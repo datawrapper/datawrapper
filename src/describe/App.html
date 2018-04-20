@@ -3,8 +3,8 @@
         <div class="span4">
             <div class="sidebar">
 
-            {{#if activeColumn}}
-                {{#if customColumn}}
+            {#if activeColumn}
+                {#if customColumn}
 
                 <ComputedColumnEditor
                     on:updateTable="refs.hot.update()"
@@ -13,9 +13,9 @@
                     bind:column="customColumn"
                     bind:columns />
 
-                <button on:click="force(event, true)" class="btn">{{__("describe / edit-format")}}</button>
+                <button on:click="force(event, true)" class="btn">{__("describe / edit-format")}</button>
 
-                {{elseif columnFormat}}
+                {:elseif columnFormat}
 
                 <CustomColumnFormat
                     on:updateTable="refs.hot.update()"
@@ -23,60 +23,60 @@
                     bind:column="columnFormat"
                     bind:columns />
 
-                    {{#if columnFormat.isComputed}}
-                    <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {{__("describe / edit-formula")}}</button>
-                    {{/if}}
+                    {#if columnFormat.isComputed}
+                    <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {__("describe / edit-formula")}</button>
+                    {/if}
 
-                {{/if}}
+                {/if}
 
-                {{#if activeColumn.type() == 'number'}}
+                {#if activeColumn.type() == 'number'}
                 <Histogram bind:values="activeValues" bind:format="activeFormat" />
-                {{/if}}
+                {/if}
 
-            {{elseif multiSelection}}
+            {:elseif multiSelection}
 
-                <h3 class="first">{{__("describe / show-hide-multi")}}</h3>
+                <h3 class="first">{__("describe / show-hide-multi")}</h3>
 
                 <ul class="unstyled">
                     <li style="margin-bottom: 5px">
                         <button class="btn" on:click="hideMultiple(multiSelection, false)">
-                            <i class="fa fa-eye"></i> {{__("describe / show-selected")}}
+                            <i class="fa fa-eye"></i> {__("describe / show-selected")}
                         </button>
                     </li>
                     <li>
                         <button class="btn" on:click="hideMultiple(multiSelection, true)">
-                            <i class="fa fa-eye-slash"></i> {{__("describe / hide-selected")}}
+                            <i class="fa fa-eye-slash"></i> {__("describe / hide-selected")}
                         </button>
                     </li>
                 </ul>
 
-            {{else}}
+            {:else}
 
-                <h3 class="first">{{ __("Make sure the data looks right") }}</h3>
+                <h3 class="first">{ __("Make sure the data looks right") }</h3>
 
-                <p>{{ __("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.") }}</p>
+                <p>{ __("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.") }</p>
 
                 <Checkbox
-                    label="{{ __("First row as label") }}"
+                    label="{ __("First row as label") }"
                     bind:value="firstRowIsHeader" />
 
-                <h4>{{__("describe / locale-select / hed")}}</h4>
+                <h4>{__("describe / locale-select / hed")}</h4>
 
-                <p>{{__("describe / locale-select / body")}}</p>
+                <p>{__("describe / locale-select / body")}</p>
 
                 <select bind:value="locale">
-                    {{#each locales as locale}}
-                    <option value="{{locale.value}}">{{locale.label}} ({{locale.value}})</option>
-                    {{/each}}
+                    {#each locales as locale}
+                    <option value="{locale.value}">{locale.label} ({locale.value})</option>
+                    {/each}
                 </select>
 
-            {{/if}}
+            {/if}
 
                 <hr>
 
                 <div class="btn-group">
-                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {{__("Back")}}</a>
-                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed"> {{__("Proceed")}} <i class="icon-chevron-right icon-white"></i></a>
+                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {__("Back")}</a>
+                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed"> {__("Proceed")} <i class="icon-chevron-right icon-white"></i></a>
                 </div>
 
             </div>
@@ -84,52 +84,52 @@
         <div class="span8">
 
             <div class="help">
-                {{{__('describe / info-table-header')}}} <img src="/static/img/arrow.svg" />
+                {@html __('describe / info-table-header')} <img src="/static/img/arrow.svg" />
             </div>
             <div class="pull-right" style="margin-bottom: 10px">
 
                 <div class="sort-box">
                     <div class="btn-group" ref:sortDropdownGroup>
                         <button class="btn dropdown-toggle" data-toggle="dropdown">
-                           {{{__('describe / sort-by')}}}… <span class="caret"></span>
+                           {@html __('describe / sort-by')}… <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu sort-menu">
-                            <li class="{{'-'==sortBy?'active':''}}"><a on:click="sort(event, '-')" href="#s">{{{__('describe / no-sorting')}}}</a></li>
-                            {{#each columns as col}}
-                            <li class="{{col.name()==sortBy?'active':''}}"><a on:click="sort(event, col.name(), true)" href="#/{{col.name()}}">
-                                <i on:click="sort(event, col.name(), true)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-asc fa-fw"></i>
-                                <i on:click="sort(event, col.name(), false)" class="fa fa-sort-{{col.type()=='text'?'alpha':'amount'}}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{{col.title()}}</a></li>
-                            {{/each}}
+                            <li class="{'-'==sortBy?'active':''}"><a on:click="sort(event, '-')" href="#s">{@html __('describe / no-sorting')}</a></li>
+                            {#each columns as col}
+                            <li class="{col.name()==sortBy?'active':''}"><a on:click="sort(event, col.name(), true)" href="#/{col.name()}">
+                                <i on:click="sort(event, col.name(), true)" class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-asc fa-fw"></i>
+                                <i on:click="sort(event, col.name(), false)" class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{col.title()}</a></li>
+                            {/each}
                         </ul>
                     </div>
                 </div>
 
                 <div class="search-box form-search">
                     <i class="im im-magnifier"></i>
-                    <div class="{{searchResults.length > 0 ? 'input-append' : ''}}">
-                        <input type="text" on:keypress="keyPress(event)" placeholder="{{__('Search data table')}}" bind:value="search" ref:search class="{{searchResults.length > 0?'with-results':''}} search-query" />
-                        {{#if searchResults.length > 0}}
+                    <div class="{searchResults.length > 0 ? 'input-append' : ''}">
+                        <input type="text" on:keypress="keyPress(event)" placeholder="{__('Search data table')}" bind:value="search" ref:search class="{searchResults.length > 0?'with-results':''} search-query" />
+                        {#if searchResults.length > 0}
                         <div class="btn-group">
                           <button class="btn" on:click="nextResult(-1)">
                             <i class="fa fa-chevron-up"></i></button>
                           <button class="btn" on:click="nextResult(+1)">
                             <i class="fa fa-chevron-down"></i></button>
                         </div>
-                        {{/if}}
+                        {/if}
                     </div>
 
-                    {{#if search}}
+                    {#if search}
                     <div class="results">
-                        {{#if searchResults.length > 0}}
-                            {{searchIndexSafe+1}}
-                            {{__("describe / search / of") }}
-                            {{searchResults.length}}
-                            {{__("describe / search / results") }}
-                        {{elseif search}}
-                            {{ __("describe / search / no-matches") }}
-                        {{/if}}
+                        {#if searchResults.length > 0}
+                            {searchIndexSafe+1}
+                            {__("describe / search / of") }
+                            {searchResults.length}
+                            {__("describe / search / results") }
+                        {:elseif search}
+                            { __("describe / search / no-matches") }
+                        {/if}
                     </div>
-                    {{/if}}
+                    {/if}
                 </div>
 
             </div>
@@ -148,11 +148,11 @@
                 on:resetSort="set({sortBy:'-'})" />
 
             <div class="buttons below-table pull-right">
-                <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {{__("describe / transpose-long")}}</button>
+                <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {__("describe / transpose-long")}</button>
 
-                <button on:click="addComputedColumn()" class="btn computed-columns"><i class="fa fa-calculator"></i> {{__("computed columns / add-btn")}}…</button>
+                <button on:click="addComputedColumn()" class="btn computed-columns"><i class="fa fa-calculator"></i> {__("computed columns / add-btn")}…</button>
 
-                <button on:click="revertChanges()" class="btn {{has_changes?'':'disabled'}}" id="reset-data-changes"><i class="fa fa-undo"></i> {{__("Revert changes")}}...</button>
+                <button on:click="revertChanges()" class="btn {has_changes?'':'disabled'}" id="reset-data-changes"><i class="fa fa-undo"></i> {__("Revert changes")}...</button>
             </div>
         </div>
     </div>
@@ -172,24 +172,24 @@
         components: { Handsontable, Checkbox, ComputedColumnEditor,
             CustomColumnFormat, Histogram },
         computed: {
-            searchIndexSafe (searchIndex, searchResults) {
+            searchIndexSafe ({ searchIndex, searchResults }) {
                 if (searchIndex<0) searchIndex+=searchResults.length;
                 searchIndex = searchIndex % searchResults.length;
                 return searchIndex;
             },
-            customColumn (activeColumn, forceColumnFormat) {
+            customColumn ({ activeColumn, forceColumnFormat }) {
                 return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
             },
-            columnFormat (activeColumn, forceColumnFormat) {
+            columnFormat ({ activeColumn, forceColumnFormat }) {
                 return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
             },
-            activeValues (activeColumn) {
+            activeValues ({ activeColumn }) {
                 return activeColumn ? activeColumn.values() : [];
             },
-            activeFormat (activeColumn, $dw_chart) {
+            activeFormat ({ activeColumn, $dw_chart }) {
                 return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
             },
-            columns (activeColumn) {
+            columns ({ activeColumn }) {
                 const ds = chart.dataset();
                 if (!activeColumn) return ds ? ds.columns() : [];
                 try {
@@ -198,7 +198,7 @@
                     return [];
                 }
             },
-            sorting (sortBy, sortDir) {
+            sorting ({ sortBy, sortDir }) {
                 return {sortBy,sortDir};
             }
         },
@@ -412,3 +412,4 @@
         }
     }
 </style>
+

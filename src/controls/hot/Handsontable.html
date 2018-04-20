@@ -163,7 +163,7 @@
             }
         },
         computed: {
-            currentResult (searchResults, searchIndex) {
+            currentResult ({ searchResults, searchIndex }) {
                 if (!searchResults || !searchResults.length) return null;
                 const l = searchResults.length;
                 if (searchIndex < 0 || searchIndex >= l) {

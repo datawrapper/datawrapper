@@ -1,23 +1,23 @@
 <div style="margin-bottom: 15px">
-    <h3 class="first">{{title}}</h3>
-    <p>{{__("computed columns / modal / intro")}}</p>
+    <h3 class="first">{title}</h3>
+    <p>{__("computed columns / modal / intro")}</p>
 
-    <label>{{__("computed columns / modal / name")}}</label>
+    <label>{__("computed columns / modal / name")}</label>
     <input type="text" bind:value="name" />
 
-    <label>{{__("computed columns / modal / formula")}}</label>
+    <label>{__("computed columns / modal / formula")}</label>
     <textarea ref:code class="code"></textarea>
 
-    <p style="margin-top: 1em">{{__("computed columns / modal / available columns")}}:</p>
+    <p style="margin-top: 1em">{__("computed columns / modal / available columns")}:</p>
 
     <ul class="col-select">
-        {{#each metaColumns as col}}
-        <li on:click="insert(col)">{{col.key}}</li>
-        {{/each}}
+        {#each metaColumns as col}
+        <li on:click="insert(col)">{col.key}</li>
+        {/each}
     </ul>
 </div>
 
-<button on:click="removeColumn()" class="btn btn-danger"><i class="fa fa-trash"></i> {{__("computed columns / modal / remove")}}</button>
+<button on:click="removeColumn()" class="btn btn-danger"><i class="fa fa-trash"></i> {__("computed columns / modal / remove")}</button>
 
 <style lang="less">
 label {
@@ -132,11 +132,11 @@ label {
             }
         },
         computed: {
-            title(column) {
+            title({ column }) {
                 var s = __("describe / edit-column");
                 return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
             },
-            metaColumns (columns) {
+            metaColumns ({ columns }) {
                 if (!columns) return [];
                 return columns.map(col => {
                     return {
@@ -146,7 +146,7 @@ label {
                     };
                 });
             },
-            keywords (metaColumns) {
+            keywords ({ metaColumns }) {
                 const keywords = ['sum','round','min','max','median','mean'];
                 metaColumns.forEach(function(col) {
                     keywords.push(col.key);

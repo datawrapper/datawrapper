@@ -1,16 +1,16 @@
-<p>{{ __("upload / quick help") }}</p>
+<p>{ __("upload / quick help") }</p>
 
 <div class="demo-datasets">
-    <p>{{ __("upload / try a dataset") }}</p>
-    <select disabled="{{readonly}}" id="demo-datasets" bind:value="selectedDataset">
-        <option value="--">{{ __("upload / sample dataset") }}</option>
-        {{#each datasetsArray as group}}
-        <optgroup label="{{group.type}}">
-            {{#each group.datasets as dataset}}
-            <option value="{{dataset}}" class="demo-dataset">{{dataset.title}}</option>
-        {{/each}}
+    <p>{ __("upload / try a dataset") }</p>
+    <select disabled="{readonly}" id="demo-datasets" bind:value="selectedDataset">
+        <option value="--">{ __("upload / sample dataset") }</option>
+        {#each datasetsArray as group}
+        <optgroup label="{group.type}">
+            {#each group.datasets as dataset}
+            <option value="{dataset}" class="demo-dataset">{dataset.title}</option>
+        {/each}
         </optgroup>
-        {{/each}}
+        {/each}
     </select>
 </div>
 
@@ -39,7 +39,7 @@
             }
         },
         computed: {
-            datasetsArray(datasets) {
+            datasetsArray({ datasets }) {
                 return Object.keys(datasets).map(k => datasets[k]);
             }
         },

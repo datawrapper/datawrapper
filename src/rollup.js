@@ -28,6 +28,7 @@ function buildLocale(app_id, locale, callback) {
 
             svelte({
                 dev: !production,
+                parser: 'v2',
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
@@ -122,9 +123,9 @@ function buildLocale(app_id, locale, callback) {
 }
 
 build('upload');
-build('describe');
-build('controls');
-build('controls/hot');
-// build('publish');
-// build('highlight');
+// build('describe');
+// build('controls');
+// build('controls/hot');
+build('publish');
+build('highlight');
 

@@ -1,31 +1,31 @@
 <div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="onDragOver(event)" on:dragenter="set({dragover:true})" on:dragend="resetDrag()" on:dragleave="resetDrag()">
-    {{#if dragover}}
+    {#if dragover}
     <div class="draginfo">
         Drag your CSV file here to upload...
     </div>
-    {{/if}}
-    <div class="row" style="{{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}}">
+    {/if}
+    <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
         <div class="span5">
             <div class="sidebar">
                 <h3>How to you want to upload your data?</h3>
 
                 <ul class="import-methods">
-                    {{#each buttons as btn}}
-                    <li on:click="btnAction(btn)" class="action {{active==btn?'active':''}}">
+                    {#each buttons as btn}
+                    <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
                         <label>
-                            {{#if btn.isFileUpload}}
+                            {#if btn.isFileUpload}
                             <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
-                            {{/if}}
-                            <i class="{{btn.icon}}"></i>
-                            <span>{{btn.title}}</span>
+                            {/if}
+                            <i class="{btn.icon}"></i>
+                            <span>{btn.title}</span>
                         </label>
                     </li>
-                    {{/each}}
+                    {/each}
                 </ul>
 
-                <h4>{{active.title}}</h4>
+                <h4>{active.title}</h4>
 
-                <:Component {Sidebar}
+                <svelte:component this={Sidebar}
                     bind:chartData
                     bind:readonly
                     bind:datasets />
@@ -34,12 +34,12 @@
         </div>
         <div class="span7">
 
-            <:Component {MainPanel}
+            <svelte:component this={MainPanel}
                 bind:chartData
                 bind:readonly />
 
             <div class="buttons pull-right">
-                <a href="describe" class="submit btn btn-primary" id="describe-proceed"> {{__("Proceed")}} <i class="icon-chevron-right icon-white"></i></a>
+                <a href="describe" class="submit btn btn-primary" id="describe-proceed"> {__("Proceed")} <i class="icon-chevron-right icon-white"></i></a>
             </div>
         </div>
     </div>

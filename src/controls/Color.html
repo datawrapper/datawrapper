@@ -1,30 +1,30 @@
 <div class="control-group vis-option-type-color">
-    <label class="control-label" style="width: 100px">{{{ label }}}</label>
+    <label class="control-label" style="width: 100px">{@html label }</label>
     <div class="controls">
-        {{#if hexColor}}
-        <ColorPicker on:change="update(event)" color="{{hexColor}}" bind:visible="open" palette="{{palette}}" />
-        {{/if}}
+        {#if hexColor}
+        <ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" palette="{palette}" />
+        {/if}
 
-        {{#if customizable}}
+        {#if customizable}
         <span class="custom-color-selector-head">
-            <a href="#customize" on:click="toggle(event)" class="btn btn-small custom {{expanded?'btn-primary':''}}" role="button">customize colors...</a>
+            <a href="#customize" on:click="toggle(event)" class="btn btn-small custom {expanded?'btn-primary':''}" role="button">customize colors...</a>
         </span>
-        {{/if}}
+        {/if}
     </div>
 </div>
 
-{{#if customizable && expanded}}
+{#if customizable && expanded}
 <div class="custom-color-selector-body" style="display: block;">
     <div class="row">
         <div class="span2" style="width:43%">
             <h4>Select element(s):</h4>
             <ul class="dataseries unstyled">
-                {{#each colorKeys as k}}
-                <li on:click="toggleSelect(k.key, event)" class="{{selected.indexOf(k.key) > -1 ? 'selected':''}}" data-series="{{k.key}}">
-                    <div class="color" style="background:{{k.color}}">{{!k.defined ? '×' : ''}}</div>
-                    <label>{{k.key}}</label>
+                {#each colorKeys as k}
+                <li on:click="toggleSelect(k.key, event)" class="{selected.indexOf(k.key) > -1 ? 'selected':''}" data-series="{k.key}">
+                    <div class="color" style="background:{k.color}">{!k.defined ? '×' : ''}</div>
+                    <label>{k.key}</label>
                 </li>
-                {{/each}}
+                {/each}
             </ul>
             <div style="font-size:12px;text-align:center;margin-bottom:10px;">
                 Select: &nbsp;
@@ -36,21 +36,21 @@
         </div>
         <div class="span2" style="width:42%;">
             <h4>Choose a color:</h4>
-            {{#if selected.length}}
+            {#if selected.length}
             <div class="select">
-                <ColorPicker on:change="updateCustom(event)" color="{{customColor}}" bind:visible="openCustom" palette="{{palette}}" />
+                <ColorPicker on:change="updateCustom(event)" color="{customColor}" bind:visible="openCustom" palette="{palette}" />
                 <button class="btn" on:click="reset()">Reset</button>
             </div>
-            {{else}}
+            {:else}
             <div class="info">
                 Please select an element on the left to change colors for individual elements...
             </div>
-            {{/if}}
+            {/if}
             <button style="margin-top:20px" class="btn" on:click="resetAll()">Reset all colors</button>
         </div>
     </div>
 </div>
-{{/if}}
+{/if}
 
 <script>
     import ColorPicker from './ColorPicker.html';
@@ -59,7 +59,7 @@
     export default {
         components: { ColorPicker },
         computed: {
-            colorKeys ($vis, customizable, axis, custom, palette) {
+            colorKeys ({ $vis, customizable, axis, custom, palette }) {
                 if (!$vis || !customizable) return [];
                 return (
                     axis ? _.unique($vis.axes(true)[axis].values()) :
@@ -74,13 +74,13 @@
                     };
                 });
             },
-            palette ($theme) {
+            palette ({ $theme }) {
                 return $theme.colors.palette; //.concat($theme.colors.secondary || []);
             },
-            hexColor (value, palette) {
+            hexColor ({ value, palette }) {
                 return getColor(value, palette);
             },
-            customColor (selected, palette, custom) {
+            customColor ({ selected, palette, custom }) {
                 if (custom[selected[0]] === undefined) return '#ccc';
                 const realColors = selected
                     .filter(s => custom[s] !== undefined)

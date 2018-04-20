@@ -1,42 +1,42 @@
 <div>
-    <h3 class="first">{{title}}</h3>
+    <h3 class="first">{title}</h3>
 
     <div class="form-horizontal">
 
         <Select
-            label="{{__("Column type")}}"
-            options="{{colTypes}}"
+            label="{__("Column type")}"
+            options="{colTypes}"
             bind:value="columnFormat.type"
             width="180px"
             />
 
         <Checkbox
-            label="{{ __("Hide column from visualization") }}"
+            label="{ __("Hide column from visualization") }"
             bind:value="columnFormat.ignore" />
 
         <hr />
 
-        {{#if column && column.type() == 'number'}}
+        {#if column && column.type() == 'number'}
         <Select
-            label="{{__("Round numbers to")}}"
-            options="{{[
+            label="{__("Round numbers to")}"
+            options="{[
                 {value:'-',label: __("describe / column-format / individual")},
-                {value:'auto',label: __("describe / column-format / auto-detect") }]}}"
-            optgroups="{{numberFormats}}"
+                {value:'auto',label: __("describe / column-format / auto-detect") }]}"
+            optgroups="{numberFormats}"
             bind:value="columnFormat['number-format']"
             width="180px"
             />
         <Select
-            label="{{__("Divide numbers by")}}"
-            options="{{divisors_opts}}"
-            optgroups="{{divisors}}"
+            label="{__("Divide numbers by")}"
+            options="{divisors_opts}"
+            optgroups="{divisors}"
             bind:value="columnFormat['number-divisor']"
             width="180px"
             />
 
         <div class="control-group vis-option-type-select">
             <label class="control-label">
-                {{__("Prepend/Append")}}
+                {__("Prepend/Append")}
             </label>
             <div class="controls form-inline">
                 <input style="width:6ex; text-align:right" data-lpignore="true" name="prepend" type="text" bind:value="columnFormat['number-prepend']">
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        {{/if}}
+        {/if}
 
     </div>
 </div>
@@ -113,7 +113,7 @@
             }
         },
         computed: {
-            title(column) {
+            title({ column }) {
                 var s = __("describe / edit-column");
                 return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
             }
@@ -225,3 +225,4 @@
     }
 }
 </style>
+
