@@ -126,6 +126,6 @@ build('upload');
 // build('describe');
 // build('controls');
 // build('controls/hot');
-build('publish');
-build('highlight');
+// build('publish');
+// build('highlight');
 

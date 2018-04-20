@@ -89,7 +89,8 @@
             // watch select input
             this.observe('selected', (sel, old) => {
                 if (sel == old) return;
-                this.set({value: sel != 'custom' ? sel : this.get('custom')+' '});
+                const {custom} = this.get();
+                this.set({value: sel != 'custom' ? sel : custom+' '});
             });
             // watch external value changes
             this.observe('value', (val, old) => {

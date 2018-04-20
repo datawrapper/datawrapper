@@ -102,7 +102,8 @@
             },
             toggle (event) {
                 event.preventDefault();
-                this.set({expanded:!this.get('expanded')});
+                const {expanded} = this.get();
+                this.set({expanded:!expanded});
             },
             toggleSelect (k, event) {
                 event.preventDefault();

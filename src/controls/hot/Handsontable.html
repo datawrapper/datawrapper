@@ -9,7 +9,8 @@
     export default {
         methods: {
             render() {
-                this.get('hot').render();
+                const {hot} = this.get();
+                hot.render();
             },
             update() {
                 const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
