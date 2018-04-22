@@ -2,12 +2,10 @@ import _isArray from 'underscore-es/isArray';
 
 function fetchJSON(url, method, credentials, body, callback) {
     var opts = {
-        method: method,
+        method, body,
         mode: 'cors',
-        body: body
+        credentials
     };
-
-    opts.credentials = credentials;
 
     window.fetch(url, opts)
     .then((res) => {
@@ -26,13 +24,13 @@ function fetchJSON(url, method, credentials, body, callback) {
     });
 }
 
-export function getJSON(url, credentials, callback) { 
+export function getJSON(url, credentials, callback) {
     if (arguments.length == 2) {
         callback = credentials;
         credentials = "include";
     }
 
-    return fetchJSON(url, 'GET', credentials, null, callback); 
+    return fetchJSON(url, 'GET', credentials, null, callback);
 }
 export function postJSON(url, body, callback) { return fetchJSON(url, 'POST', "include", body, callback); }
 export function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', "include", body, callback); }
@@ -52,4 +50,9 @@ export function tailLength(v) {
 
 export function toFixed(v) {
     return (+v).toFixed(Math.max(0, tailLength(v)));
+}
+
+export function isValidUrl(textval) {
+    var urlregex = /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?(\#([a-zA-Z0-9$\-_.+!*'(),;:@&=\/?]|%[0-9a-fA-F]{2})*)?)?$/;
+    return urlregex.test(textval);
 }

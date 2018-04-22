@@ -1,4 +1,4 @@
-<div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="onDragOver(event)" on:dragenter="set({dragover:true})" on:dragend="resetDrag()" on:dragleave="resetDrag()">
+<div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="dragStart(event)" on:dragenter="dragStart(event)" on:dragend="resetDrag()" on:dragleave="resetDrag()">
     {#if dragover}
     <div class="draginfo">
         Drag your CSV file here to upload...
@@ -115,6 +115,16 @@
             },
             btnAction (btn) {
                 this.set({active:btn});
+                if (btn.id == 'copy') {
+                    // turn off externalData, if still set
+                    const {dw_chart} = this.store.get();
+                    if (dw_chart.get('externalData')) {
+                        dw_chart.set('externalData', '');
+                        setTimeout(() => {
+                            dw.backend.currentChart.save();
+                        }, 1000);
+                    }
+                }
                 let activeKey = btn.id;
                 if (btn.id == 'upload') {
                     activeKey = 'copy';
@@ -132,14 +142,19 @@
             btnUpload (btn, event) {
                 if (btn.onFileUpload) btn.onFileUpload(event);
             },
-            onDragOver (event) {
-                event.preventDefault();
-                this.set({dragover:true});
+            dragStart (event) {
+                const {active} = this.get();
+                if (active.id == 'copy') {
+                    event.preventDefault();
+                    this.set({dragover:true});
+                }
             },
             resetDrag () {
                 this.set({dragover:false});
             },
             onFileDrop (event) {
+                const {active} = this.get();
+                if (active.id != 'copy') return;
                 // Prevent default behavior (Prevent file from being opened)
                 this.resetDrag();
                 event.preventDefault();
@@ -242,5 +257,11 @@
     text-align: center;
     z-index: 10;
     font-weight: 100;
+}
+:global(.sidebar) {
+    h4 {
+        font-size: 17px;
+        font-weight: 400;
+    }
 }
 </style>
