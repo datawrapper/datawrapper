@@ -9,6 +9,8 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $visData = "";
 
+        $chart->refreshExternalData();
+
         if ($app->request()->get('mode') == "print") $chart->usePrint();
 
         if (!DatawrapperHooks::hookRegistered(DatawrapperHooks::RENDER_RESIZE_CONTROL)) {
