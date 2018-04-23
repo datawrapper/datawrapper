@@ -4,44 +4,42 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const _ = require('underscore');
 const chalk = require('chalk');
-const d3 = require('d3-dsv');
-const downloadGoogleSpreadsheet = require('download-google-spreadsheet').default;
+const {csvParse} = require('d3-dsv');
+const {queue} = require('d3-queue');
+const request = require('request');
 
 const config = yaml.safeLoad(fs.readFileSync('./config.yaml'));
 
-var sheets = [{
-    dest: './tmp/translations/core.csv',
-    fileId: '1Duu-1CJ_pZFMZUm90uSHA5rgsxLTGhtZvXAxI9p65UI',
-    gid: '1737256870'
-}, {
-    dest: './tmp/translations/plugins.csv',
-    fileId: '1Duu-1CJ_pZFMZUm90uSHA5rgsxLTGhtZvXAxI9p65UI',
-    gid: '1978328882',
-}];
 
-var opts = {};
 
-downloadGoogleSpreadsheet(sheets, opts, function (err) {
-    if (err) throw err;
+if (config.translation) {
+    queue(2)
+        .defer(getSheet, config.translation.core)
+        .defer(getSheet, config.translation.plugins)
+        .await((err, core, plugins) => {
+            // write core locales/*.json
+            writeLocales(core, './locale');
 
-    const core = d3.csvParse(fs.readFileSync(sheets[0].dest, 'utf-8'));
-    const plugins = d3.csvParse(fs.readFileSync(sheets[1].dest, 'utf-8'));
+            _.each(_.groupBy(plugins, 'plugin'), (src, k) => {
+                if (fs.existsSync(`./plugins/${k}`)) {
+                    writeLocales(src, `./plugins/${k}/locale`);
+                } else {
+                    console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
+                }
+            });
 
-    // write core locales/*.json
-    writeLocales(core, './locale');
+            // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
+            // fs.unlinkSync(sheets[0].dest);
+            console.log('Done.');
+        });
+}
 
-    _.each(_.groupBy(plugins, 'plugin'), (src, k) => {
-        if (fs.existsSync(`./plugins/${k}`)) {
-            writeLocales(src, `./plugins/${k}/locale`);
-        } else {
-            console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
-        }
+function getSheet(url, callback) {
+    request(url, (err, res, body) => {
+        callback(null, csvParse(body));
     });
+}
 
-    // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
-    // fs.unlinkSync(sheets[0].dest);
-    console.log('Done.');
-});
 
 function writeLocales(src, path) {
     if (!fs.existsSync(path)) fs.mkdir(path);
