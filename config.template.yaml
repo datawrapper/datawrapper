@@ -120,6 +120,9 @@ plugins:
   #   secretkey: YOUR_SECRET_KEY
   #   bucket: your-bucket
 
+translation:
+  core: https://docs.google.com/spreadsheets/d...
+  plugins: https://docs.google.com/spreadsheets/d...
 
 ## PHANTOMJS (optional)
 ## edit and uncomment to enable static image chart exporting
@@ -146,3 +149,4 @@ plugins:
 ## create_test_charts.php creates a test user who owns
 ## the test charts, and will get the following password:
 # testuser_pwd: '1234'
+
