@@ -73,20 +73,48 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     $host = str_replace(['http://', 'https://'], ['', ''], $origin);
     $app->response()->header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
     $app->response()->header('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
+
+    $allow = false;
+
     if (isset($dw_config['cookie_domain'])) {
         $reg = "/^.*" . str_replace('.', '\.', $dw_config['cookie_domain']) . "$/";
-        if (preg_match($reg, $host)) {
-            $app->response()->header('Access-Control-Allow-Origin', $origin);
+        if (preg_match($reg, $host)) $allow = true;
+    }
+
+    if (isset($dw_config['allowed_origin'])) {
+        if ($dw_config['allowed_origin'] == "*") {
+            $app->response()->header('Access-Control-Allow-Origin', "*");
             $app->response()->header('Access-Control-Allow-Credentials', 'true');
 
             if ($req->getMethod() == "OPTIONS") {
                 // The client-side application can set only headers allowed in Access-Control-Allow-Headers
                 $app->response()->status(200);
-                header('Access-Control-Allow-Methods: POST,GET,OPTIONS,PUT,DELETE');
-                header('Access-Control-Allow-Origin: '. $origin);
+                header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+                header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
+                header('Access-Control-Allow-Origin: *');
                 header('Access-Control-Allow-Credentials: true');
                 die();
             }
+
+            return;
+        }
+
+        $allowReg = "/^.*" . str_replace('.', '\.', $dw_config['allowed_origin']) . "$/";
+        if (preg_match($allowReg, $host)) $allow = true;
+    }
+
+    if ($allow) {
+        $app->response()->header('Access-Control-Allow-Origin', $origin);
+        $app->response()->header('Access-Control-Allow-Credentials', 'true');
+
+        if ($req->getMethod() == "OPTIONS") {
+            // The client-side application can set only headers allowed in Access-Control-Allow-Headers
+            $app->response()->status(200);
+            header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
+            header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
+            header('Access-Control-Allow-Origin: '. $origin);
+            header('Access-Control-Allow-Credentials: true');
+            die();
         }
     }
 });
