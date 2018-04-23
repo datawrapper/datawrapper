@@ -1,38 +1,38 @@
 <div class="color-picker-cont">
-    <div on:click="set({visible:true})" class="base-color-picker color-picker" style="background: {{color}} none repeat scroll 0% 0%;">
+    <div on:click="set({visible:true})" class="base-color-picker color-picker" style="background: {color} none repeat scroll 0% 0%;">
         <div class="arrow"></div>
     </div>
-    {{#if visible && color}}
+    {#if visible && color}
     <div class="color-selector">
         <div class="palette">
-            {{#each palette as c}}
-            <div class="color" on:click="set({color:c})" on:dblclick="set({color:c, visible:false})" data-color="{{c}}" style="background: {{c}}"></div>
-            {{/each}}
+            {#each palette as c}
+            <div class="color" on:click="set({color:c})" on:dblclick="set({color:c, visible:false})" data-color="{c}" style="background: {c}"></div>
+            {/each}
         </div>
 
         <div class="color-axis lightness">
-            {{#each gradient_l as c}}
-            <div class="color {{c == nearest_l?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-            {{/each}}
+            {#each gradient_l as c}
+            <div class="color {c == nearest_l?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+            {/each}
         </div>
         <div class="color-axis saturation">
-            {{#each gradient_c as c}}
-            <div class="color {{c == nearest_c?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-            {{/each}}
+            {#each gradient_c as c}
+            <div class="color {c == nearest_c?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+            {/each}
         </div>
         <div class="color-axis hue">
-            {{#each gradient_h as c}}
-            <div class="color {{c == nearest_h?'selected':''}}" on:click="set({color:c})" data-color="{{c}}" style="background: {{c}}"></div>
-            {{/each}}
+            {#each gradient_h as c}
+            <div class="color {c == nearest_h?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+            {/each}
         </div>
 
         <div class="footer">
-            <input type="text" style="background: {{color}}; border-color: {{borderColor}}; color: {{textColor}}" bind:value="color" class="hex">
+            <input type="text" style="background: {color}; border-color: {borderColor}; color: {textColor}" bind:value="color" class="hex">
             <button class="btn btn-small ok" on:click="set({visible:false})"><i class="icon-ok"></i></button>
-            <div class="color selected" style="background: {{color}}"></div>
+            <div class="color selected" style="background: {color}"></div>
         </div>
     </div>
-    {{/if}}
+    {/if}
 </div>
 <script>
 
@@ -42,7 +42,7 @@
 
     export default {
         computed: {
-            gradient_l (color) {
+            gradient_l ({ color }) {
                 const lch = chroma(color).lch();
                 const sample = spread(70, 55, 7, 6).map((l) => chroma.lch(l, lch[1], lch[2]).hex());
                 return chroma.scale(['#000000'].concat(sample).concat('#ffffff'))
@@ -51,7 +51,7 @@
                     .padding(0.1)
                     .colors(14);
             },
-            gradient_c (color, palette) {
+            gradient_c ({ color, palette }) {
                 let high = chroma(color).set('lch.c', 120);
                 if (isNaN(high.get('lch.h'))) {
                     high = chroma.lch(high.get('lch.l'), 50, chroma(palette[0]).get('lch.h'));
@@ -62,7 +62,7 @@
                     .gamma(1.2)
                     .colors(14);
             },
-            gradient_h (color) {
+            gradient_h ({ color }) {
                 const lch = chroma(color).lch();
                 const sample = spread(lch[2], 75, 7, 6)
                     .map((h) => chroma.lch(lch[0], lch[1], h).hex());
@@ -70,13 +70,13 @@
                     .mode('lch')
                     .colors(14);
             },
-            nearest_l (color, gradient_l) { return findNearest(gradient_l, color); },
-            nearest_c (color, gradient_c) { return findNearest(gradient_c, color); },
-            nearest_h (color, gradient_h) { return findNearest(gradient_h, color); },
-            textColor (color) {
+            nearest_l ({ color, gradient_l }) { return findNearest(gradient_l, color); },
+            nearest_c ({ color, gradient_c }) { return findNearest(gradient_c, color); },
+            nearest_h ({ color, gradient_h }) { return findNearest(gradient_h, color); },
+            textColor ({ color }) {
                 return chroma(color).get('lab.l') > 60 ? 'black' : 'white';
             },
-            borderColor (color) {
+            borderColor ({ color }) {
                 return chroma(color).darker().hex();
             }
         },

@@ -9,7 +9,8 @@
     export default {
         methods: {
             render() {
-                this.get('hot').render();
+                const {hot} = this.get();
+                hot.render();
             },
             update() {
                 const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
@@ -163,7 +164,7 @@
             }
         },
         computed: {
-            currentResult (searchResults, searchIndex) {
+            currentResult ({ searchResults, searchIndex }) {
                 if (!searchResults || !searchResults.length) return null;
                 const l = searchResults.length;
                 if (searchIndex < 0 || searchIndex >= l) {

@@ -1,0 +1,246 @@
+<div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="onDragOver(event)" on:dragenter="set({dragover:true})" on:dragend="resetDrag()" on:dragleave="resetDrag()">
+    {#if dragover}
+    <div class="draginfo">
+        Drag your CSV file here to upload...
+    </div>
+    {/if}
+    <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
+        <div class="span5">
+            <div class="sidebar">
+                <h3>How to you want to upload your data?</h3>
+
+                <ul class="import-methods">
+                    {#each buttons as btn}
+                    <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
+                        <label>
+                            {#if btn.isFileUpload}
+                            <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            {/if}
+                            <i class="{btn.icon}"></i>
+                            <span>{btn.title}</span>
+                        </label>
+                    </li>
+                    {/each}
+                </ul>
+
+                <h4>{active.title}</h4>
+
+                <svelte:component this={Sidebar}
+                    bind:chartData
+                    bind:readonly
+                    bind:datasets />
+
+            </div>
+        </div>
+        <div class="span7">
+
+            <svelte:component this={MainPanel}
+                bind:chartData
+                bind:readonly />
+
+            <div class="buttons pull-right">
+                <a href="describe" class="submit btn btn-primary" id="describe-proceed"> {__("Proceed")} <i class="icon-chevron-right icon-white"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* global dw */
+    import TextAreaUpload from './TextAreaUpload.html';
+    import UploadHelp from './UploadHelp.html';
+    import readFile from '../shared/readFile.js';
+    import {putJSON} from '../shared/utils.js';
+
+    let app;
+
+    const coreUploads = [{
+        id: 'copy',
+        title: 'Copy & paste data table',
+        icon: 'im im-copy',
+        mainPanel: TextAreaUpload,
+        sidebar: UploadHelp,
+        action() {
+
+        }
+    },{
+        id: 'upload',
+        title: 'Upload CSV/TSV file',
+        icon: 'im im-upload',
+        mainPanel: TextAreaUpload,
+        sidebar: UploadHelp,
+        isFileUpload: true,
+        onFileUpload(event) {
+            const file = event.target.files[0];
+            if (file.type.substr(0,5) == 'text/') {
+                readFile(file, (err, result) => {
+                    putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                        window.location.href = 'describe';
+                    });
+                });
+            }
+        },
+        action() {}
+    }];
+
+    export default {
+        oncreate() {
+            app = this;
+            const {dw_chart} = this.store.get();
+            const method = dw_chart.get('metadata.data.upload-method', 'copy');
+            this.set({defaultMethod: method});
+            coreUploads.forEach(u => {
+                if (u.id == method) {
+                    this.set({active:u});
+                }
+            });
+        },
+        data() {
+            return {
+                dragover: false,
+                MainPanel: TextAreaUpload,
+                Sidebar: UploadHelp,
+                active: coreUploads[0],
+                buttons: coreUploads
+            }
+        },
+        methods: {
+            addButton (btn) {
+                coreUploads.push(btn);
+                this.set({buttons:coreUploads});
+                const {defaultMethod} = this.get();
+                if (btn.id == defaultMethod) {
+                    this.btnAction(btn);
+                }
+            },
+            btnAction (btn) {
+                this.set({active:btn});
+                let activeKey = btn.id;
+                if (btn.id == 'upload') {
+                    activeKey = 'copy';
+                    setTimeout(() => {
+                    // reset after 1sec
+                        this.set({active:coreUploads[0]});
+                    }, 1000);
+                }
+                const {dw_chart} = this.store.get();
+                dw_chart.set('metadata.data.upload-method', activeKey);
+                if (btn.action) btn.action();
+                if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
+                if (btn.sidebar) this.set({Sidebar:btn.sidebar});
+            },
+            btnUpload (btn, event) {
+                if (btn.onFileUpload) btn.onFileUpload(event);
+            },
+            onDragOver (event) {
+                event.preventDefault();
+                this.set({dragover:true});
+            },
+            resetDrag () {
+                this.set({dragover:false});
+            },
+            onFileDrop (event) {
+                // Prevent default behavior (Prevent file from being opened)
+                this.resetDrag();
+                event.preventDefault();
+                const files = [];
+                if (event.dataTransfer.items) {
+                    // Use DataTransferItemList interface to access the file(s)
+                    for (let i=0; i<event.dataTransfer.items.length; i++) {
+                        // If dropped items aren't files, reject them
+                        if (event.dataTransfer.items[i].kind === 'file') {
+                            files.push(event.dataTransfer.items[i].getAsFile());
+                        }
+                    }
+                    event.dataTransfer.items.clear();
+                } else {
+                    // Use DataTransfer interface to access the file(s)
+                    for (let i=0; i<event.dataTransfer.files.length; i++) {
+                        files.push(event.dataTransfer.files[i]);
+                    }
+                    event.dataTransfer.items.clear();
+                }
+                for (let i=0; i<files.length; i++) {
+                    if (files[i].type.substr(0,5) == 'text/') {
+                        return readFile(files[i], (err, result) => {
+                            putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                                window.location.href = 'describe';
+                            });
+                        });
+                    }
+                }
+            }
+        }
+    };
+</script>
+
+<style lang="less">
+
+.import-methods{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .action {
+        color: #1d81a2;
+        text-align: center;
+        min-height: 50px;
+        width: ~'calc(25% - 20px)';
+        margin: 0 10px 10px 0;
+        padding: 15px 0 10px;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        cursor: pointer;
+
+        &:hover,&.active {
+            background: #fff;
+            border-radius: 4px;
+        }
+        &.active {
+            color: #222;
+            cursor: default;
+        }
+
+        > label {
+            margin-top: -10px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-bottom: -10px;
+
+            > i {
+                display: block;
+                margin: 0 auto;
+                font-size: 24px !important;
+            }
+
+            > span {
+                font-size: 12px;
+                line-height: 15px;
+                display: block;
+                padding: 4px 10px 0;
+            }
+        }
+
+
+    }
+
+    .file-upload {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+}
+.draginfo {
+    pointer-events: none;
+    height: 0;
+    position: relative;
+    top: 120px;
+    font-size:45px;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    font-weight: 100;
+}
+</style>

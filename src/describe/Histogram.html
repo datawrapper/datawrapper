@@ -1,49 +1,74 @@
-<h3>{{__('describe / histogram')}}</h3>
+<h3>{__('describe / histogram')}</h3>
 <svg ref:svg>
     <!-- x axis -->
-    <g transform="translate({{[padding.left,padding.top]}})">
-        <g class='axis x-axis' transform="translate(0, {{innerHeight}})">
-            {{#each ticks as tick}}
-            <g class='tick' transform='translate({{xScale(tick.x)}},0)'>
+    <g transform="translate({[padding.left,padding.top]})">
+        <g class='axis x-axis' transform="translate(0, {innerHeight})">
+            {#each ticks as tick}
+            <g class='tick' transform='translate({xScale(tick.x)},0)'>
                 <line y2="3" />
-                <text y='5'>{{tick.label}}</text>
+                <text y='5'>{tick.label}</text>
             </g>
-            {{/each}}
-            {{#if highlight}}
-            <polygon transform='translate({{xScale(highlight.x)}},0)' points="0,0,4,6,-4,6" />
-            {{/if}}
+            {/each}
+            {#if highlight}
+            <polygon transform='translate({xScale(highlight.x)},0)' points="0,0,4,6,-4,6" />
+            {/if}
         </g>
 
-        <g class='bars'>
+<!--         <g class='bars'>
             {{#each bins as bin, i}}
             <g class="bar" transform="translate({{xScale(bin.x0)}},{{yScale(bin.length)}})">
-                <title>{{__('describe / histogram / tooltip').replace('$1', bin.length).replace('$2', pct(bin.length/validValues.length)).replace('$3', bin.x0).replace('$4', bin.x1)}}</title>
-                <rect x="1"
-                    width="{{ xScale(bin.x1)-xScale(bin.x0)-1 }}"
+                <title>{{tooltip(bin,i,bins,validValues.length)}}</title>
+                <rect x="0"
+                    width="{{ bin.x1 != bin.x0 ? xScale(bin.x1)-xScale(bin.x0)-1 : 20 }}"
                     height='{{ innerHeight - yScale(bin.length) }}'
                 ></rect>
             </g>
             {{/each}}
+        </g> -->
+
+        <g class='bars'>
+            {#each bins as bin, i}
+            <g class="bar" transform="translate({xScaleBand(bin.x0)},{yScale(bin.length)})">
+                <title>{tooltip(bin,i,bins,validValues.length)}</title>
+                <rect
+                    width="{ bin.x1 != bin.x0 ? xScaleBand.bandwidth() : 20 }"
+                    height='{ innerHeight - yScale(bin.length) }'
+                ></rect>
+            </g>
+            {/each}
         </g>
+
     </g>
 </svg>
 <ul>
-    {{#each stats as s}}
-    <li>{{s.name}}: <tt on:mouseleave="show(false)" on:mouseenter="show(s)">{{s.label}}</tt>
+    {#each stats as s}
+    <li>{s.name}: <tt on:mouseleave="show(false)" on:mouseenter="show(s)">{s.label}</tt>
     </li>
-    {{/each}}
-    {{#if NAs>0}}
-    <li>{{__('describe / histogram / invalid')}}: <tt style="color:#c71e1d">{{NAs}}</tt> ({{pct(NAs/values.length)}})</li>
-    {{/if}}
+    {/each}
+    {#if NAs>0}
+    <li>{__('describe / histogram / invalid')}: <tt style="color:#c71e1d">{NAs}</tt> ({pct(NAs/values.length)})</li>
+    {/if}
 </ul>
+<p class="learn-more">{@html __("describe / histogram / learn-more")}</p>
 
 <script>
-    import { scaleLinear } from 'd3-scale';
+    import _range from 'underscore-es/range';
+    import _countBy from 'underscore-es/countBy';
+    import _keys from 'underscore-es/keys';
+    import { toFixed } from '../shared/utils.js';
+    import { scaleLinear, scaleBand } from 'd3-scale';
     import { histogram, max, min, extent, mean, median,
        thresholdSturges } from 'd3-array';
 
     var xScale_ = scaleLinear();
+    var xScaleBand_ = scaleBand();
     var yScale_ = scaleLinear();
+
+    const pct = (val) => {
+        if (!val) return '0%';
+        if (val < 0.01) return '<1%';
+        return (val*100).toFixed(0)+'%';
+    };
 
     export default {
         data () {
@@ -59,11 +84,16 @@
         },
 
         helpers: {
-            pct(val) {
-                if (!val) return '0%';
-                if (val < 0.01) return '<1%';
-                return (val*100).toFixed(0)+'%';
+            tooltip(bin, i, bins, len) {
+                const tt = i === 0 ? __("describe / histogram / tooltip / first") :
+                    i == bins.length-1 ? __("describe / histogram / tooltip / last") :
+                    __("describe / histogram / tooltip");
+                return tt.replace('$1', bin.length)
+                    .replace('$2', pct(bin.length / len))
+                    .replace('$3', toFixed(bin.x0))
+                    .replace('$4', toFixed(bin.x1));
             },
+            pct,
             formatMobile(tick) {
                 return "'" + tick % 100;
             }
@@ -71,11 +101,11 @@
 
         computed: {
 
-            NAs (values) {
+            NAs ({ values }) {
                 return values.filter(d => typeof d == 'string' || Number.isNaN(d)).length;
             },
 
-            stats (validValues, format) {
+            stats ({ validValues, format }) {
                 const xmin = min(validValues);
                 const xmax = max(validValues);
                 const xmean = mean(validValues);
@@ -88,52 +118,68 @@
                 ];
             },
 
-            validValues (values) {
+            validValues ({ values }) {
                 return values.filter(d => typeof d == 'number' && !Number.isNaN(d));
             },
 
-            ticks (xScale, format) {
+            ticks ({ xScale, format }) {
                 return xScale.ticks(4).map(x => {
                     return {x, label:format(x)};
                 });
             },
 
-            bins (xScale, validValues) {
-                return histogram()
-                    .domain(xScale.domain())
-                    .thresholds(xScale.ticks(14))(validValues);
+            bins ({ niceDomain, validValues }) {
+                // const tickCnt = Math.min(_uniq(validValues).length, 14);
+                const dom = niceDomain;
+                // const classw = (s[1]-s[0]);
+                const bins = histogram()
+                    .domain(dom)
+                    .thresholds(thresholdSturges)(validValues);
+                const bin_widths = _countBy(bins.map(b => b.x1 - b.x0));
+                if (bins.length > 2 && _keys(bin_widths).length > 1) {
+                    // check first and last bin
+                    const binw = bins[1].x1 - bins[1].x0;
+                    const lst = dom[0] + Math.ceil((dom[1]-dom[0])/binw)*binw;
+                    return histogram().domain([dom[0], lst])
+                        .thresholds(_range(dom[0], lst+binw*0.4, binw))(validValues);
+                }
+                return bins;
             },
 
-            xScale (validValues, innerWidth) {
-                return xScale_
+            niceDomain ({ validValues }) {
+                return scaleLinear()
                     .domain(extent(validValues))
-                    .nice()
-                    .range([0, innerWidth]);
+                    .nice().domain();
             },
 
-            yScale (innerHeight, bins) {
+            xScaleBand({ bins, innerWidth }) {
+                return xScaleBand_
+                    .domain(bins.map(d => d.x0))
+                    .paddingInner(0.1)
+                    .rangeRound([0, innerWidth])
+                    .align(0);
+            },
+
+            xScale ({ niceDomain, bins, xScaleBand }) {
+                return xScale_
+                    .domain(niceDomain)
+                    .rangeRound([0, xScaleBand.step() * bins.length]);
+            },
+
+            yScale ({ innerHeight, bins }) {
                 return yScale_
                     .domain([0, max(bins, function(d) { return d.length; })])
                     .range([innerHeight, 0]);
             },
 
-            barWidth (bins, xScale) {
+            barWidth ({ bins, xScale }) {
                 return xScale(bins[0].x1) - xScale(bins[0].x0) - 1
             },
 
-            mean (validValues, format) {
-                const x = mean(validValues);
-                return {x, label:format(x)};
-            },
-
-            median (validValues, format) {
-
-            },
-
-            innerWidth (width, padding) {
+            innerWidth ({ width, padding }) {
                 return width - padding.left - padding.right;
             },
-            innerHeight (height, padding) {
+            innerHeight ({ height, padding }) {
                 return height - padding.bottom - padding.top;
             }
 
@@ -141,15 +187,10 @@
 
         oncreate() {
             this.resize();
-
-            this.observe('highlight', (hl) => {
-                console.log('hl', hl);
-            });
         },
 
         methods: {
             show (value) {
-                console.log('sss', value);
                 this.set({highlight: value});
             },
             resize: function () {
@@ -165,7 +206,7 @@
 </script>
 
 
-<style>
+<style lang="less">
     h3 {
         margin-top: 25px;
     }
@@ -178,12 +219,15 @@
         overflow: visible;
         position: relative;
         width: 100%;
-        height: 100px;
+        height: 135px;
     }
     .tick {
         font-family: Roboto, sans-serif;
         font-size: .725em;
         font-weight: 200;
+        line {
+            shape-rendering: crispEdges;
+        }
     }
     .axis line {
         stroke: #888;
@@ -200,6 +244,7 @@
     .bars rect {
         fill: #cecece;
         stroke: none;
+        shape-rendering: crispEdges;
     }
     tt {
         font-size: 13px;
@@ -213,8 +258,14 @@
     }
     ul li {
         display: inline-block;
-        margin-right: 1.5em;
+        margin-right: 1em;
         color: #777;
         font-size: 13px;
     }
+    :global(.learn-more) {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #888;
+    }
 </style>
+

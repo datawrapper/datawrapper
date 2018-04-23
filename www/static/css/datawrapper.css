@@ -2309,6 +2309,9 @@ body.cms-mode .footer {
   font-weight: 300;
   line-height: 1.5;
 }
+.chart-editor p b {
+  font-weight: bold;
+}
 .chart-editor h3 {
   font-weight: 500;
   font-size: 19px;

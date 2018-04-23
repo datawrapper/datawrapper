@@ -97,7 +97,7 @@ class ChartQuery extends BaseChartQuery {
         // but the rest remains the same
         $chart->setUser($src->getUser());
         $chart->setTitle($src->getTitle().' ('.__('Copy').')');
-        $chart->setMetadata(json_encode($src->getMetadata()));
+        $chart->setRawMetadata($src->getRawMetadata());
         $chart->setTheme($src->getTheme());
         $chart->setLocale($src->getLocale());
         $chart->setType($src->getType());

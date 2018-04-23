@@ -20,7 +20,7 @@ function buildLocale(app_id, locale, callback) {
     const messages = JSON.parse(fs.readFileSync(`../locale/${locale}.json`, 'utf-8'));
     const inputOptions = {
         input: `${app_id}/main.js`,
-        external: ['chroma', 'Handsontable', 'cm'],
+        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js'],
         plugins: [
             i18n({
                 language: messages
@@ -28,6 +28,7 @@ function buildLocale(app_id, locale, callback) {
 
             svelte({
                 dev: !production,
+                parser: 'v2',
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
@@ -80,12 +81,15 @@ function buildLocale(app_id, locale, callback) {
         name: app_id,
         file: `../www/static/js/svelte/${app_id}.${locale}.js`,
         format: 'umd',
+        globals: {
+            '/static/vendor/jschardet/jschardet.min.js': 'jschardet'
+        }
     };
 
-    if (app_id != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
+    if (app_id.substr(0,8) != 'controls') outputOptions.amd = { id: `svelte/${app_id}` };
 
     _rollup(bundle => {
-        _generate(bundle, (code, map) => {
+        _generate(bundle, () => {
             _write(bundle, () => {
                 console.log(app_id, locale);
             });
@@ -118,8 +122,10 @@ function buildLocale(app_id, locale, callback) {
     }
 }
 
-build('describe');
+build('upload');
+// build('describe');
 // build('controls');
+// build('controls/hot');
 // build('publish');
 // build('highlight');
 

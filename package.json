@@ -35,15 +35,17 @@
     "rollup-plugin-i18n": "*",
     "rollup-plugin-json": "*",
     "rollup-plugin-node-resolve": "*",
-    "rollup-plugin-svelte": "*",
+    "rollup-plugin-svelte": "4.1.0",
     "rollup-plugin-uglify": "*",
-    "svelte": "*",
+    "svelte": "1.64.0",
+    "svelte-upgrade": "^1.0.14",
     "underscore": "^1.8.3",
     "underscore-es": "^1.9.8",
     "watch": "^1.0.2"
   },
   "dependencies": {
     "d3-array": "^1.2.1",
-    "d3-scale": "^2.0.0"
+    "d3-scale": "^2.0.0",
+    "jschardet": "^1.6.0"
   }
 }

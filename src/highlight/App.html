@@ -1,17 +1,17 @@
 <div class="story-highlight control-group" style="clear:both">
-    <label class="separator">{{{ __("Highlight the most import elements (optional)") }}}</label>
+    <label class="separator">{@html __("Highlight the most import elements (optional)") }</label>
     <div>
         <select bind:value="selected" id="highlight-series" class="span2">
-            <option value="---">- {{{ __("select element") }}} -</option>
-            {{#each elements as element}}
-            <option value="{{element.key}}">{{element.label}}</option>
-            {{/each}}
+            <option value="---">- {@html __("select element") } -</option>
+            {#each elements as element}
+            <option value="{element.key}">{element.label}</option>
+            {/each}
         </select>
     </div>
     <p class="highlighted-series" style="margin-top: 5px">
-        {{#each highlightedElements as el}}
-        <span data-series="{{ el.key }}" class="badge {{el.valid ? 'badge-info' : ''}}"><i on:click="remove(el.key)" class="fa fa-remove"></i> {{ el.key }}</span> &nbsp;
-        {{/each}}
+        {#each highlightedElements as el}
+        <span data-series="{ el.key }" class="badge {el.valid ? 'badge-info' : ''}"><i on:click="remove(el.key)" class="fa fa-remove"></i> { el.key }</span> &nbsp;
+        {/each}
     </p>
 </div>
 
@@ -31,7 +31,7 @@
             }
         },
         computed: {
-            highlightedElements (highlighted, elements) {
+            highlightedElements ({ highlighted, elements }) {
                 const els = _.indexBy(elements, 'key');
                 return highlighted.map((k) => {
                     return {
@@ -40,7 +40,7 @@
                     };
                 });
             },
-            elements ($vis) {
+            elements ({ $vis }) {
                 if (!$vis) return [];
                 return $vis.keys().sort().map((key) => {
                     const keyLbl = $vis.keyLabel(key);

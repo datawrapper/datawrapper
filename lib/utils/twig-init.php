@@ -10,7 +10,8 @@ function dwGetHTMLPurifier() {
     if (!$instance) {
         // Twig Extension to clean HTML from malicious code
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'a[href],a[target],p,b,div,span[class],strong,u,i,em,q,blockquote,*[style],br,small');
+        $config->set('HTML.Allowed', 'a[href|class|target],p,b,div,span[class],strong,u,i,em,q,blockquote,*[style],br,small');
+        $config->set('Attr.AllowedFrameTargets', ['_blank']);
         $config->set('Cache.SerializerPath', ROOT_PATH.'/tmp/');
 
         $instance = new HTMLPurifier($config);
@@ -112,7 +113,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
             'sha' => substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.$locale.js")), 0, 8),
             'locale' => $locale,
             'app_id' => $app_id,
-            'twig_data' => !empty($data) ? $data : false
+            'twig_data' => $data ?? false
         ];
 
         global $app;

@@ -1,43 +1,43 @@
 
 <div class="control-group vis-option-custom-format">
     <label class="control-label">
-        {{{ label }}}
+        {@html label }
     </label>
 
     <div class="controls form-inline">
-        {{#if selected == 'custom'}}
+        {#if selected == 'custom'}
         <div class="small">
-            For help on custom formats, check the {{{customFormatHelp}}}.
+            For help on custom formats, check the {@html customFormatHelp}.
         </div>
-        {{/if}}
+        {/if}
 
         <select bind:value="selected">
-        {{#each options as opt}}
-            <option value="{{opt.f}}">{{opt.l}}</option>
-        {{/each}}
+        {#each options as opt}
+            <option value="{opt.f}">{opt.l}</option>
+        {/each}
             <option value="custom">(custom)</option>
         </select>
-        {{#if selected == 'custom'}}
+        {#if selected == 'custom'}
         <input bind:value="custom" type="text" />
-        {{/if}}
+        {/if}
     </div>
 </div>
 
 <script>
     export default {
         computed: {
-            customFormatHelp (axisCol) {
+            customFormatHelp ({ axisCol }) {
                 if (!axisCol) return;
                 if (axisCol.type() == 'date') return '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">moment.js documentation</a>';
                 if (axisCol.type() == 'number') return '<a href="http://numeraljs.com/#format" target="_blank">numeral.js documentation</a>';
                 return '';
             },
-            axisCol ($vis, $dataset, axis) {
+            axisCol ({ $vis, $dataset, axis }) {
                 if (!$vis || !axis) return null;
                 const colids = $vis.axes()[axis];
                 return $dataset.column(typeof colids == 'object' ? colids[0] : colids);
             },
-            options (axisCol) {
+            options ({ axisCol }) {
                 if (!axisCol) return [];
                 if (axisCol.type() == 'number') {
                     // todo: translate labels
@@ -89,7 +89,8 @@
             // watch select input
             this.observe('selected', (sel, old) => {
                 if (sel == old) return;
-                this.set({value: sel != 'custom' ? sel : this.get('custom')+' '});
+                const {custom} = this.get();
+                this.set({value: sel != 'custom' ? sel : custom+' '});
             });
             // watch external value changes
             this.observe('value', (val, old) => {

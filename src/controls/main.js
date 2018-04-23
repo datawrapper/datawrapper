@@ -8,10 +8,8 @@ import NumberInput from './Number.html';
 import Radio from './Radio.html';
 import Select from './Select.html';
 import SelectAxisColumn from './SelectAxisColumn.html';
-import Handsontable from './Handsontable.html';
 
 export default {
     Checkbox, Color, ColorPicker, Group, NumberInput,
-    Radio, Select, SelectAxisColumn, CustomFormat,
-    Handsontable
+    Radio, Select, SelectAxisColumn, CustomFormat
 };
