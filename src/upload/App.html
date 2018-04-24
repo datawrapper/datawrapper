@@ -1,13 +1,13 @@
 <div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="dragStart(event)" on:dragenter="dragStart(event)" on:dragend="resetDrag()" on:dragleave="resetDrag()">
     {#if dragover}
     <div class="draginfo">
-        Drag your CSV file here to upload...
+        {@html __('upload / drag-csv-here')}
     </div>
     {/if}
     <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
         <div class="span5">
             <div class="sidebar">
-                <h3>How to you want to upload your data?</h3>
+                <h3>{@html __('upload / title')}</h3>
 
                 <ul class="import-methods">
                     {#each buttons as btn}
@@ -23,7 +23,7 @@
                     {/each}
                 </ul>
 
-                <h4>{active.title}</h4>
+                <h4>{active.longTitle || active.title}</h4>
 
                 <svelte:component this={Sidebar}
                     bind:chartData
@@ -56,16 +56,15 @@
 
     const coreUploads = [{
         id: 'copy',
-        title: 'Copy & paste data table',
+        title: __('upload / copy-paste'),
+        longTitle: __('upload / copy-paste / long'),
         icon: 'im im-copy',
         mainPanel: TextAreaUpload,
         sidebar: UploadHelp,
-        action() {
-
-        }
+        action() {}
     },{
         id: 'upload',
-        title: 'Upload CSV/TSV file',
+        title: __('upload / upload-csv'),
         icon: 'im im-upload',
         mainPanel: TextAreaUpload,
         sidebar: UploadHelp,
