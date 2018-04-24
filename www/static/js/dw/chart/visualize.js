@@ -1,4 +1,4 @@
-
+/* globals dw */
 define([
     './visualize/options',
     './visualize/themes',
@@ -32,16 +32,18 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
             onChartSave(chart);
         });
 
-        chart.onDatasetChange(function(chart) {
-            iframe.attr('src', "");
-            // reload options
-            loadOptions().done(function() {
-                dw.backend.fire('options-reloaded');
-                loadVis();
-            });
-            // remove all notifications
-            $("#notifications .notification").fadeOutAndRemove();
-        });
+        // THIS CODE BREAKS THE CHART EDITOR!
+        //
+        // chart.onDatasetChange(function(chart) {
+        //     iframe.attr('src', "");
+        //     // reload options
+        //     loadOptions().done(function() {
+        //         dw.backend.fire('options-reloaded');
+        //         loadVis();
+        //     });
+        //     // remove all notifications
+        //     $("#notifications .notification").fadeOutAndRemove();
+        // });
 
         dw.backend.fire('vis-metas', _visMetas);
 
