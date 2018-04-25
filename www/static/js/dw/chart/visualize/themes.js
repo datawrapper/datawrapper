@@ -1,4 +1,4 @@
-
+/* globals dw,$,_*/
 // visualize/themes
 
 define(function() {
