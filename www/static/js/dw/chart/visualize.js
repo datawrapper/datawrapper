@@ -32,18 +32,17 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
             onChartSave(chart);
         });
 
-        // THIS CODE BREAKS THE CHART EDITOR!
-        //
-        // chart.onDatasetChange(function(chart) {
-        //     iframe.attr('src', "");
-        //     // reload options
-        //     loadOptions().done(function() {
-        //         dw.backend.fire('options-reloaded');
-        //         loadVis();
-        //     });
-        //     // remove all notifications
-        //     $("#notifications .notification").fadeOutAndRemove();
-        // });
+        dw.backend.on('dataset-changed', function() {
+            iframe.attr('src', "");
+
+            // reload options
+            loadOptions().done(function() {
+                dw.backend.fire('options-reloaded');
+                loadVis();
+            });
+            // remove all notifications
+            $("#notifications .notification").fadeOutAndRemove();
+        });
 
         dw.backend.fire('vis-metas', _visMetas);
 
