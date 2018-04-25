@@ -107,7 +107,7 @@
                 <div class="search-box form-search">
                     <i class="im im-magnifier"></i>
                     <div class="{searchResults.length > 0 ? 'input-append' : ''}">
-                        <input autocomplete="screw-you-google-chrome" type="text" on:keypress="keyPress(event)" placeholder="{__('Search data table')}" bind:value="search" ref:search class="{searchResults.length > 0?'with-results':''} search-query" />
+                        <input autocomplete="screw-you-google-chrome" type="search" on:keypress="keyPress(event)" placeholder="{__('Search data table')}" bind:value="search" ref:search class="{searchResults.length > 0?'with-results':''} search-query" />
                         {#if searchResults.length > 0}
                         <div class="btn-group">
                           <button class="btn" on:click="nextResult(-1)">
