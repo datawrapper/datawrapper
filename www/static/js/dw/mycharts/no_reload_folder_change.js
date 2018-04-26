@@ -145,7 +145,7 @@ define(function(require) {
                     normalRepaint();
 
                 set_click('div.pagination li a');
-                set_click('.mycharts-chart-list h3 a');
+                set_click('.mycharts-chart-list h3:not(.no-charts) a');
 
                 multiselection.init();
                 generic_chart_functions();
