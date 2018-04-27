@@ -24,8 +24,16 @@ dw.backend.ready(function() {
 
 <div class="dw-create-visualize chart-editor chart-editor-{{ mode }}">
     <div class="row">
+
+        {% if vis['svelte-sidebar'] %}
+
+        {% include 'chart/visualize/svelte-sidebar.twig' %}
+
+        {% else %}
+
         {% include "chart/visualize/sidebar.twig" %}
 
+        {% endif %}
         <div class="span8">
 
             <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
