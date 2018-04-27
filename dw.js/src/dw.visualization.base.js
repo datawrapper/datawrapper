@@ -52,7 +52,7 @@ _.extend(dw.visualization.base, {
      * short-cut for this.chart.get('metadata.visualize.*')
      */
     get: function(str, _default) {
-        return this.chart().get('metadata.visualize.'+str, _default);
+        return this.chart().get('metadata.visualize'+(str ? '.'+str : ''), _default);
     },
 
     notify: function(str) {
