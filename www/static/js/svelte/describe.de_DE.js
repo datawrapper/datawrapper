@@ -1,1 +1,8521 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e(require("cm/lib/codemirror"),require("cm/mode/javascript/javascript"),require("cm/addon/mode/simple"),require("cm/addon/hint/show-hint"),require("cm/addon/edit/matchbrackets"),require("cm/addon/display/placeholder"),require("Handsontable")):"function"==typeof define&&define.amd?define("svelte/describe",["cm/lib/codemirror","cm/mode/javascript/javascript","cm/addon/mode/simple","cm/addon/hint/show-hint","cm/addon/edit/matchbrackets","cm/addon/display/placeholder","Handsontable"],e):t.describe=e(t.CodeMirror,null,null,null,null,null,t.HOT)}(this,function(t,e,n,r,a,o,i){"use strict";function u(){}function s(t,e){for(var n in e)t[n]=e[n];return t}function l(t,e){e.appendChild(t)}function c(t,e,n){e.insertBefore(t,n)}function f(t){t.parentNode.removeChild(t)}function h(t){for(;t.previousSibling;)t.parentNode.removeChild(t.previousSibling)}function d(t){for(var e=0;e<t.length;e+=1)t[e]&&t[e].d()}function m(t){return document.createElement(t)}function v(t){return document.createElementNS("http://www.w3.org/2000/svg",t)}function g(t){return document.createTextNode(t)}function p(){return document.createComment("")}function _(t,e,n){t.addEventListener(e,n,!1)}function b(t,e,n){t.removeEventListener(e,n,!1)}function y(t,e,n){t.setAttribute(e,n)}function w(t,e,n){t.style.setProperty(e,n)}function x(t,e){for(var n=0;n<t.options.length;n+=1){var r=t.options[n];if(r.__value===e)return void(r.selected=!0)}}function M(t){var e=t.querySelector(":checked")||t.options[0];return e&&e.__value}function k(){return Object.create(null)}function C(t){this.destroy=u,this.fire("destroy"),this.set=this.get=u,!1!==t&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function N(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function S(t,e){return t!=t?e==e:t!==e}function T(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var r=0;r<n.length;r+=1){var a=n[r];a.__calling||(a.__calling=!0,a.call(this,e),a.__calling=!1)}}function F(t){return t?this._state[t]:this._state}function R(t,e){t._handlers=k(),t._bind=e._bind,t.options=e,t.root=e.root||t,t.store=t.root.store||e.store}function D(t,e,n){var r=e.bind(this);return n&&!1===n.init||r(this.get()[t],void 0),this.on(n&&n.defer?"update":"state",function(e){e.changed[t]&&r(e.current[t],e.previous&&e.previous[t])})}function I(t,e){if("teardown"===t)return this.on("destroy",e);var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}}function H(t){for(;t&&t.length;)t.shift()()}function A(){this.store._remove(this)}t=t&&t.hasOwnProperty("default")?t.default:t,i=i&&i.hasOwnProperty("default")?i.default:i;var U={destroy:C,get:F,fire:T,observe:D,on:I,set:function(t){this._set(s({},t)),this.root._lock||(this.root._lock=!0,H(this.root._beforecreate),H(this.root._oncreate),H(this.root._aftercreate),this.root._lock=!1)},teardown:C,_recompute:u,_set:function(t){var e=this._state,n={},r=!1;for(var a in t)this._differs(t[a],e[a])&&(n[a]=r=!0);r&&(this._state=s(s({},e),t),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:e}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:e})))},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:N};function L(t){var e=typeof t;return"function"===e||"object"===e&&!!t}var E,$=Array.prototype,O=Object.prototype,q=$.slice,j=O.toString,V=O.hasOwnProperty,B=Array.isArray,Y=Object.keys;function P(t,e){return null!=t&&V.call(t,e)}function z(t){if(!L(t))return[];if(Y)return Y(t);var e=[];for(var n in t)P(t,n)&&e.push(n);return ht&&function(t,e){var n=dt.length,r=t.constructor,a=G(r)&&r.prototype||O,o="constructor";P(t,o)&&!Z(e,o)&&e.push(o);for(;n--;)(o=dt[n])in t&&t[o]!==a[o]&&!Z(e,o)&&e.push(o)}(t,e),e}var W=function(t,e,n){return function(r,a,o){var i=0,u=ct(r);if("number"==typeof o)t>0?i=o>=0?o:Math.max(o+u,i):u=o>=0?Math.min(o+1,u):o+u+1;else if(n&&o&&u)return o=n(r,a),r[o]===a?o:-1;if(a!=a)return(o=e(q.call(r,i,u),Q))>=0?o+i:-1;for(o=t>0?i:u-1;o>=0&&o<u;o+=t)if(r[o]===a)return o;return-1}}(1,(E=1,function(t,e,n){e=it(e,n);for(var r=ct(t),a=E>0?0:r-1;a>=0&&a<r;a+=E)if(e(t[a],a,t))return a;return-1}),function(t,e,n,r){for(var a=(n=it(n,r,1))(e),o=0,i=ct(t);o<i;){var u=Math.floor((o+i)/2);n(t[u])<a?o=u+1:i=u}return o});function Z(t,e,n,r){return ft(t)||(t=function(t){for(var e=z(t),n=e.length,r=Array(n),a=0;a<n;a++)r[a]=t[e[a]];return r}(t)),("number"!=typeof n||r)&&(n=0),W(t,e,n)>=0}var J=B||function(t){return"[object Array]"===j.call(t)};var G=("function"!=typeof/./&&"object"!=typeof Int8Array&&"undefined"!=typeof document&&"function"!=typeof document.childNodes?function(t){return"function"==typeof t||!1}:null)||function(t){return"[object Function]"===j.call(t)};!function(){j.call(arguments)}();function Q(t){return function(t){return"[object Number]"===j.call(t)}(t)&&isNaN(t)}var X=ot;function K(t){return t}var tt,et,nt=(tt=z,function(t){var e=arguments,n=arguments.length;if(et&&(t=Object(t)),n<2||null==t)return t;for(var r=1;r<n;r++)for(var a=e[r],o=tt(a),i=o.length,u=0;u<i;u++){var s=o[u];!L(t)||et&&void 0!==t[s]||(t[s]=a[s])}return t});function rt(t){return t=nt({},t),function(e){return function(t,e){var n=z(e),r=n.length;if(null==t)return!r;for(var a=Object(t),o=0;o<r;o++){var i=n[o];if(e[i]!==a[i]||!(i in a))return!1}return!0}(e,t)}}function at(t,e,n){if(void 0===e)return t;switch(null==n?3:n){case 1:return function(n){return t.call(e,n)};case 3:return function(n,r,a){return t.call(e,n,r,a)};case 4:return function(n,r,a,o){return t.call(e,n,r,a,o)}}return function(){return t.apply(e,arguments)}}function ot(t,e){return it(t,e,1/0)}function it(t,e,n){return X!==ot?X(t,e):null==t?K:G(t)?at(t,e,n):L(t)?rt(t):st(t)}function ut(t,e){return e=null==e?t.length-1:+e,function(){for(var n=arguments,r=Math.max(arguments.length-e,0),a=Array(r),o=0;o<r;o++)a[o]=n[o+e];switch(e){case 0:return t.call(this,a);case 1:return t.call(this,arguments[0],a);case 2:return t.call(this,arguments[0],arguments[1],a)}var i=Array(e+1);for(o=0;o<e;o++)i[o]=n[o];return i[e]=a,t.apply(this,i)}}function st(t){return function(e){return null==e?void 0:e[t]}}var lt=Math.pow(2,53)-1,ct=st("length"),ft=function(t){var e=ct(t);return"number"==typeof e&&e>=0&&e<=lt};var ht=!{toString:null}.propertyIsEnumerable("toString"),dt=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];!function(t){for(var e={},n=z(t),r=0,a=n.length;r<a;r++)e[t[n[r]]]=n[r]}({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"});var mt=ut(function(t,e,n){return setTimeout(function(){return t.apply(null,n)},e)});function vt(t){if(!t||"object"!=typeof t)return t;try{return JSON.parse(JSON.stringify(t))}catch(e){return t}}var gt={insert:function(t){var e=this.get().cm;e.replaceSelection(t.key),e.focus()},removeColumn:function(){var t=this.get().column,e=this.store.get("dw_chart"),n=e.dataset(),r=vt(e.get("metadata.describe.computed-columns",{}));delete r[t.name()];var a=n.columnOrder()[n.indexOf(t.name())],o=[];e.get("metadata.data.changes",[]).forEach(function(t){t.column!=a&&(t.column>a&&t.column--,o.push(t))}),e.set("metadata.describe.computed-columns",r),e.set("metadata.data.changes",o),e.saveSoon(),this.fire("updateTable"),this.fire("unselect")}};function pt(){var e=this,n=this.get().column,r=this.store.get("dw_chart"),a=r.get("metadata.describe.computed-columns",{});this.set({formula:a[n.name()]||"",name:n.title()}),this.observe("column",function(t){t&&e.set({formula:a[t.name()]||"",name:t.title()})});var o=this;var i=t.fromTextArea(this.refs.code,{value:this.get("formula")||"",mode:"simple",indentUnit:2,tabSize:2,lineWrapping:!0,matchBrackets:!0,placeholder:"// enter formula here",continueComments:"Enter",extraKeys:{Tab:"autocomplete"},hintOptions:{hint:function(e){var n=e.getCursor(),r=e.getTokenAt(n),a=[],i=o.get("keywords");return"variable"==r.type&&(a=i.filter(function(t){return 0===t.toLowerCase().indexOf(r.string.toLowerCase())})),{list:a,from:t.Pos(n.line,r.start),to:t.Pos(n.line,r.end)}}}});window.CodeMirror=t,this.set({cm:i});var u,s,l,c,f,h,d,m=(u=function(){return e.fire("updateTable")},s=1500,h=function(t,e){c=null,e&&(f=u.apply(t,e))},(d=ut(function(t){if(c&&clearTimeout(c),l){var e=!c;c=setTimeout(h,s),e&&(f=u.apply(this,t))}else c=mt(h,s,this,t);return f})).cancel=function(){clearTimeout(c),c=null},d);this.observe("formula",function(t){t!=i.getValue()&&i.setValue(t);var n=e.get().column,a=r.get("metadata.describe.computed-columns",{});a[n.name()]!=t&&(a[n.name()]=t,r.set("metadata.describe.computed-columns",a),r.saveSoon&&r.saveSoon(),m())}),this.observe("name",function(t){var n=e.get().column,a=r.get("metadata.data.changes",[]),o=r.dataset(),i=o.columnOrder()[o.indexOf(n.name())],u=-1;a.forEach(function(t,e){t.column==i&&0===t.row&&(u=e)}),u>-1?(a[u].value=t,a[u].time=(new Date).getTime()):a.push({column:i,row:0,value:t,time:(new Date).getTime()}),r.set("metadata.data.changes",a),r.saveSoon&&r.saveSoon(),m()}),i.on("change",function(t){e.set({formula:t.getValue()})}),this.observe("metaColumns",function(n){var r=new RegExp("(?:"+e.get("keywords").join("|")+")");t.defineSimpleMode("simplemode",{start:[{regex:/"(?:[^\\]|\\.)*?(?:"|$)/,token:"string"},{regex:/(function)(\s+)([a-z$][\w$]*)/,token:["keyword",null,"keyword"]},{regex:/(?:function|var|return|if|for|while|else|do|this)\b/,token:"keyword"},{regex:/true|false|null|undefined/,token:"atom"},{regex:/0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,token:"number"},{regex:/\/\/.*/,token:"comment"},{regex:/\/(?:[^\\]|\\.)*?\//,token:"variable-3"},{regex:/\/\*/,token:"comment",next:"comment"},{regex:/[-+\/*=<>!]+/,token:"operator"},{regex:/[\{\[\(]/,indent:!0},{regex:/[\}\]\)]/,dedent:!0},{regex:r,token:"variable-2"},{regex:/[a-z$][\w$]*/,token:"variable"},{regex:/<</,token:"meta",mode:{spec:"xml",end:/>>/}}],comment:[{regex:/.*?\*\//,token:"comment",next:"start"},{regex:/.*/,token:"comment"}],meta:{dontIndentStates:["comment"],lineComment:"//"}}),i.setOption("mode","simplemode")})}function _t(t,e){var n,r,a=e.col,o=(e.each_value,e.col_index,a.key);return{c:function(){n=m("li"),r=g(o),this.h()},h:function(){_(n,"click",bt),n.className="svelte-du6ec3",n._svelte={component:t,each_value:e.each_value,col_index:e.col_index}},m:function(t,e){c(n,t,e),l(r,n)},p:function(t,e){a=e.col,e.each_value,e.col_index,t.metaColumns&&o!==(o=a.key)&&(r.data=o),n._svelte.each_value=e.each_value,n._svelte.col_index=e.col_index},u:function(){f(n)},d:function(){b(n,"click",bt)}}}function bt(t){var e=this._svelte.component,n=this._svelte.each_value[this._svelte.col_index];e.insert(n)}function yt(t){R(this,t),this.refs={},this._state=s({name:"",formula:""},t.data),this._recompute({column:1,columns:1,metaColumns:1},this._state);var e=this;t.root||(this._oncreate=[]),this._fragment=function(t,e){var n,r,a,o,i,u,h,v,p,x,M,k,C,N,S,T,F,R,D,I,H,A,U,L,E,$,O,q=!1;function j(){q=!0,t.set({name:M.value}),q=!1}for(var V=e.metaColumns,B=[],Y=0;Y<V.length;Y+=1)B[Y]=_t(t,s(s({},e),{each_value:V,col:V[Y],col_index:Y}));function P(e){t.removeColumn()}return{c:function(){n=m("div"),r=m("h3"),a=g(e.title),o=g("\n    "),i=m("p"),u=g("Die Werte in den Spalten können nach einer Formel berechnet werden, wie in Excel."),h=g("\n\n    "),v=m("label"),p=g("Spaltenname"),x=g("\n    "),M=m("input"),k=g("\n\n    "),C=m("label"),N=g("Formel (JavaScript)"),S=g("\n    "),T=m("textarea"),F=g("\n\n    "),R=m("p"),D=g("Verfügbare Spalten (lassen sich per Klick hinzufügen)"),I=g(":"),H=g("\n\n    "),A=m("ul");for(var t=0;t<B.length;t+=1)B[t].c();U=g("\n\n"),L=m("button"),E=m("i"),$=g(" "),O=g("Diese Spalte entfernen"),this.h()},h:function(){r.className="first",v.className="svelte-du6ec3",_(M,"input",j),y(M,"type","text"),C.className="svelte-du6ec3",T.className="code",w(R,"margin-top","1em"),A.className="col-select svelte-du6ec3",w(n,"margin-bottom","15px"),E.className="fa fa-trash",_(L,"click",P),L.className="btn btn-danger"},m:function(s,f){c(n,s,f),l(r,n),l(a,r),l(o,n),l(i,n),l(u,i),l(h,n),l(v,n),l(p,v),l(x,n),l(M,n),M.value=e.name,l(k,n),l(C,n),l(N,C),l(S,n),l(T,n),t.refs.code=T,l(F,n),l(R,n),l(D,R),l(I,R),l(H,n),l(A,n);for(var d=0;d<B.length;d+=1)B[d].m(A,null);c(U,s,f),c(L,s,f),l(E,L),l($,L),l(O,L)},p:function(e,n){e.title&&(a.data=n.title),q||(M.value=n.name);var r=n.metaColumns;if(e.metaColumns){for(var o=0;o<r.length;o+=1){var i=s(s({},n),{each_value:r,col:r[o],col_index:o});B[o]?B[o].p(e,i):(B[o]=_t(t,i),B[o].c(),B[o].m(A,null))}for(;o<B.length;o+=1)B[o].u(),B[o].d();B.length=r.length}},u:function(){f(n);for(var t=0;t<B.length;t+=1)B[t].u();f(U),f(L)},d:function(){b(M,"input",j),t.refs.code===T&&(t.refs.code=null),d(B),b(L,"click",P)}}}(this,this._state),this.root._oncreate.push(function(){pt.call(e),e.fire("update",{changed:{column:1,columns:1,metaColumns:1,title:1,name:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),H(this._oncreate))}function wt(t){R(this,t),this._state=s({disabled:!1},t.data),this._fragment=function(t,e){var n,r,a,o,i,u;function s(){t.set({value:a.checked})}return{c:function(){n=m("div"),r=m("label"),a=m("input"),o=g(" "),i=g(e.label),this.h()},h:function(){_(a,"change",s),y(a,"type","checkbox"),a.disabled=e.disabled,a.className="svelte-llolt7",r.className=u="checkbox "+(e.disabled?"disabled":"")+" svelte-llolt7",n.className="control-group vis-option-group vis-option-type-checkbox"},m:function(t,u){c(n,t,u),l(r,n),l(a,r),a.checked=e.value,l(o,r),l(i,r)},p:function(t,e){a.checked=e.value,t.disabled&&(a.disabled=e.disabled),t.label&&(i.data=e.label),t.disabled&&u!==(u="checkbox "+(e.disabled?"disabled":"")+" svelte-llolt7")&&(r.className=u)},u:function(){f(n)},d:function(){b(a,"change",s)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function xt(t,e){var n,r,a,o=e.opt,i=(e.each_value,e.opt_index,o.label);return{c:function(){n=m("option"),r=g(i),this.h()},h:function(){n.__value=a=o.value,n.value=n.__value},m:function(t,e){c(n,t,e),l(r,n)},p:function(t,e){o=e.opt,e.each_value,e.opt_index,t.options&&i!==(i=o.label)&&(r.data=i),t.options&&a!==(a=o.value)&&(n.__value=a),n.value=n.__value},u:function(){f(n)},d:u}}function Mt(t,e){for(var n,r=e.options,a=[],o=0;o<r.length;o+=1)a[o]=xt(0,s(s({},e),{each_value:r,opt:r[o],opt_index:o}));return{c:function(){for(var t=0;t<a.length;t+=1)a[t].c();n=p()},m:function(t,e){for(var r=0;r<a.length;r+=1)a[r].m(t,e);c(n,t,e)},p:function(t,e){var r=e.options;if(t.options){for(var o=0;o<r.length;o+=1){var i=s(s({},e),{each_value:r,opt:r[o],opt_index:o});a[o]?a[o].p(t,i):(a[o]=xt(0,i),a[o].c(),a[o].m(n.parentNode,n))}for(;o<a.length;o+=1)a[o].u(),a[o].d();a.length=r.length}},u:function(){for(var t=0;t<a.length;t+=1)a[t].u();f(n)},d:function(){d(a)}}}function kt(t,e){for(var n,r,a=e.optgroup,o=(e.each_value_1,e.optgroup_index,a.options),i=[],u=0;u<o.length;u+=1)i[u]=Ct(t,s(s({},e),{each_value_2:o,opt:o[u],opt_index_1:u}));return{c:function(){n=m("optgroup");for(var t=0;t<i.length;t+=1)i[t].c();this.h()},h:function(){y(n,"label",r=a.label)},m:function(t,e){c(n,t,e);for(var r=0;r<i.length;r+=1)i[r].m(n,null)},p:function(e,o){a=o.optgroup,o.each_value_1,o.optgroup_index;var u=a.options;if(e.optgroups){for(var l=0;l<u.length;l+=1){var c=s(s({},o),{each_value_2:u,opt:u[l],opt_index_1:l});i[l]?i[l].p(e,c):(i[l]=Ct(t,c),i[l].c(),i[l].m(n,null))}for(;l<i.length;l+=1)i[l].u(),i[l].d();i.length=u.length}e.optgroups&&r!==(r=a.label)&&y(n,"label",r)},u:function(){f(n);for(var t=0;t<i.length;t+=1)i[t].u()},d:function(){d(i)}}}function Ct(t,e){e.optgroup,e.each_value_1,e.optgroup_index;var n,r,a,o=e.opt,i=(e.each_value_2,e.opt_index_1,o.label);return{c:function(){n=m("option"),r=g(i),this.h()},h:function(){n.__value=a=o.value,n.value=n.__value},m:function(t,e){c(n,t,e),l(r,n)},p:function(t,e){e.optgroup,e.each_value_1,e.optgroup_index,o=e.opt,e.each_value_2,e.opt_index_1,t.optgroups&&i!==(i=o.label)&&(r.data=i),t.optgroups&&a!==(a=o.value)&&(n.__value=a),n.value=n.__value},u:function(){f(n)},d:u}}function Nt(t,e){for(var n,r=e.optgroups,a=[],o=0;o<r.length;o+=1)a[o]=kt(t,s(s({},e),{each_value_1:r,optgroup:r[o],optgroup_index:o}));return{c:function(){for(var t=0;t<a.length;t+=1)a[t].c();n=p()},m:function(t,e){for(var r=0;r<a.length;r+=1)a[r].m(t,e);c(n,t,e)},p:function(e,r){var o=r.optgroups;if(e.optgroups){for(var i=0;i<o.length;i+=1){var u=s(s({},r),{each_value_1:o,optgroup:o[i],optgroup_index:i});a[i]?a[i].p(e,u):(a[i]=kt(t,u),a[i].c(),a[i].m(n.parentNode,n))}for(;i<a.length;i+=1)a[i].u(),a[i].d();a.length=o.length}},u:function(){for(var t=0;t<a.length;t+=1)a[t].u();f(n)},d:function(){d(a)}}}function St(t){R(this,t),this._state=s({disabled:!1,width:"auto",options:[],optgroups:[]},t.data),t.root||(this._oncreate=[],this._beforecreate=[]),this._fragment=function(t,e){var n,r,a,o,i,u,s,h=!1,d=e.options.length&&Mt(0,e),v=e.optgroups.length&&Nt(t,e);function y(){h=!0,t.set({value:M(i)}),h=!1}return{c:function(){n=m("div"),r=m("label"),a=g("\n\n    "),o=m("div"),i=m("select"),d&&d.c(),u=p(),v&&v.c(),this.h()},h:function(){r.className="control-label",_(i,"change",y),"value"in e||t.root._beforecreate.push(y),i.disabled=e.disabled,w(i,"width",e.width),o.className=s="controls form-inline "+(e.disabled?"disabled":""),n.className="control-group vis-option-type-select"},m:function(t,s){c(n,t,s),l(r,n),r.innerHTML=e.label,l(a,n),l(o,n),l(i,o),d&&d.m(i,null),l(u,i),v&&v.m(i,null),x(i,e.value)},p:function(e,n){e.label&&(r.innerHTML=n.label),n.options.length?d?d.p(e,n):((d=Mt(0,n)).c(),d.m(i,u)):d&&(d.u(),d.d(),d=null),n.optgroups.length?v?v.p(e,n):((v=Nt(t,n)).c(),v.m(i,null)):v&&(v.u(),v.d(),v=null),h||x(i,n.value),e.disabled&&(i.disabled=n.disabled),e.width&&w(i,"width",n.width),e.disabled&&s!==(s="controls form-inline "+(n.disabled?"disabled":""))&&(o.className=s)},u:function(){r.innerHTML="",f(n),d&&d.u(),v&&v.u()},d:function(){d&&d.d(),v&&v.d(),b(i,"change",y)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),H(this._beforecreate))}s(yt.prototype,U),s(yt.prototype,gt),yt.prototype._recompute=function(t,e){var n;t.column&&this._differs(e.title,e.title=(n=e.column,"Spalte %s bearbeiten".replace("%s",'"'+(n?n.title()||n.name():"--")+'"')))&&(t.title=!0),t.columns&&this._differs(e.metaColumns,e.metaColumns=function(t){var e=t.columns;return e?e.map(function(t){return{key:(e=t.name(),e.toString().toLowerCase().replace(/\s+/g,"_").replace(/[^\w-]+/g,"").replace(/-/g,"_").replace(/__+/g,"_").replace(/^_+/,"").replace(/_+$/,"").replace(/^(\d)/,"_$1").replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/,"$1_")),title:t.title(),type:t.type()};var e}):[]}(e))&&(t.metaColumns=!0),t.metaColumns&&this._differs(e.keywords,e.keywords=function(t){var e=["sum","round","min","max","median","mean"];return t.metaColumns.forEach(function(t){e.push(t.key),"number"==t.type&&(e.push(t.key+"__sum"),e.push(t.key+"__min"),e.push(t.key+"__max"),e.push(t.key+"__mean"),e.push(t.key+"__median"))}),e}(e))&&(t.keywords=!0)},s(wt.prototype,U),s(St.prototype,U);var Tt=Date.now||function(){return(new Date).getTime()};function Ft(t,e,n){var r,a,o,i,u=0;n||(n={});var s=function(){u=!1===n.leading?0:Tt(),r=null,i=t.apply(a,o),r||(a=o=null)},l=function(){var l=Tt();u||!1!==n.leading||(u=l);var c=e-(l-u);return a=this,o=arguments,c<=0||c>e?(r&&(clearTimeout(r),r=null),u=l,i=t.apply(a,o),r||(a=o=null)):r||!1===n.trailing||(r=setTimeout(s,c)),i};return l.cancel=function(){clearTimeout(r),u=0,r=a=o=null},l}function Rt(t){if(J(t)){var e={};return Object.keys(t).forEach(function(n){return e[n]=t[n]}),e}return t}function Dt(t){return(+t).toFixed(Math.max(0,function(t){return String(t-Math.floor(t)).replace(/00000*[0-9]+$/,"").replace(/99999*[0-9]+$/,"").length-2}(t)))}var It={autoDivisor:function(){var t=this.store.get("dw_chart"),e=this.get().column,n=dw.utils.metricSuffix(t.locale()),r=e.values(),a=dw.utils.significantDimension(r),o=a<-2?3*Math.round(-1*a/3):a>4?-1*a:0,i=r.map(function(t){return t/Math.pow(10,o)}),u=dw.utils.significantDimension(i);u<=0&&(u=i.reduce(function(t,e){return Math.max(t,Math.min(3,dw.utils.tailLength(e)))},0)),u==o&&(o=0,u=0),o>15&&(o=0,u=0),this.set({columnFormat:{"number-divisor":o,"number-format":"n"+Math.max(0,u),"number-prepend":"","number-append":o?n[o]||" × 10<sup>"+o+"</sup>":""}})},getColumnFormat:function(t){var e=vt(Rt(this.store.get("dw_chart").get("metadata.data.column-format",{}))[t.name()]);return e&&"auto"!=e&&void 0===e.length||(e={type:"auto",ignore:!1,"number-prepend":"","number-append":"","number-format":"auto"}),e}};function Ht(t,e){var n,r,a,o,i,u,s,h,d,v,p={},x={},M=!1,k=!1,C={label:"Zahlen runden auf",options:[{value:"-",label:"(automatisch - individuell)"},{value:"auto",label:"(automatisch - einheitlich)"}],optgroups:e.numberFormats,width:"180px"};"number-format"in e.columnFormat&&(C.value=e.columnFormat["number-format"],p.value=!0);var N=new St({root:t.root,data:C,_bind:function(e,n){var r=t.get(),a={};!p.value&&e.value&&(r.columnFormat["number-format"]=n.value,a.columnFormat=r.columnFormat),t._set(a),p={}}});t.root._beforecreate.push(function(){N._bind({value:1},N.get())});var S={label:"Teilen/multiplizieren",options:e.divisors_opts,optgroups:e.divisors,width:"180px"};"number-divisor"in e.columnFormat&&(S.value=e.columnFormat["number-divisor"],x.value=!0);var T=new St({root:t.root,data:S,_bind:function(e,n){var r=t.get(),a={};!x.value&&e.value&&(r.columnFormat["number-divisor"]=n.value,a.columnFormat=r.columnFormat),t._set(a),x={}}});function F(){var e=t.get();M=!0,e.columnFormat["number-prepend"]=h.value,t.set({columnFormat:e.columnFormat}),M=!1}function R(){var e=t.get();k=!0,e.columnFormat["number-append"]=v.value,t.set({columnFormat:e.columnFormat}),k=!1}return t.root._beforecreate.push(function(){T._bind({value:1},T.get())}),{c:function(){N._fragment.c(),n=g("\n        "),T._fragment.c(),r=g("\n\n        "),a=m("div"),o=m("label"),i=g("Präfix/Suffix"),u=g("\n            "),s=m("div"),h=m("input"),d=g("\n                #\n                "),v=m("input"),this.h()},h:function(){o.className="control-label",_(h,"input",F),h.autocomplete="screw-you-google-chrome",w(h,"width","6ex"),w(h,"text-align","right"),h.dataset.lpignore="true",h.name="prepend",y(h,"type","text"),_(v,"input",R),v.autocomplete="screw-you-google-chrome",w(v,"width","6ex"),v.dataset.lpignore="true",v.name="append",y(v,"type","text"),s.className="controls form-inline",a.className="control-group vis-option-type-select"},m:function(t,f){N._mount(t,f),c(n,t,f),T._mount(t,f),c(r,t,f),c(a,t,f),l(o,a),l(i,o),l(u,a),l(s,a),l(h,s),h.value=e.columnFormat["number-prepend"],l(d,s),l(v,s),v.value=e.columnFormat["number-append"]},p:function(t,e){var n={label:"Zahlen runden auf",options:[{value:"-",label:"(automatisch - individuell)"},{value:"auto",label:"(automatisch - einheitlich)"}]};t.numberFormats&&(n.optgroups=e.numberFormats),!p.value&&t.columnFormat&&(n.value=e.columnFormat["number-format"],p.value=!0),N._set(n),p={};var r={label:"Teilen/multiplizieren"};t.divisors_opts&&(r.options=e.divisors_opts),t.divisors&&(r.optgroups=e.divisors),!x.value&&t.columnFormat&&(r.value=e.columnFormat["number-divisor"],x.value=!0),T._set(r),x={},M||(h.value=e.columnFormat["number-prepend"]),k||(v.value=e.columnFormat["number-append"])},u:function(){N._unmount(),f(n),T._unmount(),f(r),f(a)},d:function(){N.destroy(!1),T.destroy(!1),b(h,"input",F),b(v,"input",R)}}}function At(t){R(this,t),this._state=s({columnFormat:{type:"auto",ignore:!1,"number-divisor":"-","number-format":"auto","number-prepend":"","number-append":""},colTypes:[],divisors_opts:[{value:0,label:"(keine Änderung)"},{value:"auto",label:"(automatisch erkennen)"}],divisors:[{label:"Teilen durch",options:[{value:3,label:"1000"},{value:6,label:"1 million"},{value:9,label:"1 billion"}]},{label:"Multiplizieren mit",options:[{value:-2,label:"100"},{value:-3,label:"1000"},{value:-6,label:"1 million"},{value:-9,label:"1 billion"},{value:-12,label:"1 trillion"}]}],numberFormats:[{label:"Nachkommastellen",options:[{value:"n3",label:"3 (1,234.568)"},{value:"n2",label:"2 (1,234.57)"},{value:"n1",label:"1 (1,234.6)"},{value:"n0",label:"0 (1,235)"}]},{label:"Relevante Ziffern",options:[{value:"s6",label:"6 (1,234.57)"},{value:"s5",label:"5 (123.45)"},{value:"s4",label:"4 (12.34)"},{value:"s3",label:"3 (1.23)"},{value:"s2",label:"2 (0.12)"},{value:"s1",label:"1 (0.01)"}]}]},t.data),this._recompute({column:1},this._state);var e=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this._fragment=function(t,e){var n,r,a,o,i,u,s,h,d,v={},p={},_={label:"Spaltentyp",options:e.colTypes,width:"180px"};"type"in e.columnFormat&&(_.value=e.columnFormat.type,v.value=!0);var b=new St({root:t.root,data:_,_bind:function(e,n){var r=t.get(),a={};!v.value&&e.value&&(r.columnFormat.type=n.value,a.columnFormat=r.columnFormat),t._set(a),v={}}});t.root._beforecreate.push(function(){b._bind({value:1},b.get())});var y={label:"Spalte in Diagramm ausblenden"};"ignore"in e.columnFormat&&(y.value=e.columnFormat.ignore,p.value=!0);var w=new wt({root:t.root,data:y,_bind:function(e,n){var r=t.get(),a={};!p.value&&e.value&&(r.columnFormat.ignore=n.value,a.columnFormat=r.columnFormat),t._set(a),p={}}});t.root._beforecreate.push(function(){w._bind({value:1},w.get())});var x=e.column&&"number"==e.column.type()&&Ht(t,e);return{c:function(){n=m("div"),r=m("h3"),a=g(e.title),o=g("\n\n    "),i=m("div"),b._fragment.c(),u=g("\n\n        "),w._fragment.c(),s=g("\n\n        "),h=m("hr"),d=g("\n\n        "),x&&x.c(),this.h()},h:function(){r.className="first",i.className="form-horizontal"},m:function(t,e){c(n,t,e),l(r,n),l(a,r),l(o,n),l(i,n),b._mount(i,null),l(u,i),w._mount(i,null),l(s,i),l(h,i),l(d,i),x&&x.m(i,null)},p:function(e,n){e.title&&(a.data=n.title);var r={label:"Spaltentyp"};e.colTypes&&(r.options=n.colTypes),!v.value&&e.columnFormat&&(r.value=n.columnFormat.type,v.value=!0),b._set(r),v={};var o={label:"Spalte in Diagramm ausblenden"};!p.value&&e.columnFormat&&(o.value=n.columnFormat.ignore,p.value=!0),w._set(o),p={},n.column&&"number"==n.column.type()?x?x.p(e,n):((x=Ht(t,n)).c(),x.m(i,null)):x&&(x.u(),x.d(),x=null)},u:function(){f(n),x&&x.u()},d:function(){b.destroy(!1),w.destroy(!1),x&&x.d()}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this,e=Ft(function(){t.fire("updateTable")},100,{leading:!1}),n=Ft(function(){t.fire("updateTable")},100,{leading:!1}),r=this.get().column;this.set({colTypes:[{value:"auto",label:"auto ("+r.type()+")"},{value:"text",label:"Text"},{value:"number",label:"Number"},{value:"date",label:"Date"}]}),this.set({columnFormat:this.getColumnFormat(r)}),this.observe("column",function(e){t.set({columnFormat:t.getColumnFormat(e)}),t.get().colTypes[0].label="auto ("+r.type()+")"}),this.observe("columnFormat",function(r){var a=t.store.get("dw_chart"),o=t.get().column,i=Rt(a.get("metadata.data.column-format",{})),u=i[o.name()];if(!u||JSON.stringify(u)!=JSON.stringify(r)){if("auto"==r["number-divisor"])return void setTimeout(function(){return t.autoDivisor()},100);i[o.name()]=vt(r),a.set("metadata.data.column-format",i),a.saveSoon&&a.saveSoon(),u&&u.type==r.type?n():e()}})}).call(e),e.fire("update",{changed:{column:1,title:1,colTypes:1,columnFormat:1,numberFormats:1,divisors_opts:1,divisors:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,H(this._beforecreate),H(this._oncreate),H(this._aftercreate),this._lock=!1)}s(At.prototype,U),s(At.prototype,It),At.prototype._recompute=function(t,e){var n;t.column&&this._differs(e.title,e.title=(n=e.column,"Spalte %s bearbeiten".replace("%s",'"'+(n?n.title()||n.name():"--")+'"')))&&(t.title=!0)};var Ut,Lt,Et=(Ut=function(t,e,n){P(t,n)?t[n]++:t[n]=1},function(t,e,n){var r=Lt?[[],[]]:{};return e=it(e,n),function(t,e,n){var r,a;if(e=at(e,n),ft(t))for(r=0,a=t.length;r<a;r++)e(t[r],r,t);else{var o=z(t);for(r=0,a=o.length;r<a;r++)e(t[o[r]],o[r],t)}}(t,function(n,a){var o=e(n,a,t);Ut(r,n,o)}),r});function $t(t,e){return t<e?-1:t>e?1:t>=e?0:NaN}var Ot,qt,jt=(1===(Ot=$t).length&&(qt=Ot,Ot=function(t,e){return $t(qt(t),e)}),{left:function(t,e,n,r){for(null==n&&(n=0),null==r&&(r=t.length);n<r;){var a=n+r>>>1;Ot(t[a],e)<0?n=a+1:r=a}return n},right:function(t,e,n,r){for(null==n&&(n=0),null==r&&(r=t.length);n<r;){var a=n+r>>>1;Ot(t[a],e)>0?r=a:n=a+1}return n}}).right;function Vt(t){return null===t?NaN:+t}function Bt(t,e){var n,r,a,o=t.length,i=-1;if(null==e){for(;++i<o;)if(null!=(n=t[i])&&n>=n)for(r=a=n;++i<o;)null!=(n=t[i])&&(r>n&&(r=n),a<n&&(a=n))}else for(;++i<o;)if(null!=(n=e(t[i],i,t))&&n>=n)for(r=a=n;++i<o;)null!=(n=e(t[i],i,t))&&(r>n&&(r=n),a<n&&(a=n));return[r,a]}var Yt=Array.prototype.slice;function Pt(t){return function(){return t}}function zt(t){return t}function Wt(t,e,n){t=+t,e=+e,n=(a=arguments.length)<2?(e=t,t=0,1):a<3?1:+n;for(var r=-1,a=0|Math.max(0,Math.ceil((e-t)/n)),o=new Array(a);++r<a;)o[r]=t+r*n;return o}var Zt=Math.sqrt(50),Jt=Math.sqrt(10),Gt=Math.sqrt(2);function Qt(t,e,n){var r=(e-t)/Math.max(0,n),a=Math.floor(Math.log(r)/Math.LN10),o=r/Math.pow(10,a);return a>=0?(o>=Zt?10:o>=Jt?5:o>=Gt?2:1)*Math.pow(10,a):-Math.pow(10,-a)/(o>=Zt?10:o>=Jt?5:o>=Gt?2:1)}function Xt(t,e,n){var r=Math.abs(e-t)/Math.max(0,n),a=Math.pow(10,Math.floor(Math.log(r)/Math.LN10)),o=r/a;return o>=Zt?a*=10:o>=Jt?a*=5:o>=Gt&&(a*=2),e<t?-a:a}function Kt(t){return Math.ceil(Math.log(t.length)/Math.LN2)+1}function te(){var t=zt,e=Bt,n=Kt;function r(r){var a,o,i=r.length,u=new Array(i);for(a=0;a<i;++a)u[a]=t(r[a],a,r);var s=e(u),l=s[0],c=s[1],f=n(u,l,c);Array.isArray(f)||(f=Xt(l,c,f),f=Wt(Math.ceil(l/f)*f,Math.floor(c/f)*f,f));for(var h=f.length;f[0]<=l;)f.shift(),--h;for(;f[h-1]>c;)f.pop(),--h;var d,m=new Array(h+1);for(a=0;a<=h;++a)(d=m[a]=[]).x0=a>0?f[a-1]:l,d.x1=a<h?f[a]:c;for(a=0;a<i;++a)l<=(o=u[a])&&o<=c&&m[jt(f,o,0,h)].push(r[a]);return m}return r.value=function(e){return arguments.length?(t="function"==typeof e?e:Pt(e),r):t},r.domain=function(t){return arguments.length?(e="function"==typeof t?t:Pt([t[0],t[1]]),r):e},r.thresholds=function(t){return arguments.length?(n="function"==typeof t?t:Array.isArray(t)?Pt(Yt.call(t)):Pt(t),r):n},r}function ee(t,e){var n,r,a=t.length,o=-1;if(null==e){for(;++o<a;)if(null!=(n=t[o])&&n>=n)for(r=n;++o<a;)null!=(n=t[o])&&n>r&&(r=n)}else for(;++o<a;)if(null!=(n=e(t[o],o,t))&&n>=n)for(r=n;++o<a;)null!=(n=e(t[o],o,t))&&n>r&&(r=n);return r}function ne(t,e){var n,r=t.length,a=-1,o=[];if(null==e)for(;++a<r;)isNaN(n=Vt(t[a]))||o.push(n);else for(;++a<r;)isNaN(n=Vt(e(t[a],a,t)))||o.push(n);return function(t,e,n){if(null==n&&(n=Vt),r=t.length){if((e=+e)<=0||r<2)return+n(t[0],0,t);if(e>=1)return+n(t[r-1],r-1,t);var r,a=(r-1)*e,o=Math.floor(a),i=+n(t[o],o,t);return i+(+n(t[o+1],o+1,t)-i)*(a-o)}}(o.sort($t),.5)}function re(){}function ae(t,e){var n=new re;if(t instanceof re)t.each(function(t,e){n.set(e,t)});else if(Array.isArray(t)){var r,a=-1,o=t.length;if(null==e)for(;++a<o;)n.set(a,t[a]);else for(;++a<o;)n.set(e(r=t[a],a,t),r)}else if(t)for(var i in t)n.set(i,t[i]);return n}function oe(){}re.prototype=ae.prototype={constructor:re,has:function(t){return"$"+t in this},get:function(t){return this["$"+t]},set:function(t,e){return this["$"+t]=e,this},remove:function(t){var e="$"+t;return e in this&&delete this[e]},clear:function(){for(var t in this)"$"===t[0]&&delete this[t]},keys:function(){var t=[];for(var e in this)"$"===e[0]&&t.push(e.slice(1));return t},values:function(){var t=[];for(var e in this)"$"===e[0]&&t.push(this[e]);return t},entries:function(){var t=[];for(var e in this)"$"===e[0]&&t.push({key:e.slice(1),value:this[e]});return t},size:function(){var t=0;for(var e in this)"$"===e[0]&&++t;return t},empty:function(){for(var t in this)if("$"===t[0])return!1;return!0},each:function(t){for(var e in this)"$"===e[0]&&t(this[e],e.slice(1),this)}};var ie=ae.prototype;oe.prototype=function(t,e){var n=new oe;if(t instanceof oe)t.each(function(t){n.add(t)});else if(t){var r=-1,a=t.length;if(null==e)for(;++r<a;)n.add(t[r]);else for(;++r<a;)n.add(e(t[r],r,t))}return n}.prototype={constructor:oe,has:ie.has,add:function(t){return this["$"+(t+="")]=t,this},remove:ie.remove,clear:ie.clear,values:ie.keys,size:ie.size,empty:ie.empty,each:ie.each};var ue=Array.prototype,se=ue.map,le=ue.slice,ce={name:"implicit"};function fe(t,e,n){t.prototype=e.prototype=n,n.constructor=t}function he(t,e){var n=Object.create(t.prototype);for(var r in e)n[r]=e[r];return n}function de(){}var me="\\s*([+-]?\\d+)\\s*",ve="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",ge="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",pe=/^#([0-9a-f]{3})$/,_e=/^#([0-9a-f]{6})$/,be=new RegExp("^rgb\\("+[me,me,me]+"\\)$"),ye=new RegExp("^rgb\\("+[ge,ge,ge]+"\\)$"),we=new RegExp("^rgba\\("+[me,me,me,ve]+"\\)$"),xe=new RegExp("^rgba\\("+[ge,ge,ge,ve]+"\\)$"),Me=new RegExp("^hsl\\("+[ve,ge,ge]+"\\)$"),ke=new RegExp("^hsla\\("+[ve,ge,ge,ve]+"\\)$"),Ce={aliceblue:15792383,antiquewhite:16444375,aqua:65535,aquamarine:8388564,azure:15794175,beige:16119260,bisque:16770244,black:0,blanchedalmond:16772045,blue:255,blueviolet:9055202,brown:10824234,burlywood:14596231,cadetblue:6266528,chartreuse:8388352,chocolate:13789470,coral:16744272,cornflowerblue:6591981,cornsilk:16775388,crimson:14423100,cyan:65535,darkblue:139,darkcyan:35723,darkgoldenrod:12092939,darkgray:11119017,darkgreen:25600,darkgrey:11119017,darkkhaki:12433259,darkmagenta:9109643,darkolivegreen:5597999,darkorange:16747520,darkorchid:10040012,darkred:9109504,darksalmon:15308410,darkseagreen:9419919,darkslateblue:4734347,darkslategray:3100495,darkslategrey:3100495,darkturquoise:52945,darkviolet:9699539,deeppink:16716947,deepskyblue:49151,dimgray:6908265,dimgrey:6908265,dodgerblue:2003199,firebrick:11674146,floralwhite:16775920,forestgreen:2263842,fuchsia:16711935,gainsboro:14474460,ghostwhite:16316671,gold:16766720,goldenrod:14329120,gray:8421504,green:32768,greenyellow:11403055,grey:8421504,honeydew:15794160,hotpink:16738740,indianred:13458524,indigo:4915330,ivory:16777200,khaki:15787660,lavender:15132410,lavenderblush:16773365,lawngreen:8190976,lemonchiffon:16775885,lightblue:11393254,lightcoral:15761536,lightcyan:14745599,lightgoldenrodyellow:16448210,lightgray:13882323,lightgreen:9498256,lightgrey:13882323,lightpink:16758465,lightsalmon:16752762,lightseagreen:2142890,lightskyblue:8900346,lightslategray:7833753,lightslategrey:7833753,lightsteelblue:11584734,lightyellow:16777184,lime:65280,limegreen:3329330,linen:16445670,magenta:16711935,maroon:8388608,mediumaquamarine:6737322,mediumblue:205,mediumorchid:12211667,mediumpurple:9662683,mediumseagreen:3978097,mediumslateblue:8087790,mediumspringgreen:64154,mediumturquoise:4772300,mediumvioletred:13047173,midnightblue:1644912,mintcream:16121850,mistyrose:16770273,moccasin:16770229,navajowhite:16768685,navy:128,oldlace:16643558,olive:8421376,olivedrab:7048739,orange:16753920,orangered:16729344,orchid:14315734,palegoldenrod:15657130,palegreen:10025880,paleturquoise:11529966,palevioletred:14381203,papayawhip:16773077,peachpuff:16767673,peru:13468991,pink:16761035,plum:14524637,powderblue:11591910,purple:8388736,rebeccapurple:6697881,red:16711680,rosybrown:12357519,royalblue:4286945,saddlebrown:9127187,salmon:16416882,sandybrown:16032864,seagreen:3050327,seashell:16774638,sienna:10506797,silver:12632256,skyblue:8900331,slateblue:6970061,slategray:7372944,slategrey:7372944,snow:16775930,springgreen:65407,steelblue:4620980,tan:13808780,teal:32896,thistle:14204888,tomato:16737095,turquoise:4251856,violet:15631086,wheat:16113331,white:16777215,whitesmoke:16119285,yellow:16776960,yellowgreen:10145074};function Ne(t){var e;return t=(t+"").trim().toLowerCase(),(e=pe.exec(t))?new De((e=parseInt(e[1],16))>>8&15|e>>4&240,e>>4&15|240&e,(15&e)<<4|15&e,1):(e=_e.exec(t))?Se(parseInt(e[1],16)):(e=be.exec(t))?new De(e[1],e[2],e[3],1):(e=ye.exec(t))?new De(255*e[1]/100,255*e[2]/100,255*e[3]/100,1):(e=we.exec(t))?Te(e[1],e[2],e[3],e[4]):(e=xe.exec(t))?Te(255*e[1]/100,255*e[2]/100,255*e[3]/100,e[4]):(e=Me.exec(t))?Ie(e[1],e[2]/100,e[3]/100,1):(e=ke.exec(t))?Ie(e[1],e[2]/100,e[3]/100,e[4]):Ce.hasOwnProperty(t)?Se(Ce[t]):"transparent"===t?new De(NaN,NaN,NaN,0):null}function Se(t){return new De(t>>16&255,t>>8&255,255&t,1)}function Te(t,e,n,r){return r<=0&&(t=e=n=NaN),new De(t,e,n,r)}function Fe(t){return t instanceof de||(t=Ne(t)),t?new De((t=t.rgb()).r,t.g,t.b,t.opacity):new De}function Re(t,e,n,r){return 1===arguments.length?Fe(t):new De(t,e,n,null==r?1:r)}function De(t,e,n,r){this.r=+t,this.g=+e,this.b=+n,this.opacity=+r}function Ie(t,e,n,r){return r<=0?t=e=n=NaN:n<=0||n>=1?t=e=NaN:e<=0&&(t=NaN),new He(t,e,n,r)}function He(t,e,n,r){this.h=+t,this.s=+e,this.l=+n,this.opacity=+r}function Ae(t,e,n){return 255*(t<60?e+(n-e)*t/60:t<180?n:t<240?e+(n-e)*(240-t)/60:e)}fe(de,Ne,{displayable:function(){return this.rgb().displayable()},toString:function(){return this.rgb()+""}}),fe(De,Re,he(de,{brighter:function(t){return t=null==t?1/.7:Math.pow(1/.7,t),new De(this.r*t,this.g*t,this.b*t,this.opacity)},darker:function(t){return t=null==t?.7:Math.pow(.7,t),new De(this.r*t,this.g*t,this.b*t,this.opacity)},rgb:function(){return this},displayable:function(){return 0<=this.r&&this.r<=255&&0<=this.g&&this.g<=255&&0<=this.b&&this.b<=255&&0<=this.opacity&&this.opacity<=1},toString:function(){var t=this.opacity;return(1===(t=isNaN(t)?1:Math.max(0,Math.min(1,t)))?"rgb(":"rgba(")+Math.max(0,Math.min(255,Math.round(this.r)||0))+", "+Math.max(0,Math.min(255,Math.round(this.g)||0))+", "+Math.max(0,Math.min(255,Math.round(this.b)||0))+(1===t?")":", "+t+")")}})),fe(He,function(t,e,n,r){return 1===arguments.length?function(t){if(t instanceof He)return new He(t.h,t.s,t.l,t.opacity);if(t instanceof de||(t=Ne(t)),!t)return new He;if(t instanceof He)return t;var e=(t=t.rgb()).r/255,n=t.g/255,r=t.b/255,a=Math.min(e,n,r),o=Math.max(e,n,r),i=NaN,u=o-a,s=(o+a)/2;return u?(i=e===o?(n-r)/u+6*(n<r):n===o?(r-e)/u+2:(e-n)/u+4,u/=s<.5?o+a:2-o-a,i*=60):u=s>0&&s<1?0:i,new He(i,u,s,t.opacity)}(t):new He(t,e,n,null==r?1:r)},he(de,{brighter:function(t){return t=null==t?1/.7:Math.pow(1/.7,t),new He(this.h,this.s,this.l*t,this.opacity)},darker:function(t){return t=null==t?.7:Math.pow(.7,t),new He(this.h,this.s,this.l*t,this.opacity)},rgb:function(){var t=this.h%360+360*(this.h<0),e=isNaN(t)||isNaN(this.s)?0:this.s,n=this.l,r=n+(n<.5?n:1-n)*e,a=2*n-r;return new De(Ae(t>=240?t-240:t+120,a,r),Ae(t,a,r),Ae(t<120?t+240:t-120,a,r),this.opacity)},displayable:function(){return(0<=this.s&&this.s<=1||isNaN(this.s))&&0<=this.l&&this.l<=1&&0<=this.opacity&&this.opacity<=1}}));var Ue=Math.PI/180,Le=180/Math.PI,Ee=.95047,$e=1,Oe=1.08883,qe=4/29,je=6/29,Ve=3*je*je,Be=je*je*je;function Ye(t){if(t instanceof Pe)return new Pe(t.l,t.a,t.b,t.opacity);if(t instanceof Ge){var e=t.h*Ue;return new Pe(t.l,Math.cos(e)*t.c,Math.sin(e)*t.c,t.opacity)}t instanceof De||(t=Fe(t));var n=Je(t.r),r=Je(t.g),a=Je(t.b),o=ze((.4124564*n+.3575761*r+.1804375*a)/Ee),i=ze((.2126729*n+.7151522*r+.072175*a)/$e);return new Pe(116*i-16,500*(o-i),200*(i-ze((.0193339*n+.119192*r+.9503041*a)/Oe)),t.opacity)}function Pe(t,e,n,r){this.l=+t,this.a=+e,this.b=+n,this.opacity=+r}function ze(t){return t>Be?Math.pow(t,1/3):t/Ve+qe}function We(t){return t>je?t*t*t:Ve*(t-qe)}function Ze(t){return 255*(t<=.0031308?12.92*t:1.055*Math.pow(t,1/2.4)-.055)}function Je(t){return(t/=255)<=.04045?t/12.92:Math.pow((t+.055)/1.055,2.4)}function Ge(t,e,n,r){this.h=+t,this.c=+e,this.l=+n,this.opacity=+r}fe(Pe,function(t,e,n,r){return 1===arguments.length?Ye(t):new Pe(t,e,n,null==r?1:r)},he(de,{brighter:function(t){return new Pe(this.l+18*(null==t?1:t),this.a,this.b,this.opacity)},darker:function(t){return new Pe(this.l-18*(null==t?1:t),this.a,this.b,this.opacity)},rgb:function(){var t=(this.l+16)/116,e=isNaN(this.a)?t:t+this.a/500,n=isNaN(this.b)?t:t-this.b/200;return t=$e*We(t),new De(Ze(3.2404542*(e=Ee*We(e))-1.5371385*t-.4985314*(n=Oe*We(n))),Ze(-.969266*e+1.8760108*t+.041556*n),Ze(.0556434*e-.2040259*t+1.0572252*n),this.opacity)}})),fe(Ge,function(t,e,n,r){return 1===arguments.length?function(t){if(t instanceof Ge)return new Ge(t.h,t.c,t.l,t.opacity);t instanceof Pe||(t=Ye(t));var e=Math.atan2(t.b,t.a)*Le;return new Ge(e<0?e+360:e,Math.sqrt(t.a*t.a+t.b*t.b),t.l,t.opacity)}(t):new Ge(t,e,n,null==r?1:r)},he(de,{brighter:function(t){return new Ge(this.h,this.c,this.l+18*(null==t?1:t),this.opacity)},darker:function(t){return new Ge(this.h,this.c,this.l-18*(null==t?1:t),this.opacity)},rgb:function(){return Ye(this).rgb()}}));var Qe=-.14861,Xe=1.78277,Ke=-.29227,tn=-.90649,en=1.97294,nn=en*tn,rn=en*Xe,an=Xe*Ke-tn*Qe;function on(t,e,n,r){this.h=+t,this.s=+e,this.l=+n,this.opacity=+r}function un(t){return function(){return t}}function sn(t){return 1==(t=+t)?ln:function(e,n){return n-e?function(t,e,n){return t=Math.pow(t,n),e=Math.pow(e,n)-t,n=1/n,function(r){return Math.pow(t+r*e,n)}}(e,n,t):un(isNaN(e)?n:e)}}function ln(t,e){var n=e-t;return n?function(t,e){return function(n){return t+n*e}}(t,n):un(isNaN(t)?e:t)}fe(on,function(t,e,n,r){return 1===arguments.length?function(t){if(t instanceof on)return new on(t.h,t.s,t.l,t.opacity);t instanceof De||(t=Fe(t));var e=t.r/255,n=t.g/255,r=t.b/255,a=(an*r+nn*e-rn*n)/(an+nn-rn),o=r-a,i=(en*(n-a)-Ke*o)/tn,u=Math.sqrt(i*i+o*o)/(en*a*(1-a)),s=u?Math.atan2(i,o)*Le-120:NaN;return new on(s<0?s+360:s,u,a,t.opacity)}(t):new on(t,e,n,null==r?1:r)},he(de,{brighter:function(t){return t=null==t?1/.7:Math.pow(1/.7,t),new on(this.h,this.s,this.l*t,this.opacity)},darker:function(t){return t=null==t?.7:Math.pow(.7,t),new on(this.h,this.s,this.l*t,this.opacity)},rgb:function(){var t=isNaN(this.h)?0:(this.h+120)*Ue,e=+this.l,n=isNaN(this.s)?0:this.s*e*(1-e),r=Math.cos(t),a=Math.sin(t);return new De(255*(e+n*(Qe*r+Xe*a)),255*(e+n*(Ke*r+tn*a)),255*(e+n*(en*r)),this.opacity)}}));var cn=function t(e){var n=sn(e);function r(t,e){var r=n((t=Re(t)).r,(e=Re(e)).r),a=n(t.g,e.g),o=n(t.b,e.b),i=ln(t.opacity,e.opacity);return function(e){return t.r=r(e),t.g=a(e),t.b=o(e),t.opacity=i(e),t+""}}return r.gamma=t,r}(1);function fn(t,e){return e-=t=+t,function(n){return t+e*n}}var hn=/[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,dn=new RegExp(hn.source,"g");function mn(t,e){var n,r=typeof e;return null==e||"boolean"===r?un(e):("number"===r?fn:"string"===r?(n=Ne(e))?(e=n,cn):function(t,e){var n,r,a,o=hn.lastIndex=dn.lastIndex=0,i=-1,u=[],s=[];for(t+="",e+="";(n=hn.exec(t))&&(r=dn.exec(e));)(a=r.index)>o&&(a=e.slice(o,a),u[i]?u[i]+=a:u[++i]=a),(n=n[0])===(r=r[0])?u[i]?u[i]+=r:u[++i]=r:(u[++i]=null,s.push({i:i,x:fn(n,r)})),o=dn.lastIndex;return o<e.length&&(a=e.slice(o),u[i]?u[i]+=a:u[++i]=a),u.length<2?s[0]?function(t){return function(e){return t(e)+""}}(s[0].x):function(t){return function(){return t}}(e):(e=s.length,function(t){for(var n,r=0;r<e;++r)u[(n=s[r]).i]=n.x(t);return u.join("")})}:e instanceof Ne?cn:e instanceof Date?function(t,e){var n=new Date;return e-=t=+t,function(r){return n.setTime(t+e*r),n}}:Array.isArray(e)?function(t,e){var n,r=e?e.length:0,a=t?Math.min(r,t.length):0,o=new Array(a),i=new Array(r);for(n=0;n<a;++n)o[n]=mn(t[n],e[n]);for(;n<r;++n)i[n]=e[n];return function(t){for(n=0;n<a;++n)i[n]=o[n](t);return i}}:"function"!=typeof e.valueOf&&"function"!=typeof e.toString||isNaN(e)?function(t,e){var n,r={},a={};for(n in null!==t&&"object"==typeof t||(t={}),null!==e&&"object"==typeof e||(e={}),e)n in t?r[n]=mn(t[n],e[n]):a[n]=e[n];return function(t){for(n in r)a[n]=r[n](t);return a}}:fn)(t,e)}function vn(t,e){return e-=t=+t,function(n){return Math.round(t+e*n)}}Math.PI,Math.SQRT2;function gn(t){return+t}var pn,_n=[0,1];function bn(t,e){return(e-=t=+t)?function(n){return(n-t)/e}:(n=e,function(){return n});var n}function yn(t,e,n,r){var a=t[0],o=t[1],i=e[0],u=e[1];return o<a?(a=n(o,a),i=r(u,i)):(a=n(a,o),i=r(i,u)),function(t){return i(a(t))}}function wn(t,e,n,r){var a=Math.min(t.length,e.length)-1,o=new Array(a),i=new Array(a),u=-1;for(t[a]<t[0]&&(t=t.slice().reverse(),e=e.slice().reverse());++u<a;)o[u]=n(t[u],t[u+1]),i[u]=r(e[u],e[u+1]);return function(e){var n=jt(t,e,1,a)-1;return i[n](o[n](e))}}function xn(t,e){if((n=(t=e?t.toExponential(e-1):t.toExponential()).indexOf("e"))<0)return null;var n,r=t.slice(0,n);return[r.length>1?r[0]+r.slice(2):r,+t.slice(n+1)]}function Mn(t){return(t=xn(Math.abs(t)))?t[1]:NaN}function kn(t,e){var n=xn(t,e);if(!n)return t+"";var r=n[0],a=n[1];return a<0?"0."+new Array(-a).join("0")+r:r.length>a+1?r.slice(0,a+1)+"."+r.slice(a+1):r+new Array(a-r.length+2).join("0")}var Cn={"":function(t,e){t=t.toPrecision(e);t:for(var n,r=t.length,a=1,o=-1;a<r;++a)switch(t[a]){case".":o=n=a;break;case"0":0===o&&(o=a),n=a;break;case"e":break t;default:o>0&&(o=0)}return o>0?t.slice(0,o)+t.slice(n+1):t},"%":function(t,e){return(100*t).toFixed(e)},b:function(t){return Math.round(t).toString(2)},c:function(t){return t+""},d:function(t){return Math.round(t).toString(10)},e:function(t,e){return t.toExponential(e)},f:function(t,e){return t.toFixed(e)},g:function(t,e){return t.toPrecision(e)},o:function(t){return Math.round(t).toString(8)},p:function(t,e){return kn(100*t,e)},r:kn,s:function(t,e){var n=xn(t,e);if(!n)return t+"";var r=n[0],a=n[1],o=a-(pn=3*Math.max(-8,Math.min(8,Math.floor(a/3))))+1,i=r.length;return o===i?r:o>i?r+new Array(o-i+1).join("0"):o>0?r.slice(0,o)+"."+r.slice(o):"0."+new Array(1-o).join("0")+xn(t,Math.max(0,e+o-1))[0]},X:function(t){return Math.round(t).toString(16).toUpperCase()},x:function(t){return Math.round(t).toString(16)}},Nn=/^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;function Sn(t){return new Tn(t)}function Tn(t){if(!(e=Nn.exec(t)))throw new Error("invalid format: "+t);var e,n=e[1]||" ",r=e[2]||">",a=e[3]||"-",o=e[4]||"",i=!!e[5],u=e[6]&&+e[6],s=!!e[7],l=e[8]&&+e[8].slice(1),c=e[9]||"";"n"===c?(s=!0,c="g"):Cn[c]||(c=""),(i||"0"===n&&"="===r)&&(i=!0,n="0",r="="),this.fill=n,this.align=r,this.sign=a,this.symbol=o,this.zero=i,this.width=u,this.comma=s,this.precision=l,this.type=c}function Fn(t){return t}Sn.prototype=Tn.prototype,Tn.prototype.toString=function(){return this.fill+this.align+this.sign+this.symbol+(this.zero?"0":"")+(null==this.width?"":Math.max(1,0|this.width))+(this.comma?",":"")+(null==this.precision?"":"."+Math.max(0,0|this.precision))+this.type};var Rn,Dn,In,Hn=["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];function An(t){var e,n,r=t.grouping&&t.thousands?(e=t.grouping,n=t.thousands,function(t,r){for(var a=t.length,o=[],i=0,u=e[0],s=0;a>0&&u>0&&(s+u+1>r&&(u=Math.max(1,r-s)),o.push(t.substring(a-=u,a+u)),!((s+=u+1)>r));)u=e[i=(i+1)%e.length];return o.reverse().join(n)}):Fn,a=t.currency,o=t.decimal,i=t.numerals?function(t){return function(e){return e.replace(/[0-9]/g,function(e){return t[+e]})}}(t.numerals):Fn,u=t.percent||"%";function s(t){var e=(t=Sn(t)).fill,n=t.align,s=t.sign,l=t.symbol,c=t.zero,f=t.width,h=t.comma,d=t.precision,m=t.type,v="$"===l?a[0]:"#"===l&&/[boxX]/.test(m)?"0"+m.toLowerCase():"",g="$"===l?a[1]:/[%p]/.test(m)?u:"",p=Cn[m],_=!m||/[defgprs%]/.test(m);function b(t){var a,u,l,b=v,y=g;if("c"===m)y=p(t)+y,t="";else{var w=(t=+t)<0;if(t=p(Math.abs(t),d),w&&0==+t&&(w=!1),b=(w?"("===s?s:"-":"-"===s||"("===s?"":s)+b,y=("s"===m?Hn[8+pn/3]:"")+y+(w&&"("===s?")":""),_)for(a=-1,u=t.length;++a<u;)if(48>(l=t.charCodeAt(a))||l>57){y=(46===l?o+t.slice(a+1):t.slice(a))+y,t=t.slice(0,a);break}}h&&!c&&(t=r(t,1/0));var x=b.length+t.length+y.length,M=x<f?new Array(f-x+1).join(e):"";switch(h&&c&&(t=r(M+t,M.length?f-y.length:1/0),M=""),n){case"<":t=b+t+y+M;break;case"=":t=b+M+t+y;break;case"^":t=M.slice(0,x=M.length>>1)+b+t+y+M.slice(x);break;default:t=M+b+t+y}return i(t)}return d=null==d?m?6:12:/[gprs]/.test(m)?Math.max(1,Math.min(21,d)):Math.max(0,Math.min(20,d)),b.toString=function(){return t+""},b}return{format:s,formatPrefix:function(t,e){var n=s(((t=Sn(t)).type="f",t)),r=3*Math.max(-8,Math.min(8,Math.floor(Mn(e)/3))),a=Math.pow(10,-r),o=Hn[8+r/3];return function(t){return n(a*t)+o}}}}function Un(t,e,n){var r,a=t[0],o=t[t.length-1],i=Xt(a,o,null==e?10:e);switch((n=Sn(null==n?",f":n)).type){case"s":var u=Math.max(Math.abs(a),Math.abs(o));return null!=n.precision||isNaN(r=function(t,e){return Math.max(0,3*Math.max(-8,Math.min(8,Math.floor(Mn(e)/3)))-Mn(Math.abs(t)))}(i,u))||(n.precision=r),In(n,u);case"":case"e":case"g":case"p":case"r":null!=n.precision||isNaN(r=function(t,e){return t=Math.abs(t),e=Math.abs(e)-t,Math.max(0,Mn(e)-Mn(t))+1}(i,Math.max(Math.abs(a),Math.abs(o))))||(n.precision=r-("e"===n.type));break;case"f":case"%":null!=n.precision||isNaN(r=function(t){return Math.max(0,-Mn(Math.abs(t)))}(i))||(n.precision=r-2*("%"===n.type))}return Dn(n)}function Ln(t){var e=t.domain;return t.ticks=function(t){var n=e();return function(t,e,n){var r,a,o,i,u=-1;if(n=+n,(t=+t)==(e=+e)&&n>0)return[t];if((r=e<t)&&(a=t,t=e,e=a),0===(i=Qt(t,e,n))||!isFinite(i))return[];if(i>0)for(t=Math.ceil(t/i),e=Math.floor(e/i),o=new Array(a=Math.ceil(e-t+1));++u<a;)o[u]=(t+u)*i;else for(t=Math.floor(t*i),e=Math.ceil(e*i),o=new Array(a=Math.ceil(t-e+1));++u<a;)o[u]=(t-u)/i;return r&&o.reverse(),o}(n[0],n[n.length-1],null==t?10:t)},t.tickFormat=function(t,n){return Un(e(),t,n)},t.nice=function(n){null==n&&(n=10);var r,a=e(),o=0,i=a.length-1,u=a[o],s=a[i];return s<u&&(r=u,u=s,s=r,r=o,o=i,i=r),(r=Qt(u,s,n))>0?r=Qt(u=Math.floor(u/r)*r,s=Math.ceil(s/r)*r,n):r<0&&(r=Qt(u=Math.ceil(u*r)/r,s=Math.floor(s*r)/r,n)),r>0?(a[o]=Math.floor(u/r)*r,a[i]=Math.ceil(s/r)*r,e(a)):r<0&&(a[o]=Math.ceil(u*r)/r,a[i]=Math.floor(s*r)/r,e(a)),t},t}function En(){var t=function(t,e){var n,r,a,o=_n,i=_n,u=mn,s=!1;function l(){return n=Math.min(o.length,i.length)>2?wn:yn,r=a=null,c}function c(e){return(r||(r=n(o,i,s?function(t){return function(e,n){var r=t(e=+e,n=+n);return function(t){return t<=e?0:t>=n?1:r(t)}}}(t):t,u)))(+e)}return c.invert=function(t){return(a||(a=n(i,o,bn,s?function(t){return function(e,n){var r=t(e=+e,n=+n);return function(t){return t<=0?e:t>=1?n:r(t)}}}(e):e)))(+t)},c.domain=function(t){return arguments.length?(o=se.call(t,gn),l()):o.slice()},c.range=function(t){return arguments.length?(i=le.call(t),l()):i.slice()},c.rangeRound=function(t){return i=le.call(t),u=vn,l()},c.clamp=function(t){return arguments.length?(s=!!t,l()):s},c.interpolate=function(t){return arguments.length?(u=t,l()):u},l()}(bn,fn);return t.copy=function(){return e=t,En().domain(e.domain()).range(e.range()).interpolate(e.interpolate()).clamp(e.clamp());var e},Ln(t)}Rn=An({decimal:".",thousands:",",grouping:[3],currency:["$",""]}),Dn=Rn.format,In=Rn.formatPrefix;var $n=new Date,On=new Date;function qn(t,e,n,r){function a(e){return t(e=new Date(+e)),e}return a.floor=a,a.ceil=function(n){return t(n=new Date(n-1)),e(n,1),t(n),n},a.round=function(t){var e=a(t),n=a.ceil(t);return t-e<n-t?e:n},a.offset=function(t,n){return e(t=new Date(+t),null==n?1:Math.floor(n)),t},a.range=function(n,r,o){var i,u=[];if(n=a.ceil(n),o=null==o?1:Math.floor(o),!(n<r&&o>0))return u;do{u.push(i=new Date(+n)),e(n,o),t(n)}while(i<n&&n<r);return u},a.filter=function(n){return qn(function(e){if(e>=e)for(;t(e),!n(e);)e.setTime(e-1)},function(t,r){if(t>=t)if(r<0)for(;++r<=0;)for(;e(t,-1),!n(t););else for(;--r>=0;)for(;e(t,1),!n(t););})},n&&(a.count=function(e,r){return $n.setTime(+e),On.setTime(+r),t($n),t(On),Math.floor(n($n,On))},a.every=function(t){return t=Math.floor(t),isFinite(t)&&t>0?t>1?a.filter(r?function(e){return r(e)%t==0}:function(e){return a.count(0,e)%t==0}):a:null}),a}var jn=qn(function(){},function(t,e){t.setTime(+t+e)},function(t,e){return e-t});jn.every=function(t){return t=Math.floor(t),isFinite(t)&&t>0?t>1?qn(function(e){e.setTime(Math.floor(e/t)*t)},function(e,n){e.setTime(+e+n*t)},function(e,n){return(n-e)/t}):jn:null};var Vn=6e4,Bn=6048e5,Yn=(qn(function(t){t.setTime(1e3*Math.floor(t/1e3))},function(t,e){t.setTime(+t+1e3*e)},function(t,e){return(e-t)/1e3},function(t){return t.getUTCSeconds()}),qn(function(t){t.setTime(Math.floor(t/Vn)*Vn)},function(t,e){t.setTime(+t+e*Vn)},function(t,e){return(e-t)/Vn},function(t){return t.getMinutes()}),qn(function(t){var e=t.getTimezoneOffset()*Vn%36e5;e<0&&(e+=36e5),t.setTime(36e5*Math.floor((+t-e)/36e5)+e)},function(t,e){t.setTime(+t+36e5*e)},function(t,e){return(e-t)/36e5},function(t){return t.getHours()}),qn(function(t){t.setHours(0,0,0,0)},function(t,e){t.setDate(t.getDate()+e)},function(t,e){return(e-t-(e.getTimezoneOffset()-t.getTimezoneOffset())*Vn)/864e5},function(t){return t.getDate()-1}));function Pn(t){return qn(function(e){e.setDate(e.getDate()-(e.getDay()+7-t)%7),e.setHours(0,0,0,0)},function(t,e){t.setDate(t.getDate()+7*e)},function(t,e){return(e-t-(e.getTimezoneOffset()-t.getTimezoneOffset())*Vn)/Bn})}var zn=Pn(0),Wn=Pn(1),Zn=(Pn(2),Pn(3),Pn(4)),Jn=(Pn(5),Pn(6),qn(function(t){t.setDate(1),t.setHours(0,0,0,0)},function(t,e){t.setMonth(t.getMonth()+e)},function(t,e){return e.getMonth()-t.getMonth()+12*(e.getFullYear()-t.getFullYear())},function(t){return t.getMonth()}),qn(function(t){t.setMonth(0,1),t.setHours(0,0,0,0)},function(t,e){t.setFullYear(t.getFullYear()+e)},function(t,e){return e.getFullYear()-t.getFullYear()},function(t){return t.getFullYear()}));Jn.every=function(t){return isFinite(t=Math.floor(t))&&t>0?qn(function(e){e.setFullYear(Math.floor(e.getFullYear()/t)*t),e.setMonth(0,1),e.setHours(0,0,0,0)},function(e,n){e.setFullYear(e.getFullYear()+n*t)}):null};qn(function(t){t.setUTCSeconds(0,0)},function(t,e){t.setTime(+t+e*Vn)},function(t,e){return(e-t)/Vn},function(t){return t.getUTCMinutes()}),qn(function(t){t.setUTCMinutes(0,0,0)},function(t,e){t.setTime(+t+36e5*e)},function(t,e){return(e-t)/36e5},function(t){return t.getUTCHours()});var Gn=qn(function(t){t.setUTCHours(0,0,0,0)},function(t,e){t.setUTCDate(t.getUTCDate()+e)},function(t,e){return(e-t)/864e5},function(t){return t.getUTCDate()-1});function Qn(t){return qn(function(e){e.setUTCDate(e.getUTCDate()-(e.getUTCDay()+7-t)%7),e.setUTCHours(0,0,0,0)},function(t,e){t.setUTCDate(t.getUTCDate()+7*e)},function(t,e){return(e-t)/Bn})}var Xn=Qn(0),Kn=Qn(1),tr=(Qn(2),Qn(3),Qn(4)),er=(Qn(5),Qn(6),qn(function(t){t.setUTCDate(1),t.setUTCHours(0,0,0,0)},function(t,e){t.setUTCMonth(t.getUTCMonth()+e)},function(t,e){return e.getUTCMonth()-t.getUTCMonth()+12*(e.getUTCFullYear()-t.getUTCFullYear())},function(t){return t.getUTCMonth()}),qn(function(t){t.setUTCMonth(0,1),t.setUTCHours(0,0,0,0)},function(t,e){t.setUTCFullYear(t.getUTCFullYear()+e)},function(t,e){return e.getUTCFullYear()-t.getUTCFullYear()},function(t){return t.getUTCFullYear()}));function nr(t){if(0<=t.y&&t.y<100){var e=new Date(-1,t.m,t.d,t.H,t.M,t.S,t.L);return e.setFullYear(t.y),e}return new Date(t.y,t.m,t.d,t.H,t.M,t.S,t.L)}function rr(t){if(0<=t.y&&t.y<100){var e=new Date(Date.UTC(-1,t.m,t.d,t.H,t.M,t.S,t.L));return e.setUTCFullYear(t.y),e}return new Date(Date.UTC(t.y,t.m,t.d,t.H,t.M,t.S,t.L))}function ar(t){return{y:t,m:0,d:1,H:0,M:0,S:0,L:0}}er.every=function(t){return isFinite(t=Math.floor(t))&&t>0?qn(function(e){e.setUTCFullYear(Math.floor(e.getUTCFullYear()/t)*t),e.setUTCMonth(0,1),e.setUTCHours(0,0,0,0)},function(e,n){e.setUTCFullYear(e.getUTCFullYear()+n*t)}):null};var or,ir,ur,sr={"-":"",_:" ",0:"0"},lr=/^\s*\d+/,cr=/^%/,fr=/[\\^$*+?|[\]().{}]/g;function hr(t,e,n){var r=t<0?"-":"",a=(r?-t:t)+"",o=a.length;return r+(o<n?new Array(n-o+1).join(e)+a:a)}function dr(t){return t.replace(fr,"\\$&")}function mr(t){return new RegExp("^(?:"+t.map(dr).join("|")+")","i")}function vr(t){for(var e={},n=-1,r=t.length;++n<r;)e[t[n].toLowerCase()]=n;return e}function gr(t,e,n){var r=lr.exec(e.slice(n,n+1));return r?(t.w=+r[0],n+r[0].length):-1}function pr(t,e,n){var r=lr.exec(e.slice(n,n+1));return r?(t.u=+r[0],n+r[0].length):-1}function _r(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.U=+r[0],n+r[0].length):-1}function br(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.V=+r[0],n+r[0].length):-1}function yr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.W=+r[0],n+r[0].length):-1}function wr(t,e,n){var r=lr.exec(e.slice(n,n+4));return r?(t.y=+r[0],n+r[0].length):-1}function xr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.y=+r[0]+(+r[0]>68?1900:2e3),n+r[0].length):-1}function Mr(t,e,n){var r=/^(Z)|([+-]\d\d)(?::?(\d\d))?/.exec(e.slice(n,n+6));return r?(t.Z=r[1]?0:-(r[2]+(r[3]||"00")),n+r[0].length):-1}function kr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.m=r[0]-1,n+r[0].length):-1}function Cr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.d=+r[0],n+r[0].length):-1}function Nr(t,e,n){var r=lr.exec(e.slice(n,n+3));return r?(t.m=0,t.d=+r[0],n+r[0].length):-1}function Sr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.H=+r[0],n+r[0].length):-1}function Tr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.M=+r[0],n+r[0].length):-1}function Fr(t,e,n){var r=lr.exec(e.slice(n,n+2));return r?(t.S=+r[0],n+r[0].length):-1}function Rr(t,e,n){var r=lr.exec(e.slice(n,n+3));return r?(t.L=+r[0],n+r[0].length):-1}function Dr(t,e,n){var r=lr.exec(e.slice(n,n+6));return r?(t.L=Math.floor(r[0]/1e3),n+r[0].length):-1}function Ir(t,e,n){var r=cr.exec(e.slice(n,n+1));return r?n+r[0].length:-1}function Hr(t,e,n){var r=lr.exec(e.slice(n));return r?(t.Q=+r[0],n+r[0].length):-1}function Ar(t,e,n){var r=lr.exec(e.slice(n));return r?(t.Q=1e3*+r[0],n+r[0].length):-1}function Ur(t,e){return hr(t.getDate(),e,2)}function Lr(t,e){return hr(t.getHours(),e,2)}function Er(t,e){return hr(t.getHours()%12||12,e,2)}function $r(t,e){return hr(1+Yn.count(Jn(t),t),e,3)}function Or(t,e){return hr(t.getMilliseconds(),e,3)}function qr(t,e){return Or(t,e)+"000"}function jr(t,e){return hr(t.getMonth()+1,e,2)}function Vr(t,e){return hr(t.getMinutes(),e,2)}function Br(t,e){return hr(t.getSeconds(),e,2)}function Yr(t){var e=t.getDay();return 0===e?7:e}function Pr(t,e){return hr(zn.count(Jn(t),t),e,2)}function zr(t,e){var n=t.getDay();return t=n>=4||0===n?Zn(t):Zn.ceil(t),hr(Zn.count(Jn(t),t)+(4===Jn(t).getDay()),e,2)}function Wr(t){return t.getDay()}function Zr(t,e){return hr(Wn.count(Jn(t),t),e,2)}function Jr(t,e){return hr(t.getFullYear()%100,e,2)}function Gr(t,e){return hr(t.getFullYear()%1e4,e,4)}function Qr(t){var e=t.getTimezoneOffset();return(e>0?"-":(e*=-1,"+"))+hr(e/60|0,"0",2)+hr(e%60,"0",2)}function Xr(t,e){return hr(t.getUTCDate(),e,2)}function Kr(t,e){return hr(t.getUTCHours(),e,2)}function ta(t,e){return hr(t.getUTCHours()%12||12,e,2)}function ea(t,e){return hr(1+Gn.count(er(t),t),e,3)}function na(t,e){return hr(t.getUTCMilliseconds(),e,3)}function ra(t,e){return na(t,e)+"000"}function aa(t,e){return hr(t.getUTCMonth()+1,e,2)}function oa(t,e){return hr(t.getUTCMinutes(),e,2)}function ia(t,e){return hr(t.getUTCSeconds(),e,2)}function ua(t){var e=t.getUTCDay();return 0===e?7:e}function sa(t,e){return hr(Xn.count(er(t),t),e,2)}function la(t,e){var n=t.getUTCDay();return t=n>=4||0===n?tr(t):tr.ceil(t),hr(tr.count(er(t),t)+(4===er(t).getUTCDay()),e,2)}function ca(t){return t.getUTCDay()}function fa(t,e){return hr(Kn.count(er(t),t),e,2)}function ha(t,e){return hr(t.getUTCFullYear()%100,e,2)}function da(t,e){return hr(t.getUTCFullYear()%1e4,e,4)}function ma(){return"+0000"}function va(){return"%"}function ga(t){return+t}function pa(t){return Math.floor(+t/1e3)}!function(t){or=function(t){var e=t.dateTime,n=t.date,r=t.time,a=t.periods,o=t.days,i=t.shortDays,u=t.months,s=t.shortMonths,l=mr(a),c=vr(a),f=mr(o),h=vr(o),d=mr(i),m=vr(i),v=mr(u),g=vr(u),p=mr(s),_=vr(s),b={a:function(t){return i[t.getDay()]},A:function(t){return o[t.getDay()]},b:function(t){return s[t.getMonth()]},B:function(t){return u[t.getMonth()]},c:null,d:Ur,e:Ur,f:qr,H:Lr,I:Er,j:$r,L:Or,m:jr,M:Vr,p:function(t){return a[+(t.getHours()>=12)]},Q:ga,s:pa,S:Br,u:Yr,U:Pr,V:zr,w:Wr,W:Zr,x:null,X:null,y:Jr,Y:Gr,Z:Qr,"%":va},y={a:function(t){return i[t.getUTCDay()]},A:function(t){return o[t.getUTCDay()]},b:function(t){return s[t.getUTCMonth()]},B:function(t){return u[t.getUTCMonth()]},c:null,d:Xr,e:Xr,f:ra,H:Kr,I:ta,j:ea,L:na,m:aa,M:oa,p:function(t){return a[+(t.getUTCHours()>=12)]},Q:ga,s:pa,S:ia,u:ua,U:sa,V:la,w:ca,W:fa,x:null,X:null,y:ha,Y:da,Z:ma,"%":va},w={a:function(t,e,n){var r=d.exec(e.slice(n));return r?(t.w=m[r[0].toLowerCase()],n+r[0].length):-1},A:function(t,e,n){var r=f.exec(e.slice(n));return r?(t.w=h[r[0].toLowerCase()],n+r[0].length):-1},b:function(t,e,n){var r=p.exec(e.slice(n));return r?(t.m=_[r[0].toLowerCase()],n+r[0].length):-1},B:function(t,e,n){var r=v.exec(e.slice(n));return r?(t.m=g[r[0].toLowerCase()],n+r[0].length):-1},c:function(t,n,r){return k(t,e,n,r)},d:Cr,e:Cr,f:Dr,H:Sr,I:Sr,j:Nr,L:Rr,m:kr,M:Tr,p:function(t,e,n){var r=l.exec(e.slice(n));return r?(t.p=c[r[0].toLowerCase()],n+r[0].length):-1},Q:Hr,s:Ar,S:Fr,u:pr,U:_r,V:br,w:gr,W:yr,x:function(t,e,r){return k(t,n,e,r)},X:function(t,e,n){return k(t,r,e,n)},y:xr,Y:wr,Z:Mr,"%":Ir};function x(t,e){return function(n){var r,a,o,i=[],u=-1,s=0,l=t.length;for(n instanceof Date||(n=new Date(+n));++u<l;)37===t.charCodeAt(u)&&(i.push(t.slice(s,u)),null!=(a=sr[r=t.charAt(++u)])?r=t.charAt(++u):a="e"===r?" ":"0",(o=e[r])&&(r=o(n,a)),i.push(r),s=u+1);return i.push(t.slice(s,u)),i.join("")}}function M(t,e){return function(n){var r,a,o=ar(1900);if(k(o,t,n+="",0)!=n.length)return null;if("Q"in o)return new Date(o.Q);if("p"in o&&(o.H=o.H%12+12*o.p),"V"in o){if(o.V<1||o.V>53)return null;"w"in o||(o.w=1),"Z"in o?(r=(a=(r=rr(ar(o.y))).getUTCDay())>4||0===a?Kn.ceil(r):Kn(r),r=Gn.offset(r,7*(o.V-1)),o.y=r.getUTCFullYear(),o.m=r.getUTCMonth(),o.d=r.getUTCDate()+(o.w+6)%7):(r=(a=(r=e(ar(o.y))).getDay())>4||0===a?Wn.ceil(r):Wn(r),r=Yn.offset(r,7*(o.V-1)),o.y=r.getFullYear(),o.m=r.getMonth(),o.d=r.getDate()+(o.w+6)%7)}else("W"in o||"U"in o)&&("w"in o||(o.w="u"in o?o.u%7:"W"in o?1:0),a="Z"in o?rr(ar(o.y)).getUTCDay():e(ar(o.y)).getDay(),o.m=0,o.d="W"in o?(o.w+6)%7+7*o.W-(a+5)%7:o.w+7*o.U-(a+6)%7);return"Z"in o?(o.H+=o.Z/100|0,o.M+=o.Z%100,rr(o)):e(o)}}function k(t,e,n,r){for(var a,o,i=0,u=e.length,s=n.length;i<u;){if(r>=s)return-1;if(37===(a=e.charCodeAt(i++))){if(a=e.charAt(i++),!(o=w[a in sr?e.charAt(i++):a])||(r=o(t,n,r))<0)return-1}else if(a!=n.charCodeAt(r++))return-1}return r}return b.x=x(n,b),b.X=x(r,b),b.c=x(e,b),y.x=x(n,y),y.X=x(r,y),y.c=x(e,y),{format:function(t){var e=x(t+="",b);return e.toString=function(){return t},e},parse:function(t){var e=M(t+="",nr);return e.toString=function(){return t},e},utcFormat:function(t){var e=x(t+="",y);return e.toString=function(){return t},e},utcParse:function(t){var e=M(t,rr);return e.toString=function(){return t},e}}}(t),or.format,or.parse,ir=or.utcFormat,ur=or.utcParse}({dateTime:"%x, %X",date:"%-m/%-d/%Y",time:"%-I:%M:%S %p",periods:["AM","PM"],days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],shortDays:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],shortMonths:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]});Date.prototype.toISOString||ir("%Y-%m-%dT%H:%M:%S.%LZ");+new Date("2000-01-01T00:00:00.000Z")||ur("%Y-%m-%dT%H:%M:%S.%LZ");var _a=En(),ba=function t(){var e,n,r=function t(e){var n=ae(),r=[],a=ce;function o(t){var o=t+"",i=n.get(o);if(!i){if(a!==ce)return a;n.set(o,i=r.push(t))}return e[(i-1)%e.length]}return e=null==e?[]:le.call(e),o.domain=function(t){if(!arguments.length)return r.slice();r=[],n=ae();for(var e,a,i=-1,u=t.length;++i<u;)n.has(a=(e=t[i])+"")||n.set(a,r.push(e));return o},o.range=function(t){return arguments.length?(e=le.call(t),o):e.slice()},o.unknown=function(t){return arguments.length?(a=t,o):a},o.copy=function(){return t().domain(r).range(e).unknown(a)},o}().unknown(void 0),a=r.domain,o=r.range,i=[0,1],u=!1,s=0,l=0,c=.5;function f(){var t=a().length,r=i[1]<i[0],f=i[r-0],h=i[1-r];e=(h-f)/Math.max(1,t-s+2*l),u&&(e=Math.floor(e)),f+=(h-f-e*(t-s))*c,n=e*(1-s),u&&(f=Math.round(f),n=Math.round(n));var d=Wt(t).map(function(t){return f+e*t});return o(r?d.reverse():d)}return delete r.unknown,r.domain=function(t){return arguments.length?(a(t),f()):a()},r.range=function(t){return arguments.length?(i=[+t[0],+t[1]],f()):i.slice()},r.rangeRound=function(t){return i=[+t[0],+t[1]],u=!0,f()},r.bandwidth=function(){return n},r.step=function(){return e},r.round=function(t){return arguments.length?(u=!!t,f()):u},r.padding=function(t){return arguments.length?(s=l=Math.max(0,Math.min(1,t)),f()):s},r.paddingInner=function(t){return arguments.length?(s=Math.max(0,Math.min(1,t)),f()):s},r.paddingOuter=function(t){return arguments.length?(l=Math.max(0,Math.min(1,t)),f()):l},r.align=function(t){return arguments.length?(c=Math.max(0,Math.min(1,t)),f()):c},r.copy=function(){return t().domain(a()).range(i).round(u).paddingInner(s).paddingOuter(l).align(c)},f()}(),ya=En(),wa=function(t){return t?t<.01?"<1%":(100*t).toFixed(0)+"%":"0%"};function xa(t){var e=t.validValues,n=t.format,r=function(t,e){var n,r,a=t.length,o=-1;if(null==e){for(;++o<a;)if(null!=(n=t[o])&&n>=n)for(r=n;++o<a;)null!=(n=t[o])&&r>n&&(r=n)}else for(;++o<a;)if(null!=(n=e(t[o],o,t))&&n>=n)for(r=n;++o<a;)null!=(n=e(t[o],o,t))&&r>n&&(r=n);return r}(e),a=ee(e),o=function(t,e){var n,r=t.length,a=r,o=-1,i=0;if(null==e)for(;++o<r;)isNaN(n=Vt(t[o]))?--a:i+=n;else for(;++o<r;)isNaN(n=Vt(e(t[o],o,t)))?--a:i+=n;if(a)return i/a}(e),i=ne(e);return[{x:r,label:n(r),name:"Min"},{x:a,label:n(a),name:"Max"},{x:o,label:n(o),name:"Mittelwert"},{x:i,label:n(i),name:"Median"}]}function Ma(t){var e=t.niceDomain,n=t.validValues,r=e,a=te().domain(r).thresholds(Kt)(n),o=Et(a.map(function(t){return t.x1-t.x0}));if(a.length>2&&z(o).length>1){var i=a[1].x1-a[1].x0,u=r[0]+Math.ceil((r[1]-r[0])/i)*i;return te().domain([r[0],u]).thresholds(function(t,e,n){null==e&&(e=t||0,t=0),n||(n=e<t?-1:1);for(var r=Math.max(Math.ceil((e-t)/n),0),a=Array(r),o=0;o<r;o++,t+=n)a[o]=t;return a}(r[0],u+.4*i,i))(n)}return a}function ka(t,e,n,r){return(0===e?"$1 Werte ($2) sind kleiner $4":e==n.length-1?"$1 Werte ($2) sind größer oder gleich $3":"$1 Werte ($2) sind ≥ $3 und < $4").replace("$1",t.length).replace("$2",wa(t.length/r)).replace("$3",Dt(t.x0)).replace("$4",Dt(t.x1))}function Ca(t,e){var n,r,a,o,i,s=e.tick,h=(e.each_value,e.tick_index,s.label);return{c:function(){n=v("g"),r=v("line"),a=v("text"),o=g(h),this.h()},h:function(){y(r,"y2","3"),y(r,"class","svelte-4derlj"),y(a,"y","5"),y(a,"class","svelte-4derlj"),y(n,"class","tick svelte-4derlj"),y(n,"transform",i="translate("+e.xScale(s.x)+",0)")},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,a)},p:function(t,e){s=e.tick,e.each_value,e.tick_index,t.ticks&&h!==(h=s.label)&&(o.data=h),(t.xScale||t.ticks)&&i!==(i="translate("+e.xScale(s.x)+",0)")&&y(n,"transform",i)},u:function(){f(n)},d:u}}function Na(t,e){var n,r;return{c:function(){n=v("polygon"),this.h()},h:function(){y(n,"transform",r="translate("+e.xScale(e.highlight.x)+",0)"),y(n,"points","0,0,4,6,-4,6")},m:function(t,e){c(n,t,e)},p:function(t,e){(t.xScale||t.highlight)&&r!==(r="translate("+e.xScale(e.highlight.x)+",0)")&&y(n,"transform",r)},u:function(){f(n)},d:u}}function Sa(t,e){var n,r,a,o,i,s,h,d=e.bin,m=(e.each_value_1,e.i),p=ka(d,m,e.bins,e.validValues.length);return{c:function(){n=v("g"),r=v("title"),a=g(p),o=v("rect"),this.h()},h:function(){y(o,"width",i=d.x1!=d.x0?e.xScaleBand.bandwidth():20),y(o,"height",s=e.innerHeight-e.yScale(d.length)),y(o,"class","svelte-4derlj"),y(n,"class","bar"),y(n,"transform",h="translate("+e.xScaleBand(d.x0)+","+e.yScale(d.length)+")")},m:function(t,e){c(n,t,e),l(r,n),l(a,r),l(o,n)},p:function(t,e){d=e.bin,e.each_value_1,m=e.i,(t.bins||t.validValues)&&p!==(p=ka(d,m,e.bins,e.validValues.length))&&(a.data=p),(t.bins||t.xScaleBand)&&i!==(i=d.x1!=d.x0?e.xScaleBand.bandwidth():20)&&y(o,"width",i),(t.innerHeight||t.yScale||t.bins)&&s!==(s=e.innerHeight-e.yScale(d.length))&&y(o,"height",s),(t.xScaleBand||t.bins||t.yScale)&&h!==(h="translate("+e.xScaleBand(d.x0)+","+e.yScale(d.length)+")")&&y(n,"transform",h)},u:function(){f(n)},d:u}}function Ta(t,e){var n,r,a,o,i,u=e.s,s=(e.each_value_2,e.s_index,u.name),h=u.label;return{c:function(){n=m("li"),r=g(s),a=g(": "),o=m("tt"),i=g(h),this.h()},h:function(){_(o,"mouseleave",Ra),_(o,"mouseenter",Da),o.className="svelte-4derlj",o._svelte={component:t,each_value_2:e.each_value_2,s_index:e.s_index},n.className="svelte-4derlj"},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,n),l(i,o)},p:function(t,e){u=e.s,e.each_value_2,e.s_index,t.stats&&s!==(s=u.name)&&(r.data=s),t.stats&&h!==(h=u.label)&&(i.data=h),o._svelte.each_value_2=e.each_value_2,o._svelte.s_index=e.s_index},u:function(){f(n)},d:function(){b(o,"mouseleave",Ra),b(o,"mouseenter",Da)}}}function Fa(t,e){var n,r,a,o,i,s,h,d,v=wa(e.NAs/e.values.length);return{c:function(){n=m("li"),r=g("Ungültig"),a=g(": "),o=m("tt"),i=g(e.NAs),s=g(" ("),h=g(v),d=g(")"),this.h()},h:function(){w(o,"color","#c71e1d"),o.className="svelte-4derlj",n.className="svelte-4derlj"},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,n),l(i,o),l(s,n),l(h,n),l(d,n)},p:function(t,e){t.NAs&&(i.data=e.NAs),(t.NAs||t.values)&&v!==(v=wa(e.NAs/e.values.length))&&(h.data=v)},u:function(){f(n)},d:u}}function Ra(t){this._svelte.component.show(!1)}function Da(t){var e=this._svelte.component,n=this._svelte.each_value_2[this._svelte.s_index];e.show(n)}function Ia(t){R(this,t),this.refs={},this._state=s({format:function(t){return t},t:0,padding:{top:10,right:65,bottom:20,left:5},height:200,width:500,values:[],highlight:!1},t.data),this._recompute({values:1,validValues:1,format:1,niceDomain:1,width:1,padding:1,bins:1,innerWidth:1,xScaleBand:1,xScale:1,height:1,innerHeight:1},this._state);var e=this;t.root||(this._oncreate=[]),this._fragment=function(t,e){for(var n,r,a,o,i,u,h,_,b,w,x,M,k,C,N,S=e.ticks,T=[],F=0;F<S.length;F+=1)T[F]=Ca(0,s(s({},e),{each_value:S,tick:S[F],tick_index:F}));var R=e.highlight&&Na(0,e),D=e.bins,I=[];for(F=0;F<D.length;F+=1)I[F]=Sa(0,s(s({},e),{each_value_1:D,bin:D[F],i:F}));var H=e.stats,A=[];for(F=0;F<H.length;F+=1)A[F]=Ta(t,s(s({},e),{each_value_2:H,s:H[F],s_index:F}));var U=e.NAs>0&&Fa(0,e);return{c:function(){n=m("h3"),r=g("Werteverteilung (Histogramm)"),a=g("\n"),o=v("svg"),i=v("g"),u=v("g");for(var t=0;t<T.length;t+=1)T[t].c();for(h=p(),R&&R.c(),b=v("g"),t=0;t<I.length;t+=1)I[t].c();for(x=g("\n"),M=m("ul"),t=0;t<A.length;t+=1)A[t].c();k=p(),U&&U.c(),C=g("\n"),N=m("p"),this.h()},h:function(){n.className="svelte-4derlj",y(u,"class","axis x-axis svelte-4derlj"),y(u,"transform",_="translate(0, "+e.innerHeight+")"),y(b,"class","bars svelte-4derlj"),y(i,"transform",w="translate("+[e.padding.left,e.padding.top]+")"),y(o,"class","svelte-4derlj"),M.className="svelte-4derlj",N.className="learn-more"},m:function(e,s){c(n,e,s),l(r,n),c(a,e,s),c(o,e,s),l(i,o),l(u,i);for(var f=0;f<T.length;f+=1)T[f].m(u,null);for(l(h,u),R&&R.m(u,null),l(b,i),f=0;f<I.length;f+=1)I[f].m(b,null);for(t.refs.svg=o,c(x,e,s),c(M,e,s),f=0;f<A.length;f+=1)A[f].m(M,null);l(k,M),U&&U.m(M,null),c(C,e,s),c(N,e,s),N.innerHTML="Das obige Diagramm zeigt wie die Werte der ausgewählten Spalte verteilt sind. <a href='https://academy.datawrapper.de/article/136-histogram-min-max-median-mean' target='_blank'>Erfahre mehr...</a>"},p:function(e,n){var r=n.ticks;if(e.xScale||e.ticks){for(var a=0;a<r.length;a+=1){var o=s(s({},n),{each_value:r,tick:r[a],tick_index:a});T[a]?T[a].p(e,o):(T[a]=Ca(0,o),T[a].c(),T[a].m(u,h))}for(;a<T.length;a+=1)T[a].u(),T[a].d();T.length=r.length}n.highlight?R?R.p(e,n):((R=Na(0,n)).c(),R.m(u,null)):R&&(R.u(),R.d(),R=null),e.innerHeight&&_!==(_="translate(0, "+n.innerHeight+")")&&y(u,"transform",_);var l=n.bins;if(e.xScaleBand||e.bins||e.yScale||e.validValues||e.innerHeight){for(a=0;a<l.length;a+=1){var c=s(s({},n),{each_value_1:l,bin:l[a],i:a});I[a]?I[a].p(e,c):(I[a]=Sa(0,c),I[a].c(),I[a].m(b,null))}for(;a<I.length;a+=1)I[a].u(),I[a].d();I.length=l.length}e.padding&&w!==(w="translate("+[n.padding.left,n.padding.top]+")")&&y(i,"transform",w);var f=n.stats;if(e.stats){for(a=0;a<f.length;a+=1){var d=s(s({},n),{each_value_2:f,s:f[a],s_index:a});A[a]?A[a].p(e,d):(A[a]=Ta(t,d),A[a].c(),A[a].m(M,k))}for(;a<A.length;a+=1)A[a].u(),A[a].d();A.length=f.length}n.NAs>0?U?U.p(e,n):((U=Fa(0,n)).c(),U.m(M,null)):U&&(U.u(),U.d(),U=null)},u:function(){N.innerHTML="",f(n),f(a),f(o);for(var t=0;t<T.length;t+=1)T[t].u();for(R&&R.u(),t=0;t<I.length;t+=1)I[t].u();for(f(x),f(M),t=0;t<A.length;t+=1)A[t].u();U&&U.u(),f(C),f(N)},d:function(){d(T),R&&R.d(),d(I),t.refs.svg===o&&(t.refs.svg=null),d(A),U&&U.d()}}}(this,this._state),this.root._oncreate.push(function(){(function(){this.resize()}).call(e),e.fire("update",{changed:{values:1,validValues:1,format:1,xScale:1,niceDomain:1,bins:1,innerWidth:1,xScaleBand:1,innerHeight:1,width:1,padding:1,height:1,ticks:1,highlight:1,yScale:1,stats:1,NAs:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),H(this._oncreate))}s(Ia.prototype,U),s(Ia.prototype,{show:function(t){this.set({highlight:t})},resize:function(){var t=this.refs.svg.getBoundingClientRect();this.set({width:t.right-t.left,height:t.bottom-t.top})}}),Ia.prototype._recompute=function(t,e){t.values&&(this._differs(e.NAs,e.NAs=e.values.filter(function(t){return"string"==typeof t||Number.isNaN(t)}).length)&&(t.NAs=!0),this._differs(e.validValues,e.validValues=function(t){return t.values.filter(function(t){return"number"==typeof t&&!Number.isNaN(t)})}(e))&&(t.validValues=!0)),(t.validValues||t.format)&&this._differs(e.stats,e.stats=xa(e))&&(t.stats=!0),t.validValues&&this._differs(e.niceDomain,e.niceDomain=function(t){var e=t.validValues;return En().domain(Bt(e)).nice().domain()}(e))&&(t.niceDomain=!0),(t.niceDomain||t.validValues)&&this._differs(e.bins,e.bins=Ma(e))&&(t.bins=!0),(t.width||t.padding)&&this._differs(e.innerWidth,e.innerWidth=function(t){var e=t.width,n=t.padding;return e-n.left-n.right}(e))&&(t.innerWidth=!0),(t.bins||t.innerWidth)&&this._differs(e.xScaleBand,e.xScaleBand=function(t){var e=t.bins,n=t.innerWidth;return ba.domain(e.map(function(t){return t.x0})).paddingInner(.1).rangeRound([0,n]).align(0)}(e))&&(t.xScaleBand=!0),(t.niceDomain||t.bins||t.xScaleBand)&&this._differs(e.xScale,e.xScale=function(t){var e=t.niceDomain,n=t.bins,r=t.xScaleBand;return _a.domain(e).rangeRound([0,r.step()*n.length])}(e))&&(t.xScale=!0),(t.xScale||t.format)&&this._differs(e.ticks,e.ticks=function(t){var e=t.xScale,n=t.format;return e.ticks(4).map(function(t){return{x:t,label:n(t)}})}(e))&&(t.ticks=!0),(t.height||t.padding)&&this._differs(e.innerHeight,e.innerHeight=function(t){var e=t.height,n=t.padding;return e-n.bottom-n.top}(e))&&(t.innerHeight=!0),(t.innerHeight||t.bins)&&this._differs(e.yScale,e.yScale=function(t){var e=t.innerHeight,n=t.bins;return ya.domain([0,ee(n,function(t){return t.length})]).range([e,0])}(e))&&(t.yScale=!0),(t.bins||t.xScale)&&this._differs(e.barWidth,e.barWidth=function(t){var e=t.bins,n=t.xScale;return n(e[0].x1)-n(e[0].x0)-1}(e))&&(t.barWidth=!0)};var Ha=null;var Aa={render:function(){this.get().hot.render()},update:function(){var t=this,e=this.get(),n=e.data,r=e.transpose,a=e.firstRowIsHeader,o=e.skipRows,u=e.hot;if(n){var s=this.store.get("dw_chart"),l=s.dataset(dw.datasource.delimited({csv:n,transpose:r,firstRowIsHeader:a,skipRows:o}).parse()).dataset();this.set({columnOrder:l.columnOrder()});var c=[[]];l.eachColumn(function(t){return c[0].push(t.title())}),l.eachRow(function(t){var e=[];l.eachColumn(function(n){return e.push(n.raw(t))}),c.push(e)}),u.loadData(c);var f=Ua(this,l,i);u.updateSettings({cells:function(e,n){return{readOnly:t.get().readonly||l.hasColumn(n)&&l.column(n).isComputed&&0===e,renderer:f}},manualColumnMove:[]}),this.set({ds:l}),this.set({has_changes:s.get("metadata.data.changes",[]).length>0}),i.hooks.once("afterRender",function(){return t.initCustomEvents()}),u.render()}},dataChanged:function(t){var e=this,n=this.get().hot,r=!1;t.forEach(function(t){var a=t[0],o=t[1],i=t[2],u=t[3];if(i!=u){var s=e.store.get("dw_chart"),l=e.get().transpose,c=s.get("metadata.data.changes",[]);if(a=n.toPhysicalRow(a),o=s.dataset().columnOrder()[o],l){var f=a;a=o,o=f}c.push({column:o,row:a,value:u,time:(new Date).getTime()}),s.set("metadata.data.changes",c),r=!0}}),r&&setTimeout(function(){e.update(),chart.save()},100)},columnMoved:function(t,e){var n=this,r=this.get().hot;if(t.length){var a=this.get().columnOrder,o=a.slice(0),u=a[e],s=o.splice(t[0],t.length),l=void 0===u?o.length:u?o.indexOf(u):0;o.splice.apply(o,[l,0].concat(s)),this.store.get("dw_chart").set("metadata.data.column-order",o.slice(0)),this.set({columnOrder:o}),i.hooks.once("afterRender",function(){setTimeout(function(){n.fire("resetSort"),r.selectCell(0,l,r.countRows()-1,l+s.length-1)},10)}),this.update()}},updateHeight:function(){var t=document.querySelector(".ht_master.handsontable .wtHolder .wtHider").getBoundingClientRect().height;this.refs.hot.style.height=Math.min(500,t+10)+"px"},checkRange:function(t,e,n,r){var a=this.get().hot,o=this.get().ds;this.refs;if(e!=r||0!==t||n!=a.countRows()-1)if(e==r||0!==t||n!=a.countRows()-1)this.set({activeColumn:null,multiSelection:!1});else{for(var i=[],u=Math.min(e,r);u<=Math.max(e,r);u++)i.push(+document.querySelector("#data-preview .htCore tbody tr:first-child td:nth-child("+(u+2)+")").dataset.column);this.set({multiSelection:i.map(function(t){return o.column(t)}),activeColumn:null})}},initCustomEvents:function(){var t=this;setTimeout(function(){t.refs.hot.querySelectorAll(".htCore thead th:first-child").forEach(function(t){t.removeEventListener("click",La),t.addEventListener("click",La)}),t.refs.hot.querySelectorAll(".htCore thead th+th").forEach(function(t){t.removeEventListener("click",Ea),t.addEventListener("click",Ea)})},500)},getColumnFormat:function(t){return this.store.get("dw_chart").get("metadata.data.column-format",{})[t]||{type:"auto",ignore:!1}}};function Ua(t,e,n){var r={date:"fa fa-clock-o"};return function(a,o,i,u,s,l,c){if(!(e.numColumns()<=u)&&e.hasColumn(u)){var f=e.column(u),h=t.get(),d=h.searchResults,m=h.currentResult,v=h.activeColumn,g=t.getColumnFormat(f.name());if((i=a.toPhysicalRow(i))>0)l=chart.columnFormatter(f)(f.val(i-1),!0);parseInt(l)<0&&o.classList.add("negative"),o.classList.add(f.type()+"Type"),o.dataset.column=u,"text"==f.type()&&l&&l.length>70&&(l=l.substr(0,60)+"…"),0===i?(o.classList.add("firstRow"),r[f.type()]&&(l='<i class="'+r[f.type()]+'"></i> '+l)):o.classList.add(i%2?"oddRow":"evenRow"),g.ignore&&o.classList.add("ignored"),v&&v.name()==f.name()&&o.classList.add("active");var p=a.getPlugin("columnSorting").untranslateRow(i);d.forEach(function(t){t.row==p&&t.col==u&&o.classList.add("htSearchResult")}),m&&m.row==p&&m.col==u&&o.classList.add("htCurrentSearchResult"),i>0&&!f.type(!0).isValid(f.val(i-1))&&o.classList.add("parsingError"),c.readOnly&&o.classList.add("readOnly"),chart.dataCellChanged(u,i)&&o.classList.add("changed"),function(t,e,r,a,o,i,u){var s=dw.utils.purifyHtml(n.helper.stringify(i));e.innerHTML=s}(0,o,0,0,0,l)}}}function La(t){t.preventDefault();var e=Ha.get().transpose;Ha.set({transpose:!e}),Ha.update()}function Ea(t){for(var e=this.parentNode.children.length,n=-1,r=0;r<e;r++)if(this.parentNode.children.item(r)==this){n=r;break}var a=+Ha.refs.hot.querySelector(".htCore tbody tr:first-child td:nth-child("+(n+1)+")").dataset.column,o=Ha.store.get("dw_chart"),i=Ha.get(),u=i.activeColumn,s=i.hot;if(o.dataset().hasColumn(a)){var l=o.dataset().column(+a);u&&u.name()==l.name()?(t.target.parentNode.classList.remove("selected"),Ha.set({activeColumn:!1}),s.deselectCell()):(t.target.parentNode.classList.add("selected"),Ha.set({activeColumn:l}))}}function $a(t){R(this,t),this.refs={},this._state=s({data:"",readonly:!1,skipRows:0,firstRowIsHeader:!0,searchIndex:0,sortBy:"-",transpose:!1,activeColumn:null,search:"",searchResults:[]},t.data),this._recompute({searchResults:1,searchIndex:1},this._state);var e,n,r=this;t.root||(this._oncreate=[]),this._fragment=(e=this,this._state,{c:function(){n=m("div"),this.h()},h:function(){n.id="data-preview"},m:function(t,r){c(n,t,r),e.refs.hot=n},p:u,u:function(){f(n)},d:function(){e.refs.hot===n&&(e.refs.hot=null)}}),this.root._oncreate.push(function(){(function(){var t=this;Ha=this,i.hooks.once("afterRender",function(){return t.initCustomEvents()}),window.addEventListener("keyup",function(e){var n=t.get(),r=n.activeColumn,a=n.ds;if(r&&("ArrowRight"==e.key||"ArrowLeft"==e.key)){e.preventDefault(),e.stopPropagation();var o=a.indexOf(r.name());"ArrowRight"==e.key?t.set({activeColumn:a.column((o+1)%a.numColumns())}):t.set({activeColumn:a.column((o-1+a.numColumns())%a.numColumns())})}});var e=this.store.get("dw_chart"),n=new i(this.refs.hot,{data:[],rowHeaders:function(t){return n.getPlugin("ColumnSorting").translateRow(t)+1},colHeaders:!0,fixedRowsTop:1,filters:!0,dropdownMenu:!0,startRows:13,startCols:8,fillHandle:!1,stretchH:"all",height:500,manualColumnMove:!0,selectionMode:"range",autoColumnSize:{useHeaders:!0,syncLimit:5},columnSorting:!0,sortIndicator:!0,sortFunction:function(t,r){if(r.col>-1){var a=e.dataset().column(r.col),o=a.type(),i=n.getPlugin("columnSorting");return function(e,n){var u;if(0===e[0])return-1;switch(e[1]=a.val(e[0]-1),n[1]=a.val(n[0]-1),"number"==o&&(isNaN(e[1])&&(e[1]=t?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY),isNaN(n[1])&&(n[1]=t?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY)),"date"==o&&("string"==typeof e[1]&&(e[1]=new Date(110,0,1)),"string"==typeof n[1]&&(n[1]=new Date(110,0,1))),o){case"date":u=i.dateSort;break;case"number":u=i.numericSort;break;default:u=i.defaultSort}return u(t,r)(e,n)}}return function(t,e){return t[0]-e[0]}},afterGetColHeader:function(e,n){var r=t.get(),a=r.activeColumn,o=r.ds;o&&o.hasColumn(e)&&((0===e||e)&&a&&o.column(e).name()==a.name()&&n.classList.add("selected"),(0===e||e)&&(t.getColumnFormat(o.column(e).name()).ignore?n.classList.add("ignored"):n.classList.remove("ignored")))},search:"search"});window.HT=n,this.set({hot:n}),i.hooks.add("afterSetDataAtCell",function(e){return t.dataChanged(e)}),i.hooks.add("afterColumnMove",function(e,n){return t.columnMoved(e,n)}),i.hooks.add("afterRender",function(){return t.updateHeight()}),i.hooks.add("afterSelection",function(e,n,r,a){return t.checkRange(e,n,r,a)}),this.observe("data",function(){return t.update()}),this.observe("firstRowIsHeader",function(e,n){e!=n&&void 0!==n&&t.update()}),this.observe("search",function(e,r){e!=r&&t.set({searchIndex:0});var a=n.search.query(e);t.set({searchResults:a}),n.render()}),this.observe("currentResult",function(t){t&&n&&(n.render(),n.scrollViewportTo(t.row,t.col),setTimeout(function(){n.scrollViewportTo(t.row,t.col)},100))}),this.observe("activeColumn",function(){setTimeout(function(){return n.render()},10)}),this.observe("sorting",function(t){n.sort(e.dataset().indexOf(t.sortBy),t.sortDir)})}).call(r),r.fire("update",{changed:{searchResults:1,searchIndex:1},current:r._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),H(this._oncreate))}s($a.prototype,U),s($a.prototype,Aa),$a.prototype._recompute=function(t,e){(t.searchResults||t.searchIndex)&&this._differs(e.currentResult,e.currentResult=function(t){var e=t.searchResults,n=t.searchIndex;if(!e||!e.length)return null;var r=e.length;if(n<0||n>=r){for(;n<0;)n+=r;n>r&&(n%=r)}return e[n]}(e))&&(t.currentResult=!0)};var Oa={nextResult:function(t){var e=this.get(),n=e.searchIndex,r=e.searchResults;(n+=t)<0&&(n+=r.length),n%=r.length,this.set({searchIndex:n})},keyPress:function(t){"F3"!=t.key&&"Enter"!=t.key||this.nextResult(t.shiftKey?-1:1)},toggleTranspose:function(){var t=this;this.set({activeColumn:!1}),this.set({transpose:!this.get("transpose")}),setTimeout(function(){return t.refs.hot.update()},500)},revertChanges:function(){var t=this.store.get("dw_chart");t.set("metadata.data.changes",[]),t.saveSoon(),this.refs.hot.update()},cmFocus:function(){var t=this;setTimeout(function(){t.refs.hot.get("hot").render()},100)},addComputedColumn:function(){for(var t=this.store.get("dw_chart"),e=t.dataset(),n=Rt(t.get("metadata.describe.computed-columns",{})),r=1;e.hasColumn("Column "+r);)r++;var a="Column "+r;n[a]="",t.set("metadata.describe.computed-columns",n),t.saveSoon();var o=t.dataset(!0);this.refs.hot.update(),this.set({activeColumn:o.column(a)})},sort:function(t,e,n){t.preventDefault(),t.stopPropagation(),this.set({sortBy:e,sortDir:n}),this.refs.sortDropdownGroup.classList.remove("open")},force:function(t,e){void 0===e&&(e=!0),t.preventDefault(),this.set({forceColumnFormat:e})},hideMultiple:function(t,e){var n=this,r=this.store.get("dw_chart"),a=r.get("metadata.data.column-format",{});t.forEach(function(t){a[t.name()]?a[t.name()].ignore=e:a[t.name()]={type:"auto",ignore:e}}),r.set("metadata.data.column-format",a),r.saveSoon(),setTimeout(function(){n.refs.hot.get("hot").render()},10),this.set({multiSelection:!1})}};function qa(t,e){var n,r,a,o;function i(e){t.force(e,!1)}return{c:function(){n=m("button"),r=m("i"),a=g(" "),o=g("Zurück zum Formel-Editor"),this.h()},h:function(){r.className="fa  fa-chevron-left",_(n,"click",i),n.className="btn"},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,n)},u:function(){f(n)},d:function(){b(n,"click",i)}}}function ja(t,e){var n,r,a,o={},i={};"customColumn"in e&&(i.column=e.customColumn,o.column=!0),"columns"in e&&(i.columns=e.columns,o.columns=!0);var u=new yt({root:t.root,data:i,_bind:function(e,n){t.get();var r={};!o.column&&e.column&&(r.customColumn=n.column),!o.columns&&e.columns&&(r.columns=n.columns),t._set(r),o={}}});function s(e){t.force(e,!0)}return t.root._beforecreate.push(function(){u._bind({column:1,columns:1},u.get())}),u.on("updateTable",function(e){t.refs.hot.update()}),u.on("renderTable",function(e){t.refs.hot.render()}),u.on("unselect",function(e){t.set({activeColumn:!1})}),{c:function(){u._fragment.c(),n=g("\n\n                "),r=m("button"),a=g("Spaltenformat anpassen"),this.h()},h:function(){_(r,"click",s),r.className="btn"},m:function(t,e){u._mount(t,e),c(n,t,e),c(r,t,e),l(a,r)},p:function(t,e){var n={};!o.column&&t.customColumn&&(n.column=e.customColumn,o.column=!0),!o.columns&&t.columns&&(n.columns=e.columns,o.columns=!0),u._set(n),o={}},u:function(){u._unmount(),f(n),f(r)},d:function(){u.destroy(!1),b(r,"click",s)}}}function Va(t,e){var n,r,a={},o={};"columnFormat"in e&&(o.column=e.columnFormat,a.column=!0),"columns"in e&&(o.columns=e.columns,a.columns=!0);var i=new At({root:t.root,data:o,_bind:function(e,n){t.get();var r={};!a.column&&e.column&&(r.columnFormat=n.column),!a.columns&&e.columns&&(r.columns=n.columns),t._set(r),a={}}});t.root._beforecreate.push(function(){i._bind({column:1,columns:1},i.get())}),i.on("updateTable",function(e){t.refs.hot.update()}),i.on("renderTable",function(e){t.refs.hot.render()});var u=e.columnFormat.isComputed&&qa(t);return{c:function(){i._fragment.c(),n=g("\n\n                    "),u&&u.c(),r=p()},m:function(t,e){i._mount(t,e),c(n,t,e),u&&u.m(t,e),c(r,t,e)},p:function(e,n){var o={};!a.column&&e.columnFormat&&(o.column=n.columnFormat,a.column=!0),!a.columns&&e.columns&&(o.columns=n.columns,a.columns=!0),i._set(o),a={},n.columnFormat.isComputed?u||((u=qa(t)).c(),u.m(r.parentNode,r)):u&&(u.u(),u.d(),u=null)},u:function(){i._unmount(),f(n),u&&u.u(),f(r)},d:function(){i.destroy(!1),u&&u.d()}}}function Ba(t,e){var n={},r={};"activeValues"in e&&(r.values=e.activeValues,n.values=!0),"activeFormat"in e&&(r.format=e.activeFormat,n.format=!0);var a=new Ia({root:t.root,data:r,_bind:function(e,r){t.get();var a={};!n.values&&e.values&&(a.activeValues=r.values),!n.format&&e.format&&(a.activeFormat=r.format),t._set(a),n={}}});return t.root._beforecreate.push(function(){a._bind({values:1,format:1},a.get())}),{c:function(){a._fragment.c()},m:function(t,e){a._mount(t,e)},p:function(t,e){var r={};!n.values&&t.activeValues&&(r.values=e.activeValues,n.values=!0),!n.format&&t.activeFormat&&(r.format=e.activeFormat,n.format=!0),a._set(r),n={}},u:function(){a._unmount()},d:function(){a.destroy(!1)}}}function Ya(t,e){var n,r,a,o,i,s,h=e.locale,d=(e.each_value,e.locale_index,h.label),v=h.value;return{c:function(){n=m("option"),r=g(d),a=g(" ("),o=g(v),i=g(")"),this.h()},h:function(){n.__value=s=h.value,n.value=n.__value},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,n),l(i,n)},p:function(t,e){h=e.locale,e.each_value,e.locale_index,t.locales&&d!==(d=h.label)&&(r.data=d),t.locales&&v!==(v=h.value)&&(o.data=v),t.locales&&s!==(s=h.value)&&(n.__value=s),n.value=n.__value},u:function(){f(n)},d:u}}function Pa(t,e){var n,r;function a(t){return t.customColumn?ja:t.columnFormat?Va:null}var o=a(e),i=o&&o(t,e),u="number"==e.activeColumn.type()&&Ba(t,e);return{c:function(){i&&i.c(),n=g("\n\n                "),u&&u.c(),r=p()},m:function(t,e){i&&i.m(t,e),c(n,t,e),u&&u.m(t,e),c(r,t,e)},p:function(e,s){o===(o=a(s))&&i?i.p(e,s):(i&&(i.u(),i.d()),(i=o&&o(t,s))&&i.c(),i&&i.m(n.parentNode,n)),"number"==s.activeColumn.type()?u?u.p(e,s):((u=Ba(t,s)).c(),u.m(r.parentNode,r)):u&&(u.u(),u.d(),u=null)},u:function(){i&&i.u(),f(n),u&&u.u(),f(r)},d:function(){i&&i.d(),u&&u.d()}}}function za(t,e){var n,r,a,o,i,s,h,d,v,p,y,x,M,k;function C(e){var n=t.get();t.hideMultiple(n.multiSelection,!1)}function N(e){var n=t.get();t.hideMultiple(n.multiSelection,!0)}return{c:function(){n=m("h3"),r=g("Spalten ein-/ausblenden"),a=g("\n\n                "),o=m("ul"),i=m("li"),s=m("button"),h=m("i"),d=g(" "),v=g("Ausgewählte Spalten einblenden"),p=m("li"),y=m("button"),x=m("i"),M=g(" "),k=g("Ausgewählte Spalten ausblenden"),this.h()},h:function(){n.className="first",h.className="fa fa-eye",_(s,"click",C),s.className="btn",w(i,"margin-bottom","5px"),x.className="fa fa-eye-slash",_(y,"click",N),y.className="btn",o.className="unstyled"},m:function(t,e){c(n,t,e),l(r,n),c(a,t,e),c(o,t,e),l(i,o),l(s,i),l(h,s),l(d,s),l(v,s),l(p,o),l(y,p),l(x,y),l(M,y),l(k,y)},p:u,u:function(){f(n),f(a),f(o)},d:function(){b(s,"click",C),b(y,"click",N)}}}function Wa(t,e){var n,r,a,o,i,u,h,v,p,y,w,k,C,N,S={},T=!1,F={label:"Erste Zeile als Beschriftung"};"firstRowIsHeader"in e&&(F.value=e.firstRowIsHeader,S.value=!0);var R=new wt({root:t.root,data:F,_bind:function(e,n){t.get();var r={};!S.value&&e.value&&(r.firstRowIsHeader=n.value),t._set(r),S={}}});t.root._beforecreate.push(function(){R._bind({value:1},R.get())});for(var D=e.locales,I=[],H=0;H<D.length;H+=1)I[H]=Ya(0,s(s({},e),{each_value:D,locale:D[H],locale_index:H}));function A(){T=!0,t.set({locale:M(N)}),T=!1}return{c:function(){n=m("h3"),r=g("Überprüfe dass die Daten richtig aussehen"),a=g("\n\n                "),o=m("p"),i=g("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black."),u=g("\n\n                "),R._fragment.c(),h=g("\n\n                "),v=m("h4"),p=g("Ausgabe-Sprachraum"),y=g("\n\n                "),w=m("p"),k=g("Bestimmt Dezimal- und Tausendertrennzeichen sowie die Übersetzung von Monatsnamen und Wochentagen."),C=g("\n\n                "),N=m("select");for(var t=0;t<I.length;t+=1)I[t].c();this.h()},h:function(){n.className="first",_(N,"change",A),"locale"in e||t.root._beforecreate.push(A)},m:function(t,s){c(n,t,s),l(r,n),c(a,t,s),c(o,t,s),l(i,o),c(u,t,s),R._mount(t,s),c(h,t,s),c(v,t,s),l(p,v),c(y,t,s),c(w,t,s),l(k,w),c(C,t,s),c(N,t,s);for(var f=0;f<I.length;f+=1)I[f].m(N,null);x(N,e.locale)},p:function(t,e){var n={label:"Erste Zeile als Beschriftung"};!S.value&&t.firstRowIsHeader&&(n.value=e.firstRowIsHeader,S.value=!0),R._set(n),S={};var r=e.locales;if(t.locales){for(var a=0;a<r.length;a+=1){var o=s(s({},e),{each_value:r,locale:r[a],locale_index:a});I[a]?I[a].p(t,o):(I[a]=Ya(0,o),I[a].c(),I[a].m(N,null))}for(;a<I.length;a+=1)I[a].u(),I[a].d();I.length=r.length}T||x(N,e.locale)},u:function(){f(n),f(a),f(o),f(u),R._unmount(),f(h),f(v),f(y),f(w),f(C),f(N);for(var t=0;t<I.length;t+=1)I[t].u()},d:function(){R.destroy(!1),d(I),b(N,"change",A)}}}function Za(t,e){var n,r,a,o,i,u,s,h,d,v,p,y=e.col,w=(e.each_value_1,e.col_index,y.title());return{c:function(){n=m("li"),r=m("a"),a=m("i"),i=g("\n                                "),u=m("i"),h=g("   "),d=g(w),this.h()},h:function(){_(a,"click",Ka),a.className=o="fa fa-sort-"+("text"==y.type()?"alpha":"amount")+"-asc fa-fw svelte-1kvuoqm",a._svelte={component:t,each_value_1:e.each_value_1,col_index:e.col_index},_(u,"click",to),u.className=s="fa fa-sort-"+("text"==y.type()?"alpha":"amount")+"-desc fa-fw svelte-1kvuoqm",u._svelte={component:t,each_value_1:e.each_value_1,col_index:e.col_index},_(r,"click",eo),r.href=v="#/"+y.name(),r.className="svelte-1kvuoqm",r._svelte={component:t,each_value_1:e.each_value_1,col_index:e.col_index},n.className=p=y.name()==e.sortBy?"active":""},m:function(t,e){c(n,t,e),l(r,n),l(a,r),l(i,r),l(u,r),l(h,r),l(d,r)},p:function(t,e){y=e.col,e.each_value_1,e.col_index,t.columns&&o!==(o="fa fa-sort-"+("text"==y.type()?"alpha":"amount")+"-asc fa-fw svelte-1kvuoqm")&&(a.className=o),a._svelte.each_value_1=e.each_value_1,a._svelte.col_index=e.col_index,t.columns&&s!==(s="fa fa-sort-"+("text"==y.type()?"alpha":"amount")+"-desc fa-fw svelte-1kvuoqm")&&(u.className=s),u._svelte.each_value_1=e.each_value_1,u._svelte.col_index=e.col_index,t.columns&&w!==(w=y.title())&&(d.data=w),t.columns&&v!==(v="#/"+y.name())&&(r.href=v),r._svelte.each_value_1=e.each_value_1,r._svelte.col_index=e.col_index,(t.columns||t.sortBy)&&p!==(p=y.name()==e.sortBy?"active":"")&&(n.className=p)},u:function(){f(n)},d:function(){b(a,"click",Ka),b(u,"click",to),b(r,"click",eo)}}}function Ja(t,e){var n,r,a,o;function i(e){t.nextResult(-1)}function u(e){t.nextResult(1)}return{c:function(){n=m("div"),(r=m("button")).innerHTML='<i class="fa fa-chevron-up"></i>',a=g("\n                          "),(o=m("button")).innerHTML='<i class="fa fa-chevron-down"></i>',this.h()},h:function(){_(r,"click",i),r.className="btn svelte-1kvuoqm",_(o,"click",u),o.className="btn svelte-1kvuoqm",n.className="btn-group"},m:function(t,e){c(n,t,e),l(r,n),l(a,n),l(o,n)},u:function(){f(n)},d:function(){b(r,"click",i),b(o,"click",u)}}}function Ga(t,e){var n,r,a,o,i,s,l,h=e.searchIndexSafe+1,d=e.searchResults.length;return{c:function(){n=g(h),r=g("\n                            "),a=g("von"),o=g("\n                            "),i=g(d),s=g("\n                            "),l=g("Treffern")},m:function(t,e){c(n,t,e),c(r,t,e),c(a,t,e),c(o,t,e),c(i,t,e),c(s,t,e),c(l,t,e)},p:function(t,e){t.searchIndexSafe&&h!==(h=e.searchIndexSafe+1)&&(n.data=h),t.searchResults&&d!==(d=e.searchResults.length)&&(i.data=d)},u:function(){f(n),f(r),f(a),f(o),f(i),f(s),f(l)},d:u}}function Qa(t,e){var n;return{c:function(){n=g("Keine Treffer")},m:function(t,e){c(n,t,e)},p:u,u:function(){f(n)},d:u}}function Xa(t,e){var n;function r(t){return t.searchResults.length>0?Ga:t.search?Qa:null}var a=r(e),o=a&&a(t,e);return{c:function(){n=m("div"),o&&o.c(),this.h()},h:function(){n.className="results svelte-1kvuoqm"},m:function(t,e){c(n,t,e),o&&o.m(n,null)},p:function(e,i){a===(a=r(i))&&o?o.p(e,i):(o&&(o.u(),o.d()),(o=a&&a(t,i))&&o.c(),o&&o.m(n,null))},u:function(){f(n),o&&o.u()},d:function(){o&&o.d()}}}function Ka(t){var e=this._svelte.component,n=this._svelte.each_value_1[this._svelte.col_index];e.sort(t,n.name(),!0)}function to(t){var e=this._svelte.component,n=this._svelte.each_value_1[this._svelte.col_index];e.sort(t,n.name(),!1)}function eo(t){var e=this._svelte.component,n=this._svelte.each_value_1[this._svelte.col_index];e.sort(t,n.name(),!0)}function no(t){R(this,t),this.refs={},this._state=s(s(this.store._init(["dw_chart"]),{locale:"en-US",search:"",chartData:"",readonly:!1,transpose:!1,firstRowIsHeader:!0,searchIndex:0,activeColumn:!1,customColumn:!1,columnFormat:!1,multiSelection:!1,forceColumnFormat:!1,searchResults:[],sortBy:"-",sortDir:!0}),t.data),this.store._add(this,["dw_chart"]),this._recompute({searchIndex:1,searchResults:1,activeColumn:1,forceColumnFormat:1,$dw_chart:1,sortBy:1,sortDir:1},this._state),this._handlers.destroy=[A];var e=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this._fragment=function(t,e){var n,r,a,o,i,u,v,p,x,M,k,C,N,S,T,F,R,D,I,H,A,U,L,E,$,O,q,j,V,B,Y,P,z,W,Z,J,G,Q,X,K,tt,et,nt,rt,at,ot,it,ut,st,lt,ct,ft,ht,dt,mt,vt,gt,pt,_t,bt,yt,wt,xt,Mt,kt,Ct,Nt=!1,St={};function Tt(t){return t.activeColumn?Pa:t.multiSelection?za:Wa}var Ft=Tt(e),Rt=Ft(t,e);function Dt(e){t.sort(e,"-")}for(var It=e.columns,Ht=[],At=0;At<It.length;At+=1)Ht[At]=Za(t,s(s({},e),{each_value_1:It,col:It[At],col_index:At}));function Ut(){Nt=!0,t.set({search:et.value}),Nt=!1}function Lt(e){t.keyPress(e)}var Et=e.searchResults.length>0&&Ja(t),$t=e.search&&Xa(t,e),Ot={};"chartData"in e&&(Ot.data=e.chartData,St.data=!0),"transpose"in e&&(Ot.transpose=e.transpose,St.transpose=!0),"firstRowIsHeader"in e&&(Ot.firstRowIsHeader=e.firstRowIsHeader,St.firstRowIsHeader=!0),"activeColumn"in e&&(Ot.activeColumn=e.activeColumn,St.activeColumn=!0),"readonly"in e&&(Ot.readonly=e.readonly,St.readonly=!0),"sorting"in e&&(Ot.sorting=e.sorting,St.sorting=!0),"search"in e&&(Ot.search=e.search,St.search=!0),"searchResults"in e&&(Ot.searchResults=e.searchResults,St.searchResults=!0),"searchIndex"in e&&(Ot.searchIndex=e.searchIndex,St.searchIndex=!0),"multiSelection"in e&&(Ot.multiSelection=e.multiSelection,St.multiSelection=!0);var qt=new $a({root:t.root,data:Ot,_bind:function(e,n){t.get();var r={};!St.data&&e.data&&(r.chartData=n.data),!St.transpose&&e.transpose&&(r.transpose=n.transpose),!St.firstRowIsHeader&&e.firstRowIsHeader&&(r.firstRowIsHeader=n.firstRowIsHeader),!St.activeColumn&&e.activeColumn&&(r.activeColumn=n.activeColumn),!St.readonly&&e.readonly&&(r.readonly=n.readonly),!St.sorting&&e.sorting&&(r.sorting=n.sorting),!St.search&&e.search&&(r.search=n.search),!St.searchResults&&e.searchResults&&(r.searchResults=n.searchResults),!St.searchIndex&&e.searchIndex&&(r.searchIndex=n.searchIndex),!St.multiSelection&&e.multiSelection&&(r.multiSelection=n.multiSelection),t._set(r),St={}}});function jt(e){t.toggleTranspose()}function Vt(e){t.addComputedColumn()}function Bt(e){t.revertChanges()}return t.root._beforecreate.push(function(){qt._bind({data:1,transpose:1,firstRowIsHeader:1,activeColumn:1,readonly:1,sorting:1,search:1,searchResults:1,searchIndex:1,multiSelection:1},qt.get())}),qt.on("resetSort",function(e){t.set({sortBy:"-"})}),t.refs.hot=qt,{c:function(){n=m("div"),r=m("div"),a=m("div"),o=m("div"),Rt.c(),i=g("\n\n                "),u=m("hr"),v=g("\n\n                "),p=m("div"),x=m("a"),M=m("i"),k=g(" "),C=g("Zurück"),N=g("\n                    "),S=m("a"),T=g("Weiter"),F=g(" "),R=m("i"),D=g("\n        "),I=m("div"),H=m("div"),A=m("noscript"),U=g(" "),L=m("img"),E=g("\n            "),$=m("div"),O=m("div"),q=m("div"),j=m("button"),V=m("noscript"),B=g("… "),Y=m("span"),P=g("\n                        "),z=m("ul"),W=m("li"),Z=m("a");for(var t=0;t<Ht.length;t+=1)Ht[t].c();G=g("\n\n                "),Q=m("div"),X=m("i"),K=g("\n                    "),tt=m("div"),et=m("input"),rt=g("\n                        "),Et&&Et.c(),ot=g("\n\n                    "),$t&&$t.c(),it=g("\n\n            "),qt._fragment.c(),ut=g("\n\n            "),st=m("div"),lt=m("button"),ct=m("img"),ft=g(" "),ht=g("Zeilen und Spalten vertauschen (transponieren)"),dt=g("\n\n                "),mt=m("button"),vt=m("i"),gt=g(" "),pt=g("Spalte hinzufügen"),_t=g("…"),bt=g("\n\n                "),yt=m("button"),wt=m("i"),xt=g(" "),Mt=g("Änderungen zurücksetzen"),kt=g("..."),this.h()},h:function(){M.className="icon-chevron-left",x.className="btn submit",x.href="upload",R.className="icon-chevron-right icon-white",S.href="visualize",S.className="submit btn btn-primary",S.id="describe-proceed",p.className="btn-group",o.className="sidebar",a.className="span4",L.src="/static/img/arrow.svg",H.className="help svelte-1kvuoqm",Y.className="caret",j.className="btn dropdown-toggle",j.dataset.toggle="dropdown",_(Z,"click",Dt),Z.href="#s",Z.className="svelte-1kvuoqm",W.className=J="-"==e.sortBy?"active":"",z.className="dropdown-menu sort-menu",q.className="btn-group",O.className="sort-box svelte-1kvuoqm",X.className="im im-magnifier svelte-1kvuoqm",_(et,"input",Ut),_(et,"keypress",Lt),et.autocomplete="screw-you-google-chrome",y(et,"type","search"),et.placeholder="Search data table",et.className=nt=(e.searchResults.length>0?"with-results":"")+" search-query svelte-1kvuoqm",tt.className=at=e.searchResults.length>0?"input-append":"",Q.className="search-box form-search svelte-1kvuoqm",$.className="pull-right",w($,"margin-bottom","10px"),ct.src="/static/css/chart-editor/transpose.png",ct.className="svelte-1kvuoqm",_(lt,"click",jt),lt.className="btn transpose svelte-1kvuoqm",vt.className="fa fa-calculator",_(mt,"click",Vt),mt.className="btn computed-columns",wt.className="fa fa-undo",_(yt,"click",Bt),yt.className=Ct="btn "+(e.has_changes?"":"disabled")+" svelte-1kvuoqm",yt.id="reset-data-changes",st.className="buttons below-table pull-right svelte-1kvuoqm",I.className="span8 svelte-1kvuoqm",r.className="row",n.className="chart-editor"},m:function(s,f){c(n,s,f),l(r,n),l(a,r),l(o,a),Rt.m(o,null),l(i,o),l(u,o),l(v,o),l(p,o),l(x,p),l(M,x),l(k,x),l(C,x),l(N,p),l(S,p),l(T,S),l(F,S),l(R,S),l(D,r),l(I,r),l(H,I),l(A,H),A.insertAdjacentHTML("beforebegin","Auf Tabellenkopf klicken um<br>Spalteneigenschaften zu ändern"),l(U,H),l(L,H),l(E,I),l($,I),l(O,$),l(q,O),l(j,q),l(V,j),V.insertAdjacentHTML("beforebegin","Ansicht sortieren nach"),l(B,j),l(Y,j),l(P,q),l(z,q),l(W,z),l(Z,W),Z.innerHTML="Keine Sortierung";for(var h=0;h<Ht.length;h+=1)Ht[h].m(z,null);t.refs.sortDropdownGroup=q,l(G,$),l(Q,$),l(X,Q),l(K,Q),l(tt,Q),l(et,tt),t.refs.search=et,et.value=e.search,l(rt,tt),Et&&Et.m(tt,null),l(ot,Q),$t&&$t.m(Q,null),l(it,I),qt._mount(I,null),l(ut,I),l(st,I),l(lt,st),l(ct,lt),l(ft,lt),l(ht,lt),l(dt,st),l(mt,st),l(vt,mt),l(gt,mt),l(pt,mt),l(_t,mt),l(bt,st),l(yt,st),l(wt,yt),l(xt,yt),l(Mt,yt),l(kt,yt)},p:function(e,n){Ft===(Ft=Tt(n))&&Rt?Rt.p(e,n):(Rt.u(),Rt.d(),(Rt=Ft(t,n)).c(),Rt.m(o,i)),e.sortBy&&J!==(J="-"==n.sortBy?"active":"")&&(W.className=J);var r=n.columns;if(e.columns||e.sortBy){for(var a=0;a<r.length;a+=1){var u=s(s({},n),{each_value_1:r,col:r[a],col_index:a});Ht[a]?Ht[a].p(e,u):(Ht[a]=Za(t,u),Ht[a].c(),Ht[a].m(z,null))}for(;a<Ht.length;a+=1)Ht[a].u(),Ht[a].d();Ht.length=r.length}Nt||(et.value=n.search),e.searchResults&&nt!==(nt=(n.searchResults.length>0?"with-results":"")+" search-query svelte-1kvuoqm")&&(et.className=nt),n.searchResults.length>0?Et||((Et=Ja(t)).c(),Et.m(tt,null)):Et&&(Et.u(),Et.d(),Et=null),e.searchResults&&at!==(at=n.searchResults.length>0?"input-append":"")&&(tt.className=at),n.search?$t?$t.p(e,n):(($t=Xa(t,n)).c(),$t.m(Q,null)):$t&&($t.u(),$t.d(),$t=null);var l={};!St.data&&e.chartData&&(l.data=n.chartData,St.data=!0),!St.transpose&&e.transpose&&(l.transpose=n.transpose,St.transpose=!0),!St.firstRowIsHeader&&e.firstRowIsHeader&&(l.firstRowIsHeader=n.firstRowIsHeader,St.firstRowIsHeader=!0),!St.activeColumn&&e.activeColumn&&(l.activeColumn=n.activeColumn,St.activeColumn=!0),!St.readonly&&e.readonly&&(l.readonly=n.readonly,St.readonly=!0),!St.sorting&&e.sorting&&(l.sorting=n.sorting,St.sorting=!0),!St.search&&e.search&&(l.search=n.search,St.search=!0),!St.searchResults&&e.searchResults&&(l.searchResults=n.searchResults,St.searchResults=!0),!St.searchIndex&&e.searchIndex&&(l.searchIndex=n.searchIndex,St.searchIndex=!0),!St.multiSelection&&e.multiSelection&&(l.multiSelection=n.multiSelection,St.multiSelection=!0),qt._set(l),St={},e.has_changes&&Ct!==(Ct="btn "+(n.has_changes?"":"disabled")+" svelte-1kvuoqm")&&(yt.className=Ct)},u:function(){h(A),h(V),Z.innerHTML="",f(n),Rt.u();for(var t=0;t<Ht.length;t+=1)Ht[t].u();Et&&Et.u(),$t&&$t.u()},d:function(){Rt.d(),b(Z,"click",Dt),d(Ht),t.refs.sortDropdownGroup===q&&(t.refs.sortDropdownGroup=null),b(et,"input",Ut),b(et,"keypress",Lt),t.refs.search===et&&(t.refs.search=null),Et&&Et.d(),$t&&$t.d(),qt.destroy(!1),t.refs.hot===qt&&(t.refs.hot=null),b(lt,"click",jt),b(mt,"click",Vt),b(yt,"click",Bt)}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this;window.addEventListener("keypress",function(e){e.ctrlKey&&"f"==e.key&&(e.preventDefault(),t.refs.search!=window.document.activeElement?t.refs.search.focus():t.nextResult(1))});var e=function(e,n){t.observe(e,function(r){if(t.store.get("dw_chart").set(""+n,r),"locale"==e){if(!r)return;t.store.get("dw_chart").locale(r,function(){t.refs.hot.render()})}})};e("transpose","metadata.data.transpose"),e("firstRowIsHeader","metadata.data.horizontal-header"),e("locale","language"),this.observe("activeColumn",function(e){e||t.set({forceColumnFormat:!1})})}).call(e),e.fire("update",{changed:{searchIndex:1,searchResults:1,activeColumn:1,forceColumnFormat:1,$dw_chart:1,sortBy:1,sortDir:1,customColumn:1,columns:1,columnFormat:1,activeValues:1,activeFormat:1,multiSelection:1,firstRowIsHeader:1,locale:1,locales:1,search:1,searchIndexSafe:1,chartData:1,transpose:1,readonly:1,sorting:1,has_changes:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,H(this._beforecreate),H(this._oncreate),H(this._aftercreate),this._lock=!1)}function ro(t,e){this._observers={pre:k(),post:k()},this._handlers={},this._dependents=[],this._computed=k(),this._sortedComputedProperties=[],this._state=s({},t),this._differs=e&&e.immutable?S:N}s(no.prototype,U),s(no.prototype,Oa),no.prototype._recompute=function(t,e){var n,r,a;(t.searchIndex||t.searchResults)&&this._differs(e.searchIndexSafe,e.searchIndexSafe=(r=(n=e).searchIndex,a=n.searchResults,r<0&&(r+=a.length),r%=a.length))&&(t.searchIndexSafe=!0),(t.activeColumn||t.forceColumnFormat)&&(this._differs(e.customColumn,e.customColumn=function(t){var e=t.activeColumn,n=t.forceColumnFormat;return!(!e||n||!e.isComputed)&&e}(e))&&(t.customColumn=!0),this._differs(e.columnFormat,e.columnFormat=function(t){var e=t.activeColumn,n=t.forceColumnFormat;return!(!e||e.isComputed&&!n)&&e}(e))&&(t.columnFormat=!0)),t.activeColumn&&this._differs(e.activeValues,e.activeValues=function(t){var e=t.activeColumn;return e?e.values():[]}(e))&&(t.activeValues=!0),(t.activeColumn||t.$dw_chart)&&this._differs(e.activeFormat,e.activeFormat=function(t){var e=t.activeColumn,n=t.$dw_chart;return e?n.columnFormatter(e):function(t){return t}}(e))&&(t.activeFormat=!0),t.activeColumn&&this._differs(e.columns,e.columns=function(t){var e=t.activeColumn,n=chart.dataset();if(!e)return n?n.columns():[];try{return n.columns().filter(function(t){return!t.isComputed})}catch(t){return[]}}(e))&&(t.columns=!0),(t.sortBy||t.sortDir)&&this._differs(e.sorting,e.sorting=function(t){return{sortBy:t.sortBy,sortDir:t.sortDir}}(e))&&(t.sorting=!0)},s(ro.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},n=0;n<t.length;n+=1){var r=t[n];e["$"+r]=this._state[r]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_sortComputedProperties:function(){var t,e=this._computed,n=this._sortedComputedProperties=[],r=k();function a(o){if(t[o])throw new Error("Cyclical dependency detected");if(!r[o]){r[o]=!0;var i=e[o];i&&(t[o]=!0,i.deps.forEach(a),n.push(i))}}for(var o in this._computed)t=k(),a(o)},compute:function(t,e,n){var r,a=this,o={deps:e,update:function(o,i,u){var s=e.map(function(t){return t in i&&(u=!0),o[t]});if(u){var l=n.apply(null,s);a._differs(l,r)&&(r=l,i[t]=!0,o[t]=r)}}};o.update(this._state,{},!0),this._computed[t]=o,this._sortComputedProperties()},fire:T,get:F,observe:D,on:I,onchange:function(t){return console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})"),this.on("state",function(e){t(e.current,e.changed)})},set:function(t){var e=this._state,n=this._changed={},r=!1;for(var a in t){if(this._computed[a])throw new Error("'"+a+"' is a read-only property");this._differs(t[a],e[a])&&(n[a]=r=!0)}if(r){this._state=s(s({},e),t);for(var o=0;o<this._sortedComputedProperties.length;o+=1)this._sortedComputedProperties[o].update(this._state,n);this.fire("state",{changed:n,current:this._state,previous:e});var i=this._dependents.slice();for(o=0;o<i.length;o+=1){var u=i[o],l={};r=!1;for(var c=0;c<u.props.length;c+=1){var f=u.props[c];f in n&&(l["$"+f]=this._state[f],r=!0)}r&&u.component.set(l)}this.fire("update",{changed:n,current:this._state,previous:e})}}});return{App:no,store:new ro({}),data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('cm/lib/codemirror'), require('cm/mode/javascript/javascript'), require('cm/addon/mode/simple'), require('cm/addon/hint/show-hint'), require('cm/addon/edit/matchbrackets'), require('cm/addon/display/placeholder'), require('Handsontable')) :
+	typeof define === 'function' && define.amd ? define('svelte/describe', ['cm/lib/codemirror', 'cm/mode/javascript/javascript', 'cm/addon/mode/simple', 'cm/addon/hint/show-hint', 'cm/addon/edit/matchbrackets', 'cm/addon/display/placeholder', 'Handsontable'], factory) :
+	(global.describe = factory(global.CodeMirror,null,null,null,null,null,global.HOT));
+}(this, (function (CodeMirror,javascript,simple,showHint,matchbrackets,placeholder,HOT) { 'use strict';
+
+CodeMirror = CodeMirror && CodeMirror.hasOwnProperty('default') ? CodeMirror['default'] : CodeMirror;
+HOT = HOT && HOT.hasOwnProperty('default') ? HOT['default'] : HOT;
+
+function noop() {}
+
+function assign(tar, src) {
+	for (var k in src) tar[k] = src[k];
+	return tar;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function detachBefore(after) {
+	while (after.previousSibling) {
+		after.parentNode.removeChild(after.previousSibling);
+	}
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) iterations[i].d();
+	}
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createSvgElement(name) {
+	return document.createElementNS('http://www.w3.org/2000/svg', name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function createComment() {
+	return document.createComment('');
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function selectOption(select, value) {
+	for (var i = 0; i < select.options.length; i += 1) {
+		var option = select.options[i];
+
+		if (option.__value === value) {
+			option.selected = true;
+			return;
+		}
+	}
+}
+
+function selectValue(select) {
+	var selectedOption = select.querySelector(':checked') || select.options[0];
+	return selectedOption && selectedOption.__value;
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function _differs(a, b) {
+	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function _differsImmutable(a, b) {
+	return a != a ? b == b : a !== b;
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		var handler = handlers[i];
+
+		if (!handler.__calling) {
+			handler.__calling = true;
+			handler.call(this, data);
+			handler.__calling = false;
+		}
+	}
+}
+
+function getDev(key) {
+	if (key) console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead");
+	return get.call(this, key);
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var fn = callback.bind(this);
+
+	if (!options || options.init !== false) {
+		fn(this.get()[key], undefined);
+	}
+
+	return this.on(options && options.defer ? 'update' : 'state', function(event) {
+		if (event.changed[key]) fn(event.current[key], event.previous && event.previous[key]);
+	});
+}
+
+function observeDev(key, callback, options) {
+	console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+	var c = (key = '' + key).search(/[.[]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign(assign({}, oldState), newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		this.fire("state", { changed: changed, current: this._state, previous: oldState });
+		this._fragment.p(changed, this._state);
+		this.fire("update", { changed: changed, current: this._state, previous: oldState });
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.shift()();
+}
+
+function _mount(target, anchor) {
+	this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+function removeFromStore() {
+	this.store._remove(this);
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: getDev,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount,
+	_differs: _differs
+};
+
+// `_isObject` : an object's function
+// -----------------------------------
+
+// Is a given variable an object?
+function _isObject (obj) {
+	var type = typeof obj;
+	return type === 'function' || type === 'object' && !!obj;
+}
+
+// quick reference variables for speed access
+//-------------------------------------------
+
+// Save bytes in the minified (but not gzipped) version:
+const ArrayProto = Array.prototype;
+const ObjProto = Object.prototype;
+const slice = ArrayProto.slice;
+const toString = ObjProto.toString;
+const hasOwnProperty = ObjProto.hasOwnProperty;
+
+// All **ECMAScript 5** native function implementations that we hope to use
+// are declared here.
+const nativeIsArray = Array.isArray;
+const nativeKeys = Object.keys;
+
+// `_has` : an object's function
+
+// Shortcut function for checking if an object has a given property directly
+// on itself (in other words, not on a prototype).
+function _has (obj, key) {
+	return obj != null && hasOwnProperty.call(obj, key);
+}
+
+// `_keys` : an object's function
+
+// Retrieve the names of an object's own properties.
+// Delegates to **ECMAScript 5**'s native `Object.keys`.
+function _keys (obj) {
+	if (!_isObject(obj)) return [];
+	if (nativeKeys) return nativeKeys(obj);
+	let keys = [];
+	for (let key in obj)
+		if (_has(obj, key)) keys.push(key);
+		// Ahem, IE < 9.
+	if (hasEnumBug) collectNonEnumProps(obj, keys);
+	return keys;
+}
+
+// `_forEach` : a collection's function
+
+// Handles raw objects in addition to array-likes. Treats all
+// sparse array-likes as if they were dense.
+function _each (obj, iteratee, context) {
+	iteratee = optimizeCb(iteratee, context);
+	let i, length;
+	if (isArrayLike(obj)) {
+		for (i = 0, length = obj.length; i < length; i++) {
+			iteratee(obj[i], i, obj);
+		}
+	} else {
+		var keys = _keys(obj);
+		for (i = 0, length = keys.length; i < length; i++) {
+			iteratee(obj[keys[i]], keys[i], obj);
+		}
+	}
+	return obj;
+}
+
+// `_each` : a collection's function
+
+// `_findIndex` : an array's function
+
+// Returns the first index on an array-like that passes a predicate test.
+var _findIndex = createPredicateIndexFinder(1);
+
+// `_sortedIndex` : an array's function
+
+// Use a comparator function to figure out the smallest index at which
+// an object should be inserted so as to maintain order. Uses binary search.
+function _sortedIndex (array, obj, iteratee, context) {
+	iteratee = cb(iteratee, context, 1);
+	let value = iteratee(obj);
+	let low = 0,
+		high = getLength(array);
+	while (low < high) {
+		let mid = Math.floor((low + high) / 2);
+		if (iteratee(array[mid]) < value) low = mid + 1;
+		else high = mid;
+	}
+	return low;
+}
+
+// `_indexOf` : an array's function
+
+// Return the position of the first occurrence of an item in an array,
+// or -1 if the item is not included in the array.
+// If the array is large and already in sort order, pass `true`
+// for **isSorted** to use binary search.
+var _indexOf = createIndexFinder(1, _findIndex, _sortedIndex);
+
+// `_values` : an object's function
+
+// Retrieve the values of an object's properties.
+function _values (obj) {
+	let keys = _keys(obj);
+	let length = keys.length;
+	let values = Array(length);
+	for (let i = 0; i < length; i++) {
+		values[i] = obj[keys[i]];
+	}
+	return values;
+}
+
+// `_include` : a collection's function
+
+// Determine if the array or object contains a given item (using `===`).
+function _contains (obj, item, fromIndex, guard) {
+	if (!isArrayLike(obj)) obj = _values(obj);
+	if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+	return _indexOf(obj, item, fromIndex) >= 0;
+}
+
+// `_contains` : a collection's function
+
+// `_isArray` : an object's function
+
+// Is a given value an array?
+// Delegates to ECMA5's native Array.isArray
+var _isArray = nativeIsArray || function (obj) {
+	return toString.call(obj) === '[object Array]';
+};
+
+// `_isFunction` : an object's function
+
+// Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
+// IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
+function customFunction() {
+	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof document !== 'undefined' && typeof document.childNodes != 'function') {
+		return (obj) => typeof obj == 'function' || false;
+	}
+	return null;
+}
+
+// Is a given value a function?
+var _isFunction = customFunction() || function (obj) {
+	return toString.call(obj) === '[object Function]';
+};
+
+// `_isArguments` : an object's function
+
+// Define a fallback version of the method in browsers (ahem, IE < 9), where
+// there isn't any inspectable "Arguments" type.
+function customArguments () {
+	if (toString.call(arguments) === '[object Arguments]') return null;
+	return (obj) => _has(obj, 'callee');
+}
+
+// Is a given value an arguments object?
+var _isArguments = customArguments() || function (obj) {
+	return toString.call(obj) === '[object Arguments]';
+};
+
+// `_isNumber` : an object's function
+
+// Is a given value a number?
+function _isNumber (obj) {
+	return toString.call(obj) === '[object Number]';
+}
+
+// `_isNaN` : an object's function
+
+// Is the given value `NaN`?
+function _isNaN (obj) {
+	return _isNumber(obj) && isNaN(obj);
+}
+
+// `_invert` : an object's function
+
+// Invert the keys and values of an object. The values must be serializable.
+function _invert (obj) {
+	let result = {};
+	let keys = _keys(obj);
+	for (let i = 0, length = keys.length; i < length; i++) {
+		result[obj[keys[i]]] = keys[i];
+	}
+	return result;
+}
+
+// `_iteratee` : an utility's function
+
+// External wrapper for our callback generator. Users may customize
+// `_.iteratee` if they want additional predicate/iteratee shorthand styles.
+// This abstraction hides the internal-only argCount argument.
+var _iteratee = builtinIteratee;
+
+// `_identity` : an utility's function
+// ------------------------------------
+
+// Keep the identity function around for default iteratees.
+function _identity (value) {
+	return value;
+}
+
+// `_extendOwn` : an object's function
+
+// Extend a given object with the properties in passed-in object(s).
+var _extendOwn = createAssigner(_keys);
+
+// `_isMatch` : an object's function
+
+// Returns whether an object has a given set of `key:value` pairs.
+function _isMatch (object, attrs) {
+	let keys = _keys(attrs),
+		length = keys.length;
+	if (object == null) return !length;
+	let obj = Object(object);
+	for (let i = 0; i < length; i++) {
+		let key = keys[i];
+		if (attrs[key] !== obj[key] || !(key in obj)) return false;
+	}
+	return true;
+}
+
+// `_matches` : an utility's function
+
+// Returns a predicate for checking whether an object has a given set of
+// `key:value` pairs.
+function _matcher (attrs) {
+	attrs = _extendOwn({}, attrs);
+	return (obj) => _isMatch(obj, attrs);
+}
+
+// `_matcher` : an utility's function
+
+// `_` : base namespace and constructor for underscore's object
+ // @important: exportation of the function, not only it definition
+
+// Internal functions
+
+
+// Internal function that returns an efficient (for current engines) version
+// of the passed-in callback, to be repeatedly applied in other Underscore
+// functions.
+function optimizeCb (func, context, argCount) {
+	if (context === void 0) return func;
+	switch (argCount == null ? 3 : argCount) {
+		case 1: return (value) => func.call(context, value);
+			// The 2-parameter case has been omitted only because no current consumers
+			// made use of it.
+		case 3: return (value, index, collection) =>  func.call(context, value, index, collection);
+		case 4: return (accumulator, value, index, collection) => func.call(context, accumulator, value, index, collection);
+	}
+	return function () {
+		return func.apply(context, arguments);
+	};
+}
+
+// for callback generator.
+// This abstraction is use to hide the internal-only argCount argument.
+function builtinIteratee (value, context) {
+	return cb(value, context, Infinity);
+}
+
+// An internal function to generate callbacks that can be applied to each
+// element in a collection, returning the desired result — either `identity`,
+// an arbitrary callback, a property matcher, or a property accessor.
+function cb (value, context, argCount) {
+	if (_iteratee !== builtinIteratee) return _iteratee(value, context);
+	if (value == null) return _identity;
+	if (_isFunction(value)) return optimizeCb(value, context, argCount);
+	if (_isObject(value)) return _matcher(value);
+	return property(value);
+}
+
+// Similar to ES6's rest param (http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html)
+// This accumulates the arguments passed into an array, after a given index.
+function restArgs (func, startIndex) {
+	startIndex = startIndex == null ? func.length - 1 : +startIndex;
+	return function () {
+		let length = Math.max(arguments.length - startIndex, 0),
+			rest = Array(length),
+			index = 0;
+		for (; index < length; index++) {
+			rest[index] = arguments[index + startIndex];
+		}
+		switch (startIndex) {
+			case 0:
+				return func.call(this, rest);
+			case 1:
+				return func.call(this, arguments[0], rest);
+			case 2:
+				return func.call(this, arguments[0], arguments[1], rest);
+		}
+		var args = Array(startIndex + 1);
+		for (index = 0; index < startIndex; index++) {
+			args[index] = arguments[index];
+		}
+		args[startIndex] = rest;
+		return func.apply(this, args);
+	};
+}
+
+// An internal function used for get key's value from an object.
+function property (key) {
+	return (obj) => obj == null ? void 0 : obj[key];
+}
+
+// Helper for collection methods to determine whether a collection
+// should be iterated as an array or as an object.
+// Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
+// Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+const MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+var getLength = property('length');
+var isArrayLike = function(collection) { // @TODO simplify to function
+	let length = getLength(collection);
+	return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+};
+
+// An internal function used for aggregate "group by" operations.
+function group (behavior, partition) {
+	return function (obj, iteratee, context) {
+		let result = partition ? [[], []] : {};
+		iteratee = cb(iteratee, context);
+		_each(obj, (value, index) => {
+			let key = iteratee(value, index, obj);
+			behavior(result, value, key);
+		});
+		return result;
+	};
+}
+
+// Generator function to create the findIndex and findLastIndex functions.
+function createPredicateIndexFinder (dir) {
+	return function (array, predicate, context) {
+		predicate = cb(predicate, context);
+		let length = getLength(array);
+		let index = dir > 0 ? 0 : length - 1;
+		for (; index >= 0 && index < length; index += dir) {
+			if (predicate(array[index], index, array)) return index;
+		}
+		return -1;
+	};
+}
+
+// Generator function to create the indexOf and lastIndexOf functions.
+function createIndexFinder (dir, predicateFind, sortedIndex) {
+	return function (array, item, idx) {
+		let i = 0,
+			length = getLength(array);
+		if (typeof idx == 'number') {
+			if (dir > 0) {
+				i = idx >= 0 ? idx : Math.max(idx + length, i);
+			} else {
+				length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+			}
+		} else if (sortedIndex && idx && length) {
+			idx = sortedIndex(array, item);
+			return array[idx] === item ? idx : -1;
+		}
+		if (item !== item) {
+			idx = predicateFind(slice.call(array, i, length), _isNaN);
+			return idx >= 0 ? idx + i : -1;
+		}
+		for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+			if (array[idx] === item) return idx;
+		}
+		return -1;
+	};
+}
+
+// Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
+// @TODO move to _quickaccess to prevent inappropriate cyclic dependency with `keys` and `allkeys`
+// @FUTURE remove this hack when the will ignore IE<9 since the goal is now ES6 and beyond.
+var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+                      'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// hack for enumerating bug
+function collectNonEnumProps (obj, keys) {
+	let nonEnumIdx = nonEnumerableProps.length;
+	let constructor = obj.constructor;
+	let proto = _isFunction(constructor) && constructor.prototype || ObjProto;
+
+	// Constructor is a special case.
+	let prop = 'constructor';
+	if (_has(obj, prop) && !_contains(keys, prop)) keys.push(prop);
+
+	while (nonEnumIdx--) {
+		prop = nonEnumerableProps[nonEnumIdx];
+		if (prop in obj && obj[prop] !== proto[prop] && !_contains(keys, prop)) {
+			keys.push(prop);
+		}
+	}
+}
+
+// An internal function for creating assigner functions.
+function createAssigner (keysFunc, defaults) {
+	return function (obj) {
+		let length = arguments.length;
+		if (defaults) obj = Object(obj);
+		if (length < 2 || obj == null) return obj;
+		for (let index = 1; index < length; index++) {
+			let source = arguments[index],
+				keys = keysFunc(source),
+				l = keys.length;
+			for (let i = 0; i < l; i++) {
+				let key = keys[i];
+				if (_isObject(obj) && (!defaults || obj[key] === void 0)) obj[key] = source[key];
+			}
+		}
+		return obj;
+	};
+}
+
+// List of HTML entities for escaping.
+var escapeMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#x27;',
+	'`': '&#x60;'
+};
+var unescapeMap = _invert(escapeMap);
+
+// `_delay` : (ahem) a function's function
+
+// Delays a function for the given number of milliseconds, and then calls
+// it with the arguments supplied.
+var _delay = restArgs( (func, wait, args) => {
+  return setTimeout( () => {
+    return func.apply(null, args);
+  }, wait);
+});
+
+// `_debounce` : (ahem) a function's function
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+function _debounce (func, wait, immediate) {
+  let timeout, result;
+
+  let later = function (context, args) {
+    timeout = null;
+    if (args) result = func.apply(context, args);
+  };
+
+  let debounced = restArgs(function (args) {
+    if (timeout) clearTimeout(timeout);
+    if (immediate) {
+      var callNow = !timeout;
+      timeout = setTimeout(later, wait);
+      if (callNow) result = func.apply(this, args);
+    } else {
+      timeout = _delay(later, wait, this, args);
+    }
+
+    return result;
+  });
+
+  debounced.cancel = function () {
+    clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return debounced;
+}
+
+function clone(o) {
+	if (!o || typeof o != 'object') return o;
+	try {
+		return JSON.parse(JSON.stringify(o));
+	} catch(e) {
+		return o;
+	}
+}
+
+/* describe/ComputedColumnEditor.html generated by Svelte v1.64.0 */
+
+function title({ column }) {
+    var s = "Spalte %s bearbeiten";
+    return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
+}
+function metaColumns({ columns }) {
+    if (!columns) return [];
+    return columns.map(col => {
+        return {
+            key: column_name_to_var(col.name()),
+            title: col.title(),
+            type: col.type()
+        };
+    });
+}
+function keywords({ metaColumns }) {
+    const keywords = ['sum','round','min','max','median','mean'];
+    metaColumns.forEach(function(col) {
+        keywords.push(col.key);
+        if (col.type == 'number') {
+            keywords.push(col.key+'__sum');
+            keywords.push(col.key+'__min');
+            keywords.push(col.key+'__max');
+            keywords.push(col.key+'__mean');
+            keywords.push(col.key+'__median');
+        }
+    });
+    return keywords;
+}
+function data() {
+    return {
+        name: '',
+        formula: ''
+    }
+}
+var methods = {
+    insert (column) {
+        const {cm} = this.get();
+        cm.replaceSelection(column.key);
+        cm.focus();
+    },
+    removeColumn() {
+        const {column} = this.get();
+        const chart = this.store.get('dw_chart');
+        const ds = chart.dataset();
+        const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
+        delete customCols[column.name()];
+        const col_index = ds.columnOrder()[ds.indexOf(column.name())];
+        // delete all changes that have been made to this column
+        const changes = chart.get('metadata.data.changes', []);
+        const changes_new = [];
+        changes.forEach(c => {
+            if (c.column == col_index) return; // skip
+            if (c.column > col_index) c.column--;
+            changes_new.push(c);
+        });
+        chart.set('metadata.describe.computed-columns', customCols);
+        chart.set('metadata.data.changes', changes_new);
+        chart.saveSoon();
+        this.fire('updateTable');
+        this.fire('unselect');
+    }
+};
+
+function oncreate() {
+    const {column} = this.get();
+
+    const chart = this.store.get('dw_chart');
+    const customCols = chart.get('metadata.describe.computed-columns', {});
+
+    this.set({
+        formula: customCols[column.name()] || '',
+        name: column.title()
+    });
+
+    // update if column changes
+    this.observe('column', (col) => {
+        if (col) this.set({
+            formula: customCols[col.name()] || '',
+            name: col.title()
+        });
+    });
+
+    const app = this;
+
+    function scriptHint(editor) {
+        // Find the token at the cursor
+        var cur = editor.getCursor(),
+            token = editor.getTokenAt(cur),
+            match = [];
+
+        const keywords = app.get('keywords');
+
+        if (token.type == 'variable') {
+            match = keywords.filter(function(chk) {
+                return chk.toLowerCase()
+                    .indexOf(token.string.toLowerCase()) === 0;
+            });
+        }
+
+        return {
+            list: match,
+            from: CodeMirror.Pos(cur.line, token.start),
+            to: CodeMirror.Pos(cur.line, token.end)
+        };
+    }
+
+    // CodeMirror.registerHelper("hint", "javascript", function(editor, options) {
+    //     return scriptHint(editor, options);
+    // });
+
+    const cm = CodeMirror.fromTextArea(this.refs.code, {
+        value: this.get('formula') || '',
+        mode: 'simple',
+        indentUnit: 2,
+        tabSize: 2,
+        lineWrapping: true,
+        matchBrackets: true,
+        placeholder: '// enter formula here',
+        continueComments: "Enter",
+        extraKeys: {
+            'Tab': 'autocomplete'
+        },
+        hintOptions: {
+            hint: scriptHint
+        }
+    });
+
+    window.CodeMirror = CodeMirror;
+
+    this.set({cm});
+
+    const updateTable = _debounce(() => this.fire('updateTable'), 1500);
+
+    this.observe('formula', (formula) => {
+        // update codemirror
+        if (formula != cm.getValue()) {
+            cm.setValue(formula);
+        }
+        // update dw.chart
+        const {column} = this.get();
+        const customCols = chart.get('metadata.describe.computed-columns', {});
+        if (customCols[column.name()] != formula) {
+            customCols[column.name()] = formula;
+            chart.set('metadata.describe.computed-columns', customCols);
+            if (chart.saveSoon) chart.saveSoon();
+            updateTable();
+        }
+    });
+
+    this.observe('name', (name) => {
+        const {column} = this.get();
+        const changes = chart.get('metadata.data.changes', []);
+        const ds = chart.dataset();
+        const col = ds.columnOrder()[ds.indexOf(column.name())];
+        let last_col_name_change_i = -1;
+        changes.forEach((change,i) => {
+            if (change.column == col && change.row === 0) {
+                last_col_name_change_i = i;
+            }
+        });
+        if (last_col_name_change_i > -1) {
+            // update last change of that cell
+            changes[last_col_name_change_i].value = name;
+            changes[last_col_name_change_i].time = (new Date()).getTime();
+        } else {
+            // add new change
+            changes.push({
+                column: col, row: 0, value: name, time: (new Date()).getTime()
+            });
+        }
+        chart.set('metadata.data.changes', changes);
+        if (chart.saveSoon) chart.saveSoon();
+        updateTable();
+    });
+
+    cm.on('change', (cm) => {
+        this.set({formula: cm.getValue()});
+    });
+
+    this.observe('metaColumns', (cols) => {
+        var columns_regex = new RegExp(`(?:${this.get('keywords').join('|')})`);
+        CodeMirror.defineSimpleMode("simplemode", {
+            // The start state contains the rules that are intially used
+            start: [
+                // The regex matches the token, the token property contains the type
+                {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
+                // You can match multiple tokens at once. Note that the captured
+                // groups must span the whole string in this case
+                {regex: /(function)(\s+)([a-z$][\w$]*)/,
+                 token: ["keyword", null, "keyword"]},
+                // Rules are matched in the order in which they appear, so there is
+                // no ambiguity between this one and the one above
+                {regex: /(?:function|var|return|if|for|while|else|do|this)\b/,
+                 token: "keyword"},
+                {regex: /true|false|null|undefined/, token: "atom"},
+                {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+                 token: "number"},
+                {regex: /\/\/.*/, token: "comment"},
+                {regex: /\/(?:[^\\]|\\.)*?\//, token: "variable-3"},
+                // A next property will cause the mode to move to a different state
+                {regex: /\/\*/, token: "comment", next: "comment"},
+                {regex: /[-+\/*=<>!]+/, token: "operator"},
+                // indent and dedent properties guide autoindentation
+                {regex: /[\{\[\(]/, indent: true},
+                {regex: /[\}\]\)]/, dedent: true},
+                {regex: columns_regex, token: 'variable-2'},
+                {regex: /[a-z$][\w$]*/, token: "variable"},
+                // You can embed other modes with the mode property. This rule
+                // causes all code between << and >> to be highlighted with the XML
+                // mode.
+                {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}}
+            ],
+            // The multi-line comment state.
+            comment: [
+                {regex: /.*?\*\//, token: "comment", next: "start"},
+                {regex: /.*/, token: "comment"}
+            ],
+            // The meta property contains global information about the mode. It
+            // can contain properties like lineComment, which are supported by
+            // all modes, and also directives like dontIndentStates, which are
+            // specific to simple modes.
+            meta: {
+                dontIndentStates: ["comment"],
+                lineComment: "//"
+            }
+        });
+
+        cm.setOption('mode', 'simplemode');
+    });
+}
+function column_name_to_var(name) {
+    // if you change this, change dw.chart.js as well
+    return name.toString().toLowerCase()
+        .replace(/\s+/g, '_')           // Replace spaces with _
+        .replace(/[^\w-]+/g, '')       // Remove all non-word chars
+        .replace(/-/g, '_')             // Replace - with single _
+        .replace(/__+/g, '_')         // Replace multiple _ with single _
+        .replace(/^_+/, '')             // Trim _ from start of text
+        .replace(/_+$/, '')             // Trim _ from end of text
+        .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
+        .replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/, '$1_'); // reserved keywords
+}
+
+function create_main_fragment(component, state) {
+	var div, h3, text, text_1, p, text_2_value = "Die Werte in den Spalten können nach einer Formel berechnet werden, wie in Excel.", text_2, text_3, label, text_4_value = "Spaltenname", text_4, text_5, input, input_updating = false, text_6, label_1, text_7_value = "Formel (JavaScript)", text_7, text_8, textarea, text_9, p_1, text_10_value = "Verfügbare Spalten (lassen sich per Klick hinzufügen)", text_10, text_11, text_12, ul, text_14, button, i, text_15, text_16_value = "Diese Spalte entfernen", text_16;
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ name: input.value });
+		input_updating = false;
+	}
+
+	var each_value = state.metaColumns;
+
+	var each_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+		each_blocks[i_1] = create_each_block(component, assign(assign({}, state), {
+			each_value: each_value,
+			col: each_value[i_1],
+			col_index: i_1
+		}));
+	}
+
+	function click_handler_1(event) {
+		component.removeColumn();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			h3 = createElement("h3");
+			text = createText(state.title);
+			text_1 = createText("\n    ");
+			p = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\n    ");
+			label = createElement("label");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n    ");
+			input = createElement("input");
+			text_6 = createText("\n\n    ");
+			label_1 = createElement("label");
+			text_7 = createText(text_7_value);
+			text_8 = createText("\n    ");
+			textarea = createElement("textarea");
+			text_9 = createText("\n\n    ");
+			p_1 = createElement("p");
+			text_10 = createText(text_10_value);
+			text_11 = createText(":");
+			text_12 = createText("\n\n    ");
+			ul = createElement("ul");
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].c();
+			}
+
+			text_14 = createText("\n\n");
+			button = createElement("button");
+			i = createElement("i");
+			text_15 = createText(" ");
+			text_16 = createText(text_16_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			label.className = "svelte-du6ec3";
+			addListener(input, "input", input_input_handler);
+			setAttribute(input, "type", "text");
+			label_1.className = "svelte-du6ec3";
+			textarea.className = "code";
+			setStyle(p_1, "margin-top", "1em");
+			ul.className = "col-select svelte-du6ec3";
+			setStyle(div, "margin-bottom", "15px");
+			i.className = "fa fa-trash";
+			addListener(button, "click", click_handler_1);
+			button.className = "btn btn-danger";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(h3, div);
+			appendNode(text, h3);
+			appendNode(text_1, div);
+			appendNode(p, div);
+			appendNode(text_2, p);
+			appendNode(text_3, div);
+			appendNode(label, div);
+			appendNode(text_4, label);
+			appendNode(text_5, div);
+			appendNode(input, div);
+
+			input.value = state.name;
+
+			appendNode(text_6, div);
+			appendNode(label_1, div);
+			appendNode(text_7, label_1);
+			appendNode(text_8, div);
+			appendNode(textarea, div);
+			component.refs.code = textarea;
+			appendNode(text_9, div);
+			appendNode(p_1, div);
+			appendNode(text_10, p_1);
+			appendNode(text_11, p_1);
+			appendNode(text_12, div);
+			appendNode(ul, div);
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].m(ul, null);
+			}
+
+			insertNode(text_14, target, anchor);
+			insertNode(button, target, anchor);
+			appendNode(i, button);
+			appendNode(text_15, button);
+			appendNode(text_16, button);
+		},
+
+		p: function update(changed, state) {
+			if (changed.title) {
+				text.data = state.title;
+			}
+
+			if (!input_updating) input.value = state.name;
+
+			var each_value = state.metaColumns;
+
+			if (changed.metaColumns) {
+				for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						col: each_value[i_1],
+						col_index: i_1
+					});
+
+					if (each_blocks[i_1]) {
+						each_blocks[i_1].p(changed, each_context);
+					} else {
+						each_blocks[i_1] = create_each_block(component, each_context);
+						each_blocks[i_1].c();
+						each_blocks[i_1].m(ul, null);
+					}
+				}
+
+				for (; i_1 < each_blocks.length; i_1 += 1) {
+					each_blocks[i_1].u();
+					each_blocks[i_1].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].u();
+			}
+
+			detachNode(text_14);
+			detachNode(button);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "input", input_input_handler);
+			if (component.refs.code === textarea) component.refs.code = null;
+
+			destroyEach(each_blocks);
+
+			removeListener(button, "click", click_handler_1);
+		}
+	};
+}
+
+// (14:8) {#each metaColumns as col}
+function create_each_block(component, state) {
+	var col = state.col, each_value = state.each_value, col_index = state.col_index;
+	var li, text_value = col.key, text;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(li, "click", click_handler);
+			li.className = "svelte-du6ec3";
+
+			li._svelte = {
+				component: component,
+				each_value: state.each_value,
+				col_index: state.col_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(text, li);
+		},
+
+		p: function update(changed, state) {
+			col = state.col;
+			each_value = state.each_value;
+			col_index = state.col_index;
+			if ((changed.metaColumns) && text_value !== (text_value = col.key)) {
+				text.data = text_value;
+			}
+
+			li._svelte.each_value = state.each_value;
+			li._svelte.col_index = state.col_index;
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(li, "click", click_handler);
+		}
+	};
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, col_index = this._svelte.col_index, col = each_value[col_index];
+	component.insert(col);
+}
+
+function ComputedColumnEditor(options) {
+	this._debugName = '<ComputedColumnEditor>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data(), options.data);
+	this._recompute({ column: 1, columns: 1, metaColumns: 1 }, this._state);
+	if (!('column' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'column'");
+	if (!('columns' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'columns'");
+
+
+	if (!('name' in this._state)) console.warn("<ComputedColumnEditor> was created without expected data property 'name'");
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { column: 1, columns: 1, metaColumns: 1, title: 1, name: 1 };
+		oncreate.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+	}
+
+	this._fragment = create_main_fragment(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(ComputedColumnEditor.prototype, protoDev);
+assign(ComputedColumnEditor.prototype, methods);
+
+ComputedColumnEditor.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('title' in newState && !this._updatingReadonlyProperty) throw new Error("<ComputedColumnEditor>: Cannot set read-only property 'title'");
+	if ('metaColumns' in newState && !this._updatingReadonlyProperty) throw new Error("<ComputedColumnEditor>: Cannot set read-only property 'metaColumns'");
+	if ('keywords' in newState && !this._updatingReadonlyProperty) throw new Error("<ComputedColumnEditor>: Cannot set read-only property 'keywords'");
+};
+
+ComputedColumnEditor.prototype._recompute = function _recompute(changed, state) {
+	if (changed.column) {
+		if (this._differs(state.title, (state.title = title(state)))) changed.title = true;
+	}
+
+	if (changed.columns) {
+		if (this._differs(state.metaColumns, (state.metaColumns = metaColumns(state)))) changed.metaColumns = true;
+	}
+
+	if (changed.metaColumns) {
+		if (this._differs(state.keywords, (state.keywords = keywords(state)))) changed.keywords = true;
+	}
+};
+
+/* controls/Checkbox.html generated by Svelte v1.64.0 */
+
+function data$1() {
+    return {
+        disabled: false
+    }
+}
+function create_main_fragment$1(component, state) {
+	var div, label, input, text, text_1, label_class_value;
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			text_1 = createText(state.label);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", input_change_handler);
+			setAttribute(input, "type", "checkbox");
+			input.disabled = state.disabled;
+			input.className = "svelte-llolt7";
+			label.className = label_class_value = "checkbox " + (state.disabled? 'disabled' :'') + " svelte-llolt7";
+			div.className = "control-group vis-option-group vis-option-type-checkbox";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(input, label);
+
+			input.checked = state.value;
+
+			appendNode(text, label);
+			appendNode(text_1, label);
+		},
+
+		p: function update(changed, state) {
+			input.checked = state.value;
+			if (changed.disabled) {
+				input.disabled = state.disabled;
+			}
+
+			if (changed.label) {
+				text_1.data = state.label;
+			}
+
+			if ((changed.disabled) && label_class_value !== (label_class_value = "checkbox " + (state.disabled? 'disabled' :'') + " svelte-llolt7")) {
+				label.className = label_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+function Checkbox(options) {
+	this._debugName = '<Checkbox>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$1(), options.data);
+	if (!('disabled' in this._state)) console.warn("<Checkbox> was created without expected data property 'disabled'");
+	if (!('value' in this._state)) console.warn("<Checkbox> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Checkbox> was created without expected data property 'label'");
+
+	this._fragment = create_main_fragment$1(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Checkbox.prototype, protoDev);
+
+Checkbox.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Select.html generated by Svelte v1.64.0 */
+
+function data$2() {
+    return {
+        disabled: false,
+        width: 'auto',
+        options: [],
+        optgroups: [],
+    };
+}
+function create_main_fragment$2(component, state) {
+	var div, label, text_1, div_1, select, if_block_anchor, select_updating = false, div_1_class_value;
+
+	var if_block = (state.options.length) && create_if_block(component, state);
+
+	var if_block_1 = (state.optgroups.length) && create_if_block_1(component, state);
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ value: selectValue(select) });
+		select_updating = false;
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			select = createElement("select");
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+			if (if_block_1) if_block_1.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label";
+			addListener(select, "change", select_change_handler);
+			if (!('value' in state)) component.root._beforecreate.push(select_change_handler);
+			select.disabled = state.disabled;
+			setStyle(select, "width", state.width);
+			div_1.className = div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :'');
+			div.className = "control-group vis-option-type-select";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(select, div_1);
+			if (if_block) if_block.m(select, null);
+			appendNode(if_block_anchor, select);
+			if (if_block_1) if_block_1.m(select, null);
+
+			selectOption(select, state.value);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (state.options.length) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block(component, state);
+					if_block.c();
+					if_block.m(select, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (state.optgroups.length) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1(component, state);
+					if_block_1.c();
+					if_block_1.m(select, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+
+			if (!select_updating) selectOption(select, state.value);
+			if (changed.disabled) {
+				select.disabled = state.disabled;
+			}
+
+			if (changed.width) {
+				setStyle(select, "width", state.width);
+			}
+
+			if ((changed.disabled) && div_1_class_value !== (div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :''))) {
+				div_1.className = div_1_class_value;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+			if (if_block_1) if_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			if (if_block_1) if_block_1.d();
+			removeListener(select, "change", select_change_handler);
+		}
+	};
+}
+
+// (9:12) {#each options as opt}
+function create_each_block$1(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var option, text_value = opt.label, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = opt.value;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			if ((changed.options) && text_value !== (text_value = opt.label)) {
+				text.data = text_value;
+			}
+
+			if ((changed.options) && option_value_value !== (option_value_value = opt.value)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (8:8) {#if options.length}
+function create_if_block(component, state) {
+	var each_anchor;
+
+	var each_value = state.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$1(component, assign(assign({}, state), {
+			each_value: each_value,
+			opt: each_value[i],
+			opt_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insertNode(each_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.options;
+
+			if (changed.options) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						opt: each_value[i],
+						opt_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(each_anchor.parentNode, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			detachNode(each_anchor);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (14:12) {#each optgroups as optgroup}
+function create_each_block_1(component, state) {
+	var optgroup = state.optgroup, each_value_1 = state.each_value_1, optgroup_index = state.optgroup_index;
+	var optgroup_1, optgroup_1_label_value;
+
+	var each_value_2 = optgroup.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value_2.length; i += 1) {
+		each_blocks[i] = create_each_block_2(component, assign(assign({}, state), {
+			each_value_2: each_value_2,
+			opt: each_value_2[i],
+			opt_index_1: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			optgroup_1 = createElement("optgroup");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(optgroup_1, "label", optgroup_1_label_value = optgroup.label);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(optgroup_1, target, anchor);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(optgroup_1, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			optgroup = state.optgroup;
+			each_value_1 = state.each_value_1;
+			optgroup_index = state.optgroup_index;
+			var each_value_2 = optgroup.options;
+
+			if (changed.optgroups) {
+				for (var i = 0; i < each_value_2.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_2: each_value_2,
+						opt: each_value_2[i],
+						opt_index_1: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block_2(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(optgroup_1, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value_2.length;
+			}
+
+			if ((changed.optgroups) && optgroup_1_label_value !== (optgroup_1_label_value = optgroup.label)) {
+				setAttribute(optgroup_1, "label", optgroup_1_label_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(optgroup_1);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (16:16) {#each optgroup.options as opt}
+function create_each_block_2(component, state) {
+	var optgroup = state.optgroup, each_value_1 = state.each_value_1, optgroup_index = state.optgroup_index, opt = state.opt, each_value_2 = state.each_value_2, opt_index_1 = state.opt_index_1;
+	var option, text_value = opt.label, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = opt.value;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			optgroup = state.optgroup;
+			each_value_1 = state.each_value_1;
+			optgroup_index = state.optgroup_index;
+			opt = state.opt;
+			each_value_2 = state.each_value_2;
+			opt_index_1 = state.opt_index_1;
+			if ((changed.optgroups) && text_value !== (text_value = opt.label)) {
+				text.data = text_value;
+			}
+
+			if ((changed.optgroups) && option_value_value !== (option_value_value = opt.value)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (13:8) {#if optgroups.length}
+function create_if_block_1(component, state) {
+	var each_anchor;
+
+	var each_value_1 = state.optgroups;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value_1.length; i += 1) {
+		each_blocks[i] = create_each_block_1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			optgroup: each_value_1[i],
+			optgroup_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insertNode(each_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var each_value_1 = state.optgroups;
+
+			if (changed.optgroups) {
+				for (var i = 0; i < each_value_1.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						optgroup: each_value_1[i],
+						optgroup_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block_1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(each_anchor.parentNode, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value_1.length;
+			}
+		},
+
+		u: function unmount() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			detachNode(each_anchor);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+function Select(options) {
+	this._debugName = '<Select>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$2(), options.data);
+	if (!('label' in this._state)) console.warn("<Select> was created without expected data property 'label'");
+	if (!('disabled' in this._state)) console.warn("<Select> was created without expected data property 'disabled'");
+	if (!('value' in this._state)) console.warn("<Select> was created without expected data property 'value'");
+	if (!('width' in this._state)) console.warn("<Select> was created without expected data property 'width'");
+	if (!('options' in this._state)) console.warn("<Select> was created without expected data property 'options'");
+	if (!('optgroups' in this._state)) console.warn("<Select> was created without expected data property 'optgroups'");
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+	}
+
+	this._fragment = create_main_fragment$2(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._beforecreate);
+	}
+}
+
+assign(Select.prototype, protoDev);
+
+Select.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+// `_now` : an utility's function
+// -------------------------------
+
+// A (possibly faster) way to get the current timestamp as an integer.
+var _now = Date.now || function () {
+	return new Date().getTime();
+};
+
+// `_throttle` : (ahem) a function's function
+
+// Returns a function, that, when invoked, will only be triggered at most once
+// during a given window of time. Normally, the throttled function will run
+// as much as it can, without ever going more than once per `wait` duration;
+// but if you'd like to disable the execution on the leading edge, pass
+// `{leading: false}`. To disable execution on the trailing edge, ditto.
+function _throttle (func, wait, options) {
+  let timeout, context, args, result;
+  let previous = 0;
+  if (!options) options = {};
+
+  let later = function () {
+    previous = options.leading === false ? 0 : _now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
+
+  let throttled = function () {
+    let now = _now();
+    if (!previous && options.leading === false) previous = now;
+    let remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+
+  throttled.cancel = function () {
+    clearTimeout(timeout);
+    previous = 0;
+    timeout = context = args = null;
+  };
+
+  return throttled;
+}
+
+function arrayToObject(o) {
+    if (_isArray(o)) {
+        const obj = {};
+        Object.keys(o).forEach(k => obj[k] = o[k]);
+        return obj;
+    }
+    return o;
+}
+
+function tailLength(v) {
+    return (String(v - Math.floor(v)).replace(/00000*[0-9]+$/, '').replace(/99999*[0-9]+$/, '')).length - 2;
+}
+
+function toFixed(v) {
+    return (+v).toFixed(Math.max(0, tailLength(v)));
+}
+
+/* describe/CustomColumnFormat.html generated by Svelte v1.64.0 */
+
+function title$1({ column }) {
+    var s = "Spalte %s bearbeiten";
+    return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
+}
+function data$3() {
+    return {
+        columnFormat: {
+            type: 'auto',
+            ignore: false,
+            'number-divisor': '-',
+            'number-format': 'auto',
+            'number-prepend': '',
+            'number-append': '',
+        },
+        colTypes: [],
+        divisors_opts: [
+            {value:0, label: "(keine Änderung)" },
+            {value:'auto', label: "(automatisch erkennen)" },
+        ],
+        divisors: [{
+            label: "Teilen durch",
+            options: [
+                {value:3, label:'1000'},
+                {value:6, label:'1 million'},
+                {value:9, label:'1 billion'},
+            ]
+        }, {
+            label: "Multiplizieren mit",
+            options: [
+                {value:-2, label:'100'},
+                {value:-3, label:'1000'},
+                {value:-6, label:'1 million'},
+                {value:-9, label:'1 billion'},
+                {value:-12, label:'1 trillion'}
+            ]
+        }],
+        numberFormats: [{
+            label: "Nachkommastellen",
+            options: [
+                {value:'n3', label: '3 (1,234.568)'},
+                {value:'n2', label: '2 (1,234.57)'},
+                {value:'n1', label: '1 (1,234.6)'},
+                {value:'n0', label: '0 (1,235)'},
+            ]
+        }, {
+            label: "Relevante Ziffern",
+            options: [
+                {value:'s6', label:'6 (1,234.57)'},
+                {value:'s5', label:'5 (123.45)'},
+                {value:'s4', label:'4 (12.34)'},
+                {value:'s3', label:'3 (1.23)'},
+                {value:'s2', label:'2 (0.12)'},
+                {value:'s1', label:'1 (0.01)'},
+            ]
+        }]
+    }
+}
+var methods$1 = {
+    autoDivisor() {
+        const chart = this.store.get('dw_chart');
+        const {column} = this.get();
+        const mtrSuf = dw.utils.metricSuffix(chart.locale());
+        const values = column.values();
+        const dim = dw.utils.significantDimension(values);
+        let div = dim < -2 ? (Math.round((dim*-1) / 3) * 3) :
+                    (dim > 4 ? dim*-1 : 0);
+        const nvalues = values.map(function(v) {
+            return v / Math.pow(10, div);
+        });
+        let ndim = dw.utils.significantDimension(nvalues);
+        if (ndim <= 0) ndim = nvalues.reduce(function(acc, cur) {
+            return Math.max(acc, Math.min(3,dw.utils.tailLength(cur)));
+        }, 0);
+
+        if (ndim == div) {
+            div = 0;
+            ndim = 0;
+        }
+        if (div > 15) {
+            div = 0;
+            ndim = 0;
+        }
+
+        this.set({
+            columnFormat: {
+                'number-divisor': div,
+                'number-format': 'n'+Math.max(0, ndim),
+                'number-prepend': '',
+                'number-append': (div ? mtrSuf[div] || ' × 10<sup>'+div+'</sup>' : '')
+            }
+        });
+    },
+    getColumnFormat(column) {
+        const chart = this.store.get('dw_chart');
+        const columnFormats = arrayToObject(chart.get('metadata.data.column-format', {}));
+        let columnFormat = clone(columnFormats[column.name()]);
+        if (!columnFormat || columnFormat == 'auto' || columnFormat.length !== undefined) {
+            // no valid column format
+            columnFormat = {
+                type: 'auto',
+                ignore: false,
+                'number-prepend': '',
+                'number-append': '',
+                'number-format': 'auto'
+            };
+        }
+        return columnFormat;
+    }
+};
+
+function oncreate$1() {
+    const updateTable = _throttle(() => { this.fire('updateTable'); },100, {leading: false});
+    const renderTable = _throttle(() => { this.fire('updateTable'); }, 100, {leading: false});
+
+    const {column} = this.get();
+
+    this.set({colTypes: [
+        { value:'auto', label: 'auto ('+column.type()+')' },
+        { value:'text', label: 'Text' },
+        { value:'number', label: 'Number' },
+        { value:'date', label: 'Date' },
+    ]});
+
+    this.set({columnFormat: this.getColumnFormat(column)});
+
+    this.observe('column', (col) => {
+        this.set({columnFormat: this.getColumnFormat(col)});
+        const {colTypes} = this.get();
+        colTypes[0].label = 'auto ('+column.type()+')';
+    });
+
+    this.observe('columnFormat', (colFormat) => {
+        const chrt = this.store.get('dw_chart');
+        const {column} = this.get();
+        const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
+        const oldFormat = columnFormats[column.name()];
+        if (!oldFormat || JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
+            if (colFormat['number-divisor'] == 'auto') {
+                // stop here and compute divisor automatically
+                setTimeout(() => this.autoDivisor(), 100);
+                return;
+            }
+            columnFormats[column.name()] = clone(colFormat);
+            chrt.set('metadata.data.column-format', columnFormats);
+            if (chrt.saveSoon) chrt.saveSoon();
+            if (!oldFormat || oldFormat.type != colFormat.type) updateTable();
+            else renderTable();
+        }
+    });
+}
+function create_main_fragment$3(component, state) {
+	var div, h3, text, text_1, div_1, select_updating = {}, text_2, checkbox_updating = {}, text_3, hr, text_4;
+
+	var select_initial_data = {
+	 	label: "Spaltentyp",
+	 	options: state.colTypes,
+	 	width: "180px"
+	 };
+	if ('type' in state.columnFormat) {
+		select_initial_data.value = state.columnFormat.type;
+		select_updating.value = true;
+	}
+	var select = new Select({
+		root: component.root,
+		data: select_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!select_updating.value && changed.value) {
+				state.columnFormat.type = childState.value;
+				newState.columnFormat = state.columnFormat;
+			}
+			component._set(newState);
+			select_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		select._bind({ value: 1 }, select.get());
+	});
+
+	var checkbox_initial_data = { label: "Spalte in Diagramm ausblenden" };
+	if ('ignore' in state.columnFormat) {
+		checkbox_initial_data.value = state.columnFormat.ignore;
+		checkbox_updating.value = true;
+	}
+	var checkbox = new Checkbox({
+		root: component.root,
+		data: checkbox_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_updating.value && changed.value) {
+				state.columnFormat.ignore = childState.value;
+				newState.columnFormat = state.columnFormat;
+			}
+			component._set(newState);
+			checkbox_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		checkbox._bind({ value: 1 }, checkbox.get());
+	});
+
+	var if_block = (state.column && state.column.type() == 'number') && create_if_block$1(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			h3 = createElement("h3");
+			text = createText(state.title);
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			select._fragment.c();
+			text_2 = createText("\n\n        ");
+			checkbox._fragment.c();
+			text_3 = createText("\n\n        ");
+			hr = createElement("hr");
+			text_4 = createText("\n\n        ");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			div_1.className = "form-horizontal";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(h3, div);
+			appendNode(text, h3);
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			select._mount(div_1, null);
+			appendNode(text_2, div_1);
+			checkbox._mount(div_1, null);
+			appendNode(text_3, div_1);
+			appendNode(hr, div_1);
+			appendNode(text_4, div_1);
+			if (if_block) if_block.m(div_1, null);
+		},
+
+		p: function update(changed, state) {
+			if (changed.title) {
+				text.data = state.title;
+			}
+
+			var select_changes = {};
+			select_changes.label = "Spaltentyp";
+			if (changed.colTypes) select_changes.options = state.colTypes;
+			if (!select_updating.value && changed.columnFormat) {
+				select_changes.value = state.columnFormat.type;
+				select_updating.value = true;
+			}
+			select._set(select_changes);
+			select_updating = {};
+
+			var checkbox_changes = {};
+			checkbox_changes.label = "Spalte in Diagramm ausblenden";
+			if (!checkbox_updating.value && changed.columnFormat) {
+				checkbox_changes.value = state.columnFormat.ignore;
+				checkbox_updating.value = true;
+			}
+			checkbox._set(checkbox_changes);
+			checkbox_updating = {};
+
+			if (state.column && state.column.type() == 'number') {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$1(component, state);
+					if_block.c();
+					if_block.m(div_1, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			select.destroy(false);
+			checkbox.destroy(false);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (19:8) {#if column && column.type() == 'number'}
+function create_if_block$1(component, state) {
+	var select_updating = {}, text, select_1_updating = {}, text_1, div, label, text_2_value = "Präfix/Suffix", text_2, text_4, div_1, input, input_updating = false, text_5, input_1, input_1_updating = false;
+
+	var select_initial_data = {
+	 	label: "Zahlen runden auf",
+	 	options: [
+                {value:'-',label: "(automatisch - individuell)"},
+                {value:'auto',label: "(automatisch - einheitlich)" }],
+	 	optgroups: state.numberFormats,
+	 	width: "180px"
+	 };
+	if ('number-format' in state.columnFormat) {
+		select_initial_data.value = state.columnFormat['number-format'];
+		select_updating.value = true;
+	}
+	var select = new Select({
+		root: component.root,
+		data: select_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!select_updating.value && changed.value) {
+				state.columnFormat['number-format'] = childState.value;
+				newState.columnFormat = state.columnFormat;
+			}
+			component._set(newState);
+			select_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		select._bind({ value: 1 }, select.get());
+	});
+
+	var select_1_initial_data = {
+	 	label: "Teilen/multiplizieren",
+	 	options: state.divisors_opts,
+	 	optgroups: state.divisors,
+	 	width: "180px"
+	 };
+	if ('number-divisor' in state.columnFormat) {
+		select_1_initial_data.value = state.columnFormat['number-divisor'];
+		select_1_updating.value = true;
+	}
+	var select_1 = new Select({
+		root: component.root,
+		data: select_1_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!select_1_updating.value && changed.value) {
+				state.columnFormat['number-divisor'] = childState.value;
+				newState.columnFormat = state.columnFormat;
+			}
+			component._set(newState);
+			select_1_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		select_1._bind({ value: 1 }, select_1.get());
+	});
+
+	function input_input_handler() {
+		var state = component.get();
+		input_updating = true;
+		state.columnFormat['number-prepend'] = input.value;
+		component.set({ columnFormat: state.columnFormat });
+		input_updating = false;
+	}
+
+	function input_1_input_handler() {
+		var state = component.get();
+		input_1_updating = true;
+		state.columnFormat['number-append'] = input_1.value;
+		component.set({ columnFormat: state.columnFormat });
+		input_1_updating = false;
+	}
+
+	return {
+		c: function create() {
+			select._fragment.c();
+			text = createText("\n        ");
+			select_1._fragment.c();
+			text_1 = createText("\n\n        ");
+			div = createElement("div");
+			label = createElement("label");
+			text_2 = createText(text_2_value);
+			text_4 = createText("\n            ");
+			div_1 = createElement("div");
+			input = createElement("input");
+			text_5 = createText("\n                #\n                ");
+			input_1 = createElement("input");
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label";
+			addListener(input, "input", input_input_handler);
+			input.autocomplete = "screw-you-google-chrome";
+			setStyle(input, "width", "6ex");
+			setStyle(input, "text-align", "right");
+			input.dataset.lpignore = "true";
+			input.name = "prepend";
+			setAttribute(input, "type", "text");
+			addListener(input_1, "input", input_1_input_handler);
+			input_1.autocomplete = "screw-you-google-chrome";
+			setStyle(input_1, "width", "6ex");
+			input_1.dataset.lpignore = "true";
+			input_1.name = "append";
+			setAttribute(input_1, "type", "text");
+			div_1.className = "controls form-inline";
+			div.className = "control-group vis-option-type-select";
+		},
+
+		m: function mount(target, anchor) {
+			select._mount(target, anchor);
+			insertNode(text, target, anchor);
+			select_1._mount(target, anchor);
+			insertNode(text_1, target, anchor);
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(text_2, label);
+			appendNode(text_4, div);
+			appendNode(div_1, div);
+			appendNode(input, div_1);
+
+			input.value = state.columnFormat['number-prepend'];
+
+			appendNode(text_5, div_1);
+			appendNode(input_1, div_1);
+
+			input_1.value = state.columnFormat['number-append'];
+		},
+
+		p: function update(changed, state) {
+			var select_changes = {};
+			select_changes.label = "Zahlen runden auf";
+			select_changes.options = [
+                {value:'-',label: "(automatisch - individuell)"},
+                {value:'auto',label: "(automatisch - einheitlich)" }];
+			if (changed.numberFormats) select_changes.optgroups = state.numberFormats;
+			if (!select_updating.value && changed.columnFormat) {
+				select_changes.value = state.columnFormat['number-format'];
+				select_updating.value = true;
+			}
+			select._set(select_changes);
+			select_updating = {};
+
+			var select_1_changes = {};
+			select_1_changes.label = "Teilen/multiplizieren";
+			if (changed.divisors_opts) select_1_changes.options = state.divisors_opts;
+			if (changed.divisors) select_1_changes.optgroups = state.divisors;
+			if (!select_1_updating.value && changed.columnFormat) {
+				select_1_changes.value = state.columnFormat['number-divisor'];
+				select_1_updating.value = true;
+			}
+			select_1._set(select_1_changes);
+			select_1_updating = {};
+
+			if (!input_updating) input.value = state.columnFormat['number-prepend'];
+			if (!input_1_updating) input_1.value = state.columnFormat['number-append'];
+		},
+
+		u: function unmount() {
+			select._unmount();
+			detachNode(text);
+			select_1._unmount();
+			detachNode(text_1);
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			select.destroy(false);
+			select_1.destroy(false);
+			removeListener(input, "input", input_input_handler);
+			removeListener(input_1, "input", input_1_input_handler);
+		}
+	};
+}
+
+function CustomColumnFormat(options) {
+	this._debugName = '<CustomColumnFormat>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$3(), options.data);
+	this._recompute({ column: 1 }, this._state);
+	if (!('column' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'column'");
+
+	if (!('colTypes' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'colTypes'");
+	if (!('columnFormat' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'columnFormat'");
+	if (!('numberFormats' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'numberFormats'");
+	if (!('divisors_opts' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'divisors_opts'");
+	if (!('divisors' in this._state)) console.warn("<CustomColumnFormat> was created without expected data property 'divisors'");
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { column: 1, title: 1, colTypes: 1, columnFormat: 1, numberFormats: 1, divisors_opts: 1, divisors: 1 };
+		oncreate$1.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$3(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(CustomColumnFormat.prototype, protoDev);
+assign(CustomColumnFormat.prototype, methods$1);
+
+CustomColumnFormat.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('title' in newState && !this._updatingReadonlyProperty) throw new Error("<CustomColumnFormat>: Cannot set read-only property 'title'");
+};
+
+CustomColumnFormat.prototype._recompute = function _recompute(changed, state) {
+	if (changed.column) {
+		if (this._differs(state.title, (state.title = title$1(state)))) changed.title = true;
+	}
+};
+
+// `_range` : an array's function
+// -------------------------------
+
+// Generate an integer Array containing an arithmetic progression. A port of
+// the native Python `range()` function. See
+// [the Python documentation](http://docs.python.org/library/functions.html#range).
+function _range (start, stop, step) {
+	if (stop == null) {
+		stop = start || 0;
+		start = 0;
+	}
+	if (!step) {
+		step = stop < start ? -1 : 1;
+	}
+	let length = Math.max(Math.ceil((stop - start) / step), 0);
+	let range = Array(length);
+	for (let idx = 0; idx < length; idx++, start += step) {
+		range[idx] = start;
+	}
+	return range;
+}
+
+// `_countBy` : a collection's function
+
+// Counts instances of an object that group by a certain criterion. Pass
+// either a string attribute to count by, or a function that returns the
+// criterion.
+var _countBy = group( (result, value, key) => {
+	if (_has(result, key)) result[key]++;
+	else result[key] = 1;
+});
+
+function ascending(a, b) {
+  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+
+function bisector(compare) {
+  if (compare.length === 1) compare = ascendingComparator(compare);
+  return {
+    left: function(a, x, lo, hi) {
+      if (lo == null) lo = 0;
+      if (hi == null) hi = a.length;
+      while (lo < hi) {
+        var mid = lo + hi >>> 1;
+        if (compare(a[mid], x) < 0) lo = mid + 1;
+        else hi = mid;
+      }
+      return lo;
+    },
+    right: function(a, x, lo, hi) {
+      if (lo == null) lo = 0;
+      if (hi == null) hi = a.length;
+      while (lo < hi) {
+        var mid = lo + hi >>> 1;
+        if (compare(a[mid], x) > 0) hi = mid;
+        else lo = mid + 1;
+      }
+      return lo;
+    }
+  };
+}
+
+function ascendingComparator(f) {
+  return function(d, x) {
+    return ascending(f(d), x);
+  };
+}
+
+var ascendingBisect = bisector(ascending);
+var bisectRight = ascendingBisect.right;
+
+function number(x) {
+  return x === null ? NaN : +x;
+}
+
+function extent(values, valueof) {
+  var n = values.length,
+      i = -1,
+      value,
+      min,
+      max;
+
+  if (valueof == null) {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = values[i]) != null && value >= value) {
+        min = max = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = values[i]) != null) {
+            if (min > value) min = value;
+            if (max < value) max = value;
+          }
+        }
+      }
+    }
+  }
+
+  else {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = valueof(values[i], i, values)) != null && value >= value) {
+        min = max = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = valueof(values[i], i, values)) != null) {
+            if (min > value) min = value;
+            if (max < value) max = value;
+          }
+        }
+      }
+    }
+  }
+
+  return [min, max];
+}
+
+var array = Array.prototype;
+
+var slice$1 = array.slice;
+
+function constant(x) {
+  return function() {
+    return x;
+  };
+}
+
+function identity(x) {
+  return x;
+}
+
+function range(start, stop, step) {
+  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
+
+  var i = -1,
+      n = Math.max(0, Math.ceil((stop - start) / step)) | 0,
+      range = new Array(n);
+
+  while (++i < n) {
+    range[i] = start + i * step;
+  }
+
+  return range;
+}
+
+var e10 = Math.sqrt(50),
+    e5 = Math.sqrt(10),
+    e2 = Math.sqrt(2);
+
+function ticks(start, stop, count) {
+  var reverse,
+      i = -1,
+      n,
+      ticks,
+      step;
+
+  stop = +stop, start = +start, count = +count;
+  if (start === stop && count > 0) return [start];
+  if (reverse = stop < start) n = start, start = stop, stop = n;
+  if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+
+  if (step > 0) {
+    start = Math.ceil(start / step);
+    stop = Math.floor(stop / step);
+    ticks = new Array(n = Math.ceil(stop - start + 1));
+    while (++i < n) ticks[i] = (start + i) * step;
+  } else {
+    start = Math.floor(start * step);
+    stop = Math.ceil(stop * step);
+    ticks = new Array(n = Math.ceil(start - stop + 1));
+    while (++i < n) ticks[i] = (start - i) / step;
+  }
+
+  if (reverse) ticks.reverse();
+
+  return ticks;
+}
+
+function tickIncrement(start, stop, count) {
+  var step = (stop - start) / Math.max(0, count),
+      power = Math.floor(Math.log(step) / Math.LN10),
+      error = step / Math.pow(10, power);
+  return power >= 0
+      ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+      : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+}
+
+function tickStep(start, stop, count) {
+  var step0 = Math.abs(stop - start) / Math.max(0, count),
+      step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
+      error = step0 / step1;
+  if (error >= e10) step1 *= 10;
+  else if (error >= e5) step1 *= 5;
+  else if (error >= e2) step1 *= 2;
+  return stop < start ? -step1 : step1;
+}
+
+function sturges(values) {
+  return Math.ceil(Math.log(values.length) / Math.LN2) + 1;
+}
+
+function histogram() {
+  var value = identity,
+      domain = extent,
+      threshold = sturges;
+
+  function histogram(data) {
+    var i,
+        n = data.length,
+        x,
+        values = new Array(n);
+
+    for (i = 0; i < n; ++i) {
+      values[i] = value(data[i], i, data);
+    }
+
+    var xz = domain(values),
+        x0 = xz[0],
+        x1 = xz[1],
+        tz = threshold(values, x0, x1);
+
+    // Convert number of thresholds into uniform thresholds.
+    if (!Array.isArray(tz)) {
+      tz = tickStep(x0, x1, tz);
+      tz = range(Math.ceil(x0 / tz) * tz, Math.floor(x1 / tz) * tz, tz); // exclusive
+    }
+
+    // Remove any thresholds outside the domain.
+    var m = tz.length;
+    while (tz[0] <= x0) tz.shift(), --m;
+    while (tz[m - 1] > x1) tz.pop(), --m;
+
+    var bins = new Array(m + 1),
+        bin;
+
+    // Initialize bins.
+    for (i = 0; i <= m; ++i) {
+      bin = bins[i] = [];
+      bin.x0 = i > 0 ? tz[i - 1] : x0;
+      bin.x1 = i < m ? tz[i] : x1;
+    }
+
+    // Assign data to bins by value, ignoring any outside the domain.
+    for (i = 0; i < n; ++i) {
+      x = values[i];
+      if (x0 <= x && x <= x1) {
+        bins[bisectRight(tz, x, 0, m)].push(data[i]);
+      }
+    }
+
+    return bins;
+  }
+
+  histogram.value = function(_) {
+    return arguments.length ? (value = typeof _ === "function" ? _ : constant(_), histogram) : value;
+  };
+
+  histogram.domain = function(_) {
+    return arguments.length ? (domain = typeof _ === "function" ? _ : constant([_[0], _[1]]), histogram) : domain;
+  };
+
+  histogram.thresholds = function(_) {
+    return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant(slice$1.call(_)) : constant(_), histogram) : threshold;
+  };
+
+  return histogram;
+}
+
+function threshold(values, p, valueof) {
+  if (valueof == null) valueof = number;
+  if (!(n = values.length)) return;
+  if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
+  if (p >= 1) return +valueof(values[n - 1], n - 1, values);
+  var n,
+      i = (n - 1) * p,
+      i0 = Math.floor(i),
+      value0 = +valueof(values[i0], i0, values),
+      value1 = +valueof(values[i0 + 1], i0 + 1, values);
+  return value0 + (value1 - value0) * (i - i0);
+}
+
+function max(values, valueof) {
+  var n = values.length,
+      i = -1,
+      value,
+      max;
+
+  if (valueof == null) {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = values[i]) != null && value >= value) {
+        max = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = values[i]) != null && value > max) {
+            max = value;
+          }
+        }
+      }
+    }
+  }
+
+  else {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = valueof(values[i], i, values)) != null && value >= value) {
+        max = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = valueof(values[i], i, values)) != null && value > max) {
+            max = value;
+          }
+        }
+      }
+    }
+  }
+
+  return max;
+}
+
+function mean(values, valueof) {
+  var n = values.length,
+      m = n,
+      i = -1,
+      value,
+      sum = 0;
+
+  if (valueof == null) {
+    while (++i < n) {
+      if (!isNaN(value = number(values[i]))) sum += value;
+      else --m;
+    }
+  }
+
+  else {
+    while (++i < n) {
+      if (!isNaN(value = number(valueof(values[i], i, values)))) sum += value;
+      else --m;
+    }
+  }
+
+  if (m) return sum / m;
+}
+
+function median(values, valueof) {
+  var n = values.length,
+      i = -1,
+      value,
+      numbers = [];
+
+  if (valueof == null) {
+    while (++i < n) {
+      if (!isNaN(value = number(values[i]))) {
+        numbers.push(value);
+      }
+    }
+  }
+
+  else {
+    while (++i < n) {
+      if (!isNaN(value = number(valueof(values[i], i, values)))) {
+        numbers.push(value);
+      }
+    }
+  }
+
+  return threshold(numbers.sort(ascending), 0.5);
+}
+
+function min(values, valueof) {
+  var n = values.length,
+      i = -1,
+      value,
+      min;
+
+  if (valueof == null) {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = values[i]) != null && value >= value) {
+        min = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = values[i]) != null && min > value) {
+            min = value;
+          }
+        }
+      }
+    }
+  }
+
+  else {
+    while (++i < n) { // Find the first comparable value.
+      if ((value = valueof(values[i], i, values)) != null && value >= value) {
+        min = value;
+        while (++i < n) { // Compare the remaining values.
+          if ((value = valueof(values[i], i, values)) != null && min > value) {
+            min = value;
+          }
+        }
+      }
+    }
+  }
+
+  return min;
+}
+
+var prefix = "$";
+
+function Map() {}
+
+Map.prototype = map$1.prototype = {
+  constructor: Map,
+  has: function(key) {
+    return (prefix + key) in this;
+  },
+  get: function(key) {
+    return this[prefix + key];
+  },
+  set: function(key, value) {
+    this[prefix + key] = value;
+    return this;
+  },
+  remove: function(key) {
+    var property = prefix + key;
+    return property in this && delete this[property];
+  },
+  clear: function() {
+    for (var property in this) if (property[0] === prefix) delete this[property];
+  },
+  keys: function() {
+    var keys = [];
+    for (var property in this) if (property[0] === prefix) keys.push(property.slice(1));
+    return keys;
+  },
+  values: function() {
+    var values = [];
+    for (var property in this) if (property[0] === prefix) values.push(this[property]);
+    return values;
+  },
+  entries: function() {
+    var entries = [];
+    for (var property in this) if (property[0] === prefix) entries.push({key: property.slice(1), value: this[property]});
+    return entries;
+  },
+  size: function() {
+    var size = 0;
+    for (var property in this) if (property[0] === prefix) ++size;
+    return size;
+  },
+  empty: function() {
+    for (var property in this) if (property[0] === prefix) return false;
+    return true;
+  },
+  each: function(f) {
+    for (var property in this) if (property[0] === prefix) f(this[property], property.slice(1), this);
+  }
+};
+
+function map$1(object, f) {
+  var map = new Map;
+
+  // Copy constructor.
+  if (object instanceof Map) object.each(function(value, key) { map.set(key, value); });
+
+  // Index array by numeric index or specified key function.
+  else if (Array.isArray(object)) {
+    var i = -1,
+        n = object.length,
+        o;
+
+    if (f == null) while (++i < n) map.set(i, object[i]);
+    else while (++i < n) map.set(f(o = object[i], i, object), o);
+  }
+
+  // Convert object to map.
+  else if (object) for (var key in object) map.set(key, object[key]);
+
+  return map;
+}
+
+function Set() {}
+
+var proto$1 = map$1.prototype;
+
+Set.prototype = set$1.prototype = {
+  constructor: Set,
+  has: proto$1.has,
+  add: function(value) {
+    value += "";
+    this[prefix + value] = value;
+    return this;
+  },
+  remove: proto$1.remove,
+  clear: proto$1.clear,
+  values: proto$1.keys,
+  size: proto$1.size,
+  empty: proto$1.empty,
+  each: proto$1.each
+};
+
+function set$1(object, f) {
+  var set = new Set;
+
+  // Copy constructor.
+  if (object instanceof Set) object.each(function(value) { set.add(value); });
+
+  // Otherwise, assume it’s an array.
+  else if (object) {
+    var i = -1, n = object.length;
+    if (f == null) while (++i < n) set.add(object[i]);
+    else while (++i < n) set.add(f(object[i], i, object));
+  }
+
+  return set;
+}
+
+var array$1 = Array.prototype;
+
+var map$2 = array$1.map;
+var slice$2 = array$1.slice;
+
+var implicit = {name: "implicit"};
+
+function ordinal(range) {
+  var index = map$1(),
+      domain = [],
+      unknown = implicit;
+
+  range = range == null ? [] : slice$2.call(range);
+
+  function scale(d) {
+    var key = d + "", i = index.get(key);
+    if (!i) {
+      if (unknown !== implicit) return unknown;
+      index.set(key, i = domain.push(d));
+    }
+    return range[(i - 1) % range.length];
+  }
+
+  scale.domain = function(_) {
+    if (!arguments.length) return domain.slice();
+    domain = [], index = map$1();
+    var i = -1, n = _.length, d, key;
+    while (++i < n) if (!index.has(key = (d = _[i]) + "")) index.set(key, domain.push(d));
+    return scale;
+  };
+
+  scale.range = function(_) {
+    return arguments.length ? (range = slice$2.call(_), scale) : range.slice();
+  };
+
+  scale.unknown = function(_) {
+    return arguments.length ? (unknown = _, scale) : unknown;
+  };
+
+  scale.copy = function() {
+    return ordinal()
+        .domain(domain)
+        .range(range)
+        .unknown(unknown);
+  };
+
+  return scale;
+}
+
+function band() {
+  var scale = ordinal().unknown(undefined),
+      domain = scale.domain,
+      ordinalRange = scale.range,
+      range$$1 = [0, 1],
+      step,
+      bandwidth,
+      round = false,
+      paddingInner = 0,
+      paddingOuter = 0,
+      align = 0.5;
+
+  delete scale.unknown;
+
+  function rescale() {
+    var n = domain().length,
+        reverse = range$$1[1] < range$$1[0],
+        start = range$$1[reverse - 0],
+        stop = range$$1[1 - reverse];
+    step = (stop - start) / Math.max(1, n - paddingInner + paddingOuter * 2);
+    if (round) step = Math.floor(step);
+    start += (stop - start - step * (n - paddingInner)) * align;
+    bandwidth = step * (1 - paddingInner);
+    if (round) start = Math.round(start), bandwidth = Math.round(bandwidth);
+    var values = range(n).map(function(i) { return start + step * i; });
+    return ordinalRange(reverse ? values.reverse() : values);
+  }
+
+  scale.domain = function(_) {
+    return arguments.length ? (domain(_), rescale()) : domain();
+  };
+
+  scale.range = function(_) {
+    return arguments.length ? (range$$1 = [+_[0], +_[1]], rescale()) : range$$1.slice();
+  };
+
+  scale.rangeRound = function(_) {
+    return range$$1 = [+_[0], +_[1]], round = true, rescale();
+  };
+
+  scale.bandwidth = function() {
+    return bandwidth;
+  };
+
+  scale.step = function() {
+    return step;
+  };
+
+  scale.round = function(_) {
+    return arguments.length ? (round = !!_, rescale()) : round;
+  };
+
+  scale.padding = function(_) {
+    return arguments.length ? (paddingInner = paddingOuter = Math.max(0, Math.min(1, _)), rescale()) : paddingInner;
+  };
+
+  scale.paddingInner = function(_) {
+    return arguments.length ? (paddingInner = Math.max(0, Math.min(1, _)), rescale()) : paddingInner;
+  };
+
+  scale.paddingOuter = function(_) {
+    return arguments.length ? (paddingOuter = Math.max(0, Math.min(1, _)), rescale()) : paddingOuter;
+  };
+
+  scale.align = function(_) {
+    return arguments.length ? (align = Math.max(0, Math.min(1, _)), rescale()) : align;
+  };
+
+  scale.copy = function() {
+    return band()
+        .domain(domain())
+        .range(range$$1)
+        .round(round)
+        .paddingInner(paddingInner)
+        .paddingOuter(paddingOuter)
+        .align(align);
+  };
+
+  return rescale();
+}
+
+function define(constructor, factory, prototype) {
+  constructor.prototype = factory.prototype = prototype;
+  prototype.constructor = constructor;
+}
+
+function extend(parent, definition) {
+  var prototype = Object.create(parent.prototype);
+  for (var key in definition) prototype[key] = definition[key];
+  return prototype;
+}
+
+function Color() {}
+
+var darker = 0.7;
+var brighter = 1 / darker;
+
+var reI = "\\s*([+-]?\\d+)\\s*",
+    reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+    reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+    reHex3 = /^#([0-9a-f]{3})$/,
+    reHex6 = /^#([0-9a-f]{6})$/,
+    reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+    reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+    reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+    reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+    reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+    reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+var named = {
+  aliceblue: 0xf0f8ff,
+  antiquewhite: 0xfaebd7,
+  aqua: 0x00ffff,
+  aquamarine: 0x7fffd4,
+  azure: 0xf0ffff,
+  beige: 0xf5f5dc,
+  bisque: 0xffe4c4,
+  black: 0x000000,
+  blanchedalmond: 0xffebcd,
+  blue: 0x0000ff,
+  blueviolet: 0x8a2be2,
+  brown: 0xa52a2a,
+  burlywood: 0xdeb887,
+  cadetblue: 0x5f9ea0,
+  chartreuse: 0x7fff00,
+  chocolate: 0xd2691e,
+  coral: 0xff7f50,
+  cornflowerblue: 0x6495ed,
+  cornsilk: 0xfff8dc,
+  crimson: 0xdc143c,
+  cyan: 0x00ffff,
+  darkblue: 0x00008b,
+  darkcyan: 0x008b8b,
+  darkgoldenrod: 0xb8860b,
+  darkgray: 0xa9a9a9,
+  darkgreen: 0x006400,
+  darkgrey: 0xa9a9a9,
+  darkkhaki: 0xbdb76b,
+  darkmagenta: 0x8b008b,
+  darkolivegreen: 0x556b2f,
+  darkorange: 0xff8c00,
+  darkorchid: 0x9932cc,
+  darkred: 0x8b0000,
+  darksalmon: 0xe9967a,
+  darkseagreen: 0x8fbc8f,
+  darkslateblue: 0x483d8b,
+  darkslategray: 0x2f4f4f,
+  darkslategrey: 0x2f4f4f,
+  darkturquoise: 0x00ced1,
+  darkviolet: 0x9400d3,
+  deeppink: 0xff1493,
+  deepskyblue: 0x00bfff,
+  dimgray: 0x696969,
+  dimgrey: 0x696969,
+  dodgerblue: 0x1e90ff,
+  firebrick: 0xb22222,
+  floralwhite: 0xfffaf0,
+  forestgreen: 0x228b22,
+  fuchsia: 0xff00ff,
+  gainsboro: 0xdcdcdc,
+  ghostwhite: 0xf8f8ff,
+  gold: 0xffd700,
+  goldenrod: 0xdaa520,
+  gray: 0x808080,
+  green: 0x008000,
+  greenyellow: 0xadff2f,
+  grey: 0x808080,
+  honeydew: 0xf0fff0,
+  hotpink: 0xff69b4,
+  indianred: 0xcd5c5c,
+  indigo: 0x4b0082,
+  ivory: 0xfffff0,
+  khaki: 0xf0e68c,
+  lavender: 0xe6e6fa,
+  lavenderblush: 0xfff0f5,
+  lawngreen: 0x7cfc00,
+  lemonchiffon: 0xfffacd,
+  lightblue: 0xadd8e6,
+  lightcoral: 0xf08080,
+  lightcyan: 0xe0ffff,
+  lightgoldenrodyellow: 0xfafad2,
+  lightgray: 0xd3d3d3,
+  lightgreen: 0x90ee90,
+  lightgrey: 0xd3d3d3,
+  lightpink: 0xffb6c1,
+  lightsalmon: 0xffa07a,
+  lightseagreen: 0x20b2aa,
+  lightskyblue: 0x87cefa,
+  lightslategray: 0x778899,
+  lightslategrey: 0x778899,
+  lightsteelblue: 0xb0c4de,
+  lightyellow: 0xffffe0,
+  lime: 0x00ff00,
+  limegreen: 0x32cd32,
+  linen: 0xfaf0e6,
+  magenta: 0xff00ff,
+  maroon: 0x800000,
+  mediumaquamarine: 0x66cdaa,
+  mediumblue: 0x0000cd,
+  mediumorchid: 0xba55d3,
+  mediumpurple: 0x9370db,
+  mediumseagreen: 0x3cb371,
+  mediumslateblue: 0x7b68ee,
+  mediumspringgreen: 0x00fa9a,
+  mediumturquoise: 0x48d1cc,
+  mediumvioletred: 0xc71585,
+  midnightblue: 0x191970,
+  mintcream: 0xf5fffa,
+  mistyrose: 0xffe4e1,
+  moccasin: 0xffe4b5,
+  navajowhite: 0xffdead,
+  navy: 0x000080,
+  oldlace: 0xfdf5e6,
+  olive: 0x808000,
+  olivedrab: 0x6b8e23,
+  orange: 0xffa500,
+  orangered: 0xff4500,
+  orchid: 0xda70d6,
+  palegoldenrod: 0xeee8aa,
+  palegreen: 0x98fb98,
+  paleturquoise: 0xafeeee,
+  palevioletred: 0xdb7093,
+  papayawhip: 0xffefd5,
+  peachpuff: 0xffdab9,
+  peru: 0xcd853f,
+  pink: 0xffc0cb,
+  plum: 0xdda0dd,
+  powderblue: 0xb0e0e6,
+  purple: 0x800080,
+  rebeccapurple: 0x663399,
+  red: 0xff0000,
+  rosybrown: 0xbc8f8f,
+  royalblue: 0x4169e1,
+  saddlebrown: 0x8b4513,
+  salmon: 0xfa8072,
+  sandybrown: 0xf4a460,
+  seagreen: 0x2e8b57,
+  seashell: 0xfff5ee,
+  sienna: 0xa0522d,
+  silver: 0xc0c0c0,
+  skyblue: 0x87ceeb,
+  slateblue: 0x6a5acd,
+  slategray: 0x708090,
+  slategrey: 0x708090,
+  snow: 0xfffafa,
+  springgreen: 0x00ff7f,
+  steelblue: 0x4682b4,
+  tan: 0xd2b48c,
+  teal: 0x008080,
+  thistle: 0xd8bfd8,
+  tomato: 0xff6347,
+  turquoise: 0x40e0d0,
+  violet: 0xee82ee,
+  wheat: 0xf5deb3,
+  white: 0xffffff,
+  whitesmoke: 0xf5f5f5,
+  yellow: 0xffff00,
+  yellowgreen: 0x9acd32
+};
+
+define(Color, color, {
+  displayable: function() {
+    return this.rgb().displayable();
+  },
+  toString: function() {
+    return this.rgb() + "";
+  }
+});
+
+function color(format) {
+  var m;
+  format = (format + "").trim().toLowerCase();
+  return (m = reHex3.exec(format)) ? (m = parseInt(m[1], 16), new Rgb((m >> 8 & 0xf) | (m >> 4 & 0x0f0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1)) // #f00
+      : (m = reHex6.exec(format)) ? rgbn(parseInt(m[1], 16)) // #ff0000
+      : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+      : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+      : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+      : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+      : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+      : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+      : named.hasOwnProperty(format) ? rgbn(named[format])
+      : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+      : null;
+}
+
+function rgbn(n) {
+  return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+}
+
+function rgba(r, g, b, a) {
+  if (a <= 0) r = g = b = NaN;
+  return new Rgb(r, g, b, a);
+}
+
+function rgbConvert(o) {
+  if (!(o instanceof Color)) o = color(o);
+  if (!o) return new Rgb;
+  o = o.rgb();
+  return new Rgb(o.r, o.g, o.b, o.opacity);
+}
+
+function rgb(r, g, b, opacity) {
+  return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+}
+
+function Rgb(r, g, b, opacity) {
+  this.r = +r;
+  this.g = +g;
+  this.b = +b;
+  this.opacity = +opacity;
+}
+
+define(Rgb, rgb, extend(Color, {
+  brighter: function(k) {
+    k = k == null ? brighter : Math.pow(brighter, k);
+    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker : Math.pow(darker, k);
+    return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+  },
+  rgb: function() {
+    return this;
+  },
+  displayable: function() {
+    return (0 <= this.r && this.r <= 255)
+        && (0 <= this.g && this.g <= 255)
+        && (0 <= this.b && this.b <= 255)
+        && (0 <= this.opacity && this.opacity <= 1);
+  },
+  toString: function() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
+}));
+
+function hsla(h, s, l, a) {
+  if (a <= 0) h = s = l = NaN;
+  else if (l <= 0 || l >= 1) h = s = NaN;
+  else if (s <= 0) h = NaN;
+  return new Hsl(h, s, l, a);
+}
+
+function hslConvert(o) {
+  if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+  if (!(o instanceof Color)) o = color(o);
+  if (!o) return new Hsl;
+  if (o instanceof Hsl) return o;
+  o = o.rgb();
+  var r = o.r / 255,
+      g = o.g / 255,
+      b = o.b / 255,
+      min = Math.min(r, g, b),
+      max = Math.max(r, g, b),
+      h = NaN,
+      s = max - min,
+      l = (max + min) / 2;
+  if (s) {
+    if (r === max) h = (g - b) / s + (g < b) * 6;
+    else if (g === max) h = (b - r) / s + 2;
+    else h = (r - g) / s + 4;
+    s /= l < 0.5 ? max + min : 2 - max - min;
+    h *= 60;
+  } else {
+    s = l > 0 && l < 1 ? 0 : h;
+  }
+  return new Hsl(h, s, l, o.opacity);
+}
+
+function hsl(h, s, l, opacity) {
+  return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+}
+
+function Hsl(h, s, l, opacity) {
+  this.h = +h;
+  this.s = +s;
+  this.l = +l;
+  this.opacity = +opacity;
+}
+
+define(Hsl, hsl, extend(Color, {
+  brighter: function(k) {
+    k = k == null ? brighter : Math.pow(brighter, k);
+    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker : Math.pow(darker, k);
+    return new Hsl(this.h, this.s, this.l * k, this.opacity);
+  },
+  rgb: function() {
+    var h = this.h % 360 + (this.h < 0) * 360,
+        s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+        l = this.l,
+        m2 = l + (l < 0.5 ? l : 1 - l) * s,
+        m1 = 2 * l - m2;
+    return new Rgb(
+      hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+      hsl2rgb(h, m1, m2),
+      hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+      this.opacity
+    );
+  },
+  displayable: function() {
+    return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+        && (0 <= this.l && this.l <= 1)
+        && (0 <= this.opacity && this.opacity <= 1);
+  }
+}));
+
+/* From FvD 13.37, CSS Color Module Level 3 */
+function hsl2rgb(h, m1, m2) {
+  return (h < 60 ? m1 + (m2 - m1) * h / 60
+      : h < 180 ? m2
+      : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+      : m1) * 255;
+}
+
+var deg2rad = Math.PI / 180;
+var rad2deg = 180 / Math.PI;
+
+var Kn = 18,
+    Xn = 0.950470, // D65 standard referent
+    Yn = 1,
+    Zn = 1.088830,
+    t0 = 4 / 29,
+    t1 = 6 / 29,
+    t2 = 3 * t1 * t1,
+    t3 = t1 * t1 * t1;
+
+function labConvert(o) {
+  if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+  if (o instanceof Hcl) {
+    var h = o.h * deg2rad;
+    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  }
+  if (!(o instanceof Rgb)) o = rgbConvert(o);
+  var b = rgb2xyz(o.r),
+      a = rgb2xyz(o.g),
+      l = rgb2xyz(o.b),
+      x = xyz2lab((0.4124564 * b + 0.3575761 * a + 0.1804375 * l) / Xn),
+      y = xyz2lab((0.2126729 * b + 0.7151522 * a + 0.0721750 * l) / Yn),
+      z = xyz2lab((0.0193339 * b + 0.1191920 * a + 0.9503041 * l) / Zn);
+  return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+}
+
+function lab(l, a, b, opacity) {
+  return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+}
+
+function Lab(l, a, b, opacity) {
+  this.l = +l;
+  this.a = +a;
+  this.b = +b;
+  this.opacity = +opacity;
+}
+
+define(Lab, lab, extend(Color, {
+  brighter: function(k) {
+    return new Lab(this.l + Kn * (k == null ? 1 : k), this.a, this.b, this.opacity);
+  },
+  darker: function(k) {
+    return new Lab(this.l - Kn * (k == null ? 1 : k), this.a, this.b, this.opacity);
+  },
+  rgb: function() {
+    var y = (this.l + 16) / 116,
+        x = isNaN(this.a) ? y : y + this.a / 500,
+        z = isNaN(this.b) ? y : y - this.b / 200;
+    y = Yn * lab2xyz(y);
+    x = Xn * lab2xyz(x);
+    z = Zn * lab2xyz(z);
+    return new Rgb(
+      xyz2rgb( 3.2404542 * x - 1.5371385 * y - 0.4985314 * z), // D65 -> sRGB
+      xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z),
+      xyz2rgb( 0.0556434 * x - 0.2040259 * y + 1.0572252 * z),
+      this.opacity
+    );
+  }
+}));
+
+function xyz2lab(t) {
+  return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+}
+
+function lab2xyz(t) {
+  return t > t1 ? t * t * t : t2 * (t - t0);
+}
+
+function xyz2rgb(x) {
+  return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+}
+
+function rgb2xyz(x) {
+  return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+}
+
+function hclConvert(o) {
+  if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+  if (!(o instanceof Lab)) o = labConvert(o);
+  var h = Math.atan2(o.b, o.a) * rad2deg;
+  return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+}
+
+function hcl(h, c, l, opacity) {
+  return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+}
+
+function Hcl(h, c, l, opacity) {
+  this.h = +h;
+  this.c = +c;
+  this.l = +l;
+  this.opacity = +opacity;
+}
+
+define(Hcl, hcl, extend(Color, {
+  brighter: function(k) {
+    return new Hcl(this.h, this.c, this.l + Kn * (k == null ? 1 : k), this.opacity);
+  },
+  darker: function(k) {
+    return new Hcl(this.h, this.c, this.l - Kn * (k == null ? 1 : k), this.opacity);
+  },
+  rgb: function() {
+    return labConvert(this).rgb();
+  }
+}));
+
+var A = -0.14861,
+    B = +1.78277,
+    C = -0.29227,
+    D = -0.90649,
+    E = +1.97294,
+    ED = E * D,
+    EB = E * B,
+    BC_DA = B * C - D * A;
+
+function cubehelixConvert(o) {
+  if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
+  if (!(o instanceof Rgb)) o = rgbConvert(o);
+  var r = o.r / 255,
+      g = o.g / 255,
+      b = o.b / 255,
+      l = (BC_DA * b + ED * r - EB * g) / (BC_DA + ED - EB),
+      bl = b - l,
+      k = (E * (g - l) - C * bl) / D,
+      s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)), // NaN if l=0 or l=1
+      h = s ? Math.atan2(k, bl) * rad2deg - 120 : NaN;
+  return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
+}
+
+function cubehelix(h, s, l, opacity) {
+  return arguments.length === 1 ? cubehelixConvert(h) : new Cubehelix(h, s, l, opacity == null ? 1 : opacity);
+}
+
+function Cubehelix(h, s, l, opacity) {
+  this.h = +h;
+  this.s = +s;
+  this.l = +l;
+  this.opacity = +opacity;
+}
+
+define(Cubehelix, cubehelix, extend(Color, {
+  brighter: function(k) {
+    k = k == null ? brighter : Math.pow(brighter, k);
+    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+  },
+  darker: function(k) {
+    k = k == null ? darker : Math.pow(darker, k);
+    return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
+  },
+  rgb: function() {
+    var h = isNaN(this.h) ? 0 : (this.h + 120) * deg2rad,
+        l = +this.l,
+        a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
+        cosh = Math.cos(h),
+        sinh = Math.sin(h);
+    return new Rgb(
+      255 * (l + a * (A * cosh + B * sinh)),
+      255 * (l + a * (C * cosh + D * sinh)),
+      255 * (l + a * (E * cosh)),
+      this.opacity
+    );
+  }
+}));
+
+function constant$1(x) {
+  return function() {
+    return x;
+  };
+}
+
+function linear$1(a, d) {
+  return function(t) {
+    return a + t * d;
+  };
+}
+
+function exponential(a, b, y) {
+  return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+    return Math.pow(a + t * b, y);
+  };
+}
+
+function gamma(y) {
+  return (y = +y) === 1 ? nogamma : function(a, b) {
+    return b - a ? exponential(a, b, y) : constant$1(isNaN(a) ? b : a);
+  };
+}
+
+function nogamma(a, b) {
+  var d = b - a;
+  return d ? linear$1(a, d) : constant$1(isNaN(a) ? b : a);
+}
+
+var rgb$1 = (function rgbGamma(y) {
+  var color$$1 = gamma(y);
+
+  function rgb$$1(start, end) {
+    var r = color$$1((start = rgb(start)).r, (end = rgb(end)).r),
+        g = color$$1(start.g, end.g),
+        b = color$$1(start.b, end.b),
+        opacity = nogamma(start.opacity, end.opacity);
+    return function(t) {
+      start.r = r(t);
+      start.g = g(t);
+      start.b = b(t);
+      start.opacity = opacity(t);
+      return start + "";
+    };
+  }
+
+  rgb$$1.gamma = rgbGamma;
+
+  return rgb$$1;
+})(1);
+
+function array$2(a, b) {
+  var nb = b ? b.length : 0,
+      na = a ? Math.min(nb, a.length) : 0,
+      x = new Array(na),
+      c = new Array(nb),
+      i;
+
+  for (i = 0; i < na; ++i) x[i] = interpolateValue(a[i], b[i]);
+  for (; i < nb; ++i) c[i] = b[i];
+
+  return function(t) {
+    for (i = 0; i < na; ++i) c[i] = x[i](t);
+    return c;
+  };
+}
+
+function date(a, b) {
+  var d = new Date;
+  return a = +a, b -= a, function(t) {
+    return d.setTime(a + b * t), d;
+  };
+}
+
+function reinterpolate(a, b) {
+  return a = +a, b -= a, function(t) {
+    return a + b * t;
+  };
+}
+
+function object(a, b) {
+  var i = {},
+      c = {},
+      k;
+
+  if (a === null || typeof a !== "object") a = {};
+  if (b === null || typeof b !== "object") b = {};
+
+  for (k in b) {
+    if (k in a) {
+      i[k] = interpolateValue(a[k], b[k]);
+    } else {
+      c[k] = b[k];
+    }
+  }
+
+  return function(t) {
+    for (k in i) c[k] = i[k](t);
+    return c;
+  };
+}
+
+var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+    reB = new RegExp(reA.source, "g");
+
+function zero(b) {
+  return function() {
+    return b;
+  };
+}
+
+function one(b) {
+  return function(t) {
+    return b(t) + "";
+  };
+}
+
+function string(a, b) {
+  var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
+      am, // current match in a
+      bm, // current match in b
+      bs, // string preceding current number in b, if any
+      i = -1, // index in s
+      s = [], // string constants and placeholders
+      q = []; // number interpolators
+
+  // Coerce inputs to strings.
+  a = a + "", b = b + "";
+
+  // Interpolate pairs of numbers in a & b.
+  while ((am = reA.exec(a))
+      && (bm = reB.exec(b))) {
+    if ((bs = bm.index) > bi) { // a string precedes the next number in b
+      bs = b.slice(bi, bs);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    }
+    if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+      if (s[i]) s[i] += bm; // coalesce with previous string
+      else s[++i] = bm;
+    } else { // interpolate non-matching numbers
+      s[++i] = null;
+      q.push({i: i, x: reinterpolate(am, bm)});
+    }
+    bi = reB.lastIndex;
+  }
+
+  // Add remains of b.
+  if (bi < b.length) {
+    bs = b.slice(bi);
+    if (s[i]) s[i] += bs; // coalesce with previous string
+    else s[++i] = bs;
+  }
+
+  // Special optimization for only a single match.
+  // Otherwise, interpolate each of the numbers and rejoin the string.
+  return s.length < 2 ? (q[0]
+      ? one(q[0].x)
+      : zero(b))
+      : (b = q.length, function(t) {
+          for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+          return s.join("");
+        });
+}
+
+function interpolateValue(a, b) {
+  var t = typeof b, c;
+  return b == null || t === "boolean" ? constant$1(b)
+      : (t === "number" ? reinterpolate
+      : t === "string" ? ((c = color(b)) ? (b = c, rgb$1) : string)
+      : b instanceof color ? rgb$1
+      : b instanceof Date ? date
+      : Array.isArray(b) ? array$2
+      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+      : reinterpolate)(a, b);
+}
+
+function interpolateRound(a, b) {
+  return a = +a, b -= a, function(t) {
+    return Math.round(a + b * t);
+  };
+}
+
+var degrees = 180 / Math.PI;
+
+var rho = Math.SQRT2;
+
+function constant$2(x) {
+  return function() {
+    return x;
+  };
+}
+
+function number$1(x) {
+  return +x;
+}
+
+var unit = [0, 1];
+
+function deinterpolateLinear(a, b) {
+  return (b -= (a = +a))
+      ? function(x) { return (x - a) / b; }
+      : constant$2(b);
+}
+
+function deinterpolateClamp(deinterpolate) {
+  return function(a, b) {
+    var d = deinterpolate(a = +a, b = +b);
+    return function(x) { return x <= a ? 0 : x >= b ? 1 : d(x); };
+  };
+}
+
+function reinterpolateClamp(reinterpolate$$1) {
+  return function(a, b) {
+    var r = reinterpolate$$1(a = +a, b = +b);
+    return function(t) { return t <= 0 ? a : t >= 1 ? b : r(t); };
+  };
+}
+
+function bimap(domain, range$$1, deinterpolate, reinterpolate$$1) {
+  var d0 = domain[0], d1 = domain[1], r0 = range$$1[0], r1 = range$$1[1];
+  if (d1 < d0) d0 = deinterpolate(d1, d0), r0 = reinterpolate$$1(r1, r0);
+  else d0 = deinterpolate(d0, d1), r0 = reinterpolate$$1(r0, r1);
+  return function(x) { return r0(d0(x)); };
+}
+
+function polymap(domain, range$$1, deinterpolate, reinterpolate$$1) {
+  var j = Math.min(domain.length, range$$1.length) - 1,
+      d = new Array(j),
+      r = new Array(j),
+      i = -1;
+
+  // Reverse descending domains.
+  if (domain[j] < domain[0]) {
+    domain = domain.slice().reverse();
+    range$$1 = range$$1.slice().reverse();
+  }
+
+  while (++i < j) {
+    d[i] = deinterpolate(domain[i], domain[i + 1]);
+    r[i] = reinterpolate$$1(range$$1[i], range$$1[i + 1]);
+  }
+
+  return function(x) {
+    var i = bisectRight(domain, x, 1, j) - 1;
+    return r[i](d[i](x));
+  };
+}
+
+function copy(source, target) {
+  return target
+      .domain(source.domain())
+      .range(source.range())
+      .interpolate(source.interpolate())
+      .clamp(source.clamp());
+}
+
+// deinterpolate(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+// reinterpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding domain value x in [a,b].
+function continuous(deinterpolate, reinterpolate$$1) {
+  var domain = unit,
+      range$$1 = unit,
+      interpolate$$1 = interpolateValue,
+      clamp = false,
+      piecewise,
+      output,
+      input;
+
+  function rescale() {
+    piecewise = Math.min(domain.length, range$$1.length) > 2 ? polymap : bimap;
+    output = input = null;
+    return scale;
+  }
+
+  function scale(x) {
+    return (output || (output = piecewise(domain, range$$1, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
+  }
+
+  scale.invert = function(y) {
+    return (input || (input = piecewise(range$$1, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate$$1) : reinterpolate$$1)))(+y);
+  };
+
+  scale.domain = function(_) {
+    return arguments.length ? (domain = map$2.call(_, number$1), rescale()) : domain.slice();
+  };
+
+  scale.range = function(_) {
+    return arguments.length ? (range$$1 = slice$2.call(_), rescale()) : range$$1.slice();
+  };
+
+  scale.rangeRound = function(_) {
+    return range$$1 = slice$2.call(_), interpolate$$1 = interpolateRound, rescale();
+  };
+
+  scale.clamp = function(_) {
+    return arguments.length ? (clamp = !!_, rescale()) : clamp;
+  };
+
+  scale.interpolate = function(_) {
+    return arguments.length ? (interpolate$$1 = _, rescale()) : interpolate$$1;
+  };
+
+  return rescale();
+}
+
+// Computes the decimal coefficient and exponent of the specified number x with
+// significant digits p, where x is positive and p is in [1, 21] or undefined.
+// For example, formatDecimal(1.23) returns ["123", 0].
+function formatDecimal(x, p) {
+  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+  var i, coefficient = x.slice(0, i);
+
+  // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+  return [
+    coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+    +x.slice(i + 1)
+  ];
+}
+
+function exponent(x) {
+  return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+}
+
+function formatGroup(grouping, thousands) {
+  return function(value, width) {
+    var i = value.length,
+        t = [],
+        j = 0,
+        g = grouping[0],
+        length = 0;
+
+    while (i > 0 && g > 0) {
+      if (length + g + 1 > width) g = Math.max(1, width - length);
+      t.push(value.substring(i -= g, i + g));
+      if ((length += g + 1) > width) break;
+      g = grouping[j = (j + 1) % grouping.length];
+    }
+
+    return t.reverse().join(thousands);
+  };
+}
+
+function formatNumerals(numerals) {
+  return function(value) {
+    return value.replace(/[0-9]/g, function(i) {
+      return numerals[+i];
+    });
+  };
+}
+
+function formatDefault(x, p) {
+  x = x.toPrecision(p);
+
+  out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
+    switch (x[i]) {
+      case ".": i0 = i1 = i; break;
+      case "0": if (i0 === 0) i0 = i; i1 = i; break;
+      case "e": break out;
+      default: if (i0 > 0) i0 = 0; break;
+    }
+  }
+
+  return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
+}
+
+var prefixExponent;
+
+function formatPrefixAuto(x, p) {
+  var d = formatDecimal(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1],
+      i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+      n = coefficient.length;
+  return i === n ? coefficient
+      : i > n ? coefficient + new Array(i - n + 1).join("0")
+      : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+      : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+}
+
+function formatRounded(x, p) {
+  var d = formatDecimal(x, p);
+  if (!d) return x + "";
+  var coefficient = d[0],
+      exponent = d[1];
+  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+      : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+      : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+}
+
+var formatTypes = {
+  "": formatDefault,
+  "%": function(x, p) { return (x * 100).toFixed(p); },
+  "b": function(x) { return Math.round(x).toString(2); },
+  "c": function(x) { return x + ""; },
+  "d": function(x) { return Math.round(x).toString(10); },
+  "e": function(x, p) { return x.toExponential(p); },
+  "f": function(x, p) { return x.toFixed(p); },
+  "g": function(x, p) { return x.toPrecision(p); },
+  "o": function(x) { return Math.round(x).toString(8); },
+  "p": function(x, p) { return formatRounded(x * 100, p); },
+  "r": formatRounded,
+  "s": formatPrefixAuto,
+  "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
+  "x": function(x) { return Math.round(x).toString(16); }
+};
+
+// [[fill]align][sign][symbol][0][width][,][.precision][type]
+var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
+
+function formatSpecifier(specifier) {
+  return new FormatSpecifier(specifier);
+}
+
+formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+function FormatSpecifier(specifier) {
+  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+
+  var match,
+      fill = match[1] || " ",
+      align = match[2] || ">",
+      sign = match[3] || "-",
+      symbol = match[4] || "",
+      zero = !!match[5],
+      width = match[6] && +match[6],
+      comma = !!match[7],
+      precision = match[8] && +match[8].slice(1),
+      type = match[9] || "";
+
+  // The "n" type is an alias for ",g".
+  if (type === "n") comma = true, type = "g";
+
+  // Map invalid types to the default format.
+  else if (!formatTypes[type]) type = "";
+
+  // If zero fill is specified, padding goes after sign and before digits.
+  if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+  this.fill = fill;
+  this.align = align;
+  this.sign = sign;
+  this.symbol = symbol;
+  this.zero = zero;
+  this.width = width;
+  this.comma = comma;
+  this.precision = precision;
+  this.type = type;
+}
+
+FormatSpecifier.prototype.toString = function() {
+  return this.fill
+      + this.align
+      + this.sign
+      + this.symbol
+      + (this.zero ? "0" : "")
+      + (this.width == null ? "" : Math.max(1, this.width | 0))
+      + (this.comma ? "," : "")
+      + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+      + this.type;
+};
+
+function identity$2(x) {
+  return x;
+}
+
+var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+function formatLocale(locale) {
+  var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity$2,
+      currency = locale.currency,
+      decimal = locale.decimal,
+      numerals = locale.numerals ? formatNumerals(locale.numerals) : identity$2,
+      percent = locale.percent || "%";
+
+  function newFormat(specifier) {
+    specifier = formatSpecifier(specifier);
+
+    var fill = specifier.fill,
+        align = specifier.align,
+        sign = specifier.sign,
+        symbol = specifier.symbol,
+        zero = specifier.zero,
+        width = specifier.width,
+        comma = specifier.comma,
+        precision = specifier.precision,
+        type = specifier.type;
+
+    // Compute the prefix and suffix.
+    // For SI-prefix, the suffix is lazily computed.
+    var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+        suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? percent : "";
+
+    // What format function should we use?
+    // Is this an integer type?
+    // Can this type generate exponential notation?
+    var formatType = formatTypes[type],
+        maybeSuffix = !type || /[defgprs%]/.test(type);
+
+    // Set the default precision if not specified,
+    // or clamp the specified precision to the supported range.
+    // For significant precision, it must be in [1, 21].
+    // For fixed precision, it must be in [0, 20].
+    precision = precision == null ? (type ? 6 : 12)
+        : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+        : Math.max(0, Math.min(20, precision));
+
+    function format(value) {
+      var valuePrefix = prefix,
+          valueSuffix = suffix,
+          i, n, c;
+
+      if (type === "c") {
+        valueSuffix = formatType(value) + valueSuffix;
+        value = "";
+      } else {
+        value = +value;
+
+        // Perform the initial formatting.
+        var valueNegative = value < 0;
+        value = formatType(Math.abs(value), precision);
+
+        // If a negative value rounds to zero during formatting, treat as positive.
+        if (valueNegative && +value === 0) valueNegative = false;
+
+        // Compute the prefix and suffix.
+        valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+        valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+        // Break the formatted value into the integer “value” part that can be
+        // grouped, and fractional or exponential “suffix” part that is not.
+        if (maybeSuffix) {
+          i = -1, n = value.length;
+          while (++i < n) {
+            if (c = value.charCodeAt(i), 48 > c || c > 57) {
+              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+              value = value.slice(0, i);
+              break;
+            }
+          }
+        }
+      }
+
+      // If the fill character is not "0", grouping is applied before padding.
+      if (comma && !zero) value = group(value, Infinity);
+
+      // Compute the padding.
+      var length = valuePrefix.length + value.length + valueSuffix.length,
+          padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+      // If the fill character is "0", grouping is applied after padding.
+      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+      // Reconstruct the final output based on the desired alignment.
+      switch (align) {
+        case "<": value = valuePrefix + value + valueSuffix + padding; break;
+        case "=": value = valuePrefix + padding + value + valueSuffix; break;
+        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+        default: value = padding + valuePrefix + value + valueSuffix; break;
+      }
+
+      return numerals(value);
+    }
+
+    format.toString = function() {
+      return specifier + "";
+    };
+
+    return format;
+  }
+
+  function formatPrefix(specifier, value) {
+    var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+        e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+        k = Math.pow(10, -e),
+        prefix = prefixes[8 + e / 3];
+    return function(value) {
+      return f(k * value) + prefix;
+    };
+  }
+
+  return {
+    format: newFormat,
+    formatPrefix: formatPrefix
+  };
+}
+
+var locale;
+var format;
+var formatPrefix;
+
+defaultLocale({
+  decimal: ".",
+  thousands: ",",
+  grouping: [3],
+  currency: ["$", ""]
+});
+
+function defaultLocale(definition) {
+  locale = formatLocale(definition);
+  format = locale.format;
+  formatPrefix = locale.formatPrefix;
+  return locale;
+}
+
+function precisionFixed(step) {
+  return Math.max(0, -exponent(Math.abs(step)));
+}
+
+function precisionPrefix(step, value) {
+  return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+}
+
+function precisionRound(step, max) {
+  step = Math.abs(step), max = Math.abs(max) - step;
+  return Math.max(0, exponent(max) - exponent(step)) + 1;
+}
+
+function tickFormat(domain, count, specifier) {
+  var start = domain[0],
+      stop = domain[domain.length - 1],
+      step = tickStep(start, stop, count == null ? 10 : count),
+      precision;
+  specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+  switch (specifier.type) {
+    case "s": {
+      var value = Math.max(Math.abs(start), Math.abs(stop));
+      if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+      return formatPrefix(specifier, value);
+    }
+    case "":
+    case "e":
+    case "g":
+    case "p":
+    case "r": {
+      if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+      break;
+    }
+    case "f":
+    case "%": {
+      if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+      break;
+    }
+  }
+  return format(specifier);
+}
+
+function linearish(scale) {
+  var domain = scale.domain;
+
+  scale.ticks = function(count) {
+    var d = domain();
+    return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+  };
+
+  scale.tickFormat = function(count, specifier) {
+    return tickFormat(domain(), count, specifier);
+  };
+
+  scale.nice = function(count) {
+    if (count == null) count = 10;
+
+    var d = domain(),
+        i0 = 0,
+        i1 = d.length - 1,
+        start = d[i0],
+        stop = d[i1],
+        step;
+
+    if (stop < start) {
+      step = start, start = stop, stop = step;
+      step = i0, i0 = i1, i1 = step;
+    }
+
+    step = tickIncrement(start, stop, count);
+
+    if (step > 0) {
+      start = Math.floor(start / step) * step;
+      stop = Math.ceil(stop / step) * step;
+      step = tickIncrement(start, stop, count);
+    } else if (step < 0) {
+      start = Math.ceil(start * step) / step;
+      stop = Math.floor(stop * step) / step;
+      step = tickIncrement(start, stop, count);
+    }
+
+    if (step > 0) {
+      d[i0] = Math.floor(start / step) * step;
+      d[i1] = Math.ceil(stop / step) * step;
+      domain(d);
+    } else if (step < 0) {
+      d[i0] = Math.ceil(start * step) / step;
+      d[i1] = Math.floor(stop * step) / step;
+      domain(d);
+    }
+
+    return scale;
+  };
+
+  return scale;
+}
+
+function linear$2() {
+  var scale = continuous(deinterpolateLinear, reinterpolate);
+
+  scale.copy = function() {
+    return copy(scale, linear$2());
+  };
+
+  return linearish(scale);
+}
+
+var t0$1 = new Date,
+    t1$1 = new Date;
+
+function newInterval(floori, offseti, count, field) {
+
+  function interval(date) {
+    return floori(date = new Date(+date)), date;
+  }
+
+  interval.floor = interval;
+
+  interval.ceil = function(date) {
+    return floori(date = new Date(date - 1)), offseti(date, 1), floori(date), date;
+  };
+
+  interval.round = function(date) {
+    var d0 = interval(date),
+        d1 = interval.ceil(date);
+    return date - d0 < d1 - date ? d0 : d1;
+  };
+
+  interval.offset = function(date, step) {
+    return offseti(date = new Date(+date), step == null ? 1 : Math.floor(step)), date;
+  };
+
+  interval.range = function(start, stop, step) {
+    var range = [], previous;
+    start = interval.ceil(start);
+    step = step == null ? 1 : Math.floor(step);
+    if (!(start < stop) || !(step > 0)) return range; // also handles Invalid Date
+    do range.push(previous = new Date(+start)), offseti(start, step), floori(start);
+    while (previous < start && start < stop);
+    return range;
+  };
+
+  interval.filter = function(test) {
+    return newInterval(function(date) {
+      if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
+    }, function(date, step) {
+      if (date >= date) {
+        if (step < 0) while (++step <= 0) {
+          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
+        } else while (--step >= 0) {
+          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
+        }
+      }
+    });
+  };
+
+  if (count) {
+    interval.count = function(start, end) {
+      t0$1.setTime(+start), t1$1.setTime(+end);
+      floori(t0$1), floori(t1$1);
+      return Math.floor(count(t0$1, t1$1));
+    };
+
+    interval.every = function(step) {
+      step = Math.floor(step);
+      return !isFinite(step) || !(step > 0) ? null
+          : !(step > 1) ? interval
+          : interval.filter(field
+              ? function(d) { return field(d) % step === 0; }
+              : function(d) { return interval.count(0, d) % step === 0; });
+    };
+  }
+
+  return interval;
+}
+
+var millisecond = newInterval(function() {
+  // noop
+}, function(date, step) {
+  date.setTime(+date + step);
+}, function(start, end) {
+  return end - start;
+});
+
+// An optimized implementation for this simple case.
+millisecond.every = function(k) {
+  k = Math.floor(k);
+  if (!isFinite(k) || !(k > 0)) return null;
+  if (!(k > 1)) return millisecond;
+  return newInterval(function(date) {
+    date.setTime(Math.floor(date / k) * k);
+  }, function(date, step) {
+    date.setTime(+date + step * k);
+  }, function(start, end) {
+    return (end - start) / k;
+  });
+};
+
+var durationSecond = 1e3;
+var durationMinute = 6e4;
+var durationHour = 36e5;
+var durationDay = 864e5;
+var durationWeek = 6048e5;
+
+var second = newInterval(function(date) {
+  date.setTime(Math.floor(date / durationSecond) * durationSecond);
+}, function(date, step) {
+  date.setTime(+date + step * durationSecond);
+}, function(start, end) {
+  return (end - start) / durationSecond;
+}, function(date) {
+  return date.getUTCSeconds();
+});
+
+var minute = newInterval(function(date) {
+  date.setTime(Math.floor(date / durationMinute) * durationMinute);
+}, function(date, step) {
+  date.setTime(+date + step * durationMinute);
+}, function(start, end) {
+  return (end - start) / durationMinute;
+}, function(date) {
+  return date.getMinutes();
+});
+
+var hour = newInterval(function(date) {
+  var offset = date.getTimezoneOffset() * durationMinute % durationHour;
+  if (offset < 0) offset += durationHour;
+  date.setTime(Math.floor((+date - offset) / durationHour) * durationHour + offset);
+}, function(date, step) {
+  date.setTime(+date + step * durationHour);
+}, function(start, end) {
+  return (end - start) / durationHour;
+}, function(date) {
+  return date.getHours();
+});
+
+var day = newInterval(function(date) {
+  date.setHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setDate(date.getDate() + step);
+}, function(start, end) {
+  return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute) / durationDay;
+}, function(date) {
+  return date.getDate() - 1;
+});
+
+function weekday(i) {
+  return newInterval(function(date) {
+    date.setDate(date.getDate() - (date.getDay() + 7 - i) % 7);
+    date.setHours(0, 0, 0, 0);
+  }, function(date, step) {
+    date.setDate(date.getDate() + step * 7);
+  }, function(start, end) {
+    return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute) / durationWeek;
+  });
+}
+
+var sunday = weekday(0);
+var monday = weekday(1);
+var tuesday = weekday(2);
+var wednesday = weekday(3);
+var thursday = weekday(4);
+var friday = weekday(5);
+var saturday = weekday(6);
+
+var month = newInterval(function(date) {
+  date.setDate(1);
+  date.setHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setMonth(date.getMonth() + step);
+}, function(start, end) {
+  return end.getMonth() - start.getMonth() + (end.getFullYear() - start.getFullYear()) * 12;
+}, function(date) {
+  return date.getMonth();
+});
+
+var year = newInterval(function(date) {
+  date.setMonth(0, 1);
+  date.setHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setFullYear(date.getFullYear() + step);
+}, function(start, end) {
+  return end.getFullYear() - start.getFullYear();
+}, function(date) {
+  return date.getFullYear();
+});
+
+// An optimized implementation for this simple case.
+year.every = function(k) {
+  return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
+    date.setFullYear(Math.floor(date.getFullYear() / k) * k);
+    date.setMonth(0, 1);
+    date.setHours(0, 0, 0, 0);
+  }, function(date, step) {
+    date.setFullYear(date.getFullYear() + step * k);
+  });
+};
+
+var utcMinute = newInterval(function(date) {
+  date.setUTCSeconds(0, 0);
+}, function(date, step) {
+  date.setTime(+date + step * durationMinute);
+}, function(start, end) {
+  return (end - start) / durationMinute;
+}, function(date) {
+  return date.getUTCMinutes();
+});
+
+var utcHour = newInterval(function(date) {
+  date.setUTCMinutes(0, 0, 0);
+}, function(date, step) {
+  date.setTime(+date + step * durationHour);
+}, function(start, end) {
+  return (end - start) / durationHour;
+}, function(date) {
+  return date.getUTCHours();
+});
+
+var utcDay = newInterval(function(date) {
+  date.setUTCHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setUTCDate(date.getUTCDate() + step);
+}, function(start, end) {
+  return (end - start) / durationDay;
+}, function(date) {
+  return date.getUTCDate() - 1;
+});
+
+function utcWeekday(i) {
+  return newInterval(function(date) {
+    date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 7 - i) % 7);
+    date.setUTCHours(0, 0, 0, 0);
+  }, function(date, step) {
+    date.setUTCDate(date.getUTCDate() + step * 7);
+  }, function(start, end) {
+    return (end - start) / durationWeek;
+  });
+}
+
+var utcSunday = utcWeekday(0);
+var utcMonday = utcWeekday(1);
+var utcTuesday = utcWeekday(2);
+var utcWednesday = utcWeekday(3);
+var utcThursday = utcWeekday(4);
+var utcFriday = utcWeekday(5);
+var utcSaturday = utcWeekday(6);
+
+var utcMonth = newInterval(function(date) {
+  date.setUTCDate(1);
+  date.setUTCHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setUTCMonth(date.getUTCMonth() + step);
+}, function(start, end) {
+  return end.getUTCMonth() - start.getUTCMonth() + (end.getUTCFullYear() - start.getUTCFullYear()) * 12;
+}, function(date) {
+  return date.getUTCMonth();
+});
+
+var utcYear = newInterval(function(date) {
+  date.setUTCMonth(0, 1);
+  date.setUTCHours(0, 0, 0, 0);
+}, function(date, step) {
+  date.setUTCFullYear(date.getUTCFullYear() + step);
+}, function(start, end) {
+  return end.getUTCFullYear() - start.getUTCFullYear();
+}, function(date) {
+  return date.getUTCFullYear();
+});
+
+// An optimized implementation for this simple case.
+utcYear.every = function(k) {
+  return !isFinite(k = Math.floor(k)) || !(k > 0) ? null : newInterval(function(date) {
+    date.setUTCFullYear(Math.floor(date.getUTCFullYear() / k) * k);
+    date.setUTCMonth(0, 1);
+    date.setUTCHours(0, 0, 0, 0);
+  }, function(date, step) {
+    date.setUTCFullYear(date.getUTCFullYear() + step * k);
+  });
+};
+
+function localDate(d) {
+  if (0 <= d.y && d.y < 100) {
+    var date = new Date(-1, d.m, d.d, d.H, d.M, d.S, d.L);
+    date.setFullYear(d.y);
+    return date;
+  }
+  return new Date(d.y, d.m, d.d, d.H, d.M, d.S, d.L);
+}
+
+function utcDate(d) {
+  if (0 <= d.y && d.y < 100) {
+    var date = new Date(Date.UTC(-1, d.m, d.d, d.H, d.M, d.S, d.L));
+    date.setUTCFullYear(d.y);
+    return date;
+  }
+  return new Date(Date.UTC(d.y, d.m, d.d, d.H, d.M, d.S, d.L));
+}
+
+function newYear(y) {
+  return {y: y, m: 0, d: 1, H: 0, M: 0, S: 0, L: 0};
+}
+
+function formatLocale$1(locale) {
+  var locale_dateTime = locale.dateTime,
+      locale_date = locale.date,
+      locale_time = locale.time,
+      locale_periods = locale.periods,
+      locale_weekdays = locale.days,
+      locale_shortWeekdays = locale.shortDays,
+      locale_months = locale.months,
+      locale_shortMonths = locale.shortMonths;
+
+  var periodRe = formatRe(locale_periods),
+      periodLookup = formatLookup(locale_periods),
+      weekdayRe = formatRe(locale_weekdays),
+      weekdayLookup = formatLookup(locale_weekdays),
+      shortWeekdayRe = formatRe(locale_shortWeekdays),
+      shortWeekdayLookup = formatLookup(locale_shortWeekdays),
+      monthRe = formatRe(locale_months),
+      monthLookup = formatLookup(locale_months),
+      shortMonthRe = formatRe(locale_shortMonths),
+      shortMonthLookup = formatLookup(locale_shortMonths);
+
+  var formats = {
+    "a": formatShortWeekday,
+    "A": formatWeekday,
+    "b": formatShortMonth,
+    "B": formatMonth,
+    "c": null,
+    "d": formatDayOfMonth,
+    "e": formatDayOfMonth,
+    "f": formatMicroseconds,
+    "H": formatHour24,
+    "I": formatHour12,
+    "j": formatDayOfYear,
+    "L": formatMilliseconds,
+    "m": formatMonthNumber,
+    "M": formatMinutes,
+    "p": formatPeriod,
+    "Q": formatUnixTimestamp,
+    "s": formatUnixTimestampSeconds,
+    "S": formatSeconds,
+    "u": formatWeekdayNumberMonday,
+    "U": formatWeekNumberSunday,
+    "V": formatWeekNumberISO,
+    "w": formatWeekdayNumberSunday,
+    "W": formatWeekNumberMonday,
+    "x": null,
+    "X": null,
+    "y": formatYear,
+    "Y": formatFullYear,
+    "Z": formatZone,
+    "%": formatLiteralPercent
+  };
+
+  var utcFormats = {
+    "a": formatUTCShortWeekday,
+    "A": formatUTCWeekday,
+    "b": formatUTCShortMonth,
+    "B": formatUTCMonth,
+    "c": null,
+    "d": formatUTCDayOfMonth,
+    "e": formatUTCDayOfMonth,
+    "f": formatUTCMicroseconds,
+    "H": formatUTCHour24,
+    "I": formatUTCHour12,
+    "j": formatUTCDayOfYear,
+    "L": formatUTCMilliseconds,
+    "m": formatUTCMonthNumber,
+    "M": formatUTCMinutes,
+    "p": formatUTCPeriod,
+    "Q": formatUnixTimestamp,
+    "s": formatUnixTimestampSeconds,
+    "S": formatUTCSeconds,
+    "u": formatUTCWeekdayNumberMonday,
+    "U": formatUTCWeekNumberSunday,
+    "V": formatUTCWeekNumberISO,
+    "w": formatUTCWeekdayNumberSunday,
+    "W": formatUTCWeekNumberMonday,
+    "x": null,
+    "X": null,
+    "y": formatUTCYear,
+    "Y": formatUTCFullYear,
+    "Z": formatUTCZone,
+    "%": formatLiteralPercent
+  };
+
+  var parses = {
+    "a": parseShortWeekday,
+    "A": parseWeekday,
+    "b": parseShortMonth,
+    "B": parseMonth,
+    "c": parseLocaleDateTime,
+    "d": parseDayOfMonth,
+    "e": parseDayOfMonth,
+    "f": parseMicroseconds,
+    "H": parseHour24,
+    "I": parseHour24,
+    "j": parseDayOfYear,
+    "L": parseMilliseconds,
+    "m": parseMonthNumber,
+    "M": parseMinutes,
+    "p": parsePeriod,
+    "Q": parseUnixTimestamp,
+    "s": parseUnixTimestampSeconds,
+    "S": parseSeconds,
+    "u": parseWeekdayNumberMonday,
+    "U": parseWeekNumberSunday,
+    "V": parseWeekNumberISO,
+    "w": parseWeekdayNumberSunday,
+    "W": parseWeekNumberMonday,
+    "x": parseLocaleDate,
+    "X": parseLocaleTime,
+    "y": parseYear,
+    "Y": parseFullYear,
+    "Z": parseZone,
+    "%": parseLiteralPercent
+  };
+
+  // These recursive directive definitions must be deferred.
+  formats.x = newFormat(locale_date, formats);
+  formats.X = newFormat(locale_time, formats);
+  formats.c = newFormat(locale_dateTime, formats);
+  utcFormats.x = newFormat(locale_date, utcFormats);
+  utcFormats.X = newFormat(locale_time, utcFormats);
+  utcFormats.c = newFormat(locale_dateTime, utcFormats);
+
+  function newFormat(specifier, formats) {
+    return function(date) {
+      var string = [],
+          i = -1,
+          j = 0,
+          n = specifier.length,
+          c,
+          pad,
+          format;
+
+      if (!(date instanceof Date)) date = new Date(+date);
+
+      while (++i < n) {
+        if (specifier.charCodeAt(i) === 37) {
+          string.push(specifier.slice(j, i));
+          if ((pad = pads[c = specifier.charAt(++i)]) != null) c = specifier.charAt(++i);
+          else pad = c === "e" ? " " : "0";
+          if (format = formats[c]) c = format(date, pad);
+          string.push(c);
+          j = i + 1;
+        }
+      }
+
+      string.push(specifier.slice(j, i));
+      return string.join("");
+    };
+  }
+
+  function newParse(specifier, newDate) {
+    return function(string) {
+      var d = newYear(1900),
+          i = parseSpecifier(d, specifier, string += "", 0),
+          week, day$$1;
+      if (i != string.length) return null;
+
+      // If a UNIX timestamp is specified, return it.
+      if ("Q" in d) return new Date(d.Q);
+
+      // The am-pm flag is 0 for AM, and 1 for PM.
+      if ("p" in d) d.H = d.H % 12 + d.p * 12;
+
+      // Convert day-of-week and week-of-year to day-of-year.
+      if ("V" in d) {
+        if (d.V < 1 || d.V > 53) return null;
+        if (!("w" in d)) d.w = 1;
+        if ("Z" in d) {
+          week = utcDate(newYear(d.y)), day$$1 = week.getUTCDay();
+          week = day$$1 > 4 || day$$1 === 0 ? utcMonday.ceil(week) : utcMonday(week);
+          week = utcDay.offset(week, (d.V - 1) * 7);
+          d.y = week.getUTCFullYear();
+          d.m = week.getUTCMonth();
+          d.d = week.getUTCDate() + (d.w + 6) % 7;
+        } else {
+          week = newDate(newYear(d.y)), day$$1 = week.getDay();
+          week = day$$1 > 4 || day$$1 === 0 ? monday.ceil(week) : monday(week);
+          week = day.offset(week, (d.V - 1) * 7);
+          d.y = week.getFullYear();
+          d.m = week.getMonth();
+          d.d = week.getDate() + (d.w + 6) % 7;
+        }
+      } else if ("W" in d || "U" in d) {
+        if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
+        day$$1 = "Z" in d ? utcDate(newYear(d.y)).getUTCDay() : newDate(newYear(d.y)).getDay();
+        d.m = 0;
+        d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day$$1 + 5) % 7 : d.w + d.U * 7 - (day$$1 + 6) % 7;
+      }
+
+      // If a time zone is specified, all fields are interpreted as UTC and then
+      // offset according to the specified time zone.
+      if ("Z" in d) {
+        d.H += d.Z / 100 | 0;
+        d.M += d.Z % 100;
+        return utcDate(d);
+      }
+
+      // Otherwise, all fields are in local time.
+      return newDate(d);
+    };
+  }
+
+  function parseSpecifier(d, specifier, string, j) {
+    var i = 0,
+        n = specifier.length,
+        m = string.length,
+        c,
+        parse;
+
+    while (i < n) {
+      if (j >= m) return -1;
+      c = specifier.charCodeAt(i++);
+      if (c === 37) {
+        c = specifier.charAt(i++);
+        parse = parses[c in pads ? specifier.charAt(i++) : c];
+        if (!parse || ((j = parse(d, string, j)) < 0)) return -1;
+      } else if (c != string.charCodeAt(j++)) {
+        return -1;
+      }
+    }
+
+    return j;
+  }
+
+  function parsePeriod(d, string, i) {
+    var n = periodRe.exec(string.slice(i));
+    return n ? (d.p = periodLookup[n[0].toLowerCase()], i + n[0].length) : -1;
+  }
+
+  function parseShortWeekday(d, string, i) {
+    var n = shortWeekdayRe.exec(string.slice(i));
+    return n ? (d.w = shortWeekdayLookup[n[0].toLowerCase()], i + n[0].length) : -1;
+  }
+
+  function parseWeekday(d, string, i) {
+    var n = weekdayRe.exec(string.slice(i));
+    return n ? (d.w = weekdayLookup[n[0].toLowerCase()], i + n[0].length) : -1;
+  }
+
+  function parseShortMonth(d, string, i) {
+    var n = shortMonthRe.exec(string.slice(i));
+    return n ? (d.m = shortMonthLookup[n[0].toLowerCase()], i + n[0].length) : -1;
+  }
+
+  function parseMonth(d, string, i) {
+    var n = monthRe.exec(string.slice(i));
+    return n ? (d.m = monthLookup[n[0].toLowerCase()], i + n[0].length) : -1;
+  }
+
+  function parseLocaleDateTime(d, string, i) {
+    return parseSpecifier(d, locale_dateTime, string, i);
+  }
+
+  function parseLocaleDate(d, string, i) {
+    return parseSpecifier(d, locale_date, string, i);
+  }
+
+  function parseLocaleTime(d, string, i) {
+    return parseSpecifier(d, locale_time, string, i);
+  }
+
+  function formatShortWeekday(d) {
+    return locale_shortWeekdays[d.getDay()];
+  }
+
+  function formatWeekday(d) {
+    return locale_weekdays[d.getDay()];
+  }
+
+  function formatShortMonth(d) {
+    return locale_shortMonths[d.getMonth()];
+  }
+
+  function formatMonth(d) {
+    return locale_months[d.getMonth()];
+  }
+
+  function formatPeriod(d) {
+    return locale_periods[+(d.getHours() >= 12)];
+  }
+
+  function formatUTCShortWeekday(d) {
+    return locale_shortWeekdays[d.getUTCDay()];
+  }
+
+  function formatUTCWeekday(d) {
+    return locale_weekdays[d.getUTCDay()];
+  }
+
+  function formatUTCShortMonth(d) {
+    return locale_shortMonths[d.getUTCMonth()];
+  }
+
+  function formatUTCMonth(d) {
+    return locale_months[d.getUTCMonth()];
+  }
+
+  function formatUTCPeriod(d) {
+    return locale_periods[+(d.getUTCHours() >= 12)];
+  }
+
+  return {
+    format: function(specifier) {
+      var f = newFormat(specifier += "", formats);
+      f.toString = function() { return specifier; };
+      return f;
+    },
+    parse: function(specifier) {
+      var p = newParse(specifier += "", localDate);
+      p.toString = function() { return specifier; };
+      return p;
+    },
+    utcFormat: function(specifier) {
+      var f = newFormat(specifier += "", utcFormats);
+      f.toString = function() { return specifier; };
+      return f;
+    },
+    utcParse: function(specifier) {
+      var p = newParse(specifier, utcDate);
+      p.toString = function() { return specifier; };
+      return p;
+    }
+  };
+}
+
+var pads = {"-": "", "_": " ", "0": "0"},
+    numberRe = /^\s*\d+/, // note: ignores next directive
+    percentRe = /^%/,
+    requoteRe = /[\\^$*+?|[\]().{}]/g;
+
+function pad(value, fill, width) {
+  var sign = value < 0 ? "-" : "",
+      string = (sign ? -value : value) + "",
+      length = string.length;
+  return sign + (length < width ? new Array(width - length + 1).join(fill) + string : string);
+}
+
+function requote(s) {
+  return s.replace(requoteRe, "\\$&");
+}
+
+function formatRe(names) {
+  return new RegExp("^(?:" + names.map(requote).join("|") + ")", "i");
+}
+
+function formatLookup(names) {
+  var map = {}, i = -1, n = names.length;
+  while (++i < n) map[names[i].toLowerCase()] = i;
+  return map;
+}
+
+function parseWeekdayNumberSunday(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 1));
+  return n ? (d.w = +n[0], i + n[0].length) : -1;
+}
+
+function parseWeekdayNumberMonday(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 1));
+  return n ? (d.u = +n[0], i + n[0].length) : -1;
+}
+
+function parseWeekNumberSunday(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.U = +n[0], i + n[0].length) : -1;
+}
+
+function parseWeekNumberISO(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.V = +n[0], i + n[0].length) : -1;
+}
+
+function parseWeekNumberMonday(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.W = +n[0], i + n[0].length) : -1;
+}
+
+function parseFullYear(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 4));
+  return n ? (d.y = +n[0], i + n[0].length) : -1;
+}
+
+function parseYear(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.y = +n[0] + (+n[0] > 68 ? 1900 : 2000), i + n[0].length) : -1;
+}
+
+function parseZone(d, string, i) {
+  var n = /^(Z)|([+-]\d\d)(?::?(\d\d))?/.exec(string.slice(i, i + 6));
+  return n ? (d.Z = n[1] ? 0 : -(n[2] + (n[3] || "00")), i + n[0].length) : -1;
+}
+
+function parseMonthNumber(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.m = n[0] - 1, i + n[0].length) : -1;
+}
+
+function parseDayOfMonth(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.d = +n[0], i + n[0].length) : -1;
+}
+
+function parseDayOfYear(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 3));
+  return n ? (d.m = 0, d.d = +n[0], i + n[0].length) : -1;
+}
+
+function parseHour24(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.H = +n[0], i + n[0].length) : -1;
+}
+
+function parseMinutes(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.M = +n[0], i + n[0].length) : -1;
+}
+
+function parseSeconds(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 2));
+  return n ? (d.S = +n[0], i + n[0].length) : -1;
+}
+
+function parseMilliseconds(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 3));
+  return n ? (d.L = +n[0], i + n[0].length) : -1;
+}
+
+function parseMicroseconds(d, string, i) {
+  var n = numberRe.exec(string.slice(i, i + 6));
+  return n ? (d.L = Math.floor(n[0] / 1000), i + n[0].length) : -1;
+}
+
+function parseLiteralPercent(d, string, i) {
+  var n = percentRe.exec(string.slice(i, i + 1));
+  return n ? i + n[0].length : -1;
+}
+
+function parseUnixTimestamp(d, string, i) {
+  var n = numberRe.exec(string.slice(i));
+  return n ? (d.Q = +n[0], i + n[0].length) : -1;
+}
+
+function parseUnixTimestampSeconds(d, string, i) {
+  var n = numberRe.exec(string.slice(i));
+  return n ? (d.Q = (+n[0]) * 1000, i + n[0].length) : -1;
+}
+
+function formatDayOfMonth(d, p) {
+  return pad(d.getDate(), p, 2);
+}
+
+function formatHour24(d, p) {
+  return pad(d.getHours(), p, 2);
+}
+
+function formatHour12(d, p) {
+  return pad(d.getHours() % 12 || 12, p, 2);
+}
+
+function formatDayOfYear(d, p) {
+  return pad(1 + day.count(year(d), d), p, 3);
+}
+
+function formatMilliseconds(d, p) {
+  return pad(d.getMilliseconds(), p, 3);
+}
+
+function formatMicroseconds(d, p) {
+  return formatMilliseconds(d, p) + "000";
+}
+
+function formatMonthNumber(d, p) {
+  return pad(d.getMonth() + 1, p, 2);
+}
+
+function formatMinutes(d, p) {
+  return pad(d.getMinutes(), p, 2);
+}
+
+function formatSeconds(d, p) {
+  return pad(d.getSeconds(), p, 2);
+}
+
+function formatWeekdayNumberMonday(d) {
+  var day$$1 = d.getDay();
+  return day$$1 === 0 ? 7 : day$$1;
+}
+
+function formatWeekNumberSunday(d, p) {
+  return pad(sunday.count(year(d), d), p, 2);
+}
+
+function formatWeekNumberISO(d, p) {
+  var day$$1 = d.getDay();
+  d = (day$$1 >= 4 || day$$1 === 0) ? thursday(d) : thursday.ceil(d);
+  return pad(thursday.count(year(d), d) + (year(d).getDay() === 4), p, 2);
+}
+
+function formatWeekdayNumberSunday(d) {
+  return d.getDay();
+}
+
+function formatWeekNumberMonday(d, p) {
+  return pad(monday.count(year(d), d), p, 2);
+}
+
+function formatYear(d, p) {
+  return pad(d.getFullYear() % 100, p, 2);
+}
+
+function formatFullYear(d, p) {
+  return pad(d.getFullYear() % 10000, p, 4);
+}
+
+function formatZone(d) {
+  var z = d.getTimezoneOffset();
+  return (z > 0 ? "-" : (z *= -1, "+"))
+      + pad(z / 60 | 0, "0", 2)
+      + pad(z % 60, "0", 2);
+}
+
+function formatUTCDayOfMonth(d, p) {
+  return pad(d.getUTCDate(), p, 2);
+}
+
+function formatUTCHour24(d, p) {
+  return pad(d.getUTCHours(), p, 2);
+}
+
+function formatUTCHour12(d, p) {
+  return pad(d.getUTCHours() % 12 || 12, p, 2);
+}
+
+function formatUTCDayOfYear(d, p) {
+  return pad(1 + utcDay.count(utcYear(d), d), p, 3);
+}
+
+function formatUTCMilliseconds(d, p) {
+  return pad(d.getUTCMilliseconds(), p, 3);
+}
+
+function formatUTCMicroseconds(d, p) {
+  return formatUTCMilliseconds(d, p) + "000";
+}
+
+function formatUTCMonthNumber(d, p) {
+  return pad(d.getUTCMonth() + 1, p, 2);
+}
+
+function formatUTCMinutes(d, p) {
+  return pad(d.getUTCMinutes(), p, 2);
+}
+
+function formatUTCSeconds(d, p) {
+  return pad(d.getUTCSeconds(), p, 2);
+}
+
+function formatUTCWeekdayNumberMonday(d) {
+  var dow = d.getUTCDay();
+  return dow === 0 ? 7 : dow;
+}
+
+function formatUTCWeekNumberSunday(d, p) {
+  return pad(utcSunday.count(utcYear(d), d), p, 2);
+}
+
+function formatUTCWeekNumberISO(d, p) {
+  var day$$1 = d.getUTCDay();
+  d = (day$$1 >= 4 || day$$1 === 0) ? utcThursday(d) : utcThursday.ceil(d);
+  return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p, 2);
+}
+
+function formatUTCWeekdayNumberSunday(d) {
+  return d.getUTCDay();
+}
+
+function formatUTCWeekNumberMonday(d, p) {
+  return pad(utcMonday.count(utcYear(d), d), p, 2);
+}
+
+function formatUTCYear(d, p) {
+  return pad(d.getUTCFullYear() % 100, p, 2);
+}
+
+function formatUTCFullYear(d, p) {
+  return pad(d.getUTCFullYear() % 10000, p, 4);
+}
+
+function formatUTCZone() {
+  return "+0000";
+}
+
+function formatLiteralPercent() {
+  return "%";
+}
+
+function formatUnixTimestamp(d) {
+  return +d;
+}
+
+function formatUnixTimestampSeconds(d) {
+  return Math.floor(+d / 1000);
+}
+
+var locale$1;
+var timeFormat;
+var timeParse;
+var utcFormat;
+var utcParse;
+
+defaultLocale$1({
+  dateTime: "%x, %X",
+  date: "%-m/%-d/%Y",
+  time: "%-I:%M:%S %p",
+  periods: ["AM", "PM"],
+  days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+});
+
+function defaultLocale$1(definition) {
+  locale$1 = formatLocale$1(definition);
+  timeFormat = locale$1.format;
+  timeParse = locale$1.parse;
+  utcFormat = locale$1.utcFormat;
+  utcParse = locale$1.utcParse;
+  return locale$1;
+}
+
+var isoSpecifier = "%Y-%m-%dT%H:%M:%S.%LZ";
+
+function formatIsoNative(date) {
+  return date.toISOString();
+}
+
+var formatIso = Date.prototype.toISOString
+    ? formatIsoNative
+    : utcFormat(isoSpecifier);
+
+function parseIsoNative(string) {
+  var date = new Date(string);
+  return isNaN(date) ? null : date;
+}
+
+var parseIso = +new Date("2000-01-01T00:00:00.000Z")
+    ? parseIsoNative
+    : utcParse(isoSpecifier);
+
+/* describe/Histogram.html generated by Svelte v1.64.0 */
+
+var xScale_ = linear$2();
+var xScaleBand_ = band();
+var yScale_ = linear$2();
+
+const pct = (val) => {
+    if (!val) return '0%';
+    if (val < 0.01) return '<1%';
+    return (val*100).toFixed(0)+'%';
+};
+
+function NAs({ values }) {
+    return values.filter(d => typeof d == 'string' || Number.isNaN(d)).length;
+}
+function validValues({ values }) {
+    return values.filter(d => typeof d == 'number' && !Number.isNaN(d));
+}
+function stats({ validValues, format }) {
+    const xmin = min(validValues);
+    const xmax = max(validValues);
+    const xmean = mean(validValues);
+    const xmed = median(validValues);
+    return [
+        {x:xmin, label: format(xmin), name: 'Min'},
+        {x:xmax, label: format(xmax), name: 'Max'},
+        {x:xmean, label: format(xmean), name: "Mittelwert"},
+        {x:xmed, label: format(xmed), name: "Median" }
+    ];
+}
+function niceDomain({ validValues }) {
+    return linear$2()
+        .domain(extent(validValues))
+        .nice().domain();
+}
+function bins({ niceDomain, validValues }) {
+    // const tickCnt = Math.min(_uniq(validValues).length, 14);
+    const dom = niceDomain;
+    // const classw = (s[1]-s[0]);
+    const bins = histogram()
+        .domain(dom)
+        .thresholds(sturges)(validValues);
+    const bin_widths = _countBy(bins.map(b => b.x1 - b.x0));
+    if (bins.length > 2 && _keys(bin_widths).length > 1) {
+        // check first and last bin
+        const binw = bins[1].x1 - bins[1].x0;
+        const lst = dom[0] + Math.ceil((dom[1]-dom[0])/binw)*binw;
+        return histogram().domain([dom[0], lst])
+            .thresholds(_range(dom[0], lst+binw*0.4, binw))(validValues);
+    }
+    return bins;
+}
+function innerWidth({ width, padding }) {
+    return width - padding.left - padding.right;
+}
+function xScaleBand({ bins, innerWidth }) {
+    return xScaleBand_
+        .domain(bins.map(d => d.x0))
+        .paddingInner(0.1)
+        .rangeRound([0, innerWidth])
+        .align(0);
+}
+function xScale({ niceDomain, bins, xScaleBand }) {
+    return xScale_
+        .domain(niceDomain)
+        .rangeRound([0, xScaleBand.step() * bins.length]);
+}
+function ticks$1({ xScale, format }) {
+    return xScale.ticks(4).map(x => {
+        return {x, label:format(x)};
+    });
+}
+function innerHeight({ height, padding }) {
+    return height - padding.bottom - padding.top;
+}
+function yScale({ innerHeight, bins }) {
+    return yScale_
+        .domain([0, max(bins, function(d) { return d.length; })])
+        .range([innerHeight, 0]);
+}
+function barWidth({ bins, xScale }) {
+    return xScale(bins[0].x1) - xScale(bins[0].x0) - 1
+}
+function data$4() {
+    return {
+        format: d => d,
+        t: 0,
+        padding: { top: 10, right: 65, bottom: 20, left: 5 },
+        height: 200,
+        width: 500,
+        values: [],
+        highlight: false
+    };
+}
+function tooltip(bin, i, bins, len) {
+    const tt = i === 0 ? "$1 Werte ($2) sind kleiner $4" :
+        i == bins.length-1 ? "$1 Werte ($2) sind größer oder gleich $3" :
+        "$1 Werte ($2) sind ≥ $3 und < $4";
+    return tt.replace('$1', bin.length)
+        .replace('$2', pct(bin.length / len))
+        .replace('$3', toFixed(bin.x0))
+        .replace('$4', toFixed(bin.x1));
+}
+var methods$2 = {
+    show (value) {
+        this.set({highlight: value});
+    },
+    resize: function () {
+        var bcr = this.refs.svg.getBoundingClientRect();
+
+        this.set({
+            width: bcr.right - bcr.left,
+            height: bcr.bottom - bcr.top
+        });
+    }
+};
+
+function oncreate$2() {
+    this.resize();
+}
+function create_main_fragment$4(component, state) {
+	var h3, text_value = "Werteverteilung (Histogramm)", text, text_1, svg, g, g_1, each_anchor, g_1_transform_value, g_2, g_transform_value, text_2, ul, each_2_anchor, text_3, p, raw_value = "Das obige Diagramm zeigt wie die Werte der ausgewählten Spalte verteilt sind. <a href='https://academy.datawrapper.de/article/136-histogram-min-max-median-mean' target='_blank'>Erfahre mehr...</a>";
+
+	var each_value = state.ticks;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(component, assign(assign({}, state), {
+			each_value: each_value,
+			tick: each_value[i],
+			tick_index: i
+		}));
+	}
+
+	var if_block = (state.highlight) && create_if_block$2(component, state);
+
+	var each_value_1 = state.bins;
+
+	var each_1_blocks = [];
+
+	for (var i = 0; i < each_value_1.length; i += 1) {
+		each_1_blocks[i] = create_each_block_1$1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			bin: each_value_1[i],
+			i: i
+		}));
+	}
+
+	var each_value_2 = state.stats;
+
+	var each_2_blocks = [];
+
+	for (var i = 0; i < each_value_2.length; i += 1) {
+		each_2_blocks[i] = create_each_block_2$1(component, assign(assign({}, state), {
+			each_value_2: each_value_2,
+			s: each_value_2[i],
+			s_index: i
+		}));
+	}
+
+	var if_block_1 = (state.NAs>0) && create_if_block_1$1(component, state);
+
+	return {
+		c: function create() {
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n");
+			svg = createSvgElement("svg");
+			g = createSvgElement("g");
+			g_1 = createSvgElement("g");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+			if (if_block) if_block.c();
+			g_2 = createSvgElement("g");
+
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].c();
+			}
+
+			text_2 = createText("\n");
+			ul = createElement("ul");
+
+			for (var i = 0; i < each_2_blocks.length; i += 1) {
+				each_2_blocks[i].c();
+			}
+
+			each_2_anchor = createComment();
+			if (if_block_1) if_block_1.c();
+			text_3 = createText("\n");
+			p = createElement("p");
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "svelte-4derlj";
+			setAttribute(g_1, "class", "axis x-axis svelte-4derlj");
+			setAttribute(g_1, "transform", g_1_transform_value = "translate(0, " + state.innerHeight + ")");
+			setAttribute(g_2, "class", "bars svelte-4derlj");
+			setAttribute(g, "transform", g_transform_value = "translate(" + ([state.padding.left,state.padding.top]) + ")");
+			setAttribute(svg, "class", "svelte-4derlj");
+			ul.className = "svelte-4derlj";
+			p.className = "learn-more";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(h3, target, anchor);
+			appendNode(text, h3);
+			insertNode(text_1, target, anchor);
+			insertNode(svg, target, anchor);
+			appendNode(g, svg);
+			appendNode(g_1, g);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(g_1, null);
+			}
+
+			appendNode(each_anchor, g_1);
+			if (if_block) if_block.m(g_1, null);
+			appendNode(g_2, g);
+
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].m(g_2, null);
+			}
+
+			component.refs.svg = svg;
+			insertNode(text_2, target, anchor);
+			insertNode(ul, target, anchor);
+
+			for (var i = 0; i < each_2_blocks.length; i += 1) {
+				each_2_blocks[i].m(ul, null);
+			}
+
+			appendNode(each_2_anchor, ul);
+			if (if_block_1) if_block_1.m(ul, null);
+			insertNode(text_3, target, anchor);
+			insertNode(p, target, anchor);
+			p.innerHTML = raw_value;
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.ticks;
+
+			if (changed.xScale || changed.ticks) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						tick: each_value[i],
+						tick_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$2(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(g_1, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (state.highlight) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$2(component, state);
+					if_block.c();
+					if_block.m(g_1, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if ((changed.innerHeight) && g_1_transform_value !== (g_1_transform_value = "translate(0, " + state.innerHeight + ")")) {
+				setAttribute(g_1, "transform", g_1_transform_value);
+			}
+
+			var each_value_1 = state.bins;
+
+			if (changed.xScaleBand || changed.bins || changed.yScale || changed.validValues || changed.innerHeight) {
+				for (var i = 0; i < each_value_1.length; i += 1) {
+					var each_1_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						bin: each_value_1[i],
+						i: i
+					});
+
+					if (each_1_blocks[i]) {
+						each_1_blocks[i].p(changed, each_1_context);
+					} else {
+						each_1_blocks[i] = create_each_block_1$1(component, each_1_context);
+						each_1_blocks[i].c();
+						each_1_blocks[i].m(g_2, null);
+					}
+				}
+
+				for (; i < each_1_blocks.length; i += 1) {
+					each_1_blocks[i].u();
+					each_1_blocks[i].d();
+				}
+				each_1_blocks.length = each_value_1.length;
+			}
+
+			if ((changed.padding) && g_transform_value !== (g_transform_value = "translate(" + ([state.padding.left,state.padding.top]) + ")")) {
+				setAttribute(g, "transform", g_transform_value);
+			}
+
+			var each_value_2 = state.stats;
+
+			if (changed.stats) {
+				for (var i = 0; i < each_value_2.length; i += 1) {
+					var each_2_context = assign(assign({}, state), {
+						each_value_2: each_value_2,
+						s: each_value_2[i],
+						s_index: i
+					});
+
+					if (each_2_blocks[i]) {
+						each_2_blocks[i].p(changed, each_2_context);
+					} else {
+						each_2_blocks[i] = create_each_block_2$1(component, each_2_context);
+						each_2_blocks[i].c();
+						each_2_blocks[i].m(ul, each_2_anchor);
+					}
+				}
+
+				for (; i < each_2_blocks.length; i += 1) {
+					each_2_blocks[i].u();
+					each_2_blocks[i].d();
+				}
+				each_2_blocks.length = each_value_2.length;
+			}
+
+			if (state.NAs>0) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1$1(component, state);
+					if_block_1.c();
+					if_block_1.m(ul, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+		},
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(h3);
+			detachNode(text_1);
+			detachNode(svg);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			if (if_block) if_block.u();
+
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].u();
+			}
+
+			detachNode(text_2);
+			detachNode(ul);
+
+			for (var i = 0; i < each_2_blocks.length; i += 1) {
+				each_2_blocks[i].u();
+			}
+
+			if (if_block_1) if_block_1.u();
+			detachNode(text_3);
+			detachNode(p);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+
+			if (if_block) if_block.d();
+
+			destroyEach(each_1_blocks);
+
+			if (component.refs.svg === svg) component.refs.svg = null;
+
+			destroyEach(each_2_blocks);
+
+			if (if_block_1) if_block_1.d();
+		}
+	};
+}
+
+// (6:12) {#each ticks as tick}
+function create_each_block$2(component, state) {
+	var tick = state.tick, each_value = state.each_value, tick_index = state.tick_index;
+	var g, line, text, text_1_value = tick.label, text_1, g_transform_value;
+
+	return {
+		c: function create() {
+			g = createSvgElement("g");
+			line = createSvgElement("line");
+			text = createSvgElement("text");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(line, "y2", "3");
+			setAttribute(line, "class", "svelte-4derlj");
+			setAttribute(text, "y", "5");
+			setAttribute(text, "class", "svelte-4derlj");
+			setAttribute(g, "class", "tick svelte-4derlj");
+			setAttribute(g, "transform", g_transform_value = "translate(" + state.xScale(tick.x) + ",0)");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(g, target, anchor);
+			appendNode(line, g);
+			appendNode(text, g);
+			appendNode(text_1, text);
+		},
+
+		p: function update(changed, state) {
+			tick = state.tick;
+			each_value = state.each_value;
+			tick_index = state.tick_index;
+			if ((changed.ticks) && text_1_value !== (text_1_value = tick.label)) {
+				text_1.data = text_1_value;
+			}
+
+			if ((changed.xScale || changed.ticks) && g_transform_value !== (g_transform_value = "translate(" + state.xScale(tick.x) + ",0)")) {
+				setAttribute(g, "transform", g_transform_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(g);
+		},
+
+		d: noop
+	};
+}
+
+// (12:12) {#if highlight}
+function create_if_block$2(component, state) {
+	var polygon, polygon_transform_value;
+
+	return {
+		c: function create() {
+			polygon = createSvgElement("polygon");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(polygon, "transform", polygon_transform_value = "translate(" + state.xScale(state.highlight.x) + ",0)");
+			setAttribute(polygon, "points", "0,0,4,6,-4,6");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(polygon, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.xScale || changed.highlight) && polygon_transform_value !== (polygon_transform_value = "translate(" + state.xScale(state.highlight.x) + ",0)")) {
+				setAttribute(polygon, "transform", polygon_transform_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(polygon);
+		},
+
+		d: noop
+	};
+}
+
+// (30:12) {#each bins as bin, i}
+function create_each_block_1$1(component, state) {
+	var bin = state.bin, each_value_1 = state.each_value_1, i = state.i;
+	var g, title, text_value = tooltip(bin,i,state.bins,state.validValues.length), text, rect, rect_width_value, rect_height_value, g_transform_value;
+
+	return {
+		c: function create() {
+			g = createSvgElement("g");
+			title = createSvgElement("title");
+			text = createText(text_value);
+			rect = createSvgElement("rect");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(rect, "width", rect_width_value = bin.x1 != bin.x0 ? state.xScaleBand.bandwidth() : 20);
+			setAttribute(rect, "height", rect_height_value = state.innerHeight - state.yScale(bin.length));
+			setAttribute(rect, "class", "svelte-4derlj");
+			setAttribute(g, "class", "bar");
+			setAttribute(g, "transform", g_transform_value = "translate(" + state.xScaleBand(bin.x0) + "," + state.yScale(bin.length) + ")");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(g, target, anchor);
+			appendNode(title, g);
+			appendNode(text, title);
+			appendNode(rect, g);
+		},
+
+		p: function update(changed, state) {
+			bin = state.bin;
+			each_value_1 = state.each_value_1;
+			i = state.i;
+			if ((changed.bins || changed.validValues) && text_value !== (text_value = tooltip(bin,i,state.bins,state.validValues.length))) {
+				text.data = text_value;
+			}
+
+			if ((changed.bins || changed.xScaleBand) && rect_width_value !== (rect_width_value = bin.x1 != bin.x0 ? state.xScaleBand.bandwidth() : 20)) {
+				setAttribute(rect, "width", rect_width_value);
+			}
+
+			if ((changed.innerHeight || changed.yScale || changed.bins) && rect_height_value !== (rect_height_value = state.innerHeight - state.yScale(bin.length))) {
+				setAttribute(rect, "height", rect_height_value);
+			}
+
+			if ((changed.xScaleBand || changed.bins || changed.yScale) && g_transform_value !== (g_transform_value = "translate(" + state.xScaleBand(bin.x0) + "," + state.yScale(bin.length) + ")")) {
+				setAttribute(g, "transform", g_transform_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(g);
+		},
+
+		d: noop
+	};
+}
+
+// (44:4) {#each stats as s}
+function create_each_block_2$1(component, state) {
+	var s = state.s, each_value_2 = state.each_value_2, s_index = state.s_index;
+	var li, text_value = s.name, text, text_1, tt, text_2_value = s.label, text_2;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			text = createText(text_value);
+			text_1 = createText(": ");
+			tt = createElement("tt");
+			text_2 = createText(text_2_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(tt, "mouseleave", mouseleave_handler);
+			addListener(tt, "mouseenter", mouseenter_handler);
+			tt.className = "svelte-4derlj";
+
+			tt._svelte = {
+				component: component,
+				each_value_2: state.each_value_2,
+				s_index: state.s_index
+			};
+
+			li.className = "svelte-4derlj";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(text, li);
+			appendNode(text_1, li);
+			appendNode(tt, li);
+			appendNode(text_2, tt);
+		},
+
+		p: function update(changed, state) {
+			s = state.s;
+			each_value_2 = state.each_value_2;
+			s_index = state.s_index;
+			if ((changed.stats) && text_value !== (text_value = s.name)) {
+				text.data = text_value;
+			}
+
+			if ((changed.stats) && text_2_value !== (text_2_value = s.label)) {
+				text_2.data = text_2_value;
+			}
+
+			tt._svelte.each_value_2 = state.each_value_2;
+			tt._svelte.s_index = state.s_index;
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(tt, "mouseleave", mouseleave_handler);
+			removeListener(tt, "mouseenter", mouseenter_handler);
+		}
+	};
+}
+
+// (48:4) {#if NAs>0}
+function create_if_block_1$1(component, state) {
+	var li, text_value = "Ungültig", text, text_1, tt, text_2, text_3, text_4_value = pct(state.NAs/state.values.length), text_4, text_5;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			text = createText(text_value);
+			text_1 = createText(": ");
+			tt = createElement("tt");
+			text_2 = createText(state.NAs);
+			text_3 = createText(" (");
+			text_4 = createText(text_4_value);
+			text_5 = createText(")");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(tt, "color", "#c71e1d");
+			tt.className = "svelte-4derlj";
+			li.className = "svelte-4derlj";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(text, li);
+			appendNode(text_1, li);
+			appendNode(tt, li);
+			appendNode(text_2, tt);
+			appendNode(text_3, li);
+			appendNode(text_4, li);
+			appendNode(text_5, li);
+		},
+
+		p: function update(changed, state) {
+			if (changed.NAs) {
+				text_2.data = state.NAs;
+			}
+
+			if ((changed.NAs || changed.values) && text_4_value !== (text_4_value = pct(state.NAs/state.values.length))) {
+				text_4.data = text_4_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: noop
+	};
+}
+
+function mouseleave_handler(event) {
+	var component = this._svelte.component;
+	component.show(false);
+}
+
+function mouseenter_handler(event) {
+	var component = this._svelte.component;
+	var each_value_2 = this._svelte.each_value_2, s_index = this._svelte.s_index, s = each_value_2[s_index];
+	component.show(s);
+}
+
+function Histogram(options) {
+	this._debugName = '<Histogram>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data$4(), options.data);
+	this._recompute({ values: 1, validValues: 1, format: 1, niceDomain: 1, width: 1, padding: 1, bins: 1, innerWidth: 1, xScaleBand: 1, xScale: 1, height: 1, innerHeight: 1 }, this._state);
+	if (!('values' in this._state)) console.warn("<Histogram> was created without expected data property 'values'");
+
+	if (!('format' in this._state)) console.warn("<Histogram> was created without expected data property 'format'");
+
+
+
+
+
+
+	if (!('width' in this._state)) console.warn("<Histogram> was created without expected data property 'width'");
+	if (!('padding' in this._state)) console.warn("<Histogram> was created without expected data property 'padding'");
+	if (!('height' in this._state)) console.warn("<Histogram> was created without expected data property 'height'");
+
+	if (!('highlight' in this._state)) console.warn("<Histogram> was created without expected data property 'highlight'");
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { values: 1, validValues: 1, format: 1, xScale: 1, niceDomain: 1, bins: 1, innerWidth: 1, xScaleBand: 1, innerHeight: 1, width: 1, padding: 1, height: 1, ticks: 1, highlight: 1, yScale: 1, stats: 1, NAs: 1 };
+		oncreate$2.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+	}
+
+	this._fragment = create_main_fragment$4(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Histogram.prototype, protoDev);
+assign(Histogram.prototype, methods$2);
+
+Histogram.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('NAs' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'NAs'");
+	if ('validValues' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'validValues'");
+	if ('stats' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'stats'");
+	if ('niceDomain' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'niceDomain'");
+	if ('bins' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'bins'");
+	if ('innerWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'innerWidth'");
+	if ('xScaleBand' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'xScaleBand'");
+	if ('xScale' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'xScale'");
+	if ('ticks' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'ticks'");
+	if ('innerHeight' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'innerHeight'");
+	if ('yScale' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'yScale'");
+	if ('barWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<Histogram>: Cannot set read-only property 'barWidth'");
+};
+
+Histogram.prototype._recompute = function _recompute(changed, state) {
+	if (changed.values) {
+		if (this._differs(state.NAs, (state.NAs = NAs(state)))) changed.NAs = true;
+		if (this._differs(state.validValues, (state.validValues = validValues(state)))) changed.validValues = true;
+	}
+
+	if (changed.validValues || changed.format) {
+		if (this._differs(state.stats, (state.stats = stats(state)))) changed.stats = true;
+	}
+
+	if (changed.validValues) {
+		if (this._differs(state.niceDomain, (state.niceDomain = niceDomain(state)))) changed.niceDomain = true;
+	}
+
+	if (changed.niceDomain || changed.validValues) {
+		if (this._differs(state.bins, (state.bins = bins(state)))) changed.bins = true;
+	}
+
+	if (changed.width || changed.padding) {
+		if (this._differs(state.innerWidth, (state.innerWidth = innerWidth(state)))) changed.innerWidth = true;
+	}
+
+	if (changed.bins || changed.innerWidth) {
+		if (this._differs(state.xScaleBand, (state.xScaleBand = xScaleBand(state)))) changed.xScaleBand = true;
+	}
+
+	if (changed.niceDomain || changed.bins || changed.xScaleBand) {
+		if (this._differs(state.xScale, (state.xScale = xScale(state)))) changed.xScale = true;
+	}
+
+	if (changed.xScale || changed.format) {
+		if (this._differs(state.ticks, (state.ticks = ticks$1(state)))) changed.ticks = true;
+	}
+
+	if (changed.height || changed.padding) {
+		if (this._differs(state.innerHeight, (state.innerHeight = innerHeight(state)))) changed.innerHeight = true;
+	}
+
+	if (changed.innerHeight || changed.bins) {
+		if (this._differs(state.yScale, (state.yScale = yScale(state)))) changed.yScale = true;
+	}
+
+	if (changed.bins || changed.xScale) {
+		if (this._differs(state.barWidth, (state.barWidth = barWidth(state)))) changed.barWidth = true;
+	}
+};
+
+/* controls/hot/Handsontable.html generated by Svelte v1.64.0 */
+
+let app = null;
+
+function currentResult({ searchResults, searchIndex }) {
+    if (!searchResults || !searchResults.length) return null;
+    const l = searchResults.length;
+    if (searchIndex < 0 || searchIndex >= l) {
+        while (searchIndex<0) searchIndex += l;
+        if (searchIndex > l) searchIndex %= l;
+    }
+    return searchResults[searchIndex];
+}
+function data$5() {
+    return {
+        data: '',
+        readonly: false,
+        skipRows: 0,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        sortBy: '-',
+        transpose: false,
+        activeColumn: null,
+        search: '',
+        searchResults: []
+    };
+}
+var methods$3 = {
+    render() {
+        const {hot} = this.get();
+        hot.render();
+    },
+    update() {
+        const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+
+        if (!data) return;
+
+        // get chart
+        const chart = this.store.get('dw_chart');
+
+        // pass dataset through chart to apply changes and computed columns
+        const ds = chart.dataset(dw.datasource.delimited({
+            csv: data,
+            transpose,
+            firstRowIsHeader,
+            skipRows
+        }).parse()).dataset();
+
+        this.set({columnOrder: ds.columnOrder()});
+
+        // construct HoT data array
+        const hot_data = [[]];
+        ds.eachColumn(c => hot_data[0].push(c.title()));
+
+        ds.eachRow(r => {
+            const row = [];
+            ds.eachColumn(col => row.push(col.raw(r)));
+            hot_data.push(row);
+        });
+
+        // pass data to hot
+        hot.loadData(hot_data);
+
+        const cellRenderer = getCellRenderer(this, ds, HOT, {});
+
+        hot.updateSettings({
+            cells: (row, col) => {
+                const {readonly} = this.get();
+                return {
+                    readOnly: readonly || (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
+                    renderer: cellRenderer
+                };
+            },
+            manualColumnMove: []
+        });
+
+        this.set({ds});
+        this.set({has_changes: chart.get('metadata.data.changes', []).length > 0});
+
+        HOT.hooks.once('afterRender', () => this.initCustomEvents());
+        hot.render();
+    },
+    dataChanged (cells) {
+        const {hot} = this.get();
+        let changed = false;
+        cells.forEach(([row, col, old_val, new_val]) => {
+            if (old_val != new_val) {
+                const chart = this.store.get('dw_chart');
+                const {transpose} = this.get();
+                const changes = chart.get('metadata.data.changes', []);
+                row = hot.toPhysicalRow(row);
+                col = chart.dataset().columnOrder()[col];
+                if (transpose) {
+                    // swap row and col
+                    const tmp = row;
+                    row = col;
+                    col = tmp;
+                }
+                // store new change
+                changes.push({
+                    column: col, row, value: new_val, time: (new Date()).getTime()
+                });
+                chart.set('metadata.data.changes', changes);
+                changed = true;
+            }
+        });
+        if (changed) {
+            setTimeout(() => {
+                this.update();
+                chart.save();
+            }, 100);
+        }
+    },
+    columnMoved (srcColumns, tgtIndex) {
+        const {hot} = this.get();
+        if (!srcColumns.length) return;
+        const {columnOrder} = this.get();
+        const newOrder = columnOrder.slice(0);
+        const after = columnOrder[tgtIndex];
+        const elements = newOrder.splice(srcColumns[0], srcColumns.length);
+        const insertAt = after === undefined ? newOrder.length : after ? newOrder.indexOf(after) : 0;
+        newOrder.splice(insertAt, 0, ...elements);
+        this.store.get('dw_chart')
+            .set('metadata.data.column-order', newOrder.slice(0));
+        this.set({columnOrder: newOrder});
+        // update selection
+        HOT.hooks.once('afterRender', () => {
+            setTimeout(() => {
+                this.fire('resetSort');
+                hot.selectCell(0, insertAt, hot.countRows()-1,
+                    insertAt+elements.length-1);
+            }, 10);
+        });
+        this.update();
+    },
+    updateHeight () {
+        const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
+        this.refs.hot.style.height = Math.min(500, h+10)+'px';
+    },
+    checkRange (r,c,r2,c2) {
+        // check if
+        // 1. only a single column is selected, and
+        // 2. the range starts at the first row, and
+        // 3. the range extends through he last row
+        const {hot} = this.get();
+        const {ds} = this.get();
+        const refs = this.refs;
+        if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
+            // const chart = this.store.get('dw_chart');
+            // this.set({activeColumn: chart.dataset().column(c)});
+            return;
+        }
+        if (c != c2 && r === 0 && r2 == hot.countRows()-1) {
+            const sel = [];
+            for (let i=Math.min(c,c2); i<=Math.max(c,c2); i ++) {
+                sel.push(+document.querySelector(`#data-preview .htCore tbody tr:first-child td:nth-child(${i+2})`).dataset.column);
+            }
+            this.set({multiSelection:  sel.map(i => ds.column(i)), activeColumn:null});
+            return;
+        }
+        this.set({activeColumn:null, multiSelection:false});
+    },
+    initCustomEvents () {
+        // wait a bit to make sure HoT is rendered
+        setTimeout(() => {
+            // catch click events on A,B,C,D... header row
+            this.refs.hot.querySelectorAll('.htCore thead th:first-child').forEach(th => {
+                th.removeEventListener('click', topLeftCornerClick);
+                th.addEventListener('click', topLeftCornerClick);
+            });
+            this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                th.removeEventListener('click', cellHeaderClick);
+                th.addEventListener('click', cellHeaderClick);
+            });
+        }, 500);
+    },
+
+    getColumnFormat(name) {
+        const chart = this.store.get('dw_chart');
+        const colFormats = chart.get('metadata.data.column-format', {});
+        return colFormats[name] || { type: 'auto', ignore: false };
+    }
+};
+
+function oncreate$3() {
+    app = this;
+    HOT.hooks.once('afterRender', () => this.initCustomEvents());
+
+    window.addEventListener('keyup', (evt) => {
+        const {activeColumn, ds} = this.get();
+        if (!activeColumn) return;
+        if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
+            evt.preventDefault();
+            evt.stopPropagation();
+            const cur_i = ds.indexOf(activeColumn.name());
+            if (evt.key == 'ArrowRight') {
+                // select next column
+                this.set({activeColumn: ds.column((cur_i+1) % ds.numColumns())});
+            } else {
+                // select prev column
+                this.set({activeColumn: ds.column((cur_i-1+ds.numColumns()) % ds.numColumns())});
+            }
+        }
+
+    });
+
+    const chart = this.store.get('dw_chart');
+
+    const hot = new HOT(this.refs.hot, {
+        data: [],
+        rowHeaders: (i) => {
+            const ti = hot.getPlugin('ColumnSorting').translateRow(i);
+            return ti+1;
+        },
+        colHeaders: true,
+        fixedRowsTop: 1,
+        filters: true,
+        dropdownMenu: true,
+        startRows: 13,
+        startCols: 8,
+        fillHandle: false,
+        stretchH: 'all',
+        height: 500,
+        manualColumnMove: true,
+        selectionMode: 'range',
+        autoColumnSize: {useHeaders: true, syncLimit: 5},
+        // comments: true,
+        // contextMenu: true,
+
+        // sorting
+        columnSorting: true,
+        sortIndicator: true,
+        sortFunction: function(sortOrder, columnMeta) {
+            if (columnMeta.col > -1) {
+                var column = chart.dataset().column(columnMeta.col);
+                var colType = column.type();
+                var plugin = hot.getPlugin('columnSorting');
+                return function(a, b) {
+                    var sortFunction;
+                    if (a[0] === 0) return -1;
+                    // replace with values
+                    a[1] = column.val(a[0]-1);
+                    b[1] = column.val(b[0]-1);
+                    if (colType == 'number') {
+                        // sort NaNs at bottom
+                        if (isNaN(a[1])) a[1] = !sortOrder ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+                        if (isNaN(b[1])) b[1] = !sortOrder ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+                    }
+                    if (colType == 'date') {
+                        if (typeof a[1] == 'string') a[1] = new Date(110,0,1);
+                        if (typeof b[1] == 'string') b[1] = new Date(110,0,1);
+                    }
+                    switch (colType) {
+                        case 'date':
+                            sortFunction = plugin.dateSort;
+                            break;
+                        case 'number':
+                            sortFunction = plugin.numericSort;
+                            break;
+                        default:
+                            sortFunction = plugin.defaultSort;
+                    }
+                    return sortFunction(sortOrder, columnMeta)(a, b);
+                };
+            }
+            return (a,b) => a[0]-b[0];
+        },
+        afterGetColHeader: (col, th) => {
+            const {activeColumn, ds} = this.get();
+            if (!ds || !ds.hasColumn(col)) return;
+            if ((col === 0 || col) && activeColumn && ds.column(col).name() == activeColumn.name()) {
+                th.classList.add('selected');
+            }
+
+            if (col === 0 || col) {
+                if (this.getColumnFormat(ds.column(col).name()).ignore) {
+                    th.classList.add('ignored');
+                } else {
+                    th.classList.remove('ignored');
+                }
+            }
+        },
+        // search
+        search: 'search'
+    });
+
+    window.HT = hot;
+    this.set({hot});
+
+    HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
+    HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
+    HOT.hooks.add('afterRender', () => this.updateHeight());
+    HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
+
+    this.observe('data', () => this.update());
+    this.observe('firstRowIsHeader', (v, vo) => {
+        if (v != vo && vo !== undefined) this.update();
+    });
+
+    this.observe('search', (query, oldquery) => {
+        if (query != oldquery) this.set({searchIndex:0});
+        const searchResults = hot.search.query(query);
+        this.set({searchResults});
+        hot.render();
+    });
+
+    this.observe('currentResult', (res) => {
+        // console.log('cur search res', res);
+        if (!res || !hot) return;
+        // this is a weird hack to deal with HoT's problems to scroll
+        // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
+        // the first scrollViewportTo will trigger a render event
+        hot.render(); // to update the hightlight colors
+        hot.scrollViewportTo(res.row, res.col);
+        setTimeout(() => {
+            // one more time
+            hot.scrollViewportTo(res.row, res.col);
+        }, 100);
+    });
+
+    this.observe('activeColumn', () => {
+        setTimeout(() => hot.render(), 10);
+    });
+
+    // if (hot.sortingEnabled) {
+    this.observe('sorting', (sorting) => {
+        hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
+    });
+    // }
+
+}
+function getCellRenderer(app, dataset, Handsontable) {
+    const colTypeIcons = {
+        date: 'fa fa-clock-o'
+    };
+    function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
+        var escaped = dw.utils.purifyHtml(Handsontable.helper.stringify(value));
+        TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
+    }
+    return function(instance, td, row, col, prop, value, cellProperties) {
+        if (dataset.numColumns() <= col || !dataset.hasColumn(col)) return;
+        const column = dataset.column(col);
+        const {searchResults, currentResult, activeColumn} = app.get();
+        const colFormat = app.getColumnFormat(column.name());
+        row = instance.toPhysicalRow(row);
+        if (row > 0) {
+            var formatter = chart.columnFormatter(column);
+            value = formatter(column.val(row - 1), true);
+        }
+        if (parseInt(value) < 0) { // if row contains negative number
+            td.classList.add('negative');
+        }
+        td.classList.add(column.type()+'Type');
+        td.dataset.column = col;
+
+        if (column.type() == 'text' && value && value.length > 70) {
+            value = value.substr(0,60)+'…';
+        }
+
+        if (row === 0) {
+            td.classList.add('firstRow');
+            if (colTypeIcons[column.type()]) {
+                value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+            }
+        } else {
+            td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
+        }
+        if (colFormat.ignore) {
+            td.classList.add('ignored');
+        }
+        if (activeColumn && activeColumn.name() == column.name()) {
+            td.classList.add('active');
+        }
+        const row_p = instance.getPlugin('columnSorting').untranslateRow(row);
+        searchResults.forEach(res => {
+            if (res.row == row_p && res.col == col) {
+                td.classList.add('htSearchResult');
+            }
+        });
+        if (currentResult && currentResult.row == row_p && currentResult.col == col) {
+            td.classList.add('htCurrentSearchResult');
+        }
+        if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+            td.classList.add('parsingError');
+        }
+        if (cellProperties.readOnly) td.classList.add('readOnly');
+
+        if (chart.dataCellChanged(col, row)) {
+            td.classList.add('changed');
+        }
+        HtmlCellRender(instance, td, row, col, prop, value, cellProperties);
+        // Reflect.apply(HtmlCellRender, this, arguments);
+    };
+}
+
+function topLeftCornerClick(evt) {
+    evt.preventDefault();
+    const {transpose} = app.get();
+    app.set({transpose: !transpose});
+    app.update();
+}
+
+function cellHeaderClick(evt) {
+    const th = this;
+    // reset the HoT selection
+    // find out which data column we're in
+    const k = th.parentNode.children.length;
+    let th_i = -1;
+    // (stupid HTMLCollection has no indexOf)
+    for (let i=0; i<k; i++) {
+        if (th.parentNode.children.item(i) == th) {
+            th_i = i;
+            break;
+        }
+    }
+    // find column index
+    const col_i = +app.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+    const chart = app.store.get('dw_chart');
+    const {activeColumn,hot} = app.get();
+    if (chart.dataset().hasColumn(col_i)) {
+        const newActive = chart.dataset().column(+col_i);
+        // set active column (or unset if it's already set)
+        if (activeColumn && activeColumn.name() == newActive.name()) {
+            evt.target.parentNode.classList.remove('selected');
+            app.set({activeColumn:false});
+            hot.deselectCell();
+        } else {
+            evt.target.parentNode.classList.add('selected');
+            app.set({activeColumn: newActive});
+        }
+    }
+}
+
+function create_main_fragment$5(component, state) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.id = "data-preview";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			component.refs.hot = div;
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.hot === div) component.refs.hot = null;
+		}
+	};
+}
+
+function Handsontable_1(options) {
+	this._debugName = '<Handsontable_1>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data$5(), options.data);
+	this._recompute({ searchResults: 1, searchIndex: 1 }, this._state);
+	if (!('searchResults' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchResults'");
+	if (!('searchIndex' in this._state)) console.warn("<Handsontable_1> was created without expected data property 'searchIndex'");
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { searchResults: 1, searchIndex: 1 };
+		oncreate$3.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+	}
+
+	this._fragment = create_main_fragment$5(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Handsontable_1.prototype, protoDev);
+assign(Handsontable_1.prototype, methods$3);
+
+Handsontable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('currentResult' in newState && !this._updatingReadonlyProperty) throw new Error("<Handsontable_1>: Cannot set read-only property 'currentResult'");
+};
+
+Handsontable_1.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchResults || changed.searchIndex) {
+		if (this._differs(state.currentResult, (state.currentResult = currentResult(state)))) changed.currentResult = true;
+	}
+};
+
+/* describe/App.html generated by Svelte v1.64.0 */
+
+function searchIndexSafe({ searchIndex, searchResults }) {
+    if (searchIndex<0) searchIndex+=searchResults.length;
+    searchIndex = searchIndex % searchResults.length;
+    return searchIndex;
+}
+function customColumn({ activeColumn, forceColumnFormat }) {
+    return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
+}
+function columnFormat({ activeColumn, forceColumnFormat }) {
+    return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
+}
+function activeValues({ activeColumn }) {
+    return activeColumn ? activeColumn.values() : [];
+}
+function activeFormat({ activeColumn, $dw_chart }) {
+    return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
+}
+function columns({ activeColumn }) {
+    const ds = chart.dataset();
+    if (!activeColumn) return ds ? ds.columns() : [];
+    try {
+        return ds.columns().filter(col => !col.isComputed);
+    } catch(e) {
+        return [];
+    }
+}
+function sorting({ sortBy, sortDir }) {
+    return {sortBy,sortDir};
+}
+function data$6() {
+    return {
+        locale: 'en-US',
+        search: '',
+        chartData: '',
+        readonly: false,
+        transpose: false,
+        firstRowIsHeader: true,
+        searchIndex: 0,
+        activeColumn: false,
+        customColumn: false,
+        columnFormat: false,
+        multiSelection: false,
+        forceColumnFormat: false,
+        searchResults: [],
+        sortBy: '-',
+        sortDir: true,
+    };
+}
+var methods$4 = {
+    nextResult (diff) {
+        let {searchIndex, searchResults} = this.get();
+        searchIndex += diff;
+        if (searchIndex<0) searchIndex+=searchResults.length;
+        searchIndex = searchIndex % searchResults.length;
+        this.set({searchIndex});
+    },
+    keyPress (event) {
+        if (event.key == 'F3' || event.key == 'Enter')
+            this.nextResult(event.shiftKey ? -1 : 1);
+    },
+    toggleTranspose() {
+        this.set({activeColumn: false});
+        this.set({transpose: !this.get('transpose')});
+        setTimeout(() => this.refs.hot.update(), 500);
+        // ;
+    },
+    revertChanges() {
+        const chart = this.store.get('dw_chart');
+        chart.set('metadata.data.changes', []);
+        chart.saveSoon();
+        this.refs.hot.update();
+    },
+    cmFocus () {
+        setTimeout(() => {
+            this.refs.hot.get('hot').render();
+        }, 100);
+    },
+    addComputedColumn() {
+        const chart = this.store.get('dw_chart');
+        const ds = chart.dataset();
+        const computed = arrayToObject(chart.get('metadata.describe.computed-columns', {}));
+        // find new id
+        let i = 1;
+        while (ds.hasColumn(`Column ${i}`)) {
+            i++;
+        }
+        const id = `Column ${i}`;
+        computed[id] = '';
+        chart.set('metadata.describe.computed-columns', computed);
+        chart.saveSoon();
+        const ds2 = chart.dataset(true);
+        this.refs.hot.update();
+        this.set({ activeColumn: ds2.column(id) });
+    },
+    sort(event, col, ascending) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.set({sortBy: col, sortDir: ascending});
+        // hide the dropdown menu
+        this.refs.sortDropdownGroup.classList.remove('open');
+    },
+    force(event, val=true) {
+        event.preventDefault();
+        this.set({forceColumnFormat:val});
+    },
+    hideMultiple(columns, hide) {
+        const chart = this.store.get('dw_chart');
+        const colFmt = chart.get('metadata.data.column-format', {});
+        columns.forEach(col => {
+            if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
+            else {
+                colFmt[col.name()] = {type:'auto',ignore:hide};
+            }
+        });
+        chart.set('metadata.data.column-format', colFmt);
+        chart.saveSoon();
+        setTimeout(() => {
+            this.refs.hot.get('hot').render();
+        }, 10);
+        this.set({multiSelection: false});
+    }
+};
+
+function oncreate$4() {
+    window.addEventListener('keypress', (event) => {
+        if (event.ctrlKey && event.key == 'f') {
+            event.preventDefault();
+            if (this.refs.search != window.document.activeElement) {
+                this.refs.search.focus();
+            } else {
+                this.nextResult(+1);
+            }
+        }
+    });
+    const sync = (svelte_key, metadata_key) => {
+        this.observe(svelte_key, (svelte_value) => {
+            this.store.get('dw_chart').set(`${metadata_key}`, svelte_value);
+            if (svelte_key == 'locale') {
+                if (!svelte_value) return;
+                this.store.get('dw_chart')
+                    .locale(svelte_value, () => {
+                        this.refs.hot.render();
+                    });
+            }
+        });
+    };
+    sync('transpose', 'metadata.data.transpose');
+    sync('firstRowIsHeader', 'metadata.data.horizontal-header');
+    sync('locale', 'language');
+    this.observe('activeColumn', (ac) => {
+        if (!ac) this.set({forceColumnFormat:false});
+    });
+}
+function create_main_fragment$6(component, state) {
+	var div, div_1, div_2, div_3, text, hr, text_1, div_4, a, i, text_2, text_3_value = "Zurück", text_3, text_4, a_1, text_5_value = "Weiter", text_5, text_6, i_1, text_10, div_5, div_6, raw_value = "Auf Tabellenkopf klicken um<br>Spalteneigenschaften zu ändern", raw_after, text_11, img, text_13, div_7, div_8, div_9, button, raw_1_value = "Ansicht sortieren nach", raw_1_after, text_14, span, text_16, ul, li, a_2, raw_2_value = "Keine Sortierung", li_class_value, text_19, div_10, i_2, text_20, div_11, input, input_updating = false, input_placeholder_value, input_class_value, text_21, div_11_class_value, text_23, text_26, handsontable_updating = {}, text_27, div_12, button_1, img_1, text_28, text_29_value = "Zeilen und Spalten vertauschen (transponieren)", text_29, text_30, button_2, i_3, text_31, text_32_value = "Spalte hinzufügen", text_32, text_33, text_34, button_3, i_4, text_35, text_36_value = "Änderungen zurücksetzen", text_36, text_37, button_3_class_value;
+
+	function select_block_type_1(state) {
+		if (state.activeColumn) return create_if_block$3;
+		if (state.multiSelection) return create_if_block_5;
+		return create_if_block_6;
+	}
+
+	var current_block_type = select_block_type_1(state);
+	var if_block = current_block_type(component, state);
+
+	function click_handler(event) {
+		component.sort(event, '-');
+	}
+
+	var each_value_1 = state.columns;
+
+	var each_blocks = [];
+
+	for (var i_5 = 0; i_5 < each_value_1.length; i_5 += 1) {
+		each_blocks[i_5] = create_each_block_1$2(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			col: each_value_1[i_5],
+			col_index: i_5
+		}));
+	}
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ search: input.value });
+		input_updating = false;
+	}
+
+	function keypress_handler(event) {
+		component.keyPress(event);
+	}
+
+	var if_block_2 = (state.searchResults.length > 0) && create_if_block_7(component, state);
+
+	var if_block_3 = (state.search) && create_if_block_8(component, state);
+
+	var handsontable_initial_data = {};
+	if ('chartData' in state) {
+		handsontable_initial_data.data = state.chartData;
+		handsontable_updating.data = true;
+	}
+	if ('transpose' in state) {
+		handsontable_initial_data.transpose = state.transpose
+                ;
+		handsontable_updating.transpose = true;
+	}
+	if ('firstRowIsHeader' in state) {
+		handsontable_initial_data.firstRowIsHeader = state.firstRowIsHeader
+                ;
+		handsontable_updating.firstRowIsHeader = true;
+	}
+	if ('activeColumn' in state) {
+		handsontable_initial_data.activeColumn = state.activeColumn
+                ;
+		handsontable_updating.activeColumn = true;
+	}
+	if ('readonly' in state) {
+		handsontable_initial_data.readonly = state.readonly
+                ;
+		handsontable_updating.readonly = true;
+	}
+	if ('sorting' in state) {
+		handsontable_initial_data.sorting = state.sorting
+                ;
+		handsontable_updating.sorting = true;
+	}
+	if ('search' in state) {
+		handsontable_initial_data.search = state.search
+                ;
+		handsontable_updating.search = true;
+	}
+	if ('searchResults' in state) {
+		handsontable_initial_data.searchResults = state.searchResults
+                ;
+		handsontable_updating.searchResults = true;
+	}
+	if ('searchIndex' in state) {
+		handsontable_initial_data.searchIndex = state.searchIndex
+                ;
+		handsontable_updating.searchIndex = true;
+	}
+	if ('multiSelection' in state) {
+		handsontable_initial_data.multiSelection = state.multiSelection
+                ;
+		handsontable_updating.multiSelection = true;
+	}
+	var handsontable = new Handsontable_1({
+		root: component.root,
+		data: handsontable_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!handsontable_updating.data && changed.data) {
+				newState.chartData = childState.data;
+			}
+
+			if (!handsontable_updating.transpose && changed.transpose) {
+				newState.transpose = childState.transpose;
+			}
+
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				newState.firstRowIsHeader = childState.firstRowIsHeader;
+			}
+
+			if (!handsontable_updating.activeColumn && changed.activeColumn) {
+				newState.activeColumn = childState.activeColumn;
+			}
+
+			if (!handsontable_updating.readonly && changed.readonly) {
+				newState.readonly = childState.readonly;
+			}
+
+			if (!handsontable_updating.sorting && changed.sorting) {
+				newState.sorting = childState.sorting;
+			}
+
+			if (!handsontable_updating.search && changed.search) {
+				newState.search = childState.search;
+			}
+
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				newState.searchResults = childState.searchResults;
+			}
+
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				newState.searchIndex = childState.searchIndex;
+			}
+
+			if (!handsontable_updating.multiSelection && changed.multiSelection) {
+				newState.multiSelection = childState.multiSelection;
+			}
+			component._set(newState);
+			handsontable_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		handsontable._bind({ data: 1, transpose: 1, firstRowIsHeader: 1, activeColumn: 1, readonly: 1, sorting: 1, search: 1, searchResults: 1, searchIndex: 1, multiSelection: 1 }, handsontable.get());
+	});
+
+	handsontable.on("resetSort", function(event) {
+		component.set({sortBy:'-'});
+	});
+
+	component.refs.hot = handsontable;
+
+	function click_handler_3(event) {
+		component.toggleTranspose();
+	}
+
+	function click_handler_4(event) {
+		component.addComputedColumn();
+	}
+
+	function click_handler_5(event) {
+		component.revertChanges();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			div_3 = createElement("div");
+			if_block.c();
+			text = createText("\n\n                ");
+			hr = createElement("hr");
+			text_1 = createText("\n\n                ");
+			div_4 = createElement("div");
+			a = createElement("a");
+			i = createElement("i");
+			text_2 = createText(" ");
+			text_3 = createText(text_3_value);
+			text_4 = createText("\n                    ");
+			a_1 = createElement("a");
+			text_5 = createText(text_5_value);
+			text_6 = createText(" ");
+			i_1 = createElement("i");
+			text_10 = createText("\n        ");
+			div_5 = createElement("div");
+			div_6 = createElement("div");
+			raw_after = createElement('noscript');
+			text_11 = createText(" ");
+			img = createElement("img");
+			text_13 = createText("\n            ");
+			div_7 = createElement("div");
+			div_8 = createElement("div");
+			div_9 = createElement("div");
+			button = createElement("button");
+			raw_1_after = createElement('noscript');
+			text_14 = createText("… ");
+			span = createElement("span");
+			text_16 = createText("\n                        ");
+			ul = createElement("ul");
+			li = createElement("li");
+			a_2 = createElement("a");
+
+			for (var i_5 = 0; i_5 < each_blocks.length; i_5 += 1) {
+				each_blocks[i_5].c();
+			}
+
+			text_19 = createText("\n\n                ");
+			div_10 = createElement("div");
+			i_2 = createElement("i");
+			text_20 = createText("\n                    ");
+			div_11 = createElement("div");
+			input = createElement("input");
+			text_21 = createText("\n                        ");
+			if (if_block_2) if_block_2.c();
+			text_23 = createText("\n\n                    ");
+			if (if_block_3) if_block_3.c();
+			text_26 = createText("\n\n            ");
+			handsontable._fragment.c();
+			text_27 = createText("\n\n            ");
+			div_12 = createElement("div");
+			button_1 = createElement("button");
+			img_1 = createElement("img");
+			text_28 = createText(" ");
+			text_29 = createText(text_29_value);
+			text_30 = createText("\n\n                ");
+			button_2 = createElement("button");
+			i_3 = createElement("i");
+			text_31 = createText(" ");
+			text_32 = createText(text_32_value);
+			text_33 = createText("…");
+			text_34 = createText("\n\n                ");
+			button_3 = createElement("button");
+			i_4 = createElement("i");
+			text_35 = createText(" ");
+			text_36 = createText(text_36_value);
+			text_37 = createText("...");
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = "icon-chevron-left";
+			a.className = "btn submit";
+			a.href = "upload";
+			i_1.className = "icon-chevron-right icon-white";
+			a_1.href = "visualize";
+			a_1.className = "submit btn btn-primary";
+			a_1.id = "describe-proceed";
+			div_4.className = "btn-group";
+			div_3.className = "sidebar";
+			div_2.className = "span4";
+			img.src = "/static/img/arrow.svg";
+			div_6.className = "help svelte-1kvuoqm";
+			span.className = "caret";
+			button.className = "btn dropdown-toggle";
+			button.dataset.toggle = "dropdown";
+			addListener(a_2, "click", click_handler);
+			a_2.href = "#s";
+			a_2.className = "svelte-1kvuoqm";
+			li.className = li_class_value = '-'==state.sortBy?'active':'';
+			ul.className = "dropdown-menu sort-menu";
+			div_9.className = "btn-group";
+			div_8.className = "sort-box svelte-1kvuoqm";
+			i_2.className = "im im-magnifier svelte-1kvuoqm";
+			addListener(input, "input", input_input_handler);
+			addListener(input, "keypress", keypress_handler);
+			input.autocomplete = "screw-you-google-chrome";
+			setAttribute(input, "type", "search");
+			input.placeholder = input_placeholder_value = "Search data table";
+			input.className = input_class_value = "" + (state.searchResults.length > 0?'with-results':'') + " search-query" + " svelte-1kvuoqm";
+			div_11.className = div_11_class_value = state.searchResults.length > 0 ? 'input-append' : '';
+			div_10.className = "search-box form-search svelte-1kvuoqm";
+			div_7.className = "pull-right";
+			setStyle(div_7, "margin-bottom", "10px");
+			img_1.src = "/static/css/chart-editor/transpose.png";
+			img_1.className = "svelte-1kvuoqm";
+			addListener(button_1, "click", click_handler_3);
+			button_1.className = "btn transpose svelte-1kvuoqm";
+			i_3.className = "fa fa-calculator";
+			addListener(button_2, "click", click_handler_4);
+			button_2.className = "btn computed-columns";
+			i_4.className = "fa fa-undo";
+			addListener(button_3, "click", click_handler_5);
+			button_3.className = button_3_class_value = "btn " + (state.has_changes?'':'disabled') + " svelte-1kvuoqm";
+			button_3.id = "reset-data-changes";
+			div_12.className = "buttons below-table pull-right svelte-1kvuoqm";
+			div_5.className = "span8 svelte-1kvuoqm";
+			div_1.className = "row";
+			div.className = "chart-editor";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(div_3, div_2);
+			if_block.m(div_3, null);
+			appendNode(text, div_3);
+			appendNode(hr, div_3);
+			appendNode(text_1, div_3);
+			appendNode(div_4, div_3);
+			appendNode(a, div_4);
+			appendNode(i, a);
+			appendNode(text_2, a);
+			appendNode(text_3, a);
+			appendNode(text_4, div_4);
+			appendNode(a_1, div_4);
+			appendNode(text_5, a_1);
+			appendNode(text_6, a_1);
+			appendNode(i_1, a_1);
+			appendNode(text_10, div_1);
+			appendNode(div_5, div_1);
+			appendNode(div_6, div_5);
+			appendNode(raw_after, div_6);
+			raw_after.insertAdjacentHTML("beforebegin", raw_value);
+			appendNode(text_11, div_6);
+			appendNode(img, div_6);
+			appendNode(text_13, div_5);
+			appendNode(div_7, div_5);
+			appendNode(div_8, div_7);
+			appendNode(div_9, div_8);
+			appendNode(button, div_9);
+			appendNode(raw_1_after, button);
+			raw_1_after.insertAdjacentHTML("beforebegin", raw_1_value);
+			appendNode(text_14, button);
+			appendNode(span, button);
+			appendNode(text_16, div_9);
+			appendNode(ul, div_9);
+			appendNode(li, ul);
+			appendNode(a_2, li);
+			a_2.innerHTML = raw_2_value;
+
+			for (var i_5 = 0; i_5 < each_blocks.length; i_5 += 1) {
+				each_blocks[i_5].m(ul, null);
+			}
+
+			component.refs.sortDropdownGroup = div_9;
+			appendNode(text_19, div_7);
+			appendNode(div_10, div_7);
+			appendNode(i_2, div_10);
+			appendNode(text_20, div_10);
+			appendNode(div_11, div_10);
+			appendNode(input, div_11);
+			component.refs.search = input;
+
+			input.value = state.search;
+
+			appendNode(text_21, div_11);
+			if (if_block_2) if_block_2.m(div_11, null);
+			appendNode(text_23, div_10);
+			if (if_block_3) if_block_3.m(div_10, null);
+			appendNode(text_26, div_5);
+			handsontable._mount(div_5, null);
+			appendNode(text_27, div_5);
+			appendNode(div_12, div_5);
+			appendNode(button_1, div_12);
+			appendNode(img_1, button_1);
+			appendNode(text_28, button_1);
+			appendNode(text_29, button_1);
+			appendNode(text_30, div_12);
+			appendNode(button_2, div_12);
+			appendNode(i_3, button_2);
+			appendNode(text_31, button_2);
+			appendNode(text_32, button_2);
+			appendNode(text_33, button_2);
+			appendNode(text_34, div_12);
+			appendNode(button_3, div_12);
+			appendNode(i_4, button_3);
+			appendNode(text_35, button_3);
+			appendNode(text_36, button_3);
+			appendNode(text_37, button_3);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type_1(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if_block.u();
+				if_block.d();
+				if_block = current_block_type(component, state);
+				if_block.c();
+				if_block.m(div_3, text);
+			}
+
+			if ((changed.sortBy) && li_class_value !== (li_class_value = '-'==state.sortBy?'active':'')) {
+				li.className = li_class_value;
+			}
+
+			var each_value_1 = state.columns;
+
+			if (changed.columns || changed.sortBy) {
+				for (var i_5 = 0; i_5 < each_value_1.length; i_5 += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						col: each_value_1[i_5],
+						col_index: i_5
+					});
+
+					if (each_blocks[i_5]) {
+						each_blocks[i_5].p(changed, each_context);
+					} else {
+						each_blocks[i_5] = create_each_block_1$2(component, each_context);
+						each_blocks[i_5].c();
+						each_blocks[i_5].m(ul, null);
+					}
+				}
+
+				for (; i_5 < each_blocks.length; i_5 += 1) {
+					each_blocks[i_5].u();
+					each_blocks[i_5].d();
+				}
+				each_blocks.length = each_value_1.length;
+			}
+
+			if (!input_updating) input.value = state.search;
+			if ((changed.searchResults) && input_class_value !== (input_class_value = "" + (state.searchResults.length > 0?'with-results':'') + " search-query" + " svelte-1kvuoqm")) {
+				input.className = input_class_value;
+			}
+
+			if (state.searchResults.length > 0) {
+				if (!if_block_2) {
+					if_block_2 = create_if_block_7(component, state);
+					if_block_2.c();
+					if_block_2.m(div_11, null);
+				}
+			} else if (if_block_2) {
+				if_block_2.u();
+				if_block_2.d();
+				if_block_2 = null;
+			}
+
+			if ((changed.searchResults) && div_11_class_value !== (div_11_class_value = state.searchResults.length > 0 ? 'input-append' : '')) {
+				div_11.className = div_11_class_value;
+			}
+
+			if (state.search) {
+				if (if_block_3) {
+					if_block_3.p(changed, state);
+				} else {
+					if_block_3 = create_if_block_8(component, state);
+					if_block_3.c();
+					if_block_3.m(div_10, null);
+				}
+			} else if (if_block_3) {
+				if_block_3.u();
+				if_block_3.d();
+				if_block_3 = null;
+			}
+
+			var handsontable_changes = {};
+			if (!handsontable_updating.data && changed.chartData) {
+				handsontable_changes.data = state.chartData;
+				handsontable_updating.data = true;
+			}
+			if (!handsontable_updating.transpose && changed.transpose) {
+				handsontable_changes.transpose = state.transpose
+                ;
+				handsontable_updating.transpose = true;
+			}
+			if (!handsontable_updating.firstRowIsHeader && changed.firstRowIsHeader) {
+				handsontable_changes.firstRowIsHeader = state.firstRowIsHeader
+                ;
+				handsontable_updating.firstRowIsHeader = true;
+			}
+			if (!handsontable_updating.activeColumn && changed.activeColumn) {
+				handsontable_changes.activeColumn = state.activeColumn
+                ;
+				handsontable_updating.activeColumn = true;
+			}
+			if (!handsontable_updating.readonly && changed.readonly) {
+				handsontable_changes.readonly = state.readonly
+                ;
+				handsontable_updating.readonly = true;
+			}
+			if (!handsontable_updating.sorting && changed.sorting) {
+				handsontable_changes.sorting = state.sorting
+                ;
+				handsontable_updating.sorting = true;
+			}
+			if (!handsontable_updating.search && changed.search) {
+				handsontable_changes.search = state.search
+                ;
+				handsontable_updating.search = true;
+			}
+			if (!handsontable_updating.searchResults && changed.searchResults) {
+				handsontable_changes.searchResults = state.searchResults
+                ;
+				handsontable_updating.searchResults = true;
+			}
+			if (!handsontable_updating.searchIndex && changed.searchIndex) {
+				handsontable_changes.searchIndex = state.searchIndex
+                ;
+				handsontable_updating.searchIndex = true;
+			}
+			if (!handsontable_updating.multiSelection && changed.multiSelection) {
+				handsontable_changes.multiSelection = state.multiSelection
+                ;
+				handsontable_updating.multiSelection = true;
+			}
+			handsontable._set(handsontable_changes);
+			handsontable_updating = {};
+
+			if ((changed.has_changes) && button_3_class_value !== (button_3_class_value = "btn " + (state.has_changes?'':'disabled') + " svelte-1kvuoqm")) {
+				button_3.className = button_3_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachBefore(raw_after);
+
+			detachBefore(raw_1_after);
+
+			a_2.innerHTML = '';
+
+			detachNode(div);
+			if_block.u();
+
+			for (var i_5 = 0; i_5 < each_blocks.length; i_5 += 1) {
+				each_blocks[i_5].u();
+			}
+
+			if (if_block_2) if_block_2.u();
+			if (if_block_3) if_block_3.u();
+		},
+
+		d: function destroy$$1() {
+			if_block.d();
+			removeListener(a_2, "click", click_handler);
+
+			destroyEach(each_blocks);
+
+			if (component.refs.sortDropdownGroup === div_9) component.refs.sortDropdownGroup = null;
+			removeListener(input, "input", input_input_handler);
+			removeListener(input, "keypress", keypress_handler);
+			if (component.refs.search === input) component.refs.search = null;
+			if (if_block_2) if_block_2.d();
+			if (if_block_3) if_block_3.d();
+			handsontable.destroy(false);
+			if (component.refs.hot === handsontable) component.refs.hot = null;
+			removeListener(button_1, "click", click_handler_3);
+			removeListener(button_2, "click", click_handler_4);
+			removeListener(button_3, "click", click_handler_5);
+		}
+	};
+}
+
+// (26:20) {#if columnFormat.isComputed}
+function create_if_block_3(component, state) {
+	var button, i, text, text_1_value = "Zurück zum Formel-Editor", text_1;
+
+	function click_handler(event) {
+		component.force(event, false);
+	}
+
+	return {
+		c: function create() {
+			button = createElement("button");
+			i = createElement("i");
+			text = createText(" ");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = "fa  fa-chevron-left";
+			addListener(button, "click", click_handler);
+			button.className = "btn";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(button, target, anchor);
+			appendNode(i, button);
+			appendNode(text, button);
+			appendNode(text_1, button);
+		},
+
+		u: function unmount() {
+			detachNode(button);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+		}
+	};
+}
+
+// (7:16) {#if customColumn}
+function create_if_block_1$2(component, state) {
+	var computedcolumneditor_updating = {}, text, button, text_1_value = "Spaltenformat anpassen", text_1;
+
+	var computedcolumneditor_initial_data = {};
+	if ('customColumn' in state) {
+		computedcolumneditor_initial_data.column = state.customColumn;
+		computedcolumneditor_updating.column = true;
+	}
+	if ('columns' in state) {
+		computedcolumneditor_initial_data.columns = state.columns ;
+		computedcolumneditor_updating.columns = true;
+	}
+	var computedcolumneditor = new ComputedColumnEditor({
+		root: component.root,
+		data: computedcolumneditor_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!computedcolumneditor_updating.column && changed.column) {
+				newState.customColumn = childState.column;
+			}
+
+			if (!computedcolumneditor_updating.columns && changed.columns) {
+				newState.columns = childState.columns;
+			}
+			component._set(newState);
+			computedcolumneditor_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		computedcolumneditor._bind({ column: 1, columns: 1 }, computedcolumneditor.get());
+	});
+
+	computedcolumneditor.on("updateTable", function(event) {
+		component.refs.hot.update();
+	});
+	computedcolumneditor.on("renderTable", function(event) {
+		component.refs.hot.render();
+	});
+	computedcolumneditor.on("unselect", function(event) {
+		component.set({activeColumn:false});
+	});
+
+	function click_handler(event) {
+		component.force(event, true);
+	}
+
+	return {
+		c: function create() {
+			computedcolumneditor._fragment.c();
+			text = createText("\n\n                ");
+			button = createElement("button");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(button, "click", click_handler);
+			button.className = "btn";
+		},
+
+		m: function mount(target, anchor) {
+			computedcolumneditor._mount(target, anchor);
+			insertNode(text, target, anchor);
+			insertNode(button, target, anchor);
+			appendNode(text_1, button);
+		},
+
+		p: function update(changed, state) {
+			var computedcolumneditor_changes = {};
+			if (!computedcolumneditor_updating.column && changed.customColumn) {
+				computedcolumneditor_changes.column = state.customColumn;
+				computedcolumneditor_updating.column = true;
+			}
+			if (!computedcolumneditor_updating.columns && changed.columns) {
+				computedcolumneditor_changes.columns = state.columns ;
+				computedcolumneditor_updating.columns = true;
+			}
+			computedcolumneditor._set(computedcolumneditor_changes);
+			computedcolumneditor_updating = {};
+		},
+
+		u: function unmount() {
+			computedcolumneditor._unmount();
+			detachNode(text);
+			detachNode(button);
+		},
+
+		d: function destroy$$1() {
+			computedcolumneditor.destroy(false);
+			removeListener(button, "click", click_handler);
+		}
+	};
+}
+
+// (18:38) 
+function create_if_block_2(component, state) {
+	var customcolumnformat_updating = {}, text, if_block_anchor;
+
+	var customcolumnformat_initial_data = {};
+	if ('columnFormat' in state) {
+		customcolumnformat_initial_data.column = state.columnFormat;
+		customcolumnformat_updating.column = true;
+	}
+	if ('columns' in state) {
+		customcolumnformat_initial_data.columns = state.columns ;
+		customcolumnformat_updating.columns = true;
+	}
+	var customcolumnformat = new CustomColumnFormat({
+		root: component.root,
+		data: customcolumnformat_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!customcolumnformat_updating.column && changed.column) {
+				newState.columnFormat = childState.column;
+			}
+
+			if (!customcolumnformat_updating.columns && changed.columns) {
+				newState.columns = childState.columns;
+			}
+			component._set(newState);
+			customcolumnformat_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		customcolumnformat._bind({ column: 1, columns: 1 }, customcolumnformat.get());
+	});
+
+	customcolumnformat.on("updateTable", function(event) {
+		component.refs.hot.update();
+	});
+	customcolumnformat.on("renderTable", function(event) {
+		component.refs.hot.render();
+	});
+
+	var if_block = (state.columnFormat.isComputed) && create_if_block_3(component, state);
+
+	return {
+		c: function create() {
+			customcolumnformat._fragment.c();
+			text = createText("\n\n                    ");
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			customcolumnformat._mount(target, anchor);
+			insertNode(text, target, anchor);
+			if (if_block) if_block.m(target, anchor);
+			insertNode(if_block_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var customcolumnformat_changes = {};
+			if (!customcolumnformat_updating.column && changed.columnFormat) {
+				customcolumnformat_changes.column = state.columnFormat;
+				customcolumnformat_updating.column = true;
+			}
+			if (!customcolumnformat_updating.columns && changed.columns) {
+				customcolumnformat_changes.columns = state.columns ;
+				customcolumnformat_updating.columns = true;
+			}
+			customcolumnformat._set(customcolumnformat_changes);
+			customcolumnformat_updating = {};
+
+			if (state.columnFormat.isComputed) {
+				if (!if_block) {
+					if_block = create_if_block_3(component, state);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			customcolumnformat._unmount();
+			detachNode(text);
+			if (if_block) if_block.u();
+			detachNode(if_block_anchor);
+		},
+
+		d: function destroy$$1() {
+			customcolumnformat.destroy(false);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (32:16) {#if activeColumn.type() == 'number'}
+function create_if_block_4(component, state) {
+	var histogram_updating = {};
+
+	var histogram_initial_data = {};
+	if ('activeValues' in state) {
+		histogram_initial_data.values = state.activeValues;
+		histogram_updating.values = true;
+	}
+	if ('activeFormat' in state) {
+		histogram_initial_data.format = state.activeFormat;
+		histogram_updating.format = true;
+	}
+	var histogram = new Histogram({
+		root: component.root,
+		data: histogram_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!histogram_updating.values && changed.values) {
+				newState.activeValues = childState.values;
+			}
+
+			if (!histogram_updating.format && changed.format) {
+				newState.activeFormat = childState.format;
+			}
+			component._set(newState);
+			histogram_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		histogram._bind({ values: 1, format: 1 }, histogram.get());
+	});
+
+	return {
+		c: function create() {
+			histogram._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			histogram._mount(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var histogram_changes = {};
+			if (!histogram_updating.values && changed.activeValues) {
+				histogram_changes.values = state.activeValues;
+				histogram_updating.values = true;
+			}
+			if (!histogram_updating.format && changed.activeFormat) {
+				histogram_changes.format = state.activeFormat;
+				histogram_updating.format = true;
+			}
+			histogram._set(histogram_changes);
+			histogram_updating = {};
+		},
+
+		u: function unmount() {
+			histogram._unmount();
+		},
+
+		d: function destroy$$1() {
+			histogram.destroy(false);
+		}
+	};
+}
+
+// (68:20) {#each locales as locale}
+function create_each_block$3(component, state) {
+	var locale = state.locale, each_value = state.each_value, locale_index = state.locale_index;
+	var option, text_value = locale.label, text, text_1, text_2_value = locale.value, text_2, text_3, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			text_1 = createText(" (");
+			text_2 = createText(text_2_value);
+			text_3 = createText(")");
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = locale.value;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+			appendNode(text_1, option);
+			appendNode(text_2, option);
+			appendNode(text_3, option);
+		},
+
+		p: function update(changed, state) {
+			locale = state.locale;
+			each_value = state.each_value;
+			locale_index = state.locale_index;
+			if ((changed.locales) && text_value !== (text_value = locale.label)) {
+				text.data = text_value;
+			}
+
+			if ((changed.locales) && text_2_value !== (text_2_value = locale.value)) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.locales) && option_value_value !== (option_value_value = locale.value)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (6:12) {#if activeColumn}
+function create_if_block$3(component, state) {
+	var text, if_block_2_anchor;
+
+	function select_block_type(state) {
+		if (state.customColumn) return create_if_block_1$2;
+		if (state.columnFormat) return create_if_block_2;
+		return null;
+	}
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type && current_block_type(component, state);
+
+	var if_block_2 = (state.activeColumn.type() == 'number') && create_if_block_4(component, state);
+
+	return {
+		c: function create() {
+			if (if_block) if_block.c();
+			text = createText("\n\n                ");
+			if (if_block_2) if_block_2.c();
+			if_block_2_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			if (if_block) if_block.m(target, anchor);
+			insertNode(text, target, anchor);
+			if (if_block_2) if_block_2.m(target, anchor);
+			insertNode(if_block_2_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if (if_block) {
+					if_block.u();
+					if_block.d();
+				}
+				if_block = current_block_type && current_block_type(component, state);
+				if (if_block) if_block.c();
+				if (if_block) if_block.m(text.parentNode, text);
+			}
+
+			if (state.activeColumn.type() == 'number') {
+				if (if_block_2) {
+					if_block_2.p(changed, state);
+				} else {
+					if_block_2 = create_if_block_4(component, state);
+					if_block_2.c();
+					if_block_2.m(if_block_2_anchor.parentNode, if_block_2_anchor);
+				}
+			} else if (if_block_2) {
+				if_block_2.u();
+				if_block_2.d();
+				if_block_2 = null;
+			}
+		},
+
+		u: function unmount() {
+			if (if_block) if_block.u();
+			detachNode(text);
+			if (if_block_2) if_block_2.u();
+			detachNode(if_block_2_anchor);
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			if (if_block_2) if_block_2.d();
+		}
+	};
+}
+
+// (36:36) 
+function create_if_block_5(component, state) {
+	var h3, text_value = "Spalten ein-/ausblenden", text, text_1, ul, li, button, i, text_2, text_3_value = "Ausgewählte Spalten einblenden", text_3, li_1, button_1, i_1, text_6, text_7_value = "Ausgewählte Spalten ausblenden", text_7;
+
+	function click_handler(event) {
+		var state = component.get();
+		component.hideMultiple(state.multiSelection, false);
+	}
+
+	function click_handler_1(event) {
+		var state = component.get();
+		component.hideMultiple(state.multiSelection, true);
+	}
+
+	return {
+		c: function create() {
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n\n                ");
+			ul = createElement("ul");
+			li = createElement("li");
+			button = createElement("button");
+			i = createElement("i");
+			text_2 = createText(" ");
+			text_3 = createText(text_3_value);
+			li_1 = createElement("li");
+			button_1 = createElement("button");
+			i_1 = createElement("i");
+			text_6 = createText(" ");
+			text_7 = createText(text_7_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			i.className = "fa fa-eye";
+			addListener(button, "click", click_handler);
+			button.className = "btn";
+			setStyle(li, "margin-bottom", "5px");
+			i_1.className = "fa fa-eye-slash";
+			addListener(button_1, "click", click_handler_1);
+			button_1.className = "btn";
+			ul.className = "unstyled";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(h3, target, anchor);
+			appendNode(text, h3);
+			insertNode(text_1, target, anchor);
+			insertNode(ul, target, anchor);
+			appendNode(li, ul);
+			appendNode(button, li);
+			appendNode(i, button);
+			appendNode(text_2, button);
+			appendNode(text_3, button);
+			appendNode(li_1, ul);
+			appendNode(button_1, li_1);
+			appendNode(i_1, button_1);
+			appendNode(text_6, button_1);
+			appendNode(text_7, button_1);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(h3);
+			detachNode(text_1);
+			detachNode(ul);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+			removeListener(button_1, "click", click_handler_1);
+		}
+	};
+}
+
+// (53:12) {:else}
+function create_if_block_6(component, state) {
+	var h3, text_value = "Überprüfe dass die Daten richtig aussehen", text, text_1, p, text_2_value = "Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.", text_2, text_3, checkbox_updating = {}, text_4, h4, text_5_value = "Ausgabe-Sprachraum", text_5, text_6, p_1, text_7_value = "Bestimmt Dezimal- und Tausendertrennzeichen sowie die Übersetzung von Monatsnamen und Wochentagen.", text_7, text_8, select, select_updating = false;
+
+	var checkbox_initial_data = { label: "Erste Zeile als Beschriftung" };
+	if ('firstRowIsHeader' in state) {
+		checkbox_initial_data.value = state.firstRowIsHeader;
+		checkbox_updating.value = true;
+	}
+	var checkbox = new Checkbox({
+		root: component.root,
+		data: checkbox_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!checkbox_updating.value && changed.value) {
+				newState.firstRowIsHeader = childState.value;
+			}
+			component._set(newState);
+			checkbox_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		checkbox._bind({ value: 1 }, checkbox.get());
+	});
+
+	var each_value = state.locales;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$3(component, assign(assign({}, state), {
+			each_value: each_value,
+			locale: each_value[i],
+			locale_index: i
+		}));
+	}
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ locale: selectValue(select) });
+		select_updating = false;
+	}
+
+	return {
+		c: function create() {
+			h3 = createElement("h3");
+			text = createText(text_value);
+			text_1 = createText("\n\n                ");
+			p = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\n                ");
+			checkbox._fragment.c();
+			text_4 = createText("\n\n                ");
+			h4 = createElement("h4");
+			text_5 = createText(text_5_value);
+			text_6 = createText("\n\n                ");
+			p_1 = createElement("p");
+			text_7 = createText(text_7_value);
+			text_8 = createText("\n\n                ");
+			select = createElement("select");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			h3.className = "first";
+			addListener(select, "change", select_change_handler);
+			if (!('locale' in state)) component.root._beforecreate.push(select_change_handler);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(h3, target, anchor);
+			appendNode(text, h3);
+			insertNode(text_1, target, anchor);
+			insertNode(p, target, anchor);
+			appendNode(text_2, p);
+			insertNode(text_3, target, anchor);
+			checkbox._mount(target, anchor);
+			insertNode(text_4, target, anchor);
+			insertNode(h4, target, anchor);
+			appendNode(text_5, h4);
+			insertNode(text_6, target, anchor);
+			insertNode(p_1, target, anchor);
+			appendNode(text_7, p_1);
+			insertNode(text_8, target, anchor);
+			insertNode(select, target, anchor);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select, null);
+			}
+
+			selectOption(select, state.locale);
+		},
+
+		p: function update(changed, state) {
+			var checkbox_changes = {};
+			checkbox_changes.label = "Erste Zeile als Beschriftung";
+			if (!checkbox_updating.value && changed.firstRowIsHeader) {
+				checkbox_changes.value = state.firstRowIsHeader;
+				checkbox_updating.value = true;
+			}
+			checkbox._set(checkbox_changes);
+			checkbox_updating = {};
+
+			var each_value = state.locales;
+
+			if (changed.locales) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						locale: each_value[i],
+						locale_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$3(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(select, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (!select_updating) selectOption(select, state.locale);
+		},
+
+		u: function unmount() {
+			detachNode(h3);
+			detachNode(text_1);
+			detachNode(p);
+			detachNode(text_3);
+			checkbox._unmount();
+			detachNode(text_4);
+			detachNode(h4);
+			detachNode(text_6);
+			detachNode(p_1);
+			detachNode(text_8);
+			detachNode(select);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			checkbox.destroy(false);
+
+			destroyEach(each_blocks);
+
+			removeListener(select, "change", select_change_handler);
+		}
+	};
+}
+
+// (98:28) {#each columns as col}
+function create_each_block_1$2(component, state) {
+	var col = state.col, each_value_1 = state.each_value_1, col_index = state.col_index;
+	var li, a, i, i_class_value, text, i_1, i_1_class_value, text_1, text_2_value = col.title(), text_2, a_href_value, li_class_value;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			a = createElement("a");
+			i = createElement("i");
+			text = createText("\n                                ");
+			i_1 = createElement("i");
+			text_1 = createText("   ");
+			text_2 = createText(text_2_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(i, "click", click_handler$1);
+			i.className = i_class_value = "fa fa-sort-" + (col.type()=='text'?'alpha':'amount') + "-asc fa-fw" + " svelte-1kvuoqm";
+
+			i._svelte = {
+				component: component,
+				each_value_1: state.each_value_1,
+				col_index: state.col_index
+			};
+
+			addListener(i_1, "click", click_handler_1);
+			i_1.className = i_1_class_value = "fa fa-sort-" + (col.type()=='text'?'alpha':'amount') + "-desc fa-fw" + " svelte-1kvuoqm";
+
+			i_1._svelte = {
+				component: component,
+				each_value_1: state.each_value_1,
+				col_index: state.col_index
+			};
+
+			addListener(a, "click", click_handler_2);
+			a.href = a_href_value = "#/" + col.name();
+			a.className = "svelte-1kvuoqm";
+
+			a._svelte = {
+				component: component,
+				each_value_1: state.each_value_1,
+				col_index: state.col_index
+			};
+
+			li.className = li_class_value = col.name()==state.sortBy?'active':'';
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(a, li);
+			appendNode(i, a);
+			appendNode(text, a);
+			appendNode(i_1, a);
+			appendNode(text_1, a);
+			appendNode(text_2, a);
+		},
+
+		p: function update(changed, state) {
+			col = state.col;
+			each_value_1 = state.each_value_1;
+			col_index = state.col_index;
+			if ((changed.columns) && i_class_value !== (i_class_value = "fa fa-sort-" + (col.type()=='text'?'alpha':'amount') + "-asc fa-fw" + " svelte-1kvuoqm")) {
+				i.className = i_class_value;
+			}
+
+			i._svelte.each_value_1 = state.each_value_1;
+			i._svelte.col_index = state.col_index;
+
+			if ((changed.columns) && i_1_class_value !== (i_1_class_value = "fa fa-sort-" + (col.type()=='text'?'alpha':'amount') + "-desc fa-fw" + " svelte-1kvuoqm")) {
+				i_1.className = i_1_class_value;
+			}
+
+			i_1._svelte.each_value_1 = state.each_value_1;
+			i_1._svelte.col_index = state.col_index;
+
+			if ((changed.columns) && text_2_value !== (text_2_value = col.title())) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.columns) && a_href_value !== (a_href_value = "#/" + col.name())) {
+				a.href = a_href_value;
+			}
+
+			a._svelte.each_value_1 = state.each_value_1;
+			a._svelte.col_index = state.col_index;
+
+			if ((changed.columns || changed.sortBy) && li_class_value !== (li_class_value = col.name()==state.sortBy?'active':'')) {
+				li.className = li_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(i, "click", click_handler$1);
+			removeListener(i_1, "click", click_handler_1);
+			removeListener(a, "click", click_handler_2);
+		}
+	};
+}
+
+// (111:24) {#if searchResults.length > 0}
+function create_if_block_7(component, state) {
+	var div, button, text, button_1;
+
+	function click_handler_3(event) {
+		component.nextResult(-1);
+	}
+
+	function click_handler_4(event) {
+		component.nextResult(+1);
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			button = createElement("button");
+			button.innerHTML = "<i class=\"fa fa-chevron-up\"></i>";
+			text = createText("\n                          ");
+			button_1 = createElement("button");
+			button_1.innerHTML = "<i class=\"fa fa-chevron-down\"></i>";
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(button, "click", click_handler_3);
+			button.className = "btn svelte-1kvuoqm";
+			addListener(button_1, "click", click_handler_4);
+			button_1.className = "btn svelte-1kvuoqm";
+			div.className = "btn-group";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(button, div);
+			appendNode(text, div);
+			appendNode(button_1, div);
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler_3);
+			removeListener(button_1, "click", click_handler_4);
+		}
+	};
+}
+
+// (123:24) {#if searchResults.length > 0}
+function create_if_block_9(component, state) {
+	var text_value = state.searchIndexSafe+1, text, text_1, text_2_value = "von", text_2, text_3, text_4_value = state.searchResults.length, text_4, text_5, text_6_value = "Treffern", text_6;
+
+	return {
+		c: function create() {
+			text = createText(text_value);
+			text_1 = createText("\n                            ");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n                            ");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n                            ");
+			text_6 = createText(text_6_value);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+			insertNode(text_1, target, anchor);
+			insertNode(text_2, target, anchor);
+			insertNode(text_3, target, anchor);
+			insertNode(text_4, target, anchor);
+			insertNode(text_5, target, anchor);
+			insertNode(text_6, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.searchIndexSafe) && text_value !== (text_value = state.searchIndexSafe+1)) {
+				text.data = text_value;
+			}
+
+			if ((changed.searchResults) && text_4_value !== (text_4_value = state.searchResults.length)) {
+				text_4.data = text_4_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(text);
+			detachNode(text_1);
+			detachNode(text_2);
+			detachNode(text_3);
+			detachNode(text_4);
+			detachNode(text_5);
+			detachNode(text_6);
+		},
+
+		d: noop
+	};
+}
+
+// (128:40) 
+function create_if_block_10(component, state) {
+	var text_value = "Keine Treffer", text;
+
+	return {
+		c: function create() {
+			text = createText(text_value);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(text);
+		},
+
+		d: noop
+	};
+}
+
+// (121:20) {#if search}
+function create_if_block_8(component, state) {
+	var div;
+
+	function select_block_type_2(state) {
+		if (state.searchResults.length > 0) return create_if_block_9;
+		if (state.search) return create_if_block_10;
+		return null;
+	}
+
+	var current_block_type = select_block_type_2(state);
+	var if_block = current_block_type && current_block_type(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "results svelte-1kvuoqm";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) if_block.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type === (current_block_type = select_block_type_2(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if (if_block) {
+					if_block.u();
+					if_block.d();
+				}
+				if_block = current_block_type && current_block_type(component, state);
+				if (if_block) if_block.c();
+				if (if_block) if_block.m(div, null);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+function click_handler$1(event) {
+	var component = this._svelte.component;
+	var each_value_1 = this._svelte.each_value_1, col_index = this._svelte.col_index, col = each_value_1[col_index];
+	component.sort(event, col.name(), true);
+}
+
+function click_handler_1(event) {
+	var component = this._svelte.component;
+	var each_value_1 = this._svelte.each_value_1, col_index = this._svelte.col_index, col = each_value_1[col_index];
+	component.sort(event, col.name(), false);
+}
+
+function click_handler_2(event) {
+	var component = this._svelte.component;
+	var each_value_1 = this._svelte.each_value_1, col_index = this._svelte.col_index, col = each_value_1[col_index];
+	component.sort(event, col.name(), true);
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(assign(this.store._init(["dw_chart"]), data$6()), options.data);
+	this.store._add(this, ["dw_chart"]);
+	this._recompute({ searchIndex: 1, searchResults: 1, activeColumn: 1, forceColumnFormat: 1, $dw_chart: 1, sortBy: 1, sortDir: 1 }, this._state);
+	if (!('searchIndex' in this._state)) console.warn("<App> was created without expected data property 'searchIndex'");
+	if (!('searchResults' in this._state)) console.warn("<App> was created without expected data property 'searchResults'");
+	if (!('activeColumn' in this._state)) console.warn("<App> was created without expected data property 'activeColumn'");
+	if (!('forceColumnFormat' in this._state)) console.warn("<App> was created without expected data property 'forceColumnFormat'");
+	if (!('$dw_chart' in this._state)) console.warn("<App> was created without expected data property '$dw_chart'");
+	if (!('sortBy' in this._state)) console.warn("<App> was created without expected data property 'sortBy'");
+	if (!('sortDir' in this._state)) console.warn("<App> was created without expected data property 'sortDir'");
+
+
+
+
+
+	if (!('multiSelection' in this._state)) console.warn("<App> was created without expected data property 'multiSelection'");
+	if (!('firstRowIsHeader' in this._state)) console.warn("<App> was created without expected data property 'firstRowIsHeader'");
+	if (!('locale' in this._state)) console.warn("<App> was created without expected data property 'locale'");
+	if (!('locales' in this._state)) console.warn("<App> was created without expected data property 'locales'");
+	if (!('search' in this._state)) console.warn("<App> was created without expected data property 'search'");
+
+	if (!('chartData' in this._state)) console.warn("<App> was created without expected data property 'chartData'");
+	if (!('transpose' in this._state)) console.warn("<App> was created without expected data property 'transpose'");
+	if (!('readonly' in this._state)) console.warn("<App> was created without expected data property 'readonly'");
+
+	if (!('has_changes' in this._state)) console.warn("<App> was created without expected data property 'has_changes'");
+
+	this._handlers.destroy = [removeFromStore];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { searchIndex: 1, searchResults: 1, activeColumn: 1, forceColumnFormat: 1, $dw_chart: 1, sortBy: 1, sortDir: 1, customColumn: 1, columns: 1, columnFormat: 1, activeValues: 1, activeFormat: 1, multiSelection: 1, firstRowIsHeader: 1, locale: 1, locales: 1, search: 1, searchIndexSafe: 1, chartData: 1, transpose: 1, readonly: 1, sorting: 1, has_changes: 1 };
+		oncreate$4.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$6(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(App.prototype, protoDev);
+assign(App.prototype, methods$4);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('searchIndexSafe' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'searchIndexSafe'");
+	if ('customColumn' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'customColumn'");
+	if ('columnFormat' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'columnFormat'");
+	if ('activeValues' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'activeValues'");
+	if ('activeFormat' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'activeFormat'");
+	if ('columns' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'columns'");
+	if ('sorting' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'sorting'");
+};
+
+App.prototype._recompute = function _recompute(changed, state) {
+	if (changed.searchIndex || changed.searchResults) {
+		if (this._differs(state.searchIndexSafe, (state.searchIndexSafe = searchIndexSafe(state)))) changed.searchIndexSafe = true;
+	}
+
+	if (changed.activeColumn || changed.forceColumnFormat) {
+		if (this._differs(state.customColumn, (state.customColumn = customColumn(state)))) changed.customColumn = true;
+		if (this._differs(state.columnFormat, (state.columnFormat = columnFormat(state)))) changed.columnFormat = true;
+	}
+
+	if (changed.activeColumn) {
+		if (this._differs(state.activeValues, (state.activeValues = activeValues(state)))) changed.activeValues = true;
+	}
+
+	if (changed.activeColumn || changed.$dw_chart) {
+		if (this._differs(state.activeFormat, (state.activeFormat = activeFormat(state)))) changed.activeFormat = true;
+	}
+
+	if (changed.activeColumn) {
+		if (this._differs(state.columns, (state.columns = columns(state)))) changed.columns = true;
+	}
+
+	if (changed.sortBy || changed.sortDir) {
+		if (this._differs(state.sorting, (state.sorting = sorting(state)))) changed.sorting = true;
+	}
+};
+
+function Store(state, options) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._handlers = {};
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+	this._differs = options && options.immutable ? _differsImmutable : _differs;
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var store = this;
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (store._differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	fire: fire,
+
+	get: get,
+
+	// TODO remove this method
+	observe: observe,
+
+	on: on,
+
+	onchange: function(callback) {
+		// TODO remove this method
+		console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})");
+
+		return this.on('state', function(event) {
+			callback(event.current, event.changed);
+		});
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign(assign({}, oldState), newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		this.fire('state', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		this.fire('update', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+	}
+});
+
+const store = new Store({});
+
+const data$7 = {
+    chart: {
+        id: ''
+    },
+    readonly: false,
+    chartData: '',
+    transpose: false,
+    firstRowIsHeader: true,
+    skipRows: 0
+};
+
+var main = { App, store, data: data$7 };
+
+return main;
+
+})));

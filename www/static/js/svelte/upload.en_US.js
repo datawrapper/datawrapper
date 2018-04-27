@@ -1,1 +1,1702 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e(require("../../../../../../../static/vendor/jschardet/jschardet.min.js")):"function"==typeof define&&define.amd?define("svelte/upload",["../../../../../../../static/vendor/jschardet/jschardet.min.js"],e):t.upload=e(t.jschardet)}(this,function(t){"use strict";function e(){}function a(t,e){for(var a in e)t[a]=e[a];return t}function n(t,e){e.appendChild(t)}function r(t,e,a){e.insertBefore(t,a)}function o(t){t.parentNode.removeChild(t)}function i(t){for(var e=0;e<t.length;e+=1)t[e]&&t[e].d()}function s(t){return document.createElement(t)}function c(t){return document.createTextNode(t)}function d(t,e,a){t.addEventListener(e,a,!1)}function u(t,e,a){t.removeEventListener(e,a,!1)}function l(t,e,a){t.setAttribute(e,a)}function h(t,e){for(var a=0;a<t.options.length;a+=1){var n=t.options[a];if(n.__value===e)return void(n.selected=!0)}}function f(){return Object.create(null)}function p(t){this.destroy=e,this.fire("destroy"),this.set=this.get=e,!1!==t&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function v(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function _(t,e){return t!=t?e==e:t!==e}function g(t,e){var a=t in this._handlers&&this._handlers[t].slice();if(a)for(var n=0;n<a.length;n+=1){var r=a[n];r.__calling||(r.__calling=!0,r.call(this,e),r.__calling=!1)}}function m(t){return t?this._state[t]:this._state}function y(t,e){t._handlers=f(),t._bind=e._bind,t.options=e,t.root=e.root||t,t.store=t.root.store||e.store}function b(t,e,a){var n=e.bind(this);return a&&!1===a.init||n(this.get()[t],void 0),this.on(a&&a.defer?"update":"state",function(e){e.changed[t]&&n(e.current[t],e.previous&&e.previous[t])})}function D(t,e){if("teardown"===t)return this.on("destroy",e);var a=this._handlers[t]||(this._handlers[t]=[]);return a.push(e),{cancel:function(){var t=a.indexOf(e);~t&&a.splice(t,1)}}}function w(t){for(;t&&t.length;)t.shift()()}t=t&&t.hasOwnProperty("default")?t.default:t;var x={destroy:p,get:m,fire:g,observe:b,on:D,set:function(t){this._set(a({},t)),this.root._lock||(this.root._lock=!0,w(this.root._beforecreate),w(this.root._oncreate),w(this.root._aftercreate),this.root._lock=!1)},teardown:p,_recompute:e,_set:function(t){var e=this._state,n={},r=!1;for(var o in t)this._differs(t[o],e[o])&&(n[o]=r=!0);r&&(this._state=a(a({},e),t),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:e}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:e})))},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:v};function T(t,e,a){return function(t,e,a,n,r){var o={method:e,body:n,mode:"cors",credentials:a};window.fetch(t,o).then(function(t){if(200!=t.status)return new Error(t.statusText);try{return t.json()}catch(e){return t.text()}}).then(r).catch(function(t){console.error(t)})}(t,"PUT","include",e,a)}var N,A=Date.now||function(){return(new Date).getTime()};var C=dw.backend.currentChart,k=function(t,e,a){var n,r,o,i,s=0;a||(a={});var c=function(){s=!1===a.leading?0:A(),n=null,i=t.apply(r,o),n||(r=o=null)},d=function(){var d=A();s||!1!==a.leading||(s=d);var u=e-(d-s);return r=this,o=arguments,u<=0||u>e?(n&&(clearTimeout(n),n=null),s=d,i=t.apply(r,o),n||(r=o=null)):n||!1===a.trailing||(n=setTimeout(c,u)),i};return d.cancel=function(){clearTimeout(n),s=0,n=r=o=null},d}(function(){var t=N.get().chartData;T("/api/charts/"+C.get("id")+"/data",t)},1e3);function P(t){var e=t.changed,a=t.current,n=t.previous;e.chartData&&a.chartData&&n&&n.chartData!=a.chartData&&k()}function j(t){y(this,t),this._state=a({placeholder:"Paste your copied data here..."},t.data),this._handlers.update=[P];var e=this;t.root||(this._oncreate=[]),this._fragment=function(t,e){var a,i,c,l=!1;function h(){l=!0,t.set({chartData:c.value}),l=!1}return{c:function(){a=s("form"),i=s("div"),c=s("textarea"),this.h()},h:function(){var t,n;d(c,"input",h),c.readOnly=e.readonly,c.id="upload-data-text",t="resize",n="none",c.style.setProperty(t,n),c.placeholder=e.placeholder,c.className="svelte-h5ftni",i.className="control-group",a.className="upload-form"},m:function(t,o){r(a,t,o),n(i,a),n(c,i),c.value=e.chartData},p:function(t,e){l||(c.value=e.chartData),t.readonly&&(c.readOnly=e.readonly),t.placeholder&&(c.placeholder=e.placeholder)},u:function(){o(a)},d:function(){u(c,"input",h)}}}(this,this._state),this.root._oncreate.push(function(){(function(){N=this}).call(e),e.fire("update",{changed:{chartData:1,readonly:1,placeholder:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),w(this._oncreate))}function S(t){var e=t.changed,a=t.current;if(e.selectedDataset&&"--"!=a.selectedDataset){var n=a.selectedDataset;this.set({chartData:n.data}),n.presets&&Object.keys(n.presets).forEach(function(t){dw.backend.currentChart.set(t,n.presets[t])})}}function F(t,e){for(var n,c,d=e.group,u=(e.each_value,e.group_index,d.datasets),h=[],f=0;f<u.length;f+=1)h[f]=M(t,a(a({},e),{each_value_1:u,dataset:u[f],dataset_index:f}));return{c:function(){n=s("optgroup");for(var t=0;t<h.length;t+=1)h[t].c();this.h()},h:function(){l(n,"label",c=d.type)},m:function(t,e){r(n,t,e);for(var a=0;a<h.length;a+=1)h[a].m(n,null)},p:function(e,r){d=r.group,r.each_value,r.group_index;var o=d.datasets;if(e.datasetsArray){for(var i=0;i<o.length;i+=1){var s=a(a({},r),{each_value_1:o,dataset:o[i],dataset_index:i});h[i]?h[i].p(e,s):(h[i]=M(t,s),h[i].c(),h[i].m(n,null))}for(;i<h.length;i+=1)h[i].u(),h[i].d();h.length=o.length}e.datasetsArray&&c!==(c=d.type)&&l(n,"label",c)},u:function(){o(n);for(var t=0;t<h.length;t+=1)h[t].u()},d:function(){i(h)}}}function M(t,a){a.group,a.each_value,a.group_index;var i,d,u,l=a.dataset,h=(a.each_value_1,a.dataset_index,l.title);return{c:function(){i=s("option"),d=c(h),this.h()},h:function(){i.__value=u=l,i.value=i.__value,i.className="demo-dataset"},m:function(t,e){r(i,t,e),n(d,i)},p:function(t,e){e.group,e.each_value,e.group_index,l=e.dataset,e.each_value_1,e.dataset_index,t.datasetsArray&&h!==(h=l.title)&&(d.data=h),t.datasetsArray&&u!==(u=l)&&(i.__value=u),i.value=i.__value},u:function(){o(i)},d:e}}function U(t){y(this,t),this._state=a({selectedDataset:"--"},t.data),this._recompute({datasets:1},this._state),this._handlers.update=[S];var e=this;t.root||(this._oncreate=[],this._beforecreate=[]),this._fragment=function(t,e){for(var l,f,p,v,_,g,m,y,b,D,w=!1,x=e.datasetsArray,T=[],N=0;N<x.length;N+=1)T[N]=F(t,a(a({},e),{each_value:x,group:x[N],group_index:N}));function A(){w=!0,t.set({selectedDataset:function(t){var e=t.querySelector(":checked")||t.options[0];return e&&e.__value}(y)}),w=!1}return{c:function(){l=s("p"),f=c("Select your data (including header row/column) in Excel or LibreOffice and paste it in the text field on the right. You can also upload a CSV file from your computer."),p=c("\n\n"),v=s("div"),_=s("p"),g=c("If you just want to try Datawrapper, here‘s a list of some example datasets you can use:"),m=c("\n    "),y=s("select"),b=s("option"),D=c("Select a sample dataset");for(var t=0;t<T.length;t+=1)T[t].c();this.h()},h:function(){b.__value="--",b.value=b.__value,d(y,"change",A),"selectedDataset"in e||t.root._beforecreate.push(A),y.disabled=e.readonly,y.id="demo-datasets",y.className="svelte-1jdst2k",v.className="demo-datasets"},m:function(t,a){r(l,t,a),n(f,l),r(p,t,a),r(v,t,a),n(_,v),n(g,_),n(m,v),n(y,v),n(b,y),n(D,b);for(var o=0;o<T.length;o+=1)T[o].m(y,null);h(y,e.selectedDataset)},p:function(e,n){var r=n.datasetsArray;if(e.datasetsArray){for(var o=0;o<r.length;o+=1){var i=a(a({},n),{each_value:r,group:r[o],group_index:o});T[o]?T[o].p(e,i):(T[o]=F(t,i),T[o].c(),T[o].m(y,null))}for(;o<T.length;o+=1)T[o].u(),T[o].d();T.length=r.length}w||h(y,n.selectedDataset),e.readonly&&(y.disabled=n.readonly)},u:function(){o(l),o(p),o(v);for(var t=0;t<T.length;t+=1)T[t].u()},d:function(){i(T),u(y,"change",A)}}}(this,this._state),this.root._oncreate.push(function(){e.fire("update",{changed:{datasets:1,readonly:1,selectedDataset:1,datasetsArray:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),w(this._beforecreate),w(this._oncreate))}function E(e,a){var n=new FileReader;n.onload=function(){try{for(var r=new Uint8Array(n.result),o="",i=0;i<r.length;++i)o+=String.fromCharCode(r[i]);var s=t.detect(o);(n=new FileReader).onload=function(){return a(null,n.result)},n.readAsText(e,s.encoding)}catch(t){console.warn(t),a(null,n.result)}},n.readAsArrayBuffer(e)}a(j.prototype,x),a(U.prototype,x),U.prototype._recompute=function(t,e){var a;t.datasets&&this._differs(e.datasetsArray,e.datasetsArray=(a=e.datasets,Object.keys(a).map(function(t){return a[t]})))&&(t.datasetsArray=!0)};var O=[{id:"copy",title:"Copy & paste data table",longTitle:"Copy & paste your data",icon:"im im-copy",mainPanel:j,sidebar:U,action:function(){}},{id:"upload",title:"Upload CSV file",icon:"im im-upload",mainPanel:j,sidebar:U,isFileUpload:!0,onFileUpload:function(t){var e=t.target.files[0];"text/"==e.type.substr(0,5)&&E(e,function(t,e){T("/api/charts/"+dw.backend.currentChart.get("id")+"/data",e,function(){window.location.href="describe"})})},action:function(){}}];var L={addButton:function(t){O.push(t),this.set({buttons:O});var e=this.get().defaultMethod;t.id==e&&this.btnAction(t)},btnAction:function(t){var e=this;if(this.set({active:t}),"copy"==t.id){var a=this.store.get().dw_chart;a.get("externalData")&&(a.set("externalData",""),setTimeout(function(){dw.backend.currentChart.save()},1e3))}var n=t.id;"upload"==t.id&&(n="copy",setTimeout(function(){e.set({active:O[0]})},1e3)),this.store.get().dw_chart.set("metadata.data.upload-method",n),t.action&&t.action(),t.mainPanel&&this.set({MainPanel:t.mainPanel}),t.sidebar&&this.set({Sidebar:t.sidebar})},btnUpload:function(t,e){t.onFileUpload&&t.onFileUpload(e)},dragStart:function(t){"copy"==this.get().active.id&&(t.preventDefault(),this.set({dragover:!0}))},resetDrag:function(){this.set({dragover:!1})},onFileDrop:function(t){if("copy"==this.get().active.id){this.resetDrag(),t.preventDefault();var e=[];if(t.dataTransfer.items){for(var a=0;a<t.dataTransfer.items.length;a++)"file"===t.dataTransfer.items[a].kind&&e.push(t.dataTransfer.items[a].getAsFile());t.dataTransfer.items.clear()}else{for(var n=0;n<t.dataTransfer.files.length;n++)e.push(t.dataTransfer.files[n]);t.dataTransfer.items.clear()}for(var r=0;r<e.length;r++)if("text/"==e[r].type.substr(0,5))return E(e[r],function(t,e){T("/api/charts/"+dw.backend.currentChart.get("id")+"/data",e,function(){window.location.href="describe"})})}}};function H(t,a){var n;return{c:function(){n=s("div"),this.h()},h:function(){n.className="draginfo svelte-o0ayrc"},m:function(t,e){r(n,t,e),n.innerHTML="Drag your CSV file here to upload..."},u:function(){n.innerHTML="",o(n)},d:e}}function R(t,e){var a,i,l,h,f,p,v,_,g,m=e.btn,y=(e.each_value,e.btn_index,m.title),b=m.isFileUpload&&B(t,e);return{c:function(){a=s("li"),i=s("label"),b&&b.c(),l=c("\n                            "),h=s("i"),p=c("\n                            "),v=s("span"),_=c(y),this.h()},h:function(){h.className=f=m.icon+" svelte-o0ayrc",v.className="svelte-o0ayrc",i.className="svelte-o0ayrc",d(a,"click",q),a.className=g="action "+(e.active==m?"active":"")+" svelte-o0ayrc",a._svelte={component:t,each_value:e.each_value,btn_index:e.btn_index}},m:function(t,e){r(a,t,e),n(i,a),b&&b.m(i,null),n(l,i),n(h,i),n(p,i),n(v,i),n(_,v)},p:function(e,n){m=n.btn,n.each_value,n.btn_index,m.isFileUpload?b?b.p(e,n):((b=B(t,n)).c(),b.m(i,l)):b&&(b.u(),b.d(),b=null),e.buttons&&f!==(f=m.icon+" svelte-o0ayrc")&&(h.className=f),e.buttons&&y!==(y=m.title)&&(_.data=y),(e.active||e.buttons)&&g!==(g="action "+(n.active==m?"active":"")+" svelte-o0ayrc")&&(a.className=g),a._svelte.each_value=n.each_value,a._svelte.btn_index=n.btn_index},u:function(){o(a),b&&b.u()},d:function(){b&&b.d(),u(a,"click",q)}}}function B(t,e){var a;e.btn,e.each_value,e.btn_index;return{c:function(){a=s("input"),this.h()},h:function(){d(a,"change",V),a.className="file-upload svelte-o0ayrc",l(a,"type","file"),a._svelte={component:t,each_value:e.each_value,btn_index:e.btn_index}},m:function(t,e){r(a,t,e)},p:function(t,e){e.btn,e.each_value,e.btn_index,a._svelte.each_value=e.each_value,a._svelte.btn_index=e.btn_index},u:function(){o(a)},d:function(){u(a,"change",V)}}}function V(t){var e=this._svelte.component,a=this._svelte.each_value[this._svelte.btn_index];e.btnUpload(a,t)}function q(t){var e=this._svelte.component,a=this._svelte.each_value[this._svelte.btn_index];e.btnAction(a)}function I(t){y(this,t),this._state=a({dragover:!1,MainPanel:j,Sidebar:U,active:O[0],buttons:O},t.data);var e=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this._fragment=function(t,e){for(var l,h,f,p,v,_,g,m,y,b,D,w,x,T,N,A,C,k,P,j,S,F=e.active.longTitle||e.active.title,M={},U={},E=e.dragover&&H(),O=e.buttons,L=[],B=0;B<O.length;B+=1)L[B]=R(t,a(a({},e),{each_value:O,btn:O[B],btn_index:B}));var V=e.Sidebar;function q(e){var a={};return"chartData"in e&&(a.chartData=e.chartData,M.chartData=!0),"readonly"in e&&(a.readonly=e.readonly,M.readonly=!0),"datasets"in e&&(a.datasets=e.datasets,M.datasets=!0),{root:t.root,data:a,_bind:function(e,a){t.get();var n={};!M.chartData&&e.chartData&&(n.chartData=a.chartData),!M.readonly&&e.readonly&&(n.readonly=a.readonly),!M.datasets&&e.datasets&&(n.datasets=a.datasets),t._set(n),M={}}}}if(V){var I=new V(q(e));t.root._beforecreate.push(function(){I._bind({chartData:1,readonly:1,datasets:1},I.get())})}var $=e.MainPanel;function z(e){var a={};return"chartData"in e&&(a.chartData=e.chartData,U.chartData=!0),"readonly"in e&&(a.readonly=e.readonly,U.readonly=!0),{root:t.root,data:a,_bind:function(e,a){t.get();var n={};!U.chartData&&e.chartData&&(n.chartData=a.chartData),!U.readonly&&e.readonly&&(n.readonly=a.readonly),t._set(n),U={}}}}if($){var Y=new $(z(e));t.root._beforecreate.push(function(){Y._bind({chartData:1,readonly:1},Y.get())})}function G(e){t.onFileDrop(e)}function J(e){t.dragStart(e)}function K(e){t.dragStart(e)}function Q(e){t.resetDrag()}function W(e){t.resetDrag()}return{c:function(){l=s("div"),E&&E.c(),h=c("\n    "),f=s("div"),p=s("div"),v=s("div"),_=s("h3"),g=c("\n\n                "),m=s("ul");for(var t=0;t<L.length;t+=1)L[t].c();y=c("\n\n                "),b=s("h4"),D=c(F),w=c("\n\n                "),I&&I._fragment.c(),x=c("\n        "),T=s("div"),Y&&Y._fragment.c(),N=c("\n\n            "),A=s("div"),C=s("a"),k=c("Proceed"),P=c(" "),j=s("i"),this.h()},h:function(){m.className="import-methods svelte-o0ayrc",v.className="sidebar",p.className="span5",j.className="icon-chevron-right icon-white",C.href="describe",C.className="submit btn btn-primary",C.id="describe-proceed",A.className="buttons pull-right",T.className="span7",f.className="row",f.style.cssText=S=e.dragover?"opacity: 0.5;filter:blur(6px);background:white;pointer-events:none":"",d(l,"drop",G),d(l,"dragover",J),d(l,"dragenter",K),d(l,"dragend",Q),d(l,"dragleave",W),l.className="chart-editor dw-create-upload upload-data"},m:function(t,e){r(l,t,e),E&&E.m(l,null),n(h,l),n(f,l),n(p,f),n(v,p),n(_,v),_.innerHTML="How to you want to upload your data?",n(g,v),n(m,v);for(var a=0;a<L.length;a+=1)L[a].m(m,null);n(y,v),n(b,v),n(D,b),n(w,v),I&&I._mount(v,null),n(x,f),n(T,f),Y&&Y._mount(T,null),n(N,T),n(A,T),n(C,A),n(k,C),n(P,C),n(j,C)},p:function(e,n){n.dragover?E||((E=H()).c(),E.m(l,h)):E&&(E.u(),E.d(),E=null);var r=n.buttons;if(e.buttons||e.active){for(var o=0;o<r.length;o+=1){var i=a(a({},n),{each_value:r,btn:r[o],btn_index:o});L[o]?L[o].p(e,i):(L[o]=R(t,i),L[o].c(),L[o].m(m,null))}for(;o<L.length;o+=1)L[o].u(),L[o].d();L.length=r.length}if(e.active&&F!==(F=n.active.longTitle||n.active.title)&&(D.data=F),V!==(V=n.Sidebar))I&&I.destroy(),V&&((I=new V(q(n)))._fragment.c(),I._mount(v,null));else{var s={};!M.chartData&&e.chartData&&(s.chartData=n.chartData,M.chartData=!0),!M.readonly&&e.readonly&&(s.readonly=n.readonly,M.readonly=!0),!M.datasets&&e.datasets&&(s.datasets=n.datasets,M.datasets=!0),I._set(s),M={}}if($!==($=n.MainPanel))Y&&Y.destroy(),$&&((Y=new $(z(n)))._fragment.c(),Y._mount(T,N));else{var c={};!U.chartData&&e.chartData&&(c.chartData=n.chartData,U.chartData=!0),!U.readonly&&e.readonly&&(c.readonly=n.readonly,U.readonly=!0),Y._set(c),U={}}e.dragover&&S!==(S=n.dragover?"opacity: 0.5;filter:blur(6px);background:white;pointer-events:none":"")&&(f.style.cssText=S)},u:function(){_.innerHTML="",o(l),E&&E.u();for(var t=0;t<L.length;t+=1)L[t].u()},d:function(){E&&E.d(),i(L),I&&I.destroy(!1),Y&&Y.destroy(!1),u(l,"drop",G),u(l,"dragover",J),u(l,"dragenter",K),u(l,"dragend",Q),u(l,"dragleave",W)}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this,e=this.store.get().dw_chart.get("metadata.data.upload-method","copy");this.set({defaultMethod:e}),O.forEach(function(a){a.id==e&&t.set({active:a})})}).call(e),e.fire("update",{changed:{dragover:1,buttons:1,active:1,Sidebar:1,chartData:1,readonly:1,datasets:1,MainPanel:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,w(this._beforecreate),w(this._oncreate),w(this._aftercreate),this._lock=!1)}function $(t,e){this._observers={pre:f(),post:f()},this._handlers={},this._dependents=[],this._computed=f(),this._sortedComputedProperties=[],this._state=a({},t),this._differs=e&&e.immutable?_:v}a(I.prototype,x),a(I.prototype,L),a($.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},a=0;a<t.length;a+=1){var n=t[a];e["$"+n]=this._state[n]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_sortComputedProperties:function(){var t,e=this._computed,a=this._sortedComputedProperties=[],n=f();function r(o){if(t[o])throw new Error("Cyclical dependency detected");if(!n[o]){n[o]=!0;var i=e[o];i&&(t[o]=!0,i.deps.forEach(r),a.push(i))}}for(var o in this._computed)t=f(),r(o)},compute:function(t,e,a){var n,r=this,o={deps:e,update:function(o,i,s){var c=e.map(function(t){return t in i&&(s=!0),o[t]});if(s){var d=a.apply(null,c);r._differs(d,n)&&(n=d,i[t]=!0,o[t]=n)}}};o.update(this._state,{},!0),this._computed[t]=o,this._sortComputedProperties()},fire:g,get:m,observe:b,on:D,onchange:function(t){return console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})"),this.on("state",function(e){t(e.current,e.changed)})},set:function(t){var e=this._state,n=this._changed={},r=!1;for(var o in t){if(this._computed[o])throw new Error("'"+o+"' is a read-only property");this._differs(t[o],e[o])&&(n[o]=r=!0)}if(r){this._state=a(a({},e),t);for(var i=0;i<this._sortedComputedProperties.length;i+=1)this._sortedComputedProperties[i].update(this._state,n);this.fire("state",{changed:n,current:this._state,previous:e});var s=this._dependents.slice();for(i=0;i<s.length;i+=1){var c=s[i],d={};r=!1;for(var u=0;u<c.props.length;u+=1){var l=c.props[u];l in n&&(d["$"+l]=this._state[l],r=!0)}r&&c.component.set(d)}this.fire("update",{changed:n,current:this._state,previous:e})}}});return{App:I,store:new $({}),data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('../../../../../../../static/vendor/jschardet/jschardet.min.js')) :
+	typeof define === 'function' && define.amd ? define('svelte/upload', ['../../../../../../../static/vendor/jschardet/jschardet.min.js'], factory) :
+	(global.upload = factory(global.jschardet));
+}(this, (function (jschardet) { 'use strict';
+
+jschardet = jschardet && jschardet.hasOwnProperty('default') ? jschardet['default'] : jschardet;
+
+function noop() {}
+
+function assign(tar, src) {
+	for (var k in src) tar[k] = src[k];
+	return tar;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) iterations[i].d();
+	}
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function selectOption(select, value) {
+	for (var i = 0; i < select.options.length; i += 1) {
+		var option = select.options[i];
+
+		if (option.__value === value) {
+			option.selected = true;
+			return;
+		}
+	}
+}
+
+function selectValue(select) {
+	var selectedOption = select.querySelector(':checked') || select.options[0];
+	return selectedOption && selectedOption.__value;
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function _differs(a, b) {
+	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function _differsImmutable(a, b) {
+	return a != a ? b == b : a !== b;
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		var handler = handlers[i];
+
+		if (!handler.__calling) {
+			handler.__calling = true;
+			handler.call(this, data);
+			handler.__calling = false;
+		}
+	}
+}
+
+function getDev(key) {
+	if (key) console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead");
+	return get.call(this, key);
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var fn = callback.bind(this);
+
+	if (!options || options.init !== false) {
+		fn(this.get()[key], undefined);
+	}
+
+	return this.on(options && options.defer ? 'update' : 'state', function(event) {
+		if (event.changed[key]) fn(event.current[key], event.previous && event.previous[key]);
+	});
+}
+
+function observeDev(key, callback, options) {
+	console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+	var c = (key = '' + key).search(/[.[]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign(assign({}, oldState), newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		this.fire("state", { changed: changed, current: this._state, previous: oldState });
+		this._fragment.p(changed, this._state);
+		this.fire("update", { changed: changed, current: this._state, previous: oldState });
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.shift()();
+}
+
+function _mount(target, anchor) {
+	this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: getDev,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount,
+	_differs: _differs
+};
+
+// quick reference variables for speed access
+
+// `_isArray` : an object's function
+
+function fetchJSON(url, method, credentials, body, callback) {
+    var opts = {
+        method, body,
+        mode: 'cors',
+        credentials
+    };
+
+    window.fetch(url, opts)
+    .then((res) => {
+        // console.log('status', res);
+        if (res.status != 200) return new Error(res.statusText);
+        try {
+            return res.json();
+        } catch (Error) {
+            // could not parse json, so just return text
+            return res.text();
+        }
+    })
+    .then(callback)
+    .catch((err) => {
+        console.error(err);
+    });
+}
+function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', "include", body, callback); }
+
+// `_now` : an utility's function
+// -------------------------------
+
+// A (possibly faster) way to get the current timestamp as an integer.
+var _now = Date.now || function () {
+	return new Date().getTime();
+};
+
+// `_throttle` : (ahem) a function's function
+
+// Returns a function, that, when invoked, will only be triggered at most once
+// during a given window of time. Normally, the throttled function will run
+// as much as it can, without ever going more than once per `wait` duration;
+// but if you'd like to disable the execution on the leading edge, pass
+// `{leading: false}`. To disable execution on the trailing edge, ditto.
+function _throttle (func, wait, options) {
+  let timeout, context, args, result;
+  let previous = 0;
+  if (!options) options = {};
+
+  let later = function () {
+    previous = options.leading === false ? 0 : _now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
+
+  let throttled = function () {
+    let now = _now();
+    if (!previous && options.leading === false) previous = now;
+    let remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+
+  throttled.cancel = function () {
+    clearTimeout(timeout);
+    previous = 0;
+    timeout = context = args = null;
+  };
+
+  return throttled;
+}
+
+/* upload/TextAreaUpload.html generated by Svelte v1.64.0 */
+
+let app;
+const chart = dw.backend.currentChart;
+
+const updateData = _throttle(() => {
+    const {chartData} = app.get();
+    putJSON(`/api/charts/${chart.get('id')}/data`, chartData);
+}, 1000);
+
+
+function data() {
+    return {
+        placeholder: "Paste your copied data here...",
+    }
+}
+function oncreate() {
+    app = this;
+}
+function onupdate({changed, current, previous}) {
+    if (changed.chartData && current.chartData && previous && previous.chartData != current.chartData) {
+        updateData();
+    }
+}
+function create_main_fragment(component, state) {
+	var form, div, textarea, textarea_updating = false;
+
+	function textarea_input_handler() {
+		textarea_updating = true;
+		component.set({ chartData: textarea.value });
+		textarea_updating = false;
+	}
+
+	return {
+		c: function create() {
+			form = createElement("form");
+			div = createElement("div");
+			textarea = createElement("textarea");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(textarea, "input", textarea_input_handler);
+			textarea.readOnly = state.readonly;
+			textarea.id = "upload-data-text";
+			setStyle(textarea, "resize", "none");
+			textarea.placeholder = state.placeholder;
+			textarea.className = "svelte-h5ftni";
+			div.className = "control-group";
+			form.className = "upload-form";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(form, target, anchor);
+			appendNode(div, form);
+			appendNode(textarea, div);
+
+			textarea.value = state.chartData;
+		},
+
+		p: function update(changed, state) {
+			if (!textarea_updating) textarea.value = state.chartData;
+			if (changed.readonly) {
+				textarea.readOnly = state.readonly;
+			}
+
+			if (changed.placeholder) {
+				textarea.placeholder = state.placeholder;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(form);
+		},
+
+		d: function destroy$$1() {
+			removeListener(textarea, "input", textarea_input_handler);
+		}
+	};
+}
+
+function TextAreaUpload(options) {
+	this._debugName = '<TextAreaUpload>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data(), options.data);
+	if (!('chartData' in this._state)) console.warn("<TextAreaUpload> was created without expected data property 'chartData'");
+	if (!('readonly' in this._state)) console.warn("<TextAreaUpload> was created without expected data property 'readonly'");
+	if (!('placeholder' in this._state)) console.warn("<TextAreaUpload> was created without expected data property 'placeholder'");
+	this._handlers.update = [onupdate];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { chartData: 1, readonly: 1, placeholder: 1 };
+		oncreate.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+	}
+
+	this._fragment = create_main_fragment(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(TextAreaUpload.prototype, protoDev);
+
+TextAreaUpload.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* upload/UploadHelp.html generated by Svelte v1.64.0 */
+
+/* globals dw */
+function datasetsArray({ datasets }) {
+    return Object.keys(datasets).map(k => datasets[k]);
+}
+function data$1() {
+    return {
+        selectedDataset: '--'
+    };
+}
+function onupdate$1({changed, current}) {
+    if (changed.selectedDataset && current.selectedDataset != '--') {
+        const sel = current.selectedDataset;
+        this.set({chartData: sel.data});
+        if (sel.presets) {
+            Object.keys(sel.presets).forEach(k => {
+                dw.backend.currentChart.set(k, sel.presets[k]);
+            });
+        }
+    }
+}
+function create_main_fragment$1(component, state) {
+	var p, text_value = "Select your data (including header row/column) in Excel or LibreOffice and paste it in the text field on the right. You can also upload a CSV file from your computer.", text, text_1, div, p_1, text_2_value = "If you just want to try Datawrapper, here‘s a list of some example datasets you can use:", text_2, text_3, select, option, text_4_value = "Select a sample dataset", text_4, select_updating = false;
+
+	var each_value = state.datasetsArray;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(component, assign(assign({}, state), {
+			each_value: each_value,
+			group: each_value[i],
+			group_index: i
+		}));
+	}
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ selectedDataset: selectValue(select) });
+		select_updating = false;
+	}
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			text = createText(text_value);
+			text_1 = createText("\n\n");
+			div = createElement("div");
+			p_1 = createElement("p");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n    ");
+			select = createElement("select");
+			option = createElement("option");
+			text_4 = createText(text_4_value);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = "--";
+			option.value = option.__value;
+			addListener(select, "change", select_change_handler);
+			if (!('selectedDataset' in state)) component.root._beforecreate.push(select_change_handler);
+			select.disabled = state.readonly;
+			select.id = "demo-datasets";
+			select.className = "svelte-1jdst2k";
+			div.className = "demo-datasets";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			appendNode(text, p);
+			insertNode(text_1, target, anchor);
+			insertNode(div, target, anchor);
+			appendNode(p_1, div);
+			appendNode(text_2, p_1);
+			appendNode(text_3, div);
+			appendNode(select, div);
+			appendNode(option, select);
+			appendNode(text_4, option);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select, null);
+			}
+
+			selectOption(select, state.selectedDataset);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.datasetsArray;
+
+			if (changed.datasetsArray) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						group: each_value[i],
+						group_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(select, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (!select_updating) selectOption(select, state.selectedDataset);
+			if (changed.readonly) {
+				select.disabled = state.readonly;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(p);
+			detachNode(text_1);
+			detachNode(div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+
+			removeListener(select, "change", select_change_handler);
+		}
+	};
+}
+
+// (7:8) {#each datasetsArray as group}
+function create_each_block(component, state) {
+	var group = state.group, each_value = state.each_value, group_index = state.group_index;
+	var optgroup, optgroup_label_value;
+
+	var each_value_1 = group.datasets;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value_1.length; i += 1) {
+		each_blocks[i] = create_each_block_1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			dataset: each_value_1[i],
+			dataset_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			optgroup = createElement("optgroup");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(optgroup, "label", optgroup_label_value = group.type);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(optgroup, target, anchor);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(optgroup, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			group = state.group;
+			each_value = state.each_value;
+			group_index = state.group_index;
+			var each_value_1 = group.datasets;
+
+			if (changed.datasetsArray) {
+				for (var i = 0; i < each_value_1.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						dataset: each_value_1[i],
+						dataset_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block_1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(optgroup, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value_1.length;
+			}
+
+			if ((changed.datasetsArray) && optgroup_label_value !== (optgroup_label_value = group.type)) {
+				setAttribute(optgroup, "label", optgroup_label_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(optgroup);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (9:12) {#each group.datasets as dataset}
+function create_each_block_1(component, state) {
+	var group = state.group, each_value = state.each_value, group_index = state.group_index, dataset = state.dataset, each_value_1 = state.each_value_1, dataset_index = state.dataset_index;
+	var option, text_value = dataset.title, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = dataset;
+			option.value = option.__value;
+			option.className = "demo-dataset";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			group = state.group;
+			each_value = state.each_value;
+			group_index = state.group_index;
+			dataset = state.dataset;
+			each_value_1 = state.each_value_1;
+			dataset_index = state.dataset_index;
+			if ((changed.datasetsArray) && text_value !== (text_value = dataset.title)) {
+				text.data = text_value;
+			}
+
+			if ((changed.datasetsArray) && option_value_value !== (option_value_value = dataset)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+function UploadHelp(options) {
+	this._debugName = '<UploadHelp>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$1(), options.data);
+	this._recompute({ datasets: 1 }, this._state);
+	if (!('datasets' in this._state)) console.warn("<UploadHelp> was created without expected data property 'datasets'");
+	if (!('readonly' in this._state)) console.warn("<UploadHelp> was created without expected data property 'readonly'");
+	if (!('selectedDataset' in this._state)) console.warn("<UploadHelp> was created without expected data property 'selectedDataset'");
+	this._handlers.update = [onupdate$1];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { datasets: 1, readonly: 1, selectedDataset: 1, datasetsArray: 1 };
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+	}
+
+	this._fragment = create_main_fragment$1(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+	}
+}
+
+assign(UploadHelp.prototype, protoDev);
+
+UploadHelp.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('datasetsArray' in newState && !this._updatingReadonlyProperty) throw new Error("<UploadHelp>: Cannot set read-only property 'datasetsArray'");
+};
+
+UploadHelp.prototype._recompute = function _recompute(changed, state) {
+	if (changed.datasets) {
+		if (this._differs(state.datasetsArray, (state.datasetsArray = datasetsArray(state)))) changed.datasetsArray = true;
+	}
+};
+
+/* global Uint8Array,jschardet */
+
+function readFile(file, callback) {
+
+    var reader = new FileReader();
+    reader.onload = function() {
+        try {
+            var array = new Uint8Array(reader.result);
+            var string = "";
+            for (var i = 0; i < array.length; ++i) {
+                string += String.fromCharCode(array[i]);
+            }
+            let res = jschardet.detect(string);
+            reader = new FileReader();
+            reader.onload = () => callback(null, reader.result);
+            reader.readAsText(file, res.encoding);
+        } catch (e) {
+            console.warn(e);
+            callback(null, reader.result);
+        }
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+/* upload/App.html generated by Svelte v1.64.0 */
+
+const coreUploads = [{
+    id: 'copy',
+    title: "Copy & paste data table",
+    longTitle: "Copy & paste your data",
+    icon: 'im im-copy',
+    mainPanel: TextAreaUpload,
+    sidebar: UploadHelp,
+    action() {}
+},{
+    id: 'upload',
+    title: "Upload CSV file",
+    icon: 'im im-upload',
+    mainPanel: TextAreaUpload,
+    sidebar: UploadHelp,
+    isFileUpload: true,
+    onFileUpload(event) {
+        const file = event.target.files[0];
+        if (file.type.substr(0,5) == 'text/') {
+            readFile(file, (err, result) => {
+                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                    window.location.href = 'describe';
+                });
+            });
+        }
+    },
+    action() {}
+}];
+
+function data$2() {
+    return {
+        dragover: false,
+        MainPanel: TextAreaUpload,
+        Sidebar: UploadHelp,
+        active: coreUploads[0],
+        buttons: coreUploads
+    }
+}
+var methods = {
+    addButton (btn) {
+        coreUploads.push(btn);
+        this.set({buttons:coreUploads});
+        const {defaultMethod} = this.get();
+        if (btn.id == defaultMethod) {
+            this.btnAction(btn);
+        }
+    },
+    btnAction (btn) {
+        this.set({active:btn});
+        if (btn.id == 'copy') {
+            // turn off externalData, if still set
+            const {dw_chart} = this.store.get();
+            if (dw_chart.get('externalData')) {
+                dw_chart.set('externalData', '');
+                setTimeout(() => {
+                    dw.backend.currentChart.save();
+                }, 1000);
+            }
+        }
+        let activeKey = btn.id;
+        if (btn.id == 'upload') {
+            activeKey = 'copy';
+            setTimeout(() => {
+            // reset after 1sec
+                this.set({active:coreUploads[0]});
+            }, 1000);
+        }
+        const {dw_chart} = this.store.get();
+        dw_chart.set('metadata.data.upload-method', activeKey);
+        if (btn.action) btn.action();
+        if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
+        if (btn.sidebar) this.set({Sidebar:btn.sidebar});
+    },
+    btnUpload (btn, event) {
+        if (btn.onFileUpload) btn.onFileUpload(event);
+    },
+    dragStart (event) {
+        const {active} = this.get();
+        if (active.id == 'copy') {
+            event.preventDefault();
+            this.set({dragover:true});
+        }
+    },
+    resetDrag () {
+        this.set({dragover:false});
+    },
+    onFileDrop (event) {
+        const {active} = this.get();
+        if (active.id != 'copy') return;
+        // Prevent default behavior (Prevent file from being opened)
+        this.resetDrag();
+        event.preventDefault();
+        const files = [];
+        if (event.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            for (let i=0; i<event.dataTransfer.items.length; i++) {
+                // If dropped items aren't files, reject them
+                if (event.dataTransfer.items[i].kind === 'file') {
+                    files.push(event.dataTransfer.items[i].getAsFile());
+                }
+            }
+            event.dataTransfer.items.clear();
+        } else {
+            // Use DataTransfer interface to access the file(s)
+            for (let i=0; i<event.dataTransfer.files.length; i++) {
+                files.push(event.dataTransfer.files[i]);
+            }
+            event.dataTransfer.items.clear();
+        }
+        for (let i=0; i<files.length; i++) {
+            if (files[i].type.substr(0,5) == 'text/') {
+                return readFile(files[i], (err, result) => {
+                    putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                        window.location.href = 'describe';
+                    });
+                });
+            }
+        }
+    }
+};
+
+function oncreate$1() {
+    const {dw_chart} = this.store.get();
+    const method = dw_chart.get('metadata.data.upload-method', 'copy');
+    this.set({defaultMethod: method});
+    coreUploads.forEach(u => {
+        if (u.id == method) {
+            this.set({active:u});
+        }
+    });
+}
+function create_main_fragment$2(component, state) {
+	var div, text, div_1, div_2, div_3, h3, raw_value = "How to you want to upload your data?", text_1, ul, text_2, h4, text_3_value = state.active.longTitle || state.active.title, text_3, text_4, switch_instance_updating = {}, text_7, div_4, switch_instance_1_updating = {}, text_8, div_5, a, text_9_value = "Proceed", text_9, text_10, i, div_1_style_value;
+
+	var if_block = (state.dragover) && create_if_block(component, state);
+
+	var each_value = state.buttons;
+
+	var each_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+		each_blocks[i_1] = create_each_block$1(component, assign(assign({}, state), {
+			each_value: each_value,
+			btn: each_value[i_1],
+			btn_index: i_1
+		}));
+	}
+
+	var switch_value = state.Sidebar;
+
+	function switch_props(state) {
+		var switch_instance_initial_data = {};
+		if ('chartData' in state) {
+			switch_instance_initial_data.chartData = state.chartData
+                    ;
+			switch_instance_updating.chartData = true;
+		}
+		if ('readonly' in state) {
+			switch_instance_initial_data.readonly = state.readonly
+                    ;
+			switch_instance_updating.readonly = true;
+		}
+		if ('datasets' in state) {
+			switch_instance_initial_data.datasets = state.datasets ;
+			switch_instance_updating.datasets = true;
+		}
+		return {
+			root: component.root,
+			data: switch_instance_initial_data,
+			_bind: function(changed, childState) {
+				var state = component.get(), newState = {};
+				if (!switch_instance_updating.chartData && changed.chartData) {
+					newState.chartData = childState.chartData;
+				}
+
+				if (!switch_instance_updating.readonly && changed.readonly) {
+					newState.readonly = childState.readonly;
+				}
+
+				if (!switch_instance_updating.datasets && changed.datasets) {
+					newState.datasets = childState.datasets;
+				}
+				component._set(newState);
+				switch_instance_updating = {};
+			}
+		};
+	}
+
+	if (switch_value) {
+		var switch_instance = new switch_value(switch_props(state));
+
+		component.root._beforecreate.push(function() {
+			switch_instance._bind({ chartData: 1, readonly: 1, datasets: 1 }, switch_instance.get());
+		});
+	}
+
+	var switch_value_1 = state.MainPanel;
+
+	function switch_props_1(state) {
+		var switch_instance_1_initial_data = {};
+		if ('chartData' in state) {
+			switch_instance_1_initial_data.chartData = state.chartData
+                ;
+			switch_instance_1_updating.chartData = true;
+		}
+		if ('readonly' in state) {
+			switch_instance_1_initial_data.readonly = state.readonly ;
+			switch_instance_1_updating.readonly = true;
+		}
+		return {
+			root: component.root,
+			data: switch_instance_1_initial_data,
+			_bind: function(changed, childState) {
+				var state = component.get(), newState = {};
+				if (!switch_instance_1_updating.chartData && changed.chartData) {
+					newState.chartData = childState.chartData;
+				}
+
+				if (!switch_instance_1_updating.readonly && changed.readonly) {
+					newState.readonly = childState.readonly;
+				}
+				component._set(newState);
+				switch_instance_1_updating = {};
+			}
+		};
+	}
+
+	if (switch_value_1) {
+		var switch_instance_1 = new switch_value_1(switch_props_1(state));
+
+		component.root._beforecreate.push(function() {
+			switch_instance_1._bind({ chartData: 1, readonly: 1 }, switch_instance_1.get());
+		});
+	}
+
+	function drop_handler(event) {
+		component.onFileDrop(event);
+	}
+
+	function dragover_handler(event) {
+		component.dragStart(event);
+	}
+
+	function dragenter_handler(event) {
+		component.dragStart(event);
+	}
+
+	function dragend_handler(event) {
+		component.resetDrag();
+	}
+
+	function dragleave_handler(event) {
+		component.resetDrag();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) if_block.c();
+			text = createText("\n    ");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			div_3 = createElement("div");
+			h3 = createElement("h3");
+			text_1 = createText("\n\n                ");
+			ul = createElement("ul");
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].c();
+			}
+
+			text_2 = createText("\n\n                ");
+			h4 = createElement("h4");
+			text_3 = createText(text_3_value);
+			text_4 = createText("\n\n                ");
+			if (switch_instance) switch_instance._fragment.c();
+			text_7 = createText("\n        ");
+			div_4 = createElement("div");
+			if (switch_instance_1) switch_instance_1._fragment.c();
+			text_8 = createText("\n\n            ");
+			div_5 = createElement("div");
+			a = createElement("a");
+			text_9 = createText(text_9_value);
+			text_10 = createText(" ");
+			i = createElement("i");
+			this.h();
+		},
+
+		h: function hydrate() {
+			ul.className = "import-methods svelte-o0ayrc";
+			div_3.className = "sidebar";
+			div_2.className = "span5";
+			i.className = "icon-chevron-right icon-white";
+			a.href = "describe";
+			a.className = "submit btn btn-primary";
+			a.id = "describe-proceed";
+			div_5.className = "buttons pull-right";
+			div_4.className = "span7";
+			div_1.className = "row";
+			div_1.style.cssText = div_1_style_value = state.dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':'';
+			addListener(div, "drop", drop_handler);
+			addListener(div, "dragover", dragover_handler);
+			addListener(div, "dragenter", dragenter_handler);
+			addListener(div, "dragend", dragend_handler);
+			addListener(div, "dragleave", dragleave_handler);
+			div.className = "chart-editor dw-create-upload upload-data";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) if_block.m(div, null);
+			appendNode(text, div);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(div_3, div_2);
+			appendNode(h3, div_3);
+			h3.innerHTML = raw_value;
+			appendNode(text_1, div_3);
+			appendNode(ul, div_3);
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].m(ul, null);
+			}
+
+			appendNode(text_2, div_3);
+			appendNode(h4, div_3);
+			appendNode(text_3, h4);
+			appendNode(text_4, div_3);
+
+			if (switch_instance) {
+				switch_instance._mount(div_3, null);
+			}
+
+			appendNode(text_7, div_1);
+			appendNode(div_4, div_1);
+
+			if (switch_instance_1) {
+				switch_instance_1._mount(div_4, null);
+			}
+
+			appendNode(text_8, div_4);
+			appendNode(div_5, div_4);
+			appendNode(a, div_5);
+			appendNode(text_9, a);
+			appendNode(text_10, a);
+			appendNode(i, a);
+		},
+
+		p: function update(changed, state) {
+			if (state.dragover) {
+				if (!if_block) {
+					if_block = create_if_block(component, state);
+					if_block.c();
+					if_block.m(div, text);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			var each_value = state.buttons;
+
+			if (changed.buttons || changed.active) {
+				for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						btn: each_value[i_1],
+						btn_index: i_1
+					});
+
+					if (each_blocks[i_1]) {
+						each_blocks[i_1].p(changed, each_context);
+					} else {
+						each_blocks[i_1] = create_each_block$1(component, each_context);
+						each_blocks[i_1].c();
+						each_blocks[i_1].m(ul, null);
+					}
+				}
+
+				for (; i_1 < each_blocks.length; i_1 += 1) {
+					each_blocks[i_1].u();
+					each_blocks[i_1].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if ((changed.active) && text_3_value !== (text_3_value = state.active.longTitle || state.active.title)) {
+				text_3.data = text_3_value;
+			}
+
+			if (switch_value !== (switch_value = state.Sidebar)) {
+				if (switch_instance) switch_instance.destroy();
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props(state));
+					switch_instance._fragment.c();
+					switch_instance._mount(div_3, null);
+				}
+			}
+
+			else {
+				var switch_instance_changes = {};
+				if (!switch_instance_updating.chartData && changed.chartData) {
+					switch_instance_changes.chartData = state.chartData
+                    ;
+					switch_instance_updating.chartData = true;
+				}
+				if (!switch_instance_updating.readonly && changed.readonly) {
+					switch_instance_changes.readonly = state.readonly
+                    ;
+					switch_instance_updating.readonly = true;
+				}
+				if (!switch_instance_updating.datasets && changed.datasets) {
+					switch_instance_changes.datasets = state.datasets ;
+					switch_instance_updating.datasets = true;
+				}
+				switch_instance._set(switch_instance_changes);
+				switch_instance_updating = {};
+			}
+
+			if (switch_value_1 !== (switch_value_1 = state.MainPanel)) {
+				if (switch_instance_1) switch_instance_1.destroy();
+
+				if (switch_value_1) {
+					switch_instance_1 = new switch_value_1(switch_props_1(state));
+					switch_instance_1._fragment.c();
+					switch_instance_1._mount(div_4, text_8);
+				}
+			}
+
+			else {
+				var switch_instance_1_changes = {};
+				if (!switch_instance_1_updating.chartData && changed.chartData) {
+					switch_instance_1_changes.chartData = state.chartData
+                ;
+					switch_instance_1_updating.chartData = true;
+				}
+				if (!switch_instance_1_updating.readonly && changed.readonly) {
+					switch_instance_1_changes.readonly = state.readonly ;
+					switch_instance_1_updating.readonly = true;
+				}
+				switch_instance_1._set(switch_instance_1_changes);
+				switch_instance_1_updating = {};
+			}
+
+			if ((changed.dragover) && div_1_style_value !== (div_1_style_value = state.dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':'')) {
+				div_1.style.cssText = div_1_style_value;
+			}
+		},
+
+		u: function unmount() {
+			h3.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+
+			destroyEach(each_blocks);
+
+			if (switch_instance) switch_instance.destroy(false);
+			if (switch_instance_1) switch_instance_1.destroy(false);
+			removeListener(div, "drop", drop_handler);
+			removeListener(div, "dragover", dragover_handler);
+			removeListener(div, "dragenter", dragenter_handler);
+			removeListener(div, "dragend", dragend_handler);
+			removeListener(div, "dragleave", dragleave_handler);
+		}
+	};
+}
+
+// (2:4) {#if dragover}
+function create_if_block(component, state) {
+	var div, raw_value = "Drag your CSV file here to upload...";
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "draginfo svelte-o0ayrc";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (13:20) {#each buttons as btn}
+function create_each_block$1(component, state) {
+	var btn = state.btn, each_value = state.each_value, btn_index = state.btn_index;
+	var li, label, text, i, i_class_value, text_1, span, text_2_value = btn.title, text_2, li_class_value;
+
+	var if_block = (btn.isFileUpload) && create_if_block_1(component, state);
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			label = createElement("label");
+			if (if_block) if_block.c();
+			text = createText("\n                            ");
+			i = createElement("i");
+			text_1 = createText("\n                            ");
+			span = createElement("span");
+			text_2 = createText(text_2_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = i_class_value = "" + btn.icon + " svelte-o0ayrc";
+			span.className = "svelte-o0ayrc";
+			label.className = "svelte-o0ayrc";
+			addListener(li, "click", click_handler);
+			li.className = li_class_value = "action " + (state.active==btn?'active':'') + " svelte-o0ayrc";
+
+			li._svelte = {
+				component: component,
+				each_value: state.each_value,
+				btn_index: state.btn_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(label, li);
+			if (if_block) if_block.m(label, null);
+			appendNode(text, label);
+			appendNode(i, label);
+			appendNode(text_1, label);
+			appendNode(span, label);
+			appendNode(text_2, span);
+		},
+
+		p: function update(changed, state) {
+			btn = state.btn;
+			each_value = state.each_value;
+			btn_index = state.btn_index;
+			if (btn.isFileUpload) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block_1(component, state);
+					if_block.c();
+					if_block.m(label, text);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if ((changed.buttons) && i_class_value !== (i_class_value = "" + btn.icon + " svelte-o0ayrc")) {
+				i.className = i_class_value;
+			}
+
+			if ((changed.buttons) && text_2_value !== (text_2_value = btn.title)) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.active || changed.buttons) && li_class_value !== (li_class_value = "action " + (state.active==btn?'active':'') + " svelte-o0ayrc")) {
+				li.className = li_class_value;
+			}
+
+			li._svelte.each_value = state.each_value;
+			li._svelte.btn_index = state.btn_index;
+		},
+
+		u: function unmount() {
+			detachNode(li);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			removeListener(li, "click", click_handler);
+		}
+	};
+}
+
+// (16:28) {#if btn.isFileUpload}
+function create_if_block_1(component, state) {
+	var btn = state.btn, each_value = state.each_value, btn_index = state.btn_index;
+	var input;
+
+	return {
+		c: function create() {
+			input = createElement("input");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", change_handler);
+			input.className = "file-upload svelte-o0ayrc";
+			setAttribute(input, "type", "file");
+
+			input._svelte = {
+				component: component,
+				each_value: state.each_value,
+				btn_index: state.btn_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(input, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			btn = state.btn;
+			each_value = state.each_value;
+			btn_index = state.btn_index;
+			input._svelte.each_value = state.each_value;
+			input._svelte.btn_index = state.btn_index;
+		},
+
+		u: function unmount() {
+			detachNode(input);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", change_handler);
+		}
+	};
+}
+
+function change_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, btn_index = this._svelte.btn_index, btn = each_value[btn_index];
+	component.btnUpload(btn, event);
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, btn_index = this._svelte.btn_index, btn = each_value[btn_index];
+	component.btnAction(btn);
+}
+
+function App(options) {
+	this._debugName = '<App>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$2(), options.data);
+	if (!('dragover' in this._state)) console.warn("<App> was created without expected data property 'dragover'");
+	if (!('buttons' in this._state)) console.warn("<App> was created without expected data property 'buttons'");
+	if (!('active' in this._state)) console.warn("<App> was created without expected data property 'active'");
+	if (!('Sidebar' in this._state)) console.warn("<App> was created without expected data property 'Sidebar'");
+	if (!('chartData' in this._state)) console.warn("<App> was created without expected data property 'chartData'");
+	if (!('readonly' in this._state)) console.warn("<App> was created without expected data property 'readonly'");
+	if (!('datasets' in this._state)) console.warn("<App> was created without expected data property 'datasets'");
+	if (!('MainPanel' in this._state)) console.warn("<App> was created without expected data property 'MainPanel'");
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { dragover: 1, buttons: 1, active: 1, Sidebar: 1, chartData: 1, readonly: 1, datasets: 1, MainPanel: 1 };
+		oncreate$1.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$2(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(App.prototype, protoDev);
+assign(App.prototype, methods);
+
+App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+function Store(state, options) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._handlers = {};
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+	this._differs = options && options.immutable ? _differsImmutable : _differs;
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var i = this._dependents.length;
+		while (i--) {
+			if (this._dependents[i].component === component) {
+				this._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) return;
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var store = this;
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) dirty = true;
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (store._differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	fire: fire,
+
+	get: get,
+
+	// TODO remove this method
+	observe: observe,
+
+	on: on,
+
+	onchange: function(callback) {
+		// TODO remove this method
+		console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})");
+
+		return this.on('state', function(event) {
+			callback(event.current, event.changed);
+		});
+	},
+
+	set: function(newState) {
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this._computed[key]) throw new Error("'" + key + "' is a read-only property");
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign(assign({}, oldState), newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this._sortedComputedProperties[i].update(this._state, changed);
+		}
+
+		this.fire('state', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) dependent.component.set(componentState);
+		}
+
+		this.fire('update', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+	}
+});
+
+const store = new Store({});
+
+const data$3 = {
+    chart: {
+        id: ''
+    },
+    readonly: false,
+    chartData: '',
+    transpose: false,
+    firstRowIsHeader: true,
+    skipRows: 0
+};
+
+var main = { App, store, data: data$3 };
+
+return main;
+
+})));

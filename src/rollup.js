@@ -122,9 +122,9 @@ function buildLocale(app_id, locale, callback) {
     }
 }
 
-build('upload');
-build('describe');
-// build('controls');
+// build('upload');
+// build('describe');
+build('controls');
 // build('controls/hot');
 // build('publish');
 // build('highlight');
