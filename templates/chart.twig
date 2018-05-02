@@ -184,6 +184,7 @@
 
     __dw.init($.extend({
         chartJSON: {{ chart.toStruct(true) | json | raw }},
+        preview: {{ preview ? 'true' : 'false' }},
         chartLocale: '{{ chartLocale }}',
         themeId: '{{ theme.id }}',
         visId: '{{ visualization.id }}',

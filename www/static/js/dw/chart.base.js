@@ -2,8 +2,10 @@
 /*
  * This piece of code is inserted at the bottom of every Datawrapper
  * chart. It's main purpose is to trigger the chart rendering.
+ *
  */
 
+/* globals dw,$,__dw */
 (function() {
 
     var chart,
@@ -72,7 +74,7 @@
                 .locale(__dw.params.chartLocale)
                 .metricPrefix(__dw.params.metricPrefix)
                 .theme(dw.theme(__dw.params.themeId));
-        return chart.load(__dw.params.data, __dw.params.chartJSON.externalData);
+        return chart.load(__dw.params.data, __dw.params.preview ? undefined : __dw.params.chartJSON.externalData);
     }
 
     function getVis() {

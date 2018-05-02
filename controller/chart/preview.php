@@ -26,7 +26,7 @@ $app->get('/(chart|map)/:id/preview', function ($id) use ($app) {
         $page['fullscreen'] = $app->request()->get('fs') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['config'] = $GLOBALS['dw_config'];
-
+        $page['preview'] = true;
 
         check_iframe_origin($app);
 
