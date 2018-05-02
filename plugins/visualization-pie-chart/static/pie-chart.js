@@ -36,9 +36,9 @@
             if (!me.axesDef) return;
 
             var sliceColumns = _.map(me.axesDef.slices, function(i) { return dataset.column(i); });
-                filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row),
-                filterUI = filter.ui(me),
-                filterH = 0;
+            var filter = dw.utils.filter(dw.utils.columnNameColumn(sliceColumns), row);
+            var filterUI = filter.ui(me);
+            var filterH = 0;
 
             if (filterUI) (function() {
                 var $h = $('#header'),
@@ -52,8 +52,6 @@
 
             var c = me.initCanvas({}, 0, filterH),
                 FA = me.getFullArc(); // full arc
-
-
 
             c.outside_labels = me.get('outside-labels', true) && c.w > 400;
 
@@ -73,7 +71,7 @@
             me.init();
 
             me._footNotes = $('<div />').appendTo(el).addClass('pie-foot-notes');
-            me._footNotes.html('').css('top', c.or*2+20);
+            me._footNotes.html('').css('top', c.or*2);
 
             $('.tooltip').hide();
 
@@ -198,6 +196,8 @@
 
             var footnotes = [];
 
+            var or_pad = 0;
+
             _.each(slices, function(o) {
                 o.label = o.name;
                 if (lblOutside(o)) {
@@ -217,6 +217,10 @@
                     }
                 }
             });
+
+            if (footnotes.length) {
+                or_pad = 20;
+            }
 
             me._footNotes.html(footnotes.map(function(o) {
                 return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
@@ -249,7 +253,7 @@
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 
-                    slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy, c.or, c.ir, a0, a1, lbl, me.theme);
+                    slice = me.__slices[o.name] = Slice(c.paper, cx, c.cy - or_pad*0.5, c.or - or_pad, c.ir, a0, a1, lbl, me.theme);
                     slice.path.attr({
                         'stroke': cm(me.theme().colors.background),
                         'stroke-width': 1.6,
@@ -265,7 +269,7 @@
                     slice.label.text('<b>'+o.label+'</b>'+value);
                     slice.label[lblOutside(o) && c.outside_labels ? 'addClass' : 'removeClass']('outside');
                     slice.label[o.name != o.label ? 'addClass' : 'removeClass']('dw-circle');
-                    slice.animate(cx, c.cy, c.or, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
+                    slice.animate(cx, c.cy - or_pad*0.5, c.or  - or_pad, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
                 }
 
                 me.__seriesAngles[o.name] = normalize(a0, a1);
