@@ -10,7 +10,10 @@ const request = require('request');
 
 const config = yaml.safeLoad(fs.readFileSync('./config.yaml'));
 
-
+if (!config.translation || !config.translation.core) {
+    console.error(chalk.bold.red('Error!'), chalk.yellowBright('You need to set up the translation spreadsheets in config.yaml!'));
+    process.exit(-1);
+}
 
 if (config.translation) {
     queue(2)
