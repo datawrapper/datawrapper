@@ -52,9 +52,11 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         iframe.load(iframeLoaded);
 
         // initialize some UI actions
-        initTabNav(visMetas[chart.get('type')].namespace);
-        initTransposeLink();
-        initVisSelector();
+        if (!visMetas[chart.get('type')]['svelte-sidebar']) {
+            initTabNav(visMetas[chart.get('type')].namespace);
+            initTransposeLink();
+            initVisSelector();
+        }
 
         initScrollToFix();
 
