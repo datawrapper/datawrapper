@@ -12,6 +12,7 @@
 <script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js?v={{ vis.version }}"></script>
 {% endfor %}
 
+{% if not vis['svelte-sidebar'] %}
 <script type="text/javascript">
 var visData = {{ vis_data | raw }};
 
@@ -21,6 +22,7 @@ dw.backend.ready(function() {
     });
 });
 </script>
+{% endif %}
 
 <div class="dw-create-visualize chart-editor chart-editor-{{ mode }}">
     <div class="row">
