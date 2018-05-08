@@ -19,6 +19,7 @@
 </style>
 
 <script>
+    import {__} from '../shared/l10n';
 
     /* globals dw */
     export default {
@@ -27,6 +28,7 @@
                 selectedDataset: '--'
             };
         },
+        helpers: { __ },
         onupdate({changed, current}) {
             if (changed.selectedDataset && current.selectedDataset != '--') {
                 const sel = current.selectedDataset;

@@ -105,12 +105,9 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     // adding new svelte() twig function
     $twig->addFunction(new Twig_SimpleFunction('svelte', function($app_id, $data = null) {
         $locale = DatawrapperSession::getLanguage();
-        if (!file_exists(ROOT_PATH . 'www/static/js/svelte/'.$app_id.'.'.$locale.'.js')) {
-            $locale = 'en_US';
-        }
         // compute a sha for cache busting
         $context = [
-            'sha' => substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.$locale.js")), 0, 8),
+            'sha' => substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.js")), 0, 8),
             'locale' => $locale,
             'app_id' => $app_id,
             'twig_data' => $data ?? false

@@ -166,11 +166,13 @@
     import Handsontable from '../controls/hot/Handsontable.html';
     import Checkbox from '../controls/Checkbox.html';
 
+    import {__} from '../shared/l10n';
     import {arrayToObject} from '../shared/utils.js';
 
     export default {
         components: { Handsontable, Checkbox, ComputedColumnEditor,
             CustomColumnFormat, Histogram },
+        helpers: { __ },
         computed: {
             searchIndexSafe ({ searchIndex, searchResults }) {
                 if (searchIndex<0) searchIndex+=searchResults.length;

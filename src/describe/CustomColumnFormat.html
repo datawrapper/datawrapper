@@ -57,9 +57,11 @@
     import _throttle from 'underscore-es/throttle';
     import {arrayToObject} from '../shared/utils.js';
     import clone from '../shared/clone.js';
+    import {__} from '../shared/l10n';
 
     export default {
         components: { Checkbox, Select },
+        helpers: { __ },
         methods: {
             autoDivisor() {
                 const chart = this.store.get('dw_chart');

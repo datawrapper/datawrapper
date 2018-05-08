@@ -16,7 +16,10 @@
 </div>
 
 <script>
+    import {__} from '../shared/l10n';
+
     export default {
+        helpers: { __ },
         methods: {
             add (element) {
                 const {highlighted} = this.get();

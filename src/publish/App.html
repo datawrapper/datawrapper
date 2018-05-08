@@ -208,6 +208,7 @@
     // import Leaderboard from './Leaderboard.html';
     // import Header from './Header.html';
 
+    import {__} from '../shared/l10n';
     import {getJSON, postJSON} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
@@ -217,6 +218,7 @@
         components: {
             // Index, Header, Leaderboard
         },
+        helpers: { __ },
         computed: {
 
             shareUrl ({ shareurl_type, chart, plugin_shareurls, published }) {

@@ -7,6 +7,12 @@
     <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
         <div class="span5">
             <div class="sidebar">
+                {#if error}
+                <div class="alert alert-error">
+                    <div class="action close" on:click="set({error:false})">✕</div>
+                    {@html error}
+                </div>
+                {/if}
                 <h3>{@html __('upload / title')}</h3>
 
                 <ul class="import-methods">
@@ -51,6 +57,7 @@
     import UploadHelp from './UploadHelp.html';
     import readFile from '../shared/readFile.js';
     import {putJSON} from '../shared/utils.js';
+    import {__} from '../shared/l10n';
 
     let app;
 
@@ -77,6 +84,8 @@
                         window.location.href = 'describe';
                     });
                 });
+            } else {
+                app.set({error: 'This is not a text file!'});
             }
         },
         action() {}
@@ -103,6 +112,7 @@
                 buttons: coreUploads
             }
         },
+        helpers: { __ },
         methods: {
             addButton (btn) {
                 coreUploads.push(btn);
