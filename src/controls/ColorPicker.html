@@ -1,6 +1,10 @@
 <div class="color-picker-cont">
-    <div on:click="set({visible:true})" class="base-color-picker color-picker" style="background: {color} none repeat scroll 0% 0%;">
-        <div class="arrow"></div>
+    <div on:click="set({visible:true})">
+        <slot>
+            <div class="base-color-picker color-picker" style="background: {color} none repeat scroll 0% 0%;">
+                <div class="arrow"></div>
+            </div>
+        </slot>
     </div>
     {#if visible && color}
     <div class="color-selector">
@@ -42,6 +46,9 @@
 
     export default {
         computed: {
+            palette({$theme}) {
+                return $theme.colors.palette;
+            },
             gradient_l ({ color }) {
                 const lch = chroma(color).lch();
                 const sample = spread(70, 55, 7, 6).map((l) => chroma.lch(l, lch[1], lch[2]).hex());
