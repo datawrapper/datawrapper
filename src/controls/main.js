@@ -11,8 +11,10 @@ import Select from './Select.html';
 import Section from './Section.html';
 import TextArea from './TextArea.html';
 import SelectAxisColumn from './SelectAxisColumn.html';
+import ChartDescription from './visualize/ChartDescription.html';
 
 export default {
     Checkbox, Color, ColorSimple, ColorPicker, Group, NumberInput,
-    Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea
+    Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea,
+    ChartDescription
 };
