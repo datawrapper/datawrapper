@@ -38,6 +38,8 @@
                     bind:sheets
                     bind:datasets />
 
+                <p class="not-happy">{@html __("upload / not-happy")}</p>
+
             </div>
         </div>
         <div class="span7">
@@ -212,6 +214,14 @@
 </script>
 
 <style lang="less">
+
+:global(.not-happy) {
+    margin-top: 15px;
+    font-size: 12px;
+    a {
+        font-weight: bold;
+    }
+}
 
 .import-methods{
     margin: 0;
