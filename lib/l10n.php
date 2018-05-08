@@ -2,7 +2,8 @@
 
 class Datawrapper_L10N {
 
-    private $__messages = array();
+    private $__messages = [];
+    private $__clientScopes = ['core'];
 
     /*
      * load messages
@@ -24,7 +25,7 @@ class Datawrapper_L10N {
                 $messages[$scope] = isset($messages[$scope]) ? array_merge($msg, $messages[$scope]) : $msg;
             }
         }
-        
+
         if (isset($_GLOBALS['dw-config']['memcache'])) {
             // store translation in memcache for one minute to prevent
             // us from loading the JSON for every request
@@ -38,6 +39,9 @@ class Datawrapper_L10N {
         $messages['core'] = $this->parse(ROOT_PATH . 'locale/' . $locale . '.json');
         $plugins = PluginQuery::create()->filterByEnabled(true)->find();
         foreach ($plugins as $plugin) {
+            if ($plugin->getInfo()['svelte'] ?? false) {
+                $this->__clientScopes[] = $plugin->getName();
+            }
             $messages[$plugin->getName()] = $this->parse($plugin->getPath() . 'locale/' . $locale . '.json');
         }
         return $messages;
@@ -108,6 +112,18 @@ class Datawrapper_L10N {
 
     private function clean_msgid($msgid) {
         return trim(str_replace("\n", "", $msgid));
+    }
+
+    public function getMessages($scope='core') {
+        return $this->__messages[$scope] ?? [];
+    }
+
+    public function getClientMessages() {
+        $all = [];
+        foreach ($this->__clientScopes as $scope) {
+            $all[$scope] = $this->getMessages($scope);
+        }
+        return $all;
     }
 
 }
