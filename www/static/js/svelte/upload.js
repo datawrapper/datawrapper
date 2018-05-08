@@ -1177,7 +1177,7 @@
 	    id: 'copy',
 	    title: __('upload / copy-paste'),
 	    longTitle: __('upload / copy-paste / long'),
-	    icon: 'im im-copy',
+	    icon: 'fa fa-clipboard',
 	    mainPanel: TextAreaUpload,
 	    sidebar: UploadHelp,
 	    action() {}
@@ -1185,7 +1185,7 @@
 	    id: 'upload',
 	    title: __('upload / upload-csv'),
 	    longTitle: __('upload / upload-csv / long'),
-	    icon: 'im im-upload',
+	    icon: 'fa-file-excel-o fa',
 	    mainPanel: TextAreaUpload,
 	    sidebar: UploadHelp,
 	    isFileUpload: true,
@@ -1486,7 +1486,7 @@
 			},
 
 			h: function hydrate() {
-				ul.className = "import-methods svelte-o0ayrc";
+				ul.className = "import-methods svelte-1kcmwj1";
 				div_3.className = "sidebar";
 				div_2.className = "span5";
 				i.className = "icon-chevron-right icon-white";
@@ -1710,7 +1710,7 @@
 			},
 
 			h: function hydrate() {
-				div.className = "draginfo svelte-o0ayrc";
+				div.className = "draginfo svelte-1kcmwj1";
 			},
 
 			m: function mount(target, anchor) {
@@ -1749,11 +1749,11 @@
 			},
 
 			h: function hydrate() {
-				i.className = i_class_value = "" + btn.icon + " svelte-o0ayrc";
-				span.className = "svelte-o0ayrc";
-				label.className = "svelte-o0ayrc";
+				i.className = i_class_value = "" + btn.icon + " svelte-1kcmwj1";
+				span.className = "svelte-1kcmwj1";
+				label.className = "svelte-1kcmwj1";
 				addListener(li, "click", click_handler);
-				li.className = li_class_value = "action " + (state.active==btn?'active':'') + " svelte-o0ayrc";
+				li.className = li_class_value = "action " + (state.active==btn?'active':'') + " svelte-1kcmwj1";
 
 				li._svelte = {
 					component: component,
@@ -1791,7 +1791,7 @@
 					if_block = null;
 				}
 
-				if ((changed.buttons) && i_class_value !== (i_class_value = "" + btn.icon + " svelte-o0ayrc")) {
+				if ((changed.buttons) && i_class_value !== (i_class_value = "" + btn.icon + " svelte-1kcmwj1")) {
 					i.className = i_class_value;
 				}
 
@@ -1799,7 +1799,7 @@
 					text_2.data = text_2_value;
 				}
 
-				if ((changed.active || changed.buttons) && li_class_value !== (li_class_value = "action " + (state.active==btn?'active':'') + " svelte-o0ayrc")) {
+				if ((changed.active || changed.buttons) && li_class_value !== (li_class_value = "action " + (state.active==btn?'active':'') + " svelte-1kcmwj1")) {
 					li.className = li_class_value;
 				}
 
@@ -1833,7 +1833,7 @@
 			h: function hydrate() {
 				addListener(input, "change", change_handler);
 				input.accept = ".csv, .tsv, .txt, .xlsx, .xls, .ods";
-				input.className = "file-upload svelte-o0ayrc";
+				input.className = "file-upload svelte-1kcmwj1";
 				setAttribute(input, "type", "file");
 
 				input._svelte = {
