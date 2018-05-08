@@ -14,7 +14,7 @@
                     <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
                         <label>
                             {#if btn.isFileUpload}
-                            <input accept=".csv, .tsv, .txt, .xlsx, .xls, .ods" on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            <input accept=".csv, .tsv, .txt, .xlsx, .xls, .ods, .dbf" on:change="btnUpload(btn, event)" class="file-upload" type="file" />
                             {/if}
                             <i class="{btn.icon}"></i>
                             <span>{btn.title}</span>

@@ -308,7 +308,7 @@
   "upload / title": "How to you want to upload your data?",
   "upload / copy-paste": "Copy & paste data table",
   "upload / copy-paste / long": "Copy & paste your data",
-  "upload / upload-csv": "XLS/CSV Upload",
+  "upload / upload-csv": "XLS/CSV upload",
   "upload / upload-failed": "We're sorry, but we had trouble parsing your uploaded file.",
   "upload / upload-csv / long": "Upload CSV or Excel spreadsheets",
   "upload / select sheet": "The file you uploaded contains multiple sheets. Please select the one you want to import.",
