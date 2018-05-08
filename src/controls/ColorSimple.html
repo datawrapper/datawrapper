@@ -1,0 +1,45 @@
+{#if hexColor}
+<ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" palette="{palette}" />
+{/if}
+
+<script>
+    import ColorPicker from './ColorPicker.html';
+
+    export default {
+        components: { ColorPicker },
+        computed: {
+            palette ({ $theme }) {
+                return $theme.colors.palette; //.concat($theme.colors.secondary || []);
+            },
+            hexColor ({ value, palette }) {
+                return getColor(value, palette);
+            }
+        },
+        methods: {
+            update (color) {
+                const {palette} = this.get();
+                this.set({value: storeColor(color, palette)});
+            },
+            getColor (color) {
+                const {palette} = this.get();
+                return getColor(color, palette);
+            },
+        },
+        data() {
+            return {
+                open: false,
+                custom: {}
+            };
+        }
+    };
+
+    function storeColor(color, palette) {
+        const pi = palette.indexOf(color);
+        if (pi > -1) return pi;
+        return color;
+    }
+
+    function getColor(color, palette) {
+        return typeof color == 'number' ? palette[color%palette.length] : color;
+    }
+</script>
