@@ -7,12 +7,6 @@
     <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
         <div class="span5">
             <div class="sidebar">
-                {#if error}
-                <div class="alert alert-error">
-                    <div class="action close" on:click="set({error:false})">✕</div>
-                    {@html error}
-                </div>
-                {/if}
                 <h3>{@html __('upload / title')}</h3>
 
                 <ul class="import-methods">
@@ -20,7 +14,7 @@
                     <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
                         <label>
                             {#if btn.isFileUpload}
-                            <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            <input accept=".csv, .tsv, .txt, .xlsx, .xls, .ods" on:change="btnUpload(btn, event)" class="file-upload" type="file" />
                             {/if}
                             <i class="{btn.icon}"></i>
                             <span>{btn.title}</span>
@@ -29,11 +23,19 @@
                     {/each}
                 </ul>
 
+                {#if error}
+                <div class="alert alert-error">
+                    <div class="action close" on:click="set({error:false})">✕</div>
+                    {@html error}
+                </div>
+                {/if}
+
                 <h4>{active.longTitle || active.title}</h4>
 
                 <svelte:component this={Sidebar}
                     bind:chartData
                     bind:readonly
+                    bind:sheets
                     bind:datasets />
 
             </div>
@@ -55,8 +57,10 @@
     /* global dw */
     import TextAreaUpload from './TextAreaUpload.html';
     import UploadHelp from './UploadHelp.html';
-    import readFile from '../shared/readFile.js';
-    import {putJSON} from '../shared/utils.js';
+    import SelectSheet from './SelectSheet.html';
+    import readFile from '../shared/readFile';
+    import readSpreadsheet from '../shared/readSpreadsheet';
+    import {putJSON} from '../shared/utils';
     import {__} from '../shared/l10n';
 
     let app;
@@ -79,13 +83,20 @@
         onFileUpload(event) {
             const file = event.target.files[0];
             if (file.type.substr(0,5) == 'text/') {
+                this.set({Sidebar: UploadHelp});
                 readFile(file, (err, result) => {
                     putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
                         window.location.href = 'describe';
                     });
                 });
+            } else if (file.type.substr(0,12) == 'application/') {
+                app.set({Sidebar: SelectSheet, sheets:[]}); // reset
+                readSpreadsheet(file, (err, sheets) => {
+                    if (err) return app.set({error: err});
+                    app.set({sheets});
+                });
             } else {
-                app.set({error: 'This is not a text file!'});
+                app.set({error: __('upload / csv-required')});
             }
         },
         action() {}
@@ -109,7 +120,8 @@
                 MainPanel: TextAreaUpload,
                 Sidebar: UploadHelp,
                 active: coreUploads[0],
-                buttons: coreUploads
+                buttons: coreUploads,
+                sheets: []
             }
         },
         helpers: { __ },
@@ -139,7 +151,7 @@
                     activeKey = 'copy';
                     setTimeout(() => {
                     // reset after 1sec
-                        this.set({active:coreUploads[0]});
+                        // this.set({active:coreUploads[0]});
                     }, 1000);
                 }
                 const {dw_chart} = this.store.get();

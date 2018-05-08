@@ -25,7 +25,14 @@ export default targets;
 function build(app_id) {
     targets.push({
         input: `${app_id}/main.js`,
-        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js'],
+        external: [
+            'chroma',
+            'Handsontable',
+            'cm',
+            'vendor',
+            '/static/vendor/jschardet/jschardet.min.js',
+            '/static/vendor/xlsx/xlsx.full.min.js'
+        ],
         output: {
             sourcemap: false,
             name: app_id,
@@ -33,7 +40,8 @@ function build(app_id) {
             format: 'umd',
             amd: app_id.substr(0,8) != 'controls' ? { id: `svelte/${app_id}` } : undefined,
             globals: {
-                '/static/vendor/jschardet/jschardet.min.js': 'jschardet'
+                '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
+                '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
             }
         },
         plugins: [
