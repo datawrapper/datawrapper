@@ -1,5 +1,5 @@
 {#if hexColor}
-<ColorPicker on:change="update(event)" color="{hexColor}" />
+<ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" />
 {/if}
 
 <script>
@@ -8,6 +8,9 @@
     export default {
         components: { ColorPicker },
         computed: {
+            palette ({ $theme }) {
+                return $theme.colors.palette; //.concat($theme.colors.secondary || []);
+            },
             hexColor ({ value, palette }) {
                 return getColor(value, palette);
             }
@@ -15,6 +18,7 @@
         methods: {
             update (color) {
                 const {palette} = this.get();
+                console.log('update', color);
                 this.set({value: storeColor(color, palette)});
             },
             getColor (color) {
