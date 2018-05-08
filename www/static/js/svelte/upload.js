@@ -813,161 +813,62 @@
 	    }
 	}
 	function onupdate$2({changed, current}) {
-	    if (changed.sheets && current.sheets.length) {
+	    if (changed.sheets && current.sheets.length > 1) {
 	        setTimeout(() => {
 	            this.set({selected:current.sheets[0]});
 	        }, 300);
+	    } else if (changed.sheets && current.sheets.length == 1) {
+	        putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, current.sheets[0].csv, () => {
+	            window.location.href = 'describe';
+	        });
 	    }
 	    if (changed.selected) {
 	        this.set({chartData: current.selected.csv});
 	    }
 	}
 	function create_main_fragment$2(component, state) {
-		var div, p, text_value = __("upload / select sheet"), text, text_1, text_2, select, select_updating = false;
+		var div;
 
-		var if_block = (!state.sheets.length) && create_if_block(component, state);
-
-		var each_value = state.sheets;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$1(component, assign(assign({}, state), {
-				each_value: each_value,
-				sheet: each_value[i],
-				sheet_index: i
-			}));
+		function select_block_type(state) {
+			if (!state.sheets.length) return create_if_block;
+			if (state.sheets.length>1) return create_if_block_1;
+			return create_if_block_2;
 		}
 
-		function select_change_handler() {
-			select_updating = true;
-			component.set({ selected: selectValue(select) });
-			select_updating = false;
-		}
+		var current_block_type = select_block_type(state);
+		var if_block = current_block_type(component, state);
 
 		return {
 			c: function create() {
 				div = createElement("div");
-				p = createElement("p");
-				text = createText(text_value);
-				text_1 = createText("\n    ");
-				if (if_block) if_block.c();
-				text_2 = createText("\n    ");
-				select = createElement("select");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-				this.h();
-			},
-
-			h: function hydrate() {
-				addListener(select, "change", select_change_handler);
-				if (!('selected' in state)) component.root._beforecreate.push(select_change_handler);
-				select.className = "svelte-1jdst2k";
+				if_block.c();
 			},
 
 			m: function mount(target, anchor) {
 				insertNode(div, target, anchor);
-				appendNode(p, div);
-				appendNode(text, p);
-				appendNode(text_1, div);
-				if (if_block) if_block.m(div, null);
-				appendNode(text_2, div);
-				appendNode(select, div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(select, null);
-				}
-
-				selectOption(select, state.selected);
+				if_block.m(div, null);
 			},
 
 			p: function update(changed, state) {
-				if (!state.sheets.length) {
-					if (!if_block) {
-						if_block = create_if_block(component, state);
-						if_block.c();
-						if_block.m(div, text_2);
-					}
-				} else if (if_block) {
+				if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+					if_block.p(changed, state);
+				} else {
 					if_block.u();
 					if_block.d();
-					if_block = null;
+					if_block = current_block_type(component, state);
+					if_block.c();
+					if_block.m(div, null);
 				}
-
-				var each_value = state.sheets;
-
-				if (changed.sheets) {
-					for (var i = 0; i < each_value.length; i += 1) {
-						var each_context = assign(assign({}, state), {
-							each_value: each_value,
-							sheet: each_value[i],
-							sheet_index: i
-						});
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, each_context);
-						} else {
-							each_blocks[i] = create_each_block$1(component, each_context);
-							each_blocks[i].c();
-							each_blocks[i].m(select, null);
-						}
-					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].u();
-						each_blocks[i].d();
-					}
-					each_blocks.length = each_value.length;
-				}
-
-				if (!select_updating) selectOption(select, state.selected);
 			},
 
 			u: function unmount() {
 				detachNode(div);
-				if (if_block) if_block.u();
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
-				}
+				if_block.u();
 			},
 
 			d: function destroy$$1() {
-				if (if_block) if_block.d();
-
-				destroyEach(each_blocks);
-
-				removeListener(select, "change", select_change_handler);
+				if_block.d();
 			}
-		};
-	}
-
-	// (3:4) {#if !sheets.length}
-	function create_if_block(component, state) {
-		var div;
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div.textContent = "Please wait while we're parsing the spreadsheet...";
-				this.h();
-			},
-
-			h: function hydrate() {
-				div.className = "alert alert-info";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-			},
-
-			u: function unmount() {
-				detachNode(div);
-			},
-
-			d: noop
 		};
 	}
 
@@ -1010,6 +911,169 @@
 
 			u: function unmount() {
 				detachNode(option);
+			},
+
+			d: noop
+		};
+	}
+
+	// (2:4) {#if !sheets.length}
+	function create_if_block(component, state) {
+		var div, raw_value = __('upload / parsing-xls');
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				this.h();
+			},
+
+			h: function hydrate() {
+				div.className = "alert alert-info";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			p: noop,
+
+			u: function unmount() {
+				div.innerHTML = '';
+
+				detachNode(div);
+			},
+
+			d: noop
+		};
+	}
+
+	// (4:29) 
+	function create_if_block_1(component, state) {
+		var p, text_value = __("upload / select sheet"), text, text_1, select, select_updating = false, select_disabled_value;
+
+		var each_value = state.sheets;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$1(component, assign(assign({}, state), {
+				each_value: each_value,
+				sheet: each_value[i],
+				sheet_index: i
+			}));
+		}
+
+		function select_change_handler() {
+			select_updating = true;
+			component.set({ selected: selectValue(select) });
+			select_updating = false;
+		}
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				text = createText(text_value);
+				text_1 = createText("\n    ");
+				select = createElement("select");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				this.h();
+			},
+
+			h: function hydrate() {
+				addListener(select, "change", select_change_handler);
+				if (!('selected' in state)) component.root._beforecreate.push(select_change_handler);
+				select.disabled = select_disabled_value = !state.sheets.length;
+				select.className = "svelte-1jdst2k";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(p, target, anchor);
+				appendNode(text, p);
+				insertNode(text_1, target, anchor);
+				insertNode(select, target, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(select, null);
+				}
+
+				selectOption(select, state.selected);
+			},
+
+			p: function update(changed, state) {
+				var each_value = state.sheets;
+
+				if (changed.sheets) {
+					for (var i = 0; i < each_value.length; i += 1) {
+						var each_context = assign(assign({}, state), {
+							each_value: each_value,
+							sheet: each_value[i],
+							sheet_index: i
+						});
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, each_context);
+						} else {
+							each_blocks[i] = create_each_block$1(component, each_context);
+							each_blocks[i].c();
+							each_blocks[i].m(select, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].u();
+						each_blocks[i].d();
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				if (!select_updating) selectOption(select, state.selected);
+				if ((changed.sheets) && select_disabled_value !== (select_disabled_value = !state.sheets.length)) {
+					select.disabled = select_disabled_value;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(p);
+				detachNode(text_1);
+				detachNode(select);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+				}
+			},
+
+			d: function destroy$$1() {
+				destroyEach(each_blocks);
+
+				removeListener(select, "change", select_change_handler);
+			}
+		};
+	}
+
+	// (11:4) {:else}
+	function create_if_block_2(component, state) {
+		var p, raw_value = __('upload / xls / uploading data');
+
+		return {
+			c: function create() {
+				p = createElement("p");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(p, target, anchor);
+				p.innerHTML = raw_value;
+			},
+
+			p: noop,
+
+			u: function unmount() {
+				p.innerHTML = '';
+
+				detachNode(p);
 			},
 
 			d: noop
@@ -1120,6 +1184,7 @@
 	},{
 	    id: 'upload',
 	    title: __('upload / upload-csv'),
+	    longTitle: __('upload / upload-csv / long'),
 	    icon: 'im im-upload',
 	    mainPanel: TextAreaUpload,
 	    sidebar: UploadHelp,
@@ -1127,7 +1192,7 @@
 	    onFileUpload(event) {
 	        const file = event.target.files[0];
 	        if (file.type.substr(0,5) == 'text/') {
-	            this.set({Sidebar: UploadHelp});
+	            app$1.set({Sidebar: UploadHelp});
 	            readFile(file, (err, result) => {
 	                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
 	                    window.location.href = 'describe';
@@ -1267,7 +1332,7 @@
 			}));
 		}
 
-		var if_block_1 = (state.error) && create_if_block_2(component, state);
+		var if_block_1 = (state.error) && create_if_block_2$1(component, state);
 
 		var switch_value = state.Sidebar;
 
@@ -1525,7 +1590,7 @@
 					if (if_block_1) {
 						if_block_1.p(changed, state);
 					} else {
-						if_block_1 = create_if_block_2(component, state);
+						if_block_1 = create_if_block_2$1(component, state);
 						if_block_1.c();
 						if_block_1.m(div_3, text_3);
 					}
@@ -1668,7 +1733,7 @@
 		var btn = state.btn, each_value = state.each_value, btn_index = state.btn_index;
 		var li, label, text, i, i_class_value, text_1, span, text_2_value = btn.title, text_2, li_class_value;
 
-		var if_block = (btn.isFileUpload) && create_if_block_1(component, state);
+		var if_block = (btn.isFileUpload) && create_if_block_1$1(component, state);
 
 		return {
 			c: function create() {
@@ -1716,7 +1781,7 @@
 					if (if_block) {
 						if_block.p(changed, state);
 					} else {
-						if_block = create_if_block_1(component, state);
+						if_block = create_if_block_1$1(component, state);
 						if_block.c();
 						if_block.m(label, text);
 					}
@@ -1755,7 +1820,7 @@
 	}
 
 	// (16:28) {#if btn.isFileUpload}
-	function create_if_block_1(component, state) {
+	function create_if_block_1$1(component, state) {
 		var btn = state.btn, each_value = state.each_value, btn_index = state.btn_index;
 		var input;
 
@@ -1801,7 +1866,7 @@
 	}
 
 	// (26:16) {#if error}
-	function create_if_block_2(component, state) {
+	function create_if_block_2$1(component, state) {
 		var div, div_1, text_1, raw_before;
 
 		function click_handler_1(event) {

@@ -76,6 +76,7 @@
     },{
         id: 'upload',
         title: __('upload / upload-csv'),
+        longTitle: __('upload / upload-csv / long'),
         icon: 'im im-upload',
         mainPanel: TextAreaUpload,
         sidebar: UploadHelp,
@@ -83,7 +84,7 @@
         onFileUpload(event) {
             const file = event.target.files[0];
             if (file.type.substr(0,5) == 'text/') {
-                this.set({Sidebar: UploadHelp});
+                app.set({Sidebar: UploadHelp});
                 readFile(file, (err, result) => {
                     putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
                         window.location.href = 'describe';
