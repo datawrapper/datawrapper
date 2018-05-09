@@ -29,7 +29,8 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             'chart' => $chart,
             'readonly' => !$chart->isDataWritable($user),
             'chartData' => $chart->loadData(),
-            'datasets' => $groups
+            'datasets' => $groups,
+            'user' => $user->serialize()
         ];
 
         if ($user->isLoggedIn() && $app->request()->get('beta') !== null) {
