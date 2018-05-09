@@ -32,19 +32,21 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             'datasets' => $groups
         ];
 
-        if ($app->request()->get('beta') !== null) {
+        if ($user->isLoggedIn() && $app->request()->get('beta') !== null) {
             $user->setUserData(['beta_upload' => $app->request()->get('beta') ? '1' : '0']);
             return $app->redirect('/chart/'.$chart->getId().'/upload');
         }
 
-        $useBeta = (
-            $user->isAdmin()
-            && ($user->getUserData()['beta_upload'] ?? 1) == "1"
-            // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
-            || $user->getID() % 20 == 4
-        ) && (
-            ($user->getUserData()['beta_upload'] ?? null) !== '0'
-        );
+        if (!$user->isLoggedIn()) $useBeta = true;
+        else {
+            $useBeta = (
+                ($user->getUserData()['beta_upload'] ?? 1) == "1"
+                // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
+                || $user->getID() % 20 == 4
+            ) && (
+                ($user->getUserData()['beta_upload'] ?? null) !== '0'
+            );
+        }
 
         $app->render('chart/upload'.($useBeta ? '-new' : '').'.twig', $page);
     });
