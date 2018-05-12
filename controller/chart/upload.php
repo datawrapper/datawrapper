@@ -43,7 +43,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             $useBeta = (
                 ($user->getUserData()['beta_upload'] ?? 1) == "1"
                 // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
-                || $user->getID() % 20 == 4
+                || $user->getID() % 10 == 4
             ) && (
                 ($user->getUserData()['beta_upload'] ?? null) !== '0'
             );
