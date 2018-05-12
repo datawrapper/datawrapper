@@ -163,7 +163,7 @@
                         h = message['datawrapper-height'][chartId];
                     }
 
-                    if (!$('.preset.manual').hasClass('selected') && !$('#iframe-vis').hasClass('resizing')) {
+                    if (!$('.preset.manual').hasClass('selected') && !$('#iframe-vis').hasClass('resizing') && $('#iframe-vis').is(':visible')) {
                         resizer.updateSize($('#resize-w').val(), h);
                     }
                 }
