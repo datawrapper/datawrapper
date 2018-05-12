@@ -90,13 +90,13 @@ class ChartQuery extends BaseChartQuery {
     /*
      * copy an existing chart and store it as new
      */
-    public function copyChart($src) {
+    public function copyChart($src, $changeTitle = true) {
         $chart = new Chart();
         // new id
         $chart->setId($this->getUnusedRandomId());
         // but the rest remains the same
         $chart->setUser($src->getUser());
-        $chart->setTitle($src->getTitle().' ('.__('Copy').')');
+        $chart->setTitle($src->getTitle(). ($changeTitle ? ' ('.__('Copy').')' : ''));
         $chart->setRawMetadata($src->getRawMetadata());
         $chart->setTheme($src->getTheme());
         $chart->setLocale($src->getLocale());
