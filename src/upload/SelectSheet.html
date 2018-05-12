@@ -1,0 +1,48 @@
+<div>
+    {#if !sheets.length}
+    <div class="alert alert-info">{@html __('upload / parsing-xls') }</div>
+    {:elseif sheets.length>1}
+    <p>{ __("upload / select sheet") }</p>
+    <select bind:value="selected" disabled="{!sheets.length}">
+        {#each sheets as sheet}
+            <option value="{sheet}">{sheet.name}</option>
+        {/each}
+    </select>
+    {:else}
+    <p>{@html __('upload / xls / uploading data')}</p>
+    {/if}
+</div>
+
+<style>
+    select { width: 70%; }
+</style>
+
+<script>
+    import {__} from '../shared/l10n';
+    import {putJSON} from '../shared/utils';
+
+    /* globals dw */
+    export default {
+        data() {
+            return {
+                selected: false,
+                sheets: []
+            }
+        },
+        helpers: { __ },
+        onupdate({changed, current}) {
+            if (changed.sheets && current.sheets.length > 1) {
+                setTimeout(() => {
+                    this.set({selected:current.sheets[0]});
+                }, 300);
+            } else if (changed.sheets && current.sheets.length == 1) {
+                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, current.sheets[0].csv, () => {
+                    window.location.href = 'describe';
+                });
+            }
+            if (changed.selected) {
+                this.set({chartData: current.selected.csv});
+            }
+        }
+    }
+</script>

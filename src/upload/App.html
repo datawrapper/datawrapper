@@ -14,7 +14,7 @@
                     <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
                         <label>
                             {#if btn.isFileUpload}
-                            <input on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            <input accept=".csv, .tsv, .txt, .xlsx, .xls, .ods, .dbf" on:change="btnUpload(btn, event)" class="file-upload" type="file" />
                             {/if}
                             <i class="{btn.icon}"></i>
                             <span>{btn.title}</span>
@@ -23,12 +23,24 @@
                     {/each}
                 </ul>
 
+                {#if error}
+                <div class="alert alert-error">
+                    <div class="action close" on:click="set({error:false})">✕</div>
+                    {@html error}
+                </div>
+                {/if}
+
                 <h4>{active.longTitle || active.title}</h4>
 
                 <svelte:component this={Sidebar}
                     bind:chartData
                     bind:readonly
+                    bind:sheets
                     bind:datasets />
+
+                {#if user && user.id}
+                <p class="not-happy">{@html __("upload / not-happy")}</p>
+                {/if}
 
             </div>
         </div>
@@ -49,8 +61,11 @@
     /* global dw */
     import TextAreaUpload from './TextAreaUpload.html';
     import UploadHelp from './UploadHelp.html';
-    import readFile from '../shared/readFile.js';
-    import {putJSON} from '../shared/utils.js';
+    import SelectSheet from './SelectSheet.html';
+    import readFile from '../shared/readFile';
+    import readSpreadsheet from '../shared/readSpreadsheet';
+    import {putJSON} from '../shared/utils';
+    import {__} from '../shared/l10n';
 
     let app;
 
@@ -58,25 +73,35 @@
         id: 'copy',
         title: __('upload / copy-paste'),
         longTitle: __('upload / copy-paste / long'),
-        icon: 'im im-copy',
+        icon: 'fa fa-clipboard',
         mainPanel: TextAreaUpload,
         sidebar: UploadHelp,
         action() {}
     },{
         id: 'upload',
         title: __('upload / upload-csv'),
-        icon: 'im im-upload',
+        longTitle: __('upload / upload-csv / long'),
+        icon: 'fa-file-excel-o fa',
         mainPanel: TextAreaUpload,
         sidebar: UploadHelp,
         isFileUpload: true,
         onFileUpload(event) {
             const file = event.target.files[0];
             if (file.type.substr(0,5) == 'text/') {
+                app.set({Sidebar: UploadHelp});
                 readFile(file, (err, result) => {
                     putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
                         window.location.href = 'describe';
                     });
                 });
+            } else if (file.type.substr(0,12) == 'application/') {
+                app.set({Sidebar: SelectSheet, sheets:[]}); // reset
+                readSpreadsheet(file, (err, sheets) => {
+                    if (err) return app.set({error: err});
+                    app.set({sheets});
+                });
+            } else {
+                app.set({error: __('upload / csv-required')});
             }
         },
         action() {}
@@ -100,9 +125,11 @@
                 MainPanel: TextAreaUpload,
                 Sidebar: UploadHelp,
                 active: coreUploads[0],
-                buttons: coreUploads
+                buttons: coreUploads,
+                sheets: []
             }
         },
+        helpers: { __ },
         methods: {
             addButton (btn) {
                 coreUploads.push(btn);
@@ -129,7 +156,7 @@
                     activeKey = 'copy';
                     setTimeout(() => {
                     // reset after 1sec
-                        this.set({active:coreUploads[0]});
+                        // this.set({active:coreUploads[0]});
                     }, 1000);
                 }
                 const {dw_chart} = this.store.get();
@@ -190,6 +217,14 @@
 
 <style lang="less">
 
+:global(.not-happy) {
+    margin-top: 15px;
+    font-size: 12px;
+    a {
+        font-weight: bold;
+    }
+}
+
 .import-methods{
     margin: 0;
     padding: 0;
@@ -227,6 +262,11 @@
                 display: block;
                 margin: 0 auto;
                 font-size: 24px !important;
+
+                &.fa {
+                    position: relative;
+                    top: -2px;
+                }
             }
 
             > span {

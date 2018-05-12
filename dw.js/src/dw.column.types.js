@@ -1,4 +1,5 @@
 /* global dw,_,Globalize */
+/* eslint no-irregular-whitespace: "off"*/
 dw.column.types = {};
 
 dw.column.types.text = function() {
@@ -25,19 +26,23 @@ dw.column.types.number = function(sample) {
         if (num === 0) return 0;
         return Math.round( sig - Math.ceil( Math.log( Math.abs( num ) ) / Math.LN10 ) );
     }
-
+123456.79
     var format,
         errors = 0,
         knownFormats = {
-            '-.': /^ *[-–—]?[0-9]*(\.[0-9]+)?(e[\+\-][0-9]+)?%? *$/,
+            '-.': /^ *[-–—]?[0-9]*(\.[0-9]+)?(e[+-][0-9]+)?%? *$/,
             '-,': /^ *[-–—]?[0-9]*(,[0-9]+)?%? *$/,
             ',.': /^ *[-–—]?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)?%? *$/,
             '.,': /^ *[-–—]?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)?%? *$/,
             ' .': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
             ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
+            // thin spaces
+            ' .': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
+            ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
             // excel sometimes produces a strange white-space:
             ' .': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/
+            ' ,': /^ *[-–—]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
+            "'.": /^ *[-–—]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/
         },
         formatLabels = {
             '-.': '1234.56',
@@ -48,7 +53,9 @@ dw.column.types.number = function(sample) {
             ' ,': '1 234,56',
             // excel sometimes produces a strange white-space:
             ' .': '1 234.56',
-            ' ,': '1 234,56'
+            ' ,': '1 234,56',
+            ' .': '1 234.56',
+            ' ,': '1 234,56',
         },
         // a list of strings that are recognized as 'not available'
         naStrings = {

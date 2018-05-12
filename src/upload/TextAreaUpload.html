@@ -10,6 +10,7 @@
     /* globals __,dw */
     import {putJSON} from '../shared/utils.js';
     import _throttle from 'underscore-es/throttle';
+    import {__} from '../shared/l10n';
 
     let app;
     const chart = dw.backend.currentChart;
@@ -26,6 +27,7 @@
                 placeholder: __("upload / paste here"),
             }
         },
+        helpers: { __ },
         oncreate() {
             app = this;
         },

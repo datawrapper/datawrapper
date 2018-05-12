@@ -48,7 +48,11 @@ dw.backend.ready(function() {
             {% if not readonly %}
             {{ hook('upload_after_demo_datasets') }}
             {% endif %}
-            
+
+            <div class="did-you-know">
+                <p>{% trans "upload / try-beta" %}</p>
+            </div>
+
         </div>
 
         <div class="span8" >
@@ -65,8 +69,8 @@ dw.backend.ready(function() {
 
                     <div id="upload" style="display:inline-block"></div>
                 {% endif %}
-                
-                
+
+
 
             </form>
         </div>
