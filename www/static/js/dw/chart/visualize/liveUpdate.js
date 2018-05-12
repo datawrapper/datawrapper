@@ -45,6 +45,12 @@ define(function() {
                     }
                 });
 
+                if (changed('metadata.data.column-format')
+                    || changed('metadata.data.changes')   || changed('metadata.data.column-order')) {
+                    needReload = true;
+                    return;
+                }
+
                 // check if we need to update chart
                 if (changed('metadata.visualize')) {
                     __dw.vis.chart().attributes(attrs);
