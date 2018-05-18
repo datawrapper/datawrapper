@@ -34,6 +34,7 @@ class JobQuery extends BaseJobQuery {
         $job->setCreatedAt(time());
         $job->setType($type);
         $job->setParameter(json_encode($params));
+        $job->setFailReason('');
         $job->save();
 
         return $job;

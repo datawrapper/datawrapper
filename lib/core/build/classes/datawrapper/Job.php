@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for representing a row from the 'job' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -17,6 +17,10 @@ class Job extends BaseJob {
 
     public function getParameter() {
         return json_decode(parent::getParameter(), true);
+    }
+
+    public function getRawStatus() {
+    	return $this->status;
     }
 
 } // Job
