@@ -67,6 +67,14 @@ class Theme extends BaseTheme
             }
         }
 
+        if (Hooks::hookRegistered('set_theme_data')) {
+            $theme_data = Hooks::execute("set_theme_data");
+
+            foreach ($theme_data as $set) {
+                $data = $this->extendArray($data, $set);
+            }
+        }
+
         if ($key == null) {
             return $data;
         } else {
