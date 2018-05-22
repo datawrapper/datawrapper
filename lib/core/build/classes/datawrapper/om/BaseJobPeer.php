@@ -60,10 +60,11 @@ abstract class BaseJobPeer
     const FAIL_REASON = 'job.fail_reason';
 
     /** The enumerated values for the status field */
-    const STATUS_QUEUED = 'queued';
-    const STATUS_DONE = 'done';
+    const STATUS_CREATED = 'created';
     const STATUS_FAILED = 'failed';
-    const STATUS_CANCELED = 'canceled';
+    const STATUS_RETRIEVED = 'retrieved';
+    const STATUS_SHOT_DONE = 'shot_done';
+    const STATUS_UPLOADED = 'uploaded';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -110,10 +111,11 @@ abstract class BaseJobPeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         JobPeer::STATUS => array(
-            JobPeer::STATUS_QUEUED,
-            JobPeer::STATUS_DONE,
+            JobPeer::STATUS_CREATED,
             JobPeer::STATUS_FAILED,
-            JobPeer::STATUS_CANCELED,
+            JobPeer::STATUS_RETRIEVED,
+            JobPeer::STATUS_SHOT_DONE,
+            JobPeer::STATUS_UPLOADED,
         ),
     );
 
