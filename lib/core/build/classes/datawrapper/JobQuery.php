@@ -17,14 +17,11 @@ class JobQuery extends BaseJobQuery {
 
 
     /*
+     * DEPRECATED
      * returns the estimated time to complete a new job
      */
     public function estimatedTime($type) {
-        $avgTimePerJob = array(
-            'export' => 5
-        );
-        $numJobsInQueue = $this->filterByType($type)->filterByStatus('queued')->count();
-        return $numJobsInQueue * $avgTimePerJob[$type];
+        return 0;
     }
 
     public function createJob($type, $chart, $user, $params) {
