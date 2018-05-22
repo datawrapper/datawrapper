@@ -161,7 +161,7 @@
     <foreign-key foreignTable="chart">
       <reference local="chart_id" foreign="id"/>
     </foreign-key>
-    <column name="status" type="enum" valueSet="created,failed,retrieved,shot_done,uploaded" required="true" default="created" />
+    <column name="status" type="enum" valueSet="created,failed,retrieved,shot_done,done" required="true" default="created" />
     <column name="created_at" type="timestamp" required="true" />
     <column name="done_at" type="timestamp" required="true" />
     <column name="type" type="varchar" size="32" required="true" />

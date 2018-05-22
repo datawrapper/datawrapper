@@ -64,7 +64,7 @@ abstract class BaseJobPeer
     const STATUS_FAILED = 'failed';
     const STATUS_RETRIEVED = 'retrieved';
     const STATUS_SHOT_DONE = 'shot_done';
-    const STATUS_UPLOADED = 'uploaded';
+    const STATUS_DONE = 'done';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -115,7 +115,7 @@ abstract class BaseJobPeer
             JobPeer::STATUS_FAILED,
             JobPeer::STATUS_RETRIEVED,
             JobPeer::STATUS_SHOT_DONE,
-            JobPeer::STATUS_UPLOADED,
+            JobPeer::STATUS_DONE,
         ),
     );
 

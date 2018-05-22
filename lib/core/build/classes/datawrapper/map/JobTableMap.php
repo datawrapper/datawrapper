@@ -47,7 +47,7 @@ class JobTableMap extends TableMap
   1 => 'failed',
   2 => 'retrieved',
   3 => 'shot_done',
-  4 => 'uploaded',
+  4 => 'done',
 ));
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
         $this->addColumn('done_at', 'DoneAt', 'TIMESTAMP', true, null, null);
