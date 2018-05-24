@@ -54,7 +54,7 @@ class DatawrapperSession {
     protected function initUser() {
         // check for auth header
         if (defined('IS_API') && IS_API) {
-            $h = apache_request_headers();
+            $h = getallheaders();
             if (!empty($h['Authorization'])) {
                 $authHeader = explode(' ', $h['Authorization']);
                 if ($authHeader[0] == 'Bearer') {
