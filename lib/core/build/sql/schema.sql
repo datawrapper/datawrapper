@@ -424,15 +424,15 @@ CREATE TABLE `folder`
     INDEX `folder_FI_1` (`parent_id`),
     INDEX `folder_FI_2` (`user_id`),
     INDEX `folder_FI_3` (`org_id`),
-    -- CONSTRAINT `folder_FK_1`
-    --     FOREIGN KEY (`parent_id`)
-    --     REFERENCES `folder` (`folder_id`),
-    -- CONSTRAINT `folder_FK_2`
-    --     FOREIGN KEY (`user_id`)
-    --     REFERENCES `user` (`id`),
-    -- CONSTRAINT `folder_FK_3`
-    --     FOREIGN KEY (`org_id`)
-    --     REFERENCES `organization` (`id`)
+    CONSTRAINT `folder_FK_1`
+        FOREIGN KEY (`parent_id`)
+        REFERENCES `folder` (`folder_id`),
+    CONSTRAINT `folder_FK_2`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`),
+    CONSTRAINT `folder_FK_3`
+        FOREIGN KEY (`org_id`)
+        REFERENCES `organization` (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
 
 -- ---------------------------------------------------------------------
@@ -467,6 +467,24 @@ CREATE TABLE `user_plugin_cache`
     `plugins` LONGTEXT NOT NULL,
     PRIMARY KEY (`user_id`),
     CONSTRAINT `user_plugin_cache_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `user` (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- auth_token
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `auth_token`;
+
+CREATE TABLE `auth_token`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `token` VARCHAR(1024) NOT NULL,
+    PRIMARY KEY (`id`,`user_id`),
+    INDEX `auth_token_FI_1` (`user_id`),
+    CONSTRAINT `auth_token_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
 ) ENGINE=InnoDB;

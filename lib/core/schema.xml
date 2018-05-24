@@ -364,4 +364,17 @@
     </foreign-key>
     <column name="plugins" type="clob" required="true" />
   </table>
+
+  <table name="auth_token" phpName="AuthToken">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true" primaryKey="true" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="token" type="varchar" size="1024" required="true" />
+  </table>
+
 </database>

@@ -76,6 +76,10 @@
  * @method UserQuery rightJoinUserPluginCache($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserPluginCache relation
  * @method UserQuery innerJoinUserPluginCache($relationAlias = null) Adds a INNER JOIN clause to the query using the UserPluginCache relation
  *
+ * @method UserQuery leftJoinAuthToken($relationAlias = null) Adds a LEFT JOIN clause to the query using the AuthToken relation
+ * @method UserQuery rightJoinAuthToken($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AuthToken relation
+ * @method UserQuery innerJoinAuthToken($relationAlias = null) Adds a INNER JOIN clause to the query using the AuthToken relation
+ *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -1392,6 +1396,80 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinUserPluginCache($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'UserPluginCache', 'UserPluginCacheQuery');
+    }
+
+    /**
+     * Filter the query by a related AuthToken object
+     *
+     * @param   AuthToken|PropelObjectCollection $authToken  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByAuthToken($authToken, $comparison = null)
+    {
+        if ($authToken instanceof AuthToken) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $authToken->getUserId(), $comparison);
+        } elseif ($authToken instanceof PropelObjectCollection) {
+            return $this
+                ->useAuthTokenQuery()
+                ->filterByPrimaryKeys($authToken->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByAuthToken() only accepts arguments of type AuthToken or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the AuthToken relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinAuthToken($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('AuthToken');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'AuthToken');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the AuthToken relation AuthToken object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   AuthTokenQuery A secondary query class using the current class as primary query
+     */
+    public function useAuthTokenQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinAuthToken($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'AuthToken', 'AuthTokenQuery');
     }
 
     /**
