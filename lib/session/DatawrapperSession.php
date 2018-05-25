@@ -61,6 +61,8 @@ class DatawrapperSession {
                     $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
                     if ($auth) {
                         $this->user = $auth->getUser();
+                        $this->method = 'token';
+                        $auth->use();
                         return;
                     }
                 }
@@ -73,6 +75,7 @@ class DatawrapperSession {
             if ((isset($_SESSION['persistent']) && $_SESSION['persistent']) ||
                 (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
+                $this->method = 'session';
                 $_SESSION['last_action_time'] = time();
             }
         }
@@ -93,6 +96,13 @@ class DatawrapperSession {
 
     public static function toArray() {
         return self::getInstance()->_toArray();
+    }
+    public function _getMethod() {
+        return $this->method ?? null;
+    }
+
+    public static function getMethod() {
+        return self::getInstance()->_getMethod();
     }
 
     private static function getDefaultLocale() {
