@@ -30,7 +30,7 @@ class AuthTokenQuery extends BaseAuthTokenQuery {
         return $token;
     }
 
-    private function createRandomToken($user) {
+    private function createRandomToken() {
         return hash_hmac('sha256', random_int(0,999999).'/'.microtime(), DW_TOKEN_SALT);
     }
 }
