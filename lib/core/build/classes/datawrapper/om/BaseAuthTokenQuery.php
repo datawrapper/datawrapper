@@ -9,10 +9,16 @@
  * @method AuthTokenQuery orderById($order = Criteria::ASC) Order by the id column
  * @method AuthTokenQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method AuthTokenQuery orderByToken($order = Criteria::ASC) Order by the token column
+ * @method AuthTokenQuery orderByComment($order = Criteria::ASC) Order by the comment column
+ * @method AuthTokenQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method AuthTokenQuery orderByLastUsedAt($order = Criteria::ASC) Order by the last_used_at column
  *
  * @method AuthTokenQuery groupById() Group by the id column
  * @method AuthTokenQuery groupByUserId() Group by the user_id column
  * @method AuthTokenQuery groupByToken() Group by the token column
+ * @method AuthTokenQuery groupByComment() Group by the comment column
+ * @method AuthTokenQuery groupByCreatedAt() Group by the created_at column
+ * @method AuthTokenQuery groupByLastUsedAt() Group by the last_used_at column
  *
  * @method AuthTokenQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method AuthTokenQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -28,10 +34,16 @@
  * @method AuthToken findOneById(int $id) Return the first AuthToken filtered by the id column
  * @method AuthToken findOneByUserId(int $user_id) Return the first AuthToken filtered by the user_id column
  * @method AuthToken findOneByToken(string $token) Return the first AuthToken filtered by the token column
+ * @method AuthToken findOneByComment(string $comment) Return the first AuthToken filtered by the comment column
+ * @method AuthToken findOneByCreatedAt(string $created_at) Return the first AuthToken filtered by the created_at column
+ * @method AuthToken findOneByLastUsedAt(string $last_used_at) Return the first AuthToken filtered by the last_used_at column
  *
  * @method array findById(int $id) Return AuthToken objects filtered by the id column
  * @method array findByUserId(int $user_id) Return AuthToken objects filtered by the user_id column
  * @method array findByToken(string $token) Return AuthToken objects filtered by the token column
+ * @method array findByComment(string $comment) Return AuthToken objects filtered by the comment column
+ * @method array findByCreatedAt(string $created_at) Return AuthToken objects filtered by the created_at column
+ * @method array findByLastUsedAt(string $last_used_at) Return AuthToken objects filtered by the last_used_at column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -122,7 +134,7 @@ abstract class BaseAuthTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `user_id`, `token` FROM `auth_token` WHERE `id` = :p0 AND `user_id` = :p1';
+        $sql = 'SELECT `id`, `user_id`, `token`, `comment`, `created_at`, `last_used_at` FROM `auth_token` WHERE `id` = :p0 AND `user_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -336,6 +348,121 @@ abstract class BaseAuthTokenQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AuthTokenPeer::TOKEN, $token, $comparison);
+    }
+
+    /**
+     * Filter the query on the comment column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByComment('fooValue');   // WHERE comment = 'fooValue'
+     * $query->filterByComment('%fooValue%'); // WHERE comment LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $comment The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return AuthTokenQuery The current query, for fluid interface
+     */
+    public function filterByComment($comment = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($comment)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $comment)) {
+                $comment = str_replace('*', '%', $comment);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(AuthTokenPeer::COMMENT, $comment, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return AuthTokenQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(AuthTokenPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(AuthTokenPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AuthTokenPeer::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the last_used_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastUsedAt('2011-03-14'); // WHERE last_used_at = '2011-03-14'
+     * $query->filterByLastUsedAt('now'); // WHERE last_used_at = '2011-03-14'
+     * $query->filterByLastUsedAt(array('max' => 'yesterday')); // WHERE last_used_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastUsedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return AuthTokenQuery The current query, for fluid interface
+     */
+    public function filterByLastUsedAt($lastUsedAt = null, $comparison = null)
+    {
+        if (is_array($lastUsedAt)) {
+            $useMinMax = false;
+            if (isset($lastUsedAt['min'])) {
+                $this->addUsingAlias(AuthTokenPeer::LAST_USED_AT, $lastUsedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastUsedAt['max'])) {
+                $this->addUsingAlias(AuthTokenPeer::LAST_USED_AT, $lastUsedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AuthTokenPeer::LAST_USED_AT, $lastUsedAt, $comparison);
     }
 
     /**

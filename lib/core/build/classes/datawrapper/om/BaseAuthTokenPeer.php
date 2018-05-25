@@ -24,13 +24,13 @@ abstract class BaseAuthTokenPeer
     const TM_CLASS = 'AuthTokenTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'auth_token.id';
@@ -40,6 +40,15 @@ abstract class BaseAuthTokenPeer
 
     /** the column name for the token field */
     const TOKEN = 'auth_token.token';
+
+    /** the column name for the comment field */
+    const COMMENT = 'auth_token.comment';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'auth_token.created_at';
+
+    /** the column name for the last_used_at field */
+    const LAST_USED_AT = 'auth_token.last_used_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -60,12 +69,12 @@ abstract class BaseAuthTokenPeer
      * e.g. AuthTokenPeer::$fieldNames[AuthTokenPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Token', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'token', ),
-        BasePeer::TYPE_COLNAME => array (AuthTokenPeer::ID, AuthTokenPeer::USER_ID, AuthTokenPeer::TOKEN, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'TOKEN', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'token', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Token', 'Comment', 'CreatedAt', 'LastUsedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'token', 'comment', 'createdAt', 'lastUsedAt', ),
+        BasePeer::TYPE_COLNAME => array (AuthTokenPeer::ID, AuthTokenPeer::USER_ID, AuthTokenPeer::TOKEN, AuthTokenPeer::COMMENT, AuthTokenPeer::CREATED_AT, AuthTokenPeer::LAST_USED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'TOKEN', 'COMMENT', 'CREATED_AT', 'LAST_USED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'token', 'comment', 'created_at', 'last_used_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -75,12 +84,12 @@ abstract class BaseAuthTokenPeer
      * e.g. AuthTokenPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Token' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'token' => 2, ),
-        BasePeer::TYPE_COLNAME => array (AuthTokenPeer::ID => 0, AuthTokenPeer::USER_ID => 1, AuthTokenPeer::TOKEN => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'TOKEN' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'token' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Token' => 2, 'Comment' => 3, 'CreatedAt' => 4, 'LastUsedAt' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'token' => 2, 'comment' => 3, 'createdAt' => 4, 'lastUsedAt' => 5, ),
+        BasePeer::TYPE_COLNAME => array (AuthTokenPeer::ID => 0, AuthTokenPeer::USER_ID => 1, AuthTokenPeer::TOKEN => 2, AuthTokenPeer::COMMENT => 3, AuthTokenPeer::CREATED_AT => 4, AuthTokenPeer::LAST_USED_AT => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'TOKEN' => 2, 'COMMENT' => 3, 'CREATED_AT' => 4, 'LAST_USED_AT' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'token' => 2, 'comment' => 3, 'created_at' => 4, 'last_used_at' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -157,10 +166,16 @@ abstract class BaseAuthTokenPeer
             $criteria->addSelectColumn(AuthTokenPeer::ID);
             $criteria->addSelectColumn(AuthTokenPeer::USER_ID);
             $criteria->addSelectColumn(AuthTokenPeer::TOKEN);
+            $criteria->addSelectColumn(AuthTokenPeer::COMMENT);
+            $criteria->addSelectColumn(AuthTokenPeer::CREATED_AT);
+            $criteria->addSelectColumn(AuthTokenPeer::LAST_USED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.token');
+            $criteria->addSelectColumn($alias . '.comment');
+            $criteria->addSelectColumn($alias . '.created_at');
+            $criteria->addSelectColumn($alias . '.last_used_at');
         }
     }
 

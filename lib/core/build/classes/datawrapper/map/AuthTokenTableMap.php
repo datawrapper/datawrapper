@@ -40,7 +40,10 @@ class AuthTokenTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
-        $this->addColumn('token', 'Token', 'VARCHAR', true, 1024, null);
+        $this->addColumn('token', 'Token', 'VARCHAR', true, 64, null);
+        $this->addColumn('comment', 'Comment', 'VARCHAR', true, 255, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
+        $this->addColumn('last_used_at', 'LastUsedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 

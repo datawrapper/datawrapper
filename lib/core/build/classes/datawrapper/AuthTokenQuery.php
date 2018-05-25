@@ -13,6 +13,24 @@
  *
  * @package    propel.generator.datawrapper
  */
-class AuthTokenQuery extends BaseAuthTokenQuery
-{
+class AuthTokenQuery extends BaseAuthTokenQuery {
+
+    public function newToken($user, $comment) {
+        $token = new AuthToken();
+        $token->setUser($user);
+        $token->setComment($comment);
+        $key = $this->createRandomToken();
+        // check that the token is unique
+        while ($this->findOneByToken($key)) {
+            $key = $this->createRandomToken();
+        }
+        $token->setToken($key);
+        $token->setCreatedAt(time());
+        $token->save();
+        return $token;
+    }
+
+    private function createRandomToken($user) {
+        return hash_hmac('sha256', random_int(0,999999).'/'.microtime(), DW_TOKEN_SALT);
+    }
 }

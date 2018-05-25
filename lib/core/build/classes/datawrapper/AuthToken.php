@@ -15,4 +15,8 @@
  */
 class AuthToken extends BaseAuthToken
 {
+	public function use() {
+		$this->setLastUsedAt(time());
+		$this->save();
+	}
 }
