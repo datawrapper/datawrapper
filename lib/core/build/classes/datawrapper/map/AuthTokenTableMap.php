@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'job' table.
+ * This class defines the structure of the 'auth_token' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.datawrapper.map
  */
-class JobTableMap extends TableMap
+class AuthTokenTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'datawrapper.map.JobTableMap';
+    const CLASS_NAME = 'datawrapper.map.AuthTokenTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,28 +32,18 @@ class JobTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('job');
-        $this->setPhpName('Job');
-        $this->setClassname('Job');
+        $this->setName('auth_token');
+        $this->setPhpName('AuthToken');
+        $this->setClassname('AuthToken');
         $this->setPackage('datawrapper');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', true, null, null);
-        $this->addForeignKey('chart_id', 'ChartId', 'VARCHAR', 'chart', 'id', true, 5, null);
-        $this->addColumn('status', 'Status', 'ENUM', true, null, 'created');
-        $this->getColumn('status', false)->setValueSet(array (
-  0 => 'created',
-  1 => 'failed',
-  2 => 'retrieved',
-  3 => 'shot_done',
-  4 => 'done',
-));
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'user', 'id', true, null, null);
+        $this->addColumn('token', 'Token', 'VARCHAR', true, 64, null);
+        $this->addColumn('comment', 'Comment', 'VARCHAR', true, 255, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
-        $this->addColumn('done_at', 'DoneAt', 'TIMESTAMP', true, null, null);
-        $this->addColumn('type', 'Type', 'VARCHAR', true, 32, null);
-        $this->addColumn('parameter', 'Parameter', 'VARCHAR', true, 4096, null);
-        $this->addColumn('fail_reason', 'FailReason', 'VARCHAR', true, 4096, null);
+        $this->addColumn('last_used_at', 'LastUsedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -63,7 +53,6 @@ class JobTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-        $this->addRelation('Chart', 'Chart', RelationMap::MANY_TO_ONE, array('chart_id' => 'id', ), null, null);
     } // buildRelations()
 
-} // JobTableMap
+} // AuthTokenTableMap

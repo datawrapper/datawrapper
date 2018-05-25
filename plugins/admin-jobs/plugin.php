@@ -10,7 +10,7 @@ class DatawrapperPlugin_AdminJobs extends DatawrapperPlugin {
             function() use ($plugin) {
                 // add badges to menu title
                 $title = __('Jobs', $plugin->getName());
-                $q = JobQuery::create()->filterByStatus('queued')->count();
+                $q = JobQuery::create()->filterByStatus('created')->count();
                 if ($q > 0) $title .= ' <span class="badge badge-info">'.$q.'</span>';
                 $f = JobQuery::create()->filterByStatus('failed')->count();
                 if ($f > 0) $title .= ' <span class="badge badge-important">'.$f.'</span>';
@@ -34,9 +34,9 @@ class DatawrapperPlugin_AdminJobs extends DatawrapperPlugin {
         $page = array_merge($page, array(
             'title' => 'Background Jobs',
             'jobs' => count($jobs) > 0 ? $jobs : false,
-            'queued' => JobQuery::create()->filterByStatus(0)->count(),
-            'failed' => JobQuery::create()->filterByStatus(1)->count(),
-            'done' => JobQuery::create()->filterByStatus(4)->count()
+            'queued' => JobQuery::create()->filterByStatus('created')->count(),
+            'failed' => JobQuery::create()->filterByStatus('failed')->count(),
+            'done' => JobQuery::create()->filterByStatus('done')->count()
         ));
         $page['est_time'] = ceil($page['queued'] * 2 / 60);
 

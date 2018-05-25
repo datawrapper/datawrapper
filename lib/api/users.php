@@ -314,6 +314,15 @@ $app->post('/user/:id/products', function($id) use ($app) {
 	});
 });
 
+$app->get('/user/data/:key', function($key) use ($app) {
+    $user = Session::getUser();
+    if ($user->isLoggedIn()) {
+        $userData = $user->getUserData();
+        ok($userData[$key] ?? null);
+        return;
+    }
+    error('not-logged-in', 'you need to be logged in to access user data');
+});
 
 $app->post('/user/data', function() use ($app) {
     $user = Session::getUser();

@@ -161,7 +161,7 @@
     <foreign-key foreignTable="chart">
       <reference local="chart_id" foreign="id"/>
     </foreign-key>
-    <column name="status" type="enum" valueSet="queued,done,failed,canceled" required="true" default="queued" />
+    <column name="status" type="enum" valueSet="created,failed,retrieved,shot_done,done" required="true" default="created" />
     <column name="created_at" type="timestamp" required="true" />
     <column name="done_at" type="timestamp" required="true" />
     <column name="type" type="varchar" size="32" required="true" />
@@ -364,4 +364,20 @@
     </foreign-key>
     <column name="plugins" type="clob" required="true" />
   </table>
+
+  <table name="auth_token" phpName="AuthToken">
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="user_id" type="integer" required="true" primaryKey="true" />
+    <foreign-key foreignTable="user">
+      <reference local="user_id" foreign="id"/>
+    </foreign-key>
+    <column name="token" type="varchar" size="64" required="true" />
+    <column name="comment" type="varchar" size="255" required="true" />
+    <column name="created_at" type="timestamp" required="true" />
+    <column name="last_used_at" type="timestamp" />
+  </table>
+
 </database>

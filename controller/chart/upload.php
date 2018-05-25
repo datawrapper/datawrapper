@@ -48,6 +48,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
                 ($user->getUserData()['beta_upload'] ?? null) !== '0'
             );
         }
+        $useBeta = true;
 
         $app->render('chart/upload'.($useBeta ? '-new' : '').'.twig', $page);
     });

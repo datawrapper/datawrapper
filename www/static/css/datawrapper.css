@@ -680,6 +680,9 @@ html .btn-primary[disabled] {
 html .btn-inverse {
   background: #555;
 }
+html .btn-danger {
+  background: #c71e1d;
+}
 #dwLoginForm {
   width: 676px;
   margin-left: -338px;

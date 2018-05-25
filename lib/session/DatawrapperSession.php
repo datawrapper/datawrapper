@@ -52,12 +52,30 @@ class DatawrapperSession {
      * initializes a new user or creates a guest user if not logged in
      */
     protected function initUser() {
+        // check for auth header
+        if (defined('IS_API') && IS_API) {
+            $h = getallheaders();
+            if (!empty($h['Authorization'])) {
+                $authHeader = explode(' ', $h['Authorization']);
+                if ($authHeader[0] == 'Bearer') {
+                    $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
+                    if ($auth) {
+                        $this->user = $auth->getUser();
+                        $this->method = 'token';
+                        $auth->use();
+                        return;
+                    }
+                }
+            }
+        }
+        // check for login session
         if (isset($_SESSION['dw-user-id']) &&
             (isset($_SESSION['persistent']) ||
              isset($_SESSION['last_action_time']))) {
             if ((isset($_SESSION['persistent']) && $_SESSION['persistent']) ||
                 (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
+                $this->method = 'session';
                 $_SESSION['last_action_time'] = time();
             }
         }
@@ -78,6 +96,13 @@ class DatawrapperSession {
 
     public static function toArray() {
         return self::getInstance()->_toArray();
+    }
+    public function _getMethod() {
+        return $this->method ?? null;
+    }
+
+    public static function getMethod() {
+        return self::getInstance()->_getMethod();
     }
 
     private static function getDefaultLocale() {

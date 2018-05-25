@@ -365,6 +365,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         ]);
     }
 
+    $visible_charts = [];
     $keepGroups = [];
     $i = 0;
     $min = $perPage * $curPage;
@@ -375,6 +376,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         foreach ($group['charts'] as $chart) {
             if ($i >= $min && $i < $max) {
                 $newGroup['charts'][] = $chart;
+                $visible_charts[] = $chart;
             }
             $i++;
         }
@@ -383,7 +385,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     $grouped = $keepGroups;
 
     // save result to page
-    $shortCharts = prepare_short_arrays($charts);
+    $shortCharts = prepare_short_arrays($visible_charts);
 
     array_walk_recursive($shortCharts, function(&$value) {
         $value = str_to_Unicode($value);

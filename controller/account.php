@@ -7,8 +7,8 @@ require_once ROOT_PATH . 'controller/account/reset-password.php';
 call_user_func(function() {
     global $app;
 
-    DatawrapperHooks::register(
-        DatawrapperHooks::GET_ACCOUNT_PAGES, function() {
+    Hooks::register(
+        Hooks::GET_ACCOUNT_PAGES, function() {
         return array(
             'order' => 100,
             'controller' => function ($app, $user) {
@@ -21,16 +21,16 @@ call_user_func(function() {
         );
     });
 
-    DatawrapperHooks::register(
+    Hooks::register(
         'render_account_pages',
         function () use ($app) {
-            $user = DatawrapperSession::getUser();
+            $user = Session::getUser();
 
             $context = array(
                 "user" => $user
             );
 
-            $pages = DatawrapperHooks::execute(DatawrapperHooks::GET_ACCOUNT_PAGES, $user);
+            $pages = Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user);
 
             foreach ($pages as $page) {
                 if (!isset($page['order'])) $page['order'] = 999;
@@ -54,7 +54,7 @@ call_user_func(function() {
     $app->get('/account', function() use ($app) {
         disable_cache($app);
 
-        $user = DatawrapperSession::getUser();
+        $user = Session::getUser();
 
         $context = array(
             "user" => $user
