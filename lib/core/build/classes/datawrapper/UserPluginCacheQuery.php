@@ -38,7 +38,7 @@ class UserPluginCacheQuery extends BaseUserPluginCacheQuery
         // clear cache for all users in an organization
         $invalidateOrg = function(Product $product, Organization $org) {
             UserPluginCacheQuery::create()
-                ->findByUser($org->getActiveUsers())
+                ->filterByUser($org->getActiveUsers())
                 ->delete();
         };
         DatawrapperHooks::register(DatawrapperHooks::PRODUCT_ORGANIZATION_ADD, $invalidateOrg);
@@ -48,9 +48,9 @@ class UserPluginCacheQuery extends BaseUserPluginCacheQuery
         $invalidateProduct = function(Product $product, Plugin $plugin) {
             $query = UserPluginCacheQuery::create();
             foreach ($product->getOrganizations() as $org) {
-                $query = $query->findByUser($org->getActiveUsers())->_or();
+                $query = $query->filterByUser($org->getActiveUsers())->_or();
             }
-            $query->findByUser($product->getUsers())->delete();
+            $query->filterByUser($product->getUsers())->delete();
         };
         DatawrapperHooks::register(DatawrapperHooks::PRODUCT_PLUGIN_ADD, $invalidateProduct);
         DatawrapperHooks::register(DatawrapperHooks::PRODUCT_PLUGIN_REMOVE, $invalidateProduct);
