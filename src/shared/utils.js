@@ -34,6 +34,7 @@ export function getJSON(url, credentials, callback) {
 }
 export function postJSON(url, body, callback) { return fetchJSON(url, 'POST', "include", body, callback); }
 export function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', "include", body, callback); }
+export function deleteJSON(url, callback) { return fetchJSON(url, 'DELETE', "include", null, callback); }
 
 export function arrayToObject(o) {
     if (_isArray(o)) {
