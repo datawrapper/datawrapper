@@ -3,6 +3,7 @@
 <script>
     /* global dw,chart */
     import HOT from 'Handsontable';
+    import clone from '../../shared/clone.js';
 
     let app = null;
 
@@ -57,7 +58,7 @@
                 });
 
                 this.set({ds});
-                this.set({has_changes: chart.get('metadata.data.changes', []).length > 0})
+                this.set({has_changes: clone(chart.get('metadata.data.changes', [])).length > 0})
 
                 HOT.hooks.once('afterRender', () => this.initCustomEvents());
                 hot.render();
@@ -69,7 +70,7 @@
                     if (old_val != new_val) {
                         const chart = this.store.get('dw_chart');
                         const {transpose} = this.get();
-                        const changes = chart.get('metadata.data.changes', []);
+                        const changes = clone(chart.get('metadata.data.changes', []));
                         row = hot.toPhysicalRow(row);
                         col = chart.dataset().columnOrder()[col];
                         if (transpose) {
@@ -181,6 +182,7 @@
             window.addEventListener('keyup', (evt) => {
                 const {activeColumn, ds} = this.get();
                 if (!activeColumn) return;
+
                 if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
                     evt.preventDefault();
                     evt.stopPropagation();

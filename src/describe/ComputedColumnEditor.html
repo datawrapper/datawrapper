@@ -240,7 +240,7 @@ label {
                 }
                 // update dw.chart
                 const {column} = this.get();
-                const customCols = chart.get('metadata.describe.computed-columns', {});
+                const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
                 if (customCols[column.name()] != formula) {
                     customCols[column.name()] = formula;
                     chart.set('metadata.describe.computed-columns', customCols);
@@ -251,7 +251,7 @@ label {
 
             this.observe('name', (name) => {
                 const {column} = this.get();
-                const changes = chart.get('metadata.data.changes', []);
+                const changes = clone(chart.get('metadata.data.changes', []));
                 const ds = chart.dataset();
                 const col = ds.columnOrder()[ds.indexOf(column.name())];
                 let last_col_name_change_i = -1;

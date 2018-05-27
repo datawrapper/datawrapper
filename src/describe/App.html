@@ -168,6 +168,7 @@
 
     import {__} from '../shared/l10n';
     import {arrayToObject} from '../shared/utils.js';
+    import clone from '../shared/clone.js';
 
     export default {
         components: { Handsontable, Checkbox, ComputedColumnEditor,
@@ -293,7 +294,7 @@
             },
             hideMultiple(columns, hide) {
                 const chart = this.store.get('dw_chart');
-                const colFmt = chart.get('metadata.data.column-format', {});
+                const colFmt = clone(chart.get('metadata.data.column-format', {}));
                 columns.forEach(col => {
                     if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
                     else {
