@@ -144,7 +144,7 @@
             this.observe('columnFormat', (colFormat) => {
                 const chrt = this.store.get('dw_chart');
                 const {column} = this.get();
-                const columnFormats = arrayToObject(chrt.get('metadata.data.column-format', {}));
+                const columnFormats = arrayToObject(clone(chrt.get('metadata.data.column-format', {})));
                 const oldFormat = columnFormats[column.name()];
                 if (!oldFormat || JSON.stringify(oldFormat) != JSON.stringify(colFormat)) {
                     if (colFormat['number-divisor'] == 'auto') {
