@@ -183,6 +183,9 @@
                 const {activeColumn, ds} = this.get();
                 if (!activeColumn) return;
 
+                if (evt.target.tagName.toLowerCase() == "input" ||
+                    evt.target.tagName.toLowerCase() == "textarea") return;
+
                 if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
                     evt.preventDefault();
                     evt.stopPropagation();
