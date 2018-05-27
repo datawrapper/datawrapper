@@ -46,7 +46,8 @@ define(function() {
                 });
 
                 if (changed('metadata.data.column-format')
-                    || changed('metadata.data.changes')   || changed('metadata.data.column-order')) {
+                    || changed('metadata.data.changes')   || changed('metadata.data.column-order')
+                    || changed('metadata.describe.computed-columns')) {
                     needReload = true;
                     return;
                 }

@@ -129,10 +129,24 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         chart.sync('#describe-byline', 'metadata.describe.byline');
 
         chart.onChange(function(chart, key, value) {
+            function changed (test) {
+                return (key.substr(0, test.length) == test ||
+                    key.replace(/metadata/, "metadata.print").substr(0, test.length) == test);
+            }
+
             if (key == 'type') _typeHasChanged = true;
             if (key == 'theme') _themeHasChanged = true;
-            if (key.substr(0, 13) == 'metadata.axes' || key.substr(0, 19) == 'metadata.print.axes') _axesHaveChanged = true;
-            if (key == 'metadata.data.transpose' ||key == 'metadata.print.data.transpose') _transposed = true;
+            if (changed('metadata.data.transpose')) _transposed = true;
+
+            if (changed('metadata.axes') ||
+                changed('metadata.data.column-format') ||
+                changed('metadata.data.changes') ||
+                changed('metadata.data.column-order') ||
+                changed('metadata.describe.computed-columns')) {
+
+                _axesHaveChanged = true;
+            }
+
             liveUpdate.update(iframe, chart.attributes());
         });
     }
