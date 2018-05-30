@@ -2140,7 +2140,7 @@ body.cms-mode .footer {
 }
 .dw-create-publish .chart-actions li .banner {
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
+  background: #1d81a288;
   color: #fff;
   display: block;
   width: 82px;
