@@ -5,7 +5,14 @@ define(function() {
         return $(this)
         .attr('contenteditable', true)
         .off('focus').on('focus', function(evt) {
-            $(evt.target).data('old-value', $(evt.target).html());
+            var tgt = $(evt.target);
+            if (tgt.is('.chart-title')) {
+                var txt = tgt.text();
+                if (txt.substr(0,2) == '[ ' && txt.substr(txt.length-2) == ' ]') {
+                    evt.target.ownerDocument.execCommand('selectAll',false,null);
+                }
+            }
+            tgt.data('old-value', tgt.html());
         })
         .off('keydown').on('keydown', function(evt) {
             if (evt.keyCode == 27) {
