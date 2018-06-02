@@ -1,4 +1,4 @@
-
+/* globals define, $ */
 define(function() {
 
     $.fn.initInlineEditing = function() {
