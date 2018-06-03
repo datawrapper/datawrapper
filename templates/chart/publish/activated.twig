@@ -50,5 +50,8 @@
 
     {% endfor %}
     </ul>
+
+    {{ hook('publish_after_chart_actions', chart, user) }}
+
 </div>
 

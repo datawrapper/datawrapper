@@ -2140,7 +2140,7 @@ body.cms-mode .footer {
 }
 .dw-create-publish .chart-actions li .banner {
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
+  background: #1d81a288;
   color: #fff;
   display: block;
   width: 82px;
@@ -2159,6 +2159,21 @@ body.cms-mode .footer {
 }
 .dw-create-publish .chart-actions li.promo i.fa {
   color: rgba(50, 0, 50, 0.4) !important;
+}
+.dw-create-publish .chart-actions li.active {
+  background: #1d81a2;
+  color: #fff;
+}
+.dw-create-publish .chart-actions li.active a {
+  outline: none;
+}
+.dw-create-publish .chart-actions li.active a,
+.dw-create-publish .chart-actions li.active i.fa {
+  color: #fff;
+}
+.dw-create-publish .chart-actions li.active .banner {
+  background: #ffffff88;
+  color: #1d81a2;
 }
 .dw-create-publish .publish-step .btn-aside {
   display: inline-block;

@@ -128,6 +128,13 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         chart.sync('#describe-source-url', 'metadata.describe.source-url');
         chart.sync('#describe-byline', 'metadata.describe.byline');
 
+        $('#text-title').focus(function(evt) {
+            var val = $(evt.target).val();
+            if (val.substr(0,2) == '[ ' && val.substr(val.length-2) == ' ]') {
+                evt.target.select();
+            }
+        });
+
         chart.onChange(function(chart, key, value) {
             function changed (test) {
                 return (key.substr(0, test.length) == test ||

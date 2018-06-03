@@ -285,7 +285,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             foreach ($assets as $asset) {
                 $file = $asset[0];
                 $plugin = $asset[1];
-                $version = substr(md5($plugin->getLastInstallTime()),0, 8);
+                $version = $asset[2] ?? substr(md5($plugin->getLastInstallTime()), 0, 8);
                 if (substr($file, -3) == '.js') $plugin_js_files[] = $file . '?v=' . $version;
                 if (substr($file, -4) == '.css') $plugin_css_files[] = $file . '?v=' . $version;
             }
