@@ -22,5 +22,6 @@
   "Display content over multiple pages": "Display content over multiple pages",
   "Show filter": "Show filter",
   "Hide header": "Hide header row",
-  "table / responsive": "Responsive table"
+  "table / responsive": "Responsive table",
+  "table / responsive / help": "Re-arrange table if it doesn't fit into view"
 }
