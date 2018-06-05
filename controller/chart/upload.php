@@ -9,10 +9,13 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
     check_chart_writable($id, function($user, $chart) use ($app) {
         $datasets = DatawrapperHooks::execute(DatawrapperHooks::GET_DEMO_DATASETS);
         $groups = array();
-        foreach ($datasets as $ds) {
-            if (!isset($groups[$ds['type']])) $groups[$ds['type']] = array('type' => $ds['type'], 'datasets' => array());
-            $groups[$ds['type']]['datasets'][] = $ds;
+        if (is_array($datasets)) {
+            foreach ($datasets as $ds) {
+                if (!isset($groups[$ds['type']])) $groups[$ds['type']] = array('type' => $ds['type'], 'datasets' => array());
+                $groups[$ds['type']]['datasets'][] = $ds;
+            }
         }
+        
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Upload Data'),
             'chartData' => $chart->loadData(),
