@@ -14,7 +14,7 @@
             }
 
             dataset.limitRows(100);
-            dataset.limitColumns(50);
+            dataset.limitColumns(500);
 
             me.axesDef = me.axes();
             if (!me.axesDef) return;
