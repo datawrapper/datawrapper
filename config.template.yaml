@@ -1,8 +1,8 @@
 # Datawrapper configuration
 #
 
-domain: datawrapper.local
-chart_domain: c.datawrapper.local
+domain: app.datawrapper.local
+chart_domain: charts.datawrapper.local
 api_domain: api.datawrapper.local
 cookie_domain: .datawrapper.local
 
@@ -20,14 +20,26 @@ cookie_domain: .datawrapper.local
 # auth_salt: "MY_AUTH_SALT"
 # secure_auth_key: "MY_SECRET_AUTH_KEY"
 
+## the UI languages Datawrapper is offering
+languages:
+  - id: de-DE
+    title: Deutsch
+  - id: en-US
+    title: English
+
 ## prevent chart previews to display in iframes on other domains
 prevent_chart_preview_in_iframes: true
 
-## list of domains white-listed for iframe embedding
+## by default, Datawrapper chart preview iframes can only
+## be loaded from the main domain, to prevent accidential
+## external embedding on other domains.
+##
+## however, you can provide a list of domains that need to
+## be white-listed for iframe embedding
 allow_preview_domains:
   - foo.datawrapper.dev
 
-## show debug message?
+## show debug message
 debug: true
 
 ## some default values
