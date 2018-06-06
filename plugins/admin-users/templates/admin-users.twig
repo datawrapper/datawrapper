@@ -83,7 +83,7 @@
                     </td>
                     <td class="creation out">{{ user.createdAt | date('M jS, Y') }}</td>
                     <td class="center">
-                        <a href="/admin/charts/{{ user.id }}">{{ user.chartCount() }}</a></td>
+                        <a href="/admin/chart/by/{{ user.id }}">{{ user.chartCount() }}</a></td>
                     {% if has_plugin('admin-organizations') %}
                     <td class="center organizations">
                         {% for org in user.organizations %}<a href="/admin/organizations/{{ org.id }}">{{ org.id }}</a>{% endfor %}
