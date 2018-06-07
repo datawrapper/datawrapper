@@ -65,7 +65,8 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
             'table-responsive' => [
                 'type' => 'checkbox',
                 'label' => __('table / responsive'),
-                'default' => false
+                'default' => true,
+                'help' => __('table / responsive / help')
             ]
         );
         return $options;

@@ -22,5 +22,6 @@
   "Display content over multiple pages":"Zeilen über mehrere Seiten verteilen",
   "Show filter":"Filter anzeigen",
   "Hide header":"Beschriftungszeile ausblenden",
-  "table / responsive": "Responsive Tabelle"
+  "table / responsive": "Responsive Tabelle",
+  "table / responsive / help": "Tabellenzeilen ausklappen wenn die Tabelle nicht in die Diagrammbreite passt"
 }

@@ -10,7 +10,7 @@
     dw.visualization.register('data-table', {
 
         render: function(el) {
-            el = $(el);
+            el = $(el).removeClass('mobile-view').removeClass('scrollable');
             // add table
             var me = this, table, tr, td, th, r,
                 css_class = me.theme().datatable && me.theme().datatable['class'] ?
@@ -82,10 +82,6 @@
             });
             el.append(table);
 
-            if (me.get('table-responsive')) {
-                table.addClass('responsive');
-            }
-
             var datatable_i18n = {
                 "sEmptyTable"    : me.translate("sEmptyTable"),
                 "sInfo"          : me.translate("sInfo"),
@@ -134,8 +130,12 @@
                 } else {
                     colum_types.push({ "sType": null });
                 }
-
+ 
             });
+
+            if (me.get('table-responsive')) {
+                table.addClass('responsive');
+            }
 
             table.dataTable({
                 "bPaginate" : me.get('paginate', false),
@@ -169,11 +169,21 @@
             }
 
             var css = '{font-weight:bold; background: '+c+'!important; color: #fff!important; border-color: '+c+'!important; }';
-            $('<style>.dw-chart table th '+css+'</style>').appendTo(el);
-            $('<style type="text/css">@media (max-device-width: 540px) { .dw-chart table.responsive tr td:first-child '+css+' }</style>').appendTo(el);
+            $('<style>.dw-chart-body table th '+css+'</style>').appendTo(el);
+            $('<style type="text/css">.dw-chart-body.mobile-view table.responsive tr td:first-child '+css+'</style>').appendTo(el);
             // $('.chart.vis-data-table .datatable-default th').css('background', c);
             // $('.chart.vis-data-table .datatable-default tr td:first-child').css('background', c);
 
+            if (table.width() > el.width()) {
+                // table doesn't fit into chart
+                if (me.get('table-responsive') && el.width() < 600) {
+                    el.addClass('mobile-view');
+                } else {
+                    // make table scrollable
+                    el.addClass('scrollable');
+                }
+            }
+            
             el.append('<br style="clear:both"/>');
             me.renderingComplete();
         },
