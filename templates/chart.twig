@@ -81,6 +81,13 @@
         {{ notes | purify | raw }}
     </div>
 
+    {% if chartSource and theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
+        {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
+            <span class="footer-block source-block">
+                                    {{ sourceCaption }}:
+                {{ chartSource | purify | raw }}</span>
+    {% endif %}
+
     {% if theme.getThemeData('template.afterChart') %}
         {{ theme.getThemeData('template.afterChart') | raw }}
     {% endif %}
@@ -110,7 +117,7 @@
                             </span>
                         {% endif %}
 
-                        {% if chartSource %}
+                        {% if chartSource and theme.getThemeData("options.footer.sourcePosition") != "above-footer" %}
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
                             <span class="footer-block source-block">
                                 {{ sourceCaption }}:
