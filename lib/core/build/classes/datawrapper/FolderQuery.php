@@ -38,32 +38,31 @@ class FolderQuery extends BaseFolderQuery {
 
     public function getParsableFolders($user) {
         $folders = $this->getUserFolders($user);
-        $folderChartCounts = [];
-        $folder_ids = [];
         foreach ($folders as &$group) {
             if ($group['type'] == 'organization') {
                 $group['charts'] = ChartQuery::create()
                     ->filterByOrganization($group['organization'])
-                    ->filterByDeleted(false)
-                    ->filterByLastEditStep(array('min'=>3))
                     ->filterByInFolder(null)
+                    ->filterByDeleted(false)
+                    ->findByLastEditStep(array('min'=>3))
                     ->count();
                 $group['organization'] = $group['organization']->serialize();
             } else {
                 $group['charts'] = ChartQuery::create()
                     ->filterByOrganizationId(null)
-                    ->filterByDeleted(false)
-                    ->filterByLastEditStep(array('min'=>3))
                     ->filterByInFolder(null)
+                    ->filterByDeleted(false)
                     ->filterByUser($user)
+                    ->findByLastEditStep(array('min'=>3))
                     ->count();
             }
             $tmpfolders = [];
-            foreach ($group['folders'] as $idx => &$fold) {
+            foreach ($group['folders'] as $idx => $fold) {
                 $tmpfolders[$idx] = $fold->serialize();
                 $tmpfolders[$idx]['charts'] = ChartQuery::create()
-                    ->filterByLastEditStep(array('min'=>3))
-                    ->findByInFolder($fold->getFolderId())
+                    ->filterByInFolder($fold->getFolderId())
+                    ->filterByDeleted(false)
+                    ->findByLastEditStep(array('min'=>3))
                     ->count();
             }
             $group['folders'] = $tmpfolders;
