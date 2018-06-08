@@ -333,6 +333,7 @@
   "computed columns / modal / remove": "Remove this column",
   "computed columns / modal / available columns": "Available columns (click to add them to the formula)",
   "annotate / title": "Annotate your chart",
+  "annotate / hide-title": "hide",
   "annotate / highlight element": "Hightlight elements",
   "Select annotation type": "Select annotation type",
   "Highlight the most import elements (optional)": "Highlight the most import elements (optional)",

@@ -57,10 +57,10 @@ define(function() {
                     __dw.vis.chart().attributes(attrs);
                     render = true;
                 }
-                if (changed('title')) {
+                if (changed('title') || changed('metadata.describe.hide-title')) {
                     var $title = $$('.chart-title'),
                         $h1 = $title.parent();
-                    if (attrs.title) {
+                    if (attrs.title && !attrs.metadata.describe['hide-title']) {
                         if (!$title.length) needReload = true; // no title found, reload chart
                         else if ($h1.hasClass('hidden')) {
                             $h1.removeClass('hidden');
