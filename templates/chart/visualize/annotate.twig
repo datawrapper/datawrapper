@@ -2,6 +2,18 @@
  Annotations
  #}
 
+<style>
+.hide-title {
+    opacity: 0.5;
+}
+.hide-title:hover {
+    opacity: 1;
+}
+.hide-title input {
+    position: relative;
+    top: -2px;
+}
+</style>
 
  <div class="vis-option-type-group group-open">
      <label class="group-title">
@@ -10,7 +22,10 @@
      	{% trans "annotate / title" %}</label>
      <div class="option-group-content vis-option-type-chart-description">
          <div class="story-title control-group">
-             <div class="pull-left">
+             <div style="position:relative">
+                <label class="hide-title" style="display: block;position: absolute;right: 0;top: 0;font-size: 12px;color: #777;" class="checkbox">
+                    <input id="hide-title" type="checkbox">&nbsp;ausblenden
+                </label>
                  <label class="control-label" for="text-title">{% trans "Title" %}</label>
                  <input type="text" id="text-title" class="input-xlarge span4" />
 
