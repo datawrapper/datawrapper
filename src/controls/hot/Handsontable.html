@@ -211,6 +211,7 @@
                 },
                 colHeaders: true,
                 fixedRowsTop: 1,
+                fixedColumnsLeft: this.get('fixedColumnsLeft'),
                 filters: true,
                 dropdownMenu: true,
                 startRows: 13,
@@ -319,6 +320,10 @@
                 setTimeout(() => hot.render(), 10);
             });
 
+            this.observe('fixedColumnsLeft', (v) => {
+                hot.updateSettings({fixedColumnsLeft: v});
+            });
+
             // if (hot.sortingEnabled) {
             this.observe('sorting', (sorting) => {
                 hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
@@ -332,6 +337,7 @@
                 readonly: false,
                 skipRows: 0,
                 firstRowIsHeader: true,
+                fixedColumnsLeft: 0,
                 searchIndex: 0,
                 sortBy: '-',
                 transpose: false,
