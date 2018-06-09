@@ -67,7 +67,7 @@
 
     <div class="dw-chart-header" id="header">
         {% if not plain %}
-            <h1 {% if not title %}class="hidden"{% endif %}>
+            <h1 {% if not title or chart.getMetadata('describe.hide-title') %}class="hidden"{% endif %}>
                 <span class="chart-title">{{ title | purify | raw }}</span>
             </h1>
 

@@ -333,6 +333,7 @@
   "computed columns / modal / remove": "Diese Spalte entfernen",
   "computed columns / modal / available columns": "Verfügbare Spalten (lassen sich per Klick hinzufügen)",
   "annotate / title": "Beschreibe das Diagramm",
+  "annotate / hide-title": "ausblenden",
   "annotate / highlight element": "Elemente hervorheben",
   "Select annotation type": "Anmerkungstyp wählen",
   "Highlight the most import elements (optional)": "Hebe die wichtigsten Elemente hervor (optional)",

@@ -38,32 +38,31 @@ class FolderQuery extends BaseFolderQuery {
 
     public function getParsableFolders($user) {
         $folders = $this->getUserFolders($user);
-        $folderChartCounts = [];
-        $folder_ids = [];
         foreach ($folders as &$group) {
             if ($group['type'] == 'organization') {
                 $group['charts'] = ChartQuery::create()
                     ->filterByOrganization($group['organization'])
+                    ->filterByInFolder(null)
                     ->filterByDeleted(false)
                     ->filterByLastEditStep(array('min'=>3))
-                    ->filterByInFolder(null)
                     ->count();
                 $group['organization'] = $group['organization']->serialize();
             } else {
                 $group['charts'] = ChartQuery::create()
                     ->filterByOrganizationId(null)
-                    ->filterByDeleted(false)
-                    ->filterByLastEditStep(array('min'=>3))
                     ->filterByInFolder(null)
+                    ->filterByDeleted(false)
                     ->filterByUser($user)
+                    ->filterByLastEditStep(array('min'=>3))
                     ->count();
             }
             $tmpfolders = [];
-            foreach ($group['folders'] as $idx => &$fold) {
+            foreach ($group['folders'] as $idx => $fold) {
                 $tmpfolders[$idx] = $fold->serialize();
                 $tmpfolders[$idx]['charts'] = ChartQuery::create()
+                    ->filterByInFolder($fold->getFolderId())
+                    ->filterByDeleted(false)
                     ->filterByLastEditStep(array('min'=>3))
-                    ->findByInFolder($fold->getFolderId())
                     ->count();
             }
             $group['folders'] = $tmpfolders;

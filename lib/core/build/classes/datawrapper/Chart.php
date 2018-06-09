@@ -185,11 +185,9 @@ class Chart extends BaseChart {
     }
 
     /**
-     * writes raw csv data to the file system store
-     *
-     * @param csvdata  raw csv data string
+     * writes any asset to the file system store
      */
-    public function writeData($csvdata) {
+    public function writeAsset($filename, $data) {
         $cfg = $GLOBALS['dw_config'];
 
         if (isset($cfg['charts-s3'])
@@ -198,10 +196,10 @@ class Chart extends BaseChart {
 
             $config = $cfg['charts-s3'];
 
-            $filename = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
-                $this->getRelativeDataPath() . '/' . $this->getDataFilename();
+            $filenamePath = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
+                $this->getRelativeDataPath() . '/' . $filename;
 
-            file_put_contents($filename, $csvdata);
+            file_put_contents($filenamePath, $data);
         } else {
             $path = $this->getDataPath();
 
@@ -209,25 +207,34 @@ class Chart extends BaseChart {
                 mkdir($path, 0775);
             }
 
-            $filename = $path . '/' . $this->getDataFilename();
+            $filenamePath = $path . '/' . $filename;
 
-            file_put_contents($filename, $csvdata);
+            file_put_contents($filenamePath, $data);
         }
         $this->setLastModifiedAt(time());
-        return $filename;
+        return $filenamePath;
     }
 
     /**
-     * load data from file sytem
+     * writes raw csv data to the file system store
+     *
+     * @param csvdata  raw csv data string
      */
-    public function loadData() {
+    public function writeData($csvdata) {
+        return $this->writeAsset($this->getDataFilename(), $csvdata);        
+    }
+
+    /**
+     * load any asset from file system
+     */
+    public function loadAsset($filename) {
         $config = $GLOBALS['dw_config'];
 
         if (isset($config['charts-s3']) &&
             $config['charts-s3']['read']) {
 
             $s3url = 's3://' . $config['charts-s3']['bucket'] . '/' .
-              $this->getRelativeDataPath() . '/' .$this->getDataFilename();
+              $this->getRelativeDataPath() . '/' . $filename;
 
             try {
                 return file_get_contents($s3url);
@@ -235,13 +242,20 @@ class Chart extends BaseChart {
                 return '';
             }
         } else {
-            $filename = $this->getDataPath() . '/' . $this->getDataFilename();
-            if (!file_exists($filename)) {
+            $filenamePath = $this->getDataPath() . '/' . $filename;
+            if (!file_exists($filenamePath)) {
                 return '';
             } else {
-                return file_get_contents($filename);
+                return file_get_contents($filenamePath);
             }
         }
+    }
+
+    /**
+     * load data from file system
+     */
+    public function loadData() {
+        return $this->loadAsset($this->getDataFilename());
     }
 
     public function refreshExternalData() {

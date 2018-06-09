@@ -253,10 +253,6 @@ and also iPads specifically.
     overflow-x: scroll;
 }
 
-.dataTable td {
-    border: 1px solid #e6e6e6 !important;
-}
-
 .chart.vis-data-table .datatable-default td,
 .chart.vis-data-table .datatable-default th {
     padding: 10px !important;
@@ -304,4 +300,15 @@ and also iPads specifically.
 .chart.vis-data-table #datatable_paginate {
     margin-bottom: 10px;
     margin-top: 10px;
+}
+
+.chart.vis-data-table {
+    tbody {
+        border-top: 0;
+    }
+    .dataTable td {
+        border: 1px solid #e6e6e6 !important;
+        border-top-color: rgba(255,255,255,0) !important;
+        // border-top-style: none!important;
+    }
 }
