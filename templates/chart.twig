@@ -99,7 +99,7 @@
                     <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
                 {% endif %}
 
-                {% if theme.getThemeData("options.footer.sourcePosition") == "left" %}
+                {% if theme.getThemeData("options.footer.sourcePosition") == "left" or theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
                     {% block footer %}
 
                         {% if chartByline %}
