@@ -26,9 +26,10 @@ class JobQuery extends BaseJobQuery {
 
     public function createJob($type, $chart, $user, $params) {
         $job = new Job();
-        $job->setChartId($chart->getId());
         $job->setUserId($user->getId());
+        $job->setChartId($chart->getId());
         $job->setCreatedAt(time());
+        $job->setDoneAt('3000-01-01 00:00:00');
         $job->setType($type);
         $job->setParameter(json_encode($params, JSON_UNESCAPED_SLASHES));
         $job->setFailReason('');
