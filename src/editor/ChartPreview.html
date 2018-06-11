@@ -1,0 +1,27 @@
+<div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
+    <div id="iframe-wrapper" style="height:500px; overflow:visible;">
+        <iframe ref:iframe src="{url}" id="iframe-vis"
+            allowfullscreen
+            webkitallowfullscreen
+            mozallowfullscreen
+            oallowfullscreen
+            msallowfullscreen></iframe>
+    </div>
+
+    <!-- {{ hook('visualize_before_resizer') }}
+    {{ hook('render_resize_control') }} -->
+
+    <div id="notifications"></div>
+</div>
+
+<script>
+
+    export default {
+        computed: {
+            url({chart}) {
+                return `/chart/${chart.get('id')}/preview`;
+            }
+        }
+    }
+
+</script>

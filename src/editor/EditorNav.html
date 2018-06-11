@@ -1,0 +1,28 @@
+<div class="row create-nav">
+    {#each steps as step}
+    <EditorNavStep on:select="select(step)" bind:active bind:step bind:maxStep />
+    {/each}
+</div>
+
+<script>
+
+    import EditorNavStep from './EditorNavStep.html';
+
+    export default {
+        components: { EditorNavStep },
+        methods: {
+            select(step) {
+                this.set({active: step.index});
+                const {maxStep} = this.get();
+                this.set({maxStep: Math.max(maxStep, step.index)});
+            }
+        },
+        data() {
+            return {
+                active: 1,
+                maxStep: 3,
+                steps: []
+            }
+        }
+    }
+</script>

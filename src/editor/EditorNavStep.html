@@ -1,0 +1,40 @@
+<a on:click="select(event, step)" href="{step.redirect?step.redirect:'#'+step.id}" class="span3 {class_}">
+    <span class="step">{step.index}</span>
+    <span class="title">{@html step.title}</span>
+    {#if passed }<i class="fa fa-check"></i>{/if}
+    <div class="corner"></div>
+</a>
+
+<script>
+	export default {
+		methods: {
+			select(event, step) {
+				if (step.redirect) return;
+				event.preventDefault();
+				this.fire('select', step);
+			}
+		},
+		computed: {
+			passed ({step, active, maxStep}) {
+				return step.index < maxStep && step.index != active;
+			},
+			class_ ({step, active, maxStep, passed}) {
+				const list = [];
+				if (active == step.index) list.push('active');
+				if (step.index > maxStep) list.push('unseen');
+				if (passed) list.push('passed');
+				return list.join(' ');
+			}
+		},
+		data() {
+			return {
+				step: {
+					title: '',
+					index: 1
+				},
+				maxStep: 1,
+				active: 1
+			}
+		}
+	}
+</script>
