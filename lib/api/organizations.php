@@ -5,18 +5,18 @@
  */
 $app->get('/organizations', function() use ($app) {
     disable_cache($app);
-	if_is_admin(function() use ($app) {
-		try {
-			$organizations = OrganizationQuery::create()->filterByDeleted(false)->find();
-			$res           = array();
-			foreach ($organizations as $organization) {
-				$res[] = $organization->toArray();
-			}
-			ok($res);
-		} catch (Exception $e) {
-			error('io-error', $e->getMessage());
-		}
-	});
+    if_is_admin(function() use ($app) {
+        try {
+            $organizations = OrganizationQuery::create()->filterByDeleted(false)->find();
+            $res           = array();
+            foreach ($organizations as $organization) {
+                $res[] = $organization->toArray();
+            }
+            ok($res);
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
 });
 
 /*
@@ -268,7 +268,7 @@ $app->get('/organizations/:id/charts', function($org_id) use ($app) {
                 $conds = array();
                 foreach ($status as $s) {
                     $query->condition($conds[] = 'c'.count($conds), 'Chart.LastEditStep ' .
-                        ($s == 'published' ? ' >= 4' : 
+                        ($s == 'published' ? ' >= 4' :
                          $s == 'visualized' ? ' = 3' : '< 3'));
                 }
                 $query->where($conds, 'or');
