@@ -53,12 +53,16 @@ function get_user_ips() {
     return $ips;
 }
 
-function if_is_admin($callback) {
+function if_is_admin($callback, $elseCallback=null) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
         call_user_func($callback);
     } else {
-        error('access-denied', 'need admin privileges.');
+        if (is_callable($elseCallback)) {
+            call_user_func($elseCallback);
+        } else {
+            error('access-denied', 'need admin privileges.');
+        }
     }
 }
 
