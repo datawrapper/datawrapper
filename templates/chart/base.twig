@@ -12,7 +12,7 @@
             <a href="{{ step.id }}" class="submit span3{% if createstep == step.index %} active{% else %}{% if createstep > step.index %} passed{% endif %}{% endif %}">
                 <span class="step">{{ step.index }}</span>
                 <span class="title">{{ step.title }}</span>
-                <i class="icon-ok"></i>
+                <i class="fa fa-check"></i>
                  <div class="corner"></div>
             </a>
         {% elseif createstep < step.index and createstep == step.index-1 %}
