@@ -2369,13 +2369,13 @@ body.cms-mode .footer {
   border-radius: 0;
   box-shadow: none;
 }
-.dw .create-nav > div.active {
+.dw .create-nav > .active {
   background: #c71e1d;
   box-shadow: none;
   font-weight: normal;
   color: #fff;
 }
-.dw .create-nav > div.unseen {
+.dw .create-nav > .unseen {
   color: #999;
 }
 .dw .create-nav > a:hover {
