@@ -1,9 +1,31 @@
 <?php
 
 /*
+ * list all organizations in which the current user is a member
+ */
+$apiTeamsGetUserTeams = function() use ($app) {
+    $user = DatawrapperSession::getUser();
+
+    if (!$user->isLoggedIn()) {
+        error('access-denied', 'User is not logged in.');
+        return;
+    }
+
+    $user_id = $user->getId();
+    $organizations = UserOrganizationQuery::create()->findByUserId($user_id);
+    $res = array();
+    foreach ($organizations as $org) {
+        if (!$org->getOrganization()->getDisabled())
+            $res[] = $org->getOrganizationId();
+    }
+
+    ok($res);
+};
+
+/*
  * get list of all organizations
  */
-$app->get('/(organizations|teams)', function() use ($app) {
+$app->get('/(organizations|teams)', function() use ($app, $apiTeamsGetUserTeams) {
     disable_cache($app);
     if_is_admin(function() use ($app) {
         try {
@@ -16,7 +38,7 @@ $app->get('/(organizations|teams)', function() use ($app) {
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
-    });
+    }, $apiTeamsGetUserTeams);
 });
 
 /*
@@ -158,27 +180,7 @@ $app->delete('/(organizations|teams)/:id/users/:uid', function($org_id, $user_id
     });
 });
 
-/*
- * list all organizations in which the current user is a member
- */
-$app->get('/(organizations|teams)/user', function() use ($app) {
-    $user = DatawrapperSession::getUser();
-
-    if (!$user->isLoggedIn()) {
-        error('access-denied', 'User is not logged in.');
-        return;
-    }
-
-    $user_id = $user->getId();
-    $organizations = UserOrganizationQuery::create()->findByUserId($user_id);
-    $res = array();
-    foreach ($organizations as $org) {
-        if (!$org->getOrganization()->getDisabled())
-            $res[] = $org->getOrganizationId();
-    }
-
-    ok($res);
-});
+$app->get('/(organizations|teams)/user', $apiTeamsGetUserTeams);
 
 
 /*
