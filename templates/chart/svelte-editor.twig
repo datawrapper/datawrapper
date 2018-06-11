@@ -1,0 +1,85 @@
+{% extends "core.twig" %}
+{% block content %}
+
+<div class="vis-options" id="{{vis['svelte-editor']}}"></div>
+
+<script type="text/javascript" src="/static/plugins/{{ vis['__plugin'] }}/controls.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/plugins/{{ vis['__plugin'] }}/controls.css">
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
+
+<script type="text/javascript">
+
+var visData = {{ vis_data | raw }};
+
+require(['{{ vis['svelte-editor'] }}', 'dw/chart/visualize/themes'], function(editor, themes) {
+
+    // initialize chart
+    dw.backend.__currentData = {{ chart.loadData | json | raw }};
+    // initialize current chart
+    var chart = window.chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON(false, mode) | raw }}"));
+
+    chart
+        .locale(dw.backend.currentChart.get('language') || '{{ chartLocale }}')
+        .metricPrefix({{ metricPrefix | json | raw }});
+
+    if (chart.get('lastEditStep') < {{ createstep }}) {
+        dw.backend.__firstTime = true;
+        chart.set('lastEditStep', {{ createstep }});
+        try { chart.save(); } catch (e) {}
+    }
+
+    chart.load(dw.backend.__currentData);
+
+    editor.globals.set({
+        dw_chart: chart,
+        language: '{{language}}',
+        theme: { colors: { palette: [] }, fake: true }
+    });
+
+    editor.globals.compute('visMeta', ['visMetas'], function(visMetas) {
+        var vis = window.chart.get('type');
+        return visMetas && vis ? visMetas[vis] || null : null;
+    });
+
+    var current = chart.get('metadata.visualize', {});
+
+    var app = new editor.App({
+        store: editor.globals,
+        target: document.querySelector('#{{vis['svelte-editor']}}')
+    });
+
+    console.log('looks');
+
+    window.dw.backend
+        .on('vis-metas', function(visMetas) {
+            app.store.set({
+                visMetas: visMetas,
+                theme: window.dw.theme(chart.get('theme'))
+            });
+        })
+        .on('dataset-loaded', function() {
+            app.store.set({dataset: chart.dataset()});
+        })
+        .on('theme-changed-and-loaded', function() {
+            console.log('theme loaded');
+            app.store.set({theme: window.dw.theme(chart.get('theme')) });
+        })
+        .on('backend-vis-loaded', function(vis) { app.store.set({vis: vis}); })
+        .on('axes-changed', function() {
+            setTimeout(function() {
+                app.store.set(app.store.get());
+            }, 1000);
+        });
+
+    themes.init(visData.themes);
+    const theme = window.dw.theme(chart.get('theme'));
+    console.log('theme');
+    app.store.set({theme: theme });
+
+    // extend data with default
+    app.set({ value: _.extend({}, app.get('default') || {}, current) });
+})
+</script>
+
+
+{% endblock %}

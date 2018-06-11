@@ -82,7 +82,11 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);
 
-        $app->render('chart/visualize.twig', $page);
+        if (!empty($vis['svelte-editor'])) {
+            $app->render('chart/svelte-editor.twig', $page);
+        } else {
+            $app->render('chart/visualize.twig', $page);
+        }
     });
 });
 
