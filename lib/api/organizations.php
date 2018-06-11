@@ -3,7 +3,7 @@
 /*
  * get list of all organizations
  */
-$app->get('/organizations', function() use ($app) {
+$app->get('/(organizations|teams)', function() use ($app) {
     disable_cache($app);
     if_is_admin(function() use ($app) {
         try {
@@ -22,7 +22,7 @@ $app->get('/organizations', function() use ($app) {
 /*
  * creates new organization
  */
-$app->post('/organizations', function() use ($app) {
+$app->post('/(organizations|teams)', function() use ($app) {
     disable_cache($app);
     // only admins can create orgs
     if_is_admin(function() use ($app) {
@@ -60,7 +60,7 @@ $app->post('/organizations', function() use ($app) {
 /*
  * change organization
  */
-$app->put('/organizations/:id', function($org_id) use ($app) {
+$app->put('/(organizations|teams)/:id', function($org_id) use ($app) {
     if_is_admin(function() use ($app, $org_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
@@ -84,7 +84,7 @@ $app->put('/organizations/:id', function($org_id) use ($app) {
 /*
  * delete organization
  */
-$app->delete('/organizations/:id', function($org_id) use ($app) {
+$app->delete('/(organizations|teams)/:id', function($org_id) use ($app) {
     if_is_admin(function() use ($app, $org_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
@@ -99,7 +99,7 @@ $app->delete('/organizations/:id', function($org_id) use ($app) {
 /*
  * add user to organization
  */
-$app->post('/organizations/:id/users', function($org_id) use ($app) {
+$app->post('/(organizations|teams)/:id/users', function($org_id) use ($app) {
     if_is_admin(function() use ($app, $org_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         if ($org) {
@@ -141,7 +141,7 @@ $app->post('/organizations/:id/users', function($org_id) use ($app) {
 /*
  * remove user from organization
  */
-$app->delete('/organizations/:id/users/:uid', function($org_id, $user_id) use ($app) {
+$app->delete('/(organizations|teams)/:id/users/:uid', function($org_id, $user_id) use ($app) {
     if_is_admin(function() use ($app, $org_id, $user_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         $user = UserQuery::create()->findPk($user_id);
@@ -161,7 +161,7 @@ $app->delete('/organizations/:id/users/:uid', function($org_id, $user_id) use ($
 /*
  * list all organizations in which the current user is a member
  */
-$app->get('/organizations/user', function() use ($app) {
+$app->get('/(organizations|teams)/user', function() use ($app) {
     $user = DatawrapperSession::getUser();
 
     if (!$user->isLoggedIn()) {
@@ -184,7 +184,7 @@ $app->get('/organizations/user', function() use ($app) {
 /*
  * toggle plugin permissions of organization
  */
-$app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $plugin_id) use ($app) {
+$app->put('/(organizations|teams)/:id/plugins/:op/:plugin_id', function($org_id, $op, $plugin_id) use ($app) {
     if_is_admin(function() use ($app, $org_id, $op, $plugin_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         $plugin = PluginQuery::create()->findPk($plugin_id);
@@ -231,7 +231,7 @@ $app->put('/organizations/:id/plugins/:op/:plugin_id', function($org_id, $op, $p
 /*
  * get charts of an organization
  */
-$app->get('/organizations/:id/charts', function($org_id) use ($app) {
+$app->get('/(organizations|teams)/:id/charts', function($org_id) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     $org = OrganizationQuery::create()->findPk($org_id);
