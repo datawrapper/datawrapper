@@ -90,6 +90,6 @@ $app->get('/(chart|map)/:id/:step', function ($id, $step) use ($app) {
         }
     });
 })->conditions([
-    'step' => '((?!(create|edit|publish|upload|describe|preview|data|data\.csv|_static)).)+'
+    'step' => '((?!(create|edit|publish|upload|describe|preview|data|data\.csv|_static|token)).)+'
 ]);
 
