@@ -61,6 +61,15 @@ class DatawrapperVisualization {
         if ($asset_callback) {
             $this->vis_asset_callbacks[$meta['id']] = $asset_callback;
         }
+        if (empty($meta['workflow'])) {
+            // default workflow for charts
+            $meta['workflow'] = [
+                ['id'=>'upload', 'title'=>__('Upload Data')],
+                ['id'=>'describe', 'title'=>__('Check & Describe')],
+                ['id'=>'visualize', 'title'=>__('Visualize')],
+                ['id'=>'publish', 'title'=>__('Publish & Embed')]
+            ];
+        }
     }
 
     public function _assets($vis_id, $chart) {
