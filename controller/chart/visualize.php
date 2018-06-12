@@ -3,10 +3,10 @@
 /*
  * VISUALIZE STEP
  */
-$app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
+$app->get('/(chart|map)/:id/:step', function ($id, $step) use ($app) {
     disable_cache($app);
 
-    check_chart_writable($id, function($user, $chart) use ($app) {
+    check_chart_writable($id, function($user, $chart) use ($app, $step) {
         $visData = "";
 
         $chart->refreshExternalData();
@@ -69,6 +69,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
+            'step' => $step,
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => $vis,
@@ -88,5 +89,7 @@ $app->get('/(chart|map)/:id/visualize', function ($id) use ($app) {
             $app->render('chart/visualize.twig', $page);
         }
     });
-});
+})->conditions([
+    'step' => '((?!(create|edit|publish|upload|describe|preview|data|data\.csv|_static)).)+'
+]);
 

@@ -5,7 +5,6 @@ function add_editor_nav(&$page, $step, $chart) {
     if ($chart) $type = $chart->getNamespace();
 
     $vis = DatawrapperVisualization::get($chart->getType());
-
     $steps = $vis['workflow'];
     foreach ($steps as $i => $st) {
         $steps[$i]['index'] = $i+1;

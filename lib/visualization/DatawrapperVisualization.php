@@ -57,10 +57,6 @@ class DatawrapperVisualization {
         } else {
             $meta['icon'] = '<img src="'. $icon . '.png" />';
         }
-        $this->visualizations[$meta['id']] = $meta;
-        if ($asset_callback) {
-            $this->vis_asset_callbacks[$meta['id']] = $asset_callback;
-        }
         if (empty($meta['workflow'])) {
             // default workflow for charts
             $meta['workflow'] = [
@@ -69,6 +65,10 @@ class DatawrapperVisualization {
                 ['id'=>'visualize', 'title'=>__('Visualize')],
                 ['id'=>'publish', 'title'=>__('Publish & Embed')]
             ];
+        }
+        $this->visualizations[$meta['id']] = $meta;
+        if ($asset_callback) {
+            $this->vis_asset_callbacks[$meta['id']] = $asset_callback;
         }
     }
 
