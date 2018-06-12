@@ -11,6 +11,7 @@
 			select(event, step) {
 				if (step.redirect) return;
 				event.preventDefault();
+				if (step.readonly) return;
 				this.fire('select', step);
 			}
 		},
@@ -20,6 +21,7 @@
 			},
 			class_ ({step, active, maxStep, passed}) {
 				const list = [];
+				if (step.readonly) list.push('readonly');
 				if (active == step.index) list.push('active');
 				if (step.index > maxStep) list.push('unseen');
 				if (passed) list.push('passed');
