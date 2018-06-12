@@ -221,7 +221,7 @@ class Chart extends BaseChart {
      * @param csvdata  raw csv data string
      */
     public function writeData($csvdata) {
-        return $this->writeAsset($this->getDataFilename(), $csvdata);        
+        return $this->writeAsset($this->getDataFilename(), $csvdata);
     }
 
     /**
@@ -659,10 +659,14 @@ class Chart extends BaseChart {
     }
 
     public function getNamespace() {
-        return (($this->getType() == "d3-maps-choropleth"
-          || $this->getType() == "d3-maps-symbols") &&
-          $this->getMetadata('visualize.map-type-set') != null) ?
-          "map" : "chart";
+        if (!DatawrapperVisualization::has($this->getType())) return 'chart';
+        $vis = DatawrapperVisualization::get($this->getType());
+        return $vis['namespace'] ?? 'chart';
+        // return (
+        //     ($this->getType() == "d3-maps-choropleth"
+        //     || $this->getType() == "d3-maps-symbols") &&
+        //     $this->getMetadata('visualize.map-type-set') != null) ?
+        //   "map" : "chart";
     }
 
     public function isFork() {
