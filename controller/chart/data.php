@@ -5,7 +5,7 @@
  *
  * @param chart_id chart id
  */
-$app->get('/chart/:id/data(\.csv)?', function($chart_id) use ($app) {
+$app->get('/(chart|map)/:id/data(\.csv)?', function($chart_id) use ($app) {
     disable_cache($app);
 
     $chart = ChartQuery::create()->findPK($chart_id);
