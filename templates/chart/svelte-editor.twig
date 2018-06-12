@@ -32,6 +32,7 @@ require(['{{ vis['svelte-editor'] }}', 'dw/chart/visualize/themes'], function(ed
 
     editor.globals.set({
         dw_chart: chart,
+        vis: visData.vis,
         language: '{{language}}',
         theme: { colors: { palette: [] }, fake: true }
     });
@@ -45,6 +46,13 @@ require(['{{ vis['svelte-editor'] }}', 'dw/chart/visualize/themes'], function(ed
 
     var app = new editor.App({
         store: editor.globals,
+        data: {
+            step: '{{step}}',
+            steps: visData.vis.workflow.map(function(s,i) {
+                s.index = i+1;
+                return s;
+            })
+        },
         target: document.querySelector('#{{vis['svelte-editor']}}')
     });
 
