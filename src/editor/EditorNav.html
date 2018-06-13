@@ -1,9 +1,14 @@
-<div class="row create-nav">
+<div class="create-nav">
     {#each steps as step}
-    <EditorNavStep on:select="select(step)" bind:active bind:step bind:maxStep />
+    <EditorNavStep on:select="select(step)" bind:steps bind:active bind:step bind:maxStep />
     {/each}
 </div>
-
+<style type="text/css">
+    .create-nav {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
 <script>
 
     import EditorNavStep from './EditorNavStep.html';

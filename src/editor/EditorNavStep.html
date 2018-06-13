@@ -1,4 +1,4 @@
-<a on:click="select(event, step)" href="{step.redirect?step.redirect:'#'+step.id}" class="span3 {class_}">
+<a style="width:{95/steps.length}%" on:click="select(event, step)" href="{step.redirect?step.redirect:'#'+step.id}" class="{class_}">
     <span class="step">{step.index}</span>
     <span class="title">{@html step.title}</span>
     {#if passed }<i class="fa fa-check"></i>{/if}
