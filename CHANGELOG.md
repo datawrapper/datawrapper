@@ -1,7 +1,12 @@
 CHANGELOG
 ---------
 
-### next version
+### 1.21.0
+* added ability for visualizations to modify the chart editor steps (= workflow)
+* also visualizations can now replace the core chart editor with a single-page svelte editor by setting the `svelte-editor` config.
+* added core component for the editor nav
+
+### 1.16.0
 * improved duplicate logic in mycharts chart modal: duplicated chart now opens in new tab and the old view refreshes in the old tab
 * improved query performance on mycharts page
 * added convenience method `User.getOrganizationIds()`
