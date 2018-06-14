@@ -945,13 +945,14 @@ dw.datasource = {};
 *     delimiter : ","
 */
 
+/* globals dw,$,_ */
 
 dw.datasource.delimited = function(opts) {
 
     function loadAndParseCsv() {
         if (opts.url) {
             return $.ajax({
-                url: opts.url,
+                url: opts.url + (opts.url.indexOf('?') > -1 ? '&' : '?') + 'v='+(new Date()).getTime(),
                 method: 'GET',
                 dataType: "text"
             }).then(function(raw) {
