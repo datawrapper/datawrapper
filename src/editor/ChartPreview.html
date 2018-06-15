@@ -1,6 +1,6 @@
 <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
     <div id="iframe-wrapper" style="width:500px;height:500px; overflow:visible;">
-        <iframe ref:iframe src="{url}" id="iframe-vis"
+        <iframe title="chart-preview" ref:iframe src="{url}" id="iframe-vis"
             allowfullscreen
             webkitallowfullscreen
             mozallowfullscreen
@@ -24,6 +24,8 @@
 
     /* globals _,$,dw */
 
+    let initializing = false;
+
     export default {
         computed: {
             url({chart}) {
@@ -35,7 +37,20 @@
                 const win = this.refs.iframe.contentWindow;
                 const doc = this.refs.iframe.contentDocument;
                 if (!win.__dw || !win.__dw.attributes) {
-                    init(win, doc);
+                    // wait for chart to be rendered
+                    initializing = true;
+                    window.addEventListener('message', (evt) => {
+                        // console.log(evt, evt.message);
+                        if (evt.data == 'datawrapper:vis:rendered') {
+                            console.log('chart is rendered');
+                            if (initializing) {
+                                init(win, doc);
+                                initializing = false;
+                                win.__dw.attributes(attrs);
+                            }
+                        }
+                    });
+                    return;
                 }
                 win.__dw.attributes(attrs);
             }
@@ -56,7 +71,7 @@
             attributes: function(attrs) {
                 var render = false,
                     requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'],
-                    options = dw.backend.currentVis.meta.options;
+                    options = visData.vis.options;
 
                 for (var name in options) {
                     var o = options[name];

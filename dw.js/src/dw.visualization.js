@@ -1,4 +1,4 @@
-
+/* globals dw,_,$ */
 
 dw.visualization = (function(){
 
