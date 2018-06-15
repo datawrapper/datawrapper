@@ -11,22 +11,20 @@
 
 var visData = {{ vis_data | raw }};
 
-require(['{{ vis['svelte-editor'] }}', 'dw/chart/visualize/themes'], function(editor, themes) {
+require([
+    '{{ vis['svelte-editor'] }}',
+    'dw/chart/visualize/themes',
+    'dw/chart/visualize/liveUpdate'], function(editor, themes, liveUpdate) {
 
     // initialize chart
     dw.backend.__currentData = {{ chart.loadData | json | raw }};
     // initialize current chart
     var chart = window.chart = dw.backend.currentChart = dw.chart(JSON.parse("{{ chart.toJSON(false, mode) | raw }}"));
 
+
     chart
         .locale(dw.backend.currentChart.get('language') || '{{ chartLocale }}')
         .metricPrefix({{ metricPrefix | json | raw }});
-
-    if (chart.get('lastEditStep') < {{ createstep }}) {
-        dw.backend.__firstTime = true;
-        chart.set('lastEditStep', {{ createstep }});
-        try { chart.save(); } catch (e) {}
-    }
 
     chart.load(dw.backend.__currentData);
 
@@ -56,7 +54,7 @@ require(['{{ vis['svelte-editor'] }}', 'dw/chart/visualize/themes'], function(ed
         target: document.querySelector('#{{vis['svelte-editor']}}')
     });
 
-    console.log('looks');
+    // liveUpdate.init($('#iframe-vis'));
 
     window.dw.backend
         .on('vis-metas', function(visMetas) {
