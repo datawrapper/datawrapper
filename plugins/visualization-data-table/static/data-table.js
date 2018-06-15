@@ -8,7 +8,7 @@
 
     var last_sort;
 
-    var FLAG_REG = /:([a-z]{2}(?:-[a-z]{2:3})?):/gi;
+    var FLAG_REG = /:([a-z]{2}(?:-[a-z]{2,3})?):/gi;
 
     dw.visualization.register('data-table', {
 
