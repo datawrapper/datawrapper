@@ -44,7 +44,7 @@ $app->get('/chart/:id/preview/', function ($id) use ($app) {
 });
 
 // static route to emulate published vis files
-$app->get('/chart/:id/_static/:file+', function($id, $parts) use ($app) {
+$app->get('/(chart|map)/:id/_static/:file+', function($id, $parts) use ($app) {
     check_chart_readable($id, function($user, $chart) use ($app, $parts) {
         $fn = implode('/', $parts);
         $vis = DatawrapperVisualization::get($chart->getType());
