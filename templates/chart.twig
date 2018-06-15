@@ -77,9 +77,11 @@
 
     <div class="dw-chart-body" id="chart"></div>
 
+    {% if not plain %}
     <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
         {{ notes | purify | raw }}
     </div>
+    {% endif %}
 
     {% if chartSource and theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
         {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
@@ -92,8 +94,8 @@
         {{ theme.getThemeData('template.afterChart') | raw }}
     {% endif %}
 
-    <div class="dw-chart-footer" id="footer">
-        {% if not plain %}
+    {% if not plain %}
+        <div class="dw-chart-footer" id="footer">
             <div class="footer-left">
                 {% if theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.position') == "left" %}
                     <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
@@ -170,8 +172,8 @@
                     <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
                 {% endif %}
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 
     {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
