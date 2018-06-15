@@ -67,6 +67,24 @@ class DatawrapperPlugin_VisualizationDataTable extends DatawrapperPlugin_Visuali
                 'label' => __('table / responsive'),
                 'default' => true,
                 'help' => __('table / responsive / help')
+            ],
+            "replace-flag-icons" => [
+                "type" => "checkbox",
+                "label" => __("display / replace-flags", 'visualization-table'),
+                "default" => false,
+                // "help" => __('table / flags / help', 'visualization-table')
+            ],
+            "flag-icon-type" => [
+                "type" => "radio",
+                "default" => "4x3",
+                "options" => [
+                    ["value" => "4x3", "label" => __("display / flag-aspect / 4x3", 'visualization-table')],
+                    ["value" => "1x1", "label" => __("display / flag-aspect / square", 'visualization-table')],
+                ],
+                "label" => __("display / flag-aspect", 'visualization-table'),
+                "depends-on" => [
+                    "replace-flag-icons" => true
+                ]
             ]
         );
         return $options;

@@ -1,3 +1,4 @@
+/* globals dw, $ */
 
 (function(){
 
@@ -6,6 +7,8 @@
     };
 
     var last_sort;
+
+    var FLAG_REG = /:([a-z]{2}(?:-[a-z]{2:3})?):/gi;
 
     dw.visualization.register('data-table', {
 
@@ -18,13 +21,31 @@
                 isHighlighted = function(series) {
                     return me.chart().hasHighlight() && me.chart().isHighlighted(series);
                 },
+                replaceFlagIcons = me.get('replace-flag-icons', false),
+                useSquareFlags = me.get('flag-icon-type') == '1x1',
                 dataset = me.dataset;
+
+            if (replaceFlagIcons) {
+                // load flag icon stylesheet
+                $('<link rel="stylesheet" type="text/css" href="//static.dwcdn.net/css/flag-icons/flag-icon.min.css">').appendTo(el);
+            }
+
+            function replace(s) {
+                if (!replaceFlagIcons) return s;
+                var m = s.match(FLAG_REG);
+                if (m) m.forEach(function(match) {
+                    var code = match.substr(1, match.length-2).toLowerCase();
+                    if (code == 'uk') code = 'gb';
+                    s = s.replace(match, '<span class="flag-icon '+(useSquareFlags ? 'flag-icon-squared' : '')+' flag-icon-'+code+'"></span>');
+                });
+                return !replaceFlagIcons ? s : s.replace();
+            }
 
             table = $('<table class="'+css_class+'" id="datatable"><thead /><tbody /></table>');
             tr = $('<tr />');
             var colType = [];
             dataset.eachColumn(function(column) {
-                th = $('<th>'+column.title()+'</th>');
+                th = $('<th>'+replace(column.title())+'</th>');
                 if (isHighlighted(column)) {
                     th.addClass('highlight');
                 }
@@ -68,7 +89,7 @@
                         if (_.isDate(column.val(r))) cell_content += column.val(r).getTime();
                         cell_content += '</span>';
                     }
-                    td = $('<td>'+cell_content+'</td>');
+                    td = $('<td>'+replace(cell_content)+'</td>');
                     if (isHighlighted(column)) {
                         td.addClass('highlight');
                     }
@@ -183,7 +204,7 @@
                     el.addClass('scrollable');
                 }
             }
-            
+
             el.append('<br style="clear:both"/>');
             me.renderingComplete();
         },
