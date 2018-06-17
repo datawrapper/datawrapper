@@ -30,6 +30,7 @@
 <script>
 
     import {__} from '../shared/l10n';
+    let preview;
 
     const syncFields = {
         title: 'title',
@@ -42,6 +43,12 @@
 
     export default {
         helpers: { __ },
+        methods: {
+            linkPreview(p) {
+                preview = p;
+                console.log('linked', preview);
+            }
+        },
         oncreate() {
             const {dw_chart} = this.store.get();
             const state = {};
@@ -54,7 +61,11 @@
             if (!previous) return;
             const {dw_chart} = this.store.get();
             for (let k in syncFields) {
-                if (changed[k]) dw_chart.set(syncFields[k], current[k]);
+                if (changed[k]) {
+                    console.log('changed', k);
+                    dw_chart.set(syncFields[k], current[k]);
+                    this.fire('update');
+                }
             }
         }
     }

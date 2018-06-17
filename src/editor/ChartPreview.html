@@ -25,12 +25,16 @@
     /* globals _,$,dw */
 
     let initializing = false;
+    let iframe;
 
     export default {
         computed: {
             url({chart}) {
                 return `/chart/${chart.get('id')}/preview`;
             }
+        },
+        oncreate() {
+            iframe = this.refs.iframe;
         },
         methods: {
             update(attrs) {
@@ -53,6 +57,12 @@
                     return;
                 }
                 win.__dw.attributes(attrs);
+            },
+            saved() {
+                const win = iframe.contentWindow;
+                if (win.__dw && win.__dw.saved) {
+                    win.__dw.saved();
+                }
             }
         }
     }
@@ -69,6 +79,7 @@
 
         _.extend(__dw, {
             attributes: function(attrs) {
+                // console.log('setting new attributes', visData);
                 var render = false,
                     requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'],
                     options = visData.vis.options;
@@ -111,6 +122,7 @@
                     render = true;
                 }
                 if (changed('title') || changed('metadata.describe.hide-title')) {
+                    console.log('title changed');
                     var $title = $$('.chart-title'),
                         $h1 = $title.parent();
                     if (attrs.title && !attrs.metadata.describe['hide-title']) {
@@ -125,6 +137,7 @@
                             render = true;
                         }
                     }
+                    console.log('neeed reload', needReload);
                     if (!needReload && heightChanged($$('.chart-title'), attrs.title)) render = true;
                 }
                 if (changed('metadata.describe.intro')) {
@@ -209,7 +222,7 @@
             },
             saved: function() {
                 if (needReload) {
-                    iframe.attr('src', iframe.attr('src').replace(/&random=\d+/, '&random='+_.random(100000)));
+                    iframe.setAttribute('src', iframe.getAttribute('src').replace(/&random=\d+/, '&random='+_.random(100000)));
                 }
             }
         });
