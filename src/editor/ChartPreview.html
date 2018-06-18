@@ -63,6 +63,18 @@
                 if (win.__dw && win.__dw.saved) {
                     win.__dw.saved();
                 }
+            },
+            getContext(callback) {
+                const win = this.refs.iframe.contentWindow;
+                const doc = this.refs.iframe.contentDocument;
+                if (!win.__dw || !win.__dw.vis) {
+                    return setTimeout(() => {
+                        this.getContext(callback);
+                    }, 200);
+                }
+                win.__dw.vis.rendered().done(() => {
+                    callback(win, doc);
+                });
             }
         }
     }
