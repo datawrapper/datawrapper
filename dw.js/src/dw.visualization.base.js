@@ -10,6 +10,7 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
+        this.__rendered = false;
         this.__colors = {};
         if (window.parent && window.parent.postMessage) {
             window.parent.postMessage('datawrapper:vis:init', '*');
@@ -265,6 +266,7 @@ _.extend(dw.visualization.base, {
             }, 200);
         }
         this.__renderedDfd.resolve();
+        this.__rendered = true;
     },
 
     rendered: function() {

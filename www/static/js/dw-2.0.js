@@ -2052,8 +2052,6 @@ dw.chart = function(attributes) {
     return chart;
 };
 
-
-
 dw.visualization = (function(){
 
     var __vis = {};
