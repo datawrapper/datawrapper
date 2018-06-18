@@ -13,8 +13,7 @@ var visData = {{ vis_data | raw }};
 
 require([
     '{{ vis['svelte-editor'] }}',
-    'dw/chart/visualize/themes',
-    'dw/chart/visualize/liveUpdate'], function(editor, themes, liveUpdate) {
+    'dw/chart/visualize/themes'], function(editor, themes) {
 
     // initialize chart
     dw.backend.__currentData = {{ chart.loadData | json | raw }};
