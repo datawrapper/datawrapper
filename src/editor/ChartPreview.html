@@ -67,13 +67,15 @@
             getContext(callback) {
                 const win = this.refs.iframe.contentWindow;
                 const doc = this.refs.iframe.contentDocument;
-                console.log('getContext', win.__dw, win.__dw ? win.__dw.vis : null);
-                if (!win.__dw || !win.__dw.vis|| !win.__dw.vis.__rendered) {
+                console.log('getContext', win.__dw && win.__dw.vis ? win.__dw.vis.__rendered : null);
+                if (!win.__dw || !win.__dw.vis) {
                     return setTimeout(() => {
                         this.getContext(callback);
                     }, 200);
                 }
-                callback(win, doc);
+                setTimeout(() => {
+                    callback(win, doc);
+                }, 1000);
             }
         }
     }

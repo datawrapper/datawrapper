@@ -80,9 +80,6 @@ require([
     const theme = window.dw.theme(chart.get('theme'));
     console.log('theme');
     app.store.set({theme: theme });
-
-    // extend data with default
-    app.set({ value: _.extend({}, app.get('default') || {}, current) });
 })
 </script>
 
