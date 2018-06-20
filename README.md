@@ -15,12 +15,3 @@ Datawrapper was created by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas
 * Blog: [blog.datawrapper.de](http://blog.datawrapper.de)
 * Support: [support@datawrapper.de](mailto:support@datawrapper.de)
 
-## Translators
-
-* French - [Anne-Lise Bouyer](https://crowdin.net/profile/annelise)
-* Spanish - [Miguel Paz](https://github.com/miguelpaz)
-* Italian - [Alessio Cimarelli](https://crowdin.net/profile/jenkin), [nelsonmau](https://crowdin.net/profile/nelsonmau)
-* Chinese - [CUI Anyong](https://github.com/xiaoyongzi)
-* Portuguese - [Rubens Fernando](https://crowdin.net/profile/rubensfernando)
-
-If you want to contribute translations, contact us via hello@datawrapper.de.
