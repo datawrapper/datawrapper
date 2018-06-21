@@ -48,7 +48,8 @@ require([
             steps: visData.vis.workflow.map(function(s,i) {
                 s.index = i+1;
                 return s;
-            })
+            }),
+            value: current
         },
         target: document.querySelector('#{{vis['svelte-editor']}}')
     });
