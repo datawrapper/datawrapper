@@ -583,7 +583,7 @@ dw.column.types.date = (function() {
         s0 = /[ \-\/\.]?/.source, // optional separator
         s1 = /[ \-\/\.]/.source, // mandatory separator
         s2 = /[ \-\/\.,]/.source, // mandatory separator
-        s3 = /[ \-\|]/.source, // mandatory separator
+        s3 = /[ \-\|T]/.source, // mandatory separator
         rx = {
             YY:    { parse: /['’‘]?(\d{2})/ },
             YYYY:  { test: /([12]\d{3})/, parse: /(\d{4})/ },
@@ -2091,6 +2091,7 @@ _.extend(dw.visualization.base, {
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
+        this.__rendered = false;
         this.__colors = {};
         if (window.parent && window.parent.postMessage) {
             window.parent.postMessage('datawrapper:vis:init', '*');
@@ -2346,6 +2347,7 @@ _.extend(dw.visualization.base, {
             }, 200);
         }
         this.__renderedDfd.resolve();
+        this.__rendered = true;
     },
 
     rendered: function() {

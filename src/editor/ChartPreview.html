@@ -73,14 +73,13 @@
             getContext(callback) {
                 const win = this.refs.iframe.contentWindow;
                 const doc = this.refs.iframe.contentDocument;
-                console.log('getContext', win.__dw, win.__dw ? win.__dw.vis : null);
+
                 if (!win.__dw || !win.__dw.vis) {
                     return setTimeout(() => {
                         this.getContext(callback);
                     }, 200);
                 }
                 setTimeout(() => {
-
                     callback(win, doc);
                 }, 1000);
             }
