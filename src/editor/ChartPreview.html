@@ -1,5 +1,5 @@
 <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
-    <div id="iframe-wrapper" style="width:500px;height:500px; overflow:visible;">
+    <div id="iframe-wrapper" style="width:{width}px;height:{height}px; overflow:visible;">
         <iframe title="chart-preview" ref:iframe src="{url}" id="iframe-vis"
             allowfullscreen
             webkitallowfullscreen
@@ -36,6 +36,12 @@
         oncreate() {
             iframe = this.refs.iframe;
         },
+        data() {
+            return {
+                width: 500,
+                height: 500
+            }
+        },
         methods: {
             update(attrs) {
                 const win = this.refs.iframe.contentWindow;
@@ -68,12 +74,15 @@
                 const win = this.refs.iframe.contentWindow;
                 const doc = this.refs.iframe.contentDocument;
                 console.log('getContext', win.__dw, win.__dw ? win.__dw.vis : null);
-                if (!win.__dw || !win.__dw.vis|| !win.__dw.vis.__rendered) {
+                if (!win.__dw || !win.__dw.vis) {
                     return setTimeout(() => {
                         this.getContext(callback);
                     }, 200);
                 }
-                callback(win, doc);
+                setTimeout(() => {
+
+                    callback(win, doc);
+                }, 1000);
             }
         }
     }
