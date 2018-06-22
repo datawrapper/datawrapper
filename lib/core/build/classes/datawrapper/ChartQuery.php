@@ -115,6 +115,8 @@ class ChartQuery extends BaseChartQuery {
         // we need to copy the data, too
         $chart->writeData($src->loadData());
 
+        Hooks::execute(Hooks::CHART_COPY, $src, $chart);
+
         $chart->save();
 
         return $chart;
