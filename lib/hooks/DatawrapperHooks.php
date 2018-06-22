@@ -117,6 +117,9 @@ class DatawrapperHooks {
     // returns a list of actions to be displayed in publish step
     const GET_CHART_ACTIONS = 'get_chart_actions';
 
+    // whenever a chart gets duplicated or forked
+    const CHART_COPY = 'chart_copy';
+
     // render something beneath the chart actions
     const PUBLISH_AFTER_CHART_ACTIONS = 'publish_after_chart_actions';
 
