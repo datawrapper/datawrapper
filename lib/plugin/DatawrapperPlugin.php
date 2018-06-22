@@ -295,6 +295,12 @@ class DatawrapperPlugin {
     public function injectInitFunction($func) {
         $this->__initFunc = $func;
     }
+
+    public function provideApi($obj, $func=null) {
+        Hooks::register(Hooks::PROVIDE_API,
+            is_callable($obj) ? $obj : array($obj, $func)
+        );
+    }
 }
 
 
