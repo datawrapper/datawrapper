@@ -2214,6 +2214,7 @@ _.extend(dw.visualization.base, {
             }
         });
 
+        var checked = [];
         // auto-populate remaining axes
         _.each(me.meta.axes, function(axisDef, key) {
             function checkColumn(col) {
@@ -2226,6 +2227,44 @@ _.extend(dw.visualization.base, {
                         'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
+            function remainingRequiredColumns(accepts) {
+                // returns how many required columns there are for the remaining axes
+                // either an integer or "multiple" if there's another multi-column axis coming up
+                function equalAccepts(a1, a2) {
+                    if (typeof a1 == "undefined" && typeof a2 != "undefined") return false;
+                    if (typeof a2 == "undefined" && typeof a1 != "undefined") return false;
+                    if (a1.length != a2.length) return false;
+
+                    for (var i=0; i<a1.length; i++) {
+                        if (a2.indexOf(a1[i]) == -1) return false;
+                    }
+                    return true;
+                }
+
+                var res = 0;
+                _.each(me.meta.axes, function(axisDef, key) {
+                    if (checked.indexOf(key) > -1) return;
+                    if (!equalAccepts(axisDef.accepts, accepts)) return;
+                    if (typeof res == "string") return;
+                    if (axisDef.optional) return;
+                    if (axisDef.multiple) {
+                        res = "multiple";
+                        return;
+                    }
+                    res += 1;
+                });
+                return res;
+            }
+            function remainingAvailableColumns(dataset, i) {
+                var count = 0;
+                dataset.eachColumn(function(c, index) {
+                    if (checkColumn(c)) {
+                        count++;
+                    }
+                });
+                return count;
+            }
+            checked.push(key);
             if (axes[key]) return;  // user has defined this axis already
             if (!axisDef.optional) { // we only populate mandatory axes
                 if (!axisDef.multiple) {
@@ -2258,14 +2297,22 @@ _.extend(dw.visualization.base, {
                         }
                     }
                 } else {
+                    var required = remainingRequiredColumns(axisDef.accepts),
+                        available = remainingAvailableColumns(dataset);
+
                     // fill axis with all accepted columns
                     axes[key] = [];
                     dataset.eachColumn(function(c) {
+                        if (required === "multiple" && axes[key].length) return;
+                        else if (available <= required) return;
+
                         if (checkColumn(c)) {
                             usedColumns[c.name()] = true;
                             axes[key].push(c.name());
+                            available--;
                         }
                     });
+
                     if (!axes[key].length) {
                         errMissingColumn();
                     }
