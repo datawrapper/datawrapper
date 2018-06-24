@@ -58,7 +58,9 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/cryptojs/hmac-sha256.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/globalize.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
+
     {# javascript core 2.0 #}
+    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/misc/polyfills.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-2.0.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-backend.js"></script>
 
