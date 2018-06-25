@@ -1,10 +1,44 @@
-<div class="vis-option-type-group group-open">
-    <label class="group-title">
+<div class="vis-option-type-group {open?'group-open':''}">
+    <label class="group-title" on:click="toggle()">
         <i class="fa fa-chevron-up expand-group pull-right"></i>
         <i class="fa fa-chevron-down collapse-group pull-right"></i>
         {@html label }</label>
 
+    {#if open}
     <div class="option-group-content vis-option-type-chart-description">
         <slot></slot>
     </div>
+    {/if}
 </div>
+
+<script>
+    export default {
+        methods: {
+            toggle() {
+                const {open, id} = this.get();
+                if (id) {
+                    const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
+                    if (!visGroups['locator-map']) visGroups['locator-map'] = {};
+                    visGroups['locator-map'][id] = visGroups['locator-map'][id] == 'open' ? 'closed' : 'open';
+                    window.localStorage.setItem('dw-vis-groups', JSON.stringify(visGroups));
+                }
+                this.set({open:!open});
+            }
+        },
+        oncreate() {
+            const {id} = this.get();
+            if (id) {
+                const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
+                if (visGroups['locator-map'] && visGroups['locator-map'][id]) {
+                    this.set({open: visGroups['locator-map'][id] != 'closed'});
+                }
+            }
+        },
+        data() {
+            return {
+                id: false,
+                open: true
+            };
+        }
+    }
+</script>
