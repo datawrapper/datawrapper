@@ -33,14 +33,29 @@
                 return `/chart/${chart.get('id')}/preview`;
             }
         },
-        oncreate() {
-            iframe = this.refs.iframe;
-        },
         data() {
             return {
                 width: 500,
                 height: 500
             }
+        },
+        oncreate() {
+            iframe = this.refs.iframe;
+
+            // 5. Resize when chart wants to resize itself
+            window.addEventListener('message', (e) => {
+                var message = e.data;
+
+                if (typeof message['datawrapper-height'] != "undefined") {
+                    var h;
+
+                    for (var chartId in message['datawrapper-height']) {
+                        h = message['datawrapper-height'][chartId];
+                    }
+
+                    this.set({height: h});
+                }
+            });
         },
         methods: {
             update(attrs) {
