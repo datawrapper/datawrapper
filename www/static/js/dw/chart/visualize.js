@@ -51,6 +51,11 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         chart.load(dw.backend.__currentData).done(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
+        if (iframe[0].contentDocument.readyState == "complete") {
+            iframeLoaded();
+        }
+
+
         // initialize some UI actions
         if (!visMetas[chart.get('type')]['svelte-sidebar']) {
             initTabNav(visMetas[chart.get('type')].namespace);
