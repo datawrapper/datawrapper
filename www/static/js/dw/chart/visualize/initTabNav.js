@@ -6,10 +6,10 @@ define(function() {
         $('.nav-tabs').each(function(i, el) {
             var navTabs = $(el);
             $('li a', navTabs).each(function(i, el) {
-                $('.'+$(el).data('target')).css({ position: 'absolute', left: -10000 }); // hide
+                $('.'+$(el).data('target')).css({ position: 'absolute', left: -100000 }); // hide
                 $(el).click(function(e) {
                     e.preventDefault();
-                    $('.' + navTabs.data('target')+' > div').css({ position: 'absolute', left: -10000 }); // hide
+                    $('.' + navTabs.data('target')+' > div').css({ position: 'absolute', left: -100000 }); // hide
                     $('.' + $(e.target).data('target')).css({ position: 'static' });  // show
                     $('li', navTabs).removeClass('active');
                     $(e.target).parents('li').addClass('active');
@@ -22,7 +22,7 @@ define(function() {
 
         function show(a) {
             a.tab('show');
-            $('.tab-container > *').css({ position: 'absolute', left: -10000 });
+            $('.tab-container > *').css({ position: 'absolute', left: -100000 });
             $('.tab-container .'+a.data('target')).css({ position: 'static' });
             if (a.attr('href') == '#design') {
                 $('.proceed-btn').hide();
