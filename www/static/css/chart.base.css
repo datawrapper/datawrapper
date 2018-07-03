@@ -4,6 +4,7 @@
 .chart #header {
   min-height: 1px;
   position: relative;
+  overflow: auto;
 }
 .chart #header .header-right {
   position: absolute;

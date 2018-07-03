@@ -108,37 +108,41 @@ dw.utils = {
             if ($(el).css('margin-' + type) == 'auto') return 0;
             return +$(el).css('margin-' + type).replace('px', '');
         }
-        var ch = 0, bottom = 0; // summed height of children, 10px for top & bottom margin
+
+        var ch = 0;
+
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase(),
                 cls = $(el).attr('class') || "";
 
-            if (
-                t != 'script' &&
+            if (t != 'script' &&
                 t != 'style' &&
                 el.id != 'chart' &&
                 !$(el).hasClass('tooltip') &&
+                !$(el).hasClass('vg-tooltip') &&
+                !$(el).hasClass('hidden') &&
                 !$(el).hasClass('qtip') &&
                 !$(el).hasClass('container') &&
                 !$(el).hasClass('noscript') &&
                 !$(el).attr('aria-hidden') &&
                 cls.indexOf("overlay") == -1) {
 
-                ch += $(el).outerHeight(false); // element height
+                var height = $(el).outerHeight(false) + margin(el, 'top') + margin(el, 'bottom');
+
+                ch += height;
             }
-            ch += margin(el, 'top');
-            ch += margin(el, 'bottom');
         });
 
-        var mt = $('#chart').css('margin-top').replace('px', ''),
-            mb = $('#chart').css('margin-bottom').replace('px', ''),
-            // FIXME: -8 instead of -2 because when `introduction` is filled, a scrollbar appears.
-            // Should be dynamic.
-            maxH = $(window).height() - ch - 8;
+        maxH = $(window).height() - ch - 8;
+
         // IE Fix
-        if (!$.support.leadingWhitespace) maxH -= 15;
+        if (!$.support.leadingWhitespace) {
+            maxH -= 15;
+        }
+
         maxH -= $('body').css('padding-top').replace('px', '');
         maxH -= $('body').css('padding-bottom').replace('px', '');
+
         return maxH;
     },
 
