@@ -1600,14 +1600,15 @@ body.cms-mode .footer {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg {
   width: 30px;
   height: 40px;
-  margin-left: 27px;
+  margin-left: 25px;
   margin-top: 10px;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg circle,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg ellipse,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg polyline {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg polyline,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg polygon {
   fill: #1d81a2;
 }
 @media (max-width: 1199px) {
