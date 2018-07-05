@@ -51,7 +51,7 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         chart.load(dw.backend.__currentData).done(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
-        if (iframe[0].contentDocument.readyState == "complete") {
+        if (iframe[0].contentDocument.readyState == "complete") {            
             iframeLoaded();
         }
 
