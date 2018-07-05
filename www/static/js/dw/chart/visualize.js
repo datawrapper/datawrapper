@@ -187,6 +187,8 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         dw.backend.fire('vis-ready');
         var win = iframe.get(0).contentWindow;
 
+        if (!dw.backend.currentVis) loadVis();
+
         liveUpdate.init(iframe);
 
         dw.backend.on('vis-rendered', visualizationRendered);
