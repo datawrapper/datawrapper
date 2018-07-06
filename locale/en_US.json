@@ -389,5 +389,6 @@
   "colorblind / caption": "Colorblind check",
   "colorblind / info / deut": "<b>Deuteranopia</b> is a form of red-green blindness (1% of males).",
   "colorblind / info / prot": "<b>Protanopia</b> is a form of red-green blindness (1% of males).",
-  "colorblind / info / trit": "<b>Tritanopia</b> is a form of blue-yellow blindness (less than 1% affected)."
+  "colorblind / info / trit": "<b>Tritanopia</b> is a form of blue-yellow blindness (less than 1% affected).",
+  "Insert title here": "Insert title here"
 }
