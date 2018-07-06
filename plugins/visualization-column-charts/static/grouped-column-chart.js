@@ -114,7 +114,7 @@
                         color: me.colorMap()(me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) }))
                     });
                 });
-                if (!label_direct) me.addLegend(items, $('#header'));
+                if (!label_direct) me.addLegend(items, $('#chart'));
             }
 
             me.initDimensions();
