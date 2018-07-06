@@ -624,6 +624,7 @@
 
                 if (item.key) {
                     div.attr('data-key', item.key);
+                    div.addClass('dw-rect');
                     lbl.el.attr('data-key', item.key);
                 }
 
