@@ -392,5 +392,15 @@
   "colorblind / info / trit": "<b>Tritanopia</b> is a form of blue-yellow blindness (less than 1% affected).",
   "Insert title here": "Insert title here",
   "Created with": "Created with",
-  "customize colors...": "customize colors..."
+  "customize colors...": "customize colors...",
+  "Customize colors...": "Customize colors...",
+  "Please select an element on the left to change colors for individual elements...": "Please select an element on the left to change colors for individual elements...",
+  "Reset all colors": "Reset all colors",
+  "Reset": "Reset",
+  "Select element(s):": "Select element(s):",
+  "Select": "Select",
+  "all": "all",
+  "none": "none",
+  "invert": "invert",
+  "Choose a color:": "Choose a color:"
 }
