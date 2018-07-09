@@ -1290,45 +1290,52 @@ dw.utils = {
         return _.isFunction(obj.name) ? obj.name() : _.isString(obj.name) ? obj.name : obj;
     },
 
-    getMaxChartHeight: function(el) {
-        function margin(el, type) {
-            if ($(el).css('margin-' + type) == 'auto') return 0;
-            return +$(el).css('margin-' + type).replace('px', '');
-        }
-
-        var ch = 0;
-
-        $('body > *').each(function(i, el) {
-            var t = el.tagName.toLowerCase(),
-                cls = $(el).attr('class') || "";
-
-            if (t != 'script' &&
-                t != 'style' &&
-                el.id != 'chart' &&
-                !$(el).hasClass('tooltip') &&
-                !$(el).hasClass('vg-tooltip') &&
-                !$(el).hasClass('hidden') &&
-                !$(el).hasClass('qtip') &&
-                !$(el).hasClass('container') &&
-                !$(el).hasClass('noscript') &&
-                !$(el).attr('aria-hidden') &&
-                cls.indexOf("overlay") == -1) {
-
-                var height = $(el).outerHeight(false) + margin(el, 'top') + margin(el, 'bottom');
-
-                ch += height;
-            }
-        });
-
-        maxH = $(window).height() - ch - 8;
+    getMaxChartHeight: function(el) {        
+        var maxH = $(window).height() - 8;    
 
         // IE Fix
         if (!$.support.leadingWhitespace) {
             maxH -= 15;
+        }    
+
+        $('body > *').each(function(i, el) {                 
+            var t = el.tagName.toLowerCase(),
+                cls = $(el).attr('class') || "";
+
+            function hasClass(className) {
+                return cls.split(" ").indexOf(className) > -1;
+            }
+
+            if (t != 'script' && t != 'style' && el.id != 'chart' &&! $(el).attr('aria-hidden') &&
+                !hasClass('tooltip') &&
+                !hasClass('vg-tooltip') &&
+                !hasClass('hidden') &&
+                !hasClass('qtip') &&
+                !hasClass('container') &&
+                !hasClass('noscript') &&
+                !hasClass('hidden') &&
+                !hasClass("filter-ui")) {
+
+                maxH -= $(el).outerHeight(true);
+
+                console.log("height for element");
+                console.log(el);
+                console.log($(el).outerHeight(true));
+            }
+        });
+
+        function getProp(selector, property) {
+            return getComputedStyle($(selector).get(0))[property].replace('px', '')
         }
 
-        maxH -= $('body').css('padding-top').replace('px', '');
-        maxH -= $('body').css('padding-bottom').replace('px', '');
+        var selectors = ["body", "body #chart"],
+            properties = ["padding-top", "padding-bottom", "margin-top", "margin-bottom", "border-top-width", "border-bottom-width"];
+
+        selectors.forEach(function(sel) {
+            properties.forEach(function(prop) {
+                maxH -= getProp(sel, prop);
+            });
+        });
 
         return maxH;
     },
