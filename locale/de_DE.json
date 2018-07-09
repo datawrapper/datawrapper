@@ -389,5 +389,18 @@
   "colorblind / caption": "Farbblind-test",
   "colorblind / info / deut": "<b>Deuteranopie</b> oder <i>Grünblindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft etwa 1% von Männern)",
   "colorblind / info / prot": "<b>Protanopie</b> oder <i>Rotblindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft etwa 1% von Männern)",
-  "colorblind / info / trit": "<b>Tritanopie</b> oder <i>Blaublindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft weniger als 1%)"
+  "colorblind / info / trit": "<b>Tritanopie</b> oder <i>Blaublindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft weniger als 1%)",
+  "Insert title here": "Hier Titel einfügen",
+  "Created with": "Erstellt mit",
+  "customize colors...": "Farben verändern",
+  "Customize colors...": "Farben verändern",
+  "Please select an element on the left to change colors for individual elements...": "Wähle links ein Element aus, um dessen Farbe zu verändern.",
+  "Reset all colors": "Alle zurücksetzen",
+  "Reset": "Zurücksetzen",
+  "Select element(s):": "Element(e) auswählen",
+  "Select:": "Auswählen:",
+  "all": "alle",
+  "none": "keine",
+  "invert": "umkehren",
+  "Choose a color:": "Wähle eine Farbe aus"
 }
