@@ -130,10 +130,6 @@ dw.utils = {
                 !hasClass("filter-ui")) {
 
                 maxH -= $(el).outerHeight(true);
-
-                console.log("height for element");
-                console.log(el);
-                console.log($(el).outerHeight(true));
             }
         });
 
