@@ -179,6 +179,9 @@
             if (d.bw < 20) {
                 lblcl.push('smaller');
             }
+            if (d.bw < 30 || me.get('rotate-labels')) {
+                lblcl.push('rotate90');
+            }
             // add column label
             if (!/^X\.\d+$/.test(barv.name)) {
                 me.registerLabel(me.label(spos.left, spos.top, d.bw < 10 && s % 2 === 1 ? '' : barv.name, {
@@ -375,7 +378,6 @@
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
                 formatter = me.chart().columnFormatter(me.getBarColumn());
 
-
             if (type == "value") {
                 lbl_w = me.labelWidth(formatter(val, true), 'value outline hover');
                 return { left: d.x + d.width * 0.5, top: val_y, width: lbl_w };
@@ -383,7 +385,6 @@
                 lbl_w = c.w / (me.getBarValues().length+2);
 
                 if (d.bw < 30 || me.get('rotate-labels')) {
-                    //lblcl.push('rotate90');
                     lbl_y -= 10;  // move towards zero axis
                     lbl_w = 100;
                     if (d.bw >= 30) {
