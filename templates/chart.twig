@@ -129,14 +129,14 @@
                         {{ hook('chart_footer_after_source', chart) }}
 
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
-                            <span class="footer-block">
+                            <span class="footer-block chart-action-data">
                             {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
                                 <a href="data">{% trans getTheDataCaption %}</a>
                             </span>
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.embed.enabled") %}
-                            <a href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a>
+                            <a class="chart-action-embed" href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a>
 
                             <div class="embed-code hide">
                                 <div class="close">×</div>
@@ -150,7 +150,7 @@
                         {% endif %}
 
                         {% if theme.getThemeData("options.footer.staticImage.enabled") %}
-                            <a target="_blank" href="//img.datawrapper.de/{{ chart.id }}/full.png">
+                            <a class="chart-action-image" target="_blank" href="//img.datawrapper.de/{{ chart.id }}/full.png">
                                 {{ theme.getThemeData("options.footer.staticImage.caption") }}
                             </a>
                         {% endif %}
