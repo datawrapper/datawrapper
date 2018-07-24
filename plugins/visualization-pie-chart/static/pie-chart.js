@@ -223,7 +223,7 @@
             }
 
             me._footNotes.html(footnotes.map(function(o) {
-                return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
+                return '<span><span class="dw-circle">'+o.label +'</span><span class="name">'+o.name+'</span></span>';
             }).join(''));
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),

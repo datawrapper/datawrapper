@@ -28,18 +28,24 @@ div.label.series.outside span b {
     background: white;
     border-radius: 50%;
 }
-.pie-foot-notes span {
+
+.pie-foot-notes > span {
 	margin-left: 10px;
 }
-.pie-foot-notes span:first-child {
-	margin-left: 0px;
+.pie-foot-notes > span:first-child {
+	margin-left: 0;
 }
-.pie-foot-notes b {
+.pie-foot-notes .dw-circle {
 	display: inline-block;
  	width: 16px;
     height: 16px;
     line-height: 16px;
-    margin-right: 3px;
     background: #eee;
     border-radius: 50%;
+    position: relative;
+    z-index: -1;
+    font-weight: 700;
+}
+.pie-foot-notes .name {
+    padding-left: 3px;
 }
