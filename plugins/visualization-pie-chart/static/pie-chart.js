@@ -224,7 +224,7 @@
 
             me._footNotes.html(footnotes.map(function(o) {
                 return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
-            }).join(' '));
+            }).join(''));
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
