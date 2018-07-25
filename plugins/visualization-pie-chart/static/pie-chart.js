@@ -248,7 +248,8 @@
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
 
-                    var lbl = me.registerLabel(me.label(0, 0, '<span class="label-inner' + (o.name != o.label ? ' dw-circle' : '') + '">'+o.label+'</span>'+value, {
+                    var labelHtml = '<span class="' + (o.name != o.label ? ' dw-circle' : '') + '"><b class="label-inner">'+o.label+'</b></span><span class="label-inner">'+value+'</span>';
+                    var lbl = me.registerLabel(me.label(0, 0, labelHtml, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 
