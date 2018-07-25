@@ -247,9 +247,8 @@
                     var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
-                    if (o.name != o.label) lblcl += ' dw-circle';
 
-                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.label+'</b>'+value, {
+                    var lbl = me.registerLabel(me.label(0, 0, '<span class="label-inner' + (o.name != o.label ? ' dw-circle' : '') + '">'+o.label+'</span>'+value, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 

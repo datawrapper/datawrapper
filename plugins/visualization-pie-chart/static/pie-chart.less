@@ -1,26 +1,16 @@
-
-
-div.label.series span b {
+div.label.series span .label-inner {
     display: block;
 }
-
-div.label.series.outside span b {
+div.label.series.outside span .label-inner {
     display: none;
 }
-
 .label.series.out {
-    font-weight: bold;
+    font-weight: 700;
 }
-
-.pie-foot-notes {
-	position: absolute;
-    left: 10px;
-    font-size: 11px;
-    right: 10px;
-	text-align: center;
+.label.series .label-inner {
+    font-weight: 700;
 }
-
-.label.series.dw-circle b {
+.label.series .label-inner.dw-circle {
     width: 18px;
     height: 18px;
     line-height: 18px;
@@ -29,6 +19,13 @@ div.label.series.outside span b {
     border-radius: 50%;
 }
 
+.pie-foot-notes {
+    position: absolute;
+    left: 10px;
+    font-size: 11px;
+    right: 10px;
+    text-align: center;
+}
 .pie-foot-notes > span {
 	margin-left: 10px;
 }
