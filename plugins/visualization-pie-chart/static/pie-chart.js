@@ -245,6 +245,7 @@
                 if (!me.__slices[o.name]) {
                     // create new label
                     var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
+                    lblcl += ' label-group';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
 
