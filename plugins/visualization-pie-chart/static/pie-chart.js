@@ -223,7 +223,7 @@
             }
 
             me._footNotes.html(footnotes.map(function(o) {
-                return '<span><span class="dw-circle">'+o.label +'</span><span class="name">'+o.name+'</span></span>';
+                return '<span><span class="num">'+o.label +'</span><span class="name">'+o.name+'</span></span>';
             }).join(''));
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
@@ -249,7 +249,7 @@
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
 
-                    var labelHtml = '<span class="' + (o.name != o.label ? ' dw-circle' : '') + '"><b class="label-inner">'+o.label+'</b></span><span class="label-inner">'+value+'</span>';
+                    var labelHtml = '<span class="' + (o.name != o.label ? 'dw-circle' : '') + '"><b class="label-inner">'+o.label+'</b></span><span class="label-inner">'+value+'</span>';
                     var lbl = me.registerLabel(me.label(0, 0, labelHtml, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
