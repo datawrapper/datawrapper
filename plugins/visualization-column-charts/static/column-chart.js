@@ -265,7 +265,7 @@
                     var dim = me.barDimensions(bar, s, 0);
                     rect.animate(dim, theme.duration, theme.easing);
 
-                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;                                        
+                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;
                     if (rect.attrs.fill != fill) rect.attr({ fill: cm(fill) });
                 });
 
@@ -284,7 +284,7 @@
                             x: lpos.left,
                             y: lpos.top,
                             align: lpos.halign,
-                            valign: lpos.valign 
+                            valign: lpos.valign
                         }, theme.duration, theme.easing);
 
                         if (!lbl.hasClass('value')) {
