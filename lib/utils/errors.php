@@ -3,7 +3,7 @@
 /**
  *
  */
-function error_page($step, $title, $message, $options = false, $status = 500) {
+function error_page($step, $title, $message, $options = false, $status = 200) {
     global $app;
     $tmpl = array(
         'title' => $title,
