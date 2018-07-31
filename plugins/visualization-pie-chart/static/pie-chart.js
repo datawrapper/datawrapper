@@ -223,8 +223,8 @@
             }
 
             me._footNotes.html(footnotes.map(function(o) {
-                return '<span><b>'+o.label +'</b>&nbsp;'+o.name+'</span>';
-            }).join(' '));
+                return '<span><span class="num">'+o.label +'</span><span class="name">'+o.name+'</span></span>';
+            }).join(''));
 
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
@@ -245,11 +245,12 @@
                 if (!me.__slices[o.name]) {
                     // create new label
                     var lblcl = me.chart().hasHighlight() && me.chart().isHighlighted(o.name) ? 'series highlighted' : 'series';
+                    lblcl += ' label-group';
                     if (me.invertLabel(fill)) lblcl += ' inverted';
                     if (lblOutside(o) && c.outside_labels) lblcl += ' outside';
-                    if (o.name != o.label) lblcl += ' dw-circle';
 
-                    var lbl = me.registerLabel(me.label(0, 0, '<b>'+o.label+'</b>'+value, {
+                    var labelHtml = '<span class="' + (o.name != o.label ? 'dw-circle' : '') + '"><b class="label-inner">'+o.label+'</b></span><span class="label-inner">'+value+'</span>';
+                    var lbl = me.registerLabel(me.label(0, 0, labelHtml, {
                         w: 80, cl: lblcl, align: 'center', valign: 'middle'
                     }), o.name);
 

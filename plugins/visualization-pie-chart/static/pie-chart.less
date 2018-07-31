@@ -1,45 +1,50 @@
-
-
-div.label.series span b {
+div.label.series span .label-inner {
     display: block;
 }
-
-div.label.series.outside span b {
-    display: none;
+div.label.series.outside {
+    display: none !important;
 }
-
 .label.series.out {
-    font-weight: bold;
+    font-weight: 700;
 }
-
-.pie-foot-notes {
-	position: absolute;
-    left: 10px;
-    font-size: 11px;
-    right: 10px;
-	text-align: center;
-}
-
-.label.series.dw-circle b {
+.label.series .dw-circle {
+    display: block;
     width: 18px;
     height: 18px;
     line-height: 18px;
     margin: 0 auto 3px;
-    background: white;
+    background: rgba(255,255,255,0.9);
     border-radius: 50%;
 }
-.pie-foot-notes span {
+.label.series .dw-circle .label-inner {
+    color: #333;
+    text-shadow: none;
+}
+
+.pie-foot-notes {
+    position: absolute;
+    left: 10px;
+    font-size: 11px;
+    right: 10px;
+    text-align: center;
+}
+.pie-foot-notes > span {
 	margin-left: 10px;
 }
-.pie-foot-notes span:first-child {
-	margin-left: 0px;
+.pie-foot-notes > span:first-child {
+	margin-left: 0;
 }
-.pie-foot-notes b {
+.pie-foot-notes .num {
 	display: inline-block;
  	width: 16px;
     height: 16px;
     line-height: 16px;
-    margin-right: 3px;
     background: #eee;
     border-radius: 50%;
+    position: relative;
+    z-index: -1;
+    font-weight: 700;
+}
+.pie-foot-notes .name {
+    padding-left: 5px;
 }
