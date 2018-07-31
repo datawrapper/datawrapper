@@ -253,7 +253,8 @@
             me.horzGrid();
 
             var n = me.__n = me.getBarValues().length,
-                updated_bars = {};
+                updated_bars = {},
+                cm = this.colorMap();
 
             // update bar heights and labels
             _.each(me.getBarValues(me.get('sort-values'), me.get('reverse-order')), function(bar, s) {
@@ -263,6 +264,9 @@
                 _.each(me.__elements[bar.name], function(rect) {
                     var dim = me.barDimensions(bar, s, 0);
                     rect.animate(dim, theme.duration, theme.easing);
+
+                    var fill = me.getKeyColor(bar.name, bar.value, me.get('negative-color', false)), stroke;                                        
+                    if (rect.attrs.fill != fill) rect.attr({ fill: cm(fill) });
                 });
 
                 _.each(me.__labels[bar.name], function(lbl) {
@@ -278,10 +282,15 @@
                     if (lpos) {
                         lbl.animate({
                             x: lpos.left,
-                            y: lpos.top,
-                            align: lpos.halign,
-                            valign: lpos.valign
+                            y: lpos.top                            
                         }, theme.duration, theme.easing);
+
+                        setTimeout(function() {
+                            lbl.attr({
+                                align: lpos.halign,
+                                valign: lpos.valign
+                            });
+                        }, theme.duration);
 
                         if (!lbl.hasClass('value')) {
                             if (lpos.valign == "bottom") {
