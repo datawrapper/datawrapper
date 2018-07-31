@@ -282,15 +282,10 @@
                     if (lpos) {
                         lbl.animate({
                             x: lpos.left,
-                            y: lpos.top                            
+                            y: lpos.top,
+                            align: lpos.halign,
+                            valign: lpos.valign 
                         }, theme.duration, theme.easing);
-
-                        setTimeout(function() {
-                            lbl.attr({
-                                align: lpos.halign,
-                                valign: lpos.valign
-                            });
-                        }, theme.duration);
 
                         if (!lbl.hasClass('value')) {
                             if (lpos.valign == "bottom") {
