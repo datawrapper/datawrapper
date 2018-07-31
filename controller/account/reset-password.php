@@ -34,9 +34,7 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
 $app->get('/account/profile', function() use ($app) {
     disable_cache($app);
 
-    $user = DatawrapperSession::getUser();
-
-    if ($user->getRole() == 'guest') {
+    if (!Session::getUser()->isLoggedIn()) {
         error_settings_need_login();
         return;
     }
