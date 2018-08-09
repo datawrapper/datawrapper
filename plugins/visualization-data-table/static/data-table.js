@@ -45,7 +45,7 @@
             tr = $('<tr />');
             var colType = [];
             dataset.eachColumn(function(column) {
-                th = $('<th>'+replace(column.title())+'</th>');
+                th = $('<th class="'+column.type()+'"">'+replace(column.title())+'</th>');
                 if (isHighlighted(column)) {
                     th.addClass('highlight');
                 }
