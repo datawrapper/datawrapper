@@ -82,6 +82,12 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
         });
 
+        $chartUrlLocal = '/chart/' . $chart->getID() . '/preview';
+
+        if (!empty($chart->getMetadata('print'))) {
+            $chartUrlLocal .= '?mode=print';
+        }
+
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Publish'),
             'chartData' => $chart->loadData(),
@@ -89,7 +95,7 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             'visualizations' => DatawrapperVisualization::all(),
             'vis' => DatawrapperVisualization::get($chart->getType()),
             'chartUrl' => $chart->getPublicUrl(),
-            'chartUrlLocal' => '/chart/' . $chart->getID() . '/preview',
+            'chartUrlLocal' => $chartUrlLocal,
             'embedWidth' => $chartW,
             'embedHeight' => $chartH,
             'themes' => ThemeQuery::create()->allThemesForUser(),
