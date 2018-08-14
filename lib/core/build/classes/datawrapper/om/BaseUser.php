@@ -176,6 +176,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collAuthTokensPartial;
 
     /**
+     * @var        PropelObjectCollection|LoginToken[] Collection to store aggregation of LoginToken objects.
+     */
+    protected $collLoginTokens;
+    protected $collLoginTokensPartial;
+
+    /**
      * @var        PropelObjectCollection|Organization[] Collection to store aggregation of Organization objects.
      */
     protected $collOrganizations;
@@ -287,6 +293,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $authTokensScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $loginTokensScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -947,6 +959,8 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collAuthTokens = null;
 
+            $this->collLoginTokens = null;
+
             $this->collOrganizations = null;
             $this->collProducts = null;
             $this->collThemes = null;
@@ -1323,6 +1337,23 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->loginTokensScheduledForDeletion !== null) {
+                if (!$this->loginTokensScheduledForDeletion->isEmpty()) {
+                    LoginTokenQuery::create()
+                        ->filterByPrimaryKeys($this->loginTokensScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->loginTokensScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collLoginTokens !== null) {
+                foreach ($this->collLoginTokens as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -1621,6 +1652,14 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collLoginTokens !== null) {
+                    foreach ($this->collLoginTokens as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1772,6 +1811,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collAuthTokens) {
                 $result['AuthTokens'] = $this->collAuthTokens->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collLoginTokens) {
+                $result['LoginTokens'] = $this->collLoginTokens->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -2059,6 +2101,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getLoginTokens() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addLoginToken($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -2146,6 +2194,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('AuthToken' == $relationName) {
             $this->initAuthTokens();
+        }
+        if ('LoginToken' == $relationName) {
+            $this->initLoginTokens();
         }
     }
 
@@ -4373,6 +4424,224 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collLoginTokens collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return User The current object (for fluent API support)
+     * @see        addLoginTokens()
+     */
+    public function clearLoginTokens()
+    {
+        $this->collLoginTokens = null; // important to set this to null since that means it is uninitialized
+        $this->collLoginTokensPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collLoginTokens collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialLoginTokens($v = true)
+    {
+        $this->collLoginTokensPartial = $v;
+    }
+
+    /**
+     * Initializes the collLoginTokens collection.
+     *
+     * By default this just sets the collLoginTokens collection to an empty array (like clearcollLoginTokens());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initLoginTokens($overrideExisting = true)
+    {
+        if (null !== $this->collLoginTokens && !$overrideExisting) {
+            return;
+        }
+        $this->collLoginTokens = new PropelObjectCollection();
+        $this->collLoginTokens->setModel('LoginToken');
+    }
+
+    /**
+     * Gets an array of LoginToken objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this User is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|LoginToken[] List of LoginToken objects
+     * @throws PropelException
+     */
+    public function getLoginTokens($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collLoginTokensPartial && !$this->isNew();
+        if (null === $this->collLoginTokens || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collLoginTokens) {
+                // return empty collection
+                $this->initLoginTokens();
+            } else {
+                $collLoginTokens = LoginTokenQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collLoginTokensPartial && count($collLoginTokens)) {
+                      $this->initLoginTokens(false);
+
+                      foreach($collLoginTokens as $obj) {
+                        if (false == $this->collLoginTokens->contains($obj)) {
+                          $this->collLoginTokens->append($obj);
+                        }
+                      }
+
+                      $this->collLoginTokensPartial = true;
+                    }
+
+                    $collLoginTokens->getInternalIterator()->rewind();
+                    return $collLoginTokens;
+                }
+
+                if($partial && $this->collLoginTokens) {
+                    foreach($this->collLoginTokens as $obj) {
+                        if($obj->isNew()) {
+                            $collLoginTokens[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collLoginTokens = $collLoginTokens;
+                $this->collLoginTokensPartial = false;
+            }
+        }
+
+        return $this->collLoginTokens;
+    }
+
+    /**
+     * Sets a collection of LoginToken objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $loginTokens A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return User The current object (for fluent API support)
+     */
+    public function setLoginTokens(PropelCollection $loginTokens, PropelPDO $con = null)
+    {
+        $loginTokensToDelete = $this->getLoginTokens(new Criteria(), $con)->diff($loginTokens);
+
+        $this->loginTokensScheduledForDeletion = unserialize(serialize($loginTokensToDelete));
+
+        foreach ($loginTokensToDelete as $loginTokenRemoved) {
+            $loginTokenRemoved->setUser(null);
+        }
+
+        $this->collLoginTokens = null;
+        foreach ($loginTokens as $loginToken) {
+            $this->addLoginToken($loginToken);
+        }
+
+        $this->collLoginTokens = $loginTokens;
+        $this->collLoginTokensPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related LoginToken objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related LoginToken objects.
+     * @throws PropelException
+     */
+    public function countLoginTokens(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collLoginTokensPartial && !$this->isNew();
+        if (null === $this->collLoginTokens || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collLoginTokens) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getLoginTokens());
+            }
+            $query = LoginTokenQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByUser($this)
+                ->count($con);
+        }
+
+        return count($this->collLoginTokens);
+    }
+
+    /**
+     * Method called to associate a LoginToken object to this object
+     * through the LoginToken foreign key attribute.
+     *
+     * @param    LoginToken $l LoginToken
+     * @return User The current object (for fluent API support)
+     */
+    public function addLoginToken(LoginToken $l)
+    {
+        if ($this->collLoginTokens === null) {
+            $this->initLoginTokens();
+            $this->collLoginTokensPartial = true;
+        }
+        if (!in_array($l, $this->collLoginTokens->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddLoginToken($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	LoginToken $loginToken The loginToken object to add.
+     */
+    protected function doAddLoginToken($loginToken)
+    {
+        $this->collLoginTokens[]= $loginToken;
+        $loginToken->setUser($this);
+    }
+
+    /**
+     * @param	LoginToken $loginToken The loginToken object to remove.
+     * @return User The current object (for fluent API support)
+     */
+    public function removeLoginToken($loginToken)
+    {
+        if ($this->getLoginTokens()->contains($loginToken)) {
+            $this->collLoginTokens->remove($this->collLoginTokens->search($loginToken));
+            if (null === $this->loginTokensScheduledForDeletion) {
+                $this->loginTokensScheduledForDeletion = clone $this->collLoginTokens;
+                $this->loginTokensScheduledForDeletion->clear();
+            }
+            $this->loginTokensScheduledForDeletion[]= clone $loginToken;
+            $loginToken->setUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collOrganizations collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -4993,6 +5262,11 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collLoginTokens) {
+                foreach ($this->collLoginTokens as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collOrganizations) {
                 foreach ($this->collOrganizations as $o) {
                     $o->clearAllReferences($deep);
@@ -5052,6 +5326,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collAuthTokens->clearIterator();
         }
         $this->collAuthTokens = null;
+        if ($this->collLoginTokens instanceof PropelCollection) {
+            $this->collLoginTokens->clearIterator();
+        }
+        $this->collLoginTokens = null;
         if ($this->collOrganizations instanceof PropelCollection) {
             $this->collOrganizations->clearIterator();
         }
