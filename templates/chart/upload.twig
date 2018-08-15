@@ -4,94 +4,11 @@
 
 {{ parent() }}
 
-{{ hook('upload_before_content') }}
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
 
-<script type="text/javascript">
-dw.backend.ready(function() {
-    require(['dw/chart/upload'], function(upload) {
-        {% if not readonly %}upload.init();{% endif %}
-    });
-});
-</script>
-
-<div class="dw-create-upload chart-editor upload-data">
-
-    <div class="row">
-
-        {% if readonly %}
-        <div class="span12">
-            <div class="alert">
-                <div>{% trans "note / readonly data" %}</div>
-            </div>
-        </div>
-        {% endif %}
-
-        <div class="span4">
-            <h3>{% trans "upload / headline" %}</h3>
-            <p>{% trans "upload / quick help" %}
-
-
-            <div class="demo-datasets">
-                <p>{% trans "upload / try a dataset" %}</p>
-                <select {% if readonly %}disabled{% endif %} id="demo-datasets" class="">
-                    <option>{% trans "upload / sample dataset" %}</option>
-                    {% for group in datasets %}
-                    <optgroup label="{{ group.type }}">
-                    {% for dataset in group.datasets %}
-                    <option value="{{ dataset.id }}" class="demo-dataset" data-data="{{ dataset.data | escape('html') }}" data-presets='{{ dataset.presets | json | escape('html')  }}'>{{ dataset.title }}</option>
-                    {% endfor %}
-                    </optgroup>
-                    {% endfor %}
-                </select>
-            </div>
-
-            {% if not readonly %}
-            {{ hook('upload_after_demo_datasets') }}
-            {% endif %}
-
-            <div class="did-you-know">
-                <p>{% trans "upload / try-beta" %}</p>
-            </div>
-
-        </div>
-
-        <div class="span8" >
-
-            <form class="upload-form" style="padding-left:20px">
-                <div class="control-group" {% if readonly %}style="pointer-events:none"{% endif %}>
-                    <textarea {% if readonly %}readonly="readonly"{% endif %} id="upload-data-text" data-drop-here="{% trans "upload / drop csv" %}" style="resize:none" placeholder="{% trans "upload / paste here" %}">{{ chartData }}</textarea>
-                </div>
-
-                {% if readonly %}
-                    <a href="visualize" class="btn btn-primary pull-right">{% trans "Proceed" %} <i class="fa fa-chevron-right"></i></a>
-                {% else %}
-                    <div id="upload-data" {% if readonly %}style="pointer-events:none"{% endif %} class="btn btn-primary pull-right"><i class="fa fa-circle-o-notch fa-spin" style="display:none; color: #fff; margin:0px 4px 0px -2px;"></i> {% trans "upload / continue button" %} <i class="fa fa-chevron-right"></i></div>
-
-                    <div id="upload" style="display:inline-block"></div>
-                {% endif %}
-
-
-
-            </form>
-        </div>
-
-
-
-    </div>
-
-    <div class="upload-template hidden">
-        <div class="upload-drop">{% trans "upload / drop csv" %}</div>
-        <div class="btn upload-button" id="pick-file-from-disk"><span>
-        <i class="fa fa-upload" aria-hidden="true"></i> {% trans "upload / or upload csv" %}</span></div>
-        <ul class="qq-upload-list" style="display:none"></ul>
-    </div>
-
-
-</div>
+{{ svelte('upload', svelte_data) }}
 
 {{ hook('upload_after_content', chart) }}
 
 
-<script type="text/javascript" src="/static/vendor/ajaxupload/fileuploader.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/vendor/ajaxupload/fileuploader.css">
 {% endblock %}
