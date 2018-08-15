@@ -163,6 +163,13 @@ class DatawrapperPluginManager {
             }
             $plugins->filterById($plugin_ids);
         }
+
+        $uri = $_SERVER['REQUEST_URI'] ?? "";
+        if (preg_match('@chart/([a-zA-Z0-9]{5})/token/(.*)@', $uri, $matches)) {
+            $plugins->_or()
+                ->where("Plugin.id LIKE 'd3-basemap-%'");
+        }
+
         return $plugins->find();
     }
 
