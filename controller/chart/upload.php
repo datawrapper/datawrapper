@@ -36,11 +36,6 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             'user' => $user->serialize()
         ];
 
-        if ($user->isLoggedIn() && $app->request()->get('beta') !== null) {
-            $user->setUserData(['beta_upload' => $app->request()->get('beta') ? '1' : '0']);
-            return $app->redirect('/chart/'.$chart->getId().'/upload');
-        }
-
         $app->render('chart/upload.twig', $page);
     });
 });
