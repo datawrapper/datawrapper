@@ -1,7 +1,6 @@
 
 import Checkbox from './Checkbox.html';
 import Color from './Color.html';
-import ColorSimple from './ColorSimple.html';
 import ColorPicker from './ColorPicker.html';
 import CustomFormat from './CustomFormat.html';
 import NumberInput from './Number.html';
