@@ -12,6 +12,6 @@ import Section from '../editor/Section.html';
 import Group from '../editor/Group.html';
 
 export default {
-    Checkbox, Color, ColorSimple, ColorPicker, Group, NumberInput,
+    Checkbox, Color, ColorPicker, Group, NumberInput,
     Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea
 };

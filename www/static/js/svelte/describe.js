@@ -2605,7 +2605,7 @@
 	  return x;
 	}
 
-	function range(start, stop, step) {
+	function sequence(start, stop, step) {
 	  start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
 
 	  var i = -1,
@@ -2698,7 +2698,7 @@
 	    // Convert number of thresholds into uniform thresholds.
 	    if (!Array.isArray(tz)) {
 	      tz = tickStep(x0, x1, tz);
-	      tz = range(Math.ceil(x0 / tz) * tz, Math.floor(x1 / tz) * tz, tz); // exclusive
+	      tz = sequence(Math.ceil(x0 / tz) * tz, Math.floor(x1 / tz) * tz, tz); // exclusive
 	    }
 
 	    // Remove any thresholds outside the domain.
@@ -2742,7 +2742,7 @@
 	  return histogram;
 	}
 
-	function quantile(values, p, valueof) {
+	function threshold(values, p, valueof) {
 	  if (valueof == null) valueof = number;
 	  if (!(n = values.length)) return;
 	  if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
@@ -2836,7 +2836,7 @@
 	    }
 	  }
 
-	  return quantile(numbers.sort(ascending), 0.5);
+	  return threshold(numbers.sort(ascending), 0.5);
 	}
 
 	function min(values, valueof) {
@@ -3057,7 +3057,7 @@
 	    start += (stop - start - step * (n - paddingInner)) * align;
 	    bandwidth = step * (1 - paddingInner);
 	    if (round) start = Math.round(start), bandwidth = Math.round(bandwidth);
-	    var values = range(n).map(function(i) { return start + step * i; });
+	    var values = sequence(n).map(function(i) { return start + step * i; });
 	    return ordinalRange(reverse ? values.reverse() : values);
 	  }
 
@@ -3839,15 +3839,15 @@
 	  };
 	}
 
-	function bimap(domain, range$$1, deinterpolate, reinterpolate) {
-	  var d0 = domain[0], d1 = domain[1], r0 = range$$1[0], r1 = range$$1[1];
+	function bimap(domain, range, deinterpolate, reinterpolate) {
+	  var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
 	  if (d1 < d0) d0 = deinterpolate(d1, d0), r0 = reinterpolate(r1, r0);
 	  else d0 = deinterpolate(d0, d1), r0 = reinterpolate(r0, r1);
 	  return function(x) { return r0(d0(x)); };
 	}
 
-	function polymap(domain, range$$1, deinterpolate, reinterpolate) {
-	  var j = Math.min(domain.length, range$$1.length) - 1,
+	function polymap(domain, range, deinterpolate, reinterpolate) {
+	  var j = Math.min(domain.length, range.length) - 1,
 	      d = new Array(j),
 	      r = new Array(j),
 	      i = -1;
@@ -3855,12 +3855,12 @@
 	  // Reverse descending domains.
 	  if (domain[j] < domain[0]) {
 	    domain = domain.slice().reverse();
-	    range$$1 = range$$1.slice().reverse();
+	    range = range.slice().reverse();
 	  }
 
 	  while (++i < j) {
 	    d[i] = deinterpolate(domain[i], domain[i + 1]);
-	    r[i] = reinterpolate(range$$1[i], range$$1[i + 1]);
+	    r[i] = reinterpolate(range[i], range[i + 1]);
 	  }
 
 	  return function(x) {
@@ -3881,7 +3881,7 @@
 	// reinterpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding domain value x in [a,b].
 	function continuous(deinterpolate, reinterpolate) {
 	  var domain = unit,
-	      range$$1 = unit,
+	      range = unit,
 	      interpolate$$1 = value,
 	      clamp = false,
 	      piecewise,
@@ -3889,17 +3889,17 @@
 	      input;
 
 	  function rescale() {
-	    piecewise = Math.min(domain.length, range$$1.length) > 2 ? polymap : bimap;
+	    piecewise = Math.min(domain.length, range.length) > 2 ? polymap : bimap;
 	    output = input = null;
 	    return scale;
 	  }
 
 	  function scale(x) {
-	    return (output || (output = piecewise(domain, range$$1, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
+	    return (output || (output = piecewise(domain, range, clamp ? deinterpolateClamp(deinterpolate) : deinterpolate, interpolate$$1)))(+x);
 	  }
 
 	  scale.invert = function(y) {
-	    return (input || (input = piecewise(range$$1, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
+	    return (input || (input = piecewise(range, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
 	  };
 
 	  scale.domain = function(_) {
@@ -3907,11 +3907,11 @@
 	  };
 
 	  scale.range = function(_) {
-	    return arguments.length ? (range$$1 = slice$2.call(_), rescale()) : range$$1.slice();
+	    return arguments.length ? (range = slice$2.call(_), rescale()) : range.slice();
 	  };
 
 	  scale.rangeRound = function(_) {
-	    return range$$1 = slice$2.call(_), interpolate$$1 = interpolateRound, rescale();
+	    return range = slice$2.call(_), interpolate$$1 = interpolateRound, rescale();
 	  };
 
 	  scale.clamp = function(_) {

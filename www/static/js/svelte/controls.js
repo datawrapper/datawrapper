@@ -4054,7 +4054,7 @@
 	};
 
 	var main = {
-	    Checkbox, Color, ColorSimple, ColorPicker, Group, NumberInput: Number,
+	    Checkbox, Color, ColorPicker, Group, NumberInput: Number,
 	    Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea
 	};
 
