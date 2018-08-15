@@ -92,6 +92,8 @@ class ChartQuery extends BaseChartQuery {
      */
     public function copyChart($src, $changeTitle = true) {
         $chart = new Chart();
+        $user = Session::getUser();
+
         // new id
         $chart->setId($this->getUnusedRandomId());
         // but the rest remains the same
@@ -106,6 +108,13 @@ class ChartQuery extends BaseChartQuery {
         $chart->setForkedFrom($src->getId());
         $chart->setOrganization($src->getOrganization());
         $chart->setInFolder($src->getInFolder());
+
+        if ($user->isAdmin()) {
+            // guess it's mine now
+            $chart->setUser($user);
+            $chart->setOrganization(null);
+            $chart->setInFolder(null);
+        }
 
         $chart->setLastEditStep(3);
 
