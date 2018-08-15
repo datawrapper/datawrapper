@@ -27,6 +27,8 @@
     let initializing = false;
     let iframe;
 
+    import updateChartDescription from './lib/updateChartDescription';
+
     export default {
         computed: {
             url({chart}) {
@@ -77,6 +79,7 @@
                     });
                     return;
                 }
+                updateChartDescription(this.refs.iframe, attrs);
                 win.__dw.attributes(attrs);
             },
             saved() {

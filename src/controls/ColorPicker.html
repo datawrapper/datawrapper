@@ -1,4 +1,6 @@
-<div class="color-picker-cont">
+<:Window on:click='set({visible:false})'/>
+
+<div class="color-picker-cont" on:click='event.stopPropagation()'>
     <div on:click="set({visible:true})">
         <slot>
             <div class="base-color-picker color-picker" style="background: {color} none repeat scroll 0% 0%;">
@@ -153,4 +155,36 @@
 <style>
 .color-picker-cont { display: inline-block; }
 input.hex { margin-bottom:0!important; }
+
+.color-picker {
+    width: 2em;
+    height: 24px;
+    border: 2px solid #fff;
+        border-right-color: rgb(255, 255, 255);
+        border-right-style: solid;
+        border-right-width: 2px;
+    border-radius: 2px;
+    border-right: 20px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.color-picker .arrow {
+    position: absolute;
+    top: 0;
+    right: -20px;
+    width: 20px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.color-picker .arrow::after {
+    height: 24px;
+    line-height: 24px;
+    content: "▾";
+    color: #555;
+}
 </style>

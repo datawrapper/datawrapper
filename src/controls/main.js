@@ -1,7 +1,6 @@
 
 import Checkbox from './Checkbox.html';
 import Color from './Color.html';
-import ColorSimple from './ColorSimple.html';
 import ColorPicker from './ColorPicker.html';
 import CustomFormat from './CustomFormat.html';
 import NumberInput from './Number.html';
@@ -13,6 +12,6 @@ import Section from '../editor/Section.html';
 import Group from '../editor/Group.html';
 
 export default {
-    Checkbox, Color, ColorSimple, ColorPicker, Group, NumberInput,
+    Checkbox, Color, ColorPicker, Group, NumberInput,
     Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea
 };

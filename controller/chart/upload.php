@@ -15,7 +15,7 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
                 $groups[$ds['type']]['datasets'][] = $ds;
             }
         }
-        
+
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Upload Data'),
             'chartData' => $chart->loadData(),
@@ -41,18 +41,6 @@ $app->get('/chart/:id/upload', function ($id) use ($app) {
             return $app->redirect('/chart/'.$chart->getId().'/upload');
         }
 
-        if (!$user->isLoggedIn()) $useBeta = true;
-        else {
-            $useBeta = (
-                ($user->getUserData()['beta_upload'] ?? 1) == "1"
-                // mod 20 -> 5% of users, mod 10 -> 10% of users, mod 5 -> 20% of users
-                || $user->getID() % 5 == 4
-            ) && (
-                ($user->getUserData()['beta_upload'] ?? null) !== '0'
-            );
-        }
-        $useBeta = true;
-
-        $app->render('chart/upload'.($useBeta ? '-new' : '').'.twig', $page);
+        $app->render('chart/upload.twig', $page);
     });
 });
