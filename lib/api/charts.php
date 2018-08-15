@@ -14,7 +14,10 @@ $app->get('/charts', function() use ($app) {
                 $filter[$key] = $val;
             }
         }
-        $charts = ChartQuery::create()->getPublicChartsById($user->getId(), false, $filter, 0, 200, $app->request()->get('order'));
+        
+        $offset = $app->request()->get('offset') ?? 0;
+
+        $charts = ChartQuery::create()->getPublicChartsById($user->getId(), false, $filter, $offset, 200, $app->request()->get('order'));
     } else {
         $charts = ChartQuery::create()->getGuestCharts();
     }
