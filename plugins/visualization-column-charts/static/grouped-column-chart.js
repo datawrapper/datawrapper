@@ -231,6 +231,9 @@
                         lblcl.push('smaller');
                         lbl_w = 90;
                     }
+                    if (d.bw < 30) {
+                        lblcl.push('rotate90');
+                    }
 
                     if (me._isStacked() && me.get('connect-bars') && s > 0) {
                         var pp = bar_dims[(s-1)+'/'+(r)];
