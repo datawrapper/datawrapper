@@ -764,7 +764,8 @@ body.cms-mode {
   padding-top: 30px;
 }
 body.cms-mode .navbar,
-body.cms-mode .footer {
+body.cms-mode .footer,
+body.cms-mode .row.create-nav {
   display: none;
 }
 /** dw-create-upload **/
