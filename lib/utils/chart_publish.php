@@ -232,11 +232,22 @@ function download($url, $outf) {
         session_write_close();
 
         curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0 );
-        curl_setopt($ch, CURLOPT_COOKIE, $strCookie);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        $h = getallheaders();
+
+        if (Session::getMethod() == "token" && !empty($h['Authorization'])) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                [ "Authorization: " .  $h['Authorization']]
+            ]);
+        } else {
+            curl_setopt($ch, CURLOPT_COOKIE, $strCookie);            
+        }
+        
         if (isset($GLOBALS['dw_config']['http_auth'])) {
             curl_setopt($ch, CURLOPT_USERPWD, $GLOBALS['dw_config']['http_auth']);
         }
+
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
