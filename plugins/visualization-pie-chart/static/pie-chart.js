@@ -292,14 +292,15 @@
                         .data('ca', ca)
                         .data('key', o.name)
                         .data('index', num_labels_outside - index)
-                        .css({ opacity: 0 });
+                        .css({ opacity: 0 });                    
 
                     if (o.value / total <= 0.02) {
-                        slice.label.hide();
-                        out_lbl.text(out_lbl.text() + '&nbsp;(' + value +')');
+                        slice.label.hide();                        
                     } else {
-                        slice.label.show();
+                        slice.label.show();                        
                     }
+
+                    out_lbl.text(out_lbl.text() + '&nbsp;(' + value +')');
 
                   me.__out_labels.push(out_lbl);
                 }

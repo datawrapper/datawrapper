@@ -1,7 +1,6 @@
 /* globals dw, $ */
 
 (function(){
-
     var trim = function (myString) {
         return myString.replace(/^\s+/g,'').replace(/\s+$/g,'');
     };
@@ -160,6 +159,7 @@
 
             table.dataTable({
                 "bPaginate" : me.get('paginate', false),
+                "aLengthMenu": [5, 10, 25, 50, 100 ],
                 "bInfo"     : me.get('paginate', false),
                 "bFilter"   : me.get('filter', false),
                 "bSort"     : me.get('sortable', false),

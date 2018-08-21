@@ -8,18 +8,18 @@ require(['svelte/{{ app_id }}'], function(mod) {
 
     var store = mod.store,
         App = mod.App,
-        data = mod.data || {},
-        twigdata = {{ twig_data | json | raw }};
+        data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
     if (dw.backend.currentChart) {
         store.set({ dw_chart: dw.backend.currentChart });
     }
-    store.set({language: '{{language}}'})
+
+    store.set({language: '{{language}}'});
 
     var app = mod.app = new App({
         store: store,
         target: document.querySelector('#svelte-{{ app_id }}'),
-        data: _.extend({}, data, twigdata)
+        data: data
     });
 
     if (mod.init) mod.init(app);

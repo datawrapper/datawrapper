@@ -158,8 +158,13 @@ class DatawrapperPlugin {
         } else {
             $cfg = array();
         }
+
+        // some backdoors (token access) enter without a user
+        $user = DatawrapperSession::getUser();
+        if (is_null($user)) return $cfg;
+
         // apply organization-specific custom configuration
-        $org = DatawrapperSession::getUser()->getCurrentOrganization();
+        $org = $user->getCurrentOrganization();
         if (!empty($org)) {
             $pd = PluginDataQuery::create()
                 ->filterByPlugin($this->getPluginOM())
