@@ -238,7 +238,7 @@ function download($url, $outf) {
 
         if (Session::getMethod() == "token" && !empty($h['Authorization'])) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                [ "Authorization: " .  $h['Authorization']]
+                "Authorization: " .  $h['Authorization']
             ]);
         } else {
             curl_setopt($ch, CURLOPT_COOKIE, $strCookie);            
