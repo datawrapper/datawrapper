@@ -87,7 +87,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                 }
                 $script['src'] = $u;
                 $vis_libs[] = $script;
-                if (empty($url['cdn'])) $vis_libs_local[] = $script;
+                $vis_libs_local[] = $script;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
