@@ -72,8 +72,13 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                     $script = array("local" => $script, "cdn" => false);
                 }
                 if (!empty($script['cdn'])) {
-                    $script['src'] = $script['cdn'];
-                    $vis_libs_cdn[] = $script;
+                    if (!empty($GLOBALS['dw_config']['ignore_cdn_chart_assets'])) {
+                        // don't use assets from cdn url
+                        unset($script['cdn']);
+                    } else {
+                        $script['src'] = $script['cdn'];
+                        $vis_libs_cdn[] = $script;
+                    }
                 }
 
                 // at first we check if the library lives in ./lib of the vis module
@@ -87,7 +92,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                 }
                 $script['src'] = $u;
                 $vis_libs[] = $script;
-                $vis_libs_local[] = $script;
+                if (empty($script['cdn'])) $vis_libs_local[] = $script;
             }
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {

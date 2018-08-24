@@ -223,8 +223,8 @@ function publish_push_to_cdn($cdn_files, $chart) {
 
 
 function download($url, $outf) {
-    $strCookie = 'DW-SESSION=' . $_COOKIE['DW-SESSION'] . '; path=/';
-
+    $strCookie = 'DW-SESSION=' . ($_COOKIE['DW-SESSION'] ?? "") . '; path=/';
+    
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
         $fp = fopen($outf, 'w');
@@ -240,7 +240,7 @@ function download($url, $outf) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "Authorization: " .  $h['Authorization']
             ]);
-        } else {
+        } else {            
             curl_setopt($ch, CURLOPT_COOKIE, $strCookie);            
         }
         
