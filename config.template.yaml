@@ -86,6 +86,10 @@ footer_links:
 ## libraries such as globalize.js.
 # asset_domain: assets-datawrapper.s3.amazonaws.com
 
+## uncomment this line to force Datawrapper to include all chart assets
+## in the minified chart build instead of embedding external urls from CDN
+# ignore_cdn_chart_assets: true
+
 ## This is the directory where locally published files will be stored.
 ## If you do not define this, the `charts` directory within datawrapper
 ## will be used.

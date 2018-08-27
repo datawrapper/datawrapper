@@ -52,22 +52,21 @@ class DatawrapperSession {
      * initializes a new user or creates a guest user if not logged in
      */
     protected function initUser() {
-        // check for auth header
-        if (defined('IS_API') && IS_API) {
-            $h = getallheaders();
-            if (!empty($h['Authorization'])) {
-                $authHeader = explode(' ', $h['Authorization']);
-                if ($authHeader[0] == 'Bearer') {
-                    $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
-                    if ($auth) {
-                        $this->user = $auth->getUser();
-                        $this->method = 'token';
-                        $auth->use();
-                        return;
-                    }
+        // check for auth header        
+        $h = getallheaders();
+        if (!empty($h['Authorization'])) {
+            $authHeader = explode(' ', $h['Authorization']);
+            if ($authHeader[0] == 'Bearer') {
+                $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
+                if ($auth) {
+                    $this->user = $auth->getUser();
+                    $this->method = 'token';
+                    $auth->use();
+                    return;
                 }
             }
         }
+        
         // check for login session
         if (isset($_SESSION['dw-user-id']) &&
             (isset($_SESSION['persistent']) ||

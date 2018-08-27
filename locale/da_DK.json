@@ -211,6 +211,7 @@
   "The password must not be empty.":"The password must not be empty.",
   "The supplied token for password resetting is invalid.":"The supplied token for password resetting is invalid.",
   "Insert title here":"Insert title here",
+  "Created with": "Lavet med",
   "Copy":"Copy",
   "one-time":"one-time",
   "daily":"daily",
