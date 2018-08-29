@@ -1,0 +1,117 @@
+<div class="control-group vis-option-group vis-option-type-switch {highlight?'highlight':''}">
+    <label class="switch-outer {disabled? 'disabled' :''}" style="padding-left: 40px">
+        <label class="switch">
+            <input disabled="{disabled}" bind:checked="value "type="checkbox"><span class="slider round"></span>
+        </label>
+        { label }
+    </label>
+    {#if value}
+    <div transition:slide>
+        <div class="switch-content">
+          <slot></slot>
+        </div>
+    </div>
+
+    {/if}
+</div>
+
+<style lang="less">
+    .vis-option-type-switch {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 3px;
+        margin-bottom: 7px;
+        &:last-child {
+            border-bottom: none;
+        };
+        transition: height 0.2s ease-in-out;
+        background: #ffffff00;
+        &.highlight {
+        }
+    }
+    .switch-content {
+        padding: 5px 0 5px 40px;
+    }
+
+     /* The switch - the box around the slider */
+    .switch {
+        position: absolute;
+        display: inline-block;
+        width: 30px;
+        left: 2px;
+        top: 0;
+        height: 16px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {display:none;}
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 12px;
+        width: 12px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .2s ease-in-out;
+        transition: .2s ease-in-out;
+    }
+
+    input:checked + .slider {
+        background-color: #18a1cd;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #18a1cd;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(13px);
+        -ms-transform: translateX(13px);
+        transform: translateX(13px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 16px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
+
+<script>
+    import slide from 'svelte-transitions-slide';
+
+    export default {
+        transitions: { slide },
+        onstate({changed, current}) {
+            if (changed.value && current.value) {
+                this.set({highlight:true});
+                setTimeout(() => {
+                    this.set({highlight:false});
+                }, 300);
+            }
+        },
+        data() {
+            return {
+                disabled: false,
+                highlight: false
+            }
+        }
+    }
+</script>
