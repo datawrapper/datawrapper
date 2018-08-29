@@ -662,11 +662,6 @@ class Chart extends BaseChart {
         if (!DatawrapperVisualization::has($this->getType())) return 'chart';
         $vis = DatawrapperVisualization::get($this->getType());
         return $vis['namespace'] ?? 'chart';
-        // return (
-        //     ($this->getType() == "d3-maps-choropleth"
-        //     || $this->getType() == "d3-maps-symbols") &&
-        //     $this->getMetadata('visualize.map-type-set') != null) ?
-        //   "map" : "chart";
     }
 
     public function isFork() {
