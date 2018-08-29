@@ -52,7 +52,7 @@ class DatawrapperSession {
      * initializes a new user or creates a guest user if not logged in
      */
     protected function initUser() {
-        // check for auth header        
+        // check for auth header
         $h = getallheaders();
         if (!empty($h['Authorization'])) {
             $authHeader = explode(' ', $h['Authorization']);
@@ -66,7 +66,7 @@ class DatawrapperSession {
                 }
             }
         }
-        
+
         // check for login session
         if (isset($_SESSION['dw-user-id']) &&
             (isset($_SESSION['persistent']) ||
