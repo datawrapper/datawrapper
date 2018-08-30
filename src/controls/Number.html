@@ -1,7 +1,7 @@
 <div class="control-group vis-option-group vis-option-type-number">
     <label style="width:{width}" class="control-label">{@html label }</label>
     <div class="controls">
-        <input type="range" min="{min}" max="{max}" step="{step}" bind:value />&nbsp;&nbsp;<input type="number" min="{min}" max="{max}" step="{step}" bind:value/> <span class="unit">{unit}</span>
+        <input type="range" min="{min}" max="{max}" step="{step}" bind:value />&nbsp;&nbsp;<input type="number" min="{min}" max="{max}" step="{step}" bind:value/> {#if unit}<span class="unit">{unit}</span>{/if}
     </div>
 </div>
 
@@ -26,6 +26,9 @@
         data () {
             return {
                 unit: '',
+                step: 1,
+                min: 0,
+                max: 100,
                 width: '100px'
             };
         }

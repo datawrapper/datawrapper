@@ -42,7 +42,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         <label class="switch">
             <input class="{disabled && disabled_state == 'on' ? 'disabled-force-checked' : disabled && disabled_state == 'off' ? 'disabled-force-unchecked' : ''}" disabled="{disabled}" bind:checked="value "type="checkbox"><span class="slider round"></span>
         </label>
-        { label }
+        {@html label }
     </label>
     {#if disabled && disabled_msg}
         <div transition:slide>

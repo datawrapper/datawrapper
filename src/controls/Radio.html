@@ -1,5 +1,5 @@
 <div class="control-group vis-option-group vis-option-type-radio">
-    <label class="control-label">
+    <label style="width:{width}" class="control-label">
         {@html label }
     </label>
 
@@ -35,7 +35,8 @@
     export default {
         data() {
             return {
-                disabled: false
+                disabled: false,
+                width: 'auto'
             }
         }
     }
