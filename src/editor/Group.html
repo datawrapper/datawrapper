@@ -1,7 +1,9 @@
 <div class="vis-option-type-group {open?'group-open':''}">
     <label class="group-title" on:click="toggle()">
+        {#if !notoggle}
         <i class="fa fa-chevron-up expand-group pull-right"></i>
         <i class="fa fa-chevron-down collapse-group pull-right"></i>
+        {/if}
         {@html label }</label>
 
     {#if open}
@@ -15,7 +17,8 @@
     export default {
         methods: {
             toggle() {
-                const {open, id} = this.get();
+                const {notoggle, open, id} = this.get();
+                if (notoggle) return;
                 if (id) {
                     const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
                     if (!visGroups['locator-map']) visGroups['locator-map'] = {};
@@ -26,7 +29,8 @@
             }
         },
         oncreate() {
-            const {id} = this.get();
+            const {id, notoggle} = this.get();
+            if (notoggle) return;
             if (id) {
                 const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
                 if (visGroups['locator-map'] && visGroups['locator-map'][id]) {
@@ -36,6 +40,7 @@
         },
         data() {
             return {
+                notoggle: false,
                 id: false,
                 open: true
             };
