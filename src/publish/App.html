@@ -69,12 +69,9 @@
                 <a target="_blank" class="share-url" href="{shareUrl}">{shareUrl}</a>
             </div>
         </div>
-        <div class="help">
-            <span>?</span>
-            <div class="content">
-                {@html __('publish / help / share-url') }
-            </div>
-        </div>
+        <Help>
+            <div>{@html __('publish / help / share-url') }</div>
+        </Help>
     </div>
 
     <div class="block">
@@ -95,15 +92,15 @@
                 </div>
             </div>
         </div>
-        <div class="help">
-            <span>?</span>
-            <div class="content">
+        <Help>
+            <div>
                 {@html __('publish / embed / help') }
                 {#each embed_templates.slice(2) as tpl}
                 <div><b>{tpl.title}:</b> {@html tpl.text}</div>
                 {/each}
             </div>
-        </div>
+        </Help>
+
     </div>
 </div>
 
@@ -204,21 +201,18 @@
 </style>
 
 <script>
-    // import Index from './Index.html';
-    // import Leaderboard from './Leaderboard.html';
-    // import Header from './Header.html';
+    import Help from '../editor/Help.html';
 
     import {__} from '../shared/l10n';
     import {getJSON, postJSON} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
+
     let fakeProgress = 0;
     let initial_auto_publish = true;
 
     export default {
-        components: {
-            // Index, Header, Leaderboard
-        },
+        components: { Help},
         helpers: { __ },
         computed: {
 
