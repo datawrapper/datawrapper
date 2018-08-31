@@ -265,6 +265,8 @@ class DatawrapperHooks {
     const CHART_CREATED_WITH_DATAWRAPPER_URL = 'chart_created_with_datawrapper_url';
 
     const CUSTOM_EXTERNAL_DATA = 'CUSTOM_EXTERNAL_DATA';
+
+    const ADD_WORKFLOW = 'ADD_WORKFLOW';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
