@@ -72,8 +72,7 @@
                     window.addEventListener('message', (evt) => {
                         // console.log(evt, evt.message);
                         if (evt.data == 'datawrapper:vis:rendered') {
-                            console.log('chart is rendered');
-                            if (initializing) {
+                            if (initializing && attrs) {
                                 init(win, doc);
                                 initializing = false;
                                 win.__dw.attributes(attrs);

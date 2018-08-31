@@ -1,0 +1,65 @@
+<div class="control-group vis-option-type-select">
+    <label class="control-label">
+        {@html label }
+    </label>
+
+    <div class="controls form-inline {disabled? 'disabled' :''}">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {@html currentLabel}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                {#if options.length}
+                    {#each options as opt}
+                        <li class="{value==opt.value?'selected':''}">
+                            <a on:click="select(event, opt)" href="#/{opt.value}">{@html opt.label}</a>
+                        </li>
+                    {/each}
+                {/if}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    li.selected {
+        background: #18a1cd33;
+    }
+    .dropdown-toggle {
+        background: white;
+    }
+    span.caret {
+        margin-left: 5px;
+    }
+</style>
+
+<script type="text/javascript">
+export default {
+    computed: {
+        currentLabel({ value, options }) {
+            for (let i=0; i<options.length; i++) {
+                if (options[i].value == value) return options[i].label;
+            }
+            return '(select an item)';
+        }
+    },
+    methods: {
+        select(event, opt) {
+            console.log('dropdown.select', event, opt);
+            event.preventDefault();
+            this.set({ value: opt.value });
+            this.fire('change', opt.value);
+        }
+    },
+    data () {
+        return {
+            disabled: false,
+            width: 'auto',
+            options: [],
+            optgroups: [],
+        };
+    }
+};
+</script>
+

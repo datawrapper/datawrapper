@@ -1,19 +1,24 @@
 <div class="control-group vis-option-group vis-option-type-radio">
-    <label class="control-label">
+    <label style="width:{width}" class="control-label">
         {@html label }
     </label>
 
     <div class="controls form-inline">
         {#each options as opt}
-        <label class="radio">
-            <input type="radio" value="{ opt.value }" bind:group="value" />&nbsp;{ opt.label }
+        <label class="radio {disabled? 'disabled' :''}">
+            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/>&nbsp;{ opt.label }
         </label>
         {/each}
     </div>
 </div>
 
-<style>
+<style lang="less">
+
     label.radio {
+        &.disabled {
+            color: #999;
+            input { opacity: 0.5 }
+        }
         padding-top:0!important;
         padding-right: 1ex;
         vertical-align: text-top;
@@ -22,4 +27,17 @@
         float: none;
         vertical-align: text-bottom;
     }
+
+
 </style>
+
+<script>
+    export default {
+        data() {
+            return {
+                disabled: false,
+                width: 'auto'
+            }
+        }
+    }
+</script>

@@ -20,6 +20,8 @@ if (isset($_GET['xhr']) && $_GET['xhr'] == '1' &&
     define('NO_PLUGINS', true);
 }
 
+define('APP_DOMAIN', explode('.', $_SERVER['HTTP_HOST'])[0]);
+
 require ROOT_PATH . 'lib/bootstrap.php';
 
 $twig = $app->view()->getEnvironment();
@@ -98,5 +100,4 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
  */
 
 $app->run();
-
 

@@ -8,6 +8,11 @@
 if (!defined('ROOT_PATH')) define('ROOT_PATH', '../../');
 define('IS_API', true);
 
+// get domain
+// $h = getallheaders();
+// define('APP_DOMAIN', $h['App-Domain'] ?? 'app');
+define('APP_DOMAIN', 'app');
+
 require_once ROOT_PATH . 'lib/bootstrap.php';
 
 $config = $GLOBALS['dw_config'];
