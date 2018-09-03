@@ -17,8 +17,8 @@
     export default {
         methods: {
             toggle() {
-                const {notoggle, open, id} = this.get();
-                if (notoggle) return;
+                if (this.get().notoggle) return;
+                const {open, id} = this.get();
                 if (id) {
                     const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
                     if (!visGroups['locator-map']) visGroups['locator-map'] = {};
@@ -29,7 +29,7 @@
             }
         },
         oncreate() {
-            const {id, notoggle} = this.get();
+            const {id, notoggle} = this.get() || {};
             if (notoggle) return;
             if (id) {
                 const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};

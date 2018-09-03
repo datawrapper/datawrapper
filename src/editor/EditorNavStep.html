@@ -6,44 +6,46 @@
 </a>
 
 <script>
-	import _findWhere from 'underscore-es/findWhere';
+    import _findWhere from 'underscore-es/findWhere';
 
-	export default {
-		methods: {
-			select(event, step) {
-				if (step.redirect) return;
-				event.preventDefault();
-				if (step.readonly) return;
-				this.fire('select', step);
-                const {chart} = this.store.get();
-                window.history.pushState({step, chart}, '', `/edit/${chart.id}/${step.id}`);
-			}
-		},
-		computed: {
-			active_id ({active, steps}) {
-				return steps.indexOf(_findWhere(steps, {id:active}));
-			},
-			passed ({index, active_i, maxStep}) {
-				return index < maxStep && index != active_i;
-			},
-			class_ ({step, index, active, maxStep, passed}) {
-				const list = [];
-				if (step.readonly) list.push('readonly');
-				if (active == step.id) list.push('active');
-				if (index > maxStep) list.push('unseen');
-				if (passed) list.push('passed');
-				return list.join(' ');
-			}
-		},
-		data() {
-			return {
-				step: {
-					title: '',
-					index: 1
-				},
-				maxStep: 1,
-				active: 1
-			}
-		}
-	}
+    export default {
+        methods: {
+            select(event, step) {
+                if (step.redirect) return;
+                event.preventDefault();
+                if (step.readonly) return;
+                this.fire('select', step);
+                if (location.pathname.substr(0,6) == '/edit/') {
+                    const {chart} = this.store.get();
+                    window.history.pushState({step, chart}, '', `/edit/${chart.id}/${step.id}`);
+                }
+            }
+        },
+        computed: {
+            active_id ({active, steps}) {
+                return steps.indexOf(_findWhere(steps, {id:active}));
+            },
+            passed ({index, active_i, maxStep}) {
+                return index < maxStep && index != active_i;
+            },
+            class_ ({step, index, active, maxStep, passed}) {
+                const list = [];
+                if (step.readonly) list.push('readonly');
+                if (active == step.id) list.push('active');
+                if (index > maxStep) list.push('unseen');
+                if (passed) list.push('passed');
+                return list.join(' ');
+            }
+        },
+        data() {
+            return {
+                step: {
+                    title: '',
+                    index: 1
+                },
+                maxStep: 1,
+                active: 1
+            }
+        }
+    }
 </script>
