@@ -3,6 +3,8 @@ var assert = require('assert');
 
 import purifyHtml from '../src/shared/purifyHtml.js';
 
+const someObject = {foo:'bar'};
+
 describe('purifyHtml', () => {
     describe('default behavior', () => {
 
@@ -25,9 +27,23 @@ describe('purifyHtml', () => {
             assert.equal(purifyHtml(null), null);
             assert.equal(purifyHtml(undefined), undefined);
             assert.equal(purifyHtml(42), 42);
-            const obj = {foo:'bar'};
-            assert.equal(purifyHtml(obj), obj);
+            assert.equal(purifyHtml(someObject), someObject);
         });
+
+        it('should remove script tags', () => {
+            assert.equal(purifyHtml('<script>alert("foo")</script>'), 'alert("foo")');
+        });
+
+       it('should keep script tags if we explicitly allow it', () => {
+            assert.equal(purifyHtml('<script>alert("foo")</script>', '<script>'),
+                '<script>alert("foo")</script>');
+        });
+
+        // test if styles are kept in
+
+        // test if onclick handlers are removed
+
+        // test if javascript:... links are removed
 
     });
 });

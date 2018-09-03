@@ -10,6 +10,7 @@ const default_allowed = "<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>
 
 export default function(input, allowed) {
     if (input === null) return null;
+    if (input === undefined) return undefined;
     input = String(input);
     // strip tags
     if (input.indexOf('<') < 0 || input.indexOf('>') < 0) {
