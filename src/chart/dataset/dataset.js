@@ -83,7 +83,7 @@ export default function(columns) {
             });
         },
 
-        toCSV() {
+        csv() {
             var csv = "",
                 sep = ",",
                 quote = "\"";
@@ -105,6 +105,11 @@ export default function(columns) {
                 });
             });
             return csv;
+        },
+
+        // DEPRECATED
+        toCSV() {
+            return this.csv();
         },
 
         /*

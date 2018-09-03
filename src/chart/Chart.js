@@ -115,9 +115,7 @@ class Chart extends Store {
 
 }
 
-export default function(json) {
-    return new Chart(json)
-}
+export default Chart;
 
 function is_equal(a, b) {
     return JSON.stringify(a) == JSON.stringify(b);

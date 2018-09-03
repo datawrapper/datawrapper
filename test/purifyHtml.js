@@ -1,7 +1,6 @@
 /* globals describe, it */
-var assert = require('assert');
-
-import purifyHtml from '../src/shared/purifyHtml.js';
+const assert = require('assert');
+const purifyHtml = require('./build/build.js').purifyHtml;
 
 const someObject = {foo:'bar'};
 
