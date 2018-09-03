@@ -1,7 +1,7 @@
 {% extends "core.twig" %}
 {% block content %}
 
-<div class="vis-options" id="{{vis['svelte-editor']}}"></div>
+<div class="vis-options" id="{{vis['svelte-editor']['id']}}"></div>
 
 <script type="text/javascript" src="/static/plugins/{{ vis['__plugin'] }}/controls.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ vis['__plugin'] }}/controls.css">
@@ -12,7 +12,7 @@
 var visData = {{ vis_data | raw }};
 
 require([
-    '{{ vis['svelte-editor'] }}',
+    '{{ vis['svelte-editor']['module'] }}',
     'dw/chart/visualize/themes'], function(editor, themes) {
 
     // initialize chart
@@ -27,14 +27,14 @@ require([
 
     chart.load(dw.backend.__currentData);
 
-    editor.globals.set({
+    editor.store.set({
         dw_chart: chart,
         vis: visData.vis,
         language: '{{language}}',
         theme: { colors: { palette: [] }, fake: true }
     });
 
-    editor.globals.compute('visMeta', ['visMetas'], function(visMetas) {
+    editor.store.compute('visMeta', ['visMetas'], function(visMetas) {
         var vis = window.chart.get('type');
         return visMetas && vis ? visMetas[vis] || null : null;
     });
@@ -42,7 +42,7 @@ require([
     var current = chart.get('metadata.visualize', {});
 
     var app = new editor.App({
-        store: editor.globals,
+        store: editor.store,
         data: {
             step: '{{step}}',
             steps: visData.vis.workflow.map(function(s,i) {
@@ -51,7 +51,7 @@ require([
             }),
             initialValue: current
         },
-        target: document.querySelector('#{{vis['svelte-editor']}}')
+        target: document.querySelector('#{{vis['svelte-editor']['id']}}')
     });
 
     // liveUpdate.init($('#iframe-vis'));
