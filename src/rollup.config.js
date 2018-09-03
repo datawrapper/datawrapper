@@ -18,6 +18,7 @@ build('controls');
 build('controls/hot');
 build('publish');
 build('highlight');
+build('editor');
 
 export default targets;
 

@@ -1,0 +1,43 @@
+<EditorNav bind:active="step" bind:maxStep bind:steps bind:chart='$chart' />
+
+<div>
+    {#if step=='upload'}
+    <UploadStep
+        bind:readonly="$dataReadonly"
+        bind:datasets
+        bind:chart="$chart" />
+    {:elseif step=='describe'}
+    DESCRIBE
+    {:elseif step=='visualize'}
+    VISUALIZE
+    {:elseif step=='publish'}
+    PUBLISH
+    {:else}
+    :(
+    {/if}
+</div>
+
+<script>
+    import {__} from '../shared/l10n';
+    import EditorNav from './EditorNav.html';
+    import UploadStep from '../upload/App.html';
+
+    export default {
+        helpers: {__},
+        components: {EditorNav, UploadStep},
+        oncreate() {
+            // const {step} = this.get();
+        },
+        data() {
+            return {
+                datasets: [],
+                steps: [
+                    {id:'upload', title: __('Upload Data')},
+                    {id:'describe', title: __('Check & Describe')},
+                    {id:'visualize', title: __('Visualize')},
+                    {id:'publish', title: __('Publish & Embed')}
+                ]
+            }
+        }
+    }
+</script>
