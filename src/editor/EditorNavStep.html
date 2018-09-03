@@ -1,11 +1,13 @@
 <a style="width:{95/steps.length}%" on:click="select(event, step)" href="{step.redirect?step.redirect:'#'+step.id}" class="{class_}">
-    <span class="step">{step.index}</span>
+    <span class="step">{index}</span>
     <span class="title">{@html step.title}</span>
     {#if passed }<i class="fa fa-check"></i>{/if}
     <div class="corner"></div>
 </a>
 
 <script>
+	import _findWhere from 'underscore-es/findWhere';
+
 	export default {
 		methods: {
 			select(event, step) {
@@ -13,17 +15,22 @@
 				event.preventDefault();
 				if (step.readonly) return;
 				this.fire('select', step);
+                const {chart} = this.store.get();
+                window.history.pushState({step, chart}, '', `/edit/${chart.id}/${step.id}`);
 			}
 		},
 		computed: {
-			passed ({step, active, maxStep}) {
-				return step.index < maxStep && step.index != active;
+			active_id ({active, steps}) {
+				return steps.indexOf(_findWhere(steps, {id:active}));
 			},
-			class_ ({step, active, maxStep, passed}) {
+			passed ({index, active_i, maxStep}) {
+				return index < maxStep && index != active_i;
+			},
+			class_ ({step, index, active, maxStep, passed}) {
 				const list = [];
 				if (step.readonly) list.push('readonly');
-				if (active == step.index) list.push('active');
-				if (step.index > maxStep) list.push('unseen');
+				if (active == step.id) list.push('active');
+				if (index > maxStep) list.push('unseen');
 				if (passed) list.push('passed');
 				return list.join(' ');
 			}

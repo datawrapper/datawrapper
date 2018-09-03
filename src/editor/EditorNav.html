@@ -1,6 +1,7 @@
 <div class="create-nav">
-    {#each steps as step}
-    <EditorNavStep on:select="select(step)" bind:steps bind:active bind:step bind:maxStep />
+    {#each steps as step,i}
+    <EditorNavStep on:select="select(step, i)"
+        index="{i+1}" bind:step bind:steps bind:active bind:maxStep />
     {/each}
 </div>
 <style type="text/css">
@@ -16,16 +17,16 @@
     export default {
         components: { EditorNavStep },
         methods: {
-            select(step) {
-                this.set({active: step.index});
+            select(step, index) {
+                this.set({active: step.id});
                 const {maxStep} = this.get();
-                this.set({maxStep: Math.max(maxStep, step.index)});
+                this.set({ maxStep: Math.max(maxStep, index) });
             }
         },
         data() {
             return {
                 steps: []
-            }
+            };
         }
     }
 </script>
