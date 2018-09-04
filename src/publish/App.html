@@ -69,12 +69,9 @@
                 <a target="_blank" class="share-url" href="{shareUrl}">{shareUrl}</a>
             </div>
         </div>
-        <div class="help">
-            <span>?</span>
-            <div class="content">
-                {@html __('publish / help / share-url') }
-            </div>
-        </div>
+        <Help>
+            <div>{@html __('publish / help / share-url') }</div>
+        </Help>
     </div>
 
     <div class="block">
@@ -95,15 +92,15 @@
                 </div>
             </div>
         </div>
-        <div class="help">
-            <span>?</span>
-            <div class="content">
+        <Help>
+            <div>
                 {@html __('publish / embed / help') }
                 {#each embed_templates.slice(2) as tpl}
                 <div><b>{tpl.title}:</b> {@html tpl.text}</div>
                 {/each}
             </div>
-        </div>
+        </Help>
+
     </div>
 </div>
 
@@ -204,20 +201,18 @@
 </style>
 
 <script>
-    // import Index from './Index.html';
-    // import Leaderboard from './Leaderboard.html';
-    // import Header from './Header.html';
+    import Help from '../editor/Help.html';
 
     import {__} from '../shared/l10n';
     import {getJSON, postJSON} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
-    var fakeProgress = 0;
+
+    let fakeProgress = 0;
+    let initial_auto_publish = true;
 
     export default {
-        components: {
-            // Index, Header, Leaderboard
-        },
+        components: { Help},
         helpers: { __ },
         computed: {
 
@@ -247,7 +242,7 @@
                     setTimeout(() => { me.publish(); }, 100);
                     return;
                 }
-                const chart = me.get('chart');
+                const {chart} = me.get();
                 me.set({
                     publishing: true,
                     progress: 0,
@@ -282,14 +277,14 @@
 
             updateStatus () {
                 const me = this;
-                const chart = me.get('chart');
+                const {chart} = me.get();
                 fakeProgress += 0.05;
                 getJSON(`/api/charts/${chart.id}/publish/status`, (res) => {
                     if (res) {
                         res = (+res / 100) + fakeProgress;
                         me.set({progress: Math.min(1,res)});
                     }
-                    if (me.get('publishing')) {
+                    if (me.get().publishing) {
                         setTimeout(() => { me.updateStatus(); },400);
                     }
                 });
@@ -322,44 +317,56 @@
                 }
             }
         },
-
-        oncreate() {
-            const me = this;
-            me.observe('publishing', (p) => {
-                if (p) me.updateProgressBar(me.get('progress'));
-            });
-            me.observe('progress', (p) => {
-                me.updateProgressBar(p);
-            });
-            // persist embed_type and shareurl
-            me.observe('embed_type', (v) => {
+        onstate({changed, current}) {
+            const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
+            if (changed.publishing) {
+                if (current.publishing) this.updateProgressBar(current.progress);
+            }
+            if (changed.progress) {
+                this.updateProgressBar(current.progress);
+            }
+            if (changed.embed_type && userDataReady) {
                 const data = window.dw.backend.__userData;
-                if (!v || !data) return;
-                data.embed_type = v;
+                if (!current.embed_type || !data) return;
+                data.embed_type = current.embed_type;
                 window.dw.backend.setUserData(data);
-            });
-
-            me.observe('shareurl_type', (v) => {
+            }
+            if (changed.shareurl_type && userDataReady) {
                 const data = window.dw.backend.__userData;
-                if (!v || !data) return;
-                data.shareurl_type = v;
+                if (!current.shareurl_type || !data) return;
+                data.shareurl_type = current.shareurl_type;
                 window.dw.backend.setUserData(data);
-            });
-
-            me.observe('published', (p) => {
+            }
+            if (changed.published) {
                 window.document
                     .querySelector('.dw-create-publish .publish-step')
-                    .classList[p ? 'add' : 'remove']('is-published');
-            });
-
-            var initial_auto_publish = true;
-            me.observe('auto_publish', (p) => {
-                if (p && initial_auto_publish) {
-                    me.publish();
+                    .classList[current.published ? 'add' : 'remove']('is-published');
+            }
+            if (changed.auto_publish) {
+                if (current.auto_publish && initial_auto_publish) {
+                    this.publish();
                     initial_auto_publish = false;
                     window.history.replaceState('','', location.pathname);
                 }
-            });
+            }
+        },
+        data() {
+            return {
+                chart: {
+                    id: ''
+                },
+                embed_templates: [],
+                plugin_shareurls: [],
+                published: false,
+                publishing: false,
+                needs_republish: false,
+                publish_error: false,
+                auto_publish: false,
+                progress: 0,
+                shareurl_type: 'default',
+                embed_type: 'responsive',
+                copy_success: false
+            }
         }
     };
 </script>

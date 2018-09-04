@@ -17,7 +17,8 @@
   },
   "scripts": {
     "install": "grunt",
-    "watch": "watch 'make assets' assets/"
+    "watch": "watch 'make assets' assets/",
+    "test": "./node_modules/mocha/bin/mocha --require reify"
   },
   "devDependencies": {
     "chalk": "^2.3.0",
@@ -27,7 +28,10 @@
     "grunt-subgrunt": "^1.2.0",
     "js-yaml": "^3.10.0",
     "less": "^2.7.1",
+    "mocha": "^5.2.0",
     "node.extend": "^2.0.0",
+    "reif": "^1.0.0",
+    "reify": "^0.17.3",
     "rollup": "*",
     "rollup-plugin-buble": "*",
     "rollup-plugin-commonjs": "*",
@@ -37,8 +41,8 @@
     "rollup-plugin-svelte": "4.1.0",
     "rollup-plugin-uglify": "*",
     "svelte": "1.64.0",
-    "svelte-upgrade": "^1.0.14",
     "svelte-transitions-slide": "^1.0.0",
+    "svelte-upgrade": "^1.0.14",
     "underscore": "^1.8.3",
     "underscore-es": "^1.9.8",
     "watch": "^1.0.2"

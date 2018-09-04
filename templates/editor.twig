@@ -1,0 +1,40 @@
+{% extends "core.twig" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{workflow.path_js}}"></script>
+<link rel="stylesheet" type="text/css" href="{{workflow.path_css}}">
+
+<div class="svelte-editor-base" id="svelte-workflow-{{ workflow.id }}"></div>
+
+<script type="text/javascript">
+
+require(['{{workflow.module}}'], function(mod) {
+
+    var store = mod.store,
+        App = mod.App,
+        data = _.extend({
+            active: {{chart.lastEditStep}},
+            maxStep: {{chart.lastEditStep}},
+            step: '{{step}}',
+            visualization: {{vis|json|raw}}
+        }, mod.data || {}, {{ twig_data | json | raw }});
+
+    window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
+
+    store.set({
+        chart: {{chart.toStruct()|json|raw}},
+        user: {{user.toArray()|json|raw}},
+        language: '{{language}}'
+    });
+
+    var app = mod.app = new App({
+        store: store,
+        target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
+        data: data
+    });
+});
+</script>
+
+
+{% endblock %}
