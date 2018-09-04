@@ -258,7 +258,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['ASSET_DOMAIN'] = $config['asset_domain'];
-    $page['APP_DOMAIN'] = APP_DOMAIN;
+    $page['APP_DOMAIN'] = APP_DOMAIN ?? "app";
     $page['API_DOMAIN'] = $config['api_domain'];
     $page['IMG_DOMAIN'] = isset($config['img_domain']) ? $config['img_domain'] : 'img.datawrapper.de';
     $page['DW_CHART_CACHE_DOMAIN'] = $config['chart_domain'];
