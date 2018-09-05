@@ -8,6 +8,10 @@ import delimited from './dataset/delimited.js';
 import reorderColumns from './dataset/reorderColumns.js';
 import applyChanges from './dataset/applyChanges.js';
 import addComputedColumns from './dataset/addComputedColumns.js';
+import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
+
+import {putJSON} from '../shared/utils.js';
+import clone from '../shared/clone.js';
 
 class Chart extends Store {
 
@@ -68,8 +72,15 @@ class Chart extends Store {
         return this.get().vis;
     }
 
-    locale() {
-
+    locale(locale, callback) {
+        if (arguments.length) {
+            this._locale = locale = locale.replace('_', '-');
+            if (window.Globalize) {
+                loadGlobalizeLocale(locale, callback);
+            }
+            // todo: what about momentjs & numeraljs?
+        }
+        return this._locale;
     }
 
     getMetadata(key, _default=null) {
@@ -109,10 +120,21 @@ class Chart extends Store {
     }
 
     // stores the state of this chart to server
-    save() {
-
+    persist(callback) {
+        const {writable, id} = this.get();
+        if (writable) {
+            const payload = this.serialize();
+            putJSON(`/api/2/charts/${id}`, payload, () => {
+                if (callback) callback();
+            });
+        }
     }
 
+    serialize() {
+        const state = this.get();
+        delete state.writable;
+        return clone(state);
+    }
 }
 
 export default Chart;
