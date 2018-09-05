@@ -32,8 +32,10 @@
                 const list = [];
                 if (step.readonly) list.push('readonly');
                 if (active == step.id) list.push('active');
-                if (index > maxStep) list.push('unseen');
-                if (passed) list.push('passed');
+                else {
+                    if (index > maxStep) list.push('unseen');
+                    if (passed) list.push('passed');
+                }
                 return list.join(' ');
             }
         },
