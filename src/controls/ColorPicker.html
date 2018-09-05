@@ -4,7 +4,7 @@
     <div on:click="set({visible:true})">
         <slot>
             <div class="base-color-picker color-picker">
-                <div style="background: {color} none repeat scroll 0% 0%;" class="the-color"></div>
+                <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"></div>
                 <span class="caret"></span>
             </div>
         </slot>
@@ -52,6 +52,13 @@
             palette({$theme}) {
                 return $theme.colors.palette;
             },
+            validColor({color}) {
+                try {
+                    return chroma(color).hex();
+                } catch (e) {
+                    return '#000000';
+                }
+            },
             gradient_l ({ color }) {
                 const lch = chroma(color).lch();
                 const sample = spread(70, 55, 7, 6).map((l) => chroma.lch(l, lch[1], lch[2]).hex());
@@ -64,7 +71,7 @@
             gradient_c ({ color, palette }) {
                 let high = chroma(color).set('lch.c', 120);
                 if (isNaN(high.get('lch.h'))) {
-                    high = chroma.lch(high.get('lch.l'), 50, chroma(palette[0]).get('lch.h'));
+                    high = chroma.lch(high.get('lch.l'), 50, chroma(palette[0] || '#d00').get('lch.h'));
                 }
                 const low = chroma(color).set('lch.c', 3);
                 return chroma.scale([low, high])
@@ -99,10 +106,6 @@
         },
         oncreate() {
             const me = this;
-            me.observe('color', (color, old_color) => {
-                const {visible} = me.get();
-                if (visible && color != old_color) me.fire('change', color);
-            });
             ref = this;
             window.document.body.addEventListener('click', this.bodyClick);
         },
@@ -121,6 +124,19 @@
                     }
                     ref.set({visible: el != window.document.body});
                 }
+            }
+        },
+        onstate({changed, current, previous}) {
+            if (changed.color) {
+                try {
+                    const niceHex = chroma(current.color).hex();
+                    if (current.visible && niceHex != previous.color) {
+                        this.fire('change', current.validColor);
+                    }
+                    if (current.validColor != current.color) {
+                        setTimeout(() => { this.set({ color: current.validColor }); }, 100);
+                    }
+                } catch (e) {}
             }
         }
     };
