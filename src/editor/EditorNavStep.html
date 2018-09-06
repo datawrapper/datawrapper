@@ -16,8 +16,8 @@
                 if (step.readonly) return;
                 this.fire('select', step);
                 if (location.pathname.substr(0,6) == '/edit/') {
-                    const {chart} = this.store.get();
-                    window.history.pushState({step, chart}, '', `/edit/${chart.id}/${step.id}`);
+                    const {id} = this.store.get();
+                    window.history.pushState({step, id}, '', `/edit/${id}/${step.id}`);
                 }
             }
         },

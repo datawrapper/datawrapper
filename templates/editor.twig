@@ -20,21 +20,40 @@ require(['{{workflow.module}}'], function(mod) {
         }, mod.data || {}, {{ twig_data | json | raw }});
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
+    var getJSON = mod.utils.getJSON;
+    var themeCache = {};
+    themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
-    chart.set({writable: true});
-    chart.set({themeData: {{theme.themeData|json|raw}});
+    chart.set({
+        writable: true,
+        themeData: themeCache['{{theme.id}}']
+    });
 
-    chart.on('state', ({changed, current}) => {
-        // load theme
-    })
+    chart.on('state', ({changed, current, previous}) => {
+        // observe theme changes and load new theme data if needed
+        if (changed.theme) {
+            if (themeCache[current.theme]) {
+                // re-use cached theme
+                chart.set({themeData: themeCache[current.theme]});
+            } else {
+                // load new theme data
+                getJSON(`/api/themes/${current.theme}`, (res) => {
+                    if (res.status == 'ok') {
+                        themeCache[current.theme] = res.data.data;
+                        chart.set({themeData: res.data.data});
+                    } else {
+                        console.warn('theme not loaded', res);
+                    }
+                });
+            }
+        }
+        if (previous && changed.title || changed.theme || changed.type || changed.metadata) {
+            console.log('store!', changed, Object.keys(changed).map(k => k+':'+current[k]));
+            chart.store();
+        }
+    });
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
-
-    // store.set({
-    //     chartJSON: {{chart.toStruct()|json|raw}},
-    //     userJSON: {{user.toArray()|json|raw}},
-    //     language: '{{language}}'
-    // });
 
     var app = mod.app = new App({
         store: chart,
