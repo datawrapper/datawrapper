@@ -36,7 +36,7 @@ $app->get('/edit/:chart_id(/:step)?', function ($chart_id, $step='') use ($app) 
         if (!in_array($step, $workflow['steps'])) {
             // auto-redirect to last step
             $last_step = min($chart->getLastEditStep(), count($workflow['steps'])) - 1;
-            $step = $workflow['steps'][$last_step];
+            $step = $workflow['steps'][max(0, $last_step)];
         }
 
         $page = array(
@@ -48,7 +48,8 @@ $app->get('/edit/:chart_id(/:step)?', function ($chart_id, $step='') use ($app) 
             'chartData' => $chart->loadData(),
             'workflow' => $workflows[$vis['svelte_workflow']],
             'user' => $user,
-            'vis' => $vis
+            'vis' => $vis,
+            'theme' => ThemeQuery::create()->findPk($chart->getTheme())
         );
 
         // legacy stuff, need to move into ChartEditor some day
