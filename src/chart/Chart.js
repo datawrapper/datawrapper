@@ -3,6 +3,7 @@ import { Store } from 'svelte/store.js';
 import _some from 'underscore-es/some';
 import _isUndefined from 'underscore-es/isUndefined';
 import _isNull from 'underscore-es/isNull';
+import _debounce from 'underscore-es/debounce';
 
 import delimited from './dataset/delimited.js';
 import reorderColumns from './dataset/reorderColumns.js';
@@ -12,6 +13,12 @@ import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
 
 import {putJSON} from '../shared/utils.js';
 import clone from '../shared/clone.js';
+
+const storeChanges = _debounce((state, callback) => {
+    putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
+        if (callback) callback();
+    });
+}, 1000);
 
 class Chart extends Store {
 
@@ -120,14 +127,9 @@ class Chart extends Store {
     }
 
     // stores the state of this chart to server
-    persist(callback) {
-        const {writable, id} = this.get();
-        if (writable) {
-            const payload = this.serialize();
-            putJSON(`/api/2/charts/${id}`, payload, () => {
-                if (callback) callback();
-            });
-        }
+    store(callback) {
+        const payload = this.serialize();
+        storeChanges(payload, callback);
     }
 
     serialize() {
