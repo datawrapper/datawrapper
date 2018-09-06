@@ -61,18 +61,15 @@
             });
 
             this.store.on('state', ({changed, current, previous}) => {
-                console.log('chart.changed', changed);
                 // watch state changes
-                if (changed.metadata && previous) {
-                    this.update(this.store.serialize());
+                const state = this.store.serialize();
+                if (previous && (changed.metadata|| changed.title)) {
+                    updateChartDescription(this.refs.iframe, state);
                 }
+                updateChartAttributes(this.refs.iframe, state);
             })
         },
         methods: {
-            update(attrs) {
-                updateChartDescription(this.refs.iframe, attrs);
-                updateChartAttributes(this.refs.iframe, attrs);
-            },
             saved() {
                 const win = iframe.contentWindow;
                 if (win.__dw && win.__dw.saved) {
