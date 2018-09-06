@@ -270,4 +270,21 @@ class Theme extends BaseTheme
 
         return $arr;
     }
+
+    public function serialize() {
+        $data = $this->toArray();
+        unset($data['Assets']);
+        unset($data['Less']);
+        return $this->lowercaseKeys($data);
+    }
+
+    protected function lowercaseKeys($arr, $lower=true) {
+        foreach ($arr as $key => $value) {
+            $lkey = $key;
+            $lkey[0] = $lower ? strtolower($key[0]) : strtoupper($key[0]);
+            $arr[$lkey] = $value;
+            unset($arr[$key]);
+        }
+        return $arr;
+    }
 }

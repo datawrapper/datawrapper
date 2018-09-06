@@ -67,4 +67,46 @@ class ThemeQuery extends BaseThemeQuery
         return $themes;
     }
 
+    /*
+     * looks for a theme with id $theme_id that can be
+     * access by $user
+     */
+    public function findUserTheme($user, $theme_id) {
+        $theme = ThemeQuery::create()->findPk($theme_id);
+        if (!$theme) return false;;
+
+        global $dw_config;
+        $defaultIds = $dw_config['default-themes'] ?? ["default"];
+
+        if ($user->isAdmin()) {
+            return $theme;
+        }
+
+        // default themes
+        if (in_array($theme_id, $defaultIds)) {
+            return $theme;
+        }
+
+        $userThemes = UserThemeQuery::create()
+            ->filterByUser($user)
+            ->filterByTheme($theme)
+            ->find();
+        if (count($userThemes) > 0) return $theme;
+
+        $organization = $user->getCurrentOrganization();
+        if ($organization) {
+            $orgThemes = OrganizationThemeQuery::create()
+                ->filterByOrganization($organization)
+                ->filterByTheme($theme)
+                ->find();
+            if (count($orgThemes) > 0) return $theme;
+        }
+
+        // print_r();
+        // if (count($userThemes))
+        // foreach ($userThemes as $theme) {
+        //     $themes[] = $theme->getTheme();
+        // }
+    }
+
 }
