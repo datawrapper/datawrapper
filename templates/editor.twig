@@ -34,6 +34,7 @@ require(['{{workflow.module}}'], function(mod) {
 
     chart.on('state', ({changed, current, previous}) => {
         // observe theme changes and load new theme data if needed
+        console.log('chart.state', changed);
         if (changed.theme) {
             if (themeCache[current.theme]) {
                 // re-use cached theme

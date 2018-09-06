@@ -105,6 +105,7 @@ class Chart extends Store {
     }
 
     setMetadata(key, value) {
+        console.log('setMetadata', key, value);
         const keys = key.split('.');
         const lastKey = keys.pop();
         const {metadata} = this.get();
