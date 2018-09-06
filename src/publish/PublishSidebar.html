@@ -1,11 +1,13 @@
 <!-- assuming we're already inside a <div class="span5"> -->
 
+<App />
 
 
 <script>
-	import App from './App.html';
-
 	export default {
+		components: {
+			App: './App.html'
+		},
 		data() {
 			return {
 				user: null

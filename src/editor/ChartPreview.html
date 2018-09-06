@@ -31,8 +31,8 @@
 
     export default {
         computed: {
-            url({chart}) {
-                return chart && chart.get ? `/chart/${chart.get('id')}/preview` : '';
+            url({$id}) {
+                return $id ? `/chart/${$id}/preview` : '';
             }
         },
         data() {
@@ -43,9 +43,6 @@
         },
         oncreate() {
             iframe = this.refs.iframe;
-
-            const {chart} = this.get();
-            console.log(chart);
 
             // 5. Resize when chart wants to resize itself
             window.addEventListener('message', (e) => {
