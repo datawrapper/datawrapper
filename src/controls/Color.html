@@ -74,8 +74,8 @@
                     };
                 });
             },
-            palette ({ $theme }) {
-                return $theme.colors.palette; //.concat($theme.colors.secondary || []);
+            palette ({ $themeData }) {
+                return $themeData.colors.palette; //.concat($theme.colors.secondary || []);
             },
             hexColor ({ value, palette }) {
                 return getColor(value, palette);

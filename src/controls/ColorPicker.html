@@ -49,8 +49,8 @@
 
     export default {
         computed: {
-            palette({$theme}) {
-                return $theme.colors.palette;
+            palette({$themeData}) {
+                return $themeData.colors.palette;
             },
             validColor({color}) {
                 try {
