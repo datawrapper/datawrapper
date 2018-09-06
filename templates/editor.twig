@@ -11,25 +11,33 @@
 
 require(['{{workflow.module}}'], function(mod) {
 
-    var store = mod.store,
-        App = mod.App,
+    var App = mod.App,
         data = _.extend({
             active: {{chart.lastEditStep}},
             maxStep: {{chart.lastEditStep}},
-            step: '{{step}}',
-            visualization: {{vis|json|raw}}
+        step: '{{step}}',
+        visualization: {{vis|json|raw}}
         }, mod.data || {}, {{ twig_data | json | raw }});
+
+    var chart = new mod.Chart({{chart.toStruct()|json|raw}});
+
+    chart.set({writable: true});
+    chart.set({themeData: {{theme.themeData|json|raw}});
+
+    chart.on('state', ({changed, current}) => {
+        // load theme
+    })
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
 
-    store.set({
-        chart: {{chart.toStruct()|json|raw}},
-        user: {{user.toArray()|json|raw}},
-        language: '{{language}}'
-    });
+    // store.set({
+    //     chartJSON: {{chart.toStruct()|json|raw}},
+    //     userJSON: {{user.toArray()|json|raw}},
+    //     language: '{{language}}'
+    // });
 
     var app = mod.app = new App({
-        store: store,
+        store: chart,
         target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
         data: data
     });
