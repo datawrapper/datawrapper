@@ -430,28 +430,32 @@ class Chart extends BaseChart {
 
     public static function defaultMetaData() {
         return array(
-            'data' => array(
+            'data' => [
                 'transpose' => false,
                 'vertical-header' => true,
                 'horizontal-header' => true,
-            ),
-            'visualize' => array(
-                'highlighted-series' => array(),
-                'highlighted-values' => array()
-            ),
-            'describe' => array(
+            ],
+            'visualize' => [
+                'highlighted-series' => [],
+                'highlighted-values' => []
+            ],
+            'describe' => [
                 'source-name' => '',
                 'source-url' => '',
                 'number-format' => '-',
                 'number-divisor' => 0,
                 'number-append' => '',
                 'number-prepend' => '',
-                'intro' => ''
-            ),
-            'publish' => array(
+                'intro' => '',
+                'byline' => ''
+            ],
+            'publish' => [
                 'embed-width' => 600,
                 'embed-height' => 400
-            )
+            ],
+            'annotate' => [
+                'notes' => ''
+            ]
         );
     }
 
