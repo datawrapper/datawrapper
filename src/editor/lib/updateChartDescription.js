@@ -4,6 +4,8 @@ export default function(iframe, attrs) {
     const win = iframe.contentWindow;
     const doc = iframe.contentDocument;
 
+    if (!win.__dw) return false;
+
     let render = false;
 
     if (changed('title') || changed('metadata.describe.hide-title')) {
@@ -74,6 +76,7 @@ export default function(iframe, attrs) {
     }
 
     function changed(key) {
+        if (!win.__dw) return false;
         var p0 = win.__dw.old_attrs,
             p1 = attrs;
         key = key.split('.');

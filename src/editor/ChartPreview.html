@@ -61,6 +61,11 @@
             });
 
             this.store.on('state', ({changed, current, previous}) => {
+                if (current.passiveMode) {
+                    console.log('passive mode');
+                    // no update of chart in iframe when in passiveMode
+                    return;
+                }
                 // watch state changes
                 const state = this.store.serialize();
                 if (previous && (changed.metadata|| changed.title)) {
@@ -88,6 +93,13 @@
                 setTimeout(() => {
                     callback(win, doc);
                 }, 1000);
+            },
+            forceRender() {
+                const state = this.store.serialize();
+                updateChartAttributes(this.refs.iframe, state, true);
+            },
+            reload() {
+                this.refs.iframe.contentWindow.location.reload();
             }
         }
     }

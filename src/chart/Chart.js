@@ -15,6 +15,7 @@ import {putJSON} from '../shared/utils.js';
 import clone from '../shared/clone.js';
 
 const storeChanges = _debounce((state, callback) => {
+    console.log('putJSON');
     putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
         if (callback) callback();
     });
@@ -105,7 +106,6 @@ class Chart extends Store {
     }
 
     setMetadata(key, value) {
-        console.log('setMetadata', key, value);
         const keys = key.split('.');
         const lastKey = keys.pop();
         const {metadata} = this.get();
@@ -136,6 +136,7 @@ class Chart extends Store {
     serialize() {
         const state = this.get();
         delete state.writable;
+        delete state.passiveMode;
         return clone(state);
     }
 }

@@ -1,10 +1,12 @@
 /* globals dw, $, _ */
 
-export default function(iframe, attrs) {
+export default function(iframe, attrs, forceRender=false) {
     const win = iframe.contentWindow;
     const doc = iframe.contentDocument;
 
-    let render = false;
+    if (!win.__dw) return false;
+
+    let render = forceRender;
     let needReload = false;
 
     const requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'];
@@ -42,6 +44,7 @@ export default function(iframe, attrs) {
     if (render) win.__dw.render();
 
     function changed(key) {
+        if (!win.__dw) return false;
         var p0 = win.__dw.old_attrs,
             p1 = attrs;
         key = key.split('.');
