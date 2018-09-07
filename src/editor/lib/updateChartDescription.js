@@ -1,6 +1,6 @@
 /* globals dw, $, _ */
 
-export default function(iframe, attrs) {
+export default function({iframe, attrs}) {
     const win = iframe.contentWindow;
     const doc = iframe.contentDocument;
 

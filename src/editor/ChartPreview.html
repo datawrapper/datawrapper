@@ -1,4 +1,7 @@
 <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
+    {#if loading}
+    loading...
+    {/if}
     <div id="iframe-wrapper" style="width:{width}px;height:{height}px; overflow:visible;">
         <iframe title="chart-preview" ref:iframe src="{url}" id="iframe-vis"
             allowfullscreen
@@ -22,9 +25,6 @@
 
 <script>
 
-    /* globals _,$,dw */
-
-    let initializing = false;
     let iframe;
 
     import updateChartDescription from './lib/updateChartDescription';
@@ -38,6 +38,7 @@
         },
         data() {
             return {
+                loading: true,
                 width: 500,
                 height: 500
             }
@@ -57,21 +58,29 @@
                     }
 
                     this.set({height: h});
-                }
+            }
             });
 
             this.store.on('state', ({changed, current, previous}) => {
                 if (current.passiveMode) {
-                    console.log('passive mode');
                     // no update of chart in iframe when in passiveMode
                     return;
                 }
                 // watch state changes
                 const state = this.store.serialize();
                 if (previous && (changed.metadata|| changed.title)) {
-                    updateChartDescription(this.refs.iframe, state);
+                    updateChartDescription({
+                        iframe:this.refs.iframe,
+                        attrs: state
+                    });
                 }
-                updateChartAttributes(this.refs.iframe, state);
+                updateChartAttributes({
+                    iframe: this.refs.iframe,
+                    attrs: state,
+                    callback: () => {
+                        this.set({loading:false});
+                    }
+                });
             })
         },
         methods: {
@@ -96,7 +105,14 @@
             },
             forceRender() {
                 const state = this.store.serialize();
-                updateChartAttributes(this.refs.iframe, state, true);
+                updateChartAttributes({
+                    iframe: this.refs.iframe,
+                    attrs:state,
+                    forceRender: true,
+                    callback: () => {
+                        this.set({loading:false});
+                    }
+                });
             },
             reload() {
                 this.refs.iframe.contentWindow.location.reload();

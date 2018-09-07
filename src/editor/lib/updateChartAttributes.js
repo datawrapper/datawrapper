@@ -1,10 +1,15 @@
 /* globals dw, $, _ */
 
-export default function(iframe, attrs, forceRender=false) {
+function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
     const win = iframe.contentWindow;
-    const doc = iframe.contentDocument;
 
-    if (!win.__dw) return false;
+    if (!win.__dw || !win.__dw.vis) {
+        // iframe is not ready yet, try again in 100ms
+        setTimeout(() => {
+            updateChartAttributes({iframe, attrs, forceRender, callback});
+        }, 100);
+        return false;
+    }
 
     let render = forceRender;
     let needReload = false;
@@ -27,6 +32,7 @@ export default function(iframe, attrs, forceRender=false) {
 
     // check if we need to update chart
     if (changed('metadata.visualize')) {
+        console.log('changed!');
         win.__dw.vis.chart().attributes(attrs);
         render = true;
     }
@@ -43,9 +49,11 @@ export default function(iframe, attrs, forceRender=false) {
 
     if (render) win.__dw.render();
 
+    if (callback) callback();
+
     function changed(key) {
         if (!win.__dw) return false;
-        var p0 = win.__dw.old_attrs,
+        var p0 = win.__dw.old_attrs || {},
             p1 = attrs;
         key = key.split('.');
         _.each(key, function(k) {
@@ -55,3 +63,6 @@ export default function(iframe, attrs, forceRender=false) {
         return JSON.stringify(p0) != JSON.stringify(p1);
     }
 }
+
+
+export default updateChartAttributes;
