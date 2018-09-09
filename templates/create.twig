@@ -5,9 +5,9 @@
 <h1>What do you want to create?</h1>
 
 {% for workflow in workflows %}
-	<div>
-		<a href="/create/{{workflow['id']}}">{{workflow['title']}}</a>
-	</div>
+    <div>
+        <a href="/create/{{workflow['id']}}">{{workflow['title']}}</a>
+    </div>
 {% endfor %}
 
 {% endblock %}
