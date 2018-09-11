@@ -1302,7 +1302,6 @@ body.cms-mode .row.create-nav {
   border-radius: 0px;
   overflow: hidden;
   background: #fff;
-  max-width: 98%;
   position: relative;
 }
 #iframe-wrapper .resizer {
@@ -1803,6 +1802,9 @@ body.cms-mode .row.create-nav {
 .chart-editor.dw-create-visualize .custom-color-selector-body .dataseries li.selected {
   background: #e0eaf0;
 }
+.chart-editor.dw-create-visualize .visconfig {
+  position: relative;
+}
 .chart-editor.dw-create-visualize .visconfig .btn {
   font-weight: 400;
 }
@@ -1922,6 +1924,19 @@ body.cms-mode .row.create-nav {
   text-transform: uppercase;
   font-size: 11px;
   color: #999;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                              supported by Chrome and Opera */
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .toolbar-caption .warning {
   color: #c71e1d;

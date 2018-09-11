@@ -51,7 +51,7 @@
                 m = String(w).match(/^(\d+(?:\.\d+)?)%$/),
                 realW = m ? (+m[1] / 100) * maxW : w,
                 resizer = this;
-
+            // console.log('max width', maxW);
             $('#resize-w').val(w);
             $('#resize-h').val(h);
             $('#resize-mm-w').val(w / 4);
@@ -68,14 +68,17 @@
                 }
             });
 
-            $('.visconfig').css('min-height', (+h) + 250);
+            $('.visconfig').css('min-height', (+h) + 250)
+                .animate({
+                    left: Math.min(0, maxW - w)/2
+                });
 
             dw.backend.fire('chart-resize');
             measureChartHeight();
         };
 
         this.updateSize = function (w, h) {
-            var maxW = $('#iframe-wrapper').parent().parent().width() - 22,
+            var maxW = window.innerWidth - 460, //$('#iframe-wrapper').parent().parent().width() - 22,
                 chart = dw.backend.currentChart,
                 resizer = this;
 
