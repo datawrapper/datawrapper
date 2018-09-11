@@ -91,8 +91,9 @@ class Chart extends Store {
         return this._locale;
     }
 
-    getMetadata(key, _default=null) {
+    getMetadata(key=null, _default=null) {
         const {metadata} = this.get();
+        if (!key) return metadata;
         // get metadata
         const keys = key.split('.');
         let pt = metadata;
