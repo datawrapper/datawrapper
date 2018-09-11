@@ -29,8 +29,9 @@ $pluginApiHooks = DatawrapperHooks::execute(DatawrapperHooks::PROVIDE_API, $app)
 
 if (!empty($pluginApiHooks)) {
     foreach ($pluginApiHooks as $hook) {
-        if (!isset($hook['method'])) $hook['method'] = 'GET';
-        $app->map('/plugin/' . $hook['url'], $hook['action'])->via($hook['method']);
+        $app->map('/plugin/' . $hook['url'], $hook['action'])
+            ->via($hook['method'] ?? 'GET')
+            ->conditions($hook['conditions'] ?? []);
     }
 }
 
