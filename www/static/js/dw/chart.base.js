@@ -27,10 +27,7 @@
         var w = $chart.width(),
             h = dw.utils.getMaxChartHeight($('#chart'));
 
-        if (!$.support.leadingWhitespace) w -= 10; // IE Fix
-        w -= $body.css('padding-left').replace('px', '');
-        w -= $body.css('padding-right').replace('px', '');
-
+        if (!$.support.leadingWhitespace) w -= 10; // IE Fix        
 
         var vis;
         if (__dw.vis && __dw.vis.supportsSmartRendering()) {
