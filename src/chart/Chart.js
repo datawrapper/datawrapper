@@ -135,9 +135,17 @@ class Chart extends Store {
 
     serialize() {
         const state = this.get();
-        delete state.writable;
-        delete state.passiveMode;
-        return clone(state);
+        const keep = [
+            'id', 'title', 'theme', 'createdAt', 'lastModifiedAt', 'type', 'metadata',
+            'authorId', 'showInGallery', 'language', 'guestSession', 'lastEditStep',
+            'publishedAt', 'publicUrl', 'publicVersion', 'organizationId', 'forkedFrom',
+            'externalData', 'forkable', 'isFork', 'inFolder', 'author'
+        ];
+        const copy = {};
+        keep.forEach(k => {
+            copy[k] = state[k];
+        });
+        return copy;
     }
 }
 
