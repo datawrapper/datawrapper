@@ -32,6 +32,18 @@ require(['{{workflow.module}}'], function(mod) {
         themeData: themeCache['{{theme.id}}']
     });
 
+    window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
+
+    var app = mod.app = new App({
+        store: chart,
+        target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
+        data: data
+    });
+
+    var lastHash = null;
+
+    window.chart = chart;
+
     chart.on('state', ({changed, current, previous}) => {
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
@@ -50,17 +62,10 @@ require(['{{workflow.module}}'], function(mod) {
                 });
             }
         }
+
         if (previous && changed.title || changed.theme || changed.type || changed.metadata) {
             chart.store();
         }
-    });
-
-    window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
-
-    var app = mod.app = new App({
-        store: chart,
-        target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
-        data: data
     });
 });
 </script>
