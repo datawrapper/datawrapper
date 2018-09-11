@@ -14,8 +14,8 @@ import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
 import {putJSON} from '../shared/utils.js';
 import clone from '../shared/clone.js';
 
-const storeChanges = _debounce((state, callback) => {
-    console.log('putJSON');
+const storeChanges = _debounce((chart, callback) => {
+    const state = chart.serialize();
     putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
         if (callback) callback();
     });
@@ -129,8 +129,7 @@ class Chart extends Store {
 
     // stores the state of this chart to server
     store(callback) {
-        const payload = this.serialize();
-        storeChanges(payload, callback);
+        storeChanges(this, callback);
     }
 
     serialize() {
