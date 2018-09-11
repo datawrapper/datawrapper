@@ -61,22 +61,23 @@
             }
             });
 
-            this.store.on('state', ({changed, current, previous}) => {
+            const chart = this.store;
+
+            chart.on('state', ({changed, current, previous}) => {
                 if (current.passiveMode) {
                     // no update of chart in iframe when in passiveMode
                     return;
                 }
-                // watch state changes
-                const state = this.store.serialize();
+                const attrs = chart.serialize();
                 if (previous && (changed.metadata|| changed.title)) {
                     updateChartDescription({
                         iframe:this.refs.iframe,
-                        attrs: state
+                        attrs
                     });
                 }
                 updateChartAttributes({
                     iframe: this.refs.iframe,
-                    attrs: state,
+                    attrs,
                     callback: () => {
                         this.set({loading:false});
                     }
