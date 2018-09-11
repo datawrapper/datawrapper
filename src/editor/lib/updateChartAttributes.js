@@ -32,7 +32,6 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
 
     // check if we need to update chart
     if (changed('metadata.visualize')) {
-        console.log('changed!');
         win.__dw.vis.chart().attributes(attrs);
         render = true;
     }
