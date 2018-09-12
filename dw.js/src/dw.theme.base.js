@@ -10,7 +10,7 @@ dw.theme.base = {
      */
     colors: {
         palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
-        secondary: ["#000000", '#777777', '#cccccc', '#ffd500', '#6FAA12'],
+        secondary: [],
 
         positive: '#85B4D4',
         negative: '#E31A1C',
