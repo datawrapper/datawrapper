@@ -2,13 +2,19 @@
     {#if loading}
     loading...
     {/if}
-    <div id="iframe-wrapper" style="width:{width}px;height:{height}px; overflow:visible;">
+    <div id="iframe-wrapper" class="{resizable?'resizable' :''} {resizing?'resizing' :''}" style="width:{width}px;height:{height}px; overflow:visible;">
         <iframe title="chart-preview" ref:iframe src="{url}" id="iframe-vis"
             allowfullscreen
             webkitallowfullscreen
             mozallowfullscreen
             oallowfullscreen
             msallowfullscreen></iframe>
+        {#if resizable}
+        <div ref="resizer" on:mousedown="dragStart(event)" class="resizer resizer-both">
+            <i class="fa fa-arrows-h"></i>
+        </div>
+        {/if}
+
     </div>
 
     <!-- {{ hook('visualize_before_resizer') }}
@@ -21,14 +27,41 @@
 #iframe-wrapper {
     margin: 0 auto;
 }
+.resizing iframe {
+    pointer-events: none;
+}
 </style>
 
 <script>
 
     let iframe;
+    let preview;
 
     import updateChartDescription from './lib/updateChartDescription';
     import updateChartAttributes from './lib/updateChartAttributes';
+
+    let startX;
+    let startY;
+    let startWidth;
+    let startHeight;
+
+    function doDrag(event) {
+        preview.set({
+            width: startWidth + (event.clientX - startX)*2,
+            height: startHeight + event.clientY - startY
+        });
+        event.preventDefault();
+        return false;
+    }
+
+    function stopDrag() {
+        window.document.removeEventListener('mousemove', doDrag);
+        window.document.removeEventListener('mouseup', stopDrag);
+        preview.set({resizing:false});
+        const {width, height} = preview.get();
+        preview.fire('resize', {width,height});
+    }
+
 
     export default {
         computed: {
@@ -39,12 +72,15 @@
         data() {
             return {
                 loading: true,
+                resizable: true,
+                resizing: false,
                 width: 500,
                 height: 500
             }
         },
         oncreate() {
             iframe = this.refs.iframe;
+            preview = this;
 
             // 5. Resize when chart wants to resize itself
             window.addEventListener('message', (e) => {
@@ -58,7 +94,7 @@
                     }
 
                     this.set({height: h});
-            }
+                }
             });
 
             const chart = this.store;
@@ -82,7 +118,8 @@
                         this.set({loading:false});
                     }
                 });
-            })
+            });
+
         },
         methods: {
             saved() {
@@ -117,6 +154,15 @@
             },
             reload() {
                 this.refs.iframe.contentWindow.location.reload();
+            },
+            dragStart(event) {
+                startX = event.clientX;
+                startY = event.clientY;
+                startWidth = this.get().width;
+                startHeight = this.get().height;
+                this.set({resizing:true});
+                window.document.addEventListener('mousemove', doDrag);
+                window.document.addEventListener('mouseup', stopDrag);
             }
         }
     }
