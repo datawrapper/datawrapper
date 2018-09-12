@@ -20,11 +20,19 @@ $app->get('/(chart|map)/:id/:step', function ($id, $step) use ($app) {
             });
         }
 
+        // check if this chart type is using the new editor
+        $vis = DatawrapperVisualization::get($chart->getType());
+        if (!empty($vis['svelte_workflow']) && $vis['svelte_workflow'] != 'chart') {
+            $app->redirect('/edit/'.$chart->getId());
+            return;
+        }
+
         // check if path and namespace match
         $path = explode('/', $app->request()->getPath())[1];
         if ($path != $chart->getNamespace()) {
             // and redirect
             $app->redirect('/'.$chart->getNamespace().'/'.$chart->getId().'/visualize');
+            return;
         }
 
         $allThemes = ThemeQuery::create()->allThemesForUser();
