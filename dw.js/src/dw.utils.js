@@ -103,15 +103,15 @@ dw.utils = {
         return _.isFunction(obj.name) ? obj.name() : _.isString(obj.name) ? obj.name : obj;
     },
 
-    getMaxChartHeight: function(el) {        
-        var maxH = $(window).height() - 8;    
+    getMaxChartHeight: function() {
+        var maxH = $(window).height() - 8;
 
         // IE Fix
         if (!$.support.leadingWhitespace) {
             maxH -= 15;
-        }    
+        }
 
-        $('body > *').each(function(i, el) {                 
+        $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase(),
                 cls = $(el).attr('class') || "";
 
@@ -127,7 +127,8 @@ dw.utils = {
                 !hasClass('container') &&
                 !hasClass('noscript') &&
                 !hasClass('hidden') &&
-                !hasClass("filter-ui")) {
+                !hasClass("filter-ui") &&
+                !hasClass("dw-chart-body")) {
 
                 maxH -= $(el).outerHeight(true);
             }

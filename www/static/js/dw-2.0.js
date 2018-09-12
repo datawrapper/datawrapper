@@ -1290,15 +1290,15 @@ dw.utils = {
         return _.isFunction(obj.name) ? obj.name() : _.isString(obj.name) ? obj.name : obj;
     },
 
-    getMaxChartHeight: function(el) {        
-        var maxH = $(window).height() - 8;    
+    getMaxChartHeight: function() {
+        var maxH = $(window).height() - 8;
 
         // IE Fix
         if (!$.support.leadingWhitespace) {
             maxH -= 15;
-        }    
+        }
 
-        $('body > *').each(function(i, el) {                 
+        $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase(),
                 cls = $(el).attr('class') || "";
 
@@ -1314,7 +1314,8 @@ dw.utils = {
                 !hasClass('container') &&
                 !hasClass('noscript') &&
                 !hasClass('hidden') &&
-                !hasClass("filter-ui")) {
+                !hasClass("filter-ui") &&
+                !hasClass("dw-chart-body")) {
 
                 maxH -= $(el).outerHeight(true);
             }
@@ -2097,6 +2098,8 @@ _.extend(dw.visualization.base, {
 
     // called before rendering
     __init: function() {
+        // only for debugging
+        if (!this.__uid) this.__uid = (Math.random()*10000).toFixed();
         this.__renderedDfd = $.Deferred();
         this.__rendered = false;
         this.__colors = {};
