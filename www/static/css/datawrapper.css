@@ -1314,10 +1314,10 @@ body.cms-mode .row.create-nav {
 }
 #iframe-wrapper .resizer-both {
   cursor: se-resize;
-  transform: rotate(35deg);
-  -webkit-transform: rotate(35deg);
-  -ie-transform: rotate(35deg);
-  -moz-transform: rotate(35deg);
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -ie-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
 }
 #iframe-wrapper .info-text {
   position: absolute;
