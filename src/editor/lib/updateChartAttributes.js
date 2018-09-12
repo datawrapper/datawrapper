@@ -32,7 +32,7 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
 
     // check if we need to update chart
     if (changed('metadata.visualize')) {
-        win.__dw.vis.chart().attributes(attrs);
+        // win.__dw.vis.chart().attributes(attrs);
         render = true;
     }
 
@@ -40,6 +40,9 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
         win.location.reload();
         return;
     }
+
+    // make a copy
+    attrs = JSON.parse(JSON.stringify(attrs));
 
     win.__dw.vis.chart().attributes(attrs);
     win.__dw.old_attrs = $.extend(true, {}, attrs);
