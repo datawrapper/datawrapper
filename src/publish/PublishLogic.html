@@ -1,0 +1,20 @@
+<!-- default publish logic: logged in users may publish, guests see sign-in prompt -->
+{#if $user.mayPublish}
+    <App />
+{:elseif !$user.isLoggedIn}
+    <div class="alert alert-info" style="margin-top: 30px">
+        To publish a chart, you need to be signed in to Datawrapper
+    </div>
+    <SignInForm loginForm="1" />
+{:else}
+    THERE IS A DIFFERENT REASON WHY YOU CANNOT PUBLISH
+{/if}
+
+<script>
+    import App from './App.html';
+    import SignInForm from '../signin/SignInForm.html';
+
+    export default {
+        components: { App, SignInForm }
+    }
+</script>
