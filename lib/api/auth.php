@@ -192,3 +192,10 @@ $app->post('/account/invitation/:token', function ($token) use ($app) {
         }
     }
 });
+
+/*
+ * return a list of any available alternative signin methods
+ */
+$app->get('/auth/alternative-signins', function () use ($app) {
+    ok(Hooks::execute(Hooks::ALTERNATIVE_SIGNIN));
+});
