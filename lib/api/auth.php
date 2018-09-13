@@ -3,7 +3,7 @@
 /* get session info */
 $app->get('/account', function() {
     try {
-        $r = DatawrapperSession::toArray();
+        $r = Session::toArray();
         ok($r);
     } catch (Exception $e) {
         error('exception', $e->getMessage());
@@ -12,13 +12,13 @@ $app->get('/account', function() {
 
 /* get current language */
 $app->get('/account/lang', function() use ($app) {
-    ok(DatawrapperSession::getLanguage());
+    ok(Session::getLanguage());
 });
 
 /* set a new language */
 $app->put('/account/lang', function() use ($app) {
     $data = json_decode($app->request()->getBody());
-    DatawrapperSession::setLanguage( $data->lang );
+    Session::setLanguage( $data->lang );
     ok();
 });
 
@@ -30,7 +30,7 @@ $app->post('/auth/login', function() use($app) {
     $user = UserQuery::create()->findOneByEmail($payload->email);
     if (!empty($user) && $user->getDeleted() == false) {
         if ($user->getPwd() === secure_password($payload->pwhash)) {
-            DatawrapperSession::login($user, $payload->keeplogin == true);
+            Session::login($user, $payload->keeplogin == true);
             ok();
         } else {
             Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
@@ -50,9 +50,9 @@ $app->get('/auth/salt', function() use ($app) {
  *logs out the current user
  */
 $app->post('/auth/logout', function() {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     if ($user->isLoggedIn()) {
-        DatawrapperSession::logout();
+        Session::logout();
         ok();
     } else {
         error('not-loggin-in', 'you cannot logout if you\'re not logged in');
@@ -85,7 +85,7 @@ $app->post('/account/reset-password', function() use($app) {
         $protocol = get_current_protocol();
         $passwordResetLink = $protocol . '://' . $GLOBALS['dw_config']['domain'] . '/account/reset-password/' . $token;
 
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_RESET_PASSWORD_EMAIL, $user->getEmail(), $user->guessName(), $passwordResetLink);
+        Hooks::execute(Hooks::SEND_RESET_PASSWORD_EMAIL, $user->getEmail(), $user->guessName(), $passwordResetLink);
 
         ok(__('You should soon receive an email with further instructions.'));
 
@@ -99,7 +99,7 @@ $app->post('/account/reset-password', function() use($app) {
  * endpoint for re-sending the activation link to a user
  */
 $app->post('/account/resend-activation', function() use($app) {
-    $user = DatawrapperSession::getUser();
+    $user = Session::getUser();
     $token = $user->getActivateToken();
     if (!empty($token)) {
         // check how often the activation email has been send
@@ -121,7 +121,7 @@ $app->post('/account/resend-activation', function() use($app) {
         $protocol = get_current_protocol();
         $activationLink = $protocol . '://' . $domain . '/account/activate/' . $token;
 
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_ACTIVATION_EMAIL, $user->getEmail(), 
+        Hooks::execute(Hooks::SEND_ACTIVATION_EMAIL, $user->getEmail(),
           $user->guessName(), $activationLink);
 
         ok(__('The activation email has been send to your email address, again.'));
@@ -150,7 +150,7 @@ $app->post('/account/resend-invitation', function() use($app) {
         $invitationLink = $protocol . '://' . $domain . '/account/invite/' . $token;
         $name           = $user->getEmail();
 
-        DatawrapperHooks::execute(DatawrapperHooks::SEND_INVITE_EMAIL_TO_NEW_USER,
+        Hooks::execute(Hooks::SEND_INVITE_EMAIL_TO_NEW_USER,
             $user->getEmail(), $user->guessName(), $invitationLink);
         ok(__('You should soon receive an email with further instructions.'));
     } else {
@@ -187,7 +187,7 @@ $app->post('/account/invitation/:token', function ($token) use ($app) {
             // $link = 'http://' . $domain;
             // include('../../lib/templates/confirmation-email.php');
             // mail($name, __('Confirmation of account creation') . ' ' . $domain, $confirmation_email, 'From: ' . $from);
-            DatawrapperSession::login($user);
+            Session::login($user);
             ok();
         }
     }
