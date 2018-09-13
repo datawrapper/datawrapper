@@ -515,7 +515,12 @@
         .dataseries {
             li {
                 label { font-weight: 400; }
-                &.selected { background: #e0eaf0; }
+                &.selected {
+                    background: #18a1cd22;
+                }
+                &.selected + li {
+                    border-top-color: #c6d9df;
+                }
             }
         }
     }
