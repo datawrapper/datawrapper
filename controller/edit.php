@@ -103,12 +103,7 @@
                 'dataReadonly' => !$chart->isDataWritable($user),
                 'chartData' => $chart->loadData(),
                 'workflow' => $workflows[$vis['svelte_workflow']],
-                'userArray' => [
-                    'id' => $user->getId(),
-                    'email' => $user->getEmail(),
-                    'isLoggedIn' => $user->isLoggedIn(),
-                    'mayPublish' => $user->mayPublish()
-                ],
+                'userArray' => $user->serialize(),
                 'vis' => $vis,
                 'theme' => ThemeQuery::create()->findPk($chart->getTheme())
             );

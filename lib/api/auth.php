@@ -31,7 +31,7 @@ $app->post('/auth/login', function() use($app) {
     if (!empty($user) && $user->getDeleted() == false) {
         if ($user->getPwd() === secure_password($payload->pwhash)) {
             Session::login($user, $payload->keeplogin == true);
-            ok();
+            ok($user->serialize());
         } else {
             Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
             error('login-invalid', __('The password is incorrect.'));

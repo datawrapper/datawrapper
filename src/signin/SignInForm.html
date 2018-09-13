@@ -29,7 +29,7 @@
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        <input type="checkbox" bind:value="rememberLogin">&nbsp;&nbsp;{__('Remember login?')}
+                        <input type="checkbox" bind:checked="keeplogin">&nbsp;&nbsp;{__('Remember login?')}
                     </label>
                 </div>
             </div>
@@ -37,7 +37,7 @@
         </form>
 
         {#if !resetPassword}
-        <button on:click="login()" class="btn btn-large btn-primary">
+        <button on:click="login(email, password, keeplogin)" class="btn btn-large btn-primary">
             <i class="fa fa-sign-in fa-fw"></i> {__('Login')}
         </button>
         &nbsp; or &nbsp;
@@ -121,6 +121,7 @@
 <script>
     import {__} from '../shared/l10n';
     import {getJSON, postJSON} from '../shared/utils';
+    import CryptoJS from 'crypto-js';
 
     export default {
         helpers: {__},
@@ -155,8 +156,22 @@
         },
 
         methods: {
-            login() {
-
+            login(email, password, keeplogin) {
+                const pwhash = this.encryptPassword(password);
+                postJSON('/api/auth/login',
+                    JSON.stringify({email, pwhash, keeplogin}),
+                    (res) => {
+                        if (res.status == 'ok') {
+                            this.store.set({user: res.data});
+                        } else {
+                            console.log('error', res);
+                            // this.set({
+                            //     resetPassword: false,
+                            //     remoteEmailError: res.message
+                            // });
+                        }
+                    }
+                );
             },
             signUp() {
 
@@ -198,6 +213,10 @@
             resetPassword(event, state) {
                 event.preventDefault();
                 this.set({resetPassword: state});
+            },
+            encryptPassword(pwd) {
+                const SALT = window.dw.backend.__auth_salt;
+                return CryptoJS.HmacSHA256(pwd, SALT).toString();
             }
         },
         data() {
@@ -209,7 +228,7 @@
                 password2: '',
                 remoteEmailError: '',
                 remotePasswordError: '',
-                rememberLogin: true,
+                keeplogin: true,
                 loginForm: true,
                 resetPassword: false,
                 alternativeSignIns: []

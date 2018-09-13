@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "chalk": "^2.3.0",
+    "crypto-js": "^3.1.9-1",
     "d3-dsv": "^1.0.8",
     "d3-queue": "^3.0.7",
     "grunt": "^1.0.1",
