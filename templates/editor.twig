@@ -24,6 +24,7 @@ require(['{{workflow.module}}'], function(mod) {
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
     var getJSON = mod.utils.getJSON;
+
     var themeCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
