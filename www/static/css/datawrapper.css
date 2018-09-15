@@ -1480,7 +1480,7 @@ body.cms-mode .row.create-nav {
   color: #000;
   padding: 8px 2px;
   margin-bottom: 10px;
-  font-weight: 700!important;
+  font-weight: 700;
   font-family: 'Roboto', Helvetica, sans-serif;
 }
 .chart-editor.dw-create-visualize #vis-options .vis-option-type-group label.group-title .fa,

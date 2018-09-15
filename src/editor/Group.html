@@ -1,4 +1,4 @@
-<div class="vis-option-type-group {open?'group-open':''}">
+<div class="vis-option-type-group {open?'group-open':''} {notoggle?'notoggle':''}">
     <label class="group-title" on:click="toggle()">
         {#if !notoggle}
         <i class="fa fa-chevron-up expand-group pull-right"></i>
@@ -12,6 +12,16 @@
     </div>
     {/if}
 </div>
+
+<style lang="less">
+    .vis-option-type-group.notoggle {
+        .group-title {
+            font-size: 18px;
+            font-weight: 400!important;
+            border-top: 0!important;
+        }
+    }
+</style>
 
 <script>
     export default {
