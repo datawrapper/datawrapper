@@ -64,16 +64,17 @@ forcing the switch state to "on" or "off" in case it is disabled.
 
 <style lang="less">
     .vis-option-type-switch {
-        border-bottom: 1px solid #ddd;
+
         padding-bottom: 3px;
         margin-bottom: 7px;
-        &:last-child {
-            border-bottom: none;
-        };
         transition: height 0.2s ease-in-out;
         background: #ffffff00;
         &.highlight {
         }
+    }
+
+    .vis-option-type-switch + .vis-option-type-switch {
+        border-top: 1px solid #ddd;
     }
 
     .switch-content > :first-child {
