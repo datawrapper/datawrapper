@@ -10,6 +10,7 @@ import Dropdown from './Dropdown.html';
 import Switch from './Switch.html';
 import TextArea from './TextArea.html';
 import SelectAxisColumn from './SelectAxisColumn.html';
+import Text from './Text.html';
 import Section from '../editor/Section.html';
 import Group from '../editor/Group.html';
 import Help from '../editor/Help.html';
@@ -17,5 +18,5 @@ import Help from '../editor/Help.html';
 export default {
     Checkbox, Color, ColorPicker, Group, NumberInput, Switch, Dropdown,
     Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea,
-    Help
+    Help, Text
 };
