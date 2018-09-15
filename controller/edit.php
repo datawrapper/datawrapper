@@ -105,6 +105,10 @@
                 'workflow' => $workflows[$vis['svelte_workflow']],
                 'userArray' => $user->serialize(),
                 'vis' => $vis,
+                'chartLocales' => array_map(function($s) {
+                    $s = explode('|', $s);
+                    return ['value'=>$s[0], 'label'=>$s[1]];
+                 }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
                 'theme' => ThemeQuery::create()->findPk($chart->getTheme())
             );
 

@@ -31,7 +31,8 @@ require(['{{workflow.module}}'], function(mod) {
     chart.set({
         writable: true,
         themeData: themeCache['{{theme.id}}'],
-        user: {{userArray|json|raw}}
+        user: {{userArray|json|raw}},
+        chartLocales: {{chartLocales|json|raw}}
     });
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
