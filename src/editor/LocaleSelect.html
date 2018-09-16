@@ -4,6 +4,7 @@
     import Select from '../controls/Select.html';
 
     export default {
+        components: {Select},
         computed: {
             localeOptions({$chartLocales}) {
                 return $chartLocales.map(t => {
@@ -14,7 +15,6 @@
                 })
             }
         },
-        components: {Select}
     }
 
 </script>
