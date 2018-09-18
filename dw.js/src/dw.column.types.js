@@ -93,7 +93,7 @@ dw.column.types.number = function(sample) {
             // normalize number
             if (format[0] != '-') {
                 // remove kilo seperator
-                number = number.replace(new RegExp(format[0], 'g'), '');
+                number = number.replace(new RegExp((format[0] == '.' ? '\\.' : format[0]), 'g'), '');
             }
             if (format[1] != '.') {
                 // replace decimal char w/ point
