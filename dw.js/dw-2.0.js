@@ -1176,7 +1176,7 @@ _.extend(DelimitedParser.prototype, {
         _.each(delimiters, function(delimiter, i) {
             var regex = getDelimiterPatterns(delimiter, me.quoteChar),
                 c = strData.match(regex).length;
-            if  (delimiter == '\t') c *= 1.25;
+            if  (delimiter == '\t') c *= 1.15;
             if (c > maxMatchCount) {
                 maxMatchCount = c;
                 k = i;
