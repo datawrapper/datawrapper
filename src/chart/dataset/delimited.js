@@ -228,6 +228,7 @@ class DelimitedParser {
         delimiters.forEach((delimiter, i) => {
             var regex = getDelimiterPatterns(delimiter, me.quoteChar),
                 c = strData.match(regex).length;
+            if  (delimiter == '\t') c *= 3;
             if (c > maxMatchCount) {
                 maxMatchCount = c;
                 k = i;
