@@ -267,7 +267,7 @@
                 } else {
                     // update existing label
                     slice = me.__slices[o.name];
-                    slice.label.text('<b>'+o.label+'</b>'+value);
+                    slice.label.text('<b class="label-inner">'+o.label+'</b><span class="label-inner">'+value+'</span>');
                     slice.label[lblOutside(o) && c.outside_labels ? 'addClass' : 'removeClass']('outside');
                     slice.label[o.name != o.label ? 'addClass' : 'removeClass']('dw-circle');
                     slice.animate(cx, c.cy - or_pad*0.5, c.or  - or_pad, c.ir, a0, a1, me.theme().duration, me.theme().easing, o.value > 0 ? 1 : 0.5);
