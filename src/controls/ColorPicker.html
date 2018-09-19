@@ -1,53 +1,58 @@
-<:Window on:click='windowClick(event)'/>
-
 <div class="color-picker-cont">
-    <div class="button" ref:button on:click="toggle()">
-        <slot>
-            <div class="base-color-picker color-picker">
-                <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"></div>
-                <span class="caret"></span>
+    <BaseDropdown ref:dropdown>
+        <span slot="button">
+            <slot>
+                <div class="base-color-picker color-picker">
+                    <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"></div>
+                    <span class="caret"></span>
+                </div>
+            </slot>
+        </span>
+        <span slot="content">
+            {#if color}
+            <div class="color-selector">
+                <div class="palette">
+                    {#each palette as c}
+                    <div class="color" on:click="set({color:c})" on:dblclick="set({color:c, visible:false})" data-color="{c}" style="background: {c}"></div>
+                    {/each}
+                </div>
+
+                <div class="color-axis lightness">
+                    {#each gradient_l as c}
+                    <div class="color {c == nearest_l?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+                    {/each}
+                </div>
+                <div class="color-axis saturation">
+                    {#each gradient_c as c}
+                    <div class="color {c == nearest_c?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+                    {/each}
+                </div>
+                <div class="color-axis hue">
+                    {#each gradient_h as c}
+                    <div class="color {c == nearest_h?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
+                    {/each}
+                </div>
+
+                <div class="footer">
+                    <input type="text" style="background: {color}; border-color: {borderColor}; color: {textColor}" bind:value="color" class="hex">
+                    <button class="btn btn-small ok" on:click="set({visible:false})"><i class="icon-ok"></i></button>
+                    <div class="color selected" style="background: {color}"></div>
+                </div>
             </div>
-        </slot>
-    </div>
-    {#if visible && color}
-    <div class="color-selector">
-        <div class="palette">
-            {#each palette as c}
-            <div class="color" on:click="set({color:c})" on:dblclick="set({color:c, visible:false})" data-color="{c}" style="background: {c}"></div>
-            {/each}
-        </div>
+            {/if}
+        </span>
+    </BaseDropdown>
 
-        <div class="color-axis lightness">
-            {#each gradient_l as c}
-            <div class="color {c == nearest_l?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
-            {/each}
-        </div>
-        <div class="color-axis saturation">
-            {#each gradient_c as c}
-            <div class="color {c == nearest_c?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
-            {/each}
-        </div>
-        <div class="color-axis hue">
-            {#each gradient_h as c}
-            <div class="color {c == nearest_h?'selected':''}" on:click="set({color:c})" data-color="{c}" style="background: {c}"></div>
-            {/each}
-        </div>
-
-        <div class="footer">
-            <input type="text" style="background: {color}; border-color: {borderColor}; color: {textColor}" bind:value="color" class="hex">
-            <button class="btn btn-small ok" on:click="set({visible:false})"><i class="icon-ok"></i></button>
-            <div class="color selected" style="background: {color}"></div>
-        </div>
-    </div>
-    {/if}
 </div>
 <script>
 
     import chroma from 'chroma';
+    import _isUndefined from 'underscore-es/isUndefined';
 
-    let ref;
+    import BaseDropdown from './BaseDropdown.html';
 
     export default {
+        components: { BaseDropdown },
         computed: {
             palette({$themeData}) {
                 return $themeData.colors.palette;
@@ -101,45 +106,14 @@
             return {
                 palette: [],
                 color: '#63c0de',
-                visible: false
             };
-        },
-        oncreate() {
-            const me = this;
-            ref = this;
-            // window.document.body.addEventListener('click', this.bodyClick);
-        },
-        ondestroy() {
-            // window.document.body.removeEventListener('click', this.bodyClick);
-        },
-        methods: {
-            // bodyClick (event) {
-            //     if (!ref.get) return;
-            //     const {visible} = ref.get();
-            //     let el = event.target;
-            //     if (visible) {
-            //         while (!el.classList.contains('color-picker-cont') &&
-            //             el.nodeName.toLowerCase() != 'body') {
-            //             el = el.parentNode;
-            //         }
-            //         ref.set({visible: el != window.document.body});
-            //     }
-            // },
-            toggle() {
-                const {visible} = this.get();
-                this.set({visible: !visible});
-            },
-            windowClick(event) {
-                if (!this.refs) return;
-                if (event.target == this.refs.button) return;
-                this.set({visible:false});
-            }
         },
         onstate({changed, current, previous}) {
             if (changed.color) {
                 try {
                     const niceHex = chroma(current.color).hex();
-                    if (current.visible && niceHex != previous.color) {
+                    const {visible} = this.refs.dropdown.get();
+                    if (visible && niceHex != previous.color) {
                         this.fire('change', current.validColor);
                     }
                     if (current.validColor != current.color) {
@@ -166,7 +140,7 @@
 
     function spread(center, width, num, num2, exp) {
         var r = [center], s = width / num, a = 0;
-        num2 = _.isUndefined(num2) ? num : num2;
+        num2 = _isUndefined(num2) ? num : num2;
         exp = exp || 1;
         while (num-- > 0) {
             a += s;
@@ -182,20 +156,16 @@
 .color-picker-cont { display: inline-block; }
 input.hex { margin-bottom:0!important; }
 
-button * {
-    pointer-events: none;
-}
-
 .color-picker {
     width: 2em;
     height: 24px;
     border: 2px solid #fff;
-        border-right-color: rgb(255, 255, 255);
-        border-right-style: solid;
-        border-right-width: 2px;
+    border-right-color: rgb(255, 255, 255);
+    border-right-style: solid;
+    border-right-width: 2px;
     border-radius: 4px;
     border-right: 20px solid #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)!important;
     position: relative;
     display: inline-block;
     margin-right: 10px;
@@ -206,6 +176,7 @@ button * {
     box-shadow: 3px 3px 3px #eee;
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.2);
+    top: 31px;
 }
 
 .the-color {

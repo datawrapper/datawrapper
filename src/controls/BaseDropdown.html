@@ -1,0 +1,38 @@
+<:Window on:click='windowClick(event)'/>
+
+<div style="position: relative; display: inline-block;">
+    <div ref:button on:click="toggle()" class="base-drop-btn">
+        <slot name="button">Button</slot>
+    </div>
+    {#if visible}
+    <slot name="content">Content</slot>
+    {/if}
+</div>
+<style>
+    .base-drop-btn {
+        cursor: pointer;
+    }
+    .base-drop-btn :global(*) {
+        pointer-events: none;
+    }
+</style>
+<script>
+    export default {
+        data() {
+            return { visible: false };
+        },
+        methods: {
+            toggle() {
+                const {visible} = this.get();
+                console.log('toggle', !visible);
+                this.set({visible: !visible});
+            },
+            windowClick(event) {
+                if (event.target == this.refs.button) return;
+                // this is a hack for the colorpicker, need to find out how to get rid of
+                if (event.target.classList.contains('hex')) return;
+                this.set({visible:false});
+            }
+        }
+    }
+</script>
