@@ -2,7 +2,7 @@
 TODO for later:
 * allow limiting resizing to x or y direction
 -->
-<div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
+<div ref:cont style="position:relative;">
     <div id="iframe-wrapper" class="{loading?'loading':''} {resizable?'resizable' :''} {resizing?'resizing' :''}" style="width:{width}px;height:{height}px; overflow:visible;">
         <iframe title="chart-preview" ref:iframe src="{url}"
             on:load="iframeLoaded(event)"
@@ -182,6 +182,7 @@ TODO for later:
                 startWidth = this.get().width;
                 startHeight = this.get().height;
                 this.set({resizing:true});
+                this.fire('beforeResize');
                 window.document.addEventListener('mousemove', doDrag);
                 window.document.addEventListener('mouseup', stopDrag);
             }
