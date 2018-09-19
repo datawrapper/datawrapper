@@ -24,7 +24,9 @@ function check_path_permissions() {
         $msg = '<h2>The following folders on your server need to be writable:</h2><ul>';
 
         foreach ($paths as $path) {
-            $msg .= '<li><code>'.htmlspecialchars($path, ENT_QUOTES, 'UTF-8').'</code></li>';
+            if (!is_writable($path)) {
+                $msg .= '<li><code>'.htmlspecialchars($path, ENT_QUOTES, 'UTF-8').'</code></li>';
+            }
         }
 
         $msg .= '</ul>';
