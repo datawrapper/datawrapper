@@ -28,12 +28,12 @@
             passed ({index, active_i, maxStep}) {
                 return index < maxStep && index != active_i;
             },
-            class_ ({step, index, active, maxStep, passed}) {
+            class_ ({step, index, active, passed, $lastEditStep}) {
                 const list = [];
                 if (step.readonly) list.push('readonly');
                 if (active == step.id) list.push('active');
                 else {
-                    if (index > maxStep) list.push('unseen');
+                    if (index > $lastEditStep+1) list.push('unseen');
                     if (passed) list.push('passed');
                 }
                 return list.join(' ');

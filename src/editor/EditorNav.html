@@ -1,7 +1,7 @@
 <div class="create-nav">
     {#each steps as step,i}
     <EditorNavStep on:select="select(step, i)"
-        index="{i+1}" bind:step bind:steps bind:active bind:maxStep />
+        index="{i+1}" bind:step bind:steps bind:active />
     {/each}
 </div>
 <style type="text/css">
@@ -13,15 +13,22 @@
 <script>
 
     import EditorNavStep from './EditorNavStep.html';
+    import _findWhere from 'underscore-es/findWhere';
 
     export default {
         components: { EditorNavStep },
         methods: {
             select(step, index) {
                 this.set({active: step.id});
-                const {maxStep} = this.get();
-                this.set({ maxStep: Math.max(maxStep, index) });
+                const {lastEditStep} = this.store.get();
+                this.store.set({lastEditStep: Math.max(lastEditStep, index+1)})
             }
+        },
+        oncreate() {
+            const {active, steps} = this.get();
+            const {lastEditStep} = this.store.get();
+            const step = _findWhere(steps, {id:active});
+            this.store.set({lastEditStep: Math.max(lastEditStep, steps.indexOf(step)+1)});
         },
         data() {
             return {
