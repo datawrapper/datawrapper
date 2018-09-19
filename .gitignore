@@ -40,3 +40,4 @@ lib/core/propel-gen
 dw.js/yarn.lock
 .reify-cache
 .gitignore-global
+tmp/*
