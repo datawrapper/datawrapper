@@ -1,3 +1,5 @@
+<:Window on:click='windowClick(event)'/>
+
 <div class="control-group vis-option-type-select">
     <label class="control-label">
         {@html label }
@@ -5,11 +7,11 @@
 
     <div class="controls form-inline {disabled? 'disabled' :''}">
         <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <button ref:button on:click="toggle(event)" class="btn dropdown-toggle">
                 {@html currentLabel}
                 <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
+            </button>
+            <ul class="dropdown-menu" style="display:{visible?'block':'none'};">
                 {#if options.length}
                     {#each options as opt}
                         <li class="{value==opt.value?'selected':''}">
@@ -32,6 +34,9 @@
     span.caret {
         margin-left: 5px;
     }
+    button * {
+        pointer-events: none;
+    }
 </style>
 
 <script type="text/javascript">
@@ -45,16 +50,25 @@ export default {
         }
     },
     methods: {
+        toggle() {
+            const {visible} = this.get();
+            this.set({visible: !visible});
+        },
         select(event, opt) {
-            console.log('dropdown.select', event, opt);
             event.preventDefault();
             this.set({ value: opt.value });
             this.fire('change', opt.value);
+        },
+        windowClick(event) {
+            if (!this.refs) return;
+            if (event.target == this.refs.button) return;
+            this.set({visible:false});
         }
     },
     data () {
         return {
             disabled: false,
+            visible: false,
             width: 'auto',
             options: [],
             optgroups: [],

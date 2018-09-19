@@ -1,7 +1,7 @@
-<:Window on:click='set({visible:false})'/>
+<:Window on:click='windowClick(event)'/>
 
-<div class="color-picker-cont" on:click='event.stopPropagation()'>
-    <div on:click="set({visible:true})">
+<div class="color-picker-cont">
+    <div class="button" ref:button on:click="toggle()">
         <slot>
             <div class="base-color-picker color-picker">
                 <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"></div>
@@ -107,23 +107,32 @@
         oncreate() {
             const me = this;
             ref = this;
-            window.document.body.addEventListener('click', this.bodyClick);
+            // window.document.body.addEventListener('click', this.bodyClick);
         },
         ondestroy() {
-            window.document.body.removeEventListener('click', this.bodyClick);
+            // window.document.body.removeEventListener('click', this.bodyClick);
         },
         methods: {
-            bodyClick (event) {
-                if (!ref.get) return;
-                const {visible} = ref.get();
-                let el = event.target;
-                if (visible) {
-                    while (!el.classList.contains('color-picker-cont') &&
-                        el.nodeName.toLowerCase() != 'body') {
-                        el = el.parentNode;
-                    }
-                    ref.set({visible: el != window.document.body});
-                }
+            // bodyClick (event) {
+            //     if (!ref.get) return;
+            //     const {visible} = ref.get();
+            //     let el = event.target;
+            //     if (visible) {
+            //         while (!el.classList.contains('color-picker-cont') &&
+            //             el.nodeName.toLowerCase() != 'body') {
+            //             el = el.parentNode;
+            //         }
+            //         ref.set({visible: el != window.document.body});
+            //     }
+            // },
+            toggle() {
+                const {visible} = this.get();
+                this.set({visible: !visible});
+            },
+            windowClick(event) {
+                if (!this.refs) return;
+                if (event.target == this.refs.button) return;
+                this.set({visible:false});
             }
         },
         onstate({changed, current, previous}) {
@@ -172,6 +181,10 @@
 <style>
 .color-picker-cont { display: inline-block; }
 input.hex { margin-bottom:0!important; }
+
+button * {
+    pointer-events: none;
+}
 
 .color-picker {
     width: 2em;
