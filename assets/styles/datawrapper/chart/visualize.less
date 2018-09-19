@@ -244,7 +244,7 @@
                 // }
                 padding: 8px 2px;
                 margin-bottom: 10px;
-                font-weight: 700!important;
+                font-weight: 700;
 
                 font-family: @base-font;
                 .fa {
@@ -515,7 +515,12 @@
         .dataseries {
             li {
                 label { font-weight: 400; }
-                &.selected { background: #e0eaf0; }
+                &.selected {
+                    background: #18a1cd22;
+                }
+                &.selected + li {
+                    border-top-color: #c6d9df;
+                }
             }
         }
     }

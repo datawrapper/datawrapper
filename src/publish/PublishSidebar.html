@@ -1,17 +1,25 @@
 <!-- assuming we're already inside a <div class="span5"> -->
 
-<App />
-
+<svelte:component this="{PublishLogic}" />
 
 <script>
-	export default {
-		components: {
-			App: './App.html'
-		},
-		data() {
-			return {
-				user: null
-			}
-		}
-	}
+
+    import PublishLogic from './PublishLogic.html';
+
+    export default {
+        methods: {
+            setPublishLogic(app) {
+                this.set({PublishLogic: app});
+            },
+            reset() {
+                this.set({PublishLogic});
+            }
+        },
+        data() {
+            return {
+                PublishLogic
+            }
+        }
+    }
+
 </script>

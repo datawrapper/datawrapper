@@ -37,7 +37,9 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
     }
 
     if (needReload) {
-        win.location.reload();
+        setTimeout(() => {
+            win.location.reload();
+        }, 1000)
         return;
     }
 

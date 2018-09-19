@@ -300,7 +300,7 @@
                 _.each(me.__labels[column.name()], function(lbl) {
                     if (lbl.hasClass('value')) {
                         fill = getFill(column, lbl);
-                        if (lbl.hasClass('inside') && chroma(fill).lab()[0] < 50) { lbl.addClass('inverted'); }
+                        if (lbl.hasClass('inside') && chroma(fill).lab()[0] < 70) { lbl.addClass('inverted'); }
                     }
                 });
             });

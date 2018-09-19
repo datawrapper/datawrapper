@@ -39,3 +39,4 @@ lib/core/propel-gen
 .dgsstoken
 dw.js/yarn.lock
 .reify-cache
+.gitignore-global

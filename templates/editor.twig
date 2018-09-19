@@ -24,12 +24,15 @@ require(['{{workflow.module}}'], function(mod) {
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
     var getJSON = mod.utils.getJSON;
+
     var themeCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
     chart.set({
         writable: true,
-        themeData: themeCache['{{theme.id}}']
+        themeData: themeCache['{{theme.id}}'],
+        user: {{userArray|json|raw}},
+        chartLocales: {{chartLocales|json|raw}}
     });
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
@@ -42,7 +45,7 @@ require(['{{workflow.module}}'], function(mod) {
 
     var lastHash = null;
 
-    window.chart = chart;
+    {% if user.isAdmin %}window.chart = chart;{% endif %}
 
     chart.on('state', ({changed, current, previous}) => {
         // observe theme changes and load new theme data if needed
@@ -63,7 +66,8 @@ require(['{{workflow.module}}'], function(mod) {
             }
         }
 
-        if (previous && changed.title || changed.theme || changed.type || changed.metadata) {
+        if (previous && changed.title || changed.theme || changed.type ||
+            changed.metadata || changed.language || changed.lastEditStep) {
             chart.store();
         }
     });

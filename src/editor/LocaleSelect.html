@@ -1,0 +1,20 @@
+<Select label="Locale" options="{localeOptions}" width="200px" bind:value="$language" />
+
+<script>
+    import Select from '../controls/Select.html';
+
+    export default {
+        components: {Select},
+        computed: {
+            localeOptions({$chartLocales}) {
+                return $chartLocales.map(t => {
+                    return {
+                        value: t.value,
+                        label: `${t.label} (${t.value})`
+                    };
+                })
+            }
+        },
+    }
+
+</script>

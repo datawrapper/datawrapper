@@ -24,11 +24,24 @@
         ];
     });
 
+    function editor_check_access() {
+        if (!DatawrapperSession::getUser()->isAdmin()) {
+            // return $app->redirect('/');
+        }
+        $cfg = $GLOBALS['dw_config'];
+        $user = DatawrapperSession::getUser();
+        if (!$user->isLoggedIn() && isset($cfg['prevent_guest_charts']) && $cfg['prevent_guest_charts']) {
+            error_access_denied();
+
+            die();
+        }
+    }
+
+
     // GET route for the new chart editor
     $app->get('/create(/:workflow)?', function($wfid='') use ($app, $get_workflows) {
-        if (!DatawrapperSession::getUser()->isAdmin()) {
-            return $app->redirect('/');
-        }
+
+        editor_check_access();
 
         $workflows = $get_workflows();
         if (!empty($wfid)) {
@@ -37,7 +50,8 @@
             }
             // we have a workflow!
             // create a new chart
-            $chart = ChartQuery::create()->createEmptyChart(DatawrapperSession::getUser());
+            $chart = ChartQuery::create()
+                ->createEmptyChart(DatawrapperSession::getUser());
             // set type to default type of workflow
             $chart->setType($workflows[$wfid]['default_type']);
             $chart->save();
@@ -63,9 +77,7 @@
     $app->get('/edit/:chart_id(/:step)?', function ($chart_id, $step='') use ($app, $get_workflows) {
         disable_cache($app);
 
-        if (!DatawrapperSession::getUser()->isAdmin()) {
-            return $app->redirect('/');
-        }
+        editor_check_access();
 
         $chart = ChartQuery::create()->findPK($chart_id);
 
@@ -91,8 +103,12 @@
                 'dataReadonly' => !$chart->isDataWritable($user),
                 'chartData' => $chart->loadData(),
                 'workflow' => $workflows[$vis['svelte_workflow']],
-                'user' => $user,
+                'userArray' => $user->serialize(),
                 'vis' => $vis,
+                'chartLocales' => array_map(function($s) {
+                    $s = explode('|', $s);
+                    return ['value'=>$s[0], 'label'=>$s[1]];
+                 }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
                 'theme' => ThemeQuery::create()->findPk($chart->getTheme())
             );
 

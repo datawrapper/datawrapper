@@ -256,8 +256,8 @@
                 return css;
             }
 
-            
-            
+
+
 
             // create label DIV element
             lbl.css($.extend({}, attrs.css, position()));
@@ -535,10 +535,10 @@
 
         setKeyColor: function(key, color) {
             var me = this;
-            
+
             if (!me.__customColors) me.__customColors = {};
-            
-            
+
+
             me.__customColors[key] = color;
         },
 
@@ -578,7 +578,7 @@
             var c = chroma.color(col),
                 bg = chroma.color(this.theme().colors.background);
             return bg.lab()[0] > 60 ?  // check if background is whitish
-                c.lab()[0] < 80 :  //
+                c.lab()[0] < 70 :  //
                 c.lab()[0] > 60;
         },
 
@@ -614,7 +614,7 @@
                     top: posTop
                 });
 
-                
+
 
                 l.append(div);
                 lbl = me.label(xo + 15, (posTop-1), item.label, {
@@ -649,7 +649,7 @@
 
         optimizeLabelPositions: function(labels, pad, valign, ymin, ymax) {
             if (!labels.length) return;
-            
+
             var i = 1,
                 c = valign == 'top' ? 0 : valign == 'middle' ? 0.5 : 1,
                 min_y = ymin === undefined ? labels[0].el.parent().offset().top : ymin,

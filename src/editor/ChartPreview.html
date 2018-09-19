@@ -1,9 +1,12 @@
+<!--
+TODO for later:
+* allow limiting resizing to x or y direction
+-->
 <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
-    {#if loading}
-    loading...
-    {/if}
-    <div id="iframe-wrapper" class="{resizable?'resizable' :''} {resizing?'resizing' :''}" style="width:{width}px;height:{height}px; overflow:visible;">
-        <iframe title="chart-preview" ref:iframe src="{url}" id="iframe-vis"
+    <div id="iframe-wrapper" class="{loading?'loading':''} {resizable?'resizable' :''} {resizing?'resizing' :''}" style="width:{width}px;height:{height}px; overflow:visible;">
+        <iframe title="chart-preview" ref:iframe src="{url}"
+            on:load="iframeLoaded(event)"
+            id="iframe-vis"
             allowfullscreen
             webkitallowfullscreen
             mozallowfullscreen
@@ -14,18 +17,44 @@
             <i class="fa fa-arrows-h"></i>
         </div>
         {/if}
-
     </div>
-
     <!-- {{ hook('visualize_before_resizer') }}
     {{ hook('render_resize_control') }} -->
-
     <div id="notifications"></div>
 </div>
 
 <style>
 #iframe-wrapper {
     margin: 0 auto;
+}
+#iframe-wrapper.loading {
+    opacity: 1;
+}
+#iframe-wrapper.loading:before {
+    display: block;
+    content: '';
+    position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left:0;
+    opacity: 0.8;
+    background: #eaeaea;
+}
+#iframe-wrapper.loading:after {
+    content: 'loading...';
+    display: block;
+    position: absolute;
+    top:50%;
+    right: 0;
+    bottom: 0;
+    font-size: 20px;
+    left:0;
+    text-align: center;
+    line-height: 0;
+}
+#iframe-wrapper.loading iframe {
+    filter: blur(5px);
 }
 .resizing iframe {
     pointer-events: none;
@@ -45,27 +74,6 @@
     let startWidth;
     let startHeight;
 
-    function doDrag(event) {
-        preview.set({
-            width: startWidth + (event.clientX - startX)*2,
-            height: startHeight + event.clientY - startY
-        });
-        event.preventDefault();
-        return false;
-    }
-
-    function stopDrag() {
-        window.document.removeEventListener('mousemove', doDrag);
-        window.document.removeEventListener('mouseup', stopDrag);
-        preview.set({resizing:false});
-        const {width, height} = preview.get();
-        const bbox = preview.refs.iframe.contentDocument.querySelector('.dw-chart-body').getBoundingClientRect();
-        const maxH = preview.refs.iframe.contentWindow.dw.utils.getMaxChartHeight();
-        const [chartWidth, chartHeight] = [bbox.width, maxH];
-        preview.fire('resize', {width,height,chartWidth, chartHeight});
-    }
-
-
     export default {
         computed: {
             url({$id}) {
@@ -75,10 +83,13 @@
         data() {
             return {
                 loading: true,
+                // resize logic
+                width: 500,
+                height: 500,
                 resizable: true,
                 resizing: false,
-                width: 500,
-                height: 500
+                // inline editing
+                editable: true,
             }
         },
         oncreate() {
@@ -122,9 +133,16 @@
                     }
                 });
             });
-
         },
         methods: {
+            iframeLoaded() {
+                const {editable} = this.get();
+                if (editable) {
+                    this.getContext((win,doc) => {
+                        activateInlineEditing(doc, this.store);
+                    });
+                }
+            },
             saved() {
                 const win = iframe.contentWindow;
                 if (win.__dw && win.__dw.saved) {
@@ -167,6 +185,78 @@
                 window.document.addEventListener('mousemove', doDrag);
                 window.document.addEventListener('mouseup', stopDrag);
             }
+        }
+    }
+
+    function doDrag(event) {
+        preview.set({
+            width: startWidth + (event.clientX - startX)*2,
+            height: startHeight + event.clientY - startY
+        });
+        event.preventDefault();
+        return false;
+    }
+
+    function stopDrag() {
+        window.document.removeEventListener('mousemove', doDrag);
+        window.document.removeEventListener('mouseup', stopDrag);
+        preview.set({resizing:false});
+        const {width, height} = preview.get();
+        const bbox = preview.refs.iframe.contentDocument.querySelector('.dw-chart-body').getBoundingClientRect();
+        const maxH = preview.refs.iframe.contentWindow.dw.utils.getMaxChartHeight();
+        const [chartWidth, chartHeight] = [bbox.width, maxH];
+        preview.fire('resize', {width,height,chartWidth, chartHeight});
+    }
+
+    function activateInlineEditing(doc, chart) {
+
+        makeElementEditable({
+            el: doc.querySelector('.chart-title'),
+            onchange(lbl) {
+                chart.set({passiveMode: true});
+                chart.set({title: lbl});
+                chart.set({passiveMode: false});
+            }
+        });
+
+        makeElementEditable({
+            el: doc.querySelector('.chart-intro'),
+            onchange: sync('describe.intro')
+        });
+
+        makeElementEditable({
+            el: doc.querySelector('.dw-chart-notes'),
+            onchange: sync('annotate.notes')
+        });
+
+        function sync(key) {
+            return function(txt) {
+                chart.set({passiveMode: true});
+                chart.setMetadata(key, txt);
+                chart.set({passiveMode: false});
+            };
+        }
+
+        function makeElementEditable({el, onchange}) {
+            if (!el) return;
+            let last_value = false;
+
+            el.setAttribute('contenteditable', true);
+
+            el.addEventListener('focus', () => {
+                // save old value for ESC key
+                last_value = el.innerHTML;
+            });
+
+            el.addEventListener('keyup', (evt) => {
+                if (evt.keyCode == 27) {
+                    evt.preventDefault();
+                    // escape key, revert last value
+                    el.innerHTML = last_value;
+                    el.blur();
+                }
+                onchange(el.innerHTML.replace(/(<br>)+$/g, ''));
+            });
         }
     }
 

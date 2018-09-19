@@ -498,7 +498,7 @@ dw.column.types.number = function(sample) {
             // normalize number
             if (format[0] != '-') {
                 // remove kilo seperator
-                number = number.replace(format[0], '');
+                number = number.replace(new RegExp((format[0] == '.' ? '\\.' : format[0]), 'g'), '');
             }
             if (format[1] != '.') {
                 // replace decimal char w/ point
@@ -548,7 +548,9 @@ dw.column.types.number = function(sample) {
         },
 
         isValid: function(val) {
-            return val === "" || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
+            return val === "" ||
+                naStrings[String(val).toLowerCase()] ||
+                _.isNumber(type.parse(val));
         },
 
         ambiguousFormats: function() {
@@ -1174,6 +1176,7 @@ _.extend(DelimitedParser.prototype, {
         _.each(delimiters, function(delimiter, i) {
             var regex = getDelimiterPatterns(delimiter, me.quoteChar),
                 c = strData.match(regex).length;
+            if  (delimiter == '\t') c *= 1.15;
             if (c > maxMatchCount) {
                 maxMatchCount = c;
                 k = i;

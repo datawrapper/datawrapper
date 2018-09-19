@@ -156,13 +156,15 @@ class User extends BaseUser {
      * sensitive information than $user->toArray()
      */
     public function serialize() {
-        $res = array(
+        $res = [
             'id' => $this->getId(),
             'email' => $this->getEmail(),
             'name' => $this->getName(),
             'website' => $this->getWebsite(),
             'socialmedia' => $this->getSmProfile(),
-        );
+            'isLoggedIn' => $this->isLoggedIn(),
+            'mayPublish' => $this->mayPublish()
+        ];
 
         if ($this->getCurrentOrganization() != null) {
             $res['organization'] = $this->getCurrentOrganization()->serialize();
