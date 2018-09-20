@@ -3221,9 +3221,6 @@ ul.options li i:first-child {
 form.well form {
   margin: 0;
 }
-.well {
-  background: #f2f2f2;
-}
 .well hr {
   border-top-color: #ccc;
   border-bottom-color: #fff;
