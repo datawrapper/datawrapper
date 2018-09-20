@@ -30,20 +30,27 @@ TODO for later:
 #iframe-wrapper.loading {
     opacity: 1;
 }
-#iframe-wrapper.loading:before {
+#iframe-wrapper:before {
+    pointer-events: none;
     display: block;
     content: '';
     position: absolute;
-    top:0;
-    right: 0;
-    bottom: 0;
-    left:0;
-    opacity: 0.8;
-    background: #eaeaea;
+    top:-1px;
+    right: -1px;
+    bottom: -1px;
+    left:-1px;
+    background: #f9f9f9;
+    background: #f3f3f3;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+#iframe-wrapper.loading:before {
+    opacity: 0.95;
 }
 #iframe-wrapper.loading:after {
     content: 'loading...';
     display: block;
+    color: #999;
     position: absolute;
     top:50%;
     right: 0;
@@ -54,7 +61,7 @@ TODO for later:
     line-height: 0;
 }
 #iframe-wrapper.loading iframe {
-    filter: blur(5px);
+    /*filter: blur(5px);*/
 }
 .resizing iframe {
     pointer-events: none;
