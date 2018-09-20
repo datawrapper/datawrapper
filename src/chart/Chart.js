@@ -150,6 +150,15 @@ class Chart extends Store {
         return copy;
     }
 
+    passiveMode() {
+        this.set({ passiveMode:true });
+        setTimeout(() => this.set({passiveMode:false}), 500);
+    }
+
+    isPassive() {
+        return this.get().passiveMode;
+    }
+
 }
 
 Chart.prototype.observeDeep = observeDeep;
