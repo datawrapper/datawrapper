@@ -4271,6 +4271,7 @@
 
 	function data$9() {
 	    return {
+	        hasHelp: false,
 	        disabled_msg: '',
 	        disabled_state: 'auto',
 	        disabled: false,

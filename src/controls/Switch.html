@@ -59,8 +59,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
     {#if !disabled && value}
         <div transition:slide>
             <div class="switch-content">
-                <slot>
-                </slot>
+                <slot></slot>
             </div>
         </div>
     {/if}
@@ -200,6 +199,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         },
         data() {
             return {
+                hasHelp: false,
                 disabled_msg: '',
                 disabled_state: 'auto',
                 disabled: false,
