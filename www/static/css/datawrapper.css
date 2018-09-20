@@ -2364,6 +2364,11 @@ body.cms-mode .row.create-nav {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 300;
 }
+.chart-editor .mini-help {
+  font-size: 12px;
+  color: #ababab;
+  font-weight: 400;
+}
 .dw .create-nav > * {
   background: #e5e5e5;
   position: relative;
@@ -3220,6 +3225,12 @@ ul.options li i:first-child {
 }
 form.well form {
   margin: 0;
+}
+.well {
+  box-shadow: inset 0px 2px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid #dddbdb;
+  border-right-color: #efefef;
+  border-bottom-color: #efefef;
 }
 .well hr {
   border-top-color: #ccc;
