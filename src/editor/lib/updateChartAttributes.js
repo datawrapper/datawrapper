@@ -14,7 +14,7 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
     let render = forceRender;
     let needReload = false;
 
-    const requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'];
+    const requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes'];
 
     requiresReload.forEach(function(key) {
         if (changed(key)) {
