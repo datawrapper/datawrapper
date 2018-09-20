@@ -21,6 +21,8 @@ const storeChanges = _debounce((chart, callback) => {
     });
 }, 1000);
 
+import { observeDeep } from 'svelte-extras';
+
 class Chart extends Store {
 
     // load the dataset
@@ -147,7 +149,10 @@ class Chart extends Store {
         });
         return copy;
     }
+
 }
+
+Chart.prototype.observeDeep = observeDeep;
 
 export default Chart;
 
