@@ -47,6 +47,10 @@ require(['{{workflow.module}}'], function(mod) {
 
     {% if user.isAdmin %}window.chart = chart;{% endif %}
 
+    var editHistory = [];
+    var dontPush = false;
+    var historyPos = 0;
+
     chart.on('state', ({changed, current, previous}) => {
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
@@ -69,6 +73,24 @@ require(['{{workflow.module}}'], function(mod) {
         if (previous && changed.title || changed.theme || changed.type ||
             changed.metadata || changed.language || changed.lastEditStep) {
             chart.store();
+            if (!dontPush) {
+                const s = JSON.stringify(chart.serialize());
+                if (editHistory[0] != s) editHistory.unshift(s);
+                editHistory.length = Math.min(editHistory.length, 10);
+                historyPos = 0;
+            }
+        }
+    });
+
+    window.addEventListener('keypress', function(evt) {
+        if (evt.key == 'z' && evt.ctrlKey) {
+            historyPos++;
+            console.log(editHistory.length, editHistory);
+            if (editHistory[historyPos]) {
+                dontPush = true;
+                chart.set(JSON.parse(editHistory[historyPos]));
+                dontPush = false;
+            }
         }
     });
 });
