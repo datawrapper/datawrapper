@@ -88,6 +88,8 @@
                         if (_.isDate(column.val(r))) cell_content += column.val(r).getTime();
                         cell_content += '</span>';
                     }
+
+                    if (cell_content==null) cell_content="";
                     td = $('<td>'+replace(cell_content)+'</td>');
                     if (isHighlighted(column)) {
                         td.addClass('highlight');
