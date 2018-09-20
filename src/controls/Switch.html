@@ -38,6 +38,11 @@ forcing the switch state to "on" or "off" in case it is disabled.
 -->
 
 <div class="control-group vis-option-group vis-option-type-switch {highlight?'highlight':''}">
+    {#if hasHelp}
+    <Help>
+        <slot name="help"></slot>
+    </Help>
+    {/if}
     <label class="switch-outer {disabled? 'disabled' :''}" style="padding-left: 40px">
         <label class="switch">
             <input class="{disabled && disabled_state == 'on' ? 'disabled-force-checked' : disabled && disabled_state == 'off' ? 'disabled-force-unchecked' : ''}" disabled="{disabled}" bind:checked="value "type="checkbox"><span class="slider round"></span>
@@ -175,9 +180,16 @@ forcing the switch state to "on" or "off" in case it is disabled.
 
 <script>
     import slide from 'svelte-transitions-slide';
+    import Help from '../editor/Help.html';
 
     export default {
         transitions: { slide },
+        components: { Help },
+        oncreate() {
+            this.set({
+                hasHelp: !!this.options.slots.help
+            });
+        },
         onstate({changed, current}) {
             if (changed.value && current.value) {
                 this.set({highlight:true});

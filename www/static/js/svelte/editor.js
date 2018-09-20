@@ -2804,6 +2804,35 @@
 	}
 	function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', "include", body, callback); }
 
+	function getNestedValue(obj, parts) {
+	    for (var i = 0; i < parts.length; i += 1) {
+	        if (!obj)
+	            return undefined;
+	        obj = obj[parts[i]];
+	    }
+	    return obj;
+	}
+	function observeDeep(keypath, callback, opts) {
+	    var parts = keypath.replace(/\[(\d+)\]/g, '.$1').split('.');
+	    var key = parts[0];
+	    var fn = callback.bind(this);
+	    var last = getNestedValue(this.get(), parts);
+	    if (!opts || opts.init !== false)
+	        fn(last);
+	    return this.on(opts && opts.defer ? 'update' : 'state', function (_a) {
+	        var changed = _a.changed, current = _a.current, previous = _a.previous;
+	        if (changed[key]) {
+	            var value = getNestedValue(current, parts);
+	            if (value !== last ||
+	                typeof value === 'object' ||
+	                typeof value === 'function') {
+	                fn(value, last);
+	                last = value;
+	            }
+	        }
+	    });
+	}
+
 	const storeChanges = _debounce((chart, callback) => {
 	    const state = chart.serialize();
 	    putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
@@ -2937,7 +2966,10 @@
 	        });
 	        return copy;
 	    }
+
 	}
+
+	Chart$1.prototype.observeDeep = observeDeep;
 
 	function is_equal(a, b) {
 	    return JSON.stringify(a) == JSON.stringify(b);
