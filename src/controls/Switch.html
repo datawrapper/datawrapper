@@ -64,16 +64,16 @@ forcing the switch state to "on" or "off" in case it is disabled.
 
 <style lang="less">
     .vis-option-type-switch {
-
-        padding-bottom: 3px;
-        margin-bottom: 7px;
+        padding-top: 6px;
+        margin-top: 7px;
         transition: height 0.2s ease-in-out;
         background: #ffffff00;
         &.highlight {
         }
     }
 
-    .vis-option-type-switch + .vis-option-type-switch {
+    .vis-option-type-switch + .vis-option-type-switch,
+    :global(.vis-option-type-switch + .help + .vis-option-type-switch) {
         border-top: 1px solid #ddd;
     }
 
@@ -102,7 +102,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         display: inline-block;
         width: 30px;
         left: 2px;
-        top: 0;
+        top: 6px;
         height: 16px;
     }
 
