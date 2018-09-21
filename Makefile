@@ -11,7 +11,7 @@ clean:
 	rm -f -- $(GENERATED_FILES)
 
 dw.js/dw-2.0.js: dw.js/src/*.js
-	cd dw.js && grunt
+	cd dw.js && ../node_modules/.bin/grunt
 
 assets: www/static/css/datawrapper.css www/static/css/chart.base.css
 

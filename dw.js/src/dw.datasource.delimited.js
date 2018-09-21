@@ -24,7 +24,7 @@ dw.datasource.delimited = function(opts) {
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
             });
-        } else if (opts.csv) {
+        } else if (opts.csv || opts.csv === '') {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
                     return new DelimitedParser(opts).parse(raw);

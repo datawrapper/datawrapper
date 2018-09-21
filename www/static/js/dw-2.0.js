@@ -960,7 +960,7 @@ dw.datasource.delimited = function(opts) {
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
             });
-        } else if (opts.csv) {
+        } else if (opts.csv || opts.csv === '') {
             var dfd = $.Deferred(),
                 parsed = dfd.then(function(raw) {
                     return new DelimitedParser(opts).parse(raw);
@@ -1725,7 +1725,7 @@ dw.chart = function(attributes) {
                     transpose: chart.get('metadata.data.transpose', false)
                 };
 
-            if (csv && !externalData) dsopts.csv = csv;
+            if ((csv || csv === '') && !externalData) dsopts.csv = csv;
             else dsopts.url = externalData || 'data.csv';
 
             datasource = dw.datasource.delimited(dsopts);
