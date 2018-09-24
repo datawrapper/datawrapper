@@ -538,7 +538,7 @@
             _.each(me.__barLbls, function(lbl, key) {
                 var valueLabels = me.get('value-labels');
                 if (!valueLabels || valueLabels == "auto") {
-                    if (hoveredSeries && lbl.data('row') == row) {
+                    if (hoveredSeries && lbl.data('row') == row && hoveredSeries == lbl.data('key')) {
                         lbl.show();
                         visibleLbls.push(lbl.data('label'));
                     } else lbl.hide();
