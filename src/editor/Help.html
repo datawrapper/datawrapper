@@ -1,8 +1,10 @@
-<div class="help">
+<div on:mouseenter="show()" on:mouseleave="hide()" class="help">
     <span>?</span>
+    {#if visible}
     <div class="content">
         <slot />
     </div>
+    {/if}
 </div>
 
 <style type="text/css">
@@ -19,12 +21,12 @@
         right: 8px;
     }
 
-    .help:hover .content {
+    .help .content {
         display: block;
     }
 
     .help .content {
-        display: none;
+        /*display: none;*/
         position: absolute;
         top: -8px;
         right: -8px;
@@ -62,3 +64,27 @@
         color: #f9f9f9;
     }
 </style>
+
+<script>
+
+    export default {
+        data() {
+            return {
+                visible: false
+            }
+        },
+        methods: {
+            show() {
+                const t = setTimeout(() => {
+                    this.set({visible: true});
+                }, 400);
+                this.set({t});
+            },
+            hide() {
+                const {t} = this.get();
+                clearTimeout(t);
+                this.set({visible:false});
+            }
+        }
+    }
+</script>
