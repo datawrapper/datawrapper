@@ -186,7 +186,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         components: { Help },
         oncreate() {
             this.set({
-                hasHelp: !!this.options.slots.help
+                hasHelp: this.options ? !!this.options.slots.help : false
             });
         },
         onstate({changed, current}) {
