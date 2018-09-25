@@ -40,7 +40,8 @@
 
     // GET route for the new chart editor
     $app->get('/create(/:workflow)?', function($wfid='') use ($app, $get_workflows) {
-
+        
+        disable_cache($app);
         editor_check_access();
 
         $workflows = $get_workflows();
@@ -75,8 +76,8 @@
 
     // GET route for new beta chart editor
     $app->get('/edit/:chart_id(/:step)?', function ($chart_id, $step='') use ($app, $get_workflows) {
+        
         disable_cache($app);
-
         editor_check_access();
 
         $chart = ChartQuery::create()->findPK($chart_id);
