@@ -13,7 +13,7 @@
             <div class="color-selector" on:click="event.stopPropagation()">
                 <div class="palette">
                     {#each palette as c}
-                    <div class="color" on:click="setColor(c, false)" on:dblclick="setColor(c, true)" data-color="{c}" style="background: {c}"></div>
+                    <div class="color" on:click="setColor(c, false)" on:dblclick="setColor(c, true)" data-color="{c}" style="background: {c}; border-color: {borderColor(c)}"></div>
                     {/each}
                 </div>
 
@@ -48,6 +48,7 @@
 
     import chroma from 'chroma';
     import _isUndefined from 'underscore-es/isUndefined';
+    import _uniq from 'underscore-es/uniq';
 
     import BaseDropdown from './BaseDropdown.html';
 
@@ -61,9 +62,14 @@
                 }
             }
         },
+        helpers: {
+            borderColor(c) {
+                return chroma(c).hex('rgb') == '#ffffff' ? '#eeeeee' : c;
+            }
+        },
         computed: {
-            palette({$themeData}) {
-                return $themeData.colors.palette;
+            palette({$themeData, prepend, append}) {
+                return _uniq(prepend.concat($themeData.colors.palette).concat(append));
             },
             validColor({color}) {
                 try {
@@ -113,6 +119,8 @@
         data() {
             return {
                 palette: [],
+                prepend: [],
+                append: [],
                 color: '#63c0de',
             };
         },
@@ -185,6 +193,11 @@ input.hex { margin-bottom:0!important; }
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     top: 31px;
+}
+
+.palette .color {
+    box-sizing: border-box;
+    border: 2px solid;
 }
 
 .the-color {
