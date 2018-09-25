@@ -11,6 +11,7 @@
 <style>
     .base-drop-btn {
         cursor: pointer;
+        display: inline-block;
     }
     .base-drop-btn :global(*) {
         pointer-events: none;
@@ -27,7 +28,7 @@
                 this.set({visible: !visible});
             },
             windowClick(event) {
-                if (event.target == this.refs.button) return;
+                if (!event.target || event.target == this.refs.button) return;
                 // this is a hack for the colorpicker, need to find out how to get rid of
                 if (event.target.classList.contains('hex')) return;
                 this.set({visible:false});
