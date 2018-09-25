@@ -28,10 +28,10 @@ www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawr
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
 svelte:
-	cd src && rollup -c
+	cd src && ../node_modules/.bin/rollup -c
 
 svelte-dev:
-	cd src && rollup -cw
+	cd src && ../node_modules/.bin/rollup -cw
 
 plugins:
 	scripts/install-plugins
