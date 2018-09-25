@@ -2366,6 +2366,7 @@ body.cms-mode .row.create-nav {
 }
 .chart-editor .mini-help {
   font-size: 12px;
+  line-height: 15px;
   color: #ababab;
   font-weight: 400;
 }
@@ -3455,4 +3456,11 @@ input[type="color"],
 }
 .did-you-know p:last-child {
   margin-bottom: 0;
+}
+button.btn > i.im {
+  font-size: 0.8rem !important;
+  vertical-align: middle;
+}
+button.btn-small > i.im {
+  font-size: 0.7rem !important;
 }
