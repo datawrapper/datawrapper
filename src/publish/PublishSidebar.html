@@ -1,7 +1,9 @@
 <!-- assuming we're already inside a <div class="span5"> -->
-
-<svelte:component this="{PublishLogic}" />
-
+<div class="dw-create-publish">
+    <div class="publish-step is-published">
+        <svelte:component this="{PublishLogic}" />
+    </div>
+</div>
 <script>
 
     import PublishLogic from './PublishLogic.html';
