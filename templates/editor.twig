@@ -19,7 +19,7 @@ require(['{{workflow.module}}'], function(mod) {
             active: {{chart.lastEditStep}},
             maxStep: {{chart.lastEditStep}},
         step: '{{step}}',
-        visualization: {{vis|json|raw}}
+        visualization: {{vis|json|raw}},
         }, mod.data || {}, {{ twig_data | json | raw }});
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
@@ -32,7 +32,8 @@ require(['{{workflow.module}}'], function(mod) {
         writable: true,
         themeData: themeCache['{{theme.id}}'],
         user: {{userArray|json|raw}},
-        chartLocales: {{chartLocales|json|raw}}
+        locales: {{chartLocales|json|raw}},
+        actions: {{chartActions|json|raw}}
     });
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');

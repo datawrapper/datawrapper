@@ -40,7 +40,7 @@
 
     // GET route for the new chart editor
     $app->get('/create(/:workflow)?', function($wfid='') use ($app, $get_workflows) {
-        
+
         disable_cache($app);
         editor_check_access();
 
@@ -76,7 +76,7 @@
 
     // GET route for new beta chart editor
     $app->get('/edit/:chart_id(/:step)?', function ($chart_id, $step='') use ($app, $get_workflows) {
-        
+
         disable_cache($app);
         editor_check_access();
 
@@ -110,7 +110,8 @@
                     $s = explode('|', $s);
                     return ['value'=>$s[0], 'label'=>$s[1]];
                  }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
-                'theme' => ThemeQuery::create()->findPk($chart->getTheme())
+                'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
+                'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user)
             );
 
             // legacy stuff, need to move into ChartEditor some day

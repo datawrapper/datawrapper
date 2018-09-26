@@ -132,7 +132,8 @@
         {/each}
         </ul>
 
-        <slot name="after_chart_actions"></slot>
+        <svelte:component ref:action this={Action}
+            visible="{true}" show="{true}" />
 
     </div>
 </div>
@@ -236,9 +237,10 @@
 
 <script>
     import Help from '../editor/Help.html';
+    import Action from './Action.html';
 
     import {__} from '../shared/l10n';
-    import {getJSON, postJSON} from '../shared/utils';
+    import {getJSON, postJSON, loadScript, loadStylesheet} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
 
@@ -267,8 +269,10 @@
                 return $metadata.publish['embed-codes']['embed-method-'+embed_type];
             },
 
-            sortedChartActions({chartActions}) {
-                return chartActions.sort((a,b) => a.order - b.order);
+            sortedChartActions({chartActions, $actions}) {
+                return (chartActions.concat($actions))
+                    .filter(a => a.id != 'publish-s3')
+                    .sort((a,b) => a.order - b.order);
             }
         },
         methods: {
@@ -347,7 +351,29 @@
 
             select(action, event) {
                 event.preventDefault();
-                if (action.action && this[action.action]) {
+                if (action.mod) {
+                    if (action.mod.App) {
+                        this.set({ Action: action.mod.App });
+                    } else {
+                        // todo: show loading indicator
+                        this.set({Action});
+                        this.refs.action.set({loading: true});
+                        if (action.mod.css) {
+                            loadStylesheet(action.mod.css);
+                        }
+                        loadScript(action.mod.src, () => {
+                            setTimeout(() => {
+                                require([action.mod.id], (mod) => {
+                                    // todo: HIDE loading indicator
+                                    Object.assign(action.mod, mod);
+                                    this.set({Action: action.mod.App});
+                                    if (mod.init) mod.init(this.refs.action);
+                                });
+                            }, 200);
+                        });
+                    }
+                } else if (action.action && this[action.action]) {
+                    this.set({Action});
                     this[action.action]();
                 }
             },
@@ -415,10 +441,11 @@
                 shareurl_type: 'default',
                 embed_type: 'responsive',
                 copy_success: false,
+                Action,
                 chartActions: [{
                     id: 'duplicate',
                     icon: 'code-fork',
-                    title: __('Duplicate this chart'),
+                    title: __('Duplicate'),
                     order: 500,
                     action: 'duplicate'
                 }]
