@@ -120,7 +120,7 @@
 
             {#if action}
             <li class="action action-{action.id} {action.class||''}">
-                <a role="button" href="{action.url ? action.url : '#'+action.id}">
+                <a on:click="select(action, event)" role="button" href="{action.url ? action.url : '#'+action.id}">
                     <i class="fa fa-{action.icon}"></i><span class="title">{@html action.title}</span>
                 </a>
                 {#if action.banner && action.banner.text != "FALSE" && action.banner.text != "-"}
@@ -331,12 +331,11 @@
                 this.store.set(chartInfo);
             },
 
-            copy (embedCode) {
+            copy () {
                 const me = this;
                 me.refs.embedInput.select();
                 try {
                     var successful = document.execCommand('copy');
-                    var msg = successful ? 'successful' : 'unsuccessful';
                     if (successful) {
                         me.set({copy_success: true});
                         setTimeout(() => me.set({copy_success:false}), 300);
@@ -344,6 +343,25 @@
                 } catch (err) {
                     // console.log('Oops, unable to copy');
                 }
+            },
+
+            select(action, event) {
+                event.preventDefault();
+                if (action.action && this[action.action]) {
+                    this[action.action]();
+                }
+            },
+
+            duplicate() {
+                const {id} = this.store.get();
+                postJSON(`/api/charts/${id}/copy`, null, (res) => {
+                    if (res.status == "ok") {
+                        // redirect to copied chart
+                        window.location.href = `/edit/${res.data.id}/visualize`;
+                    } else {
+                        console.warn(data);
+                    }
+                });
             }
         },
 
@@ -401,7 +419,8 @@
                     id: 'duplicate',
                     icon: 'code-fork',
                     title: __('Duplicate this chart'),
-                    order: 500
+                    order: 500,
+                    action: 'duplicate'
                 }]
             }
         }
