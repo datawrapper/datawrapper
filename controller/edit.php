@@ -111,6 +111,9 @@
                     return ['value'=>$s[0], 'label'=>$s[1]];
                  }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
                 'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
+                'userThemes' => array_map(function($t) {
+                    return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
+                }, ThemeQuery::create()->allThemesForUser()),
                 'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user)
             );
 

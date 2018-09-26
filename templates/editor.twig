@@ -33,7 +33,8 @@ require(['{{workflow.module}}'], function(mod) {
         themeData: themeCache['{{theme.id}}'],
         user: {{userArray|json|raw}},
         locales: {{chartLocales|json|raw}},
-        actions: {{chartActions|json|raw}}
+        actions: {{chartActions|json|raw}},
+        themes: {{userThemes|json|raw}}
     });
 
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');

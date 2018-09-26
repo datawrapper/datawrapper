@@ -2,37 +2,14 @@
 
 <script>
     import Select from '../controls/Select.html';
-    import {getJSON} from '../shared/utils';
-
-    let themeCache = null;
 
     export default {
         components: {Select},
         computed: {
-            themeOptions({themes}) {
-                return themes.map(t => {
+            themeOptions({$themes}) {
+                return $themes.map(t => {
                     return {value: t.id, label: t.title};
                 })
-            }
-        },
-        data() {
-            return {
-                themes: []
-            }
-        },
-        oncreate() {
-            // require theme
-            if (!themeCache) {
-                getJSON('/api/themes', (res) => {
-                    if (res.status == 'ok') {
-                        themeCache = res.data;
-                        this.set({themes: themeCache});
-                    } else {
-                        console.error('could not load themes', res);
-                    }
-                })
-            } else {
-                this.set({themes: themeCache});
             }
         }
     }
