@@ -79,6 +79,7 @@ export default function({iframe, attrs}) {
         if (!win.__dw) return false;
         var p0 = win.__dw.old_attrs,
             p1 = attrs;
+        if (!p0) return true;
         key = key.split('.');
         _.each(key, function(k) {
             p0 = p0[k] || {};
