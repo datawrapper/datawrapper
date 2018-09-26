@@ -281,6 +281,7 @@
   "describe / sort-by": "Ansicht sortieren nach",
   "describe / no-sorting": "Keine Sortierung",
   "describe / locale-select / hed": "Ausgabe-Sprachraum",
+  "describe / locale-select / language": "Sprache",
   "describe / locale-select / body": "Bestimmt Dezimal- und Tausendertrennzeichen sowie die Übersetzung von Monatsnamen und Wochentagen.",
   "describe / edit-format": "Spaltenformat anpassen",
   "describe / edit-formula": "Zurück zum Formel-Editor",

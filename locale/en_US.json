@@ -281,6 +281,7 @@
   "describe / sort-by": "Sort view by",
   "describe / no-sorting": "No sorting",
   "describe / locale-select / hed": "Output locale",
+  "describe / locale-select / language": "Language",
   "describe / locale-select / body": "Defines decimal and thousand separators as well as translation of month and weekday names.",
   "describe / edit-format": "Edit column format",
   "describe / edit-formula": "Return to formula editor",

@@ -1,5 +1,5 @@
 <div class="control-group vis-option-type-select">
-    <label class="control-label">
+    <label style="width: {labelWidth}" class="control-label">
         {@html label }
     </label>
 
@@ -29,6 +29,7 @@ export default {
         return {
             disabled: false,
             width: 'auto',
+            labelWidth: 'auto',
             options: [],
             optgroups: [],
         };

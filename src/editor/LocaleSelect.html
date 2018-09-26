@@ -1,10 +1,12 @@
-<Select label="Locale" options="{options}" width="200px" bind:value="$language" />
+<Select label="{__('describe / locale-select / language')}" options="{options}" width="200px" labelWidth="80px" bind:value="$language" />
 
 <script>
     import Select from '../controls/Select.html';
+    import {__} from '../shared/l10n.js';
 
     export default {
         components: {Select},
+        helpers: {__},
         computed: {
             options({$locales}) {
                 return $locales.map(t => {
