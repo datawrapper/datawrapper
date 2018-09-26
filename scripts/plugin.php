@@ -56,7 +56,7 @@ function list_plugins() {
         print "\033[m ".$plugin->getName();
         // check for un-committed changes
         $info = $plugin->getInfo();
-        if (!empty($info['repository']) &&
+        if (false && !empty($info['repository']) &&
             $info['repository']['type'] == 'git' &&
             file_exists($plugin->getPath() . '.git/config')) {
 
@@ -85,7 +85,7 @@ function list_plugins() {
     }
     _apply("*", function($id) {
         $plugin = PluginQuery::create()->findPk($id);
-        if (!$plugin) print "$id :  NOT INSTALLED\n";
+        if (!$plugin) print "NOT INSTALLED:  $id \n";
     });
 }
 
@@ -95,7 +95,8 @@ function list_plugins() {
 function clean() {
     $plugins = PluginQuery::create()->find();
     foreach ($plugins as $plugin) {
-        if (!file_exists($plugin->getPath() . 'package.json')) {
+        if (!file_exists($plugin->getPath() . 'plugin.json') &&
+            !file_exists($plugin->getPath() . 'package.json')) {
             $plugin->delete();
             print $plugin->getId()." deleted from database.\n";
         }
@@ -123,8 +124,9 @@ function install($pattern) {
             print "No plugin found with that name. Skipping.\n";
             return true; // cancel apply loop
         }
-        if (!file_exists($tmp->getPath() . 'package.json')) {
-            print "Path exists, but no package.json found. Skipping.\n";
+        if (!file_exists($tmp->getPath() . 'plugin.json') &&
+            !file_exists($tmp->getPath() . 'package.json')) {
+            print "Path exists, but no package.json or plugin.json found. Skipping.\n";
             return true; // cancel apply loop
         }
         // check if plugin is already installed
@@ -164,12 +166,16 @@ function download_from_git($url) {
         // downlaod zip
         $tmp_name = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'tmp-'.time();
         exec('git clone '.$url.' '.$tmp_name.' 2>&1', $ret, $err);
-        $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
+        $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'plugin.json';
+        if (!file_exists($pkg_info)) {
+            // fall back to package.json
+            $pkg_info = $tmp_name . DIRECTORY_SEPARATOR . 'package.json';
+        }
         if (file_exists($pkg_info)) {
             try {
                 $pkg_info = json_decode(file_get_contents($pkg_info), true);
             } catch (Error $e) {
-                print 'Not a valid plugin: package.json could not be read.';
+                print 'Not a valid plugin: neither plugin.json nor package.json could be read.';
                 return true;
             }
             if (!empty($pkg_info['name'])) {
@@ -182,11 +188,11 @@ function download_from_git($url) {
                     return true;
                 }
             } else {
-                print 'No name specified in package.json.';
+                print 'No name specified in plugin.json.';
                 return true;
             }
         } else {
-            print 'No package.json found in repository';
+            print 'Neither plugin.json nor package.json found in repository';
             return true;
         }
 
@@ -289,7 +295,7 @@ function update($pattern) {
             }
         } else {
             if (file_exists($plugin->getPath() . '.git/config')) {
-                print "Skipping $id: No repository information found in package.json.\n";
+                print "Skipping $id: No repository information found in plugin.json.\n";
             }
         }
     });
@@ -302,7 +308,8 @@ function reload() {
     $plugins = PluginQuery::create()->find();
     foreach ($plugins as $plugin) {
 
-        if (file_exists($plugin->getPath() . 'package.json')) {
+        if (file_exists($plugin->getPath() . 'plugin.json') ||
+            file_exists($plugin->getPath() . 'package.json')) {
             if ($plugin->getEnabled()) {
                 _loadPluginClass($plugin)->install();
                 print $plugin->getId()." reinstalled\n";
@@ -319,8 +326,10 @@ function health_check() {
     $WARN = "\033[1;31mWARNING:\033[1;33m";
     ob_start();
     foreach ($plugins as $plugin) {
-        if (file_exists($plugin->getPath() . 'package.json')) {
-            $info = json_decode(file_get_contents($plugin->getPath() . 'package.json'), true);
+        $pkg_info = $plugin->getPath() . 'plugin.json';
+        if (!file_exists($pkg_info)) $pkg_info = $plugin->getPath() . 'package.json';
+        if (file_exists($pkg_info)) {
+            $info = json_decode(file_get_contents($pkg_info), true);
             if (empty($info)) {
                 print $WARN.' package.json could not be read: '.$plugin->getId()."\n";
             } else {
@@ -384,7 +393,12 @@ exit();
 function _apply($pattern, $func) {
     $plugin_ids = array();
     if (strpos($pattern, '*') > -1) {
-        foreach (glob(ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR . $pattern . DIRECTORY_SEPARATOR . "package.json") as $filename) {
+        $base_path = ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR . $pattern . DIRECTORY_SEPARATOR;
+        $paths = array_merge(
+            glob($base_path . "package.json"),
+            glob($base_path . "plugin.json")
+        );
+        foreach ($paths as $filename) {
             $d = dirname($filename);
             $d = substr($d, strrpos($d, DIRECTORY_SEPARATOR)+1);
             $plugin_ids[] = $d;

@@ -116,7 +116,12 @@ class DatawrapperPlugin {
      */
     private function getPackageJSON() {
         if (!empty($this->__packageJson)) return $this->__packageJson;
-        $meta = json_decode(file_get_contents(ROOT_PATH . 'plugins/' . $this->getName() . '/package.json'),true);
+        $plugin_path = ROOT_PATH . 'plugins/' . $this->getName();
+        if (file_exists($plugin_path . '/plugin.json')) {
+            $meta = json_decode(file_get_contents($plugin_path . '/plugin.json'),true);
+        } else {
+            $meta = json_decode(file_get_contents($plugin_path . '/package.json'),true);
+        }
         $this->__packageJson = $meta;
         return $meta;
     }
@@ -134,7 +139,11 @@ class DatawrapperPlugin {
      */
     public function getLastInstallTime() {
         $pluginDir = ROOT_PATH . 'plugins/' . $this->getName();
+        if (file_exists($pluginDir . '/plugin.json')) {
+            return filemtime($pluginDir . '/plugin.json');
+        }
         return filemtime($pluginDir . '/package.json');
+
     }
 
     /*

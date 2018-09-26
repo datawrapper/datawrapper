@@ -31,12 +31,19 @@ class Plugin extends BasePlugin {
 
     public function getInfo() {
         if (!isset($this->packageInfo)) {
-            if (!file_exists($this->getPath() . 'package.json')) {
+            if (!file_exists($this->getPath() . 'plugin.json') &&
+                !file_exists($this->getPath() . 'package.json')) {
                 return false;
             }
-            $this->packageInfo = json_decode(
-                file_get_contents($this->getPath() . 'package.json')
-            , true);
+            if (file_exists($this->getPath() . 'plugin.json')) {
+                $this->packageInfo = json_decode(
+                    file_get_contents($this->getPath() . 'plugin.json')
+                , true);
+            } else {
+                $this->packageInfo = json_decode(
+                    file_get_contents($this->getPath() . 'package.json')
+                , true);
+            }
             if (!isset($this->packageInfo['dependencies'])) $this->packageInfo['dependencies'] = array();
         }
         return $this->packageInfo;

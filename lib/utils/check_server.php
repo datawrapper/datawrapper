@@ -90,7 +90,7 @@ function check_database() {
 
 /*
  * checks that the current plugin setup is correct
- * - all activated plugins need to have a valid package.json
+ * - all activated plugins need to have a valid plugin.json
  */
 function check_plugins() {
     $db = connect_database();
@@ -105,11 +105,14 @@ function check_plugins() {
     $installed = array();
 
     foreach ($res as $row) {
+        $plugin_json = ROOT_PATH . 'plugins/' . $row['id'] . '/plugin.json';
         $package_json = ROOT_PATH . 'plugins/' . $row['id'] . '/package.json';
-        if (!file_exists($package_json)) {
+        if (!file_exists($package_json) && !file_exists($plugin_json)) {
             $missing[] = $row['id'];
         } else {
-            $info = file_get_contents($package_json);
+            $info = file_exists($plugin_json) ?
+                file_get_contents($plugin_json) :
+                file_get_contents($package_json);
             $info = json_decode($info, true);
             if (empty($info)) {
                 $package_json_parse_error[] = $row['id'];
@@ -142,7 +145,7 @@ function check_plugins() {
     }
     if (count($package_json_parse_error) > 0) {
         return '<h2>Some plugins have bad package descriptors</h2>'
-            . '<p>For the following plugins the descriptor stored in package.json could '
+            . '<p>For the following plugins the descriptor stored in plugin.json could '
             . 'not be parsed correctly. Please make sure that they are valid JSON files.'
             . '<ul><li><code>'. join('</li></code><li><code>', $package_json_parse_error) . '</code></li></ul>';
     }
