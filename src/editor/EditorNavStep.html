@@ -22,7 +22,7 @@
             }
         },
         computed: {
-            active_id ({active, steps}) {
+            active_i ({active, steps}) {
                 return steps.indexOf(_findWhere(steps, {id:active}));
             },
             passed ({index, active_i, maxStep}) {
