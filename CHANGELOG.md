@@ -1,6 +1,10 @@
 CHANGELOG
 ---------
 
+### 1.22.0
+* plugins should now rename their `package.json` descriptor to `plugin.json` to avoid future conflicts with npm's package.json.
+* added the basis for the new chart editor
+
 ### 1.21.0
 * added ability for visualizations to modify the chart editor steps (= workflow)
 * also visualizations can now replace the core chart editor with a single-page svelte editor by setting the `svelte-editor` config.
@@ -70,7 +74,7 @@ CHANGELOG
 * Added transparent navbar style
 * Added d3.js to Datawrapper core so every module can require it.
 * All charts are now writable to everyone within an organization.
-* We migrated our translation system from crowdin.net to a simple Google Spreadsheet. Check the readme to learn how to contribute as translator. 
+* We migrated our translation system from crowdin.net to a simple Google Spreadsheet. Check the readme to learn how to contribute as translator.
 * Added Python script `parse_translations.py` for parsing plugin translations so we don't need xgettext anymore.
 * Important: we're now using grunt and bower instead of bundling 3rd party libs into our repo. Please run `npm install` after updating
 * Bugfix: don't mess with location.hash in chart popups
@@ -83,7 +87,7 @@ CHANGELOG
 
 * re-designed mycharts and gallery, now showing more charts in a masonry layout
 * fixed client-side snapshots using canvg. works with html and text. creates double-res fullsiye screenshots instead of tiny thumbnails
-* made sure that snapshots of complex charts are not generated on client-side, but using the new plugin "snapshot" 
+* made sure that snapshots of complex charts are not generated on client-side, but using the new plugin "snapshot"
 * loading js files as utf-8
 * re-designed option groups in chart editor
 * color changes in color selector popup are now immediately applied to chart
