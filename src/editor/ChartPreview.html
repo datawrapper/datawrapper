@@ -83,12 +83,13 @@ TODO for later:
 
     export default {
         computed: {
-            url({$id}) {
-                return $id ? `/chart/${$id}/preview` : '';
+            url({$id, src}) {
+                return src ? src : $id ? `/chart/${$id}/preview` : '';
             }
         },
         data() {
             return {
+                src: false,
                 loading: true,
                 // resize logic
                 width: 500,
