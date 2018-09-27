@@ -5,8 +5,13 @@
 
     <div class="controls form-inline">
         {#each options as opt}
-        <label class="radio {disabled? 'disabled' :''}">
-            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/>&nbsp;{ opt.label }
+        <label title="{opt.tooltip||''}" class="radio {disabled? 'disabled' :''} {opt.help?'has-help':''}">
+            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/>&nbsp;<span>{ opt.label }</span>
+            {#if opt.help}
+            <div class="help">
+                {@html opt.help}
+            </div>
+            {/if}
         </label>
         {/each}
     </div>
@@ -21,7 +26,37 @@
         }
         padding-top:0!important;
         padding-right: 1ex;
+        position: relative;
         vertical-align: text-top;
+
+        &.has-help > span {
+            border-bottom: 1px dotted #9cbfd199;
+        }
+
+        &.has-help:hover > span {
+            border-bottom: 2px solid #9cbfd1;
+        }
+        .help {
+            position: absolute;
+            top: 24px;
+            padding: 8px 10px 8px 10px;
+            background: #9cbfd1;
+            color: #f9f9f9;
+            width: 180px;
+            border-radius: 4px;
+            box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
+            z-index: 8000;
+            opacity: 0;
+            transition: 0s opacity;
+            pointer-events: none;
+        }
+
+        &:hover .help {
+            opacity: 1;
+            transition-delay: 0.4s;
+            transition-duration: 0.3s;
+            pointer-events: all;
+        }
     }
     input {
         float: none;

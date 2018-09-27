@@ -1,1 +1,6086 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e(require("chroma")):"function"==typeof define&&define.amd?define(["chroma"],e):t.controls=e(t.chroma)}(this,function(t){"use strict";function e(){}function n(t,e){for(var n in e)t[n]=e[n];return t}function o(t,e){e.appendChild(t)}function i(t,e,n){e.insertBefore(t,n)}function a(t){t.parentNode.removeChild(t)}function l(t,e){for(;t.nextSibling&&t.nextSibling!==e;)t.parentNode.removeChild(t.nextSibling)}function s(t){for(;t.previousSibling;)t.parentNode.removeChild(t.previousSibling)}function c(t){for(;t.nextSibling;)t.parentNode.removeChild(t.nextSibling)}function r(t,e){for(;t.firstChild;)e.appendChild(t.firstChild)}function u(t){for(var e=0;e<t.length;e+=1)t[e]&&t[e].d()}function d(){return document.createDocumentFragment()}function h(t){return document.createElement(t)}function f(t){return document.createTextNode(t)}function p(){return document.createComment("")}function v(t,e,n){t.addEventListener(e,n,!1)}function m(t,e,n){t.removeEventListener(e,n,!1)}function g(t,e,n){t.setAttribute(e,n)}function b(t){return""===t?void 0:+t}function x(t,e,n){t.style.setProperty(e,n)}function y(t,e){for(var n=0;n<t.options.length;n+=1){var o=t.options[n];if(o.__value===e)return void(o.selected=!0)}}function k(t){var e=t.querySelector(":checked")||t.options[0];return e&&e.__value}function N(t){return t}function w(t,e,n,o,i,a){var l,s=n(e,o),c=s.duration||300,r=s.easing||N;if(s.css&&!C.stylesheet){var u=h("style");document.head.appendChild(u),C.stylesheet=u.sheet}return i&&(s.css&&s.delay&&(l=e.style.cssText,e.style.cssText+=s.css(0)),s.tick&&s.tick(0)),{t:i?0:1,running:!1,program:null,pending:null,run:function(t,e){var n={start:window.performance.now()+(s.delay||0),intro:t,callback:e};s.delay?this.pending=n:this.start(n),this.running||(this.running=!0,C.add(this))},start:function(n){t.fire(n.intro?"intro.start":"outro.start",{node:e}),n.a=this.t,n.b=n.intro?1:0,n.delta=n.b-n.a,n.duration=c*Math.abs(n.b-n.a),n.end=n.start+n.duration,s.css&&(s.delay&&(e.style.cssText=l),n.rule=function(t,e,n,o,i,a){for(var l="{\n",s=0;s<=1;s+=16.666/o)l+=100*s+"%{"+a(t+n*i(s))+"}\n";return l+"100% {"+a(e)+"}\n}"}(n.a,n.b,n.delta,n.duration,r,s.css),C.addRule(n.rule,n.name="__svelte_"+function(t){for(var e=5381,n=t.length;n--;)e=(e<<5)-e^t.charCodeAt(n);return e>>>0}(n.rule)),e.style.animation=(e.style.animation||"").split(", ").filter(function(t){return t&&(n.delta<0||!/__svelte/.test(t))}).concat(n.name+" "+n.duration+"ms linear 1 forwards").join(", ")),this.program=n,this.pending=null},update:function(t){var e=this.program;if(e){var n=t-e.start;this.t=e.a+e.delta*r(n/e.duration),s.tick&&s.tick(this.t)}},done:function(){var t=this.program;this.t=t.b,s.tick&&s.tick(this.t),s.css&&C.deleteRule(e,t.name),t.callback(),t=null,this.running=!!this.pending},abort:function(){s.tick&&s.tick(1),s.css&&C.deleteRule(e,this.program.name),this.program=this.pending=null,this.running=!1}}}t=t&&t.hasOwnProperty("default")?t.default:t;var C={running:!1,transitions:[],bound:null,stylesheet:null,activeRules:{},add:function(t){this.transitions.push(t),this.running||(this.running=!0,requestAnimationFrame(this.bound||(this.bound=this.next.bind(this))))},addRule:function(t,e){this.activeRules[e]||(this.activeRules[e]=!0,this.stylesheet.insertRule("@keyframes "+e+" "+t,this.stylesheet.cssRules.length))},next:function(){this.running=!1;for(var t=window.performance.now(),e=this.transitions.length;e--;){var n=this.transitions[e];n.program&&t>=n.program.end&&n.done(),n.pending&&t>=n.pending.start&&n.start(n.pending),n.running?(n.update(t),this.running=!0):n.pending||this.transitions.splice(e,1)}if(this.running)requestAnimationFrame(this.bound);else if(this.stylesheet){for(e=this.stylesheet.cssRules.length;e--;)this.stylesheet.deleteRule(e);this.activeRules={}}},deleteRule:function(t,e){t.style.animation=t.style.animation.split(", ").filter(function(t){return-1===t.indexOf(e)}).join(", ")}};function M(t){this.destroy=e,this.fire("destroy"),this.set=this.get=e,!1!==t&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function H(t,e){t._handlers=Object.create(null),t._bind=e._bind,t.options=e,t.root=e.root||t,t.store=t.root.store||e.store}function T(t){for(;t&&t.length;)t.shift()()}function L(){this.store._remove(this)}var $={destroy:M,get:function(t){return t?this._state[t]:this._state},fire:function(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var o=0;o<n.length;o+=1){var i=n[o];i.__calling||(i.__calling=!0,i.call(this,e),i.__calling=!1)}},observe:function(t,e,n){var o=e.bind(this);return n&&!1===n.init||o(this.get()[t],void 0),this.on(n&&n.defer?"update":"state",function(e){e.changed[t]&&o(e.current[t],e.previous&&e.previous[t])})},on:function(t,e){if("teardown"===t)return this.on("destroy",e);var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}},set:function(t){this._set(n({},t)),this.root._lock||(this.root._lock=!0,T(this.root._beforecreate),T(this.root._oncreate),T(this.root._aftercreate),this.root._lock=!1)},teardown:M,_recompute:e,_set:function(t){var e=this._state,o={},i=!1;for(var a in t)this._differs(t[a],e[a])&&(o[a]=i=!0);i&&(this._state=n(n({},e),t),this._recompute(o,this._state),this._bind&&this._bind(o,this._state),this._fragment&&(this.fire("state",{changed:o,current:this._state,previous:e}),this._fragment.p(o,this._state),this.fire("update",{changed:o,current:this._state,previous:e})))},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:function(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}};function j(t){H(this,t),this._state=n({disabled:!1,faded:!1},t.data),this._fragment=function(t,e){var n,l,s,c,r,u;function d(){t.set({value:s.checked})}return{c:function(){n=h("div"),l=h("label"),s=h("input"),c=f(" "),r=f(e.label),this.h()},h:function(){v(s,"change",d),g(s,"type","checkbox"),s.disabled=e.disabled,s.className="svelte-c3c81a",l.className=u="checkbox "+(e.disabled?"disabled":"")+" "+(e.faded?"faded":"")+" svelte-c3c81a",n.className="control-group vis-option-group vis-option-type-checkbox"},m:function(t,a){i(n,t,a),o(l,n),o(s,l),s.checked=e.value,o(c,l),o(r,l)},p:function(t,e){s.checked=e.value,t.disabled&&(s.disabled=e.disabled),t.label&&(r.data=e.label),(t.disabled||t.faded)&&u!==(u="checkbox "+(e.disabled?"disabled":"")+" "+(e.faded?"faded":"")+" svelte-c3c81a")&&(l.className=u)},u:function(){a(n)},d:function(){m(s,"change",d)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}n(j.prototype,$);var S=Array.prototype,A=Object.prototype,O=S.slice,D=A.toString,F=A.hasOwnProperty,Y=Object.keys;function K(t){var e=typeof t;return"function"===e||"object"===e&&!!t}function z(t,e){return null!=t&&F.call(t,e)}function R(t){if(!K(t))return[];if(Y)return Y(t);var e=[];for(var n in t)z(t,n)&&e.push(n);return et&&function(t,e){var n=nt.length,o=t.constructor,i=E(o)&&o.prototype||A,a="constructor";z(t,a)&&!at(e,a)&&e.push(a);for(;n--;)(a=nt[n])in t&&t[a]!==i[a]&&!at(e,a)&&e.push(a)}(t,e),e}var E=("function"!=typeof/./&&"object"!=typeof Int8Array&&"undefined"!=typeof document&&"function"!=typeof document.childNodes?function(t){return"function"==typeof t||!1}:null)||function(t){return"[object Function]"===D.call(t)};!function(){D.call(arguments)}();function I(t){return function(t){return"[object Number]"===D.call(t)}(t)&&isNaN(t)}var P=J;function Q(t){return t}var q,B,W=(q=R,function(t){var e=arguments,n=arguments.length;if(B&&(t=Object(t)),n<2||null==t)return t;for(var o=1;o<n;o++)for(var i=e[o],a=q(i),l=a.length,s=0;s<l;s++){var c=a[s];!K(t)||B&&void 0!==t[c]||(t[c]=i[c])}return t});function G(t){return t=W({},t),function(e){return function(t,e){var n=R(e),o=n.length;if(null==t)return!o;for(var i=Object(t),a=0;a<o;a++){var l=n[a];if(e[l]!==i[l]||!(l in i))return!1}return!0}(e,t)}}function J(t,e){return U(t,e,1/0)}function U(t,e,n){return P!==J?P(t,e):null==t?Q:E(t)?function(t,e,n){if(void 0===e)return t;switch(null==n?3:n){case 1:return function(n){return t.call(e,n)};case 3:return function(n,o,i){return t.call(e,n,o,i)};case 4:return function(n,o,i,a){return t.call(e,n,o,i,a)}}return function(){return t.apply(e,arguments)}}(t,e,n):K(t)?G(t):V(t)}function V(t){return function(e){return null==e?void 0:e[t]}}var X=Math.pow(2,53)-1,Z=V("length"),tt=function(t){var e=Z(t);return"number"==typeof e&&e>=0&&e<=X};var et=!{toString:null}.propertyIsEnumerable("toString"),nt=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"];var ot;!function(t){for(var e={},n=R(t),o=0,i=n.length;o<i;o++)e[t[n[o]]]=n[o]}({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"});var it=function(t,e,n){return function(o,i,a){var l=0,s=Z(o);if("number"==typeof a)t>0?l=a>=0?a:Math.max(a+s,l):s=a>=0?Math.min(a+1,s):a+s+1;else if(n&&a&&s)return o[a=n(o,i)]===i?a:-1;if(i!=i)return(a=e(O.call(o,l,s),I))>=0?a+l:-1;for(a=t>0?l:s-1;a>=0&&a<s;a+=t)if(o[a]===i)return a;return-1}}(1,(ot=1,function(t,e,n){e=U(e,n);for(var o=Z(t),i=ot>0?0:o-1;i>=0&&i<o;i+=ot)if(e(t[i],i,t))return i;return-1}),function(t,e,n,o){for(var i=(n=U(n,o,1))(e),a=0,l=Z(t);a<l;){var s=Math.floor((a+l)/2);n(t[s])<i?a=s+1:l=s}return a});function at(t,e,n,o){return tt(t)||(t=function(t){for(var e=R(t),n=e.length,o=Array(n),i=0;i<n;i++)o[i]=t[e[i]];return o}(t)),("number"!=typeof n||o)&&(n=0),it(t,e,n)>=0}function lt(t,e,n,o){var i;!0!==(i=e)&&!1!==i&&"[object Boolean]"!==D.call(i)&&(o=n,n=e,e=!1),null!=n&&(n=U(n,o));for(var a=[],l=[],s=0,c=Z(t);s<c;s++){var r=t[s],u=n?n(r,s,t):r;e?(s&&l===u||a.push(r),l=u):n?at(l,u)||(l.push(u),a.push(r)):at(a,r)||a.push(r)}return a}function st(t,n){var o,l,s,c=t._slotted.content;return{c:function(){c||(s=f("Content"))},m:function(t,e){c?(i(o||(o=p()),t,e),i(c,t,e),i(l||(l=p()),t,e)):i(s,t,e)},u:function(){c?(!function(t,e,n){for(;t.nextSibling&&t.nextSibling!==e;)n.appendChild(t.parentNode.removeChild(t.nextSibling))}(o,l,c),a(o),a(l)):a(s)},d:e}}function ct(t){H(this,t),this.refs={},this._state=n({visible:!1},t.data),this._slotted=t.slots||{},this.slots={},this._fragment=function(t,e){var n,l,s,c,u=t._slotted.button;function d(e){t.windowClick(e)}function p(e){t.toggle()}window.addEventListener("click",d);var _=e.visible&&st(t);return{c:function(){n=h("div"),l=h("div"),u||(s=f("Button")),c=f("\n    "),_&&_.c(),this.h()},h:function(){v(l,"click",p),l.className="base-drop-btn svelte-1e7v6nx",x(n,"position","relative"),x(n,"display","inline-block")},m:function(e,a){i(n,e,a),o(l,n),o(u||s,l),t.refs.button=l,o(c,n),_&&_.m(n,null)},p:function(e,o){o.visible?_||((_=st(t)).c(),_.m(n,null)):_&&(_.u(),_.d(),_=null)},u:function(){a(n),u&&r(l,u),_&&_.u()},d:function(){window.removeEventListener("click",d),m(l,"click",p),t.refs.button===l&&(t.refs.button=null),_&&_.d()}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function rt(e){return"#ffffff"==t(e).hex("rgb")?"#eeeeee":e}n(ct.prototype,$),n(ct.prototype,{toggle:function(){var t=this.get().visible;this.set({visible:!t})},windowClick:function(t){t.target&&t.target!=this.refs.button&&(t.target.classList.contains("hex")||this.set({visible:!1}))}});function ut(e){var n=this,o=e.changed,i=e.current,a=e.previous;if(o.color)try{var l=t(i.color).hex();this.refs.dropdown.get().visible&&l!=a.color&&this.fire("change",i.validColor),i.validColor!=i.color&&setTimeout(function(){n.set({color:i.validColor})},100)}catch(t){}}function dt(e,n){var o=-1,i=999999;return e[0]==e[1]?"-":(e.forEach(function(e,a){var l=t.distance(e,n,"lab");l<i&&(i=l,o=a)}),e[o])}function ht(t,e,n,o,i){var a=[t],l=e/n,s=0;for(o=void 0===o?n:o,i=i||1;n-- >0;)s+=l,a.unshift(t-s),o-- >0&&a.push(t+s);return a}function ft(t,e){var n,o,l=e.c;e.each_value,e.c_index;return{c:function(){n=h("div"),this.h()},h:function(){v(n,"click",gt),v(n,"dblclick",bt),n.className="color svelte-1ntytnd",n.dataset.color=o=l,x(n,"background",l),x(n,"border-color",rt(l)),n._svelte={component:t,each_value:e.each_value,c_index:e.c_index}},m:function(t,e){i(n,t,e)},p:function(t,e){l=e.c,e.each_value,e.c_index,t.palette&&o!==(o=l)&&(n.dataset.color=o),t.palette&&(x(n,"background",l),x(n,"border-color",rt(l))),n._svelte.each_value=e.each_value,n._svelte.c_index=e.c_index},u:function(){a(n)},d:function(){m(n,"click",gt),m(n,"dblclick",bt)}}}function pt(t,e){var n,o,l,s=e.c;e.each_value_1,e.c_index_1;return{c:function(){n=h("div"),this.h()},h:function(){v(n,"click",xt),n.className=o="color "+(s==e.nearest_l?"selected":"")+" svelte-1ntytnd",n.dataset.color=l=s,x(n,"background",s),n._svelte={component:t,each_value_1:e.each_value_1,c_index_1:e.c_index_1}},m:function(t,e){i(n,t,e)},p:function(t,e){s=e.c,e.each_value_1,e.c_index_1,(t.gradient_l||t.nearest_l)&&o!==(o="color "+(s==e.nearest_l?"selected":"")+" svelte-1ntytnd")&&(n.className=o),t.gradient_l&&l!==(l=s)&&(n.dataset.color=l),t.gradient_l&&x(n,"background",s),n._svelte.each_value_1=e.each_value_1,n._svelte.c_index_1=e.c_index_1},u:function(){a(n)},d:function(){m(n,"click",xt)}}}function vt(t,e){var n,o,l,s=e.c;e.each_value_2,e.c_index_2;return{c:function(){n=h("div"),this.h()},h:function(){v(n,"click",yt),n.className=o="color "+(s==e.nearest_c?"selected":"")+" svelte-1ntytnd",n.dataset.color=l=s,x(n,"background",s),n._svelte={component:t,each_value_2:e.each_value_2,c_index_2:e.c_index_2}},m:function(t,e){i(n,t,e)},p:function(t,e){s=e.c,e.each_value_2,e.c_index_2,(t.gradient_c||t.nearest_c)&&o!==(o="color "+(s==e.nearest_c?"selected":"")+" svelte-1ntytnd")&&(n.className=o),t.gradient_c&&l!==(l=s)&&(n.dataset.color=l),t.gradient_c&&x(n,"background",s),n._svelte.each_value_2=e.each_value_2,n._svelte.c_index_2=e.c_index_2},u:function(){a(n)},d:function(){m(n,"click",yt)}}}function _t(t,e){var n,o,l,s=e.c;e.each_value_3,e.c_index_3;return{c:function(){n=h("div"),this.h()},h:function(){v(n,"click",kt),n.className=o="color "+(s==e.nearest_h?"selected":"")+" svelte-1ntytnd",n.dataset.color=l=s,x(n,"background",s),n._svelte={component:t,each_value_3:e.each_value_3,c_index_3:e.c_index_3}},m:function(t,e){i(n,t,e)},p:function(t,e){s=e.c,e.each_value_3,e.c_index_3,(t.gradient_h||t.nearest_h)&&o!==(o="color "+(s==e.nearest_h?"selected":"")+" svelte-1ntytnd")&&(n.className=o),t.gradient_h&&l!==(l=s)&&(n.dataset.color=l),t.gradient_h&&x(n,"background",s),n._svelte.each_value_3=e.each_value_3,n._svelte.c_index_3=e.c_index_3},u:function(){a(n)},d:function(){m(n,"click",kt)}}}function mt(t,e){for(var l,s,c,r,d,p,_,b,y,k,N,w,C,M,H,T=!1,L=e.palette,$=[],j=0;j<L.length;j+=1)$[j]=ft(t,n(n({},e),{each_value:L,c:L[j],c_index:j}));var S=e.gradient_l,A=[];for(j=0;j<S.length;j+=1)A[j]=pt(t,n(n({},e),{each_value_1:S,c:S[j],c_index_1:j}));var O=e.gradient_c,D=[];for(j=0;j<O.length;j+=1)D[j]=vt(t,n(n({},e),{each_value_2:O,c:O[j],c_index_2:j}));var F=e.gradient_h,Y=[];for(j=0;j<F.length;j+=1)Y[j]=_t(t,n(n({},e),{each_value_3:F,c:F[j],c_index_3:j}));function K(){T=!0,t.set({color:N.value}),T=!1}function z(e){var n=t.get();t.setColor(n.color,!0)}function R(t){t.stopPropagation()}return{c:function(){l=h("div"),s=h("div");for(var t=0;t<$.length;t+=1)$[t].c();c=f("\n\n                "),r=h("div");for(t=0;t<A.length;t+=1)A[t].c();d=f("\n                "),p=h("div");for(t=0;t<D.length;t+=1)D[t].c();_=f("\n                "),b=h("div");for(t=0;t<Y.length;t+=1)Y[t].c();y=f("\n\n                "),k=h("div"),N=h("input"),w=f("\n                    "),(C=h("button")).innerHTML='<i class="icon-ok"></i>',M=f("\n                    "),H=h("div"),this.h()},h:function(){s.className="palette svelte-1ntytnd",r.className="color-axis lightness",p.className="color-axis saturation",b.className="color-axis hue",v(N,"input",K),g(N,"type","text"),x(N,"background",e.color),x(N,"border-color",rt),x(N,"color",e.textColor),N.className="hex svelte-1ntytnd",v(C,"click",z),C.className="btn btn-small ok",H.className="color selected",x(H,"background",e.color),k.className="footer",v(l,"click",R),l.className="color-selector svelte-1ntytnd"},m:function(t,n){i(l,t,n),o(s,l);for(var a=0;a<$.length;a+=1)$[a].m(s,null);o(c,l),o(r,l);for(a=0;a<A.length;a+=1)A[a].m(r,null);o(d,l),o(p,l);for(a=0;a<D.length;a+=1)D[a].m(p,null);o(_,l),o(b,l);for(a=0;a<Y.length;a+=1)Y[a].m(b,null);o(y,l),o(k,l),o(N,k),N.value=e.color,o(w,k),o(C,k),o(M,k),o(H,k)},p:function(e,o){var i=o.palette;if(e.palette){for(var a=0;a<i.length;a+=1){var l=n(n({},o),{each_value:i,c:i[a],c_index:a});$[a]?$[a].p(e,l):($[a]=ft(t,l),$[a].c(),$[a].m(s,null))}for(;a<$.length;a+=1)$[a].u(),$[a].d();$.length=i.length}var c=o.gradient_l;if(e.gradient_l||e.nearest_l){for(a=0;a<c.length;a+=1){var u=n(n({},o),{each_value_1:c,c:c[a],c_index_1:a});A[a]?A[a].p(e,u):(A[a]=pt(t,u),A[a].c(),A[a].m(r,null))}for(;a<A.length;a+=1)A[a].u(),A[a].d();A.length=c.length}var d=o.gradient_c;if(e.gradient_c||e.nearest_c){for(a=0;a<d.length;a+=1){var h=n(n({},o),{each_value_2:d,c:d[a],c_index_2:a});D[a]?D[a].p(e,h):(D[a]=vt(t,h),D[a].c(),D[a].m(p,null))}for(;a<D.length;a+=1)D[a].u(),D[a].d();D.length=d.length}var f=o.gradient_h;if(e.gradient_h||e.nearest_h){for(a=0;a<f.length;a+=1){var v=n(n({},o),{each_value_3:f,c:f[a],c_index_3:a});Y[a]?Y[a].p(e,v):(Y[a]=_t(t,v),Y[a].c(),Y[a].m(b,null))}for(;a<Y.length;a+=1)Y[a].u(),Y[a].d();Y.length=f.length}T||(N.value=o.color),e.color&&x(N,"background",o.color),e.textColor&&x(N,"color",o.textColor),e.color&&x(H,"background",o.color)},u:function(){a(l);for(var t=0;t<$.length;t+=1)$[t].u();for(t=0;t<A.length;t+=1)A[t].u();for(t=0;t<D.length;t+=1)D[t].u();for(t=0;t<Y.length;t+=1)Y[t].u()},d:function(){u($),u(A),u(D),u(Y),m(N,"input",K),m(C,"click",z),m(l,"click",R)}}}function gt(t){var e=this._svelte.component,n=this._svelte.each_value[this._svelte.c_index];e.setColor(n,!1)}function bt(t){var e=this._svelte.component,n=this._svelte.each_value[this._svelte.c_index];e.setColor(n,!0)}function xt(t){var e=this._svelte.component,n=this._svelte.each_value_1[this._svelte.c_index_1];e.setColor(n,!1)}function yt(t){var e=this._svelte.component,n=this._svelte.each_value_2[this._svelte.c_index_2];e.setColor(n,!1)}function kt(t){var e=this._svelte.component,n=this._svelte.each_value_3[this._svelte.c_index_3];e.setColor(n,!1)}function Nt(t){H(this,t),this.refs={},this._state=n(n(this.store._init(["themeData"]),{palette:[],prepend:[],append:[],color:"#63c0de"}),t.data),this.store._add(this,["themeData"]),this._recompute({$themeData:1,prepend:1,append:1,color:1,palette:1,gradient_l:1,gradient_c:1,gradient_h:1},this._state),this._handlers.state=[ut],this._handlers.destroy=[L],this._slotted=t.slots||{};var e,l,s,c,u,p,v,_,m,b,y,k,N,w,C,M=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this.slots={},this._fragment=(e=this,l=this._state,N=e._slotted.default,w=l.color&&mt(e,l),C=new ct({root:e.root,slots:{default:d(),button:d(),content:d()}}),e.refs.dropdown=C,{c:function(){s=h("div"),c=f("\n        "),u=h("span"),N||(p=h("div"),v=h("div"),_=f("\n                    "),m=h("span")),b=f("\n        "),y=h("span"),w&&w.c(),k=f("\n    "),C._fragment.c(),this.h()},h:function(){N||(x(v,"background",l.validColor+" none repeat scroll 0% 0%"),v.className="the-color svelte-1ntytnd",m.className="caret svelte-1ntytnd",p.className="base-color-picker color-picker svelte-1ntytnd"),g(u,"slot","button"),g(y,"slot","content"),s.className="color-picker-cont svelte-1ntytnd"},m:function(t,e){i(s,t,e),o(c,C._slotted.default),o(u,C._slotted.button),N?o(N,u):(o(p,u),o(v,p),o(_,p),o(m,p)),o(b,C._slotted.default),o(y,C._slotted.content),w&&w.m(y,null),o(k,C._slotted.default),C._mount(s,null)},p:function(t,n){N||t.validColor&&x(v,"background",n.validColor+" none repeat scroll 0% 0%"),n.color?w?w.p(t,n):((w=mt(e,n)).c(),w.m(y,null)):w&&(w.u(),w.d(),w=null)},u:function(){a(s),N&&r(u,N),w&&w.u()},d:function(){w&&w.d(),C.destroy(!1),e.refs.dropdown===C&&(e.refs.dropdown=null)}}),this.root._oncreate.push(function(){var t={$themeData:1,prepend:1,append:1,color:1,palette:1,gradient_l:1,gradient_c:1,gradient_h:1,validColor:1,nearest_l:1,nearest_c:1,nearest_h:1,textColor:1};ut.call(M,{changed:t,current:M._state}),M.fire("update",{changed:t,current:M._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,T(this._beforecreate),T(this._oncreate),T(this._aftercreate),this._lock=!1)}function wt(t){var e=t.$vis,n=t.customizable,o=t.axis,i=t.custom,a=t.palette;return e&&n?(o?_.unique(e.axes(!0)[o].values()):e.colorKeys?e.colorKeys():e.keys()).map(function(t){var e;return e=t,{key:t=dw.utils.purifyHtml(e,""),defined:void 0!==i[t],color:void 0!==i[t]?Ht(i[t],a):"#cccccc"}}):[]}n(Nt.prototype,$),n(Nt.prototype,{setColor:function(t,e){this.set({color:t}),e&&this.refs.dropdown.set({visible:!1})}}),Nt.prototype._recompute=function(e,n){var o,i,a,l;(e.$themeData||e.prepend||e.append)&&this._differs(n.palette,n.palette=(i=(o=n).$themeData,a=o.prepend,l=o.append,lt(a.concat(i.colors.palette).concat(l))))&&(e.palette=!0),e.color&&(this._differs(n.validColor,n.validColor=function(e){var n=e.color;try{return t(n).hex()}catch(t){return"#000000"}}(n))&&(e.validColor=!0),this._differs(n.gradient_l,n.gradient_l=function(e){var n=e.color,o=t(n).lch(),i=ht(70,55,7,6).map(function(e){return t.lch(e,o[1],o[2]).hex()});return t.scale(["#000000"].concat(i).concat("#ffffff")).mode("lch").gamma(.8).padding(.1).colors(14)}(n))&&(e.gradient_l=!0)),(e.color||e.palette)&&this._differs(n.gradient_c,n.gradient_c=function(e){var n=e.color,o=e.palette,i=t(n).set("lch.c",120);isNaN(i.get("lch.h"))&&(i=t.lch(i.get("lch.l"),50,t(o[0]||"#d00").get("lch.h")));var a=t(n).set("lch.c",3);return t.scale([a,i]).mode("lch").gamma(1.2).colors(14)}(n))&&(e.gradient_c=!0),e.color&&this._differs(n.gradient_h,n.gradient_h=function(e){var n=e.color,o=t(n).lch(),i=ht(o[2],75,7,6).map(function(e){return t.lch(o[0],o[1],e).hex()});return t.scale(i).mode("lch").colors(14)}(n))&&(e.gradient_h=!0),(e.color||e.gradient_l)&&this._differs(n.nearest_l,n.nearest_l=function(t){var e=t.color;return dt(t.gradient_l,e)}(n))&&(e.nearest_l=!0),(e.color||e.gradient_c)&&this._differs(n.nearest_c,n.nearest_c=function(t){var e=t.color;return dt(t.gradient_c,e)}(n))&&(e.nearest_c=!0),(e.color||e.gradient_h)&&this._differs(n.nearest_h,n.nearest_h=function(t){var e=t.color;return dt(t.gradient_h,e)}(n))&&(e.nearest_h=!0),e.color&&(this._differs(n.textColor,n.textColor=function(e){var n=e.color;return t(n).get("lab.l")>60?"black":"white"}(n))&&(e.textColor=!0),this._differs(n.borderColor,n.borderColor=function(e){var n=e.color;return t(n).darker().hex()}(n))&&(e.borderColor=!0))};var Ct={update:function(t){var e=this.get().palette;this.set({value:Mt(t,e)})},updateCustom:function(t){var e=this.get(),n=e.selected,o=e.palette,i=e.custom;n.forEach(function(e){return i[e]=Mt(t,o)}),this.set({custom:i})},toggle:function(t){t.preventDefault();var e=this.get().expanded;this.set({expanded:!e})},toggleSelect:function(t,e){e.preventDefault();var n=this.get().selected,o=n.indexOf(t);e.shiftKey?o>-1?n.splice(o,1):n.push(t):(n.length=1,n[0]=t),this.set({selected:n})},getColor:function(t){return Ht(t,this.get().palette)},reset:function(){var t=this.get(),e=t.selected,n=t.custom;e.forEach(function(t){return delete n[t]}),this.set({custom:n})},resetAll:function(){var t=this.get().custom;Object.keys(t).forEach(function(e){return delete t[e]}),this.set({custom:t})},selectAll:function(t){t.preventDefault();var e=this.get(),n=e.selected;e.colorKeys.forEach(function(t){n.indexOf(t.key)<0&&n.push(t.key)}),this.set({selected:n})},selectNone:function(t){t.preventDefault();var e=this.get().selected;e.length=0,this.set({selected:e})},selectInvert:function(t){t.preventDefault();var e=this.get(),n=e.selected,o=e.colorKeys;console.log(n),o.forEach(function(t){var e=n.indexOf(t.key);e<0?n.push(t.key):n.splice(e,1)}),console.log(n),this.set({selected:n})}};function Mt(t,e){var n=e.indexOf(t);return n>-1?n:t}function Ht(t,e){return"number"==typeof t?e[t%e.length]:t}function Tt(t,e){var n={},o={color:e.hexColor,palette:e.palette};"open"in e&&(o.visible=e.open,n.visible=!0);var i=new Nt({root:t.root,data:o,_bind:function(e,o){t.get();var i={};!n.visible&&e.visible&&(i.open=o.visible),t._set(i),n={}}});return t.root._beforecreate.push(function(){i._bind({visible:1},i.get())}),i.on("change",function(e){t.update(e)}),{c:function(){i._fragment.c()},m:function(t,e){i._mount(t,e)},p:function(t,e){var o={};t.hexColor&&(o.color=e.hexColor),t.palette&&(o.palette=e.palette),!n.visible&&t.open&&(o.visible=e.open,n.visible=!0),i._set(o),n={}},u:function(){i._unmount()},d:function(){i.destroy(!1)}}}function Lt(t,e){var n,l,s;function c(e){t.toggle(e)}return{c:function(){n=h("span"),(l=h("a")).textContent="customize colors...",this.h()},h:function(){v(l,"click",c),l.href="#customize",l.className=s="btn btn-small custom "+(e.expanded?"btn-primary":""),g(l,"role","button"),n.className="custom-color-selector-head"},m:function(t,e){i(n,t,e),o(l,n)},p:function(t,e){t.expanded&&s!==(s="btn btn-small custom "+(e.expanded?"btn-primary":""))&&(l.className=s)},u:function(){a(n)},d:function(){m(l,"click",c)}}}function $t(t,e){var n,l,s,c,r,u,d,p,_=e.k,g=(e.each_value,e.k_index,_.defined?"":"×"),b=_.key;return{c:function(){n=h("li"),l=h("div"),s=f(g),c=f("\n                    "),r=h("label"),u=f(b),this.h()},h:function(){l.className="color",x(l,"background",_.color),v(n,"click",Ot),n.className=d=e.selected.indexOf(_.key)>-1?"selected":"",n.dataset.series=p=_.key,n._svelte={component:t,each_value:e.each_value,k_index:e.k_index}},m:function(t,e){i(n,t,e),o(l,n),o(s,l),o(c,n),o(r,n),o(u,r)},p:function(t,e){_=e.k,e.each_value,e.k_index,t.colorKeys&&g!==(g=_.defined?"":"×")&&(s.data=g),t.colorKeys&&x(l,"background",_.color),t.colorKeys&&b!==(b=_.key)&&(u.data=b),(t.selected||t.colorKeys)&&d!==(d=e.selected.indexOf(_.key)>-1?"selected":"")&&(n.className=d),t.colorKeys&&p!==(p=_.key)&&(n.dataset.series=p),n._svelte.each_value=e.each_value,n._svelte.k_index=e.k_index},u:function(){a(n)},d:function(){m(n,"click",Ot)}}}function jt(t,e){var n,l,s,c={},r={color:e.customColor,palette:e.palette};"openCustom"in e&&(r.visible=e.openCustom,c.visible=!0);var u=new Nt({root:t.root,data:r,_bind:function(e,n){t.get();var o={};!c.visible&&e.visible&&(o.openCustom=n.visible),t._set(o),c={}}});function d(e){t.reset()}return t.root._beforecreate.push(function(){u._bind({visible:1},u.get())}),u.on("change",function(e){t.updateCustom(e)}),{c:function(){n=h("div"),u._fragment.c(),l=f("\n                "),(s=h("button")).textContent="Reset",this.h()},h:function(){v(s,"click",d),s.className="btn",n.className="select"},m:function(t,e){i(n,t,e),u._mount(n,null),o(l,n),o(s,n)},p:function(t,e){var n={};t.customColor&&(n.color=e.customColor),t.palette&&(n.palette=e.palette),!c.visible&&t.openCustom&&(n.visible=e.openCustom,c.visible=!0),u._set(n),c={}},u:function(){a(n)},d:function(){u.destroy(!1),m(s,"click",d)}}}function St(t,n){var o;return{c:function(){(o=h("div")).textContent="Please select an element on the left to change colors for individual elements...",this.h()},h:function(){o.className="info"},m:function(t,e){i(o,t,e)},p:e,u:function(){a(o)},d:e}}function At(t,e){for(var l,s,c,r,d,p,_,g,b,y,k,N,w,C,M,H,T,L,$,j,S=e.colorKeys,A=[],O=0;O<S.length;O+=1)A[O]=$t(t,n(n({},e),{each_value:S,k:S[O],k_index:O}));function D(e){t.selectAll(e)}function F(e){t.selectNone(e)}function Y(e){t.selectInvert(e)}function K(t){return t.selected.length?jt:St}var z=K(e),R=z(t,e);function E(e){t.resetAll()}return{c:function(){l=h("div"),s=h("div"),c=h("div"),(r=h("h4")).textContent="Select element(s):",d=f("\n            "),p=h("ul");for(var t=0;t<A.length;t+=1)A[t].c();_=f("\n            "),g=h("div"),b=f("Select:  \n                "),(y=h("a")).textContent="all",k=f("  \n                "),(N=h("a")).textContent="none",w=f("  \n                "),(C=h("a")).textContent="invert",M=f("\n        "),H=h("div"),(T=h("h4")).textContent="Choose a color:",L=f("\n            "),R.c(),$=f("\n            "),(j=h("button")).textContent="Reset all colors",this.h()},h:function(){p.className="dataseries unstyled",v(y,"click",D),y.href="#/select-all",v(N,"click",F),N.href="#/select-none",v(C,"click",Y),C.href="#/select-invert",x(g,"font-size","12px"),x(g,"text-align","center"),x(g,"margin-bottom","10px"),c.className="span2",x(c,"width","43%"),v(j,"click",E),x(j,"margin-top","20px"),j.className="btn",H.className="span2",x(H,"width","42%"),s.className="row",l.className="custom-color-selector-body",x(l,"display","block")},m:function(t,e){i(l,t,e),o(s,l),o(c,s),o(r,c),o(d,c),o(p,c);for(var n=0;n<A.length;n+=1)A[n].m(p,null);o(_,c),o(g,c),o(b,g),o(y,g),o(k,g),o(N,g),o(w,g),o(C,g),o(M,s),o(H,s),o(T,H),o(L,H),R.m(H,null),o($,H),o(j,H)},p:function(e,o){var i=o.colorKeys;if(e.colorKeys||e.selected){for(var a=0;a<i.length;a+=1){var l=n(n({},o),{each_value:i,k:i[a],k_index:a});A[a]?A[a].p(e,l):(A[a]=$t(t,l),A[a].c(),A[a].m(p,null))}for(;a<A.length;a+=1)A[a].u(),A[a].d();A.length=i.length}z===(z=K(o))&&R?R.p(e,o):(R.u(),R.d(),(R=z(t,o)).c(),R.m(H,$))},u:function(){a(l);for(var t=0;t<A.length;t+=1)A[t].u();R.u()},d:function(){u(A),m(y,"click",D),m(N,"click",F),m(C,"click",Y),R.d(),m(j,"click",E)}}}function Ot(t){var e=this._svelte.component,n=this._svelte.each_value[this._svelte.k_index];e.toggleSelect(n.key,t)}function Dt(t){H(this,t),this._state=n(n(this.store._init(["vis","themeData"]),{open:!1,openCustom:!1,customizable:!1,expanded:!1,selected:[],custom:{}}),t.data),this.store._add(this,["vis","themeData"]),this._recompute({$themeData:1,$vis:1,customizable:1,axis:1,custom:1,palette:1,value:1,selected:1},this._state),this._handlers.destroy=[L];var e,l,s,c,r,u,d,v,_,m,g,b,y=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this._fragment=(e=this,l=this._state,m=l.hexColor&&Tt(e,l),g=l.customizable&&Lt(e,l),b=l.customizable&&l.expanded&&At(e,l),{c:function(){s=h("div"),c=h("label"),r=f("\n    "),u=h("div"),m&&m.c(),d=f("\n\n        "),g&&g.c(),v=f("\n\n"),b&&b.c(),_=p(),this.h()},h:function(){c.className="control-label",x(c,"width","100px"),u.className="controls",s.className="control-group vis-option-type-color"},m:function(t,e){i(s,t,e),o(c,s),c.innerHTML=l.label,o(r,s),o(u,s),m&&m.m(u,null),o(d,u),g&&g.m(u,null),i(v,t,e),b&&b.m(t,e),i(_,t,e)},p:function(t,n){t.label&&(c.innerHTML=n.label),n.hexColor?m?m.p(t,n):((m=Tt(e,n)).c(),m.m(u,d)):m&&(m.u(),m.d(),m=null),n.customizable?g?g.p(t,n):((g=Lt(e,n)).c(),g.m(u,null)):g&&(g.u(),g.d(),g=null),n.customizable&&n.expanded?b?b.p(t,n):((b=At(e,n)).c(),b.m(_.parentNode,_)):b&&(b.u(),b.d(),b=null)},u:function(){c.innerHTML="",a(s),m&&m.u(),g&&g.u(),a(v),b&&b.u(),a(_)},d:function(){m&&m.d(),g&&g.d(),b&&b.d()}}),this.root._oncreate.push(function(){(function(){var t=this;this.observe("custom",function(e){e&&0===e.length&&(e={}),t.set({custom:e})})}).call(y),y.fire("update",{changed:{$vis:1,customizable:1,axis:1,custom:1,palette:1,$themeData:1,value:1,selected:1,label:1,hexColor:1,open:1,expanded:1,colorKeys:1,customColor:1,openCustom:1},current:y._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,T(this._beforecreate),T(this._oncreate),T(this._aftercreate),this._lock=!1)}function Ft(t,n){var s,c,r,u,d;return{c:function(){s=h("div"),c=f("For help on custom formats, check the "),r=h("noscript"),u=h("noscript"),d=f("."),this.h()},h:function(){s.className="small svelte-h47p2z"},m:function(t,e){i(s,t,e),o(c,s),o(r,s),r.insertAdjacentHTML("afterend",n.customFormatHelp),o(u,s),o(d,s)},p:function(t,e){t.customFormatHelp&&(l(r,u),r.insertAdjacentHTML("afterend",e.customFormatHelp))},u:function(){l(r,u),a(s)},d:e}}function Yt(t,n){var l,s,c,r=n.opt,u=(n.each_value,n.opt_index,r.l);return{c:function(){l=h("option"),s=f(u),this.h()},h:function(){l.__value=c=r.f,l.value=l.__value},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){r=e.opt,e.each_value,e.opt_index,t.options&&u!==(u=r.l)&&(s.data=u),t.options&&c!==(c=r.f)&&(l.__value=c),l.value=l.__value},u:function(){a(l)},d:e}}function Kt(t,e){var n,o=!1;function l(){o=!0,t.set({custom:n.value}),o=!1}return{c:function(){n=h("input"),this.h()},h:function(){v(n,"input",l),g(n,"type","text"),n.className="svelte-h47p2z"},m:function(t,o){i(n,t,o),n.value=e.custom},p:function(t,e){o||(n.value=e.custom)},u:function(){a(n)},d:function(){m(n,"input",l)}}}function zt(t){H(this,t),this._state=n(n(this.store._init(["vis","dataset"]),{axis:!1,value:"",custom:"",selected:null}),t.data),this.store._add(this,["vis","dataset"]),this._recompute({$vis:1,$dataset:1,axis:1,axisCol:1},this._state),this._handlers.destroy=[L];var e=this;t.root||(this._oncreate=[],this._beforecreate=[]),this._fragment=function(t,e){for(var l,s,c,r,d,p,_,g,b,x=!1,N="custom"==e.selected&&Ft(0,e),w=e.options,C=[],M=0;M<w.length;M+=1)C[M]=Yt(0,n(n({},e),{each_value:w,opt:w[M],opt_index:M}));function H(){x=!0,t.set({selected:k(p)}),x=!1}var T="custom"==e.selected&&Kt(t,e);return{c:function(){l=h("div"),s=h("label"),c=f("\n\n    "),r=h("div"),N&&N.c(),d=f("\n\n        "),p=h("select");for(var t=0;t<C.length;t+=1)C[t].c();_=h("option"),g=f("(custom)"),b=f("\n        "),T&&T.c(),this.h()},h:function(){s.className="control-label svelte-h47p2z",_.__value="custom",_.value=_.__value,v(p,"change",H),"selected"in e||t.root._beforecreate.push(H),p.className="svelte-h47p2z",r.className="controls form-inline",l.className="control-group vis-option-custom-format"},m:function(t,n){i(l,t,n),o(s,l),s.innerHTML=e.label,o(c,l),o(r,l),N&&N.m(r,null),o(d,r),o(p,r);for(var a=0;a<C.length;a+=1)C[a].m(p,null);o(_,p),o(g,_),y(p,e.selected),o(b,r),T&&T.m(r,null)},p:function(e,o){e.label&&(s.innerHTML=o.label),"custom"==o.selected?N?N.p(e,o):((N=Ft(0,o)).c(),N.m(r,d)):N&&(N.u(),N.d(),N=null);var i=o.options;if(e.options){for(var a=0;a<i.length;a+=1){var l=n(n({},o),{each_value:i,opt:i[a],opt_index:a});C[a]?C[a].p(e,l):(C[a]=Yt(0,l),C[a].c(),C[a].m(p,_))}for(;a<C.length;a+=1)C[a].u(),C[a].d();C.length=i.length}x||y(p,o.selected),"custom"==o.selected?T?T.p(e,o):((T=Kt(t,o)).c(),T.m(r,null)):T&&(T.u(),T.d(),T=null)},u:function(){s.innerHTML="",a(l),N&&N.u();for(var t=0;t<C.length;t+=1)C[t].u();T&&T.u()},d:function(){N&&N.d(),u(C),m(p,"change",H),T&&T.d()}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this;this.observe("selected",function(e,n){if(e!=n){var o=t.get().custom;t.set({value:"custom"!=e?e:o+" "})}}),this.observe("value",function(e,n){if(e!=n){for(var o=0,i=t.get().options;o<i.length;o+=1)if(i[o].f==e)return t.set({selected:e});t.set({selected:"custom",custom:e})}}),this.observe("custom",function(e,n){e!=n&&"custom"==t.get().selected&&t.set({value:e})})}).call(e),e.fire("update",{changed:{axisCol:1,$vis:1,$dataset:1,axis:1,label:1,selected:1,customFormatHelp:1,options:1,custom:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),T(this._beforecreate),T(this._oncreate))}function Rt(t,n){var l,s;return{c:function(){l=h("span"),s=f(n.unit),this.h()},h:function(){l.className="unit svelte-l16hlj"},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){t.unit&&(s.data=e.unit)},u:function(){a(l)},d:e}}function Et(t){H(this,t),this._state=n({unit:"",step:1,min:0,max:100,width:"100px"},t.data),this._fragment=function(t,e){var n,l,s,c,r,u,d,p,_=!1;function y(){t.set({value:b(r.value)})}function k(){t.set({value:b(r.value)})}function N(){_=!0,t.set({value:b(d.value)}),_=!1}var w=e.unit&&Rt(0,e);return{c:function(){n=h("div"),l=h("label"),s=f("\n    "),c=h("div"),r=h("input"),u=f("  "),d=h("input"),p=f(" "),w&&w.c(),this.h()},h:function(){x(l,"width",e.width),l.className="control-label",v(r,"input",y),v(r,"change",k),g(r,"type","range"),r.min=e.min,r.max=e.max,r.step=e.step,r.className="svelte-l16hlj",v(d,"input",N),g(d,"type","number"),d.min=e.min,d.max=e.max,d.step=e.step,d.className="svelte-l16hlj",c.className="controls",n.className="control-group vis-option-group vis-option-type-number"},m:function(t,a){i(n,t,a),o(l,n),l.innerHTML=e.label,o(s,n),o(c,n),o(r,c),r.value=e.value,o(u,c),o(d,c),d.value=e.value,o(p,c),w&&w.m(c,null)},p:function(t,e){t.label&&(l.innerHTML=e.label),t.width&&x(l,"width",e.width),r.value=e.value,r.value=e.value,t.min&&(r.min=e.min),t.max&&(r.max=e.max),t.step&&(r.step=e.step),_||(d.value=e.value),t.min&&(d.min=e.min),t.max&&(d.max=e.max),t.step&&(d.step=e.step),e.unit?w?w.p(t,e):((w=Rt(0,e)).c(),w.m(c,null)):w&&(w.u(),w.d(),w=null)},u:function(){l.innerHTML="",a(n),w&&w.u()},d:function(){m(r,"input",y),m(r,"change",k),m(d,"input",N),w&&w.d()}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function It(t,e){var n,l,s,c,r,u,d=e.opt,p=(e.each_value,e.opt_index,d.label);function _(){t.set({value:l.__value})}return{c:function(){n=h("label"),l=h("input"),c=f(" "),r=f(p),this.h()},h:function(){t._bindingGroups[0].push(l),v(l,"change",_),g(l,"type","radio"),l.__value=s=d.value,l.value=l.__value,l.disabled=e.disabled,l.className="svelte-a6km24",n.className=u="radio "+(e.disabled?"disabled":"")+" svelte-a6km24"},m:function(t,a){i(n,t,a),o(l,n),l.checked=l.__value===e.value,o(c,n),o(r,n)},p:function(t,e){d=e.opt,e.each_value,e.opt_index,l.checked=l.__value===e.value,t.options&&s!==(s=d.value)&&(l.__value=s),l.value=l.__value,t.disabled&&(l.disabled=e.disabled),t.options&&p!==(p=d.label)&&(r.data=p),t.disabled&&u!==(u="radio "+(e.disabled?"disabled":"")+" svelte-a6km24")&&(n.className=u)},u:function(){a(n)},d:function(){t._bindingGroups[0].splice(t._bindingGroups[0].indexOf(l),1),m(l,"change",_)}}}function Pt(t){H(this,t),this._state=n({disabled:!1,width:"auto"},t.data),this._bindingGroups=[[]],this._fragment=function(t,e){for(var l,s,c,r,d=e.options,p=[],v=0;v<d.length;v+=1)p[v]=It(t,n(n({},e),{each_value:d,opt:d[v],opt_index:v}));return{c:function(){l=h("div"),s=h("label"),c=f("\n\n    "),r=h("div");for(var t=0;t<p.length;t+=1)p[t].c();this.h()},h:function(){x(s,"width",e.width),s.className="control-label",r.className="controls form-inline",l.className="control-group vis-option-group vis-option-type-radio"},m:function(t,n){i(l,t,n),o(s,l),s.innerHTML=e.label,o(c,l),o(r,l);for(var a=0;a<p.length;a+=1)p[a].m(r,null)},p:function(e,o){e.label&&(s.innerHTML=o.label),e.width&&x(s,"width",o.width);var i=o.options;if(e.disabled||e.options||e.value){for(var a=0;a<i.length;a+=1){var l=n(n({},o),{each_value:i,opt:i[a],opt_index:a});p[a]?p[a].p(e,l):(p[a]=It(t,l),p[a].c(),p[a].m(r,null))}for(;a<p.length;a+=1)p[a].u(),p[a].d();p.length=i.length}},u:function(){s.innerHTML="",a(l);for(var t=0;t<p.length;t+=1)p[t].u()},d:function(){u(p)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function Qt(t,n){var l,s,c,r=n.opt,u=(n.each_value,n.opt_index,r.label);return{c:function(){l=h("option"),s=f(u),this.h()},h:function(){l.__value=c=r.value,l.value=l.__value},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){r=e.opt,e.each_value,e.opt_index,t.options&&u!==(u=r.label)&&(s.data=u),t.options&&c!==(c=r.value)&&(l.__value=c),l.value=l.__value},u:function(){a(l)},d:e}}function qt(t,e){for(var o,l=e.options,s=[],c=0;c<l.length;c+=1)s[c]=Qt(0,n(n({},e),{each_value:l,opt:l[c],opt_index:c}));return{c:function(){for(var t=0;t<s.length;t+=1)s[t].c();o=p()},m:function(t,e){for(var n=0;n<s.length;n+=1)s[n].m(t,e);i(o,t,e)},p:function(t,e){var i=e.options;if(t.options){for(var a=0;a<i.length;a+=1){var l=n(n({},e),{each_value:i,opt:i[a],opt_index:a});s[a]?s[a].p(t,l):(s[a]=Qt(0,l),s[a].c(),s[a].m(o.parentNode,o))}for(;a<s.length;a+=1)s[a].u(),s[a].d();s.length=i.length}},u:function(){for(var t=0;t<s.length;t+=1)s[t].u();a(o)},d:function(){u(s)}}}function Bt(t,e){for(var o,l,s=e.optgroup,c=(e.each_value_1,e.optgroup_index,s.options),r=[],d=0;d<c.length;d+=1)r[d]=Wt(t,n(n({},e),{each_value_2:c,opt:c[d],opt_index_1:d}));return{c:function(){o=h("optgroup");for(var t=0;t<r.length;t+=1)r[t].c();this.h()},h:function(){g(o,"label",l=s.label)},m:function(t,e){i(o,t,e);for(var n=0;n<r.length;n+=1)r[n].m(o,null)},p:function(e,i){s=i.optgroup,i.each_value_1,i.optgroup_index;var a=s.options;if(e.optgroups){for(var c=0;c<a.length;c+=1){var u=n(n({},i),{each_value_2:a,opt:a[c],opt_index_1:c});r[c]?r[c].p(e,u):(r[c]=Wt(t,u),r[c].c(),r[c].m(o,null))}for(;c<r.length;c+=1)r[c].u(),r[c].d();r.length=a.length}e.optgroups&&l!==(l=s.label)&&g(o,"label",l)},u:function(){a(o);for(var t=0;t<r.length;t+=1)r[t].u()},d:function(){u(r)}}}function Wt(t,n){n.optgroup,n.each_value_1,n.optgroup_index;var l,s,c,r=n.opt,u=(n.each_value_2,n.opt_index_1,r.label);return{c:function(){l=h("option"),s=f(u),this.h()},h:function(){l.__value=c=r.value,l.value=l.__value},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){e.optgroup,e.each_value_1,e.optgroup_index,r=e.opt,e.each_value_2,e.opt_index_1,t.optgroups&&u!==(u=r.label)&&(s.data=u),t.optgroups&&c!==(c=r.value)&&(l.__value=c),l.value=l.__value},u:function(){a(l)},d:e}}function Gt(t,e){for(var o,l=e.optgroups,s=[],c=0;c<l.length;c+=1)s[c]=Bt(t,n(n({},e),{each_value_1:l,optgroup:l[c],optgroup_index:c}));return{c:function(){for(var t=0;t<s.length;t+=1)s[t].c();o=p()},m:function(t,e){for(var n=0;n<s.length;n+=1)s[n].m(t,e);i(o,t,e)},p:function(e,i){var a=i.optgroups;if(e.optgroups){for(var l=0;l<a.length;l+=1){var c=n(n({},i),{each_value_1:a,optgroup:a[l],optgroup_index:l});s[l]?s[l].p(e,c):(s[l]=Bt(t,c),s[l].c(),s[l].m(o.parentNode,o))}for(;l<s.length;l+=1)s[l].u(),s[l].d();s.length=a.length}},u:function(){for(var t=0;t<s.length;t+=1)s[t].u();a(o)},d:function(){u(s)}}}function Jt(t){H(this,t),this._state=n({disabled:!1,width:"auto",labelWidth:"auto",options:[],optgroups:[]},t.data),t.root||(this._oncreate=[],this._beforecreate=[]),this._fragment=function(t,e){var n,l,s,c,r,u,d,_=!1,g=e.options.length&&qt(0,e),b=e.optgroups.length&&Gt(t,e);function N(){_=!0,t.set({value:k(r)}),_=!1}return{c:function(){n=h("div"),l=h("label"),s=f("\n\n    "),c=h("div"),r=h("select"),g&&g.c(),u=p(),b&&b.c(),this.h()},h:function(){x(l,"width",e.labelWidth),l.className="control-label",v(r,"change",N),"value"in e||t.root._beforecreate.push(N),r.disabled=e.disabled,x(r,"width",e.width),c.className=d="controls form-inline "+(e.disabled?"disabled":""),n.className="control-group vis-option-type-select"},m:function(t,a){i(n,t,a),o(l,n),l.innerHTML=e.label,o(s,n),o(c,n),o(r,c),g&&g.m(r,null),o(u,r),b&&b.m(r,null),y(r,e.value)},p:function(e,n){e.label&&(l.innerHTML=n.label),e.labelWidth&&x(l,"width",n.labelWidth),n.options.length?g?g.p(e,n):((g=qt(0,n)).c(),g.m(r,u)):g&&(g.u(),g.d(),g=null),n.optgroups.length?b?b.p(e,n):((b=Gt(t,n)).c(),b.m(r,null)):b&&(b.u(),b.d(),b=null),_||y(r,n.value),e.disabled&&(r.disabled=n.disabled),e.width&&x(r,"width",n.width),e.disabled&&d!==(d="controls form-inline "+(n.disabled?"disabled":""))&&(c.className=d)},u:function(){l.innerHTML="",a(n),g&&g.u(),b&&b.u()},d:function(){g&&g.d(),b&&b.d(),m(r,"change",N)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),T(this._beforecreate))}n(Dt.prototype,$),n(Dt.prototype,Ct),Dt.prototype._recompute=function(e,n){e.$themeData&&this._differs(n.palette,n.palette=n.$themeData.colors.palette)&&(e.palette=!0),(e.$vis||e.customizable||e.axis||e.custom||e.palette)&&this._differs(n.colorKeys,n.colorKeys=wt(n))&&(e.colorKeys=!0),(e.value||e.palette)&&this._differs(n.hexColor,n.hexColor=function(t){return Ht(t.value,t.palette)}(n))&&(e.hexColor=!0),(e.selected||e.palette||e.custom)&&this._differs(n.customColor,n.customColor=function(e){var n=e.selected,o=e.palette,i=e.custom;if(void 0===i[n[0]])return"#ccc";var a=n.filter(function(t){return void 0!==i[t]}).map(function(t){return Ht(i[t],o)});return a.length?t.average(a,"lab"):"#ccc"}(n))&&(e.customColor=!0)},n(zt.prototype,$),zt.prototype._recompute=function(t,e){(t.$vis||t.$dataset||t.axis)&&this._differs(e.axisCol,e.axisCol=function(t){var e=t.$vis,n=t.$dataset,o=t.axis;if(!e||!o)return null;var i=e.axes()[o];return n.column("object"==typeof i?i[0]:i)}(e))&&(t.axisCol=!0),t.axisCol&&(this._differs(e.customFormatHelp,e.customFormatHelp=function(t){var e=t.axisCol;if(e)return"date"==e.type()?'<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">moment.js documentation</a>':"number"==e.type()?'<a href="http://numeraljs.com/#format" target="_blank">numeral.js documentation</a>':""}(e))&&(t.customFormatHelp=!0),this._differs(e.options,e.options=function(t){var e=t.axisCol;return e?"number"==e.type()?[{l:"1,000[.00]",f:"0,0.[00]"},{l:"0",f:"0"},{l:"0.0",f:"0.0"},{l:"0.00",f:"0.00"},{l:"0.000",f:"0.000"},{l:"0.[0]",f:"0.[0]"},{l:"0.[00]",f:"0.[00]"},{l:"0%",f:"0%"},{l:"0.0%",f:"0.0%"},{l:"0.00%",f:"0.00%"},{l:"0.[0]%",f:"0.[0]%"},{l:"0.[00]%",f:"0.[00]%"},{l:"10,000",f:"0,0"},{l:"1st",f:"0o"},{l:"123k",f:"0a"},{l:"123.4k",f:"0.[0]a"},{l:"123.45k",f:"0.[00]a"}]:"date"==e.type()?[{l:"2015, 2016",f:"YYYY"},{l:"2015 Q1, 2015 Q2",f:"YYYY [Q]Q"},{l:"2015, Q2, Q3",f:"YYYY|\\QQ"},{l:"2015, Feb, Mar",f:"YYYY|MMM"},{l:"’15, ’16",f:"’YY"},{l:"April, May",f:"MMMM"},{l:"Apr, May",f:"MMM"},{l:"Apr ’15, May ’15",f:"MMM ’YY"},{l:"April, 2, 3",f:"MMM|DD"}]:void 0:[]}(e))&&(t.options=!0))},n(Et.prototype,$),n(Pt.prototype,$),n(Jt.prototype,$);function Ut(t,e){var n,l,s,c,r=e.opt,u=(e.each_value,e.opt_index,r.label);return{c:function(){n=h("li"),l=h("a"),this.h()},h:function(){v(l,"click",Xt),l.href=s="#/"+r.value,l._svelte={component:t,each_value:e.each_value,opt_index:e.opt_index},n.className=c=(e.value==r.value?"selected":"")+" svelte-154oatd"},m:function(t,e){i(n,t,e),o(l,n),l.innerHTML=u},p:function(t,e){r=e.opt,e.each_value,e.opt_index,t.options&&u!==(u=r.label)&&(l.innerHTML=u),t.options&&s!==(s="#/"+r.value)&&(l.href=s),l._svelte.each_value=e.each_value,l._svelte.opt_index=e.opt_index,(t.value||t.options)&&c!==(c=(e.value==r.value?"selected":"")+" svelte-154oatd")&&(n.className=c)},u:function(){l.innerHTML="",a(n)},d:function(){m(l,"click",Xt)}}}function Vt(t,e){for(var o,l=e.options,s=[],c=0;c<l.length;c+=1)s[c]=Ut(t,n(n({},e),{each_value:l,opt:l[c],opt_index:c}));return{c:function(){for(var t=0;t<s.length;t+=1)s[t].c();o=p()},m:function(t,e){for(var n=0;n<s.length;n+=1)s[n].m(t,e);i(o,t,e)},p:function(e,i){var a=i.options;if(e.value||e.options){for(var l=0;l<a.length;l+=1){var c=n(n({},i),{each_value:a,opt:a[l],opt_index:l});s[l]?s[l].p(e,c):(s[l]=Ut(t,c),s[l].c(),s[l].m(o.parentNode,o))}for(;l<s.length;l+=1)s[l].u(),s[l].d();s.length=a.length}},u:function(){for(var t=0;t<s.length;t+=1)s[t].u();a(o)},d:function(){u(s)}}}function Xt(t){var e=this._svelte.component,n=this._svelte.each_value[this._svelte.opt_index];e.select(t,n)}function Zt(t){var e,l,c,r,u,p,v,_,m,b,y,k,N,w,C,M,L,$,j,S;H(this,t),this._state=n({disabled:!1,width:"auto",options:[],optgroups:[]},t.data),this._recompute({value:1,options:1},this._state),t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this._fragment=(e=this,l=this._state,j=l.options.length&&Vt(e,l),S=new ct({root:e.root,slots:{default:d(),button:d(),content:d()}}),{c:function(){c=h("div"),r=h("label"),u=f("\n\n    "),p=h("div"),v=f("\n            "),_=h("span"),m=h("div"),b=h("button"),y=h("noscript"),k=f("\n                        "),N=h("span"),w=f("\n            "),C=h("span"),M=h("ul"),j&&j.c(),L=f("\n        "),S._fragment.c(),this.h()},h:function(){r.className="control-label",N.className="caret svelte-154oatd",b.className="btn dropdown-toggle svelte-154oatd",m.className="btn-group",g(_,"slot","button"),M.className="dropdown-menu svelte-154oatd",x(M,"display","block"),g(C,"slot","content"),p.className=$="controls form-inline "+(l.disabled?"disabled":"")+" svelte-154oatd",c.className="control-group vis-option-type-select"},m:function(t,e){i(c,t,e),o(r,c),r.innerHTML=l.label,o(u,c),o(p,c),o(v,S._slotted.default),o(_,S._slotted.button),o(m,_),o(b,m),o(y,b),y.insertAdjacentHTML("beforebegin",l.currentLabel),o(k,b),o(N,b),o(w,S._slotted.default),o(C,S._slotted.content),o(M,C),j&&j.m(M,null),o(L,S._slotted.default),S._mount(p,null)},p:function(t,n){t.label&&(r.innerHTML=n.label),t.currentLabel&&(s(y),y.insertAdjacentHTML("beforebegin",n.currentLabel)),n.options.length?j?j.p(t,n):((j=Vt(e,n)).c(),j.m(M,null)):j&&(j.u(),j.d(),j=null),t.disabled&&$!==($="controls form-inline "+(n.disabled?"disabled":"")+" svelte-154oatd")&&(p.className=$)},u:function(){r.innerHTML="",s(y),a(c),j&&j.u()},d:function(){j&&j.d(),S.destroy(!1)}}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,T(this._beforecreate),T(this._oncreate),T(this._aftercreate),this._lock=!1)}function te(t){var e=t-1;return e*e*e+1}function ee(t,e){var n=e.delay;void 0===n&&(n=0);var o=e.duration;void 0===o&&(o=400);var i=e.easing;void 0===i&&(i=te);var a=getComputedStyle(t),l=+a.opacity,s=parseFloat(a.height),c=parseFloat(a.paddingTop),r=parseFloat(a.paddingBottom),u=parseFloat(a.marginTop),d=parseFloat(a.marginBottom),h=parseFloat(a.borderTopWidth),f=parseFloat(a.borderBottomWidth);return{delay:n,duration:o,easing:i,css:function(t){return"overflow: hidden;opacity: "+Math.min(20*t,1)*l+";height: "+t*s+"px;padding-top: "+t*c+"px;padding-bottom: "+t*r+"px;margin-top: "+t*u+"px;margin-bottom: "+t*d+"px;border-top-width: "+t*h+"px;border-bottom-width: "+t*f+"px;"}}}n(Zt.prototype,$),n(Zt.prototype,{select:function(t,e){t.preventDefault(),this.set({value:e.value}),this.fire("change",e.value)}}),Zt.prototype._recompute=function(t,e){(t.value||t.options)&&this._differs(e.currentLabel,e.currentLabel=function(t){for(var e=t.value,n=t.options,o=0;o<n.length;o++)if(n[o].value==e)return n[o].label;return"(select an item)"}(e))&&(t.currentLabel=!0)};var ne={show:function(){var t=this,e=setTimeout(function(){t.set({visible:!0})},400);this.set({t:e})},hide:function(){var t=this.get().t;clearTimeout(t),this.set({visible:!1})}};function oe(t,n){var l,s=t._slotted.default;return{c:function(){l=h("div"),this.h()},h:function(){l.className="content svelte-1mt7hew"},m:function(t,e){i(l,t,e),s&&o(s,l)},u:function(){a(l),s&&r(l,s)},d:e}}function ie(t){H(this,t),this._state=n({visible:!1},t.data),this._slotted=t.slots||{},this.slots={},this._fragment=function(t,e){var n,l,s,c=e.visible&&oe(t);function r(e){t.show()}function u(e){t.hide()}return{c:function(){n=h("div"),(l=h("span")).textContent="?",s=f("\n    "),c&&c.c(),this.h()},h:function(){l.className="svelte-1mt7hew",v(n,"mouseenter",r),v(n,"mouseleave",u),n.className="help svelte-1mt7hew"},m:function(t,e){i(n,t,e),o(l,n),o(s,n),c&&c.m(n,null)},p:function(e,o){o.visible?c||((c=oe(t)).c(),c.m(n,null)):c&&(c.u(),c.d(),c=null)},u:function(){a(n),c&&c.u()},d:function(){c&&c.d(),m(n,"mouseenter",r),m(n,"mouseleave",u)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function ae(t){var e=this,n=t.changed,o=t.current;n.value&&o.value&&(this.set({highlight:!0}),setTimeout(function(){e.set({highlight:!1})},300))}function le(t,e){var n,i,a=t._slotted.help,l=new ie({root:t.root,slots:{default:d()}});return{c:function(){n=f("\n        "),i=f("\n    "),l._fragment.c()},m:function(t,e){o(n,l._slotted.default),a&&o(a,l._slotted.default),o(i,l._slotted.default),l._mount(t,e)},u:function(){a&&r(l._slotted.default,a),l._unmount()},d:function(){l.destroy(!1)}}}function se(t,n){var l,s,c,r,u;return{c:function(){l=h("div"),s=h("div"),this.h()},h:function(){s.className="disabled-msg svelte-2cwspk",l.className="svelte-2cwspk"},m:function(t,e){i(l,t,e),o(s,l),s.innerHTML=n.disabled_msg},p:function(t,e){(u||t.disabled_msg)&&(s.innerHTML=e.disabled_msg)},i:function(e,n){r||(r=!0,u=!1,t.root._aftercreate.push(function(){c||(c=w(t,l,ee,{},!0)),c.run(!0,function(){t.fire("intro.end",{node:l})})}),this.m(e,n))},o:function(e){if(!u){u=!0,r=!1;var n=1;c.run(!1,function(){t.fire("outro.end",{node:l}),0==--n&&e(),c=null})}},u:function(){s.innerHTML="",a(l)},d:e}}function ce(t,n){var l,s,c,u,d,f=t._slotted.default;return{c:function(){l=h("div"),s=h("div"),this.h()},h:function(){s.className="switch-content svelte-2cwspk",l.className="svelte-2cwspk"},m:function(t,e){i(l,t,e),o(s,l),f&&o(f,s)},p:e,i:function(e,n){u||(u=!0,d=!1,t.root._aftercreate.push(function(){c||(c=w(t,l,ee,{},!0)),c.run(!0,function(){t.fire("intro.end",{node:l})})}),this.m(e,n))},o:function(e){if(!d){d=!0,u=!1;var n=1;c.run(!1,function(){t.fire("outro.end",{node:l}),0==--n&&e(),c=null})}},u:function(){a(l),f&&r(s,f)},d:e}}function re(t){H(this,t),this._state=n({hasHelp:!1,disabled_msg:"",disabled_state:"auto",disabled:!1,highlight:!1},t.data),this._handlers.state=[ae],this._slotted=t.slots||{};var e=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this.slots={},this._fragment=function(t,e){var n,l,s,r,u,d,p,_,b,y,k,N,w,C,M=e.hasHelp&&le(t);function H(){t.set({value:u.checked})}var T=[se,ce],L=[];function $(t){return t.disabled&&t.disabled_msg?0:!t.disabled&&t.value?1:-1}return~(N=$(e))&&(w=L[N]=T[N](t,e)),{c:function(){n=h("div"),M&&M.c(),l=f("\n    "),s=h("label"),r=h("label"),u=h("input"),p=h("span"),_=f("\n        "),b=h("noscript"),k=f("\n    "),w&&w.c(),this.h()},h:function(){v(u,"change",H),u.className=d=(e.disabled&&"on"==e.disabled_state?"disabled-force-checked":e.disabled&&"off"==e.disabled_state?"disabled-force-unchecked":"")+" svelte-2cwspk",u.disabled=e.disabled,g(u,"type","checkbox"),p.className="slider round svelte-2cwspk",r.className="switch svelte-2cwspk",s.className=y="switch-outer "+(e.disabled?"disabled":"")+" svelte-2cwspk",x(s,"padding-left","40px"),n.className=C="control-group vis-option-group vis-option-type-switch "+(e.highlight?"highlight":"")+" svelte-2cwspk"},m:function(t,a){i(n,t,a),M&&M.m(n,null),o(l,n),o(s,n),o(r,s),o(u,r),u.checked=e.value,o(p,r),o(_,s),o(b,s),b.insertAdjacentHTML("afterend",e.label),o(k,n),~N&&L[N].i(n,null)},p:function(e,o){o.hasHelp?M||((M=le(t)).c(),M.m(n,l)):M&&(M.u(),M.d(),M=null),u.checked=o.value,(e.disabled||e.disabled_state)&&d!==(d=(o.disabled&&"on"==o.disabled_state?"disabled-force-checked":o.disabled&&"off"==o.disabled_state?"disabled-force-unchecked":"")+" svelte-2cwspk")&&(u.className=d),e.disabled&&(u.disabled=o.disabled),e.label&&(c(b),b.insertAdjacentHTML("afterend",o.label)),e.disabled&&y!==(y="switch-outer "+(o.disabled?"disabled":"")+" svelte-2cwspk")&&(s.className=y);var i=N;(N=$(o))===i?~N&&L[N].p(e,o):(w&&w.o(function(){L[i].u(),L[i].d(),L[i]=null}),~N?((w=L[N])||(w=L[N]=T[N](t,o)).c(),w.i(n,null)):w=null),e.highlight&&C!==(C="control-group vis-option-group vis-option-type-switch "+(o.highlight?"highlight":"")+" svelte-2cwspk")&&(n.className=C)},u:function(){c(b),a(n),M&&M.u()},d:function(){M&&M.d(),m(u,"change",H),~N&&(L[N].u(),L[N].d())}}}(this,this._state),this.root._oncreate.push(function(){var t={highlight:1,hasHelp:1,disabled:1,disabled_state:1,value:1,label:1,disabled_msg:1};ae.call(e,{changed:t,current:e._state}),function(){this.set({hasHelp:!(!this.options||!this.options.slots||!this.options.slots.help)})}.call(e),e.fire("update",{changed:t,current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,T(this._beforecreate),T(this._oncreate),T(this._aftercreate),this._lock=!1)}function ue(t){H(this,t),this._state=n({placeholder:""},t.data),this._fragment=function(t,e){var n,l,s,c,r,u,d=!1;function p(){d=!0,t.set({value:u.value}),d=!1}return{c:function(){n=h("div"),l=h("label"),s=f(e.label),c=f("\n    "),r=h("div"),u=h("textarea"),this.h()},h:function(){l.className="control-label",v(u,"input",p),u.placeholder=e.placeholder,x(u,"width",e.width||"auto"),r.className="controls",n.className="control-group vis-option-group vis-option-type-textarea"},m:function(t,a){i(n,t,a),o(l,n),o(s,l),o(c,n),o(r,n),o(u,r),u.value=e.value},p:function(t,e){t.label&&(s.data=e.label),d||(u.value=e.value),t.placeholder&&(u.placeholder=e.placeholder),t.width&&x(u,"width",e.width||"auto")},u:function(){a(n)},d:function(){m(u,"input",p)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function de(t,n){var l,s,c=n.axis["na-label"]||"--";return{c:function(){l=h("option"),s=f(c),this.h()},h:function(){l.__value="-",l.value=l.__value},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){t.axis&&c!==(c=e.axis["na-label"]||"--")&&(s.data=c)},u:function(){a(l)},d:e}}function he(t,n){var l,s,c,r=n.column,u=(n.each_value,n.column_index,r.name);return{c:function(){l=h("option"),s=f(u),this.h()},h:function(){l.__value=c=r.name,l.value=l.__value},m:function(t,e){i(l,t,e),o(s,l)},p:function(t,e){r=e.column,e.each_value,e.column_index,t.columns&&u!==(u=r.name)&&(s.data=u),t.columns&&c!==(c=r.name)&&(l.__value=c),l.value=l.__value},u:function(){a(l)},d:e}}function fe(t){H(this,t),this._state=n(n(this.store._init(["visMeta","dataset"]),{selected:!1}),t.data),this.store._add(this,["visMeta","dataset"]),this._recompute({axis:1,$visMeta:1,$dataset:1},this._state),this._handlers.destroy=[L];var e=this;t.root||(this._oncreate=[],this._beforecreate=[]),this._fragment=function(t,e){for(var l,s,c,r,d,_,g=!1,b=e.$visMeta&&e.$visMeta.axes[e.axis].optional&&de(0,e),x=e.columns,N=[],w=0;w<x.length;w+=1)N[w]=he(0,n(n({},e),{each_value:x,column:x[w],column_index:w}));function C(){g=!0,t.set({selected:k(d)}),g=!1}return{c:function(){l=h("div"),s=h("label"),c=f("\n\n    "),r=h("div"),d=h("select"),b&&b.c(),_=p();for(var t=0;t<N.length;t+=1)N[t].c();this.h()},h:function(){s.className="control-label svelte-7khi8i",v(d,"change",C),"selected"in e||t.root._beforecreate.push(C),d.className="svelte-7khi8i",r.className="controls form-inline",l.className="control-group vis-option-group"},m:function(t,n){i(l,t,n),o(s,l),s.innerHTML=e.label,o(c,l),o(r,l),o(d,r),b&&b.m(d,null),o(_,d);for(var a=0;a<N.length;a+=1)N[a].m(d,null);y(d,e.selected)},p:function(t,e){t.label&&(s.innerHTML=e.label),e.$visMeta&&e.$visMeta.axes[e.axis].optional?b?b.p(t,e):((b=de(0,e)).c(),b.m(d,_)):b&&(b.u(),b.d(),b=null);var o=e.columns;if(t.columns){for(var i=0;i<o.length;i+=1){var a=n(n({},e),{each_value:o,column:o[i],column_index:i});N[i]?N[i].p(t,a):(N[i]=he(0,a),N[i].c(),N[i].m(d,null))}for(;i<N.length;i+=1)N[i].u(),N[i].d();N.length=o.length}g||y(d,e.selected)},u:function(){s.innerHTML="",a(l),b&&b.u();for(var t=0;t<N.length;t+=1)N[t].u()},d:function(){b&&b.d(),u(N),m(d,"change",C)}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this;t.observe("selected",function(e){if(e){var n=t.get().axis,o=_.clone(window.chart.get("metadata.axes",{}));"-"==e?delete o[n]:o[n]=e,window.chart.set("metadata.axes",o)}}),t.store.observe("visMeta",function(e){var n=t.get(),o=n.selected,i=n.axis;!o&&e&&(o=window.chart.get("metadata.axes")[i],t.set({selected:o}))})}).call(e),e.fire("update",{changed:{axis:1,$visMeta:1,$dataset:1,label:1,selected:1,columns:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),T(this._beforecreate),T(this._oncreate))}function pe(t){H(this,t),this._state=n({unit:"",width:"100px"},t.data),this._fragment=function(t,e){var n,l,s,c,r,u=!1;function d(){u=!0,t.set({value:r.value}),u=!1}return{c:function(){n=h("div"),l=h("label"),s=f("\n    "),c=h("div"),r=h("input"),this.h()},h:function(){x(l,"width",e.width),l.className="control-label",v(r,"input",d),g(r,"type","text"),r.className="input-large",c.className="controls",n.className="control-group vis-option-group vis-option-type-text"},m:function(t,a){i(n,t,a),o(l,n),l.innerHTML=e.label,o(s,n),o(c,n),o(r,c),r.value=e.value},p:function(t,e){t.label&&(l.innerHTML=e.label),t.width&&x(l,"width",e.width),u||(r.value=e.value)},u:function(){l.innerHTML="",a(n)},d:function(){m(r,"input",d)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function ve(t,n){var l,s,c,u,d=t._slotted.default;return{c:function(){l=h("div"),s=h("fieldset"),c=h("div"),this.h()},h:function(){c.className="control-group vis-option-group",s.id="visOptions",l.className=u="section "+n.id},m:function(t,e){i(l,t,e),o(s,l),o(c,s),d&&o(d,c)},p:function(t,e){t.id&&u!==(u="section "+e.id)&&(l.className=u)},u:function(){a(l),d&&r(c,d)},d:e}}function _e(t){var e,o,l,s;H(this,t),this._state=n({},t.data),this._slotted=t.slots||{},this.slots={},this._fragment=(e=this,o=this._state,s=o.id==o.active&&ve(e,o),{c:function(){s&&s.c(),l=p()},m:function(t,e){s&&s.m(t,e),i(l,t,e)},p:function(t,n){n.id==n.active?s?s.p(t,n):((s=ve(e,n)).c(),s.m(l.parentNode,l)):s&&(s.u(),s.d(),s=null)},u:function(){s&&s.u(),a(l)},d:function(){s&&s.d()}}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}n(ie.prototype,$),n(ie.prototype,ne),n(re.prototype,$),n(ue.prototype,$),n(fe.prototype,$),fe.prototype._recompute=function(t,e){(t.axis||t.$visMeta||t.$dataset)&&this._differs(e.columns,e.columns=function(t){var e=t.axis,n=t.$visMeta,o=t.$dataset,i=[];return o&&n&&e?(o.eachColumn(function(t){_.indexOf(n.axes[e].accepts,t.type())>-1&&i.push({name:t.name()})}),i):[]}(e))&&(t.columns=!0)},n(pe.prototype,$),n(_e.prototype,$);var me={toggle:function(){if(!this.get().notoggle){var t=this.get(),e=t.open,n=t.id;if(n){var o=JSON.parse(window.localStorage.getItem("dw-vis-groups"))||{};o["locator-map"]||(o["locator-map"]={}),o["locator-map"][n]="open"==o["locator-map"][n]?"closed":"open",window.localStorage.setItem("dw-vis-groups",JSON.stringify(o))}this.set({open:!e})}}};function ge(t,n){var o,l,s;return{c:function(){o=h("i"),l=f("\n        "),s=h("i"),this.h()},h:function(){o.className="fa fa-chevron-up expand-group pull-right",s.className="fa fa-chevron-down collapse-group pull-right"},m:function(t,e){i(o,t,e),i(l,t,e),i(s,t,e)},u:function(){a(o),a(l),a(s)},d:e}}function be(t,n){var l,s=t._slotted.default;return{c:function(){l=h("div"),this.h()},h:function(){l.className="option-group-content vis-option-type-chart-description"},m:function(t,e){i(l,t,e),s&&o(s,l)},u:function(){a(l),s&&r(l,s)},d:e}}function xe(t){H(this,t),this._state=n({notoggle:!1,id:!1,open:!0},t.data),this._slotted=t.slots||{};var e=this;t.root||(this._oncreate=[]),this.slots={},this._fragment=function(t,e){var n,l,s,r,u,d,p=!e.notoggle&&ge();function _(e){t.toggle()}var g=e.open&&be(t);return{c:function(){n=h("div"),l=h("label"),p&&p.c(),s=f("\n        "),r=h("noscript"),u=f("\n\n    "),g&&g.c(),this.h()},h:function(){v(l,"click",_),l.className="group-title svelte-ww03ir",n.className=d="vis-option-type-group "+(e.open?"group-open":"")+" "+(e.notoggle?"notoggle":"")+" svelte-ww03ir"},m:function(t,a){i(n,t,a),o(l,n),p&&p.m(l,null),o(s,l),o(r,l),r.insertAdjacentHTML("afterend",e.label),o(u,n),g&&g.m(n,null)},p:function(e,o){o.notoggle?p&&(p.u(),p.d(),p=null):p||((p=ge()).c(),p.m(l,s)),e.label&&(c(r),r.insertAdjacentHTML("afterend",o.label)),o.open?g||((g=be(t)).c(),g.m(n,null)):g&&(g.u(),g.d(),g=null),(e.open||e.notoggle)&&d!==(d="vis-option-type-group "+(o.open?"group-open":"")+" "+(o.notoggle?"notoggle":"")+" svelte-ww03ir")&&(n.className=d)},u:function(){c(r),a(n),p&&p.u(),g&&g.u()},d:function(){p&&p.d(),m(l,"click",_),g&&g.d()}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this.get()||{},e=t.id;if(!t.notoggle&&e){var n=JSON.parse(window.localStorage.getItem("dw-vis-groups"))||{};n["locator-map"]&&n["locator-map"][e]&&this.set({open:"closed"!=n["locator-map"][e]})}}).call(e),e.fire("update",{changed:{open:1,notoggle:1,label:1},current:e._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),T(this._oncreate))}return n(xe.prototype,$),n(xe.prototype,me),{Checkbox:j,Color:Dt,ColorPicker:Nt,Group:xe,NumberInput:Et,Switch:re,Dropdown:Zt,Radio:Pt,Select:Jt,SelectAxisColumn:fe,CustomFormat:zt,Section:_e,TextArea:ue,Help:ie,Text:pe}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chroma')) :
+	typeof define === 'function' && define.amd ? define(['chroma'], factory) :
+	(global.controls = factory(global.chroma));
+}(this, (function (chroma) { 'use strict';
+
+chroma = chroma && chroma.hasOwnProperty('default') ? chroma['default'] : chroma;
+
+function noop() {}
+
+function assign(tar, src) {
+	for (var k in src) tar[k] = src[k];
+	return tar;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function detachBetween(before, after) {
+	while (before.nextSibling && before.nextSibling !== after) {
+		before.parentNode.removeChild(before.nextSibling);
+	}
+}
+
+function detachBefore(after) {
+	while (after.previousSibling) {
+		after.parentNode.removeChild(after.previousSibling);
+	}
+}
+
+function detachAfter(before) {
+	while (before.nextSibling) {
+		before.parentNode.removeChild(before.nextSibling);
+	}
+}
+
+function reinsertBetween(before, after, target) {
+	while (before.nextSibling && before.nextSibling !== after) {
+		target.appendChild(before.parentNode.removeChild(before.nextSibling));
+	}
+}
+
+function reinsertChildren(parent, target) {
+	while (parent.firstChild) target.appendChild(parent.firstChild);
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) iterations[i].d();
+	}
+}
+
+function createFragment() {
+	return document.createDocumentFragment();
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function createComment() {
+	return document.createComment('');
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function toNumber(value) {
+	return value === '' ? undefined : +value;
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function selectOption(select, value) {
+	for (var i = 0; i < select.options.length; i += 1) {
+		var option = select.options[i];
+
+		if (option.__value === value) {
+			option.selected = true;
+			return;
+		}
+	}
+}
+
+function selectValue(select) {
+	var selectedOption = select.querySelector(':checked') || select.options[0];
+	return selectedOption && selectedOption.__value;
+}
+
+function linear(t) {
+	return t;
+}
+
+function generateRule(
+	a,
+	b,
+	delta,
+	duration,
+	ease,
+	fn
+) {
+	var keyframes = '{\n';
+
+	for (var p = 0; p <= 1; p += 16.666 / duration) {
+		var t = a + delta * ease(p);
+		keyframes += p * 100 + '%{' + fn(t) + '}\n';
+	}
+
+	return keyframes + '100% {' + fn(b) + '}\n}';
+}
+
+// https://github.com/darkskyapp/string-hash/blob/master/index.js
+function hash(str) {
+	var hash = 5381;
+	var i = str.length;
+
+	while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+	return hash >>> 0;
+}
+
+function wrapTransition(component, node, fn, params, intro, outgroup) {
+	var obj = fn(node, params);
+	var duration = obj.duration || 300;
+	var ease = obj.easing || linear;
+	var cssText;
+
+	// TODO share <style> tag between all transitions?
+	if (obj.css && !transitionManager.stylesheet) {
+		var style = createElement('style');
+		document.head.appendChild(style);
+		transitionManager.stylesheet = style.sheet;
+	}
+
+	if (intro) {
+		if (obj.css && obj.delay) {
+			cssText = node.style.cssText;
+			node.style.cssText += obj.css(0);
+		}
+
+		if (obj.tick) obj.tick(0);
+	}
+
+	return {
+		t: intro ? 0 : 1,
+		running: false,
+		program: null,
+		pending: null,
+		run: function(intro, callback) {
+			var program = {
+				start: window.performance.now() + (obj.delay || 0),
+				intro: intro,
+				callback: callback
+			};
+
+			if (obj.delay) {
+				this.pending = program;
+			} else {
+				this.start(program);
+			}
+
+			if (!this.running) {
+				this.running = true;
+				transitionManager.add(this);
+			}
+		},
+		start: function(program) {
+			component.fire(program.intro ? 'intro.start' : 'outro.start', { node: node });
+
+			program.a = this.t;
+			program.b = program.intro ? 1 : 0;
+			program.delta = program.b - program.a;
+			program.duration = duration * Math.abs(program.b - program.a);
+			program.end = program.start + program.duration;
+
+			if (obj.css) {
+				if (obj.delay) node.style.cssText = cssText;
+
+				program.rule = generateRule(
+					program.a,
+					program.b,
+					program.delta,
+					program.duration,
+					ease,
+					obj.css
+				);
+
+				transitionManager.addRule(program.rule, program.name = '__svelte_' + hash(program.rule));
+
+				node.style.animation = (node.style.animation || '')
+					.split(', ')
+					.filter(function(anim) {
+						// when introing, discard old animations if there are any
+						return anim && (program.delta < 0 || !/__svelte/.test(anim));
+					})
+					.concat(program.name + ' ' + program.duration + 'ms linear 1 forwards')
+					.join(', ');
+			}
+
+			this.program = program;
+			this.pending = null;
+		},
+		update: function(now) {
+			var program = this.program;
+			if (!program) return;
+
+			var p = now - program.start;
+			this.t = program.a + program.delta * ease(p / program.duration);
+			if (obj.tick) obj.tick(this.t);
+		},
+		done: function() {
+			var program = this.program;
+			this.t = program.b;
+			if (obj.tick) obj.tick(this.t);
+			if (obj.css) transitionManager.deleteRule(node, program.name);
+			program.callback();
+			program = null;
+			this.running = !!this.pending;
+		},
+		abort: function() {
+			if (obj.tick) obj.tick(1);
+			if (obj.css) transitionManager.deleteRule(node, this.program.name);
+			this.program = this.pending = null;
+			this.running = false;
+		}
+	};
+}
+
+var transitionManager = {
+	running: false,
+	transitions: [],
+	bound: null,
+	stylesheet: null,
+	activeRules: {},
+
+	add: function(transition) {
+		this.transitions.push(transition);
+
+		if (!this.running) {
+			this.running = true;
+			requestAnimationFrame(this.bound || (this.bound = this.next.bind(this)));
+		}
+	},
+
+	addRule: function(rule, name) {
+		if (!this.activeRules[name]) {
+			this.activeRules[name] = true;
+			this.stylesheet.insertRule('@keyframes ' + name + ' ' + rule, this.stylesheet.cssRules.length);
+		}
+	},
+
+	next: function() {
+		this.running = false;
+
+		var now = window.performance.now();
+		var i = this.transitions.length;
+
+		while (i--) {
+			var transition = this.transitions[i];
+
+			if (transition.program && now >= transition.program.end) {
+				transition.done();
+			}
+
+			if (transition.pending && now >= transition.pending.start) {
+				transition.start(transition.pending);
+			}
+
+			if (transition.running) {
+				transition.update(now);
+				this.running = true;
+			} else if (!transition.pending) {
+				this.transitions.splice(i, 1);
+			}
+		}
+
+		if (this.running) {
+			requestAnimationFrame(this.bound);
+		} else if (this.stylesheet) {
+			var i = this.stylesheet.cssRules.length;
+			while (i--) this.stylesheet.deleteRule(i);
+			this.activeRules = {};
+		}
+	},
+
+	deleteRule: function(node, name) {
+		node.style.animation = node.style.animation
+			.split(', ')
+			.filter(function(anim) {
+				return anim.indexOf(name) === -1;
+			})
+			.join(', ');
+	}
+};
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) this._fragment.u();
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function _differs(a, b) {
+	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function fire(eventName, data) {
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) return;
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		var handler = handlers[i];
+
+		if (!handler.__calling) {
+			handler.__calling = true;
+			handler.call(this, data);
+			handler.__calling = false;
+		}
+	}
+}
+
+function getDev(key) {
+	if (key) console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead");
+	return get.call(this, key);
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var fn = callback.bind(this);
+
+	if (!options || options.init !== false) {
+		fn(this.get()[key], undefined);
+	}
+
+	return this.on(options && options.defer ? 'update' : 'state', function(event) {
+		if (event.changed[key]) fn(event.current[key], event.previous && event.previous[key]);
+	});
+}
+
+function observeDev(key, callback, options) {
+	console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+	var c = (key = '' + key).search(/[.[]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'";
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') return this.on('destroy', handler);
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) handlers.splice(index, 1);
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) return;
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	}
+	if (!dirty) return;
+
+	this._state = assign(assign({}, oldState), newState);
+	this._recompute(changed, this._state);
+	if (this._bind) this._bind(changed, this._state);
+
+	if (this._fragment) {
+		this.fire("state", { changed: changed, current: this._state, previous: oldState });
+		this._fragment.p(changed, this._state);
+		this.fire("update", { changed: changed, current: this._state, previous: oldState });
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) fns.shift()();
+}
+
+function _mount(target, anchor) {
+	this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+}
+
+function _unmount() {
+	if (this._fragment) this._fragment.u();
+}
+
+function removeFromStore() {
+	this.store._remove(this);
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: getDev,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount,
+	_differs: _differs
+};
+
+/* controls/Checkbox.html generated by Svelte v1.64.0 */
+
+function data() {
+    return {
+        disabled: false,
+        faded: false
+    }
+}
+function create_main_fragment(component, state) {
+	var div, label, input, text, text_1, label_class_value;
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			text_1 = createText(state.label);
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", input_change_handler);
+			setAttribute(input, "type", "checkbox");
+			input.disabled = state.disabled;
+			input.className = "svelte-c3c81a";
+			label.className = label_class_value = "checkbox " + (state.disabled? 'disabled' :'') + " " + (state.faded? 'faded' :'') + " svelte-c3c81a";
+			div.className = "control-group vis-option-group vis-option-type-checkbox";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(input, label);
+
+			input.checked = state.value;
+
+			appendNode(text, label);
+			appendNode(text_1, label);
+		},
+
+		p: function update(changed, state) {
+			input.checked = state.value;
+			if (changed.disabled) {
+				input.disabled = state.disabled;
+			}
+
+			if (changed.label) {
+				text_1.data = state.label;
+			}
+
+			if ((changed.disabled || changed.faded) && label_class_value !== (label_class_value = "checkbox " + (state.disabled? 'disabled' :'') + " " + (state.faded? 'faded' :'') + " svelte-c3c81a")) {
+				label.className = label_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+function Checkbox(options) {
+	this._debugName = '<Checkbox>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data(), options.data);
+	if (!('disabled' in this._state)) console.warn("<Checkbox> was created without expected data property 'disabled'");
+	if (!('faded' in this._state)) console.warn("<Checkbox> was created without expected data property 'faded'");
+	if (!('value' in this._state)) console.warn("<Checkbox> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Checkbox> was created without expected data property 'label'");
+
+	this._fragment = create_main_fragment(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Checkbox.prototype, protoDev);
+
+Checkbox.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+// `_isUndefined` : an object's function
+// --------------------------------------
+
+// Is a given variable undefined?
+function _isUndefined (obj) {
+	return obj === void 0;
+}
+
+// quick reference variables for speed access
+//-------------------------------------------
+
+// Save bytes in the minified (but not gzipped) version:
+const ArrayProto = Array.prototype;
+const ObjProto = Object.prototype;
+const slice = ArrayProto.slice;
+const toString = ObjProto.toString;
+const hasOwnProperty = ObjProto.hasOwnProperty;
+const nativeKeys = Object.keys;
+
+// `_isBoolean` : an object's function
+
+// Is a given value a boolean?
+function _isBoolean (obj) {
+	return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+}
+
+// `_isObject` : an object's function
+// -----------------------------------
+
+// Is a given variable an object?
+function _isObject (obj) {
+	var type = typeof obj;
+	return type === 'function' || type === 'object' && !!obj;
+}
+
+// `_has` : an object's function
+
+// Shortcut function for checking if an object has a given property directly
+// on itself (in other words, not on a prototype).
+function _has (obj, key) {
+	return obj != null && hasOwnProperty.call(obj, key);
+}
+
+// `_keys` : an object's function
+
+// Retrieve the names of an object's own properties.
+// Delegates to **ECMAScript 5**'s native `Object.keys`.
+function _keys (obj) {
+	if (!_isObject(obj)) return [];
+	if (nativeKeys) return nativeKeys(obj);
+	let keys = [];
+	for (let key in obj)
+		if (_has(obj, key)) keys.push(key);
+		// Ahem, IE < 9.
+	if (hasEnumBug) collectNonEnumProps(obj, keys);
+	return keys;
+}
+
+// `_forEach` : a collection's function
+
+// `_each` : a collection's function
+
+// `_isArray` : an object's function
+
+// `_isFunction` : an object's function
+
+// Optimize `isFunction` if appropriate. Work around some typeof bugs in old v8,
+// IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
+function customFunction() {
+	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof document !== 'undefined' && typeof document.childNodes != 'function') {
+		return (obj) => typeof obj == 'function' || false;
+	}
+	return null;
+}
+
+// Is a given value a function?
+var _isFunction = customFunction() || function (obj) {
+	return toString.call(obj) === '[object Function]';
+};
+
+// `_isArguments` : an object's function
+
+// Define a fallback version of the method in browsers (ahem, IE < 9), where
+// there isn't any inspectable "Arguments" type.
+function customArguments () {
+	if (toString.call(arguments) === '[object Arguments]') return null;
+	return (obj) => _has(obj, 'callee');
+}
+
+// Is a given value an arguments object?
+var _isArguments = customArguments() || function (obj) {
+	return toString.call(obj) === '[object Arguments]';
+};
+
+// `_isNumber` : an object's function
+
+// Is a given value a number?
+function _isNumber (obj) {
+	return toString.call(obj) === '[object Number]';
+}
+
+// `_isNaN` : an object's function
+
+// Is the given value `NaN`?
+function _isNaN (obj) {
+	return _isNumber(obj) && isNaN(obj);
+}
+
+// `_invert` : an object's function
+
+// Invert the keys and values of an object. The values must be serializable.
+function _invert (obj) {
+	let result = {};
+	let keys = _keys(obj);
+	for (let i = 0, length = keys.length; i < length; i++) {
+		result[obj[keys[i]]] = keys[i];
+	}
+	return result;
+}
+
+// `_iteratee` : an utility's function
+
+// External wrapper for our callback generator. Users may customize
+// `_.iteratee` if they want additional predicate/iteratee shorthand styles.
+// This abstraction hides the internal-only argCount argument.
+var _iteratee = builtinIteratee;
+
+// `_identity` : an utility's function
+// ------------------------------------
+
+// Keep the identity function around for default iteratees.
+function _identity (value) {
+	return value;
+}
+
+// `_extendOwn` : an object's function
+
+// Extend a given object with the properties in passed-in object(s).
+var _extendOwn = createAssigner(_keys);
+
+// `_isMatch` : an object's function
+
+// Returns whether an object has a given set of `key:value` pairs.
+function _isMatch (object, attrs) {
+	let keys = _keys(attrs),
+		length = keys.length;
+	if (object == null) return !length;
+	let obj = Object(object);
+	for (let i = 0; i < length; i++) {
+		let key = keys[i];
+		if (attrs[key] !== obj[key] || !(key in obj)) return false;
+	}
+	return true;
+}
+
+// `_matches` : an utility's function
+
+// Returns a predicate for checking whether an object has a given set of
+// `key:value` pairs.
+function _matcher (attrs) {
+	attrs = _extendOwn({}, attrs);
+	return (obj) => _isMatch(obj, attrs);
+}
+
+// `_matcher` : an utility's function
+
+// `_` : base namespace and constructor for underscore's object
+ // @important: exportation of the function, not only it definition
+
+// Internal functions
+
+
+// Internal function that returns an efficient (for current engines) version
+// of the passed-in callback, to be repeatedly applied in other Underscore
+// functions.
+function optimizeCb (func, context, argCount) {
+	if (context === void 0) return func;
+	switch (argCount == null ? 3 : argCount) {
+		case 1: return (value) => func.call(context, value);
+			// The 2-parameter case has been omitted only because no current consumers
+			// made use of it.
+		case 3: return (value, index, collection) =>  func.call(context, value, index, collection);
+		case 4: return (accumulator, value, index, collection) => func.call(context, accumulator, value, index, collection);
+	}
+	return function () {
+		return func.apply(context, arguments);
+	};
+}
+
+// for callback generator.
+// This abstraction is use to hide the internal-only argCount argument.
+function builtinIteratee (value, context) {
+	return cb(value, context, Infinity);
+}
+
+// An internal function to generate callbacks that can be applied to each
+// element in a collection, returning the desired result — either `identity`,
+// an arbitrary callback, a property matcher, or a property accessor.
+function cb (value, context, argCount) {
+	if (_iteratee !== builtinIteratee) return _iteratee(value, context);
+	if (value == null) return _identity;
+	if (_isFunction(value)) return optimizeCb(value, context, argCount);
+	if (_isObject(value)) return _matcher(value);
+	return property(value);
+}
+
+// An internal function used for get key's value from an object.
+function property (key) {
+	return (obj) => obj == null ? void 0 : obj[key];
+}
+
+// Helper for collection methods to determine whether a collection
+// should be iterated as an array or as an object.
+// Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
+// Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
+const MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+var getLength = property('length');
+var isArrayLike = function(collection) { // @TODO simplify to function
+	let length = getLength(collection);
+	return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
+};
+
+// Generator function to create the findIndex and findLastIndex functions.
+function createPredicateIndexFinder (dir) {
+	return function (array, predicate, context) {
+		predicate = cb(predicate, context);
+		let length = getLength(array);
+		let index = dir > 0 ? 0 : length - 1;
+		for (; index >= 0 && index < length; index += dir) {
+			if (predicate(array[index], index, array)) return index;
+		}
+		return -1;
+	};
+}
+
+// Generator function to create the indexOf and lastIndexOf functions.
+function createIndexFinder (dir, predicateFind, sortedIndex) {
+	return function (array, item, idx) {
+		let i = 0,
+			length = getLength(array);
+		if (typeof idx == 'number') {
+			if (dir > 0) {
+				i = idx >= 0 ? idx : Math.max(idx + length, i);
+			} else {
+				length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
+			}
+		} else if (sortedIndex && idx && length) {
+			idx = sortedIndex(array, item);
+			return array[idx] === item ? idx : -1;
+		}
+		if (item !== item) {
+			idx = predicateFind(slice.call(array, i, length), _isNaN);
+			return idx >= 0 ? idx + i : -1;
+		}
+		for (idx = dir > 0 ? i : length - 1; idx >= 0 && idx < length; idx += dir) {
+			if (array[idx] === item) return idx;
+		}
+		return -1;
+	};
+}
+
+// Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
+// @TODO move to _quickaccess to prevent inappropriate cyclic dependency with `keys` and `allkeys`
+// @FUTURE remove this hack when the will ignore IE<9 since the goal is now ES6 and beyond.
+var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+                      'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+// hack for enumerating bug
+function collectNonEnumProps (obj, keys) {
+	let nonEnumIdx = nonEnumerableProps.length;
+	let constructor = obj.constructor;
+	let proto = _isFunction(constructor) && constructor.prototype || ObjProto;
+
+	// Constructor is a special case.
+	let prop = 'constructor';
+	if (_has(obj, prop) && !_contains(keys, prop)) keys.push(prop);
+
+	while (nonEnumIdx--) {
+		prop = nonEnumerableProps[nonEnumIdx];
+		if (prop in obj && obj[prop] !== proto[prop] && !_contains(keys, prop)) {
+			keys.push(prop);
+		}
+	}
+}
+
+// An internal function for creating assigner functions.
+function createAssigner (keysFunc, defaults) {
+	return function (obj) {
+		let length = arguments.length;
+		if (defaults) obj = Object(obj);
+		if (length < 2 || obj == null) return obj;
+		for (let index = 1; index < length; index++) {
+			let source = arguments[index],
+				keys = keysFunc(source),
+				l = keys.length;
+			for (let i = 0; i < l; i++) {
+				let key = keys[i];
+				if (_isObject(obj) && (!defaults || obj[key] === void 0)) obj[key] = source[key];
+			}
+		}
+		return obj;
+	};
+}
+
+// List of HTML entities for escaping.
+var escapeMap = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#x27;',
+	'`': '&#x60;'
+};
+var unescapeMap = _invert(escapeMap);
+
+// `_findIndex` : an array's function
+
+// Returns the first index on an array-like that passes a predicate test.
+var _findIndex = createPredicateIndexFinder(1);
+
+// `_sortedIndex` : an array's function
+
+// Use a comparator function to figure out the smallest index at which
+// an object should be inserted so as to maintain order. Uses binary search.
+function _sortedIndex (array, obj, iteratee, context) {
+	iteratee = cb(iteratee, context, 1);
+	let value = iteratee(obj);
+	let low = 0,
+		high = getLength(array);
+	while (low < high) {
+		let mid = Math.floor((low + high) / 2);
+		if (iteratee(array[mid]) < value) low = mid + 1;
+		else high = mid;
+	}
+	return low;
+}
+
+// `_indexOf` : an array's function
+
+// Return the position of the first occurrence of an item in an array,
+// or -1 if the item is not included in the array.
+// If the array is large and already in sort order, pass `true`
+// for **isSorted** to use binary search.
+var _indexOf = createIndexFinder(1, _findIndex, _sortedIndex);
+
+// `_values` : an object's function
+
+// Retrieve the values of an object's properties.
+function _values (obj) {
+	let keys = _keys(obj);
+	let length = keys.length;
+	let values = Array(length);
+	for (let i = 0; i < length; i++) {
+		values[i] = obj[keys[i]];
+	}
+	return values;
+}
+
+// `_include` : a collection's function
+
+// Determine if the array or object contains a given item (using `===`).
+function _contains (obj, item, fromIndex, guard) {
+	if (!isArrayLike(obj)) obj = _values(obj);
+	if (typeof fromIndex != 'number' || guard) fromIndex = 0;
+	return _indexOf(obj, item, fromIndex) >= 0;
+}
+
+// `_contains` : a collection's function
+
+// `_unique` : an array's function
+
+// Produce a duplicate-free version of the array. If the array has already
+// been sorted, you have the option of using a faster algorithm.
+function _uniq (array, isSorted, iteratee, context) {
+	if (!_isBoolean(isSorted)) {
+		context = iteratee;
+		iteratee = isSorted;
+		isSorted = false;
+	}
+	if (iteratee != null) iteratee = cb(iteratee, context);
+	let result = [];
+	let seen = [];
+	for (let i = 0, length = getLength(array); i < length; i++) {
+		let value = array[i],
+			computed = iteratee ? iteratee(value, i, array) : value;
+		if (isSorted) {
+			if (!i || seen !== computed) result.push(value);
+			seen = computed;
+		} else if (iteratee) {
+			if (!_contains(seen, computed)) {
+				seen.push(computed);
+				result.push(value);
+			}
+		} else if (!_contains(result, value)) {
+			result.push(value);
+		}
+	}
+	return result;
+}
+
+// `_uniq` : an array's function
+
+/* controls/BaseDropdown.html generated by Svelte v1.64.0 */
+
+function data$1() {
+    return { visible: false };
+}
+var methods = {
+    toggle() {
+        const {visible} = this.get();
+        this.set({visible: !visible});
+    },
+    windowClick(event) {
+        if (!event.target || event.target == this.refs.button) return;
+        // this is a hack for the colorpicker, need to find out how to get rid of
+        if (event.target.classList.contains('hex')) return;
+        this.set({visible:false});
+    }
+};
+
+function create_main_fragment$1(component, state) {
+	var div, div_1, slot_content_button = component._slotted.button, text, text_2;
+
+	function onwindowclick(event) {
+		component.windowClick(event);
+	}
+	window.addEventListener("click", onwindowclick);
+
+	function click_handler(event) {
+		component.toggle();
+	}
+
+	var if_block = (state.visible) && create_if_block(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			if (!slot_content_button) {
+				text = createText("Button");
+			}
+			text_2 = createText("\n    ");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(div_1, "click", click_handler);
+			div_1.className = "base-drop-btn svelte-1e7v6nx";
+			setStyle(div, "position", "relative");
+			setStyle(div, "display", "inline-block");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			if (!slot_content_button) {
+				appendNode(text, div_1);
+			}
+
+			else {
+				appendNode(slot_content_button, div_1);
+			}
+
+			component.refs.button = div_1;
+			appendNode(text_2, div);
+			if (if_block) if_block.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (state.visible) {
+				if (!if_block) {
+					if_block = create_if_block(component, state);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_button) {
+				reinsertChildren(div_1, slot_content_button);
+			}
+
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			window.removeEventListener("click", onwindowclick);
+
+			removeListener(div_1, "click", click_handler);
+			if (component.refs.button === div_1) component.refs.button = null;
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (7:4) {#if visible}
+function create_if_block(component, state) {
+	var slot_content_content = component._slotted.content, slot_content_content_before, slot_content_content_after, text;
+
+	return {
+		c: function create() {
+			if (!slot_content_content) {
+				text = createText("Content");
+			}
+		},
+
+		m: function mount(target, anchor) {
+			if (!slot_content_content) {
+				insertNode(text, target, anchor);
+			}
+
+			else {
+				insertNode(slot_content_content_before || (slot_content_content_before = createComment()), target, anchor);
+				insertNode(slot_content_content, target, anchor);
+				insertNode(slot_content_content_after || (slot_content_content_after = createComment()), target, anchor);
+			}
+		},
+
+		u: function unmount() {
+			if (!slot_content_content) {
+				detachNode(text);
+			}
+
+			else {
+				reinsertBetween(slot_content_content_before, slot_content_content_after, slot_content_content);
+				detachNode(slot_content_content_before);
+				detachNode(slot_content_content_after);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function BaseDropdown(options) {
+	this._debugName = '<BaseDropdown>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(data$1(), options.data);
+	if (!('visible' in this._state)) console.warn("<BaseDropdown> was created without expected data property 'visible'");
+
+	this._slotted = options.slots || {};
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$1(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(BaseDropdown.prototype, protoDev);
+assign(BaseDropdown.prototype, methods);
+
+BaseDropdown.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/ColorPicker.html generated by Svelte v1.64.0 */
+
+function palette({$themeData, prepend, append}) {
+    return _uniq(prepend.concat($themeData.colors.palette).concat(append));
+}
+function validColor({color}) {
+    try {
+        return chroma(color).hex();
+    } catch (e) {
+        return '#000000';
+    }
+}
+function gradient_l({ color }) {
+    const lch = chroma(color).lch();
+    const sample = spread(70, 55, 7, 6).map((l) => chroma.lch(l, lch[1], lch[2]).hex());
+    return chroma.scale(['#000000'].concat(sample).concat('#ffffff'))
+        .mode('lch')
+        .gamma(0.8)
+        .padding(0.1)
+        .colors(14);
+}
+function gradient_c({ color, palette }) {
+    let high = chroma(color).set('lch.c', 120);
+    if (isNaN(high.get('lch.h'))) {
+        high = chroma.lch(high.get('lch.l'), 50, chroma(palette[0] || '#d00').get('lch.h'));
+    }
+    const low = chroma(color).set('lch.c', 3);
+    return chroma.scale([low, high])
+        .mode('lch')
+        .gamma(1.2)
+        .colors(14);
+}
+function gradient_h({ color }) {
+    const lch = chroma(color).lch();
+    const sample = spread(lch[2], 75, 7, 6)
+        .map((h) => chroma.lch(lch[0], lch[1], h).hex());
+    return chroma.scale(sample)
+        .mode('lch')
+        .colors(14);
+}
+function nearest_l({ color, gradient_l }) { return findNearest(gradient_l, color); }
+function nearest_c({ color, gradient_c }) { return findNearest(gradient_c, color); }
+function nearest_h({ color, gradient_h }) { return findNearest(gradient_h, color); }
+function textColor({ color }) {
+    return chroma(color).get('lab.l') > 60 ? 'black' : 'white';
+}
+function borderColor({ color }) {
+    return chroma(color).darker().hex();
+}
+function data$2() {
+    return {
+        palette: [],
+        prepend: [],
+        append: [],
+        color: '#63c0de',
+    };
+}
+function borderColor_1(c) {
+    return chroma(c).hex('rgb') == '#ffffff' ? '#eeeeee' : c;
+}
+var methods$1 = {
+    setColor(color, close) {
+        this.set({color});
+        if (close) {
+            this.refs.dropdown.set({visible:false});
+        }
+    }
+};
+
+function onstate({changed, current, previous}) {
+    if (changed.color) {
+        try {
+            const niceHex = chroma(current.color).hex();
+            const {visible} = this.refs.dropdown.get();
+            if (visible && niceHex != previous.color) {
+                this.fire('change', current.validColor);
+            }
+            if (current.validColor != current.color) {
+                setTimeout(() => { this.set({ color: current.validColor }); }, 100);
+            }
+        } catch (e) {}
+    }
+}
+function findNearest(colors, color) {
+    let nearest_i = -1;
+    let nearest_dist = 999999;
+    if (colors[0] == colors[1]) return '-';
+    colors.forEach((c,i) => {
+        const dist = chroma.distance(c, color, 'lab');
+        if (dist < nearest_dist) {
+            nearest_dist = dist;
+            nearest_i = i;
+        }
+    });
+    return colors[nearest_i];
+}
+
+function spread(center, width, num, num2, exp) {
+    var r = [center], s = width / num, a = 0;
+    num2 = _isUndefined(num2) ? num : num2;
+    exp = exp || 1;
+    while (num-- > 0) {
+        a += s;
+        r.unshift(center - a);
+        if (num2-- > 0) r.push(center + a);
+    }
+    return r;
+}
+
+function create_main_fragment$2(component, state) {
+	var div, text, span, slot_content_default = component._slotted.default, div_1, div_2, text_1, span_1, text_5, span_2, text_7;
+
+	var if_block = (state.color) && create_if_block$1(component, state);
+
+	var basedropdown = new BaseDropdown({
+		root: component.root,
+		slots: { default: createFragment(), button: createFragment(), content: createFragment() }
+	});
+
+	component.refs.dropdown = basedropdown;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText("\n        ");
+			span = createElement("span");
+			if (!slot_content_default) {
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				text_1 = createText("\n                    ");
+				span_1 = createElement("span");
+			}
+			text_5 = createText("\n        ");
+			span_2 = createElement("span");
+			if (if_block) if_block.c();
+			text_7 = createText("\n    ");
+			basedropdown._fragment.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			if (!slot_content_default) {
+				setStyle(div_2, "background", "" + state.validColor + " none repeat scroll 0% 0%");
+				div_2.className = "the-color svelte-1ntytnd";
+				span_1.className = "caret svelte-1ntytnd";
+				div_1.className = "base-color-picker color-picker svelte-1ntytnd";
+			}
+			setAttribute(span, "slot", "button");
+			setAttribute(span_2, "slot", "content");
+			div.className = "color-picker-cont svelte-1ntytnd";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(text, basedropdown._slotted.default);
+			appendNode(span, basedropdown._slotted.button);
+			if (!slot_content_default) {
+				appendNode(div_1, span);
+				appendNode(div_2, div_1);
+				appendNode(text_1, div_1);
+				appendNode(span_1, div_1);
+			}
+
+			else {
+				appendNode(slot_content_default, span);
+			}
+
+			appendNode(text_5, basedropdown._slotted.default);
+			appendNode(span_2, basedropdown._slotted.content);
+			if (if_block) if_block.m(span_2, null);
+			appendNode(text_7, basedropdown._slotted.default);
+			basedropdown._mount(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (!slot_content_default) {
+				if (changed.validColor) {
+					setStyle(div_2, "background", "" + state.validColor + " none repeat scroll 0% 0%");
+			}
+
+			}
+
+			if (state.color) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$1(component, state);
+					if_block.c();
+					if_block.m(span_2, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(span, slot_content_default);
+			}
+
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			basedropdown.destroy(false);
+			if (component.refs.dropdown === basedropdown) component.refs.dropdown = null;
+		}
+	};
+}
+
+// (15:20) {#each palette as c}
+function create_each_block(component, state) {
+	var c = state.c, each_value = state.each_value, c_index = state.c_index;
+	var div, div_data_color_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(div, "click", click_handler);
+			addListener(div, "dblclick", dblclick_handler);
+			div.className = "color svelte-1ntytnd";
+			div.dataset.color = div_data_color_value = c;
+			setStyle(div, "background", c);
+			setStyle(div, "border-color", borderColor_1(c));
+
+			div._svelte = {
+				component: component,
+				each_value: state.each_value,
+				c_index: state.c_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			c = state.c;
+			each_value = state.each_value;
+			c_index = state.c_index;
+			if ((changed.palette) && div_data_color_value !== (div_data_color_value = c)) {
+				div.dataset.color = div_data_color_value;
+			}
+
+			if (changed.palette) {
+				setStyle(div, "background", c);
+				setStyle(div, "border-color", borderColor_1(c));
+			}
+
+			div._svelte.each_value = state.each_value;
+			div._svelte.c_index = state.c_index;
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(div, "click", click_handler);
+			removeListener(div, "dblclick", dblclick_handler);
+		}
+	};
+}
+
+// (21:20) {#each gradient_l as c}
+function create_each_block_1(component, state) {
+	var c = state.c, each_value_1 = state.each_value_1, c_index_1 = state.c_index_1;
+	var div, div_class_value, div_data_color_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(div, "click", click_handler_1);
+			div.className = div_class_value = "color " + (c == state.nearest_l?'selected':'') + " svelte-1ntytnd";
+			div.dataset.color = div_data_color_value = c;
+			setStyle(div, "background", c);
+
+			div._svelte = {
+				component: component,
+				each_value_1: state.each_value_1,
+				c_index_1: state.c_index_1
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			c = state.c;
+			each_value_1 = state.each_value_1;
+			c_index_1 = state.c_index_1;
+			if ((changed.gradient_l || changed.nearest_l) && div_class_value !== (div_class_value = "color " + (c == state.nearest_l?'selected':'') + " svelte-1ntytnd")) {
+				div.className = div_class_value;
+			}
+
+			if ((changed.gradient_l) && div_data_color_value !== (div_data_color_value = c)) {
+				div.dataset.color = div_data_color_value;
+			}
+
+			if (changed.gradient_l) {
+				setStyle(div, "background", c);
+			}
+
+			div._svelte.each_value_1 = state.each_value_1;
+			div._svelte.c_index_1 = state.c_index_1;
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(div, "click", click_handler_1);
+		}
+	};
+}
+
+// (26:20) {#each gradient_c as c}
+function create_each_block_2(component, state) {
+	var c = state.c, each_value_2 = state.each_value_2, c_index_2 = state.c_index_2;
+	var div, div_class_value, div_data_color_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(div, "click", click_handler_2);
+			div.className = div_class_value = "color " + (c == state.nearest_c?'selected':'') + " svelte-1ntytnd";
+			div.dataset.color = div_data_color_value = c;
+			setStyle(div, "background", c);
+
+			div._svelte = {
+				component: component,
+				each_value_2: state.each_value_2,
+				c_index_2: state.c_index_2
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			c = state.c;
+			each_value_2 = state.each_value_2;
+			c_index_2 = state.c_index_2;
+			if ((changed.gradient_c || changed.nearest_c) && div_class_value !== (div_class_value = "color " + (c == state.nearest_c?'selected':'') + " svelte-1ntytnd")) {
+				div.className = div_class_value;
+			}
+
+			if ((changed.gradient_c) && div_data_color_value !== (div_data_color_value = c)) {
+				div.dataset.color = div_data_color_value;
+			}
+
+			if (changed.gradient_c) {
+				setStyle(div, "background", c);
+			}
+
+			div._svelte.each_value_2 = state.each_value_2;
+			div._svelte.c_index_2 = state.c_index_2;
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(div, "click", click_handler_2);
+		}
+	};
+}
+
+// (31:20) {#each gradient_h as c}
+function create_each_block_3(component, state) {
+	var c = state.c, each_value_3 = state.each_value_3, c_index_3 = state.c_index_3;
+	var div, div_class_value, div_data_color_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(div, "click", click_handler_3);
+			div.className = div_class_value = "color " + (c == state.nearest_h?'selected':'') + " svelte-1ntytnd";
+			div.dataset.color = div_data_color_value = c;
+			setStyle(div, "background", c);
+
+			div._svelte = {
+				component: component,
+				each_value_3: state.each_value_3,
+				c_index_3: state.c_index_3
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			c = state.c;
+			each_value_3 = state.each_value_3;
+			c_index_3 = state.c_index_3;
+			if ((changed.gradient_h || changed.nearest_h) && div_class_value !== (div_class_value = "color " + (c == state.nearest_h?'selected':'') + " svelte-1ntytnd")) {
+				div.className = div_class_value;
+			}
+
+			if ((changed.gradient_h) && div_data_color_value !== (div_data_color_value = c)) {
+				div.dataset.color = div_data_color_value;
+			}
+
+			if (changed.gradient_h) {
+				setStyle(div, "background", c);
+			}
+
+			div._svelte.each_value_3 = state.each_value_3;
+			div._svelte.c_index_3 = state.c_index_3;
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(div, "click", click_handler_3);
+		}
+	};
+}
+
+// (12:12) {#if color}
+function create_if_block$1(component, state) {
+	var div, div_1, text_1, div_2, text_3, div_3, text_5, div_4, text_7, div_5, input, input_updating = false, text_8, button, text_9, div_6;
+
+	var each_value = state.palette;
+
+	var each_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+		each_blocks[i_1] = create_each_block(component, assign(assign({}, state), {
+			each_value: each_value,
+			c: each_value[i_1],
+			c_index: i_1
+		}));
+	}
+
+	var each_value_1 = state.gradient_l;
+
+	var each_1_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value_1.length; i_1 += 1) {
+		each_1_blocks[i_1] = create_each_block_1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			c: each_value_1[i_1],
+			c_index_1: i_1
+		}));
+	}
+
+	var each_value_2 = state.gradient_c;
+
+	var each_2_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value_2.length; i_1 += 1) {
+		each_2_blocks[i_1] = create_each_block_2(component, assign(assign({}, state), {
+			each_value_2: each_value_2,
+			c: each_value_2[i_1],
+			c_index_2: i_1
+		}));
+	}
+
+	var each_value_3 = state.gradient_h;
+
+	var each_3_blocks = [];
+
+	for (var i_1 = 0; i_1 < each_value_3.length; i_1 += 1) {
+		each_3_blocks[i_1] = create_each_block_3(component, assign(assign({}, state), {
+			each_value_3: each_value_3,
+			c: each_value_3[i_1],
+			c_index_3: i_1
+		}));
+	}
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ color: input.value });
+		input_updating = false;
+	}
+
+	function click_handler_4(event) {
+		var state = component.get();
+		component.setColor(state.color, true);
+	}
+
+	function click_handler_5(event) {
+		event.stopPropagation();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].c();
+			}
+
+			text_1 = createText("\n\n                ");
+			div_2 = createElement("div");
+
+			for (var i_1 = 0; i_1 < each_1_blocks.length; i_1 += 1) {
+				each_1_blocks[i_1].c();
+			}
+
+			text_3 = createText("\n                ");
+			div_3 = createElement("div");
+
+			for (var i_1 = 0; i_1 < each_2_blocks.length; i_1 += 1) {
+				each_2_blocks[i_1].c();
+			}
+
+			text_5 = createText("\n                ");
+			div_4 = createElement("div");
+
+			for (var i_1 = 0; i_1 < each_3_blocks.length; i_1 += 1) {
+				each_3_blocks[i_1].c();
+			}
+
+			text_7 = createText("\n\n                ");
+			div_5 = createElement("div");
+			input = createElement("input");
+			text_8 = createText("\n                    ");
+			button = createElement("button");
+			button.innerHTML = "<i class=\"icon-ok\"></i>";
+			text_9 = createText("\n                    ");
+			div_6 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_1.className = "palette svelte-1ntytnd";
+			div_2.className = "color-axis lightness";
+			div_3.className = "color-axis saturation";
+			div_4.className = "color-axis hue";
+			addListener(input, "input", input_input_handler);
+			setAttribute(input, "type", "text");
+			setStyle(input, "background", state.color);
+			setStyle(input, "border-color", borderColor_1);
+			setStyle(input, "color", state.textColor);
+			input.className = "hex svelte-1ntytnd";
+			addListener(button, "click", click_handler_4);
+			button.className = "btn btn-small ok";
+			div_6.className = "color selected";
+			setStyle(div_6, "background", state.color);
+			div_5.className = "footer";
+			addListener(div, "click", click_handler_5);
+			div.className = "color-selector svelte-1ntytnd";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].m(div_1, null);
+			}
+
+			appendNode(text_1, div);
+			appendNode(div_2, div);
+
+			for (var i_1 = 0; i_1 < each_1_blocks.length; i_1 += 1) {
+				each_1_blocks[i_1].m(div_2, null);
+			}
+
+			appendNode(text_3, div);
+			appendNode(div_3, div);
+
+			for (var i_1 = 0; i_1 < each_2_blocks.length; i_1 += 1) {
+				each_2_blocks[i_1].m(div_3, null);
+			}
+
+			appendNode(text_5, div);
+			appendNode(div_4, div);
+
+			for (var i_1 = 0; i_1 < each_3_blocks.length; i_1 += 1) {
+				each_3_blocks[i_1].m(div_4, null);
+			}
+
+			appendNode(text_7, div);
+			appendNode(div_5, div);
+			appendNode(input, div_5);
+
+			input.value = state.color;
+
+			appendNode(text_8, div_5);
+			appendNode(button, div_5);
+			appendNode(text_9, div_5);
+			appendNode(div_6, div_5);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.palette;
+
+			if (changed.palette) {
+				for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						c: each_value[i_1],
+						c_index: i_1
+					});
+
+					if (each_blocks[i_1]) {
+						each_blocks[i_1].p(changed, each_context);
+					} else {
+						each_blocks[i_1] = create_each_block(component, each_context);
+						each_blocks[i_1].c();
+						each_blocks[i_1].m(div_1, null);
+					}
+				}
+
+				for (; i_1 < each_blocks.length; i_1 += 1) {
+					each_blocks[i_1].u();
+					each_blocks[i_1].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			var each_value_1 = state.gradient_l;
+
+			if (changed.gradient_l || changed.nearest_l) {
+				for (var i_1 = 0; i_1 < each_value_1.length; i_1 += 1) {
+					var each_1_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						c: each_value_1[i_1],
+						c_index_1: i_1
+					});
+
+					if (each_1_blocks[i_1]) {
+						each_1_blocks[i_1].p(changed, each_1_context);
+					} else {
+						each_1_blocks[i_1] = create_each_block_1(component, each_1_context);
+						each_1_blocks[i_1].c();
+						each_1_blocks[i_1].m(div_2, null);
+					}
+				}
+
+				for (; i_1 < each_1_blocks.length; i_1 += 1) {
+					each_1_blocks[i_1].u();
+					each_1_blocks[i_1].d();
+				}
+				each_1_blocks.length = each_value_1.length;
+			}
+
+			var each_value_2 = state.gradient_c;
+
+			if (changed.gradient_c || changed.nearest_c) {
+				for (var i_1 = 0; i_1 < each_value_2.length; i_1 += 1) {
+					var each_2_context = assign(assign({}, state), {
+						each_value_2: each_value_2,
+						c: each_value_2[i_1],
+						c_index_2: i_1
+					});
+
+					if (each_2_blocks[i_1]) {
+						each_2_blocks[i_1].p(changed, each_2_context);
+					} else {
+						each_2_blocks[i_1] = create_each_block_2(component, each_2_context);
+						each_2_blocks[i_1].c();
+						each_2_blocks[i_1].m(div_3, null);
+					}
+				}
+
+				for (; i_1 < each_2_blocks.length; i_1 += 1) {
+					each_2_blocks[i_1].u();
+					each_2_blocks[i_1].d();
+				}
+				each_2_blocks.length = each_value_2.length;
+			}
+
+			var each_value_3 = state.gradient_h;
+
+			if (changed.gradient_h || changed.nearest_h) {
+				for (var i_1 = 0; i_1 < each_value_3.length; i_1 += 1) {
+					var each_3_context = assign(assign({}, state), {
+						each_value_3: each_value_3,
+						c: each_value_3[i_1],
+						c_index_3: i_1
+					});
+
+					if (each_3_blocks[i_1]) {
+						each_3_blocks[i_1].p(changed, each_3_context);
+					} else {
+						each_3_blocks[i_1] = create_each_block_3(component, each_3_context);
+						each_3_blocks[i_1].c();
+						each_3_blocks[i_1].m(div_4, null);
+					}
+				}
+
+				for (; i_1 < each_3_blocks.length; i_1 += 1) {
+					each_3_blocks[i_1].u();
+					each_3_blocks[i_1].d();
+				}
+				each_3_blocks.length = each_value_3.length;
+			}
+
+			if (!input_updating) input.value = state.color;
+			if (changed.color) {
+				setStyle(input, "background", state.color);
+			}
+
+			if (changed.textColor) {
+				setStyle(input, "color", state.textColor);
+			}
+
+			if (changed.color) {
+				setStyle(div_6, "background", state.color);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+				each_blocks[i_1].u();
+			}
+
+			for (var i_1 = 0; i_1 < each_1_blocks.length; i_1 += 1) {
+				each_1_blocks[i_1].u();
+			}
+
+			for (var i_1 = 0; i_1 < each_2_blocks.length; i_1 += 1) {
+				each_2_blocks[i_1].u();
+			}
+
+			for (var i_1 = 0; i_1 < each_3_blocks.length; i_1 += 1) {
+				each_3_blocks[i_1].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+
+			destroyEach(each_1_blocks);
+
+			destroyEach(each_2_blocks);
+
+			destroyEach(each_3_blocks);
+
+			removeListener(input, "input", input_input_handler);
+			removeListener(button, "click", click_handler_4);
+			removeListener(div, "click", click_handler_5);
+		}
+	};
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, c_index = this._svelte.c_index, c = each_value[c_index];
+	component.setColor(c, false);
+}
+
+function dblclick_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, c_index = this._svelte.c_index, c = each_value[c_index];
+	component.setColor(c, true);
+}
+
+function click_handler_1(event) {
+	var component = this._svelte.component;
+	var each_value_1 = this._svelte.each_value_1, c_index_1 = this._svelte.c_index_1, c = each_value_1[c_index_1];
+	component.setColor(c, false);
+}
+
+function click_handler_2(event) {
+	var component = this._svelte.component;
+	var each_value_2 = this._svelte.each_value_2, c_index_2 = this._svelte.c_index_2, c = each_value_2[c_index_2];
+	component.setColor(c, false);
+}
+
+function click_handler_3(event) {
+	var component = this._svelte.component;
+	var each_value_3 = this._svelte.each_value_3, c_index_3 = this._svelte.c_index_3, c = each_value_3[c_index_3];
+	component.setColor(c, false);
+}
+
+function ColorPicker(options) {
+	this._debugName = '<ColorPicker>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this.refs = {};
+	this._state = assign(assign(this.store._init(["themeData"]), data$2()), options.data);
+	this.store._add(this, ["themeData"]);
+	this._recompute({ $themeData: 1, prepend: 1, append: 1, color: 1, palette: 1, gradient_l: 1, gradient_c: 1, gradient_h: 1 }, this._state);
+	if (!('$themeData' in this._state)) console.warn("<ColorPicker> was created without expected data property '$themeData'");
+	if (!('prepend' in this._state)) console.warn("<ColorPicker> was created without expected data property 'prepend'");
+	if (!('append' in this._state)) console.warn("<ColorPicker> was created without expected data property 'append'");
+	if (!('color' in this._state)) console.warn("<ColorPicker> was created without expected data property 'color'");
+
+	this._handlers.state = [onstate];
+
+	this._handlers.destroy = [removeFromStore];
+
+	this._slotted = options.slots || {};
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { $themeData: 1, prepend: 1, append: 1, color: 1, palette: 1, gradient_l: 1, gradient_c: 1, gradient_h: 1, validColor: 1, nearest_l: 1, nearest_c: 1, nearest_h: 1, textColor: 1 };
+		onstate.call(self, { changed: changed, current: self._state });
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$2(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(ColorPicker.prototype, protoDev);
+assign(ColorPicker.prototype, methods$1);
+
+ColorPicker.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('palette' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'palette'");
+	if ('validColor' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'validColor'");
+	if ('gradient_l' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'gradient_l'");
+	if ('gradient_c' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'gradient_c'");
+	if ('gradient_h' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'gradient_h'");
+	if ('nearest_l' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'nearest_l'");
+	if ('nearest_c' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'nearest_c'");
+	if ('nearest_h' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'nearest_h'");
+	if ('textColor' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'textColor'");
+	if ('borderColor' in newState && !this._updatingReadonlyProperty) throw new Error("<ColorPicker>: Cannot set read-only property 'borderColor'");
+};
+
+ColorPicker.prototype._recompute = function _recompute(changed, state) {
+	if (changed.$themeData || changed.prepend || changed.append) {
+		if (this._differs(state.palette, (state.palette = palette(state)))) changed.palette = true;
+	}
+
+	if (changed.color) {
+		if (this._differs(state.validColor, (state.validColor = validColor(state)))) changed.validColor = true;
+		if (this._differs(state.gradient_l, (state.gradient_l = gradient_l(state)))) changed.gradient_l = true;
+	}
+
+	if (changed.color || changed.palette) {
+		if (this._differs(state.gradient_c, (state.gradient_c = gradient_c(state)))) changed.gradient_c = true;
+	}
+
+	if (changed.color) {
+		if (this._differs(state.gradient_h, (state.gradient_h = gradient_h(state)))) changed.gradient_h = true;
+	}
+
+	if (changed.color || changed.gradient_l) {
+		if (this._differs(state.nearest_l, (state.nearest_l = nearest_l(state)))) changed.nearest_l = true;
+	}
+
+	if (changed.color || changed.gradient_c) {
+		if (this._differs(state.nearest_c, (state.nearest_c = nearest_c(state)))) changed.nearest_c = true;
+	}
+
+	if (changed.color || changed.gradient_h) {
+		if (this._differs(state.nearest_h, (state.nearest_h = nearest_h(state)))) changed.nearest_h = true;
+	}
+
+	if (changed.color) {
+		if (this._differs(state.textColor, (state.textColor = textColor(state)))) changed.textColor = true;
+		if (this._differs(state.borderColor, (state.borderColor = borderColor(state)))) changed.borderColor = true;
+	}
+};
+
+/* controls/Color.html generated by Svelte v1.64.0 */
+
+function palette_1({ $themeData }) {
+    return $themeData.colors.palette; //.concat($theme.colors.secondary || []);
+}
+function colorKeys({ $vis, customizable, axis, custom, palette }) {
+    if (!$vis || !customizable) return [];
+    return (
+        axis ? _.unique($vis.axes(true)[axis].values()) :
+        $vis.colorKeys ? $vis.colorKeys() : $vis.keys()
+    ).map((k) => {
+        k = stripTags(k);
+        return {
+            key: k,
+            defined: custom[k] !== undefined,
+            color: custom[k] !== undefined ?
+                getColor(custom[k],palette) : '#cccccc'
+        };
+    });
+}
+function hexColor({ value, palette }) {
+    return getColor(value, palette);
+}
+function customColor({ selected, palette, custom }) {
+    if (custom[selected[0]] === undefined) return '#ccc';
+    const realColors = selected
+        .filter(s => custom[s] !== undefined)
+        .map(s => getColor(custom[s], palette));
+    if (!realColors.length) return '#ccc';
+    // if (realColors.length == 1) return realColors[0];
+    return chroma.average(realColors, 'lab');
+}
+function data$3() {
+    return {
+        open: false,
+        openCustom: false,
+        customizable: false,
+        expanded: false,
+        selected: [],
+        custom: {}
+    };
+}
+var methods$2 = {
+    update (color) {
+        const {palette} = this.get();
+        this.set({value: storeColor(color, palette)});
+    },
+    updateCustom (color) {
+        const {selected, palette, custom} = this.get();
+        selected.forEach((k) => custom[k] = storeColor(color, palette));
+        this.set({custom});
+    },
+    toggle (event) {
+        event.preventDefault();
+        const {expanded} = this.get();
+        this.set({expanded:!expanded});
+    },
+    toggleSelect (k, event) {
+        event.preventDefault();
+        const {selected} = this.get();
+        const i = selected.indexOf(k);
+        if (event.shiftKey) {
+            if (i > -1) selected.splice(i,1);
+            else selected.push(k);
+        } else {
+            selected.length = 1;
+            selected[0] = k;
+        }
+        this.set({selected});
+    },
+    getColor (color) {
+        const {palette} = this.get();
+        return getColor(color, palette);
+    },
+    reset () {
+        const {selected, custom} = this.get();
+        selected.forEach(k => delete custom[k]);
+        this.set({custom});
+    },
+    resetAll () {
+        const {custom} = this.get();
+        Object.keys(custom).forEach(k => delete custom[k]);
+        this.set({custom});
+    },
+    selectAll(event) {
+        event.preventDefault();
+        const {selected, colorKeys} = this.get();
+        colorKeys.forEach(k => {
+            if (selected.indexOf(k.key) < 0) selected.push(k.key);
+        });
+        this.set({selected});
+    },
+    selectNone(event) {
+        event.preventDefault();
+        const {selected} = this.get();
+        selected.length = 0;
+        this.set({selected});
+    },
+    selectInvert(event) {
+        event.preventDefault();
+        const {selected, colorKeys} = this.get();
+        console.log(selected);
+        colorKeys.forEach(k => {
+            const i = selected.indexOf(k.key);
+            if (i < 0) selected.push(k.key);
+            else selected.splice(i, 1);
+        });
+        console.log(selected);
+        this.set({selected});
+    }
+};
+
+function oncreate() {
+    this.observe('custom', (c) => {
+        if (c && c.length === 0) {
+            c = {};
+        }
+        this.set({custom:c});
+    });
+}
+function storeColor(color, palette) {
+    const pi = palette.indexOf(color);
+    if (pi > -1) return pi;
+    return color;
+}
+
+function getColor(color, palette) {
+    return typeof color == 'number' ? palette[color%palette.length] : color;
+}
+
+function stripTags(s) {
+    return dw.utils.purifyHtml(s, '');
+}
+
+function create_main_fragment$3(component, state) {
+	var div, label, text, div_1, text_1, text_4, if_block_2_anchor;
+
+	var if_block = (state.hexColor) && create_if_block$2(component, state);
+
+	var if_block_1 = (state.customizable) && create_if_block_1(component, state);
+
+	var if_block_2 = (state.customizable && state.expanded) && create_if_block_2(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text = createText("\n    ");
+			div_1 = createElement("div");
+			if (if_block) if_block.c();
+			text_1 = createText("\n\n        ");
+			if (if_block_1) if_block_1.c();
+			text_4 = createText("\n\n");
+			if (if_block_2) if_block_2.c();
+			if_block_2_anchor = createComment();
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label";
+			setStyle(label, "width", "100px");
+			div_1.className = "controls";
+			div.className = "control-group vis-option-type-color";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text, div);
+			appendNode(div_1, div);
+			if (if_block) if_block.m(div_1, null);
+			appendNode(text_1, div_1);
+			if (if_block_1) if_block_1.m(div_1, null);
+			insertNode(text_4, target, anchor);
+			if (if_block_2) if_block_2.m(target, anchor);
+			insertNode(if_block_2_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (state.hexColor) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$2(component, state);
+					if_block.c();
+					if_block.m(div_1, text_1);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (state.customizable) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1(component, state);
+					if_block_1.c();
+					if_block_1.m(div_1, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+
+			if (state.customizable && state.expanded) {
+				if (if_block_2) {
+					if_block_2.p(changed, state);
+				} else {
+					if_block_2 = create_if_block_2(component, state);
+					if_block_2.c();
+					if_block_2.m(if_block_2_anchor.parentNode, if_block_2_anchor);
+				}
+			} else if (if_block_2) {
+				if_block_2.u();
+				if_block_2.d();
+				if_block_2 = null;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+			if (if_block_1) if_block_1.u();
+			detachNode(text_4);
+			if (if_block_2) if_block_2.u();
+			detachNode(if_block_2_anchor);
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			if (if_block_1) if_block_1.d();
+			if (if_block_2) if_block_2.d();
+		}
+	};
+}
+
+// (4:8) {#if hexColor}
+function create_if_block$2(component, state) {
+	var colorpicker_updating = {};
+
+	var colorpicker_initial_data = { color: state.hexColor, palette: state.palette };
+	if ('open' in state) {
+		colorpicker_initial_data.visible = state.open;
+		colorpicker_updating.visible = true;
+	}
+	var colorpicker = new ColorPicker({
+		root: component.root,
+		data: colorpicker_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!colorpicker_updating.visible && changed.visible) {
+				newState.open = childState.visible;
+			}
+			component._set(newState);
+			colorpicker_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		colorpicker._bind({ visible: 1 }, colorpicker.get());
+	});
+
+	colorpicker.on("change", function(event) {
+		component.update(event);
+	});
+
+	return {
+		c: function create() {
+			colorpicker._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			colorpicker._mount(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var colorpicker_changes = {};
+			if (changed.hexColor) colorpicker_changes.color = state.hexColor;
+			if (changed.palette) colorpicker_changes.palette = state.palette;
+			if (!colorpicker_updating.visible && changed.open) {
+				colorpicker_changes.visible = state.open;
+				colorpicker_updating.visible = true;
+			}
+			colorpicker._set(colorpicker_changes);
+			colorpicker_updating = {};
+		},
+
+		u: function unmount() {
+			colorpicker._unmount();
+		},
+
+		d: function destroy$$1() {
+			colorpicker.destroy(false);
+		}
+	};
+}
+
+// (8:8) {#if customizable}
+function create_if_block_1(component, state) {
+	var span, a, a_class_value;
+
+	function click_handler(event) {
+		component.toggle(event);
+	}
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			a = createElement("a");
+			a.textContent = "customize colors...";
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(a, "click", click_handler);
+			a.href = "#customize";
+			a.className = a_class_value = "btn btn-small custom " + (state.expanded?'btn-primary':'');
+			setAttribute(a, "role", "button");
+			span.className = "custom-color-selector-head";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(a, span);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.expanded) && a_class_value !== (a_class_value = "btn btn-small custom " + (state.expanded?'btn-primary':''))) {
+				a.className = a_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: function destroy$$1() {
+			removeListener(a, "click", click_handler);
+		}
+	};
+}
+
+// (22:16) {#each colorKeys as k}
+function create_each_block$1(component, state) {
+	var k = state.k, each_value = state.each_value, k_index = state.k_index;
+	var li, div, text_value = !k.defined ? '×' : '', text, text_1, label, text_2_value = k.key, text_2, li_class_value, li_data_series_value;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			div = createElement("div");
+			text = createText(text_value);
+			text_1 = createText("\n                    ");
+			label = createElement("label");
+			text_2 = createText(text_2_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "color";
+			setStyle(div, "background", k.color);
+			addListener(li, "click", click_handler$1);
+			li.className = li_class_value = state.selected.indexOf(k.key) > -1 ? 'selected':'';
+			li.dataset.series = li_data_series_value = k.key;
+
+			li._svelte = {
+				component: component,
+				each_value: state.each_value,
+				k_index: state.k_index
+			};
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(div, li);
+			appendNode(text, div);
+			appendNode(text_1, li);
+			appendNode(label, li);
+			appendNode(text_2, label);
+		},
+
+		p: function update(changed, state) {
+			k = state.k;
+			each_value = state.each_value;
+			k_index = state.k_index;
+			if ((changed.colorKeys) && text_value !== (text_value = !k.defined ? '×' : '')) {
+				text.data = text_value;
+			}
+
+			if (changed.colorKeys) {
+				setStyle(div, "background", k.color);
+			}
+
+			if ((changed.colorKeys) && text_2_value !== (text_2_value = k.key)) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.selected || changed.colorKeys) && li_class_value !== (li_class_value = state.selected.indexOf(k.key) > -1 ? 'selected':'')) {
+				li.className = li_class_value;
+			}
+
+			if ((changed.colorKeys) && li_data_series_value !== (li_data_series_value = k.key)) {
+				li.dataset.series = li_data_series_value;
+			}
+
+			li._svelte.each_value = state.each_value;
+			li._svelte.k_index = state.k_index;
+		},
+
+		u: function unmount() {
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(li, "click", click_handler$1);
+		}
+	};
+}
+
+// (39:12) {#if selected.length}
+function create_if_block_3(component, state) {
+	var div, colorpicker_updating = {}, text, button;
+
+	var colorpicker_initial_data = {
+	 	color: state.customColor,
+	 	palette: state.palette
+	 };
+	if ('openCustom' in state) {
+		colorpicker_initial_data.visible = state.openCustom;
+		colorpicker_updating.visible = true;
+	}
+	var colorpicker = new ColorPicker({
+		root: component.root,
+		data: colorpicker_initial_data,
+		_bind: function(changed, childState) {
+			var state = component.get(), newState = {};
+			if (!colorpicker_updating.visible && changed.visible) {
+				newState.openCustom = childState.visible;
+			}
+			component._set(newState);
+			colorpicker_updating = {};
+		}
+	});
+
+	component.root._beforecreate.push(function() {
+		colorpicker._bind({ visible: 1 }, colorpicker.get());
+	});
+
+	colorpicker.on("change", function(event) {
+		component.updateCustom(event);
+	});
+
+	function click_handler_1(event) {
+		component.reset();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			colorpicker._fragment.c();
+			text = createText("\n                ");
+			button = createElement("button");
+			button.textContent = "Reset";
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(button, "click", click_handler_1);
+			button.className = "btn";
+			div.className = "select";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			colorpicker._mount(div, null);
+			appendNode(text, div);
+			appendNode(button, div);
+		},
+
+		p: function update(changed, state) {
+			var colorpicker_changes = {};
+			if (changed.customColor) colorpicker_changes.color = state.customColor;
+			if (changed.palette) colorpicker_changes.palette = state.palette;
+			if (!colorpicker_updating.visible && changed.openCustom) {
+				colorpicker_changes.visible = state.openCustom;
+				colorpicker_updating.visible = true;
+			}
+			colorpicker._set(colorpicker_changes);
+			colorpicker_updating = {};
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			colorpicker.destroy(false);
+			removeListener(button, "click", click_handler_1);
+		}
+	};
+}
+
+// (44:12) {:else}
+function create_if_block_4(component, state) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div.textContent = "Please select an element on the left to change colors for individual elements...";
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "info";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (16:0) {#if customizable && expanded}
+function create_if_block_2(component, state) {
+	var div, div_1, div_2, h4, text_1, ul, text_2, div_3, text_3, a, text_5, a_1, text_7, a_2, text_11, div_4, h4_1, text_13, text_14, button;
+
+	var each_value = state.colorKeys;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$1(component, assign(assign({}, state), {
+			each_value: each_value,
+			k: each_value[i],
+			k_index: i
+		}));
+	}
+
+	function click_handler_1(event) {
+		component.selectAll(event);
+	}
+
+	function click_handler_2(event) {
+		component.selectNone(event);
+	}
+
+	function click_handler_3(event) {
+		component.selectInvert(event);
+	}
+
+	function select_block_type(state) {
+		if (state.selected.length) return create_if_block_3;
+		return create_if_block_4;
+	}
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type(component, state);
+
+	function click_handler_4(event) {
+		component.resetAll();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			h4 = createElement("h4");
+			h4.textContent = "Select element(s):";
+			text_1 = createText("\n            ");
+			ul = createElement("ul");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			text_2 = createText("\n            ");
+			div_3 = createElement("div");
+			text_3 = createText("Select:  \n                ");
+			a = createElement("a");
+			a.textContent = "all";
+			text_5 = createText("  \n                ");
+			a_1 = createElement("a");
+			a_1.textContent = "none";
+			text_7 = createText("  \n                ");
+			a_2 = createElement("a");
+			a_2.textContent = "invert";
+			text_11 = createText("\n        ");
+			div_4 = createElement("div");
+			h4_1 = createElement("h4");
+			h4_1.textContent = "Choose a color:";
+			text_13 = createText("\n            ");
+			if_block.c();
+			text_14 = createText("\n            ");
+			button = createElement("button");
+			button.textContent = "Reset all colors";
+			this.h();
+		},
+
+		h: function hydrate() {
+			ul.className = "dataseries unstyled";
+			addListener(a, "click", click_handler_1);
+			a.href = "#/select-all";
+			addListener(a_1, "click", click_handler_2);
+			a_1.href = "#/select-none";
+			addListener(a_2, "click", click_handler_3);
+			a_2.href = "#/select-invert";
+			setStyle(div_3, "font-size", "12px");
+			setStyle(div_3, "text-align", "center");
+			setStyle(div_3, "margin-bottom", "10px");
+			div_2.className = "span2";
+			setStyle(div_2, "width", "43%");
+			addListener(button, "click", click_handler_4);
+			setStyle(button, "margin-top", "20px");
+			button.className = "btn";
+			div_4.className = "span2";
+			setStyle(div_4, "width", "42%");
+			div_1.className = "row";
+			div.className = "custom-color-selector-body";
+			setStyle(div, "display", "block");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(h4, div_2);
+			appendNode(text_1, div_2);
+			appendNode(ul, div_2);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(ul, null);
+			}
+
+			appendNode(text_2, div_2);
+			appendNode(div_3, div_2);
+			appendNode(text_3, div_3);
+			appendNode(a, div_3);
+			appendNode(text_5, div_3);
+			appendNode(a_1, div_3);
+			appendNode(text_7, div_3);
+			appendNode(a_2, div_3);
+			appendNode(text_11, div_1);
+			appendNode(div_4, div_1);
+			appendNode(h4_1, div_4);
+			appendNode(text_13, div_4);
+			if_block.m(div_4, null);
+			appendNode(text_14, div_4);
+			appendNode(button, div_4);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.colorKeys;
+
+			if (changed.colorKeys || changed.selected) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						k: each_value[i],
+						k_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(ul, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
+				if_block.u();
+				if_block.d();
+				if_block = current_block_type(component, state);
+				if_block.c();
+				if_block.m(div_4, text_14);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			if_block.u();
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+
+			removeListener(a, "click", click_handler_1);
+			removeListener(a_1, "click", click_handler_2);
+			removeListener(a_2, "click", click_handler_3);
+			if_block.d();
+			removeListener(button, "click", click_handler_4);
+		}
+	};
+}
+
+function click_handler$1(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, k_index = this._svelte.k_index, k = each_value[k_index];
+	component.toggleSelect(k.key, event);
+}
+
+function Color(options) {
+	this._debugName = '<Color>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(assign(this.store._init(["vis","themeData"]), data$3()), options.data);
+	this.store._add(this, ["vis","themeData"]);
+	this._recompute({ $themeData: 1, $vis: 1, customizable: 1, axis: 1, custom: 1, palette: 1, value: 1, selected: 1 }, this._state);
+	if (!('$vis' in this._state)) console.warn("<Color> was created without expected data property '$vis'");
+	if (!('customizable' in this._state)) console.warn("<Color> was created without expected data property 'customizable'");
+	if (!('axis' in this._state)) console.warn("<Color> was created without expected data property 'axis'");
+	if (!('custom' in this._state)) console.warn("<Color> was created without expected data property 'custom'");
+
+	if (!('$themeData' in this._state)) console.warn("<Color> was created without expected data property '$themeData'");
+	if (!('value' in this._state)) console.warn("<Color> was created without expected data property 'value'");
+	if (!('selected' in this._state)) console.warn("<Color> was created without expected data property 'selected'");
+	if (!('label' in this._state)) console.warn("<Color> was created without expected data property 'label'");
+
+	if (!('open' in this._state)) console.warn("<Color> was created without expected data property 'open'");
+	if (!('expanded' in this._state)) console.warn("<Color> was created without expected data property 'expanded'");
+
+
+	if (!('openCustom' in this._state)) console.warn("<Color> was created without expected data property 'openCustom'");
+
+	this._handlers.destroy = [removeFromStore];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { $vis: 1, customizable: 1, axis: 1, custom: 1, palette: 1, $themeData: 1, value: 1, selected: 1, label: 1, hexColor: 1, open: 1, expanded: 1, colorKeys: 1, customColor: 1, openCustom: 1 };
+		oncreate.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$3(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(Color.prototype, protoDev);
+assign(Color.prototype, methods$2);
+
+Color.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('palette' in newState && !this._updatingReadonlyProperty) throw new Error("<Color>: Cannot set read-only property 'palette'");
+	if ('colorKeys' in newState && !this._updatingReadonlyProperty) throw new Error("<Color>: Cannot set read-only property 'colorKeys'");
+	if ('hexColor' in newState && !this._updatingReadonlyProperty) throw new Error("<Color>: Cannot set read-only property 'hexColor'");
+	if ('customColor' in newState && !this._updatingReadonlyProperty) throw new Error("<Color>: Cannot set read-only property 'customColor'");
+};
+
+Color.prototype._recompute = function _recompute(changed, state) {
+	if (changed.$themeData) {
+		if (this._differs(state.palette, (state.palette = palette_1(state)))) changed.palette = true;
+	}
+
+	if (changed.$vis || changed.customizable || changed.axis || changed.custom || changed.palette) {
+		if (this._differs(state.colorKeys, (state.colorKeys = colorKeys(state)))) changed.colorKeys = true;
+	}
+
+	if (changed.value || changed.palette) {
+		if (this._differs(state.hexColor, (state.hexColor = hexColor(state)))) changed.hexColor = true;
+	}
+
+	if (changed.selected || changed.palette || changed.custom) {
+		if (this._differs(state.customColor, (state.customColor = customColor(state)))) changed.customColor = true;
+	}
+};
+
+/* controls/CustomFormat.html generated by Svelte v1.64.0 */
+
+function axisCol({ $vis, $dataset, axis }) {
+    if (!$vis || !axis) return null;
+    const colids = $vis.axes()[axis];
+    return $dataset.column(typeof colids == 'object' ? colids[0] : colids);
+}
+function customFormatHelp({ axisCol }) {
+    if (!axisCol) return;
+    if (axisCol.type() == 'date') return '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">moment.js documentation</a>';
+    if (axisCol.type() == 'number') return '<a href="http://numeraljs.com/#format" target="_blank">numeral.js documentation</a>';
+    return '';
+}
+function options({ axisCol }) {
+    if (!axisCol) return [];
+    if (axisCol.type() == 'number') {
+        // todo: translate labels
+        return [
+            { l: '1,000[.00]', f: '0,0.[00]' },
+            { l: '0', f: '0' },
+            { l: '0.0', f: '0.0' },
+            { l: '0.00', f: '0.00' },
+            { l: '0.000', f: '0.000' },
+            { l: '0.[0]', f: '0.[0]' },
+            { l: '0.[00]', f: '0.[00]' },
+            { l: '0%', f: '0%' },
+            { l: '0.0%', f: '0.0%' },
+            { l: '0.00%', f: '0.00%' },
+            { l: '0.[0]%', f: '0.[0]%' },
+            { l: '0.[00]%', f: '0.[00]%' },
+            { l: '10,000', f: '0,0' },
+            { l: '1st', f: '0o' },
+            { l: '123k', f: '0a' },
+            { l: '123.4k', f: '0.[0]a' },
+            { l: '123.45k', f: '0.[00]a' },
+        ];
+    }
+    if (axisCol.type() == 'date') {
+        // todo translate
+        return [
+            { l: '2015, 2016', f: 'YYYY' },
+            { l: '2015 Q1, 2015 Q2', f: 'YYYY [Q]Q' },
+            { l: '2015, Q2, Q3', f: 'YYYY|\\QQ' },
+            { l: '2015, Feb, Mar', f: 'YYYY|MMM' },
+            { l: '’15, ’16', f: '’YY' },
+            { l: 'April, May', f: 'MMMM' },
+            { l: 'Apr, May', f: 'MMM' },
+            { l: 'Apr ’15, May ’15', f: 'MMM ’YY' },
+            { l: 'April, 2, 3', f: 'MMM|DD' },
+        ];
+    }
+}
+function data$4() {
+    return {
+        axis: false,
+        value: '',
+        custom: '',
+        selected: null
+    }
+}
+function oncreate$1() {
+    // watch select input
+    this.observe('selected', (sel, old) => {
+        if (sel == old) return;
+        const {custom} = this.get();
+        this.set({value: sel != 'custom' ? sel : custom+' '});
+    });
+    // watch external value changes
+    this.observe('value', (val, old) => {
+        if (val == old) return;
+        const {options} = this.get();
+        for (let o of options) {
+            if (o.f == val) return this.set({selected: val});
+        }
+        this.set({selected: 'custom', custom: val});
+    });
+    this.observe('custom', (val, old) => {
+        if (val == old) return;
+        const {selected} = this.get();
+        if (selected == 'custom') this.set({value:val});
+    });
+}
+function create_main_fragment$4(component, state) {
+	var div, label, text_1, div_1, text_2, select, option, text_3, select_updating = false, text_4;
+
+	var if_block = (state.selected == 'custom') && create_if_block$3(component, state);
+
+	var each_value = state.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(component, assign(assign({}, state), {
+			each_value: each_value,
+			opt: each_value[i],
+			opt_index: i
+		}));
+	}
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ selected: selectValue(select) });
+		select_updating = false;
+	}
+
+	var if_block_1 = (state.selected == 'custom') && create_if_block_1$1(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			if (if_block) if_block.c();
+			text_2 = createText("\n\n        ");
+			select = createElement("select");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			option = createElement("option");
+			text_3 = createText("(custom)");
+			text_4 = createText("\n        ");
+			if (if_block_1) if_block_1.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label svelte-h47p2z";
+			option.__value = "custom";
+			option.value = option.__value;
+			addListener(select, "change", select_change_handler);
+			if (!('selected' in state)) component.root._beforecreate.push(select_change_handler);
+			select.className = "svelte-h47p2z";
+			div_1.className = "controls form-inline";
+			div.className = "control-group vis-option-custom-format";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			if (if_block) if_block.m(div_1, null);
+			appendNode(text_2, div_1);
+			appendNode(select, div_1);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select, null);
+			}
+
+			appendNode(option, select);
+			appendNode(text_3, option);
+
+			selectOption(select, state.selected);
+
+			appendNode(text_4, div_1);
+			if (if_block_1) if_block_1.m(div_1, null);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (state.selected == 'custom') {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$3(component, state);
+					if_block.c();
+					if_block.m(div_1, text_2);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			var each_value = state.options;
+
+			if (changed.options) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						opt: each_value[i],
+						opt_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$2(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(select, option);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (!select_updating) selectOption(select, state.selected);
+
+			if (state.selected == 'custom') {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1$1(component, state);
+					if_block_1.c();
+					if_block_1.m(div_1, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			if (if_block_1) if_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+
+			destroyEach(each_blocks);
+
+			removeListener(select, "change", select_change_handler);
+			if (if_block_1) if_block_1.d();
+		}
+	};
+}
+
+// (8:8) {#if selected == 'custom'}
+function create_if_block$3(component, state) {
+	var div, text, raw_before, raw_after, text_1;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText("For help on custom formats, check the ");
+			raw_before = createElement('noscript');
+			raw_after = createElement('noscript');
+			text_1 = createText(".");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "small svelte-h47p2z";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(text, div);
+			appendNode(raw_before, div);
+			raw_before.insertAdjacentHTML("afterend", state.customFormatHelp);
+			appendNode(raw_after, div);
+			appendNode(text_1, div);
+		},
+
+		p: function update(changed, state) {
+			if (changed.customFormatHelp) {
+				detachBetween(raw_before, raw_after);
+				raw_before.insertAdjacentHTML("afterend", state.customFormatHelp);
+			}
+		},
+
+		u: function unmount() {
+			detachBetween(raw_before, raw_after);
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (15:8) {#each options as opt}
+function create_each_block$2(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var option, text_value = opt.l, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = opt.f;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			if ((changed.options) && text_value !== (text_value = opt.l)) {
+				text.data = text_value;
+			}
+
+			if ((changed.options) && option_value_value !== (option_value_value = opt.f)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (20:8) {#if selected == 'custom'}
+function create_if_block_1$1(component, state) {
+	var input, input_updating = false;
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ custom: input.value });
+		input_updating = false;
+	}
+
+	return {
+		c: function create() {
+			input = createElement("input");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "input", input_input_handler);
+			setAttribute(input, "type", "text");
+			input.className = "svelte-h47p2z";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(input, target, anchor);
+
+			input.value = state.custom;
+		},
+
+		p: function update(changed, state) {
+			if (!input_updating) input.value = state.custom;
+		},
+
+		u: function unmount() {
+			detachNode(input);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "input", input_input_handler);
+		}
+	};
+}
+
+function CustomFormat(options) {
+	this._debugName = '<CustomFormat>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(assign(this.store._init(["vis","dataset"]), data$4()), options.data);
+	this.store._add(this, ["vis","dataset"]);
+	this._recompute({ $vis: 1, $dataset: 1, axis: 1, axisCol: 1 }, this._state);
+
+	if (!('$vis' in this._state)) console.warn("<CustomFormat> was created without expected data property '$vis'");
+	if (!('$dataset' in this._state)) console.warn("<CustomFormat> was created without expected data property '$dataset'");
+	if (!('axis' in this._state)) console.warn("<CustomFormat> was created without expected data property 'axis'");
+	if (!('label' in this._state)) console.warn("<CustomFormat> was created without expected data property 'label'");
+	if (!('selected' in this._state)) console.warn("<CustomFormat> was created without expected data property 'selected'");
+
+
+	if (!('custom' in this._state)) console.warn("<CustomFormat> was created without expected data property 'custom'");
+
+	this._handlers.destroy = [removeFromStore];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { axisCol: 1, $vis: 1, $dataset: 1, axis: 1, label: 1, selected: 1, customFormatHelp: 1, options: 1, custom: 1 };
+		oncreate$1.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+	}
+
+	this._fragment = create_main_fragment$4(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+	}
+}
+
+assign(CustomFormat.prototype, protoDev);
+
+CustomFormat.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('axisCol' in newState && !this._updatingReadonlyProperty) throw new Error("<CustomFormat>: Cannot set read-only property 'axisCol'");
+	if ('customFormatHelp' in newState && !this._updatingReadonlyProperty) throw new Error("<CustomFormat>: Cannot set read-only property 'customFormatHelp'");
+	if ('options' in newState && !this._updatingReadonlyProperty) throw new Error("<CustomFormat>: Cannot set read-only property 'options'");
+};
+
+CustomFormat.prototype._recompute = function _recompute(changed, state) {
+	if (changed.$vis || changed.$dataset || changed.axis) {
+		if (this._differs(state.axisCol, (state.axisCol = axisCol(state)))) changed.axisCol = true;
+	}
+
+	if (changed.axisCol) {
+		if (this._differs(state.customFormatHelp, (state.customFormatHelp = customFormatHelp(state)))) changed.customFormatHelp = true;
+		if (this._differs(state.options, (state.options = options(state)))) changed.options = true;
+	}
+};
+
+/* controls/Number.html generated by Svelte v1.64.0 */
+
+function data$5() {
+    return {
+        unit: '',
+        step: 1,
+        min: 0,
+        max: 100,
+        width: '100px'
+    };
+}
+function create_main_fragment$5(component, state) {
+	var div, label, text, div_1, input, text_1, input_1, input_1_updating = false, text_2;
+
+	function input_input_handler() {
+		component.set({ value: toNumber(input.value) });
+	}
+
+	function input_change_handler() {
+		component.set({ value: toNumber(input.value) });
+	}
+
+	function input_1_input_handler() {
+		input_1_updating = true;
+		component.set({ value: toNumber(input_1.value) });
+		input_1_updating = false;
+	}
+
+	var if_block = (state.unit) && create_if_block$4(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text = createText("\n    ");
+			div_1 = createElement("div");
+			input = createElement("input");
+			text_1 = createText("  ");
+			input_1 = createElement("input");
+			text_2 = createText(" ");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(label, "width", state.width);
+			label.className = "control-label";
+			addListener(input, "input", input_input_handler);
+			addListener(input, "change", input_change_handler);
+			setAttribute(input, "type", "range");
+			input.min = state.min;
+			input.max = state.max;
+			input.step = state.step;
+			input.className = "svelte-l16hlj";
+			addListener(input_1, "input", input_1_input_handler);
+			setAttribute(input_1, "type", "number");
+			input_1.min = state.min;
+			input_1.max = state.max;
+			input_1.step = state.step;
+			input_1.className = "svelte-l16hlj";
+			div_1.className = "controls";
+			div.className = "control-group vis-option-group vis-option-type-number";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text, div);
+			appendNode(div_1, div);
+			appendNode(input, div_1);
+
+			input.value = state.value ;
+
+			appendNode(text_1, div_1);
+			appendNode(input_1, div_1);
+
+			input_1.value = state.value;
+
+			appendNode(text_2, div_1);
+			if (if_block) if_block.m(div_1, null);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (changed.width) {
+				setStyle(label, "width", state.width);
+			}
+
+			input.value = state.value ;
+			input.value = state.value ;
+			if (changed.min) {
+				input.min = state.min;
+			}
+
+			if (changed.max) {
+				input.max = state.max;
+			}
+
+			if (changed.step) {
+				input.step = state.step;
+			}
+
+			if (!input_1_updating) input_1.value = state.value;
+			if (changed.min) {
+				input_1.min = state.min;
+			}
+
+			if (changed.max) {
+				input_1.max = state.max;
+			}
+
+			if (changed.step) {
+				input_1.step = state.step;
+			}
+
+			if (state.unit) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$4(component, state);
+					if_block.c();
+					if_block.m(div_1, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "input", input_input_handler);
+			removeListener(input, "change", input_change_handler);
+			removeListener(input_1, "input", input_1_input_handler);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (4:163) {#if unit}
+function create_if_block$4(component, state) {
+	var span, text;
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			text = createText(state.unit);
+			this.h();
+		},
+
+		h: function hydrate() {
+			span.className = "unit svelte-l16hlj";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(text, span);
+		},
+
+		p: function update(changed, state) {
+			if (changed.unit) {
+				text.data = state.unit;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: noop
+	};
+}
+
+function Number(options) {
+	this._debugName = '<Number>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$5(), options.data);
+	if (!('width' in this._state)) console.warn("<Number> was created without expected data property 'width'");
+	if (!('label' in this._state)) console.warn("<Number> was created without expected data property 'label'");
+	if (!('min' in this._state)) console.warn("<Number> was created without expected data property 'min'");
+	if (!('max' in this._state)) console.warn("<Number> was created without expected data property 'max'");
+	if (!('step' in this._state)) console.warn("<Number> was created without expected data property 'step'");
+	if (!('value' in this._state)) console.warn("<Number> was created without expected data property 'value'");
+	if (!('unit' in this._state)) console.warn("<Number> was created without expected data property 'unit'");
+
+	this._fragment = create_main_fragment$5(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Number.prototype, protoDev);
+
+Number.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Radio.html generated by Svelte v1.64.0 */
+
+function data$6() {
+    return {
+        disabled: false,
+        width: 'auto'
+    }
+}
+function create_main_fragment$6(component, state) {
+	var div, label, text_1, div_1;
+
+	var each_value = state.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$3(component, assign(assign({}, state), {
+			each_value: each_value,
+			opt: each_value[i],
+			opt_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(label, "width", state.width);
+			label.className = "control-label";
+			div_1.className = "controls form-inline";
+			div.className = "control-group vis-option-group vis-option-type-radio";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div_1, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (changed.width) {
+				setStyle(label, "width", state.width);
+			}
+
+			var each_value = state.options;
+
+			if (changed.options || changed.disabled || changed.value) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						opt: each_value[i],
+						opt_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$3(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(div_1, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (7:8) {#each options as opt}
+function create_each_block$3(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var label, input, input_value_value, text, span, text_1_value = opt.label, text_1, text_2, label_title_value, label_class_value;
+
+	function input_change_handler() {
+		component.set({ value: input.__value });
+	}
+
+	var if_block = (opt.help) && create_if_block$5(component, state);
+
+	return {
+		c: function create() {
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			span = createElement("span");
+			text_1 = createText(text_1_value);
+			text_2 = createText("\n            ");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			component._bindingGroups[0].push(input);
+			addListener(input, "change", input_change_handler);
+			setAttribute(input, "type", "radio");
+			input.__value = input_value_value = opt.value;
+			input.value = input.__value;
+			input.disabled = state.disabled;
+			input.className = "svelte-vxnks8";
+			span.className = "svelte-vxnks8";
+			label.title = label_title_value = opt.tooltip||'';
+			label.className = label_class_value = "radio " + (state.disabled? 'disabled' :'') + " " + (opt.help?'has-help':'') + " svelte-vxnks8";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(label, target, anchor);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.value;
+
+			appendNode(text, label);
+			appendNode(span, label);
+			appendNode(text_1, span);
+			appendNode(text_2, label);
+			if (if_block) if_block.m(label, null);
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			input.checked = input.__value === state.value;
+			if ((changed.options) && input_value_value !== (input_value_value = opt.value)) {
+				input.__value = input_value_value;
+			}
+
+			input.value = input.__value;
+			if (changed.disabled) {
+				input.disabled = state.disabled;
+			}
+
+			if ((changed.options) && text_1_value !== (text_1_value = opt.label)) {
+				text_1.data = text_1_value;
+			}
+
+			if (opt.help) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$5(component, state);
+					if_block.c();
+					if_block.m(label, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if ((changed.options) && label_title_value !== (label_title_value = opt.tooltip||'')) {
+				label.title = label_title_value;
+			}
+
+			if ((changed.disabled || changed.options) && label_class_value !== (label_class_value = "radio " + (state.disabled? 'disabled' :'') + " " + (opt.help?'has-help':'') + " svelte-vxnks8")) {
+				label.className = label_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(label);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (10:12) {#if opt.help}
+function create_if_block$5(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var div, raw_value = opt.help;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "help svelte-vxnks8";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			if ((changed.options) && raw_value !== (raw_value = opt.help)) {
+				div.innerHTML = raw_value;
+			}
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+function Radio(options) {
+	this._debugName = '<Radio>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$6(), options.data);
+	if (!('width' in this._state)) console.warn("<Radio> was created without expected data property 'width'");
+	if (!('label' in this._state)) console.warn("<Radio> was created without expected data property 'label'");
+	if (!('options' in this._state)) console.warn("<Radio> was created without expected data property 'options'");
+	if (!('disabled' in this._state)) console.warn("<Radio> was created without expected data property 'disabled'");
+	if (!('value' in this._state)) console.warn("<Radio> was created without expected data property 'value'");
+	this._bindingGroups = [[]];
+
+	this._fragment = create_main_fragment$6(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Radio.prototype, protoDev);
+
+Radio.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Select.html generated by Svelte v1.64.0 */
+
+function data$7() {
+    return {
+        disabled: false,
+        width: 'auto',
+        labelWidth: 'auto',
+        options: [],
+        optgroups: [],
+    };
+}
+function create_main_fragment$7(component, state) {
+	var div, label, text_1, div_1, select, if_block_anchor, select_updating = false, div_1_class_value;
+
+	var if_block = (state.options.length) && create_if_block$6(component, state);
+
+	var if_block_1 = (state.optgroups.length) && create_if_block_1$2(component, state);
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ value: selectValue(select) });
+		select_updating = false;
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			select = createElement("select");
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+			if (if_block_1) if_block_1.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(label, "width", state.labelWidth);
+			label.className = "control-label";
+			addListener(select, "change", select_change_handler);
+			if (!('value' in state)) component.root._beforecreate.push(select_change_handler);
+			select.disabled = state.disabled;
+			setStyle(select, "width", state.width);
+			div_1.className = div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :'');
+			div.className = "control-group vis-option-type-select";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(select, div_1);
+			if (if_block) if_block.m(select, null);
+			appendNode(if_block_anchor, select);
+			if (if_block_1) if_block_1.m(select, null);
+
+			selectOption(select, state.value);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (changed.labelWidth) {
+				setStyle(label, "width", state.labelWidth);
+			}
+
+			if (state.options.length) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$6(component, state);
+					if_block.c();
+					if_block.m(select, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (state.optgroups.length) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1$2(component, state);
+					if_block_1.c();
+					if_block_1.m(select, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+
+			if (!select_updating) selectOption(select, state.value);
+			if (changed.disabled) {
+				select.disabled = state.disabled;
+			}
+
+			if (changed.width) {
+				setStyle(select, "width", state.width);
+			}
+
+			if ((changed.disabled) && div_1_class_value !== (div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :''))) {
+				div_1.className = div_1_class_value;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+			if (if_block_1) if_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			if (if_block_1) if_block_1.d();
+			removeListener(select, "change", select_change_handler);
+		}
+	};
+}
+
+// (9:12) {#each options as opt}
+function create_each_block$4(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var option, text_value = opt.label, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = opt.value;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			if ((changed.options) && text_value !== (text_value = opt.label)) {
+				text.data = text_value;
+			}
+
+			if ((changed.options) && option_value_value !== (option_value_value = opt.value)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (8:8) {#if options.length}
+function create_if_block$6(component, state) {
+	var each_anchor;
+
+	var each_value = state.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$4(component, assign(assign({}, state), {
+			each_value: each_value,
+			opt: each_value[i],
+			opt_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insertNode(each_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.options;
+
+			if (changed.options) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						opt: each_value[i],
+						opt_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$4(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(each_anchor.parentNode, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			detachNode(each_anchor);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (14:12) {#each optgroups as optgroup}
+function create_each_block_1$1(component, state) {
+	var optgroup = state.optgroup, each_value_1 = state.each_value_1, optgroup_index = state.optgroup_index;
+	var optgroup_1, optgroup_1_label_value;
+
+	var each_value_2 = optgroup.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value_2.length; i += 1) {
+		each_blocks[i] = create_each_block_2$1(component, assign(assign({}, state), {
+			each_value_2: each_value_2,
+			opt: each_value_2[i],
+			opt_index_1: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			optgroup_1 = createElement("optgroup");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			setAttribute(optgroup_1, "label", optgroup_1_label_value = optgroup.label);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(optgroup_1, target, anchor);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(optgroup_1, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			optgroup = state.optgroup;
+			each_value_1 = state.each_value_1;
+			optgroup_index = state.optgroup_index;
+			var each_value_2 = optgroup.options;
+
+			if (changed.optgroups) {
+				for (var i = 0; i < each_value_2.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_2: each_value_2,
+						opt: each_value_2[i],
+						opt_index_1: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block_2$1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(optgroup_1, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value_2.length;
+			}
+
+			if ((changed.optgroups) && optgroup_1_label_value !== (optgroup_1_label_value = optgroup.label)) {
+				setAttribute(optgroup_1, "label", optgroup_1_label_value);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(optgroup_1);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (16:16) {#each optgroup.options as opt}
+function create_each_block_2$1(component, state) {
+	var optgroup = state.optgroup, each_value_1 = state.each_value_1, optgroup_index = state.optgroup_index, opt = state.opt, each_value_2 = state.each_value_2, opt_index_1 = state.opt_index_1;
+	var option, text_value = opt.label, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = opt.value;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			optgroup = state.optgroup;
+			each_value_1 = state.each_value_1;
+			optgroup_index = state.optgroup_index;
+			opt = state.opt;
+			each_value_2 = state.each_value_2;
+			opt_index_1 = state.opt_index_1;
+			if ((changed.optgroups) && text_value !== (text_value = opt.label)) {
+				text.data = text_value;
+			}
+
+			if ((changed.optgroups) && option_value_value !== (option_value_value = opt.value)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (13:8) {#if optgroups.length}
+function create_if_block_1$2(component, state) {
+	var each_anchor;
+
+	var each_value_1 = state.optgroups;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value_1.length; i += 1) {
+		each_blocks[i] = create_each_block_1$1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			optgroup: each_value_1[i],
+			optgroup_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insertNode(each_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var each_value_1 = state.optgroups;
+
+			if (changed.optgroups) {
+				for (var i = 0; i < each_value_1.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						optgroup: each_value_1[i],
+						optgroup_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block_1$1(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(each_anchor.parentNode, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value_1.length;
+			}
+		},
+
+		u: function unmount() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			detachNode(each_anchor);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+function Select(options) {
+	this._debugName = '<Select>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$7(), options.data);
+	if (!('labelWidth' in this._state)) console.warn("<Select> was created without expected data property 'labelWidth'");
+	if (!('label' in this._state)) console.warn("<Select> was created without expected data property 'label'");
+	if (!('disabled' in this._state)) console.warn("<Select> was created without expected data property 'disabled'");
+	if (!('value' in this._state)) console.warn("<Select> was created without expected data property 'value'");
+	if (!('width' in this._state)) console.warn("<Select> was created without expected data property 'width'");
+	if (!('options' in this._state)) console.warn("<Select> was created without expected data property 'options'");
+	if (!('optgroups' in this._state)) console.warn("<Select> was created without expected data property 'optgroups'");
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+	}
+
+	this._fragment = create_main_fragment$7(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._beforecreate);
+	}
+}
+
+assign(Select.prototype, protoDev);
+
+Select.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Dropdown.html generated by Svelte v1.64.0 */
+
+function currentLabel({ value, options }) {
+    for (let i=0; i<options.length; i++) {
+        if (options[i].value == value) return options[i].label;
+    }
+    return '(select an item)';
+}
+function data$8() {
+    return {
+        disabled: false,
+        width: 'auto',
+        options: [],
+        optgroups: [],
+    };
+}
+var methods$3 = {
+    select(event, opt) {
+        event.preventDefault();
+        this.set({ value: opt.value });
+        this.fire('change', opt.value);
+    }
+};
+
+function create_main_fragment$8(component, state) {
+	var div, label, text_1, div_1, text_2, span, div_2, button, raw_1_after, text_3, span_1, text_7, span_2, ul, text_9, div_1_class_value;
+
+	var if_block = (state.options.length) && create_if_block$7(component, state);
+
+	var basedropdown = new BaseDropdown({
+		root: component.root,
+		slots: { default: createFragment(), button: createFragment(), content: createFragment() }
+	});
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			text_2 = createText("\n            ");
+			span = createElement("span");
+			div_2 = createElement("div");
+			button = createElement("button");
+			raw_1_after = createElement('noscript');
+			text_3 = createText("\n                        ");
+			span_1 = createElement("span");
+			text_7 = createText("\n            ");
+			span_2 = createElement("span");
+			ul = createElement("ul");
+			if (if_block) if_block.c();
+			text_9 = createText("\n        ");
+			basedropdown._fragment.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label";
+			span_1.className = "caret svelte-154oatd";
+			button.className = "btn dropdown-toggle svelte-154oatd";
+			div_2.className = "btn-group";
+			setAttribute(span, "slot", "button");
+			ul.className = "dropdown-menu svelte-154oatd";
+			setStyle(ul, "display", "block");
+			setAttribute(span_2, "slot", "content");
+			div_1.className = div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :'') + " svelte-154oatd";
+			div.className = "control-group vis-option-type-select";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(text_2, basedropdown._slotted.default);
+			appendNode(span, basedropdown._slotted.button);
+			appendNode(div_2, span);
+			appendNode(button, div_2);
+			appendNode(raw_1_after, button);
+			raw_1_after.insertAdjacentHTML("beforebegin", state.currentLabel);
+			appendNode(text_3, button);
+			appendNode(span_1, button);
+			appendNode(text_7, basedropdown._slotted.default);
+			appendNode(span_2, basedropdown._slotted.content);
+			appendNode(ul, span_2);
+			if (if_block) if_block.m(ul, null);
+			appendNode(text_9, basedropdown._slotted.default);
+			basedropdown._mount(div_1, null);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (changed.currentLabel) {
+				detachBefore(raw_1_after);
+				raw_1_after.insertAdjacentHTML("beforebegin", state.currentLabel);
+			}
+
+			if (state.options.length) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$7(component, state);
+					if_block.c();
+					if_block.m(ul, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if ((changed.disabled) && div_1_class_value !== (div_1_class_value = "controls form-inline " + (state.disabled? 'disabled' :'') + " svelte-154oatd")) {
+				div_1.className = div_1_class_value;
+			}
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachBefore(raw_1_after);
+
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			basedropdown.destroy(false);
+		}
+	};
+}
+
+// (20:20) {#each options as opt}
+function create_each_block$5(component, state) {
+	var opt = state.opt, each_value = state.each_value, opt_index = state.opt_index;
+	var li, a, raw_value = opt.label, a_href_value, li_class_value;
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			a = createElement("a");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(a, "click", click_handler$2);
+			a.href = a_href_value = "#/" + opt.value;
+
+			a._svelte = {
+				component: component,
+				each_value: state.each_value,
+				opt_index: state.opt_index
+			};
+
+			li.className = li_class_value = "" + (state.value==opt.value?'selected':'') + " svelte-154oatd";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(a, li);
+			a.innerHTML = raw_value;
+		},
+
+		p: function update(changed, state) {
+			opt = state.opt;
+			each_value = state.each_value;
+			opt_index = state.opt_index;
+			if ((changed.options) && raw_value !== (raw_value = opt.label)) {
+				a.innerHTML = raw_value;
+			}
+
+			if ((changed.options) && a_href_value !== (a_href_value = "#/" + opt.value)) {
+				a.href = a_href_value;
+			}
+
+			a._svelte.each_value = state.each_value;
+			a._svelte.opt_index = state.opt_index;
+
+			if ((changed.value || changed.options) && li_class_value !== (li_class_value = "" + (state.value==opt.value?'selected':'') + " svelte-154oatd")) {
+				li.className = li_class_value;
+			}
+		},
+
+		u: function unmount() {
+			a.innerHTML = '';
+
+			detachNode(li);
+		},
+
+		d: function destroy$$1() {
+			removeListener(a, "click", click_handler$2);
+		}
+	};
+}
+
+// (19:16) {#if options.length}
+function create_if_block$7(component, state) {
+	var each_anchor;
+
+	var each_value = state.options;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$5(component, assign(assign({}, state), {
+			each_value: each_value,
+			opt: each_value[i],
+			opt_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insertNode(each_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.options;
+
+			if (changed.value || changed.options) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						opt: each_value[i],
+						opt_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$5(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(each_anchor.parentNode, each_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			detachNode(each_anchor);
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+function click_handler$2(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, opt_index = this._svelte.opt_index, opt = each_value[opt_index];
+	component.select(event, opt);
+}
+
+function Dropdown(options) {
+	this._debugName = '<Dropdown>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$8(), options.data);
+	this._recompute({ value: 1, options: 1 }, this._state);
+	if (!('value' in this._state)) console.warn("<Dropdown> was created without expected data property 'value'");
+	if (!('options' in this._state)) console.warn("<Dropdown> was created without expected data property 'options'");
+	if (!('label' in this._state)) console.warn("<Dropdown> was created without expected data property 'label'");
+	if (!('disabled' in this._state)) console.warn("<Dropdown> was created without expected data property 'disabled'");
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$8(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(Dropdown.prototype, protoDev);
+assign(Dropdown.prototype, methods$3);
+
+Dropdown.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('currentLabel' in newState && !this._updatingReadonlyProperty) throw new Error("<Dropdown>: Cannot set read-only property 'currentLabel'");
+};
+
+Dropdown.prototype._recompute = function _recompute(changed, state) {
+	if (changed.value || changed.options) {
+		if (this._differs(state.currentLabel, (state.currentLabel = currentLabel(state)))) changed.currentLabel = true;
+	}
+};
+
+function cubicOut(t) {
+  var f = t - 1.0;
+  return f * f * f + 1.0
+}
+
+function slide(
+	node,
+	ref
+) {
+	var delay = ref.delay; if ( delay === void 0 ) delay = 0;
+	var duration = ref.duration; if ( duration === void 0 ) duration = 400;
+	var easing = ref.easing; if ( easing === void 0 ) easing = cubicOut;
+
+	var style = getComputedStyle(node);
+	var opacity = +style.opacity;
+	var height = parseFloat(style.height);
+	var paddingTop = parseFloat(style.paddingTop);
+	var paddingBottom = parseFloat(style.paddingBottom);
+	var marginTop = parseFloat(style.marginTop);
+	var marginBottom = parseFloat(style.marginBottom);
+	var borderTopWidth = parseFloat(style.borderTopWidth);
+	var borderBottomWidth = parseFloat(style.borderBottomWidth);
+
+	return {
+		delay: delay,
+		duration: duration,
+		easing: easing,
+		css: function (t) { return "overflow: hidden;" +
+			"opacity: " + (Math.min(t * 20, 1) * opacity) + ";" +
+			"height: " + (t * height) + "px;" +
+			"padding-top: " + (t * paddingTop) + "px;" +
+			"padding-bottom: " + (t * paddingBottom) + "px;" +
+			"margin-top: " + (t * marginTop) + "px;" +
+			"margin-bottom: " + (t * marginBottom) + "px;" +
+			"border-top-width: " + (t * borderTopWidth) + "px;" +
+			"border-bottom-width: " + (t * borderBottomWidth) + "px;"; }
+	};
+}
+
+/* editor/Help.html generated by Svelte v1.64.0 */
+
+function data$9() {
+    return {
+        visible: false
+    }
+}
+var methods$4 = {
+    show() {
+        const t = setTimeout(() => {
+            this.set({visible: true});
+        }, 400);
+        this.set({t});
+    },
+    hide() {
+        const {t} = this.get();
+        clearTimeout(t);
+        this.set({visible:false});
+    }
+};
+
+function create_main_fragment$9(component, state) {
+	var div, span, text_1;
+
+	var if_block = (state.visible) && create_if_block$8(component, state);
+
+	function mouseenter_handler(event) {
+		component.show();
+	}
+
+	function mouseleave_handler(event) {
+		component.hide();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			span = createElement("span");
+			span.textContent = "?";
+			text_1 = createText("\n    ");
+			if (if_block) if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			span.className = "svelte-1mt7hew";
+			addListener(div, "mouseenter", mouseenter_handler);
+			addListener(div, "mouseleave", mouseleave_handler);
+			div.className = "help svelte-1mt7hew";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(span, div);
+			appendNode(text_1, div);
+			if (if_block) if_block.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (state.visible) {
+				if (!if_block) {
+					if_block = create_if_block$8(component, state);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			removeListener(div, "mouseenter", mouseenter_handler);
+			removeListener(div, "mouseleave", mouseleave_handler);
+		}
+	};
+}
+
+// (3:4) {#if visible}
+function create_if_block$8(component, state) {
+	var div, slot_content_default = component._slotted.default;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "content svelte-1mt7hew";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+
+			if (slot_content_default) {
+				appendNode(slot_content_default, div);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(div, slot_content_default);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function Help(options) {
+	this._debugName = '<Help>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$9(), options.data);
+	if (!('visible' in this._state)) console.warn("<Help> was created without expected data property 'visible'");
+
+	this._slotted = options.slots || {};
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$9(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Help.prototype, protoDev);
+assign(Help.prototype, methods$4);
+
+Help.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/Switch.html generated by Svelte v1.64.0 */
+
+function data$10() {
+    return {
+        hasHelp: false,
+        disabled_msg: '',
+        disabled_state: 'auto',
+        disabled: false,
+        highlight: false
+    }
+}
+function oncreate$2() {
+    this.set({
+        hasHelp: this.options && this.options.slots ? !!this.options.slots.help : false
+    });
+}
+function onstate$1({changed, current}) {
+    if (changed.value && current.value) {
+        this.set({highlight:true});
+        setTimeout(() => {
+            this.set({highlight:false});
+        }, 300);
+    }
+}
+function create_main_fragment$10(component, state) {
+	var div, text, label, label_1, input, input_class_value, span, text_2, raw_before, label_class_value, text_4, current_block_type_index, if_block_1, div_class_value;
+
+	var if_block = (state.hasHelp) && create_if_block$9(component, state);
+
+	function input_change_handler() {
+		component.set({ value: input.checked });
+	}
+
+	var if_block_creators = [
+		create_if_block_1$3,
+		create_if_block_2$1,
+
+	];
+
+	var if_blocks = [];
+
+	function select_block_type(state) {
+		if (state.disabled && state.disabled_msg) return 0;
+		if (!state.disabled && state.value) return 1;
+		return -1;
+	}
+
+	if (~(current_block_type_index = select_block_type(state))) {
+		if_block_1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](component, state);
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) if_block.c();
+			text = createText("\n    ");
+			label = createElement("label");
+			label_1 = createElement("label");
+			input = createElement("input");
+			span = createElement("span");
+			text_2 = createText("\n        ");
+			raw_before = createElement('noscript');
+			text_4 = createText("\n    ");
+			if (if_block_1) if_block_1.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(input, "change", input_change_handler);
+			input.className = input_class_value = "" + (state.disabled && state.disabled_state == 'on' ? 'disabled-force-checked' : state.disabled && state.disabled_state == 'off' ? 'disabled-force-unchecked' : '') + " svelte-2cwspk";
+			input.disabled = state.disabled;
+			setAttribute(input, "type", "checkbox");
+			span.className = "slider round svelte-2cwspk";
+			label_1.className = "switch svelte-2cwspk";
+			label.className = label_class_value = "switch-outer " + (state.disabled? 'disabled' :'') + " svelte-2cwspk";
+			setStyle(label, "padding-left", "40px");
+			div.className = div_class_value = "control-group vis-option-group vis-option-type-switch " + (state.highlight?'highlight':'') + " svelte-2cwspk";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) if_block.m(div, null);
+			appendNode(text, div);
+			appendNode(label, div);
+			appendNode(label_1, label);
+			appendNode(input, label_1);
+
+			input.checked = state.value;
+
+			appendNode(span, label_1);
+			appendNode(text_2, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", state.label);
+			appendNode(text_4, div);
+			if (~current_block_type_index) if_blocks[current_block_type_index].i(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (state.hasHelp) {
+				if (!if_block) {
+					if_block = create_if_block$9(component, state);
+					if_block.c();
+					if_block.m(div, text);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			input.checked = state.value;
+			if ((changed.disabled || changed.disabled_state) && input_class_value !== (input_class_value = "" + (state.disabled && state.disabled_state == 'on' ? 'disabled-force-checked' : state.disabled && state.disabled_state == 'off' ? 'disabled-force-unchecked' : '') + " svelte-2cwspk")) {
+				input.className = input_class_value;
+			}
+
+			if (changed.disabled) {
+				input.disabled = state.disabled;
+			}
+
+			if (changed.label) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", state.label);
+			}
+
+			if ((changed.disabled) && label_class_value !== (label_class_value = "switch-outer " + (state.disabled? 'disabled' :'') + " svelte-2cwspk")) {
+				label.className = label_class_value;
+			}
+
+			var previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type(state);
+			if (current_block_type_index === previous_block_index) {
+				if (~current_block_type_index) if_blocks[current_block_type_index].p(changed, state);
+			} else {
+				if (if_block_1) {
+					if_block_1.o(function() {
+						if_blocks[ previous_block_index ].u();
+						if_blocks[ previous_block_index ].d();
+						if_blocks[ previous_block_index ] = null;
+					});
+				}
+
+				if (~current_block_type_index) {
+					if_block_1 = if_blocks[current_block_type_index];
+					if (!if_block_1) {
+						if_block_1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](component, state);
+						if_block_1.c();
+					}
+					if_block_1.i(div, null);
+				} else {
+					if_block_1 = null;
+				}
+			}
+
+			if ((changed.highlight) && div_class_value !== (div_class_value = "control-group vis-option-group vis-option-type-switch " + (state.highlight?'highlight':'') + " svelte-2cwspk")) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(div);
+			if (if_block) if_block.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			removeListener(input, "change", input_change_handler);
+			if (~current_block_type_index) {
+				if_blocks[current_block_type_index].u();
+				if_blocks[current_block_type_index].d();
+			}
+		}
+	};
+}
+
+// (41:4) {#if hasHelp}
+function create_if_block$9(component, state) {
+	var text, slot_content_help = component._slotted.help, text_1;
+
+	var help = new Help({
+		root: component.root,
+		slots: { default: createFragment() }
+	});
+
+	return {
+		c: function create() {
+			text = createText("\n        ");
+			text_1 = createText("\n    ");
+			help._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			appendNode(text, help._slotted.default);
+
+			if (slot_content_help) {
+				appendNode(slot_content_help, help._slotted.default);
+			}
+
+			appendNode(text_1, help._slotted.default);
+			help._mount(target, anchor);
+		},
+
+		u: function unmount() {
+			if (slot_content_help) {
+				reinsertChildren(help._slotted.default, slot_content_help);
+			}
+
+			help._unmount();
+		},
+
+		d: function destroy$$1() {
+			help.destroy(false);
+		}
+	};
+}
+
+// (52:4) {#if disabled && disabled_msg}
+function create_if_block_1$3(component, state) {
+	var div, div_1, div_transition, introing, outroing;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_1.className = "disabled-msg svelte-2cwspk";
+			div.className = "svelte-2cwspk";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			div_1.innerHTML = state.disabled_msg;
+		},
+
+		p: function update(changed, state) {
+			if (outroing || changed.disabled_msg) {
+				div_1.innerHTML = state.disabled_msg;
+			}
+		},
+
+		i: function intro(target, anchor) {
+			if (introing) return;
+			introing = true;
+			outroing = false;
+
+			component.root._aftercreate.push(function() {
+				if (!div_transition) div_transition = wrapTransition(component, div, slide, {}, true, null);
+				div_transition.run(true, function() {
+					component.fire("intro.end", { node: div });
+				});
+			});
+
+			this.m(target, anchor);
+		},
+
+		o: function outro(outrocallback) {
+			if (outroing) return;
+			outroing = true;
+			introing = false;
+
+			var outros = 1;
+
+			div_transition.run(false, function() {
+				component.fire("outro.end", { node: div });
+				if (--outros === 0) outrocallback();
+				div_transition = null;
+			});
+		},
+
+		u: function unmount() {
+			div_1.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (59:4) {#if !disabled && value}
+function create_if_block_2$1(component, state) {
+	var div, div_1, slot_content_default = component._slotted.default, div_transition, introing, outroing;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_1.className = "switch-content svelte-2cwspk";
+			div.className = "svelte-2cwspk";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+
+			if (slot_content_default) {
+				appendNode(slot_content_default, div_1);
+			}
+		},
+
+		p: noop,
+
+		i: function intro(target, anchor) {
+			if (introing) return;
+			introing = true;
+			outroing = false;
+
+			component.root._aftercreate.push(function() {
+				if (!div_transition) div_transition = wrapTransition(component, div, slide, {}, true, null);
+				div_transition.run(true, function() {
+					component.fire("intro.end", { node: div });
+				});
+			});
+
+			this.m(target, anchor);
+		},
+
+		o: function outro(outrocallback) {
+			if (outroing) return;
+			outroing = true;
+			introing = false;
+
+			var outros = 1;
+
+			div_transition.run(false, function() {
+				component.fire("outro.end", { node: div });
+				if (--outros === 0) outrocallback();
+				div_transition = null;
+			});
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(div_1, slot_content_default);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function Switch(options) {
+	this._debugName = '<Switch>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$10(), options.data);
+	if (!('highlight' in this._state)) console.warn("<Switch> was created without expected data property 'highlight'");
+	if (!('hasHelp' in this._state)) console.warn("<Switch> was created without expected data property 'hasHelp'");
+	if (!('disabled' in this._state)) console.warn("<Switch> was created without expected data property 'disabled'");
+	if (!('disabled_state' in this._state)) console.warn("<Switch> was created without expected data property 'disabled_state'");
+	if (!('value' in this._state)) console.warn("<Switch> was created without expected data property 'value'");
+	if (!('label' in this._state)) console.warn("<Switch> was created without expected data property 'label'");
+	if (!('disabled_msg' in this._state)) console.warn("<Switch> was created without expected data property 'disabled_msg'");
+
+	this._handlers.state = [onstate$1];
+
+	this._slotted = options.slots || {};
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { highlight: 1, hasHelp: 1, disabled: 1, disabled_state: 1, value: 1, label: 1, disabled_msg: 1 };
+		onstate$1.call(self, { changed: changed, current: self._state });
+		oncreate$2.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$10(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(Switch.prototype, protoDev);
+
+Switch.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/TextArea.html generated by Svelte v1.64.0 */
+
+function data$11() {
+    return {
+        placeholder: ''
+    }
+}
+function create_main_fragment$11(component, state) {
+	var div, label, text, text_1, div_1, textarea, textarea_updating = false;
+
+	function textarea_input_handler() {
+		textarea_updating = true;
+		component.set({ value: textarea.value });
+		textarea_updating = false;
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text = createText(state.label);
+			text_1 = createText("\n    ");
+			div_1 = createElement("div");
+			textarea = createElement("textarea");
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label";
+			addListener(textarea, "input", textarea_input_handler);
+			textarea.placeholder = state.placeholder;
+			setStyle(textarea, "width", ( state.width || 'auto' ));
+			div_1.className = "controls";
+			div.className = "control-group vis-option-group vis-option-type-textarea";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(text, label);
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(textarea, div_1);
+
+			textarea.value = state.value;
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				text.data = state.label;
+			}
+
+			if (!textarea_updating) textarea.value = state.value;
+			if (changed.placeholder) {
+				textarea.placeholder = state.placeholder;
+			}
+
+			if (changed.width) {
+				setStyle(textarea, "width", ( state.width || 'auto' ));
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(textarea, "input", textarea_input_handler);
+		}
+	};
+}
+
+function TextArea(options) {
+	this._debugName = '<TextArea>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$11(), options.data);
+	if (!('label' in this._state)) console.warn("<TextArea> was created without expected data property 'label'");
+	if (!('value' in this._state)) console.warn("<TextArea> was created without expected data property 'value'");
+	if (!('placeholder' in this._state)) console.warn("<TextArea> was created without expected data property 'placeholder'");
+	if (!('width' in this._state)) console.warn("<TextArea> was created without expected data property 'width'");
+
+	this._fragment = create_main_fragment$11(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(TextArea.prototype, protoDev);
+
+TextArea.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* controls/SelectAxisColumn.html generated by Svelte v1.64.0 */
+
+function columns({ axis, $visMeta, $dataset }) {
+    const columns = [];
+    // const axisMeta =
+    if (!$dataset || !$visMeta || !axis) return [];
+    $dataset.eachColumn((column) => {
+        if (_.indexOf($visMeta.axes[axis].accepts, column.type()) > -1) {
+            columns.push({
+                name: column.name()
+            });
+        }
+    });
+    return columns;
+}
+function data$12() {
+    return {
+        selected: false
+    };
+}
+function oncreate$3() {
+    const me = this;
+    me.observe('selected', (sel) => {
+        if (sel) {
+            const {axis} = me.get();
+            var axes = _.clone(window.chart.get('metadata.axes', {}));
+            if (sel == '-') delete axes[axis];
+            else axes[axis] = sel;
+            window.chart.set('metadata.axes', axes);
+        }
+    });
+    me.store.observe('visMeta', (visMeta) => {
+        let {selected, axis} = me.get();
+        if (!selected && visMeta) {
+            // initialize!
+            selected = window.chart.get('metadata.axes')[axis];
+            me.set({selected});
+        }
+    });
+}
+function create_main_fragment$12(component, state) {
+	var div, label, text_1, div_1, select, if_block_anchor, select_updating = false;
+
+	var if_block = (state.$visMeta && state.$visMeta.axes[state.axis].optional) && create_if_block$10(component, state);
+
+	var each_value = state.columns;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$6(component, assign(assign({}, state), {
+			each_value: each_value,
+			column: each_value[i],
+			column_index: i
+		}));
+	}
+
+	function select_change_handler() {
+		select_updating = true;
+		component.set({ selected: selectValue(select) });
+		select_updating = false;
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text_1 = createText("\n\n    ");
+			div_1 = createElement("div");
+			select = createElement("select");
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label svelte-7khi8i";
+			addListener(select, "change", select_change_handler);
+			if (!('selected' in state)) component.root._beforecreate.push(select_change_handler);
+			select.className = "svelte-7khi8i";
+			div_1.className = "controls form-inline";
+			div.className = "control-group vis-option-group";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(select, div_1);
+			if (if_block) if_block.m(select, null);
+			appendNode(if_block_anchor, select);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select, null);
+			}
+
+			selectOption(select, state.selected);
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (state.$visMeta && state.$visMeta.axes[state.axis].optional) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$10(component, state);
+					if_block.c();
+					if_block.m(select, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			var each_value = state.columns;
+
+			if (changed.columns) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						column: each_value[i],
+						column_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$6(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(select, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (!select_updating) selectOption(select, state.selected);
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) if_block.u();
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+
+			destroyEach(each_blocks);
+
+			removeListener(select, "change", select_change_handler);
+		}
+	};
+}
+
+// (8:12) {#if $visMeta && $visMeta.axes[axis].optional}
+function create_if_block$10(component, state) {
+	var option, text_value = state.axis['na-label']||'--', text;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = "-";
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.axis) && text_value !== (text_value = state.axis['na-label']||'--')) {
+				text.data = text_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+// (11:12) {#each columns as column}
+function create_each_block$6(component, state) {
+	var column = state.column, each_value = state.each_value, column_index = state.column_index;
+	var option, text_value = column.name, text, option_value_value;
+
+	return {
+		c: function create() {
+			option = createElement("option");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			option.__value = option_value_value = column.name;
+			option.value = option.__value;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(option, target, anchor);
+			appendNode(text, option);
+		},
+
+		p: function update(changed, state) {
+			column = state.column;
+			each_value = state.each_value;
+			column_index = state.column_index;
+			if ((changed.columns) && text_value !== (text_value = column.name)) {
+				text.data = text_value;
+			}
+
+			if ((changed.columns) && option_value_value !== (option_value_value = column.name)) {
+				option.__value = option_value_value;
+			}
+
+			option.value = option.__value;
+		},
+
+		u: function unmount() {
+			detachNode(option);
+		},
+
+		d: noop
+	};
+}
+
+function SelectAxisColumn(options) {
+	this._debugName = '<SelectAxisColumn>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(assign(this.store._init(["visMeta","dataset"]), data$12()), options.data);
+	this.store._add(this, ["visMeta","dataset"]);
+	this._recompute({ axis: 1, $visMeta: 1, $dataset: 1 }, this._state);
+	if (!('axis' in this._state)) console.warn("<SelectAxisColumn> was created without expected data property 'axis'");
+	if (!('$visMeta' in this._state)) console.warn("<SelectAxisColumn> was created without expected data property '$visMeta'");
+	if (!('$dataset' in this._state)) console.warn("<SelectAxisColumn> was created without expected data property '$dataset'");
+	if (!('label' in this._state)) console.warn("<SelectAxisColumn> was created without expected data property 'label'");
+	if (!('selected' in this._state)) console.warn("<SelectAxisColumn> was created without expected data property 'selected'");
+
+	this._handlers.destroy = [removeFromStore];
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { axis: 1, $visMeta: 1, $dataset: 1, label: 1, selected: 1, columns: 1 };
+		oncreate$3.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+	}
+
+	this._fragment = create_main_fragment$12(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+	}
+}
+
+assign(SelectAxisColumn.prototype, protoDev);
+
+SelectAxisColumn.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('columns' in newState && !this._updatingReadonlyProperty) throw new Error("<SelectAxisColumn>: Cannot set read-only property 'columns'");
+};
+
+SelectAxisColumn.prototype._recompute = function _recompute(changed, state) {
+	if (changed.axis || changed.$visMeta || changed.$dataset) {
+		if (this._differs(state.columns, (state.columns = columns(state)))) changed.columns = true;
+	}
+};
+
+/* controls/Text.html generated by Svelte v1.64.0 */
+
+function data$13() {
+    return {
+        unit: '',
+        width: '100px'
+    };
+}
+function create_main_fragment$13(component, state) {
+	var div, label, text, div_1, input, input_updating = false;
+
+	function input_input_handler() {
+		input_updating = true;
+		component.set({ value: input.value });
+		input_updating = false;
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text = createText("\n    ");
+			div_1 = createElement("div");
+			input = createElement("input");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(label, "width", state.width);
+			label.className = "control-label";
+			addListener(input, "input", input_input_handler);
+			setAttribute(input, "type", "text");
+			input.className = "input-large";
+			div_1.className = "controls";
+			div.className = "control-group vis-option-group vis-option-type-text";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			label.innerHTML = state.label;
+			appendNode(text, div);
+			appendNode(div_1, div);
+			appendNode(input, div_1);
+
+			input.value = state.value ;
+		},
+
+		p: function update(changed, state) {
+			if (changed.label) {
+				label.innerHTML = state.label;
+			}
+
+			if (changed.width) {
+				setStyle(label, "width", state.width);
+			}
+
+			if (!input_updating) input.value = state.value ;
+		},
+
+		u: function unmount() {
+			label.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(input, "input", input_input_handler);
+		}
+	};
+}
+
+function Text(options) {
+	this._debugName = '<Text>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$13(), options.data);
+	if (!('width' in this._state)) console.warn("<Text> was created without expected data property 'width'");
+	if (!('label' in this._state)) console.warn("<Text> was created without expected data property 'label'");
+	if (!('value' in this._state)) console.warn("<Text> was created without expected data property 'value'");
+
+	this._fragment = create_main_fragment$13(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Text.prototype, protoDev);
+
+Text.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* editor/Section.html generated by Svelte v1.64.0 */
+
+function create_main_fragment$14(component, state) {
+	var if_block_anchor;
+
+	var if_block = (state.id==state.active) && create_if_block$11(component, state);
+
+	return {
+		c: function create() {
+			if (if_block) if_block.c();
+			if_block_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			if (if_block) if_block.m(target, anchor);
+			insertNode(if_block_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (state.id==state.active) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$11(component, state);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			if (if_block) if_block.u();
+			detachNode(if_block_anchor);
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+		}
+	};
+}
+
+// (1:0) {#if id==active}
+function create_if_block$11(component, state) {
+	var div, fieldset, div_1, slot_content_default = component._slotted.default, div_class_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			fieldset = createElement("fieldset");
+			div_1 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_1.className = "control-group vis-option-group";
+			fieldset.id = "visOptions";
+			div.className = div_class_value = "section " + state.id;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(fieldset, div);
+			appendNode(div_1, fieldset);
+
+			if (slot_content_default) {
+				appendNode(slot_content_default, div_1);
+			}
+		},
+
+		p: function update(changed, state) {
+			if ((changed.id) && div_class_value !== (div_class_value = "section " + state.id)) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(div_1, slot_content_default);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function Section(options) {
+	this._debugName = '<Section>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign({}, options.data);
+	if (!('id' in this._state)) console.warn("<Section> was created without expected data property 'id'");
+	if (!('active' in this._state)) console.warn("<Section> was created without expected data property 'active'");
+
+	this._slotted = options.slots || {};
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$14(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Section.prototype, protoDev);
+
+Section.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* editor/Group.html generated by Svelte v1.64.0 */
+
+function data$14() {
+    return {
+        notoggle: false,
+        id: false,
+        open: true
+    };
+}
+var methods$5 = {
+    toggle() {
+        if (this.get().notoggle) return;
+        const {open, id} = this.get();
+        if (id) {
+            const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
+            if (!visGroups['locator-map']) visGroups['locator-map'] = {};
+            visGroups['locator-map'][id] = visGroups['locator-map'][id] == 'open' ? 'closed' : 'open';
+            window.localStorage.setItem('dw-vis-groups', JSON.stringify(visGroups));
+        }
+        this.set({open:!open});
+    }
+};
+
+function oncreate$4() {
+    const {id, notoggle} = this.get() || {};
+    if (notoggle) return;
+    if (id) {
+        const visGroups = JSON.parse(window.localStorage.getItem('dw-vis-groups')) || {};
+        if (visGroups['locator-map'] && visGroups['locator-map'][id]) {
+            this.set({open: visGroups['locator-map'][id] != 'closed'});
+        }
+    }
+}
+function create_main_fragment$15(component, state) {
+	var div, label, text, raw_before, text_1, div_class_value;
+
+	var if_block = (!state.notoggle) && create_if_block$12(component, state);
+
+	function click_handler(event) {
+		component.toggle();
+	}
+
+	var if_block_1 = (state.open) && create_if_block_1$4(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			if (if_block) if_block.c();
+			text = createText("\n        ");
+			raw_before = createElement('noscript');
+			text_1 = createText("\n\n    ");
+			if (if_block_1) if_block_1.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(label, "click", click_handler);
+			label.className = "group-title svelte-ww03ir";
+			div.className = div_class_value = "vis-option-type-group " + (state.open?'group-open':'') + " " + (state.notoggle?'notoggle':'') + " svelte-ww03ir";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			if (if_block) if_block.m(label, null);
+			appendNode(text, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", state.label);
+			appendNode(text_1, div);
+			if (if_block_1) if_block_1.m(div, null);
+		},
+
+		p: function update(changed, state) {
+			if (!state.notoggle) {
+				if (!if_block) {
+					if_block = create_if_block$12(component, state);
+					if_block.c();
+					if_block.m(label, text);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (changed.label) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", state.label);
+			}
+
+			if (state.open) {
+				if (!if_block_1) {
+					if_block_1 = create_if_block_1$4(component, state);
+					if_block_1.c();
+					if_block_1.m(div, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+
+			if ((changed.open || changed.notoggle) && div_class_value !== (div_class_value = "vis-option-type-group " + (state.open?'group-open':'') + " " + (state.notoggle?'notoggle':'') + " svelte-ww03ir")) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(div);
+			if (if_block) if_block.u();
+			if (if_block_1) if_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			if (if_block) if_block.d();
+			removeListener(label, "click", click_handler);
+			if (if_block_1) if_block_1.d();
+		}
+	};
+}
+
+// (3:8) {#if !notoggle}
+function create_if_block$12(component, state) {
+	var i, text, i_1;
+
+	return {
+		c: function create() {
+			i = createElement("i");
+			text = createText("\n        ");
+			i_1 = createElement("i");
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = "fa fa-chevron-up expand-group pull-right";
+			i_1.className = "fa fa-chevron-down collapse-group pull-right";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(i, target, anchor);
+			insertNode(text, target, anchor);
+			insertNode(i_1, target, anchor);
+		},
+
+		u: function unmount() {
+			detachNode(i);
+			detachNode(text);
+			detachNode(i_1);
+		},
+
+		d: noop
+	};
+}
+
+// (9:4) {#if open}
+function create_if_block_1$4(component, state) {
+	var div, slot_content_default = component._slotted.default;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "option-group-content vis-option-type-chart-description";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+
+			if (slot_content_default) {
+				appendNode(slot_content_default, div);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(div, slot_content_default);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function Group(options) {
+	this._debugName = '<Group>';
+	if (!options || (!options.target && !options.root)) throw new Error("'target' is a required option");
+	init(this, options);
+	this._state = assign(data$14(), options.data);
+	if (!('open' in this._state)) console.warn("<Group> was created without expected data property 'open'");
+	if (!('notoggle' in this._state)) console.warn("<Group> was created without expected data property 'notoggle'");
+	if (!('label' in this._state)) console.warn("<Group> was created without expected data property 'label'");
+
+	this._slotted = options.slots || {};
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { open: 1, notoggle: 1, label: 1 };
+		oncreate$4.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+	}
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$15(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		callAll(this._oncreate);
+	}
+}
+
+assign(Group.prototype, protoDev);
+assign(Group.prototype, methods$5);
+
+Group.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+var main = {
+    Checkbox, Color, ColorPicker, Group, NumberInput: Number, Switch, Dropdown,
+    Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea,
+    Help, Text
+};
+
+return main;
+
+})));
