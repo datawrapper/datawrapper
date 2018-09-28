@@ -73,7 +73,7 @@ TODO for later:
     let iframe;
     let preview;
 
-    import updateChartDescription from './lib/updateChartDescription';
+    // import updateChartDescription from './lib/updateChartDescription';
     import updateChartAttributes from './lib/updateChartAttributes';
 
     let startX;
@@ -127,12 +127,12 @@ TODO for later:
                     return;
                 }
                 const attrs = chart.serialize();
-                if (previous && (changed.metadata|| changed.title)) {
-                    updateChartDescription({
-                        iframe:this.refs.iframe,
-                        attrs
-                    });
-                }
+                // if (previous && (changed.metadata|| changed.title)) {
+                //     updateChartDescription({
+                //         iframe:this.refs.iframe,
+                //         attrs
+                //     });
+                // }
                 updateChartAttributes({
                     iframe: this.refs.iframe,
                     attrs,
