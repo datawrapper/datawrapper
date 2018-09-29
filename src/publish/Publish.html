@@ -293,7 +293,7 @@
                 // we start to publish the chart
                 chart.store(() => {
                     // publish chart
-                    postJSON(`/api/charts/${chart.id}/publish`, null, (res) => {
+                    postJSON(`/api/charts/${chart.get().id}/publish`, null, (res) => {
                         if (res.status == 'ok') {
                             this.publishFinished(res.data);
                         } else {
@@ -426,7 +426,7 @@
         },
         oncreate() {
             const {lastEditStep} = this.store.get();
-            this.set({published: lastEditStep >= 4});
+            this.set({published: lastEditStep > 4});
         },
         data() {
             return {

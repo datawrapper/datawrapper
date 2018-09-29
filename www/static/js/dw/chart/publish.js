@@ -68,10 +68,12 @@ define(function() {
         $('.publish-step div.help').each(function(){
             var $toggle = $('span', this),
                 $tpl = $('.content', this);
-            $toggle.popover({
-                html: $tpl.html().trim(),
-                trigger: 'hover'
-            });
+            if ($tpl && $tpl.html && $tpl.html()) {
+                $toggle.popover({
+                    html: $tpl.html().trim(),
+                    trigger: 'hover'
+                });
+            }
         });
 
     }
