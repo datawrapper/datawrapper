@@ -163,6 +163,8 @@ class User extends BaseUser {
             'website' => $this->getWebsite(),
             'socialmedia' => $this->getSmProfile(),
             'isLoggedIn' => $this->isLoggedIn(),
+            'isGuest' => !$this->isLoggedIn(),
+            'isActivated' => $this->isActivated(),
             'mayPublish' => $this->mayPublish()
         ];
 
