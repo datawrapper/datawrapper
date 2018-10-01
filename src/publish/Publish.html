@@ -1,10 +1,15 @@
 
 <!-- new publish step -->
 <div>
-    {#if published}
-    <p>{@html __('publish / republish-intro') }</p>
+    {#if publishHed}<h2 class="pad-top">{@html publishHed}</h2>{/if}
+    {#if publishIntro}
+        <p>{@html publishIntro}</p>
     {:else}
-    <p style="margin-bottom: 20px">{@html __('publish / publish-intro') }</p>
+        {#if published}
+        <p>{@html __('publish / republish-intro') }</p>
+        {:else}
+        <p style="margin-bottom: 20px">{@html __('publish / publish-intro') }</p>
+        {/if}
     {/if}
 
     <button disabled="{ publishing }" on:click="publish()" class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}">
@@ -114,8 +119,8 @@
     <div class="export-and-duplicate">
 
         <slot name="export_actions_header">
-            <h2 class="pad-top">{@html __('publish / export-duplicate')}</h2>
-            <p>{@html __('publish / export-duplicate / intro')}</p>
+            <h2 class="pad-top">{@html exportHed}</h2>
+            {#if exportIntro}<p>{@html exportIntro}</p>{/if}
         </slot>
 
         <ul class="chart-actions">
@@ -451,7 +456,12 @@
                     title: __('Duplicate'),
                     order: 500,
                     action: 'duplicate'
-                }]
+                }],
+                publishHed: '',
+                publishIntro: '',
+                beforeExport: null,
+                exportHed: __('publish / export-duplicate'),
+                exportIntro: __('publish / export-duplicate / intro')
             }
         }
     };
