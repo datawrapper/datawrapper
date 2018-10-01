@@ -14,19 +14,25 @@ const targets = [];
 
 build('upload');
 build('describe');
-build('controls', true);
-build('controls/hot', true);
-build('publish/sidebar', true);
-build('publish');
+build('controls', {no_amd:true});
+build('controls/hot', {no_amd:true});
+build('publish', {append:'_old'});
+build('publish', {no_amd:true, entry:'index.js'});
+build('publish/sidebar', {no_amd:true});
 build('highlight');
 build('editor');
 
 export default targets;
 
 
-function build(app_id, no_amd=false) {
+function build(app_id, opts) {
+    const {no_amd, entry, append} = Object.assign({
+        no_amd: false,
+        entry: 'main.js',
+        append: ''
+    }, opts);
     targets.push({
-        input: `${app_id}/main.js`,
+        input: `${app_id}/${entry}`,
         external: [
             'chroma',
             'Handsontable',
@@ -38,9 +44,9 @@ function build(app_id, no_amd=false) {
         output: {
             sourcemap: false,
             name: app_id,
-            file: `../www/static/js/svelte/${app_id}.js`,
+            file: `../www/static/js/svelte/${app_id}${append}.js`,
             format: 'umd',
-            amd: no_amd ? undefined : { id: `svelte/${app_id}` },
+            amd: no_amd ? undefined : { id: `svelte/${app_id}${append}` },
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
                 '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
@@ -53,7 +59,7 @@ function build(app_id, no_amd=false) {
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
-                    css.write(`../www/static/css/svelte/${app_id}.css`);
+                    css.write(`../www/static/css/svelte/${app_id}${append}.css`);
                 },
                 // this results in smaller CSS files
                 cascade: false,
