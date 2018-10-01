@@ -14,8 +14,9 @@ const targets = [];
 
 build('upload');
 build('describe');
-build('controls');
-build('controls/hot');
+build('controls', true);
+build('controls/hot', true);
+build('publish/sidebar', true);
 build('publish');
 build('highlight');
 build('editor');
@@ -23,7 +24,7 @@ build('editor');
 export default targets;
 
 
-function build(app_id) {
+function build(app_id, no_amd=false) {
     targets.push({
         input: `${app_id}/main.js`,
         external: [
@@ -39,7 +40,7 @@ function build(app_id) {
             name: app_id,
             file: `../www/static/js/svelte/${app_id}.js`,
             format: 'umd',
-            amd: app_id.substr(0,8) != 'controls' ? { id: `svelte/${app_id}` } : undefined,
+            amd: no_amd ? undefined : { id: `svelte/${app_id}` },
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
                 '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'

@@ -117,6 +117,10 @@
                 'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user)
             );
 
+            if (Hooks::hookRegistered(Hooks::REPLACE_PUBLISH_LOGIC)) {
+                $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC)[0];
+            }
+
             // legacy stuff, need to move into ChartEditor some day
             // demo datasets
             $datasets = DatawrapperHooks::execute(DatawrapperHooks::GET_DEMO_DATASETS);

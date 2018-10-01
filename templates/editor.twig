@@ -37,6 +37,12 @@ require(['{{workflow.module}}'], function(mod) {
         themes: {{userThemes|json|raw}}
     });
 
+    {% if publishLogic %}
+chart.set({
+        publishLogic: {{publishLogic|json|raw}}
+    });
+    {% endif %}
+
     window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
 
     var app = mod.app = new App({

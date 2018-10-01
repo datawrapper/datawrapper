@@ -7,15 +7,24 @@
 <script>
 
     import PublishLogic from './PublishLogic.html';
+    import {loadScript, loadStylesheet} from '../shared/utils';
 
     export default {
-        methods: {
-            setPublishLogic(app) {
-                this.set({PublishLogic: app});
-            },
-            reset() {
-                this.set({PublishLogic});
-            }
+        oncreate() {
+            this.store.observe('publishLogic', (cfg) => {
+                if (cfg) {
+                    loadStylesheet(cfg.css);
+                    loadScript(cfg.src, () => {
+                        console.log('script loaded', cfg.src);
+                        require([cfg.mod], (mod) => {
+                            console.log('module loaded');
+                            this.set({PublishLogic: mod.App});
+                        })
+                    })
+                }else {
+                    this.set({PublishLogic});
+                }
+            });
         },
         data() {
             return {

@@ -267,6 +267,8 @@ class DatawrapperHooks {
     const CUSTOM_EXTERNAL_DATA = 'CUSTOM_EXTERNAL_DATA';
 
     const ADD_WORKFLOW = 'ADD_WORKFLOW';
+
+    const REPLACE_PUBLISH_LOGIC = 'replace_publish_logic';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
