@@ -88,7 +88,7 @@ $app->post('/users', function() use ($app) {
     $user->setLanguage(Session::getLanguage());
     $user->setActivateToken(hash_hmac('sha256', $data->email.'/'.time(), DW_TOKEN_SALT));
     $user->save();
-    $result = $user->toArray();
+    $result = $user->serialize();
 
     Hooks::execute(Hooks::USER_SIGNUP, $user);
 
