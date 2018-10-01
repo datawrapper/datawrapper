@@ -1,7 +1,7 @@
 <!-- assuming we're already inside a <div class="span5"> -->
 <div class="dw-create-publish">
     <div class="publish-step is-published">
-        <svelte:component this="{PublishLogic}" />
+        <svelte:component ref:publish this="{PublishLogic}" />
     </div>
 </div>
 <script>
@@ -15,10 +15,9 @@
                 if (cfg) {
                     loadStylesheet(cfg.css);
                     loadScript(cfg.src, () => {
-                        console.log('script loaded', cfg.src);
                         require([cfg.mod], (mod) => {
-                            console.log('module loaded');
                             this.set({PublishLogic: mod.App});
+                            this.refs.publish.set(cfg.data);
                         })
                     })
                 }else {
