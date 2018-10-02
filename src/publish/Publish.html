@@ -59,7 +59,7 @@
     </div>
     {/if}
 
-    <div style="margin-top:20px" class="{published?'':'inactive'}">
+    <div style="margin-top:30px" class="{published?'':'inactive'}">
         <h2>{@html __('publish / share-embed') }</h2>
         <div class="block">
             <i class="icon fa fa-link fa-fw"></i>
@@ -127,7 +127,7 @@
         {#each sortedChartActions as action}
 
             {#if action}
-            <li class="action action-{action.id} {action.class||''}">
+            <li class="action action-{action.id} {action.class||''} {action.id == active_action ? 'active':''}">
                 <a on:click="select(action, event)" role="button" href="{action.url ? action.url : '#'+action.id}">
                     <i class="fa fa-{action.icon}"></i><span class="title">{@html action.title}</span>
                 </a>
@@ -305,7 +305,9 @@
                         if (res.status == 'ok') {
                             this.publishFinished(res.data);
                         } else {
-                            this.set({publish_error: res.message });
+                            this.set({
+                                publish_error: res.message
+                            });
                         }
                     });
                     fakeProgress = 0;
@@ -339,6 +341,9 @@
                     published: true,
                     needs_republish: false
                 });
+                this.store.set({
+                    lastEditStep: 5
+                });
                 setTimeout(() => this.set({publishing: false}), 500);
                 this.store.set(chartInfo);
             },
@@ -359,6 +364,12 @@
 
             select(action, event) {
                 event.preventDefault();
+                const {active_action} = this.get();
+                if (action.id == active_action) {
+                    // unselect current action
+                    return this.set({ active_action:'', Action });
+                }
+                this.set({active_action: action.id});
                 if (action.mod) {
                     if (action.mod.App) {
                         this.set({ Action: action.mod.App });
@@ -438,6 +449,7 @@
         },
         data() {
             return {
+                active_action: '',
                 embed_templates: [],
                 plugin_shareurls: [],
                 published: false,
