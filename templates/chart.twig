@@ -64,6 +64,7 @@
     {% set notes = chart.getMetadata('annotate.notes') %}
     {% set source = chart.getMetadata('describe.source-name') %}
     {% set sourceURL = chart.getMetadata('describe.source-url') %}
+    {% set byline = chart.getMetadata('describe.byline') %}
 
     <div class="dw-chart-header" id="header">
         {% if not plain %}
@@ -104,38 +105,49 @@
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" or theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
                     {% block footer %}
 
-                        {% if chartByline %}
-                            <span class="footer-block byline-block">
-
-                                {{ chart.namespace == 'map' ?
-                                    theme.getThemeData('options.footer.mapCaption') :
-                                    theme.getThemeData('options.footer.chartCaption') }}
-                                {{ chartByline | purify | raw }}
-                            </span>
-                        {% elseif chartBasedOn %}
-                            <span class="footer-block byline-block">
-                                {{ theme.getThemeData('options.footer.forkCaption') | capitalize }}
-                                <span class="chart-based-on">{{ chartBasedOn | purify | raw }}</span>
-                            </span>
+                        {% if chartBasedOn %}
+                        <span class="footer-block byline-block">
+                            {{ theme.getThemeData('options.footer.forkCaption') | capitalize }}
+                            <span class="chart-based-on">{{ chartBasedOn | purify | raw }}</span>
+                        </span>
+                        {% else %}
+                        <span class="footer-block byline-block {% if not byline %}hidden{% endif %}">
+                            {{ chart.namespace == 'map' ?
+                                theme.getThemeData('options.footer.mapCaption') :
+                                theme.getThemeData('options.footer.chartCaption') }}
+                            <span class="chart-byline">{{ chartByline | purify | raw }}</span>
+                        </span>
                         {% endif %}
 
-                        {% if chartSource and theme.getThemeData("options.footer.sourcePosition") != "above-footer" %}
+
+                        {% if theme.getThemeData("options.footer.sourcePosition") != "above-footer" %}
+                        <span class="footer-block source-block {% if not source %}hidden{% endif %}">
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
-                            <span class="footer-block source-block">
-                                {{ sourceCaption }}:
-                            {{ chartSource | purify | raw }}</span>
+                            <span class="separator"></span>
+                            {{ sourceCaption }}:
+                            <a href="{{sourceURL}}" target="_blank">{{ source | purify | raw }}</a>
+                        </span>
                         {% endif %}
 
                         {{ hook('chart_footer_after_source', chart) }}
 
+                        {# GET THE DATA #}
                         {% if theme.getThemeData("options.footer.getTheData.enabled") %}
-                            <span class="footer-block chart-action-data">
+                        <span class="footer-block chart-action-data">
                             {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
-                                <a href="data">{% trans getTheDataCaption %}</a>
-                            </span>
+                            {% if getTheDataCaption %}
+                            <span class="separator"></span>
+                            {% endif %}
+                            <a href="data">{% trans getTheDataCaption %}</a>
+                        </span>
                         {% endif %}
 
+                        {# EMBED #}
                         {% if theme.getThemeData("options.footer.embed.enabled") %}
+                        <span class="footer-block embed">
+                            {% if theme.getThemeData("options.footer.embed.caption") %}
+                            <span class="separator"></span>
+                            {% endif %}
                             <a class="chart-action-embed" href="#embed">{{ theme.getThemeData("options.footer.embed.caption") }}</a>
 
                             <div class="embed-code hide">
@@ -147,16 +159,25 @@
                                 $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
                                 $('.embed-code textarea').click(function() { $(this).focus().select(); });
                             </script>
+                        </span>
                         {% endif %}
 
+                        {# STATIC IMAGE #}
                         {% if theme.getThemeData("options.footer.staticImage.enabled") %}
+                        <span class="footer-block static-image">
+                            {% if theme.getThemeData("options.footer.staticImage.caption") %}
+                            <span class="separator"></span>
+                            {% endif %}
                             <a class="chart-action-image" target="_blank" href="//img.datawrapper.de/{{ chart.id }}/full.png">
                                 {{ theme.getThemeData("options.footer.staticImage.caption") }}
                             </a>
+                        </span>
                         {% endif %}
 
+                        {# CREATED WITH DATAWRAPPER #}
                         {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
                         <span class="footer-block attribution">
+                            <span class="separator"></span>
                             <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
                         </span>
                         {% endif %}

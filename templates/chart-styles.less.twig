@@ -174,9 +174,65 @@
         justify-content: space-between;
         align-items: center;
 
-        & > div > a::before, & > div > .source-block::before, & > div > .footer-block::before {
-            content: "•";
+        & > div > .footer-block {
             display: inline-block;
+
+            &.hidden {
+                display: none;
+            }
+
+            a[href=""] {
+                {# empty links should look like text #}
+                color: @typography_footer_color;
+                color: #999;
+                pointer-events: none;
+                text-decoration: none;
+            }
+
+            .separator {
+                display: inline-block;
+
+                &:before {
+                    content: "•";
+                    display: inline-block;
+                }
+            }
+        }
+
+        & > div {
+            .footer-block.hidden:first-child + .footer-block:not(.hidden) .separator,
+            .footer-block.hidden:first-child
+              + .footer-block.hidden
+              + .footer-block:not(.hidden) .separator,
+            .footer-block.hidden:first-child
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block:not(.hidden) .separator,
+            .footer-block.hidden:first-child
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block:not(.hidden) .separator,
+            .footer-block.hidden:first-child
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block:not(.hidden) .separator,
+            .footer-block.hidden:first-child
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block.hidden
+              + .footer-block:not(.hidden) .separator {
+                display: none;
+            }
+        }
+
+        & > div > a::before, & > div > .source-block::before, & > div > .footer-block::before {
+            {# content: "•";
+            display: inline-block; #}
             {# margin-right: 4px; #}
         }
 
