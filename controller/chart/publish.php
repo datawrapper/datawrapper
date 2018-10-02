@@ -10,6 +10,13 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
 
         $cfg = $GLOBALS['dw_config'];
 
+        // check if this chart type is using the new editor
+        $vis = DatawrapperVisualization::get($chart->getType());
+        if (!empty($vis['svelte_workflow']) && $vis['svelte_workflow'] != 'chart') {
+            $app->redirect('/edit/'.$chart->getId().'/publish');
+            return;
+        }
+
         Hooks::register(
             'render_chart_actions',
             function($chart, $user) use ($app) {
