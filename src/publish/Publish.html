@@ -387,7 +387,7 @@
                                     Object.assign(action.mod, mod);
                                     this.set({Action: action.mod.App});
                                     if (mod.init) mod.init(this.refs.action);
-                                    if (action.data) this.refs.action.set(action.data);
+                                    if (action.mod.data) this.refs.action.set(action.mod.data);
                                 });
                             }, 200);
                         });
