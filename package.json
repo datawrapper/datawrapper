@@ -5,16 +5,6 @@
     "type": "git",
     "url": "https://github.com/datawrapper/datawrapper.git"
   },
-  "jshintConfig": {
-    "globalstrict": false,
-    "globals": {
-      "dw": true,
-      "_": true,
-      "$": true,
-      "chroma": true,
-      "d3": true
-    }
-  },
   "scripts": {
     "install": "grunt",
     "watch": "watch 'make assets' assets/",
