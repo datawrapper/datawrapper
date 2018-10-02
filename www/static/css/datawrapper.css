@@ -2203,13 +2203,13 @@ body.cms-mode .row.create-nav {
   margin-left: 10px;
   border-color: #e9d4ad;
 }
-.dw-create-publish .publish-step .btn-aside,
-.dw-create-publish .publish-step .alert {
+.dw-create-publish .publish-step .svelte-publish .btn-aside,
+.dw-create-publish .publish-step .svelte-publish .alert {
   max-width: 100%;
   margin-top: 7px;
   margin-left: 0;
 }
-.dw-create-publish .publish-step .alert.publishing .progress {
+.dw-create-publish .publish-step .svelte-publish .alert.publishing .progress {
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -2218,7 +2218,7 @@ body.cms-mode .row.create-nav {
   display: none;
 }
 .dw-create-publish .publish-step h2.pad-top {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .dw-create-publish .publish-step .btn-copy {
   vertical-align: top;
