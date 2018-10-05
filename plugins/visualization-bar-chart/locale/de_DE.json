@@ -1,9 +1,9 @@
 {
   "bar chart": "Balken (alt)",
   "base-color": "Basisfarbe",
-  "sort-bars": "Balken sortieren",
-  "reverse-order": "Reihenfolge umkehren",
+  "filter-missing": "Fehlende Werte nicht anzeigen",
   "negative-values": "Alternative Farbe für negative Werte verwenden",
+  "reverse-order": "Reihenfolge umkehren",
   "same-scale": "Gleiche Achsen für alle Säulen",
-  "filter-missing": "Fehlende Werte nicht anzeigen"
+  "sort-bars": "Balken sortieren"
 }

@@ -1,9 +1,9 @@
 {
   "bar chart": "Bars (old)",
   "base-color": "Base color",
-  "sort-bars": "Autmatically sort bars",
-  "reverse-order": "Reverse order",
+  "filter-missing": "Filter missing values",
   "negative-values": "Use different color for negative values",
+  "reverse-order": "Reverse order",
   "same-scale": "Use the same scale for all columns",
-  "filter-missing": "Filter missing values"
+  "sort-bars": "Autmatically sort bars"
 }
