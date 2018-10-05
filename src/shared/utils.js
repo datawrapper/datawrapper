@@ -8,14 +8,18 @@ function fetchJSON(url, method, credentials, body, callback) {
     };
 
     window.fetch(url, opts)
-    .then((res) => {
-        // console.log('status', res);
+    .then(res => {
         if (res.status != 200) return new Error(res.statusText);
+        return res.text();
+    })
+    .then(text => {
+        // console.log('status', res);
         try {
-            return res.json();
+            return JSON.parse(text);
         } catch (Error) {
             // could not parse json, so just return text
-            return res.text();
+            console.warn('malformed json input', text);
+            return text;
         }
     })
     .then(callback)
