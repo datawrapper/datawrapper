@@ -100,6 +100,15 @@ TODO for later:
                 editable: true,
             }
         },
+        onupdate({changed, current}) {
+            // sync embed height and width
+            if (changed.width) {
+                this.store.setMetadata('publish.embed-width', current.width);
+            }
+            if (changed.height) {
+                this.store.setMetadata('publish.embed-height', current.height);
+            }
+        },
         oncreate() {
             iframe = this.refs.iframe;
             preview = this;
@@ -121,11 +130,12 @@ TODO for later:
 
             const chart = this.store;
 
-            chart.on('state', ({changed, current, previous}) => {
+            chart.on('state', ({current}) => {
                 if (current.passiveMode) {
                     // no update of chart in iframe when in passiveMode
                     return;
                 }
+
                 const attrs = chart.serialize();
                 // if (previous && (changed.metadata|| changed.title)) {
                 //     updateChartDescription({
@@ -189,7 +199,7 @@ TODO for later:
                 startY = event.clientY;
                 startWidth = this.get().width;
                 startHeight = this.get().height;
-                this.set({resizing:true});
+                this.set({ resizing:true });
                 this.fire('beforeResize');
                 window.document.addEventListener('mousemove', doDrag);
                 window.document.addEventListener('mouseup', stopDrag);
