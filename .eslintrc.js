@@ -7,5 +7,8 @@ module.exports = {
     "extends": "eslint:recommended",
     "globals": {
         "Reflect": true
+    },
+    "rules": {
+    	"no-sequences": "error"
     }
 };
