@@ -51,11 +51,11 @@
     export default {
         components: { BaseDropdown },
         computed: {
-            currentLabel({ value, options }) {
+            currentLabel({ value, options, placeholder }) {
                 for (let i=0; i<options.length; i++) {
                     if (options[i].value == value) return options[i].label;
                 }
-                return '(select an item)';
+                return `<span style="color:#999;font-size:12px;">${placeholder}</span>`;
             }
         },
         methods: {
@@ -71,6 +71,7 @@
                 width: 'auto',
                 options: [],
                 optgroups: [],
+                placeholder: '(select an item)'
             };
         }
     };
