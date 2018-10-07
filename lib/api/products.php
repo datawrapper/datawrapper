@@ -52,8 +52,13 @@ $app->put('/products/:id', function($id) use ($app) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
             $params = json_decode($app->request()->getBody(), true);
-            $product->setName($params['name']);
+            $product->setName($params['name']);            
             $product->setData(json_encode($params['data']));
+
+            if (isset($params['priority'])) {
+                $product->setPriority($params['priority']);
+            }
+
             $product->save();
             ok($product->toArray());
         } else {
