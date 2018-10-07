@@ -138,12 +138,6 @@ TODO for later:
                 }
 
                 const attrs = chart.serialize();
-                // if (previous && (changed.metadata|| changed.title)) {
-                //     updateChartDescription({
-                //         iframe:this.refs.iframe,
-                //         attrs
-                //     });
-                // }
                 updateChartAttributes({
                     iframe: this.refs.iframe,
                     attrs,
@@ -161,6 +155,7 @@ TODO for later:
                         activateInlineEditing(doc, this.store);
                     });
                 }
+                this.fire('iframeLoaded');
             },
             saved() {
                 const win = iframe.contentWindow;
