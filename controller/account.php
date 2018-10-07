@@ -13,7 +13,7 @@ call_user_func(function() {
             'order' => 100,
             'controller' => function ($app, $user) {
               return function() use ($app, $user) {
-                $app->render('account/edit-account.twig', array(
+                $app->render('account/edit-profile.twig', array(
                     "user" => $user
                 ));
               };

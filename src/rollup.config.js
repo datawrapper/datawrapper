@@ -21,6 +21,7 @@ build('publish', {no_amd:true, entry:'index.js'});
 build('publish/sidebar', {no_amd:true});
 build('highlight');
 build('editor');
+build('account');
 
 export default targets;
 
