@@ -219,6 +219,7 @@
     <column name="name" type="varchar" size="512" required="true" />
   <column name="created_at" type="timestamp" required="true" />
   <column name="deleted" type="boolean" default="false" />
+  <column name="priority" type="integer" default="0" />
   <column name="data" type="clob" />
   </table>
 
@@ -243,7 +244,9 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   <column name="user_id" type="integer" primaryKey="true" />
-    <column name="product_id" type="integer" primaryKey="true" />
+  <column name="product_id" type="integer" primaryKey="true" />
+  <column name="created_by_admin" type="boolean" default="true" />
+  <column name="changes" type="clob" required="false" />
   <column name="expires" type="timestamp" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>
@@ -260,6 +263,8 @@
     </vendor>
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
+    <column name="created_by_admin" type="boolean" default="true" />
+    <column name="changes" type="clob" required="false" />
     <column name="expires" type="timestamp" />
     <foreign-key foreignTable="organization">
       <reference local="organization_id" foreign="id"/>

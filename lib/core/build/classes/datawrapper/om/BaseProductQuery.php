@@ -10,12 +10,14 @@
  * @method ProductQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ProductQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method ProductQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
+ * @method ProductQuery orderByPriority($order = Criteria::ASC) Order by the priority column
  * @method ProductQuery orderByData($order = Criteria::ASC) Order by the data column
  *
  * @method ProductQuery groupById() Group by the id column
  * @method ProductQuery groupByName() Group by the name column
  * @method ProductQuery groupByCreatedAt() Group by the created_at column
  * @method ProductQuery groupByDeleted() Group by the deleted column
+ * @method ProductQuery groupByPriority() Group by the priority column
  * @method ProductQuery groupByData() Group by the data column
  *
  * @method ProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -40,12 +42,14 @@
  * @method Product findOneByName(string $name) Return the first Product filtered by the name column
  * @method Product findOneByCreatedAt(string $created_at) Return the first Product filtered by the created_at column
  * @method Product findOneByDeleted(boolean $deleted) Return the first Product filtered by the deleted column
+ * @method Product findOneByPriority(int $priority) Return the first Product filtered by the priority column
  * @method Product findOneByData(string $data) Return the first Product filtered by the data column
  *
  * @method array findById(int $id) Return Product objects filtered by the id column
  * @method array findByName(string $name) Return Product objects filtered by the name column
  * @method array findByCreatedAt(string $created_at) Return Product objects filtered by the created_at column
  * @method array findByDeleted(boolean $deleted) Return Product objects filtered by the deleted column
+ * @method array findByPriority(int $priority) Return Product objects filtered by the priority column
  * @method array findByData(string $data) Return Product objects filtered by the data column
  *
  * @package    propel.generator.datawrapper.om
@@ -150,7 +154,7 @@ abstract class BaseProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `data` FROM `product` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `name`, `created_at`, `deleted`, `priority`, `data` FROM `product` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -378,6 +382,48 @@ abstract class BaseProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductPeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
+     * Filter the query on the priority column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPriority(1234); // WHERE priority = 1234
+     * $query->filterByPriority(array(12, 34)); // WHERE priority IN (12, 34)
+     * $query->filterByPriority(array('min' => 12)); // WHERE priority >= 12
+     * $query->filterByPriority(array('max' => 12)); // WHERE priority <= 12
+     * </code>
+     *
+     * @param     mixed $priority The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ProductQuery The current query, for fluid interface
+     */
+    public function filterByPriority($priority = null, $comparison = null)
+    {
+        if (is_array($priority)) {
+            $useMinMax = false;
+            if (isset($priority['min'])) {
+                $this->addUsingAlias(ProductPeer::PRIORITY, $priority['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($priority['max'])) {
+                $this->addUsingAlias(ProductPeer::PRIORITY, $priority['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductPeer::PRIORITY, $priority, $comparison);
     }
 
     /**

@@ -280,4 +280,47 @@ class User extends BaseUser {
         return true;
     }
 
+    /*
+     * returns the highest-priority product that is enabled for this user
+     */
+    public function getActiveProduct() {
+        $user = $this;
+        $product = null;
+        
+        $ups = UserProductQuery::create()
+            ->filterByUserId($user->getId())
+            ->find();
+
+        foreach ($ups as $up) {
+            $prod = $up->getProduct();
+
+            if ($product == null || $product->getPriority() < $prod->getPriority()) {
+                $product = $prod;
+            }
+        }
+
+        $organizations = $user->getActiveOrganizations();
+
+        foreach ($organizations as $org) {
+            $ops = OrganizationProductQuery::create()
+                    ->filterByOrganization($org)
+                    ->find();
+
+            foreach ($ops as $op) {
+                $prod = $op->getProduct();
+
+                if ($product == null || $product->getPriority() < $prod->getPriority()) {
+                    $product = $prod;
+                }
+            }
+        }
+
+        if ($product == null) {
+            // get lowest prio product as default
+            $product = ProductQuery::create()->orderByPriority("desc")->limit(1)->findOne();
+        }
+
+        return $product;
+    }
+
 } // User

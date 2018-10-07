@@ -8,10 +8,14 @@
  *
  * @method UserProductQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
  * @method UserProductQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
+ * @method UserProductQuery orderByCreatedByAdmin($order = Criteria::ASC) Order by the created_by_admin column
+ * @method UserProductQuery orderByChanges($order = Criteria::ASC) Order by the changes column
  * @method UserProductQuery orderByExpires($order = Criteria::ASC) Order by the expires column
  *
  * @method UserProductQuery groupByUserId() Group by the user_id column
  * @method UserProductQuery groupByProductId() Group by the product_id column
+ * @method UserProductQuery groupByCreatedByAdmin() Group by the created_by_admin column
+ * @method UserProductQuery groupByChanges() Group by the changes column
  * @method UserProductQuery groupByExpires() Group by the expires column
  *
  * @method UserProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -31,10 +35,14 @@
  *
  * @method UserProduct findOneByUserId(int $user_id) Return the first UserProduct filtered by the user_id column
  * @method UserProduct findOneByProductId(int $product_id) Return the first UserProduct filtered by the product_id column
+ * @method UserProduct findOneByCreatedByAdmin(boolean $created_by_admin) Return the first UserProduct filtered by the created_by_admin column
+ * @method UserProduct findOneByChanges(string $changes) Return the first UserProduct filtered by the changes column
  * @method UserProduct findOneByExpires(string $expires) Return the first UserProduct filtered by the expires column
  *
  * @method array findByUserId(int $user_id) Return UserProduct objects filtered by the user_id column
  * @method array findByProductId(int $product_id) Return UserProduct objects filtered by the product_id column
+ * @method array findByCreatedByAdmin(boolean $created_by_admin) Return UserProduct objects filtered by the created_by_admin column
+ * @method array findByChanges(string $changes) Return UserProduct objects filtered by the changes column
  * @method array findByExpires(string $expires) Return UserProduct objects filtered by the expires column
  *
  * @package    propel.generator.datawrapper.om
@@ -126,7 +134,7 @@ abstract class BaseUserProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `user_id`, `product_id`, `expires` FROM `user_product` WHERE `user_id` = :p0 AND `product_id` = :p1';
+        $sql = 'SELECT `user_id`, `product_id`, `created_by_admin`, `changes`, `expires` FROM `user_product` WHERE `user_id` = :p0 AND `product_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -313,6 +321,62 @@ abstract class BaseUserProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserProductPeer::PRODUCT_ID, $productId, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_by_admin column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedByAdmin(true); // WHERE created_by_admin = true
+     * $query->filterByCreatedByAdmin('yes'); // WHERE created_by_admin = true
+     * </code>
+     *
+     * @param     boolean|string $createdByAdmin The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserProductQuery The current query, for fluid interface
+     */
+    public function filterByCreatedByAdmin($createdByAdmin = null, $comparison = null)
+    {
+        if (is_string($createdByAdmin)) {
+            $createdByAdmin = in_array(strtolower($createdByAdmin), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserProductPeer::CREATED_BY_ADMIN, $createdByAdmin, $comparison);
+    }
+
+    /**
+     * Filter the query on the changes column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByChanges('fooValue');   // WHERE changes = 'fooValue'
+     * $query->filterByChanges('%fooValue%'); // WHERE changes LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $changes The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserProductQuery The current query, for fluid interface
+     */
+    public function filterByChanges($changes = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($changes)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $changes)) {
+                $changes = str_replace('*', '%', $changes);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(UserProductPeer::CHANGES, $changes, $comparison);
     }
 
     /**

@@ -24,19 +24,25 @@ abstract class BaseUserProductPeer
     const TM_CLASS = 'UserProductTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the user_id field */
     const USER_ID = 'user_product.user_id';
 
     /** the column name for the product_id field */
     const PRODUCT_ID = 'user_product.product_id';
+
+    /** the column name for the created_by_admin field */
+    const CREATED_BY_ADMIN = 'user_product.created_by_admin';
+
+    /** the column name for the changes field */
+    const CHANGES = 'user_product.changes';
 
     /** the column name for the expires field */
     const EXPIRES = 'user_product.expires';
@@ -60,12 +66,12 @@ abstract class BaseUserProductPeer
      * e.g. UserProductPeer::$fieldNames[UserProductPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId', 'ProductId', 'Expires', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'productId', 'expires', ),
-        BasePeer::TYPE_COLNAME => array (UserProductPeer::USER_ID, UserProductPeer::PRODUCT_ID, UserProductPeer::EXPIRES, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'PRODUCT_ID', 'EXPIRES', ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id', 'product_id', 'expires', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('UserId', 'ProductId', 'CreatedByAdmin', 'Changes', 'Expires', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'productId', 'createdByAdmin', 'changes', 'expires', ),
+        BasePeer::TYPE_COLNAME => array (UserProductPeer::USER_ID, UserProductPeer::PRODUCT_ID, UserProductPeer::CREATED_BY_ADMIN, UserProductPeer::CHANGES, UserProductPeer::EXPIRES, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID', 'PRODUCT_ID', 'CREATED_BY_ADMIN', 'CHANGES', 'EXPIRES', ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id', 'product_id', 'created_by_admin', 'changes', 'expires', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -75,12 +81,12 @@ abstract class BaseUserProductPeer
      * e.g. UserProductPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'ProductId' => 1, 'Expires' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'productId' => 1, 'expires' => 2, ),
-        BasePeer::TYPE_COLNAME => array (UserProductPeer::USER_ID => 0, UserProductPeer::PRODUCT_ID => 1, UserProductPeer::EXPIRES => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'PRODUCT_ID' => 1, 'EXPIRES' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'product_id' => 1, 'expires' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'ProductId' => 1, 'CreatedByAdmin' => 2, 'Changes' => 3, 'Expires' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'productId' => 1, 'createdByAdmin' => 2, 'changes' => 3, 'expires' => 4, ),
+        BasePeer::TYPE_COLNAME => array (UserProductPeer::USER_ID => 0, UserProductPeer::PRODUCT_ID => 1, UserProductPeer::CREATED_BY_ADMIN => 2, UserProductPeer::CHANGES => 3, UserProductPeer::EXPIRES => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USER_ID' => 0, 'PRODUCT_ID' => 1, 'CREATED_BY_ADMIN' => 2, 'CHANGES' => 3, 'EXPIRES' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'product_id' => 1, 'created_by_admin' => 2, 'changes' => 3, 'expires' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -156,10 +162,14 @@ abstract class BaseUserProductPeer
         if (null === $alias) {
             $criteria->addSelectColumn(UserProductPeer::USER_ID);
             $criteria->addSelectColumn(UserProductPeer::PRODUCT_ID);
+            $criteria->addSelectColumn(UserProductPeer::CREATED_BY_ADMIN);
+            $criteria->addSelectColumn(UserProductPeer::CHANGES);
             $criteria->addSelectColumn(UserProductPeer::EXPIRES);
         } else {
             $criteria->addSelectColumn($alias . '.user_id');
             $criteria->addSelectColumn($alias . '.product_id');
+            $criteria->addSelectColumn($alias . '.created_by_admin');
+            $criteria->addSelectColumn($alias . '.changes');
             $criteria->addSelectColumn($alias . '.expires');
         }
     }
