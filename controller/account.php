@@ -15,7 +15,8 @@ call_user_func(function() {
               return function() use ($app, $user) {
                 $app->render('account/edit-profile.twig', array(
                     "svelte_data" => [
-                        "email" => $user->getEmail()
+                        "email" => $user->getEmail(),
+                        "userId" => $user->getId()
                     ]
                 ));
               };

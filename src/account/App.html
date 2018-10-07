@@ -12,38 +12,44 @@
 	        <div class="form-horizontal edit-account-confirm">
 	            <h2>{ __("Change password") }</h2>
 	            <p>{ __("For security reasons we ask you to provide your current password. Please make sure you use a strong password.") }</p>
+
+	            {#if errors && errors.length }
+	            	<div class="alert">
+		            	<ul style="margin-bottom: 0;">
+		            		{#each errors as message}
+		            			<li>{@html message }</li>
+	            			{/each}
+		            	</ul>	
+	            	</div>
+	            {/if}
+
 	            <fieldset>
 	                <div class="control-group">
-	                    <label class="control-label" for="cur-pwd">{ __("Current Password") }</label>
+	                    <label class="control-label">{ __("Current Password") }</label>
 	                    <div class="controls">
-	                        <input type="password" class="input-xlarge">
+	                        <input type="password" bind:value="currentPassword" class="input-xlarge">
 	                        <p class="help-block">{ __("For security reasons, please provide your current password.") }</p>
 	                    </div>
 	                </div>
 	                <div class="control-group">
-	                    <label class="control-label" for="pwd">{ __("New Password") }</label>
+	                    <label class="control-label">{ __("New Password") }</label>
 	                    <div class="controls">
-	                        <input type="{ showPasswordInPlaintext ? 'text' : 'password' }" class="input-xlarge">
+	                        <input type="password"  bind:value="newPassword1" class="input-xlarge">
 	                    </div>
 	                </div>
 	                <div class="control-group">
-	                    <label class="control-label" for="pwd2">{ __("(repeat)") }</label>
+	                    <label class="control-label">{ __("(repeat)") }</label>
 	                    <div class="controls">
-	                        <input type="{ showPasswordInPlaintext ? 'text' : 'password' }" class="input-xlarge">
-	                    </div>
-	                </div>
-	                <div class="control-group">
-	                    <div class="controls">
-	                        <label class="checkbox">
-	                        	<input bind:checked="showPasswordInPlaintext" type="checkbox" />
-	                        	{ __("Show password in clear text") }	
-	                        </label>
+	                        <input type="password" bind:value="newPassword2" class="input-xlarge">
 	                    </div>
 	                </div>
 
 	                <div>
 	                    <button on:click="set({changePassword: false})" class="btn btn-save btn-default btn-back">{ __("Back") }</button>
-	                    <button class="btn btn-save btn-primary" type="submit" id="change-password" style="float:right">{ __("Change Password") }</button>
+	                    <button class="btn btn-primary" on:click="changePassword()" style="float:right">
+	                    	<i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; 
+	                    	{ __("Change Password") }
+                    	</button>
 	                </div>
 	            </fieldset>
 	        </div>
@@ -80,6 +86,17 @@
 	<div class="row delete-account">
 	    <div class="span6 offset3">
 	        <h2 style="margin-bottom:20px">{ __("Account deletion") }</h2>
+
+	        {#if errors && errors.length }
+            	<div class="alert">
+	            	<ul style="margin-bottom: 0;">
+	            		{#each errors as message}
+	            			<li>{@html message }</li>
+            			{/each}
+	            	</ul>	
+            	</div>
+            {/if}
+
 	        <p>{ __("Think about it one more time. Have you considered all the consequences of deleting your account?") }</p>
 	        <ul>
 	        	<li>{ __("If you simply want to use Datawrapper for free, you can downgrade your account without deleting it. That way, you keep access to your chart.") }</li>
@@ -90,7 +107,7 @@
 	        <div class="">
 	            <p><b>{ __("Please enter your password to confirm the deletion request:") }</b></p>
 	            <div class="control-group">
-	                <input type="password" id="confirm-pwd" placeholder="{ __("Password") }" />
+	                <input type="password" bind:value="confirmPassword" placeholder="{ __("Password") }" />
 	            </div>
 	            <p>{@html __("Do you still <b>really</b> want to delete your Datawrapper account?") }</p>
 	            <div class="control-group">
@@ -98,8 +115,8 @@
 	                	<i class="fa fa-chevron-left"></i>&nbsp;
 	                	{ __("No, I changed my mind..") }
 	                </button>
-	                <button style="float:right" on:click="set({deleteAccount2: false, deleteAccount3: true})" class="btn btn-danger">
-	                	<i class="fa fa-times"></i>&nbsp;
+	                <button style="float:right" on:click="deleteAccount()" class="btn btn-danger">
+	                	<i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
 	            	    { __("Yes, delete it!") }
 	            	</button>
 	            </div>
@@ -123,6 +140,17 @@
 	    	<div class="form-horizontal edit-account">
 	            <h2>{ __("Change E-Mail") }</h2>
 	            <p>{ __("Please note that you'll have to confirm your new e-mail address again after changing it.") }</p>
+            
+	            {#if errors && errors.length }
+	            	<div class="alert">
+		            	<ul style="margin-bottom: 0;">
+		            		{#each errors as message}
+		            			<li>{@html message }</li>
+	            			{/each}
+		            	</ul>	
+	            	</div>
+	            {/if}	        	
+
 	            <fieldset>
 	                <div class="control-group">
 	                    <label class="control-label" for="email">{ __("E-Mail") }:</label>
@@ -133,7 +161,10 @@
 	                
 	                <div class="">
 	                    <button on:click="set({changeEmail: false})" class="btn btn-default">{ __( "Back") }</button>
-	                    <button on:click="changeEmail()" style="float: right;" class="btn btn-save btn-primary">{ __( "Change E-Mail") }</button>
+	                    <button on:click="changeEmail()" style="float: right;" class="btn btn-save btn-primary">
+	                    	<i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;                    		
+	                    { __( "Change E-Mail") }
+	                </button>
 	                </div>
 	            </fieldset>
 	        </div>	
@@ -142,14 +173,28 @@
 
 {:else}
 
-	<div class="row edit-account" style="margin-top: 20px;">
-	    <div class="span6 offset3">
+	{#if messages && messages.length }
+		<div class="row" style="margin-top: 20px;">
+			<div class="span6 offset3">
+		    	<div class="alert alert-success">
+		        	<ul style="margin-bottom: 0;">
+		        		{#each messages as message}
+		        			<li>{@html message }</li>
+		    			{/each}
+		        	</ul>	
+		    	</div>
+	    	</div>
+		</div>
+    {/if}	  
+
+	<div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
+	    <div class="span6 offset3">			
 	    	<div>
 				<div>
 					{ __("E-Mail") }:
 				</div>
 				<div>
-					<input disabled="{ !changeEmail }" bind:value="email" type="text"/>
+					<input disabled="{ !changeEmail }" value="{ originalEmail }" type="text"/>
 				</div>
 				<div>
 					<button on:click="set({changeEmail: true})" class="btn btn-save btn-default">{ __( "Change E-Mail") }</button>
@@ -179,122 +224,159 @@
 
 <script>
 	import {__} from '../shared/l10n';
+	import {getJSON, putJSON, fetchJSON} from '../shared/utils';
+	import checkPassword from '../shared/checkPassword';
 
 	export default {
 		helpers: {
 			__
 		},
+		onstate({ changed, current, previous }) {
+		
+			if (changed.email && !previous) {
+				this.set({originalEmail: current.email});
+			}
+		},
 		methods: {
 			changeEmail() {
-				var submit = $(e.target),
-		        payload = {
-		            email: $('#email').val(),
-		        };
-		        submit.addClass('loading');
-		        $.ajax({
-		            url: '/api/users/{{ user.id }}',
-		            type: 'PUT',
-		            dataType: 'json',
-		            data: JSON.stringify(payload),
-		            success: function(data) {
-		                submit.removeClass('loading');
-		                if (data.status == 'ok') {
-		                    _.each(data.data.messages, function(msg) {
-		                        dw.backend.logMessage(msg, $('#edit-account-email .control-group')[0], 'info');
-		                    });
-		                    _.each(data.data.errors, function(msg) {
-		                        dw.backend.logMessage(msg, $('#edit-account-email .control-group')[0], 'warning');
-		                    });
-		                    $('.profile .reset').prop('disabled', true);
-		                } else {
-		                    dw.backend.logError(data.message, $('#edit-account-email .control-group')[0]);
-		                }
-		            }
-		         });
+				var { email, userId } = this.get();
+
+				this.set({savingEmail: true});
+						        
+		        putJSON('/api/users/' + userId, JSON.stringify({email}), (res) => {
+		        	this.set({savingEmail: false});
+
+	        		var messages = [],
+	        			errors = [];
+
+	        		if (res.status == "error") {
+	        			errors.push(res.message);
+	        		}
+
+	        		if (res.data && res.data.messages) {
+	        			res.data.messages.forEach((msg) => {
+	        				messages.push(msg);
+	        			});
+	        		}
+
+	        		if (res.data && res.data.errors) {
+	        			res.data.errors.forEach((msg) => {
+	        				errors.push(msg);
+	        			});
+	        		}
+
+	        		if (errors.length == 0) {
+	        			this.set({originalEmail: email, changeEmail: false, messages});
+	        		} else {
+	        			this.set({errors});
+	        		}	        		
+                });
 			},
 			changePassword() {
-				var submit = $(e.target),
-	                parent = $($('.settings.password .control-group')[0]),
-	                curPwd = $.trim($('#cur-pwd').val()),
-	                pwd = $.trim($('#pwd').val()),
-	                pwd2 = $.trim($('#pwd2').val()),
-	                check;
+				var { currentPassword, newPassword1, newPassword2, userId } = this.get(),
+					check = checkPassword(currentPassword, newPassword1, newPassword2);
 
-	            dw.backend.clearAlerts()
-
-	            check = dw.backend.checkPassword(curPwd, pwd, pwd2);
 	            if (check === true) {
-	                // at first we req
-	                submit.addClass('loading');
+	                this.set({savingPassword: true});
 
-	                $.getJSON('/api/auth/salt', function(res) {
-	                    if (res.status == 'ok') {
-	                        var salt = res.data.salt
-	                            hmac = CryptoJS.HmacSHA256,
-	                            payload = {
-	                                oldpwhash: hmac(curPwd, salt).toString(),
-	                                pwd: CryptoJS.HmacSHA256(pwd, salt).toString()
-	                            };
+	                getJSON("/api/auth/salt", (res) => {
+						if (res.status != 'ok') {
+							this.set({
+								errors: ["Could not load salt."],
+								savingPassword: false
+							});
 
-	                        $('#pwd').val('');
-	                        $('#pwd2').val('');
-	                        $('#cur-pwd').val('');
+							return;
+						}
 
-	                        $.ajax({
-	                            url: '/api/users/{{ user.id }}',
-	                            type: 'PUT',
-	                            data: JSON.stringify(payload),
-	                            dataType: 'json',
-	                            success: function(data) {
-	                                submit.removeClass('loading');
-	                                if (data.status == 'ok') {
-	                                    _.each(data.data.messages, function(msg) {
-	                                        dw.backend.logMessage(msg, $('#edit-account-password .control-group')[0], 'info');
-	                                    });
-	                                    _.each(data.data.errors, function(msg) {
-	                                        dw.backend.logMessage(msg, $('#edit-account-password .control-group')[0], 'warning');
-	                                    });
-	                                    if (!data.data.errors.length) {
-	                                        dw.backend.logMessage('{ __("Congrats! Your password has been changed.") }', $('#edit-account-password .control-group')[0]);
-	                                    }
-	                                }
-	                            }
-	                        });
-	                    }
+						var salt = res.data.salt,
+                            payload = {
+                                oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
+                                pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
+                            };                       
+
+                        putJSON('/api/users/' + userId, JSON.stringify(payload), (res) => {
+                        	this.set({savingPassword: false, currentPassword: "", 
+                        			newPassword1: "", newPassword2: ""});
+
+                        	var messages = [],
+			        			errors = [];
+
+			        		if (res.status == "error") {
+			        			errors.push(res.message);
+			        		}
+
+			        		if (res.data && res.data.messages) {
+			        			res.data.messages.forEach((msg) => {
+			        				messages.push(msg);
+			        			});
+			        		}
+
+			        		if (res.data && res.data.errors) {
+			        			res.data.errors.forEach((msg) => {
+			        				errors.push(msg);
+			        			});
+			        		}
+
+			        		if (errors.length == 0) {
+			        			messages.push("Your password was changed sucessfully");
+			        			this.set({changePassword: false, messages});
+			        		} else {
+			        			this.set({errors});
+			        		}	 
+                        });					
 	                });
+            	} else {
+					var errors = [check];
+					this.set({errors});
             	}
 			},
 			deleteAccount() {
-				$.getJSON('/api/auth/salt', function(r) {
-	                if (r.status == 'ok') {
-	                    var cpwd = CryptoJS.HmacSHA256($('#confirm-pwd').val(), r.data.salt).toString();
-	                    $.ajax({
-	                        url: '/api/users/current?pwd='+cpwd,
-	                        type: 'DELETE',
-	                        data: JSON.stringify({
-	                            pwd: cpwd
-	                        }),
-	                        dataType: 'json'
-	                    }).done(function(res) {
-	                        if (res.status == 'ok') {
-	                            $('#confirmDeletion .modal-body').remove();
-	                            $('#confirmDeletion .modal-footer').remove();
-	                            $('#confirmDeletion .post-delete').css({
-	                                'text-align': 'center',
-	                                'padding': '30px'
-	                            });
-	                            $('#confirmDeletion .post-delete').addClass('modal-body');
-	                            $('#confirmDeletion .post-delete').show();
-	                        } else {
-	                            dw.backend.logError(res.message, $('#confirm-pwd').parent());
-	                        }
-	                    }).fail(function(res) {
-	                        dw.backend.logError('could not delete user: ' + JSON.stringify(res), $('#confirm-pwd').parent());
-	                    });
-	                } else {
-	                    dw.backend.logError('could not load salt', $('#confirm-pwd').parent());
-	                }
-	            });
+				var { confirmPassword } = this.get();
+
+				this.set({deletingAccount: true});
+
+				getJSON("/api/auth/salt", (res) => {
+					if (res.status != 'ok') {
+						this.set({
+							errors: ["Could not load salt."],
+							deletingAccount: false
+						});
+
+						return;
+					}
+
+					var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
+
+					fetchJSON('/api/users/current?pwd=' + passwordHash, "DELETE", "include", JSON.stringify({pwd: passwordHash}), (res) => {
+						this.set({deletingAccount: false});
+
+						var messages = [],
+		        			errors = [];
+
+		        		if (res.status == "error") {
+		        			errors.push(res.message);
+		        		}
+
+		        		if (res.data && res.data.messages) {
+		        			res.data.messages.forEach((msg) => {
+		        				messages.push(msg);
+		        			});
+		        		}
+
+		        		if (res.data && res.data.errors) {
+		        			res.data.errors.forEach((msg) => {
+		        				errors.push(msg);
+		        			});
+		        		}
+
+		        		if (errors.length == 0) {		        			
+		        			this.set({deleteAccount2: false, deleteAccount3: true});
+		        		} else {
+		        			this.set({errors});
+		        		}	 
+					});
+				});
 			}
 		},
 		data() {
@@ -302,7 +384,12 @@
 				changePassword: false,
 				changeEmail: false,
 				deleteAccount: false,
-				showPasswordInPlaintext: false
+				showPasswordInPlaintext: false,
+				messages: [],
+				currentPassword: "",
+				newPassword1: "",
+				newPassword2: "",
+				confirmPassword: ""
 			}
 		}
 	}
