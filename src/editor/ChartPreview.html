@@ -18,8 +18,7 @@ TODO for later:
         </div>
         {/if}
     </div>
-    <!-- {{ hook('visualize_before_resizer') }}
-    {{ hook('render_resize_control') }} -->
+
     <div id="notifications"></div>
 </div>
 
@@ -116,6 +115,8 @@ TODO for later:
             // 5. Resize when chart wants to resize itself
             window.addEventListener('message', (e) => {
                 var message = e.data;
+                const {resizing} = this.get();
+                if (resizing) return;
 
                 if (typeof message['datawrapper-height'] != "undefined") {
                     var h;
@@ -221,7 +222,9 @@ TODO for later:
         window.document.removeEventListener('mouseup', stopDrag);
         preview.set({resizing:false});
         const {width, height} = preview.get();
-        const bbox = preview.refs.iframe.contentDocument.querySelector('.dw-chart-body').getBoundingClientRect();
+        const bbox = preview.refs.iframe.contentDocument
+            .querySelector('.dw-chart-body')
+            .getBoundingClientRect();
         const maxH = preview.refs.iframe.contentWindow.dw.utils.getMaxChartHeight();
         const [chartWidth, chartHeight] = [bbox.width, maxH];
         preview.fire('resize', {width,height,chartWidth, chartHeight});
