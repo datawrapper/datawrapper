@@ -1,7 +1,7 @@
 <div class="row">
     <div class="span10 offset1">
         <h1>{ __("Edit profile") }</h1>
-        <h2>{ __("Change the e-mail address or password you use to log into Datawrapper.") }</h2>
+        <h2>{ __("account / change-login") }</h2>
     </div>
 </div>
 
@@ -10,7 +10,7 @@
 	<div class="row">
 	    <div class="span6 offset3">
 	        <div class="form-horizontal edit-account-confirm">
-	            <h2>{ __("Change password") }</h2>
+	            <h2>{ __("account / password") }</h2>
 	            <p>{ __("For security reasons we ask you to provide your current password. Please make sure you use a strong password.") }</p>
 
 	            {#if errors && errors.length }
@@ -48,7 +48,7 @@
 	                    <button on:click="set({changePassword: false})" class="btn btn-save btn-default btn-back">{ __("Back") }</button>
 	                    <button class="btn btn-primary" on:click="changePassword()" style="float:right">
 	                    	<i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; 
-	                    	{ __("Change Password") }
+	                    	{ __("account / password") }
                     	</button>
 	                </div>
 	            </fieldset>
@@ -64,18 +64,18 @@
 	            <i class="fa fa-times"></i>
 	        </div>
 
-	        <h2 style="margin-bottom:20px">{ __("Are you sure you want to delete your account?") }</h2>
+	        <h2 style="margin-bottom:20px">{ __("account / confirm-account-deletion") }</h2>
 
 
 	        <div style="display: flex; justify-content: center; align-items: center;">
 	        	<button on:click="set({deleteAccount: false})" class="btn btn-back btn-primary">
-	        		<i class="fa fa-chevron-left"></i> &nbsp; { __("No, go back") }
+	        		<i class="fa fa-chevron-left"></i> &nbsp; { __("account / confirm-account-deletion / no") }
 	    		</button>
 
-		        <div style="display:block; margin:0px 10px">{ __("or") }</div>
+		        <div style="display:block; margin:0px 10px">{ __("account / or") }</div>
 
 		        <button on:click="set({deleteAccount: false, deleteAccount2: true})" class="btn btn-default">
-		        	<i class="fa fa-times"></i> &nbsp; { __("Yes, delete my account") }
+		        	<i class="fa fa-times"></i> &nbsp; { __("account / confirm-account-deletion / yes") }
 		        </button>
 	        </div>	        
 	    </div>
@@ -99,7 +99,7 @@
 
 	        <p>{ __("Think about it one more time. Have you considered all the consequences of deleting your account?") }</p>
 	        <ul>
-	        	<li>{ __("If you simply want to use Datawrapper for free, you can downgrade your account without deleting it. That way, you keep access to your chart.") }</li>
+	        	<li>{ __("account / confirm-account-deletion / free") }</li>
 	            <li>{ __("You cannot login and logout anymore.") }</li>
 	            <li>{ __("You cannot edit or remove your charts anymore.") }</li>
 	        </ul>
@@ -138,8 +138,8 @@
 	<div class="row">
 	    <div class="span6 offset3">
 	    	<div class="form-horizontal edit-account">
-	            <h2>{ __("Change E-Mail") }</h2>
-	            <p>{ __("Please note that you'll have to confirm your new e-mail address again after changing it.") }</p>
+	            <h2>{ __("account / email") }</h2>
+	            <p>{ __("account / confirm-email-change") }</p>
             
 	            {#if errors && errors.length }
 	            	<div class="alert">
@@ -163,7 +163,7 @@
 	                    <button on:click="set({changeEmail: false})" class="btn btn-default">{ __( "Back") }</button>
 	                    <button on:click="changeEmail()" style="float: right;" class="btn btn-save btn-primary">
 	                    	<i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;                    		
-	                    { __( "Change E-Mail") }
+	                    { __( "account / email") }
 	                </button>
 	                </div>
 	            </fieldset>
@@ -197,7 +197,7 @@
 					<input disabled="{ !changeEmail }" value="{ originalEmail }" type="text"/>
 				</div>
 				<div>
-					<button on:click="set({changeEmail: true})" class="btn btn-save btn-default">{ __( "Change E-Mail") }</button>
+					<button on:click="set({changeEmail: true})" class="btn btn-save btn-default">{ __( "account / email") }</button>
 				</div>    			
 	    	</div>
 
@@ -209,12 +209,12 @@
 					<input disabled value="abcdefgh" type="password"/>
 				</div>
 				<div>
-					<button on:click="set({changePassword: true})" class="btn btn-save btn-default">{ __("Change Password") }</button>
+					<button on:click="set({changePassword: true})" class="btn btn-save btn-default">{ __("account / password") }</button>
 				</div>    			
 	    	</div>
 
 	    	<div style="text-align: center; display: block;">
-	        	{ __("or") } <span class="link" on:click="set({deleteAccount: true})" href="#">{ __("delete your account") }</span>.
+	        	{ __("account / or") } <span class="link" on:click="set({deleteAccount: true})" href="#">{ __("account / delete") }</span>.
 	        </div>
 	    </div>
 	</div>
@@ -266,7 +266,7 @@
 	        		}
 
 	        		if (errors.length == 0) {
-	        			this.set({originalEmail: email, changeEmail: false, messages});
+	        			this.set({originalEmail: email, changeEmail: false, messages, errors: []});
 	        		} else {
 	        			this.set({errors});
 	        		}	        		
@@ -320,7 +320,7 @@
 
 			        		if (errors.length == 0) {
 			        			messages.push("Your password was changed sucessfully");
-			        			this.set({changePassword: false, messages});
+			        			this.set({changePassword: false, messages, errors: []});
 			        		} else {
 			        			this.set({errors});
 			        		}	 
