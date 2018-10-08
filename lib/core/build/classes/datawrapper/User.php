@@ -323,4 +323,25 @@ class User extends BaseUser {
         return $product;
     }
 
+    public function getActiveUserProduct() {
+        $user = $this;
+        $userProduct = null;
+        
+        $ups = UserProductQuery::create()
+            ->filterByUserId($user->getId())
+            ->find();
+
+        foreach ($ups as $up) {
+            $prod = $up->getProduct();
+
+            if ($userProduct == null || 
+                $userProduct->getProduct()->getPriority() < $prod->getPriority()) {
+
+                $userProduct = $up;
+            }
+        }
+
+        return $userProduct;
+    }
+
 } // User
