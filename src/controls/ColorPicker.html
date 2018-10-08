@@ -3,7 +3,7 @@
         <span slot="button">
             <slot>
                 <div class="base-color-picker color-picker">
-                    <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"></div>
+                    <div style="background: {validColor} none repeat scroll 0% 0%;" class="the-color"><div class="transparency" style="opacity: {1-alpha(validColor)}"></div></div>
                     <span class="caret"></span>
                 </div>
             </slot>
@@ -13,7 +13,7 @@
             <div class="color-selector" on:click="event.stopPropagation()">
                 <div class="palette">
                     {#each palette as c}
-                    <div class="color" on:click="setColor(c, false)" on:dblclick="setColor(c, true)" data-color="{c}" style="background: {c}; border-color: {borderColor(c)}"></div>
+                    <div class="color" on:click="setColor(c, false)" on:dblclick="setColor(c, true)" data-color="{c}" style="background: {c}; border-color: {borderColor(c)}"><div class="transparency" style="opacity: {1-alpha(c)}"></div></div>
                     {/each}
                 </div>
 
@@ -36,7 +36,7 @@
                 <div class="footer">
                     <input type="text" style="background: {color}; border-color: {borderColor}; color: {textColor}" bind:value="color" class="hex">
                     <button class="btn btn-small ok" on:click="setColor(color, true)"><i class="icon-ok"></i></button>
-                    <div class="color selected" style="background: {color}"></div>
+                    <div class="color selected" style="background: {color}"><div class="transparency" style="opacity: {1-alpha(color)}"></div></div>
                 </div>
             </div>
             {/if}
@@ -52,6 +52,8 @@
 
     import BaseDropdown from './BaseDropdown.html';
 
+    console.log('chroma', chroma.version);
+
     export default {
         components: { BaseDropdown },
         methods: {
@@ -65,6 +67,9 @@
         helpers: {
             borderColor(c) {
                 return chroma(c).hex('rgb') == '#ffffff' ? '#eeeeee' : c;
+            },
+            alpha(c) {
+                return chroma(c).alpha()
             }
         },
         computed: {
@@ -168,7 +173,7 @@
 
 </script>
 
-<style>
+<style lang="less">
 .color-picker-cont { display: inline-block; }
 input.hex { margin-bottom:0!important; }
 
@@ -198,6 +203,11 @@ input.hex { margin-bottom:0!important; }
 .palette .color {
     box-sizing: border-box;
     border: 2px solid;
+    position: relative;
+}
+
+.palette .color.no-color {
+
 }
 
 .the-color {
@@ -213,6 +223,19 @@ input.hex { margin-bottom:0!important; }
     width: 0px;
     cursor: pointer;
     text-align: center;
+}
+
+.the-color, .palette .color, .footer .color {
+    .transparency {
+        position: absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+        background-image: url(/static/img/transparent.png);
+        background-size: 10px;
+        opacity: 0;
+    }
 }
 
 </style>
