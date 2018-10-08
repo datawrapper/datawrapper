@@ -59,7 +59,7 @@
             matches({query, items, filter}) {
                 if (!filter) return items;
                 return items.filter(item => {
-                    return item.title.toLowerCase().indexOf(query.toLowerCase()) > -1;
+                    return (item.search || item.title).toLowerCase().indexOf(query.toLowerCase()) > -1;
                 })
             }
         },
@@ -75,7 +75,6 @@
             },
 
             search(query) {
-                console.log('search', query);
                 this.set({open:true});
                 // we're firing the "search" event so that the
                 // parent component can update the "items" list
