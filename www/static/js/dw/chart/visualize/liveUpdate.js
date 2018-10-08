@@ -110,25 +110,16 @@ define(function() {
                     }
                 }
                 if (changed('metadata.describe.source-name') || changed('metadata.describe.source-url')) {
-                    if (attrs.metadata.describe['source-name'] && !$$('.source-block').length) needReload = true;
-                    if (!attrs.metadata.describe['source-name'] && $$('.source-block').length) needReload = true;
-                    if (!needReload) {
-                        $$('.source-block').html(dw.utils.purifyHtml(
-                            ($$('.source-block').data('src') || 'Source:')+' '+
-                            (attrs.metadata.describe['source-url'] ?
-                            '<a href="'+attrs.metadata.describe['source-url']+'">'+attrs.metadata.describe['source-name']+'</a>' :
-                            attrs.metadata.describe['source-name'])
-                        ));
-                    }
+                    $$('.source-block a')
+                        .html(attrs.metadata.describe['source-name'])
+                        .attr('href', attrs.metadata.describe['source-url'] || '');
+                    $$('.source-block')[attrs.metadata.describe['source-name'] ? 'removeClass' : 'addClass']('hidden');
                 }
                 if (changed('metadata.describe.byline')) {
-                    if (attrs.metadata.describe.byline && !$$('.byline-block .chart-byline').length) needReload = true;
-                    if (!attrs.metadata.describe.byline && $$('.byline-block .chart-byline').length) needReload = true;
-                    if (!needReload) {
-                        $$('.byline-block .chart-byline').text(
-                            attrs.metadata.describe.byline
-                        );
-                    }
+                    $$('.byline-block .chart-byline').text(
+                        attrs.metadata.describe.byline
+                    );
+                    $$('.byline-block')[attrs.metadata.describe.byline ? 'removeClass' : 'addClass']('hidden');
                 }
 
                 __dw.vis.chart().attributes(attrs);
