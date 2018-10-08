@@ -248,6 +248,7 @@ TODO for later:
 
         function sync(key) {
             return function(txt) {
+                console.log('sync', key);
                 chart.set({passiveMode: true});
                 chart.setMetadata(key, txt);
                 chart.set({passiveMode: false});
