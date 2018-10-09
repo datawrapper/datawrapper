@@ -151,8 +151,6 @@ class Chart extends Store {
     }
 
     passiveMode() {
-        console.log('passiveMode');
-        console.trace();
         this.set({ passiveMode:true });
         setTimeout(() => this.set({passiveMode:false}), 100);
     }

@@ -3,11 +3,11 @@
 <div on:click='event.stopPropagation()'
     class="control-group vis-option-group vis-option-type-select" >
 
-    <div class="dropdown" on:click="onClick(event)">
+    <div class="dropdown {!open && selection ? 'selection' : ''}" on:click="onClick(event)">
         <input
             type="search"
             ref:searchInput
-            placeholder="{placeholder}"
+            placeholder="{open ? placeholder : selection||placeholder}"
             bind:value="query"
             on:keypress="keyup(event)"
             on:input="search(query)"
@@ -26,7 +26,7 @@
 
             {#each matches as item,i}
 
-            <li class="{i==selectedIndex?'selected':''}" style="{item.style||''}" on:click="select(item)">
+            <li class="{i==selectedIndex?'selected':''}" style="{item.style||''}" on:click="select(item, event)">
                 <!-- <i class="fa fa-plus-circle"></i> -->
                 {@html item.display || item.title}
             </li>
@@ -45,6 +45,7 @@
     export default {
         data () {
             return {
+                selection: '',
                 query: "",
                 placeholder: "",
                 filter: 'indexOf',
@@ -58,46 +59,57 @@
         computed: {
             matches({query, items, filter}) {
                 if (!filter) return items;
+                if (!query) return items;
+                // check if items is an array
+                if (!items || !items.filter) return [];
                 return items.filter(item => {
-                    return (item.search || item.title).toLowerCase().indexOf(query.toLowerCase()) > -1;
-                })
+                    return (item.search || item.title)
+                        .toLowerCase()
+                        .indexOf(query.toLowerCase()) > -1;
+                });
             }
         },
         methods: {
+
+            focus() {
+                this.refs.searchInput.focus();
+            },
 
             blur() {
                 this.refs.searchInput.blur();
             },
 
             onClick(event) {
-                this.set({open:true});
+                this.set({open: true});
                 this.fire('focus', event);
             },
 
             search(query) {
-                this.set({open:true});
+                this.set({open: true});
                 // we're firing the "search" event so that the
                 // parent component can update the "items" list
                 this.fire('search', {query});
             },
 
-            select(item){
+            select(item, event){
                 this.set({
                     selectedItem: item,
                     query: item.title,
                     open: false
                 });
+                if (event) event.stopPropagation();
                 this.fire('select', {item});
             },
 
             keyup(event){
+                if (!event) return;
                 if (event.keyCode === 13) {
-                    // return
+                    // RETURN key
                     const {selectedItem} = this.get();
                     this.select(selectedItem);
                 }
                 if (event.keyCode == 38 || event.keyCode == 40) {
-                    // arrow up/down
+                    // ARROW UP/DOWN
                     let {selectedIndex, matches} = this.get();
                     if (isNaN(selectedIndex)) selectedIndex = -1;
                     const len = matches.length||0;
@@ -112,6 +124,11 @@
                         selectedIndex,
                         selectedItem: matches[selectedIndex]
                     });
+                }
+                if (event.keyCode == 27) {
+                    // ESCAPE
+                    this.set({open: false});
+                    this.blur();
                 }
             }
         },
@@ -135,16 +152,40 @@
  </script>
 
 
-<style type="text/css">
-
+<style lang="less">
 
     .dropdown{
         display: flex;
         flex-wrap: wrap;
+
+        &.selection {
+            @selection_color: #222;
+            @selection_weight: 300;
+            input::-webkit-input-placeholder {
+                color: @selection_color;
+                font-weight: @selection_weight;
+                opacity: 1;
+            }
+            input::-moz-placeholder {
+                color: @selection_color;
+                font-weight: @selection_weight;
+                opacity: 1;
+            }
+            input:-ms-input-placeholder {
+                color: @selection_color;
+                font-weight: @selection_weight;
+                opacity: 1;
+            }
+            input:-moz-input-placeholder {
+                color: @selection_color;
+                font-weight: @selection_weight;
+                opacity: 1;
+            }
+        }
     }
 
     .dropdown-results li.selected {
-        background: #cccccc;
+        background: #18a1cd33;
     }
     .control-group{
     }
@@ -174,11 +215,13 @@
         overflow: auto;
         margin: 0px;
         /*width: 262px;*/
-        width: calc(100% - 61px);
+        width: ~'calc(100% - 21px)';
         background-color: white;
         border: 1px solid #cccccc;
-        margin-top: -1px;
-        width: 100%;
+        margin-top: 0px;
+        border-top: 0;
+        box-shadow: 2px 2px 2px #0001;
+        /*width: 94%;*/
     }
 
     .dropdown-results li {
@@ -190,7 +233,7 @@
     }
 
     .dropdown-results li:hover {
-        background-color: #cccccc;
+        background-color: #18a1cd33;
         cursor: pointer;
     }
 

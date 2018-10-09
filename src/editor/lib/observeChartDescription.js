@@ -32,12 +32,8 @@ export default function(chart, chartCont) {
         const txt = chartCont.querySelector(text);
         const cont = chartCont.querySelector(block);
 
-        console.log('observe', key);
-
         chart.observeDeep(key, (value, old) => {
-            console.log('observeDeep', key, value);
             if (chart.isPassive()) return;
-            console.log('change', key, value, txt);
             if (value != old) {
                 if (href) txt.setAttribute('href', value);
                 else txt.innerHTML = value;

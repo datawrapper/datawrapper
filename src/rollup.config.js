@@ -1,6 +1,4 @@
-import fs from 'fs';
 import less from 'less';
-import rollup from 'rollup';
 import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -98,10 +96,12 @@ function build(app_id, opts) {
 
             // If we're building for production (npm run build
             // instead of npm run dev), transpile and minify
-            production && buble({
+            buble({
                 transforms: { dangerousForOf: true }
             }),
-            production && uglify()
+            production && uglify({
+                mangle: true
+            })
         ]
     });
 }
