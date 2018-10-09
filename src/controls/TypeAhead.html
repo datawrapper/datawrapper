@@ -26,7 +26,7 @@
 
             {#each matches as item,i}
 
-            <li class="{i==selectedIndex?'selected':''}" style="{item.style||''}" on:click="select(item)">
+            <li class="{i==selectedIndex?'selected':''}" style="{item.style||''}" on:click="select(item, event)">
                 <!-- <i class="fa fa-plus-circle"></i> -->
                 {@html item.display || item.title}
             </li>
@@ -81,12 +81,13 @@
                 this.fire('search', {query});
             },
 
-            select(item){
+            select(item, event){
                 this.set({
                     selectedItem: item,
                     query: item.title,
                     open: false
                 });
+                event.stopPropagation();
                 this.fire('select', {item});
             },
 
