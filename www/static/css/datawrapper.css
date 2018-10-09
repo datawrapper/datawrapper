@@ -2267,8 +2267,8 @@ body.cms-mode .row.create-nav {
   top: -8px;
   right: -8px;
   padding: 8px 40px 8px 10px;
-  background: #9cbfd1;
-  color: #f9f9f9;
+  background: #18a1cd;
+  color: #fff;
   width: 350px;
   border-radius: 4px;
   box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
@@ -2290,9 +2290,9 @@ body.cms-mode .row.create-nav {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #9cbfd1;
+  background: transparent;
   text-align: center;
-  color: #f9f9f9;
+  color: #6c6e6f66;
   font-size: 17px;
   line-height: 24px;
 }
@@ -3428,7 +3428,7 @@ input[type="color"],
   font-size: 15px;
   line-height: 1.4;
   padding: 10px;
-  background: #09c;
+  background: #18a1cd;
   color: white;
 }
 .did-you-know .close {

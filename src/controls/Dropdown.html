@@ -51,11 +51,13 @@
     export default {
         components: { BaseDropdown },
         computed: {
-            currentLabel({ value, options }) {
-                for (let i=0; i<options.length; i++) {
-                    if (options[i].value == value) return options[i].label;
+            currentLabel({ value, options, placeholder, forcePlaceholder }) {
+                if (!forcePlaceholder) {
+                    for (let i=0; i<options.length; i++) {
+                        if (options[i].value == value) return options[i].label;
+                    }
                 }
-                return '(select an item)';
+                return `<span style="color:#999;font-size:12px;">${placeholder}</span>`;
             }
         },
         methods: {
@@ -67,10 +69,12 @@
         },
         data () {
             return {
+                forcePlaceholder: false,
                 disabled: false,
                 width: 'auto',
                 options: [],
                 optgroups: [],
+                placeholder: '(select an item)'
             };
         }
     };
