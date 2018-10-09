@@ -312,7 +312,7 @@ class User extends BaseUser {
 
         if ($product == null) {
             // get lowest prio product as default
-            $product = ProductQuery::create()->orderByPriority("desc")->limit(1)->findOne();
+            $product = ProductQuery::create()->orderByPriority("asc")->limit(1)->findOne();
         }
 
         return $product;
@@ -329,9 +329,7 @@ class User extends BaseUser {
         foreach ($ups as $up) {
             $prod = $up->getProduct();
 
-            if ($userProduct == null || 
-                $userProduct->getProduct()->getPriority() < $prod->getPriority()) {
-
+            if ($userProduct == null || $userProduct->getProduct()->getPriority() < $prod->getPriority()) {
                 $userProduct = $up;
             }
         }
