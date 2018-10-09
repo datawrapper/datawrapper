@@ -2,7 +2,7 @@
 
 {{ hook('publish_before_embed', chart, user) }}
 
-{% if user.mayPublish %}
+{% if user.mayPublish(chart) %}
 
     {{ svelte('publish_old', svelte_data) }}
 

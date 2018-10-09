@@ -43,10 +43,6 @@ class User extends BaseUser {
         return $this->getRole() == UserPeer::ROLE_SYSADMIN;
     }
 
-    public function isAbleToPublish() {
-        return $this->mayPublish();
-    }
-
     public function hasCharts() {
         return $this->chartCount() > 0;
     }
@@ -164,8 +160,7 @@ class User extends BaseUser {
             'socialmedia' => $this->getSmProfile(),
             'isLoggedIn' => $this->isLoggedIn(),
             'isGuest' => !$this->isLoggedIn(),
-            'isActivated' => $this->isActivated(),
-            'mayPublish' => $this->mayPublish()
+            'isActivated' => $this->isActivated()
         ];
 
         if ($this->getCurrentOrganization() != null) {
@@ -269,11 +264,11 @@ class User extends BaseUser {
     /*
      * returns true|false
      */
-    public function mayPublish() {
+    public function mayPublish($chart) {
         if (!$this->isLoggedIn() || !$this->isActivated()) return false;
         if (DatawrapperHooks::hookRegistered(DatawrapperHooks::USER_MAY_PUBLISH)) {
             $user = DatawrapperSession::getUser(0);
-            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user) as $value) {
+            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user, $chart) as $value) {
                 if ($value === false) return false;
             }
         }

@@ -38,7 +38,7 @@ dw.backend.ready(function() {
         </div>
 
         <div class="span7">
-            {% if user.isAbleToPublish %}
+            {% if user.mayPublish(chart) %}
 
             <div class="messages"></div>
 

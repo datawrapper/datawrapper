@@ -660,13 +660,20 @@ html .btn .fa.icon-btn-left {
 html .btn .fa.icon-btn-right {
   margin-right: -6px;
 }
+html .btn-primary,
+html .btn-success {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+  box-shadow: none;
+  background-repeat: repeat-x;
+}
 html .btn-primary {
   color: #fff!important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
   background-color: #1d81a2;
-  background-repeat: repeat-x;
-  box-shadow: none;
   border-color: darker(#1d81a2, 5%);
+}
+html .btn-success {
+  background-color: #09bb9f !important;
+  border-color: darker(#09bb9f, 5%);
 }
 html .btn-primary:hover,
 html .btn-primary:focus,

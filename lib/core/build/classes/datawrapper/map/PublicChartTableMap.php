@@ -43,6 +43,9 @@ class PublicChartTableMap extends TableMap
         $this->addColumn('type', 'Type', 'VARCHAR', true, 200, null);
         $this->addColumn('metadata', 'Metadata', 'CLOB', true, null, null);
         $this->addColumn('external_data', 'ExternalData', 'VARCHAR', false, 255, null);
+        $this->addColumn('first_published_at', 'FirstPublishedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('author_id', 'AuthorId', 'INTEGER', false, null, null);
+        $this->addColumn('organization_id', 'OrganizationId', 'VARCHAR', false, 128, null);
         // validators
     } // initialize()
 

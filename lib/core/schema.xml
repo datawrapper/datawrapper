@@ -51,6 +51,9 @@
     <column name="type" type="varchar" size="200" required="true" />
     <column name="metadata" type="clob" required="true" />
     <column name="external_data" type="varchar" size="255" required="false" />
+    <column name="first_published_at" type="timestamp" />
+    <column name="author_id" type="integer" required="false"/>
+    <column name="organization_id" type="varchar" size="128" required="false" />
     <foreign-key foreignTable="chart">
       <reference local="id" foreign="id"/>
     </foreign-key>

@@ -66,6 +66,9 @@ CREATE TABLE `chart_public`
     `type` VARCHAR(200) NOT NULL,
     `metadata` LONGTEXT NOT NULL,
     `external_data` VARCHAR(255),
+    `first_published_at` DATETIME,
+    `author_id` INTEGER,
+    `organization_id` VARCHAR(128),
     PRIMARY KEY (`id`),
     CONSTRAINT `chart_public_FK_1`
         FOREIGN KEY (`id`)
