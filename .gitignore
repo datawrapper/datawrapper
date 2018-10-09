@@ -42,3 +42,4 @@ dw.js/yarn.lock
 .gitignore-global
 tmp/*
 *.css.map
+lib/core/buildtime-conf.xml
