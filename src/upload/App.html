@@ -97,6 +97,8 @@
                     app.set({sheets});
                 });
             } else {
+                console.log(file.type);
+                console.log(file);
                 app.set({error: __('upload / csv-required')});
             }
         },
