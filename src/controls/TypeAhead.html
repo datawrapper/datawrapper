@@ -88,7 +88,7 @@
                     query: item.title,
                     open: false
                 });
-                event.stopPropagation();
+                if (event) event.stopPropagation();
                 this.fire('select', {item});
             },
 
