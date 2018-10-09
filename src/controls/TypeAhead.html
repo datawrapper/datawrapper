@@ -58,6 +58,7 @@
         computed: {
             matches({query, items, filter}) {
                 if (!filter) return items;
+                if (!query) return items;
                 return items.filter(item => {
                     return (item.search || item.title).toLowerCase().indexOf(query.toLowerCase()) > -1;
                 })
