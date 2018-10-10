@@ -10,7 +10,7 @@
 
     {% if has_hook('publish_custom_page_not_allowed') %}
 
-        {{ hook('publish_custom_page_not_allowed') }}
+        {{ hook('publish_custom_page_not_allowed', user, chart) }}
 
     {% else %}
         {# core message for being unable to publish #}
