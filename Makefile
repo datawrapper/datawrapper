@@ -35,3 +35,8 @@ svelte-dev:
 
 plugins:
 	scripts/install-plugins
+
+propel:
+	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen om
+	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen sql
+	composer dump-autoload
