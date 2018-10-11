@@ -160,6 +160,7 @@ class User extends BaseUser {
             'socialmedia' => $this->getSmProfile(),
             'isLoggedIn' => $this->isLoggedIn(),
             'isGuest' => !$this->isLoggedIn(),
+            'isActivated' => $this->isActivated(),
             'isAdmin' => $this->isAdmin()
         ];
 
