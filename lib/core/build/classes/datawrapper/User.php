@@ -160,7 +160,7 @@ class User extends BaseUser {
             'socialmedia' => $this->getSmProfile(),
             'isLoggedIn' => $this->isLoggedIn(),
             'isGuest' => !$this->isLoggedIn(),
-            'isActivated' => $this->isActivated()
+            'isAdmin' => $this->isAdmin()
         ];
 
         if ($this->getCurrentOrganization() != null) {
@@ -281,7 +281,7 @@ class User extends BaseUser {
     public function getActiveProduct() {
         $user = $this;
         $product = null;
-        
+
         $ups = UserProductQuery::create()
             ->filterByUserId($user->getId())
             ->find();
@@ -321,7 +321,7 @@ class User extends BaseUser {
     public function getActiveUserProduct() {
         $user = $this;
         $userProduct = null;
-        
+
         $ups = UserProductQuery::create()
             ->filterByUserId($user->getId())
             ->find();
