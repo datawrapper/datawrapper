@@ -11,12 +11,18 @@
  * @method PublicChartQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method PublicChartQuery orderByMetadata($order = Criteria::ASC) Order by the metadata column
  * @method PublicChartQuery orderByExternalData($order = Criteria::ASC) Order by the external_data column
+ * @method PublicChartQuery orderByFirstPublishedAt($order = Criteria::ASC) Order by the first_published_at column
+ * @method PublicChartQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method PublicChartQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
  *
  * @method PublicChartQuery groupById() Group by the id column
  * @method PublicChartQuery groupByTitle() Group by the title column
  * @method PublicChartQuery groupByType() Group by the type column
  * @method PublicChartQuery groupByMetadata() Group by the metadata column
  * @method PublicChartQuery groupByExternalData() Group by the external_data column
+ * @method PublicChartQuery groupByFirstPublishedAt() Group by the first_published_at column
+ * @method PublicChartQuery groupByAuthorId() Group by the author_id column
+ * @method PublicChartQuery groupByOrganizationId() Group by the organization_id column
  *
  * @method PublicChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PublicChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -33,12 +39,18 @@
  * @method PublicChart findOneByType(string $type) Return the first PublicChart filtered by the type column
  * @method PublicChart findOneByMetadata(string $metadata) Return the first PublicChart filtered by the metadata column
  * @method PublicChart findOneByExternalData(string $external_data) Return the first PublicChart filtered by the external_data column
+ * @method PublicChart findOneByFirstPublishedAt(string $first_published_at) Return the first PublicChart filtered by the first_published_at column
+ * @method PublicChart findOneByAuthorId(int $author_id) Return the first PublicChart filtered by the author_id column
+ * @method PublicChart findOneByOrganizationId(string $organization_id) Return the first PublicChart filtered by the organization_id column
  *
  * @method array findById(string $id) Return PublicChart objects filtered by the id column
  * @method array findByTitle(string $title) Return PublicChart objects filtered by the title column
  * @method array findByType(string $type) Return PublicChart objects filtered by the type column
  * @method array findByMetadata(string $metadata) Return PublicChart objects filtered by the metadata column
  * @method array findByExternalData(string $external_data) Return PublicChart objects filtered by the external_data column
+ * @method array findByFirstPublishedAt(string $first_published_at) Return PublicChart objects filtered by the first_published_at column
+ * @method array findByAuthorId(int $author_id) Return PublicChart objects filtered by the author_id column
+ * @method array findByOrganizationId(string $organization_id) Return PublicChart objects filtered by the organization_id column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -142,7 +154,7 @@ abstract class BasePublicChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `type`, `metadata`, `external_data` FROM `chart_public` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `type`, `metadata`, `external_data`, `first_published_at`, `author_id`, `organization_id` FROM `chart_public` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -374,6 +386,120 @@ abstract class BasePublicChartQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PublicChartPeer::EXTERNAL_DATA, $externalData, $comparison);
+    }
+
+    /**
+     * Filter the query on the first_published_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFirstPublishedAt('2011-03-14'); // WHERE first_published_at = '2011-03-14'
+     * $query->filterByFirstPublishedAt('now'); // WHERE first_published_at = '2011-03-14'
+     * $query->filterByFirstPublishedAt(array('max' => 'yesterday')); // WHERE first_published_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $firstPublishedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PublicChartQuery The current query, for fluid interface
+     */
+    public function filterByFirstPublishedAt($firstPublishedAt = null, $comparison = null)
+    {
+        if (is_array($firstPublishedAt)) {
+            $useMinMax = false;
+            if (isset($firstPublishedAt['min'])) {
+                $this->addUsingAlias(PublicChartPeer::FIRST_PUBLISHED_AT, $firstPublishedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($firstPublishedAt['max'])) {
+                $this->addUsingAlias(PublicChartPeer::FIRST_PUBLISHED_AT, $firstPublishedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PublicChartPeer::FIRST_PUBLISHED_AT, $firstPublishedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the author_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAuthorId(1234); // WHERE author_id = 1234
+     * $query->filterByAuthorId(array(12, 34)); // WHERE author_id IN (12, 34)
+     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id >= 12
+     * $query->filterByAuthorId(array('max' => 12)); // WHERE author_id <= 12
+     * </code>
+     *
+     * @param     mixed $authorId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PublicChartQuery The current query, for fluid interface
+     */
+    public function filterByAuthorId($authorId = null, $comparison = null)
+    {
+        if (is_array($authorId)) {
+            $useMinMax = false;
+            if (isset($authorId['min'])) {
+                $this->addUsingAlias(PublicChartPeer::AUTHOR_ID, $authorId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($authorId['max'])) {
+                $this->addUsingAlias(PublicChartPeer::AUTHOR_ID, $authorId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PublicChartPeer::AUTHOR_ID, $authorId, $comparison);
+    }
+
+    /**
+     * Filter the query on the organization_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOrganizationId('fooValue');   // WHERE organization_id = 'fooValue'
+     * $query->filterByOrganizationId('%fooValue%'); // WHERE organization_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $organizationId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return PublicChartQuery The current query, for fluid interface
+     */
+    public function filterByOrganizationId($organizationId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($organizationId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $organizationId)) {
+                $organizationId = str_replace('*', '%', $organizationId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(PublicChartPeer::ORGANIZATION_ID, $organizationId, $comparison);
     }
 
     /**

@@ -4,6 +4,13 @@
         index="{i+1}" bind:step bind:steps bind:active />
     {/each}
 </div>
+
+{#if $user.id != $authorId && $user.isAdmin}
+<div class="alert alert-warning" style="text-align:center;margin-top:10px;">
+ This chart belongs to <a target="_blank" href="/admin/chart/by/{$authorId}">{$author.name || $author.email || `User ID ${$authorId}`}</a>. Great power comes with great responsibility, so be careful with what you're doing!
+</div>
+{/if}
+
 <style type="text/css">
     .create-nav {
         display: flex;

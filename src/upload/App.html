@@ -83,7 +83,7 @@
         isFileUpload: true,
         onFileUpload(event) {
             const file = event.target.files[0];
-            if (file.type.substr(0,5) == 'text/') {
+            if (file.type.substr(0,5) == 'text/' || file.name.substr(file.name.length - 4) == ".csv") {
                 app.set({Sidebar: UploadHelp});
                 readFile(file, (err, result) => {
                     putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
@@ -97,6 +97,8 @@
                     app.set({sheets});
                 });
             } else {
+                console.log(file.type);
+                console.log(file);
                 app.set({error: __('upload / csv-required')});
             }
         },

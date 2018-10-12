@@ -1,6 +1,6 @@
 import _isArray from 'underscore-es/isArray';
 
-function fetchJSON(url, method, credentials, body, callback) {
+export function fetchJSON(url, method, credentials, body, callback) {
     var opts = {
         method, body,
         mode: 'cors',

@@ -362,7 +362,7 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
 $app->post('/charts/:id/publish', function($chart_id) use ($app) {
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        if ($user->mayPublish()) {
+        if ($user->mayPublish($chart)) {
             $justLocal = $app->request()->get('local') == 1;
             $chart->publish();
             publish_chart($user, $chart, false, $justLocal);

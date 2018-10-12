@@ -13,8 +13,11 @@ call_user_func(function() {
             'order' => 100,
             'controller' => function ($app, $user) {
               return function() use ($app, $user) {
-                $app->render('account/edit-account.twig', array(
-                    "user" => $user
+                $app->render('account/edit-profile.twig', array(
+                    "svelte_data" => [
+                        "email" => $user->getEmail(),
+                        "userId" => $user->getId()
+                    ]
                 ));
               };
             }

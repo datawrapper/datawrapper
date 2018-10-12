@@ -24,19 +24,25 @@ abstract class BaseOrganizationProductPeer
     const TM_CLASS = 'OrganizationProductTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /** the column name for the organization_id field */
     const ORGANIZATION_ID = 'organization_product.organization_id';
 
     /** the column name for the product_id field */
     const PRODUCT_ID = 'organization_product.product_id';
+
+    /** the column name for the created_by_admin field */
+    const CREATED_BY_ADMIN = 'organization_product.created_by_admin';
+
+    /** the column name for the changes field */
+    const CHANGES = 'organization_product.changes';
 
     /** the column name for the expires field */
     const EXPIRES = 'organization_product.expires';
@@ -60,12 +66,12 @@ abstract class BaseOrganizationProductPeer
      * e.g. OrganizationProductPeer::$fieldNames[OrganizationProductPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('OrganizationId', 'ProductId', 'Expires', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId', 'productId', 'expires', ),
-        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID, OrganizationProductPeer::PRODUCT_ID, OrganizationProductPeer::EXPIRES, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID', 'PRODUCT_ID', 'EXPIRES', ),
-        BasePeer::TYPE_FIELDNAME => array ('organization_id', 'product_id', 'expires', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('OrganizationId', 'ProductId', 'CreatedByAdmin', 'Changes', 'Expires', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId', 'productId', 'createdByAdmin', 'changes', 'expires', ),
+        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID, OrganizationProductPeer::PRODUCT_ID, OrganizationProductPeer::CREATED_BY_ADMIN, OrganizationProductPeer::CHANGES, OrganizationProductPeer::EXPIRES, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID', 'PRODUCT_ID', 'CREATED_BY_ADMIN', 'CHANGES', 'EXPIRES', ),
+        BasePeer::TYPE_FIELDNAME => array ('organization_id', 'product_id', 'created_by_admin', 'changes', 'expires', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -75,12 +81,12 @@ abstract class BaseOrganizationProductPeer
      * e.g. OrganizationProductPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('OrganizationId' => 0, 'ProductId' => 1, 'Expires' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId' => 0, 'productId' => 1, 'expires' => 2, ),
-        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID => 0, OrganizationProductPeer::PRODUCT_ID => 1, OrganizationProductPeer::EXPIRES => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID' => 0, 'PRODUCT_ID' => 1, 'EXPIRES' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('organization_id' => 0, 'product_id' => 1, 'expires' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('OrganizationId' => 0, 'ProductId' => 1, 'CreatedByAdmin' => 2, 'Changes' => 3, 'Expires' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('organizationId' => 0, 'productId' => 1, 'createdByAdmin' => 2, 'changes' => 3, 'expires' => 4, ),
+        BasePeer::TYPE_COLNAME => array (OrganizationProductPeer::ORGANIZATION_ID => 0, OrganizationProductPeer::PRODUCT_ID => 1, OrganizationProductPeer::CREATED_BY_ADMIN => 2, OrganizationProductPeer::CHANGES => 3, OrganizationProductPeer::EXPIRES => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ORGANIZATION_ID' => 0, 'PRODUCT_ID' => 1, 'CREATED_BY_ADMIN' => 2, 'CHANGES' => 3, 'EXPIRES' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('organization_id' => 0, 'product_id' => 1, 'created_by_admin' => 2, 'changes' => 3, 'expires' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -156,10 +162,14 @@ abstract class BaseOrganizationProductPeer
         if (null === $alias) {
             $criteria->addSelectColumn(OrganizationProductPeer::ORGANIZATION_ID);
             $criteria->addSelectColumn(OrganizationProductPeer::PRODUCT_ID);
+            $criteria->addSelectColumn(OrganizationProductPeer::CREATED_BY_ADMIN);
+            $criteria->addSelectColumn(OrganizationProductPeer::CHANGES);
             $criteria->addSelectColumn(OrganizationProductPeer::EXPIRES);
         } else {
             $criteria->addSelectColumn($alias . '.organization_id');
             $criteria->addSelectColumn($alias . '.product_id');
+            $criteria->addSelectColumn($alias . '.created_by_admin');
+            $criteria->addSelectColumn($alias . '.changes');
             $criteria->addSelectColumn($alias . '.expires');
         }
     }

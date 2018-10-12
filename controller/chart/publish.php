@@ -17,43 +17,6 @@ $app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
             return;
         }
 
-        Hooks::register(
-            'render_chart_actions',
-            function($chart, $user) use ($app) {
-                $cap = Hooks::execute("get_chart_action_provider");
-
-                if ($cap == null || sizeof($cap) == 0) {
-                    $user = Session::getUser();
-                    $chartActions = Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user);
-
-                    // add duplicate action
-                    $chartActions[] = array(
-                        'id' => 'duplicate',
-                        'icon' => 'code-fork',
-                        'title' => __('Duplicate this chart'),
-                        'order' => 500
-                    );
-
-                    // sort actions
-                    usort($chartActions, function($a, $b) {
-                        return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
-                    });
-
-                    $app->render('chart/chart-actions.twig', array(
-                        "chart" => $chart,
-                        "chartActions" => $chartActions,
-                        "user" => $user
-                    ));
-                } else {
-                    usort($cap, function ($item1, $item2) {
-                        return $item1['priority'] > $item2['priority'] ? 0 : 1;
-                    });
-
-                    $cap[0]['render']($app, $chart, $user);
-                }
-            }
-        );
-
         $chartW = $chart->getMetadata('publish.embed-width');
         $chartH = $chart->getMetadata('publish.embed-height');
 

@@ -14,9 +14,10 @@ import Text from './Text.html';
 import Section from '../editor/Section.html';
 import Group from '../editor/Group.html';
 import Help from '../editor/Help.html';
+import TypeAhead from './TypeAhead.html';
 
 export default {
     Checkbox, Color, ColorPicker, Group, NumberInput, Switch, Dropdown,
     Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea,
-    Help, Text
+    Help, Text, TypeAhead
 };

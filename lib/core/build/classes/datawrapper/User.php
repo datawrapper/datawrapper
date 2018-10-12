@@ -43,10 +43,6 @@ class User extends BaseUser {
         return $this->getRole() == UserPeer::ROLE_SYSADMIN;
     }
 
-    public function isAbleToPublish() {
-        return $this->mayPublish();
-    }
-
     public function hasCharts() {
         return $this->chartCount() > 0;
     }
@@ -165,7 +161,7 @@ class User extends BaseUser {
             'isLoggedIn' => $this->isLoggedIn(),
             'isGuest' => !$this->isLoggedIn(),
             'isActivated' => $this->isActivated(),
-            'mayPublish' => $this->mayPublish()
+            'isAdmin' => $this->isAdmin()
         ];
 
         if ($this->getCurrentOrganization() != null) {
@@ -269,15 +265,77 @@ class User extends BaseUser {
     /*
      * returns true|false
      */
-    public function mayPublish() {
+    public function mayPublish($chart) {
         if (!$this->isLoggedIn() || !$this->isActivated()) return false;
         if (DatawrapperHooks::hookRegistered(DatawrapperHooks::USER_MAY_PUBLISH)) {
             $user = DatawrapperSession::getUser(0);
-            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user) as $value) {
+            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user, $chart) as $value) {
                 if ($value === false) return false;
             }
         }
         return true;
+    }
+
+    /*
+     * returns the highest-priority product that is enabled for this user
+     */
+    public function getActiveProduct() {
+        $user = $this;
+        $product = null;
+
+        $ups = UserProductQuery::create()
+            ->filterByUserId($user->getId())
+            ->find();
+
+        foreach ($ups as $up) {
+            $prod = $up->getProduct();
+
+            if ($product == null || $product->getPriority() < $prod->getPriority()) {
+                $product = $prod;
+            }
+        }
+
+        $organizations = $user->getActiveOrganizations();
+
+        foreach ($organizations as $org) {
+            $ops = OrganizationProductQuery::create()
+                    ->filterByOrganization($org)
+                    ->find();
+
+            foreach ($ops as $op) {
+                $prod = $op->getProduct();
+
+                if ($product == null || $product->getPriority() < $prod->getPriority()) {
+                    $product = $prod;
+                }
+            }
+        }
+
+        if ($product == null) {
+            // get lowest prio product as default
+            $product = ProductQuery::create()->orderByPriority("asc")->limit(1)->findOne();
+        }
+
+        return $product;
+    }
+
+    public function getActiveUserProduct() {
+        $user = $this;
+        $userProduct = null;
+
+        $ups = UserProductQuery::create()
+            ->filterByUserId($user->getId())
+            ->find();
+
+        foreach ($ups as $up) {
+            $prod = $up->getProduct();
+
+            if ($userProduct == null || $userProduct->getProduct()->getPriority() < $prod->getPriority()) {
+                $userProduct = $up;
+            }
+        }
+
+        return $userProduct;
     }
 
 } // User

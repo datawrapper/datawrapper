@@ -25,6 +25,8 @@ class PublicChart extends BasePublicChart {
         $this->setType($chart->getType());
         $this->setMetadata($chart->getRawMetadata());
         $this->setExternalData($chart->getExternalData());
+        $this->setAuthorId($chart->getAuthorId());
+        $this->setOrganizationId($chart->getOrganizationId());
         $this->save();
         // copy data
         $this->writeData($chart->loadData());

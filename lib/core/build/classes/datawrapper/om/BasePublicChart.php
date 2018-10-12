@@ -60,6 +60,24 @@ abstract class BasePublicChart extends BaseObject implements Persistent
     protected $external_data;
 
     /**
+     * The value for the first_published_at field.
+     * @var        string
+     */
+    protected $first_published_at;
+
+    /**
+     * The value for the author_id field.
+     * @var        int
+     */
+    protected $author_id;
+
+    /**
+     * The value for the organization_id field.
+     * @var        string
+     */
+    protected $organization_id;
+
+    /**
      * @var        Chart
      */
     protected $aChart;
@@ -132,6 +150,66 @@ abstract class BasePublicChart extends BaseObject implements Persistent
     public function getExternalData()
     {
         return $this->external_data;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [first_published_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getFirstPublishedAt($format = 'Y-m-d H:i:s')
+    {
+        if ($this->first_published_at === null) {
+            return null;
+        }
+
+        if ($this->first_published_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->first_published_at);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->first_published_at, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
+     * Get the [author_id] column value.
+     *
+     * @return int
+     */
+    public function getAuthorId()
+    {
+        return $this->author_id;
+    }
+
+    /**
+     * Get the [organization_id] column value.
+     *
+     * @return string
+     */
+    public function getOrganizationId()
+    {
+        return $this->organization_id;
     }
 
     /**
@@ -244,6 +322,71 @@ abstract class BasePublicChart extends BaseObject implements Persistent
     } // setExternalData()
 
     /**
+     * Sets the value of [first_published_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return PublicChart The current object (for fluent API support)
+     */
+    public function setFirstPublishedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->first_published_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->first_published_at !== null && $tmpDt = new DateTime($this->first_published_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->first_published_at = $newDateAsString;
+                $this->modifiedColumns[] = PublicChartPeer::FIRST_PUBLISHED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setFirstPublishedAt()
+
+    /**
+     * Set the value of [author_id] column.
+     *
+     * @param int $v new value
+     * @return PublicChart The current object (for fluent API support)
+     */
+    public function setAuthorId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->author_id !== $v) {
+            $this->author_id = $v;
+            $this->modifiedColumns[] = PublicChartPeer::AUTHOR_ID;
+        }
+
+
+        return $this;
+    } // setAuthorId()
+
+    /**
+     * Set the value of [organization_id] column.
+     *
+     * @param string $v new value
+     * @return PublicChart The current object (for fluent API support)
+     */
+    public function setOrganizationId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->organization_id !== $v) {
+            $this->organization_id = $v;
+            $this->modifiedColumns[] = PublicChartPeer::ORGANIZATION_ID;
+        }
+
+
+        return $this;
+    } // setOrganizationId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -280,6 +423,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
             $this->type = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->metadata = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->external_data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->first_published_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->author_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->organization_id = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -288,7 +434,7 @@ abstract class BasePublicChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 5; // 5 = PublicChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = PublicChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating PublicChart object", $e);
@@ -527,6 +673,15 @@ abstract class BasePublicChart extends BaseObject implements Persistent
         if ($this->isColumnModified(PublicChartPeer::EXTERNAL_DATA)) {
             $modifiedColumns[':p' . $index++]  = '`external_data`';
         }
+        if ($this->isColumnModified(PublicChartPeer::FIRST_PUBLISHED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`first_published_at`';
+        }
+        if ($this->isColumnModified(PublicChartPeer::AUTHOR_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`author_id`';
+        }
+        if ($this->isColumnModified(PublicChartPeer::ORGANIZATION_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`organization_id`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart_public` (%s) VALUES (%s)',
@@ -552,6 +707,15 @@ abstract class BasePublicChart extends BaseObject implements Persistent
                         break;
                     case '`external_data`':
                         $stmt->bindValue($identifier, $this->external_data, PDO::PARAM_STR);
+                        break;
+                    case '`first_published_at`':
+                        $stmt->bindValue($identifier, $this->first_published_at, PDO::PARAM_STR);
+                        break;
+                    case '`author_id`':
+                        $stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
+                        break;
+                    case '`organization_id`':
+                        $stmt->bindValue($identifier, $this->organization_id, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -707,6 +871,15 @@ abstract class BasePublicChart extends BaseObject implements Persistent
             case 4:
                 return $this->getExternalData();
                 break;
+            case 5:
+                return $this->getFirstPublishedAt();
+                break;
+            case 6:
+                return $this->getAuthorId();
+                break;
+            case 7:
+                return $this->getOrganizationId();
+                break;
             default:
                 return null;
                 break;
@@ -741,6 +914,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
             $keys[2] => $this->getType(),
             $keys[3] => $this->getMetadata(),
             $keys[4] => $this->getExternalData(),
+            $keys[5] => $this->getFirstPublishedAt(),
+            $keys[6] => $this->getAuthorId(),
+            $keys[7] => $this->getOrganizationId(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aChart) {
@@ -795,6 +971,15 @@ abstract class BasePublicChart extends BaseObject implements Persistent
             case 4:
                 $this->setExternalData($value);
                 break;
+            case 5:
+                $this->setFirstPublishedAt($value);
+                break;
+            case 6:
+                $this->setAuthorId($value);
+                break;
+            case 7:
+                $this->setOrganizationId($value);
+                break;
         } // switch()
     }
 
@@ -824,6 +1009,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setMetadata($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setExternalData($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setFirstPublishedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setAuthorId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setOrganizationId($arr[$keys[7]]);
     }
 
     /**
@@ -840,6 +1028,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
         if ($this->isColumnModified(PublicChartPeer::TYPE)) $criteria->add(PublicChartPeer::TYPE, $this->type);
         if ($this->isColumnModified(PublicChartPeer::METADATA)) $criteria->add(PublicChartPeer::METADATA, $this->metadata);
         if ($this->isColumnModified(PublicChartPeer::EXTERNAL_DATA)) $criteria->add(PublicChartPeer::EXTERNAL_DATA, $this->external_data);
+        if ($this->isColumnModified(PublicChartPeer::FIRST_PUBLISHED_AT)) $criteria->add(PublicChartPeer::FIRST_PUBLISHED_AT, $this->first_published_at);
+        if ($this->isColumnModified(PublicChartPeer::AUTHOR_ID)) $criteria->add(PublicChartPeer::AUTHOR_ID, $this->author_id);
+        if ($this->isColumnModified(PublicChartPeer::ORGANIZATION_ID)) $criteria->add(PublicChartPeer::ORGANIZATION_ID, $this->organization_id);
 
         return $criteria;
     }
@@ -907,6 +1098,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
         $copyObj->setType($this->getType());
         $copyObj->setMetadata($this->getMetadata());
         $copyObj->setExternalData($this->getExternalData());
+        $copyObj->setFirstPublishedAt($this->getFirstPublishedAt());
+        $copyObj->setAuthorId($this->getAuthorId());
+        $copyObj->setOrganizationId($this->getOrganizationId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1026,6 +1220,9 @@ abstract class BasePublicChart extends BaseObject implements Persistent
         $this->type = null;
         $this->metadata = null;
         $this->external_data = null;
+        $this->first_published_at = null;
+        $this->author_id = null;
+        $this->organization_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

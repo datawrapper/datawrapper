@@ -8,10 +8,14 @@
  *
  * @method OrganizationProductQuery orderByOrganizationId($order = Criteria::ASC) Order by the organization_id column
  * @method OrganizationProductQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
+ * @method OrganizationProductQuery orderByCreatedByAdmin($order = Criteria::ASC) Order by the created_by_admin column
+ * @method OrganizationProductQuery orderByChanges($order = Criteria::ASC) Order by the changes column
  * @method OrganizationProductQuery orderByExpires($order = Criteria::ASC) Order by the expires column
  *
  * @method OrganizationProductQuery groupByOrganizationId() Group by the organization_id column
  * @method OrganizationProductQuery groupByProductId() Group by the product_id column
+ * @method OrganizationProductQuery groupByCreatedByAdmin() Group by the created_by_admin column
+ * @method OrganizationProductQuery groupByChanges() Group by the changes column
  * @method OrganizationProductQuery groupByExpires() Group by the expires column
  *
  * @method OrganizationProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -31,10 +35,14 @@
  *
  * @method OrganizationProduct findOneByOrganizationId(string $organization_id) Return the first OrganizationProduct filtered by the organization_id column
  * @method OrganizationProduct findOneByProductId(int $product_id) Return the first OrganizationProduct filtered by the product_id column
+ * @method OrganizationProduct findOneByCreatedByAdmin(boolean $created_by_admin) Return the first OrganizationProduct filtered by the created_by_admin column
+ * @method OrganizationProduct findOneByChanges(string $changes) Return the first OrganizationProduct filtered by the changes column
  * @method OrganizationProduct findOneByExpires(string $expires) Return the first OrganizationProduct filtered by the expires column
  *
  * @method array findByOrganizationId(string $organization_id) Return OrganizationProduct objects filtered by the organization_id column
  * @method array findByProductId(int $product_id) Return OrganizationProduct objects filtered by the product_id column
+ * @method array findByCreatedByAdmin(boolean $created_by_admin) Return OrganizationProduct objects filtered by the created_by_admin column
+ * @method array findByChanges(string $changes) Return OrganizationProduct objects filtered by the changes column
  * @method array findByExpires(string $expires) Return OrganizationProduct objects filtered by the expires column
  *
  * @package    propel.generator.datawrapper.om
@@ -126,7 +134,7 @@ abstract class BaseOrganizationProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `organization_id`, `product_id`, `expires` FROM `organization_product` WHERE `organization_id` = :p0 AND `product_id` = :p1';
+        $sql = 'SELECT `organization_id`, `product_id`, `created_by_admin`, `changes`, `expires` FROM `organization_product` WHERE `organization_id` = :p0 AND `product_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_STR);
@@ -298,6 +306,62 @@ abstract class BaseOrganizationProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrganizationProductPeer::PRODUCT_ID, $productId, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_by_admin column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedByAdmin(true); // WHERE created_by_admin = true
+     * $query->filterByCreatedByAdmin('yes'); // WHERE created_by_admin = true
+     * </code>
+     *
+     * @param     boolean|string $createdByAdmin The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationProductQuery The current query, for fluid interface
+     */
+    public function filterByCreatedByAdmin($createdByAdmin = null, $comparison = null)
+    {
+        if (is_string($createdByAdmin)) {
+            $createdByAdmin = in_array(strtolower($createdByAdmin), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(OrganizationProductPeer::CREATED_BY_ADMIN, $createdByAdmin, $comparison);
+    }
+
+    /**
+     * Filter the query on the changes column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByChanges('fooValue');   // WHERE changes = 'fooValue'
+     * $query->filterByChanges('%fooValue%'); // WHERE changes LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $changes The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return OrganizationProductQuery The current query, for fluid interface
+     */
+    public function filterByChanges($changes = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($changes)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $changes)) {
+                $changes = str_replace('*', '%', $changes);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrganizationProductPeer::CHANGES, $changes, $comparison);
     }
 
     /**

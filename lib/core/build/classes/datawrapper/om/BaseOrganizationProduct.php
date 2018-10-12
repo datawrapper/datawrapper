@@ -42,6 +42,19 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     protected $product_id;
 
     /**
+     * The value for the created_by_admin field.
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $created_by_admin;
+
+    /**
+     * The value for the changes field.
+     * @var        string
+     */
+    protected $changes;
+
+    /**
      * The value for the expires field.
      * @var        string
      */
@@ -78,6 +91,27 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->created_by_admin = true;
+    }
+
+    /**
+     * Initializes internal state of BaseOrganizationProduct object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [organization_id] column value.
      *
      * @return string
@@ -95,6 +129,26 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     public function getProductId()
     {
         return $this->product_id;
+    }
+
+    /**
+     * Get the [created_by_admin] column value.
+     *
+     * @return boolean
+     */
+    public function getCreatedByAdmin()
+    {
+        return $this->created_by_admin;
+    }
+
+    /**
+     * Get the [changes] column value.
+     *
+     * @return string
+     */
+    public function getChanges()
+    {
+        return $this->changes;
     }
 
     /**
@@ -188,6 +242,56 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     } // setProductId()
 
     /**
+     * Sets the value of the [created_by_admin] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return OrganizationProduct The current object (for fluent API support)
+     */
+    public function setCreatedByAdmin($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->created_by_admin !== $v) {
+            $this->created_by_admin = $v;
+            $this->modifiedColumns[] = OrganizationProductPeer::CREATED_BY_ADMIN;
+        }
+
+
+        return $this;
+    } // setCreatedByAdmin()
+
+    /**
+     * Set the value of [changes] column.
+     *
+     * @param string $v new value
+     * @return OrganizationProduct The current object (for fluent API support)
+     */
+    public function setChanges($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (string) $v;
+        }
+
+        if ($this->changes !== $v) {
+            $this->changes = $v;
+            $this->modifiedColumns[] = OrganizationProductPeer::CHANGES;
+        }
+
+
+        return $this;
+    } // setChanges()
+
+    /**
      * Sets the value of [expires] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -220,6 +324,10 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->created_by_admin !== true) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -244,7 +352,9 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
 
             $this->organization_id = ($row[$startcol + 0] !== null) ? (string) $row[$startcol + 0] : null;
             $this->product_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->expires = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->created_by_admin = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+            $this->changes = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->expires = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -253,7 +363,7 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 3; // 3 = OrganizationProductPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = OrganizationProductPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating OrganizationProduct object", $e);
@@ -494,6 +604,12 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
         if ($this->isColumnModified(OrganizationProductPeer::PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`product_id`';
         }
+        if ($this->isColumnModified(OrganizationProductPeer::CREATED_BY_ADMIN)) {
+            $modifiedColumns[':p' . $index++]  = '`created_by_admin`';
+        }
+        if ($this->isColumnModified(OrganizationProductPeer::CHANGES)) {
+            $modifiedColumns[':p' . $index++]  = '`changes`';
+        }
         if ($this->isColumnModified(OrganizationProductPeer::EXPIRES)) {
             $modifiedColumns[':p' . $index++]  = '`expires`';
         }
@@ -513,6 +629,12 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
                         break;
                     case '`product_id`':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                        break;
+                    case '`created_by_admin`':
+                        $stmt->bindValue($identifier, (int) $this->created_by_admin, PDO::PARAM_INT);
+                        break;
+                    case '`changes`':
+                        $stmt->bindValue($identifier, $this->changes, PDO::PARAM_STR);
                         break;
                     case '`expires`':
                         $stmt->bindValue($identifier, $this->expires, PDO::PARAM_STR);
@@ -669,6 +791,12 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
                 return $this->getProductId();
                 break;
             case 2:
+                return $this->getCreatedByAdmin();
+                break;
+            case 3:
+                return $this->getChanges();
+                break;
+            case 4:
                 return $this->getExpires();
                 break;
             default:
@@ -702,7 +830,9 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getOrganizationId(),
             $keys[1] => $this->getProductId(),
-            $keys[2] => $this->getExpires(),
+            $keys[2] => $this->getCreatedByAdmin(),
+            $keys[3] => $this->getChanges(),
+            $keys[4] => $this->getExpires(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aOrganization) {
@@ -752,6 +882,12 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
                 $this->setProductId($value);
                 break;
             case 2:
+                $this->setCreatedByAdmin($value);
+                break;
+            case 3:
+                $this->setChanges($value);
+                break;
+            case 4:
                 $this->setExpires($value);
                 break;
         } // switch()
@@ -780,7 +916,9 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setOrganizationId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setProductId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setExpires($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCreatedByAdmin($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setChanges($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setExpires($arr[$keys[4]]);
     }
 
     /**
@@ -794,6 +932,8 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
 
         if ($this->isColumnModified(OrganizationProductPeer::ORGANIZATION_ID)) $criteria->add(OrganizationProductPeer::ORGANIZATION_ID, $this->organization_id);
         if ($this->isColumnModified(OrganizationProductPeer::PRODUCT_ID)) $criteria->add(OrganizationProductPeer::PRODUCT_ID, $this->product_id);
+        if ($this->isColumnModified(OrganizationProductPeer::CREATED_BY_ADMIN)) $criteria->add(OrganizationProductPeer::CREATED_BY_ADMIN, $this->created_by_admin);
+        if ($this->isColumnModified(OrganizationProductPeer::CHANGES)) $criteria->add(OrganizationProductPeer::CHANGES, $this->changes);
         if ($this->isColumnModified(OrganizationProductPeer::EXPIRES)) $criteria->add(OrganizationProductPeer::EXPIRES, $this->expires);
 
         return $criteria;
@@ -867,6 +1007,8 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     {
         $copyObj->setOrganizationId($this->getOrganizationId());
         $copyObj->setProductId($this->getProductId());
+        $copyObj->setCreatedByAdmin($this->getCreatedByAdmin());
+        $copyObj->setChanges($this->getChanges());
         $copyObj->setExpires($this->getExpires());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1036,11 +1178,14 @@ abstract class BaseOrganizationProduct extends BaseObject implements Persistent
     {
         $this->organization_id = null;
         $this->product_id = null;
+        $this->created_by_admin = null;
+        $this->changes = null;
         $this->expires = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

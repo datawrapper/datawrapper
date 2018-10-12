@@ -1,4 +1,4 @@
-<div class="control-group vis-option-group vis-option-type-radio">
+<div class="control-group vis-option-group vis-option-type-radio {inline?'inline':''}">
     <label style="width:{width}" class="control-label">
         {@html label }
     </label>
@@ -59,11 +59,25 @@
             pointer-events: all;
         }
     }
+
     input {
         float: none;
         vertical-align: text-bottom;
     }
 
+    .inline {
+        .form-inline, label {
+            display: inline-block;
+        }
+
+        .control-label {
+            margin-right: 5px;
+        }
+
+        .controls label {
+            margin-top: -2px;
+        }
+    }
 
 </style>
 

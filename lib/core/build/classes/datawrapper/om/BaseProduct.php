@@ -55,6 +55,13 @@ abstract class BaseProduct extends BaseObject implements Persistent
     protected $deleted;
 
     /**
+     * The value for the priority field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $priority;
+
+    /**
      * The value for the data field.
      * @var        string
      */
@@ -158,6 +165,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
     public function applyDefaultValues()
     {
         $this->deleted = false;
+        $this->priority = 0;
     }
 
     /**
@@ -238,6 +246,16 @@ abstract class BaseProduct extends BaseObject implements Persistent
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Get the [priority] column value.
+     *
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 
     /**
@@ -345,6 +363,27 @@ abstract class BaseProduct extends BaseObject implements Persistent
     } // setDeleted()
 
     /**
+     * Set the value of [priority] column.
+     *
+     * @param int $v new value
+     * @return Product The current object (for fluent API support)
+     */
+    public function setPriority($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->priority !== $v) {
+            $this->priority = $v;
+            $this->modifiedColumns[] = ProductPeer::PRIORITY;
+        }
+
+
+        return $this;
+    } // setPriority()
+
+    /**
      * Set the value of [data] column.
      *
      * @param string $v new value
@@ -379,6 +418,10 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 return false;
             }
 
+            if ($this->priority !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -405,7 +448,8 @@ abstract class BaseProduct extends BaseObject implements Persistent
             $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->created_at = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->deleted = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-            $this->data = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->priority = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->data = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -414,7 +458,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 5; // 5 = ProductPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = ProductPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Product object", $e);
@@ -776,6 +820,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductPeer::DELETED)) {
             $modifiedColumns[':p' . $index++]  = '`deleted`';
         }
+        if ($this->isColumnModified(ProductPeer::PRIORITY)) {
+            $modifiedColumns[':p' . $index++]  = '`priority`';
+        }
         if ($this->isColumnModified(ProductPeer::DATA)) {
             $modifiedColumns[':p' . $index++]  = '`data`';
         }
@@ -801,6 +848,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
                         break;
                     case '`deleted`':
                         $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
+                        break;
+                    case '`priority`':
+                        $stmt->bindValue($identifier, $this->priority, PDO::PARAM_INT);
                         break;
                     case '`data`':
                         $stmt->bindValue($identifier, $this->data, PDO::PARAM_STR);
@@ -976,6 +1026,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 return $this->getDeleted();
                 break;
             case 4:
+                return $this->getPriority();
+                break;
+            case 5:
                 return $this->getData();
                 break;
             default:
@@ -1011,7 +1064,8 @@ abstract class BaseProduct extends BaseObject implements Persistent
             $keys[1] => $this->getName(),
             $keys[2] => $this->getCreatedAt(),
             $keys[3] => $this->getDeleted(),
-            $keys[4] => $this->getData(),
+            $keys[4] => $this->getPriority(),
+            $keys[5] => $this->getData(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collProductPlugins) {
@@ -1070,6 +1124,9 @@ abstract class BaseProduct extends BaseObject implements Persistent
                 $this->setDeleted($value);
                 break;
             case 4:
+                $this->setPriority($value);
+                break;
+            case 5:
                 $this->setData($value);
                 break;
         } // switch()
@@ -1100,7 +1157,8 @@ abstract class BaseProduct extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDeleted($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setData($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPriority($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setData($arr[$keys[5]]);
     }
 
     /**
@@ -1116,6 +1174,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
         if ($this->isColumnModified(ProductPeer::NAME)) $criteria->add(ProductPeer::NAME, $this->name);
         if ($this->isColumnModified(ProductPeer::CREATED_AT)) $criteria->add(ProductPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(ProductPeer::DELETED)) $criteria->add(ProductPeer::DELETED, $this->deleted);
+        if ($this->isColumnModified(ProductPeer::PRIORITY)) $criteria->add(ProductPeer::PRIORITY, $this->priority);
         if ($this->isColumnModified(ProductPeer::DATA)) $criteria->add(ProductPeer::DATA, $this->data);
 
         return $criteria;
@@ -1183,6 +1242,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
         $copyObj->setName($this->getName());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setDeleted($this->getDeleted());
+        $copyObj->setPriority($this->getPriority());
         $copyObj->setData($this->getData());
 
         if ($deepCopy && !$this->startCopy) {
@@ -2551,6 +2611,7 @@ abstract class BaseProduct extends BaseObject implements Persistent
         $this->name = null;
         $this->created_at = null;
         $this->deleted = null;
+        $this->priority = null;
         $this->data = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

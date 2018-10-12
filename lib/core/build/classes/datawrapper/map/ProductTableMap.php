@@ -42,6 +42,7 @@ class ProductTableMap extends TableMap
         $this->addColumn('name', 'Name', 'VARCHAR', true, 512, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', true, null, null);
         $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, false);
+        $this->addColumn('priority', 'Priority', 'INTEGER', false, null, 0);
         $this->addColumn('data', 'Data', 'CLOB', false, null, null);
         // validators
     } // initialize()

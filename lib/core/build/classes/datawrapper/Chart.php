@@ -481,6 +481,7 @@ class Chart extends BaseChart {
         if (empty($this->getPublicChart())) {
             // create new public chart
             $publicChart = new PublicChart();
+            $publicChart->setFirstPublishedAt(time());
             $this->setPublicChart($publicChart);
         }
         $this->getPublicChart()->update();

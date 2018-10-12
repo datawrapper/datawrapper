@@ -24,13 +24,13 @@ abstract class BasePublicChartPeer
     const TM_CLASS = 'PublicChartTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the id field */
     const ID = 'chart_public.id';
@@ -46,6 +46,15 @@ abstract class BasePublicChartPeer
 
     /** the column name for the external_data field */
     const EXTERNAL_DATA = 'chart_public.external_data';
+
+    /** the column name for the first_published_at field */
+    const FIRST_PUBLISHED_AT = 'chart_public.first_published_at';
+
+    /** the column name for the author_id field */
+    const AUTHOR_ID = 'chart_public.author_id';
+
+    /** the column name for the organization_id field */
+    const ORGANIZATION_ID = 'chart_public.organization_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +75,12 @@ abstract class BasePublicChartPeer
      * e.g. PublicChartPeer::$fieldNames[PublicChartPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Type', 'Metadata', 'ExternalData', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'type', 'metadata', 'externalData', ),
-        BasePeer::TYPE_COLNAME => array (PublicChartPeer::ID, PublicChartPeer::TITLE, PublicChartPeer::TYPE, PublicChartPeer::METADATA, PublicChartPeer::EXTERNAL_DATA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'TYPE', 'METADATA', 'EXTERNAL_DATA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'type', 'metadata', 'external_data', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'Type', 'Metadata', 'ExternalData', 'FirstPublishedAt', 'AuthorId', 'OrganizationId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'type', 'metadata', 'externalData', 'firstPublishedAt', 'authorId', 'organizationId', ),
+        BasePeer::TYPE_COLNAME => array (PublicChartPeer::ID, PublicChartPeer::TITLE, PublicChartPeer::TYPE, PublicChartPeer::METADATA, PublicChartPeer::EXTERNAL_DATA, PublicChartPeer::FIRST_PUBLISHED_AT, PublicChartPeer::AUTHOR_ID, PublicChartPeer::ORGANIZATION_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'TYPE', 'METADATA', 'EXTERNAL_DATA', 'FIRST_PUBLISHED_AT', 'AUTHOR_ID', 'ORGANIZATION_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'type', 'metadata', 'external_data', 'first_published_at', 'author_id', 'organization_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -81,12 +90,12 @@ abstract class BasePublicChartPeer
      * e.g. PublicChartPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Type' => 2, 'Metadata' => 3, 'ExternalData' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'type' => 2, 'metadata' => 3, 'externalData' => 4, ),
-        BasePeer::TYPE_COLNAME => array (PublicChartPeer::ID => 0, PublicChartPeer::TITLE => 1, PublicChartPeer::TYPE => 2, PublicChartPeer::METADATA => 3, PublicChartPeer::EXTERNAL_DATA => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'TYPE' => 2, 'METADATA' => 3, 'EXTERNAL_DATA' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'type' => 2, 'metadata' => 3, 'external_data' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'Type' => 2, 'Metadata' => 3, 'ExternalData' => 4, 'FirstPublishedAt' => 5, 'AuthorId' => 6, 'OrganizationId' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'type' => 2, 'metadata' => 3, 'externalData' => 4, 'firstPublishedAt' => 5, 'authorId' => 6, 'organizationId' => 7, ),
+        BasePeer::TYPE_COLNAME => array (PublicChartPeer::ID => 0, PublicChartPeer::TITLE => 1, PublicChartPeer::TYPE => 2, PublicChartPeer::METADATA => 3, PublicChartPeer::EXTERNAL_DATA => 4, PublicChartPeer::FIRST_PUBLISHED_AT => 5, PublicChartPeer::AUTHOR_ID => 6, PublicChartPeer::ORGANIZATION_ID => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'TYPE' => 2, 'METADATA' => 3, 'EXTERNAL_DATA' => 4, 'FIRST_PUBLISHED_AT' => 5, 'AUTHOR_ID' => 6, 'ORGANIZATION_ID' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'type' => 2, 'metadata' => 3, 'external_data' => 4, 'first_published_at' => 5, 'author_id' => 6, 'organization_id' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -165,12 +174,18 @@ abstract class BasePublicChartPeer
             $criteria->addSelectColumn(PublicChartPeer::TYPE);
             $criteria->addSelectColumn(PublicChartPeer::METADATA);
             $criteria->addSelectColumn(PublicChartPeer::EXTERNAL_DATA);
+            $criteria->addSelectColumn(PublicChartPeer::FIRST_PUBLISHED_AT);
+            $criteria->addSelectColumn(PublicChartPeer::AUTHOR_ID);
+            $criteria->addSelectColumn(PublicChartPeer::ORGANIZATION_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.title');
             $criteria->addSelectColumn($alias . '.type');
             $criteria->addSelectColumn($alias . '.metadata');
             $criteria->addSelectColumn($alias . '.external_data');
+            $criteria->addSelectColumn($alias . '.first_published_at');
+            $criteria->addSelectColumn($alias . '.author_id');
+            $criteria->addSelectColumn($alias . '.organization_id');
         }
     }
 

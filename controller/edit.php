@@ -118,7 +118,7 @@
             );
 
             if (Hooks::hookRegistered(Hooks::REPLACE_PUBLISH_LOGIC)) {
-                $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC)[0];
+                $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC, $user, $chart)[0];
             }
 
             // legacy stuff, need to move into ChartEditor some day

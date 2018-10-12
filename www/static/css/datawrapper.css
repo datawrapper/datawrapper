@@ -660,13 +660,20 @@ html .btn .fa.icon-btn-left {
 html .btn .fa.icon-btn-right {
   margin-right: -6px;
 }
+html .btn-primary,
+html .btn-success {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+  box-shadow: none;
+  background-repeat: repeat-x;
+}
 html .btn-primary {
   color: #fff!important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
   background-color: #1d81a2;
-  background-repeat: repeat-x;
-  box-shadow: none;
   border-color: darker(#1d81a2, 5%);
+}
+html .btn-success {
+  background-color: #09bb9f !important;
+  border-color: darker(#09bb9f, 5%);
 }
 html .btn-primary:hover,
 html .btn-primary:focus,
@@ -2267,8 +2274,8 @@ body.cms-mode .row.create-nav {
   top: -8px;
   right: -8px;
   padding: 8px 40px 8px 10px;
-  background: #9cbfd1;
-  color: #f9f9f9;
+  background: #18a1cd;
+  color: #fff;
   width: 350px;
   border-radius: 4px;
   box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
@@ -2290,9 +2297,9 @@ body.cms-mode .row.create-nav {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #9cbfd1;
+  background: transparent;
   text-align: center;
-  color: #f9f9f9;
+  color: #6c6e6f66;
   font-size: 17px;
   line-height: 24px;
 }
@@ -3425,10 +3432,10 @@ input[type="color"],
 }
 .did-you-know {
   margin-top: 30px;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.4;
   padding: 10px;
-  background: #09c;
+  background: #18a1cd;
   color: white;
 }
 .did-you-know .close {

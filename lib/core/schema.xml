@@ -51,6 +51,9 @@
     <column name="type" type="varchar" size="200" required="true" />
     <column name="metadata" type="clob" required="true" />
     <column name="external_data" type="varchar" size="255" required="false" />
+    <column name="first_published_at" type="timestamp" />
+    <column name="author_id" type="integer" required="false"/>
+    <column name="organization_id" type="varchar" size="128" required="false" />
     <foreign-key foreignTable="chart">
       <reference local="id" foreign="id"/>
     </foreign-key>
@@ -219,6 +222,7 @@
     <column name="name" type="varchar" size="512" required="true" />
   <column name="created_at" type="timestamp" required="true" />
   <column name="deleted" type="boolean" default="false" />
+  <column name="priority" type="integer" default="0" />
   <column name="data" type="clob" />
   </table>
 
@@ -243,7 +247,9 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   <column name="user_id" type="integer" primaryKey="true" />
-    <column name="product_id" type="integer" primaryKey="true" />
+  <column name="product_id" type="integer" primaryKey="true" />
+  <column name="created_by_admin" type="boolean" default="true" />
+  <column name="changes" type="clob" required="false" />
   <column name="expires" type="timestamp" />
     <foreign-key foreignTable="user">
       <reference local="user_id" foreign="id"/>
@@ -260,6 +266,8 @@
     </vendor>
     <column name="organization_id" type="varchar" size="128" primaryKey="true" />
     <column name="product_id" type="integer" primaryKey="true" />
+    <column name="created_by_admin" type="boolean" default="true" />
+    <column name="changes" type="clob" required="false" />
     <column name="expires" type="timestamp" />
     <foreign-key foreignTable="organization">
       <reference local="organization_id" foreign="id"/>

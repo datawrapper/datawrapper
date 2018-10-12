@@ -13,22 +13,40 @@ export default function(chart, chartCont) {
             text: '.dw-chart-notes',
             block: '.dw-chart-notes',
             key: 'metadata.annotate.notes'
+        }, {
+            text: '.byline-block .chart-byline',
+            block: '.footer-block.byline-block',
+            key: 'metadata.describe.byline'
+        }, {
+            text: '.source-block a',
+            block: '.footer-block.source-block',
+            key: 'metadata.describe.source-name'
+        }, {
+            text: '.source-block a',
+            key: 'metadata.describe.source-url',
+            href: true
         }
     ];
 
-    keys.forEach(({text, block, key}) => {
+    keys.forEach(({text, block, key, href}) => {
         const txt = chartCont.querySelector(text);
         const cont = chartCont.querySelector(block);
 
         chart.observeDeep(key, (value, old) => {
             if (chart.isPassive()) return;
             if (value != old) {
-                txt.innerHTML = value;
-                if (value && !old) {
-                    cont.classList.remove('hidden');
-                } else if (!value && old) {
-                    cont.classList.add('hidden');
+                if (href) txt.setAttribute('href', value);
+                else txt.innerHTML = value;
+                if (cont) {
+                    value = value && value.trim ? value.trim() : value;
+                    old = old && old.trim ? old.trim() : old;
+                    if (value && !old) {
+                        cont.classList.remove('hidden');
+                    } else if (!value && old) {
+                        cont.classList.add('hidden');
+                    }
                 }
+
             }
         });
     });
