@@ -91,6 +91,7 @@
     function initResizeHandler(vis, container) {
         var height = vis.meta.height || 'fit',
             curWidth = container.width(),
+            resizeTimeout = null,
             resize = (height == 'fixed' ? resizeFixed : renderLater);
 
         // IE continuosly reloads the chart for some strange reasons
@@ -101,12 +102,16 @@
         }
 
         function resizeFixed() {
-            var w = container.width();
-            // console.log(curWidth, w);            
-            if (Math.abs(curWidth - w) > 10) {
-                curWidth = w;
-                renderLater();
-            }
+            clearTimeout(resizeTimeout);
+
+            resizeTimeout = setTimeout(function() {
+                var w = container.width();
+                // console.log(curWidth, w)      
+                if (Math.abs(curWidth - w) > 10) {
+                    curWidth = w;
+                    renderLater();
+                }
+            }, 20);
         }
     }
 
