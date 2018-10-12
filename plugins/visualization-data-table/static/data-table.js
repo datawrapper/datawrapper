@@ -24,6 +24,12 @@
                 useSquareFlags = me.get('flag-icon-type') == '1x1',
                 dataset = me.dataset;
 
+            try {
+                if (window.parent.dw) {}
+            } catch (ex) {
+                $(window).off("resize");
+            }            
+
             if (replaceFlagIcons) {
                 // load flag icon stylesheet
                 $('<link rel="stylesheet" type="text/css" href="//static.dwcdn.net/css/flag-icons/flag-icon.min.css">').appendTo(el);
