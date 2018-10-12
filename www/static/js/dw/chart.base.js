@@ -102,8 +102,8 @@
 
         function resizeFixed() {
             var w = container.width();
-            // console.log(curWidth, w);
-            if (curWidth != w) {
+            // console.log(curWidth, w);            
+            if (Math.abs(curWidth - w) > 10) {
                 curWidth = w;
                 renderLater();
             }
