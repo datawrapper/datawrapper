@@ -222,6 +222,7 @@
                         lblcl.push('highlighted');
                     }
                     if (d.bw < 30) {
+                        $('.dw-chart-body').removeClass('rotated-labels');
                         //lblcl.push('rotate90');
                         lbl_y += 5;
                         lbl_w = 100;
@@ -232,6 +233,7 @@
                         lbl_w = 90;
                     }
                     if (d.bw < 30) {
+                        $('.dw-chart-body').addClass('rotated-labels');
                         lblcl.push('rotate90');
                     }
 
