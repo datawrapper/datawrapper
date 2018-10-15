@@ -322,7 +322,8 @@
                         line = c.paper.path('M'+cxy(c.or+4)+'L'+cxy(c.or+8)+'L'+[lx-5, ly + h*0.5]);
                     }
                     me.registerElement(line, lbl.data('key'));
-                    line[0].classList.add("connected-line")
+
+                    line[0].setAttribute('class','connected-line');
                     line.attr('opacity', 0);                    
                     lbl.el.data('line', line);
 
