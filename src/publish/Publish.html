@@ -252,6 +252,7 @@
     import Action from './Action.html';
 
     import {__} from '../shared/l10n';
+    import {trackEvent} from '../shared/analytics';
     import {getJSON, postJSON, loadScript, loadStylesheet} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
@@ -303,12 +304,16 @@
 
                 // save embed heights and wait until it's done before
                 // we start to publish the chart
+                trackEvent('Chart Editor', 'publish');
+
                 chart.store(() => {
                     // publish chart
                     postJSON(`/api/charts/${chart.get().id}/publish`, null, (res) => {
                         if (res.status == 'ok') {
                             this.publishFinished(res.data);
+                            trackEvent('Chart Editor', 'publish-success');
                         } else {
+                            trackEvent('Chart Editor', 'publish-error', res.message);
                             this.set({
                                 publish_error: res.message
                             });
@@ -358,6 +363,7 @@
                 try {
                     var successful = document.execCommand('copy');
                     if (successful) {
+                        trackEvent('Chart Editor', 'embedcode-copy');
                         me.set({copy_success: true});
                         setTimeout(() => me.set({copy_success:false}), 300);
                     }
@@ -404,6 +410,7 @@
 
             duplicate() {
                 const {id} = this.store.get();
+                trackEvent('Chart Editor', 'duplicate');
                 postJSON(`/api/charts/${id}/copy`, null, (res) => {
                     if (res.status == "ok") {
                         // redirect to copied chart

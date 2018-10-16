@@ -204,6 +204,7 @@
     import Help from '../editor/Help.html';
 
     import {__} from '../shared/l10n';
+    import {trackEvent} from '../shared/analytics';
     import {getJSON, postJSON} from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
@@ -255,12 +256,16 @@
                 me.set({chart});
                 // save embed heights and wait until it's done before
                 // we start to publish the chart
+                trackEvent('Chart Editor', 'publish');
+
                 window.chart.attributes(chart).save().then((d) => {
                     // publish chart
                     postJSON(`/api/charts/${chart.id}/publish`, null, (res) => {
                         if (res.status == 'ok') {
+                            trackEvent('Chart Editor', 'publish-success');
                             me.publishFinished(res.data);
                         } else {
+                            trackEvent('Chart Editor', 'publish-error', res.message);
                             me.set({publish_error: res.message });
                         }
                     });
@@ -309,6 +314,7 @@
                     var successful = document.execCommand('copy');
                     var msg = successful ? 'successful' : 'unsuccessful';
                     if (successful) {
+                        trackEvent('Chart Editor', 'embedcode-copy');
                         me.set({copy_success: true});
                         setTimeout(() => me.set({copy_success:false}), 300);
                     }
