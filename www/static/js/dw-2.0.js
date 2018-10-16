@@ -1,4 +1,4 @@
-/*! datawrapper - v1.22.0 *///
+/*! datawrapper - v1.22.1 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -543,6 +543,12 @@ dw.column.types.number = function(sample) {
                         'n6';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
+                if(prepend.includes("{+/-}")) {
+                    if (val < 0) { val = val.replace("-",0); prepend = prepend.replace("{+/-}","-"); }
+                    else if (val > 0) prepend = prepend.replace("{+/-}","+");
+                    else prepend = prepend.replace("{+/0}","");
+                }
+
                 return full ? prepend + val + append : val;
             };
         },

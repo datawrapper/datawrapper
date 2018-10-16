@@ -138,6 +138,12 @@ dw.column.types.number = function(sample) {
                         'n6';
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
+                if(prepend.includes("{+/-}")) {
+                    if (val < 0) { val = val.replace("-",0); prepend = prepend.replace("{+/-}","-"); }
+                    else if (val > 0) prepend = prepend.replace("{+/-}","+");
+                    else prepend = prepend.replace("{+/0}","");
+                }
+
                 return full ? prepend + val + append : val;
             };
         },
