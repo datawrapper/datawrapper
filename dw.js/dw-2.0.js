@@ -546,7 +546,7 @@ dw.column.types.number = function(sample) {
                 if(prepend.includes("{+/-}")) {
                     if (val < 0) { val = val.replace("-",0); prepend = prepend.replace("{+/-}","-"); }
                     else if (val > 0) prepend = prepend.replace("{+/-}","+");
-                    else prepend = prepend.replace("{+/0}","");
+                    else prepend = prepend.replace("{+/-}","");
                 }
 
                 return full ? prepend + val + append : val;
