@@ -269,6 +269,8 @@ class DatawrapperHooks {
     const ADD_WORKFLOW = 'ADD_WORKFLOW';
 
     const REPLACE_PUBLISH_LOGIC = 'replace_publish_logic';
+
+    const CORE_SET_CHART = 'core_set_chart';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');

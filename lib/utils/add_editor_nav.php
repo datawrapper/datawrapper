@@ -10,6 +10,10 @@ function add_editor_nav(&$page, $step, $chart) {
         $steps[$i]['index'] = $i+1;
     }
 
+    Hooks::register(Hooks::CORE_SET_CHART, function() use ($chart) {
+        return $chart;
+    });
+
     $page['steps'] = $steps;
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);

@@ -96,6 +96,10 @@
                 $step = $workflow['steps'][max(0, $last_step)];
             }
 
+            Hooks::register(Hooks::CORE_SET_CHART, function() use ($chart) {
+                return $chart;
+            });
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',
