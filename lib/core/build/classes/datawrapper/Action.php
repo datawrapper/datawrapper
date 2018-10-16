@@ -27,6 +27,7 @@ class Action extends BaseAction {
         }
         $action->setActionTime(time());
         $action->save();
+        return $action;
     }
 
 } // Action
