@@ -13,7 +13,7 @@
         "nb": "No data available in table",
         "da": "Ingen resultater",
         "nb": "Ingen data tilgjengelig i tabellen",
-        "se": "No data available in table"
+        "se": "Tabellen innehåller ingen data"
     },
     "sInfo": {
         "en": "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -29,7 +29,7 @@
         "nb": "Showing _START_ to _END_ of _TOTAL_ entries",
         "da": "Viser _START_-_END_ af _TOTAL_ rækker",
         "nb": "Viser _START_ til _END_ av _TOTAL_ linjer",
-        "se": "Visar _START_ till _END_ av _TOTAL_ antalet poster"
+        "se": "Visar _START_ till _END_ av totalt _TOTAL_ rader"
     },
     "sInfoEmpty": {
         "en": "Showing 0 to 0 of 0 entries",
@@ -45,7 +45,7 @@
         "nb": "Showing 0 to 0 of 0 entries",
         "da": "Viser 0-0 af 0 rækker",
         "nb": "Viser 0 til 0 av 0 linjer",
-        "se": "–"
+        "se": "Visar 0 till 0 av totalt 0 rader"
     },
     "sInfoFiltered": {
         "en": "(filtered from _MAX_ total entries)",
@@ -61,7 +61,7 @@
         "nb": "(filtered from _MAX_ total entries)",
         "da": "(ud af i alt _MAX_ rækker)",
         "nb": "(filtrert fra _MAX_ totalt antall linjer)",
-        "se": "(Filrerat från _MAX_ totala antalet poster"
+        "se": "(filtrerade från totalt _MAX_ rader)"
     },
     "sInfoThousands": {
         "en": ",",
@@ -77,7 +77,7 @@
         "nb": ",",
         "da": ",",
         "nb": " ",
-        "se": ","
+        "se": " "
     },
     "sLengthMenu": {
         "en": "Show _MENU_ entries",
@@ -93,7 +93,7 @@
         "nb": "Show _MENU_ entries",
         "da": "Viser _MENU_ rækker",
         "nb": "Vis _MENU_ linjer",
-        "se": "Visa _MENU_ poster"
+        "se": "Visa _MENU_ rader"
     },
     "sLoadingRecords": {
         "en": "Loading...",
@@ -109,7 +109,7 @@
         "nb": "Loading...",
         "da": "Loading...",
         "nb": "Laster...",
-        "se": "Loading..."
+        "se": "Laddar..."
     },
     "sProcessing": {
         "en": "Processing...",
@@ -125,7 +125,7 @@
         "nb": "Processing...",
         "da": "Processing...",
         "nb": "Laster...",
-        "se": "Processing..."
+        "se": "Bearbetar..."
     },
     "sSearch": {
         "en": "Search:",
@@ -157,7 +157,7 @@
         "nb": "No matching records found",
         "da": "Ingen resultater",
         "nb": "Ingen linjer matcher s&oslash;ket",
-        "se": "Inga matchande resultat funna"
+        "se": "Hittade inga matchande resultat",
     },
     "oPaginate_sFirst": {
         "en": "First",
@@ -189,7 +189,7 @@
         "nb": "Last",
         "da": "Sidste",
         "nb": "Siste",
-        "se": "Siste"
+        "se": "Sista"
     },
     "oPaginate_sNext": {
         "en": "Next",
@@ -237,7 +237,7 @@
         "nb": ": activate to sort column ascending",
         "da": ": activate to sort column ascending",
         "nb": ": aktiver for å sortere kolonnen stigende",
-        "se": ": activate to sort column ascending"
+        "se": ": aktivera för att sortera kolumnen i stigande ordning"
     },
     "oAria_sSortDescending": {
         "en": ": activate to sort column descending",
@@ -253,6 +253,6 @@
         "nb": ": activate to sort column descending",
         "da": ": activate to sort column descending",
         "nb": ": aktiver for å sortere kolonnen synkende",
-        "se": ": activate to sort column descending"
+        "se": ": aktivera för att sortera kolumnen i fallande ordning"
     }
 }
