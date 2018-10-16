@@ -74,7 +74,7 @@ class Chart extends BaseChart {
         $chart = $this->serialize();
         if ($public) {
             // remove any sensitive user data
-            unset($chart['author']);
+            // unset($chart['author']);
         }
         return $chart;
     }
