@@ -39,6 +39,15 @@
                 return list.join(' ');
             }
         },
+        onupdate({changed, current}) {
+            if (changed.active_i) {
+                const step = current.steps[current.active_i];
+                if (step) {
+                    const {id, title} = this.store.get();
+                    window.document.title = `${title} - ${id} - ${step.title} | Datawrapper`;
+                }
+            }
+        },
         data() {
             return {
                 step: {

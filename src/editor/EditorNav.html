@@ -1,3 +1,5 @@
+<:Window on:popstate='popstate(event)'/>
+
 <div class="create-nav">
     {#each steps as step,i}
     <EditorNavStep on:select="select(step, i)"
@@ -21,6 +23,7 @@
 
     import EditorNavStep from './EditorNavStep.html';
     import _findWhere from 'underscore-es/findWhere';
+    import {trackPageView} from '../shared/analytics';
 
     export default {
         components: { EditorNavStep },
@@ -29,13 +32,29 @@
                 this.set({active: step.id});
                 const {lastEditStep} = this.store.get();
                 this.store.set({lastEditStep: Math.max(lastEditStep, index+1)})
+                trackPageView();
+            },
+            popstate(event) {
+                if (event.state && event.state.id && event.state.step) {
+                    const {id, step} = event.state;
+                    if (id == this.store.get().id) {
+                        // same chart id
+                        this.set({active: step.id});
+                        trackPageView();
+                    } else {
+                        // need to reload
+                        window.location.href = `/edit/${id}/${step.id}`;
+                    }
+                }
             }
         },
         oncreate() {
             const {active, steps} = this.get();
-            const {lastEditStep} = this.store.get();
+            const {lastEditStep, id} = this.store.get();
             const step = _findWhere(steps, {id:active});
             this.store.set({lastEditStep: Math.max(lastEditStep, steps.indexOf(step)+1)});
+            // make sure the initial state is stored
+            window.history.replaceState({step,id}, step.title);
         },
         data() {
             return {
