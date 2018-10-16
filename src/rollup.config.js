@@ -23,13 +23,17 @@ build('account');
 
 export default targets;
 
-
 function build(app_id, opts) {
     const {no_amd, entry, append} = Object.assign({
         no_amd: false,
         entry: 'main.js',
         append: ''
     }, opts);
+    if (process.env.ROLLUP_TGT_APP) {
+        if (app_id != process.env.ROLLUP_TGT_APP) {
+            return;
+        }
+    }
     targets.push({
         input: `${app_id}/${entry}`,
         external: [

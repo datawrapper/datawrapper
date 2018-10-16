@@ -27,7 +27,18 @@ translations:
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
-svelte:
+svelte: \
+	www/static/js/svelte/account.js \
+	www/static/js/svelte/controls.js \
+	www/static/js/svelte/controls/hot.js \
+	www/static/js/svelte/describe.js \
+	www/static/js/svelte/editor.js \
+	www/static/js/svelte/publish.js \
+	www/static/js/svelte/publish/sidebar.js \
+	www/static/js/svelte/publish_old.js \
+	www/static/js/svelte/upload.js
+
+svelte-all:
 	cd src && ../node_modules/.bin/rollup -c
 
 svelte-dev:
@@ -40,3 +51,31 @@ propel:
 	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen om
 	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen sql
 	composer dump-autoload
+
+
+www/static/js/svelte/account.js: src/account/*
+	cd src && ROLLUP_TGT_APP=account ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/controls.js: src/controls/* src/editor/*
+	cd src && ROLLUP_TGT_APP=controls ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/controls/hot.js: src/controls/hot/*
+	cd src && ROLLUP_TGT_APP=controls/hot ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/describe.js: src/describe/*
+	cd src && ROLLUP_TGT_APP=describe ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/editor.js: src/editor/*
+	cd src && ROLLUP_TGT_APP=editor ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/publish.js: src/publish/*
+	cd src && ROLLUP_TGT_APP=publish ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/publish_old.js: src/publish/*
+	cd src && ROLLUP_TGT_APP=publish_old ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/publish/sidebar.js: src/publish/sidebar/*
+	cd src && ROLLUP_TGT_APP=publish/sidebar ../node_modules/.bin/rollup -c
+
+www/static/js/svelte/upload.js: src/upload/*
+	cd src && ROLLUP_TGT_APP=upload ../node_modules/.bin/rollup -c
