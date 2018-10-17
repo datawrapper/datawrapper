@@ -677,7 +677,7 @@ class Chart extends BaseChart {
         $res = Hooks::execute(Hooks::ADD_WORKFLOW);
         foreach ($res as $wf) {
             if ($wf['id'] == $vis['svelte-workflow']) {
-                return $wf['default_step'];
+                return $wf['default_step'] ?? 'visualize';
             }
         }
         return 'visualize';
