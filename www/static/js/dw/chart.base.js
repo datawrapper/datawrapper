@@ -45,23 +45,30 @@
         initResizeHandler(vis, $chart);
 
         // update data link to point to edited dataset
-        if (!window['__ltie9']) {
-            if (window.navigator.msSaveOrOpenBlob){
-                var blobObject = new Blob([chart.dataset().toCSV()]);
-                $('a[href=data]')
-                    .addClass('dw-data-link')
-                    .click(function() {
-                        window.navigator.msSaveOrOpenBlob(blobObject, 'data-' + chart.get('id') + '.csv');
-                        return false;
-                    });
-            } else {
-                $('a[href=data]')
-                    .addClass('dw-data-link')
-                    .attr('download', 'data-'+chart.get('id')+'.csv')
-                    .attr('href', 'data:application/octet-stream;charset=utf-8,' +
-                        encodeURIComponent(chart.dataset().toCSV()));
+        var csv = chart.dataset().toCSV();
+        if (!csv || csv && csv.trim && csv.trim() == 'X.1') {
+            // hide get the data link
+            $('.chart-action-data').addClass('hidden');
+        } else {
+            if (!window['__ltie9']) {
+                if (window.navigator.msSaveOrOpenBlob){
+                    var blobObject = new Blob([csv]);
+                    $('a[href=data]')
+                        .addClass('dw-data-link')
+                        .click(function() {
+                            window.navigator.msSaveOrOpenBlob(blobObject, 'data-' + chart.get('id') + '.csv');
+                            return false;
+                        });
+                } else {
+                    $('a[href=data]')
+                        .addClass('dw-data-link')
+                        .attr('download', 'data-'+chart.get('id')+'.csv')
+                        .attr('href', 'data:application/octet-stream;charset=utf-8,' +
+                            encodeURIComponent(csv));
+                }
             }
         }
+
 
         chart.render($chart);
     }
@@ -90,7 +97,7 @@
 
     function initResizeHandler(vis, container) {
         var height = vis.meta.height || 'fit',
-            curWidth = container.width(),            
+            curWidth = container.width(),
             resize = (height == 'fixed' ? resizeFixed : renderLater);
 
         // IE continuosly reloads the chart for some strange reasons
@@ -101,7 +108,7 @@
         }
 
         function resizeFixed() {
-            var w = container.width();         
+            var w = container.width();
             if (curWidth != w) {
                 curWidth = w;
                 renderLater();
