@@ -43,7 +43,9 @@ chart.set({
     });
     {% endif %}
 
-    window.history.replaceState({}, '', '/edit/{{chart.id}}/{{step}}');
+    if (window.location.pathname.split('/')[3] != '{{step}}') {
+        window.history.replaceState({id:'{{chart.id}}'}, '', '/edit/{{chart.id}}/{{step}}');
+    }
 
     var app = mod.app = new App({
         store: chart,
