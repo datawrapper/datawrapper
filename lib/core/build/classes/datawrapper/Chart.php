@@ -669,6 +669,20 @@ class Chart extends BaseChart {
         return $vis['namespace'] ?? 'chart';
     }
 
+    public function getDefaultStep() {
+        if (!DatawrapperVisualization::has($this->getType())) return 'visualize';
+        $vis = DatawrapperVisualization::get($this->getType());
+        if (empty($vis['svelte-workflow'])) return 'visualize';
+        $workflows = [];
+        $res = Hooks::execute(Hooks::ADD_WORKFLOW);
+        foreach ($res as $wf) {
+            if ($wf['id'] == $vis['svelte-workflow']) {
+                return $wf['default_step'];
+            }
+        }
+        return 'visualize';
+    }
+
     public function isFork() {
         return $this->getIsFork();
     }

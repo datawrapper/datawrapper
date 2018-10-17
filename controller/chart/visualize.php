@@ -22,7 +22,7 @@ $app->get('/(chart|map)/:id/:step', function ($id, $step) use ($app) {
 
         // check if this chart type is using the new editor
         $vis = DatawrapperVisualization::get($chart->getType());
-        if (!empty($vis['svelte_workflow']) && $vis['svelte_workflow'] != 'chart') {
+        if (!empty($vis['svelte-workflow']) && $vis['svelte-workflow'] != 'chart') {
             $app->redirect('/edit/'.$chart->getId());
             return;
         }

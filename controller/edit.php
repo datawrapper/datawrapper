@@ -45,6 +45,7 @@
         editor_check_access();
 
         $workflows = $get_workflows();
+
         if (!empty($wfid)) {
             if (empty($workflows[$wfid])) {
                 return $app->redirect('/create');
@@ -83,13 +84,14 @@
         $chart = ChartQuery::create()->findPK($chart_id);
 
         check_chart_writable($chart_id, function($user, $chart) use ($app, $step, $get_workflows) {
+            $req = $app->request();
             $vis = Visualization::get($chart->getType());
             // get list of all workflows
             $workflows = $get_workflows();
-            if (empty($workflows[$vis['svelte_workflow']])) {
-                die('workflow '.$vis['svelte_workflow'].' not found');
+            if (empty($workflows[$vis['svelte-workflow']])) {
+                die('workflow '.$vis['svelte-workflow'].' not found');
             }
-            $workflow = $workflows[$vis['svelte_workflow']];
+            $workflow = $workflows[$vis['svelte-workflow']];
             if (!in_array($step, $workflow['steps'])) {
                 // auto-redirect to last step
                 $last_step = min($chart->getLastEditStep(), count($workflow['steps'])) - 1;
@@ -107,7 +109,7 @@
                 'chart' => $chart,
                 'dataReadonly' => !$chart->isDataWritable($user),
                 'chartData' => $chart->loadData(),
-                'workflow' => $workflows[$vis['svelte_workflow']],
+                'workflow' => $workflows[$vis['svelte-workflow']],
                 'userArray' => $user->serialize(),
                 'vis' => $vis,
                 'chartLocales' => array_map(function($s) {

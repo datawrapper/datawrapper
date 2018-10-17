@@ -66,8 +66,8 @@ class DatawrapperVisualization {
                 ['id'=>'publish', 'title'=>__('Publish & Embed')]
             ];
         }
-        if (empty($meta['svelte_workflow'])) {
-            $meta['svelte_workflow'] = 'chart';
+        if (empty($meta['svelte-workflow'])) {
+            $meta['svelte-workflow'] = 'chart';
         }
         $this->visualizations[$meta['id']] = $meta;
         if ($asset_callback) {

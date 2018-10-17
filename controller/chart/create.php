@@ -78,13 +78,13 @@ $app->map('/chart/create', function() use ($app) {
                         $chart->setType($chart_tpl->getType());
                     }
                     $chart->setForkedFrom($chart_tpl->getId());
-                    $step = 'visualize';
+                    $step = $chart->getDefaultStep().'?tpl='.$chart_tpl->getId();
                     $chart->setLastEditStep(3);
-                    Action::logAction(DatawrapperSession::getUser(), 'chart-template', $chart_tpl->getId());
+                    Action::logAction(Session::getUser(), 'chart-template', $chart_tpl->getId());
                 }
             }
         }
         $chart->save();
-        $app->redirect('/' . $chart->getNamespace() . '/'.$chart->getId().'/'.$step);
+        $app->redirect('/'.$chart->getNamespace().'/'.$chart->getId().'/'.$step);
     }
 })->via('GET', 'POST');
