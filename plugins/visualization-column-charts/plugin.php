@@ -3,15 +3,78 @@
 class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visualization{
 
     public function init() {
-        DatawrapperVisualization::register($this, $this->getMeta_Simple());
-        DatawrapperVisualization::register($this, $this->getMeta_Grouped());
-        DatawrapperVisualization::register($this, $this->getMeta_Stacked());
-    }
+        $groupXAxis = [
+            "type" => "group",
+            "label" => __("settings / x-axis"),
+            "options" => [
+                "rotate-labels" => array(                            
+                    "label" => __("settings / rotate"),                            
+                    "type" => "radio",                            
+                    "options" => [
+                        "auto" => __("settings / auto"),
+                        "on" => __("settings / always"),
+                        "off" => __("settings / never")
+                    ],
+                    "default" => 'auto'
+                )
+            ]
+        ];
 
-    public function getMeta_Simple(){
-        $id = $this->getName();
+        $groupYAxis = [
+            "type" => "group",
+            "label" => __("settings / y-axis"),
+            "options" => [
+                'custom-range' => [
+                    'type' => 'custom-range',
+                    'label' => __('settings / extend-range'),
+                    "depends-on" => array(
+                        "normalize" => false
+                    )
+                ],
+                "grid-lines" => array(
+                    "type" => "radio",
+                    "label" => __("Grid lines"),
+                    "options" => array(
+                        array("value" => "show", "label" => __("Show")),
+                        array("value" => "hide", "label" => __("Hide"))
+                    ),
+                    "default" => 'show'
+                ),                        
+                "custom-ticks" => array(
+                    "type" => "text",
+                    "label" => __("settings / custom-ticks"),
+                    "depends-on" => array(
+                        "grid-lines" => "show"
+                    )
+                ),
+                "grid-label-position" => array(
+                    "type" => "radio",
+                    "label" => __("settings / grid-position"),
+                    "options" => array(
+                        "left" => __("settings / left"),
+                        "right" => __("settings / left")
+                    ),
+                    "default" => "left",
+                    "depends-on" => array(
+                        "grid-lines" => "show"                                
+                    )
+                ),
+                "grid-labels" => array(
+                    "type" => "radio",
+                    "label" => __("settings / label-position"),
+                    "options" => array(
+                        array("value" => "outside", "label" => __("settings / outside")),
+                        array("value" => "inside", "label" => __("settings / inside")),
+                    ),
+                    "default" => "inside",
+                    "depends-on" => array(
+                        "grid-lines" => "show"
+                    )
+                )
+            ]            
+        ];
 
-        $meta = array(
+        DatawrapperVisualization::register($this, array(
             "id" => "column-chart",
             "title" => __("Column Chart"),
             "version" => $this->getVersion(),
@@ -43,80 +106,19 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         ),
                     ]
                 ],
-                "g-x-axis" => [
-                    "type" => "group",
-                    "label" => "X-Axis",
-                    "options" => [
-                        "rotate-labels" => array(                            
-                            "label" => __("Rotate labels"),                            
-                            "type" => "radio",                            
-                            "options" => [
-                                "auto" => __("Auto"),
-                                "on" => __("Always"),
-                                "off" => __("Never")
-                            ],
-                            "default" => 'auto'
-                        )
-                    ]
-                ],
+                "g-x-axis" => $groupXAxis,
                 "g-y-axis" => [
                     "type" => "group",
-                    "label" => "Y-Axis",
-                    "options" => [
+                    "label" => __("settings / y-axis"),
+                    "options" => array_merge([
                         "absolute-scale" => array(
                             "type" => "checkbox",
                             "label" => __("Use the same scale for all columns"),
                             "depends-on" => array(
                                 "chart.min_columns[columns]" => 2
                             )
-                        ),
-                        'custom-range' => [
-                            'type' => 'custom-range',
-                            'label' => __('extend range'),
-                            'help' => __('help / extend range'),
-                        ],
-                        "grid-lines" => array(
-                            "type" => "radio",
-                            "label" => __("Grid lines"),
-                            "options" => array(
-                                array("value" => "show", "label" => __("Show")),
-                                array("value" => "hide", "label" => __("Hide")),
-                                array("value" => "auto", "label" => __("Automatic")),
-                            ),
-                            "default" => 'auto'
-                        ),                        
-                        "custom-ticks" => array(
-                            "type" => "text",
-                            "label" => __("Custom ticks"),
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        ),
-                        "grid-label-position" => array(
-                            "type" => "radio",
-                            "label" => __("Grid position"),
-                            "options" => array(
-                                "left" => "left",
-                                "right" => "right"
-                            ),
-                            "default" => "left",
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        ),
-                        "grid-labels" => array(
-                            "type" => "radio",
-                            "label" => __("Label position"),
-                            "options" => array(
-                                array("value" => "outside", "label" => __("outside")),
-                                array("value" => "inside", "label" => __("inside")),
-                            ),
-                            "default" => "inside",
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
                         )
-                    ]
+                    ], $groupYAxis["options"])
                 ],
                 "g-display" => [
                     "type" => "group",
@@ -159,14 +161,9 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     ]
                 ]
             )
-        );
-        return $meta;
-    }
+        ));        
 
-    public function getMeta_Grouped(){
-        $id = $this->getName();
-
-        $meta = array(
+        DatawrapperVisualization::register($this, array(
             "id" => "grouped-column-chart",
             "title" => __("Grouped Column Chart"),
             "version" => $this->getVersion(),
@@ -199,72 +196,11 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         ),
                     ]
                 ],
-                "g-x-axis" => [
-                    "type" => "group",
-                    "label" => "X-Axis",
-                    "options" => [
-                        "rotate-labels" => array(                            
-                            "label" => __("Rotate labels"),                            
-                            "type" => "radio",                            
-                            "options" => [
-                                "auto" => __("Auto"),
-                                "on" => __("Always"),
-                                "off" => __("Never")
-                            ],
-                            "default" => 'auto'
-                        )
-                    ]
-                ],
+                "g-x-axis" => $groupXAxis,
                 "g-y-axis" => [
                     "type" => "group",
                     "label" => "Y-Axis",
-                    "options" => [
-                        'custom-range' => [
-                            'type' => 'custom-range',
-                            'label' => __('extend range'),
-                            'help' => __('help / extend range'),
-                        ],
-                        "grid-lines" => array(
-                            "type" => "radio",
-                            "label" => __("Grid lines"),
-                            "options" => array(
-                                array("value" => "show", "label" => __("Show")),
-                                array("value" => "hide", "label" => __("Hide"))
-                            ),
-                            "default" => 'show'
-                        ),                        
-                        "custom-ticks" => array(
-                            "type" => "text",
-                            "label" => __("Custom ticks"),
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        ),
-                        "grid-label-position" => array(
-                            "type" => "radio",
-                            "label" => __("Grid position"),
-                            "options" => array(
-                                "left" => "left",
-                                "right" => "right"
-                            ),
-                            "default" => "left",
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        ),
-                        "grid-labels" => array(
-                            "type" => "radio",
-                            "label" => __("Label position"),
-                            "options" => array(
-                                array("value" => "outside", "label" => __("outside")),
-                                array("value" => "inside", "label" => __("inside")),
-                            ),
-                            "default" => "inside",
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        )
-                    ]
+                    "options" => $groupYAxis
                 ],
                 "g-display" => [
                     "type" => "group",
@@ -295,14 +231,9 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 ]
             ),
             "libraries" => array()
-        );
-        return $meta;
-    }
+        ));
 
-    public function getMeta_Stacked(){
-        $id = $this->getName();
-
-        $meta = array(
+        DatawrapperVisualization::register($this, array(
             "id" => "stacked-column-chart",
             "title" => __("Stacked Column Chart"),
             "version" => $this->getVersion(),
@@ -361,79 +292,11 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         ),
                     ]
                 ],
-                "g-x-axis" => [
-                    "type" => "group",
-                    "label" => "X-Axis",
-                    "options" => [
-                        "rotate-labels" => array(                            
-                            "label" => __("Rotate labels"),                            
-                            "type" => "radio",                            
-                            "options" => [
-                                "auto" => __("Auto"),
-                                "on" => __("Always"),
-                                "off" => __("Never")
-                            ],
-                            "default" => 'auto'
-                        )
-                    ]
-                ],
-                "g-y-axis" => [
-                    "type" => "group",
-                    "label" => "Y-Axis",
-                    "options" => [
-                        'custom-range' => [
-                            'type' => 'custom-range',
-                            'label' => __('extend range'),
-                            'help' => __('help / extend range'),
-                            "depends-on" => array(
-                                "normalize" => false
-                            )
-                        ],
-                        "grid-lines" => array(
-                            "type" => "radio",
-                            "label" => __("Grid lines"),
-                            "options" => array(
-                                array("value" => "show", "label" => __("Show")),
-                                array("value" => "hide", "label" => __("Hide"))
-                            ),
-                            "default" => 'show'
-                        ),                        
-                        "custom-ticks" => array(
-                            "type" => "text",
-                            "label" => __("Custom ticks"),
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        ),
-                        "grid-label-position" => array(
-                            "type" => "radio",
-                            "label" => __("Grid position"),
-                            "options" => array(
-                                "left" => "left",
-                                "right" => "right"
-                            ),
-                            "default" => "left",
-                            "depends-on" => array(
-                                "grid-lines" => "show"                                
-                            )
-                        ),
-                        "grid-labels" => array(
-                            "type" => "radio",
-                            "label" => __("Label position"),
-                            "options" => array(
-                                array("value" => "outside", "label" => __("outside")),
-                                array("value" => "inside", "label" => __("inside")),
-                            ),
-                            "default" => "inside",
-                            "depends-on" => array(
-                                "grid-lines" => "show"
-                            )
-                        )
-                    ]
-                ],
+                "g-x-axis" => $groupXAxis,
+                "g-y-axis" => $groupYAxis,
                 "g-display" => [
                     "type" => "group",
-                    "label" => "Display",
+                    "label" => __("settings / display"),
                     "options" => [
                         "base-color" => [
                             "type" => "base-color",
@@ -494,7 +357,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 "stack percentages" => __("stack percentages"),
                 "cannotShowNegativeValues" => __("negative-values")
             )
-        );
-        return $meta;
+        ));
+
     }
 }
