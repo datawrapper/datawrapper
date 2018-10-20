@@ -75,13 +75,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'label' => __('extend range'),
                             'help' => __('help / extend range'),
                         ],
-                        "custom-ticks" => array(
-                            "type" => "text",
-                            "label" => __("Custom ticks"),
-                            "depends-on" => array(
-                                
-                            )
-                        ),
                         "grid-lines" => array(
                             "type" => "radio",
                             "label" => __("Grid lines"),
@@ -91,6 +84,13 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 array("value" => "auto", "label" => __("Automatic")),
                             ),
                             "default" => 'auto'
+                        ),                        
+                        "custom-ticks" => array(
+                            "type" => "text",
+                            "label" => __("Custom ticks"),
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
                         ),
                         "grid-label-position" => array(
                             "type" => "radio",
@@ -108,8 +108,8 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "type" => "radio",
                             "label" => __("Label position"),
                             "options" => array(
-                                array("value" => "outside", "label" => __("Outside")),
-                                array("value" => "inside", "label" => __("Inside")),
+                                array("value" => "outside", "label" => __("outside")),
+                                array("value" => "inside", "label" => __("inside")),
                             ),
                             "default" => "inside",
                             "depends-on" => array(
