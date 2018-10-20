@@ -29,62 +29,135 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => array(
-                "base-color" => array(
-                    "type" => "base-color",
-                    "label" => __("Base color")
-                ),
-                "sort-values" => array(
-                    "type" => "checkbox",
-                    "label" => __("Automatically sort bars")
-                ),
-                "reverse-order" => array(
-                    "type" => "checkbox",
-                    "label" => __("Reverse order")
-                ),
-                "negative-color" => array(
-                    "type" => "checkbox",
-                    "label" => __("Use different color for negative values"),
-                    "depends-on" => array(
-                        "chart.min_value[columns]" => '<0'
-                    )
-                ),
-                "ignore-missing-values" => array(
-                    "type" => "checkbox",
-                    "label" => __("Ignore missing values"),
-                    "default" => false
-                ),
-                "rotate-labels" => array(
-                    "type" => "checkbox",
-                    "label" => __("Rotate labels"),
-                    "default" => false
-                ),
-                "absolute-scale" => array(
-                    "type" => "checkbox",
-                    "label" => __("Use the same scale for all columns"),
-                    "depends-on" => array(
-                        "chart.min_columns[columns]" => 2
-                    )
-                ),
-                "grid-lines" => array(
-                    "type" => "radio-left",
-                    "label" => __("Grid lines"),
-                    "options" => array(
-                        array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide")),
-                        array("value" => "auto", "label" => __("Automatic")),
-                    ),
-                    "default" => 'auto'
-                ),
-                "value-labels" => array(
-                    "type" => "radio-left",
-                    "label" => __("Value labels"),
-                    "options" => array(
-                        array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide")),
-                        array("value" => "auto", "label" => __("Automatic")),
-                    ),
-                    "default" => 'auto'
-                )
+                "g-sorting" => [
+                    "type" => "group",
+                    "label" => "Sorting",
+                    "options" => [
+                        "sort-values" => [
+                            "type" => "checkbox",
+                            "label" => __("Automatically sort bars")
+                        ],
+                        "reverse-order" => array(
+                            "type" => "checkbox",
+                            "label" => __("Reverse order")
+                        ),
+                    ]
+                ],
+                "g-x-axis" => [
+                    "type" => "group",
+                    "label" => "X-Axis",
+                    "options" => [
+                        "rotate-labels" => array(                            
+                            "label" => __("Rotate labels"),                            
+                            "type" => "radio",                            
+                            "options" => [
+                                "auto" => __("Auto"),
+                                "on" => __("Always"),
+                                "off" => __("Never")
+                            ],
+                            "default" => 'auto'
+                        )
+                    ]
+                ],
+                "g-y-axis" => [
+                    "type" => "group",
+                    "label" => "Y-Axis",
+                    "options" => [
+                        "absolute-scale" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use the same scale for all columns"),
+                            "depends-on" => array(
+                                "chart.min_columns[columns]" => 2
+                            )
+                        ),
+                        'custom-range' => [
+                            'type' => 'custom-range',
+                            'label' => __('extend range'),
+                            'help' => __('help / extend range'),
+                        ],
+                        "custom-ticks" => array(
+                            "type" => "text",
+                            "label" => __("Custom ticks"),
+                            "depends-on" => array(
+                                
+                            )
+                        ),
+                        "grid-lines" => array(
+                            "type" => "radio",
+                            "label" => __("Grid lines"),
+                            "options" => array(
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide")),
+                                array("value" => "auto", "label" => __("Automatic")),
+                            ),
+                            "default" => 'auto'
+                        ),
+                        "grid-label-position" => array(
+                            "type" => "radio",
+                            "label" => __("Grid position"),
+                            "options" => array(
+                                "left" => "left",
+                                "right" => "right"
+                            ),
+                            "default" => "left",
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        ),
+                        "grid-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Label position"),
+                            "options" => array(
+                                array("value" => "outside", "label" => __("Outside")),
+                                array("value" => "inside", "label" => __("Inside")),
+                            ),
+                            "default" => "inside",
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        )
+                    ]
+                ],
+                "g-display" => [
+                    "type" => "group",
+                    "label" => "Display",
+                    "options" => [
+                        "base-color" => [
+                            "type" => "base-color",
+                            "label" => __("Base color")
+                        ],
+                        "negative-color" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use different color for negative values"),
+                            "depends-on" => array(
+                                "chart.min_value[columns]" => '<0'
+                            )
+                        ),
+                        "bar-padding" => array(
+                            "type" => "slider",
+                            "label" => __("Space between bars (%)"),
+                            "default" => 30,
+                            "min" => 0,
+                            "max" => 100
+                        ),
+                        "value-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Value labels"),
+                            "options" => array(
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide")),
+                                array("value" => "auto", "label" => __("Automatic")),
+                                array("value" => "hover", "label" => __("Hover"))
+                            ),
+                            "default" => 'auto'
+                        ),
+                        "ignore-missing-values" => array(
+                            "type" => "checkbox",
+                            "label" => __("Ignore missing values"),
+                            "default" => false
+                        )
+                    ]
+                ]
             )
         );
         return $meta;
