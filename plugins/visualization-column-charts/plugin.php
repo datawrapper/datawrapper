@@ -52,7 +52,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "label" => __("settings / grid-position"),
                     "options" => array(
                         "left" => __("settings / left"),
-                        "right" => __("settings / left")
+                        "right" => __("settings / right")
                     ),
                     "default" => "left",
                     "depends-on" => array(
@@ -197,11 +197,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     ]
                 ],
                 "g-x-axis" => $groupXAxis,
-                "g-y-axis" => [
-                    "type" => "group",
-                    "label" => "Y-Axis",
-                    "options" => $groupYAxis
-                ],
+                "g-y-axis" => $groupYAxis,
                 "g-display" => [
                     "type" => "group",
                     "label" => "Display",
