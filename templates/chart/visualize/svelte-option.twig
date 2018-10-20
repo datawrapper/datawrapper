@@ -4,54 +4,125 @@
 
 </div>
 
-<script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css?v={{ COMMIT_SHA }}">
+
+<script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js?v={{ sha }}"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/controls.css">
-<link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
+
 <script type="text/javascript">
 
-require(['{{ type }}'], function(controls) {
+require(['{{ path }}'], function(mod) {
 
-    controls.globals.set({
-        dw_chart: chart,
-        key: '{{key}}',
-        language: '{{language}}',
-        theme: { colors: { palette: [] }, fake: true }
+    var App = mod.App,
+        data = _.extend({
+            visualization: {{vis|json|raw}},
+        }, mod.data || {}, {{ twig_data | json | raw }});
+
+    var chartData = {{chart.toStruct()|json|raw}};
+
+    // set defaults
+    chartData.metadata.visualize = _.extend(
+        {{defaults|json|raw}},
+        chartData.metadata.visualize
+    );
+
+    var chart = new mod.Chart(chartData);
+    var getJSON = mod.utils.getJSON;
+
+    var themeCache = {};
+    themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
+
+    chart.set({
+        writable: true,
+        themeData: themeCache['{{theme.id}}'],
+        user: {{userArray|json|raw}},
+        locales: {{chartLocales|json|raw}},
+        themes: {{userThemes|json|raw}}
     });
 
-    controls.globals.compute('visMeta', ['visMetas'], function(visMetas) {
-        var vis = window.chart.get('type');
-        return visMetas && vis ? visMetas[vis] || null : null;
+    var app = mod.app = new App({
+        store: chart,
+        target: document.querySelector('#{{ type }}-{{ key }}'),
+        data: data
     });
 
-    var current = chart.get('metadata.visualize.{{key}}');
+    var lastHash = null;
 
-    var app = new controls.App({
-        store: controls.globals,
-        target: document.querySelector('#{{ type }}-{{ key }}')
+    var editHistory = [];
+    var dontPush = false;
+    var historyPos = 0;
+    var passiveMode = false;
+
+    chart.on('state', ({changed, current, previous}) => {
+        // observe theme changes and load new theme data if needed
+        if (changed.theme) {
+            console.log('theme has changed', current.theme);
+            if (themeCache[current.theme]) {
+                // re-use cached theme
+                chart.set({themeData: themeCache[current.theme]});
+            } else {
+                // load new theme data
+                getJSON(`/api/themes/${current.theme}`, (res) => {
+                    if (res.status == 'ok') {
+                        themeCache[current.theme] = res.data.data;
+                        chart.set({themeData: res.data.data});
+                    } else {
+                        console.warn('theme not loaded', res);
+                    }
+                });
+            }
+        }
+
+        if (previous && changed.title || changed.theme || changed.type ||
+            changed.metadata || changed.language || changed.lastEditStep) {
+            chart.store();
+            if (!dontPush) {
+                const s = JSON.stringify(chart.serialize());
+                if (historyPos > 0) {
+                    // throw away edit history until the current pos
+                    editHistory.splice(0, historyPos);
+                }
+                if (editHistory[0] != s) editHistory.unshift(s);
+                editHistory.length = Math.min(editHistory.length, 50);
+                historyPos = 0;
+            }
+            if (!passiveMode && dw && dw.backend && dw.backend.currentChart) {
+                var iframe = document.querySelector('#iframe-vis');
+                if (iframe && iframe.contentWindow) {
+                    var win = iframe.contentWindow;
+                    if (win.__dw && win.__dw.attributes) {
+                        win.__dw.attributes(current);
+                    }
+                }
+
+                dw.backend.currentChart.set('metadata', JSON.parse(JSON.stringify(current.metadata)));
+            }
+        }
     });
 
-    window.dw.backend
-        .on('vis-metas', function(visMetas) {
-            app.store.set({
-                visMetas: visMetas,
-                theme: window.dw.theme(chart.get('theme'))
-            });
-        })
-        .on('dataset-loaded', function() {
-            app.store.set({dataset: chart.dataset()});
-        })
-        .on('theme-changed-and-loaded', function() {
-            app.store.set({theme: window.dw.theme(chart.get('theme')) });
-        })
-        .on('backend-vis-loaded', function(vis) { app.store.set({vis: vis}); })
-        .on('axes-changed', function() {
-            setTimeout(function() {
-                app.store.set(app.store.get());
-            }, 1000);
-        });
+    window.addEventListener('keypress', function(evt) {
+        if (evt.key == 'z' && evt.ctrlKey) {
+            const old_pos = historyPos;
+            historyPos += evt.altKey ? -1 : 1;
+            if (editHistory[historyPos]) {
+                dontPush = true;
+                chart.set(JSON.parse(editHistory[historyPos]));
+                dontPush = false;
+            } else {
+                historyPos = old_pos;
+            }
+        }
+    });
 
-    // extend data with default
-    app.set({ value: _.extend({}, app.get('default') || {}, current) });
+
+    // observe changes to old chart object
+    dw.backend.currentChart.onChange(function() {
+        passiveMode = true;
+        chart.set(dw.backend.currentChart.attributes());
+        setTimeout(function() {
+            passiveMode = false;
+        }, 100)
+    });
 })
 </script>
 
