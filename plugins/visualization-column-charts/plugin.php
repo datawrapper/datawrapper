@@ -171,7 +171,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "title" => __("Grouped Column Chart"),
             "version" => $this->getVersion(),
             "dimensions" => 2,
-            "extends" => "raphael-chart",
+            "extends" => "column-chart",
             "color-by" => "row",
             "order" => 10,
             "less" => dirname(__FILE__ ) . "/static/grouped-column-chart.less",
@@ -185,28 +185,121 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => array(
-                "base-color" => array(
-                    "type" => "base-color",
-                    "label" => __("Base color")
-                ),
-                "sort-values" => array(
-                    "type" => "checkbox",
-                    "label" => __("Automatically sort bars")
-                ),
-                "reverse-order" => array(
-                    "type" => "checkbox",
-                    "label" => __("Reverse order")
-                ),
-                "value-labels" => array(
-                    "type" => "radio-left",
-                    "label" => __("Value labels"),
-                    "options" => array(
-                        array("value" => "auto", "label" => __("On hover")),
-                        array("value" => "show", "label" => __("Show")),
-                        array("value" => "hide", "label" => __("Hide"))
-                    ),
-                    "default" => 'auto'
-                ),
+                "g-sorting" => [
+                    "type" => "group",
+                    "label" => "Sorting",
+                    "options" => [
+                        "sort-values" => [
+                            "type" => "checkbox",
+                            "label" => __("Automatically sort bars")
+                        ],
+                        "reverse-order" => array(
+                            "type" => "checkbox",
+                            "label" => __("Reverse order")
+                        ),
+                    ]
+                ],
+                "g-x-axis" => [
+                    "type" => "group",
+                    "label" => "X-Axis",
+                    "options" => [
+                        "rotate-labels" => array(                            
+                            "label" => __("Rotate labels"),                            
+                            "type" => "radio",                            
+                            "options" => [
+                                "auto" => __("Auto"),
+                                "on" => __("Always"),
+                                "off" => __("Never")
+                            ],
+                            "default" => 'auto'
+                        )
+                    ]
+                ],
+                "g-y-axis" => [
+                    "type" => "group",
+                    "label" => "Y-Axis",
+                    "options" => [
+                        'custom-range' => [
+                            'type' => 'custom-range',
+                            'label' => __('extend range'),
+                            'help' => __('help / extend range'),
+                        ],
+                        "grid-lines" => array(
+                            "type" => "radio",
+                            "label" => __("Grid lines"),
+                            "options" => array(
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide"))
+                            ),
+                            "default" => 'show'
+                        ),                        
+                        "custom-ticks" => array(
+                            "type" => "text",
+                            "label" => __("Custom ticks"),
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        ),
+                        "grid-label-position" => array(
+                            "type" => "radio",
+                            "label" => __("Grid position"),
+                            "options" => array(
+                                "left" => "left",
+                                "right" => "right"
+                            ),
+                            "default" => "left",
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        ),
+                        "grid-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Label position"),
+                            "options" => array(
+                                array("value" => "outside", "label" => __("outside")),
+                                array("value" => "inside", "label" => __("inside")),
+                            ),
+                            "default" => "inside",
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        )
+                    ]
+                ],
+                "g-display" => [
+                    "type" => "group",
+                    "label" => "Display",
+                    "options" => [
+                        "base-color" => [
+                            "type" => "base-color",
+                            "label" => __("Base color")
+                        ],
+                        "negative-color" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use different color for negative values"),
+                            "depends-on" => array(
+                                "chart.min_value[columns]" => '<0'
+                            )
+                        ),
+                        "series-padding" => array(
+                            "type" => "slider",
+                            "label" => __("Space between groups (%)"),
+                            "default" => 75,
+                            "min" => 0,
+                            "max" => 200
+                        ),
+                        "value-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Value labels"),
+                            "options" => array(
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide")),
+                                array("value" => "hover", "label" => __("Hover"))
+                            ),
+                            "default" => 'hover'
+                        )
+                    ]
+                ]
             ),
             "libraries" => array()
         );

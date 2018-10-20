@@ -69,8 +69,8 @@
                 svg = $(me._svgCanvas()),
                 ch = $(svg.parent());
 
-            $(svg).height($(svg).height()-lh);
-            $(ch).height($(ch).height()-lh);
+            $(svg).height($(svg).height());
+            $(ch).height($(ch).height());
 
             // -- substract a few pixel to get space for the legend!
             me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+0)]);
@@ -124,22 +124,7 @@
 
         is_normalized: function() {
             var me = this;
-            return me.get('normalize', false) && (!me.get('normalize-user', false) || $('#normalize:checked').length > 0);
-        },
-
-        post_render: function() {
-            var me = this;
-            if (me.get('normalize-user', false)) {
-                $('.header-right').remove();
-                var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> ' + me.translate('stack percentages') + '</label></div>');
-                chkNormalize.addClass('header-right');
-                $('#normalize', chkNormalize).on('change', function() {
-                    me.initDimensions();
-                    me.update();
-                    me.horzGrid();
-                });
-                $('#header').append(chkNormalize);
-            }
+            return me.get('normalize', false);
         },
 
         checkData: function() {

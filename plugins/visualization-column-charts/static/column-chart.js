@@ -3,6 +3,22 @@
 
     dw.visualization.register('column-chart', 'raphael-chart', {
 
+        checkDataset: function(el) {
+            var me = this,
+                dataset = me.dataset;
+
+            if (dataset.numRows() > 40 || dataset.numColumns() > 50) {
+                console.log('limit');
+                me.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
+            }
+
+            dataset.limitRows(100);
+            dataset.limitColumns(500);            
+            me.setRoot(el);
+            me.axesDef = me.axes();
+            me.__lastRow = 0;            
+        },
+
         render: function(el) {
             var me = this, 
                 dataset = me.dataset,
@@ -16,17 +32,7 @@
                 filterUI = filter.ui(me),
                 filterH = 0;
 
-            
-            if (dataset.numRows() > 40 || dataset.numColumns() > 50) {
-                console.log('limit');
-                this.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
-            }
-
-            dataset.limitRows(100);
-            dataset.limitColumns(500);            
-            this.setRoot(el);
-            me.axesDef = me.axes();
-            me.__lastRow = 0;            
+            me.checkDataset(el);
             if (!me.axesDef) return;
                                
             if (filterUI) {
@@ -43,16 +49,14 @@
             }
 
             c = me.initCanvas({ tpad: 20 }, 0, filterH);
-            // the defaults are insane
             c.rpad = 0;
             c.lpad = 0;
             c.bpad = 10;
 
-            chart_width = c.w - c.lpad - c.rpad;            
-
+        
             if (filterUI) c.tpad += 5;
 
-            me.renderChart(el, c, chart_width);
+            me.renderChart(el, c);
             
             me.renderingComplete();
         },
@@ -62,32 +66,15 @@
                 column = me.getBarColumn(),
                 bars = me.getBarValues(),
                 sortBars = me.get('sort-values'), 
-                reverse = me.get('reverse-order');
+                reverse = me.get('reverse-order'),
+                chart_width = c.w - c.lpad - c.rpad;
 
             me.init();
 
             if (!column) return;            
 
             me.calculateGridLabelSpace();
-
-            var mm = column.range(),
-                mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
-                maxLabelHeight = 0,
-                labelSpace = me.barLabelWidth(),                
-                labelClass = 'label series' + (me.useSmallerLabels() ? " smaller" : "");
-
-            if (me.rotateLabels()) {                
-                maxLabelHeight = Math.min(d3.max(bars, function(d) {
-                    return me.labelWidth(d.name, labelClass);
-                }), 100);
-            } else {
-                maxLabelHeight = d3.max(bars, function(d) {                                        
-                    return me.labelHeight(d.name, labelClass, labelSpace);
-                });                                      
-            }            
-
-            c.bpad += maxLabelHeight * mm_r;
-            c.tpad += (maxLabelHeight * (1-mm_r));
+            me.addSeriesLabelSpace(c, bars);    
             
             me.initDimensions();
             me.horzGrid();
@@ -100,6 +87,28 @@
             el.mousemove(_.bind(me.onMouseMove, me));            
             
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
+        },
+
+        addSeriesLabelSpace: function(c, bars) {
+            var me = this,
+                mm = me.getDomain(),
+                mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
+                maxLabelHeight = 0,
+                labelSpace = me.barLabelWidth(),                
+                labelClass = 'label series' + (me.useSmallerLabels() ? " smaller" : "");
+
+            if (me.rotateLabels()) {                
+                maxLabelHeight = Math.min(d3.max(bars, function(d) {
+                    return me.labelWidth(d.name, labelClass);
+                }), 100);
+            } else {
+                maxLabelHeight = d3.max(bars, function(d) {         
+                    return me.labelHeight(d.name, labelClass, labelSpace);
+                });                                      
+            }       
+
+            c.bpad += maxLabelHeight * mm_r;
+            c.tpad += (maxLabelHeight * (1-mm_r));
         },
 
         calculateGridLabelSpace: function() {
@@ -507,7 +516,7 @@
             return ticks;
         },
 
-        horzGrid: function(animate) {
+        horzGrid: function(animate, column) {
             // draw tick marks and labels
             var me = this,
                 yscale = me.__scales.y,
@@ -519,7 +528,7 @@
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {},
                 position = me.get('grid-labels', 'inside'),
-                formatter = me.chart().columnFormatter(me.getBarColumn()),
+                formatter = me.chart().columnFormatter(column ? column : me.getBarColumn()),
                 duration = animate ? theme.duration : 0,
                 gridVisible = me.gridVisible(),
                 gridLabelPosition = me.get("grid-label-position", "left");
