@@ -26,10 +26,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
             "options" => [
                 'custom-range' => [
                     'type' => 'custom-range',
-                    'label' => __('settings / extend-range'),
-                    "depends-on" => array(
-                        "normalize" => false
-                    )
+                    'label' => __('settings / extend-range')
                 ],
                 "grid-lines" => array(
                     "type" => "radio",
@@ -66,7 +63,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                         array("value" => "outside", "label" => __("settings / outside")),
                         array("value" => "inside", "label" => __("settings / inside")),
                     ),
-                    "default" => "inside",
+                    "default" => "outside",
                     "depends-on" => array(
                         "grid-lines" => "show"
                     )

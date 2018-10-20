@@ -412,7 +412,7 @@
 
         gridLabelSpace: function() {
             var me = this,
-                position = me.get('grid-labels', 'inside'),
+                position = me.get('grid-labels', 'outside'),
                 gridVisible = me.gridVisible();
 
             if (gridVisible && position == "outside") {
@@ -535,7 +535,7 @@
                 ticks = me.getYGridTicks(),
                 tickLabels = me.__tickLabels = me.__tickLabels || {},
                 gridLines = me.__gridLines = me.__gridLines || {},
-                position = me.get('grid-labels', 'inside'),
+                position = me.get('grid-labels', 'outside'),
                 formatter = me.chart().columnFormatter(column ? column : me.getBarColumn()),
                 duration = animate ? theme.duration : 0,
                 gridVisible = me.gridVisible(),
