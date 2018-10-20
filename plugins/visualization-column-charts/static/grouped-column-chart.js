@@ -287,7 +287,7 @@
                                 path: 'M'+[pp.x+pp.w, pp.y]+'L'+[d.x, d.y, d.x, d.y + d.h, pp.x+pp.w, pp.y+pp.h]
                             };
                         me.__barCn[key] = me.__barCn[key] || me.registerElement(c.paper.path().attr(cn_attrs), column.name(), r);
-                        me.__barCn[key].animate(cn_attrs, me.theme().duration, me.theme().easing);
+                        me.__barCn[key].animate(cn_attrs, 0, me.theme().easing);
                     }
 
                     // add series label
@@ -360,7 +360,7 @@
                 if (me.__row_label_lines[r]) me.__row_label_lines[r].animate({path: path}, me.theme().duration, me.theme().easing);
                 else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5 });
 
-                lbl.animate(lbl.__attrs, me.theme().duration, me.theme().easing);
+                lbl.animate(lbl.__attrs, 0, me.theme().easing);
             })
         },
 
