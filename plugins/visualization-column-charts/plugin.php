@@ -281,13 +281,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 "chart.min_value[columns]" => '<0'
                             )
                         ),
-                        "series-padding" => array(
-                            "type" => "slider",
-                            "label" => __("Space between groups (%)"),
-                            "default" => 75,
-                            "min" => 0,
-                            "max" => 200
-                        ),
                         "value-labels" => array(
                             "type" => "radio",
                             "label" => __("Value labels"),
@@ -328,76 +321,124 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                 )
             ),
             "options" => [
-                "base-color" => array(
-                    "type" => "base-color",
-                    "label" => __("Base color")
-                ),
-                "sort-values" => array(
-                    "type" => "checkbox",
-                    "label" => __("Automatically sort bars")
-                ),
-                "sort-by" => array(
-                    'type' => 'radio',
-                    'label' => __('Sort by'),
-                    'default' => 'first',
-                    "depends-on" => [
-                        "sort-values" => true
-                    ],
-                    'options' => [
-                        [
-                            'value' => 'first',
-                            'label' => __('first')
-                        ],
-                        [
-                            'value' => 'last',
-                            'label' => __('last'),
-                        ],
-                    ]
-                ),
-                "reverse-order" => array(
-                    "type" => "checkbox",
-                    "depends-on" => [
-                        "sort-values" => true
-                    ],
-                    "label" => __("Reverse order")
-                ),
-                "normalize" => array(
-                    "type" => "checkbox",
-                    "label" => __("Stack percentages"),
-                    "default" => false
-                ),
-                "labels" => [
+                "g-sorting" => [
                     "type" => "group",
-                    "label" => __('Labels'),
+                    "label" => "Sorting",
                     "options" => [
-                        "grid-lines" => [
+                        "sort-values" => array(
                             "type" => "checkbox",
-                            "label" => __("Show grid lines"),
+                            "label" => __("Automatically sort bars")
+                        ),
+                        "sort-by" => array(
+                            'type' => 'radio',
+                            'label' => __('Sort by'),
+                            'default' => 'first',
+                            "depends-on" => [
+                                "sort-values" => true
+                            ],
+                            'options' => [
+                                [
+                                    'value' => 'first',
+                                    'label' => __('first')
+                                ],
+                                [
+                                    'value' => 'last',
+                                    'label' => __('last'),
+                                ],
+                            ]
+                        ),
+                        "reverse-order" => array(
+                            "type" => "checkbox",
+                            "depends-on" => [
+                                "sort-values" => true
+                            ],
+                            "label" => __("Reverse order")
+                        ),
+                        "normalize" => array(
+                            "type" => "checkbox",
+                            "label" => __("Stack percentages"),
                             "default" => false
+                        ),
+                    ]
+                ],
+                "g-x-axis" => [
+                    "type" => "group",
+                    "label" => "X-Axis",
+                    "options" => [
+                        "rotate-labels" => array(                            
+                            "label" => __("Rotate labels"),                            
+                            "type" => "radio",                            
+                            "options" => [
+                                "auto" => __("Auto"),
+                                "on" => __("Always"),
+                                "off" => __("Never")
+                            ],
+                            "default" => 'auto'
+                        )
+                    ]
+                ],
+                "g-y-axis" => [
+                    "type" => "group",
+                    "label" => "Y-Axis",
+                    "options" => [
+                        'custom-range' => [
+                            'type' => 'custom-range',
+                            'label' => __('extend range'),
+                            'help' => __('help / extend range'),
+                            "depends-on" => array(
+                                "normalize" => false
+                            )
                         ],
-                        "value-labels" => array(
-                            "type" => "radio-left",
-                            "label" => __("Value labels"),
+                        "grid-lines" => array(
+                            "type" => "radio",
+                            "label" => __("Grid lines"),
                             "options" => array(
-                                array("value" => "auto", "label" => __("On hover")),
                                 array("value" => "show", "label" => __("Show")),
                                 array("value" => "hide", "label" => __("Hide"))
                             ),
-                            "default" => 'auto'
+                            "default" => 'show'
+                        ),                        
+                        "custom-ticks" => array(
+                            "type" => "text",
+                            "label" => __("Custom ticks"),
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
                         ),
-                    ],
+                        "grid-label-position" => array(
+                            "type" => "radio",
+                            "label" => __("Grid position"),
+                            "options" => array(
+                                "left" => "left",
+                                "right" => "right"
+                            ),
+                            "default" => "left",
+                            "depends-on" => array(
+                                "grid-lines" => "show"                                
+                            )
+                        ),
+                        "grid-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Label position"),
+                            "options" => array(
+                                array("value" => "outside", "label" => __("outside")),
+                                array("value" => "inside", "label" => __("inside")),
+                            ),
+                            "default" => "inside",
+                            "depends-on" => array(
+                                "grid-lines" => "show"
+                            )
+                        )
+                    ]
                 ],
-
-                'connect-bars' => [
-                    'type' => 'checkbox',
-                    'label' => __('stacked / connect-bars'),
-                    'default' => false,
-                ],
-                
-                'group-layout' => [
-                    'type' => 'group',
-                    'label' => __('Layout (desktop)'),
-                    'options' => [
+                "g-display" => [
+                    "type" => "group",
+                    "label" => "Display",
+                    "options" => [
+                        "base-color" => [
+                            "type" => "base-color",
+                            "label" => __("Base color")
+                        ],
                         'direct-labeling' => [
                             'type' => 'radio',
                             'label' => __('Direct labeling'),
@@ -424,82 +465,30 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'max' => 50,
                             'step' => 1
                         ],
-                        'padding' => [
-                            'type' => 'slider',
-                            'label' => __('Inner margin (%)'),
-                            'default' => 35,
-                            'min' => 0,
-                            'max' => 150,
-                            'step' => 1
-                        ],
-                        'margin' => [
-                            'type' => 'slider',
-                            'label' => __('Outer margin (%)'),
-                            'default' => 10,
-                            'min' => 0,
-                            'max' => 30,
-                            'step' => 1
-                        ],
-                    ]
-                ],
-                'group-layout-mobile' => [
-                    'type' => 'group',
-                    'label' => __('Layout (mobile)'),
-                    'options' => [
-                        'same-as-desktop' => [
+                        'connect-bars' => [
                             'type' => 'checkbox',
-                            'default' => true,
-                            'label' => __('same as destkop')
+                            'label' => __('stacked / connect-bars'),
+                            'default' => false,
                         ],
-                        'direct-labeling-mobile' => [
-                            'type' => 'radio',
-                            'label' => __('Direct labeling'),
-                            'default' => 'always',
-                            'options' => [
-                                [
-                                    'value' => 'no',
-                                    'label' => __('no')
-                                ],
-                                [
-                                    'value' => 'always',
-                                    'label' => __('yes'),
-                                ],
-                            ],
-                            'depends-on' => [ 'same-as-desktop' => false ]
-                        ],
-                        'label-space-mobile' => [
-                            'type' => 'slider',
-                            'depends-on' => [
-                                'direct-labeling-mobile' => 'always',
-                                'same-as-desktop' => false
-                            ],
-                            'label' => __('Direct label space (%)'),
-                            'default' => 30,
-                            'min' => 10,
-                            'max' => 50,
-                            'step' => 1
-                        ],
-                        'padding-mobile' => [
-                            'type' => 'slider',
-                            'label' => __('Inner margin (%)'),
-                            'default' => 35,
-                            'min' => 0,
-                            'max' => 150,
-                            'step' => 1,
-                            'depends-on' => [ 'same-as-desktop' => false ]
-                        ],
-                        'margin-mobile' => [
-                            'type' => 'slider',
-                            'label' => __('Outer margin (%)'),
-                            'default' => 10,
-                            'min' => 0,
-                            'max' => 30,
-                            'step' => 1,
-                            'depends-on' => [ 'same-as-desktop' => false ]
-                        ]
+                        "negative-color" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use different color for negative values"),
+                            "depends-on" => array(
+                                "chart.min_value[columns]" => '<0'
+                            )
+                        ),
+                        "value-labels" => array(
+                            "type" => "radio",
+                            "label" => __("Value labels"),
+                            "options" => array(
+                                array("value" => "show", "label" => __("Show")),
+                                array("value" => "hide", "label" => __("Hide")),
+                                array("value" => "hover", "label" => __("Hover"))
+                            ),
+                            "default" => 'hover'
+                        )
                     ]
                 ]
-                
             ],
             "locale" => array(
                 "stack percentages" => __("stack percentages"),

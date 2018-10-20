@@ -51,9 +51,7 @@
             c = me.initCanvas({ tpad: 20 }, 0, filterH);
             c.rpad = 0;
             c.lpad = 0;
-            c.bpad = 10;
-
-        
+            c.bpad = 10;    
             if (filterUI) c.tpad += 5;
 
             me.renderChart(el, c);
@@ -424,6 +422,16 @@
             }
         },
 
+        gridLabelPosition: function() {
+            var me = this;
+
+            if (me._isStacked && me._isStacked() && me.useDirectLabeling()) {
+                return "left"
+            }
+
+            return me.get("grid-label-position", "left");
+        },
+
         barDimensions: function(bar, s) {
             var me = this,
                 sc = me.__scales,
@@ -434,8 +442,8 @@
                 val = bar.value,
                 bw = me.barWidth(),
                 barLabelWidth = me.barLabelWidth(),                
-                pad = pad = me.get("bar-padding", 30) / 100,
-                gridLabelPosition = me.get("grid-label-position", "left");
+                pad = me.get("bar-padding", 30) / 100,
+                gridLabelPosition = me.gridLabelPosition();
 
             if (isNaN(val)) val = 0;           
            
@@ -531,7 +539,7 @@
                 formatter = me.chart().columnFormatter(column ? column : me.getBarColumn()),
                 duration = animate ? theme.duration : 0,
                 gridVisible = me.gridVisible(),
-                gridLabelPosition = me.get("grid-label-position", "left");
+                gridLabelPosition = me.gridLabelPosition();
 
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), 

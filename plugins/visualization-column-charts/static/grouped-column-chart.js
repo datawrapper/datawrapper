@@ -48,7 +48,7 @@
             me.addSeriesLabelSpace(c, barColumns.map(function(d) { return { name: d.title() }; }));   
 
             if (me.useDirectLabeling()) {
-                var mobile = me.get('same-as-desktop') || c.w > 420 ? '' : '-mobile',
+                var mobile = me.get('same-as-desktop', true) ? "" : (c.w > 420 ? '' : '-mobile'),
                     labelSpace = me.get('label-space'+mobile)/100;
 
                 c.rpad = Math.max(c.w * labelSpace, 1);
@@ -143,7 +143,7 @@
                 c = me.__canvas,
                 n = me.getBarValues().length,
                 s = barColumns.length,
-                pad = me.get("series-padding", 10) / 100,
+                pad = me.get("series-padding", 35) / 100,
                 gridLabelSpace = me.gridLabelSpace(),
                 cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding();
 
@@ -167,7 +167,7 @@
                 barLabelWidth = me.barLabelWidth(),
                 seriesSpace = me.barAndLabelWidth().seriesWidth,
                 bw = me.barWidth(),
-                pad = me.get("series-padding", 10) / 100,
+                pad = me.get("series-padding", 35) / 100,
                 gridLabelPosition = me.get("grid-label-position", "left"),
                 val = column.val(r);
                         
@@ -305,9 +305,7 @@
                                 rotate: me.rotateLabels() ? -90 : 0
                             },
                             sl = me.__series_names[column.name()] = me.__series_names[column.name()] ||
-                                me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());
-
-                        console.log(halign);
+                                me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());                        
 
                         sl.animate(la, 0, me.theme().easing);
                     }
@@ -367,8 +365,9 @@
         },
 
         useDirectLabeling: function() {
-            var me = this,
-                mob = me.get('same-as-desktop') || me.__canvas.w > 420 ? '' : '-mobile';
+            var me = this, 
+                mob = me.get('same-as-desktop', true) ? "" : me.__canvas.w > 420 ? '' : '-mobile';
+
             return me._isStacked() && me.get('direct-labeling'+mob) == 'always';
         },
 
