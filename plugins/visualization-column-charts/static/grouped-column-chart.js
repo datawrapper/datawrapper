@@ -42,11 +42,7 @@
                 dataset = me.dataset;                
                 barColumns = me.getBarColumns(), 
                 all_values_negative = true;               
-             
-            me.initColorOptions(el);
-            me.calculateGridLabelSpace();
-            me.addSeriesLabelSpace(c, barColumns.map(function(d) { return { name: d.title() }; }));   
-
+            
             if (me.useDirectLabeling()) {
                 var mobile = me.get('same-as-desktop', true) ? "" : (c.w > 420 ? '' : '-mobile'),
                     labelSpace = me.get('label-space'+mobile)/100;
@@ -68,6 +64,10 @@
                     me.addLegend(items, $('#chart'));
                 }
             }
+
+            me.initColorOptions(el);
+            me.calculateGridLabelSpace();
+            me.addSeriesLabelSpace(c, barColumns.map(function(d) { return { name: d.title() }; }));              
 
             _.each(barColumns, function(column, s) {
                 column.each(function(val) {
@@ -256,6 +256,7 @@
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
+                        lbl_x = d.bx,
                         lblcl = ['series'],
                         lbl_w = d.tw,
                         valign = val >= 0 ? 'top' : 'bottom',
@@ -272,6 +273,8 @@
                     if (me.rotateLabels()) {                        
                         lbl_w = 100;
                         lblcl.push('rotate90');
+                        var height = me.labelHeight(column.title(), "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);
+                        lbl_x -= height / 2;                        
                         $('.dw-chart-body').addClass('rotated-labels');
                         halign = 'right';
                     } else {
@@ -293,7 +296,7 @@
                     // add series label
                     if (!/^X\.\d+$/.test(column.title()) && r === 0) {                        
                         var la = {
-                                x: d.bx,
+                                x: lbl_x,
                                 y: lbl_y,
                                 w: lbl_w,
                                 align: halign,

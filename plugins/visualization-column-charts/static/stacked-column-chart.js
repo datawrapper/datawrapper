@@ -107,7 +107,7 @@
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
                 pad = me.get("padding", 30) / 100,
-                gridLabelSpace = me.gridLabelSpace(),
+                gridLabelSpace = me.gridLabelSpace(),                
                 cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding() / 2;
 
             return {

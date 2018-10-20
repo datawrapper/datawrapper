@@ -99,7 +99,7 @@
                 maxLabelHeight = Math.min(d3.max(bars, function(d) {
                     return me.labelWidth(d.name, labelClass);
                 }) + 10, 100);
-            } else {
+            } else {                
                 maxLabelHeight = d3.max(bars, function(d) {         
                     return me.labelHeight(d.name, labelClass, labelSpace);
                 });                                      
@@ -178,7 +178,7 @@
                 valueLabels = me.get('value-labels');
 
             var lpos = me.labelPosition(barv, s, 'value'),
-                spos = me.labelPosition(barv, s, 'series');
+                spos = me.labelPosition(barv, s, 'series', barv.name);
 
             // add value labels
             if (valueLabels != "hide") {
@@ -467,7 +467,7 @@
             return { width: Math.round(bw), height: h, x: x, y: y, bx: x, bw: bw, pad: pad };
         },
 
-        labelPosition: function(bar, s, type) {
+        labelPosition: function(bar, s, type, txt) {
             var me = this,
                 d = me.barDimensions(bar, s), 
                 lbl_w,
@@ -479,7 +479,8 @@
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
                 pad = pad = me.get("bar-padding", 30) / 100;
-                formatter = me.chart().columnFormatter(me.getBarColumn());
+                formatter = me.chart().columnFormatter(me.getBarColumn()),
+                left = d.bx + d.width * 0.5;
 
             if (type == "value") {
                 lbl_w = me.labelWidth(formatter(val, true), 'value outline hover');
@@ -488,12 +489,16 @@
                 lbl_w = me.barLabelWidth();
 
                 if (me.rotateLabels()) {
+                    var height = me.labelHeight(txt, "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
+
                     lbl_y -= 10;  // move towards zero axis
-                    lbl_w = 100;                    
+                    lbl_w = 100; 
+                    
+                    left = left - height/3;
                     halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
 
-                return { left: d.bx + d.width * 0.5, top: lbl_y, width: lbl_w, halign: halign, valign: valign };
+                return { left: left, top: lbl_y, width: lbl_w, halign: halign, valign: valign };
             }
         },
 
