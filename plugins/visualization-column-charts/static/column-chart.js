@@ -98,7 +98,7 @@
             if (me.rotateLabels()) {                
                 maxLabelHeight = Math.min(d3.max(bars, function(d) {
                     return me.labelWidth(d.name, labelClass);
-                }), 100);
+                }) + 10, 100);
             } else {
                 maxLabelHeight = d3.max(bars, function(d) {         
                     return me.labelHeight(d.name, labelClass, labelSpace);
@@ -106,7 +106,7 @@
             }       
 
             c.bpad += maxLabelHeight * mm_r;
-            c.tpad += (maxLabelHeight * (1-mm_r));
+            c.tpad += maxLabelHeight * (1-mm_r);
         },
 
         calculateGridLabelSpace: function() {
@@ -651,7 +651,7 @@
 
         gridVisible: function() {
             var me = this;
-            return me.get('grid-lines', 'show') == 'show' ? true :
+            return me.get('grid-lines', 'show') == 'show' || me.get('grid-lines', 'show') == true  ? true :
                 me.get('grid-lines') == 'hide' || me.get('grid-lines') == 'axis' ? false :
                 (me.__canvas.w / me.getBarValues().length) < 50 ||
                 me.getBarValues().length > 8 || me.get('value-labels') == 'hide';
