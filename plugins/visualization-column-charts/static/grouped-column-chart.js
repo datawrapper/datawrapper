@@ -361,7 +361,9 @@
                 else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5 });
 
                 lbl.animate(lbl.__attrs, 0, me.theme().easing);
-            })
+            });
+
+            if (me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
         useDirectLabeling: function() {
