@@ -148,9 +148,9 @@
                 cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding();
 
             return {
-                barWidth: cw / (s + (s-1) * pad) / n,                
-                labelWidth: cw / (s + (s-1) * pad),
-                seriesWidth: cw / s,
+                barWidth: Math.round(cw / (s + (s-1) * pad) / n),
+                labelWidth: Math.round(cw / (s + (s-1) * pad)),
+                seriesWidth: Math.round(cw / s),
             };            
         },
 
@@ -185,7 +185,7 @@
             var leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
                 otherBars = r * bw,
                 otherSeries = s * seriesSpace,
-                pad = s > 0 ? (seriesSpace * pad / n) : 0;
+                pad = s > 0 ? (seriesSpace * pad / (n-1)) : 0;
 
             x = Math.round(leftPad + otherBars + otherSeries + pad);
             seriesX = Math.round(leftPad + otherSeries + seriesSpace / 2);
@@ -213,15 +213,14 @@
                 column.each(function(val, r) {
                     me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
-                        fill = me.getBarColor(column, r, me._color_opts),
-                        stroke = fill, //chroma.color(fill).darken(10).hex(),
+                        fill = me.getBarColor(column, r, me._color_opts),                        
                         key = column.name()+'-'+r,
                         bar_attrs = {
                             x: d.x,
                             y: d.y,
                             width: d.w,
                             height: d.h,
-                            stroke: cm(stroke),
+                            stroke: "none",
                             fill: cm(fill)
                         };
                     bar_dims[s+'/'+r] = d;
@@ -250,8 +249,6 @@
                         } else if (valueLabels == "always") {
                             me.__barLbls[key].show();
                         }
-
-                        me.__bars[key].animate(bar_attrs, 0, me.theme().easing).data('strokeCol', stroke);
                     }
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
