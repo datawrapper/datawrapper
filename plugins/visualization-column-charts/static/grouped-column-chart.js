@@ -271,7 +271,7 @@
                         lbl_w = 100;
                         lblcl.push('rotate90');
                         var height = me.labelHeight(column.title(), "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);
-                        lbl_x -= height / 2;                        
+                        lbl_x -= height / 3;                        
                         $('.dw-chart-body').addClass('rotated-labels');
                         halign = 'right';
                     } else {
