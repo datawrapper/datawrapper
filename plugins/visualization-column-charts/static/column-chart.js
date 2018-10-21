@@ -152,6 +152,8 @@
             
             rectD.x = d.bx;
 
+            if (typeof barv.value == "undefined" || barv.value == null) barv.value = "";
+
             // create bar
             bar = me.registerElement(c.paper.rect().attr(rectD).attr({
                 // 'stroke': stroke,
@@ -181,7 +183,7 @@
                 spos = me.labelPosition(barv, s, 'series', barv.name);
 
             // add value labels
-            if (valueLabels != "hide") {
+            if (valueLabels != "hide") {                
                 me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
                     w: lpos.width,
                     align: 'center',
@@ -253,7 +255,7 @@
                 fmt = labels.type(true).formatter();
 
             column.each(function(val, i) {
-                if (!isNaN(val) || !me.get('ignore-missing-values', false)) {
+                if (!isNaN(val) || !me.get('ignore-missing-values', false)) {                    
                     values.push({
                         name: fmt(labels.val(i)),
                         value: val,
@@ -312,7 +314,8 @@
                 _.each(me.__labels[bar.name], function(lbl) {
                     var lpos;
                     if (lbl.hasClass('value')) {
-                        // update value
+                        // update value    
+                        if (typeof bar.value == "undefined" || bar.value == null || bar.value == "undefined") bar.value = "";
                         lbl.text(formatter(bar.value, true));
                         lpos = me.labelPosition(bar, s, 'value');
                     } else if (lbl.hasClass('series')) {
