@@ -492,9 +492,9 @@
                     var height = me.labelHeight(txt, "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
 
                     lbl_y -= 10;  // move towards zero axis
-                    lbl_w = 100; 
+                    lbl_w = 100;
                     
-                    left = left - height/3;
+                    left = left - height/3 + 5;
                     halign = 'right'; // lbl_top ? 'right' : 'left';
                 }
 
