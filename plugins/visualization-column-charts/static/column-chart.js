@@ -397,7 +397,7 @@
                 cw = c.w - c.lpad - c.rpad - gridLabelSpace;
 
             return {
-                barWidth: cw / (n + (n-1) * pad),
+                barWidth: cw / (n + (n > 2 ? (n - 1) : (n)) * pad),
                 labelWidth: cw / n
             };            
         },
@@ -556,7 +556,7 @@
                     key = String(val);
 
                 // show or update label
-                if (val !== 0) {
+                if (val !== 0 && position != "hidden") {
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x, ly, formatter(val, t == ticks.length-1, false),
                             { align: gridLabelPosition == "left" ? "right" : "left",  cl: 'axis', css: { opacity: 0 } });

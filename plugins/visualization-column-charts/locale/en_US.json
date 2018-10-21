@@ -47,5 +47,6 @@
   "settings / label-position": "Label position:",
   "settings / inside": "inside",
   "settings / outside": "outside",
+  "settings / hidden": "hidden",
   "settings / display": "Display"
 }

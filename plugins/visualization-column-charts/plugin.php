@@ -62,6 +62,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                     "options" => array(
                         array("value" => "outside", "label" => __("settings / outside")),
                         array("value" => "inside", "label" => __("settings / inside")),
+                        array("value" => "hidden", "label" => __("settings / hidden")),
                     ),
                     "default" => "outside",
                     "depends-on" => array(

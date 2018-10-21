@@ -94,7 +94,7 @@
             $(ch).height($(ch).height());
 
             // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (!me.useDirectLabeling() ? (lh + 10) : 0)]);
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (!me.useDirectLabeling() ? (lh + 20) : 0)]);
             return;
         },
 
