@@ -185,7 +185,7 @@
             var leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
                 otherBars = r * bw,
                 otherSeries = s * seriesSpace,
-                pad = s > 0 ? (seriesSpace * pad / (n-1)) : 0;
+                pad = (s > 0 && n > 2) ? (seriesSpace * pad / (n-1)) : 0;
 
             x = Math.round(leftPad + otherBars + otherSeries + pad);
             seriesX = Math.round(leftPad + otherSeries + seriesSpace / 2);
@@ -244,7 +244,7 @@
                         }, 0, 'expoInOut');
                         me.__barLbls[key].data('row', r);
 
-                        if (!valueLabels || valueLabels == "hover") {
+                        if (!valueLabels || valueLabels == "hover" || valueLabels == "auto") {
                             me.__barLbls[key].hide();
                         } else if (valueLabels == "always") {
                             me.__barLbls[key].show();
@@ -436,7 +436,7 @@
             // show/hide the labels that show values on top of the bars            
             _.each(me.__barLbls, function(lbl, key) {
                 var valueLabels = me.get('value-labels');
-                if (!valueLabels || valueLabels == "hover") {
+                if (!valueLabels || valueLabels == "hover" || valueLabels == "auto") {
                     if (hoveredSeries && lbl.data('row') == row && hoveredSeries == lbl.data('key')) {
                         lbl.show();                        
                     } else {
