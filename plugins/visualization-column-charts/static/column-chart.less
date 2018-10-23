@@ -1,17 +1,36 @@
-
-.chart.vis-column-chart {
+.chart, .dw-chart-body.column-chart {
     overflow: hidden;
 }
 
-.chart.vis-column-chart  .label {
-  position: absolute;
+.chart .label {
+    position: absolute;
 }
 
-.chart.vis-column-chart  .label.lbl-align-right {
-  text-align: right;
+.chart .label.series {
+    word-break: break-word;
 }
 
-.chart.vis-column-chart  .label.lbl-align-left {
-  text-align: left;
+.chart .label.lbl-align-right {
+    text-align: right;
 }
 
+.chart .label.lbl-align-left {
+    text-align: left;
+}
+
+.chart .label.hover {
+    font-weight: initial;
+}
+
+.chart .label span {
+    color: rgb(128, 128, 128);
+    font-size: 12px;
+}
+
+.chart .label.only-on-hover {
+    display: none;
+}
+
+.chart .label.only-on-hover.hover {
+    display: block;
+}

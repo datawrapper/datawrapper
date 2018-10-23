@@ -1,53 +1,33 @@
 
 (function(){
 
-    dw.visualization.register('grouped-column-chart', 'raphael-chart', {
-
-        // some config
+    dw.visualization.register('grouped-column-chart', 'column-chart', {
         _showValueLabels: function() { return true; },
 
         _isStacked: function() { return false; },
 
-        _directLabeling: function() {
-            var me = this,
-                mob = me.get('same-as-desktop') || me.__canvas.w > 420 ? '' : '-mobile';
-            return me._isStacked() && me.get('direct-labeling'+mob) == 'always';
-        },
+        render: function(el) {            
+            var me = this;
 
-        render: function(el) {
-
-            this.setRoot(el);
-
-            var me = this,
-                c = me.initCanvas({}),
-                dataset = me.dataset,
-                chart_width = c.w - c.lpad - c.rpad,
-                series_gap = 0.05, // pull from theme
-                row_gap = 0.01;
-
-            if (dataset.numRows() > 40 || dataset.numColumns() > 50) {
-                console.log('limit');
-                this.notify('Your dataset is too big for this chart type. You may want to consider using a different one (e.g. line chart or scatterplot).');
-            }
-
-            dataset.limitRows(100);
-            dataset.limitColumns(50);
-
-            var label_direct = me._directLabeling();
-
-            me.axesDef = me.axes();
+            me.checkDataset(el);
             if (!me.axesDef) return;
 
-            if (!_.isUndefined(me.get('selected-row'))) {
-                row = me.get('selected-row');
-            }
+            c = me.initCanvas({ tpad: 20 });            
+            c.rpad = 0;
+            c.lpad = 0;
+            c.bpad = 10
+            
+            me.init();
+            me.renderChart(el, c);                
+            me.renderingComplete();
+        },
+
+        initColorOptions: function(el) {
+            var me = this;                
 
             me.__top = $(el).offset().top - $(el).parent().offset().top;
-
-            me.checkData();
-
             me._color_opts = {};
-
+            
             if (me.get('negative-color', false)) {
                 me._color_opts.byValue = function(v) {
                     return me.theme().colors[v < 0 ? 'negative' : 'positive'];
@@ -55,93 +35,162 @@
             } else {
                 me._color_opts.varyLightness = true;
             }
+        },
 
-            me.init();
+        renderChart: function(el, c) {            
+            var me = this,
+                dataset = me.dataset;                
+                barColumns = me.getBarColumns(), 
+                all_values_negative = true;               
+            
+            if (me.useDirectLabeling()) {
+                var mobile = me.get('same-as-desktop', true) ? "" : (c.w > 420 ? '' : '-mobile'),
+                    labelSpace = me.get('label-space'+mobile)/100;
 
-            // compute maximum x-label height
-            var lh = 0,
-                lhi = 0,
-                lw = 0,
-                lwi = 0;
-                barColumns = me.getBarColumns(),
-                n = barColumns.length,
-                all_values_negative = true;
+                c.rpad = Math.max(c.w * labelSpace, 1);
+            } else {                
+                if (dataset.numRows() > 1) {
+                    var items = [],
+                        lblFmt = me.chart().columnFormatter(me.axes(true).labels);
+
+                    dataset.eachRow(function(r) {
+                        items.push({
+                            key: 'row-'+r,
+                            label: lblFmt(me.axes(true).labels.val(r)),
+                            color: me.colorMap()(me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) }))
+                        });
+                    });
+                    
+                    me.addLegend(items, $('#chart'));
+                }
+            }
+
+            me.initColorOptions(el);
+            me.calculateGridLabelSpace();
+            me.addSeriesLabelSpace(c, barColumns.map(function(d) { return { name: d.title() }; }));              
 
             _.each(barColumns, function(column, s) {
-                var lbl_w = me.labelWidth(column.title(), 'series'),
-                    lbl_h = me.labelHeight(column.title(), 'series');
-
-                if (lbl_w >= lw) { lw = lbl_w; lwi = s; }
-                if (lbl_h >= lh) { lh = lbl_h; lhi = s; }
-
                 column.each(function(val) {
                     if (val > 0) all_values_negative = false;
                 });
             });
-
-            if (label_direct) {
-                var mobile = me.get('same-as-desktop') || c.w > 420 ? '' : '-mobile',
-                    labelSpace = me.get('label-space'+mobile)/100;
-
-                c.tpad = 2;
-                c.rpad = Math.max(c.w * labelSpace, 1);
-            } else c.tpad += 20;
-
-            if (me.get('grid-lines') && me._isStacked()) c.tpad += 10;
-
-            var bw = me.barDimensions(barColumns[0], 0, 0).bw;
-
-            if (bw < 20) {
-                c.bpad += me.labelWidth(barColumns[lwi].title(), 'series smaller');
-            } else if (bw < 30) {
-                c.bpad += Math.min(100, lw);
-            } else {
-                c.bpad += lh;
-            }
 
             if (all_values_negative) {
                 c.tpad = 30;
                 c.bpad = 0;
             }
 
-            if (dataset.numRows() > 1) {
-                var items = [],
-                    lblFmt = me.chart().columnFormatter(me.axes(true).labels);
-                dataset.eachRow(function(r) {
-                    items.push({
-                        key: 'row-'+r,
-                        label: lblFmt(me.axes(true).labels.val(r)),
-                        color: me.colorMap()(me.getBarColor(null, r, { varyLightness: true, key: me.axes(true).labels.val(r) }))
-                    });
-                });
-                if (!label_direct) me.addLegend(items, $('#chart'));
-            }
+            // store bar references for updates
+            ["__bars", "__barLbls", "__gridlines", "__gridlabels", "__series_names", "__row_labels",
+                "__row_labels", "__row_label_lines", "__barCn"].forEach(function(prop) {
+                me[prop] = {}
+            });
 
             me.initDimensions();
-
-            // store bar references for updates
-            me.__bars = {};
-            me.__barLbls = {};
-            me.__gridlines = {};
-            me.__gridlabels = {};
-            me.__series_names = {};
-            me.__row_labels = {};
-            me.__row_label_lines = {};
-            me.__barCn = {};
-
-            if (!me.theme().columnChart.cutGridLines) me.horzGrid();
-
+            me.horzGrid(false, me.getBarColumns()[0]);
             me.update();
-
-            // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));
+        },
 
-            $('.showOnHover').hide();
+         getDomain: function() {
+            var me = this,
+                domain = dw.utils.minMax(me.getBarColumns()),
+                customRange = me.get("custom-range");        
 
-            if (me.theme().columnChart.cutGridLines) me.horzGrid();
+            if (me.get('absolute-scale', false)) {
+                domain = dw.utils.minMax(_.map(me.axesDef.columns, function(c) { return me.dataset.column(c); }));
+            }    
 
-            me.post_render();
-            me.renderingComplete();
+            if (customRange && typeof customRange[0] !== "undefined" && customRange[0] !== null && customRange[0] !== "") {
+                domain[0] = customRange[0];
+            }
+
+            if (customRange && typeof customRange[1] !== "undefined" && customRange[1] !== null && customRange[1] !== "") {
+                domain[1] = customRange[1];
+            }
+
+            if (domain[0] > 0) domain[0] = 0;
+            if (domain[1] < 0) domain[1] = 0;
+
+            return domain;
+        },
+
+        initDimensions: function(r) {            
+            var me = this, c = me.__canvas;
+
+            me.__domain = me.getDomain();
+            me.__scales = {
+                y: d3.scale.linear().domain(me.__domain)
+            };
+
+            var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+                svg = $(me._svgCanvas()),
+                ch = $(svg.parent());
+
+            $(svg).height($(svg).height());
+            $(ch).height($(ch).height());
+
+            // -- substract a few pixel to get space for the legend!
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+10)]);
+        },
+
+        outerPadding: function() {
+            return 40;
+        },
+
+        barAndLabelWidth: function() {
+            var me = this,
+                c = me.__canvas,
+                n = me.getBarValues().length,
+                s = barColumns.length,
+                pad = me.get("series-padding", 35) / 100,
+                gridLabelSpace = me.gridLabelSpace(),
+                cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding();
+
+            return {
+                barWidth: Math.round(cw / (s + (s-1) * pad) / n),
+                labelWidth: Math.round(cw / (s + (s-1) * pad)),
+                seriesWidth: Math.round(cw / s),
+            };            
+        },
+
+        /*
+         * computes x,y,w,h for each bar
+         */
+        barDimensions: function(column, s, r) {
+            var me = this,
+                sc = me.__scales,
+                c = me.__canvas,
+                n = me.axesDef.columns.length,
+                h, x, y, i, seriesX,
+                gridLabelSpace = me.gridLabelSpace(),
+                barLabelWidth = me.barLabelWidth(),
+                seriesSpace = me.barAndLabelWidth().seriesWidth,
+                bw = me.barWidth(),
+                pad = me.get("series-padding", 35) / 100,
+                gridLabelPosition = me.get("grid-label-position", "left"),
+                val = column.val(r);
+                        
+            if (sc && sc.y) {
+                h = sc.y(val) - sc.y(0);
+                if (h >= 0) {
+                    y = c.h - c.bpad - sc.y(0) - h;
+                } else {
+                    y = c.h - c.bpad - sc.y(0);
+                    h *= -1;
+                }
+            }
+            if (val !== 0) h = Math.max(0.5, h);
+
+            var leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
+                otherBars = r * bw,
+                otherSeries = s * seriesSpace,
+                pad = (s > 0 && n > 2) ? (seriesSpace * pad / (n-1)) : 0;
+
+            x = Math.round(leftPad + otherBars + otherSeries + pad);
+            seriesX = Math.round(leftPad + otherSeries + seriesSpace / 2);
+
+            return { w: bw, h: h, x: x, y: y, bx: seriesX, bw: seriesSpace, tw: barLabelWidth };
         },
 
         update: function() {
@@ -164,27 +213,23 @@
                 column.each(function(val, r) {
                     me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
-                        fill = me.getBarColor(column, r, me._color_opts),
-                        stroke = fill, //chroma.color(fill).darken(10).hex(),
+                        fill = me.getBarColor(column, r, me._color_opts),                        
                         key = column.name()+'-'+r,
                         bar_attrs = {
                             x: d.x,
                             y: d.y,
                             width: d.w,
                             height: d.h,
-                            stroke: cm(stroke),
+                            stroke: "none",
                             fill: cm(fill)
                         };
                     bar_dims[s+'/'+r] = d;
                     last_bar = d;
                     me.__rowx.push([d.x, d.x+d.w, d.y, d.y + d.h, r]);
 
-                    var valueLabels = me.get('value-labels');
-
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
-                    if (me.theme().columnChart.barAttrs) {
-                        me.__bars[key].attr(me.theme().columnChart.barAttrs);
-                    }
+
+                    var valueLabels = me.get('value-labels');                                    
 
                     if (valueLabels != "hide") {
                         me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
@@ -199,21 +244,18 @@
                         }, 0, 'expoInOut');
                         me.__barLbls[key].data('row', r);
 
-
-                        if (!valueLabels || valueLabels == "auto") {
+                        if (!valueLabels || valueLabels == "hover" || valueLabels == "auto") {
                             me.__barLbls[key].hide();
                         } else if (valueLabels == "always") {
                             me.__barLbls[key].show();
                         }
-
-                        me.__bars[key].animate(bar_attrs, me.theme().duration, me.theme().easing).data('strokeCol', stroke);
-
                     }
 
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
+                        lbl_x = d.bx,
                         lblcl = ['series'],
-                        lbl_w = d.tw-5,
+                        lbl_w = d.tw,
                         valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',
                         alwaysShow = (me.chart().hasHighlight() && me.chart().isHighlighted(column.name())) || (d.w > 40);
@@ -221,22 +263,20 @@
                     if (me.chart().hasHighlight() && me.chart().isHighlighted(column.name())) {
                         lblcl.push('highlighted');
                     }
-                    if (d.bw < 30) {
-                        //lblcl.push('rotate90');
-                        lbl_y += 5;
-                        lbl_w = 100;
-                        halign = 'right';
-                    }
-                    if (d.bw < 20) {
-                        lblcl.push('smaller');
-                        lbl_w = 90;
-                    }
-                    if (d.bw < 30) {
-                        $('.dw-chart-body').addClass('rotated-labels');
-                        lblcl.push('rotate90');
 
+                    if (me.useSmallerLabels()) {
+                        lblcl.push('smaller');
                     }
-                    else if (d.bw >= 30) $('.dw-chart-body').removeClass('rotated-labels');
+                    if (me.rotateLabels()) {                        
+                        lbl_w = 100;
+                        lblcl.push('rotate90');
+                        var height = me.labelHeight(column.title(), "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);
+                        lbl_x -= height / 3;                        
+                        $('.dw-chart-body').addClass('rotated-labels');
+                        halign = 'right';
+                    } else {
+                        $('.dw-chart-body').removeClass('rotated-labels');
+                    }
 
                     if (me._isStacked() && me.get('connect-bars') && s > 0) {
                         var pp = bar_dims[(s-1)+'/'+(r)];
@@ -247,29 +287,31 @@
                                 path: 'M'+[pp.x+pp.w, pp.y]+'L'+[d.x, d.y, d.x, d.y + d.h, pp.x+pp.w, pp.y+pp.h]
                             };
                         me.__barCn[key] = me.__barCn[key] || me.registerElement(c.paper.path().attr(cn_attrs), column.name(), r);
-                        me.__barCn[key].animate(cn_attrs, me.theme().duration, me.theme().easing);
+                        me.__barCn[key].animate(cn_attrs, 0, me.theme().easing);
                     }
 
                     // add series label
-                    if (!/^X\.\d+$/.test(column.title()) && r === 0) {
-
+                    if (!/^X\.\d+$/.test(column.title()) && r === 0) {                        
                         var la = {
-                                x: d.bx + d.bw * 0.5,
+                                x: lbl_x,
                                 y: lbl_y,
                                 w: lbl_w,
                                 align: halign,
                                 valign: valign,
                                 cl: lblcl.join(' '),
-                                rotate: d.bw < 30 ? -90 : 0
+                                css: {
+                                    "word-break": "break-word"
+                                },
+                                rotate: me.rotateLabels() ? -90 : 0
                             },
                             sl = me.__series_names[column.name()] = me.__series_names[column.name()] ||
-                                me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());
+                                me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name());                        
 
-                        sl.animate(la, me.theme().duration, me.theme().easing);
+                        sl.animate(la, 0, me.theme().easing);
                     }
 
                     // add row label (if direct)
-                    if (me._directLabeling() && s == columns.length-1) {
+                    if (me.useDirectLabeling() && s == columns.length-1) {
                         var rl = {
                                 x: c.w - c.rpad+20 - (me.get('grid-lines') ? 0 : (c.w * me.get('margin')/150)),
                                 y: d.y + d.h*0.5,
@@ -318,14 +360,17 @@
                 if (me.__row_label_lines[r]) me.__row_label_lines[r].animate({path: path}, me.theme().duration, me.theme().easing);
                 else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5 });
 
-                lbl.animate(lbl.__attrs, me.theme().duration, me.theme().easing);
-            })
+                lbl.animate(lbl.__attrs, 0, me.theme().easing);
+            });
 
-            // draw baseline
-            if (!me._isStacked() || me.get('grid-lines')) {
-                var y = c.h - me.__scales.y(0) - c.bpad;
-                me.path([['M', c.lpad, y], ['L', c.w - c.rpad, y]], 'axis').attr(me.theme().yAxis);
-            }
+            if (me.__gridLines['0']) me.__gridLines['0'].toFront();
+        },
+
+        useDirectLabeling: function() {
+            var me = this, 
+                mob = me.get('same-as-desktop', true) ? "" : me.__canvas.w > 420 ? '' : '-mobile';
+
+            return me._isStacked() && me.get('direct-labeling'+mob) == 'always';
         },
 
         getBarColor: function(bar, row, opts) {
@@ -359,62 +404,7 @@
             }
             if (reverse) columns.reverse();
             return columns;
-        },
-
-        initDimensions: function(r) {
-            //
-            var me = this, c = me.__canvas;
-
-            me.__domain = dw.utils.minMax(me.getBarColumns());
-            if (me.__domain[0] > 0) me.__domain[0] = 0;
-            if (me.__domain[1] < 0) me.__domain[1] = 0;
-            me.__scales = {
-                y: d3.scale.linear().domain(me.__domain)
-            };
-
-            var lh = ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
-                svg = $(me._svgCanvas()),
-                ch = $(svg.parent());
-
-            $(svg).height($(svg).height()-lh);
-            $(ch).height($(ch).height()-lh);
-
-            // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+20)]);
-        },
-
-        /*
-         * computes x,y,w,h for each bar
-         */
-        barDimensions: function(column, s, r) {
-            var me = this,
-                sc = me.__scales,
-                c = me.__canvas,
-                n = me.axesDef.columns.length,
-                w, h, x, y, i, cw, bw,
-                pad = 0.35,
-                vspace = 0.1,
-                val = column.val(r);
-
-            if (c.w / n < 30) vspace = 0.05;
-
-            cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
-            bw = cw / (n + (n-1) * pad);
-            w = Math.round(bw / column.length);
-
-            if (sc && sc.y) {
-                h = sc.y(val) - sc.y(0);
-                if (h >= 0) {
-                    y = c.h - c.bpad - sc.y(0) - h;
-                } else {
-                    y = c.h - c.bpad - sc.y(0);
-                    h *= -1;
-                }
-            }
-            if (val !== 0) h = Math.max(0.5, h);
-            x = Math.round((c.w - c.lpad - c.rpad) * vspace + c.lpad + s * (bw + bw * pad));
-            return { w: w, h: h, x: x + Math.floor((w+1)*r), y: y, bx: x, bw: bw, tw: bw + bw * pad };
-        },
+        },    
 
         getDataRowByPoint: function(x, y) {
             var me = this;
@@ -432,122 +422,28 @@
         },
 
         /*
-         * renders the horizontal grid
-         */
-        horzGrid: function() {
-            // draw tick marks and labels
-            var me = this,
-                yscale = me.__scales.y,
-                c = me.__canvas,
-                domain = me.__domain,
-                styles = me.__styles,
-                ticks = me.getYTicks(yscale, c.h, true);
-
-            if (me._isStacked() && !me.get('grid-lines')) return;
-
-            ticks = ticks.filter(function(val, t) {
-                return val >= domain[0] && val <= domain[1];
-            });
-
-            _.each(ticks, function(val, t) {
-                var y = c.h - c.bpad - yscale(val),
-                    x = c.lpad, ly = y-10, lbl,
-                    txt = me.formatValue(val, true);
-                // c.paper.text(x, y, val).attr(styles.labels).attr({ 'text-anchor': 'end' });
-                if (me.theme().columnChart.cutGridLines) ly += 10;
-
-                if (val !== 0) {
-                    lbl = me.__gridlabels[val] = me.__gridlabels[val] || me.label(x+2, ly, txt, { align: 'left', cl: 'axis', css: { opacity: 0 } });
-                    lbl.animate({ x: x+2, y: ly, css: { opacity: 1 } }, me.theme().duration, me.theme().easing);
-                }
-
-                if (me.theme().yTicks) {
-                    me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
-                }
-                if (me.theme().horizontalGrid) {
-                    var p = 'M' + [c.lpad, y] + 'H' + (c.w - c.rpad),
-                        l = me.__gridlines[val] = me.__gridlines[val] || me.path(p, 'grid').attr(me.theme().horizontalGrid).attr('opacity', 0);
-
-                    if (val === 0) l.attr(me.theme().xAxis);
-                    else if (me.theme().columnChart.cutGridLines) l.attr('stroke', me.theme().colors.background);
-
-                    l.animate({ path: p, opacity: 1 }, me.theme().duration, me.theme().easing);
-                    l.toBack();
-                }
-            });
-
-            _.each(me.__gridlabels, function(lbl, val) {
-                if (_.indexOf(ticks, +val) < 0) {
-                    lbl.animate({ css: { opacity: 0 } }, me.theme().duration, me.theme().easing);
-                }
-            });
-            _.each(me.__gridlines, function(line, val) {
-                if (_.indexOf(ticks, +val) < 0) {
-                    line.animate({ opacity: 0 }, me.theme().duration, me.theme().easing);
-                }
-            });
-        },
-
-        /*
          * highlights hovered bars and displays value labels
          */
         hover: function(hoveredSeries, row) {
-            var me = this,
-                whitishBg = chroma.color(me.theme().colors.background).lch()[0] > 60;
-            // compute fill color, depending on hoveredSeries
-            function getFill(col, el) {
-                var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
-                // if (hoveredSeries !== undefined && col.name() == dw.utils.name(hoveredSeries)) {
-                //     fill = chroma.color(fill).darken(whitishBg ? 15 : -25).hex();
-                // }
-                return fill;
+            var me = this;
+
+            // highlight legend element
+            $('.dw-chart .legend > div').removeClass('hover');
+            if (hoveredSeries) {
+                $('.dw-chart .legend > div[data-key="row-'+row+'"]').addClass('hover');                
             }
 
-            _.each(me.getBarColumns(), function(column) {
-
-                var fill, stroke;
-
-                // highlight/invert the column title
-                _.each(me.__labels[column.name()], function(lbl) {
-                    if (hoveredSeries !== undefined && column.name() == dw.utils.name(hoveredSeries)) {
-                        // lbl.addClass('hover');
-                        // if (lbl.hasClass('showOnHover')) lbl.show(0.5);
-                    } else {
-                        lbl.removeClass('hover');
-                        if (lbl.hasClass('showOnHover')) lbl.hide(0.5);
-                    }
-                    if (lbl.hasClass('value')) {
-                        lbl.removeClass('hover');
-                        fill = getFill(column, lbl);
-                        // console.log(fill, );
-                        if (lbl.hasClass('inside') && chroma(fill).lab()[0] < 50) lbl.addClass('inverted');
-                        //}
-                    }
-                });
-
-                $('.dw-chart .legend > div').removeClass('hover');
-                if (hoveredSeries) $('.dw-chart .legend > div[data-key="row-'+row+'"]').addClass('hover');
-                // animate the bar fill & stroke
-                // _.each(me.__elements[column.name()], function(el) {
-                //     fill = getFill(column, el);
-                //     stroke = fill; //chroma.color(fill).darken(10).hex();
-                //     if (el.attrs.fill != fill || el.attrs.stroke != stroke)
-                //         el.animate({ fill: fill, stroke: stroke }, 50);
-                // });
-            });
-
-            // show/hide the labels that show values on top of the bars
-            var visibleLbls = [];
+            // show/hide the labels that show values on top of the bars            
             _.each(me.__barLbls, function(lbl, key) {
                 var valueLabels = me.get('value-labels');
-                if (!valueLabels || valueLabels == "auto") {
+                if (!valueLabels || valueLabels == "hover" || valueLabels == "auto") {
                     if (hoveredSeries && lbl.data('row') == row && hoveredSeries == lbl.data('key')) {
-                        lbl.show();
-                        visibleLbls.push(lbl.data('label'));
-                    } else lbl.hide();
+                        lbl.show();                        
+                    } else {
+                        lbl.hide();
+                    }
                 }
-            });
-            // me.optimizmeLabelPositions(visibleLbls, 5);
+            });             
         },
 
         unhoverSeries: function() {
@@ -562,13 +458,6 @@
             return me.formatValue.apply(me, arguments);
         },
 
-        post_render: function() {
-
-        },
-
-        checkData: function() {
-            return true;
-        }
     });
 
 }).call(this);

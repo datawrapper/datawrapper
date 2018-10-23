@@ -100,22 +100,10 @@
             if (!hovered_key) hovered_key = me.getKeyByLabel();
 
             if (!hovered_key) {
-                // nothing hovered
-                clearTimeout(me.__mouseOverTimer);
-                me.__mouseOutTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (theme.hover) me.hover();
-                    if (theme.tooltip) me.hideTooltip();
-                }, 200);
+                // nothing hovered            
+                if (theme.hover) me.hover();                
             } else {
-                if (me.__mouseOutTimer) clearTimeout(me.__mouseOutTimer);
-                me.__mouseOverTimer = setTimeout(function() {
-                    clearTimeout(me.__mouseOverTimer);
-                    clearTimeout(me.__mouseOutTimer);
-                    if (theme.hover) me.hover(hovered_key, row);
-                    //if (theme.tooltip && hoveredNode) me.showTooltip(series, row, x, y);
-                }, 100);
+                if (theme.hover) me.hover(hovered_key, row);
             }
         },
 
@@ -199,7 +187,6 @@
          * based on raphael-chart. Using HTML instead of SVG has several benefits.
          */
         label: function(x, y, txt, _attrs) {
-
             var me = this,
                 rot_w = Math.max(_attrs.w || 0, 100),
                 lbl,  // $(<div class="label" />)
@@ -257,8 +244,6 @@
             }
 
 
-
-
             // create label DIV element
             lbl.css($.extend({}, attrs.css, position()));
 
@@ -274,6 +259,7 @@
                     'filter': 'progid:DXImageTransform.Microsoft.BasicImage(rotation=3)'
                 });
             }
+
             var label = { el: lbl };
             // update label text
             label.text = function(txt) {
@@ -283,25 +269,24 @@
                 }
                 return $('span', lbl).html();
             };
+
             // animate label attributes
             label.animate = function(_attrs, duration, easing) {
                 //
                 if (_attrs.align != attrs.align) {
-                    setTimeout(function() {
-                        lbl.css({ 'text-align': _attrs.align });
-                    }, duration ? duration * 0.5 : 10);
+                    lbl.css({ 'text-align': _attrs.align });
                 }
                 if (attrs.rotate && _attrs.valign != attrs.valign) {
-                    setTimeout(function() {
-                        lbl.css({ 'text-align': _attrs.valign == 'top' ? 'right' : 'left' });
-                    }, duration ? duration * 0.5 : 10);
+                    lbl.css({ 'text-align': _attrs.valign == 'top' ? 'right' : 'left' });
                 }
                 if (_attrs.txt != attrs.txt) label.text(_attrs.txt);
                 $.extend(attrs, _attrs);
                 var _css = $.extend({}, attrs.css, position());
                 return duration ? lbl.stop().animate(_css, duration, easing) : lbl.css(_css);
             };
+
             label.attr = label.animate;
+
             // wrap lbl.data
             label.data = function() { return lbl.data.apply(lbl, arguments); };
             label.hide = function() { return lbl.hide.apply(lbl, arguments); };
@@ -361,8 +346,8 @@
 
             lbl = document.createElement('div');
             lbl.style.position = 'absolute';
-            lbl.style.left = '-10000px';
-            span = document.createElement('span');
+            lbl.style.left = '-10000px';            
+            span = document.createElement('span');            
             lbl.appendChild(span);
             $span = $(span);
 
@@ -377,10 +362,10 @@
                 lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
                 lbl.style.width = width+'px';
                 span.style.fontSize = fontSize ? fontSize : null;
-                span.innerHTML = txt;
+                span.innerHTML = txt;                
                 return oh();
             }
-            this.labelHeight = labelHeight;
+            this.labelHeight = labelHeight;            
             return labelHeight(txt, className, width, fontSize);
         },
 

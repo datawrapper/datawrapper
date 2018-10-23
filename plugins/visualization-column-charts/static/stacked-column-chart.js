@@ -45,11 +45,11 @@
             return stackedColumns;
         },
 
-        initDimensions: function(r) {
-            //
-            var me = this, c = me.__canvas,
+        getDomain: function() {
+            var me = this,
                 normalize = me.is_normalized(),
-                dMin = 0, dMax = 0;
+                dMin = 0, dMax = 0,
+                customRange = me.get("custom-range");
 
             _.each(me._getBarColumns(), function(column) {
                 if (normalize) {
@@ -60,21 +60,60 @@
                     dMax = Math.max(dMax, column.total());
                 }
             });
-            me.__domain = normalize ? [0, 1] : [dMin, dMax];
+
+            var domain = [dMin, dMax];
+
+            if (customRange && typeof customRange[0] !== "undefined" && customRange[0] !== null && customRange[0] !== "") {
+                domain[0] = customRange[0];
+            }
+
+            if (customRange && typeof customRange[1] !== "undefined" && customRange[1] !== null && customRange[1] !== "") {
+                domain[1] = customRange[1];
+            }
+
+            if (domain[0] > 0) domain[0] = 0;
+            if (domain[1] < 0) domain[1] = 0;
+
+            return normalize ? [0, 1] : domain;
+        },
+
+        initDimensions: function(r) {
+            var me = this, 
+                c = me.__canvas;
+                
+            me.__domain = me.getDomain();
             me.__scales = {
                 y: d3.scale.linear().domain(me.__domain)
             };
 
-            var lh = me._directLabeling() ? 0 : ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+            var lh = me.useDirectLabeling() ? 0 : ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
                 svg = $(me._svgCanvas()),
                 ch = $(svg.parent());
 
-            $(svg).height($(svg).height()-lh);
-            $(ch).height($(ch).height()-lh);
+            $(svg).height($(svg).height());
+            $(ch).height($(ch).height());
 
             // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh+0)]);
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (!me.useDirectLabeling() ? (lh + 20) : 0)]);
             return;
+        },
+
+        outerPadding: function() {
+            return 20;
+        },
+
+        barAndLabelWidth: function() {
+            var me = this,
+                c = me.__canvas,
+                n = me.axesDef.columns.length,
+                pad = me.get("padding", 30) / 100,
+                gridLabelSpace = me.gridLabelSpace(),                
+                cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding() / 2;
+
+            return {
+                barWidth: cw / (n + (n-1) * pad),
+                labelWidth: cw / n
+            };            
         },
 
         barDimensions: function(column, s, r) {
@@ -84,18 +123,14 @@
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
                 w, h, x, y, i, cw, bw,
-                mobile = me.get('same-as-desktop') || c.w > 420 ? '' : '-mobile',
-                pad = me.get('padding'+mobile)/100,
-                vspace = me.get('margin'+mobile)/100;
-
-            if (c.w / n < 30) vspace *= 0.5;
-             // console.log('s', me.get('grid-lines'));
-            // if (me._isStacked() && !me.get('grid-lines')) vspace = 0;
-
-            cw = (c.w - c.lpad - c.rpad) * (1 - vspace - vspace);
-            bw = bw = cw / (n + (n-1) * pad);
+                bw = me.barWidth(),
+                barLabelWidth = me.barLabelWidth(),
+                gridLabelSpace = me.gridLabelSpace(),
+                gridLabelPosition = me.gridLabelPosition();         
+            
             if (r === 0) yo = 0;
-            w = bw; //w = Math.round(bw / column.length);
+            w = bw;
+
             if (sc && sc.y) {
                 h = sc.y(column.val(r)) - sc.y(0);
                 if (h >= 0) {
@@ -107,8 +142,13 @@
                 y = y - yo;
                 me.__yoffset = yo + h;
             }
-            x = Math.round( (c.w - c.lpad - c.rpad) * vspace  + c.lpad + s * (bw + bw * pad) );
-            return { w: w, h: h, x: x, y: y, bx: x, bw: bw, tw: bw + bw * pad };
+
+            var leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
+                otherBars = s * barLabelWidth;
+
+            x = Math.round(leftPad + otherBars);  
+
+            return { w: w, h: h, x: x, y: y, bx: x + w/2, bw: bw, tw: barLabelWidth };
         },
 
         formatValue: function() {
@@ -124,22 +164,7 @@
 
         is_normalized: function() {
             var me = this;
-            return me.get('normalize', false) && (!me.get('normalize-user', false) || $('#normalize:checked').length > 0);
-        },
-
-        post_render: function() {
-            var me = this;
-            if (me.get('normalize-user', false)) {
-                $('.header-right').remove();
-                var chkNormalize = $('<div><label for="normalize"><input type="checkbox" id="normalize" /> ' + me.translate('stack percentages') + '</label></div>');
-                chkNormalize.addClass('header-right');
-                $('#normalize', chkNormalize).on('change', function() {
-                    me.initDimensions();
-                    me.update();
-                    me.horzGrid();
-                });
-                $('#header').append(chkNormalize);
-            }
+            return me.get('normalize', false);
         },
 
         checkData: function() {

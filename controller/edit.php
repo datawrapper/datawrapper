@@ -102,6 +102,9 @@
                 return $chart;
             });
 
+            $userArray = $user->serialize();
+            $userArray['mayPublish'] = $user->mayPublish($chart);
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',
@@ -110,7 +113,7 @@
                 'dataReadonly' => !$chart->isDataWritable($user),
                 'chartData' => $chart->loadData(),
                 'workflow' => $workflows[$vis['svelte-workflow']],
-                'userArray' => $user->serialize(),
+                'userArray' => $userArray,
                 'vis' => $vis,
                 'chartLocales' => array_map(function($s) {
                     $s = explode('|', $s);
