@@ -9,14 +9,13 @@
 <script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js?v={{ sha }}"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/controls.css">
 
+
 <script type="text/javascript">
 
 require(['{{ path }}'], function(mod) {
 
     var App = mod.App,
-        data = _.extend({
-            visualization: {{vis|json|raw}},
-        }, mod.data || {}, {{ twig_data | json | raw }});
+        data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
     var chartData = {{chart.toStruct()|json|raw}};
 
@@ -30,14 +29,25 @@ require(['{{ path }}'], function(mod) {
     var getJSON = mod.utils.getJSON;
 
     var themeCache = {};
+    var visCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
+    visCache['{{vis.id}}'] = {{vis|json|raw}};
 
     chart.set({
         writable: true,
         themeData: themeCache['{{theme.id}}'],
         user: {{userArray|json|raw}},
         locales: {{chartLocales|json|raw}},
-        themes: {{userThemes|json|raw}}
+        themes: {{userThemes|json|raw}},
+        visualization: visCache['{{vis.id}}']
+    });
+
+    chart.compute('axes', ['visualization'], function(visualization) {
+        return _.values(visualization.axes);
+    });
+
+    chart.load(dw.backend.__currentData).then(function(ds) {
+        chart.set({dataset: ds});
     });
 
     var app = mod.app = new App({
@@ -68,6 +78,23 @@ require(['{{ path }}'], function(mod) {
                         chart.set({themeData: res.data.data});
                     } else {
                         console.warn('theme not loaded', res);
+                    }
+                });
+            }
+        }
+
+        if (changed.type) {
+            if (visCache[current.type]) {
+                // re-use cached visualization
+                chart.set({visualization: visCache[current.type]});
+            } else {
+                // load new vis data
+                getJSON(`/api/visualizations/${current.type}`, (res) => {
+                    if (res.status == 'ok') {
+                        visCache[current.type] = res.data.data;
+                        chart.set({visualization: visCache[current.type]});
+                    } else {
+                        console.warn('vis not loaded', res);
                     }
                 });
             }
