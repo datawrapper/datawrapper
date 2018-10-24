@@ -552,7 +552,7 @@
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val), 
                     x = gridLabelPosition == "left" ?
-                        c.lpad + me.__gridLabelSpace - 8 :
+                        Math.max(0, c.lpad + me.__gridLabelSpace - 8) :
                         c.w - me.__gridLabelSpace + 8;
 
                     ly = y-(position == "inside" ? 10 : 0),
