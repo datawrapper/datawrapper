@@ -13,7 +13,8 @@
         "nb": "No data available in table",
         "da": "Ingen resultater",
         "nb": "Ingen data tilgjengelig i tabellen",
-        "sv": "Tabellen innehåller ingen data"
+        "sv": "Tabellen innehåller ingen data",
+        "he": "אין כל מידע בטבלה"
     },
     "sInfo": {
         "en": "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -29,7 +30,8 @@
         "nb": "Showing _START_ to _END_ of _TOTAL_ entries",
         "da": "Viser _START_-_END_ af _TOTAL_ rækker",
         "nb": "Viser _START_ til _END_ av _TOTAL_ linjer",
-        "sv": "Visar _START_ till _END_ av totalt _TOTAL_ rader"
+        "sv": "Visar _START_ till _END_ av totalt _TOTAL_ rader",
+        "he": "מציג _START_ עד _END_ מתוך _TOTAL_ רשומות"
     },
     "sInfoEmpty": {
         "en": "Showing 0 to 0 of 0 entries",
@@ -45,7 +47,8 @@
         "nb": "Showing 0 to 0 of 0 entries",
         "da": "Viser 0-0 af 0 rækker",
         "nb": "Viser 0 til 0 av 0 linjer",
-        "sv": "Visar 0 till 0 av totalt 0 rader"
+        "sv": "Visar 0 till 0 av totalt 0 rader",
+        "he": "מציג 0 עד 0 מתוך 0 רשומות"
     },
     "sInfoFiltered": {
         "en": "(filtered from _MAX_ total entries)",
@@ -61,7 +64,8 @@
         "nb": "(filtered from _MAX_ total entries)",
         "da": "(ud af i alt _MAX_ rækker)",
         "nb": "(filtrert fra _MAX_ totalt antall linjer)",
-        "sv": "(filtrerade från totalt _MAX_ rader)"
+        "sv": "(filtrerade från totalt _MAX_ rader)",
+        "he": "(מתוך _MAX_ רשומות בסך הכל)"
     },
     "sInfoThousands": {
         "en": ",",
@@ -77,7 +81,8 @@
         "nb": ",",
         "da": ",",
         "nb": " ",
-        "sv": " "
+        "sv": " ",
+        "he": ","
     },
     "sLengthMenu": {
         "en": "Show _MENU_ entries",
@@ -93,7 +98,8 @@
         "nb": "Show _MENU_ entries",
         "da": "Viser _MENU_ rækker",
         "nb": "Vis _MENU_ linjer",
-        "sv": "Visa _MENU_ rader"
+        "sv": "Visa _MENU_ rader",
+        "he": "הצג _MENU_ שורות"
     },
     "sLoadingRecords": {
         "en": "Loading...",
@@ -109,7 +115,8 @@
         "nb": "Loading...",
         "da": "Loading...",
         "nb": "Laster...",
-        "sv": "Laddar..."
+        "sv": "Laddar...",
+        "he": "טוען..."
     },
     "sProcessing": {
         "en": "Processing...",
@@ -125,7 +132,8 @@
         "nb": "Processing...",
         "da": "Processing...",
         "nb": "Laster...",
-        "sv": "Bearbetar..."
+        "sv": "Bearbetar...",
+        "he": "מעבד..."
     },
     "sSearch": {
         "en": "Search:",
@@ -141,7 +149,8 @@
         "nb": "Search:",
         "da": "Søg:",
         "nb": "S&oslash;k:",
-        "sv": "Sök:"
+        "sv": "Sök:",
+        "he": "חיפוש:"
     },
     "sZeroRecords": {
         "en": "No matching records found",
@@ -157,7 +166,8 @@
         "nb": "No matching records found",
         "da": "Ingen resultater",
         "nb": "Ingen linjer matcher s&oslash;ket",
-        "sv": "Hittade inga matchande resultat"
+        "sv": "Hittade inga matchande resultat",
+        "he": "לא נמצאו רשומות מתאימות"
     },
     "oPaginate_sFirst": {
         "en": "First",
@@ -173,7 +183,8 @@
         "nb": "First",
         "da": "Første",
         "nb": "F&oslash;rste",
-        "sv": "Första"
+        "sv": "Första",
+        "he": "עמוד ראשון"
     },
     "oPaginate_sLast": {
         "en": "Last",
@@ -189,7 +200,8 @@
         "nb": "Last",
         "da": "Sidste",
         "nb": "Siste",
-        "sv": "Sista"
+        "sv": "Sista",
+        "he": "עמוד אחרון"
     },
     "oPaginate_sNext": {
         "en": "Next",
@@ -205,7 +217,8 @@
         "nb": "Next",
         "da": "Næste",
         "nb": "Neste",
-        "sv": "Nästa"
+        "sv": "Nästa",
+        "he": "הבא"
     },
     "oPaginate_sPrevious": {
         "en": "Previous",
@@ -221,7 +234,8 @@
         "nb": "Previous",
         "da": "Forrige",
         "nb": "Forrige",
-        "sv": "Föregående"
+        "sv": "Föregående",
+        "he": "הקודם"
     },
     "oAria_sSortAscending": {
         "en": ": activate to sort column ascending",
@@ -237,7 +251,8 @@
         "nb": ": activate to sort column ascending",
         "da": ": activate to sort column ascending",
         "nb": ": aktiver for å sortere kolonnen stigende",
-        "sv": ": aktivera för att sortera kolumnen i stigande ordning"
+        "sv": ": aktivera för att sortera kolumnen i stigande ordning",
+        "he": ": מיון בסדר עולה"
     },
     "oAria_sSortDescending": {
         "en": ": activate to sort column descending",
@@ -253,6 +268,7 @@
         "nb": ": activate to sort column descending",
         "da": ": activate to sort column descending",
         "nb": ": aktiver for å sortere kolonnen synkende",
-        "sv": ": aktivera för att sortera kolumnen i fallande ordning"
+        "sv": ": aktivera för att sortera kolumnen i fallande ordning",
+        "he": ": מיון בסדר יורד"
     }
 }
