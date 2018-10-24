@@ -121,7 +121,7 @@
                     txt = formatter(val, t == ticks.length-1, false);
 
                 return me.labelWidth(txt, 'label axis');
-            }) + 8; 
+            }) + 14;
         },    
 
         getDataRowByPoint: function(x, y) {
