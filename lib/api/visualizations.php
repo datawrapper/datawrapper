@@ -25,15 +25,6 @@ $app->get('/visualizations', function() {
 });
 
 $app->get('/visualizations/:visid', function($visid) {
-    if (false && isset($_SESSION['dw-visualizations-'.$visid])) {
-        // read from session cache
-        // ToDo: use user-independend cache here (e.g. memcache)
-        $res = $_SESSION['dw-visualizations-'.$visid];
-    } else {
-        // read from file system
-        $res = DatawrapperVisualization::get($visid);
-        // store in cache
-        $_SESSION['dw-visualizations-'.$visid] = $res;
-    }
+    $res = DatawrapperVisualization::get($visid);
     ok($res);
 });

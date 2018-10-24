@@ -5,7 +5,7 @@
 
     <div class="controls form-inline">
         <select bind:value="selected">
-            {#if $visMeta && $visMeta.axes[axis].optional}
+            {#if $visualization && $visualization.axes[axis].optional}
             <option value="-">{axis['na-label']||'--'}</option>
             {/if}
             {#each columns as column}
@@ -21,14 +21,18 @@ select { width: 170px!important; }
 </style>
 
 <script>
+
+import _indexOf from 'underscore-es/indexOf';
+import _clone from 'underscore-es/clone';
+
 export default {
     computed: {
-        columns({ axis, $visMeta, $dataset }) {
+        columns({ axis, $visualization, $dataset }) {
             const columns = [];
             // const axisMeta =
-            if (!$dataset || !$visMeta || !axis) return [];
+            if (!$dataset || !$visualization || !axis) return [];
             $dataset.eachColumn((column) => {
-                if (_.indexOf($visMeta.axes[axis].accepts, column.type()) > -1) {
+                if (_indexOf($visualization.axes[axis].accepts, column.type()) > -1) {
                     columns.push({
                         name: column.name()
                     });
@@ -42,23 +46,25 @@ export default {
             selected: false
         };
     },
-    oncreate() {
-        const me = this;
-        me.observe('selected', (sel) => {
-            if (sel) {
-                const {axis} = me.get();
-                var axes = _.clone(window.chart.get('metadata.axes', {}));
-                if (sel == '-') delete axes[axis];
-                else axes[axis] = sel;
-                window.chart.set('metadata.axes', axes);
+    onstate({changed, current}) {
+        if (changed.selected) {
+            if (current.selected) {
+                const {axis} = this.get();
+                var axes = _clone(this.store.getMetadata('axes', {}));
+                if (current.selected == '-') delete axes[axis];
+                else axes[axis] = current.selected;
+                this.store.setMetadata('axes', axes);
             }
-        });
-        me.store.observe('visMeta', (visMeta) => {
-            let {selected, axis} = me.get();
-            if (!selected && visMeta) {
+        }
+
+    },
+    oncreate() {
+        this.store.observe('visualization', (visualization) => {
+            if (!this.get().selected && visualization) {
                 // initialize!
-                selected = window.chart.get('metadata.axes')[axis];
-                me.set({selected});
+                const selected = this.store.getMetadata('axes')[this.get().axis];
+                console.log('initialize', this.get().axis, selected);
+                this.set({selected});
             }
         });
     }
