@@ -238,12 +238,13 @@
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
                     value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true),
-                    //remove html tags
-                    html = o.name;
                     div = document.createElement("div");
-                    div.innerHTML = html;
-                    name = div.textContent || div.innerText || "";
-                    var fill = me.getKeyColor(name,0);
+
+                // remove html tags
+                div.innerHTML = o.name;
+
+                var name = div.textContent || div.innerText || "",
+                    fill = me.getKeyColor(name,0);
 
                 me.__sliceKeys.push(o.name);
 
