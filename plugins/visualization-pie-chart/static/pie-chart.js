@@ -229,16 +229,22 @@
             var cx = c.cx - (all_labels_inside ? 0 : (out_label_w+50)*0.5),
                 lbl_duration = _.keys(me.__slices).length > 0 ? me.theme().duration : 100;
 
-            var cm = me.colorMap();
+            var cm = me.colorMap();  
 
             _.each(slices, function(o, index) {
 
                 var da = o.value / total * FA,
-                    fill = me.getKeyColor(o.name, 0),
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
+                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true),
+                    div = document.createElement("div");
+
+                // remove html tags
+                div.innerHTML = o.name;
+
+                var name = div.textContent || div.innerText || "",
+                    fill = me.getKeyColor(name,0);
 
                 me.__sliceKeys.push(o.name);
 
