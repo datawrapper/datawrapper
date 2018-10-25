@@ -1,5 +1,5 @@
 
-<div class="control-group vis-option-custom-format">
+<div class="control-group vis-option-custom-format {disabled ? 'disabled' : ''}">
     <label class="control-label">
         {@html label }
     </label>
@@ -11,25 +11,54 @@
         </div>
         {/if}
 
-        <select bind:value="selected">
+        <select bind:value="selected" disabled="{disabled}">
         {#each options as opt}
             <option value="{opt.f}">{opt.l}</option>
         {/each}
             <option value="custom">(custom)</option>
         </select>
         {#if selected == 'custom'}
-        <input bind:value="custom" type="text" />
+        <input bind:value="custom" type="text" disabled="{disabled}" />
         {/if}
     </div>
 </div>
 
+<style>
+    .control-label {
+        width: 100px!important;
+    }
+    select,
+    input {
+        width: 110px!important;
+        vertical-align: baseline;
+    }
+    input {
+        width: 100px!important;
+    }
+    .small {
+        font-size: 12px;
+        line-height: 14px;
+        font-style: italic;
+        color: #999;
+        max-width: 210px;
+        margin-bottom: 6px;
+    }
+    .disabled {
+        color: #999;
+    }
+    .disabled select,
+    .disabled input {
+        opacity: 0.5
+    }
+</style>
+
 <script>
     export default {
         computed: {
-            customFormatHelp ({ axisCol }) {
+            customFormatHelp ({ axisCol, disabled }) {
                 if (!axisCol) return;
-                if (axisCol.type() == 'date') return '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">moment.js documentation</a>';
-                if (axisCol.type() == 'number') return '<a href="http://numeraljs.com/#format" target="_blank">numeral.js documentation</a>';
+                if (axisCol.type() == 'date') return `${disabled ? '' : '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">'}moment.js documentation${disabled ? '' : '</a>'}`;
+                if (axisCol.type() == 'number') return `${disabled ? '' : '<a href="http://numeraljs.com/#format" target="_blank">'}numeral.js documentation${disabled ? '' : '</a>'}`;
                 return '';
             },
             axisCol ({ $vis, $dataset, axis }) {
@@ -82,8 +111,9 @@
                 axis: false,
                 value: '',
                 custom: '',
-                selected: null
-            }
+                selected: null,
+                disabled: false
+            };
         },
         oncreate() {
             // watch select input
@@ -110,24 +140,3 @@
         }
     };
 </script>
-
-<style>
-.control-label {
-    width: 100px!important;
-}
-select, input {
-    width: 110px!important;
-    vertical-align: baseline;
-}
-input {
-    width: 100px!important;
-}
-.small {
-    font-size: 12px;
-    line-height: 14px;
-    font-style: italic;
-    color: #999;
-    max-width: 210px;
-    margin-bottom: 6px;
-}
-</style>
