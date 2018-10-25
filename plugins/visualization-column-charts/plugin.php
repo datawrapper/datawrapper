@@ -204,13 +204,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "type" => "base-color",
                             "label" => __("Base color")
                         ],
-                        "negative-color" => array(
-                            "type" => "checkbox",
-                            "label" => __("Use different color for negative values"),
-                            "depends-on" => array(
-                                "chart.min_value[columns]" => '<0'
-                            )
-                        ),
                         "value-labels" => array(
                             "type" => "radio",
                             "label" => __("Value labels"),
@@ -327,13 +320,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'label' => __('stacked / connect-bars'),
                             'default' => false,
                         ],
-                        "negative-color" => array(
-                            "type" => "checkbox",
-                            "label" => __("Use different color for negative values"),
-                            "depends-on" => array(
-                                "chart.min_value[columns]" => '<0'
-                            )
-                        ),
                         "value-labels" => array(
                             "type" => "radio",
                             "label" => __("Value labels"),

@@ -26,15 +26,7 @@
             var me = this;                
 
             me.__top = $(el).offset().top - $(el).parent().offset().top;
-            me._color_opts = {};
-            
-            if (me.get('negative-color', false)) {
-                me._color_opts.byValue = function(v) {
-                    return me.theme().colors[v < 0 ? 'negative' : 'positive'];
-                };
-            } else {
-                me._color_opts.varyLightness = true;
-            }
+            me._color_opts = {varyLightness: true};
         },
 
         renderChart: function(el, c) {            

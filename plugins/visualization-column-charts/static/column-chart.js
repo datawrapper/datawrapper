@@ -121,7 +121,7 @@
                     txt = formatter(val, t == ticks.length-1, false);
 
                 return me.labelWidth(txt, 'label axis');
-            }) + 8; 
+            }) + 14;
         },    
 
         getDataRowByPoint: function(x, y) {
@@ -550,19 +550,33 @@
                 gridLabelPosition = me.gridLabelPosition();
 
             _.each(ticks, function(val, t) {
-                var y = c.h - c.bpad - yscale(val), 
-                    x = gridLabelPosition == "left" ?
-                        c.lpad + me.__gridLabelSpace - 8 :
-                        c.w - me.__gridLabelSpace + 8;
-
+                var y = c.h - c.bpad - yscale(val),                     
                     ly = y-(position == "inside" ? 10 : 0),
                     key = String(val);
+
+                if (gridLabelPosition == "left") {
+                    if (position == "outside") {
+                        align = "right";
+                        x = c.lpad + me.__gridLabelSpace - 8;
+                    } else {
+                        align = "left";
+                        x = 0;
+                    }
+                } else {
+                    if (position == "outside") {
+                        align = "left";                        
+                        x = c.w - me.__gridLabelSpace + 8;
+                    } else {
+                        align = "right";
+                        x = c.w;
+                    }
+                }
 
                 // show or update label
                 if (val !== 0 && position != "hidden") {
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x, ly, formatter(val, t == ticks.length-1, false),
-                            { align: gridLabelPosition == "left" ? "right" : "left",  cl: 'axis', css: { opacity: 0 } });
+                            { align: align,  cl: 'axis', css: { opacity: 0 } });
                     lbl.text(formatter(val, t == ticks.length-1, false));
                     lbl.animate({ x: x, y: ly, css: { opacity: 1 } }, duration, theme.easing);
                 }
