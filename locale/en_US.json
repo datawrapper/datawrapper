@@ -379,7 +379,7 @@
   "publish / publish-btn-intro": "Click here if you want to embed your chart in your <b>website</b> or <b>CMS</b>.",
   "publish / publish-btn": "Publish chart",
   "publish / republish-btn": "Re-publish chart",
-  "publish / republish-alert": "You have changed the chart after its last publication. To make these changes show up you got to <b>publish the chart again</b>.",
+  "publish / republish-alert": "You have changed the chart after its last publication. To make these changes show up you will need to <b>publish the chart again</b>.",
   "publish / progress / please-wait": "Your chart is now being prepared for publication and should be ready in a few seconds.",
   "publish / publish-success": "Congratulations, your chart can now be shared and embedded on your site.",
   "publish / share-url": "Share via URL",
