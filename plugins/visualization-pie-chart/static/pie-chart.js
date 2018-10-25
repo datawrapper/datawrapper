@@ -237,11 +237,10 @@
                     stroke = chroma.color(fill).darken(15).hex(),
                     a0 = reverse ? sa - da : sa,
                     a1 = reverse ? sa : sa + da,
-                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true);
-                    
-                    //Remove html tags
-                    var html = o.name;
-                    var div = document.createElement("div");
+                    value = showTotal && me.get('show-percentages', false) ? Math.round(o.value / total * 100)+'%' : formatValue(o.value, true),
+                    //remove html tags
+                    html = o.name,
+                    div = document.createElement("div");
                     div.innerHTML = html;
                     name = div.textContent || div.innerText || "";
                     var fill = me.getKeyColor(name,0);
