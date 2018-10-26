@@ -191,6 +191,7 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any window smaller than 760px
 and also iPads specifically.
 */
+
 .dw-chart-body.mobile-view {
     /* Force table to not be like tables anymore */
     table.responsive, .responsive thead, .responsive tbody, .responsive th, .responsive td, .responsive tr {
@@ -206,13 +207,13 @@ and also iPads specifically.
 
     .responsive tr { border: 1px solid #ccc; margin-bottom: 10px}
 
-    .responsive td {
+    .responsive.datatable-default td {
         /* Behave  like a "row" */
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
-        text-align: right!important;
+        padding-left: 50%!important;
+        text-align: left!important;
 
         :first-child {
 
@@ -234,6 +235,7 @@ and also iPads specifically.
         text-align: left!important;
         padding-right: 10px;
         white-space: pre-wrap;
+        font-weight:800;
     }
 
     /*
