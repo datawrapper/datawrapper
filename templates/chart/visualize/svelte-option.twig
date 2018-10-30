@@ -1,7 +1,7 @@
 {% if option.type == type %}
 
 <div class="{{ type }}" id="{{ type }}-{{ key }}">
-
+ <i class="fa fa-spinner fa-spin fa-2x fa-cog"></i> Loading...
 </div>
 
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css?v={{ COMMIT_SHA }}">
@@ -46,14 +46,31 @@ require(['{{ path }}'], function(mod) {
         return _.values(visualization.axes);
     });
 
+    function getContext(callback) {
+        var win = $('#iframe-vis').get(0).contentWindow;
+        var doc = $('#iframe-vis').get(0).contentDocument;
+        if (!win || !win.__dw || !win.__dw.vis) {
+            return setTimeout(() => {
+                getContext(callback);
+            }, 200);
+        }
+        callback(win, doc);
+    }
+
     chart.load(dw.backend.__currentData).then(function(ds) {
         chart.set({dataset: ds});
-    });
 
-    var app = mod.app = new App({
-        store: chart,
-        target: document.querySelector('#{{ type }}-{{ key }}'),
-        data: data
+        getContext(function(win, doc) {
+            chart.set({vis: win.__dw.vis});
+
+            document.querySelector('#{{ type }}-{{ key }}').innerHTML = '';
+
+            var app = mod.app = new App({
+                store: chart,
+                target: document.querySelector('#{{ type }}-{{ key }}'),
+                data: data
+            });
+        });
     });
 
     var lastHash = null;
