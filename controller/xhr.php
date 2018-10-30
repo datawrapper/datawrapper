@@ -46,6 +46,7 @@ $app->get('/xhr/:chartid/vis-options', function($id) use ($app) {
         $page = array(
             'vis' => $vis,
             'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
+            'chart' => $chart,
             'language' => substr(DatawrapperSession::getLanguage(), 0, 2)
         );
 
