@@ -43,7 +43,6 @@ class Theme extends BaseTheme
         }
 
 
-        // some visuazations
         $data['colors_perceived_bg'] =
             empty($data['colors_background']) ||
                 $data['colors_background'] == '~"transparent"' ? '~"white"' :
