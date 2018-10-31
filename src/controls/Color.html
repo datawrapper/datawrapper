@@ -55,6 +55,7 @@
 <script>
     import ColorPicker from './ColorPicker.html';
     import chroma from 'chroma';
+    import purifyHtml from '../shared/purifyHtml';
 
     export default {
         components: { ColorPicker },
@@ -190,6 +191,6 @@
     }
 
     function stripTags(s) {
-        return dw.utils.purifyHtml(s, '');
+        return purifyHtml(s, '');
     }
 </script>
