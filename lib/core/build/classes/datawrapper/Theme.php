@@ -26,6 +26,7 @@ class Theme extends BaseTheme
         $twig = (empty($appTwig) ? $app->view()->getEnvironment() : $appTwig->view()->getEnvironment());
         $twigData = $data;
         $twigData['fonts'] = $this->getAssetFonts();
+
         $baseLess = $twig->render('chart-styles.less.twig', $twigData);
 
         $allThemeLess = $this->getLess();
@@ -40,6 +41,12 @@ class Theme extends BaseTheme
         foreach ($visLess as $vis) {
             $allVisLess .= "\n\n\n" . file_get_contents($vis);
         }
+
+
+        $data['colors_perceived_bg'] =
+            empty($data['colors_background']) ||
+                $data['colors_background'] == '~"transparent"' ? '~"white"' :
+                $data['colors_background'];
 
         $less = new lessc;
         $less->setVariables($data);

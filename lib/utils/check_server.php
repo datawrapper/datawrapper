@@ -190,6 +190,7 @@ function check_server() {
     foreach ($check as $func) {
         $msg = call_user_func($func);
         if (!empty($msg)) {
+            http_response_code(500);
             print '<html><head><title>Datawrapper</title></head><body>';
             print '<div style="border-radius:20px;background:#ffc; border:1px solid #eea; padding: 30px;width:700px;margin:30px auto;font-size:18px;font-family:Helvetica Neue;font-weight:300">';
             print '<style>h2 { font-weight: 400; font-size: 28px; color: #b20 } ul li { font-size: 18px }</style>';

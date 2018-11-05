@@ -56,7 +56,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
             </div>
         </div>
     {:else}
-    {#if !disabled && value}
+    {#if (!disabled || disabled_state == 'on') && value}
         <div transition:slide>
             <div class="switch-content">
                 <slot></slot>
