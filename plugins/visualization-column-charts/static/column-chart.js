@@ -116,6 +116,10 @@
             var me = this,
                 ticks = me.getDomain();
 
+            if (me._isStacked && me._isStacked() && me.is_normalized()) {
+                ticks = [0, 100];
+            }
+
             me.__gridLabelSpace = d3.max(ticks, function(val, t) {
                 var formatter = me.chart().columnFormatter(me.getBarColumn()),
                     txt = formatter(val, t == ticks.length-1, false);
@@ -549,6 +553,7 @@
                 gridVisible = me.gridVisible(),
                 gridLabelPosition = me.gridLabelPosition();
 
+
             _.each(ticks, function(val, t) {
                 var y = c.h - c.bpad - yscale(val),                     
                     ly = y-(position == "inside" ? 10 : 0),
@@ -577,7 +582,13 @@
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x, ly, formatter(val, t == ticks.length-1, false),
                             { align: align,  cl: 'axis', css: { opacity: 0 } });
-                    lbl.text(formatter(val, t == ticks.length-1, false));
+
+                    if (me._isStacked && me._isStacked() && me.is_normalized()) {
+                        lbl.text(me.formatValue(val, true));
+                    } else {
+                        lbl.text(formatter(val, t == ticks.length-1, false));
+                    }                    
+
                     lbl.animate({ x: x, y: ly, css: { opacity: 1 } }, duration, theme.easing);
                 }
                 if (theme.yTicks) {
