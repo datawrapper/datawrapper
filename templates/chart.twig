@@ -132,7 +132,7 @@
                         {{ hook('chart_footer_after_source', chart) }}
 
                         {# GET THE DATA #}
-                        {% if theme.getThemeData("options.footer.getTheData.enabled") %}
+                        {% if not visualization['json-data'] and theme.getThemeData("options.footer.getTheData.enabled") %}
                         <span class="footer-block chart-action-data">
                             {% set getTheDataCaption = theme.getThemeData("options.footer.getTheData.caption") %}
                             {% if getTheDataCaption %}
