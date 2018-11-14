@@ -18,9 +18,12 @@ require(['{{workflow.module}}'], function(mod) {
         data = _.extend({
             active: {{chart.lastEditStep}},
             maxStep: {{chart.lastEditStep}},
-        step: '{{step}}',
-        visualization: {{vis|json|raw}},
-        }, mod.data || {}, {{ twig_data | json | raw }});
+            step: '{{step}}',
+            visualization: {{vis|json|raw}},
+        },
+        mod.data || {},
+        {{workflow.data|json|raw}} || {},
+        {{ twig_data | json | raw }});
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
     var getJSON = mod.utils.getJSON;
@@ -28,13 +31,17 @@ require(['{{workflow.module}}'], function(mod) {
     var themeCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
+    var data = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
+    chart.load(data);
+
     chart.set({
         writable: true,
         themeData: themeCache['{{theme.id}}'],
         user: {{userArray|json|raw}},
         locales: {{chartLocales|json|raw}},
         actions: {{chartActions|json|raw}},
-        themes: {{userThemes|json|raw}}
+        themes: {{userThemes|json|raw}},
+        dataset: data ? JSON.parse(data) : {}
     });
 
     {% if publishLogic %}
@@ -93,6 +100,10 @@ chart.set({
                 editHistory.length = Math.min(editHistory.length, 50);
                 historyPos = 0;
             }
+        }
+
+        if (changed.dataset) {
+            chart.storeData();
         }
     });
 
