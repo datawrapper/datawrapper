@@ -6,17 +6,24 @@ import _isNull from 'underscore-es/isNull';
 import _debounce from 'underscore-es/debounce';
 
 import delimited from './dataset/delimited.js';
+import json from './dataset/json.js';
 import reorderColumns from './dataset/reorderColumns.js';
 import applyChanges from './dataset/applyChanges.js';
 import addComputedColumns from './dataset/addComputedColumns.js';
 import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
 
 import {putJSON} from '../shared/utils.js';
-import clone from '../shared/clone.js';
 
 const storeChanges = _debounce((chart, callback) => {
     const state = chart.serialize();
     putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
+        if (callback) callback();
+    });
+}, 1000);
+
+const storeData = _debounce((chart, callback) => {
+    const data = chart.rawData();
+    putJSON(`/api/2/charts/${chart.get('id')}/data`, data, () => {
         if (callback) callback();
     });
 }, 1000);
@@ -35,7 +42,10 @@ class Chart extends Store {
         if (csv && !externalData) dsopts.csv = csv;
         else dsopts.url = externalData || 'data.csv';
 
-        const datasource = delimited(dsopts);
+        if (dsopts.csv) this._rawData = dsopts.csv;
+
+        const datasource = this.getMetadata('data.json',false) ?
+            json(dsopts) : delimited(dsopts);
 
         return datasource.dataset().then((ds) => {
             this.dataset(ds);
@@ -52,10 +62,12 @@ class Chart extends Store {
         // set a new dataset, or reset the old one if ds===true
         if (arguments.length) {
             if (ds !== true) this._dataset_cache = ds;
-            this._dataset =
+            const jsonData = typeof ds.list != 'function';
+            this._dataset =  jsonData ? ds :
                 reorderColumns(this,
                 applyChanges(this,
                 addComputedColumns(this, ds === true ? this._dataset_cache : ds)));
+            if (jsonData) this.set({dataset: ds});
             return this._dataset;
         }
         // return current dataset
@@ -135,6 +147,10 @@ class Chart extends Store {
         storeChanges(this, callback);
     }
 
+    storeData(callback) {
+        storeData(this, callback);
+    }
+
     serialize() {
         const state = this.get();
         const keep = [
@@ -157,6 +173,10 @@ class Chart extends Store {
 
     isPassive() {
         return this.get().passiveMode;
+    }
+
+    rawData() {
+        return this._rawData;
     }
 
 }
