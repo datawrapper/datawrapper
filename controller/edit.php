@@ -111,6 +111,11 @@
             $userArray = $user->serialize();
             $userArray['mayPublish'] = $user->mayPublish($chart);
 
+            if (!empty($vis['json-data']) && !$chart->getMetadata('data.json')) {
+                $chart->updateMetadata('data.json', true);
+                $chart->save();
+            }
+
             $data = $chart->loadData();
             if ($vis && !empty($vis['default-data']) && empty($data)) {
                 $data = $vis['default-data'];
