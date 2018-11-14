@@ -56,6 +56,12 @@
                 ->createEmptyChart(DatawrapperSession::getUser());
             // set type to default type of workflow
             $chart->setType($workflows[$wfid]['default_type']);
+
+            $vis = Visualization::get($workflows[$wfid]['default_type']);
+            if ($vis && $vis['default-data']) {
+                $chart->writeData($vis['default-data']);
+            }
+
             $chart->save();
             // and redirect to /edit/:chart_id
             $app->redirect('/edit/'.$chart->getId());
@@ -105,13 +111,19 @@
             $userArray = $user->serialize();
             $userArray['mayPublish'] = $user->mayPublish($chart);
 
+            $data = $chart->loadData();
+            if ($vis && !empty($vis['default-data']) && empty($data)) {
+                $data = $vis['default-data'];
+                $chart->writeData($data);
+            }
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',
                 'step' => $step,
                 'chart' => $chart,
                 'dataReadonly' => !$chart->isDataWritable($user),
-                'chartData' => $chart->loadData(),
+                'chartData' => $data,
                 'workflow' => $workflows[$vis['svelte-workflow']],
                 'userArray' => $userArray,
                 'vis' => $vis,
