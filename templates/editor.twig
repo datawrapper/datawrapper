@@ -31,8 +31,8 @@ require(['{{workflow.module}}'], function(mod) {
     var themeCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
-    var data = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
-    chart.load(data);
+    var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
+    chart.load(chartData);
 
     chart.set({
         writable: true,
@@ -41,7 +41,7 @@ require(['{{workflow.module}}'], function(mod) {
         locales: {{chartLocales|json|raw}},
         actions: {{chartActions|json|raw}},
         themes: {{userThemes|json|raw}},
-        dataset: data ? JSON.parse(data) : {}
+        dataset: chartData ? JSON.parse(chartData) : {}
     });
 
     {% if publishLogic %}
