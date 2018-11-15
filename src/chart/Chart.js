@@ -22,7 +22,9 @@ const storeChanges = _debounce((chart, callback) => {
 }, 1000);
 
 const storeData = _debounce((chart, callback) => {
-    const data = chart.rawData();
+    const data = chart.getMetadata('data.json') ?
+        JSON.stringify(chart.dataset()) : chart.rawData();
+    // const data = chart.rawData();
     putJSON(`/api/2/charts/${chart.get('id')}/data`, data, () => {
         if (callback) callback();
     });
