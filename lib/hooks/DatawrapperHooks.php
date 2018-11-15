@@ -271,6 +271,8 @@ class DatawrapperHooks {
     const REPLACE_PUBLISH_LOGIC = 'replace_publish_logic';
 
     const CORE_SET_CHART = 'core_set_chart';
+
+    const PLUGIN_ACTION = 'plugin_action';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');
