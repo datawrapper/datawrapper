@@ -31,9 +31,6 @@ require(['{{workflow.module}}'], function(mod) {
     var themeCache = {};
     themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
 
-    var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
-    chart.load(chartData);
-
     chart.set({
         writable: true,
         themeData: themeCache['{{theme.id}}'],
@@ -53,12 +50,6 @@ chart.set({
     if (window.location.pathname.split('/')[3] != '{{step}}') {
         window.history.replaceState({id:'{{chart.id}}'}, '', '/edit/{{chart.id}}/{{step}}');
     }
-
-    var app = mod.app = new App({
-        store: chart,
-        target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
-        data: data
-    });
 
     var lastHash = null;
 
@@ -119,6 +110,15 @@ chart.set({
                 historyPos = old_pos;
             }
         }
+    });
+
+    var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
+    chart.load(chartData).then(function() {
+        var app = mod.app = new App({
+            store: chart,
+            target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
+            data: data
+        });
     });
 });
 </script>
