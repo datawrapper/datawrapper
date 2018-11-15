@@ -26,7 +26,7 @@ $app->put('/plugins/:id/:action', function($plugin_id, $action) use ($app) {
 })->conditions(array('action' => '(enable|disable|publish|unpublish)'));
 
 
-$pluginApiHooks = Hooks::execute(Hooks::PROVIDE_API, $app);
+$pluginApiHooks = DatawrapperHooks::execute(DatawrapperHooks::PROVIDE_API, $app);
 
 if (!empty($pluginApiHooks)) {
     foreach ($pluginApiHooks as $hook) {
