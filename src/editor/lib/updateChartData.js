@@ -9,11 +9,11 @@ function updateChartData({iframe, data, callback}) {
         return false;
     }
 
-    let render = true;
+    let render = false;
     let needReload = false; // TODO check if column configuration changed
 
     if (data != win.__dw.params.data) {
-        render = true;
+        // render = true;
     }
 
     if (needReload) {
@@ -25,9 +25,11 @@ function updateChartData({iframe, data, callback}) {
 
     // update dataset to reflect changes
     win.__dw.params.data = data;
-    win.__dw.vis.chart().load(win.__dw.params.data);
 
-    if (render) win.__dw.render();
+    if (render) {
+        win.__dw.vis.chart().load(win.__dw.params.data);
+        win.__dw.render();
+    }
 
     if (callback) callback();
 }
