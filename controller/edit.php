@@ -58,7 +58,7 @@
             $chart->setType($workflows[$wfid]['default_type']);
 
             $vis = Visualization::get($workflows[$wfid]['default_type']);
-            if ($vis && $vis['default-data']) {
+            if ($vis && !empty($vis['default-data'])) {
                 $chart->writeData($vis['default-data']);
             }
 
