@@ -113,7 +113,7 @@ chart.set({
     });
 
     var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
-    chart.load(chartData).then(function() {
+    chart.load(chartData || 'X.1').then(function() {
         var app = mod.app = new App({
             store: chart,
             target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
