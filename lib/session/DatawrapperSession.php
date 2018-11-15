@@ -108,7 +108,6 @@ class DatawrapperSession {
         if (!empty($GLOBALS['dw_config']['languages'])) {
             return $GLOBALS['dw_config']['languages'][0]['id'];
         }
-
         return 'en_US';
     }
 

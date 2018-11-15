@@ -485,13 +485,21 @@
                 halign = 'center',
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
-                pad = pad = me.get("bar-padding", 30) / 100;
+                pad = pad = me.get("bar-padding", 30) / 100,
+                gridLabelPosition = me.get("grid-label-position", "left");
                 formatter = me.chart().columnFormatter(me.getBarColumn()),
                 left = d.bx + d.width * 0.5;
 
             if (type == "value") {
                 lbl_w = me.labelWidth(formatter(val, true), 'value outline hover');
-                return { left: d.bx + d.width * 0.5, top: val_y, width: lbl_w };
+
+                if (gridLabelPosition == "right") {
+                    left = Math.max(0 + lbl_w * 0.5, d.bx + d.width * 0.5)
+                } else {
+                    left = Math.min(c.w - lbl_w * 0.5, d.bx + d.width * 0.5)
+                }
+
+                return { left: left, top: val_y, width: lbl_w };
             } else if (type == "series") {
                 lbl_w = me.barLabelWidth();
 

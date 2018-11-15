@@ -74,6 +74,7 @@ TODO for later:
 
     // import updateChartDescription from './lib/updateChartDescription';
     import updateChartAttributes from './lib/updateChartAttributes';
+    import updateChartData from './lib/updateChartData';
 
     let startX;
     let startY;
@@ -145,6 +146,13 @@ TODO for later:
                         this.set({loading:false});
                     }
                 });
+                if (chart.getMetadata('data.json')) {
+                    // chart._rawData = JSON.stringify(chart.get('dataset'));
+                    // updateChartData({
+                    //     iframe: this.refs.iframe,
+                    //     data: chart._rawData
+                    // });
+                }
             });
         },
         methods: {

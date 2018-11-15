@@ -2,11 +2,21 @@
     <label style="width:{width}" class="control-label">{@html label }</label>
     <div class="controls">
         <input type="text" class="input-large" placeholder={placeholder} bind:value />
+        {#if help}
+        <p class="mini-help">{@html help}</p>
+        {/if}
     </div>
 </div>
 
 <style>
-
+p.mini-help {
+    margin-top: -8px;
+}
+label.control-label {
+    vertical-align: top!important;
+    position: relative;
+    top: 6px;
+}
 </style>
 
 <script>
@@ -15,6 +25,7 @@
             return {
                 unit: '',
                 width: '100px',
+                help: '',
                 placeholder:''
             };
         }

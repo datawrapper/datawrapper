@@ -17,6 +17,7 @@ $app->put('/plugins/:id/:action', function($plugin_id, $action) use ($app) {
                 case 'unpublish': $plugin->setIsPrivate(true); break;
             }
             $plugin->save();
+            Hooks::execute(Hooks::PLUGIN_ACTION, $action, $plugin_id);
             ok();
         } else {
             error('plugin-not-found', 'No plugin found with that ID');

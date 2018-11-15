@@ -18,9 +18,12 @@ require(['{{workflow.module}}'], function(mod) {
         data = _.extend({
             active: {{chart.lastEditStep}},
             maxStep: {{chart.lastEditStep}},
-        step: '{{step}}',
-        visualization: {{vis|json|raw}},
-        }, mod.data || {}, {{ twig_data | json | raw }});
+            step: '{{step}}',
+            visualization: {{vis|json|raw}},
+        },
+        mod.data || {},
+        {{workflow.data|json|raw}} || {},
+        {{ twig_data | json | raw }});
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
     var getJSON = mod.utils.getJSON;
@@ -34,7 +37,8 @@ require(['{{workflow.module}}'], function(mod) {
         user: {{userArray|json|raw}},
         locales: {{chartLocales|json|raw}},
         actions: {{chartActions|json|raw}},
-        themes: {{userThemes|json|raw}}
+        themes: {{userThemes|json|raw}},
+        dataset: chartData ? JSON.parse(chartData) : {}
     });
 
     {% if publishLogic %}
@@ -46,12 +50,6 @@ chart.set({
     if (window.location.pathname.split('/')[3] != '{{step}}') {
         window.history.replaceState({id:'{{chart.id}}'}, '', '/edit/{{chart.id}}/{{step}}');
     }
-
-    var app = mod.app = new App({
-        store: chart,
-        target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
-        data: data
-    });
 
     var lastHash = null;
 
@@ -94,6 +92,10 @@ chart.set({
                 historyPos = 0;
             }
         }
+
+        if (changed.dataset) {
+            chart.storeData();
+        }
     });
 
     window.addEventListener('keypress', function(evt) {
@@ -108,6 +110,15 @@ chart.set({
                 historyPos = old_pos;
             }
         }
+    });
+
+    var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
+    chart.load(chartData).then(function() {
+        var app = mod.app = new App({
+            store: chart,
+            target: document.querySelector('#svelte-workflow-{{ workflow.id }}'),
+            data: data
+        });
     });
 });
 </script>
