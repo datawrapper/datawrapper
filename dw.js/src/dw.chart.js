@@ -61,7 +61,9 @@ dw.chart = function(attributes) {
             if ((csv || csv === '') && !externalData) dsopts.csv = csv;
             else dsopts.url = externalData || 'data.csv';
 
-            datasource = dw.datasource.delimited(dsopts);
+            datasource = chart.get('metadata.data.json') ?
+                dw.datasource.json(dsopts) :
+                dw.datasource.delimited(dsopts);
 
             return datasource.dataset().pipe(function(ds) {
                 chart.dataset(ds);
@@ -74,7 +76,8 @@ dw.chart = function(attributes) {
         dataset: function(ds) {
             if (arguments.length) {
                 if (ds !== true) _ds = ds;
-                dataset = reorderColumns(applyChanges(addComputedColumns(ds === true ? _ds : ds)));
+                dataset = chart.get('metadata.data.json') ? _ds :
+                    reorderColumns(applyChanges(addComputedColumns(_ds)));
                 if (ds === true) return dataset;
                 return chart;
             }

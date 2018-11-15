@@ -45,7 +45,7 @@
         initResizeHandler(vis, $chart);
 
         // update data link to point to edited dataset
-        var csv = chart.dataset().toCSV();
+        var csv = chart.dataset().toCSV && chart.dataset().toCSV();
         if (!csv || csv && csv.trim && csv.trim() == 'X.1') {
             // hide get the data link
             $('.chart-action-data').addClass('hidden');

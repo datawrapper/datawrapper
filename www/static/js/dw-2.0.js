@@ -1197,6 +1197,33 @@ _.extend(DelimitedParser.prototype, {
 }); // end _.extend(DelimitedParser)
 
 
+/* globals dw,$,_ */
+
+dw.datasource.json = function(opts) {
+
+    function loadAndParseJSON() {
+        if (opts.url) {
+            // todo fetch
+        } else if (opts.csv || opts.json) {
+            var dfd = $.Deferred(),
+                parsed = dfd.then(function(raw) {
+                    return JSON.parse(raw);
+                });
+            dfd.resolve(opts.csv || opts.json);
+            return parsed;
+        }
+        throw 'you need to provide either an URL or CSV data.';
+    }
+
+    return {
+        dataset: loadAndParseJSON,
+        parse: function() {
+            return JSON.parse(opts.csv || opts.json);
+        }
+    };
+};
+
+
 
 dw.utils = {
     /* global dw,Globalize,_,$ */
@@ -1737,7 +1764,9 @@ dw.chart = function(attributes) {
             if ((csv || csv === '') && !externalData) dsopts.csv = csv;
             else dsopts.url = externalData || 'data.csv';
 
-            datasource = dw.datasource.delimited(dsopts);
+            datasource = chart.get('metadata.data.json') ?
+                dw.datasource.json(dsopts) :
+                dw.datasource.delimited(dsopts);
 
             return datasource.dataset().pipe(function(ds) {
                 chart.dataset(ds);
@@ -1750,7 +1779,8 @@ dw.chart = function(attributes) {
         dataset: function(ds) {
             if (arguments.length) {
                 if (ds !== true) _ds = ds;
-                dataset = reorderColumns(applyChanges(addComputedColumns(ds === true ? _ds : ds)));
+                dataset = chart.get('metadata.data.json') ? _ds :
+                    reorderColumns(applyChanges(addComputedColumns(_ds)));
                 if (ds === true) return dataset;
                 return chart;
             }
@@ -2199,7 +2229,7 @@ _.extend(dw.visualization.base, {
         _.each(columnFormat, function(format, key) {
             ignore[key] = !!format.ignore;
         });
-        me.dataset.filterColumns(ignore);
+        if (me.dataset.filterColumns) me.dataset.filterColumns(ignore);
         return me;
     },
 
