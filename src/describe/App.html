@@ -54,7 +54,7 @@
 
                 <h3 class="first">{ __("Make sure the data looks right") }</h3>
 
-                <p>{ __("Please make sure that Datawrapper interprets your data correctly. In the table columns should be shown in blue, dates in green and text in black.") }</p>
+                <p>{@html __("describe / data-looks-right") }</p>
 
                 <Checkbox
                     label="{ __("First row as label") }"
@@ -62,7 +62,7 @@
 
                 <h4>{__("describe / locale-select / hed")}</h4>
 
-                <p>{__("describe / locale-select / body")}</p>
+                <p>{@html __("describe / locale-select / body")}</p>
 
                 <select bind:value="locale">
                     {#each locales as locale}
@@ -339,6 +339,7 @@
         line-height: 0px;
         color: #aaa;
     }
+
     .below-table {
         margin-top: 20px;
     }
@@ -415,5 +416,13 @@
             width: auto!important;
         }
     }
+
+    :global(.sidebar span.type-hl) {
+        background-color:white;
+        padding:0 3px;
+        font-family:'Roboto Mono';
+        border: 1px solid #cccccc;
+    }
+
 </style>
 
