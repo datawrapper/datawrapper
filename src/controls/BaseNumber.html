@@ -1,0 +1,68 @@
+{#if slider}<input type="range" min="{min*multiply}" max="{max*multiply}" step="{step*multiply}" on:input="update(value2, multiply,step)" bind:value="value2" />&nbsp;&nbsp;{/if}<input type="number" min="{min*multiply}" on:input="update(value2, multiply,step)" max="{max*multiply}" step="{step*multiply}" bind:value="value2" /> {#if unit}<span class="unit">{unit}</span>{/if}
+
+
+
+<style>
+    input[type="range"] {
+        width: calc(100% - 95px);
+    }
+    input[type="number"] {
+        width: 40px;
+        text-align: right;
+        border: 0;
+        background: #fcfcfc;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        margin: 0;
+        margin-left: 10px;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+    }
+    input[type="number"]:hover {
+        -moz-appearance: textfield-multiline;
+        appearance: textfield-multiline;
+    }
+    input[type=number]:hover::-webkit-inner-spin-button,
+    input[type=number]:hover::-webkit-outer-spin-button {
+          -webkit-appearance: inner-spin-button;
+          margin: 0;
+    }
+    .unit {
+        font-weight: 300;
+        color: #999;
+    }
+</style>
+
+<script>
+    const def = {
+        unit: '',
+        step: 1,
+        min: 0,
+        max: 100,
+        slider: true,
+        multiply: 1,
+        value2: 0,
+    };
+
+    export default {
+        data () { return Object.assign({}, def); },
+        oncreate() {
+            this._defaultData = def;
+        },
+        methods: {
+            update(value2, multiply, step) {
+                // update outside world value
+                value2 = +(value2).toFixed(-Math.round(Math.log(step*multiply)/Math.LN10))
+                this.set({value2, value: value2/multiply});
+            }
+        },
+        computed: {
+            value2({value, multiply, step}) {
+                return +(value * multiply).toFixed(-Math.round(Math.log(step*multiply)/Math.LN10));
+            }
+        }
+    };
+</script>

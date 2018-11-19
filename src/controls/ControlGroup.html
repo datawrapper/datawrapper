@@ -1,0 +1,18 @@
+<div class="control-group vis-option-group vis-option-type-number">
+    <label style="width:{width||def.width}" class="control-label">{@html label }</label>
+    <div class="controls" style="width: calc(100% - {width||def.width} - 20px)">
+    	<slot />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	export default {
+		helpers: {
+			def: {
+				width: '100px'
+			}
+		}
+	}
+
+</script>
