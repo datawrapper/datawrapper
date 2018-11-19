@@ -1,14 +1,14 @@
 
 <ControlGroup bind:width label="{label}">
-    <BaseNumber 
+    <BaseNumber
         ref:baseNumber
         bind:value
-        bind:unit
-        bind:multiply
-        bind:step
-        bind:min
-        bind:max
-        bind:slider
+        unit="{unit}"
+        multiply="{multiply}"
+        step="{step}"
+        min="{min}"
+        max="{max}"
+        slider="{slider}"
         />
 </ControlGroup>
 
@@ -16,18 +16,7 @@
     import BaseNumber from './BaseNumber.html';
     import ControlGroup from './ControlGroup.html';
 
-
     export default {
-        oncreate() {
-            const state = this.get();
-            const def = this.refs.baseNumber._defaultData;
-            Object.keys(def).forEach(key => {
-                console.log(key, state[key], def[key]);
-                if (state[key] === undefined) state[key] = def[key];
-            })
-            console.log('final', state);
-            this.set(state);
-        },
         components: { ControlGroup, BaseNumber }
     };
 </script>
