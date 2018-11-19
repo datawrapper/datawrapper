@@ -1,17 +1,14 @@
-<div class="control-group vis-option-type-color">
-    <label class="control-label" style="width: 100px">{@html label }</label>
-    <div class="controls">
-        {#if hexColor}
-        <ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" palette="{palette}" />
-        {/if}
+<ControlGroup label="{label}" width="{width||'100px'}">
+    {#if hexColor}
+    <ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" palette="{palette}" />
+    {/if}
 
-        {#if customizable}
-        <span class="custom-color-selector-head">
-            <a href="#customize" on:click="toggle(event)" class="btn btn-small custom {expanded?'btn-primary':''}" role="button">customize colors...</a>
-        </span>
-        {/if}
-    </div>
-</div>
+    {#if customizable}
+    <span class="custom-color-selector-head">
+        <a href="#customize" on:click="toggle(event)" class="btn btn-small custom {expanded?'btn-primary':''}" role="button">customize colors...</a>
+    </span>
+    {/if}
+</ControlGroup>
 
 {#if customizable && expanded}
 <div class="custom-color-selector-body" style="display: block;">
@@ -54,16 +51,18 @@
 
 <script>
     import ColorPicker from './ColorPicker.html';
+    import ControlGroup from './ControlGroup.html';
     import chroma from 'chroma';
     import purifyHtml from '../shared/purifyHtml';
+    import _unique from 'underscore-es/unique';
 
     export default {
-        components: { ColorPicker },
+        components: { ColorPicker, ControlGroup },
         computed: {
             colorKeys ({ $vis, customizable, axis, custom, palette }) {
                 if (!$vis || !customizable) return [];
                 return (
-                    axis ? _.unique($vis.axes(true)[axis].values()) :
+                    axis ? _unique($vis.axes(true)[axis].values()) :
                     $vis.colorKeys ? $vis.colorKeys() : $vis.keys()
                 ).map((k) => {
                     k = stripTags(k);
@@ -150,13 +149,11 @@
             selectInvert(event) {
                 event.preventDefault();
                 const {selected, colorKeys} = this.get();
-                console.log(selected);
                 colorKeys.forEach(k => {
                     const i = selected.indexOf(k.key);
                     if (i < 0) selected.push(k.key);
                     else selected.splice(i, 1);
                 });
-                console.log(selected);
                 this.set({selected});
             }
         },
