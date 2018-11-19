@@ -1,4 +1,4 @@
-{#if slider_}<input type="range" min="{min_*multiply_}" max="{max_*multiply_}" step="{step_*multiply_}" on:input="update()" bind:value="value2" />&nbsp;&nbsp;{/if}<input type="number" min="{min_*multiply_}" on:input="update()" max="{max_*multiply_}" step="{step_*multiply_}" bind:value="value2" /> {#if unit_}<span class="unit">{unit_}</span>{/if}
+{#if slider_}<input type="range" min="{min_*multiply_}" max="{max_*multiply_}" step="{step_*multiply_}" on:input="update()" bind:value="value2" />&nbsp;&nbsp;{/if}<input type="number" min="{min_*multiply_}" on:input="update()" max="{max_*multiply_}" step="{step_*multiply_}" style="{slider_?'margin-left:10px':''}" bind:value="value2" /> {#if unit_}<span class="unit">{unit_}</span>{/if}
 
 
 <style>
@@ -13,7 +13,6 @@
         -moz-appearance: textfield;
         appearance: textfield;
         margin: 0;
-        margin-left: 10px;
     }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
