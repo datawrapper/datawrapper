@@ -1,17 +1,9 @@
-<div class="control-group vis-option-group vis-option-type-text">
-    <label style="width:{width}" class="control-label">{@html label }</label>
-    <div class="controls">
-        <input type="text" class="input-large" placeholder={placeholder} bind:value />
-        {#if help}
-        <p class="mini-help">{@html help}</p>
-        {/if}
-    </div>
-</div>
+<ControlGroup width="{width}" label="{label}" help="{help}">
+    <input type="text" class="input-large" placeholder={placeholder} bind:value />
+</ControlGroup>
 
 <style>
-p.mini-help {
-    margin-top: -8px;
-}
+
 label.control-label {
     vertical-align: top!important;
     position: relative;
@@ -20,7 +12,10 @@ label.control-label {
 </style>
 
 <script>
+    import ControlGroup from './ControlGroup.html';
+
     export default {
+        components: {ControlGroup},
         data () {
             return {
                 unit: '',
