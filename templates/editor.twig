@@ -112,7 +112,7 @@ chart.set({
         }
     });
 
-    var chartData = '{{chart.loadData()|raw}}'.replace(/\n/g, '\\n');
+    var chartData = {{chart.loadData()|json|raw}};//'.replace(/\n/g, '\\n');
     chart.load(chartData || 'X.1').then(function() {
         var app = mod.app = new App({
             store: chart,
