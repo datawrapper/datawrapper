@@ -28,7 +28,7 @@
                 if (window.parent.dw) {}
             } catch (ex) {
                 $(window).off("resize");
-            }            
+            }
 
             if (replaceFlagIcons) {
                 // load flag icon stylesheet
@@ -203,15 +203,21 @@
             // $('.chart.vis-data-table .datatable-default th').css('background', c);
             // $('.chart.vis-data-table .datatable-default tr td:first-child').css('background', c);
 
-            if (table.width() > el.width()) {
-                // table doesn't fit into chart
-                if (me.get('table-responsive') && el.width() < 600) {
-                    el.addClass('mobile-view');
-                } else {
-                    // make table scrollable
-                    el.addClass('scrollable');
+            function checkResponsive() {
+                el.removeClass('mobile-view');
+                if (table.width() > el.width()) {
+                    // table doesn't fit into chart
+                    if (me.get('table-responsive') && el.width() < 600) {
+                        el.addClass('mobile-view');
+                    } else {
+                        // make table scrollable
+                        el.addClass('scrollable');
+                    }
                 }
             }
+
+            checkResponsive();
+            window.addEventListener('resize', checkResponsive);
 
             el.append('<br style="clear:both"/>');
             me.renderingComplete();
