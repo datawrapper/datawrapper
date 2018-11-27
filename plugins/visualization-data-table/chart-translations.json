@@ -150,7 +150,8 @@
         "da": "Søg:",
         "nb": "S&oslash;k:",
         "sv": "Sök:",
-        "he": "חיפוש:"
+        "he": "חיפוש:",
+        "fi": "Etsi:"
     },
     "sZeroRecords": {
         "en": "No matching records found",
