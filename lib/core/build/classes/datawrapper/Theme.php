@@ -280,8 +280,6 @@ class Theme extends BaseTheme
 
     public function serialize() {
         $data = $this->toArray();
-        unset($data['Assets']);
-        unset($data['Less']);
         return $this->lowercaseKeys($data);
     }
 
