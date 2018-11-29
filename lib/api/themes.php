@@ -24,8 +24,9 @@ $app->get('/themes', function() {
 });
 
 $app->get('/themes/:themeid', function($themeid) {
+    global $app;
     $user = DatawrapperSession::getUser();
     $theme = ThemeQuery::create()->findUserTheme($user, $themeid);
-    if (!$theme) return error(404, 'there is no theme with that id');
-    ok($theme->serialize());
+    if (!$theme) return error(404, 'there is no theme with that id');    
+    ok($theme->serialize($app->request()->get('includeAll')));
 });
