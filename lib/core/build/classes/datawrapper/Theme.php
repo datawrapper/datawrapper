@@ -278,10 +278,14 @@ class Theme extends BaseTheme
         return $arr;
     }
 
-    public function serialize() {
+    public function serialize($includeAll) {
         $data = $this->toArray();
-        unset($data['Assets']);
-        unset($data['Less']);
+
+        if (!$includeAll) {
+            unset($data['Assets']);
+            unset($data['Less']);
+        }
+
         return $this->lowercaseKeys($data);
     }
 
