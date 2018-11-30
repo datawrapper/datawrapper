@@ -56,7 +56,7 @@
                     me.addLegend(items, $('#chart'));
                 }
             }
-
+ 
             me.initColorOptions(el);
             me.calculateGridLabelSpace();
             me.addSeriesLabelSpace(c, barColumns.map(function(d) { return { name: d.title() }; }));              
@@ -225,7 +225,7 @@
 
                     if (valueLabels != "hide") {
                         me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
-                                align: 'center', cl: 'value'+(d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
+                                align: 'center', cl: 'value direct-value-label chart-text'+(d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
                         // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
                         me.__barLbls[key].animate({
                             x: d.x + d.w * 0.5,
@@ -246,7 +246,7 @@
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
                         lbl_x = d.bx,
-                        lblcl = ['series'],
+                        lblcl = ['series x-tick-value'],  
                         lbl_w = d.tw,
                         valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',
@@ -262,7 +262,7 @@
                     if (me.rotateLabels()) {                        
                         lbl_w = 100;
                         lblcl.push('rotate90');
-                        var height = me.labelHeight(column.title(), "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);
+                        var height = me.labelHeight(column.title(), "label series x-tick-values chart-text" + (me.useSmallerLabels() ? " smaller" : ""), 100);
                         lbl_x -= height / 3;                        
                         $('.dw-chart-body').addClass('rotated-labels');
                         halign = 'right';

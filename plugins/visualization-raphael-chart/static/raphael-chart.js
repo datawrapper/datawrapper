@@ -464,7 +464,6 @@
             var me = this,
                 chart = me.chart(),
                 color = me._getColor(series, row, opts);
-
             // modify colors to indicate highlighting
             if (series && chart.hasHighlight() && !chart.isHighlighted(series)) {
                 // mix color with background
@@ -611,8 +610,8 @@
                     div.attr('data-key', item.key);
                     div.addClass('dw-rect');
                     lbl.el.attr('data-key', item.key);
+                    lbl.el.addClass('legend-text chart-text')
                 }
-
                 xo += me.labelWidth(item.label)+30;
 
                 if (xo > me.__canvas.w) {

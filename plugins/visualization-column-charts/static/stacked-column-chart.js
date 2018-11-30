@@ -76,7 +76,7 @@
 
             return normalize ? [0, 1] : domain;
         },
-
+ 
         initDimensions: function(r) {
             var me = this, 
                 c = me.__canvas;

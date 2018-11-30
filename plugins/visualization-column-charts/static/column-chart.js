@@ -93,7 +93,7 @@
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
                 maxLabelHeight = 0,
                 labelSpace = me.barLabelWidth(),                
-                labelClass = 'label series' + (me.useSmallerLabels() ? " smaller" : "");
+                labelClass = 'label series x-tick-values chart-text' + (me.useSmallerLabels() ? " smaller" : "");
 
             if (me.rotateLabels()) {                
                 maxLabelHeight = Math.min(d3.max(bars, function(d) {
@@ -174,7 +174,7 @@
                 f_val  = formatter(val, true),
                 vlbl_w = me.labelWidth(f_val, 'value'),
                 bw     = (d.width + d.width * d.pad),
-                lblcl  = ['series'],
+                lblcl  = ['series x-tick-values chart-text'],
                 lbl_w  = c.w / (n+2),
                 valign = val > 0 ? 'top' : 'bottom',
                 halign = 'center',
@@ -191,7 +191,7 @@
                 me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
                     w: lpos.width,
                     align: 'center',
-                    cl: 'value outline' + (valueLabels == "hover" ? ' only-on-hover' : "")
+                    cl: 'value outline direct-value-label chart-text' + (valueLabels == "hover" ? ' only-on-hover' : "")
                 }), barv.name);
             }
 
@@ -504,7 +504,7 @@
                 lbl_w = me.barLabelWidth();
 
                 if (me.rotateLabels()) {
-                    var height = me.labelHeight(txt, "label series" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
+                    var height = me.labelHeight(txt, "label series x-tick-values chart-text" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
 
                     lbl_y -= 10;  // move towards zero axis
                     lbl_w = 100;
@@ -543,7 +543,7 @@
 
             return ticks;
         },
-
+ 
         horzGrid: function(animate, column) {
             // draw tick marks and labels
             var me = this,
@@ -589,7 +589,7 @@
                 if (val !== 0 && position != "hidden") {
                     var lbl = tickLabels[key] = tickLabels[key] ||
                         me.label(x, ly, formatter(val, t == ticks.length-1, false),
-                            { align: align,  cl: 'axis', css: { opacity: 0 } });
+                            { align: align,  cl: 'axis y-tick-values chart-text', css: { opacity: 0 } });
 
                     if (me._isStacked && me._isStacked() && me.is_normalized()) {
                         lbl.text(me.formatValue(val, true));
@@ -617,9 +617,11 @@
                     }                 
 
                     var lattrs = { path: [['M', x, y], ['L', x2, y]], opacity: 1 },
-                        l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid');
+                        l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid y-gridline');
                     l.toBack();
                     if (val === 0) {
+                        l.node.classList.add("x-axis");
+                        l.node.classList.remove("y-gridline");
                         $.extend(lattrs, theme.xAxis);
                         l.toFront();
                     } else {
@@ -661,14 +663,14 @@
 
             me.__lastTicks = ticks;
             me.__lastDomain = domain.slice(0);
-        },
+        },   
 
         hover: function(hover_key) {
             var me = this,
                 cm = this.colorMap(),
                 barvalues = me.getBarValues(),
                 l = barvalues.length;
-
+ 
             _.each(barvalues, function(bar) {
                 _.each(me.__labels[bar.name], function(lbl) {
                     if (hover_key !== undefined && bar.name == hover_key) {
