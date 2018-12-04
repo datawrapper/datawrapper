@@ -1,5 +1,5 @@
 <div class="control-group vis-option-type-select">
-    <label style="width: {labelWidth}" class="control-label">
+    <label style="width: {labelWidth}" class="control-label {disabled? 'disabled' :''}">
         {@html label }
     </label>
 
@@ -23,16 +23,22 @@
     </div>
 </div>
 
-<script type="text/javascript">
-export default {
-    data () {
-        return {
-            disabled: false,
-            width: 'auto',
-            labelWidth: 'auto',
-            options: [],
-            optgroups: [],
-        };
+<style>
+    label.disabled {
+        color: #999;
     }
-};
+</style>
+
+<script>
+    export default {
+        data () {
+            return {
+                disabled: false,
+                width: 'auto',
+                labelWidth: 'auto',
+                options: [],
+                optgroups: [],
+            };
+        }
+    };
 </script>

@@ -1,5 +1,5 @@
 <div class="control-group vis-option-group vis-option-type-number">
-    <label style="width:{width||def.width}" class="control-label">{@html label }</label>
+    <label style="width:{width||def.width}" class="control-label {disabled ? 'disabled' : ''}">{@html label }</label>
     <div class="controls" style="width: calc(100% - {width||def.width} - 20px)">
         <slot />
         {#if help}
@@ -8,7 +8,7 @@
     </div>
 </div>
 
-<style type="text/css">
+<style>
     p.mini-help {
         margin-top: -8px;
     }
@@ -17,15 +17,15 @@
         position: relative;
         top: 6px;
     }
-
+    label.disabled {
+        color: #999;
+    }
 </style>
 
-<script type="text/javascript">
-
+<script>
     export default {
         helpers: {
             def: { width: '100px' }
         }
-    }
-
+    };
 </script>
