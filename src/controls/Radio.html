@@ -1,7 +1,9 @@
 <div class="control-group vis-option-group vis-option-type-radio {inline?'inline':''}">
-    <label style="width:{width}" class="control-label">
-        {@html label }
-    </label>
+    {#if label}
+        <label style="width:{width}" class="control-label">
+            {@html label }
+        </label>
+    {/if}
 
     <div class="controls form-inline">
         {#each options as opt}
