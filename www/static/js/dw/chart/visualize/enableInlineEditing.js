@@ -30,7 +30,7 @@ define(function() {
         var doc = iframe.get(0).contentDocument,
             lastNotification;
 
-        $('.label[data-column][data-row] span', doc)
+        $('.label[data-column][data-row] span,.dw-editable[data-column][data-row] span', doc)
             .initInlineEditing()
             .off('blur').on('blur', function(evt) {
                 var span = $(evt.target),
