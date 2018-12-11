@@ -1610,6 +1610,7 @@ body.cms-mode .row.create-nav {
   height: 40px;
   margin-left: 27px;
   margin-top: 10px;
+  overflow: visible;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg path,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb svg rect,
