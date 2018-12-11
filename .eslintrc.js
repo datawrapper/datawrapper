@@ -9,6 +9,7 @@ module.exports = {
         "Reflect": true
     },
     "rules": {
-    	"no-sequences": "error"
+    	"no-sequences": "error",
+        "eqeqeq": ["error", "smart"]
     }
 };
