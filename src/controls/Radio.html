@@ -5,7 +5,7 @@
         </label>
     {/if}
 
-    <div class="controls form-inline">
+    <div class="controls form-inline" style="width: calc(100% - {width||def.width} - 20px)">
         {#each options as opt}
         <label title="{opt.tooltip||''}" class="radio {disabled? 'disabled' :''} {opt.help?'has-help':''}">
             <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/>&nbsp;<span>{ opt.label }</span>
