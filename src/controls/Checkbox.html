@@ -45,6 +45,16 @@
             border-color: #18a1cd;
             box-shadow: 0 0 1px 1px fade(#18a1cd, 55%);
         }
+        input[type=checkbox]:disabled + span.css-ui {
+            background: #ddd;
+            border-color: #bbb;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        input[type=checkbox]:disabled:checked + span.css-ui {
+            border-color: #bbb;
+            background: #bbb;
+        }
         text-align:left;
         width:100%;
         position:relative;

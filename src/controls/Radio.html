@@ -8,7 +8,7 @@
     <div class="controls form-inline" style="width: calc(100% - {width||def.width} - 20px)">
         {#each options as opt}
         <label title="{opt.tooltip||''}" class="radio {disabled? 'disabled' :''} {opt.help?'has-help':''}">
-            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/>&nbsp;<span>{ opt.label }</span>
+            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/><span class="css-ui"></span>&nbsp;<span>{ opt.label }</span>
             {#if opt.help}
             <div class="help">
                 {@html opt.help}
@@ -62,11 +62,55 @@
         }
     }
 
-    input {
+    input[type=radio] {
         float: none;
-        vertical-align: text-bottom;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        display: inline-block;
+        vertical-align: sub;
     }
-
+    input[type=radio] + span.css-ui {
+        display: inline-block;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        border: 1px solid #bbb;
+        vertical-align: baseline;
+        position: relative;
+        top: 3px;
+        margin-right: 0.15rem;
+    }
+    input[type=radio]:checked + span.css-ui {
+        background: #18a1cd;
+        border-color: #18a1cd;
+        &:after {
+            position: absolute;
+            content: '';
+            display: block;
+            background: white;
+            width: 0.51rem;
+            height: 0.51rem;
+            border-radius: 50%;
+            top: 0.15rem;
+            left: 0.15rem;
+            border: none;
+        };
+    }
+    input[type=radio]:focus + span.css-ui {
+        border-color: #18a1cd;
+        box-shadow: 0 0 1px 1px fade(#18a1cd, 55%);
+    }
+    input[type=radio]:disabled + span.css-ui {
+        background: #ddd;
+        border-color: #bbb;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    input[type=radio]:disabled:checked + span.css-ui {
+        border-color: #bbb;
+        background: #bbb;
+    }
     .inline {
         .form-inline, label {
             display: inline-block;
