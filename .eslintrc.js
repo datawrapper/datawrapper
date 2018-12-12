@@ -10,6 +10,7 @@ module.exports = {
     },
     "rules": {
     	"no-sequences": "error",
-        "eqeqeq": ["error", "smart"]
+        "eqeqeq": ["error", "smart"],
+        "no-multiple-empty-lines": ["error", { "max": 1 }]
     }
 };
