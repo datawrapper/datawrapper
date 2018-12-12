@@ -43,7 +43,7 @@ require(['{{ path }}'], function(mod) {
     });
 
     chart.compute('axes', ['visualization'], function(visualization) {
-        return _.values(visualization.axes);
+        return _.values(visualization.axes || {});
     });
 
     function getContext(callback) {
