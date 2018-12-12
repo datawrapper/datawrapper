@@ -62,7 +62,11 @@
             colorKeys ({ $vis, customizable, axis, custom, palette }) {
                 if (!$vis || !customizable) return [];
                 return (
-                    axis ? _unique($vis.axes(true)[axis].values()) :
+                    axis ? _unique(
+                        $vis.axes(true)[axis].type() === 'date' ?
+                            $vis.axes(true)[axis].raw() : // raw values for date cols
+                            $vis.axes(true)[axis].values() // fmt values else
+                    ) :
                     $vis.colorKeys ? $vis.colorKeys() : $vis.keys()
                 ).map((k) => {
                     k = stripTags(k);
