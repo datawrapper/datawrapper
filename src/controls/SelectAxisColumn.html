@@ -62,7 +62,7 @@ export default {
         this.store.observe('visualization', (visualization) => {
             if (!this.get().selected && visualization) {
                 // initialize!
-                const selected = this.store.getMetadata('axes')[this.get().axis];
+                const selected = this.store.getMetadata('axes', {})[this.get().axis];
                 console.log('initialize', this.get().axis, selected);
                 this.set({selected});
             }
