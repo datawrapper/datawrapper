@@ -1,15 +1,49 @@
 <div class="control-group vis-option-group vis-option-type-checkbox">
     <label class="checkbox {disabled? 'disabled' :''} {faded? 'faded' :''}">
-        <input type="checkbox" disabled="{disabled}" bind:checked="value" />&nbsp;{ label }
+        <input type="checkbox" disabled="{disabled}" bind:checked="value" /><span class="css-ui"></span> &nbsp;{ label }
     </label>
 </div>
 
 <style lang="less">
     label.checkbox {
-        input {
+        input[type=checkbox] {
             float: none;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
             display: inline-block;
             vertical-align: sub;
+        }
+        input[type=checkbox] + span.css-ui {
+            display: inline-block;
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 2px;
+            border: 1px solid #bbb;
+            vertical-align: baseline;
+            position: relative;
+            top: 3px;
+            margin-left: -16px;
+        }
+        input[type=checkbox]:checked + span.css-ui {
+            background: #18a1cd;
+            border-color: #18a1cd;
+            &:after {
+                position: absolute;
+                display: block;
+                color: white;
+                left:1px;
+                top: 2px;
+                font-weight: bold;
+                content: '\e023';
+                font-family: 'iconmonstr-iconic-font';
+                font-size: 0.65rem;
+                line-height: 0.8rem;
+            };
+        }
+        input[type=checkbox]:focus + span.css-ui {
+            border-color: #18a1cd;
+            box-shadow: 0 0 1px 1px fade(#18a1cd, 55%);
         }
         text-align:left;
         width:100%;
