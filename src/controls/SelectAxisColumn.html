@@ -1,10 +1,10 @@
 <div class="control-group vis-option-group">
-    <label class="control-label">
+    <label class="control-label" style="width: {width}px">
         {@html label }
     </label>
 
-    <div class="controls form-inline">
-        <select bind:value="selected">
+    <div class="controls form-inline" style="width: calc(100% - {width}px - 20px)">
+        <select bind:value="selected" style="width: calc(100% - 50px)">
             {#if $visualization && $visualization.axes[axis].optional}
             <option value="-">{axis['na-label']||'--'}</option>
             {/if}
@@ -16,8 +16,13 @@
 </div>
 
 <style>
-.control-label { width: 100px!important; vertical-align: baseline; }
-select { width: 170px!important; }
+.control-label {
+    vertical-align: middle!important;
+    margin-bottom: 0!important;
+}
+.controls.form-inline {
+    vertical-align: middle!important;
+}
 </style>
 
 <script>
@@ -43,7 +48,8 @@ export default {
     },
     data() {
         return {
-            selected: false
+            selected: false,
+            width: 200
         };
     },
     onstate({changed, current}) {
