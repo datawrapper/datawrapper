@@ -44,7 +44,6 @@ require(['{{ path }}'], function(mod) {
 
     chart.compute('axes', ['visualization'], function(visualization) {
         if (!visualization) {
-            console.log('visualization is undefined', visualization);
             return [];
         }
         return _.values(visualization.axes || {});
@@ -89,7 +88,7 @@ require(['{{ path }}'], function(mod) {
     chart.on('state', ({changed, current, previous}) => {
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
-            console.log('theme has changed', current.theme);
+            // console.log('theme has changed', current.theme);
             if (themeCache[current.theme]) {
                 // re-use cached theme
                 chart.set({themeData: themeCache[current.theme]});
