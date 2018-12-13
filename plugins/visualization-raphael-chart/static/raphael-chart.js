@@ -480,8 +480,9 @@
 
             function keyColor(key, value, useNegativeColor, colorful) {
                 var color;
-
-                key = String(key);
+                // parse out html tags
+                var regex = /(<([^>]+)>)/ig,
+                    key = String(key.replace(regex, ""));
 
                 var userCustomColors = me.get('custom-colors', {});
 
