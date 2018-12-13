@@ -55,19 +55,21 @@ export default {
             if (current.selected) {
                 const {axis} = this.get();
                 var axes = _clone(this.store.getMetadata('axes', {}));
-                if (current.selected == '-') delete axes[axis];
+                if (current.selected === '-') delete axes[axis];
                 else axes[axis] = current.selected;
                 this.store.setMetadata('axes', axes);
             }
         }
-
     },
     oncreate() {
         this.store.observe('visualization', (visualization) => {
-            if (!this.get().selected && visualization) {
+            if (!this.get) return;
+            const state = this.get();
+            if (!state) return;
+            if (state.selected && visualization) {
                 // initialize!
                 const selected = this.store.getMetadata('axes', {})[this.get().axis];
-                console.log('initialize', this.get().axis, selected);
+                // console.log('initialize', this.get().axis, selected);
                 this.set({selected});
             }
         });

@@ -43,6 +43,10 @@ require(['{{ path }}'], function(mod) {
     });
 
     chart.compute('axes', ['visualization'], function(visualization) {
+        if (!visualization) {
+            console.log('visualization is undefined', visualization);
+            return [];
+        }
         return _.values(visualization.axes || {});
     });
 
@@ -57,6 +61,8 @@ require(['{{ path }}'], function(mod) {
         callback(win, doc);
     }
 
+    var app;
+
     chart.load(dw.backend.__currentData).then(function(ds) {
         chart.set({dataset: ds});
 
@@ -65,7 +71,7 @@ require(['{{ path }}'], function(mod) {
 
             document.querySelector('#{{ type }}-{{ key }}').innerHTML = '';
 
-            var app = mod.app = new App({
+            app = mod.app = new App({
                 store: chart,
                 target: document.querySelector('#{{ type }}-{{ key }}'),
                 data: data
@@ -101,6 +107,9 @@ require(['{{ path }}'], function(mod) {
         }
 
         if (changed.type) {
+            if (app && app.destroy) {
+                app.destroy();
+            }
             if (visCache[current.type]) {
                 // re-use cached visualization
                 chart.set({visualization: visCache[current.type]});
