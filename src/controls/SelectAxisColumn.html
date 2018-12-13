@@ -1,19 +1,13 @@
-<div class="control-group vis-option-group">
-    <label class="control-label" style="width: {width}px">
-        {@html label }
-    </label>
-
-    <div class="controls form-inline" style="width: calc(100% - {width}px - 20px)">
-        <select bind:value="selected" style="width: calc(100% - 50px)">
-            {#if $visualization && $visualization.axes[axis].optional}
-            <option value="-">{axis['na-label']||'--'}</option>
-            {/if}
-            {#each columns as column}
-            <option value="{column.name}">{column.name}</option>
-            {/each}
-        </select>
-    </div>
-</div>
+<ControlGroup bind:width label="{label}">
+    <select bind:value="selected" style="width: calc(100% - 50px)">
+        {#if $visualization && $visualization.axes[axis].optional}
+        <option value="-">{axis['na-label']||'--'}</option>
+        {/if}
+        {#each columns as column}
+        <option value="{column.name}">{column.name}</option>
+        {/each}
+    </select>
+</ControlGroup>
 
 <style>
 .control-label {
@@ -30,7 +24,10 @@
 import _indexOf from 'underscore-es/indexOf';
 import _clone from 'underscore-es/clone';
 
+import ControlGroup from './ControlGroup.html';
+
 export default {
+    components: { ControlGroup },
     computed: {
         columns({ axis, $visualization, $dataset }) {
             const columns = [];
@@ -49,7 +46,7 @@ export default {
     data() {
         return {
             selected: false,
-            width: 200
+            width: '200px'
         };
     },
     onstate({changed, current}) {
