@@ -1,4 +1,4 @@
-<ControlGroup bind:width label="{label}">
+<ControlGroup width="{width}" valign="{valign}" label="{label}">
     <select bind:value="selected" style="width: calc(100% - 50px)">
         {#if $visualization && $visualization.axes[axis].optional}
         <option value="-">{axis['na-label']||'--'}</option>
@@ -46,7 +46,8 @@ export default {
     data() {
         return {
             selected: false,
-            width: '200px'
+            width: '200px',
+            valign: 'baseline'
         };
     },
     onstate({changed, current}) {

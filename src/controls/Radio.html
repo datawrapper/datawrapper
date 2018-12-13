@@ -1,13 +1,7 @@
-<div class="control-group vis-option-group vis-option-type-radio {inline?'inline':''}">
-    {#if label}
-        <label style="width:{width}" class="control-label">
-            {@html label }
-        </label>
-    {/if}
-
-    <div class="controls form-inline" style="width: calc(100% - {width||def.width} - 20px)">
+<ControlGroup width="{width}" valign="{valign}" label="{label}">
+    <div class="{inline?'inline':''}">
         {#each options as opt}
-        <label title="{opt.tooltip||''}" class="radio {disabled? 'disabled' :''} {opt.help?'has-help':''}">
+        <label title="{opt.tooltip||''}" class="{disabled? 'disabled' :''} {opt.help?'has-help':''}">
             <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/><span class="css-ui"></span>&nbsp;<span>{ opt.label }</span>
             {#if opt.help}
             <div class="help">
@@ -17,7 +11,8 @@
         </label>
         {/each}
     </div>
-</div>
+</ControlGroup>
+
 
 <style lang="less">
 
@@ -67,6 +62,7 @@
         opacity: 0!important;
         pointer-events: none;
         position: absolute;
+        left: -10000px;
         display: inline-block;
         vertical-align: sub;
     }
@@ -112,8 +108,9 @@
         background: #bbb;
     }
     .inline {
-        .form-inline, label {
+        label {
             display: inline-block;
+            margin-right: 1em;
         }
 
         .control-label {
@@ -128,12 +125,18 @@
 </style>
 
 <script>
+    import ControlGroup from './ControlGroup.html';
+
     export default {
+        components: { ControlGroup },
         data() {
             return {
                 disabled: false,
-                width: 'auto'
+                width: 'auto',
+                valign: 'top',
+                inline: true
             }
         }
     }
 </script>
+
