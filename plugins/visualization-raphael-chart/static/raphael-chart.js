@@ -481,8 +481,7 @@
             function keyColor(key, value, useNegativeColor, colorful) {
                 var color;
                 // parse out html tags
-                var regex = /(<([^>]+)>)/ig,
-                    key = String(key.replace(regex, ""));
+                var key = String(dw.utils.purifyHtml(key,""));
 
                 var userCustomColors = me.get('custom-colors', {});
 
