@@ -68,30 +68,22 @@
     }
     input[type=radio] + span.css-ui {
         display: inline-block;
-        width: 0.8rem;
-        height: 0.8rem;
+        width: 0.85rem;
+        height: 0.85rem;
+/*        width: ~'calc(0.8rem + 2px)';
+        height: ~'calc(0.8rem + 2px)';*/
         border-radius: 50%;
         border: 1px solid #bbb;
         vertical-align: baseline;
+        box-sizing: border-box;
         position: relative;
-        top: 3px;
         margin-right: 0.15rem;
+        top: 3px;
     }
     input[type=radio]:checked + span.css-ui {
-        background: #18a1cd;
+        background: white;
         border-color: #18a1cd;
-        &:after {
-            position: absolute;
-            content: '';
-            display: block;
-            background: white;
-            width: 0.51rem;
-            height: 0.51rem;
-            border-radius: 50%;
-            top: 0.15rem;
-            left: 0.15rem;
-            border: none;
-        };
+        border-width: 4px;
     }
     input[type=radio]:focus + span.css-ui {
         border-color: #18a1cd;
