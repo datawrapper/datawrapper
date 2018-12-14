@@ -4,7 +4,7 @@ $translated = json_decode(file_get_contents(dirname(__FILE__) . '/chart-translat
 
 DatawrapperVisualization::register($plugin, array(
     'id' => 'pie-chart',
-    'title' => __('Pie chart'),
+    'title' => __('Pie Chart (old)'),
     'extends' => 'raphael-chart',
     'author' => array(
         'name' => 'gka',
@@ -51,7 +51,7 @@ DatawrapperVisualization::register($plugin, array(
 
 DatawrapperVisualization::register($plugin, array(
     'id' => 'donut-chart',
-    'title' => __('Donut chart'),
+    'title' => __('Donut Chart (old)'),
     'version' => '1.3.1',
     'extends' => 'pie-chart',
     'author' => array(
