@@ -228,23 +228,6 @@
         window.onload = __dw.render();
     }
 
-    if (visJSON.height == "fixed") {
-        setInterval(function() {
-            var desiredHeight = $('html').outerHeight(true);
-            window.parent.postMessage({
-                'datawrapper-height': {
-                    '{{ chart.id }}': desiredHeight
-                }
-            }, "*");
-
-            window.parent.postMessage({
-                sentinel: 'amp',
-                type: 'embed-size',
-                height: desiredHeight
-            }, '*');
-        }, 1000);
-    }
-
     {% if theme.getThemeData('template.js') %}
         {{ theme.getThemeData('template.js') | raw }}
     {% endif %}

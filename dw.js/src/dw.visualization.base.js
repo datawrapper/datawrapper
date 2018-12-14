@@ -322,6 +322,20 @@ _.extend(dw.visualization.base, {
         if (window.parent && window.parent['postMessage']) {
             setTimeout(function() {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
+                var desiredHeight = $('html').outerHeight(true);
+                // Can I get the chart id somewhere else? This is dirty
+                var id = location.pathname.split('/')[1];
+                var data = {}
+                data[id] = desiredHeight
+                window.parent.postMessage({
+                    'datawrapper-height': data
+                }, "*");
+
+                window.parent.postMessage({
+                    sentinel: 'amp',
+                    type: 'embed-size',
+                    height: desiredHeight
+                }, '*');
             }, 200);
         }
         this.__renderedDfd.resolve();
