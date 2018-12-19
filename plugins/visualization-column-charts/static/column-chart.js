@@ -620,8 +620,7 @@
                         l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid y-gridline');
                     l.toBack();
                     if (val === 0) {
-                        l.node.classList.add("x-axis");
-                        l.node.classList.remove("y-gridline");
+                        l.node.setAttribute("class","grid x-axis");
                         $.extend(lattrs, theme.xAxis);
                         l.toFront();
                     } else {
