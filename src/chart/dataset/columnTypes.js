@@ -359,6 +359,11 @@ columnTypes.date = (function() {
             parse: reg(rx.YYYY.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.DD.parse, s3, rx.HHMM.parse),
             precision: 'day-minutes'
         }
+        'ISO8601': {
+            test: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
+            parse: function(str) { return str },
+            precision: 'day-seconds'
+        }
     };
 
     function reg() {
@@ -481,6 +486,8 @@ columnTypes.date = (function() {
                     case 'YYYY-MM-DD HH:MM': return new Date(+m[1], (m[3]-1), +m[4], hour(+m[5], m[8]), +m[6] || 0, +m[7] || 0);
                     case 'DD.MM.YYYY HH:MM': return new Date(+m[4], (m[3]-1), +m[1], hour(+m[5], m[8]), +m[6] || 0, +m[7] || 0);
                     case 'MM/DD/YYYY HH:MM': return new Date(+m[4], (m[1]-1), +m[3], hour(+m[5], m[8]), +m[6] || 0, +m[7] || 0);
+
+                    case 'ISO8601': return new Date(m.toUpperCase()ssss);
 
                     default:
                         console.warn('unknown format', format);
