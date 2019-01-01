@@ -109,8 +109,9 @@ class ChartQuery extends BaseChartQuery {
         $chart->setOrganization($src->getOrganization());
         $chart->setInFolder($src->getInFolder());
 
-        if ($user->isAdmin()) {
-            // guess it's mine now
+        if ($user->isAdmin() && $user->getId() != $chart->getUser()->getId()) {
+            // an admin duplicates a chart from someone else
+            // transfer chart ownership to admin
             $chart->setUser($user);
             $chart->setOrganization(null);
             $chart->setInFolder(null);
