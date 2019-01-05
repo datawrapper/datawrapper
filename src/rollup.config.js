@@ -1,3 +1,4 @@
+/* eslint-env node, es6 */
 import less from 'less';
 import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
@@ -30,7 +31,7 @@ function build(app_id, opts) {
         append: ''
     }, opts);
     if (process.env.ROLLUP_TGT_APP) {
-        if (app_id != process.env.ROLLUP_TGT_APP) {
+        if (app_id !== process.env.ROLLUP_TGT_APP) {
             return;
         }
     }
@@ -87,7 +88,6 @@ function build(app_id, opts) {
                     }
                 }
             }),
-
 
             // If you have external dependencies installed from
             // npm, you'll most likely need these plugins. In
