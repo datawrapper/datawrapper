@@ -107,11 +107,11 @@ columnTypes.number = function(sample) {
                 .replace('–', '-')
                 .replace('—', '-');
             // normalize number
-            if (format[0] != '-') {
+            if (format[0] !== '-') {
                 // remove kilo seperator
-                number = number.replace(new RegExp((format[0] == '.' ? '\\.' : format[0]), 'g'), '');
+                number = number.replace(new RegExp((format[0] === '.' ? '\\.' : format[0]), 'g'), '');
             }
-            if (format[1] != '.') {
+            if (format[1] !== '.') {
                 // replace decimal char w/ point
                 number = number.replace(format[1], '.');
             }
@@ -135,15 +135,15 @@ columnTypes.number = function(sample) {
             return function(val, full, round) {
                 if (isNaN(val)) return val;
                 var _fmt = format;
-                if (div !== 0 && _fmt == '-') _fmt = 'n1';
+                if (div !== 0 && _fmt === '-') _fmt = 'n1';
                 if (div !== 0) val = Number(val) / Math.pow(10, div);
-                if (_fmt.substr(0,1) == 's') {
+                if (_fmt.substr(0,1) === 's') {
                     // significant figures
                     var sig = +_fmt.substr(1);
                     _fmt = 'n'+Math.max(0, signDigitsDecimalPlaces(val, sig));
                 }
                 if (round) _fmt = 'n0';
-                if (_fmt == '-') {
+                if (_fmt === '-') {
                     // guess number format based on single number
                     _fmt = equalish(val, Math.round(val)) ? 'n0' :
                         equalish(val, Math.round(val*10)*0.1) ? 'n1' :
@@ -153,7 +153,7 @@ columnTypes.number = function(sample) {
                         equalish(val, Math.round(val*100000)*0.00001) ? 'n5' :
                         'n6';
                 }
-                val = Globalize.format(val, _fmt != '-' ? _fmt : null);
+                val = Globalize.format(val, _fmt !== '-' ? _fmt : null);
                 return full ? prepend + val + append : val;
             };
         },
@@ -165,7 +165,7 @@ columnTypes.number = function(sample) {
         ambiguousFormats: function() {
             var candidates = [];
             _each(matches, function(cnt, fmt) {
-                if (cnt == bestMatch[1]) {
+                if (cnt === bestMatch[1]) {
                     candidates.push([fmt, formatLabels[fmt]]); // key, label
                 }
             });
@@ -182,7 +182,6 @@ columnTypes.number = function(sample) {
     };
     return type;
 };
-
 
 /*
  * type for date values, e.g. 2004 Q1
@@ -358,7 +357,7 @@ columnTypes.date = (function() {
             test: reg(rx.YYYY.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.DD.test, s3, rx.HHMM.test),
             parse: reg(rx.YYYY.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.DD.parse, s3, rx.HHMM.parse),
             precision: 'day-minutes'
-        }
+        },
         'ISO8601': {
             test: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
             parse: function(str) { return str },
@@ -404,8 +403,8 @@ columnTypes.date = (function() {
     }
 
     function hour(hr, amPm) {
-        if (hr != 12) return hr + (amPm == 'pm' ? 12 : 0);
-        return amPm == 'am' ? 0 : 12;
+        if (hr !== 12) return hr + (amPm === 'pm' ? 12 : 0);
+        return amPm === 'am' ? 0 : 12;
     }
 
     return function(sample) {
@@ -487,7 +486,7 @@ columnTypes.date = (function() {
                     case 'DD.MM.YYYY HH:MM': return new Date(+m[4], (m[3]-1), +m[1], hour(+m[5], m[8]), +m[6] || 0, +m[7] || 0);
                     case 'MM/DD/YYYY HH:MM': return new Date(+m[4], (m[1]-1), +m[3], hour(+m[5], m[8]), +m[6] || 0, +m[7] || 0);
 
-                    case 'ISO8601': return new Date(m.toUpperCase()ssss);
+                    case 'ISO8601': return new Date(m.toUpperCase());
 
                     default:
                         console.warn('unknown format', format);
@@ -533,7 +532,7 @@ columnTypes.date = (function() {
             ambiguousFormats: function() {
                 var candidates = [];
                 _each(matches, function(cnt, fmt) {
-                    if (cnt == bestMatch[1]) {
+                    if (cnt === bestMatch[1]) {
                         candidates.push([fmt, fmt]); // key, label
                     }
                 });
