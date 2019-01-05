@@ -20,7 +20,6 @@
     }
 </style>
 <script>
-
     import EditorNavStep from './EditorNavStep.html';
     import _findWhere from 'underscore-es/findWhere';
     import {trackPageView} from '../shared/analytics';
@@ -37,7 +36,7 @@
             popstate(event) {
                 if (event.state && event.state.id && event.state.step) {
                     const {id, step} = event.state;
-                    if (id == this.store.get().id) {
+                    if (id === this.store.get().id) {
                         // same chart id
                         this.set({active: step.id});
                         trackPageView();
