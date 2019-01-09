@@ -242,6 +242,13 @@
                 type: 'embed-size',
                 height: desiredHeight
             }, '*');
+
+              window.parent.postMessage(JSON.stringify({ 
+                src: window.location.toString(), 
+                context: 'iframe.resize', 
+                height: desiredHeight
+            }), '*');
+
         }, 1000);
     }
 
