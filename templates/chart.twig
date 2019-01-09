@@ -211,51 +211,86 @@
 
     var visJSON = {{ visualization | json | raw }};
 
+    // load polyfills
+    (function() {
+        // see https://github.com/datawrapper/polyfills/blob/master/getBrowser.js
+        function getBrowser(){var e=!!window.opr&&!!opr.addons||!!window.opera||navigator.userAgent.indexOf(" OPR/")>=0;var r=typeof InstallTrigger!=="undefined";var o=/constructor/i.test(window.HTMLElement)||function(e){return e.toString()==="[object SafariRemoteNotification]"}(!window["safari"]||safari.pushNotification);var i=false||!!document.documentMode;var n=!i&&!!window.StyleMedia;var a=!!window.chrome&&!!window.chrome.loadTimes;var t=(a||e)&&!!window.CSS;var s=a?"chrome":r?"firefox":o?"safari":i?"ie":n?"edge":false;var f=a?getVersion(/chrom(?:e|ium)\/([0-9]+)\./):r?getVersion(/firefox\/([0-9]+\.*[0-9]*)/):o?getVersion(/version\/([0-9+]).[0-9+].[0-9+] safari/):i?getVersion(/msie ([0-9+]).[0-9+].[0-9+]/):n?getVersion(/edge\/([0-9+]).[0-9+].[0-9+]/):false;return{browser:s,version:f};function getVersion(e){var r=navigator.userAgent.toLowerCase().match(e);return r?parseInt(r[1],10):false}}
 
-    __dw.init($.extend({
-        chartJSON: {{ chart.toStruct(true) | json | raw }},
-        preview: {{ preview ? 'true' : 'false' }},
-        chartLocale: '{{ chartLocale }}',
-        themeId: '{{ theme.id }}',
-        visId: '{{ visualization.id }}',
-        visJSON: visJSON,
-        metricPrefix: {{ metricPrefix | json | raw }},
-        lang: '{{ lang }}',
-        data: {{ chartData | json | raw }}
-    }, window.__dwParams));
+        var availablePolyfills = {
+            firefox: [30, 51], chrome: [20, 54], ie: [6,11],
+            edge: [12,18], safari: [6,12]
+        };
 
-    if (/iP(hone|od|ad)/.test(navigator.platform)) {
-        window.onload = __dw.render();
+        var dev = getBrowser();
+        var script = document.createElement("script");
+        script.type = 'text/javascript';
+        script.async = true;
+        script.onload = run;
+        script.onerror = run;
+        if (dev.browser && availablePolyfills[dev.browser] &&
+            dev.version >= availablePolyfills[dev.browser][0]) {
+            if (dev.version > availablePolyfills[dev.browser][1]) {
+                // no need for polyfill, browser is quite new
+                return run();
+            }
+            // use cached polyfill.io polyfills
+            script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/'+dev.browser+'-'+dev.version+'.js';
+        } else {
+            // fall back to core js
+            script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/core.min.js';
+        }
+        document.getElementsByTagName('head')[0].appendChild(script);
+    })();
+
+    function run() {
+        __dw.init($.extend({
+            chartJSON: {{ chart.toStruct(true) | json | raw }},
+            preview: {{ preview ? 'true' : 'false' }},
+            chartLocale: '{{ chartLocale }}',
+            themeId: '{{ theme.id }}',
+            visId: '{{ visualization.id }}',
+            visJSON: visJSON,
+            metricPrefix: {{ metricPrefix | json | raw }},
+            lang: '{{ lang }}',
+            data: {{ chartData | json | raw }}
+        }, window.__dwParams));
+
+        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+            window.onload = __dw.render();
+        }
+
+        if (visJSON.height == "fixed") {
+            setInterval(function() {
+                var desiredHeight = $('html').outerHeight(true);
+
+                // datawrapper responsive embed
+                window.parent.postMessage({
+                    'datawrapper-height': {
+                        '{{ chart.id }}': desiredHeight
+                    }
+                }, "*");
+
+                // Google AMP
+                window.parent.postMessage({
+                    sentinel: 'amp',
+                    type: 'embed-size',
+                    height: desiredHeight
+                }, '*');
+
+                // Medium
+                window.parent.postMessage(JSON.stringify({
+                    src: window.location.toString(),
+                    context: 'iframe.resize',
+                    height: desiredHeight
+                }), '*');
+
+            }, 1000);
+        }
+
+        {% if theme.getThemeData('template.js') %}
+            {{ theme.getThemeData('template.js') | raw }}
+        {% endif %}
     }
-
-    if (visJSON.height == "fixed") {
-        setInterval(function() {
-            var desiredHeight = $('html').outerHeight(true);
-            window.parent.postMessage({
-                'datawrapper-height': {
-                    '{{ chart.id }}': desiredHeight
-                }
-            }, "*");
-
-            window.parent.postMessage({
-                sentinel: 'amp',
-                type: 'embed-size',
-                height: desiredHeight
-            }, '*');
-
-              window.parent.postMessage(JSON.stringify({ 
-                src: window.location.toString(), 
-                context: 'iframe.resize', 
-                height: desiredHeight
-            }), '*');
-
-        }, 1000);
-    }
-
-    {% if theme.getThemeData('template.js') %}
-        {{ theme.getThemeData('template.js') | raw }}
-    {% endif %}
-
     </script>
 
 </body>
