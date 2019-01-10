@@ -260,12 +260,10 @@
         }
         
         setInterval(function() {
-            // todo: review me 
-
             if (visJSON.height == "fixed") {
                 var desiredHeight = $('html').outerHeight(true);
             } else {
-                if (__dw.params.preview) {
+                if (__dw.params.preview || !__dw.vis.chart().get('metadata.publish.chart-height')) {
                     return;
                 }
                 
