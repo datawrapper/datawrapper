@@ -258,34 +258,43 @@
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
             window.onload = __dw.render();
         }
+        
+        setInterval(function() {
+            // todo: review me 
 
-        if (visJSON.height == "fixed") {
-            setInterval(function() {
+            if (visJSON.height == "fixed") {
                 var desiredHeight = $('html').outerHeight(true);
+            } else {
+                if (__dw.params.preview) {
+                    return;
+                }
+                
+                var desiredHeight = dw.utils.getNonChartHeight() + 
+                    __dw.vis.chart().get('metadata.publish.chart-height');
+            }
 
-                // datawrapper responsive embed
-                window.parent.postMessage({
-                    'datawrapper-height': {
-                        '{{ chart.id }}': desiredHeight
-                    }
-                }, "*");
+            // datawrapper responsive embed
+            window.parent.postMessage({
+                'datawrapper-height': {
+                    '{{ chart.id }}': desiredHeight
+                }
+            }, "*");
 
-                // Google AMP
-                window.parent.postMessage({
-                    sentinel: 'amp',
-                    type: 'embed-size',
-                    height: desiredHeight
-                }, '*');
+            // Google AMP
+            window.parent.postMessage({
+                sentinel: 'amp',
+                type: 'embed-size',
+                height: desiredHeight
+            }, '*');
 
-                // Medium
-                window.parent.postMessage(JSON.stringify({
-                    src: window.location.toString(),
-                    context: 'iframe.resize',
-                    height: desiredHeight
-                }), '*');
+            // Medium
+            window.parent.postMessage(JSON.stringify({
+                src: window.location.toString(),
+                context: 'iframe.resize',
+                height: desiredHeight
+            }), '*');
 
-            }, 1000);
-        }
+        }, 1000);
 
         {% if theme.getThemeData('template.js') %}
             {{ theme.getThemeData('template.js') | raw }}

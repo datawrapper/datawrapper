@@ -1336,12 +1336,12 @@ dw.utils = {
         return _.isFunction(obj.name) ? obj.name() : _.isString(obj.name) ? obj.name : obj;
     },
 
-    getMaxChartHeight: function() {
-        var maxH = $(window).height() - 8;
+    getNonChartHeight: function() {
+        var h = 0;
 
         // IE Fix
         if (!$.support.leadingWhitespace) {
-            maxH -= 15;
+            h += 15;
         }
 
         $('body > *').each(function(i, el) {
@@ -1363,7 +1363,7 @@ dw.utils = {
                 !hasClass("filter-ui") &&
                 !hasClass("dw-chart-body")) {
 
-                maxH -= $(el).outerHeight(true);
+                h += Number($(el).outerHeight(true));
             }
         });
 
@@ -1376,10 +1376,16 @@ dw.utils = {
 
         selectors.forEach(function(sel) {
             properties.forEach(function(prop) {
-                maxH -= getProp(sel, prop);
+                h += Number(getProp(sel, prop));
             });
         });
 
+        return h;
+    },
+
+    getMaxChartHeight: function() {
+        var maxH = $(window).height() - 8;
+        maxH -= dw.utils.getNonChartHeight();
         return maxH;
     },
 
