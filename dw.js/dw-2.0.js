@@ -1363,11 +1363,7 @@ dw.utils = {
                 !hasClass("filter-ui") &&
                 !hasClass("dw-chart-body")) {
 
-<<<<<<< HEAD
                 h += Number($(el).outerHeight(true));
-=======
-                h +=  $(el).outerHeight(true);
->>>>>>> master
             }
         });
 
@@ -1380,11 +1376,7 @@ dw.utils = {
 
         selectors.forEach(function(sel) {
             properties.forEach(function(prop) {
-<<<<<<< HEAD
                 h += Number(getProp(sel, prop));
-=======
-                h +=  getProp(sel, prop);
->>>>>>> master
             });
         });
 
