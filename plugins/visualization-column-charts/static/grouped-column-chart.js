@@ -12,10 +12,10 @@
             me.checkDataset(el);
             if (!me.axesDef) return;
 
-            c = me.initCanvas({ tpad: !me._isStacked() && me.get('value-labels-position') == "outside" ? 40 : 20 });            
+            c = me.initCanvas({ tpad: 20 });            
             c.rpad = 0;
             c.lpad = 0;
-            c.bpad = !me._isStacked() && me.get('value-labels-position') == "outside" ? 30 : 10;
+            c.bpad = 10;
             
             me.init();
             me.renderChart(el, c);                
@@ -33,7 +33,8 @@
             var me = this,
                 dataset = me.dataset;                
                 barColumns = me.getBarColumns(), 
-                all_values_negative = true;               
+                all_values_negative = true;
+                all_values_positive = true;          
             
             if (me.useDirectLabeling()) {
                 var mobile = me.get('same-as-desktop', true) ? "" : (c.w > 420 ? '' : '-mobile'),
@@ -64,12 +65,29 @@
             _.each(barColumns, function(column, s) {
                 column.each(function(val) {
                     if (val > 0) all_values_negative = false;
+                    if (val < 0) all_values_positive = false;
                 });
             });
 
             if (all_values_negative) {
                 c.tpad = 30;
                 c.bpad = 0;
+            }
+
+            // padding for 
+            if (!me._isStacked() && me.get('value-labels-position') == "outside") {
+                if (!all_values_positive) {
+                    c.bpad = 30;
+                    if (all_values_negative) {
+                        c.tpad = 20;
+                    }
+                };
+                if (!all_values_negative) {
+                    c.tpad = 30;
+                    if(all_values_positive) {
+                        c.bad = 10;
+                    }
+                }
             }
 
             // store bar references for updates
