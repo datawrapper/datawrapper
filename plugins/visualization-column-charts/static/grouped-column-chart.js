@@ -224,11 +224,9 @@
                     var valueLabels = me.get('value-labels'),
                         labelOut = me.get('value-labels-position') == "outside" ? true : false;
 
-                    // console.log(labelPos);
                     if (valueLabels != "hide") {
                         me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
                                 align: 'center', cl: 'value direct-value-label chart-text'+(!labelOut && d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
-                        // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
                         me.__barLbls[key].animate({
                             x: d.x + d.w * 0.5,
                             y: me._isStacked() ?
