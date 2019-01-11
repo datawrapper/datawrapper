@@ -221,17 +221,21 @@
 
                     me.__bars[key] = me.__bars[key] || me.registerElement(c.paper.rect().attr(bar_attrs), column.name(), r);
 
-                    var valueLabels = me.get('value-labels');                                    
+                    var valueLabels = me.get('value-labels'),
+                        labelOut = me.get('value-labels-position') == "outside" ? true : false;
 
+                    // console.log(labelPos);
                     if (valueLabels != "hide") {
                         me.__barLbls[key] = me.__barLbls[key] || me.registerLabel(me.label(0,0,'X', {
-                                align: 'center', cl: 'value direct-value-label chart-text'+(d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
+                                align: 'center', cl: 'value direct-value-label chart-text'+(!labelOut && d.h > 30 || me._isStacked() ? ' inside' : '') }), column.name());
                         // console.log('xxx', column.name(), r, d.y, d.h, 'y:', +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? d.h - 12 : -12) : +(d.h > 30 ? 12 : d.h + 12) ))
                         me.__barLbls[key].animate({
                             x: d.x + d.w * 0.5,
                             y: me._isStacked() ?
-                                d.y + d.h * 0.5 :
-                                +d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // < 0
+                                d.y + d.h * 0.5 : // stacked columns
+                                + labelOut ?
+                                d.y + (column.val(r) >= 0 ? - 10 : d.h + 10 ) : // grouped columns outside label
+                                d.y + (column.val(r) >= 0 ? +(d.h > 30 ? 12 : -12) : +(d.h > 30 ? d.h- 12 : d.h + 12) ), // grouped columns inside label
                             txt: me.formatValue(column.val(r), true)
                         }, 0, 'expoInOut');
                         me.__barLbls[key].data('row', r);
@@ -246,7 +250,7 @@
                     var val_y = val >= 0 ? d.y - 10 : d.y + d.h + 10,
                         lbl_y = val < 0 ? d.y - 10 : d.y + d.h + 5,
                         lbl_x = d.bx,
-                        lblcl = ['series x-tick-value'],  
+                        lblcl = ['series x-tick-values'],  
                         lbl_w = d.tw,
                         valign = val >= 0 ? 'top' : 'bottom',
                         halign = 'center',

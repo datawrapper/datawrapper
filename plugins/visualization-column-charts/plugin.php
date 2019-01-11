@@ -213,7 +213,21 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 array("value" => "hover", "label" => __("Hover"))
                             ),
                             "default" => 'hover'
-                        )
+                        ),
+                        "value-labels-position" => array(
+                            "type" => "radio",
+                            // "depends-on" => array(
+                            //     "value-labels" => "show" ,
+                            //     "value-labels" => "hover"
+
+                            // ),
+                            "label" => __("Label position"),
+                            "options" => array(
+                                array("value" => "inside", "label" => __("Inside")),
+                                array("value" => "outside", "label" => __("Outside"))
+                            ),
+                            "default" => 'outside'
+                        ),
                     ]
                 ]
             ),
