@@ -2,7 +2,7 @@
 
 function check_chart_readable($id, $callback) {
     $chart = ChartQuery::create()->findPK($id);
-    if ($chart) {
+    if ($chart && !$chart->getDeleted()) {
         $user = DatawrapperSession::getUser();
         if ($chart->isReadable($user) === true) {
             call_user_func($callback, $user, $chart);
@@ -18,7 +18,7 @@ function check_chart_readable($id, $callback) {
 
 function check_chart_writable($id, $callback) {
     $chart = ChartQuery::create()->findPK($id);
-    if ($chart) {
+    if ($chart && !$chart->getDeleted()) {
         $user = DatawrapperSession::getUser();
         if ($chart->isWritable($user) === true) {
             call_user_func($callback, $user, $chart);
