@@ -279,6 +279,7 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to access the chart
      */
     public function isReadable($user) {
+        if ($this->getDeleted()) return false;
         if ($user->isLoggedIn()) {
             if (Hooks::hookRegistered(Hooks::IS_CHART_READABLE)) {
                 $readables = Hooks::execute(Hooks::IS_CHART_READABLE, $this, $user);
