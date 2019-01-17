@@ -347,7 +347,8 @@
 
 
             function getFill(col, el) {
-                var fill = me.getBarColor(null, el.data('row'), { varyLightness: true, key: me.axes(true).labels.val(el.data('row')) });
+                var row = typeof(el) === "object" ? el.data('row') : el,
+                    fill = me.getBarColor(null,row, { varyLightness: true, key: me.axes(true).labels.val(row) });
                 return fill;
             }
 
@@ -367,11 +368,14 @@
             directLbls.forEach(function(lbl, r) {
                 lbl.__attrs.y = lbl.__attrs.oy + lbl.__noverlap.dy;
 
-                var path = 'M'+(last_bar.x + last_bar.w)+','+lbl.__attrs.oy+'L'+(lbl.__attrs.x-3)+','+lbl.__attrs.y;
+
+                var lblColor = me.get('use-line-color') ? getFill(null,r) : chroma(me.__theme.colors.background).lab[0] < 50 ? "#ffffff" : "#000000",
+
+                    path = 'M'+(last_bar.x + last_bar.w)+','+lbl.__attrs.oy+'L'+(lbl.__attrs.x-3)+','+lbl.__attrs.y;
 
                 if (me.__row_label_lines[r]) me.__row_label_lines[r].animate({path: path}, me.theme().duration, me.theme().easing);
-                else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5 });
-
+                else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5, stroke:cm(lblColor), "stroke-width": me.get('use-line-color')? "2px" : "1px" });
+                $(lbl.el[0].firstElementChild).css({color:cm(lblColor)});
                 lbl.animate(lbl.__attrs, 0, me.theme().easing);
             });
 

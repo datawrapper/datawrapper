@@ -316,6 +316,14 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 ],
                             ]
                         ],
+                        "use-line-color" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use column color for labels"),
+                            "default" => false,
+                            'depends-on' => [
+                                'direct-labeling' => 'always'
+                            ]
+                        ),
                         'label-space' => [
                             'type' => 'slider',
                             'depends-on' => [
