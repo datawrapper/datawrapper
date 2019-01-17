@@ -352,6 +352,18 @@
                 return fill;
             }
 
+            function fixColor(clr) {
+                var col,
+                lab = chroma(clr).lab();
+                if (chroma(me.__theme.colors.background).lab()[0] > 50) {
+                    col = lab[0] > 85 ? chroma.lab(80, lab[1], lab[2]) : clr;
+                }               
+                else { 
+                    col = lab[0] < 15 ? chroma.lab(20, lab[1], lab[2]) : clr;
+                }
+                return col;
+            }
+
             _.each(me.getBarColumns(), function(column) {
                 var fill, stroke;
 
@@ -369,7 +381,7 @@
                 lbl.__attrs.y = lbl.__attrs.oy + lbl.__noverlap.dy;
 
 
-                var lblColor = me.get('use-line-color') ? getFill(null,r) : chroma(me.__theme.colors.background).lab[0] < 50 ? "#ffffff" : "#000000",
+                var lblColor = me.get('use-line-color') ? fixColor(getFill(null,r)) : chroma(me.__theme.colors.background).lab()[0] < 50 ? "#ffffff" : "#000000",
 
                     path = 'M'+(last_bar.x + last_bar.w)+','+lbl.__attrs.oy+'L'+(lbl.__attrs.x-3)+','+lbl.__attrs.y;
 
