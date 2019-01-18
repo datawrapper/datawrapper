@@ -179,7 +179,7 @@
                 last_sort = [dataset.indexOf(me.get('sort-by')), me.get('sort-asc') ? 'asc' : 'desc'];
             }
 
-            if (last_sort) { table.fnSort([last_sort]); }
+            if (last_sort && last_sort > -1) {table.fnSort([last_sort]); }
 
             $('thead th').click(function() {
                 var th = $('th[aria-sort]', table),
@@ -188,7 +188,6 @@
             });
 
             var c = me.get('header-color');
-
             if (typeof c == "undefined") {
                 c = me.theme().colors.palette[0];
             } else if (typeof c == "number") {
