@@ -387,7 +387,7 @@
 
                 if (me.__row_label_lines[r]) me.__row_label_lines[r].animate({path: path}, me.theme().duration, me.theme().easing);
                 else me.__row_label_lines[r] = c.paper.path(path).attr(me.theme().yAxis).attr({ opacity: 0.5, stroke:cm(lblColor), "stroke-width": me.get('use-line-color')? "2px" : "1px" });
-                $(lbl.el[0].firstElementChild).css({color:cm(lblColor)});
+                if (me.get('use-line-color')) $(lbl.el[0].firstElementChild).css({color:cm(lblColor)});
                 lbl.animate(lbl.__attrs, 0, me.theme().easing);
             });
 
