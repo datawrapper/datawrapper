@@ -188,12 +188,10 @@ class ChartQuery extends BaseChartQuery {
 
         } else {
             if ($org) {
-                $query = $this->filterByOrganizationId($id)
-                    ->filterByDeleted(false);
+                $query = $this->filterByOrganizationId($id);
             } else {
                 $query = $this->filterByAuthorId($id)
-                    ->filterByOrganizationId(null)
-                    ->filterByDeleted(false);
+                    ->filterByOrganizationId(null);
             }
         }
 
@@ -236,7 +234,7 @@ class ChartQuery extends BaseChartQuery {
                 }
             }
         }
-        return $query;
+        return $query->filterByDeleted(false);
     }
 
     public function getPublicChartsById($id, $org, $filter=array(), $start=0, $perPage=15, $order=false) {
