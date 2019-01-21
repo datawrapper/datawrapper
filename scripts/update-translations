@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-env node */
+/* eslint no-console: "off" */
 
 const fs = require('fs');
 const yaml = require('js-yaml');
@@ -24,10 +26,12 @@ if (config.translation) {
             writeLocales(core, './locale');
 
             _.each(_.groupBy(plugins, 'plugin'), (src, k) => {
-                if (fs.existsSync(`./plugins/${k}`)) {
-                    writeLocales(src, `./plugins/${k}/locale`);
-                } else {
-                    console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
+                if (k) {
+                    if (fs.existsSync(`./plugins/${k}`)) {
+                        writeLocales(src, `./plugins/${k}/locale`);
+                    } else {
+                        console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
+                    }
                 }
             });
 
@@ -43,9 +47,8 @@ function getSheet(url, callback) {
     });
 }
 
-
 function writeLocales(src, path) {
-    if (!fs.existsSync(path)) fs.mkdir(path);
+    if (!fs.existsSync(path)) fs.mkdirSync(path);
     var err = false;
     config.languages.forEach((lang) => {
         const f = `${path}/${lang.id.replace('-','_')}.json`;
