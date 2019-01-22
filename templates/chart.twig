@@ -207,97 +207,32 @@
 
     <script type="text/javascript" charset="utf-8">
 
-    if (document.getElementsByTagName('script').length > 0) $('body').addClass('js');
-
-    var visJSON = {{ visualization | json | raw }};
-
-    // load polyfills
     (function() {
-        // https://unpkg.com/@datawrapper/polyfills@1.0.2/dist/getBrowser.umd.js
-        !function(e,o){"object"==typeof exports&&"undefined"!=typeof module?module.exports=o():"function"==typeof define&&define.amd?define(o):e.getBrowser=o()}(this,function(){function e(e){return function(o){var i=o.toLowerCase().match(e);return!!i&&parseInt(i[1],10)}}var o={chrome:e(/chrom(?:e|ium)\/([0-9]+)\./),firefox:e(/firefox\/([0-9]+\.*[0-9]*)/),safari:e(/version\/([0-9]+).[0-9]+.[0-9]+ safari/),ie:e(/(?:msie |rv:)([0-9]+).[0-9]+/),edge:e(/edge\/([0-9]+).[0-9]+.[0-9]+/)};return function(){var e=!!window.opr&&!!opr.addons||!!window.opera||navigator.userAgent.indexOf(" OPR/")>=0,i="undefined"!=typeof InstallTrigger,n=/constructor/i.test(window.HTMLElement)||"[object SafariRemoteNotification]"===(!window.safari||safari.pushNotification).toString(),r=!!document.documentMode,t=!r&&!!window.StyleMedia,a=!!window.chrome&&!!window.chrome.loadTimes,f=((a||e)&&window,a?"chrome":i?"firefox":n?"safari":r?"ie":!!t&&"edge");return{browser:f,version:!(!f||!o[f])&&o[f](navigator.userAgent)}}});
 
-        var availablePolyfills = {
-            firefox: [30, 51], chrome: [20, 54], ie: [6,11],
-            edge: [12,18], safari: [6,12]
-        };
+        {% include 'chart/render.js.twig' %}
 
-        var dev = getBrowser();
-        var script = document.createElement("script");
-        script.type = 'text/javascript';
-        script.async = true;
-        script.onload = run;
-        script.onerror = run;
-        if (dev.browser && availablePolyfills[dev.browser] &&
-            dev.version >= availablePolyfills[dev.browser][0]) {
-            if (dev.version > availablePolyfills[dev.browser][1]) {
-                // no need for polyfill, browser is quite new
-                return run();
-            }
-            // use cached polyfill.io polyfills
-            script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/'+dev.browser+'-'+dev.version+'.js';
-        } else {
-            // fall back to core js
-            script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/core.min.js';
-        }
-        document.getElementsByTagName('head')[0].appendChild(script);
-    })();
-
-    function run() {
-        __dw.init($.extend({
+        render({
+            visJSON: {{ visualization | json | raw }},
             chartJSON: {{ chart.toStruct(true) | json | raw }},
-            preview: {{ preview ? 'true' : 'false' }},
-            chartLocale: '{{ chartLocale }}',
+            chartData: {{ chartData | json | raw }},
+            isPreview: {{ preview ? 'true' : 'false' }},
             themeId: '{{ theme.id }}',
             visId: '{{ visualization.id }}',
-            visJSON: visJSON,
-            metricPrefix: {{ metricPrefix | json | raw }},
+            chartLocale: '{{ chartLocale }}',
             lang: '{{ lang }}',
-            data: {{ chartData | json | raw }}
-        }, window.__dwParams));
+            chartId: '{{ chart.id }}',
+            metricPrefix: {{ metricPrefix | json | raw }},
+            templateJS: {% if theme.getThemeData('template.js') %}
+function() {
+    {{ theme.getThemeData('template.js') | raw }}
+}
+{% else %}
+false
+{% endif %}
+        });
 
-        if (/iP(hone|od|ad)/.test(navigator.platform)) {
-            window.onload = __dw.render();
-        }
-        
-        setInterval(function() {
-            if (visJSON.height == "fixed") {
-                var desiredHeight = $('html').outerHeight(true);
-            } else {
-                if (__dw.params.preview || !__dw.vis.chart().get('metadata.publish.chart-height')) {
-                    return;
-                }
-                
-                var desiredHeight = dw.utils.getNonChartHeight() + 
-                    __dw.vis.chart().get('metadata.publish.chart-height');
-            }
+    })();
 
-            // datawrapper responsive embed
-            window.parent.postMessage({
-                'datawrapper-height': {
-                    '{{ chart.id }}': desiredHeight
-                }
-            }, "*");
-
-            // Google AMP
-            window.parent.postMessage({
-                sentinel: 'amp',
-                type: 'embed-size',
-                height: desiredHeight
-            }, '*');
-
-            // Medium
-            window.parent.postMessage(JSON.stringify({
-                src: window.location.toString(),
-                context: 'iframe.resize',
-                height: desiredHeight
-            }), '*');
-
-        }, 1000);
-
-        {% if theme.getThemeData('template.js') %}
-            {{ theme.getThemeData('template.js') | raw }}
-        {% endif %}
-    }
     </script>
 
 </body>
