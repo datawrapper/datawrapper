@@ -1,3 +1,8 @@
+/*
+ * This is the JS code we ship with *every* published Datawrapper chart.
+ * It's main purpose is to load polyfills for older browsers and handle
+ * the postMessage calls for automatic resizing etc.
+ */
 import getBrowser from '@datawrapper/polyfills';
 
 /* globals dw, __dw, $ */
