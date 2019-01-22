@@ -27,6 +27,8 @@ translations:
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
+build: svelte-all
+
 svelte: \
 	www/static/js/svelte/account.js \
 	www/static/js/svelte/controls.js \
