@@ -2,9 +2,8 @@ import getBrowser from '@datawrapper/polyfills';
 
 /* globals dw, __dw, $ */
 
-export default function({ chartId, themeId, visId,
-    visJSON, chartJSON, chartData, isPreview,
-    chartLocale, lang, metricPrefix, templateJS }) {
+export default function({ visJSON, chartJSON, chartData, isPreview,
+    chartLocale, metricPrefix, templateJS }) {
 
     // load polyfills
     var availablePolyfills = {
@@ -40,9 +39,9 @@ export default function({ chartId, themeId, visId,
             data: chartData,
             preview: isPreview,
             chartLocale,
-            themeId,
-            visId,
-            lang,
+            themeId: chartJSON.theme,
+            visId: chartJSON.type,
+            lang: chartLocale.substr(0,2),
             metricPrefix
         }, window.__dwParams || {}));
 
@@ -67,7 +66,7 @@ export default function({ chartId, themeId, visId,
             // datawrapper responsive embed
             window.parent.postMessage({
                 'datawrapper-height': {
-                    [chartId]: desiredHeight
+                    [chartJSON.id]: desiredHeight
                 }
             }, "*");
 

@@ -216,11 +216,7 @@
             chartJSON: {{ chart.toStruct(true) | json | raw }},
             chartData: {{ chartData | json | raw }},
             isPreview: {{ preview ? 'true' : 'false' }},
-            themeId: '{{ theme.id }}',
-            visId: '{{ visualization.id }}',
             chartLocale: '{{ chartLocale }}',
-            lang: '{{ lang }}',
-            chartId: '{{ chart.id }}',
             metricPrefix: {{ metricPrefix | json | raw }},
             templateJS: {% if theme.getThemeData('template.js') %}
 function() {
