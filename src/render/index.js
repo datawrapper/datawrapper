@@ -16,23 +16,27 @@ export default function({ visJSON, chartJSON, chartData, isPreview,
         edge: [12,18], safari: [6,12]
     };
 
-    var dev = getBrowser();
+    // see https://github.com/datawrapper/polyfills/blob/master/src/getBrowser.js
+    var environment = getBrowser();
+    // create script tag for polyfill
     var script = document.createElement("script");
     script.type = 'text/javascript';
     script.async = true;
     script.onload = run;
+    // render the chart even if load fails!
     script.onerror = run;
-    if (dev.browser && availablePolyfills[dev.browser] &&
-        dev.version >= availablePolyfills[dev.browser][0]) {
-        if (dev.version > availablePolyfills[dev.browser][1]) {
+
+    if (environment.browser && availablePolyfills[environment.browser] &&
+        environment.version >= availablePolyfills[environment.browser][0]) {
+        if (environment.version > availablePolyfills[environment.browser][1]) {
             // no need for polyfill, browser is quite new
             return run();
         }
         // use cached polyfill.io polyfills
-        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/'+dev.browser+'-'+dev.version+'.js';
+        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/'+environment.browser+'-'+environment.version+'.js';
     } else {
-        // fall back to core js
-        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/core.min.js';
+        // unknown browser, fall back to generic polyfill
+        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/all.js';
     }
 
     document.getElementsByTagName('head')[0].appendChild(script);
