@@ -179,7 +179,14 @@
                 last_sort = [dataset.indexOf(me.get('sort-by')), me.get('sort-asc') ? 'asc' : 'desc'];
             }
 
-            if (last_sort && last_sort > -1) {table.fnSort([last_sort]); }
+            if (last_sort) {
+                try {
+                    table.fnSort([last_sort]);
+                }
+                catch(err) {
+                    console.error(err);
+                }
+            }
 
             $('thead th').click(function() {
                 var th = $('th[aria-sort]', table),
