@@ -81,3 +81,6 @@ www/static/js/svelte/publish/sidebar.js: src/publish/sidebar/*
 
 www/static/js/svelte/upload.js: src/upload/*
 	cd src && ROLLUP_TGT_APP=upload ../node_modules/.bin/rollup -c
+
+templates/chart/embed.twig: src/embed/*
+	cd src && ROLLUP_TGT_APP=embed ../node_modules/.bin/rollup -c

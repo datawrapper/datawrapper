@@ -293,7 +293,9 @@ function publish_get_embed_templates() {
         "id" => "responsive",
         "title" => __("publish / embed / responsive"),
         "text" => __("publish / embed / responsive / text"),
-        "template" => '<iframe id="datawrapper-chart-%chart_id%" src="%chart_url%" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important;" height="%chart_height%"></iframe><script type="text/javascript">if("undefined"==typeof window.datawrapper)window.datawrapper={};window.datawrapper["%chart_id%"]={},window.datawrapper["%chart_id%"].iframe=document.getElementById("datawrapper-chart-%chart_id%"),window.addEventListener("message",function(a){if("undefined"!=typeof a.data["datawrapper-height"])for(var b in a.data["datawrapper-height"])if("%chart_id%"==b)window.datawrapper["%chart_id%"].iframe.style.height=a.data["datawrapper-height"][b]+"px"});</script>',
+        "template" => '<iframe id="datawrapper-chart-%chart_id%" src="%chart_url%" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important;" height="%chart_height%"></iframe><script type="text/javascript">' 
+                . file_get_contents(ROOT_PATH . 'templates/chart/embed.js') . 
+            '</script>',
     ];
 
     // standard iframe
