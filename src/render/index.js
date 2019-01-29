@@ -28,6 +28,7 @@ export default function({ visJSON, chartJSON, chartData, isPreview,
 
     if (environment.browser && availablePolyfills[environment.browser] &&
         environment.version >= availablePolyfills[environment.browser][0]) {
+        
         if (environment.version > availablePolyfills[environment.browser][1]) {
             // no need for polyfill, browser is quite new
             return run();
