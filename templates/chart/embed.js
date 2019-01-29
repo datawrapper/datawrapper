@@ -1,0 +1,1 @@
+!function(){"use strict";window.addEventListener("message",function(t){if(void 0!==t.data["datawrapper-height"])for(var e in t.data["datawrapper-height"]){var r=document.getElementById("datawrapper-chart-"+e);r&&(r.style.height=a.data["datawrapper-height"][e]+"px")}})}();
