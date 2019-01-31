@@ -8,7 +8,7 @@
 
     function receiveMessage(event) {
         if (event.data &&
-            event.data.source == 'datawrapper' &&
+            event.data.source === 'datawrapper' &&
             event.data.chart_id &&
             listeners[event.data.type]) {
             listeners[event.data.type].forEach(function(cb) {
