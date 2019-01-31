@@ -432,9 +432,6 @@ CREATE TABLE `folder`
     INDEX `folder_FI_1` (`parent_id`),
     INDEX `folder_FI_2` (`user_id`),
     INDEX `folder_FI_3` (`org_id`),
-    CONSTRAINT `folder_FK_1`
-        FOREIGN KEY (`parent_id`)
-        REFERENCES `folder` (`folder_id`),
     CONSTRAINT `folder_FK_2`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`),
