@@ -1,9 +1,0 @@
-{
-    "name": "visualization-line-chart",
-    "version": "1.5.0",
-    "author": "Gregor Aisch",
-    "dependencies": {
-        "core": "1.5.0",
-        "visualization-raphael-chart": "*"
-    }
-}
