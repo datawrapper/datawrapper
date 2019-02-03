@@ -10,6 +10,8 @@ import getBrowser from '@datawrapper/polyfills';
 export default function({ visJSON, chartJSON, chartData, isPreview,
     chartLocale, metricPrefix, templateJS }) {
 
+    window.visJSON = visJSON;
+
     // load polyfills
     var availablePolyfills = {
         firefox: [30, 51], chrome: [20, 54], ie: [6,11],
