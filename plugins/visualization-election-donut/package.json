@@ -1,9 +1,0 @@
-{
-   "name": "visualization-election-donut",
-   "version": "1.6.0",
-   "author": "Gregor Aisch <gregor@datawrapper.de>",
-   "dependencies": {
-        "core": "1.8.*",
-        "visualization-pie-chart": "*"
-   }
-}
