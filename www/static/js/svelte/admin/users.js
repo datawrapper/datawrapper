@@ -1,1 +1,807 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define("svelte/admin/users",e):t["admin/users"]=e()}(this,function(){"use strict";function t(){}function e(t,e){for(var n in e)t[n]=e[n];return t}function n(t,e){e.appendChild(t)}function r(t,e,n){e.insertBefore(t,n)}function s(t){t.parentNode.removeChild(t)}function i(t){return document.createElement(t)}function o(t){return document.createTextNode(t)}function a(){return Object.create(null)}function u(e){this.destroy=t,this.fire("destroy"),this.set=this.get=t,!1!==e&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function c(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function h(t,e){return t!=t?e==e:t!==e}function d(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var r=0;r<n.length;r+=1){var s=n[r];s.__calling||(s.__calling=!0,s.call(this,e),s.__calling=!1)}}function f(t){return t?this._state[t]:this._state}function l(t,e,n){var r=e.bind(this);return n&&!1===n.init||r(this.get()[t],void 0),this.on(n&&n.defer?"update":"state",function(e){e.changed[t]&&r(e.current[t],e.previous&&e.previous[t])})}function _(t,e){if("teardown"===t)return this.on("destroy",e);var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}}function p(t){for(;t&&t.length;)t.shift()()}var m={destroy:u,get:f,fire:d,observe:l,on:_,set:function(t){this._set(e({},t)),this.root._lock||(this.root._lock=!0,p(this.root._beforecreate),p(this.root._oncreate),p(this.root._aftercreate),this.root._lock=!1)},teardown:u,_recompute:t,_set:function(t){var n=this._state,r={},s=!1;for(var i in t)this._differs(t[i],n[i])&&(r[i]=s=!0);s&&(this._state=e(e({},n),t),this._recompute(r,this._state),this._bind&&this._bind(r,this._state),this._fragment&&(this.fire("state",{changed:r,current:this._state,previous:n}),this._fragment.p(r,this._state),this.fire("update",{changed:r,current:this._state,previous:n})))},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:c};function v(t,e,n){return 2===arguments.length&&(n=e,e="include"),function(t,e,n,r,s){var i={method:e,body:r,mode:"cors",credentials:n};window.fetch(t,i).then(function(t){return 200!==t.status?new Error(t.statusText):t.text()}).then(function(t){try{return JSON.parse(t)}catch(e){return console.warn("malformed json input",t),t}}).then(s).catch(function(t){console.error(t)})}(t,"GET",e,null,n)}function g(e,a){var u,c,h,d,f,l,_,p,m,v,g,y,b,N,w,C,x,E,I,A,k,P,T,j,L,H,O=a.user,S=(a.each_value,a.user_index,O.Id),M=O.Name||"",R=O.Email,$=O.Role,B=O.CreatedAt;return{c:function(){u=i("tr"),c=i("td"),h=i("a"),d=o(S),l=o("\n\t\t\t\t"),_=i("td"),p=o(M),m=o("\n\t\t\t\t"),v=i("td"),g=o(R),y=o("\n\t\t\t\t"),b=i("td"),N=i("i"),w=o("\n\t\t\t\t\t"),C=o($),x=o("\n\t\t\t\t"),E=i("td"),I=o(B),A=o("\n\t\t\t\t"),k=i("td"),P=i("a"),j=o("\n\t\t\t\t"),(L=i("td")).innerHTML='<a href="#" class="do" data-action="editAction"><i class="icon-pencil" title="edit"></i></a>\n\t\t\t\t\t<a href="#" class="do" data-action="resetAction"><i class="icon-envelope" title="reset the password and send a mail"></i></a>\n\t\t\t\t\t<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>',this.h()},h:function(){h.href=f="/admin/users/"+O.Id,c.className="id out",_.className="name out",v.className="email out",N.className="icon-user",N.title="Editor",E.className="creation out",P.href=T="/admin/chart/by/"+O.Id,k.className="center",L.className="actions",u.className="user editor ",u.dataset.id=H=O.Id},m:function(t,e){r(u,t,e),n(c,u),n(h,c),n(d,h),n(l,u),n(_,u),n(p,_),n(m,u),n(v,u),n(g,v),n(y,u),n(b,u),n(N,b),n(w,b),n(C,b),n(x,u),n(E,u),n(I,E),n(A,u),n(k,u),n(P,k),n(j,u),n(L,u)},p:function(t,e){O=e.user,e.each_value,e.user_index,t.users&&S!==(S=O.Id)&&(d.data=S),t.users&&f!==(f="/admin/users/"+O.Id)&&(h.href=f),t.users&&M!==(M=O.Name||"")&&(p.data=M),t.users&&R!==(R=O.Email)&&(g.data=R),t.users&&$!==($=O.Role)&&(C.data=$),t.users&&B!==(B=O.CreatedAt)&&(I.data=B),t.users&&T!==(T="/admin/chart/by/"+O.Id)&&(P.href=T),t.users&&H!==(H=O.Id)&&(u.dataset.id=H)},u:function(){s(u)},d:t}}function y(t){!function(t,e){t._handlers=a(),t._bind=e._bind,t.options=e,t.root=e.root||t,t.store=t.root.store||e.store}(this,t),this._state=e({users:[],count:0},t.data);var u=this;t.root||(this._oncreate=[]),this._fragment=function(t,a){var u,c,h,d,f,l,_,p,m,v,y,b,N,w;function C(e){var n=t.get();t.set({count:n.count+1})}for(var x=a.users,E=[],I=0;I<x.length;I+=1)E[I]=g(0,e(e({},a),{each_value:x,user:x[I],user_index:I}));return{c:function(){u=i("h1"),c=o("Hello world ("),h=o(a.count),d=o(")"),f=o("\n\n"),(l=i("button")).textContent="increment",_=o("\n\n"),p=i("hr"),m=o("\n\n"),v=i("ul"),y=i("table"),(b=i("thead")).innerHTML='<tr><th><a href="?sort=id">#</a></th>\n\t\t\t\t<th><a href="?sort=name">Name</a></th>\n\t\t\t\t<th><a href="?sort=email">Sign-In</a></th>\n\t\t\t\t<th>Status</th>\n\t\t\t\t<th><a href="?sort=created_at">Created at</a></th>\n\t\t\t\t<th class="center">Charts</th>\n\t\t\t\t<th>Actions</th></tr>',N=o("\n\t\t"),w=i("tbody");for(var t=0;t<E.length;t+=1)E[t].c();this.h()},h:function(){var t,e;t="click",e=C,l.addEventListener(t,e,!1),w.className="users",y.className="table users"},m:function(t,e){r(u,t,e),n(c,u),n(h,u),n(d,u),r(f,t,e),r(l,t,e),r(_,t,e),r(p,t,e),r(m,t,e),r(v,t,e),n(y,v),n(b,y),n(N,y),n(w,y);for(var s=0;s<E.length;s+=1)E[s].m(w,null)},p:function(t,n){t.count&&(h.data=n.count);var r=n.users;if(t.users){for(var s=0;s<r.length;s+=1){var i=e(e({},n),{each_value:r,user:r[s],user_index:s});E[s]?E[s].p(t,i):(E[s]=g(0,i),E[s].c(),E[s].m(w,null))}for(;s<E.length;s+=1)E[s].u(),E[s].d();E.length=r.length}},u:function(){s(u),s(f),s(l),s(_),s(p),s(m),s(v);for(var t=0;t<E.length;t+=1)E[t].u()},d:function(){var t,e;t="click",e=C,l.removeEventListener(t,e,!1),function(t){for(var e=0;e<t.length;e+=1)t[e]&&t[e].d()}(E)}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this;v("/api/users",function(e){"ok"===e.status&&(console.log(e.data),t.set({users:e.data}))})}).call(u),u.fire("update",{changed:{count:1,users:1},current:u._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),p(this._oncreate))}function b(t,n){this._observers={pre:a(),post:a()},this._handlers={},this._dependents=[],this._computed=a(),this._sortedComputedProperties=[],this._state=e({},t),this._differs=n&&n.immutable?h:c}return e(y.prototype,m),e(b.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},n=0;n<t.length;n+=1){var r=t[n];e["$"+r]=this._state[r]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_sortComputedProperties:function(){var t,e=this._computed,n=this._sortedComputedProperties=[],r=a();function s(i){if(t[i])throw new Error("Cyclical dependency detected");if(!r[i]){r[i]=!0;var o=e[i];o&&(t[i]=!0,o.deps.forEach(s),n.push(o))}}for(var i in this._computed)t=a(),s(i)},compute:function(t,e,n){var r,s=this,i={deps:e,update:function(i,o,a){var u=e.map(function(t){return t in o&&(a=!0),i[t]});if(a){var c=n.apply(null,u);s._differs(c,r)&&(r=c,o[t]=!0,i[t]=r)}}};i.update(this._state,{},!0),this._computed[t]=i,this._sortComputedProperties()},fire:d,get:f,observe:l,on:_,onchange:function(t){return console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})"),this.on("state",function(e){t(e.current,e.changed)})},set:function(t){var n=this._state,r=this._changed={},s=!1;for(var i in t){if(this._computed[i])throw new Error("'"+i+"' is a read-only property");this._differs(t[i],n[i])&&(r[i]=s=!0)}if(s){this._state=e(e({},n),t);for(var o=0;o<this._sortedComputedProperties.length;o+=1)this._sortedComputedProperties[o].update(this._state,r);this.fire("state",{changed:r,current:this._state,previous:n});var a=this._dependents.slice();for(o=0;o<a.length;o+=1){var u=a[o],c={};s=!1;for(var h=0;h<u.props.length;h+=1){var d=u.props[h];d in r&&(c["$"+d]=this._state[d],s=!0)}s&&u.component.set(c)}this.fire("update",{changed:r,current:this._state,previous:n})}}}),{App:y,store:new b({}),data:{}}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/admin/users', factory) :
+	(global['admin/users'] = factory());
+}(this, (function () { 'use strict';
+
+function noop() {}
+
+function assign(tar, src) {
+	for (var k in src) { tar[k] = src[k]; }
+	return tar;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) { iterations[i].d(); }
+	}
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) { this._fragment.u(); }
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function _differs(a, b) {
+	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function _differsImmutable(a, b) {
+	return a != a ? b == b : a !== b;
+}
+
+function fire(eventName, data) {
+	var this$1 = this;
+
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) { return; }
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		var handler = handlers[i];
+
+		if (!handler.__calling) {
+			handler.__calling = true;
+			handler.call(this$1, data);
+			handler.__calling = false;
+		}
+	}
+}
+
+function getDev(key) {
+	if (key) { console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead"); }
+	return get.call(this, key);
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var fn = callback.bind(this);
+
+	if (!options || options.init !== false) {
+		fn(this.get()[key], undefined);
+	}
+
+	return this.on(options && options.defer ? 'update' : 'state', function(event) {
+		if (event.changed[key]) { fn(event.current[key], event.previous && event.previous[key]); }
+	});
+}
+
+function observeDev(key, callback, options) {
+	console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+	var c = (key = '' + key).search(/[.[]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			{ message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'"; }
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') { return this.on('destroy', handler); }
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) { handlers.splice(index, 1); }
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) { return; }
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var this$1 = this;
+
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+	}
+	if (!dirty) { return; }
+
+	this._state = assign(assign({}, oldState), newState);
+	this._recompute(changed, this._state);
+	if (this._bind) { this._bind(changed, this._state); }
+
+	if (this._fragment) {
+		this.fire("state", { changed: changed, current: this._state, previous: oldState });
+		this._fragment.p(changed, this._state);
+		this.fire("update", { changed: changed, current: this._state, previous: oldState });
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) { fns.shift()(); }
+}
+
+function _mount(target, anchor) {
+	this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+}
+
+function _unmount() {
+	if (this._fragment) { this._fragment.u(); }
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: getDev,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount,
+	_differs: _differs
+};
+
+// quick reference variables for speed access
+
+// `_isArray` : an object's function
+
+function fetchJSON(url, method, credentials, body, callback) {
+    var opts = {
+        method: method, body: body,
+        mode: 'cors',
+        credentials: credentials
+    };
+
+    window.fetch(url, opts)
+    .then(function (res) {
+        if (res.status !== 200) { return new Error(res.statusText); }
+        return res.text();
+    })
+    .then(function (text) {
+        try {
+            return JSON.parse(text);
+        } catch (Error) {
+            // could not parse json, so just return text
+            console.warn('malformed json input', text);
+            return text;
+        }
+    })
+    .then(callback)
+    .catch(function (err) {
+        console.error(err);
+    });
+}
+
+function getJSON(url, credentials, callback) {
+    if (arguments.length === 2) {
+        callback = credentials;
+        credentials = "include";
+    }
+
+    return fetchJSON(url, 'GET', credentials, null, callback);
+}
+
+/* admin/users/UserAdminRow.html generated by Svelte v1.64.0 */
+
+function create_main_fragment(component, state) {
+	var tr, td, a, text_value = state.user.Id, text, a_href_value, text_1, td_1, text_2_value = state.user.Name || '', text_2, text_3, td_2, text_4_value = state.user.Email, text_4, text_5, td_3, i, text_6, text_7_value = state.user.Role, text_7, text_9, td_4, text_10_value = state.user.CreatedAt, text_10, text_11, td_5, a_1, a_1_href_value, text_14, td_6, button, text_15, a_2, text_16, a_3, tr_data_id_value;
+
+	function click_handler(event) {
+		component.set({ edit: true });
+	}
+
+	return {
+		c: function create() {
+			tr = createElement("tr");
+			td = createElement("td");
+			a = createElement("a");
+			text = createText(text_value);
+			text_1 = createText("\n\t");
+			td_1 = createElement("td");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n\t");
+			td_2 = createElement("td");
+			text_4 = createText(text_4_value);
+			text_5 = createText("\n\t");
+			td_3 = createElement("td");
+			i = createElement("i");
+			text_6 = createText("\n\t\t");
+			text_7 = createText(text_7_value);
+			text_9 = createText("\n\t");
+			td_4 = createElement("td");
+			text_10 = createText(text_10_value);
+			text_11 = createText("\n\t");
+			td_5 = createElement("td");
+			a_1 = createElement("a");
+			a_1.textContent = "X";
+			text_14 = createText("\n\t");
+			td_6 = createElement("td");
+			button = createElement("button");
+			button.innerHTML = "<i class=\"icon-pencil\" title=\"edit\"></i>";
+			text_15 = createText("\n\t\t");
+			a_2 = createElement("a");
+			a_2.innerHTML = "<i class=\"icon-envelope\" title=\"reset the password and send a mail\"></i>";
+			text_16 = createText("\n\t\t");
+			a_3 = createElement("a");
+			a_3.innerHTML = "<i class=\"icon-trash\" title=\"delete\"></i>";
+			this.h();
+		},
+
+		h: function hydrate() {
+			a.href = a_href_value = "/admin/users/" + state.user.Id;
+			td.className = "id out";
+			td_1.className = "name out";
+			td_2.className = "email out";
+			i.className = "icon-user";
+			i.title = "Editor";
+			td_4.className = "creation out";
+			a_1.href = a_1_href_value = "/admin/chart/by/" + state.user.Id;
+			td_5.className = "center";
+			addListener(button, "click", click_handler);
+			a_2.href = "#";
+			a_2.className = "do";
+			a_2.dataset.action = "resetAction";
+			a_3.href = "#";
+			a_3.className = "do";
+			a_3.dataset.action = "removeAction";
+			td_6.className = "actions";
+			tr.className = "user";
+			tr.dataset.id = tr_data_id_value = state.user.Id;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(tr, target, anchor);
+			appendNode(td, tr);
+			appendNode(a, td);
+			appendNode(text, a);
+			appendNode(text_1, tr);
+			appendNode(td_1, tr);
+			appendNode(text_2, td_1);
+			appendNode(text_3, tr);
+			appendNode(td_2, tr);
+			appendNode(text_4, td_2);
+			appendNode(text_5, tr);
+			appendNode(td_3, tr);
+			appendNode(i, td_3);
+			appendNode(text_6, td_3);
+			appendNode(text_7, td_3);
+			appendNode(text_9, tr);
+			appendNode(td_4, tr);
+			appendNode(text_10, td_4);
+			appendNode(text_11, tr);
+			appendNode(td_5, tr);
+			appendNode(a_1, td_5);
+			appendNode(text_14, tr);
+			appendNode(td_6, tr);
+			appendNode(button, td_6);
+			appendNode(text_15, td_6);
+			appendNode(a_2, td_6);
+			appendNode(text_16, td_6);
+			appendNode(a_3, td_6);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.user) && text_value !== (text_value = state.user.Id)) {
+				text.data = text_value;
+			}
+
+			if ((changed.user) && a_href_value !== (a_href_value = "/admin/users/" + state.user.Id)) {
+				a.href = a_href_value;
+			}
+
+			if ((changed.user) && text_2_value !== (text_2_value = state.user.Name || '')) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.user) && text_4_value !== (text_4_value = state.user.Email)) {
+				text_4.data = text_4_value;
+			}
+
+			if ((changed.user) && text_7_value !== (text_7_value = state.user.Role)) {
+				text_7.data = text_7_value;
+			}
+
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.CreatedAt)) {
+				text_10.data = text_10_value;
+			}
+
+			if ((changed.user) && a_1_href_value !== (a_1_href_value = "/admin/chart/by/" + state.user.Id)) {
+				a_1.href = a_1_href_value;
+			}
+
+			if ((changed.user) && tr_data_id_value !== (tr_data_id_value = state.user.Id)) {
+				tr.dataset.id = tr_data_id_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(tr);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+		}
+	};
+}
+
+function UserAdminRow(options) {
+	this._debugName = '<UserAdminRow>';
+	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	init(this, options);
+	this._state = assign({}, options.data);
+	if (!('user' in this._state)) { console.warn("<UserAdminRow> was created without expected data property 'user'"); }
+
+	this._fragment = create_main_fragment(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(UserAdminRow.prototype, protoDev);
+
+UserAdminRow.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* admin/users/UserAdmin.html generated by Svelte v1.64.0 */
+
+function data() {
+    return {
+        users: []
+    };
+}
+var methods = {};
+
+function oncreate() {
+    var this$1 = this;
+
+    // get a list of signin methods
+    getJSON('/api/users', function (res) {
+        if (res.status === 'ok') {
+            this$1.set({ users: res.data });
+        }
+    });
+}
+function create_main_fragment$1(component, state) {
+	var ul, table, thead, text_15, tbody;
+
+	var each_value = state.users;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(component, assign(assign({}, state), {
+			each_value: each_value,
+			user: each_value[i],
+			user_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			ul = createElement("ul");
+			table = createElement("table");
+			thead = createElement("thead");
+			thead.innerHTML = "<tr><th><a href=\"?sort=id\">#</a></th>\n\t\t\t\t<th><a href=\"?sort=name\">Name</a></th>\n\t\t\t\t<th><a href=\"?sort=email\">Sign-In</a></th>\n\t\t\t\t<th>Status</th>\n\t\t\t\t<th><a href=\"?sort=created_at\">Created at</a></th>\n\t\t\t\t<th class=\"center\">Charts</th>\n\t\t\t\t<th>Actions</th></tr>";
+			text_15 = createText("\n\t\t");
+			tbody = createElement("tbody");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			tbody.className = "users";
+			table.className = "table users";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(ul, target, anchor);
+			appendNode(table, ul);
+			appendNode(thead, table);
+			appendNode(text_15, table);
+			appendNode(tbody, table);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(tbody, null);
+			}
+		},
+
+		p: function update(changed, state) {
+			var each_value = state.users;
+
+			if (changed.users) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						user: each_value[i],
+						user_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(tbody, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(ul);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (15:3) {#each users as user}
+function create_each_block(component, state) {
+	var user = state.user, each_value = state.each_value, user_index = state.user_index;
+
+	var useradminrow_initial_data = { user: user };
+	var useradminrow = new UserAdminRow({
+		root: component.root,
+		data: useradminrow_initial_data
+	});
+
+	return {
+		c: function create() {
+			useradminrow._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			useradminrow._mount(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			user = state.user;
+			each_value = state.each_value;
+			user_index = state.user_index;
+			var useradminrow_changes = {};
+			if (changed.users) { useradminrow_changes.user = user; }
+			useradminrow._set(useradminrow_changes);
+		},
+
+		u: function unmount() {
+			useradminrow._unmount();
+		},
+
+		d: function destroy$$1() {
+			useradminrow.destroy(false);
+		}
+	};
+}
+
+function UserAdmin(options) {
+	this._debugName = '<UserAdmin>';
+	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	init(this, options);
+	this._state = assign(data(), options.data);
+	if (!('users' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'users'"); }
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { users: 1 };
+		oncreate.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this._fragment = create_main_fragment$1(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(UserAdmin.prototype, protoDev);
+assign(UserAdmin.prototype, methods);
+
+UserAdmin.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+function Store(state, options) {
+	this._observers = { pre: blankObject(), post: blankObject() };
+	this._handlers = {};
+	this._dependents = [];
+
+	this._computed = blankObject();
+	this._sortedComputedProperties = [];
+
+	this._state = assign({}, state);
+	this._differs = options && options.immutable ? _differsImmutable : _differs;
+}
+
+assign(Store.prototype, {
+	_add: function(component, props) {
+		this._dependents.push({
+			component: component,
+			props: props
+		});
+	},
+
+	_init: function(props) {
+		var this$1 = this;
+
+		var state = {};
+		for (var i = 0; i < props.length; i += 1) {
+			var prop = props[i];
+			state['$' + prop] = this$1._state[prop];
+		}
+		return state;
+	},
+
+	_remove: function(component) {
+		var this$1 = this;
+
+		var i = this._dependents.length;
+		while (i--) {
+			if (this$1._dependents[i].component === component) {
+				this$1._dependents.splice(i, 1);
+				return;
+			}
+		}
+	},
+
+	_sortComputedProperties: function() {
+		var this$1 = this;
+
+		var computed = this._computed;
+		var sorted = this._sortedComputedProperties = [];
+		var cycles;
+		var visited = blankObject();
+
+		function visit(key) {
+			if (cycles[key]) {
+				throw new Error('Cyclical dependency detected');
+			}
+
+			if (visited[key]) { return; }
+			visited[key] = true;
+
+			var c = computed[key];
+
+			if (c) {
+				cycles[key] = true;
+				c.deps.forEach(visit);
+				sorted.push(c);
+			}
+		}
+
+		for (var key in this$1._computed) {
+			cycles = blankObject();
+			visit(key);
+		}
+	},
+
+	compute: function(key, deps, fn) {
+		var store = this;
+		var value;
+
+		var c = {
+			deps: deps,
+			update: function(state, changed, dirty) {
+				var values = deps.map(function(dep) {
+					if (dep in changed) { dirty = true; }
+					return state[dep];
+				});
+
+				if (dirty) {
+					var newValue = fn.apply(null, values);
+					if (store._differs(newValue, value)) {
+						value = newValue;
+						changed[key] = true;
+						state[key] = value;
+					}
+				}
+			}
+		};
+
+		c.update(this._state, {}, true);
+
+		this._computed[key] = c;
+		this._sortComputedProperties();
+	},
+
+	fire: fire,
+
+	get: get,
+
+	// TODO remove this method
+	observe: observe,
+
+	on: on,
+
+	onchange: function(callback) {
+		// TODO remove this method
+		console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})");
+
+		return this.on('state', function(event) {
+			callback(event.current, event.changed);
+		});
+	},
+
+	set: function(newState) {
+		var this$1 = this;
+
+		var oldState = this._state,
+			changed = this._changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this$1._computed[key]) { throw new Error("'" + key + "' is a read-only property"); }
+			if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+		}
+		if (!dirty) { return; }
+
+		this._state = assign(assign({}, oldState), newState);
+
+		for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+			this$1._sortedComputedProperties[i].update(this$1._state, changed);
+		}
+
+		this.fire('state', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+
+		var dependents = this._dependents.slice(); // guard against mutations
+		for (var i = 0; i < dependents.length; i += 1) {
+			var dependent = dependents[i];
+			var componentState = {};
+			dirty = false;
+
+			for (var j = 0; j < dependent.props.length; j += 1) {
+				var prop = dependent.props[j];
+				if (prop in changed) {
+					componentState['$' + prop] = this$1._state[prop];
+					dirty = true;
+				}
+			}
+
+			if (dirty) { dependent.component.set(componentState); }
+		}
+
+		this.fire('update', {
+			changed: changed,
+			current: this._state,
+			previous: oldState
+		});
+	}
+});
+
+var store = new Store({});
+
+var main = { App: UserAdmin, store: store, data: {} };
+
+return main;
+
+})));

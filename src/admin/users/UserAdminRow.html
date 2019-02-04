@@ -1,0 +1,22 @@
+<tr class="user" data-id="{user.Id}">
+	<td class="id out"><a href="/admin/users/{user.Id}">{user.Id}</a></td>
+	<td class="name out">{user.Name || ''}</td>
+	<td class="email out">{user.Email}</td>
+	<td>
+		<i class="icon-user" title="Editor"></i>
+		{user.Role}
+	</td>
+	<td class="creation out">{user.CreatedAt}</td>
+	<td class="center">
+		<a href="/admin/chart/by/{user.Id}">X</a>
+	</td>
+	<td class="actions">
+		<button on:click="set({ edit: true })"><i class="icon-pencil" title="edit"></i></button>
+		<a href="#" class="do" data-action="resetAction"><i class="icon-envelope" title="reset the password and send a mail"></i></a>
+		<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>
+	</td>
+</tr>
+
+<script>
+    export default {};
+</script>
