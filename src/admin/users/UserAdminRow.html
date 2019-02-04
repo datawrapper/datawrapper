@@ -18,7 +18,7 @@
 	</td>
 	{:else}
 	<td class="email">
-		<input type="text" value={user.Name} />
+		<input type="text" value={user.Email} />
 	</td>
 	<td>
 		<select name="status">
@@ -49,7 +49,7 @@
 
         methods: {
             save() {
-                // console.log('SAVE!');
+                // TODO: save changes through API
                 this.set({ edit: false });
             }
         }

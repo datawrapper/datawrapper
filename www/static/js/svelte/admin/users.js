@@ -289,7 +289,7 @@ function data() {
 }
 var methods = {
     save: function save() {
-        // console.log('SAVE!');
+        // TODO: save changes through API
         this.set({ edit: false });
     }
 };
@@ -599,7 +599,7 @@ function create_if_block_1(component, state) {
 
 		h: function hydrate() {
 			setAttribute(input, "type", "text");
-			input.value = input_value_value = state.user.Name;
+			input.value = input_value_value = state.user.Email;
 			td.className = "email";
 			select.name = "status";
 			td_2.className = "creation out";
@@ -635,7 +635,7 @@ function create_if_block_1(component, state) {
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && input_value_value !== (input_value_value = state.user.Name)) {
+			if ((changed.user) && input_value_value !== (input_value_value = state.user.Email)) {
 				input.value = input_value_value;
 			}
 
