@@ -1,5 +1,6 @@
 <tr class="user" data-id="{user.Id}">
 	<td class="id out"><a href="/admin/users/{user.Id}">{user.Id}</a></td>
+	{#if !edit}
 	<td class="name out">{user.Name || ''}</td>
 	<td class="email out">{user.Email}</td>
 	<td>
@@ -15,6 +16,24 @@
 		<a href="#" class="do" data-action="resetAction"><i class="icon-envelope" title="reset the password and send a mail"></i></a>
 		<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>
 	</td>
+	{:else}
+	<td class="email"><input type="text"></td>
+	<td>
+		<select name="status">
+			<option value="pending">Nicht aktiviert</option>
+			<option value="editor">Editor</option>
+			<option value="admin" selected="selected">Administrator</option>
+			<option value="graphic-editor">Grafik-Redakteur</option>
+		</select>
+	</td>
+	<td class="creation out">2019-01-31 11:46:25</td>
+	<td class="center">--</td>
+	<td class="center">--</td>
+	<td class="actions">
+		<button><i class="icon-ok" title="save"></i></button>
+		<button on:click="set({ edit: false })"><i class="icon-remove" title="cancel"></i></button>
+	</td>
+	{/if}
 </tr>
 
 <script>
