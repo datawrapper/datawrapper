@@ -17,25 +17,41 @@
 		<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>
 	</td>
 	{:else}
-	<td class="email"><input type="text"></td>
+	<td class="email">
+		<input type="text" value={user.Name} />
+	</td>
 	<td>
 		<select name="status">
-			<option value="pending">Nicht aktiviert</option>
-			<option value="editor">Editor</option>
-			<option value="admin" selected="selected">Administrator</option>
-			<option value="graphic-editor">Grafik-Redakteur</option>
+			{#each statusOptions as status}
+			<option value={status} selected={user.Role===status}>{status}</option>
+			{/each}
 		</select>
 	</td>
 	<td class="creation out">2019-01-31 11:46:25</td>
 	<td class="center">--</td>
 	<td class="center">--</td>
 	<td class="actions">
-		<button><i class="icon-ok" title="save"></i></button>
+		<button on:click="save()"><i class="icon-ok" title="save"></i></button>
 		<button on:click="set({ edit: false })"><i class="icon-remove" title="cancel"></i></button>
 	</td>
 	{/if}
 </tr>
 
 <script>
-    export default {};
+    export default {
+        data() {
+            return {
+                edit: false,
+                // TODO: status options should probably be dynamic – how to load them?
+                statusOptions: ['pending', 'editor', 'admin', 'graphic-editor']
+            };
+        },
+
+        methods: {
+            save() {
+                // console.log('SAVE!');
+                this.set({ edit: false });
+            }
+        }
+    };
 </script>
