@@ -71,11 +71,13 @@
   "lint-staged": {
     "linters": {
       "*.js": [
-        "eslint --fix",
+        "prettier --write",
+        "healthier",
         "git add"
       ],
       "*.html": [
-        "eslint --fix",
+        "prettier --write",
+        "healthier", 
         "git add"
       ]
     },
