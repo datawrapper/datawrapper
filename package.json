@@ -7,7 +7,7 @@
   },
   "scripts": {
     "format": "prettier --write 'src/**/*.{js,html}'",
-    "lint": "healthier && prettier --check 'src/**/*.{js,html}'",
+    "lint": "healthier 'src/**/*.{js,html}' && prettier --check 'src/**/*.{js,html}'",
     "install": "grunt",
     "watch": "watch 'make assets' assets/",
     "test": "./node_modules/mocha/bin/mocha --require reify"
