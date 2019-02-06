@@ -1,14 +1,22 @@
 {
+  "scripts": {
+    "format": "prettier --write src/**/*.html src/**/*.js && eslint --ext .html,.js src --fix",
+    "lint": "eslint --ext .html,.js src",
+    "install": "grunt",
+    "watch": "watch 'make assets' assets/",
+    "test": "./node_modules/mocha/bin/mocha --require reify"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "semi": true,
+    "printWidth": 100,
+    "singleQuote": true
+  },
   "name": "datawrapper",
   "version": "1.22.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/datawrapper/datawrapper.git"
-  },
-  "scripts": {
-    "install": "grunt",
-    "watch": "watch 'make assets' assets/",
-    "test": "./node_modules/mocha/bin/mocha --require reify"
   },
   "devDependencies": {
     "@datawrapper/polyfills": "^1.0.4",
@@ -18,8 +26,15 @@
     "crypto-js": "^3.1.9-1",
     "d3-dsv": "^1.0.8",
     "d3-queue": "^3.0.7",
-    "eslint": "^5.12.0",
-    "eslint-plugin-html": "^5.0.0",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-html": "^5.0.3",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "grunt": "^1.0.3",
     "grunt-subgrunt": "^1.2.0",
     "husky": "^1.3.1",
@@ -28,6 +43,8 @@
     "lint-staged": "^8.1.0",
     "mocha": "^5.2.0",
     "node.extend": "^2.0.0",
+    "prettier": "^1.16.4",
+    "prettier-plugin-svelte": "^0.3.0",
     "reif": "^1.0.0",
     "reify": "^0.17.3",
     "rollup": "*",
