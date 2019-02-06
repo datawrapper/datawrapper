@@ -1,4 +1,9 @@
-<a style="width:{95/steps.length}%" on:click="select(event, step)" href="{step.redirect?step.redirect:'#'+step.id}" class="{class_}">
+<a
+    style="width:{95/steps.length}%"
+    on:click="select(event, step)"
+    href="{step.redirect?step.redirect:'#'+step.id}"
+    class="{class_}"
+>
     <span class="step">{index}</span>
     <span class="title">{@html step.title}</span>
     {#if passed }<i class="fa fa-check"></i>{/if}
@@ -15,39 +20,31 @@
                 event.preventDefault();
                 if (step.readonly) return;
                 this.fire('select', step);
-                if (location.pathname.substr(0,6) == '/edit/') {
-                    const {id} = this.store.get();
-                    window.history.pushState({step, id}, '', `/edit/${id}/${step.id}`);
+                if (location.pathname.substr(0, 6) === '/edit/') {
+                    const { id } = this.store.get();
+                    window.history.pushState({ step, id }, '', `/edit/${id}/${step.id}`);
                 }
             }
         },
         computed: {
-            active_i ({active, steps}) {
-                return steps.indexOf(_findWhere(steps, {id:active}));
+            active_i({ active, steps }) {
+                return steps.indexOf(_findWhere(steps, { id: active }));
             },
-            passed ({index, active_i, maxStep}) {
+            passed({ index, active_i, maxStep }) {
                 return index < maxStep && index != active_i;
             },
-            class_ ({step, index, active, passed, $lastEditStep}) {
+            class_({ step, index, active, passed, $lastEditStep }) {
                 const list = [];
                 if (step.readonly) list.push('readonly');
                 if (active == step.id) list.push('active');
                 else {
-                    if (index > $lastEditStep+1) list.push('unseen');
+                    if (index > $lastEditStep + 1) list.push('unseen');
                     if (passed) list.push('passed');
                 }
                 return list.join(' ');
             }
         },
-        onupdate({changed, current}) {
-            if (changed.active_i) {
-                const step = current.steps[current.active_i];
-                if (step) {
-                    const {id, title} = this.store.get();
-                    window.document.title = `${title} - ${id} - ${step.title} | Datawrapper`;
-                }
-            }
-        },
+        onstate,
         data() {
             return {
                 step: {
@@ -56,7 +53,7 @@
                 },
                 maxStep: 1,
                 active: 1
-            }
+            };
         }
-    }
+    };
 </script>

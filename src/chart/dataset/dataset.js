@@ -1,4 +1,3 @@
-
 import _range from 'underscore-es/range';
 import _isString from 'underscore-es/isString';
 
@@ -6,31 +5,29 @@ import _isString from 'underscore-es/isString';
  * Dataset class
  */
 export default function(columns) {
-
     // make column names unique
-    var columnsByName = {},
-        origColumns = columns.slice(0);
+    var columnsByName = {};
+    var origColumns = columns.slice(0);
 
-    columns.forEach((col) => {
+    columns.forEach(col => {
         uniqueName(col);
         columnsByName[col.name()] = col;
     });
 
     // sets a unique name for a column
     function uniqueName(col) {
-        var origColName = col.name(),
-            colName = origColName,
-            appendix = 1;
+        var origColName = col.name();
+        var colName = origColName;
+        var appendix = 1;
 
         while (columnsByName.hasOwnProperty(colName)) {
-            colName = origColName+'.'+(appendix++);
+            colName = origColName + '.' + appendix++;
         }
         if (colName != origColName) col.name(colName); // rename column
     }
 
     // public interface
     const dataset = {
-
         columns() {
             return columns;
         },
@@ -39,7 +36,7 @@ export default function(columns) {
             if (_isString(x)) {
                 // single column by name
                 if (columnsByName[x] !== undefined) return columnsByName[x];
-                throw 'No column found with that name: "'+x+'"';
+                throw 'No column found with that name: "' + x + '"';
             } else {
                 if (x < 0) {
                     return;
@@ -48,7 +45,7 @@ export default function(columns) {
 
             // single column by index
             if (columns[x] !== undefined) return columns[x];
-            throw 'No column found with that index: '+x;
+            throw 'No column found with that index: ' + x;
         },
 
         numColumns() {
@@ -78,28 +75,30 @@ export default function(columns) {
         list() {
             return _range(columns[0].length).map(function(r) {
                 var o = {};
-                columns.forEach((col) => { o[col.name()] = col.val(r); });
+                columns.forEach(col => {
+                    o[col.name()] = col.val(r);
+                });
                 return o;
             });
         },
 
         csv() {
-            var csv = "",
-                sep = ",",
-                quote = "\"";
+            var csv = '';
+            var sep = ',';
+            var quote = '"';
             // add header
             columns.forEach((col, i) => {
                 var t = col.title();
-                if (t.indexOf(quote) > -1) t.replace(quote, '\\'+quote);
+                if (t.indexOf(quote) > -1) t.replace(quote, '\\' + quote);
                 if (t.indexOf(sep) > -1) t = quote + t + quote;
                 csv += (i > 0 ? sep : '') + t;
             });
             // add values
-            _range(dataset.numRows()).forEach((row) => {
+            _range(dataset.numRows()).forEach(row => {
                 csv += '\n';
                 columns.forEach((col, i) => {
-                    var t = ''+(col.type() == 'date' ? col.raw(row) : col.val(row));
-                    if (t.indexOf(quote) > -1) t.replace(quote, '\\'+quote);
+                    var t = '' + (col.type() == 'date' ? col.raw(row) : col.val(row));
+                    if (t.indexOf(quote) > -1) t.replace(quote, '\\' + quote);
                     if (t.indexOf(sep) > -1) t = quote + t + quote;
                     csv += (i > 0 ? sep : '') + t;
                 });
@@ -116,7 +115,7 @@ export default function(columns) {
          * removes ignored columns from dataset
          */
         filterColumns(ignore) {
-            columns = columns.filter((c) => !ignore[c.name()]);
+            columns = columns.filter(c => !ignore[c.name()]);
             ignore.forEach((ign, key) => {
                 if (ign && columnsByName[key]) delete columnsByName[key];
             });
@@ -128,7 +127,7 @@ export default function(columns) {
          */
         eachRow(func) {
             var i;
-            for (i=0; i<dataset.numRows(); i++) {
+            for (i = 0; i < dataset.numRows(); i++) {
                 func(i);
             }
             return dataset;
@@ -148,14 +147,14 @@ export default function(columns) {
         reset() {
             columns = origColumns.slice(0);
             columnsByName = {};
-            columns.forEach((col) => {
+            columns.forEach(col => {
                 columnsByName[col.name()] = col;
             });
             return dataset;
         },
 
         limitRows(numRows) {
-            columns.forEach((col) => {
+            columns.forEach(col => {
                 col.limitRows(numRows);
             });
             return dataset;
@@ -180,11 +179,8 @@ export default function(columns) {
             return columns.map(function(c) {
                 return origColumns.indexOf(c);
             });
-        },
-
+        }
     };
 
     return dataset;
-
 }
-

@@ -1,12 +1,12 @@
 /* globals dw, $, _ */
 
-function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
+function updateChartAttributes({ iframe, attrs, forceRender = false, callback }) {
     const win = iframe.contentWindow;
 
     if (!win.__dw || !win.__dw.vis) {
         // iframe is not ready yet, try again in 100ms
         setTimeout(() => {
-            updateChartAttributes({iframe, attrs, forceRender, callback});
+            updateChartAttributes({ iframe, attrs, forceRender, callback });
         }, 100);
         return false;
     }
@@ -19,13 +19,15 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
     requiresReload.forEach(function(key) {
         if (changed(key)) {
             needReload = true;
-            return;
         }
     });
 
-    if (changed('metadata.data.column-format')
-        || changed('metadata.data.changes')   || changed('metadata.data.column-order')
-        || changed('metadata.describe.computed-columns')) {
+    if (
+        changed('metadata.data.column-format') ||
+        changed('metadata.data.changes') ||
+        changed('metadata.data.column-order') ||
+        changed('metadata.describe.computed-columns')
+    ) {
         needReload = true;
         return;
     }
@@ -39,7 +41,7 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
     if (needReload) {
         setTimeout(() => {
             win.location.reload();
-        }, 1000)
+        }, 1000);
         return;
     }
 
@@ -57,16 +59,15 @@ function updateChartAttributes({iframe, attrs, forceRender=false, callback}) {
 
     function changed(key) {
         if (!win.__dw) return false;
-        var p0 = win.__dw.old_attrs || {},
-            p1 = attrs;
+        var p0 = win.__dw.old_attrs || {};
+        var p1 = attrs;
         key = key.split('.');
         _.each(key, function(k) {
             p0 = p0[k] || {};
             p1 = p1[k] || {};
         });
-        return JSON.stringify(p0) != JSON.stringify(p1);
+        return JSON.stringify(p0) !== JSON.stringify(p1);
     }
 }
-
 
 export default updateChartAttributes;

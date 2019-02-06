@@ -17,71 +17,74 @@
     </ul>
 </div>
 
-<button on:click="removeColumn()" class="btn btn-danger"><i class="fa fa-trash"></i> {__("computed columns / modal / remove")}</button>
+<button on:click="removeColumn()" class="btn btn-danger">
+    <i class="fa fa-trash"></i> {__("computed columns / modal / remove")}
+</button>
 
 <style lang="less">
-label {
-    font-weight: bold;
-}
-.col-select {
-    padding: 0;
-    margin: 0;
-    li {
-        font-family: 'Roboto mono';
-        display: inline-block;
-        /*color: #1d81a2;*/
-        cursor: pointer;
-        margin: 0px 1ex 1ex 0;
-        font-size: 12px;
-        line-height: 15px;
-        background: #1d81a2;
-        color: white;
-        padding: 2px 5px;
-        border-radius: 2px;
+    label {
+        font-weight: bold;
+    }
+    .col-select {
+        padding: 0;
+        margin: 0;
+        li {
+            font-family: 'Roboto mono';
+            display: inline-block;
+            /*color: #1d81a2;*/
+            cursor: pointer;
+            margin: 0px 1ex 1ex 0;
+            font-size: 12px;
+            line-height: 15px;
+            background: #1d81a2;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 2px;
 
-        &:hover {
-            background: #18a1cd;
+            &:hover {
+                background: #18a1cd;
+            }
         }
     }
-}
-:global(.CodeMirror) {
-    border-radius: 1px;
-    width: 95%;
-    height: 130px;
-    padding: 0px 3px;
-    border: 1px solid #cccccc;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    transition: border linear 0.2s, box-shadow linear 0.2s;
-    background-color: #ffffff;
+    :global(.CodeMirror) {
+        border-radius: 1px;
+        width: 95%;
+        height: 130px;
+        padding: 0px 3px;
+        border: 1px solid #cccccc;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        transition: border linear 0.2s, box-shadow linear 0.2s;
+        background-color: #ffffff;
 
-    .CodeMirror-nonmatchingbracket {
-        color: inherit;
-        background: #fcc;
-    }
+        .CodeMirror-nonmatchingbracket {
+            color: inherit;
+            background: #fcc;
+        }
 
-    .CodeMirror-matchingbracket {
-        color: inherit;
-        background: #cfc;
-    }
+        .CodeMirror-matchingbracket {
+            color: inherit;
+            background: #cfc;
+        }
 
-    .CodeMirror-placeholder,
-    .cm-s-default .cm-comment {
-        color: #9C938B;
-    }
+        .CodeMirror-placeholder,
+        .cm-s-default .cm-comment {
+            color: #9c938b;
+        }
 
-    .cm-variable-2 {
-        color: #18a1cd!important;
-    }
+        .cm-variable-2 {
+            color: #18a1cd !important;
+        }
 
-    &.CodeMirror-focused {
-        border-color: rgba(82, 168, 236, 0.8);
-        outline: 0;
-        outline: thin dotted \9;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        &.CodeMirror-focused {
+            border-color: rgba(82, 168, 236, 0.8);
+            outline: 0;
+            outline: thin dotted \9;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+                0 0 8px rgba(82, 168, 236, 0.6);
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+        }
     }
-}
 </style>
 
 <script>
@@ -95,24 +98,24 @@ label {
 
     import _debounce from 'underscore-es/debounce';
     import clone from '../shared/clone.js';
-    import {__} from '../shared/l10n';
+    import { __ } from '../shared/l10n';
 
     export default {
         data() {
             return {
                 name: '',
                 formula: ''
-            }
+            };
         },
         helpers: { __ },
         methods: {
-            insert (column) {
-                const {cm} = this.get();
+            insert(column) {
+                const { cm } = this.get();
                 cm.replaceSelection(column.key);
                 cm.focus();
             },
             removeColumn() {
-                const {column} = this.get();
+                const { column } = this.get();
                 const chart = this.store.get('dw_chart');
                 const ds = chart.dataset();
                 const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
@@ -135,10 +138,10 @@ label {
         },
         computed: {
             title({ column }) {
-                var s = __("describe / edit-column");
-                return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`)
+                var s = __('describe / edit-column');
+                return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`);
             },
-            metaColumns ({ columns }) {
+            metaColumns({ columns }) {
                 if (!columns) return [];
                 return columns.map(col => {
                     return {
@@ -148,23 +151,23 @@ label {
                     };
                 });
             },
-            keywords ({ metaColumns }) {
-                const keywords = ['sum','round','min','max','median','mean'];
+            keywords({ metaColumns }) {
+                const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
                 metaColumns.forEach(function(col) {
                     keywords.push(col.key);
                     if (col.type == 'number') {
-                        keywords.push(col.key+'__sum');
-                        keywords.push(col.key+'__min');
-                        keywords.push(col.key+'__max');
-                        keywords.push(col.key+'__mean');
-                        keywords.push(col.key+'__median');
+                        keywords.push(col.key + '__sum');
+                        keywords.push(col.key + '__min');
+                        keywords.push(col.key + '__max');
+                        keywords.push(col.key + '__mean');
+                        keywords.push(col.key + '__median');
                     }
                 });
                 return keywords;
             }
         },
         oncreate() {
-            const {column} = this.get();
+            const { column } = this.get();
 
             const chart = this.store.get('dw_chart');
             const customCols = chart.get('metadata.describe.computed-columns', {});
@@ -175,27 +178,27 @@ label {
             });
 
             // update if column changes
-            this.observe('column', (col) => {
-                if (col) this.set({
-                    formula: customCols[col.name()] || '',
-                    name: col.title()
-                });
+            this.observe('column', col => {
+                if (col)
+                    this.set({
+                        formula: customCols[col.name()] || '',
+                        name: col.title()
+                    });
             });
 
             const app = this;
 
             function scriptHint(editor) {
                 // Find the token at the cursor
-                var cur = editor.getCursor(),
-                    token = editor.getTokenAt(cur),
-                    match = [];
+                var cur = editor.getCursor();
+                var token = editor.getTokenAt(cur);
+                var match = [];
 
                 const keywords = app.get('keywords');
 
                 if (token.type == 'variable') {
                     match = keywords.filter(function(chk) {
-                        return chk.toLowerCase()
-                            .indexOf(token.string.toLowerCase()) === 0;
+                        return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 }
 
@@ -218,9 +221,9 @@ label {
                 lineWrapping: true,
                 matchBrackets: true,
                 placeholder: '// enter formula here',
-                continueComments: "Enter",
+                continueComments: 'Enter',
                 extraKeys: {
-                    'Tab': 'autocomplete'
+                    Tab: 'autocomplete'
                 },
                 hintOptions: {
                     hint: scriptHint
@@ -229,17 +232,17 @@ label {
 
             window.CodeMirror = CodeMirror;
 
-            this.set({cm});
+            this.set({ cm });
 
             const updateTable = _debounce(() => this.fire('updateTable'), 1500);
 
-            this.observe('formula', (formula) => {
+            this.observe('formula', formula => {
                 // update codemirror
                 if (formula != cm.getValue()) {
                     cm.setValue(formula);
                 }
                 // update dw.chart
-                const {column} = this.get();
+                const { column } = this.get();
                 const customCols = clone(chart.get('metadata.describe.computed-columns', {}));
                 if (customCols[column.name()] != formula) {
                     customCols[column.name()] = formula;
@@ -249,13 +252,13 @@ label {
                 }
             });
 
-            this.observe('name', (name) => {
-                const {column} = this.get();
+            this.observe('name', name => {
+                const { column } = this.get();
                 const changes = clone(chart.get('metadata.data.changes', []));
                 const ds = chart.dataset();
                 const col = ds.columnOrder()[ds.indexOf(column.name())];
                 let last_col_name_change_i = -1;
-                changes.forEach((change,i) => {
+                changes.forEach((change, i) => {
                     if (change.column == col && change.row === 0) {
                         last_col_name_change_i = i;
                     }
@@ -263,11 +266,14 @@ label {
                 if (last_col_name_change_i > -1) {
                     // update last change of that cell
                     changes[last_col_name_change_i].value = name;
-                    changes[last_col_name_change_i].time = (new Date()).getTime();
+                    changes[last_col_name_change_i].time = new Date().getTime();
                 } else {
                     // add new change
                     changes.push({
-                        column: col, row: 0, value: name, time: (new Date()).getTime()
+                        column: col,
+                        row: 0,
+                        value: name,
+                        time: new Date().getTime()
                     });
                 }
                 chart.set('metadata.data.changes', changes);
@@ -275,74 +281,84 @@ label {
                 updateTable();
             });
 
-            cm.on('change', (cm) => {
-                this.set({formula: cm.getValue()});
+            cm.on('change', cm => {
+                this.set({ formula: cm.getValue() });
             });
 
-            this.observe('metaColumns', (cols) => {
+            this.observe('metaColumns', cols => {
                 var columns_regex = new RegExp(`(?:${this.get('keywords').join('|')})`);
-                CodeMirror.defineSimpleMode("simplemode", {
+                CodeMirror.defineSimpleMode('simplemode', {
                     // The start state contains the rules that are intially used
                     start: [
                         // The regex matches the token, the token property contains the type
-                        {regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: "string"},
+                        { regex: /"(?:[^\\]|\\.)*?(?:"|$)/, token: 'string' },
                         // You can match multiple tokens at once. Note that the captured
                         // groups must span the whole string in this case
-                        {regex: /(function)(\s+)([a-z$][\w$]*)/,
-                         token: ["keyword", null, "keyword"]},
+                        {
+                            regex: /(function)(\s+)([a-z$][\w$]*)/,
+                            token: ['keyword', null, 'keyword']
+                        },
                         // Rules are matched in the order in which they appear, so there is
                         // no ambiguity between this one and the one above
-                        {regex: /(?:function|var|return|if|for|while|else|do|this)\b/,
-                         token: "keyword"},
-                        {regex: /true|false|null|undefined/, token: "atom"},
-                        {regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
-                         token: "number"},
-                        {regex: /\/\/.*/, token: "comment"},
-                        {regex: /\/(?:[^\\]|\\.)*?\//, token: "variable-3"},
+                        {
+                            regex: /(?:function|var|return|if|for|while|else|do|this)\b/,
+                            token: 'keyword'
+                        },
+                        { regex: /true|false|null|undefined/, token: 'atom' },
+                        {
+                            regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
+                            token: 'number'
+                        },
+                        { regex: /\/\/.*/, token: 'comment' },
+                        { regex: /\/(?:[^\\]|\\.)*?\//, token: 'variable-3' },
                         // A next property will cause the mode to move to a different state
-                        {regex: /\/\*/, token: "comment", next: "comment"},
-                        {regex: /[-+\/*=<>!]+/, token: "operator"},
+                        { regex: /\/\*/, token: 'comment', next: 'comment' },
+                        { regex: /[-+\/*=<>!]+/, token: 'operator' },
                         // indent and dedent properties guide autoindentation
-                        {regex: /[\{\[\(]/, indent: true},
-                        {regex: /[\}\]\)]/, dedent: true},
-                        {regex: columns_regex, token: 'variable-2'},
-                        {regex: /[a-z$][\w$]*/, token: "variable"},
+                        { regex: /[\{\[\(]/, indent: true },
+                        { regex: /[\}\]\)]/, dedent: true },
+                        { regex: columns_regex, token: 'variable-2' },
+                        { regex: /[a-z$][\w$]*/, token: 'variable' },
                         // You can embed other modes with the mode property. This rule
                         // causes all code between << and >> to be highlighted with the XML
                         // mode.
-                        {regex: /<</, token: "meta", mode: {spec: "xml", end: />>/}}
+                        { regex: /<</, token: 'meta', mode: { spec: 'xml', end: />>/ } }
                     ],
                     // The multi-line comment state.
                     comment: [
-                        {regex: /.*?\*\//, token: "comment", next: "start"},
-                        {regex: /.*/, token: "comment"}
+                        { regex: /.*?\*\//, token: 'comment', next: 'start' },
+                        { regex: /.*/, token: 'comment' }
                     ],
                     // The meta property contains global information about the mode. It
                     // can contain properties like lineComment, which are supported by
                     // all modes, and also directives like dontIndentStates, which are
                     // specific to simple modes.
                     meta: {
-                        dontIndentStates: ["comment"],
-                        lineComment: "//"
+                        dontIndentStates: ['comment'],
+                        lineComment: '//'
                     }
                 });
 
                 cm.setOption('mode', 'simplemode');
             });
         }
-    }
+    };
 
     function column_name_to_var(name) {
         // if you change this, change dw.chart.js as well
-        return name.toString().toLowerCase()
-            .replace(/\s+/g, '_')           // Replace spaces with _
-            .replace(/[^\w-]+/g, '')       // Remove all non-word chars
-            .replace(/-/g, '_')             // Replace - with single _
-            .replace(/__+/g, '_')         // Replace multiple _ with single _
-            .replace(/^_+/, '')             // Trim _ from start of text
-            .replace(/_+$/, '')             // Trim _ from end of text
-            .replace(/^(\d)/, '_$1')        // If first char is a number, prefix with _
-            .replace(/^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/, '$1_'); // reserved keywords
+        return name
+            .toString()
+            .toLowerCase()
+            .replace(/\s+/g, '_') // Replace spaces with _
+            .replace(/[^\w-]+/g, '') // Remove all non-word chars
+            .replace(/-/g, '_') // Replace - with single _
+            .replace(/__+/g, '_') // Replace multiple _ with single _
+            .replace(/^_+/, '') // Trim _ from start of text
+            .replace(/_+$/, '') // Trim _ from end of text
+            .replace(/^(\d)/, '_$1') // If first char is a number, prefix with _
+            .replace(
+                /^(abstract|arguments|await|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|eval|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|let|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|var|void|volatile|while|window|with|yield)$/,
+                '$1_'
+            ); // reserved keywords
     }
-
 </script>

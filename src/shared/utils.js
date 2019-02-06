@@ -2,55 +2,67 @@ import _isArray from 'underscore-es/isArray';
 
 export function fetchJSON(url, method, credentials, body, callback) {
     var opts = {
-        method, body,
+        method,
+        body,
         mode: 'cors',
         credentials
     };
 
-    window.fetch(url, opts)
-    .then(res => {
-        if (res.status != 200) return new Error(res.statusText);
-        return res.text();
-    })
-    .then(text => {
-        // console.log('status', res);
-        try {
-            return JSON.parse(text);
-        } catch (Error) {
-            // could not parse json, so just return text
-            console.warn('malformed json input', text);
-            return text;
-        }
-    })
-    .then(callback)
-    .catch((err) => {
-        console.error(err);
-    });
+    window
+        .fetch(url, opts)
+        .then(res => {
+            if (res.status != 200) return new Error(res.statusText);
+            return res.text();
+        })
+        .then(text => {
+            // console.log('status', res);
+            try {
+                return JSON.parse(text);
+            } catch (Error) {
+                // could not parse json, so just return text
+                console.warn('malformed json input', text);
+                return text;
+            }
+        })
+        .then(callback)
+        .catch(err => {
+            console.error(err);
+        });
 }
 
 export function getJSON(url, credentials, callback) {
     if (arguments.length == 2) {
         callback = credentials;
-        credentials = "include";
+        credentials = 'include';
     }
 
     return fetchJSON(url, 'GET', credentials, null, callback);
 }
-export function postJSON(url, body, callback) { return fetchJSON(url, 'POST', "include", body, callback); }
-export function putJSON(url, body, callback) { return fetchJSON(url, 'PUT', "include", body, callback); }
-export function deleteJSON(url, callback) { return fetchJSON(url, 'DELETE', "include", null, callback); }
+export function postJSON(url, body, callback) {
+    return fetchJSON(url, 'POST', 'include', body, callback);
+}
+export function putJSON(url, body, callback) {
+    return fetchJSON(url, 'PUT', 'include', body, callback);
+}
+export function deleteJSON(url, callback) {
+    return fetchJSON(url, 'DELETE', 'include', null, callback);
+}
 
 export function arrayToObject(o) {
     if (_isArray(o)) {
         const obj = {};
-        Object.keys(o).forEach(k => obj[k] = o[k]);
+        Object.keys(o).forEach(k => (obj[k] = o[k]));
         return obj;
     }
     return o;
 }
 
 export function tailLength(v) {
-    return (String(v - Math.floor(v)).replace(/00000*[0-9]+$/, '').replace(/99999*[0-9]+$/, '')).length - 2;
+    return (
+        String(v - Math.floor(v))
+            .replace(/00000*[0-9]+$/, '')
+            .replace(/99999*[0-9]+$/, '').length - 2
+    );
 }
 
 export function toFixed(v) {

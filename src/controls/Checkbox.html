@@ -1,20 +1,23 @@
 <div class="control-group vis-option-group vis-option-type-checkbox">
     <label class="checkbox {disabled? 'disabled' :''} {faded? 'faded' :''}">
-        <input type="checkbox" disabled="{disabled}" bind:checked="value" /><span class="css-ui"></span> &nbsp;{ label }
+        <input type="checkbox" disabled="{disabled}" bind:checked="value" /><span
+            class="css-ui"
+        ></span>
+        &nbsp;{ label }
     </label>
 </div>
 
 <style lang="less">
     label.checkbox {
-        input[type=checkbox] {
+        input[type='checkbox'] {
             float: none;
-            opacity: 0!important;
+            opacity: 0 !important;
             pointer-events: none;
             position: absolute;
             display: inline-block;
             vertical-align: sub;
         }
-        input[type=checkbox] + span.css-ui {
+        input[type='checkbox'] + span.css-ui {
             display: inline-block;
             width: 0.85em;
             height: 0.85em;
@@ -25,7 +28,7 @@
             top: 2px;
             margin-left: -16px;
         }
-        input[type=checkbox]:checked + span.css-ui {
+        input[type='checkbox']:checked + span.css-ui {
             background: #18a1cd;
             border-color: #18a1cd;
             &:after {
@@ -39,30 +42,33 @@
                 font-family: 'iconmonstr-iconic-font';
                 font-size: 0.65em;
                 line-height: 0.8em;
-            };
+            }
         }
-        input[type=checkbox]:focus + span.css-ui {
+        input[type='checkbox']:focus + span.css-ui {
             border-color: #18a1cd;
             box-shadow: 0 0 1px 1px fade(#18a1cd, 55%);
         }
-        input[type=checkbox]:disabled + span.css-ui {
+        input[type='checkbox']:disabled + span.css-ui {
             background: #ddd;
             border-color: #bbb;
             cursor: not-allowed;
             opacity: 0.6;
         }
-        input[type=checkbox]:disabled:checked + span.css-ui {
+        input[type='checkbox']:disabled:checked + span.css-ui {
             border-color: #bbb;
             background: #bbb;
         }
-        text-align:left;
-        width:100%;
-        position:relative;
-        left:0;
+        text-align: left;
+        width: 100%;
+        position: relative;
+        left: 0;
 
-        &.disabled,&.faded {
+        &.disabled,
+        &.faded {
             color: #999;
-            input { opacity: 0.5 }
+            input {
+                opacity: 0.5;
+            }
         }
     }
 </style>
@@ -73,7 +79,7 @@
             return {
                 disabled: false,
                 faded: false
-            }
+            };
         }
-    }
+    };
 </script>

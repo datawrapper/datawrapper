@@ -1,10 +1,10 @@
-function updateChartData({iframe, data, callback}) {
+function updateChartData({ iframe, data, callback }) {
     const win = iframe.contentWindow;
 
     if (!win.__dw || !win.__dw.vis) {
         // iframe is not ready yet, try again in 100ms
         setTimeout(() => {
-            updateChartData({iframe, data, callback});
+            updateChartData({ iframe, data, callback });
         }, 100);
         return false;
     }
@@ -12,14 +12,14 @@ function updateChartData({iframe, data, callback}) {
     let render = false;
     let needReload = false; // TODO check if column configuration changed
 
-    if (data != win.__dw.params.data) {
+    if (data !== win.__dw.params.data) {
         // render = true;
     }
 
     if (needReload) {
         setTimeout(() => {
             win.location.reload();
-        }, 1000)
+        }, 1000);
         return;
     }
 

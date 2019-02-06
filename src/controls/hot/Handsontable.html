@@ -10,11 +10,11 @@
     export default {
         methods: {
             render() {
-                const {hot} = this.get();
+                const { hot } = this.get();
                 hot.render();
             },
             update() {
-                const {data, transpose, firstRowIsHeader, skipRows, hot} = this.get();
+                const { data, transpose, firstRowIsHeader, skipRows, hot } = this.get();
 
                 if (!data) return;
 
@@ -22,14 +22,20 @@
                 const chart = this.store.get('dw_chart');
 
                 // pass dataset through chart to apply changes and computed columns
-                const ds = chart.dataset(dw.datasource.delimited({
-                    csv: data,
-                    transpose,
-                    firstRowIsHeader,
-                    skipRows
-                }).parse()).dataset();
+                const ds = chart
+                    .dataset(
+                        dw.datasource
+                            .delimited({
+                                csv: data,
+                                transpose,
+                                firstRowIsHeader,
+                                skipRows
+                            })
+                            .parse()
+                    )
+                    .dataset();
 
-                this.set({columnOrder: ds.columnOrder()});
+                this.set({ columnOrder: ds.columnOrder() });
 
                 // construct HoT data array
                 const hot_data = [[]];
@@ -48,28 +54,30 @@
 
                 hot.updateSettings({
                     cells: (row, col) => {
-                        const {readonly} = this.get();
+                        const { readonly } = this.get();
                         return {
-                            readOnly: readonly || (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
+                            readOnly:
+                                readonly ||
+                                (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
                             renderer: cellRenderer
                         };
                     },
                     manualColumnMove: []
                 });
 
-                this.set({ds});
-                this.set({has_changes: clone(chart.get('metadata.data.changes', [])).length > 0})
+                this.set({ ds });
+                this.set({ has_changes: clone(chart.get('metadata.data.changes', [])).length > 0 });
 
                 HOT.hooks.once('afterRender', () => this.initCustomEvents());
                 hot.render();
             },
-            dataChanged (cells) {
-                const {hot} = this.get();
+            dataChanged(cells) {
+                const { hot } = this.get();
                 let changed = false;
                 cells.forEach(([row, col, old_val, new_val]) => {
                     if (old_val != new_val) {
                         const chart = this.store.get('dw_chart');
-                        const {transpose} = this.get();
+                        const { transpose } = this.get();
                         const changes = clone(chart.get('metadata.data.changes', []));
                         row = hot.toPhysicalRow(row);
                         col = chart.dataset().columnOrder()[col];
@@ -81,12 +89,15 @@
                         }
                         // store new change
                         changes.push({
-                            column: col, row, value: new_val, time: (new Date()).getTime()
+                            column: col,
+                            row,
+                            value: new_val,
+                            time: new Date().getTime()
                         });
                         chart.set('metadata.data.changes', changes);
                         changed = true;
                     }
-                })
+                });
                 if (changed) {
                     setTimeout(() => {
                         this.update();
@@ -94,56 +105,66 @@
                     }, 100);
                 }
             },
-            columnMoved (srcColumns, tgtIndex) {
-                const {hot} = this.get();
+            columnMoved(srcColumns, tgtIndex) {
+                const { hot } = this.get();
                 if (!srcColumns.length) return;
-                const {columnOrder} = this.get();
+                const { columnOrder } = this.get();
                 const newOrder = columnOrder.slice(0);
                 const after = columnOrder[tgtIndex];
                 const elements = newOrder.splice(srcColumns[0], srcColumns.length);
-                const insertAt = after === undefined ? newOrder.length : after ? newOrder.indexOf(after) : 0;
+                const insertAt =
+                    after === undefined ? newOrder.length : after ? newOrder.indexOf(after) : 0;
                 newOrder.splice(insertAt, 0, ...elements);
-                this.store.get('dw_chart')
-                    .set('metadata.data.column-order', newOrder.slice(0));
-                this.set({columnOrder: newOrder});
+                this.store.get('dw_chart').set('metadata.data.column-order', newOrder.slice(0));
+                this.set({ columnOrder: newOrder });
                 // update selection
                 HOT.hooks.once('afterRender', () => {
                     setTimeout(() => {
                         this.fire('resetSort');
-                        hot.selectCell(0, insertAt, hot.countRows()-1,
-                            insertAt+elements.length-1);
+                        hot.selectCell(
+                            0,
+                            insertAt,
+                            hot.countRows() - 1,
+                            insertAt + elements.length - 1
+                        );
                     }, 10);
                 });
                 this.update();
             },
-            updateHeight () {
-                const h = document.querySelector('.ht_master.handsontable .wtHolder .wtHider').getBoundingClientRect().height;
-                this.refs.hot.style.height = Math.min(500, h+10)+'px';
+            updateHeight() {
+                const h = document
+                    .querySelector('.ht_master.handsontable .wtHolder .wtHider')
+                    .getBoundingClientRect().height;
+                this.refs.hot.style.height = Math.min(500, h + 10) + 'px';
             },
-            checkRange (r,c,r2,c2) {
+            checkRange(r, c, r2, c2) {
                 // check if
                 // 1. only a single column is selected, and
                 // 2. the range starts at the first row, and
                 // 3. the range extends through he last row
-                const {hot} = this.get();
-                const {ds} = this.get();
+                const { hot } = this.get();
+                const { ds } = this.get();
                 const refs = this.refs;
-                if (c == c2 && r === 0 && r2 == hot.countRows()-1) {
+                if (c == c2 && r === 0 && r2 == hot.countRows() - 1) {
                     // const chart = this.store.get('dw_chart');
                     // this.set({activeColumn: chart.dataset().column(c)});
                     return;
                 }
-                if (c != c2 && r === 0 && r2 == hot.countRows()-1) {
+                if (c != c2 && r === 0 && r2 == hot.countRows() - 1) {
                     const sel = [];
-                    for (let i=Math.min(c,c2); i<=Math.max(c,c2); i ++) {
-                        sel.push(+document.querySelector(`#data-preview .htCore tbody tr:first-child td:nth-child(${i+2})`).dataset.column);
+                    for (let i = Math.min(c, c2); i <= Math.max(c, c2); i++) {
+                        sel.push(
+                            +document.querySelector(
+                                `#data-preview .htCore tbody tr:first-child td:nth-child(${i + 2})`
+                            ).dataset.column
+                        );
                     }
-                    this.set({multiSelection:  sel.map(i => ds.column(i)), activeColumn:null});
+                    this.set({ multiSelection: sel.map(i => ds.column(i)), activeColumn: null });
                     return;
                 }
-                this.set({activeColumn:null, multiSelection:false});
+                this.set({ activeColumn: null, multiSelection: false });
             },
-            initCustomEvents () {
+            initCustomEvents() {
                 // wait a bit to make sure HoT is rendered
                 setTimeout(() => {
                     // catch click events on A,B,C,D... header row
@@ -165,11 +186,11 @@
             }
         },
         computed: {
-            currentResult ({ searchResults, searchIndex }) {
+            currentResult({ searchResults, searchIndex }) {
                 if (!searchResults || !searchResults.length) return null;
                 const l = searchResults.length;
                 if (searchIndex < 0 || searchIndex >= l) {
-                    while (searchIndex<0) searchIndex += l;
+                    while (searchIndex < 0) searchIndex += l;
                     if (searchIndex > l) searchIndex %= l;
                 }
                 return searchResults[searchIndex];
@@ -179,12 +200,15 @@
             app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
-            window.addEventListener('keyup', (evt) => {
-                const {activeColumn, ds} = this.get();
+            window.addEventListener('keyup', evt => {
+                const { activeColumn, ds } = this.get();
                 if (!activeColumn) return;
 
-                if (evt.target.tagName.toLowerCase() == "input" ||
-                    evt.target.tagName.toLowerCase() == "textarea") return;
+                if (
+                    evt.target.tagName.toLowerCase() == 'input' ||
+                    evt.target.tagName.toLowerCase() == 'textarea'
+                )
+                    return;
 
                 if (evt.key == 'ArrowRight' || evt.key == 'ArrowLeft') {
                     evt.preventDefault();
@@ -192,22 +216,23 @@
                     const cur_i = ds.indexOf(activeColumn.name());
                     if (evt.key == 'ArrowRight') {
                         // select next column
-                        this.set({activeColumn: ds.column((cur_i+1) % ds.numColumns())});
+                        this.set({ activeColumn: ds.column((cur_i + 1) % ds.numColumns()) });
                     } else {
                         // select prev column
-                        this.set({activeColumn: ds.column((cur_i-1+ds.numColumns()) % ds.numColumns())});
+                        this.set({
+                            activeColumn: ds.column((cur_i - 1 + ds.numColumns()) % ds.numColumns())
+                        });
                     }
                 }
-
             });
 
             const chart = this.store.get('dw_chart');
 
             const hot = new HOT(this.refs.hot, {
                 data: [],
-                rowHeaders: (i) => {
+                rowHeaders: i => {
                     const ti = hot.getPlugin('ColumnSorting').translateRow(i);
-                    return ti+1;
+                    return ti + 1;
                 },
                 colHeaders: true,
                 fixedRowsTop: 1,
@@ -221,7 +246,7 @@
                 height: 500,
                 manualColumnMove: true,
                 selectionMode: 'range',
-                autoColumnSize: {useHeaders: true, syncLimit: 5},
+                autoColumnSize: { useHeaders: true, syncLimit: 5 },
                 // comments: true,
                 // contextMenu: true,
 
@@ -237,16 +262,22 @@
                             var sortFunction;
                             if (a[0] === 0) return -1;
                             // replace with values
-                            a[1] = column.val(a[0]-1);
-                            b[1] = column.val(b[0]-1);
+                            a[1] = column.val(a[0] - 1);
+                            b[1] = column.val(b[0] - 1);
                             if (colType == 'number') {
                                 // sort NaNs at bottom
-                                if (isNaN(a[1])) a[1] = !sortOrder ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
-                                if (isNaN(b[1])) b[1] = !sortOrder ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+                                if (isNaN(a[1]))
+                                    a[1] = !sortOrder
+                                        ? Number.NEGATIVE_INFINITY
+                                        : Number.POSITIVE_INFINITY;
+                                if (isNaN(b[1]))
+                                    b[1] = !sortOrder
+                                        ? Number.NEGATIVE_INFINITY
+                                        : Number.POSITIVE_INFINITY;
                             }
                             if (colType == 'date') {
-                                if (typeof a[1] == 'string') a[1] = new Date(110,0,1);
-                                if (typeof b[1] == 'string') b[1] = new Date(110,0,1);
+                                if (typeof a[1] === 'string') a[1] = new Date(110, 0, 1);
+                                if (typeof b[1] === 'string') b[1] = new Date(110, 0, 1);
                             }
                             switch (colType) {
                                 case 'date':
@@ -261,12 +292,16 @@
                             return sortFunction(sortOrder, columnMeta)(a, b);
                         };
                     }
-                    return (a,b) => a[0]-b[0];
+                    return (a, b) => a[0] - b[0];
                 },
                 afterGetColHeader: (col, th) => {
-                    const {activeColumn, ds} = this.get();
+                    const { activeColumn, ds } = this.get();
                     if (!ds || !ds.hasColumn(col)) return;
-                    if ((col === 0 || col) && activeColumn && ds.column(col).name() == activeColumn.name()) {
+                    if (
+                        (col === 0 || col) &&
+                        activeColumn &&
+                        ds.column(col).name() == activeColumn.name()
+                    ) {
                         th.classList.add('selected');
                     }
 
@@ -283,26 +318,26 @@
             });
 
             window.HT = hot;
-            this.set({hot});
+            this.set({ hot });
 
-            HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
-            HOT.hooks.add('afterColumnMove', (a,b) => this.columnMoved(a,b));
+            HOT.hooks.add('afterSetDataAtCell', a => this.dataChanged(a));
+            HOT.hooks.add('afterColumnMove', (a, b) => this.columnMoved(a, b));
             HOT.hooks.add('afterRender', () => this.updateHeight());
-            HOT.hooks.add('afterSelection', (r,c,r2,c2) => this.checkRange(r,c,r2,c2));
+            HOT.hooks.add('afterSelection', (r, c, r2, c2) => this.checkRange(r, c, r2, c2));
 
             this.observe('data', () => this.update());
             this.observe('firstRowIsHeader', (v, vo) => {
-                if (v != vo && vo !== undefined) this.update()
+                if (v != vo && vo !== undefined) this.update();
             });
 
             this.observe('search', (query, oldquery) => {
-                if (query != oldquery) this.set({searchIndex:0});
+                if (query != oldquery) this.set({ searchIndex: 0 });
                 const searchResults = hot.search.query(query);
-                this.set({searchResults});
+                this.set({ searchResults });
                 hot.render();
             });
 
-            this.observe('currentResult', (res) => {
+            this.observe('currentResult', res => {
                 // console.log('cur search res', res);
                 if (!res || !hot) return;
                 // this is a weird hack to deal with HoT's problems to scroll
@@ -320,16 +355,15 @@
                 setTimeout(() => hot.render(), 10);
             });
 
-            this.observe('fixedColumnsLeft', (v) => {
-                hot.updateSettings({fixedColumnsLeft: v});
+            this.observe('fixedColumnsLeft', v => {
+                hot.updateSettings({ fixedColumnsLeft: v });
             });
 
             // if (hot.sortingEnabled) {
-            this.observe('sorting', (sorting) => {
+            this.observe('sorting', sorting => {
                 hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
             });
             // }
-
         },
         data() {
             return {
@@ -359,27 +393,28 @@
         return function(instance, td, row, col, prop, value, cellProperties) {
             if (dataset.numColumns() <= col || !dataset.hasColumn(col)) return;
             const column = dataset.column(col);
-            const {searchResults, currentResult, activeColumn} = app.get();
+            const { searchResults, currentResult, activeColumn } = app.get();
             const colFormat = app.getColumnFormat(column.name());
             row = instance.toPhysicalRow(row);
             if (row > 0) {
                 var formatter = chart.columnFormatter(column);
                 value = formatter(column.val(row - 1), true);
             }
-            if (parseInt(value) < 0) { // if row contains negative number
+            if (parseInt(value) < 0) {
+                // if row contains negative number
                 td.classList.add('negative');
             }
-            td.classList.add(column.type()+'Type');
+            td.classList.add(column.type() + 'Type');
             td.dataset.column = col;
 
             if (column.type() == 'text' && value && value.length > 70) {
-                value = value.substr(0,60)+'…';
+                value = value.substr(0, 60) + '…';
             }
 
             if (row === 0) {
                 td.classList.add('firstRow');
                 if (colTypeIcons[column.type()]) {
-                    value = '<i class="'+colTypeIcons[column.type()]+'"></i> ' + value;
+                    value = '<i class="' + colTypeIcons[column.type()] + '"></i> ' + value;
                 }
             } else {
                 td.classList.add(row % 2 ? 'oddRow' : 'evenRow');
@@ -399,7 +434,7 @@
             if (currentResult && currentResult.row == row_p && currentResult.col == col) {
                 td.classList.add('htCurrentSearchResult');
             }
-            if (row > 0 && !column.type(true).isValid(column.val(row-1))) {
+            if (row > 0 && !column.type(true).isValid(column.val(row - 1))) {
                 td.classList.add('parsingError');
             }
             if (cellProperties.readOnly) td.classList.add('readOnly');
@@ -414,8 +449,8 @@
 
     function topLeftCornerClick(evt) {
         evt.preventDefault();
-        const {transpose} = app.get();
-        app.set({transpose: !transpose});
+        const { transpose } = app.get();
+        app.set({ transpose: !transpose });
         app.update();
     }
 
@@ -426,30 +461,31 @@
         const k = th.parentNode.children.length;
         let th_i = -1;
         // (stupid HTMLCollection has no indexOf)
-        for (let i=0; i<k; i++) {
+        for (let i = 0; i < k; i++) {
             if (th.parentNode.children.item(i) == th) {
                 th_i = i;
                 break;
             }
         }
         // find column index
-        const col_i = +app.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${th_i+1})`).dataset.column;
+        const col_i = +app.refs.hot.querySelector(
+            `.htCore tbody tr:first-child td:nth-child(${th_i + 1})`
+    ).dataset.column;
         const chart = app.store.get('dw_chart');
-        const {activeColumn,hot} = app.get();
+        const { activeColumn, hot } = app.get();
         if (chart.dataset().hasColumn(col_i)) {
             const newActive = chart.dataset().column(+col_i);
             // set active column (or unset if it's already set)
             if (activeColumn && activeColumn.name() == newActive.name()) {
                 evt.target.parentNode.classList.remove('selected');
-                app.set({activeColumn:false});
+                app.set({ activeColumn: false });
                 hot.deselectCell();
             } else {
                 evt.target.parentNode.classList.add('selected');
-                app.set({activeColumn: newActive});
+                app.set({ activeColumn: newActive });
             }
         }
     }
-
 </script>
 
 <style lang="less">

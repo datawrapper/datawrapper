@@ -1,11 +1,20 @@
 <ControlGroup label="{label}" width="{width||'100px'}">
     {#if hexColor}
-    <ColorPicker on:change="update(event)" color="{hexColor}" bind:visible="open" palette="{palette}" />
-    {/if}
-
-    {#if customizable}
+    <ColorPicker
+        on:change="update(event)"
+        color="{hexColor}"
+        bind:visible="open"
+        palette="{palette}"
+    />
+    {/if} {#if customizable}
     <span class="custom-color-selector-head">
-        <a href="#customize" on:click="toggle(event)" class="btn btn-small custom {expanded?'btn-primary':''}" role="button">customize colors...</a>
+        <a
+            href="#customize"
+            on:click="toggle(event)"
+            class="btn btn-small custom {expanded?'btn-primary':''}"
+            role="button"
+            >customize colors...</a
+        >
     </span>
     {/if}
 </ControlGroup>
@@ -17,7 +26,11 @@
             <h4>Select element(s):</h4>
             <ul class="dataseries unstyled">
                 {#each colorKeys as k}
-                <li on:click="toggleSelect(k.key, event)" class="{selected.indexOf(k.key) > -1 ? 'selected':''}" data-series="{k.key}">
+                <li
+                    on:click="toggleSelect(k.key, event)"
+                    class="{selected.indexOf(k.key) > -1 ? 'selected':''}"
+                    data-series="{k.key}"
+                >
                     <div class="color" style="background:{k.color}">{!k.defined ? '×' : ''}</div>
                     <label>{k.key}</label>
                 </li>
@@ -29,13 +42,17 @@
                 <a href="#/select-none" on:click="selectNone(event)">none</a> &nbsp;
                 <a href="#/select-invert" on:click="selectInvert(event)">invert</a>
             </div>
-
         </div>
         <div class="span2" style="width:42%;">
             <h4>Choose a color:</h4>
             {#if selected.length}
             <div class="select">
-                <ColorPicker on:change="updateCustom(event)" color="{customColor}" bind:visible="openCustom" palette="{palette}" />
+                <ColorPicker
+                    on:change="updateCustom(event)"
+                    color="{customColor}"
+                    bind:visible="openCustom"
+                    palette="{palette}"
+                />
                 <button class="btn" on:click="reset()">Reset</button>
             </div>
             {:else}
@@ -43,7 +60,9 @@
                 Please select an element on the left to change colors for individual elements...
             </div>
             {/if}
-            <button style="margin-top:20px" class="btn" on:click="resetAll()">Reset all colors</button>
+            <button style="margin-top:20px" class="btn" on:click="resetAll()">
+                Reset all colors
+            </button>
         </div>
     </div>
 </div>
@@ -59,106 +78,107 @@
     export default {
         components: { ColorPicker, ControlGroup },
         computed: {
-            colorKeys ({ $vis, customizable, axis, custom, palette }) {
+            colorKeys({ $vis, customizable, axis, custom, palette }) {
                 if (!$vis || !customizable) return [];
-                return (
-                    axis ? _unique(
-                        $vis.axes(true)[axis].type() === 'date' ?
-                            $vis.axes(true)[axis].raw() : // raw values for date cols
-                            $vis.axes(true)[axis].values() // fmt values else
-                    ) :
-                    $vis.colorKeys ? $vis.colorKeys() : $vis.keys()
-                ).map((k) => {
+                return (axis
+                    ? _unique(
+                          $vis.axes(true)[axis].type() === 'date'
+                              ? $vis.axes(true)[axis].raw() // raw values for date cols
+                              : $vis.axes(true)[axis].values() // fmt values else
+                      )
+                    : $vis.colorKeys
+                    ? $vis.colorKeys()
+                    : $vis.keys()
+                ).map(k => {
                     k = stripTags(k);
                     return {
                         key: k,
                         defined: custom[k] !== undefined,
-                        color: custom[k] !== undefined ?
-                            getColor(custom[k],palette) : '#cccccc'
+                        color: custom[k] !== undefined ? getColor(custom[k], palette) : '#cccccc'
                     };
                 });
             },
-            palette ({ $themeData }) {
-                return $themeData.colors.palette; //.concat($theme.colors.secondary || []);
+            palette({ $themeData }) {
+                return $themeData.colors.palette; // .concat($theme.colors.secondary || []);
             },
-            hexColor ({ value, palette }) {
+            hexColor({ value, palette }) {
                 return getColor(value, palette);
             },
-            customColor ({ selected, palette, custom }) {
+            customColor({ selected, palette, custom }) {
                 if (custom[selected[0]] === undefined) return '#ccc';
                 const realColors = selected
                     .filter(s => custom[s] !== undefined)
                     .map(s => getColor(custom[s], palette));
                 if (!realColors.length) return '#ccc';
-                // if (realColors.length == 1) return realColors[0];
+                // if (realColors.length === 1) return realColors[0];
                 return chroma.average(realColors, 'lab');
-            },
+            }
         },
         methods: {
-            update (color) {
-                const {palette} = this.get();
-                this.set({value: storeColor(color, palette)});
+            update(color) {
+                const { palette } = this.get();
+                this.set({ value: storeColor(color, palette) });
             },
-            updateCustom (color) {
-                const {selected, palette, custom} = this.get();
-                selected.forEach((k) => custom[k] = storeColor(color, palette));
-                this.set({custom});
+            updateCustom(color) {
+                const { selected, palette, custom } = this.get();
+                selected.forEach(k => (custom[k] = storeColor(color, palette)));
+                this.set({ custom });
             },
-            toggle (event) {
+            toggle(event) {
                 event.preventDefault();
-                const {expanded} = this.get();
-                this.set({expanded:!expanded});
+                const { expanded } = this.get();
+                this.set({ expanded: !expanded });
             },
-            toggleSelect (k, event) {
+            toggleSelect(k, event) {
                 event.preventDefault();
-                const {selected} = this.get();
+                const { selected } = this.get();
                 const i = selected.indexOf(k);
                 if (event.shiftKey) {
-                    if (i > -1) selected.splice(i,1);
+                    if (i > -1) selected.splice(i, 1);
                     else selected.push(k);
                 } else {
                     selected.length = 1;
                     selected[0] = k;
                 }
-                this.set({selected});
+                this.set({ selected });
             },
-            getColor (color) {
-                const {palette} = this.get();
+            getColor(color) {
+                const { palette } = this.get();
                 return getColor(color, palette);
             },
-            reset () {
-                const {selected, custom} = this.get();
+            reset() {
+                const { selected, custom } = this.get();
                 selected.forEach(k => delete custom[k]);
-                this.set({custom});
+                this.set({ custom });
             },
-            resetAll () {
-                const {custom} = this.get();
+            resetAll() {
+                const { custom } = this.get();
                 Object.keys(custom).forEach(k => delete custom[k]);
-                this.set({custom});
+                this.set({ custom });
             },
             selectAll(event) {
                 event.preventDefault();
-                const {selected, colorKeys} = this.get();
+                const { selected, colorKeys } = this.get();
                 colorKeys.forEach(k => {
                     if (selected.indexOf(k.key) < 0) selected.push(k.key);
                 });
-                this.set({selected});
+                this.set({ selected });
             },
             selectNone(event) {
                 event.preventDefault();
-                const {selected} = this.get();
+                const { selected } = this.get();
                 selected.length = 0;
-                this.set({selected});
+                this.set({ selected });
             },
             selectInvert(event) {
                 event.preventDefault();
-                const {selected, colorKeys} = this.get();
+                const { selected, colorKeys } = this.get();
                 colorKeys.forEach(k => {
                     const i = selected.indexOf(k.key);
                     if (i < 0) selected.push(k.key);
                     else selected.splice(i, 1);
                 });
-                this.set({selected});
+                this.set({ selected });
             }
         },
         data() {
@@ -172,11 +192,11 @@
             };
         },
         oncreate() {
-            this.observe('custom', (c) => {
+            this.observe('custom', c => {
                 if (c && c.length === 0) {
                     c = {};
                 }
-                this.set({custom:c});
+                this.set({ custom: c });
             });
         }
     };
@@ -188,7 +208,7 @@
     }
 
     function getColor(color, palette) {
-        return typeof color == 'number' ? palette[color%palette.length] : color;
+        return typeof color === 'number' ? palette[color % palette.length] : color;
     }
 
     function stripTags(s) {

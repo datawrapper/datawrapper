@@ -1,12 +1,10 @@
 export default function(curPwd, pwd, pwd2) {
-	var msg, errFields;
-    if (curPwd === '') {        
+    var msg, errFields;
+    if (curPwd === '') {
         msg = dw.backend.messages.provideCurPwd;
-    }
-    else if (pwd.length < 4) {        
+    } else if (pwd.length < 4) {
         msg = dw.backend.messages.pwdTooShort;
-    }
-    else if (pwd != pwd2) {        
+    } else if (pwd !== pwd2) {
         msg = dw.backend.messages.pwdMismatch;
     }
     if (msg) {

@@ -45,25 +45,28 @@ forcing the switch state to "on" or "off" in case it is disabled.
     {/if}
     <label class="switch-outer {disabled? 'disabled' :''}" style="padding-left: 40px">
         <label class="switch">
-            <input class="{disabled && disabled_state == 'on' ? 'disabled-force-checked' : disabled && disabled_state == 'off' ? 'disabled-force-unchecked' : ''}" disabled="{disabled}" bind:checked="value "type="checkbox"><span class="slider round"></span>
+            <input
+                class="{disabled && disabled_state == 'on' ? 'disabled-force-checked' : disabled && disabled_state == 'off' ? 'disabled-force-unchecked' : ''}"
+                disabled="{disabled}"
+                bind:checked="value "
+                type="checkbox"
+            /><span class="slider round"></span>
         </label>
         {@html label }
     </label>
     {#if disabled && disabled_msg}
-        <div transition:slide>
-            <div class="disabled-msg">
-                {@html disabled_msg}
-            </div>
+    <div transition:slide>
+        <div class="disabled-msg">
+            {@html disabled_msg}
         </div>
-    {:else}
-    {#if (!disabled || disabled_state == 'on') && value}
-        <div transition:slide>
-            <div class="switch-content">
-                <slot></slot>
-            </div>
+    </div>
+    {:else} {#if (!disabled || disabled_state == 'on') && value}
+    <div transition:slide>
+        <div class="switch-content">
+            <slot></slot>
         </div>
-    {/if}
-    {/if}
+    </div>
+    {/if} {/if}
 </div>
 
 <style lang="less">
@@ -71,7 +74,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         padding-top: 8px;
         margin-top: 0px;
         padding-bottom: 3px;
-        margin-bottom: 5px!important;
+        margin-bottom: 5px !important;
         transition: height 0.2s ease-in-out;
         background: #ffffff00;
         &.highlight {
@@ -89,7 +92,8 @@ forcing the switch state to "on" or "off" in case it is disabled.
     .switch-content > :last-child {
         padding-bottom: 3px;
     }
-    .switch-content, .disabled-msg {
+    .switch-content,
+    .disabled-msg {
         padding: 0 0 0px 40px;
     }
 
@@ -102,7 +106,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
         line-height: 1.2;
     }
 
-     /* The switch - the box around the slider */
+    /* The switch - the box around the slider */
     .switch {
         position: absolute;
         display: inline-block;
@@ -117,7 +121,9 @@ forcing the switch state to "on" or "off" in case it is disabled.
     }
 
     /* Hide default HTML checkbox */
-    .switch input {display:none;}
+    .switch input {
+        display: none;
+    }
 
     /* The slider */
     .slider {
@@ -128,20 +134,20 @@ forcing the switch state to "on" or "off" in case it is disabled.
         right: 0;
         bottom: 0;
         background-color: #ccc;
-        -webkit-transition: .2s;
-        transition: .2s;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
     }
 
     .slider:before {
         position: absolute;
-        content: "";
+        content: '';
         height: 12px;
         width: 12px;
         left: 2px;
         bottom: 2px;
         background-color: white;
-        -webkit-transition: .2s ease-in-out;
-        transition: .2s ease-in-out;
+        -webkit-transition: 0.2s ease-in-out;
+        transition: 0.2s ease-in-out;
     }
 
     input:checked + .slider {
@@ -191,11 +197,11 @@ forcing the switch state to "on" or "off" in case it is disabled.
                 hasHelp: this.options && this.options.slots ? !!this.options.slots.help : false
             });
         },
-        onstate({changed, current}) {
+        onstate({ changed, current }) {
             if (changed.value && current.value) {
-                this.set({highlight:true});
+                this.set({ highlight: true });
                 setTimeout(() => {
-                    this.set({highlight:false});
+                    this.set({ highlight: false });
                 }, 300);
             }
         },
@@ -206,7 +212,7 @@ forcing the switch state to "on" or "off" in case it is disabled.
                 disabled_state: 'auto',
                 disabled: false,
                 highlight: false
-            }
+            };
         }
-    }
+    };
 </script>

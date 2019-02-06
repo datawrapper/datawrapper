@@ -1,4 +1,3 @@
-
 import Checkbox from './Checkbox.html';
 import Color from './Color.html';
 import ColorPicker from './ColorPicker.html';
@@ -20,7 +19,23 @@ import Help from '../editor/Help.html';
 import EditorNav from '../editor/EditorNav.html';
 
 export default {
-    Checkbox, Color, ColorPicker, Group, NumberInput, Switch, Dropdown,
-    Radio, Select, SelectAxisColumn, CustomFormat, Section, TextArea,
-    Help, Text, TypeAhead, EditorNav, BaseNumber, ControlGroup
+    Checkbox,
+    Color,
+    ColorPicker,
+    Group,
+    NumberInput,
+    Switch,
+    Dropdown,
+    Radio,
+    Select,
+    SelectAxisColumn,
+    CustomFormat,
+    Section,
+    TextArea,
+    Help,
+    Text,
+    TypeAhead,
+    EditorNav,
+    BaseNumber,
+    ControlGroup
 };

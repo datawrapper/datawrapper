@@ -1,10 +1,20 @@
-<div class="chart-editor dw-create-upload upload-data" on:drop="onFileDrop(event)" on:dragover="dragStart(event)" on:dragenter="dragStart(event)" on:dragend="resetDrag()" on:dragleave="resetDrag()">
+<div
+    class="chart-editor dw-create-upload upload-data"
+    on:drop="onFileDrop(event)"
+    on:dragover="dragStart(event)"
+    on:dragenter="dragStart(event)"
+    on:dragend="resetDrag()"
+    on:dragleave="resetDrag()"
+>
     {#if dragover}
     <div class="draginfo">
         {@html __('upload / drag-csv-here')}
     </div>
     {/if}
-    <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
+    <div
+        class="row"
+        style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}"
+    >
         <div class="span5">
             <div class="sidebar">
                 <h3>{@html __('upload / title')}</h3>
@@ -14,7 +24,12 @@
                     <li on:click="btnAction(btn)" class="action {active==btn?'active':''}">
                         <label>
                             {#if btn.isFileUpload}
-                            <input accept=".csv, .tsv, .txt, .xlsx, .xls, .ods, .dbf" on:change="btnUpload(btn, event)" class="file-upload" type="file" />
+                            <input
+                                accept=".csv, .tsv, .txt, .xlsx, .xls, .ods, .dbf"
+                                on:change="btnUpload(btn, event)"
+                                class="file-upload"
+                                type="file"
+                            />
                             {/if}
                             <i class="{btn.icon}"></i>
                             <span>{btn.title}</span>
@@ -32,22 +47,22 @@
 
                 <h4>{active.longTitle || active.title}</h4>
 
-                <svelte:component this={Sidebar}
+                <svelte:component
+                    this="{Sidebar}"
                     bind:chartData
                     bind:readonly
                     bind:sheets
-                    bind:datasets />
-
+                    bind:datasets
+                />
             </div>
         </div>
         <div class="span7">
-
-            <svelte:component this={MainPanel}
-                bind:chartData
-                bind:readonly />
+            <svelte:component this="{MainPanel}" bind:chartData bind:readonly />
 
             <div class="buttons pull-right">
-                <a href="describe" class="submit btn btn-primary" id="describe-proceed"> {__("Proceed")} <i class="icon-chevron-right icon-white"></i></a>
+                <a href="describe" class="submit btn btn-primary" id="describe-proceed">
+                    {__("Proceed")} <i class="icon-chevron-right icon-white"></i
+                ></a>
             </div>
         </div>
     </div>
@@ -60,60 +75,66 @@
     import SelectSheet from './SelectSheet.html';
     import readFile from '../shared/readFile';
     import readSpreadsheet from '../shared/readSpreadsheet';
-    import {putJSON} from '../shared/utils';
-    import {__} from '../shared/l10n';
+    import { putJSON } from '../shared/utils';
+    import { __ } from '../shared/l10n';
 
     let app;
 
-    const coreUploads = [{
-        id: 'copy',
-        title: __('upload / copy-paste'),
-        longTitle: __('upload / copy-paste / long'),
-        icon: 'fa fa-clipboard',
-        mainPanel: TextAreaUpload,
-        sidebar: UploadHelp,
-        action() {}
-    },{
-        id: 'upload',
-        title: __('upload / upload-csv'),
-        longTitle: __('upload / upload-csv / long'),
-        icon: 'fa-file-excel-o fa',
-        mainPanel: TextAreaUpload,
-        sidebar: UploadHelp,
-        isFileUpload: true,
-        onFileUpload(event) {
-            const file = event.target.files[0];
-            if (file.type.substr(0,5) == 'text/' || file.name.substr(file.name.length - 4) == ".csv") {
-                app.set({Sidebar: UploadHelp});
-                readFile(file, (err, result) => {
-                    putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                        window.location.href = 'describe';
-                    });
-                });
-            } else if (file.type.substr(0,12) == 'application/') {
-                app.set({Sidebar: SelectSheet, sheets:[]}); // reset
-                readSpreadsheet(file, (err, sheets) => {
-                    if (err) return app.set({error: err});
-                    app.set({sheets});
-                });
-            } else {
-                console.log(file.type);
-                console.log(file);
-                app.set({error: __('upload / csv-required')});
-            }
+    const coreUploads = [
+        {
+            id: 'copy',
+            title: __('upload / copy-paste'),
+            longTitle: __('upload / copy-paste / long'),
+            icon: 'fa fa-clipboard',
+            mainPanel: TextAreaUpload,
+            sidebar: UploadHelp,
+            action() {}
         },
-        action() {}
-    }];
+        {
+            id: 'upload',
+            title: __('upload / upload-csv'),
+            longTitle: __('upload / upload-csv / long'),
+            icon: 'fa-file-excel-o fa',
+            mainPanel: TextAreaUpload,
+            sidebar: UploadHelp,
+            isFileUpload: true,
+            onFileUpload(event) {
+                const file = event.target.files[0];
+                if (
+                    file.type.substr(0, 5) === 'text/' ||
+                    file.name.substr(file.name.length - 4) === '.csv'
+                ) {
+                    app.set({ Sidebar: UploadHelp });
+                    readFile(file, (err, result) => {
+                        putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
+                            window.location.href = 'describe';
+                        });
+                    });
+                } else if (file.type.substr(0, 12) === 'application/') {
+                    app.set({ Sidebar: SelectSheet, sheets: [] }); // reset
+                    readSpreadsheet(file, (err, sheets) => {
+                        if (err) return app.set({ error: err });
+                        app.set({ sheets });
+                    });
+                } else {
+                    console.log(file.type);
+                    console.log(file);
+                    app.set({ error: __('upload / csv-required') });
+                }
+            },
+            action() {}
+        }
+    ];
 
     export default {
         oncreate() {
             app = this;
-            const {dw_chart} = this.store.get();
+            const { dw_chart } = this.store.get();
             const method = dw_chart.get('metadata.data.upload-method', 'copy');
-            this.set({defaultMethod: method});
+            this.set({ defaultMethod: method });
             coreUploads.forEach(u => {
-                if (u.id == method) {
-                    this.set({active:u});
+                if (u.id === method) {
+                    this.set({ active: u });
                 }
             });
         },
@@ -133,23 +154,23 @@
                 transpose: false,
                 firstRowIsHeader: true,
                 skipRows: 0
-            }
+            };
         },
         helpers: { __ },
         methods: {
-            addButton (btn) {
+            addButton(btn) {
                 coreUploads.push(btn);
-                this.set({buttons:coreUploads});
-                const {defaultMethod} = this.get();
-                if (btn.id == defaultMethod) {
+                this.set({ buttons: coreUploads });
+                const { defaultMethod } = this.get();
+                if (btn.id === defaultMethod) {
                     this.btnAction(btn);
                 }
             },
-            btnAction (btn) {
-                this.set({active:btn});
-                if (btn.id == 'copy') {
+            btnAction(btn) {
+                this.set({ active: btn });
+                if (btn.id === 'copy') {
                     // turn off externalData, if still set
-                    const {dw_chart} = this.store.get();
+                    const { dw_chart } = this.store.get();
                     if (dw_chart.get('externalData')) {
                         dw_chart.set('externalData', '');
                         setTimeout(() => {
@@ -158,42 +179,42 @@
                     }
                 }
                 let activeKey = btn.id;
-                if (btn.id == 'upload') {
+                if (btn.id === 'upload') {
                     activeKey = 'copy';
                     setTimeout(() => {
-                    // reset after 1sec
+                        // reset after 1sec
                         // this.set({active:coreUploads[0]});
                     }, 1000);
                 }
-                const {dw_chart} = this.store.get();
+                const { dw_chart } = this.store.get();
                 dw_chart.set('metadata.data.upload-method', activeKey);
                 if (btn.action) btn.action();
-                if (btn.mainPanel) this.set({MainPanel:btn.mainPanel});
-                if (btn.sidebar) this.set({Sidebar:btn.sidebar});
+                if (btn.mainPanel) this.set({ MainPanel: btn.mainPanel });
+                if (btn.sidebar) this.set({ Sidebar: btn.sidebar });
             },
-            btnUpload (btn, event) {
+            btnUpload(btn, event) {
                 if (btn.onFileUpload) btn.onFileUpload(event);
             },
-            dragStart (event) {
-                const {active} = this.get();
-                if (active.id == 'copy') {
+            dragStart(event) {
+                const { active } = this.get();
+                if (active.id === 'copy') {
                     event.preventDefault();
-                    this.set({dragover:true});
+                    this.set({ dragover: true });
                 }
             },
-            resetDrag () {
-                this.set({dragover:false});
+            resetDrag() {
+                this.set({ dragover: false });
             },
-            onFileDrop (event) {
-                const {active} = this.get();
-                if (active.id != 'copy') return;
+            onFileDrop(event) {
+                const { active } = this.get();
+                if (active.id !== 'copy') return;
                 // Prevent default behavior (Prevent file from being opened)
                 this.resetDrag();
                 event.preventDefault();
                 const files = [];
                 if (event.dataTransfer.items) {
                     // Use DataTransferItemList interface to access the file(s)
-                    for (let i=0; i<event.dataTransfer.items.length; i++) {
+                    for (let i = 0; i < event.dataTransfer.items.length; i++) {
                         // If dropped items aren't files, reject them
                         if (event.dataTransfer.items[i].kind === 'file') {
                             files.push(event.dataTransfer.items[i].getAsFile());
@@ -202,17 +223,21 @@
                     event.dataTransfer.items.clear();
                 } else {
                     // Use DataTransfer interface to access the file(s)
-                    for (let i=0; i<event.dataTransfer.files.length; i++) {
+                    for (let i = 0; i < event.dataTransfer.files.length; i++) {
                         files.push(event.dataTransfer.files[i]);
                     }
                     event.dataTransfer.items.clear();
                 }
-                for (let i=0; i<files.length; i++) {
-                    if (files[i].type.substr(0,5) == 'text/') {
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].type.substr(0, 5) === 'text/') {
                         return readFile(files[i], (err, result) => {
-                            putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                                window.location.href = 'describe';
-                            });
+                            putJSON(
+                                `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                                result,
+                                () => {
+                                    window.location.href = 'describe';
+                                }
+                            );
                         });
                     }
                 }
@@ -222,91 +247,89 @@
 </script>
 
 <style lang="less">
-
-:global(.not-happy) {
-    margin-top: 15px;
-    font-size: 12px;
-    a {
-        font-weight: bold;
+    :global(.not-happy) {
+        margin-top: 15px;
+        font-size: 12px;
+        a {
+            font-weight: bold;
+        }
     }
-}
 
-.import-methods{
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    .import-methods {
+        margin: 0;
+        padding: 0;
+        list-style: none;
 
-    .action {
-        color: #1d81a2;
-        text-align: center;
-        min-height: 50px;
-        width: ~'calc(25% - 20px)';
-        margin: 0 10px 10px 0;
-        padding: 15px 0 10px;
-        overflow: hidden;
-        position: relative;
-        display: inline-block;
-        vertical-align: top;
-        cursor: pointer;
+        .action {
+            color: #1d81a2;
+            text-align: center;
+            min-height: 50px;
+            width: ~'calc(25% - 20px)';
+            margin: 0 10px 10px 0;
+            padding: 15px 0 10px;
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            cursor: pointer;
 
-        &:hover,&.active {
-            background: #fff;
-            border-radius: 4px;
-        }
-        &.active {
-            color: #222;
-            cursor: default;
-        }
+            &:hover,
+            &.active {
+                background: #fff;
+                border-radius: 4px;
+            }
+            &.active {
+                color: #222;
+                cursor: default;
+            }
 
-        > label {
-            margin-top: -10px;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            margin-bottom: -10px;
+            > label {
+                margin-top: -10px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                margin-bottom: -10px;
 
-            > i {
-                display: block;
-                margin: 0 auto;
-                font-size: 24px !important;
+                > i {
+                    display: block;
+                    margin: 0 auto;
+                    font-size: 24px !important;
 
-                &.fa {
-                    position: relative;
-                    top: -2px;
+                    &.fa {
+                        position: relative;
+                        top: -2px;
+                    }
+                }
+
+                > span {
+                    font-size: 12px;
+                    line-height: 15px;
+                    display: block;
+                    padding: 4px 10px 0;
                 }
             }
-
-            > span {
-                font-size: 12px;
-                line-height: 15px;
-                display: block;
-                padding: 4px 10px 0;
-            }
         }
 
-
+        .file-upload {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
     }
-
-    .file-upload {
-        opacity: 0;
-        position: absolute;
-        z-index: -1;
+    .draginfo {
+        pointer-events: none;
+        height: 0;
+        position: relative;
+        top: 120px;
+        font-size: 45px;
+        width: 100%;
+        text-align: center;
+        z-index: 10;
+        font-weight: 100;
     }
-}
-.draginfo {
-    pointer-events: none;
-    height: 0;
-    position: relative;
-    top: 120px;
-    font-size:45px;
-    width: 100%;
-    text-align: center;
-    z-index: 10;
-    font-weight: 100;
-}
-:global(.sidebar) {
-    h4 {
-        font-size: 17px;
-        font-weight: 400;
+    :global(.sidebar) {
+        h4 {
+            font-size: 17px;
+            font-weight: 400;
+        }
     }
-}
 </style>

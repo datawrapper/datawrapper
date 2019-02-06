@@ -1,5 +1,4 @@
 export default function(chart_id) {
-
     return function(event, data) {
         if (window.parent && window.parent.postMessage) {
             const evt = {
@@ -11,5 +10,4 @@ export default function(chart_id) {
             window.parent.postMessage(evt, '*');
         }
     };
-
 }

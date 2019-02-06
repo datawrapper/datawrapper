@@ -7,436 +7,487 @@
 
 {#if changePassword }
 
-	<div class="row">
-	    <div class="span6 offset3">
-	        <div class="form-horizontal edit-account-confirm">
-	            <h2>{ __("account / password") }</h2>
-	            <p>{ __("For security reasons we ask you to provide your current password. Please make sure you use a strong password.") }</p>
+<div class="row">
+    <div class="span6 offset3">
+        <div class="form-horizontal edit-account-confirm">
+            <h2>{ __("account / password") }</h2>
+            <p>
+                { __("For security reasons we ask you to provide your current password. Please make
+                sure you use a strong password.") }
+            </p>
 
-	            {#if errors && errors.length }
-	            	<div class="alert">
-		            	<ul style="margin-bottom: 0;">
-		            		{#each errors as message}
-		            			<li>{@html message }</li>
-	            			{/each}
-		            	</ul>	
-	            	</div>
-	            {/if}
+            {#if errors && errors.length }
+            <div class="alert">
+                <ul style="margin-bottom: 0;">
+                    {#each errors as message}
+                    <li>{@html message }</li>
+                    {/each}
+                </ul>
+            </div>
+            {/if}
 
-	            <fieldset>
-	                <div class="control-group">
-	                    <label class="control-label">{ __("Current Password") }</label>
-	                    <div class="controls">
-	                        <input type="password" bind:value="currentPassword" class="input-xlarge">
-	                        <p class="help-block">{ __("For security reasons, please provide your current password.") }</p>
-	                    </div>
-	                </div>
-	                <div class="control-group">
-	                    <label class="control-label">{ __("New Password") }</label>
-	                    <div class="controls">
-	                        <input type="password"  bind:value="newPassword1" class="input-xlarge">
-	                    </div>
-	                </div>
-	                <div class="control-group">
-	                    <label class="control-label">{ __("(repeat)") }</label>
-	                    <div class="controls">
-	                        <input type="password" bind:value="newPassword2" class="input-xlarge">
-	                    </div>
-	                </div>
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label">{ __("Current Password") }</label>
+                    <div class="controls">
+                        <input type="password" bind:value="currentPassword" class="input-xlarge" />
+                        <p class="help-block">
+                            { __("For security reasons, please provide your current password.") }
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">{ __("New Password") }</label>
+                    <div class="controls">
+                        <input type="password" bind:value="newPassword1" class="input-xlarge" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">{ __("(repeat)") }</label>
+                    <div class="controls">
+                        <input type="password" bind:value="newPassword2" class="input-xlarge" />
+                    </div>
+                </div>
 
-	                <div>
-	                    <button on:click="set({changePassword: false})" class="btn btn-save btn-default btn-back">{ __("Back") }</button>
-	                    <button class="btn btn-primary" on:click="changePassword()" style="float:right">
-	                    	<i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; 
-	                    	{ __("account / password") }
-                    	</button>
-	                </div>
-	            </fieldset>
-	        </div>
-	    </div>
-	</div>
+                <div>
+                    <button
+                        on:click="set({changePassword: false})"
+                        class="btn btn-save btn-default btn-back"
+                    >
+                        { __("Back") }
+                    </button>
+                    <button class="btn btn-primary" on:click="changePassword()" style="float:right">
+                        <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i
+                        >&nbsp; { __("account / password") }
+                    </button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
 
 {:elseif deleteAccount }
 
-	<div class="row delete-account">
-	    <div class="span6 offset3" style="text-align:center">	    	
-	        <div class="iconholder">
-	            <i class="fa fa-times"></i>
-	        </div>
+<div class="row delete-account">
+    <div class="span6 offset3" style="text-align:center">
+        <div class="iconholder">
+            <i class="fa fa-times"></i>
+        </div>
 
-	        <h2 style="margin-bottom:20px">{ __("account / confirm-account-deletion") }</h2>
+        <h2 style="margin-bottom:20px">{ __("account / confirm-account-deletion") }</h2>
 
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <button on:click="set({deleteAccount: false})" class="btn btn-back btn-primary">
+                <i class="fa fa-chevron-left"></i> &nbsp; { __("account / confirm-account-deletion /
+                no") }
+            </button>
 
-	        <div style="display: flex; justify-content: center; align-items: center;">
-	        	<button on:click="set({deleteAccount: false})" class="btn btn-back btn-primary">
-	        		<i class="fa fa-chevron-left"></i> &nbsp; { __("account / confirm-account-deletion / no") }
-	    		</button>
+            <div style="display:block; margin:0px 10px">{ __("account / or") }</div>
 
-		        <div style="display:block; margin:0px 10px">{ __("account / or") }</div>
-
-		        <button on:click="set({deleteAccount: false, deleteAccount2: true})" class="btn btn-default">
-		        	<i class="fa fa-times"></i> &nbsp; { __("account / confirm-account-deletion / yes") }
-		        </button>
-	        </div>	        
-	    </div>
-	</div>
+            <button
+                on:click="set({deleteAccount: false, deleteAccount2: true})"
+                class="btn btn-default"
+            >
+                <i class="fa fa-times"></i> &nbsp; { __("account / confirm-account-deletion / yes")
+                }
+            </button>
+        </div>
+    </div>
+</div>
 
 {:elseif deleteAccount2 }
 
-	<div class="row delete-account">
-	    <div class="span6 offset3">
-	        <h2 style="margin-bottom:20px">{ __("Account deletion") }</h2>
+<div class="row delete-account">
+    <div class="span6 offset3">
+        <h2 style="margin-bottom:20px">{ __("Account deletion") }</h2>
 
-	        {#if errors && errors.length }
-            	<div class="alert">
-	            	<ul style="margin-bottom: 0;">
-	            		{#each errors as message}
-	            			<li>{@html message }</li>
-            			{/each}
-	            	</ul>	
-            	</div>
-            {/if}
+        {#if errors && errors.length }
+        <div class="alert">
+            <ul style="margin-bottom: 0;">
+                {#each errors as message}
+                <li>{@html message }</li>
+                {/each}
+            </ul>
+        </div>
+        {/if}
 
-	        <p>{ __("Think about it one more time. Have you considered all the consequences of deleting your account?") }</p>
-	        <ul>
-	        	<li>{ __("account / confirm-account-deletion / free") }</li>
-	            <li>{ __("You cannot login and logout anymore.") }</li>
-	            <li>{ __("You cannot edit or remove your charts anymore.") }</li>
-	        </ul>
-	        <p>{ __("Note that this will only delete your account. Your charts will not be removed. If you want to remove your charts, please do it manually.") }</p>
-	        <div class="">
-	            <p><b>{ __("Please enter your password to confirm the deletion request:") }</b></p>
-	            <div class="control-group">
-	                <input type="password" bind:value="confirmPassword" placeholder="{ __("Password") }" />
-	            </div>
-	            <p>{@html __("Do you still <b>really</b> want to delete your Datawrapper account?") }</p>
-	            <div class="control-group">
-	                <button on:click="set({deleteAccount2: false})" class="btn btn-info">
-	                	<i class="fa fa-chevron-left"></i>&nbsp;
-	                	{ __("No, I changed my mind..") }
-	                </button>
-	                <button style="float:right" on:click="deleteAccount()" class="btn btn-danger">
-	                	<i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
-	            	    { __("Yes, delete it!") }
-	            	</button>
-	            </div>
-	        </div>
-	    </div>
-	</div>
+        <p>
+            { __("Think about it one more time. Have you considered all the consequences of deleting
+            your account?") }
+        </p>
+        <ul>
+            <li>{ __("account / confirm-account-deletion / free") }</li>
+            <li>{ __("You cannot login and logout anymore.") }</li>
+            <li>{ __("You cannot edit or remove your charts anymore.") }</li>
+        </ul>
+        <p>
+            { __("Note that this will only delete your account. Your charts will not be removed. If
+            you want to remove your charts, please do it manually.") }
+        </p>
+        <div class="">
+            <p><b>{ __("Please enter your password to confirm the deletion request:") }</b></p>
+            <div class="control-group">
+                <input type="password" bind:value="confirmPassword" placeholder="{ __("Password") }"
+                />
+            </div>
+            <p>
+                {@html __("Do you still <b>really</b> want to delete your Datawrapper account?") }
+            </p>
+            <div class="control-group">
+                <button on:click="set({deleteAccount2: false})" class="btn btn-info">
+                    <i class="fa fa-chevron-left"></i>&nbsp; { __("No, I changed my mind..") }
+                </button>
+                <button style="float:right" on:click="deleteAccount()" class="btn btn-danger">
+                    <i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
+                    { __("Yes, delete it!") }
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {:elseif deleteAccount3 }
 
-	<div class="row delete-account">
-	    <div class="span6 offset3" style="text-align:center">	    	
-			<h2 style="margin-bottom:20px;text-align:center">{ __("Your account has been deleted.") }</h2>
-	        <a href="/" class="btn btn-primary btn-large">{ __("Goodbye!") }</a>
-        </div>
+<div class="row delete-account">
+    <div class="span6 offset3" style="text-align:center">
+        <h2 style="margin-bottom:20px;text-align:center">
+            { __("Your account has been deleted.") }
+        </h2>
+        <a href="/" class="btn btn-primary btn-large">{ __("Goodbye!") }</a>
     </div>
+</div>
 
 {:elseif changeEmail}
 
-	<div class="row">
-	    <div class="span6 offset3">
-	    	<div class="form-horizontal edit-account">
-	            <h2>{ __("account / email") }</h2>
-	            <p>{ __("account / confirm-email-change") }</p>
-            
-	            {#if errors && errors.length }
-	            	<div class="alert">
-		            	<ul style="margin-bottom: 0;">
-		            		{#each errors as message}
-		            			<li>{@html message }</li>
-	            			{/each}
-		            	</ul>	
-	            	</div>
-	            {/if}	        	
+<div class="row">
+    <div class="span6 offset3">
+        <div class="form-horizontal edit-account">
+            <h2>{ __("account / email") }</h2>
+            <p>{ __("account / confirm-email-change") }</p>
 
-	            <fieldset>
-	                <div class="control-group">
-	                    <label class="control-label" for="email">{ __("E-Mail") }:</label>
-	                    <div class="controls">
-	                        <input disabled="{ !changeEmail }" bind:value="email" type="text" />
-	                    </div>
-	                </div>
-	                
-	                <div class="">
-	                    <button on:click="set({changeEmail: false})" class="btn btn-default">{ __( "Back") }</button>
-	                    <button on:click="changeEmail()" style="float: right;" class="btn btn-save btn-primary">
-	                    	<i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;                    		
-	                    { __( "account / email") }
-	                </button>
-	                </div>
-	            </fieldset>
-	        </div>	
-	    </div>
-	</div>
+            {#if errors && errors.length }
+            <div class="alert">
+                <ul style="margin-bottom: 0;">
+                    {#each errors as message}
+                    <li>{@html message }</li>
+                    {/each}
+                </ul>
+            </div>
+            {/if}
 
-{:else}
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="email">{ __("E-Mail") }:</label>
+                    <div class="controls">
+                        <input disabled="{ !changeEmail }" bind:value="email" type="text" />
+                    </div>
+                </div>
 
-	{#if messages && messages.length }
-		<div class="row" style="margin-top: 20px;">
-			<div class="span6 offset3">
-		    	<div class="alert alert-success">
-		        	<ul style="margin-bottom: 0;">
-		        		{#each messages as message}
-		        			<li>{@html message }</li>
-		    			{/each}
-		        	</ul>	
-		    	</div>
-	    	</div>
-		</div>
-    {/if}	  
+                <div class="">
+                    <button on:click="set({changeEmail: false})" class="btn btn-default">
+                        { __( "Back") }
+                    </button>
+                    <button
+                        on:click="changeEmail()"
+                        style="float: right;"
+                        class="btn btn-save btn-primary"
+                    >
+                        <i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
+                        { __( "account / email") }
+                    </button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
 
-	<div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
-	    <div class="span6 offset3">			
-	    	<div>
-				<div>
-					{ __("E-Mail") }:
-				</div>
-				<div>
-					<input disabled="{ !changeEmail }" value="{ originalEmail }" type="text"/>
-				</div>
-				<div>
-					<button on:click="set({changeEmail: true})" class="btn btn-save btn-default">{ __( "account / email") }</button>
-				</div>    			
-	    	</div>
+{:else} {#if messages && messages.length }
+<div class="row" style="margin-top: 20px;">
+    <div class="span6 offset3">
+        <div class="alert alert-success">
+            <ul style="margin-bottom: 0;">
+                {#each messages as message}
+                <li>{@html message }</li>
+                {/each}
+            </ul>
+        </div>
+    </div>
+</div>
+{/if}
 
-	    	<div>
-				<div>
-					{ __("Password") }:
-				</div>
-				<div>
-					<input disabled value="abcdefgh" type="password"/>
-				</div>
-				<div>
-					<button on:click="set({changePassword: true})" class="btn btn-save btn-default">{ __("account / password") }</button>
-				</div>    			
-	    	</div>
+<div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
+    <div class="span6 offset3">
+        <div>
+            <div>
+                { __("E-Mail") }:
+            </div>
+            <div>
+                <input disabled="{ !changeEmail }" value="{ originalEmail }" type="text" />
+            </div>
+            <div>
+                <button on:click="set({changeEmail: true})" class="btn btn-save btn-default">
+                    { __( "account / email") }
+                </button>
+            </div>
+        </div>
 
-	    	<div style="text-align: center; display: block;">
-	        	{ __("account / or") } <span class="link" on:click="set({deleteAccount: true})" href="#">{ __("account / delete") }</span>.
-	        </div>
-	    </div>
-	</div>
+        <div>
+            <div>
+                { __("Password") }:
+            </div>
+            <div>
+                <input disabled value="abcdefgh" type="password" />
+            </div>
+            <div>
+                <button on:click="set({changePassword: true})" class="btn btn-save btn-default">
+                    { __("account / password") }
+                </button>
+            </div>
+        </div>
+
+        <div style="text-align: center; display: block;">
+            { __("account / or") }
+            <span class="link" on:click="set({deleteAccount: true})" href="#"
+                >{ __("account / delete") }</span
+            >.
+        </div>
+    </div>
+</div>
 
 {/if}
 
-
 <script>
-	import {__} from '../shared/l10n';
-	import {getJSON, putJSON, fetchJSON} from '../shared/utils';
-	import checkPassword from '../shared/checkPassword';
+    /* global CryptoJS */
+    import { __ } from '../shared/l10n';
+    import { getJSON, putJSON, fetchJSON } from '../shared/utils';
+    import checkPassword from '../shared/checkPassword';
 
-	export default {
-		helpers: {
-			__
-		},
-		onstate({ changed, current, previous }) {
-		
-			if (changed.email && !previous) {
-				this.set({originalEmail: current.email});
-			}
-		},
-		methods: {
-			changeEmail() {
-				var { email, userId } = this.get();
+    export default {
+        data() {
+            return {
+                changePassword: false,
+                changeEmail: false,
+                deleteAccount: false,
+                showPasswordInPlaintext: false,
+                messages: [],
+                currentPassword: '',
+                newPassword1: '',
+                newPassword2: '',
+                confirmPassword: ''
+            };
+        },
 
-				this.set({savingEmail: true});
-						        
-		        putJSON('/api/users/' + userId, JSON.stringify({email}), (res) => {
-		        	this.set({savingEmail: false});
+        helpers: {
+            __
+        },
 
-	        		var messages = [],
-	        			errors = [];
+        methods: {
+            changeEmail() {
+                var { email, userId } = this.get();
 
-	        		if (res.status == "error") {
-	        			errors.push(res.message);
-	        		}
+                this.set({ savingEmail: true });
 
-	        		if (res.data && res.data.messages) {
-	        			res.data.messages.forEach((msg) => {
-	        				messages.push(msg);
-	        			});
-	        		}
+                putJSON('/api/users/' + userId, JSON.stringify({ email }), res => {
+                    this.set({ savingEmail: false });
 
-	        		if (res.data && res.data.errors) {
-	        			res.data.errors.forEach((msg) => {
-	        				errors.push(msg);
-	        			});
-	        		}
+                    var messages = [];
+                    var errors = [];
 
-	        		if (errors.length == 0) {
-	        			this.set({originalEmail: email, changeEmail: false, messages, errors: []});
-	        		} else {
-	        			this.set({errors});
-	        		}	        		
+                    if (res.status === 'error') {
+                        errors.push(res.message);
+                    }
+
+                    if (res.data && res.data.messages) {
+                        res.data.messages.forEach(msg => {
+                            messages.push(msg);
+                        });
+                    }
+
+                    if (res.data && res.data.errors) {
+                        res.data.errors.forEach(msg => {
+                            errors.push(msg);
+                        });
+                    }
+
+                    if (errors.length === 0) {
+                        this.set({
+                            originalEmail: email,
+                            changeEmail: false,
+                            messages,
+                            errors: []
+                        });
+                    } else {
+                        this.set({ errors });
+                    }
                 });
-			},
-			changePassword() {
-				var { currentPassword, newPassword1, newPassword2, userId } = this.get(),
-					check = checkPassword(currentPassword, newPassword1, newPassword2);
+            },
+            changePassword() {
+                var { currentPassword, newPassword1, newPassword2, userId } = this.get();
+                var check = checkPassword(currentPassword, newPassword1, newPassword2);
 
-	            if (check === true) {
-	                this.set({savingPassword: true});
+                if (check === true) {
+                    this.set({ savingPassword: true });
 
-	                getJSON("/api/auth/salt", (res) => {
-						if (res.status != 'ok') {
-							this.set({
-								errors: ["Could not load salt."],
-								savingPassword: false
-							});
+                    getJSON('/api/auth/salt', res => {
+                        if (res.status !== 'ok') {
+                            this.set({
+                                errors: ['Could not load salt.'],
+                                savingPassword: false
+                            });
 
-							return;
-						}
+                            return;
+                        }
 
-						var salt = res.data.salt,
-                            payload = {
-                                oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
-                                pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
-                            };                       
+                        var salt = res.data.salt;
+                        var payload = {
+                            oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
+                            pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
+                        };
 
-                        putJSON('/api/users/' + userId, JSON.stringify(payload), (res) => {
-                        	this.set({savingPassword: false, currentPassword: "", 
-                        			newPassword1: "", newPassword2: ""});
+                        putJSON('/api/users/' + userId, JSON.stringify(payload), res => {
+                            this.set({
+                                savingPassword: false,
+                                currentPassword: '',
+                                newPassword1: '',
+                                newPassword2: ''
+                            });
 
-                        	var messages = [],
-			        			errors = [];
+                            var messages = [];
+                            var errors = [];
 
-			        		if (res.status == "error") {
-			        			errors.push(res.message);
-			        		}
+                            if (res.status === 'error') {
+                                errors.push(res.message);
+                            }
 
-			        		if (res.data && res.data.messages) {
-			        			res.data.messages.forEach((msg) => {
-			        				messages.push(msg);
-			        			});
-			        		}
+                            if (res.data && res.data.messages) {
+                                res.data.messages.forEach(msg => {
+                                    messages.push(msg);
+                                });
+                            }
 
-			        		if (res.data && res.data.errors) {
-			        			res.data.errors.forEach((msg) => {
-			        				errors.push(msg);
-			        			});
-			        		}
+                            if (res.data && res.data.errors) {
+                                res.data.errors.forEach(msg => {
+                                    errors.push(msg);
+                                });
+                            }
 
-			        		if (errors.length == 0) {
-			        			messages.push("Your password was changed sucessfully");
-			        			this.set({changePassword: false, messages, errors: []});
-			        		} else {
-			        			this.set({errors});
-			        		}	 
-                        });					
-	                });
-            	} else {
-					var errors = [check];
-					this.set({errors});
-            	}
-			},
-			deleteAccount() {
-				var { confirmPassword } = this.get();
+                            if (errors.length === 0) {
+                                messages.push('Your password was changed sucessfully');
+                                this.set({ changePassword: false, messages, errors: [] });
+                            } else {
+                                this.set({ errors });
+                            }
+                        });
+                    });
+                } else {
+                    var errors = [check];
+                    this.set({ errors });
+                }
+            },
+            deleteAccount() {
+                var { confirmPassword } = this.get();
 
-				this.set({deletingAccount: true});
+                this.set({ deletingAccount: true });
 
-				getJSON("/api/auth/salt", (res) => {
-					if (res.status != 'ok') {
-						this.set({
-							errors: ["Could not load salt."],
-							deletingAccount: false
-						});
+                getJSON('/api/auth/salt', res => {
+                    if (res.status !== 'ok') {
+                        this.set({
+                            errors: ['Could not load salt.'],
+                            deletingAccount: false
+                        });
 
-						return;
-					}
+                        return;
+                    }
 
-					var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
+                    var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
 
-					fetchJSON('/api/users/current?pwd=' + passwordHash, "DELETE", "include", JSON.stringify({pwd: passwordHash}), (res) => {
-						this.set({deletingAccount: false});
+                    fetchJSON(
+                        '/api/users/current?pwd=' + passwordHash,
+                        'DELETE',
+                        'include',
+                        JSON.stringify({ pwd: passwordHash }),
+                        res => {
+                            this.set({ deletingAccount: false });
 
-						var messages = [],
-		        			errors = [];
+                            var messages = [];
+                            var errors = [];
 
-		        		if (res.status == "error") {
-		        			errors.push(res.message);
-		        		}
+                            if (res.status === 'error') {
+                                errors.push(res.message);
+                            }
 
-		        		if (res.data && res.data.messages) {
-		        			res.data.messages.forEach((msg) => {
-		        				messages.push(msg);
-		        			});
-		        		}
+                            if (res.data && res.data.messages) {
+                                res.data.messages.forEach(msg => {
+                                    messages.push(msg);
+                                });
+                            }
 
-		        		if (res.data && res.data.errors) {
-		        			res.data.errors.forEach((msg) => {
-		        				errors.push(msg);
-		        			});
-		        		}
+                            if (res.data && res.data.errors) {
+                                res.data.errors.forEach(msg => {
+                                    errors.push(msg);
+                                });
+                            }
 
-		        		if (errors.length == 0) {		        			
-		        			this.set({deleteAccount2: false, deleteAccount3: true});
-		        		} else {
-		        			this.set({errors});
-		        		}	 
-					});
-				});
-			}
-		},
-		data() {
-			return {
-				changePassword: false,
-				changeEmail: false,
-				deleteAccount: false,
-				showPasswordInPlaintext: false,
-				messages: [],
-				currentPassword: "",
-				newPassword1: "",
-				newPassword2: "",
-				confirmPassword: ""
-			}
-		}
-	}
-</script>	
+                            if (errors.length === 0) {
+                                this.set({ deleteAccount2: false, deleteAccount3: true });
+                            } else {
+                                this.set({ errors });
+                            }
+                        }
+                    );
+                });
+            }
+        },
 
+        onstate({ changed, current, previous }) {
+            if (changed.email && !previous) {
+                this.set({ originalEmail: current.email });
+            }
+        }
+    };
+</script>
 
 <style type="text/css" lang="less">
-	.edit-account {  	
-		#input-email,
-		#input-password {
-	  		margin-bottom: 0px;
-		}
-	}
+    .edit-account {
+        #input-email,
+        #input-password {
+            margin-bottom: 0px;
+        }
+    }
 
-	.edit-account > .span6 > div {
-		display: flex;
-		justify-content: space-around;
-		font-size: 18px;
+    .edit-account > .span6 > div {
+        display: flex;
+        justify-content: space-around;
+        font-size: 18px;
 
-		div::first-child {
-			text-align: right;
-		}
+        div::first-child {
+            text-align: right;
+        }
 
-		div::last-child {
-			text-align: right;
-		}
-	}
+        div::last-child {
+            text-align: right;
+        }
+    }
 
-	.delete-account {
-		padding-top: 10px;
+    .delete-account {
+        padding-top: 10px;
 
-	    h2 {
-	    	margin: 0px 0px 20px 0px;
-	    }
+        h2 {
+            margin: 0px 0px 20px 0px;
+        }
 
-	    .iconholder {
-			color: #c71e1d;
-			text-align: center;
-			display: block;
-			font-size: 48px;
-			height: 55px;
-		}
-	}	
+        .iconholder {
+            color: #c71e1d;
+            text-align: center;
+            display: block;
+            font-size: 48px;
+            height: 55px;
+        }
+    }
 
-	.link {
-	    color: #1d81a2;
-	    font-weight: bold;
-	    cursor: pointer;
-	}
+    .link {
+        color: #1d81a2;
+        font-weight: bold;
+        cursor: pointer;
+    }
 </style>

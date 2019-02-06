@@ -2,18 +2,19 @@
     <div class="row">
         <div class="span4">
             <div class="sidebar">
-
-            {#if activeColumn}
-                {#if customColumn}
+                {#if activeColumn} {#if customColumn}
 
                 <ComputedColumnEditor
                     on:updateTable="refs.hot.update()"
                     on:renderTable="refs.hot.render()"
                     on:unselect="set({activeColumn:false})"
                     bind:column="customColumn"
-                    bind:columns />
+                    bind:columns
+                />
 
-                <button on:click="force(event, true)" class="btn">{__("describe / edit-format")}</button>
+                <button on:click="force(event, true)" class="btn">
+                    {__("describe / edit-format")}
+                </button>
 
                 {:elseif columnFormat}
 
@@ -21,19 +22,16 @@
                     on:updateTable="refs.hot.update()"
                     on:renderTable="refs.hot.render()"
                     bind:column="columnFormat"
-                    bind:columns />
+                    bind:columns
+                />
 
-                    {#if columnFormat.isComputed}
-                    <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {__("describe / edit-formula")}</button>
-                    {/if}
-
-                {/if}
-
-                {#if activeColumn.type() == 'number'}
+                {#if columnFormat.isComputed}
+                <button class="btn" on:click="force(event, false)">
+                    <i class="fa  fa-chevron-left"></i> {__("describe / edit-formula")}
+                </button>
+                {/if} {/if} {#if activeColumn.type() == 'number'}
                 <Histogram bind:values="activeValues" bind:format="activeFormat" />
-                {/if}
-
-            {:elseif multiSelection}
+                {/if} {:elseif multiSelection}
 
                 <h3 class="first">{__("describe / show-hide-multi")}</h3>
 
@@ -50,15 +48,13 @@
                     </li>
                 </ul>
 
-            {:else}
+                {:else}
 
                 <h3 class="first">{ __("Make sure the data looks right") }</h3>
 
                 <p>{@html __("describe / data-looks-right") }</p>
 
-                <Checkbox
-                    label="{ __("First row as label") }"
-                    bind:value="firstRowIsHeader" />
+                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" />
 
                 <h4>{__("describe / locale-select / hed")}</h4>
 
@@ -70,35 +66,50 @@
                     {/each}
                 </select>
 
-            {/if}
+                {/if}
 
-                <hr>
+                <hr />
 
                 <div class="btn-group">
-                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {__("Back")}</a>
-                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed"> {__("Proceed")} <i class="icon-chevron-right icon-white"></i></a>
+                    <a class="btn submit" href="upload"
+                        ><i class="icon-chevron-left"></i> {__("Back")}</a
+                    >
+                    <a href="visualize" class="submit btn btn-primary" id="describe-proceed">
+                        {__("Proceed")} <i class="icon-chevron-right icon-white"></i
+                    ></a>
                 </div>
-
             </div>
         </div>
         <div class="span8">
-
             <div class="help">
                 {@html __('describe / info-table-header')} <img src="/static/img/arrow.svg" />
             </div>
             <div class="pull-right" style="margin-bottom: 10px">
-
                 <div class="sort-box">
                     <div class="btn-group" ref:sortDropdownGroup>
                         <button class="btn dropdown-toggle" data-toggle="dropdown">
-                           {@html __('describe / sort-by')}… <span class="caret"></span>
+                            {@html __('describe / sort-by')}… <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu sort-menu">
-                            <li class="{'-'==sortBy?'active':''}"><a on:click="sort(event, '-')" href="#s">{@html __('describe / no-sorting')}</a></li>
+                            <li class="{'-'==sortBy?'active':''}">
+                                <a on:click="sort(event, '-')" href="#s"
+                                    >{@html __('describe / no-sorting')}</a
+                                >
+                            </li>
                             {#each columns as col}
-                            <li class="{col.name()==sortBy?'active':''}"><a on:click="sort(event, col.name(), true)" href="#/{col.name()}">
-                                <i on:click="sort(event, col.name(), true)" class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-asc fa-fw"></i>
-                                <i on:click="sort(event, col.name(), false)" class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-desc fa-fw"></i>&nbsp;&nbsp;&nbsp;{col.title()}</a></li>
+                            <li class="{col.name()==sortBy?'active':''}">
+                                <a on:click="sort(event, col.name(), true)" href="#/{col.name()}">
+                                    <i
+                                        on:click="sort(event, col.name(), true)"
+                                        class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-asc fa-fw"
+                                    ></i>
+                                    <i
+                                        on:click="sort(event, col.name(), false)"
+                                        class="fa fa-sort-{col.type()=='text'?'alpha':'amount'}-desc fa-fw"
+                                    ></i
+                                    >&nbsp;&nbsp;&nbsp;{col.title()}</a
+                                >
+                            </li>
                             {/each}
                         </ul>
                     </div>
@@ -107,34 +118,39 @@
                 <div class="search-box form-search">
                     <i class="im im-magnifier"></i>
                     <div class="{searchResults.length > 0 ? 'input-append' : ''}">
-                        <input autocomplete="screw-you-google-chrome" type="search" on:keypress="keyPress(event)" placeholder="{__('Search data table')}" bind:value="search" ref:search class="{searchResults.length > 0?'with-results':''} search-query" />
+                        <input
+                            autocomplete="screw-you-google-chrome"
+                            type="search"
+                            on:keypress="keyPress(event)"
+                            placeholder="{__('Search data table')}"
+                            bind:value="search"
+                            ref:search
+                            class="{searchResults.length > 0?'with-results':''} search-query"
+                        />
                         {#if searchResults.length > 0}
                         <div class="btn-group">
-                          <button class="btn" on:click="nextResult(-1)">
-                            <i class="fa fa-chevron-up"></i></button>
-                          <button class="btn" on:click="nextResult(+1)">
-                            <i class="fa fa-chevron-down"></i></button>
+                            <button class="btn" on:click="nextResult(-1)">
+                                <i class="fa fa-chevron-up"></i>
+                            </button>
+                            <button class="btn" on:click="nextResult(+1)">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
                         </div>
                         {/if}
                     </div>
 
                     {#if search}
                     <div class="results">
-                        {#if searchResults.length > 0}
-                            {searchIndexSafe+1}
-                            {__("describe / search / of") }
-                            {searchResults.length}
-                            {__("describe / search / results") }
-                        {:elseif search}
-                            { __("describe / search / no-matches") }
-                        {/if}
+                        {#if searchResults.length > 0} {searchIndexSafe+1} {__("describe / search /
+                        of") } {searchResults.length} {__("describe / search / results") } {:elseif
+                        search} { __("describe / search / no-matches") } {/if}
                     </div>
                     {/if}
                 </div>
-
             </div>
 
-            <Handsontable ref:hot
+            <Handsontable
+                ref:hot
                 bind:data="chartData"
                 bind:transpose
                 bind:firstRowIsHeader
@@ -146,14 +162,26 @@
                 bind:searchResults
                 bind:searchIndex
                 bind:multiSelection
-                on:resetSort="set({sortBy:'-'})" />
+                on:resetSort="set({sortBy:'-'})"
+            />
 
             <div class="buttons below-table pull-right">
-                <button class="btn transpose" on:click="toggleTranspose()"><img src="/static/css/chart-editor/transpose.png"> {__("describe / transpose-long")}</button>
+                <button class="btn transpose" on:click="toggleTranspose()">
+                    <img src="/static/css/chart-editor/transpose.png" /> {__("describe /
+                    transpose-long")}
+                </button>
 
-                <button on:click="addComputedColumn()" class="btn computed-columns"><i class="fa fa-calculator"></i> {__("computed columns / add-btn")}…</button>
+                <button on:click="addComputedColumn()" class="btn computed-columns">
+                    <i class="fa fa-calculator"></i> {__("computed columns / add-btn")}…
+                </button>
 
-                <button on:click="revertChanges()" class="btn {has_changes?'':'disabled'}" id="reset-data-changes"><i class="fa fa-undo"></i> {__("Revert changes")}...</button>
+                <button
+                    on:click="revertChanges()"
+                    class="btn {has_changes?'':'disabled'}"
+                    id="reset-data-changes"
+                >
+                    <i class="fa fa-undo"></i> {__("Revert changes")}...
+                </button>
             </div>
         </div>
     </div>
@@ -167,47 +195,50 @@
     import Handsontable from '../controls/hot/Handsontable.html';
     import Checkbox from '../controls/Checkbox.html';
 
-    import {__} from '../shared/l10n';
-    import {arrayToObject} from '../shared/utils.js';
+    import { __ } from '../shared/l10n';
+    import { arrayToObject } from '../shared/utils.js';
     import clone from '../shared/clone.js';
 
     export default {
-        components: { Handsontable, Checkbox, ComputedColumnEditor,
-            CustomColumnFormat, Histogram },
+        components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat, Histogram },
         helpers: { __ },
         computed: {
-            searchIndexSafe ({ searchIndex, searchResults }) {
-                if (searchIndex<0) searchIndex+=searchResults.length;
+            searchIndexSafe({ searchIndex, searchResults }) {
+                if (searchIndex < 0) searchIndex += searchResults.length;
                 searchIndex = searchIndex % searchResults.length;
                 return searchIndex;
             },
-            customColumn ({ activeColumn, forceColumnFormat }) {
-                return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
+            customColumn({ activeColumn, forceColumnFormat }) {
+                return activeColumn && !forceColumnFormat && activeColumn.isComputed
+                    ? activeColumn
+                    : false;
             },
-            columnFormat ({ activeColumn, forceColumnFormat }) {
-                return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
+            columnFormat({ activeColumn, forceColumnFormat }) {
+                return activeColumn && (!activeColumn.isComputed || forceColumnFormat)
+                    ? activeColumn
+                    : false;
             },
-            activeValues ({ activeColumn }) {
+            activeValues({ activeColumn }) {
                 return activeColumn ? activeColumn.values() : [];
             },
-            activeFormat ({ activeColumn, $dw_chart }) {
+            activeFormat({ activeColumn, $dw_chart }) {
                 return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
             },
-            columns ({ activeColumn }) {
+            columns({ activeColumn }) {
                 const ds = chart.dataset();
                 if (!activeColumn) return ds ? ds.columns() : [];
                 try {
                     return ds.columns().filter(col => !col.isComputed);
-                } catch(e) {
+                } catch (e) {
                     return [];
                 }
             },
-            sorting ({ sortBy, sortDir }) {
-                return {sortBy,sortDir};
+            sorting({ sortBy, sortDir }) {
+                return { sortBy, sortDir };
             }
         },
         oncreate() {
-            window.addEventListener('keypress', (event) => {
+            window.addEventListener('keypress', event => {
                 if (event.ctrlKey && event.key == 'f') {
                     event.preventDefault();
                     if (this.refs.search != window.document.activeElement) {
@@ -218,39 +249,37 @@
                 }
             });
             const sync = (svelte_key, metadata_key) => {
-                this.observe(svelte_key, (svelte_value) => {
+                this.observe(svelte_key, svelte_value => {
                     this.store.get('dw_chart').set(`${metadata_key}`, svelte_value);
                     if (svelte_key == 'locale') {
                         if (!svelte_value) return;
-                        this.store.get('dw_chart')
-                            .locale(svelte_value, () => {
-                                this.refs.hot.render();
-                            });
+                        this.store.get('dw_chart').locale(svelte_value, () => {
+                            this.refs.hot.render();
+                        });
                     }
                 });
             };
             sync('transpose', 'metadata.data.transpose');
             sync('firstRowIsHeader', 'metadata.data.horizontal-header');
             sync('locale', 'language');
-            this.observe('activeColumn', (ac) => {
-                if (!ac) this.set({forceColumnFormat:false});
+            this.observe('activeColumn', ac => {
+                if (!ac) this.set({ forceColumnFormat: false });
             });
         },
         methods: {
-            nextResult (diff) {
-                let {searchIndex, searchResults} = this.get();
+            nextResult(diff) {
+                let { searchIndex, searchResults } = this.get();
                 searchIndex += diff;
-                if (searchIndex<0) searchIndex+=searchResults.length;
+                if (searchIndex < 0) searchIndex += searchResults.length;
                 searchIndex = searchIndex % searchResults.length;
-                this.set({searchIndex});
+                this.set({ searchIndex });
             },
-            keyPress (event) {
-                if (event.key == 'F3' || event.key == 'Enter')
-                    this.nextResult(event.shiftKey ? -1 : 1);
+            keyPress(event) {
+                if (event.key == 'F3' || event.key == 'Enter') this.nextResult(event.shiftKey ? -1 : 1);
             },
             toggleTranspose() {
-                this.set({activeColumn: false});
-                this.set({transpose: !this.get('transpose')});
+                this.set({ activeColumn: false });
+                this.set({ transpose: !this.get('transpose') });
                 setTimeout(() => this.refs.hot.update(), 500);
                 // ;
             },
@@ -260,7 +289,7 @@
                 chart.saveSoon();
                 this.refs.hot.update();
             },
-            cmFocus () {
+            cmFocus() {
                 setTimeout(() => {
                     this.refs.hot.get('hot').render();
                 }, 100);
@@ -285,13 +314,13 @@
             sort(event, col, ascending) {
                 event.preventDefault();
                 event.stopPropagation();
-                this.set({sortBy: col, sortDir: ascending});
+                this.set({ sortBy: col, sortDir: ascending });
                 // hide the dropdown menu
                 this.refs.sortDropdownGroup.classList.remove('open');
             },
-            force(event, val=true) {
+            force(event, val = true) {
                 event.preventDefault();
-                this.set({forceColumnFormat:val});
+                this.set({ forceColumnFormat: val });
             },
             hideMultiple(columns, hide) {
                 const chart = this.store.get('dw_chart');
@@ -299,7 +328,7 @@
                 columns.forEach(col => {
                     if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
                     else {
-                        colFmt[col.name()] = {type:'auto',ignore:hide};
+                        colFmt[col.name()] = { type: 'auto', ignore: hide };
                     }
                 });
                 chart.set('metadata.data.column-format', colFmt);
@@ -307,7 +336,7 @@
                 setTimeout(() => {
                     this.refs.hot.get('hot').render();
                 }, 10);
-                this.set({multiSelection: false});
+                this.set({ multiSelection: false });
             }
         },
         data() {
@@ -326,7 +355,7 @@
                 forceColumnFormat: false,
                 searchResults: [],
                 sortBy: '-',
-                sortDir: true,
+                sortDir: true
             };
         }
     };
@@ -413,16 +442,14 @@
     :global(.vis-option-type-checkbox) {
         label {
             display: inline-block;
-            width: auto!important;
+            width: auto !important;
         }
     }
 
     :global(.sidebar span.type-hl) {
-        background-color:white;
-        padding:0 3px;
-        font-family:'Roboto Mono';
+        background-color: white;
+        padding: 0 3px;
+        font-family: 'Roboto Mono';
         border: 1px solid #cccccc;
     }
-
 </style>
-

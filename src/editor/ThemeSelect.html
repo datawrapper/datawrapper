@@ -1,17 +1,22 @@
-<Select label="Design" options="{themeOptions}" labelWidth="80px" width="200px" bind:value="$theme" />
+<select
+    label="Design"
+    options="{themeOptions}"
+    labelWidth="80px"
+    width="200px"
+    bind:value="$theme"
+/>
 
 <script>
     import Select from '../controls/Select.html';
 
     export default {
-        components: {Select},
+        components: { Select },
         computed: {
-            themeOptions({$themes}) {
+            themeOptions({ $themes }) {
                 return $themes.map(t => {
-                    return {value: t.id, label: t.title};
-                })
+                    return { value: t.id, label: t.title };
+                });
             }
         }
-    }
-
+    };
 </script>

@@ -1,46 +1,45 @@
 <form class="upload-form">
-
     <div class="control-group">
-        <textarea bind:value="chartData" readonly="{readonly}" id="upload-data-text" style="resize:none" placeholder="{placeholder}"></textarea>
+        <textarea
+            bind:value="chartData"
+            readonly="{readonly}"
+            id="upload-data-text"
+            style="resize:none"
+            placeholder="{placeholder}"
+        ></textarea>
     </div>
-
 </form>
 
 <script>
     /* globals __,dw */
-    import {putJSON} from '../shared/utils.js';
+    import { putJSON } from '../shared/utils.js';
     import _throttle from 'underscore-es/throttle';
-    import {__} from '../shared/l10n';
+    import { __ } from '../shared/l10n';
 
     let app;
     const chart = dw.backend.currentChart;
 
     const updateData = _throttle(() => {
-        const {chartData} = app.get();
+        const { chartData } = app.get();
         putJSON(`/api/charts/${chart.get('id')}/data`, chartData);
     }, 1000);
-
 
     export default {
         data() {
             return {
-                placeholder: __("upload / paste here"),
-            }
+                placeholder: __('upload / paste here')
+            };
         },
         helpers: { __ },
         oncreate() {
             app = this;
         },
-        onupdate({changed, current, previous}) {
-            if (changed.chartData && current.chartData && previous && previous.chartData != current.chartData) {
-                updateData();
-            }
-        },
-    }
+        onstate
+    };
 </script>
 
 <style>
-textarea#upload-data-text {
-    height: 260px;
-}
+    textarea#upload-data-text {
+        height: 260px;
+    }
 </style>

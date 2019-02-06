@@ -5,4 +5,4 @@ import { Store } from 'svelte/store.js';
 
 const data = {};
 
-export default {App, Chart, data};
+export default { App, Chart, data };

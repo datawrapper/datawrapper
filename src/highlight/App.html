@@ -10,70 +10,75 @@
     </div>
     <p class="highlighted-series" style="margin-top: 5px">
         {#each highlightedElements as el}
-        <span data-series="{ el.key }" class="badge {el.valid ? 'badge-info' : ''}"><i on:click="remove(el.key)" class="fa fa-remove"></i> { el.key }</span> &nbsp;
-        {/each}
+        <span data-series="{ el.key }" class="badge {el.valid ? 'badge-info' : ''}"
+            ><i on:click="remove(el.key)" class="fa fa-remove"></i> { el.key }</span
+        >
+        &nbsp; {/each}
     </p>
 </div>
 
 <script>
-    import {__} from '../shared/l10n';
+    import { __ } from '../shared/l10n';
 
     export default {
         helpers: { __ },
         methods: {
-            add (element) {
-                const {highlighted} = this.get();
+            add(element) {
+                const { highlighted } = this.get();
                 if (highlighted.indexOf(element) < 0) highlighted.push(element);
-                this.set({highlighted});
-                setTimeout(() => this.set({selected:'---'}), 30);
+                this.set({ highlighted });
+                setTimeout(() => this.set({ selected: '---' }), 30);
             },
-            remove (element) {
-                const {highlighted} = this.get();
+            remove(element) {
+                const { highlighted } = this.get();
                 highlighted.splice(highlighted.indexOf(element), 1);
-                this.set({highlighted});
+                this.set({ highlighted });
             }
         },
         computed: {
-            highlightedElements ({ highlighted, elements }) {
+            highlightedElements({ highlighted, elements }) {
                 const els = _.indexBy(elements, 'key');
-                return highlighted.map((k) => {
+                return highlighted.map(k => {
                     return {
                         key: k,
                         valid: els[k]
                     };
                 });
             },
-            elements ({ $vis }) {
+            elements({ $vis }) {
                 if (!$vis) return [];
-                return $vis.keys().sort().map((key) => {
-                    const keyLbl = $vis.keyLabel(key);
-                    return {
-                        key,
-                        label: key + (key != keyLbl ? ` (${keyLbl})` : '')
-                    };
-                });
+                return $vis
+                    .keys()
+                    .sort()
+                    .map(key => {
+                        const keyLbl = $vis.keyLabel(key);
+                        return {
+                            key,
+                            label: key + (key != keyLbl ? ` (${keyLbl})` : '')
+                        };
+                    });
             }
         },
         oncreate() {
             const me = this;
-            this.store.observe('vis', (vis) => {
+            this.store.observe('vis', vis => {
                 if (!vis) return;
-                this.set({highlighted: clone(vis.get('highlighted-series')) });
+                this.set({ highlighted: clone(vis.get('highlighted-series')) });
                 vis.chart().onChange((chart, key) => {
                     if (key == 'metadata.visualize.highlighted-series') {
-                        this.set({highlighted: clone(vis.get('highlighted-series')) });
+                        this.set({ highlighted: clone(vis.get('highlighted-series')) });
                     }
                 });
             });
-            this.observe('highlighted', (hl) => {
-                const {vis} = this.store.get();
+            this.observe('highlighted', hl => {
+                const { vis } = this.store.get();
                 if (!vis) return;
                 const old = JSON.stringify(vis.get('highlighted-series'));
                 if (old != JSON.stringify(hl) && vis) {
                     vis.chart().set('metadata.visualize.highlighted-series', clone(hl));
                 }
             });
-            this.observe('selected', (sel) => {
+            this.observe('selected', sel => {
                 if (sel && sel != '---') {
                     this.add(sel);
                 }

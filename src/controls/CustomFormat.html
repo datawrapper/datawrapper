@@ -1,23 +1,22 @@
-
 <div class="control-group vis-option-custom-format {disabled ? 'disabled' : ''}">
     <label class="control-label">
         {@html label }
     </label>
 
     <div class="controls form-inline">
-        {#if selected == 'custom'}
+        {#if selected === 'custom'}
         <div class="small">
             For help on custom formats, check the {@html customFormatHelp}.
         </div>
         {/if}
 
         <select bind:value="selected" disabled="{disabled}">
-        {#each options as opt}
+            {#each options as opt}
             <option value="{opt.f}">{opt.l}</option>
-        {/each}
+            {/each}
             <option value="custom">(custom)</option>
         </select>
-        {#if selected == 'custom'}
+        {#if selected === 'custom'}
         <input bind:value="custom" type="text" disabled="{disabled}" />
         {/if}
     </div>
@@ -25,15 +24,15 @@
 
 <style>
     .control-label {
-        width: 100px!important;
+        width: 100px !important;
     }
     select,
     input {
-        width: 110px!important;
+        width: 110px !important;
         vertical-align: baseline;
     }
     input {
-        width: 100px!important;
+        width: 100px !important;
     }
     .small {
         font-size: 12px;
@@ -48,27 +47,35 @@
     }
     .disabled select,
     .disabled input {
-        opacity: 0.5
+        opacity: 0.5;
     }
 </style>
 
 <script>
     export default {
         computed: {
-            customFormatHelp ({ axisCol, disabled }) {
+            customFormatHelp({ axisCol, disabled }) {
                 if (!axisCol) return;
-                if (axisCol.type() == 'date') return `${disabled ? '' : '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">'}moment.js documentation${disabled ? '' : '</a>'}`;
-                if (axisCol.type() == 'number') return `${disabled ? '' : '<a href="http://numeraljs.com/#format" target="_blank">'}numeral.js documentation${disabled ? '' : '</a>'}`;
+                if (axisCol.type() === 'date')
+                    return `${
+                        disabled
+                            ? ''
+                            : '<a href="http://momentjs.com/docs/#/displaying/format/" target="_blank">'
+                    }moment.js documentation${disabled ? '' : '</a>'}`;
+                if (axisCol.type() === 'number')
+                    return `${
+                        disabled ? '' : '<a href="http://numeraljs.com/#format" target="_blank">'
+                    }numeral.js documentation${disabled ? '' : '</a>'}`;
                 return '';
             },
-            axisCol ({ $vis, $dataset, axis }) {
+            axisCol({ $vis, $dataset, axis }) {
                 if (!$vis || !axis) return null;
                 const colids = $vis.axes()[axis];
-                return $dataset.column(typeof colids == 'object' ? colids[0] : colids);
+                return $dataset.column(typeof colids === 'object' ? colids[0] : colids);
             },
-            options ({ axisCol }) {
+            options({ axisCol }) {
                 if (!axisCol) return [];
-                if (axisCol.type() == 'number') {
+                if (axisCol.type() === 'number') {
                     // todo: translate labels
                     return [
                         { l: '1,000[.00]', f: '0,0.[00]' },
@@ -87,10 +94,10 @@
                         { l: '1st', f: '0o' },
                         { l: '123k', f: '0a' },
                         { l: '123.4k', f: '0.[0]a' },
-                        { l: '123.45k', f: '0.[00]a' },
+                        { l: '123.45k', f: '0.[00]a' }
                     ];
                 }
-                if (axisCol.type() == 'date') {
+                if (axisCol.type() === 'date') {
                     // todo translate
                     return [
                         { l: '2015, 2016', f: 'YYYY' },
@@ -101,7 +108,7 @@
                         { l: 'April, May', f: 'MMMM' },
                         { l: 'Apr, May', f: 'MMM' },
                         { l: 'Apr ’15, May ’15', f: 'MMM ’YY' },
-                        { l: 'April, 2, 3', f: 'MMM|DD' },
+                        { l: 'April, 2, 3', f: 'MMM|DD' }
                     ];
                 }
             }
@@ -118,24 +125,24 @@
         oncreate() {
             // watch select input
             this.observe('selected', (sel, old) => {
-                if (sel == old) return;
-                const {custom} = this.get();
-                this.set({value: sel != 'custom' ? sel : custom+' '});
+                if (sel === old) return;
+                const { custom } = this.get();
+                this.set({ value: sel !== 'custom' ? sel : custom + ' ' });
             });
             // watch external value changes
             this.observe('value', (val, old) => {
-                if (val == old) return;
-                const {options} = this.get();
+                if (val === old) return;
+                const { options } = this.get();
                 let found = false;
                 for (let o of options) {
-                    if (o.f == val) return this.set({selected: val});
+                    if (o.f === val) return this.set({ selected: val });
                 }
-                this.set({selected: 'custom', custom: val});
+                this.set({ selected: 'custom', custom: val });
             });
             this.observe('custom', (val, old) => {
-                if (val == old) return;
-                const {selected} = this.get();
-                if (selected == 'custom') this.set({value:val});
+                if (val === old) return;
+                const { selected } = this.get();
+                if (selected === 'custom') this.set({ value: val });
             });
         }
     };

@@ -1,4 +1,3 @@
-
 /*
  * column abstracts the functionality of each column
  * of a dataset. A column has a type (text|number|date).
@@ -31,25 +30,19 @@ import purifyHtml from '../../shared/purifyHtml.js';
 
 /* globals */
 export default function(name, rows, type) {
-
     function notEmpty(d) {
         return d !== null && d !== undefined && d !== '';
     }
 
     function guessType(sample) {
-
         if (_every(rows, _isNumber)) return columnTypes.number();
         if (_every(rows, _isDate)) return columnTypes.date();
         // guessing column type by counting parsing errors
         // for every known type
-        var types = [
-                columnTypes.date(sample),
-                columnTypes.number(sample),
-                columnTypes.text()
-            ],
-            type,
-            k = rows.filter(notEmpty).length,
-            tolerance = 0.1; // allowing 10% mis-parsed values
+        var types = [columnTypes.date(sample), columnTypes.number(sample), columnTypes.text()];
+        var type;
+        var k = rows.filter(notEmpty).length;
+        var tolerance = 0.1; // allowing 10% mis-parsed values
 
         _each(rows, function(val) {
             _each(types, function(t) {
@@ -66,16 +59,20 @@ export default function(name, rows, type) {
 
     // we pick random 200 non-empty values for column type testing
     var sample = _shuffle(_range(rows.length))
-        .filter(function(i) { return notEmpty(rows[i]); })
+        .filter(function(i) {
+            return notEmpty(rows[i]);
+        })
         .slice(0, 200)
-        .map(function(i) { return rows[i]; });
+        .map(function(i) {
+            return rows[i];
+        });
 
     type = type ? columnTypes[type](sample) : guessType(sample);
 
-    var range,
-        total,
-        origRows = rows.slice(0),
-        title;
+    var range;
+    var total;
+    var origRows = rows.slice(0);
+    var title;
 
     // public interface
     var column = {
@@ -91,8 +88,8 @@ export default function(name, rows, type) {
         // column title (used for presentation)
         title: function() {
             if (arguments.length) {
-              title = arguments[0];
-              return column;
+                title = arguments[0];
+                return column;
             }
             return purifyHtml(title || name);
         },
@@ -120,7 +117,9 @@ export default function(name, rows, type) {
          */
         values: function(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = _map(r, function(d) { return purifyHtml(d); });
+            r = _map(r, function(d) {
+                return purifyHtml(d);
+            });
             return _map(r, type.parse);
         },
 
@@ -128,7 +127,7 @@ export default function(name, rows, type) {
          * apply function to each value
          */
         each: function(f) {
-            for (var i=0; i<rows.length; i++) {
+            for (var i = 0; i < rows.length; i++) {
                 f(column.val(i), i);
             }
         },
@@ -155,7 +154,7 @@ export default function(name, rows, type) {
                     type = columnTypes[o](sample);
                     return column;
                 } else {
-                    throw 'unknown column type: '+o;
+                    throw 'unknown column type: ' + o;
                 }
             }
             return type.name();
@@ -207,7 +206,7 @@ export default function(name, rows, type) {
         },
 
         toString: function() {
-            return name + ' ('+type.name()+')';
+            return name + ' (' + type.name() + ')';
         },
 
         indexOf: function(val) {

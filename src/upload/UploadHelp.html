@@ -8,18 +8,20 @@
         <optgroup label="{group.type}">
             {#each group.datasets as dataset}
             <option value="{dataset}" class="demo-dataset">{dataset.title}</option>
-        {/each}
+            {/each}
         </optgroup>
         {/each}
     </select>
 </div>
 
 <style>
-    select { width: 70%; }
+    select {
+        width: 70%;
+    }
 </style>
 
 <script>
-    import {__} from '../shared/l10n';
+    import { __ } from '../shared/l10n';
 
     /* globals dw */
     export default {
@@ -29,21 +31,11 @@
             };
         },
         helpers: { __ },
-        onupdate({changed, current}) {
-            if (changed.selectedDataset && current.selectedDataset != '--') {
-                const sel = current.selectedDataset;
-                this.set({chartData: sel.data});
-                if (sel.presets) {
-                    Object.keys(sel.presets).forEach(k => {
-                        dw.backend.currentChart.set(k, sel.presets[k]);
-                    });
-                }
-            }
-        },
+        onstate,
         computed: {
             datasetsArray({ datasets }) {
                 return Object.keys(datasets).map(k => datasets[k]);
             }
-        },
-    }
+        }
+    };
 </script>

@@ -1,6 +1,8 @@
 <div class="control-group vis-option-group vis-option-type-number label-{valign||def.valign}">
     {#if label}
-    <label style="width:{width||def.width};" class="control-label {disabled ? 'disabled' : ''}">{@html label }</label>
+    <label style="width:{width||def.width};" class="control-label {disabled ? 'disabled' : ''}"
+        >{@html label }</label
+    >
     {/if}
     <div class="controls" style="width: calc(100% - {width||def.width} - 40px);">
         <slot />
@@ -52,7 +54,7 @@
         helpers: {
             def: {
                 width: '100px',
-                valign: 'baseline',
+                valign: 'baseline'
             }
         }
     };

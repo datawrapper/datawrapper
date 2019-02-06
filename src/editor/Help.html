@@ -71,25 +71,24 @@
 </style>
 
 <script>
-
     export default {
         data() {
             return {
                 visible: false
-            }
+            };
         },
         methods: {
             show() {
                 const t = setTimeout(() => {
-                    this.set({visible: true});
+                    this.set({ visible: true });
                 }, 400);
-                this.set({t});
+                this.set({ t });
             },
             hide() {
-                const {t} = this.get();
+                const { t } = this.get();
                 clearTimeout(t);
-                this.set({visible:false});
+                this.set({ visible: false });
             }
         }
-    }
+    };
 </script>

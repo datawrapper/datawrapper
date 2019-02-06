@@ -13,11 +13,11 @@ const targets = [];
 
 build('upload');
 build('describe');
-build('controls', {no_amd:true});
-build('controls/hot', {no_amd:true});
-build('publish', {append:'_old'});
-build('publish', {no_amd:true, entry:'index.js'});
-build('publish/sidebar', {no_amd:true});
+build('controls', { no_amd: true });
+build('controls/hot', { no_amd: true });
+build('publish', { append: '_old' });
+build('publish', { no_amd: true, entry: 'index.js' });
+build('publish/sidebar', { no_amd: true });
 build('highlight');
 build('editor');
 build('account');
@@ -39,10 +39,11 @@ targets.push({
         buble({
             transforms: { dangerousForOf: true }
         }),
-        production && uglify({
-            mangle: true,
-            output: { comments: /^!/ }
-        })
+        production &&
+            uglify({
+                mangle: true,
+                output: { comments: /^!/ }
+            })
     ]
 });
 
@@ -59,21 +60,25 @@ targets.push({
         buble({
             transforms: { dangerousForOf: true }
         }),
-        production && uglify({
-            mangle: true,
-            output: { comments: /^!/ }
-        })
+        production &&
+            uglify({
+                mangle: true,
+                output: { comments: /^!/ }
+            })
     ]
 });
 
 export default targets;
 
 function build(app_id, opts) {
-    const {no_amd, entry, append} = Object.assign({
-        no_amd: false,
-        entry: 'main.js',
-        append: ''
-    }, opts);
+    const { no_amd, entry, append } = Object.assign(
+        {
+            no_amd: false,
+            entry: 'main.js',
+            append: ''
+        },
+        opts
+    );
     if (process.env.ROLLUP_TGT_APP) {
         if (app_id !== process.env.ROLLUP_TGT_APP) {
             return;
@@ -116,18 +121,22 @@ function build(app_id, opts) {
                     style: ({ content, attributes }) => {
                         if (attributes.lang !== 'less') return;
                         return new Promise((fulfil, reject) => {
-                            less.render(content, {
-                                data: content,
-                                includePaths: ['src'],
-                                sourceMap: true,
-                            }, (err, result) => {
-                                if (err) return reject(err);
+                            less.render(
+                                content,
+                                {
+                                    data: content,
+                                    includePaths: ['src'],
+                                    sourceMap: true
+                                },
+                                (err, result) => {
+                                    if (err) return reject(err);
 
-                                fulfil({
-                                    code: result.css.toString(),
-                                    map: result.map.toString()
-                                });
-                            });
+                                    fulfil({
+                                        code: result.css.toString(),
+                                        map: result.map.toString()
+                                    });
+                                }
+                            );
                         });
                     }
                 }
@@ -147,10 +156,10 @@ function build(app_id, opts) {
             buble({
                 transforms: { dangerousForOf: true }
             }),
-            production && uglify({
-                mangle: true
-            })
+            production &&
+                uglify({
+                    mangle: true
+                })
         ]
     });
 }
-
