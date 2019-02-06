@@ -14,11 +14,8 @@ module.exports = {
     },
     "rules": {
         "no-sequences": "error",
-        "eqeqeq": ["error", "smart"],
-        "no-multiple-empty-lines": ["error", { "max": 1 }],
         "no-console": ["error", { "allow": ["warn", "error"] }],
-        "camelcase": ["warn",{"ignoreDestructuring": true}],
-        "no-console": ["error",{"allow": ["warn","error"]}],
+        "camelcase": ["warn", {"ignoreDestructuring": true}],
         "prettier/prettier": "error",
     },
     "plugins": [
