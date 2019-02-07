@@ -516,18 +516,22 @@ class Chart extends BaseChart {
         $search = [
             '%chart_id%',
             '%chart_url%',
+            '%chart_title%',
+            '%chart_intro%',
             '%chart_width%',
             '%chart_height%',
             '%embed_heights%',
-            '%embed_heights_escaped%'
+            '%embed_heights_escaped%',
         ];
         $replace = [
             $this->getID(),
             $this->getPublicUrl(),
+            htmlentities(strip_tags($this->getTitle())),
+            htmlentities(strip_tags($this->getMetadata('describe.intro'))),
             $this->getMetadata('publish.embed-width'),
             $this->getMetadata('publish.embed-height'),
             json_encode($this->getMetadata('publish.embed-heights')),
-            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights'))),
+            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights')))
         ];
         foreach (publish_get_embed_templates() as $template) {
             $code = str_replace($search, $replace, $template['template']);
