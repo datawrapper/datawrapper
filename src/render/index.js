@@ -1,3 +1,5 @@
+/* globals dw, __dw, $ */
+
 /*
  * This is the JS code we ship with *every* published Datawrapper chart.
  * It's main purpose is to load polyfills for older browsers and handle
@@ -5,7 +7,7 @@
  */
 import getBrowser from '@datawrapper/polyfills';
 
-/* globals dw, __dw, $ */
+import FontFaceObserver from 'fontfaceobserver'
 
 export default function({
     visJSON,
@@ -14,7 +16,9 @@ export default function({
     isPreview,
     chartLocale,
     metricPrefix,
-    templateJS
+    templateJS,
+    fontsJSON,
+    typographyJSON
 }) {
     window.visJSON = visJSON;
 
@@ -77,6 +81,30 @@ export default function({
                 window.__dwParams || {}
             )
         );
+
+        /* Render vis again after fonts have been loaded */
+        const loadingFonts = Array.isArray(fontsJSON) ? [] : Object.keys(fontsJSON)
+        const fonts = new Set(loadingFonts)
+
+        Object.keys(typographyJSON).forEach(key => {
+            const typefaceKey = typographyJSON[key].typeface
+            if (typefaceKey) {
+                const typeFaces = typefaceKey.split(',').map(t => t.trim())
+                typeFaces.forEach(face => fonts.add(face))
+            }
+        })
+
+        const observers = []
+        fonts.forEach(font => {
+            const obs = new FontFaceObserver(font)
+            observers.push(obs.load())
+        })
+
+        Promise.all(observers)
+            .then(() => {
+            __dw.render();
+            })
+            .catch(() => {})
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {

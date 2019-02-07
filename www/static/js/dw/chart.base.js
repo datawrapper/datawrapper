@@ -69,7 +69,6 @@
             }
         }
 
-
         chart.render($chart);
     }
 
