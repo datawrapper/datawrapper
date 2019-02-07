@@ -5,31 +5,29 @@
     </div>
 </div>
 <script>
-
     import PublishLogic from './PublishLogic.html';
-    import {loadScript, loadStylesheet} from '../shared/utils';
+    import { loadScript, loadStylesheet } from '../shared/utils';
 
     export default {
         oncreate() {
-            this.store.observe('publishLogic', (cfg) => {
+            this.store.observe('publishLogic', cfg => {
                 if (cfg) {
                     loadStylesheet(cfg.css);
                     loadScript(cfg.src, () => {
-                        require([cfg.mod], (mod) => {
-                            this.set({PublishLogic: mod.App});
+                        require([cfg.mod], mod => {
+                            this.set({ PublishLogic: mod.App });
                             this.refs.publish.set(cfg.data);
-                        })
-                    })
-                }else {
-                    this.set({PublishLogic});
+                        });
+                    });
+                } else {
+                    this.set({ PublishLogic });
                 }
             });
         },
         data() {
             return {
                 PublishLogic
-            }
+            };
         }
-    }
-
+    };
 </script>

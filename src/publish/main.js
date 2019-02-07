@@ -1,3 +1,4 @@
+/* eslint camelcase: "off" */
 import App from './App.html';
 
 import { Store } from 'svelte/store.js';
