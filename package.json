@@ -39,7 +39,6 @@
         "mocha": "^5.2.0",
         "node.extend": "^2.0.0",
         "prettier": "^1.16.4",
-        "reif": "^1.0.0",
         "reify": "^0.17.3",
         "rollup": "*",
         "rollup-plugin-buble": "*",
