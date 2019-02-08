@@ -53,7 +53,7 @@ require(['{{ path }}'], function(mod) {
         var win = $('#iframe-vis').get(0).contentWindow;
         var doc = $('#iframe-vis').get(0).contentDocument;
         if (!win || !win.__dw || !win.__dw.vis) {
-            return setTimeout(() => {
+            return setTimeout(function () {
                 getContext(callback);
             }, 200);
         }
@@ -85,7 +85,11 @@ require(['{{ path }}'], function(mod) {
     var historyPos = 0;
     var passiveMode = false;
 
-    chart.on('state', ({changed, current, previous}) => {
+    chart.on('state', function (_ref) {
+        var changed = _ref.changed;
+        var current = _ref.current;
+        var previous = _ref.previous;
+
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
             // console.log('theme has changed', current.theme);
@@ -94,7 +98,7 @@ require(['{{ path }}'], function(mod) {
                 chart.set({themeData: themeCache[current.theme]});
             } else {
                 // load new theme data
-                getJSON(`/api/themes/${current.theme}`, (res) => {
+                getJSON(('/api/themes/' + (current.theme)), function (res) {
                     if (res.status == 'ok') {
                         themeCache[current.theme] = res.data.data;
                         chart.set({themeData: res.data.data});
@@ -114,7 +118,7 @@ require(['{{ path }}'], function(mod) {
                 chart.set({visualization: visCache[current.type]});
             } else {
                 // load new vis data
-                getJSON(`/api/visualizations/${current.type}`, (res) => {
+                getJSON(('/api/visualizations/' + (current.type)), function (res) {
                     if (res.status == 'ok') {
                         visCache[current.type] = res.data.data;
                         chart.set({visualization: visCache[current.type]});
@@ -129,7 +133,7 @@ require(['{{ path }}'], function(mod) {
             changed.metadata || changed.language || changed.lastEditStep) {
             chart.store();
             if (!dontPush) {
-                const s = JSON.stringify(chart.serialize());
+                var s = JSON.stringify(chart.serialize());
                 if (historyPos > 0) {
                     // throw away edit history until the current pos
                     editHistory.splice(0, historyPos);
@@ -154,7 +158,7 @@ require(['{{ path }}'], function(mod) {
 
     window.addEventListener('keypress', function(evt) {
         if (evt.key == 'z' && evt.ctrlKey) {
-            const old_pos = historyPos;
+            var old_pos = historyPos;
             historyPos += evt.altKey ? -1 : 1;
             if (editHistory[historyPos]) {
                 dontPush = true;
