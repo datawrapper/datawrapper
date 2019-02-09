@@ -406,7 +406,7 @@ html .navbar .navbar-inner .nav li.dropdown.active > .dropdown-toggle:hover {
   -webkit-box-shadow: none;
   background: transparent;
   font-weight: 500;
-  color: #222!important;
+  color: #222 !important;
 }
 html .navbar .navbar-inner .nav .dropdown a.group {
   color: #999;
@@ -513,7 +513,7 @@ html .navbar.navbar-inverse .navbar-inner .nav .active > a,
 html .navbar.navbar-inverse .navbar-inner .nav .active > a:hover,
 html .navbar.navbar-inverse .navbar-inner .nav li.dropdown.active > .dropdown-toggle:hover {
   background: #111111;
-  color: #fff!important;
+  color: #fff !important;
 }
 html .navbar.navbar-inverse .navbar-inner .brand {
   color: #ddd;
@@ -596,7 +596,7 @@ footer .version {
   font-weight: 500;
 }
 #alertModal .btn {
-  background-color: #f4db94 !important;
+  background-color: hsl(44, 82%, 77%) !important;
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fcf7e7", endColorstr="#f4da94");
   background-image: -khtml-gradient(linear, left top, left bottom, from(#fcf7e7), to(#f4da94));
@@ -606,7 +606,7 @@ footer .version {
   background-image: -webkit-linear-gradient(top, #fcf7e7, #f4da94);
   background-image: -o-linear-gradient(top, #fcf7e7, #f4da94);
   background-image: linear-gradient(#fcf7e7, #f4da94);
-  border-color: #f4da94 #f4da94 #f2d47f;
+  border-color: #f4da94 #f4da94 hsl(44, 82%, 72.5%);
   color: #333 !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.29);
   -webkit-font-smoothing: antialiased;
@@ -667,7 +667,7 @@ html .btn-success {
   background-repeat: repeat-x;
 }
 html .btn-primary {
-  color: #fff!important;
+  color: #fff !important;
   background-color: #1d81a2;
   border-color: darker(#1d81a2, 5%);
 }
@@ -940,7 +940,7 @@ body.cms-mode .row.create-nav {
 .chart-editor.dw-create-describe .handsontable thead th {
   cursor: pointer;
   background: #eee;
-  border-right: 1px solid #b3b3b3;
+  border-right: 1px solid hsl(0, 0%, 70%);
 }
 .chart-editor.dw-create-describe .handsontable thead th.selected {
   background: #ccc;
@@ -1011,10 +1011,10 @@ body.cms-mode .row.create-nav {
   text-decoration: line-through;
 }
 .chart-editor.dw-create-describe .handsontable tr:first-child td {
-  border-top: 1px solid #cccccc !important;
+  border-top: 1px solid hsl(0, 0%, 80%) !important;
 }
 .chart-editor.dw-create-describe .handsontable tr:first-child td.firstRow.area {
-  border-top: 1px solid #8599ad !important;
+  border-top: 1px solid hsl(210, 20%, 60%) !important;
 }
 .chart-editor.dw-create-describe .handsontable .colHeader:after {
   vertical-align: bottom;
@@ -1672,7 +1672,10 @@ body.cms-mode .row.create-nav {
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg ellipse,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polyline,
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg polyline,
-.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg polyline {
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg polyline,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg polygon,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb:active svg polygon,
+.chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active:hover svg polygon {
   fill: #fff;
 }
 .chart-editor.dw-create-visualize .vis-thumbs .vis-thumb.active svg .st0,
@@ -2771,10 +2774,10 @@ body.dw-mycharts .thumbnail .dw-checkbox {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 body.dw-mycharts .thumbnail:hover {
-  border-color: #acf!important;
+  border-color: #acf !important;
 }
 body.dw-mycharts .thumbnail.checked {
-  border-color: #09c!important;
+  border-color: #09c !important;
 }
 body.dw-mycharts .thumbnail:hover .dw-checkbox {
   display: block;
@@ -2846,11 +2849,11 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
 .mycharts-modal .close:hover {
   opacity: 0.5;
   color: #300;
-  -webkit-transition: opacity .25s linear;
-  -moz-transition: opacity .25s linear;
-  -ms-transition: opacity .25s linear;
-  -o-transition: opacity .25s linear;
-  transition: opacity .25s linear;
+  -webkit-transition: opacity 0.25s linear;
+  -moz-transition: opacity 0.25s linear;
+  -ms-transition: opacity 0.25s linear;
+  -o-transition: opacity 0.25s linear;
+  transition: opacity 0.25s linear;
 }
 .mycharts-modal iframe {
   border-radius: 5px;
