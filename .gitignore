@@ -39,12 +39,8 @@ plugins/*
 !plugins/admin-jobs
 !plugins/admin-users
 !plugins/email-native
-!plugins/visualization-bar-chart
 !plugins/visualization-column-charts
 !plugins/visualization-data-table
-!plugins/visualization-election-donut
-!plugins/visualization-line-chart
-!plugins/visualization-pie-chart
 !plugins/visualization-raphael-chart
 !plugins/visualization
 scripts/execute_jobs.lock
