@@ -136,6 +136,10 @@ plugins:
   #   secretkey: YOUR_SECRET_KEY
   #   bucket: your-bucket
 
+  chart-locale-select:
+    locales: en-US|english,de-DE|deutsch,de-CH|deutsch,gr-GR|Greek,es-ES|español,it-IT|italiano,pt-PT|português,ar-AE|العربية,zh-CN|中國的,ja-JP|日本語,ru-RU|русский,nb-NO|norsk
+
+
 translation:
   core: https://docs.google.com/spreadsheets/d...
   plugins: https://docs.google.com/spreadsheets/d...
