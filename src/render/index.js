@@ -7,7 +7,7 @@
  */
 import getBrowser from '@datawrapper/polyfills';
 
-import FontFaceObserver from 'fontfaceobserver'
+import observeFonts from '../shared/observe-fonts';
 
 export default function({
     visJSON,
@@ -82,29 +82,9 @@ export default function({
             )
         );
 
-        /* Render vis again after fonts have been loaded */
-        const loadingFonts = Array.isArray(fontsJSON) ? [] : Object.keys(fontsJSON)
-        const fonts = new Set(loadingFonts)
-
-        Object.keys(typographyJSON).forEach(key => {
-            const typefaceKey = typographyJSON[key].typeface
-            if (typefaceKey) {
-                const typeFaces = typefaceKey.split(',').map(t => t.trim())
-                typeFaces.forEach(face => fonts.add(face))
-            }
-        })
-
-        const observers = []
-        fonts.forEach(font => {
-            const obs = new FontFaceObserver(font)
-            observers.push(obs.load())
-        })
-
-        Promise.all(observers)
-            .then(() => {
-            __dw.render();
-            })
-            .catch(() => {})
+        observeFonts(fontsJSON, typographyJSON)
+            .then(() => __dw.render())
+            .catch(() => __dw.render());
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
