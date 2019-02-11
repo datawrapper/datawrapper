@@ -34,6 +34,7 @@ CREATE TABLE `chart`
     `forkable` TINYINT(1) DEFAULT 0,
     `is_fork` TINYINT(1) DEFAULT 0,
     `in_folder` INTEGER,
+    `utf8` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),

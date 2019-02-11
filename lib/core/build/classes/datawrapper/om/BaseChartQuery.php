@@ -29,6 +29,7 @@
  * @method ChartQuery orderByForkable($order = Criteria::ASC) Order by the forkable column
  * @method ChartQuery orderByIsFork($order = Criteria::ASC) Order by the is_fork column
  * @method ChartQuery orderByInFolder($order = Criteria::ASC) Order by the in_folder column
+ * @method ChartQuery orderByUtf8($order = Criteria::ASC) Order by the utf8 column
  *
  * @method ChartQuery groupById() Group by the id column
  * @method ChartQuery groupByTitle() Group by the title column
@@ -53,6 +54,7 @@
  * @method ChartQuery groupByForkable() Group by the forkable column
  * @method ChartQuery groupByIsFork() Group by the is_fork column
  * @method ChartQuery groupByInFolder() Group by the in_folder column
+ * @method ChartQuery groupByUtf8() Group by the utf8 column
  *
  * @method ChartQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ChartQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -111,6 +113,7 @@
  * @method Chart findOneByForkable(boolean $forkable) Return the first Chart filtered by the forkable column
  * @method Chart findOneByIsFork(boolean $is_fork) Return the first Chart filtered by the is_fork column
  * @method Chart findOneByInFolder(int $in_folder) Return the first Chart filtered by the in_folder column
+ * @method Chart findOneByUtf8(boolean $utf8) Return the first Chart filtered by the utf8 column
  *
  * @method array findById(string $id) Return Chart objects filtered by the id column
  * @method array findByTitle(string $title) Return Chart objects filtered by the title column
@@ -135,6 +138,7 @@
  * @method array findByForkable(boolean $forkable) Return Chart objects filtered by the forkable column
  * @method array findByIsFork(boolean $is_fork) Return Chart objects filtered by the is_fork column
  * @method array findByInFolder(int $in_folder) Return Chart objects filtered by the in_folder column
+ * @method array findByUtf8(boolean $utf8) Return Chart objects filtered by the utf8 column
  *
  * @package    propel.generator.datawrapper.om
  */
@@ -238,7 +242,7 @@ abstract class BaseChartQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable`, `is_fork`, `in_folder` FROM `chart` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `title`, `theme`, `created_at`, `last_modified_at`, `type`, `metadata`, `deleted`, `deleted_at`, `author_id`, `show_in_gallery`, `language`, `guest_session`, `last_edit_step`, `published_at`, `public_url`, `public_version`, `organization_id`, `forked_from`, `external_data`, `forkable`, `is_fork`, `in_folder`, `utf8` FROM `chart` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -1096,6 +1100,33 @@ abstract class BaseChartQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ChartPeer::IN_FOLDER, $inFolder, $comparison);
+    }
+
+    /**
+     * Filter the query on the utf8 column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUtf8(true); // WHERE utf8 = true
+     * $query->filterByUtf8('yes'); // WHERE utf8 = true
+     * </code>
+     *
+     * @param     boolean|string $utf8 The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChartQuery The current query, for fluid interface
+     */
+    public function filterByUtf8($utf8 = null, $comparison = null)
+    {
+        if (is_string($utf8)) {
+            $utf8 = in_array(strtolower($utf8), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ChartPeer::UTF8, $utf8, $comparison);
     }
 
     /**

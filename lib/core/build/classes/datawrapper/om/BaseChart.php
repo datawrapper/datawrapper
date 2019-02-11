@@ -175,6 +175,13 @@ abstract class BaseChart extends BaseObject implements Persistent
     protected $in_folder;
 
     /**
+     * The value for the utf8 field.
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $utf8;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -264,6 +271,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->public_version = 0;
         $this->forkable = false;
         $this->is_fork = false;
+        $this->utf8 = false;
     }
 
     /**
@@ -624,6 +632,16 @@ abstract class BaseChart extends BaseObject implements Persistent
     public function getInFolder()
     {
         return $this->in_folder;
+    }
+
+    /**
+     * Get the [utf8] column value.
+     *
+     * @return boolean
+     */
+    public function getUtf8()
+    {
+        return $this->utf8;
     }
 
     /**
@@ -1166,6 +1184,35 @@ abstract class BaseChart extends BaseObject implements Persistent
     } // setInFolder()
 
     /**
+     * Sets the value of the [utf8] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Chart The current object (for fluent API support)
+     */
+    public function setUtf8($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->utf8 !== $v) {
+            $this->utf8 = $v;
+            $this->modifiedColumns[] = ChartPeer::UTF8;
+        }
+
+
+        return $this;
+    } // setUtf8()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1200,6 +1247,10 @@ abstract class BaseChart extends BaseObject implements Persistent
             }
 
             if ($this->is_fork !== false) {
+                return false;
+            }
+
+            if ($this->utf8 !== false) {
                 return false;
             }
 
@@ -1248,6 +1299,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $this->forkable = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
             $this->is_fork = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
             $this->in_folder = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->utf8 = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1256,7 +1308,7 @@ abstract class BaseChart extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 23; // 23 = ChartPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 24; // 24 = ChartPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Chart object", $e);
@@ -1638,6 +1690,9 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::IN_FOLDER)) {
             $modifiedColumns[':p' . $index++]  = '`in_folder`';
         }
+        if ($this->isColumnModified(ChartPeer::UTF8)) {
+            $modifiedColumns[':p' . $index++]  = '`utf8`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `chart` (%s) VALUES (%s)',
@@ -1717,6 +1772,9 @@ abstract class BaseChart extends BaseObject implements Persistent
                         break;
                     case '`in_folder`':
                         $stmt->bindValue($identifier, $this->in_folder, PDO::PARAM_INT);
+                        break;
+                    case '`utf8`':
+                        $stmt->bindValue($identifier, (int) $this->utf8, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1966,6 +2024,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 22:
                 return $this->getInFolder();
                 break;
+            case 23:
+                return $this->getUtf8();
+                break;
             default:
                 return null;
                 break;
@@ -2018,6 +2079,7 @@ abstract class BaseChart extends BaseObject implements Persistent
             $keys[20] => $this->getForkable(),
             $keys[21] => $this->getIsFork(),
             $keys[22] => $this->getInFolder(),
+            $keys[23] => $this->getUtf8(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -2144,6 +2206,9 @@ abstract class BaseChart extends BaseObject implements Persistent
             case 22:
                 $this->setInFolder($value);
                 break;
+            case 23:
+                $this->setUtf8($value);
+                break;
         } // switch()
     }
 
@@ -2191,6 +2256,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if (array_key_exists($keys[20], $arr)) $this->setForkable($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setIsFork($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setInFolder($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setUtf8($arr[$keys[23]]);
     }
 
     /**
@@ -2225,6 +2291,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         if ($this->isColumnModified(ChartPeer::FORKABLE)) $criteria->add(ChartPeer::FORKABLE, $this->forkable);
         if ($this->isColumnModified(ChartPeer::IS_FORK)) $criteria->add(ChartPeer::IS_FORK, $this->is_fork);
         if ($this->isColumnModified(ChartPeer::IN_FOLDER)) $criteria->add(ChartPeer::IN_FOLDER, $this->in_folder);
+        if ($this->isColumnModified(ChartPeer::UTF8)) $criteria->add(ChartPeer::UTF8, $this->utf8);
 
         return $criteria;
     }
@@ -2310,6 +2377,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $copyObj->setForkable($this->getForkable());
         $copyObj->setIsFork($this->getIsFork());
         $copyObj->setInFolder($this->getInFolder());
+        $copyObj->setUtf8($this->getUtf8());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3212,6 +3280,7 @@ abstract class BaseChart extends BaseObject implements Persistent
         $this->forkable = null;
         $this->is_fork = null;
         $this->in_folder = null;
+        $this->utf8 = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

@@ -37,6 +37,7 @@
     <column name="forkable" type="boolean" default="false" />
     <column name="is_fork" type="boolean" default="false" />
     <column name="in_folder" type="integer" />
+    <column name="utf8" type="boolean" default="false" />
     <foreign-key foreignTable="folder">
       <reference local="in_folder" foreign="folder_id" />
     </foreign-key>
@@ -395,7 +396,7 @@
       <reference local="user_id" foreign="id"/>
     </foreign-key>
     <column name="token" type="varchar" size="64" required="true" />
-    <column name="redirect_url" type="varchar" size="64" required="true" />    
+    <column name="redirect_url" type="varchar" size="64" required="true" />
   </table>
 
 </database>
