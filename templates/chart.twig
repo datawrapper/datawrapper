@@ -218,6 +218,8 @@
             isPreview: {{ preview ? 'true' : 'false' }},
             chartLocale: '{{ chartLocale }}',
             metricPrefix: {{ metricPrefix | json | raw }},
+            fontsJSON: {{ theme.getAssetFonts() | json | raw }},
+            typographyJSON: {{ theme.getThemeData('typography') | json | raw }},
             templateJS: {% if theme.getThemeData('template.js') %}
 function() {
     {{ theme.getThemeData('template.js') | raw }}
