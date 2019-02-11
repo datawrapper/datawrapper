@@ -22,10 +22,6 @@
  * @method FolderQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method FolderQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method FolderQuery leftJoinFolderRelatedByParentId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FolderRelatedByParentId relation
- * @method FolderQuery rightJoinFolderRelatedByParentId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FolderRelatedByParentId relation
- * @method FolderQuery innerJoinFolderRelatedByParentId($relationAlias = null) Adds a INNER JOIN clause to the query using the FolderRelatedByParentId relation
- *
  * @method FolderQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
  * @method FolderQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
  * @method FolderQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
@@ -37,10 +33,6 @@
  * @method FolderQuery leftJoinChart($relationAlias = null) Adds a LEFT JOIN clause to the query using the Chart relation
  * @method FolderQuery rightJoinChart($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Chart relation
  * @method FolderQuery innerJoinChart($relationAlias = null) Adds a INNER JOIN clause to the query using the Chart relation
- *
- * @method FolderQuery leftJoinFolderRelatedByFolderId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FolderRelatedByFolderId relation
- * @method FolderQuery rightJoinFolderRelatedByFolderId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FolderRelatedByFolderId relation
- * @method FolderQuery innerJoinFolderRelatedByFolderId($relationAlias = null) Adds a INNER JOIN clause to the query using the FolderRelatedByFolderId relation
  *
  * @method Folder findOne(PropelPDO $con = null) Return the first Folder matching the query
  * @method Folder findOneOrCreate(PropelPDO $con = null) Return the first Folder matching the query, or a new Folder object populated from the query conditions when no match is found
@@ -300,8 +292,6 @@ abstract class BaseFolderQuery extends ModelCriteria
      * $query->filterByParentId(array('max' => 12)); // WHERE parent_id <= 12
      * </code>
      *
-     * @see       filterByFolderRelatedByParentId()
-     *
      * @param     mixed $parentId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -433,82 +423,6 @@ abstract class BaseFolderQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FolderPeer::ORG_ID, $orgId, $comparison);
-    }
-
-    /**
-     * Filter the query by a related Folder object
-     *
-     * @param   Folder|PropelObjectCollection $folder The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 FolderQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByFolderRelatedByParentId($folder, $comparison = null)
-    {
-        if ($folder instanceof Folder) {
-            return $this
-                ->addUsingAlias(FolderPeer::PARENT_ID, $folder->getFolderId(), $comparison);
-        } elseif ($folder instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(FolderPeer::PARENT_ID, $folder->toKeyValue('PrimaryKey', 'FolderId'), $comparison);
-        } else {
-            throw new PropelException('filterByFolderRelatedByParentId() only accepts arguments of type Folder or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the FolderRelatedByParentId relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return FolderQuery The current query, for fluid interface
-     */
-    public function joinFolderRelatedByParentId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('FolderRelatedByParentId');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'FolderRelatedByParentId');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the FolderRelatedByParentId relation Folder object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   FolderQuery A secondary query class using the current class as primary query
-     */
-    public function useFolderRelatedByParentIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinFolderRelatedByParentId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'FolderRelatedByParentId', 'FolderQuery');
     }
 
     /**
@@ -735,80 +649,6 @@ abstract class BaseFolderQuery extends ModelCriteria
         return $this
             ->joinChart($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Chart', 'ChartQuery');
-    }
-
-    /**
-     * Filter the query by a related Folder object
-     *
-     * @param   Folder|PropelObjectCollection $folder  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 FolderQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByFolderRelatedByFolderId($folder, $comparison = null)
-    {
-        if ($folder instanceof Folder) {
-            return $this
-                ->addUsingAlias(FolderPeer::FOLDER_ID, $folder->getParentId(), $comparison);
-        } elseif ($folder instanceof PropelObjectCollection) {
-            return $this
-                ->useFolderRelatedByFolderIdQuery()
-                ->filterByPrimaryKeys($folder->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByFolderRelatedByFolderId() only accepts arguments of type Folder or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the FolderRelatedByFolderId relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return FolderQuery The current query, for fluid interface
-     */
-    public function joinFolderRelatedByFolderId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('FolderRelatedByFolderId');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'FolderRelatedByFolderId');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the FolderRelatedByFolderId relation Folder object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   FolderQuery A secondary query class using the current class as primary query
-     */
-    public function useFolderRelatedByFolderIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinFolderRelatedByFolderId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'FolderRelatedByFolderId', 'FolderQuery');
     }
 
     /**

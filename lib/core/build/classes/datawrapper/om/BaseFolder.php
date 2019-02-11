@@ -60,11 +60,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
     protected $org_id;
 
     /**
-     * @var        Folder
-     */
-    protected $aFolderRelatedByParentId;
-
-    /**
      * @var        User
      */
     protected $aUser;
@@ -79,12 +74,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
      */
     protected $collCharts;
     protected $collChartsPartial;
-
-    /**
-     * @var        PropelObjectCollection|Folder[] Collection to store aggregation of Folder objects.
-     */
-    protected $collFoldersRelatedByFolderId;
-    protected $collFoldersRelatedByFolderIdPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -111,12 +100,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $chartsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $foldersRelatedByFolderIdScheduledForDeletion = null;
 
     /**
      * Get the [folder_id] column value.
@@ -204,10 +187,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
         if ($this->parent_id !== $v) {
             $this->parent_id = $v;
             $this->modifiedColumns[] = FolderPeer::PARENT_ID;
-        }
-
-        if ($this->aFolderRelatedByParentId !== null && $this->aFolderRelatedByParentId->getFolderId() !== $v) {
-            $this->aFolderRelatedByParentId = null;
         }
 
 
@@ -353,9 +332,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aFolderRelatedByParentId !== null && $this->parent_id !== $this->aFolderRelatedByParentId->getFolderId()) {
-            $this->aFolderRelatedByParentId = null;
-        }
         if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
             $this->aUser = null;
         }
@@ -401,12 +377,9 @@ abstract class BaseFolder extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aFolderRelatedByParentId = null;
             $this->aUser = null;
             $this->aOrganization = null;
             $this->collCharts = null;
-
-            $this->collFoldersRelatedByFolderId = null;
 
         } // if (deep)
     }
@@ -526,13 +499,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aFolderRelatedByParentId !== null) {
-                if ($this->aFolderRelatedByParentId->isModified() || $this->aFolderRelatedByParentId->isNew()) {
-                    $affectedRows += $this->aFolderRelatedByParentId->save($con);
-                }
-                $this->setFolderRelatedByParentId($this->aFolderRelatedByParentId);
-            }
-
             if ($this->aUser !== null) {
                 if ($this->aUser->isModified() || $this->aUser->isNew()) {
                     $affectedRows += $this->aUser->save($con);
@@ -570,24 +536,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
 
             if ($this->collCharts !== null) {
                 foreach ($this->collCharts as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->foldersRelatedByFolderIdScheduledForDeletion !== null) {
-                if (!$this->foldersRelatedByFolderIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->foldersRelatedByFolderIdScheduledForDeletion as $folderRelatedByFolderId) {
-                        // need to save related object because we set the relation to null
-                        $folderRelatedByFolderId->save($con);
-                    }
-                    $this->foldersRelatedByFolderIdScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collFoldersRelatedByFolderId !== null) {
-                foreach ($this->collFoldersRelatedByFolderId as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -760,12 +708,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aFolderRelatedByParentId !== null) {
-                if (!$this->aFolderRelatedByParentId->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aFolderRelatedByParentId->getValidationFailures());
-                }
-            }
-
             if ($this->aUser !== null) {
                 if (!$this->aUser->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
@@ -786,14 +728,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
 
                 if ($this->collCharts !== null) {
                     foreach ($this->collCharts as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collFoldersRelatedByFolderId !== null) {
-                    foreach ($this->collFoldersRelatedByFolderId as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -886,9 +820,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
             $keys[4] => $this->getOrgId(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aFolderRelatedByParentId) {
-                $result['FolderRelatedByParentId'] = $this->aFolderRelatedByParentId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aUser) {
                 $result['User'] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -897,9 +828,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
             }
             if (null !== $this->collCharts) {
                 $result['Charts'] = $this->collCharts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collFoldersRelatedByFolderId) {
-                $result['FoldersRelatedByFolderId'] = $this->collFoldersRelatedByFolderId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1076,12 +1004,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getFoldersRelatedByFolderId() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addFolderRelatedByFolderId($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1130,58 +1052,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
         }
 
         return self::$peer;
-    }
-
-    /**
-     * Declares an association between this object and a Folder object.
-     *
-     * @param             Folder $v
-     * @return Folder The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFolderRelatedByParentId(Folder $v = null)
-    {
-        if ($v === null) {
-            $this->setParentId(NULL);
-        } else {
-            $this->setParentId($v->getFolderId());
-        }
-
-        $this->aFolderRelatedByParentId = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Folder object, it will not be re-added.
-        if ($v !== null) {
-            $v->addFolderRelatedByFolderId($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Folder object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Folder The associated Folder object.
-     * @throws PropelException
-     */
-    public function getFolderRelatedByParentId(PropelPDO $con = null, $doQuery = true)
-    {
-        if ($this->aFolderRelatedByParentId === null && ($this->parent_id !== null) && $doQuery) {
-            $this->aFolderRelatedByParentId = FolderQuery::create()->findPk($this->parent_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFolderRelatedByParentId->addFoldersRelatedByFolderId($this);
-             */
-        }
-
-        return $this->aFolderRelatedByParentId;
     }
 
     /**
@@ -1301,9 +1171,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
     {
         if ('Chart' == $relationName) {
             $this->initCharts();
-        }
-        if ('FolderRelatedByFolderId' == $relationName) {
-            $this->initFoldersRelatedByFolderId();
         }
     }
 
@@ -1601,274 +1468,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collFoldersRelatedByFolderId collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Folder The current object (for fluent API support)
-     * @see        addFoldersRelatedByFolderId()
-     */
-    public function clearFoldersRelatedByFolderId()
-    {
-        $this->collFoldersRelatedByFolderId = null; // important to set this to null since that means it is uninitialized
-        $this->collFoldersRelatedByFolderIdPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collFoldersRelatedByFolderId collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialFoldersRelatedByFolderId($v = true)
-    {
-        $this->collFoldersRelatedByFolderIdPartial = $v;
-    }
-
-    /**
-     * Initializes the collFoldersRelatedByFolderId collection.
-     *
-     * By default this just sets the collFoldersRelatedByFolderId collection to an empty array (like clearcollFoldersRelatedByFolderId());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initFoldersRelatedByFolderId($overrideExisting = true)
-    {
-        if (null !== $this->collFoldersRelatedByFolderId && !$overrideExisting) {
-            return;
-        }
-        $this->collFoldersRelatedByFolderId = new PropelObjectCollection();
-        $this->collFoldersRelatedByFolderId->setModel('Folder');
-    }
-
-    /**
-     * Gets an array of Folder objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Folder is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Folder[] List of Folder objects
-     * @throws PropelException
-     */
-    public function getFoldersRelatedByFolderId($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collFoldersRelatedByFolderIdPartial && !$this->isNew();
-        if (null === $this->collFoldersRelatedByFolderId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collFoldersRelatedByFolderId) {
-                // return empty collection
-                $this->initFoldersRelatedByFolderId();
-            } else {
-                $collFoldersRelatedByFolderId = FolderQuery::create(null, $criteria)
-                    ->filterByFolderRelatedByParentId($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collFoldersRelatedByFolderIdPartial && count($collFoldersRelatedByFolderId)) {
-                      $this->initFoldersRelatedByFolderId(false);
-
-                      foreach($collFoldersRelatedByFolderId as $obj) {
-                        if (false == $this->collFoldersRelatedByFolderId->contains($obj)) {
-                          $this->collFoldersRelatedByFolderId->append($obj);
-                        }
-                      }
-
-                      $this->collFoldersRelatedByFolderIdPartial = true;
-                    }
-
-                    $collFoldersRelatedByFolderId->getInternalIterator()->rewind();
-                    return $collFoldersRelatedByFolderId;
-                }
-
-                if($partial && $this->collFoldersRelatedByFolderId) {
-                    foreach($this->collFoldersRelatedByFolderId as $obj) {
-                        if($obj->isNew()) {
-                            $collFoldersRelatedByFolderId[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collFoldersRelatedByFolderId = $collFoldersRelatedByFolderId;
-                $this->collFoldersRelatedByFolderIdPartial = false;
-            }
-        }
-
-        return $this->collFoldersRelatedByFolderId;
-    }
-
-    /**
-     * Sets a collection of FolderRelatedByFolderId objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $foldersRelatedByFolderId A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Folder The current object (for fluent API support)
-     */
-    public function setFoldersRelatedByFolderId(PropelCollection $foldersRelatedByFolderId, PropelPDO $con = null)
-    {
-        $foldersRelatedByFolderIdToDelete = $this->getFoldersRelatedByFolderId(new Criteria(), $con)->diff($foldersRelatedByFolderId);
-
-        $this->foldersRelatedByFolderIdScheduledForDeletion = unserialize(serialize($foldersRelatedByFolderIdToDelete));
-
-        foreach ($foldersRelatedByFolderIdToDelete as $folderRelatedByFolderIdRemoved) {
-            $folderRelatedByFolderIdRemoved->setFolderRelatedByParentId(null);
-        }
-
-        $this->collFoldersRelatedByFolderId = null;
-        foreach ($foldersRelatedByFolderId as $folderRelatedByFolderId) {
-            $this->addFolderRelatedByFolderId($folderRelatedByFolderId);
-        }
-
-        $this->collFoldersRelatedByFolderId = $foldersRelatedByFolderId;
-        $this->collFoldersRelatedByFolderIdPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Folder objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Folder objects.
-     * @throws PropelException
-     */
-    public function countFoldersRelatedByFolderId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collFoldersRelatedByFolderIdPartial && !$this->isNew();
-        if (null === $this->collFoldersRelatedByFolderId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collFoldersRelatedByFolderId) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getFoldersRelatedByFolderId());
-            }
-            $query = FolderQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByFolderRelatedByParentId($this)
-                ->count($con);
-        }
-
-        return count($this->collFoldersRelatedByFolderId);
-    }
-
-    /**
-     * Method called to associate a Folder object to this object
-     * through the Folder foreign key attribute.
-     *
-     * @param    Folder $l Folder
-     * @return Folder The current object (for fluent API support)
-     */
-    public function addFolderRelatedByFolderId(Folder $l)
-    {
-        if ($this->collFoldersRelatedByFolderId === null) {
-            $this->initFoldersRelatedByFolderId();
-            $this->collFoldersRelatedByFolderIdPartial = true;
-        }
-        if (!in_array($l, $this->collFoldersRelatedByFolderId->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddFolderRelatedByFolderId($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	FolderRelatedByFolderId $folderRelatedByFolderId The folderRelatedByFolderId object to add.
-     */
-    protected function doAddFolderRelatedByFolderId($folderRelatedByFolderId)
-    {
-        $this->collFoldersRelatedByFolderId[]= $folderRelatedByFolderId;
-        $folderRelatedByFolderId->setFolderRelatedByParentId($this);
-    }
-
-    /**
-     * @param	FolderRelatedByFolderId $folderRelatedByFolderId The folderRelatedByFolderId object to remove.
-     * @return Folder The current object (for fluent API support)
-     */
-    public function removeFolderRelatedByFolderId($folderRelatedByFolderId)
-    {
-        if ($this->getFoldersRelatedByFolderId()->contains($folderRelatedByFolderId)) {
-            $this->collFoldersRelatedByFolderId->remove($this->collFoldersRelatedByFolderId->search($folderRelatedByFolderId));
-            if (null === $this->foldersRelatedByFolderIdScheduledForDeletion) {
-                $this->foldersRelatedByFolderIdScheduledForDeletion = clone $this->collFoldersRelatedByFolderId;
-                $this->foldersRelatedByFolderIdScheduledForDeletion->clear();
-            }
-            $this->foldersRelatedByFolderIdScheduledForDeletion[]= $folderRelatedByFolderId;
-            $folderRelatedByFolderId->setFolderRelatedByParentId(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Folder is new, it will return
-     * an empty collection; or if this Folder has previously
-     * been saved, it will retrieve related FoldersRelatedByFolderId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Folder.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Folder[] List of Folder objects
-     */
-    public function getFoldersRelatedByFolderIdJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = FolderQuery::create(null, $criteria);
-        $query->joinWith('User', $join_behavior);
-
-        return $this->getFoldersRelatedByFolderId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Folder is new, it will return
-     * an empty collection; or if this Folder has previously
-     * been saved, it will retrieve related FoldersRelatedByFolderId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Folder.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Folder[] List of Folder objects
-     */
-    public function getFoldersRelatedByFolderIdJoinOrganization($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = FolderQuery::create(null, $criteria);
-        $query->joinWith('Organization', $join_behavior);
-
-        return $this->getFoldersRelatedByFolderId($query, $con);
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1905,14 +1504,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collFoldersRelatedByFolderId) {
-                foreach ($this->collFoldersRelatedByFolderId as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->aFolderRelatedByParentId instanceof Persistent) {
-              $this->aFolderRelatedByParentId->clearAllReferences($deep);
-            }
             if ($this->aUser instanceof Persistent) {
               $this->aUser->clearAllReferences($deep);
             }
@@ -1927,11 +1518,6 @@ abstract class BaseFolder extends BaseObject implements Persistent
             $this->collCharts->clearIterator();
         }
         $this->collCharts = null;
-        if ($this->collFoldersRelatedByFolderId instanceof PropelCollection) {
-            $this->collFoldersRelatedByFolderId->clearIterator();
-        }
-        $this->collFoldersRelatedByFolderId = null;
-        $this->aFolderRelatedByParentId = null;
         $this->aUser = null;
         $this->aOrganization = null;
     }

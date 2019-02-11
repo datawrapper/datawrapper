@@ -39,7 +39,7 @@ class FolderTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('folder_id', 'FolderId', 'INTEGER', true, null, null);
-        $this->addForeignKey('parent_id', 'ParentId', 'INTEGER', 'folder', 'folder_id', false, null, null);
+        $this->addColumn('parent_id', 'ParentId', 'INTEGER', false, null, null);
         $this->addColumn('folder_name', 'FolderName', 'VARCHAR', false, 128, null);
         $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'user', 'id', false, null, null);
         $this->addForeignKey('org_id', 'OrgId', 'VARCHAR', 'organization', 'id', false, 128, null);
@@ -51,11 +51,9 @@ class FolderTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('FolderRelatedByParentId', 'Folder', RelationMap::MANY_TO_ONE, array('parent_id' => 'folder_id', ), null, null);
         $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
         $this->addRelation('Organization', 'Organization', RelationMap::MANY_TO_ONE, array('org_id' => 'id', ), null, null);
         $this->addRelation('Chart', 'Chart', RelationMap::ONE_TO_MANY, array('folder_id' => 'in_folder', ), null, null, 'Charts');
-        $this->addRelation('FolderRelatedByFolderId', 'Folder', RelationMap::ONE_TO_MANY, array('folder_id' => 'parent_id', ), null, null, 'FoldersRelatedByFolderId');
     } // buildRelations()
 
 } // FolderTableMap

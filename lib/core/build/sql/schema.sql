@@ -429,13 +429,12 @@ CREATE TABLE `folder`
     `user_id` INTEGER,
     `org_id` VARCHAR(128),
     PRIMARY KEY (`folder_id`),
-    INDEX `folder_FI_1` (`parent_id`),
-    INDEX `folder_FI_2` (`user_id`),
-    INDEX `folder_FI_3` (`org_id`),
-    CONSTRAINT `folder_FK_2`
+    INDEX `folder_FI_1` (`user_id`),
+    INDEX `folder_FI_2` (`org_id`),
+    CONSTRAINT `folder_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`),
-    CONSTRAINT `folder_FK_3`
+    CONSTRAINT `folder_FK_2`
         FOREIGN KEY (`org_id`)
         REFERENCES `organization` (`id`)
 ) ENGINE=InnoDB CHARACTER SET='utf8';
