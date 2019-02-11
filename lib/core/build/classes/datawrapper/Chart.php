@@ -513,10 +513,20 @@ class Chart extends BaseChart {
     public function generateEmbedCodes() {
         // generate embed codes
         $embedcodes = [];
+        $theme = ThemeQuery::create()->findPk($this->getTheme());
+
+        // hack: temporarily set UI language to chart language
+        // so we get the correct translation of "Chart:" and "Map:"
+        if ($this->getLanguage() != '') {
+            global $__l10n;
+            $__l10n->loadMessages($this->getLanguage());
+        }
+
         $search = [
             '%chart_id%',
             '%chart_url%',
             '%chart_title%',
+            '%chart_type%',
             '%chart_intro%',
             '%chart_width%',
             '%chart_height%',
@@ -527,12 +537,21 @@ class Chart extends BaseChart {
             $this->getID(),
             $this->getPublicUrl(),
             htmlentities(strip_tags($this->getTitle())),
+            $this->getNamespace() == 'map' ?
+                $theme->getThemeData('options.footer.mapCaption') :
+                $theme->getThemeData('options.footer.chartCaption'),
             htmlentities(strip_tags($this->getMetadata('describe.intro'))),
             $this->getMetadata('publish.embed-width'),
             $this->getMetadata('publish.embed-height'),
             json_encode($this->getMetadata('publish.embed-heights')),
             str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights')))
         ];
+
+        // hack: revert the UI language
+        if ($this->getLanguage() != '') {
+            $__l10n->loadMessages(DatawrapperSession::getLanguage());
+        }
+
         foreach (publish_get_embed_templates() as $template) {
             $code = str_replace($search, $replace, $template['template']);
             $embedcodes['embed-method-'.$template['id']] = $code;
