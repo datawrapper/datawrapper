@@ -103,7 +103,7 @@
                     // set a type as classe
                     td.addClass(column.type());
                     if (cell_content == "&mdash;") td.addClass("not-available");
-                    td.attr('title', column.title());
+                    td.attr('title', dw.utils.purifyHtml(column.title(), '<br>').replace(/<br>/g, ' '));
                     tr.append(td);
                 });
                 $('tbody', table).append(tr);
