@@ -16,6 +16,7 @@ export default function({
     isPreview,
     chartLocale,
     metricPrefix,
+    themeId,
     templateJS,
     fontsJSON,
     typographyJSON
@@ -73,7 +74,7 @@ export default function({
                     data: chartData,
                     preview: isPreview,
                     chartLocale,
-                    themeId: chartJSON.theme,
+                    themeId: themeId,
                     visId: chartJSON.type,
                     lang: chartLocale.substr(0, 2),
                     metricPrefix
