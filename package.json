@@ -40,6 +40,7 @@
         "mocha": "^5.2.0",
         "node.extend": "^2.0.0",
         "prettier": "^1.16.4",
+        "prettier-plugin-svelte": "^0.3.0",
         "reify": "^0.17.3",
         "rollup": "*",
         "rollup-plugin-buble": "*",
@@ -65,6 +66,9 @@
     },
     "eslintConfig": {
         "parser": "babel-eslint",
+        "extends": [
+            "plugin:@tivac/svelte/svelte"
+        ],
         "rules": {
             "no-console": [
                 "error",
