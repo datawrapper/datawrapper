@@ -1,49 +1,70 @@
 <tr class="user" data-id="{user.Id}">
-	<td class="id out"><a href="/admin/users/{user.Id}">{user.Id}</a></td>
-	{#if !edit}
-	<td class="name out">{user.Name || ''}</td>
-	<td class="email out">{user.Email}</td>
-	<td>
-		<i class="icon-user" title="Editor"></i>
-		{user.Role}
-	</td>
-	<td class="creation out">{user.CreatedAt}</td>
-	<td class="center">
-		<a href="/admin/chart/by/{user.Id}">X</a>
-	</td>
-	<td class="actions">
-		<button on:click="set({ edit: true })"><i class="icon-pencil" title="edit"></i></button>
-		<a href="#" class="do" data-action="resetAction"><i class="icon-envelope" title="reset the password and send a mail"></i></a>
-		<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>
-	</td>
-	{:else}
-	<td class="email">
-		<input type="text" value={user.Email} />
-	</td>
-	<td>
-		<select name="status">
-			{#each statusOptions as status}
-			<option value={status} selected={user.Role===status}>{status}</option>
-			{/each}
-		</select>
-	</td>
-	<td class="creation out">2019-01-31 11:46:25</td>
-	<td class="center">--</td>
-	<td class="center">--</td>
-	<td class="actions">
-		<button on:click="save()"><i class="icon-ok" title="save"></i></button>
-		<button on:click="set({ edit: false })"><i class="icon-remove" title="cancel"></i></button>
-	</td>
-	{/if}
+    <td class="id out"><a href="/admin/users/{user.Id}">{user.Id}</a></td>
+    {#if !edit}
+    <td class="name out">{user.Name || ''}</td>
+    <td class="email out">{user.Email}</td>
+    <td>
+        <i class="icon-user" title="Editor"></i>
+        {__(statusName, "admin-users")}
+    </td>
+    <td class="creation out">{user.CreatedAt}</td>
+    <td class="center">
+        <a href="/admin/chart/by/{user.Id}">X</a>
+    </td>
+    <td class="actions">
+        <button on:click="set({ edit: true })"><i class="icon-pencil" title="edit"></i></button>
+        <button><i class="icon-envelope" title="reset the password and send a mail"></i></button>
+        <button><i class="icon-trash" title="delete"></i></button>
+    </td>
+    {:else}
+    <td class="email">
+        <input type="text" value="{user.Email}" />
+    </td>
+    <td>
+        <select name="status">
+            {#each statusOptions as status}
+            <option value="{status.slug}" selected="{isCurrentStatus(status.slug)}">
+                {__(status.name, "admin-users")}
+            </option>
+            {/each}
+        </select>
+    </td>
+    <td class="creation out">2019-01-31 11:46:25</td>
+    <td class="center">--</td>
+    <td class="center">--</td>
+    <td class="actions">
+        <button on:click="save()"><i class="icon-ok" title="save"></i></button>
+        <button on:click="set({ edit: false })"><i class="icon-remove" title="cancel"></i></button>
+    </td>
+    {/if}
 </tr>
 
 <script>
+    import { __ } from '../../shared/l10n';
+
     export default {
+        helpers: {
+            __
+        },
+
+        computed: {
+            isCurrentStatus: ({ user }) => status => user.Role === status,
+            statusName: ({ user, statusOptions }) =>
+                statusOptions.find(({ slug }) => slug === user.Role).name
+        },
+
         data() {
             return {
+                user: {},
                 edit: false,
+
                 // TODO: status options should probably be dynamic – how to load them?
-                statusOptions: ['pending', 'editor', 'admin', 'graphic-editor']
+                statusOptions: [
+                    { slug: 'pending', name: 'Pending' },
+                    { slug: 'editor', name: 'Editor' },
+                    { slug: 'graphic-editor', name: 'Graphic Editor' },
+                    { slug: 'admin', name: 'Administrator' }
+                ]
             };
         },
 

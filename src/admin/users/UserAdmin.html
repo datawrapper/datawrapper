@@ -1,48 +1,46 @@
 <ul>
-	<table class="table users">
-		<thead>
-			<tr>
-				<th><a href="?sort=id">#</a></th>
-				<th><a href="?sort=name">Name</a></th>
-				<th><a href="?sort=email">Sign-In</a></th>
-				<th>Status</th>
-				<th><a href="?sort=created_at">Created at</a></th>
-				<th class="center">Charts</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody class="users">
-			{#each users as user}
-			<UserAdminRow {user} />
-			{/each}
-		</tbody>
-	</table>
+    <table class="table users">
+        <thead>
+            <tr>
+                <th><a href="?sort=id">#</a></th>
+                <th><a href="?sort=name">{__("Name", "admin-users")}</a></th>
+                <th><a href="?sort=email">{__("Sign-In", "admin-users")}</a></th>
+                <th>{__("Status", "admin-users")}</th>
+                <th><a href="?sort=created_at">{__("Created at", "admin-users")}</a></th>
+                <th class="center">{__("Charts", "admin-users")}</th>
+                <th>{__("Actions", "admin-users")}</th>
+            </tr>
+        </thead>
+        <tbody class="users">
+            {#each items as user}
+            <UserAdminRow {user}></UserAdminRow>
+            {/each}
+        </tbody>
+    </table>
 </ul>
 
 <script>
+    import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
     import UserAdminRow from './UserAdminRow.html';
 
     export default {
-        components: {
-            UserAdminRow
-        },
+        components: { UserAdminRow },
 
         data() {
             return {
-                users: []
+                items: []
             };
         },
 
+        helpers: { __ },
+
         oncreate() {
-            // get a list of signin methods
             getJSON('/api/users', res => {
                 if (res.status === 'ok') {
-                    this.set({ users: res.data });
+                    this.set({ items: res.data });
                 }
             });
-        },
-
-        methods: {}
+        }
     };
 </script>
