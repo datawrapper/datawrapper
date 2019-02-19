@@ -38,7 +38,7 @@
         "less": "^3.9.0",
         "lint-staged": "^8.1.0",
         "mocha": "^5.2.0",
-        "node.extend": "^2.0.0",
+        "node.extend": "^2.0.2",
         "prettier": "^1.16.4",
         "prettier-plugin-svelte": "^0.3.0",
         "reify": "^0.17.3",
