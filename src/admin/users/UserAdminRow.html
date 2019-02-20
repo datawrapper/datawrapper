@@ -5,7 +5,7 @@
     <td class="email out">{user.Email}</td>
     <td>
         <i class="icon-user" title="Editor"></i>
-        {__(statusName, "admin-users")}
+        {__(statusName, 'admin-users')}
     </td>
     <td class="creation out">{user.CreatedAt}</td>
     <td class="center">
@@ -13,13 +13,16 @@
     </td>
     <td class="actions">
         <button class="action" on:click="set({ edit: true })">
-            <i class="icon-pencil" title="edit"></i>
+            <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
         </button>
         <button class="action">
-            <i class="icon-envelope" title="reset the password and send a mail"></i>
+            <i
+                class="icon-envelope"
+                title="{__('reset the password and send a mail', 'admin-users')}"
+            ></i>
         </button>
         <button class="action">
-            <i class="icon-trash" title="delete"></i>
+            <i class="icon-trash" title="{__('delete', 'admin-users')}"></i>
         </button>
     </td>
     {:else}
@@ -30,7 +33,7 @@
         <select name="status">
             {#each statusOptions as status}
             <option value="{status.slug}" selected="{isCurrentStatus(status.slug)}">
-                {__(status.name, "admin-users")}
+                {__(status.name, 'admin-users')}
             </option>
             {/each}
         </select>
@@ -40,10 +43,10 @@
     <td class="center">--</td>
     <td class="actions">
         <button class="action" on:click="save()">
-            <i class="icon-ok" title="save"></i>
+            <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
         </button>
         <button class="action" on:click="set({ edit: false })">
-            <i class="icon-remove" title="cancel"></i>
+            <i class="icon-remove" title="{__('cancel', 'admin-users')}"></i>
         </button>
     </td>
     {/if}
