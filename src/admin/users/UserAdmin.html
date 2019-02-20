@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody class="users">
-            {#each items as user}
+            {#each users as user}
             <UserAdminRow {user}></UserAdminRow>
             {/each}
         </tbody>
@@ -29,7 +29,7 @@
 
         data() {
             return {
-                items: []
+                users: []
             };
         },
 
@@ -38,7 +38,7 @@
         oncreate() {
             getJSON('/api/users', res => {
                 if (res.status === 'ok') {
-                    this.set({ items: res.data });
+                    this.set({ users: res.data });
                 }
             });
         }
