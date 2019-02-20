@@ -411,7 +411,7 @@ function create_main_fragment(component, state) {
 	};
 }
 
-// (25:12) {#each statusOptions as status}
+// (31:12) {#each statusOptions as status}
 function create_each_block(component, state) {
 	var status = state.status, each_value = state.each_value, status_index = state.status_index;
 	var option, text_value = __(status.name, "admin-users"), text, option_value_value, option_selected_value;
@@ -462,7 +462,7 @@ function create_each_block(component, state) {
 
 // (3:4) {#if !edit}
 function create_if_block(component, state) {
-	var td, text_value = state.user.Name || '', text, text_1, td_1, text_2_value = state.user.Email, text_2, text_3, td_2, i, text_4, text_5_value = __(state.statusName, "admin-users"), text_5, text_7, td_3, text_8_value = state.user.CreatedAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, text_13, button_1, text_14, button_2;
+	var td, text_value = state.user.Name || '', text, text_1, td_1, text_2_value = state.user.Email, text_2, text_3, td_2, i, text_4, text_5_value = __(state.statusName, "admin-users"), text_5, text_7, td_3, text_8_value = state.user.CreatedAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, text_14, button_1, text_16, button_2;
 
 	function click_handler(event) {
 		component.set({ edit: true });
@@ -491,10 +491,10 @@ function create_if_block(component, state) {
 			td_5 = createElement("td");
 			button = createElement("button");
 			button.innerHTML = "<i class=\"icon-pencil\" title=\"edit\"></i>";
-			text_13 = createText("\n        ");
+			text_14 = createText("\n        ");
 			button_1 = createElement("button");
 			button_1.innerHTML = "<i class=\"icon-envelope\" title=\"reset the password and send a mail\"></i>";
-			text_14 = createText("\n        ");
+			text_16 = createText("\n        ");
 			button_2 = createElement("button");
 			button_2.innerHTML = "<i class=\"icon-trash\" title=\"delete\"></i>";
 			this.h();
@@ -509,6 +509,9 @@ function create_if_block(component, state) {
 			a.href = a_href_value = "/admin/chart/by/" + state.user.Id;
 			td_4.className = "center";
 			addListener(button, "click", click_handler);
+			button.className = "action svelte-1q6ii24";
+			button_1.className = "action svelte-1q6ii24";
+			button_2.className = "action svelte-1q6ii24";
 			td_5.className = "actions";
 		},
 
@@ -532,9 +535,9 @@ function create_if_block(component, state) {
 			insertNode(text_12, target, anchor);
 			insertNode(td_5, target, anchor);
 			appendNode(button, td_5);
-			appendNode(text_13, td_5);
-			appendNode(button_1, td_5);
 			appendNode(text_14, td_5);
+			appendNode(button_1, td_5);
+			appendNode(text_16, td_5);
 			appendNode(button_2, td_5);
 		},
 
@@ -580,9 +583,9 @@ function create_if_block(component, state) {
 	};
 }
 
-// (19:4) {:else}
+// (25:4) {:else}
 function create_if_block_1(component, state) {
-	var td, input, input_value_value, text_1, td_1, select, text_3, td_2, text_5, td_3, text_7, td_4, text_9, td_5, button, text_10, button_1;
+	var td, input, input_value_value, text_1, td_1, select, text_3, td_2, text_5, td_3, text_7, td_4, text_9, td_5, button, text_11, button_1;
 
 	var each_value = state.statusOptions;
 
@@ -629,7 +632,7 @@ function create_if_block_1(component, state) {
 			td_5 = createElement("td");
 			button = createElement("button");
 			button.innerHTML = "<i class=\"icon-ok\" title=\"save\"></i>";
-			text_10 = createText("\n        ");
+			text_11 = createText("\n        ");
 			button_1 = createElement("button");
 			button_1.innerHTML = "<i class=\"icon-remove\" title=\"cancel\"></i>";
 			this.h();
@@ -644,7 +647,9 @@ function create_if_block_1(component, state) {
 			td_3.className = "center";
 			td_4.className = "center";
 			addListener(button, "click", click_handler);
+			button.className = "action svelte-1q6ii24";
 			addListener(button_1, "click", click_handler_1);
+			button_1.className = "action svelte-1q6ii24";
 			td_5.className = "actions";
 		},
 
@@ -668,7 +673,7 @@ function create_if_block_1(component, state) {
 			insertNode(text_9, target, anchor);
 			insertNode(td_5, target, anchor);
 			appendNode(button, td_5);
-			appendNode(text_10, td_5);
+			appendNode(text_11, td_5);
 			appendNode(button_1, td_5);
 		},
 
@@ -773,7 +778,7 @@ UserAdminRow.prototype._recompute = function _recompute(changed, state) {
 
 function data$1() {
     return {
-        items: []
+        users: []
     };
 }
 function oncreate() {
@@ -781,14 +786,14 @@ function oncreate() {
 
     getJSON('/api/users', function (res) {
         if (res.status === 'ok') {
-            this$1.set({ items: res.data });
+            this$1.set({ users: res.data });
         }
     });
 }
 function create_main_fragment$1(component, state) {
 	var ul, table, thead, tr, th, text_1, th_1, a_1, text_2_value = __("Name", "admin-users"), text_2, text_3, th_2, a_2, text_4_value = __("Sign-In", "admin-users"), text_4, text_5, th_3, text_6_value = __("Status", "admin-users"), text_6, text_7, th_4, a_3, text_8_value = __("Created at", "admin-users"), text_8, text_9, th_5, text_10_value = __("Charts", "admin-users"), text_10, text_11, th_6, text_12_value = __("Actions", "admin-users"), text_12, text_15, tbody;
 
-	var each_value = state.items;
+	var each_value = state.users;
 
 	var each_blocks = [];
 
@@ -883,9 +888,9 @@ function create_main_fragment$1(component, state) {
 		},
 
 		p: function update(changed, state) {
-			var each_value = state.items;
+			var each_value = state.users;
 
-			if (changed.items) {
+			if (changed.users) {
 				for (var i = 0; i < each_value.length; i += 1) {
 					var each_context = assign(assign({}, state), {
 						each_value: each_value,
@@ -924,7 +929,7 @@ function create_main_fragment$1(component, state) {
 	};
 }
 
-// (15:12) {#each items as user}
+// (15:12) {#each users as user}
 function create_each_block$1(component, state) {
 	var user = state.user, each_value = state.each_value, user_index = state.user_index;
 
@@ -948,7 +953,7 @@ function create_each_block$1(component, state) {
 			each_value = state.each_value;
 			user_index = state.user_index;
 			var useradminrow_changes = {};
-			if (changed.items) { useradminrow_changes.user = user; }
+			if (changed.users) { useradminrow_changes.user = user; }
 			useradminrow._set(useradminrow_changes);
 		},
 
@@ -967,11 +972,11 @@ function UserAdmin(options) {
 	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
 	init(this, options);
 	this._state = assign(data$1(), options.data);
-	if (!('items' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'items'"); }
+	if (!('users' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'users'"); }
 
 	var self = this;
 	var _oncreate = function() {
-		var changed = { items: 1 };
+		var changed = { users: 1 };
 		oncreate.call(self);
 		self.fire("update", { changed: changed, current: self._state });
 	};

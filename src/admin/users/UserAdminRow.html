@@ -12,9 +12,15 @@
         <a href="/admin/chart/by/{user.Id}">X</a>
     </td>
     <td class="actions">
-        <button on:click="set({ edit: true })"><i class="icon-pencil" title="edit"></i></button>
-        <button><i class="icon-envelope" title="reset the password and send a mail"></i></button>
-        <button><i class="icon-trash" title="delete"></i></button>
+        <button class="action" on:click="set({ edit: true })">
+            <i class="icon-pencil" title="edit"></i>
+        </button>
+        <button class="action">
+            <i class="icon-envelope" title="reset the password and send a mail"></i>
+        </button>
+        <button class="action">
+            <i class="icon-trash" title="delete"></i>
+        </button>
     </td>
     {:else}
     <td class="email">
@@ -33,11 +39,25 @@
     <td class="center">--</td>
     <td class="center">--</td>
     <td class="actions">
-        <button on:click="save()"><i class="icon-ok" title="save"></i></button>
-        <button on:click="set({ edit: false })"><i class="icon-remove" title="cancel"></i></button>
+        <button class="action" on:click="save()">
+            <i class="icon-ok" title="save"></i>
+        </button>
+        <button class="action" on:click="set({ edit: false })">
+            <i class="icon-remove" title="cancel"></i>
+        </button>
     </td>
     {/if}
 </tr>
+
+<style>
+    .action {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        display: inline;
+    }
+</style>
 
 <script>
     import { __ } from '../../shared/l10n';
