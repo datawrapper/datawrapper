@@ -53,9 +53,9 @@
             return {
                 list: [],
                 orderBy: 'id',
-                offset: 3,
+                offset: 0,
                 limit: 3,
-                total: 1
+                total: 0
             };
         },
 
@@ -70,15 +70,18 @@
             },
 
             updateList() {
-                const { orderBy } = this.get();
-                getJSON(`//datawrapper.local:3000/admin/users?orderBy=${orderBy}`, data => {
-                    if (data && data.list) {
-                        this.set({
-                            list: data.list,
-                            total: data.total
-                        });
+                const { orderBy, offset, limit } = this.get();
+                getJSON(
+                    `//datawrapper.local:3000/admin/users?orderBy=${orderBy}&offset=${offset}&limit=${limit}`,
+                    data => {
+                        if (data && data.list) {
+                            this.set({
+                                list: data.list,
+                                total: data.total
+                            });
+                        }
                     }
-                });
+                );
             }
         },
 

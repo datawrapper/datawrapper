@@ -9,18 +9,20 @@
 </div>
 
 <script>
+    const query = ({ limit, offset }) => `?limit=${limit}&offset=${offset}`;
+
     export default {
         computed: {
             items: ({ total, limit }) => {
                 const pageCount = Math.ceil(total / limit);
                 const pages = Array.from({ length: pageCount }, (v, i) => ({
                     text: i + 1,
-                    href: `?page=${i}`
+                    href: query({ limit, offset: i * limit })
                 }));
                 return [
-                    { text: '«', href: '?page=0' },
+                    { text: '«', href: query({ limit, offset: 0 }) },
                     ...pages,
-                    { text: '»', href: `?page=${pageCount}` }
+                    { text: '»', href: query({ limit, offset: (pageCount - 1) * limit }) }
                 ];
             }
         },
