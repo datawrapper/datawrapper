@@ -2,11 +2,25 @@
     <table class="table users">
         <thead>
             <tr>
-                <th><a href="?sort=id">#</a></th>
-                <th><a href="?sort=name">{__("Name", "admin-users")}</a></th>
-                <th><a href="?sort=email">{__("Sign-In", "admin-users")}</a></th>
+                <th>
+                    <a href="?orderBy=id" on:click="orderBy(event, 'id')">#</a>
+                </th>
+                <th>
+                    <a href="?orderBy=name" on:click="orderBy(event, 'name')">
+                        {__("Name", "admin-users")}
+                    </a>
+                </th>
+                <th>
+                    <a href="?orderBy=email" on:click="orderBy(event, 'email')">
+                        {__("Sign-In", "admin-users")}
+                    </a>
+                </th>
                 <th>{__("Status", "admin-users")}</th>
-                <th><a href="?sort=created_at">{__("Created at", "admin-users")}</a></th>
+                <th>
+                    <a href="?orderBy=createdAt" on:click="orderBy(event, 'createdAt')">
+                        {__("Created at", "admin-users")}
+                    </a>
+                </th>
                 <th class="center">{__("Charts", "admin-users")}</th>
                 <th>{__("Actions", "admin-users")}</th>
             </tr>
@@ -29,18 +43,35 @@
 
         data() {
             return {
-                users: []
+                users: [],
+                orderBy: 'id'
             };
         },
 
         helpers: { __ },
 
+        methods: {
+            orderBy(event, orderBy) {
+                event.preventDefault();
+                this.set({ orderBy });
+                window.history.replaceState({ orderBy }, '', `/admin/users?orderBy=${orderBy}`);
+                this.updateList();
+            },
+
+            updateList() {
+                const { orderBy } = this.get();
+                getJSON(`//datawrapper.local:3000/admin/users?orderBy=${orderBy}`, data => {
+                    if (data && data.list) {
+                        this.set({ users: data.list });
+                    }
+                });
+            }
+        },
+
         oncreate() {
-            getJSON('//datawrapper.local:3000/admin/users', data => {
-                if (data && data.list) {
-                    this.set({ users: data.list });
-                }
-            });
+            // 'location: ' + document.location + ', state: ' + JSON.stringify(event.state);
+
+            this.updateList();
         }
     };
 </script>

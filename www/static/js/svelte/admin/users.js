@@ -339,7 +339,7 @@ var methods = {
 };
 
 function create_main_fragment(component, state) {
-	var tr, td, text_value = state.user.role, text, text_1, td_1, a, text_2_value = state.user.id, text_2, a_href_value, text_3, tr_class_value;
+	var tr, td, a, text_value = state.user.id, text, a_href_value, text_1, tr_class_value;
 
 	function select_block_type(state) {
 		if (!state.edit) { return create_if_block; }
@@ -353,41 +353,31 @@ function create_main_fragment(component, state) {
 		c: function create() {
 			tr = createElement("tr");
 			td = createElement("td");
+			a = createElement("a");
 			text = createText(text_value);
 			text_1 = createText("\n    ");
-			td_1 = createElement("td");
-			a = createElement("a");
-			text_2 = createText(text_2_value);
-			text_3 = createText("\n    ");
 			if_block.c();
 			this.h();
 		},
 
 		h: function hydrate() {
 			a.href = a_href_value = "/admin/users/" + state.user.id;
-			td_1.className = "id out";
+			td.className = "id out";
 			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-ory1xp";
 		},
 
 		m: function mount(target, anchor) {
 			insertNode(tr, target, anchor);
 			appendNode(td, tr);
-			appendNode(text, td);
+			appendNode(a, td);
+			appendNode(text, a);
 			appendNode(text_1, tr);
-			appendNode(td_1, tr);
-			appendNode(a, td_1);
-			appendNode(text_2, a);
-			appendNode(text_3, tr);
 			if_block.m(tr, null);
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_value !== (text_value = state.user.role)) {
+			if ((changed.user) && text_value !== (text_value = state.user.id)) {
 				text.data = text_value;
-			}
-
-			if ((changed.user) && text_2_value !== (text_2_value = state.user.id)) {
-				text_2.data = text_2_value;
 			}
 
 			if ((changed.user) && a_href_value !== (a_href_value = "/admin/users/" + state.user.id)) {
@@ -420,7 +410,7 @@ function create_main_fragment(component, state) {
 	};
 }
 
-// (35:12) {#each statusOptions as status}
+// (34:12) {#each statusOptions as status}
 function create_each_block(component, state) {
 	var status_1 = state.status, each_value = state.each_value, status_index = state.status_index;
 	var option, text_value = __(status_1.name, 'admin-users'), text, option_value_value, option_selected_value;
@@ -469,7 +459,7 @@ function create_each_block(component, state) {
 	};
 }
 
-// (4:4) {#if !edit}
+// (3:4) {#if !edit}
 function create_if_block(component, state) {
 	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.status.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, text_10_value = state.user.chartCount, text_10, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
 
@@ -610,7 +600,7 @@ function create_if_block(component, state) {
 	};
 }
 
-// (29:4) {:else}
+// (28:4) {:else}
 function create_if_block_1(component, state) {
 	var td, input, input_value_value, text_1, td_1, select, text_3, td_2, text_5, td_3, text_7, td_4, text_9, td_5, button, i, i_title_value, text_11, button_1, i_1, i_1_title_value;
 
@@ -811,20 +801,54 @@ UserAdminRow.prototype._recompute = function _recompute(changed, state) {
 
 function data$1() {
     return {
-        users: []
+        users: [],
+        orderBy: 'id'
     };
 }
-function oncreate() {
-    var this$1 = this;
+var methods$1 = {
+    orderBy: function orderBy(event, orderBy$1) {
+        event.preventDefault();
+        this.set({ orderBy: orderBy$1 });
+        window.history.replaceState({ orderBy: orderBy$1 }, '', ("/admin/users?orderBy=" + orderBy$1));
+        this.updateList();
+    },
 
-    getJSON('//datawrapper.local:3000/admin/users', function (data) {
-        if (data && data.list) {
-            this$1.set({ users: data.list });
-        }
-    });
+    updateList: function updateList() {
+        var this$1 = this;
+
+        var ref = this.get();
+        var orderBy = ref.orderBy;
+        getJSON(("//datawrapper.local:3000/admin/users?orderBy=" + orderBy), function (data) {
+            if (data && data.list) {
+                this$1.set({ users: data.list });
+            }
+        });
+    }
+};
+
+function oncreate() {
+    // 'location: ' + document.location + ', state: ' + JSON.stringify(event.state);
+
+    this.updateList();
 }
 function create_main_fragment$1(component, state) {
-	var ul, table, thead, tr, th, text_1, th_1, a_1, text_2_value = __("Name", "admin-users"), text_2, text_3, th_2, a_2, text_4_value = __("Sign-In", "admin-users"), text_4, text_5, th_3, text_6_value = __("Status", "admin-users"), text_6, text_7, th_4, a_3, text_8_value = __("Created at", "admin-users"), text_8, text_9, th_5, text_10_value = __("Charts", "admin-users"), text_10, text_11, th_6, text_12_value = __("Actions", "admin-users"), text_12, text_15, tbody;
+	var ul, table, thead, tr, th, a, text_2, th_1, a_1, text_3_value = __("Name", "admin-users"), text_3, text_6, th_2, a_2, text_7_value = __("Sign-In", "admin-users"), text_7, text_10, th_3, text_11_value = __("Status", "admin-users"), text_11, text_12, th_4, a_3, text_13_value = __("Created at", "admin-users"), text_13, text_16, th_5, text_17_value = __("Charts", "admin-users"), text_17, text_18, th_6, text_19_value = __("Actions", "admin-users"), text_19, text_22, tbody;
+
+	function click_handler(event) {
+		component.orderBy(event, 'id');
+	}
+
+	function click_handler_1(event) {
+		component.orderBy(event, 'name');
+	}
+
+	function click_handler_2(event) {
+		component.orderBy(event, 'email');
+	}
+
+	function click_handler_3(event) {
+		component.orderBy(event, 'createdAt');
+	}
 
 	var each_value = state.users;
 
@@ -845,29 +869,30 @@ function create_main_fragment$1(component, state) {
 			thead = createElement("thead");
 			tr = createElement("tr");
 			th = createElement("th");
-			th.innerHTML = "<a href=\"?sort=id\">#</a>";
-			text_1 = createText("\n                ");
+			a = createElement("a");
+			a.textContent = "#";
+			text_2 = createText("\n                ");
 			th_1 = createElement("th");
 			a_1 = createElement("a");
-			text_2 = createText(text_2_value);
-			text_3 = createText("\n                ");
+			text_3 = createText(text_3_value);
+			text_6 = createText("\n                ");
 			th_2 = createElement("th");
 			a_2 = createElement("a");
-			text_4 = createText(text_4_value);
-			text_5 = createText("\n                ");
+			text_7 = createText(text_7_value);
+			text_10 = createText("\n                ");
 			th_3 = createElement("th");
-			text_6 = createText(text_6_value);
-			text_7 = createText("\n                ");
+			text_11 = createText(text_11_value);
+			text_12 = createText("\n                ");
 			th_4 = createElement("th");
 			a_3 = createElement("a");
-			text_8 = createText(text_8_value);
-			text_9 = createText("\n                ");
+			text_13 = createText(text_13_value);
+			text_16 = createText("\n                ");
 			th_5 = createElement("th");
-			text_10 = createText(text_10_value);
-			text_11 = createText("\n                ");
+			text_17 = createText(text_17_value);
+			text_18 = createText("\n                ");
 			th_6 = createElement("th");
-			text_12 = createText(text_12_value);
-			text_15 = createText("\n        ");
+			text_19 = createText(text_19_value);
+			text_22 = createText("\n        ");
 			tbody = createElement("tbody");
 
 			for (var i = 0; i < each_blocks.length; i += 1) {
@@ -877,9 +902,14 @@ function create_main_fragment$1(component, state) {
 		},
 
 		h: function hydrate() {
-			a_1.href = "?sort=name";
-			a_2.href = "?sort=email";
-			a_3.href = "?sort=created_at";
+			addListener(a, "click", click_handler);
+			a.href = "?orderBy=id";
+			addListener(a_1, "click", click_handler_1);
+			a_1.href = "?orderBy=name";
+			addListener(a_2, "click", click_handler_2);
+			a_2.href = "?orderBy=email";
+			addListener(a_3, "click", click_handler_3);
+			a_3.href = "?orderBy=createdAt";
 			th_5.className = "center";
 			tbody.className = "users";
 			table.className = "table users";
@@ -891,28 +921,29 @@ function create_main_fragment$1(component, state) {
 			appendNode(thead, table);
 			appendNode(tr, thead);
 			appendNode(th, tr);
-			appendNode(text_1, tr);
+			appendNode(a, th);
+			appendNode(text_2, tr);
 			appendNode(th_1, tr);
 			appendNode(a_1, th_1);
-			appendNode(text_2, a_1);
-			appendNode(text_3, tr);
+			appendNode(text_3, a_1);
+			appendNode(text_6, tr);
 			appendNode(th_2, tr);
 			appendNode(a_2, th_2);
-			appendNode(text_4, a_2);
-			appendNode(text_5, tr);
+			appendNode(text_7, a_2);
+			appendNode(text_10, tr);
 			appendNode(th_3, tr);
-			appendNode(text_6, th_3);
-			appendNode(text_7, tr);
+			appendNode(text_11, th_3);
+			appendNode(text_12, tr);
 			appendNode(th_4, tr);
 			appendNode(a_3, th_4);
-			appendNode(text_8, a_3);
-			appendNode(text_9, tr);
+			appendNode(text_13, a_3);
+			appendNode(text_16, tr);
 			appendNode(th_5, tr);
-			appendNode(text_10, th_5);
-			appendNode(text_11, tr);
+			appendNode(text_17, th_5);
+			appendNode(text_18, tr);
 			appendNode(th_6, tr);
-			appendNode(text_12, th_6);
-			appendNode(text_15, table);
+			appendNode(text_19, th_6);
+			appendNode(text_22, table);
 			appendNode(tbody, table);
 
 			for (var i = 0; i < each_blocks.length; i += 1) {
@@ -957,12 +988,17 @@ function create_main_fragment$1(component, state) {
 		},
 
 		d: function destroy$$1() {
+			removeListener(a, "click", click_handler);
+			removeListener(a_1, "click", click_handler_1);
+			removeListener(a_2, "click", click_handler_2);
+			removeListener(a_3, "click", click_handler_3);
+
 			destroyEach(each_blocks);
 		}
 	};
 }
 
-// (15:12) {#each users as user}
+// (29:12) {#each users as user}
 function create_each_block$1(component, state) {
 	var user = state.user, each_value = state.each_value, user_index = state.user_index;
 
@@ -1038,6 +1074,7 @@ function UserAdmin(options) {
 }
 
 assign(UserAdmin.prototype, protoDev);
+assign(UserAdmin.prototype, methods$1);
 
 UserAdmin.prototype._checkReadOnly = function _checkReadOnly(newState) {
 };
