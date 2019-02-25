@@ -1,11 +1,12 @@
-<tr class="user" data-id="{user.Id}">
-    <td class="id out"><a href="/admin/users/{user.Id}">{user.id}</a></td>
+<tr class="user role-{user.role}">
+    <td>{user.role}</td>
+    <td class="id out"><a href="/admin/users/{user.id}">{user.id}</a></td>
     {#if !edit}
     <td class="name out">{user.name || ''}</td>
     <td class="email out">{user.email}</td>
     <td>
-        <i class="icon-user" title="Editor"></i>
-        {__(statusName, 'admin-users')}
+        <i class="icon-{status.icon}" title="Editor"></i>
+        {__(status.name, 'admin-users')}
     </td>
     <td class="creation out">{user.createdAt}</td>
     <td class="center">
@@ -60,6 +61,10 @@
         background: transparent;
         display: inline;
     }
+
+    .role-0 {
+        color: #c00;
+    }
 </style>
 
 <script>
@@ -72,8 +77,8 @@
 
         computed: {
             isCurrentStatus: ({ user }) => status => user.role === status,
-            statusName: ({ user, statusOptions }) =>
-                statusOptions.find(({ slug }) => slug === user.role).name
+            status: ({ user, statusOptions }) =>
+                statusOptions.find(({ slug }) => slug === user.role)
         },
 
         data() {
@@ -83,10 +88,10 @@
 
                 // TODO: status options should probably be dynamic – how to load them?
                 statusOptions: [
-                    { slug: 3, name: 'Pending' },
-                    { slug: 5, name: 'Editor' },
-                    { slug: 1, name: 'Graphic Editor' },
-                    { slug: 0, name: 'Administrator' }
+                    { slug: 3, name: 'Pending', icon: 'user' },
+                    { slug: 5, name: 'Editor', icon: 'user' },
+                    { slug: 1, name: 'Graphic Editor', icon: 'user' },
+                    { slug: 0, name: 'Administrator', icon: 'fire' }
                 ]
             };
         },

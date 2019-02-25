@@ -306,7 +306,7 @@ function isCurrentStatus(ref) {
 	return function (status) { return user.role === status; };
 }
 
-function statusName(ref) {
+function status(ref) {
 	var user = ref.user;
 	var statusOptions = ref.statusOptions;
 
@@ -314,7 +314,7 @@ function statusName(ref) {
 		var slug = ref.slug;
 
 		return slug === user.role;
-	}).name;
+	});
 }
 
 function data() {
@@ -324,10 +324,10 @@ function data() {
 
         // TODO: status options should probably be dynamic – how to load them?
         statusOptions: [
-            { slug: 3, name: 'Pending' },
-            { slug: 5, name: 'Editor' },
-            { slug: 1, name: 'Graphic Editor' },
-            { slug: 0, name: 'Administrator' }
+            { slug: 3, name: 'Pending', icon: 'user' },
+            { slug: 5, name: 'Editor', icon: 'user' },
+            { slug: 1, name: 'Graphic Editor', icon: 'user' },
+            { slug: 0, name: 'Administrator', icon: 'fire' }
         ]
     };
 }
@@ -339,7 +339,7 @@ var methods = {
 };
 
 function create_main_fragment(component, state) {
-	var tr, td, a, text_value = state.user.id, text, a_href_value, text_1, tr_data_id_value;
+	var tr, td, text_value = state.user.role, text, text_1, td_1, a, text_2_value = state.user.id, text_2, a_href_value, text_3, tr_class_value;
 
 	function select_block_type(state) {
 		if (!state.edit) { return create_if_block; }
@@ -353,35 +353,44 @@ function create_main_fragment(component, state) {
 		c: function create() {
 			tr = createElement("tr");
 			td = createElement("td");
-			a = createElement("a");
 			text = createText(text_value);
 			text_1 = createText("\n    ");
+			td_1 = createElement("td");
+			a = createElement("a");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n    ");
 			if_block.c();
 			this.h();
 		},
 
 		h: function hydrate() {
-			a.href = a_href_value = "/admin/users/" + state.user.Id;
-			td.className = "id out";
-			tr.className = "user";
-			tr.dataset.id = tr_data_id_value = state.user.Id;
+			a.href = a_href_value = "/admin/users/" + state.user.id;
+			td_1.className = "id out";
+			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-ory1xp";
 		},
 
 		m: function mount(target, anchor) {
 			insertNode(tr, target, anchor);
 			appendNode(td, tr);
-			appendNode(a, td);
-			appendNode(text, a);
+			appendNode(text, td);
 			appendNode(text_1, tr);
+			appendNode(td_1, tr);
+			appendNode(a, td_1);
+			appendNode(text_2, a);
+			appendNode(text_3, tr);
 			if_block.m(tr, null);
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_value !== (text_value = state.user.id)) {
+			if ((changed.user) && text_value !== (text_value = state.user.role)) {
 				text.data = text_value;
 			}
 
-			if ((changed.user) && a_href_value !== (a_href_value = "/admin/users/" + state.user.Id)) {
+			if ((changed.user) && text_2_value !== (text_2_value = state.user.id)) {
+				text_2.data = text_2_value;
+			}
+
+			if ((changed.user) && a_href_value !== (a_href_value = "/admin/users/" + state.user.id)) {
 				a.href = a_href_value;
 			}
 
@@ -395,8 +404,8 @@ function create_main_fragment(component, state) {
 				if_block.m(tr, null);
 			}
 
-			if ((changed.user) && tr_data_id_value !== (tr_data_id_value = state.user.Id)) {
-				tr.dataset.id = tr_data_id_value;
+			if ((changed.user) && tr_class_value !== (tr_class_value = "user role-" + state.user.role + " svelte-ory1xp")) {
+				tr.className = tr_class_value;
 			}
 		},
 
@@ -411,10 +420,10 @@ function create_main_fragment(component, state) {
 	};
 }
 
-// (34:12) {#each statusOptions as status}
+// (35:12) {#each statusOptions as status}
 function create_each_block(component, state) {
-	var status = state.status, each_value = state.each_value, status_index = state.status_index;
-	var option, text_value = __(status.name, 'admin-users'), text, option_value_value, option_selected_value;
+	var status_1 = state.status, each_value = state.each_value, status_index = state.status_index;
+	var option, text_value = __(status_1.name, 'admin-users'), text, option_value_value, option_selected_value;
 
 	return {
 		c: function create() {
@@ -424,9 +433,9 @@ function create_each_block(component, state) {
 		},
 
 		h: function hydrate() {
-			option.__value = option_value_value = status.slug;
+			option.__value = option_value_value = status_1.slug;
 			option.value = option.__value;
-			option.selected = option_selected_value = state.isCurrentStatus(status.slug);
+			option.selected = option_selected_value = state.isCurrentStatus(status_1.slug);
 		},
 
 		m: function mount(target, anchor) {
@@ -435,19 +444,19 @@ function create_each_block(component, state) {
 		},
 
 		p: function update(changed, state) {
-			status = state.status;
+			status_1 = state.status;
 			each_value = state.each_value;
 			status_index = state.status_index;
-			if ((changed.statusOptions) && text_value !== (text_value = __(status.name, 'admin-users'))) {
+			if ((changed.statusOptions) && text_value !== (text_value = __(status_1.name, 'admin-users'))) {
 				text.data = text_value;
 			}
 
-			if ((changed.statusOptions) && option_value_value !== (option_value_value = status.slug)) {
+			if ((changed.statusOptions) && option_value_value !== (option_value_value = status_1.slug)) {
 				option.__value = option_value_value;
 			}
 
 			option.value = option.__value;
-			if ((changed.isCurrentStatus || changed.statusOptions) && option_selected_value !== (option_selected_value = state.isCurrentStatus(status.slug))) {
+			if ((changed.isCurrentStatus || changed.statusOptions) && option_selected_value !== (option_selected_value = state.isCurrentStatus(status_1.slug))) {
 				option.selected = option_selected_value;
 			}
 		},
@@ -460,9 +469,9 @@ function create_each_block(component, state) {
 	};
 }
 
-// (3:4) {#if !edit}
+// (4:4) {#if !edit}
 function create_if_block(component, state) {
-	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, text_4, text_5_value = __(state.statusName, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
+	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.status.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
 
 	function click_handler(event) {
 		component.set({ edit: true });
@@ -503,7 +512,7 @@ function create_if_block(component, state) {
 		h: function hydrate() {
 			td.className = "name out";
 			td_1.className = "email out";
-			i.className = "icon-user";
+			i.className = i_class_value = "icon-" + state.status.icon + " svelte-ory1xp";
 			i.title = "Editor";
 			td_3.className = "creation out";
 			a.href = a_href_value = "/admin/chart/by/" + state.user.Id;
@@ -511,13 +520,13 @@ function create_if_block(component, state) {
 			i_1.className = "icon-pencil";
 			i_1.title = i_1_title_value = __('edit', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-189i6di";
+			button.className = "action svelte-ory1xp";
 			i_2.className = "icon-envelope";
 			i_2.title = i_2_title_value = __('reset the password and send a mail', 'admin-users');
-			button_1.className = "action svelte-189i6di";
+			button_1.className = "action svelte-ory1xp";
 			i_3.className = "icon-trash";
 			i_3.title = i_3_title_value = __('delete', 'admin-users');
-			button_2.className = "action svelte-189i6di";
+			button_2.className = "action svelte-ory1xp";
 			td_5.className = "actions";
 		},
 
@@ -559,7 +568,11 @@ function create_if_block(component, state) {
 				text_2.data = text_2_value;
 			}
 
-			if ((changed.statusName) && text_5_value !== (text_5_value = __(state.statusName, 'admin-users'))) {
+			if ((changed.status) && i_class_value !== (i_class_value = "icon-" + state.status.icon + " svelte-ory1xp")) {
+				i.className = i_class_value;
+			}
+
+			if ((changed.status) && text_5_value !== (text_5_value = __(state.status.name, 'admin-users'))) {
 				text_5.data = text_5_value;
 			}
 
@@ -592,7 +605,7 @@ function create_if_block(component, state) {
 	};
 }
 
-// (28:4) {:else}
+// (29:4) {:else}
 function create_if_block_1(component, state) {
 	var td, input, input_value_value, text_1, td_1, select, text_3, td_2, text_5, td_3, text_7, td_4, text_9, td_5, button, i, i_title_value, text_11, button_1, i_1, i_1_title_value;
 
@@ -658,11 +671,11 @@ function create_if_block_1(component, state) {
 			i.className = "icon-ok";
 			i.title = i_title_value = __('save', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-189i6di";
+			button.className = "action svelte-ory1xp";
 			i_1.className = "icon-remove";
 			i_1.title = i_1_title_value = __('cancel', 'admin-users');
 			addListener(button_1, "click", click_handler_1);
-			button_1.className = "action svelte-189i6di";
+			button_1.className = "action svelte-ory1xp";
 			td_5.className = "actions";
 		},
 
@@ -776,7 +789,7 @@ assign(UserAdminRow.prototype, methods);
 
 UserAdminRow.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	if ('isCurrentStatus' in newState && !this._updatingReadonlyProperty) { throw new Error("<UserAdminRow>: Cannot set read-only property 'isCurrentStatus'"); }
-	if ('statusName' in newState && !this._updatingReadonlyProperty) { throw new Error("<UserAdminRow>: Cannot set read-only property 'statusName'"); }
+	if ('status' in newState && !this._updatingReadonlyProperty) { throw new Error("<UserAdminRow>: Cannot set read-only property 'status'"); }
 };
 
 UserAdminRow.prototype._recompute = function _recompute(changed, state) {
@@ -785,7 +798,7 @@ UserAdminRow.prototype._recompute = function _recompute(changed, state) {
 	}
 
 	if (changed.user || changed.statusOptions) {
-		if (this._differs(state.statusName, (state.statusName = statusName(state)))) { changed.statusName = true; }
+		if (this._differs(state.status, (state.status = status(state)))) { changed.status = true; }
 	}
 };
 
