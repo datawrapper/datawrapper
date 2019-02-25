@@ -303,7 +303,7 @@ function getJSON(url, credentials, callback) {
 function isCurrentStatus(ref) {
 	var user = ref.user;
 
-	return function (status) { return user.Role === status; };
+	return function (status) { return user.role === status; };
 }
 
 function statusName(ref) {
@@ -313,7 +313,7 @@ function statusName(ref) {
 	return statusOptions.find(function (ref) {
 		var slug = ref.slug;
 
-		return slug === user.Role;
+		return slug === user.role;
 	}).name;
 }
 
@@ -324,10 +324,10 @@ function data() {
 
         // TODO: status options should probably be dynamic – how to load them?
         statusOptions: [
-            { slug: 'pending', name: 'Pending' },
-            { slug: 'editor', name: 'Editor' },
-            { slug: 'graphic-editor', name: 'Graphic Editor' },
-            { slug: 'admin', name: 'Administrator' }
+            { slug: 3, name: 'Pending' },
+            { slug: 5, name: 'Editor' },
+            { slug: 1, name: 'Graphic Editor' },
+            { slug: 0, name: 'Administrator' }
         ]
     };
 }
@@ -339,7 +339,7 @@ var methods = {
 };
 
 function create_main_fragment(component, state) {
-	var tr, td, a, text_value = state.user.Id, text, a_href_value, text_1, tr_data_id_value;
+	var tr, td, a, text_value = state.user.id, text, a_href_value, text_1, tr_data_id_value;
 
 	function select_block_type(state) {
 		if (!state.edit) { return create_if_block; }
@@ -377,7 +377,7 @@ function create_main_fragment(component, state) {
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_value !== (text_value = state.user.Id)) {
+			if ((changed.user) && text_value !== (text_value = state.user.id)) {
 				text.data = text_value;
 			}
 
@@ -462,7 +462,7 @@ function create_each_block(component, state) {
 
 // (3:4) {#if !edit}
 function create_if_block(component, state) {
-	var td, text_value = state.user.Name || '', text, text_1, td_1, text_2_value = state.user.Email, text_2, text_3, td_2, i, text_4, text_5_value = __(state.statusName, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.CreatedAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
+	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, text_4, text_5_value = __(state.statusName, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
 
 	function click_handler(event) {
 		component.set({ edit: true });
@@ -511,13 +511,13 @@ function create_if_block(component, state) {
 			i_1.className = "icon-pencil";
 			i_1.title = i_1_title_value = __('edit', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-1q6ii24";
+			button.className = "action svelte-189i6di";
 			i_2.className = "icon-envelope";
 			i_2.title = i_2_title_value = __('reset the password and send a mail', 'admin-users');
-			button_1.className = "action svelte-1q6ii24";
+			button_1.className = "action svelte-189i6di";
 			i_3.className = "icon-trash";
 			i_3.title = i_3_title_value = __('delete', 'admin-users');
-			button_2.className = "action svelte-1q6ii24";
+			button_2.className = "action svelte-189i6di";
 			td_5.className = "actions";
 		},
 
@@ -551,11 +551,11 @@ function create_if_block(component, state) {
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_value !== (text_value = state.user.Name || '')) {
+			if ((changed.user) && text_value !== (text_value = state.user.name || '')) {
 				text.data = text_value;
 			}
 
-			if ((changed.user) && text_2_value !== (text_2_value = state.user.Email)) {
+			if ((changed.user) && text_2_value !== (text_2_value = state.user.email)) {
 				text_2.data = text_2_value;
 			}
 
@@ -563,7 +563,7 @@ function create_if_block(component, state) {
 				text_5.data = text_5_value;
 			}
 
-			if ((changed.user) && text_8_value !== (text_8_value = state.user.CreatedAt)) {
+			if ((changed.user) && text_8_value !== (text_8_value = state.user.createdAt)) {
 				text_8.data = text_8_value;
 			}
 
@@ -649,7 +649,7 @@ function create_if_block_1(component, state) {
 
 		h: function hydrate() {
 			setAttribute(input, "type", "text");
-			input.value = input_value_value = state.user.Email;
+			input.value = input_value_value = state.user.email;
 			td.className = "email";
 			select.name = "status";
 			td_2.className = "creation out";
@@ -658,11 +658,11 @@ function create_if_block_1(component, state) {
 			i.className = "icon-ok";
 			i.title = i_title_value = __('save', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-1q6ii24";
+			button.className = "action svelte-189i6di";
 			i_1.className = "icon-remove";
 			i_1.title = i_1_title_value = __('cancel', 'admin-users');
 			addListener(button_1, "click", click_handler_1);
-			button_1.className = "action svelte-1q6ii24";
+			button_1.className = "action svelte-189i6di";
 			td_5.className = "actions";
 		},
 
@@ -693,7 +693,7 @@ function create_if_block_1(component, state) {
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && input_value_value !== (input_value_value = state.user.Email)) {
+			if ((changed.user) && input_value_value !== (input_value_value = state.user.email)) {
 				input.value = input_value_value;
 			}
 
@@ -799,9 +799,9 @@ function data$1() {
 function oncreate() {
     var this$1 = this;
 
-    getJSON('/api/users', function (res) {
-        if (res.status === 'ok') {
-            this$1.set({ users: res.data });
+    getJSON('//datawrapper.local:3000/admin/users', function (data) {
+        if (data && data.list) {
+            this$1.set({ users: data.list });
         }
     });
 }

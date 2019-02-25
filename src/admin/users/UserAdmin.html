@@ -36,9 +36,9 @@
         helpers: { __ },
 
         oncreate() {
-            getJSON('/api/users', res => {
-                if (res.status === 'ok') {
-                    this.set({ users: res.data });
+            getJSON('//datawrapper.local:3000/admin/users', data => {
+                if (data && data.list) {
+                    this.set({ users: data.list });
                 }
             });
         }
