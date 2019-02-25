@@ -471,7 +471,7 @@ function create_each_block(component, state) {
 
 // (4:4) {#if !edit}
 function create_if_block(component, state) {
-	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.status.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
+	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.status.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, text_10_value = state.user.chartCount, text_10, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value, text_16, button_2, i_3, i_3_title_value;
 
 	function click_handler(event) {
 		component.set({ edit: true });
@@ -495,7 +495,7 @@ function create_if_block(component, state) {
 			text_9 = createText("\n    ");
 			td_4 = createElement("td");
 			a = createElement("a");
-			a.textContent = "X";
+			text_10 = createText(text_10_value);
 			text_12 = createText("\n    ");
 			td_5 = createElement("td");
 			button = createElement("button");
@@ -515,7 +515,7 @@ function create_if_block(component, state) {
 			i.className = i_class_value = "icon-" + state.status.icon + " svelte-ory1xp";
 			i.title = "Editor";
 			td_3.className = "creation out";
-			a.href = a_href_value = "/admin/chart/by/" + state.user.Id;
+			a.href = a_href_value = "/admin/chart/by/" + state.user.id;
 			td_4.className = "center";
 			i_1.className = "icon-pencil";
 			i_1.title = i_1_title_value = __('edit', 'admin-users');
@@ -547,6 +547,7 @@ function create_if_block(component, state) {
 			insertNode(text_9, target, anchor);
 			insertNode(td_4, target, anchor);
 			appendNode(a, td_4);
+			appendNode(text_10, a);
 			insertNode(text_12, target, anchor);
 			insertNode(td_5, target, anchor);
 			appendNode(button, td_5);
@@ -580,7 +581,11 @@ function create_if_block(component, state) {
 				text_8.data = text_8_value;
 			}
 
-			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.Id)) {
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.chartCount)) {
+				text_10.data = text_10_value;
+			}
+
+			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.id)) {
 				a.href = a_href_value;
 			}
 		},

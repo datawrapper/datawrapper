@@ -10,7 +10,7 @@
     </td>
     <td class="creation out">{user.createdAt}</td>
     <td class="center">
-        <a href="/admin/chart/by/{user.Id}">X</a>
+        <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
     <td class="actions">
         <button class="action" on:click="set({ edit: true })">
