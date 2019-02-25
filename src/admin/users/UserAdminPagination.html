@@ -1,0 +1,30 @@
+<div class="pagination">
+    <ul>
+        {#each items as item}
+        <li>
+            <a href="{item.href}">{item.text}</a>
+        </li>
+        {/each}
+    </ul>
+</div>
+
+<script>
+    export default {
+        computed: {
+            items: ({ total, limit }) => {
+                const pageCount = Math.ceil(total / limit);
+                const pages = Array.from({ length: pageCount }, (v, i) => ({
+                    text: i + 1,
+                    href: `?page=${i}`
+                }));
+                return [
+                    { text: '«', href: '?page=0' },
+                    ...pages,
+                    { text: '»', href: `?page=${pageCount}` }
+                ];
+            }
+        },
+
+        methods: {}
+    };
+</script>

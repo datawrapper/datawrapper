@@ -1,4 +1,4 @@
-<ul>
+<div>
     <table class="table users">
         <thead>
             <tr>
@@ -26,26 +26,36 @@
             </tr>
         </thead>
         <tbody class="users">
-            {#each users as user}
+            {#each list as user}
             <UserAdminRow {user}></UserAdminRow>
             {/each}
         </tbody>
     </table>
-</ul>
+    <div class="pull-right">
+        <UserAdminPagination {orderBy} {offset} {limit} {total}></UserAdminPagination>
+    </div>
+</div>
 
 <script>
     import { parse } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
     import UserAdminRow from './UserAdminRow.html';
+    import UserAdminPagination from './UserAdminPagination.html';
 
     export default {
-        components: { UserAdminRow },
+        components: {
+            UserAdminRow,
+            UserAdminPagination
+        },
 
         data() {
             return {
-                users: [],
-                orderBy: 'id'
+                list: [],
+                orderBy: 'id',
+                offset: 3,
+                limit: 3,
+                total: 1
             };
         },
 
@@ -63,7 +73,10 @@
                 const { orderBy } = this.get();
                 getJSON(`//datawrapper.local:3000/admin/users?orderBy=${orderBy}`, data => {
                     if (data && data.list) {
-                        this.set({ users: data.list });
+                        this.set({
+                            list: data.list,
+                            total: data.total
+                        });
                     }
                 });
             }
