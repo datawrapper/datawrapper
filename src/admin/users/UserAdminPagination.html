@@ -1,7 +1,7 @@
 <div class="pagination">
     <ul>
         {#each items as item}
-        <li>
+        <li class="{item.active ? 'active' : ''}">
             <a href="{item.href}">{item.text}</a>
         </li>
         {/each}
@@ -10,19 +10,31 @@
 
 <script>
     const query = ({ limit, offset }) => `?limit=${limit}&offset=${offset}`;
+    const isActive = ({ currentPage, i, pageCount }) =>
+        currentPage === i || currentPage === pageCount;
 
     export default {
         computed: {
-            items: ({ total, limit }) => {
+            items: ({ total, limit, offset }) => {
                 const pageCount = Math.ceil(total / limit);
+                const currentPage = Math.ceil(offset / limit);
                 const pages = Array.from({ length: pageCount }, (v, i) => ({
                     text: i + 1,
-                    href: query({ limit, offset: i * limit })
+                    href: query({ limit, offset: i * limit }),
+                    active: isActive({ currentPage, i, pageCount })
                 }));
                 return [
-                    { text: '«', href: query({ limit, offset: 0 }) },
+                    {
+                        text: '«',
+                        href: query({ limit, offset: 0 }),
+                        active: isActive({ currentPage, pageCount, i: 0 })
+                    },
                     ...pages,
-                    { text: '»', href: query({ limit, offset: (pageCount - 1) * limit }) }
+                    {
+                        text: '»',
+                        href: query({ limit, offset: (pageCount - 1) * limit }),
+                        active: isActive({ currentPage, pageCount, i: pageCount - 1 })
+                    }
                 ];
             }
         },

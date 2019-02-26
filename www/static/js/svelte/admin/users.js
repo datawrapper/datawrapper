@@ -1148,19 +1148,37 @@ var query = function (ref) {
 
 	return ("?limit=" + limit + "&offset=" + offset);
 };
+var isActive = function (ref) {
+    	var currentPage = ref.currentPage;
+    	var i = ref.i;
+    	var pageCount = ref.pageCount;
+
+    	return currentPage === i || currentPage === pageCount;
+};
 
 function items(ref) {
     var total = ref.total;
     var limit = ref.limit;
+    var offset = ref.offset;
 
     var pageCount = Math.ceil(total / limit);
+    var currentPage = Math.ceil(offset / limit);
     var pages = Array.from({ length: pageCount }, function (v, i) { return ({
         text: i + 1,
-        href: query({ limit: limit, offset: i * limit })
+        href: query({ limit: limit, offset: i * limit }),
+        active: isActive({ currentPage: currentPage, i: i, pageCount: pageCount })
     }); });
     return [
-        { text: '«', href: query({ limit: limit, offset: 0 }) } ].concat( pages,
-        [{ text: '»', href: query({ limit: limit, offset: (pageCount - 1) * limit }) }]
+        {
+            text: '«',
+            href: query({ limit: limit, offset: 0 }),
+            active: isActive({ currentPage: currentPage, pageCount: pageCount, i: 0 })
+        } ].concat( pages,
+        [{
+            text: '»',
+            href: query({ limit: limit, offset: (pageCount - 1) * limit }),
+            active: isActive({ currentPage: currentPage, pageCount: pageCount, i: pageCount - 1 })
+        }]
     );
 }
 
@@ -1250,7 +1268,7 @@ function create_main_fragment$1(component, state) {
 // (3:8) {#each items as item}
 function create_each_block$1(component, state) {
 	var item = state.item, each_value = state.each_value, item_index = state.item_index;
-	var li, a, text_value = item.text, text, a_href_value;
+	var li, a, text_value = item.text, text, a_href_value, li_class_value;
 
 	return {
 		c: function create() {
@@ -1262,6 +1280,7 @@ function create_each_block$1(component, state) {
 
 		h: function hydrate() {
 			a.href = a_href_value = item.href;
+			li.className = li_class_value = item.active ? 'active' : '';
 		},
 
 		m: function mount(target, anchor) {
@@ -1281,6 +1300,10 @@ function create_each_block$1(component, state) {
 			if ((changed.items) && a_href_value !== (a_href_value = item.href)) {
 				a.href = a_href_value;
 			}
+
+			if ((changed.items) && li_class_value !== (li_class_value = item.active ? 'active' : '')) {
+				li.className = li_class_value;
+			}
 		},
 
 		u: function unmount() {
@@ -1296,9 +1319,10 @@ function UserAdminPagination(options) {
 	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
 	init(this, options);
 	this._state = assign({}, options.data);
-	this._recompute({ total: 1, limit: 1 }, this._state);
+	this._recompute({ total: 1, limit: 1, offset: 1 }, this._state);
 	if (!('total' in this._state)) { console.warn("<UserAdminPagination> was created without expected data property 'total'"); }
 	if (!('limit' in this._state)) { console.warn("<UserAdminPagination> was created without expected data property 'limit'"); }
+	if (!('offset' in this._state)) { console.warn("<UserAdminPagination> was created without expected data property 'offset'"); }
 
 	this._fragment = create_main_fragment$1(this, this._state);
 
@@ -1317,7 +1341,7 @@ UserAdminPagination.prototype._checkReadOnly = function _checkReadOnly(newState)
 };
 
 UserAdminPagination.prototype._recompute = function _recompute(changed, state) {
-	if (changed.total || changed.limit) {
+	if (changed.total || changed.limit || changed.offset) {
 		if (this._differs(state.items, (state.items = items(state)))) { changed.items = true; }
 	}
 };
