@@ -30,7 +30,6 @@ dwInitTwigEnvironment($twig);
 require_once ROOT_PATH . 'controller/plugin-templates.php';
 require_once ROOT_PATH . 'controller/edit.php';
 require_once ROOT_PATH . 'controller/home.php';
-require_once ROOT_PATH . 'controller/login.php';
 require_once ROOT_PATH . 'controller/account.php';
 require_once ROOT_PATH . 'controller/chart/create.php';
 require_once ROOT_PATH . 'controller/chart/edit.php';
