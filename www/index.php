@@ -77,16 +77,15 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     if ($requiredKey === $givenKey) return;
 
     $req = $app->request();
-    if (UserQuery::create()->filterByRole(array('admin', 'sysadmin'))->count() > 0) {
-        if ($req->getResourceUri() != '/login' &&
-            strncmp($req->getResourceUri(), '/account/invite/', 16) && // and doesn't start with '/account/invite/'
-            strncmp($req->getResourceUri(), '/account/reset-password/', 24)) { // and doesn't start with '/account/reset-password/'
+
+    if ($req->getResourceUri() != '/login' &&
+        // and doesn't start with '/account/invite/'
+        strncmp($req->getResourceUri(), '/account/invite/', 16) && 
+        // and doesn't start with '/account/reset-password/'
+        strncmp($req->getResourceUri(), '/account/reset-password/', 24)) {
+
+        if (empty($dw_config['login_urls']) || !in_array($req->getResourceUri(), $dw_config['login_urls'])) {            
             $app->redirect('/login');
-        }
-    }
-    else {
-        if ($req->getResourceUri() != '/setup') {
-            $app->redirect('/setup');
         }
     }
 });
