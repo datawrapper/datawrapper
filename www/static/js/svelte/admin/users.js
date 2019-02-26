@@ -1163,17 +1163,17 @@ function items(ref) {
 
     var pageCount = Math.ceil(total / limit);
     var currentPage = Math.ceil(offset / limit);
-    var pages = Array.from({ length: pageCount }, function (v, i) { return ({
-        text: i + 1,
-        href: query({ limit: limit, offset: i * limit }),
-        active: isActive({ currentPage: currentPage, i: i, pageCount: pageCount })
-    }); });
     return [
         {
             text: '«',
             href: query({ limit: limit, offset: 0 }),
             active: isActive({ currentPage: currentPage, pageCount: pageCount, i: 0 })
-        } ].concat( pages,
+        } ].concat( Array.from({ length: pageCount }, function (v, i) { return ({
+            text: i + 1,
+            href: query({ limit: limit, offset: i * limit }),
+            active: isActive({ currentPage: currentPage, i: i, pageCount: pageCount }),
+            state: { limit: limit, offset: i * limit }
+        }); }),
         [{
             text: '»',
             href: query({ limit: limit, offset: (pageCount - 1) * limit }),
@@ -1182,7 +1182,12 @@ function items(ref) {
     );
 }
 
-var methods$1 = {};
+var methods$1 = {
+    navigate: function navigate(event, state) {
+        event.preventDefault();
+        this.fire('navigate', state);
+    }
+};
 
 function create_main_fragment$1(component, state) {
 	var div, ul;
@@ -1279,7 +1284,15 @@ function create_each_block$1(component, state) {
 		},
 
 		h: function hydrate() {
+			addListener(a, "click", click_handler);
 			a.href = a_href_value = item.href;
+
+			a._svelte = {
+				component: component,
+				each_value: state.each_value,
+				item_index: state.item_index
+			};
+
 			li.className = li_class_value = item.active ? 'active' : '';
 		},
 
@@ -1301,6 +1314,9 @@ function create_each_block$1(component, state) {
 				a.href = a_href_value;
 			}
 
+			a._svelte.each_value = state.each_value;
+			a._svelte.item_index = state.item_index;
+
 			if ((changed.items) && li_class_value !== (li_class_value = item.active ? 'active' : '')) {
 				li.className = li_class_value;
 			}
@@ -1310,8 +1326,16 @@ function create_each_block$1(component, state) {
 			detachNode(li);
 		},
 
-		d: noop
+		d: function destroy$$1() {
+			removeListener(a, "click", click_handler);
+		}
 	};
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var each_value = this._svelte.each_value, item_index = this._svelte.item_index, item = each_value[item_index];
+	component.navigate(event, item.state);
 }
 
 function UserAdminPagination(options) {
@@ -1365,6 +1389,12 @@ var methods$2 = {
         this.updateList();
     },
 
+    gotoPage: function gotoPage(navState) {
+        this.set(navState);
+        window.history.replaceState(navState, '', ("/admin/users?" + (queryString_3(navState))));
+        this.updateList();
+    },
+
     updateList: function updateList() {
         var this$1 = this;
 
@@ -1373,7 +1403,7 @@ var methods$2 = {
         var offset = ref.offset;
         var limit = ref.limit;
         getJSON(
-            ("//datawrapper.local:3000/admin/users?orderBy=" + orderBy + "&offset=" + offset + "&limit=" + limit),
+            ("//datawrapper.local:3000/admin/users?" + (queryString_3({ orderBy: orderBy, offset: offset, limit: limit }))),
             function (data) {
                 if (data && data.list) {
                     this$1.set({
@@ -1431,6 +1461,10 @@ function create_main_fragment$2(component, state) {
 	var useradminpagination = new UserAdminPagination({
 		root: component.root,
 		data: useradminpagination_initial_data
+	});
+
+	useradminpagination.on("navigate", function(event) {
+		component.gotoPage(event);
 	});
 
 	return {

@@ -32,12 +32,18 @@
         </tbody>
     </table>
     <div class="pull-right">
-        <UserAdminPagination {orderBy} {offset} {limit} {total}></UserAdminPagination>
+        <UserAdminPagination
+            on:navigate="gotoPage(event)"
+            {orderBy}
+            {offset}
+            {limit}
+            {total}
+        ></UserAdminPagination>
     </div>
 </div>
 
 <script>
-    import { parse } from 'query-string';
+    import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
     import UserAdminRow from './UserAdminRow.html';
@@ -69,10 +75,16 @@
                 this.updateList();
             },
 
+            gotoPage(navState) {
+                this.set(navState);
+                window.history.replaceState(navState, '', `/admin/users?${stringify(navState)}`);
+                this.updateList();
+            },
+
             updateList() {
                 const { orderBy, offset, limit } = this.get();
                 getJSON(
-                    `//datawrapper.local:3000/admin/users?orderBy=${orderBy}&offset=${offset}&limit=${limit}`,
+                    `//datawrapper.local:3000/admin/users?${stringify({ orderBy, offset, limit })}`,
                     data => {
                         if (data && data.list) {
                             this.set({

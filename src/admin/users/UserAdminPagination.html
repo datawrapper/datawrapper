@@ -2,7 +2,7 @@
     <ul>
         {#each items as item}
         <li class="{item.active ? 'active' : ''}">
-            <a href="{item.href}">{item.text}</a>
+            <a href="{item.href}" on:click="navigate(event, item.state)">{item.text}</a>
         </li>
         {/each}
     </ul>
@@ -18,18 +18,18 @@
             items: ({ total, limit, offset }) => {
                 const pageCount = Math.ceil(total / limit);
                 const currentPage = Math.ceil(offset / limit);
-                const pages = Array.from({ length: pageCount }, (v, i) => ({
-                    text: i + 1,
-                    href: query({ limit, offset: i * limit }),
-                    active: isActive({ currentPage, i, pageCount })
-                }));
                 return [
                     {
                         text: '«',
                         href: query({ limit, offset: 0 }),
                         active: isActive({ currentPage, pageCount, i: 0 })
                     },
-                    ...pages,
+                    ...Array.from({ length: pageCount }, (v, i) => ({
+                        text: i + 1,
+                        href: query({ limit, offset: i * limit }),
+                        active: isActive({ currentPage, i, pageCount }),
+                        state: { limit, offset: i * limit }
+                    })),
                     {
                         text: '»',
                         href: query({ limit, offset: (pageCount - 1) * limit }),
@@ -39,6 +39,11 @@
             }
         },
 
-        methods: {}
+        methods: {
+            navigate(event, state) {
+                event.preventDefault();
+                this.fire('navigate', state);
+            }
+        }
     };
 </script>
