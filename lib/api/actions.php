@@ -2,7 +2,7 @@
 
 
 /*
- * creates new job
+ * logs a user action or event
  */
 $app->post('/actions/:key', function($key) use ($app) {
     disable_cache($app);
