@@ -18,22 +18,42 @@ if (!config.translation || !config.translation.core) {
 }
 
 if (config.translation) {
-    queue(2)
+    queue(3)
         .defer(getSheet, config.translation.core)
         .defer(getSheet, config.translation.plugins)
-        .await((err, core, plugins) => {
-            // write core locales/*.json
-            writeLocales(core, './locale');
+        .defer(getSheet, config.translation.chart)
+        .await((err, core, plugins, chart) => {      
+            // write core locales/*.json            
+            writeLocales(core, './locale', config.languages);
 
-            _.each(_.groupBy(plugins, 'plugin'), (src, k) => {
+            var chartTranslations = _.indexBy(chart, 'plugin'),
+                chartSrc = _.groupBy(chart, 'plugin');
+
+            _.each(_.groupBy(plugins, 'plugin'), (src, k) => {                
+                var languages = config.languages;
+
+                if (!_.isEmpty(chartTranslations[k])) {                    
+                    _.each(_.groupBy(chart, 'plugin'), (c, id) => {                
+                        if (id == k) {
+                            src= src.concat(c);
+                        }
+                    });
+                    
+                    var locales = config.plugins['chart-locale-select'].locales.split(",")
+                    locales.forEach((el, i) => {
+                        locales[i] = { id: el.split("|")[0] };
+                    });
+                    languages = locales;                    
+                }
+
                 if (k) {
-                    if (fs.existsSync(`./plugins/${k}`)) {
-                        writeLocales(src, `./plugins/${k}/locale`);
+                    if (fs.existsSync(`./plugins/${k}`)) {                        
+                        writeLocales(src, `./plugins/${k}/locale`, languages);
                     } else {
                         console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
                     }
                 }
-            });
+            });            
 
             // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
             // fs.unlinkSync(sheets[0].dest);
@@ -47,17 +67,16 @@ function getSheet(url, callback) {
     });
 }
 
-function writeLocales(src, path) {
+function writeLocales(src, path, languages) {
     if (!fs.existsSync(path)) fs.mkdirSync(path);
     var err = false;
-    config.languages.forEach((lang) => {
-        const f = `${path}/${lang.id.replace('-','_')}.json`;
+    languages.forEach((lang) => {
+        const f = `${path}/${lang.id.replace('-','_')}.json`;        
         try {
             fs.accessSync(f, fs.constants.R_OK | fs.constants.W_OK);
         } catch (e) {
             console.error(chalk.red(' ✖ '), 'no permission to write', f);
-            err = true;
-            return;
+            err = true;            
         }
         const locale = {};
         src.forEach((row) => {
