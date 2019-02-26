@@ -57,15 +57,17 @@ call_user_func(function() {
     $app->get('/account', function() use ($app) {
         disable_cache($app);
 
-        $user = Session::getUser();
+        if (Session::isLoggedIn()) {
+            $user = Session::getUser();
 
-        $context = array(
-            "user" => $user
-        );
+            $context = array(
+                "user" => $user
+            );
 
-        add_header_vars($page, 'account');
+            add_header_vars($page, 'account');
 
-        $app->render('account.twig', $page);
+            $app->render('account.twig', $page);
+        }        
     });
 
 });
