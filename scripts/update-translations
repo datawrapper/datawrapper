@@ -22,6 +22,7 @@ if (config.translation) {
         .defer(getSheet, config.translation.core)
         .defer(getSheet, config.translation.plugins)
         .await((err, core, plugins) => {
+            if (err) return console.error(err);
             // write core locales/*.json
             writeLocales(core, './locale');
 
@@ -43,6 +44,7 @@ if (config.translation) {
 
 function getSheet(url, callback) {
     request(url, (err, res, body) => {
+        if (err) return console.error(err);
         callback(null, csvParse(body));
     });
 }
