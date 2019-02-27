@@ -58,6 +58,8 @@
     import UserAdminRow from './UserAdminRow.html';
     import UserAdminPagination from './UserAdminPagination.html';
 
+    const BASE_URL = '//datawrapper.local:3000/admin/users';
+
     export default {
         components: {
             UserAdminRow,
@@ -68,6 +70,7 @@
             return {
                 list: [],
                 orderBy: 'id',
+                loader: null,
                 offset: 0,
                 limit: 3,
                 total: 0
@@ -90,32 +93,39 @@
         methods: {
             orderBy(event, orderBy) {
                 event.preventDefault();
-                this.set({ orderBy });
-                window.history.replaceState({ orderBy }, '', `/admin/users?orderBy=${orderBy}`);
-                this.set({ loader: this.loadUsers() });
+                this.set({ orderBy, offset: 0 });
+                const state = { orderBy };
+                window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
+                this.loadUsers();
             },
 
-            gotoPage(navState) {
-                window.history.replaceState(navState, '', `/admin/users?${stringify(navState)}`);
-                this.set({ loader: this.loadUsers(navState) });
+            gotoPage({ offset, limit }) {
+                this.set({ offset, limit });
+                const { orderBy } = this.get();
+                const state = { offset, limit, orderBy };
+                window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
+                this.loadUsers();
             },
 
-            loadUsers({ orderBy, offset, limit }) {
-                return getJSON(
-                    `//datawrapper.local:3000/admin/users?${stringify({ orderBy, offset, limit })}`,
+            loadUsers() {
+                const { offset, limit, orderBy } = this.get();
+                const loader = getJSON(
+                    `${BASE_URL}?${stringify({ offset, limit, orderBy })}`,
                     data => {
                         if (data && data.list) {
                             const { total, list } = data;
-                            this.set({ list, total, orderBy, offset, limit });
+                            this.set({ list, total });
                         }
                     }
                 );
+                this.set({ loader });
             }
         },
 
         oncreate() {
             const urlQuery = parse(window.location.search);
-            this.set({ loader: this.loadUsers(urlQuery) });
+            this.set(urlQuery);
+            this.loadUsers();
         }
     };
 </script>
