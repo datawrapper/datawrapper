@@ -33,11 +33,10 @@
     </table>
     <div class="pull-right">
         <UserAdminPagination
+            pages="{paginationItems}"
+            url="{paginationUrl}"
             on:navigate="gotoPage(event)"
-            {orderBy}
-            {offset}
-            {limit}
-            {total}
+            {currentPageNum}
         ></UserAdminPagination>
     </div>
 </div>
@@ -65,7 +64,18 @@
             };
         },
 
-        helpers: { __ },
+        computed: {
+            currentPageNum: ({ limit, offset }) => Math.ceil(offset / limit),
+            paginationItems: ({ total, limit, offset }) =>
+                Array.from({ length: Math.ceil(total / limit) }, (v, i) => ({
+                    state: { limit, offset: i * limit }
+                }))
+        },
+
+        helpers: {
+            __,
+            paginationUrl: state => `?${stringify(state)}`
+        },
 
         methods: {
             orderBy(event, orderBy) {
@@ -87,10 +97,8 @@
                     `//datawrapper.local:3000/admin/users?${stringify({ orderBy, offset, limit })}`,
                     data => {
                         if (data && data.list) {
-                            this.set({
-                                list: data.list,
-                                total: data.total
-                            });
+                            const { total, list } = data;
+                            this.set({ list, total });
                         }
                     }
                 );

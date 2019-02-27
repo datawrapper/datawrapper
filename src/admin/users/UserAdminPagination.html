@@ -9,31 +9,30 @@
 </div>
 
 <script>
-    const query = ({ limit, offset }) => `?limit=${limit}&offset=${offset}`;
-    const isActive = ({ currentPage, i, pageCount }) =>
-        currentPage === i || currentPage === pageCount;
-
     export default {
         computed: {
-            items: ({ total, limit, offset }) => {
-                const pageCount = Math.ceil(total / limit);
-                const currentPage = Math.ceil(offset / limit);
+            items: ({ pages, url, currentPageNum }) => {
+                const firstItem = pages[0] && pages[0].state;
+                const lastItem = pages[pages.length - 1] && pages[pages.length - 1].state;
+
                 return [
                     {
                         text: '«',
-                        href: query({ limit, offset: 0 }),
-                        active: isActive({ currentPage, pageCount, i: 0 })
+                        href: url(firstItem),
+                        active: currentPageNum === 0,
+                        state: firstItem
                     },
-                    ...Array.from({ length: pageCount }, (v, i) => ({
+                    ...pages.map(({ state }, i) => ({
                         text: i + 1,
-                        href: query({ limit, offset: i * limit }),
-                        active: isActive({ currentPage, i, pageCount }),
-                        state: { limit, offset: i * limit }
+                        href: url(state),
+                        active: currentPageNum === i,
+                        state: state
                     })),
                     {
                         text: '»',
-                        href: query({ limit, offset: (pageCount - 1) * limit }),
-                        active: isActive({ currentPage, pageCount, i: pageCount - 1 })
+                        href: url(lastItem),
+                        active: currentPageNum === pages.length - 1,
+                        state: lastItem
                     }
                 ];
             }
