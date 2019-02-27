@@ -74,9 +74,8 @@
         box-shadow: none;
     }
 
-    // chrome only hack
-    @supports (-webkit-appearance: none) and (not (overflow: -webkit-marquee)) and
-        (not (-ms-ime-align: auto)) and (not (-moz-appearance: none)) {
+    // use clip-path solution for chrome if clip-path is supported
+    @supports (-webkit-clip-path: polygon) {
         & > * {
             clip-path: polygon(
                 0% 0%,
