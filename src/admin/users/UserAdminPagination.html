@@ -12,8 +12,8 @@
     export default {
         computed: {
             items: ({ pages, url, currentPageNum }) => {
-                const firstItem = pages[0] && pages[0].state;
-                const lastItem = pages[pages.length - 1] && pages[pages.length - 1].state;
+                const firstItem = pages[0].state;
+                const lastItem = pages[pages.length - 1].state;
 
                 return [
                     {

@@ -25,12 +25,21 @@
                 <th>{__("Actions", "admin-users")}</th>
             </tr>
         </thead>
+
+        {#if loader} {#await loader}
+        <p>Loading</p>
+        {:then answer}
         <tbody class="users">
             {#each list as user}
             <UserAdminRow {user}></UserAdminRow>
             {/each}
         </tbody>
+        {:catch error}
+        <p>An error occured while loading user list.</p>
+        {/await} {/if}
     </table>
+
+    {#if paginationItems.length > 0}
     <div class="pull-right">
         <UserAdminPagination
             pages="{paginationItems}"
@@ -39,6 +48,7 @@
             {currentPageNum}
         ></UserAdminPagination>
     </div>
+    {/if}
 </div>
 
 <script>
@@ -82,23 +92,21 @@
                 event.preventDefault();
                 this.set({ orderBy });
                 window.history.replaceState({ orderBy }, '', `/admin/users?orderBy=${orderBy}`);
-                this.updateList();
+                this.set({ loader: this.loadUsers() });
             },
 
             gotoPage(navState) {
-                this.set(navState);
                 window.history.replaceState(navState, '', `/admin/users?${stringify(navState)}`);
-                this.updateList();
+                this.set({ loader: this.loadUsers(navState) });
             },
 
-            updateList() {
-                const { orderBy, offset, limit } = this.get();
-                getJSON(
+            loadUsers({ orderBy, offset, limit }) {
+                return getJSON(
                     `//datawrapper.local:3000/admin/users?${stringify({ orderBy, offset, limit })}`,
                     data => {
                         if (data && data.list) {
                             const { total, list } = data;
-                            this.set({ list, total });
+                            this.set({ list, total, orderBy, offset, limit });
                         }
                     }
                 );
@@ -107,8 +115,7 @@
 
         oncreate() {
             const urlQuery = parse(window.location.search);
-            this.set(urlQuery);
-            this.updateList();
+            this.set({ loader: this.loadUsers(urlQuery) });
         }
     };
 </script>

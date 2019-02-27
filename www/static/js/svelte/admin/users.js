@@ -37,6 +37,10 @@ function createText(data) {
 	return document.createTextNode(data);
 }
 
+function createComment() {
+	return document.createComment('');
+}
+
 function addListener(node, event, handler) {
 	node.addEventListener(event, handler, false);
 }
@@ -221,6 +225,10 @@ function _mount(target, anchor) {
 
 function _unmount() {
 	if (this._fragment) { this._fragment.u(); }
+}
+
+function isPromise(value) {
+	return value && typeof value.then === 'function';
 }
 
 var protoDev = {
@@ -1165,8 +1173,8 @@ function items(ref) {
     var url = ref.url;
     var currentPageNum = ref.currentPageNum;
 
-    var firstItem = pages[0] && pages[0].state;
-    var lastItem = pages[pages.length - 1] && pages[pages.length - 1].state;
+    var firstItem = pages[0].state;
+    var lastItem = pages[pages.length - 1].state;
 
     return [
         {
@@ -1418,29 +1426,27 @@ var methods$2 = {
         event.preventDefault();
         this.set({ orderBy: orderBy$1 });
         window.history.replaceState({ orderBy: orderBy$1 }, '', ("/admin/users?orderBy=" + orderBy$1));
-        this.updateList();
+        this.set({ loader: this.loadUsers() });
     },
 
     gotoPage: function gotoPage(navState) {
-        this.set(navState);
         window.history.replaceState(navState, '', ("/admin/users?" + (queryString_3(navState))));
-        this.updateList();
+        this.set({ loader: this.loadUsers(navState) });
     },
 
-    updateList: function updateList() {
+    loadUsers: function loadUsers(ref) {
         var this$1 = this;
-
-        var ref = this.get();
         var orderBy = ref.orderBy;
         var offset = ref.offset;
         var limit = ref.limit;
-        getJSON(
+
+        return getJSON(
             ("//datawrapper.local:3000/admin/users?" + (queryString_3({ orderBy: orderBy, offset: offset, limit: limit }))),
             function (data) {
                 if (data && data.list) {
                     var total = data.total;
                     var list = data.list;
-                    this$1.set({ list: list, total: total });
+                    this$1.set({ list: list, total: total, orderBy: orderBy, offset: offset, limit: limit });
                 }
             }
         );
@@ -1449,11 +1455,10 @@ var methods$2 = {
 
 function oncreate() {
     var urlQuery = queryString_2(window.location.search);
-    this.set(urlQuery);
-    this.updateList();
+    this.set({ loader: this.loadUsers(urlQuery) });
 }
 function create_main_fragment$2(component, state) {
-	var div, table, thead, tr, th, a, text_2, th_1, a_1, text_3_value = __("Name", "admin-users"), text_3, text_6, th_2, a_2, text_7_value = __("Sign-In", "admin-users"), text_7, text_10, th_3, text_11_value = __("Status", "admin-users"), text_11, text_12, th_4, a_3, text_13_value = __("Created at", "admin-users"), text_13, text_16, th_5, text_17_value = __("Charts", "admin-users"), text_17, text_18, th_6, text_19_value = __("Actions", "admin-users"), text_19, text_22, tbody, text_25, div_1;
+	var div, table, thead, tr, th, a, text_2, th_1, a_1, text_3_value = __("Name", "admin-users"), text_3, text_6, th_2, a_2, text_7_value = __("Sign-In", "admin-users"), text_7, text_10, th_3, text_11_value = __("Status", "admin-users"), text_11, text_12, th_4, a_3, text_13_value = __("Created at", "admin-users"), text_13, text_16, th_5, text_17_value = __("Charts", "admin-users"), text_17, text_18, th_6, text_19_value = __("Actions", "admin-users"), text_19, text_22, text_24;
 
 	function click_handler(event) {
 		component.orderBy(event, 'id');
@@ -1471,31 +1476,9 @@ function create_main_fragment$2(component, state) {
 		component.orderBy(event, 'createdAt');
 	}
 
-	var each_value = state.list;
+	var if_block = (state.loader) && create_if_block$1(component, state);
 
-	var each_blocks = [];
-
-	for (var i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block$2(component, assign(assign({}, state), {
-			each_value: each_value,
-			user: each_value[i],
-			user_index: i
-		}));
-	}
-
-	var useradminpagination_initial_data = {
-	 	pages: state.paginationItems,
-	 	url: paginationUrl,
-	 	currentPageNum: state.currentPageNum
-	 };
-	var useradminpagination = new UserAdminPagination({
-		root: component.root,
-		data: useradminpagination_initial_data
-	});
-
-	useradminpagination.on("navigate", function(event) {
-		component.gotoPage(event);
-	});
+	var if_block_1 = (state.paginationItems.length > 0) && create_if_block_1$1(component, state);
 
 	return {
 		c: function create() {
@@ -1527,16 +1510,10 @@ function create_main_fragment$2(component, state) {
 			text_18 = createText("\n                ");
 			th_6 = createElement("th");
 			text_19 = createText(text_19_value);
-			text_22 = createText("\n        ");
-			tbody = createElement("tbody");
-
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			text_25 = createText("\n    ");
-			div_1 = createElement("div");
-			useradminpagination._fragment.c();
+			text_22 = createText("\n\n        ");
+			if (if_block) { if_block.c(); }
+			text_24 = createText("\n\n    ");
+			if (if_block_1) { if_block_1.c(); }
 			this.h();
 		},
 
@@ -1550,9 +1527,7 @@ function create_main_fragment$2(component, state) {
 			addListener(a_3, "click", click_handler_3);
 			a_3.href = "?orderBy=createdAt";
 			th_5.className = "center";
-			tbody.className = "users";
 			table.className = "table users";
-			div_1.className = "pull-right";
 		},
 
 		m: function mount(target, anchor) {
@@ -1584,18 +1559,166 @@ function create_main_fragment$2(component, state) {
 			appendNode(th_6, tr);
 			appendNode(text_19, th_6);
 			appendNode(text_22, table);
-			appendNode(tbody, table);
+			if (if_block) { if_block.m(table, null); }
+			appendNode(text_24, div);
+			if (if_block_1) { if_block_1.m(div, null); }
+		},
+
+		p: function update(changed, state) {
+			if (state.loader) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$1(component, state);
+					if_block.c();
+					if_block.m(table, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (state.paginationItems.length > 0) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1$1(component, state);
+					if_block_1.c();
+					if_block_1.m(div, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if (if_block) { if_block.u(); }
+			if (if_block_1) { if_block_1.u(); }
+		},
+
+		d: function destroy$$1() {
+			removeListener(a, "click", click_handler);
+			removeListener(a_1, "click", click_handler_1);
+			removeListener(a_2, "click", click_handler_2);
+			removeListener(a_3, "click", click_handler_3);
+			if (if_block) { if_block.d(); }
+			if (if_block_1) { if_block_1.d(); }
+		}
+	};
+}
+
+// (29:36)          <p>Loading</p>         {:then answer}
+function create_pending_block(component, state) {
+	var p;
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			p.textContent = "Loading";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (33:12) {#each list as user}
+function create_each_block$2(component, state) {
+	var answer = state.answer, undefined = state.undefined, undefined = state.undefined, user = state.user, each_value = state.each_value, user_index = state.user_index;
+
+	var useradminrow_initial_data = { user: user };
+	var useradminrow = new UserAdminRow({
+		root: component.root,
+		data: useradminrow_initial_data
+	});
+
+	return {
+		c: function create() {
+			useradminrow._fragment.c();
+		},
+
+		m: function mount(target, anchor) {
+			useradminrow._mount(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			answer = state.answer;
+			undefined = state.undefined;
+			undefined = state.undefined;
+			user = state.user;
+			each_value = state.each_value;
+			user_index = state.user_index;
+			var useradminrow_changes = {};
+			if (changed.list) { useradminrow_changes.user = user; }
+			useradminrow._set(useradminrow_changes);
+		},
+
+		u: function unmount() {
+			useradminrow._unmount();
+		},
+
+		d: function destroy$$1() {
+			useradminrow.destroy(false);
+		}
+	};
+}
+
+// (31:8) {:then answer}
+function create_then_block(component, state) {
+	var answer = state.answer, undefined = state.undefined, undefined = state.undefined;
+	var tbody;
+
+	var each_value = state.list;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(component, assign(assign({}, state), {
+			each_value: each_value,
+			user: each_value[i],
+			user_index: i
+		}));
+	}
+
+	return {
+		c: function create() {
+			tbody = createElement("tbody");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+			this.h();
+		},
+
+		h: function hydrate() {
+			tbody.className = "users";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(tbody, target, anchor);
 
 			for (var i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(tbody, null);
 			}
-
-			appendNode(text_25, div);
-			appendNode(div_1, div);
-			useradminpagination._mount(div_1, null);
 		},
 
 		p: function update(changed, state) {
+			answer = state.answer;
+			undefined = state.undefined;
+			undefined = state.undefined;
 			var each_value = state.list;
 
 			if (changed.list) {
@@ -1621,7 +1744,171 @@ function create_main_fragment$2(component, state) {
 				}
 				each_blocks.length = each_value.length;
 			}
+		},
 
+		u: function unmount() {
+			detachNode(tbody);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			destroyEach(each_blocks);
+		}
+	};
+}
+
+// (37:8) {:catch error}
+function create_catch_block(component, state) {
+	var error = state.error, undefined = state.undefined, undefined = state.undefined;
+	var p;
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			p.textContent = "An error occured while loading user list.";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			error = state.error;
+			undefined = state.undefined;
+			undefined = state.undefined;
+
+		},
+
+		u: function unmount() {
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (29:8) {#if loader}
+function create_if_block$1(component, state) {
+	var await_block_anchor, await_block_1, await_block_type, await_token, promise, resolved;
+
+	function replace_await_block(token, type, state) {
+		if (token !== await_token) { return; }
+
+		var old_block = await_block_1;
+		await_block_1 = type && (await_block_type = type)(component, state);
+
+		if (old_block) {
+			old_block.u();
+			old_block.d();
+			await_block_1.c();
+			await_block_1.m(await_block_anchor.parentNode, await_block_anchor);
+
+			component.root.set({});
+		}
+	}
+
+	function handle_promise(promise, state) {
+		var token = await_token = {};
+
+		if (isPromise(promise)) {
+			promise.then(function(value) {
+				var state = component.get();
+				resolved = { answer: value };
+				replace_await_block(token, create_then_block, assign(assign({}, state), resolved));
+			}, function (error) {
+				var state = component.get();
+				resolved = { error: error };
+				replace_await_block(token, create_catch_block, assign(assign({}, state), resolved));
+			});
+
+			// if we previously had a then/catch block, destroy it
+			if (await_block_type !== create_pending_block) {
+				replace_await_block(token, create_pending_block, state);
+				return true;
+			}
+		} else {
+			resolved = { answer: promise };
+			if (await_block_type !== create_then_block) {
+				replace_await_block(token, create_then_block, assign(assign({}, state), resolved));
+				return true;
+			}
+		}
+	}
+
+	handle_promise(promise = state.loader, state);
+
+	return {
+		c: function create() {
+			await_block_anchor = createComment();
+
+			await_block_1.c();
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(await_block_anchor, target, anchor);
+
+			await_block_1.m(target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (('loader' in changed) && promise !== (promise = state.loader) && handle_promise(promise, state)) {
+				// nothing
+			} else {
+				await_block_1.p(changed, assign(assign({}, state), resolved));
+			}
+		},
+
+		u: function unmount() {
+			detachNode(await_block_anchor);
+
+			await_block_1.u();
+		},
+
+		d: function destroy$$1() {
+			await_token = null;
+			await_block_1.d();
+		}
+	};
+}
+
+// (42:4) {#if paginationItems.length > 0}
+function create_if_block_1$1(component, state) {
+	var div;
+
+	var useradminpagination_initial_data = {
+	 	pages: state.paginationItems,
+	 	url: paginationUrl,
+	 	currentPageNum: state.currentPageNum
+	 };
+	var useradminpagination = new UserAdminPagination({
+		root: component.root,
+		data: useradminpagination_initial_data
+	});
+
+	useradminpagination.on("navigate", function(event) {
+		component.gotoPage(event);
+	});
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			useradminpagination._fragment.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "pull-right";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			useradminpagination._mount(div, null);
+		},
+
+		p: function update(changed, state) {
 			var useradminpagination_changes = {};
 			if (changed.paginationItems) { useradminpagination_changes.pages = state.paginationItems; }
 			useradminpagination_changes.url = paginationUrl;
@@ -1631,59 +1918,10 @@ function create_main_fragment$2(component, state) {
 
 		u: function unmount() {
 			detachNode(div);
-
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].u();
-			}
 		},
 
 		d: function destroy$$1() {
-			removeListener(a, "click", click_handler);
-			removeListener(a_1, "click", click_handler_1);
-			removeListener(a_2, "click", click_handler_2);
-			removeListener(a_3, "click", click_handler_3);
-
-			destroyEach(each_blocks);
-
 			useradminpagination.destroy(false);
-		}
-	};
-}
-
-// (29:12) {#each list as user}
-function create_each_block$2(component, state) {
-	var user = state.user, each_value = state.each_value, user_index = state.user_index;
-
-	var useradminrow_initial_data = { user: user };
-	var useradminrow = new UserAdminRow({
-		root: component.root,
-		data: useradminrow_initial_data
-	});
-
-	return {
-		c: function create() {
-			useradminrow._fragment.c();
-		},
-
-		m: function mount(target, anchor) {
-			useradminrow._mount(target, anchor);
-		},
-
-		p: function update(changed, state) {
-			user = state.user;
-			each_value = state.each_value;
-			user_index = state.user_index;
-			var useradminrow_changes = {};
-			if (changed.list) { useradminrow_changes.user = user; }
-			useradminrow._set(useradminrow_changes);
-		},
-
-		u: function unmount() {
-			useradminrow._unmount();
-		},
-
-		d: function destroy$$1() {
-			useradminrow.destroy(false);
 		}
 	};
 }
@@ -1697,11 +1935,12 @@ function UserAdmin(options) {
 	if (!('limit' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'limit'"); }
 	if (!('offset' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'offset'"); }
 	if (!('total' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'total'"); }
+	if (!('loader' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'loader'"); }
 	if (!('list' in this._state)) { console.warn("<UserAdmin> was created without expected data property 'list'"); }
 
 	var self = this;
 	var _oncreate = function() {
-		var changed = { limit: 1, offset: 1, total: 1, list: 1, paginationItems: 1, currentPageNum: 1 };
+		var changed = { limit: 1, offset: 1, total: 1, loader: 1, list: 1, paginationItems: 1, currentPageNum: 1 };
 		oncreate.call(self);
 		self.fire("update", { changed: changed, current: self._state });
 	};
