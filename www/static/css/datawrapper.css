@@ -2431,6 +2431,15 @@ input[type="color"],
   border-radius: 0;
   box-shadow: none;
 }
+@supports (-webkit-appearance: none) and (not (overflow: -webkit-marquee)) and
+        (not (-ms-ime-align: auto)) and (not (-moz-appearance: none)) {
+  .dw .create-nav > * {
+    clip-path: polygon(0% 0%, 93% 0%, 93.5% 0.5%, 94% 2%, 99.95% 48%, 99.95% 52%, 94% 98%, 93.5% 99.5%, 93% 100%, 0% 100%);
+  }
+  .dw .create-nav .corner {
+    display: none;
+  }
+}
 .dw .create-nav > .active {
   background: #c71e1d;
   box-shadow: none;
