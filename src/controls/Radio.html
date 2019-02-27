@@ -1,8 +1,16 @@
 <ControlGroup width="{width}" valign="{valign}" label="{label}">
     <div class="{inline?'inline':''}">
         {#each options as opt}
-        <label title="{opt.tooltip||''}" class="{disabled? 'disabled' :''} {opt.help?'has-help':''}">
-            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}"/><span class="css-ui"></span>&nbsp;<span>{ opt.label }</span>
+        <label
+            title="{opt.tooltip||''}"
+            class="{disabled? 'disabled' :''} {opt.help?'has-help':''}"
+        >
+            <input
+                type="radio"
+                value="{ opt.value }"
+                bind:group="value"
+                disabled="{disabled}"
+            /><span class="css-ui"></span>&nbsp;<span>{ opt.label }</span>
             {#if opt.help}
             <div class="help">
                 {@html opt.help}
@@ -13,15 +21,15 @@
     </div>
 </ControlGroup>
 
-
 <style lang="less">
-
-    label.radio {
+    label {
         &.disabled {
             color: #999;
-            input { opacity: 0.5 }
+            input {
+                opacity: 0.5;
+            }
         }
-        padding-top:0!important;
+        padding-top: 0 !important;
         padding-right: 1ex;
         position: relative;
         vertical-align: text-top;
@@ -57,16 +65,16 @@
         }
     }
 
-    input[type=radio] {
+    input[type='radio'] {
         float: none;
-        opacity: 0!important;
+        opacity: 0 !important;
         pointer-events: none;
         position: absolute;
         left: -10000px;
         display: inline-block;
         vertical-align: sub;
     }
-    input[type=radio] + span.css-ui {
+    input[type='radio'] + span.css-ui {
         display: inline-block;
         width: 1em;
         height: 1em;
@@ -78,22 +86,22 @@
         margin-right: 0.15rem;
         top: 2px;
     }
-    input[type=radio]:checked + span.css-ui {
+    input[type='radio']:checked + span.css-ui {
         background: white;
         border-color: #18a1cd;
         border-width: 4px;
     }
-    input[type=radio]:focus + span.css-ui {
+    input[type='radio']:focus + span.css-ui {
         border-color: #18a1cd;
         box-shadow: 0 0 1px 1px fade(#18a1cd, 55%);
     }
-    input[type=radio]:disabled + span.css-ui {
+    input[type='radio']:disabled + span.css-ui {
         background: #ddd;
         border-color: #bbb;
         cursor: not-allowed;
         opacity: 0.6;
     }
-    input[type=radio]:disabled:checked + span.css-ui {
+    input[type='radio']:disabled:checked + span.css-ui {
         border-color: #bbb;
         background: #bbb;
     }
@@ -111,7 +119,6 @@
             margin-top: -2px;
         }
     }
-
 </style>
 
 <script>
@@ -125,8 +132,7 @@
                 width: 'auto',
                 valign: 'top',
                 inline: true
-            }
+            };
         }
-    }
+    };
 </script>
-
