@@ -4,7 +4,7 @@
     /* global dw,chart */
     import HOT from 'Handsontable';
     import getCellRenderer from './getCellRenderer';
-    import cellHeaderClick from './cellHeaderClick';
+    // import cellHeaderClick from './cellHeaderClick';
     import clone from '../../shared/clone.js';
 
     let app = null;
@@ -12,6 +12,7 @@
     export default {
         data() {
             return {
+                hot: null,
                 data: '',
                 readonly: false,
                 skipRows: 0,
@@ -34,6 +35,10 @@
                     if (searchIndex > l) searchIndex %= l;
                 }
                 return searchResults[searchIndex];
+            },
+            searchResults({ search, hot }) {
+                if (!hot || !search) return [];
+                return hot.search.query(search);
             }
         },
         methods: {
@@ -186,10 +191,10 @@
                         th.removeEventListener('click', topLeftCornerClick);
                         th.addEventListener('click', topLeftCornerClick);
                     });
-                    const cellHeaderClickHandler = cellHeaderClick(app);
+                    // const cellHeaderClickHandler = cellHeaderClick(app);
                     this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
-                        th.removeEventListener('click', cellHeaderClickHandler);
-                        th.addEventListener('click', cellHeaderClickHandler);
+                        th.removeEventListener('click', cellHeaderClick);
+                        th.addEventListener('click', cellHeaderClick);
                     });
                 }, 500);
             },
@@ -315,48 +320,79 @@
             HOT.hooks.add('afterColumnMove', (a, b) => this.columnMoved(a, b));
             HOT.hooks.add('afterRender', () => this.updateHeight());
             HOT.hooks.add('afterSelection', (r, c, r2, c2) => this.checkRange(r, c, r2, c2));
+        },
 
-            this.observe('data', () => this.update());
-            this.observe('firstRowIsHeader', (v, vo) => {
-                if (v !== vo && vo !== undefined) this.update();
-            });
+        onstate({ changed, current, previous }) {
+            const hot = current.hot;
+            if (!hot) return;
 
-            this.observe('search', (query, oldquery) => {
-                if (query !== oldquery) this.set({ searchIndex: 0 });
-                const searchResults = hot.search.query(query);
-                this.set({ searchResults });
+            if (changed.data) {
+                this.update();
+            }
+            if (changed.firstRowIsHeader && previous && previous.firstRowIsHeader !== undefined) {
+                this.update();
+            }
+            if (changed.hot) {
+                this.update();
+            }
+            if (changed.search && previous) {
+                this.set({ searchIndex: 0 });
+            }
+
+            if (changed.searchResults) {
                 hot.render();
-            });
-
-            this.observe('currentResult', res => {
-                // console.log('cur search res', res);
-                if (!res || !hot) return;
-                // this is a weird hack to deal with HoT's problems to scroll
-                // all the way down after hot.scrollViewportTo(hot.countRows()-1, res.col);
-                // the first scrollViewportTo will trigger a render event
-                hot.render(); // to update the hightlight colors
+            }
+            if (changed.currentResult && current.currentResult) {
+                hot.render();
+                const res = current.currentResult;
                 hot.scrollViewportTo(res.row, res.col);
                 setTimeout(() => {
                     // one more time
                     hot.scrollViewportTo(res.row, res.col);
                 }, 100);
-            });
-
-            this.observe('activeColumn', () => {
+            }
+            if (changed.activeColumn) {
                 setTimeout(() => hot.render(), 10);
-            });
-
-            this.observe('fixedColumnsLeft', v => {
-                hot.updateSettings({ fixedColumnsLeft: v });
-            });
-
-            // if (hot.sortingEnabled) {
-            this.observe('sorting', sorting => {
-                hot.sort(chart.dataset().indexOf(sorting.sortBy), sorting.sortDir);
-            });
-            // }
+            }
+            if (changed.fixedColumnsLeft) {
+                hot.updateSettings({ fixedColumnsLeft: current.fixedColumnsLeft });
+            }
+            if (changed.sorting) {
+                hot.sort(chart.dataset().indexOf(current.sorting.sortBy), current.sorting.sortDir);
+            }
         }
     };
+
+    function cellHeaderClick(evt) {
+        const th = this;
+        // reset the HoT selection
+        // find out which data column we're in
+        const k = th.parentNode.children.length;
+        let thIndex = -1;
+        // (stupid HTMLCollection has no indexOf)
+        for (let i = 0; i < k; i++) {
+            if (th.parentNode.children.item(i) === th) {
+                thIndex = i;
+                break;
+            }
+        }
+        // find column index
+        const colIndex = +app.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${thIndex + 1})`).dataset.column;
+        const chart = app.store.get('dw_chart');
+        const { activeColumn, hot } = app.get();
+        if (chart.dataset().hasColumn(colIndex)) {
+            const newActive = chart.dataset().column(+colIndex);
+            // set active column (or unset if it's already set)
+            if (activeColumn && activeColumn.name() === newActive.name()) {
+                evt.target.parentNode.classList.remove('selected');
+                app.set({ activeColumn: false });
+                hot.deselectCell();
+            } else {
+                evt.target.parentNode.classList.add('selected');
+                app.set({ activeColumn: newActive });
+            }
+        }
+    }
 
     function topLeftCornerClick(evt) {
         evt.preventDefault();
