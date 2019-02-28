@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "crypto-js": "^3.1.9-1",
-        "d3-array": "^1.2.1",
+        "d3-array": "^1.2.4",
         "d3-scale": "^2.0.0",
         "fontfaceobserver": "2.1.0",
         "jschardet": "^1.6.0",
