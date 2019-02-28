@@ -5,20 +5,15 @@
 
     <div class="controls form-inline {disabled? 'disabled' :''}">
         <select disabled="{disabled}" bind:value="value" style="width:{ width }">
-        {#if options.length}
-            {#each options as opt}
-                <option value="{opt.value}">{opt.label}</option>
-            {/each}
-        {/if}
-        {#if optgroups.length}
-            {#each optgroups as optgroup}
+            {#if options.length} {#each options as opt}
+            <option value="{opt.value}">{opt.label}</option>
+            {/each} {/if} {#if optgroups.length} {#each optgroups as optgroup}
             <optgroup label="{optgroup.label}">
                 {#each optgroup.options as opt}
-                    <option value="{opt.value}">{opt.label}</option>
+                <option value="{opt.value}">{opt.label}</option>
                 {/each}
             </optgroup>
-            {/each}
-        {/if}
+            {/each} {/if}
         </select>
     </div>
 </div>
@@ -31,13 +26,13 @@
 
 <script>
     export default {
-        data () {
+        data() {
             return {
                 disabled: false,
                 width: 'auto',
                 labelWidth: 'auto',
                 options: [],
-                optgroups: [],
+                optgroups: []
             };
         }
     };

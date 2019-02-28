@@ -2,77 +2,75 @@
     <select bind:value="selected" style="width: calc(100% - 50px)">
         {#if $visualization && $visualization.axes[axis].optional}
         <option value="-">{axis['na-label']||'--'}</option>
-        {/if}
-        {#each columns as column}
+        {/if} {#each columns as column}
         <option value="{column.name}">{column.name}</option>
         {/each}
     </select>
 </ControlGroup>
 
 <style>
-.control-label {
-    vertical-align: middle!important;
-    margin-bottom: 0!important;
-}
-.controls.form-inline {
-    vertical-align: middle!important;
-}
+    .control-label {
+        vertical-align: middle !important;
+        margin-bottom: 0 !important;
+    }
+    .controls.form-inline {
+        vertical-align: middle !important;
+    }
 </style>
 
 <script>
+    import _indexOf from 'underscore-es/indexOf';
+    import _clone from 'underscore-es/clone';
 
-import _indexOf from 'underscore-es/indexOf';
-import _clone from 'underscore-es/clone';
+    import ControlGroup from './ControlGroup.html';
 
-import ControlGroup from './ControlGroup.html';
-
-export default {
-    components: { ControlGroup },
-    computed: {
-        columns({ axis, $visualization, $dataset }) {
-            const columns = [];
-            // const axisMeta =
-            if (!$dataset || !$visualization || !axis) return [];
-            $dataset.eachColumn((column) => {
-                if (_indexOf($visualization.axes[axis].accepts, column.type()) > -1) {
-                    columns.push({
-                        name: column.name()
-                    });
+    export default {
+        components: { ControlGroup },
+        data() {
+            return {
+                selected: false,
+                width: '200px',
+                valign: 'baseline'
+            };
+        },
+        computed: {
+            columns({ axis, $visualization, $dataset }) {
+                const columns = [];
+                // const axisMeta =
+                if (!$dataset || !$visualization || !axis) return [];
+                $dataset.eachColumn(column => {
+                    if (_indexOf($visualization.axes[axis].accepts, column.type()) > -1) {
+                        columns.push({
+                            name: column.name()
+                        });
+                    }
+                });
+                return columns;
+            }
+        },
+        oncreate() {
+            this.store.observe('visualization', visualization => {
+                if (!this.get) return;
+                const state = this.get();
+                if (!state) return;
+                if (state.selected && visualization) {
+                    // initialize!
+                    const selected = this.store.getMetadata('axes', {})[this.get().axis];
+                    // console.log('initialize', this.get().axis, selected);
+                    this.set({ selected });
                 }
             });
-            return columns;
-        }
-    },
-    data() {
-        return {
-            selected: false,
-            width: '200px',
-            valign: 'baseline'
-        };
-    },
-    onstate({changed, current}) {
-        if (changed.selected) {
-            if (current.selected) {
-                const {axis} = this.get();
-                var axes = _clone(this.store.getMetadata('axes', {}));
-                if (current.selected === '-') delete axes[axis];
-                else axes[axis] = current.selected;
-                this.store.setMetadata('axes', axes);
+        },
+        onstate({ changed, current }) {
+            if (changed.selected) {
+                if (current.selected) {
+                    const { axis } = this.get();
+                    var axes = _clone(this.store.getMetadata('axes', {}));
+                    if (current.selected === '-') delete axes[axis];
+                    else axes[axis] = current.selected;
+                    this.store.setMetadata('axes', axes);
+                }
             }
         }
-    },
-    oncreate() {
-        this.store.observe('visualization', (visualization) => {
-            if (!this.get) return;
-            const state = this.get();
-            if (!state) return;
-            if (state.selected && visualization) {
-                // initialize!
-                const selected = this.store.getMetadata('axes', {})[this.get().axis];
-                // console.log('initialize', this.get().axis, selected);
-                this.set({selected});
-            }
-        });
-    }
-};
+    };
 </script>
