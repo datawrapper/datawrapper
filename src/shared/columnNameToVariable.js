@@ -6,7 +6,7 @@
  * @param {string} name -- name of the column
  * @returns {string} -- variable name
  */
-export default function(name) {
+export default function columnNameToVariable(name) {
     return name
         .toString()
         .toLowerCase()
