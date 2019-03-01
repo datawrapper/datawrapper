@@ -2,21 +2,24 @@
     <h3 class="first">{title}</h3>
 
     <div class="form-horizontal">
-        <select label="{__('Column type')}" options="{colTypes}" bind:value="columnFormat.type" width="180px" />
+        <!-- prettier-ignore -->
+        <Select label="{__('Column type')}" options="{colTypes}" bind:value="columnFormat.type" width="180px" />
 
         <Checkbox label="{ __('Hide column from visualization') }" bind:value="columnFormat.ignore" />
 
         <hr />
 
         {#if column && column.type() == 'number'}
-        <select
+        <!-- prettier-ignore -->
+        <Select
             label="{__('Round numbers to')}"
             options="{roundOptions}"
             optgroups="{numberFormats}"
             bind:value="columnFormat['number-format']"
             width="180px"
         />
-        <select
+        <!-- prettier-ignore -->
+        <Select
             label="{__('Divide numbers by')}"
             options="{divisors_opts}"
             optgroups="{divisors}"
