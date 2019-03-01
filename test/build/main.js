@@ -3,12 +3,12 @@ import dataset from '../../src/chart/dataset/dataset';
 import Chart from '../../src/chart/Chart';
 import purifyHtml from '../../src/shared/purifyHtml';
 
-import {Store} from 'svelte/store';
+import { Store } from 'svelte/store';
 
 export default {
-	column,
-	dataset,
-	Chart,
-	purifyHtml,
-	Store
-}
+    column,
+    dataset,
+    Chart,
+    purifyHtml,
+    Store
+};

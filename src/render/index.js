@@ -9,18 +9,7 @@ import getBrowser from '@datawrapper/polyfills';
 
 import observeFonts from '../shared/observe-fonts';
 
-export default function({
-    visJSON,
-    chartJSON,
-    chartData,
-    isPreview,
-    chartLocale,
-    metricPrefix,
-    themeId,
-    templateJS,
-    fontsJSON,
-    typographyJSON
-}) {
+export default function({ visJSON, chartJSON, chartData, isPreview, chartLocale, metricPrefix, themeId, templateJS, fontsJSON, typographyJSON }) {
     window.visJSON = visJSON;
 
     // load polyfills
@@ -42,22 +31,13 @@ export default function({
     // render the chart even if load fails!
     script.onerror = run;
 
-    if (
-        environment.browser &&
-        availablePolyfills[environment.browser] &&
-        environment.version >= availablePolyfills[environment.browser][0]
-    ) {
+    if (environment.browser && availablePolyfills[environment.browser] && environment.version >= availablePolyfills[environment.browser][0]) {
         if (environment.version > availablePolyfills[environment.browser][1]) {
             // no need for polyfill, browser is quite new
             return run();
         }
         // use cached polyfill.io polyfills
-        script.src =
-            'https://datawrapper.dwcdn.net/lib/polyfills/' +
-            environment.browser +
-            '-' +
-            environment.version +
-            '.js';
+        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/' + environment.browser + '-' + environment.version + '.js';
     } else {
         // unknown browser, fall back to generic polyfill
         script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/all.js';
@@ -101,9 +81,7 @@ export default function({
                     return;
                 }
 
-                desiredHeight =
-                    dw.utils.getNonChartHeight() +
-                    __dw.vis.chart().get('metadata.publish.chart-height');
+                desiredHeight = dw.utils.getNonChartHeight() + __dw.vis.chart().get('metadata.publish.chart-height');
             }
 
             // datawrapper responsive embed

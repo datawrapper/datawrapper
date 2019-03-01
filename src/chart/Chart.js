@@ -66,13 +66,7 @@ class Chart extends Store {
             const jsonData = typeof ds.list !== 'function';
             this._dataset = jsonData
                 ? ds
-                : reorderColumns(
-                      this,
-                      applyChanges(
-                          this,
-                          addComputedColumns(this, ds === true ? this._dataset_cache : ds)
-                      )
-                  );
+                : reorderColumns(this, applyChanges(this, addComputedColumns(this, ds === true ? this._dataset_cache : ds)));
             if (jsonData) this.set({ dataset: ds });
             return this._dataset;
         }

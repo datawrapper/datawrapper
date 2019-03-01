@@ -1,16 +1,10 @@
 <ControlGroup width="{width}" valign="{valign}" label="{label}">
     <div class="{inline?'inline':''}">
         {#each options as opt}
-        <label
-            title="{opt.tooltip||''}"
-            class="{disabled? 'disabled' :''} {opt.help?'has-help':''}"
-        >
-            <input
-                type="radio"
-                value="{ opt.value }"
-                bind:group="value"
-                disabled="{disabled}"
-            /><span class="css-ui"></span>&nbsp;<span>{ opt.label }</span>
+        <label title="{opt.tooltip||''}" class="{disabled? 'disabled' :''} {opt.help?'has-help':''}">
+            <input type="radio" value="{ opt.value }" bind:group="value" disabled="{disabled}" /><span class="css-ui"></span>&nbsp;<span
+                >{ opt.label }</span
+            >
             {#if opt.help}
             <div class="help">
                 {@html opt.help}

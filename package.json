@@ -1,16 +1,17 @@
 {
     "name": "datawrapper",
     "version": "1.23.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/datawrapper/datawrapper.git"
-    },
     "scripts": {
-        "format": "prettier --write 'src/**/*.{js,html}'",
+        "format": "prettier 'src/**/*.{js,html}' --write",
         "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
         "install": "grunt",
         "watch": "watch 'make assets' assets/",
+        "pretest": "cd test/build && rollup -c",
         "test": "./node_modules/mocha/bin/mocha --require reify"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/datawrapper/datawrapper.git"
     },
     "dependencies": {
         "crypto-js": "^3.1.9-1",
@@ -61,14 +62,11 @@
     "prettier": {
         "tabWidth": 4,
         "semi": true,
-        "printWidth": 100,
+        "printWidth": 150,
         "singleQuote": true
     },
     "eslintConfig": {
         "parser": "babel-eslint",
-        "extends": [
-            "plugin:@tivac/svelte/svelte"
-        ],
         "rules": {
             "no-console": [
                 "error",
@@ -80,9 +78,16 @@
                 }
             ],
             "camelcase": [
-                "warn"
+                "warn",
+                {
+                    "ignoreDestructuring": true,
+                    "properties": "never"
+                }
             ]
         },
+        "extends": [
+            "plugin:@tivac/svelte/svelte"
+        ],
         "plugins": [
             "html",
             "@tivac/svelte"

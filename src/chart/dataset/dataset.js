@@ -90,10 +90,7 @@ export default function(columns) {
          * @returns {boolean}
          */
         hasColumn(nameOrIndex) {
-            return (
-                (_isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !==
-                undefined
-            );
+            return (_isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !== undefined;
         },
 
         /**

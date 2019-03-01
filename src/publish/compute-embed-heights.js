@@ -7,10 +7,7 @@ export default function() {
     const $ = window.$;
     const previewChart = $($('#iframe-vis')[0].contentDocument);
     // find out default heights
-    const defaultHeight =
-        $('h1', previewChart).height() +
-        $('.chart-intro', previewChart).height() +
-        $('.dw-chart-notes', previewChart).height();
+    const defaultHeight = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
 
     const totalHeight = $('#iframe-vis').height();
 
@@ -18,10 +15,7 @@ export default function() {
         // now we resize headline, intro and footer
         previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', width + 'px');
 
-        const height =
-            $('h1', previewChart).height() +
-            $('.chart-intro', previewChart).height() +
-            $('.dw-chart-notes', previewChart).height();
+        const height = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
 
         embedHeights[width] = totalHeight + (height - defaultHeight);
     });

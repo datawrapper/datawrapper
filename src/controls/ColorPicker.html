@@ -153,6 +153,7 @@
             if (changed.color) {
                 try {
                     const niceHex = chroma(current.color).hex();
+                    // eslint-disable-next-line
                     const { visible } = this.refs.dropdown.get();
                     if (visible && niceHex !== previous.color) {
                         this.fire('change', current.validColor);
