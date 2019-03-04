@@ -2748,6 +2748,24 @@ body.dw-mycharts div.folders li > a > span .chart-count {
   margin-left: 5px;
   font-size: 14px;
 }
+body.dw-mycharts div.folders li.subtree-collapsed {
+  position: relative;
+}
+body.dw-mycharts div.folders li.subtree-collapsed + ul {
+  display: none;
+}
+body.dw-mycharts div.folders li.subtree-collapsed:after {
+  content: '+';
+  display: block;
+  position: absolute;
+  left: 4px;
+  height: 10px;
+  color: #fff;
+  top: 0px;
+  font-weight: bold;
+  font-size: 15px;
+  pointer-events: none;
+}
 body.dw-mycharts .thumbnails.subfolders li {
   position: relative;
 }
