@@ -131,7 +131,15 @@ require(['{{ path }}'], function(mod) {
 
         if (previous && changed.title || changed.theme || changed.type ||
             changed.metadata || changed.language || changed.lastEditStep) {
-            chart.store();
+            chart.store(function() {
+                var iframe = document.querySelector('#iframe-vis');
+                if (iframe && iframe.contentWindow) {
+                    var win = iframe.contentWindow;
+                    if (win.__dw && win.__dw.saved) {
+                        win.__dw.saved();
+                    }
+                }
+            });
             if (!dontPush) {
                 var s = JSON.stringify(chart.serialize());
                 if (historyPos > 0) {
