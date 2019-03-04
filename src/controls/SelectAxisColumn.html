@@ -53,10 +53,10 @@
                 if (!this.get) return;
                 const state = this.get();
                 if (!state) return;
-                if (state.selected && visualization) {
-                    // initialize!
+
+                // initialize if state is not yet set
+                if (!state.selected && visualization) {
                     const selected = this.store.getMetadata('axes', {})[this.get().axis];
-                    // console.log('initialize', this.get().axis, selected);
                     this.set({ selected });
                 }
             });
