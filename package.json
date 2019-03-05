@@ -6,8 +6,9 @@
         "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
         "install": "grunt",
         "watch": "watch 'make assets' assets/",
-        "pretest": "cd test/build && rollup -c",
-        "test": "./node_modules/mocha/bin/mocha --require reify"
+        "pretest-legacy": "cd test_legacy/build && rollup -c",
+        "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
+        "test": "ava"
     },
     "repository": {
         "type": "git",
@@ -25,7 +26,9 @@
     "devDependencies": {
         "@datawrapper/polyfills": "^1.0.4",
         "@tivac/eslint-plugin-svelte": "^1.2.1",
+        "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
+        "browser-env": "^3.2.6",
         "chalk": "^2.3.0",
         "crypto-js": "^3.1.9-1",
         "d3-dsv": "^1.0.8",
@@ -111,6 +114,11 @@
             "**/dw-2.0.js",
             "**/vendor/**/.js",
             "www/static/js/svelte/**/*.js"
+        ]
+    },
+    "ava": {
+        "require": [
+            "./test/helpers/setup-browser-env.js"
         ]
     }
 }
