@@ -102,7 +102,8 @@ TODO for later:
         },
         computed: {
             url({ $id, src }) {
-                return src || $id ? `/chart/${$id}/preview` : '';
+                // eslint-disable-next-line
+                return src ? src : $id ? `/chart/${$id}/preview` : '';
             }
         },
         methods: {
