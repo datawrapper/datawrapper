@@ -8,7 +8,9 @@
         "watch": "watch 'make assets' assets/",
         "pretest-legacy": "cd test_legacy/build && rollup -c",
         "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
-        "test": "ava"
+        "pretest": "rollup --config test/rollup.config.js",
+        "test": "ava ./test/build.js",
+        "posttest": "rm ./test/build.js"
     },
     "repository": {
         "type": "git",
@@ -51,6 +53,7 @@
         "rollup-plugin-commonjs": "*",
         "rollup-plugin-i18n": "*",
         "rollup-plugin-json": "*",
+        "rollup-plugin-multi-entry": "^2.1.0",
         "rollup-plugin-node-resolve": "*",
         "rollup-plugin-svelte": "4.1.0",
         "rollup-plugin-uglify": "*",
