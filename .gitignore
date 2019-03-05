@@ -48,6 +48,7 @@ scripts/history.php
 scripts/lib/execute_jobs.lock
 templates/plugins/*
 test/result/*
+test/build.js
 tmp/*
 vendor/*
 www/static/custom/*

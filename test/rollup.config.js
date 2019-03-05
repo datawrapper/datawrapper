@@ -1,3 +1,4 @@
+import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
 import svelte from 'rollup-plugin-svelte';
@@ -10,6 +11,6 @@ export default {
         sourcemap: false,
         format: 'cjs'
     },
-    plugins: [multiEntry(), svelte({ parser: 'v2' }), commonjs(), json()],
+    plugins: [resolve(), multiEntry(), svelte({ parser: 'v2' }), commonjs(), json()],
     external: ['ava']
 };

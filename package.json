@@ -9,8 +9,7 @@
         "pretest-legacy": "cd test_legacy/build && rollup -c",
         "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
         "pretest": "rollup --config test/rollup.config.js",
-        "test": "ava ./test/build.js",
-        "posttest": "rm ./test/build.js"
+        "test": "ava"
     },
     "repository": {
         "type": "git",
@@ -122,6 +121,9 @@
     "ava": {
         "require": [
             "./test/helpers/setup-browser-env.js"
+        ],
+        "files": [
+            "./test/build.js"
         ]
     }
 }
