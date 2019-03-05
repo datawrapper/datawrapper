@@ -9,7 +9,9 @@
         "pretest-legacy": "cd test_legacy/build && rollup -c",
         "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
         "pretest": "rollup --config test/rollup.config.js",
-        "test": "ava"
+        "test": "ava",
+        "watch-pretest": "rollup --silent --watch --config test/rollup.config.js",
+        "watch-test": "concurrently npm:watch-pretest \"ava --watch\""
     },
     "repository": {
         "type": "git",
@@ -31,6 +33,7 @@
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.6",
         "chalk": "^2.3.0",
+        "concurrently": "^4.1.0",
         "crypto-js": "^3.1.9-1",
         "d3-dsv": "^1.0.8",
         "d3-queue": "^3.0.7",
