@@ -20,11 +20,9 @@ test('should not crash if input is not a string', t => {
     t.notThrows(() => purifyHtml({ foo: 'bar' }));
 });
 
-test('should return the input value if not a string', t => {
+test('should return the input value if undefined or null', t => {
     t.is(purifyHtml(null), null);
     t.is(purifyHtml(undefined), undefined);
-    t.is(purifyHtml(42), 42);
-    t.deepEqual(purifyHtml({ foo: 'bar' }), { foo: 'bar' });
 });
 
 test('should remove script tags', t => {
