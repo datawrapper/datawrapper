@@ -49,6 +49,7 @@ scripts/lib/execute_jobs.lock
 templates/plugins/*
 test/result/*
 test/build.js
+test/build.js.map
 tmp/*
 vendor/*
 www/static/custom/*
