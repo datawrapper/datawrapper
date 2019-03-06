@@ -8,10 +8,8 @@
         "watch": "watch 'make assets' assets/",
         "pretest-legacy": "cd test_legacy/build && rollup -c",
         "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
-        "pretest": "rollup --config test/rollup.config.js",
         "test": "ava",
-        "watch-pretest": "rollup --silent --watch --config test/rollup.config.js",
-        "watch-test": "concurrently npm:watch-pretest \"ava --watch\""
+        "test:watch": "ava --watch --verbose"
     },
     "repository": {
         "type": "git",
@@ -33,11 +31,11 @@
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.6",
         "chalk": "^2.3.0",
-        "concurrently": "^4.1.0",
         "crypto-js": "^3.1.9-1",
         "d3-dsv": "^1.0.8",
         "d3-queue": "^3.0.7",
         "eslint-plugin-html": "^5.0.3",
+        "esm": "^3.2.11",
         "grunt": "^1.0.3",
         "grunt-subgrunt": "^1.2.0",
         "healthier": "^2.0.0",
@@ -50,12 +48,12 @@
         "prettier": "^1.16.4",
         "prettier-plugin-svelte": "^0.3.0",
         "reify": "^0.17.3",
+        "require-extension-hooks": "^0.3.3",
         "rollup": "*",
         "rollup-plugin-buble": "*",
         "rollup-plugin-commonjs": "*",
         "rollup-plugin-i18n": "*",
         "rollup-plugin-json": "*",
-        "rollup-plugin-multi-entry": "^2.1.0",
         "rollup-plugin-node-resolve": "*",
         "rollup-plugin-svelte": "4.1.0",
         "rollup-plugin-uglify": "*",
@@ -123,10 +121,12 @@
     },
     "ava": {
         "require": [
-            "./test/helpers/setup-browser-env.js"
+            "esm",
+            "./test/helpers/setup-browser-env.js",
+            "./test/helpers/setup-svelte-compiler.js"
         ],
         "files": [
-            "./test/build.js"
+            "./src/**/*.test.js"
         ]
     }
 }
