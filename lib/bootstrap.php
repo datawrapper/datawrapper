@@ -11,15 +11,8 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 define('CLI', php_sapi_name() == "cli");
 
 // load YAML parser and config
-$GLOBALS['dw_config'] = $dw_config = Spyc::YAMLLoad(ROOT_PATH . 'config.yaml');
+$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad(ROOT_PATH . 'config.yaml'));
 
-// replace environment variables in config.yaml
-// the expected format is $_ENV[...], e.g. $_ENV[DW_DATABASE_USER]
-array_walk_recursive($GLOBALS['dw_config'], function(&$value, $key) {
-    if (preg_match('/\$_ENV\[([^\]]+)\]/', $value, $matches)) {
-        $value = getenv($matches[1]) ?? $matches[1];
-    }
-});
 
 if (isset($dw_config['debug']) && $dw_config['debug'] == true) {
     error_reporting(E_ALL);
@@ -109,8 +102,6 @@ setlocale(LC_TIME, $locale.'.utf8');
 
 $__l10n = new Datawrapper_L10N();
 $__l10n->loadMessages($locale);
-
-parse_config();
 
 if (!defined('NO_SLIM')) {
     // Initialize Slim app..
