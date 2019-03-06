@@ -8,7 +8,7 @@ export default {
     input: ['./src/**/*.test.js'],
     output: {
         file: './test/build.js',
-        sourcemap: false,
+        sourcemap: true,
         format: 'cjs'
     },
     plugins: [resolve(), multiEntry(), svelte({ parser: 'v2' }), commonjs(), json()],
