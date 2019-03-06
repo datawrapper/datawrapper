@@ -2,7 +2,7 @@
 const assert = require('assert');
 const column = require('./build/build.js').column;
 
-const test_data = [5.4, 4.2, 4, 3.6, 3.4];
+const testData = [5.4, 4.2, 4, 3.6, 3.4];
 
 // fmt = col.type(true).formatter({ 'number-format': 'n0' })
 //                 formatted = []
@@ -12,11 +12,10 @@ const test_data = [5.4, 4.2, 4, 3.6, 3.4];
 
 describe('column', () => {
     describe('basic column api', () => {
-
-        const col = column('my title', test_data);
+        const col = column('my title', testData);
 
         it('returns the title', () => {
-            assert.equal(col.title(), 'my title');
+            assert.strictEqual(col.title(), 'my title');
         });
     });
 });

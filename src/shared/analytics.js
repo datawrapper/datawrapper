@@ -6,7 +6,7 @@ export function trackEvent(category, action, name, value) {
 
 let previousPageUrl;
 
-export function trackPageView(loadTime=0) {
+export function trackPageView(loadTime = 0) {
     if (window._paq) {
         if (previousPageUrl) {
             window._paq.push(['setReferrerUrl', previousPageUrl]);

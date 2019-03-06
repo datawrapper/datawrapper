@@ -30,7 +30,6 @@ dwInitTwigEnvironment($twig);
 require_once ROOT_PATH . 'controller/plugin-templates.php';
 require_once ROOT_PATH . 'controller/edit.php';
 require_once ROOT_PATH . 'controller/home.php';
-require_once ROOT_PATH . 'controller/login.php';
 require_once ROOT_PATH . 'controller/account.php';
 require_once ROOT_PATH . 'controller/chart/create.php';
 require_once ROOT_PATH . 'controller/chart/edit.php';
@@ -78,16 +77,15 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
     if ($requiredKey === $givenKey) return;
 
     $req = $app->request();
-    if (UserQuery::create()->filterByRole(array('admin', 'sysadmin'))->count() > 0) {
-        if ($req->getResourceUri() != '/login' &&
-            strncmp($req->getResourceUri(), '/account/invite/', 16) && // and doesn't start with '/account/invite/'
-            strncmp($req->getResourceUri(), '/account/reset-password/', 24)) { // and doesn't start with '/account/reset-password/'
+
+    if ($req->getResourceUri() != '/login' &&
+        // and doesn't start with '/account/invite/'
+        strncmp($req->getResourceUri(), '/account/invite/', 16) && 
+        // and doesn't start with '/account/reset-password/'
+        strncmp($req->getResourceUri(), '/account/reset-password/', 24)) {
+
+        if (empty($dw_config['login_urls']) || !in_array($req->getResourceUri(), $dw_config['login_urls'])) {            
             $app->redirect('/login');
-        }
-    }
-    else {
-        if ($req->getResourceUri() != '/setup') {
-            $app->redirect('/setup');
         }
     }
 });

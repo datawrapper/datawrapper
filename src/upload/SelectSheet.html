@@ -5,7 +5,7 @@
     <p>{ __("upload / select sheet") }</p>
     <select bind:value="selected" disabled="{!sheets.length}">
         {#each sheets as sheet}
-            <option value="{sheet}">{sheet.name}</option>
+        <option value="{sheet}">{sheet.name}</option>
         {/each}
     </select>
     {:else}
@@ -14,12 +14,14 @@
 </div>
 
 <style>
-    select { width: 70%; }
+    select {
+        width: 70%;
+    }
 </style>
 
 <script>
-    import {__} from '../shared/l10n';
-    import {putJSON} from '../shared/utils';
+    import { __ } from '../shared/l10n';
+    import { putJSON } from '../shared/utils';
 
     /* globals dw */
     export default {
@@ -27,22 +29,23 @@
             return {
                 selected: false,
                 sheets: []
-            }
+            };
         },
         helpers: { __ },
-        onupdate({changed, current}) {
+        // eslint-disable-next-line
+        onupdate({ changed, current }) {
             if (changed.sheets && current.sheets.length > 1) {
                 setTimeout(() => {
-                    this.set({selected:current.sheets[0]});
+                    this.set({ selected: current.sheets[0] });
                 }, 300);
-            } else if (changed.sheets && current.sheets.length == 1) {
+            } else if (changed.sheets && current.sheets.length === 1) {
                 putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, current.sheets[0].csv, () => {
                     window.location.href = 'describe';
                 });
             }
             if (changed.selected) {
-                this.set({chartData: current.selected.csv});
+                this.set({ chartData: current.selected.csv });
             }
         }
-    }
+    };
 </script>

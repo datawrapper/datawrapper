@@ -1,136 +1,147 @@
 {#if loginForm}
-    <!-- LOGIN -->
-    <h2>{@html __('login / login / headline')}</h2>
-    <p>{@html __('login / login / intro')}</p>
+<!-- LOGIN -->
+<h2>{@html __('login / login / headline')}</h2>
+<p>{@html __('login / login / intro')}</p>
 
-    <div class="login-form">
-        {#if successMsg}
-        <div class="alert alert-success">{@html successMsg}</div>
-        {/if}
-        {#if errorMsg}
-        <div class="alert alert-error">{@html errorMsg}</div>
-        {/if}
-        <form class="form-vertical">
-            <div class="control-group {emailError?'error':''}">
-                <label class="control-label">{__('email')}</label>
-                <div class="controls">
-                    <input  bind:value="email" class="input-xlarge span3" type="email" placeholder="name@example.com" />
-                    <span class="help-inline">{emailError}</span>
-                </div>
-            </div>
-            {#if !resetPassword}
-            <div class="control-group {passwordError?'error':''}">
-                <label class="control-label">{__('password')}</label>
-                <div class="controls">
-                    <input class="input-xlarge span3" type="password" bind:value="password" placeholder="" />
-                    <span class="help-inline">{passwordError}</span>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <label class="checkbox">
-                        <input type="checkbox" bind:checked="keeplogin">&nbsp;&nbsp;{__('Remember login?')}
-                    </label>
-                </div>
-            </div>
-            {/if}
-        </form>
-
-        {#if !resetPassword}
-        <button on:click="login(email, password, keeplogin)" class="btn btn-large btn-primary">
-            <i class="fa fa-sign-in fa-fw"></i> {__('Login')}
-        </button>
-        &nbsp; or &nbsp;
-        <button on:click="toSignUp(event, true)" class="btn btn-large">
-            {@html __('login / signup / headline')}
-        </button>
-        {:else}
-        <button on:click="sendNewPassword(email)" class="btn btn-large btn-info">{__('Send new password')}</button>
-        {/if}
-
-        <div style="margin-top: 10px">
-            {#if resetPassword}
-            <a on:click="resetPassword(event,false)" href="#">{__('Return to login...')}</a>
-            {:else}
-            <a on:click="resetPassword(event,true)" href="#">{__('Can\'t recall your password?')}</a>
-            {/if}
-        </div>
-    </div>
-
-    {#if alternativeSignIns.length}
-    <div style="margin-top:10px">
-        <hr />
-        <p>Alternatively, you can sign in using these providers:</p>
-        {#each alternativeSignIns as signin}
-        <a class="btn" href="{signin.url}"><i class="{signin.icon}"></i> {signin.label}</a>&nbsp;&nbsp;
-        {/each}
-    </div>
+<div class="login-form">
+    {#if successMsg}
+    <div class="alert alert-success">{@html successMsg}</div>
+    {/if} {#if errorMsg}
+    <div class="alert alert-error">{@html errorMsg}</div>
     {/if}
-
-{:else}
-    <!-- SIGN UP -->
-    <h2>{@html __('login / signup / headline')}</h2>
-    <p>{@html __('login / signup / intro')}</p>
-
     <form class="form-vertical">
         <div class="control-group {emailError?'error':''}">
             <label class="control-label">{__('email')}</label>
             <div class="controls">
-                <input data-lpignore="true" bind:value="email" class="input-xxlarge span3" type="email" placeholder="name@example.com" />
+                <input bind:value="email" class="input-xlarge span3" type="email" placeholder="name@example.com" />
                 <span class="help-inline">{emailError}</span>
             </div>
         </div>
+        {#if !resetPassword}
         <div class="control-group {passwordError?'error':''}">
             <label class="control-label">{__('password')}</label>
             <div class="controls">
-                <input data-lpignore="true" class="input-xxlarge span3" type="password" bind:value="password" placeholder="" />
+                <input class="input-xlarge span3" type="password" bind:value="password" placeholder="" />
                 <span class="help-inline">{passwordError}</span>
             </div>
         </div>
-        <div class="control-group {password2Error?'error':''}">
-            <label class="control-label">{__('repeat password')}</label>
+        <div class="control-group">
             <div class="controls">
-                <input data-lpignore="true" class="input-xxlarge span3" type="password" bind:value="password2" placeholder="" />
-                <span class="help-inline">{password2Error}</span>
+                <label class="checkbox"> <input type="checkbox" bind:checked="keeplogin" />&nbsp;&nbsp;{__('Remember login?')} </label>
             </div>
         </div>
-
+        {/if}
     </form>
 
-    <a on:click="signUp()" class="btn btn-large btn-primary">
-        <i class="fa fa-pencil fa-fw"></i> {__('Sign Up')}
-    </a>
+    {#if !resetPassword}
+    <button on:click="login(email, password, keeplogin)" class="btn btn-large btn-primary"><i class="fa fa-sign-in fa-fw"></i> {__('Login')}</button>
     &nbsp; or &nbsp;
-    <a on:click="toSignUp(event, false)" class="btn btn-login btn-large">
-        {__('Login')}
-    </a>
+    <button on:click="toSignUp(event, true)" class="btn btn-large">
+        {@html __('login / signup / headline')}
+    </button>
+    {:else}
+    <button on:click="sendNewPassword(email)" class="btn btn-large btn-info">
+        {__('Send new password')}
+    </button>
+    {/if}
+
+    <div style="margin-top: 10px">
+        {#if resetPassword}
+        <a on:click="resetPassword(event,false)" href="#">{__('Return to login...')}</a>
+        {:else}
+        <a on:click="resetPassword(event,true)" href="#">{__('Can\'t recall your password?')}</a>
+        {/if}
+    </div>
+</div>
+
+{#if alternativeSignIns.length}
+<div style="margin-top:10px">
+    <hr />
+    <p>Alternatively, you can sign in using these providers:</p>
+    {#each alternativeSignIns as signin}
+    <a class="btn" href="{signin.url}"><i class="{signin.icon}"></i> {signin.label}</a>&nbsp;&nbsp; {/each}
+</div>
+{/if} {:else}
+<!-- SIGN UP -->
+<h2>{@html __('login / signup / headline')}</h2>
+<p>{@html __('login / signup / intro')}</p>
+
+<form class="form-vertical">
+    <div class="control-group {emailError?'error':''}">
+        <label class="control-label">{__('email')}</label>
+        <div class="controls">
+            <input data-lpignore="true" bind:value="email" class="input-xxlarge span3" type="email" placeholder="name@example.com" />
+            <span class="help-inline">{emailError}</span>
+        </div>
+    </div>
+    <div class="control-group {passwordError?'error':''}">
+        <label class="control-label">{__('password')}</label>
+        <div class="controls">
+            <input data-lpignore="true" class="input-xxlarge span3" type="password" bind:value="password" placeholder="" />
+            <span class="help-inline">{passwordError}</span>
+        </div>
+    </div>
+    <div class="control-group {password2Error?'error':''}">
+        <label class="control-label">{__('repeat password')}</label>
+        <div class="controls">
+            <input data-lpignore="true" class="input-xxlarge span3" type="password" bind:value="password2" placeholder="" />
+            <span class="help-inline">{password2Error}</span>
+        </div>
+    </div>
+</form>
+
+<a on:click="signUp()" class="btn btn-large btn-primary"> <i class="fa fa-pencil fa-fw"></i> {__('Sign Up')} </a>
+&nbsp; or &nbsp;
+<a on:click="toSignUp(event, false)" class="btn btn-login btn-large">
+    {__('Login')}
+</a>
 {/if}
 
 <style lang="less">
-    p { font-size: 16px; line-height: 1.5 }
-    input { padding: 8px 6px }
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+    input {
+        padding: 8px 6px;
+    }
     .control-label {
         text-transform: uppercase;
-        font-size: 13px!important;
+        font-size: 13px !important;
         letter-spacing: 2px;
-        font-weight: 400!important;
+        font-weight: 400 !important;
         color: #999;
     }
 </style>
 
 <script>
-    import {__} from '../shared/l10n';
-    import {getJSON, postJSON} from '../shared/utils';
+    import { __ } from '../shared/l10n';
+    import { getJSON, postJSON } from '../shared/utils';
     import CryptoJS from 'crypto-js';
 
     export default {
-        helpers: {__},
+        data() {
+            return {
+                successMsg: '',
+                errorMsg: '',
+                email: '',
+                password: '',
+                password2: '',
+                remoteEmailError: '',
+                remotePasswordError: '',
+                keeplogin: true,
+                loginForm: true,
+                resetPassword: false,
+                alternativeSignIns: []
+            };
+        },
+
         computed: {
-            emailError({remoteEmailError}) {
+            emailError({ remoteEmailError }) {
                 if (remoteEmailError) return remoteEmailError;
                 return '';
             },
-            passwordError({password, remotePasswordError}) {
+            passwordError({ password, remotePasswordError }) {
                 if (remotePasswordError) return remotePasswordError;
                 if (!password) return '';
                 if (!password || password.length < 6) {
@@ -138,44 +149,31 @@
                 }
                 return '';
             },
-            password2Error({passwordError, password, password2}) {
+            password2Error({ passwordError, password, password2 }) {
                 if (passwordError) return '';
-                if (password2 != password) {
+                if (password2 !== password) {
                     return 'The two passwords must be identical';
                 }
                 return '';
             }
         },
-        oncreate() {
-            // get a list of signin methods
-            getJSON('/api/auth/alternative-signins', (res) => {
-                if (res.status == 'ok') {
-                    this.set({alternativeSignIns: res.data});
-                }
-            });
-        },
-
+        helpers: { __ },
         methods: {
             login(email, password, keeplogin) {
                 const pwhash = this.encryptPassword(password);
-                postJSON('/api/auth/login',
-                    JSON.stringify({email, pwhash, keeplogin}),
-                    (res) => {
-                        if (res.status == 'ok') {
-                            this.store.set({user: res.data});
-                        } else {
-                            console.log('error', res);
-                            // this.set({
-                            //     resetPassword: false,
-                            //     remoteEmailError: res.message
-                            // });
-                        }
+                postJSON('/api/auth/login', JSON.stringify({ email, pwhash, keeplogin }), res => {
+                    if (res.status === 'ok') {
+                        this.store.set({ user: res.data });
+                    } else {
+                        console.error('error', res);
+                        // this.set({
+                        //     resetPassword: false,
+                        //     remoteEmailError: res.message
+                        // });
                     }
-                );
+                });
             },
-            signUp() {
-
-            },
+            signUp() {},
             reset() {
                 this.set({
                     successMsg: '',
@@ -191,48 +189,37 @@
                     });
                 }
                 this.reset();
-                postJSON('/api/account/reset-password',
-                    JSON.stringify({email}),
-                    (res) => {
-                        if (res.status == 'ok') {
-                            this.set({ resetPassword: false, successMsg: res.data });
-                        } else {
-                            this.set({
-                                resetPassword: false,
-                                remoteEmailError: res.message
-                            });
-                        }
+                postJSON('/api/account/reset-password', JSON.stringify({ email }), res => {
+                    if (res.status === 'ok') {
+                        this.set({ resetPassword: false, successMsg: res.data });
+                    } else {
+                        this.set({
+                            resetPassword: false,
+                            remoteEmailError: res.message
+                        });
                     }
-                );
-
+                });
             },
             toSignUp(event, state) {
                 event.preventDefault();
-                this.set({loginForm: !state});
+                this.set({ loginForm: !state });
             },
             resetPassword(event, state) {
                 event.preventDefault();
-                this.set({resetPassword: state});
+                this.set({ resetPassword: state });
             },
             encryptPassword(pwd) {
                 const SALT = window.dw.backend.__auth_salt;
                 return CryptoJS.HmacSHA256(pwd, SALT).toString();
             }
         },
-        data() {
-            return {
-                successMsg: '',
-                errorMsg: '',
-                email: '',
-                password: '',
-                password2: '',
-                remoteEmailError: '',
-                remotePasswordError: '',
-                keeplogin: true,
-                loginForm: true,
-                resetPassword: false,
-                alternativeSignIns: []
-            }
+        oncreate() {
+            // get a list of signin methods
+            getJSON('/api/auth/alternative-signins', res => {
+                if (res.status === 'ok') {
+                    this.set({ alternativeSignIns: res.data });
+                }
+            });
         }
-    }
+    };
 </script>

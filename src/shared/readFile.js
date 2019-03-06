@@ -1,14 +1,13 @@
-/* global Uint8Array,jschardet */
+/* global Uint8Array, FileReader */
 
 import jschardet from '/static/vendor/jschardet/jschardet.min.js';
 
 export default function(file, callback) {
-
     var reader = new FileReader();
     reader.onload = function() {
         try {
             var array = new Uint8Array(reader.result);
-            var string = "";
+            var string = '';
             let nonAscii = 0;
             for (var i = 0; i < array.length; ++i) {
                 if (array[i] > 122) nonAscii++;

@@ -1,12 +1,8 @@
 <div style="margin-top: 40px">
     <div class="btn-group buttons">
         {#if activeIndex > 0}
-        <a on:click="back(event)" class="btn btn-tabback" href="#">
-            <i class="fa fa-chevron-left fa-fw icon-btn-left"></i> {__('Back')}
-        </a>
-        {/if}
-
-        {#if activeIndex < steps.length-1}
+        <a on:click="back(event)" class="btn btn-tabback" href="#"> <i class="fa fa-chevron-left fa-fw icon-btn-left"></i> {__('Back')} </a>
+        {/if} {#if activeIndex < steps.length-1}
         <a on:click="proceed(event)" href="#proceed" class=" btn proceed-btn">
             {__('Proceed')} <i class="fa fa-chevron-right fa-fw icon-btn-right"></i>
         </a>
@@ -16,28 +12,28 @@
 
 <script type="text/javascript">
     import _findWhere from 'underscore-es/findWhere';
-    import {__} from '../shared/l10n';
+    import { __ } from '../shared/l10n';
 
     export default {
         computed: {
-            activeIndex({active, steps}) {
-                return steps.indexOf(_findWhere(steps, {id:active}));
+            activeIndex({ active, steps }) {
+                return steps.indexOf(_findWhere(steps, { id: active }));
             }
         },
         helpers: { __ },
         methods: {
             proceed(event) {
                 event.preventDefault();
-                const {steps,activeIndex} = this.get();
-                this.set({active: steps[activeIndex+1].id});
+                const { steps, activeIndex } = this.get();
+                this.set({ active: steps[activeIndex + 1].id });
                 window.scrollTo(0, 65);
             },
             back(event) {
                 event.preventDefault();
-                const {steps,activeIndex} = this.get();
-                this.set({active: steps[activeIndex-1].id});
+                const { steps, activeIndex } = this.get();
+                this.set({ active: steps[activeIndex - 1].id });
                 window.scrollTo(0, 65);
             }
         }
-    }
+    };
 </script>

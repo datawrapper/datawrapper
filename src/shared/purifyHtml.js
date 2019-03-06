@@ -1,4 +1,4 @@
-/*
+/**
  * Remove all html tags from the given string
  *
  * written by Kevin van Zonneveld et.al.
@@ -18,7 +18,7 @@ export default function(input, allowed) {
     }
     input = stripTags(input, allowed);
     // remove all event attributes
-    if (typeof document == 'undefined') return input;
+    if (typeof document === 'undefined') return input;
     var d = document.createElement('div');
     d.innerHTML = input;
     var sel = d.querySelectorAll('*');
@@ -35,11 +35,7 @@ export default function(input, allowed) {
 
 function stripTags(input, allowed) {
     // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-    allowed = (
-        ((allowed !== undefined ? allowed || '' : defaultAllowed) + '')
-            .toLowerCase()
-            .match(/<[a-z][a-z0-9]*>/g) || []
-    ).join('');
+    allowed = (((allowed !== undefined ? allowed || '' : defaultAllowed) + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join('');
 
     var before = input;
     var after = input;

@@ -9,6 +9,11 @@
     import { loadScript, loadStylesheet } from '../shared/utils';
 
     export default {
+        data() {
+            return {
+                PublishLogic
+            };
+        },
         oncreate() {
             this.store.observe('publishLogic', cfg => {
                 if (cfg) {
@@ -23,11 +28,6 @@
                     this.set({ PublishLogic });
                 }
             });
-        },
-        data() {
-            return {
-                PublishLogic
-            };
         }
     };
 </script>

@@ -13,11 +13,11 @@ const targets = [];
 
 build('upload');
 build('describe');
-build('controls', {no_amd:true});
-build('controls/hot', {no_amd:true});
-build('publish', {append:'_old'});
-build('publish', {no_amd:true, entry:'index.js'});
-build('publish/sidebar', {no_amd:true});
+build('controls', { noAMD: true });
+build('controls/hot', { noAMD: true });
+build('publish', { append: '_old' });
+build('publish', { noAMD: true, entry: 'index.js' });
+build('publish/sidebar', { noAMD: true });
 build('highlight');
 build('editor');
 build('account');
@@ -39,10 +39,11 @@ targets.push({
         buble({
             transforms: { dangerousForOf: true }
         }),
-        production && uglify({
-            mangle: true,
-            output: { comments: /^!/ }
-        })
+        production &&
+            uglify({
+                mangle: true,
+                output: { comments: /^!/ }
+            })
     ]
 });
 
@@ -59,42 +60,39 @@ targets.push({
         buble({
             transforms: { dangerousForOf: true }
         }),
-        production && uglify({
-            mangle: true,
-            output: { comments: /^!/ }
-        })
+        production &&
+            uglify({
+                mangle: true,
+                output: { comments: /^!/ }
+            })
     ]
 });
 
 export default targets;
 
-function build(app_id, opts) {
-    const {no_amd, entry, append} = Object.assign({
-        no_amd: false,
-        entry: 'main.js',
-        append: ''
-    }, opts);
-    if (process.env.ROLLUP_TGT_APP) {
-        if (app_id !== process.env.ROLLUP_TGT_APP) {
+function build(appId, opts) {
+    const { noAMD, entry, append } = Object.assign(
+        {
+            noAMD: false,
+            entry: 'main.js',
+            append: ''
+        },
+        opts
+    );
+    if (process.env.ROLLUP_TARGET) {
+        if (appId !== process.env.ROLLUP_TARGET) {
             return;
         }
     }
     targets.push({
-        input: `${app_id}/${entry}`,
-        external: [
-            'chroma',
-            'Handsontable',
-            'cm',
-            'vendor',
-            '/static/vendor/jschardet/jschardet.min.js',
-            '/static/vendor/xlsx/xlsx.full.min.js'
-        ],
+        input: `${appId}/${entry}`,
+        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
         output: {
             sourcemap: false,
-            name: app_id,
-            file: `../www/static/js/svelte/${app_id}${append}.js`,
+            name: appId,
+            file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
-            amd: no_amd ? undefined : { id: `svelte/${app_id}${append}` },
+            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
                 '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
@@ -107,7 +105,7 @@ function build(app_id, opts) {
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
-                    css.write(`../www/static/css/svelte/${app_id}${append}.css`);
+                    css.write(`../www/static/css/svelte/${appId}${append}.css`);
                 },
                 // this results in smaller CSS files
                 cascade: false,
@@ -115,19 +113,23 @@ function build(app_id, opts) {
                 preprocess: {
                     style: ({ content, attributes }) => {
                         if (attributes.lang !== 'less') return;
-                        return new Promise((fulfil, reject) => {
-                            less.render(content, {
-                                data: content,
-                                includePaths: ['src'],
-                                sourceMap: true,
-                            }, (err, result) => {
-                                if (err) return reject(err);
+                        return new Promise((resolve, reject) => {
+                            less.render(
+                                content,
+                                {
+                                    data: content,
+                                    includePaths: ['src'],
+                                    sourceMap: true
+                                },
+                                (err, result) => {
+                                    if (err) return reject(err);
 
-                                fulfil({
-                                    code: result.css.toString(),
-                                    map: result.map.toString()
-                                });
-                            });
+                                    resolve({
+                                        code: result.css.toString(),
+                                        map: result.map.toString()
+                                    });
+                                }
+                            );
                         });
                     }
                 }
@@ -147,10 +149,10 @@ function build(app_id, opts) {
             buble({
                 transforms: { dangerousForOf: true }
             }),
-            production && uglify({
-                mangle: true
-            })
+            production &&
+                uglify({
+                    mangle: true
+                })
         ]
     });
 }
-

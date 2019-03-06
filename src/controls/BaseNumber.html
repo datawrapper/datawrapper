@@ -1,11 +1,26 @@
-{#if slider_}<input type="range" min="{min_*multiply_}" max="{max_*multiply_}" step="{step_*multiply_}" on:input="update()" bind:value="value2" />&nbsp;&nbsp;{/if}<input type="number" min="{min_*multiply_}" on:input="update()" max="{max_*multiply_}" step="{step_*multiply_}" style="{slider_?'margin-left:10px':''}" bind:value="value2" /> {#if unit_}<span class="unit">{unit_}</span>{/if}
-
+{#if slider_}<input
+    type="range"
+    min="{min_*multiply_}"
+    max="{max_*multiply_}"
+    step="{step_*multiply_}"
+    on:input="update()"
+    bind:value="value2"
+/>&nbsp;&nbsp;{/if}<input
+    type="number"
+    min="{min_*multiply_}"
+    on:input="update()"
+    max="{max_*multiply_}"
+    step="{step_*multiply_}"
+    style="{slider_?'margin-left:10px':''}"
+    bind:value="value2"
+/>
+{#if unit_}<span class="unit">{unit_}</span>{/if}
 
 <style>
-    input[type="range"] {
+    input[type='range'] {
         width: calc(100% - 95px);
     }
-    input[type="number"] {
+    input[type='number'] {
         width: 40px;
         text-align: right;
         /*border: 0;*/
@@ -14,20 +29,20 @@
         appearance: textfield;
         margin: 0;
     }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
-    input[type="number"]:hover {
+    input[type='number']:hover {
         -moz-appearance: textfield-multiline;
         appearance: textfield-multiline;
         text-align: center;
     }
-    input[type=number]:hover::-webkit-inner-spin-button,
-    input[type=number]:hover::-webkit-outer-spin-button {
-          -webkit-appearance: inner-spin-button;
-          margin: 0;
+    input[type='number']:hover::-webkit-inner-spin-button,
+    input[type='number']:hover::-webkit-outer-spin-button {
+        -webkit-appearance: inner-spin-button;
+        margin: 0;
     }
     .unit {
         font-weight: 300;
@@ -36,30 +51,41 @@
 </style>
 
 <script>
-
     export default {
+        computed: {
+            // need to define default properties here
+            step_({ step }) {
+                return step || 1;
+            },
+            min_({ min }) {
+                return min !== undefined ? min : 0;
+            },
+            max_({ max }) {
+                return max !== undefined ? max : 100;
+            },
+            unit_({ unit }) {
+                return unit !== undefined ? unit : '';
+            },
+            slider_({ slider }) {
+                return slider !== undefined ? slider : true;
+            },
+            multiply_({ multiply }) {
+                return multiply || 1;
+            }
+        },
         methods: {
             update() {
                 // update outside world value
-                const {value2, multiply_, step_} = this.get();
-                const value = +(value2).toFixed(-Math.round(Math.log(step_*multiply_)/Math.LN10))/multiply_;
-                this.set({value});
+                const { value2, multiply_, step_ } = this.get();
+                const value = +value2.toFixed(-Math.round(Math.log(step_ * multiply_) / Math.LN10)) / multiply_;
+                this.set({ value });
             }
         },
-        onstate({changed, current, previous}) {
+        onstate({ changed, current, previous }) {
             if (changed.value || !previous) {
-                const value2 = +(current.value * current.multiply_).toFixed(-Math.round(Math.log(current.step_*current.multiply_)/Math.LN10));
+                const value2 = +(current.value * current.multiply_).toFixed(-Math.round(Math.log(current.step_ * current.multiply_) / Math.LN10));
                 this.set({ value2 });
             }
-        },
-        computed: {
-            // need to define default properties here
-            step_({step}) { return step || 1; },
-            min_({min}) { return min !== undefined ? min : 0; },
-            max_({max}) { return max !== undefined ? max : 100; },
-            unit_({unit}) { return unit !== undefined ? unit : ''; },
-            slider_({slider}) { return slider !== undefined ? slider : true; },
-            multiply_({multiply}) { return multiply || 1; },
         }
     };
 </script>

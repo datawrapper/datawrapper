@@ -2431,6 +2431,15 @@ input[type="color"],
   border-radius: 0;
   box-shadow: none;
 }
+@supports (-webkit-clip-path: polygon(0% 0%, 100% 100%)) {
+  .dw .create-nav > * {
+    clip-path: polygon(0% 0%, 93% 0%, 93.5% 0.5%, 94% 2%, 99.95% 48%, 99.95% 52%, 94% 98%, 93.5% 99.5%, 93% 100%, 0% 100%);
+    -webkit-clip-path: polygon(0% 0%, 93% 0%, 93.5% 0.5%, 94% 2%, 99.95% 48%, 99.95% 52%, 94% 98%, 93.5% 99.5%, 93% 100%, 0% 100%);
+  }
+  .dw .create-nav .corner {
+    display: none;
+  }
+}
 .dw .create-nav > .active {
   background: #c71e1d;
   box-shadow: none;
@@ -2738,6 +2747,24 @@ body.dw-mycharts div.folders li > a > span .chart-count {
   display: inline-block;
   margin-left: 5px;
   font-size: 14px;
+}
+body.dw-mycharts div.folders li.subtree-collapsed {
+  position: relative;
+}
+body.dw-mycharts div.folders li.subtree-collapsed + ul {
+  display: none;
+}
+body.dw-mycharts div.folders li.subtree-collapsed:after {
+  content: '+';
+  display: block;
+  position: absolute;
+  left: 4px;
+  height: 10px;
+  color: #fff;
+  top: 0px;
+  font-weight: bold;
+  font-size: 15px;
+  pointer-events: none;
 }
 body.dw-mycharts .thumbnails.subfolders li {
   position: relative;

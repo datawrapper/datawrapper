@@ -78,7 +78,12 @@ if (!defined('NO_SESSION')) {
     // forcing require of database session handler
     require_once ROOT_PATH . 'lib/session/database.php';
     DatawrapperSession::initSession();
-    ob_start("ob_gzhandler");
+
+    if (!empty($dw_config['no_gzip']) && $dw_config['no_gzip']) {
+        ob_start();
+    } else {
+        ob_start("ob_gzhandler");
+    }    
 }
 
 function debug_log($txt) {

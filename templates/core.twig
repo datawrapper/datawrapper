@@ -74,10 +74,12 @@
         dw.backend.__commit_sha = '{{ COMMIT_SHA }}';
         dw.backend.__auth_salt = '{{ DW_AUTH_SALT }}';
         dw.backend.__messages = {{ messages | json | raw }};
+        dw.backend.__svelteApps = {};
 
         if (dw.backend.__userData.length === 0) {
             dw.backend.__userData = {};
         }
+
         $(function() {
             Globalize.culture('{{ locale | replace({'_':'-'}) }}');
         });
