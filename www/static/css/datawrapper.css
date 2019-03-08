@@ -2748,23 +2748,39 @@ body.dw-mycharts div.folders li > a > span .chart-count {
   margin-left: 5px;
   font-size: 14px;
 }
-body.dw-mycharts div.folders li.subtree-collapsed {
+body.dw-mycharts div.folders li.has-subtree .collapseToggle:before,
+body.dw-mycharts div.folders li.root-folder .collapseToggle:before {
+  content: '▼';
+}
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed {
   position: relative;
 }
-body.dw-mycharts div.folders li.subtree-collapsed + ul {
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed + ul,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed + ul {
   display: none;
 }
-body.dw-mycharts div.folders li.subtree-collapsed:after {
-  content: '+';
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed .collapseToggle:before,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed .collapseToggle:before {
+  content: '▶';
+}
+body.dw-mycharts div.folders li.has-subtree .collapseToggle,
+body.dw-mycharts div.folders li.root-folder .collapseToggle {
+  transform: translate(-20px, 0);
+}
+body.dw-mycharts div.folders li.has-subtree .collapseToggle:hover:before,
+body.dw-mycharts div.folders li.root-folder .collapseToggle:hover:before {
+  color: #adadad;
+}
+body.dw-mycharts div.folders li.has-subtree .collapseToggle:before,
+body.dw-mycharts div.folders li.root-folder .collapseToggle:before {
+  color: #d4d4d4;
+  top: 0px;
+  height: 10px;
+  font-weight: bold;
+  font-size: 13px;
   display: block;
   position: absolute;
-  left: 4px;
-  height: 10px;
-  color: #fff;
-  top: 0px;
-  font-weight: bold;
-  font-size: 15px;
-  pointer-events: none;
 }
 body.dw-mycharts .thumbnails.subfolders li {
   position: relative;

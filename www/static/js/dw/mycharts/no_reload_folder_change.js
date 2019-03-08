@@ -173,8 +173,7 @@ define(function(require) {
     }
 
     function toggleSubtree() {
-        $('.folders-left li a > .im').click(function(evt) {
-            console.log('im click', evt.currentTarget.parentNode);
+        $('.folders-left li a > .im,.folders-left li .collapseToggle').click(function(evt) {
             var li = $(evt.currentTarget).parents('li');
             if (li.is('.has-subtree,.root-folder')) {
                 evt.preventDefault();
