@@ -109,19 +109,18 @@ function parseMigrationSQL($sql) {
 // if yes, get core schema version from there
 // if not, assume version 001 if `chart` db table exists, 000 otherwise
 
-function migrateToLatest($scope, $fromVersion) {
-    // check if newer migration scripts exist in migrations/
-
-}
-
+/**
+ * reads latest schema version from the `schema` table
+ */
 function getSchemaVersion($scope) {
     global $tables;
     if (in_array('schema', $tables)) {
         return dbFetchOne('SELECT version FROM schema WHERE scope = "'.$scope.'"') ?? 0;
     }
-    if ($scope === "core") {
-        // check if chart table exists
-
-    }
     return 0;
+}
+
+function migrateToLatest($scope, $fromVersion) {
+    // check if newer migration scripts exist in migrations/
+
 }
