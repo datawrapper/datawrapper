@@ -39,7 +39,7 @@ define(function(require) {
                     '<li folder-id="' +
                         folder.id +
                         '">\n\
-                    <div class="collapseToggle"></div>\n\
+                    <div class="collapse-toggle"></div>\n\
                     <a href="' +
                         genHref(org_id, folder.id) +
                         '">\n\
