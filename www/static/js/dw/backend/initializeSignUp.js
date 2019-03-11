@@ -1,16 +1,13 @@
-
 define(function() {
-
     /*
      * initialize sign up form
      */
     return function() {
-
         function refreshSalt() {
             $('.btn-register, .btn-login').data('salt', dw.backend.__auth_salt);
             // $.getJSON('/api/2/auth/salt', function(res) {
             //    if (res.status == 'ok') {
-               // }
+            // }
             // });
         }
 
@@ -47,40 +44,40 @@ define(function() {
                 pwd2 = $.trim($('.register-pwd-2', form).val()),
                 auth_salt = $('.btn-register', form).data('salt');
 
-           if (pwd == pwd2) {
-              if (true) {
-                 var payload = {
-                    email: $('.register-email', form).val(),
-                    pwd: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
-                    pwd2: CryptoJS.HmacSHA256(pwd2, auth_salt).toString()
-                 };
-                 $.ajax({
-                    url: '/api/users',
-                    type: 'POST',
-                    data: JSON.stringify(payload),
-                    dataType: 'json',
-                    context: this,
-                    success: function(data) {
-                        if (data.status == 'ok') {
-                            // If the registration went well, notify user we sent him an email
-                            $('.row.login-signup, .alternative-signins').addClass("hidden");
-                            $('.signup-confirm').removeClass("hidden");
+            if (pwd == pwd2) {
+                if (true) {
+                    var payload = {
+                        email: $('.register-email', form).val(),
+                        pwd: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
+                        pwd2: CryptoJS.HmacSHA256(pwd2, auth_salt).toString()
+                    };
+                    $.ajax({
+                        url: '/api/users',
+                        type: 'POST',
+                        data: JSON.stringify(payload),
+                        dataType: 'json',
+                        context: this,
+                        success: function(data) {
+                            if (data.status == 'ok') {
+                                // If the registration went well, notify user we sent him an email
+                                $('.row.login-signup, .alternative-signins').addClass('hidden');
+                                $('.signup-confirm').removeClass('hidden');
 
-                            $('.btn-got-it', '.signup-confirm').click(function() {
-                                $('#dwLoginForm').modal('hide');
-                                window.location.reload();
-                            });
-                        } else {
-                            dw.backend.logError(data.code, '.signup-form');
+                                $('.btn-got-it', '.signup-confirm').click(function() {
+                                    $('#dwLoginForm').modal('hide');
+                                    window.location.reload();
+                                });
+                            } else {
+                                dw.backend.logError(data.code, '.signup-form');
+                            }
                         }
-                    }
-                 });
-              } else {
-                 alert('Error: password is to unsecure. please chose a password with at least 8 characters');
-              }
-           } else {
-              alert('Error: password mismatch');
-           }
+                    });
+                } else {
+                    alert('Error: password is to unsecure. please chose a password with at least 8 characters');
+                }
+            } else {
+                alert('Error: password mismatch');
+            }
         });
 
         function loginEvent(evt) {
@@ -94,7 +91,9 @@ define(function() {
                     keeplogin: $('.keep-login', loginForm).attr('checked') == 'checked'
                 };
             if (pwd === '') {
-                $('.login-pwd', loginForm).parent().addClass('error');
+                $('.login-pwd', loginForm)
+                    .parent()
+                    .addClass('error');
                 return false;
             }
 
@@ -106,19 +105,23 @@ define(function() {
                 dataType: 'json',
                 data: JSON.stringify(payload),
                 success: function(data) {
-                    if (data.status == "ok") {
+                    if (data.status == 'ok') {
                         $('#dwLoginForm').modal('hide');
                         $('input', loginForm).val('');
                         if (loginForm.data('target')) location.href = loginForm.data('target');
                         else {
-                            if (location.pathname == "/login") location.pathname = "/";
+                            if (location.pathname == '/login') location.pathname = '/';
                             else location.reload();
                         }
                     } else {
                         if (data.code == 'login-invalid') {
-                            $('.login-pwd', loginForm).parent().addClass('error');
+                            $('.login-pwd', loginForm)
+                                .parent()
+                                .addClass('error');
                         } else if (data.code == 'login-email-unknown') {
-                            $('.login-email', loginForm).parent().addClass('error');
+                            $('.login-email', loginForm)
+                                .parent()
+                                .addClass('error');
                         }
                         dw.backend.logError(data.message, loginForm);
                     }
@@ -133,5 +136,4 @@ define(function() {
             if (evt.keyCode == 13) loginEvent(evt);
         });
     }; // end initialize signup
-
 });
