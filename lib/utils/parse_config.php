@@ -9,7 +9,7 @@ function parse_config($cfg) {
     // the expected format is $_ENV[...], e.g. $_ENV[DW_DATABASE_USER]
     array_walk_recursive($cfg, function(&$value, $key) {
         if (preg_match('/\$_ENV\[([^\]]+)\]/', $value, $matches)) {
-            $value = getenv($matches[1]);
+            $value = str_replace('$_ENV['.$matches[1].']', getenv($matches[1]), $value);
         }
     });
 
