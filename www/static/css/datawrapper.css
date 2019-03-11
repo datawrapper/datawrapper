@@ -2705,7 +2705,7 @@ body.dw-mycharts .gallery .subfolders .thumbnail .im,
 body.dw-mycharts .gallery .subfolders .thumbnail .fa {
   color: #999;
 }
-body.dw-mycharts div.folders {
+body.dw-mycharts div.folders > ul.folders-left {
   padding-left: 18px;
 }
 body.dw-mycharts div.folders > ul {
