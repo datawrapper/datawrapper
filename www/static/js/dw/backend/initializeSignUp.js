@@ -88,7 +88,7 @@ define(function() {
                 payload = {
                     email: $('.login-email', loginForm).val(),
                     pwhash: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
-                    keeplogin: $('.keep-login', loginForm).attr('checked') == 'checked'
+                    keeplogin: $('.keep-login', loginForm).prop('checked')
                 };
             if (pwd === '') {
                 $('.login-pwd', loginForm)
