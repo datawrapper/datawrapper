@@ -242,8 +242,8 @@ body.dw-mycharts {
         margin-left: 5px;
         font-size: 14px;
     }
-    div.folders li.has-subtree, div.folders li.root-folder  {
-
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
         .collapseToggle:before {
             content: '▼';
         }
@@ -259,13 +259,12 @@ body.dw-mycharts {
         }
     }
 
-    div.folders li.has-subtree, div.folders li.root-folder {
-
-        .collapseToggle{
-            
-            transform:translate(-20px,0);
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
+        .collapseToggle {
+            transform: translate(-20px, 0);
             &:hover:before {
-                color:#adadad;
+                color: #adadad;
             }
             &:before {
                 color: #d4d4d4;
