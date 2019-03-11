@@ -3,7 +3,7 @@
 import test from 'ava';
 import App from './App.html';
 
-test('foo', t => {
+test('foobar', t => {
     t.pass();
 });
 
