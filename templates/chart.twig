@@ -50,6 +50,9 @@
 
     <style type="text/css">
         {{ themeCSS | raw }}
+        {% if nopointer %}
+        body { pointer-events: none }
+        {% endif %}
     </style>
 
     {{ hook('chart_html_head_end', chart) }}

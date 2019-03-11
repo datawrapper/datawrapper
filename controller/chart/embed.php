@@ -34,6 +34,7 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         $page['thumb'] = $app->request()->params('t') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['plain'] = $app->request()->get('plain') == 1;
+        $page['nopointer'] = $app->request()->get('nopointer') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
 
         check_iframe_origin($app);

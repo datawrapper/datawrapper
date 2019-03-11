@@ -22,6 +22,7 @@ $app->get('/(chart|map)/:id/preview', function ($id) use ($app) {
         $page['theme'] = $theme;
 
         $page = get_chart_content($chart, $user, $theme, $app->request()->get('minify'), $app->request()->get('debug'));
+        $page['nopointer'] = $app->request()->get('nopointer') == 1;
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
