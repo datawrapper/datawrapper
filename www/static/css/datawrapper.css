@@ -2705,6 +2705,9 @@ body.dw-mycharts .gallery .subfolders .thumbnail .im,
 body.dw-mycharts .gallery .subfolders .thumbnail .fa {
   color: #999;
 }
+body.dw-mycharts div.folders {
+  padding-left: 18px;
+}
 body.dw-mycharts div.folders > ul {
   margin-bottom: 40px;
 }
@@ -2748,23 +2751,42 @@ body.dw-mycharts div.folders li > a > span .chart-count {
   margin-left: 5px;
   font-size: 14px;
 }
-body.dw-mycharts div.folders li.subtree-collapsed {
+body.dw-mycharts div.folders li.has-subtree .collapse-toggle:before,
+body.dw-mycharts div.folders li.root-folder .collapse-toggle:before {
+  content: '\e013';
+}
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed {
   position: relative;
 }
-body.dw-mycharts div.folders li.subtree-collapsed + ul {
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed + ul,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed + ul {
   display: none;
 }
-body.dw-mycharts div.folders li.subtree-collapsed:after {
-  content: '+';
+body.dw-mycharts div.folders li.has-subtree.subtree-collapsed .collapse-toggle:before,
+body.dw-mycharts div.folders li.root-folder.subtree-collapsed .collapse-toggle:before {
+  content: '\e03d';
+}
+body.dw-mycharts div.folders li.has-subtree .collapse-toggle,
+body.dw-mycharts div.folders li.root-folder .collapse-toggle {
+  font: normal normal normal 16px/1 'iconmonstr-iconic-font';
+  vertical-align: middle;
+}
+body.dw-mycharts div.folders li.has-subtree .collapse-toggle:hover:before,
+body.dw-mycharts div.folders li.root-folder .collapse-toggle:hover:before {
+  color: #adadad;
+}
+body.dw-mycharts div.folders li.has-subtree .collapse-toggle:before,
+body.dw-mycharts div.folders li.root-folder .collapse-toggle:before {
+  color: #d4d4d4;
+  top: 2px;
+  left: -18px;
+  height: 10px;
+  line-height: 20px;
+  font-weight: bold;
+  font-size: 11px;
   display: block;
   position: absolute;
-  left: 4px;
-  height: 10px;
-  color: #fff;
-  top: 0px;
-  font-weight: bold;
-  font-size: 15px;
-  pointer-events: none;
 }
 body.dw-mycharts .thumbnails.subfolders li {
   position: relative;

@@ -199,6 +199,9 @@ body.dw-mycharts {
     .gallery .subfolders .thumbnail .fa {
         color: #999;
     }
+    div.folders {
+        padding-left: 18px;
+    }
     div.folders > ul {
         margin-bottom: 40px;
     }
@@ -242,22 +245,43 @@ body.dw-mycharts {
         margin-left: 5px;
         font-size: 14px;
     }
-    div.folders li.subtree-collapsed {
-        position: relative;
-        & + ul {
-            display: none;
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
+        .collapse-toggle:before {
+            content: '\e013';
         }
-        &:after {
-            content: '+';
-            display: block;
-            position: absolute;
-            left: 4px;
-            height: 10px;
-            color: #fff;
-            top: 0px;
-            font-weight: bold;
-            font-size: 15px;
-            pointer-events: none;
+
+        &.subtree-collapsed {
+            position: relative;
+            & + ul {
+                display: none;
+            }
+            .collapse-toggle:before {
+                content: '\e03d';
+            }
+        }
+    }
+
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
+        .collapse-toggle {
+            font: normal normal normal 16px/1 'iconmonstr-iconic-font';
+            vertical-align: middle;
+
+            &:hover:before {
+                color: #adadad;
+            }
+            &:before {
+                color: #d4d4d4;
+                top: 2px;
+                left: -18px;
+                height: 10px;
+                line-height: 20px;
+                font-weight: bold;
+                font-size: 11px;
+                display: block;
+                position: absolute;
+            }
         }
     }
 
