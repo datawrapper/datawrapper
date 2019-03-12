@@ -6,12 +6,20 @@ use Propel;
 use PDO;
 use PDOException;
 
+
 class Migrations {
+
+    const VERBOSE = false;
 
     static function sync($scope) {
         $version = self::getSchemaVersion($scope);
         $migrations = self::getMigrations($scope);
-        self::log($scope, 'currently on version '.$version);
+
+        if (empty($migrations)) {
+            if (self::VERBOSE) self::log($scope, 'no db migrations found', 'gray');
+            return;
+        }
+        if (self::VERBOSE) self::log($scope, 'currently on version '.$version);
 
         // print_r(($migrations[$scope]));
         foreach ($migrations as $migration) {
@@ -31,7 +39,7 @@ class Migrations {
                     }
                 }
             } else {
-                self::log($scope, 'already on version '.$migration['version'].' ('.$migration['key'].')', 'gray');
+                if (self::VERBOSE) self::log($scope, 'already on version '.$migration['version'].' ('.$migration['key'].')', 'gray');
             }
         }
     }
@@ -186,7 +194,7 @@ class Migrations {
         'teal' => '36'
     ];
 
-    protected function log($scope, $message, $color = 'lightgray', $bold = false) {
+    protected static function log($scope, $message, $color = 'lightgray', $bold = false) {
         if (defined('NO_SLIM')) {
             print '['.$scope.'] ';
             if ($color && isset(self::$colors[$color])) print "\033[".($bold ? '1' : '0').';'.self::$colors[$color]."m";
