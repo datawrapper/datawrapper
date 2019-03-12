@@ -16,7 +16,7 @@ dw.js/dw-2.0.js: dw.js/src/*.js
 assets: www/static/css/datawrapper.css www/static/css/chart.base.css
 
 sync-db:
-	php scripts/sync-db.php
+	@php scripts/sync-db.php
 
 
 # www/static/js/dw-2.0.js: dw.js/dw-2.0.js

@@ -131,10 +131,10 @@ class Migrations {
      */
     static function getSchemaVersion($scope) {
         if (empty(self::$tables)) {
-            self::$tables = self::dbFetchColumn('SHOW TABLES');
+            self::$tables = self::dbFetchColumn('SHOW TABLES', false);
         }
         if (in_array('schema', self::$tables)) {
-            $version = self::dbFetchOne('SELECT version FROM `schema` WHERE scope = "'.$scope.'"');
+            $version = self::dbFetchOne('SELECT version FROM `schema` WHERE scope = "'.$scope.'"', false);
             if (!empty($version)) return $version;
         }
         return 0;
@@ -163,22 +163,22 @@ class Migrations {
         try {
             $pdo = Propel::getConnection();
             return $pdo->query($sql);
-        } catch(PDOException $exception){
-            if ($verbose) self::log('mysql', $exception->getMessage(), 'red');
-            throw $exception;
+        } catch(PDOException $e){
+            if ($verbose) self::log('mysql', $e->getMessage(), 'red');
+            throw $e;
         } catch (Exception $e) {
-            if ($verbose) self::log('php', $exception->getMessage(), 'red');
-            throw $exception;
+            if ($verbose) self::log('php', $e->getMessage(), 'red');
+            throw $e;
         }
     }
 
-    protected static function dbFetchColumn($sql) {
-        $res = self::dbQuery($sql);
+    protected static function dbFetchColumn($sql, $verbose=true) {
+        $res = self::dbQuery($sql, $verbose);
         return $res->fetchAll(PDO::FETCH_COLUMN, 0);
     }
 
-    protected static function dbFetchOne($sql) {
-        $res = self::dbQuery($sql);
+    protected static function dbFetchOne($sql, $verbose=true) {
+        $res = self::dbQuery($sql, $verbose);
         return $res->fetchColumn(0);
     }
 
