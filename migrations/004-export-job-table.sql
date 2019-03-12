@@ -1,3 +1,5 @@
+-- Adds export_job
+
 -- Up
 CREATE TABLE `export_job` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

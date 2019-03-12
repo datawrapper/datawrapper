@@ -1,3 +1,5 @@
+-- Adds chart
+
 -- Up
 # This is a fix for InnoDB in MySQL >= 4.1.x
 # It "suspends judgement" for fkey relationships until are tables are set.
