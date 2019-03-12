@@ -1,11 +1,16 @@
 const path = require('path');
-const hooks = require('require-extension-hooks');
-const { compile } = require(`svelte`);
+const addHook = require('pirates').addHook;
+const { compile } = require('svelte');
 
 const SVELTE_EXTENSION = '.html';
 
-hooks(SVELTE_EXTENSION).push(function({ filename, content }) {
-    const { js } = compile(content, {
+// We use LESS which requires async preprocessing, which we can't easily do here.
+// To circumvent preprocessing, we simply remove all style tags from the raw code.
+const removeStyles = code => code.replace(/<style([^]*?)>([^]*?)<\/style>/i, '');
+
+const compileSvelte = (rawCode, filename) => {
+    const code = removeStyles(rawCode);
+    const { js } = compile(code, {
         // the filename of the source file, used in e.g. generating sourcemaps.
         filename,
 
@@ -18,4 +23,6 @@ hooks(SVELTE_EXTENSION).push(function({ filename, content }) {
     });
 
     return js.code;
-});
+};
+
+addHook(compileSvelte, { exts: [SVELTE_EXTENSION] });
