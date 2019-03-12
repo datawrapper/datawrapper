@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * updates the DB schema to the latest version
  */
 
 define('NO_SLIM', 1);
@@ -24,18 +25,5 @@ foreach (glob(ROOT_PATH . 'plugins/*/migrations') as $path) {
 
 // iterate over all scopes
 foreach ($scopes as $scope) {
-    // get current schema for scope
     Migrations::sync($scope);
 }
-
-
-
-
-
-// check if `schema` DB table exists
-// if yes, get core schema version from there
-// if not, assume version 001 if `chart` db table exists, 000 otherwise
-
-
-
-
