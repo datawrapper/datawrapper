@@ -27,6 +27,7 @@ class Migrations {
                 if (self::canSkipMigration($migration)) {
                     self::log($scope, 'skipping migration '.$migration['version'].' ('.$migration['key'].')');
                     self::updateSchemaVersion($scope, $migration['version']);
+                    $version = $migration['version'];
                 } else {
                     self::log($scope, 'applying migration '.$migration['version'].' ('.$migration['key'].')', 'white');
                     try {
@@ -34,8 +35,11 @@ class Migrations {
                     } catch (Exception $e) {
                         self::log($scope, 'migration '.$migration['version'].' ('.$migration['key'].') failed!', 'red', true);
                         self::log($scope, $e->getMessage(), 'red', true);
+                        self::log($scope, 'stopping db migration at version '.$version, 'yellow');
+                        return;
                     } finally {
                         self::updateSchemaVersion($scope, $migration['version']);
+                        $version = $migration['version'];
                     }
                 }
             } else {
@@ -55,7 +59,6 @@ class Migrations {
     }
 
     protected static function applyMigration($migration) {
-        print $migration['content']['up'];
         self::dbQuery($migration['content']['up']);
     }
 
