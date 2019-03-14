@@ -7,8 +7,8 @@ This project uses [AVA](https://github.com/avajs/ava) and [browser-env](https://
 To run tests during development, you can use `npm run test:watch`, or AVA directly. Using `ava --watch` (or `-w`) will run tests in [watch mode](https://github.com/avajs/ava/blob/master/docs/recipes/watch-mode.md). For more info on running tests, see the [AVA CLI documentation](https://github.com/avajs/ava/blob/master/docs/05-command-line.md).
 
 ```
-# Run and watch tests:
-npm run test:watch # (equivalent to running ava -w)
+# Run and watch test with verbose output:
+npm run test:watch # (equivalent to running ava --watch --verbose)
 
 # You can also run specific test files individually:
 npx ava -w ./src/example/ExampleComponent.test.js
