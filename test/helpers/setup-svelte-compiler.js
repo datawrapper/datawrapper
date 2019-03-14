@@ -6,6 +6,8 @@ const SVELTE_EXTENSION = '.html';
 
 // We use LESS which requires async preprocessing, which we can't easily do here.
 // To circumvent preprocessing, we simply remove all style tags from the raw code.
+// The regex is borrowed from Svelte's original preprocess function:
+// https://github.com/sveltejs/svelte/blob/master/src/preprocess/
 const removeStyles = code => code.replace(/<style([^]*?)>([^]*?)<\/style>/i, '');
 
 const compileSvelte = (rawCode, filename) => {
