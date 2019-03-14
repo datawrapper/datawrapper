@@ -15,11 +15,19 @@ sourceMapSupport.install({
 });
 
 // We use LESS which requires async preprocessing, which we can't easily do here.
-// To circumvent preprocessing, we simply remove all style tags from the raw code.
+// To circumvent preprocessing, we simply replace all style tags with placeholders.
+// The placeholders make sure that line numbers are kept intact for accurate source maps.
 // The regex is borrowed from Svelte's original preprocess function:
 // https://github.com/sveltejs/svelte/blob/master/src/preprocess/
-const removeStyles = code => code.replace(/<style([^]*?)>([^]*?)<\/style>/i, '');
-
+const removeStyles = code => {
+    const styleBlocks = code.match(/<style([^]*?)>([^]*?)<\/style>/gi);
+    styleBlocks.forEach(block => {
+        const lines = block.split(/\r\n|\r|\n/);
+        const placeholder = lines.map(() => '<!-- This line replaces LESS code! -->').join('\n');
+        code = code.replace(block, placeholder);
+    });
+    return code;
+};
 const compileSvelte = (rawCode, filename) => {
     const code = removeStyles(rawCode);
     const { js } = compile(code, {
@@ -34,7 +42,7 @@ const compileSvelte = (rawCode, filename) => {
         parser: 'v2'
     });
 
-    // make the sourcemap available to be retrieved via source map support
+    // make the sourcemap available to be retrieved via "source-map-support"
     sourcemaps[filename] = js.map;
 
     return js.code;
