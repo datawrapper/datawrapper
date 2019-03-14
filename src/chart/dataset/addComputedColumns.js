@@ -1,7 +1,4 @@
-import _each from 'underscore-es/each';
-import _isDate from 'underscore-es/isDate';
-import _isBoolean from 'underscore-es/isBoolean';
-import _isNumber from 'underscore-es/isNumber';
+import _ from 'underscore';
 import column from './column';
 import arrayMin from 'd3-array/src/min';
 import arrayMax from 'd3-array/src/max';
@@ -30,7 +27,7 @@ export default function(chart, dataset) {
         }
     });
 
-    _each(virtualColumns, addComputedColumn);
+    _.each(virtualColumns, addComputedColumn);
 
     return dataset;
 
@@ -65,9 +62,9 @@ export default function(chart, dataset) {
                 }.call({ context: context });
             })
             .map(function(v) {
-                if (_isBoolean(v)) return v ? 'yes' : 'no';
-                if (_isDate(v)) return datefmt(v);
-                if (_isNumber(v)) return '' + v;
+                if (_.isBoolean(v)) return v ? 'yes' : 'no';
+                if (_.isDate(v)) return datefmt(v);
+                if (_.isNumber(v)) return '' + v;
                 return String(v);
             });
         const virtualColumn = column(name, values);

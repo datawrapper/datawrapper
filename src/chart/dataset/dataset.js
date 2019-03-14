@@ -1,6 +1,4 @@
-import _range from 'underscore-es/range';
-import _each from 'underscore-es/each';
-import _isString from 'underscore-es/isString';
+import _ from 'underscore';
 
 /*
  * Dataset class
@@ -47,7 +45,7 @@ export default function(columns) {
          * @returns {dw.Column}
          */
         column(nameOrIndex) {
-            if (_isString(nameOrIndex)) {
+            if (_.isString(nameOrIndex)) {
                 // single column by name
                 if (columnsByName[nameOrIndex] !== undefined) return columnsByName[nameOrIndex];
                 throw new Error('No column found with that name: "' + nameOrIndex + '"');
@@ -90,7 +88,7 @@ export default function(columns) {
          * @returns {boolean}
          */
         hasColumn(nameOrIndex) {
-            return (_isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !== undefined;
+            return (_.isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !== undefined;
         },
 
         /**
@@ -108,7 +106,7 @@ export default function(columns) {
          * @returns {object[]}
          */
         list() {
-            return _range(columns[0].length).map(function(r) {
+            return _.range(columns[0].length).map(function(r) {
                 var o = {};
                 columns.forEach(col => {
                     o[col.name()] = col.val(r);
@@ -133,7 +131,7 @@ export default function(columns) {
                 csv += (i > 0 ? sep : '') + t;
             });
             // add values
-            _range(dataset.numRows()).forEach(row => {
+            _.range(dataset.numRows()).forEach(row => {
                 csv += '\n';
                 columns.forEach((col, i) => {
                     var t = '' + (col.type() === 'date' ? col.raw(row) : col.val(row));
@@ -159,7 +157,7 @@ export default function(columns) {
          */
         filterColumns(ignore) {
             columns = columns.filter(c => !ignore[c.name()]);
-            _each(ignore, (ign, key) => {
+            _.each(ignore, (ign, key) => {
                 if (ign && columnsByName[key]) delete columnsByName[key];
             });
             return dataset;

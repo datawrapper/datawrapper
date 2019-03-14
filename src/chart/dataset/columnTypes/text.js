@@ -1,8 +1,8 @@
-const _identity = d => d;
+import _ from 'underscore';
 
 export default function() {
     return {
-        parse: _identity,
+        parse: _.identity,
         errors: function() {
             return 0;
         },
@@ -10,7 +10,7 @@ export default function() {
             return 'text';
         },
         formatter: function() {
-            return _identity;
+            return _.identity;
         },
         isValid: function() {
             return true;

@@ -1,4 +1,4 @@
-import _each from 'underscore-es/each';
+import _ from 'underscore';
 
 export default function(chart, dataset) {
     var changes = chart.getMetadata('data.changes', []);
@@ -23,7 +23,7 @@ export default function(chart, dataset) {
 
     // overwrite column types
     var columnFormats = chart.getMetadata('data.column-format', {});
-    _each(columnFormats, (columnFormat, key) => {
+    _.each(columnFormats, (columnFormat, key) => {
         if (columnFormat.type && dataset.hasColumn(key) && columnFormat.type !== 'auto') {
             dataset.column(key).type(columnFormat.type);
         }

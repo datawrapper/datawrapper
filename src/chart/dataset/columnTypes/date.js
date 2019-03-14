@@ -1,11 +1,5 @@
 /* globals Globalize */
-import _each from 'underscore-es/each';
-import _isString from 'underscore-es/isString';
-import _isUndefined from 'underscore-es/isUndefined';
-import _isDate from 'underscore-es/isDate';
-import _flatten from 'underscore-es/flatten';
-import _values from 'underscore-es/values';
-import _isRegExp from 'underscore-es/isRegExp';
+import _ from 'underscore';
 
 const begin = /^ */.source;
 const end = /[*']* *$/.source;
@@ -27,8 +21,6 @@ const rx = {
     HHMM: { parse: /(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *(am|pm)?/ }
 };
 
-const _identity = d => d;
-
 const MONTHS = {
     // feel free to add more localized month names
     0: ['jan', 'january', 'januar', 'jänner', 'jän', 'janv', 'janvier', 'ene', 'enero', 'gen', 'gennaio', 'janeiro'],
@@ -46,17 +38,17 @@ const MONTHS = {
 };
 const shortMonthKey = {};
 
-_each(MONTHS, function(abbr, m) {
-    _each(abbr, function(a) {
+_.each(MONTHS, function(abbr, m) {
+    _.each(abbr, function(a) {
         shortMonthKey[a] = m;
     });
 });
 
-rx.MMM = { parse: new RegExp('(' + _flatten(_values(MONTHS)).join('|') + ')') };
+rx.MMM = { parse: new RegExp('(' + _.flatten(_.values(MONTHS)).join('|') + ')') };
 
-_each(rx, function(r) {
+_.each(rx, function(r) {
     r.parse = r.parse.source;
-    if (_isRegExp(r.test)) r.test = r.test.source;
+    if (_.isRegExp(r.test)) r.test = r.test.source;
     else r.test = r.parse;
 });
 
@@ -198,7 +190,7 @@ function reg() {
 
 function test(str, key) {
     var fmt = knownFormats[key];
-    if (_isRegExp(fmt.test)) {
+    if (_.isRegExp(fmt.test)) {
         return fmt.test.test(str);
     } else {
         return fmt.test(str, key);
@@ -207,7 +199,7 @@ function test(str, key) {
 
 function parse(str, key) {
     var fmt = knownFormats[key];
-    if (_isRegExp(fmt.parse)) {
+    if (_.isRegExp(fmt.parse)) {
         return str.match(fmt.parse);
     } else {
         return fmt.parse(str, key);
@@ -242,8 +234,8 @@ export default function(sample) {
 
     sample = sample || [];
 
-    _each(knownFormats, function(format, key) {
-        _each(sample, function(n) {
+    _.each(knownFormats, function(format, key) {
+        _.each(sample, function(n) {
             if (matches[key] === undefined) matches[key] = 0;
             if (test(n, key)) {
                 matches[key] += 1;
@@ -259,8 +251,8 @@ export default function(sample) {
     // public interface
     const type = {
         parse: function(raw) {
-            if (_isDate(raw) || _isUndefined(raw)) return raw;
-            if (!format || !_isString(raw)) {
+            if (_.isDate(raw) || _.isUndefined(raw)) return raw;
+            if (!format || !_.isString(raw)) {
                 errors++;
                 return raw;
             }
@@ -371,28 +363,28 @@ export default function(sample) {
 
         // returns a function for formatting dates
         formatter: function() {
-            if (!format) return _identity;
+            if (!format) return _.identity;
             var monthPattern = Globalize.culture().calendar.patterns.M.replace('MMMM', 'MMM');
             switch (knownFormats[format].precision) {
                 case 'year':
                     return function(d) {
-                        return !_isDate(d) ? d : d.getFullYear();
+                        return !_.isDate(d) ? d : d.getFullYear();
                     };
                 case 'half':
                     return function(d) {
-                        return !_isDate(d) ? d : d.getFullYear() + ' H' + (d.getMonth() / 6 + 1);
+                        return !_.isDate(d) ? d : d.getFullYear() + ' H' + (d.getMonth() / 6 + 1);
                     };
                 case 'quarter':
                     return function(d) {
-                        return !_isDate(d) ? d : d.getFullYear() + ' Q' + (d.getMonth() / 3 + 1);
+                        return !_.isDate(d) ? d : d.getFullYear() + ' Q' + (d.getMonth() / 3 + 1);
                     };
                 case 'month':
                     return function(d) {
-                        return !_isDate(d) ? d : Globalize.format(d, 'MMM yy');
+                        return !_.isDate(d) ? d : Globalize.format(d, 'MMM yy');
                     };
                 case 'week':
                     return function(d) {
-                        return !_isDate(d)
+                        return !_.isDate(d)
                             ? d
                             : dateToIsoWeek(d)
                                   .slice(0, 2)
@@ -400,28 +392,28 @@ export default function(sample) {
                     };
                 case 'day':
                     return function(d, verbose) {
-                        return !_isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd');
+                        return !_.isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd');
                     };
                 case 'day-minutes':
                     return function(d) {
-                        return !_isDate(d)
+                        return !_.isDate(d)
                             ? d
                             : Globalize.format(d, monthPattern).replace(' ', '&nbsp;') + ' - ' + Globalize.format(d, 't').replace(' ', '&nbsp;');
                     };
                 case 'day-seconds':
                     return function(d) {
-                        return !_isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;');
+                        return !_.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;');
                     };
             }
         },
 
         isValid: function(val) {
-            return _isDate(type.parse(val));
+            return _.isDate(type.parse(val));
         },
 
         ambiguousFormats: function() {
             var candidates = [];
-            _each(matches, function(cnt, fmt) {
+            _.each(matches, function(cnt, fmt) {
                 if (cnt === bestMatch[1]) {
                     candidates.push([fmt, fmt]); // key, label
                 }

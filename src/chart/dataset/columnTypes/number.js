@@ -1,9 +1,6 @@
 /* eslint no-irregular-whitespace: "off" */
 
-import _each from 'underscore-es/each';
-import _isNumber from 'underscore-es/isNumber';
-import _isUndefined from 'underscore-es/isUndefined';
-import _isNull from 'underscore-es/isNull';
+import _ from 'underscore';
 import equalish from '../../../shared/equalish';
 
 /* globals Globalize */
@@ -64,8 +61,8 @@ export default function(sample) {
 
     sample = sample || [];
 
-    _each(sample, function(n) {
-        _each(knownFormats, function(regex, fmt) {
+    _.each(sample, function(n) {
+        _.each(knownFormats, function(regex, fmt) {
             if (matches[fmt] === undefined) matches[fmt] = 0;
             if (regex.test(n)) {
                 matches[fmt] += 1;
@@ -81,7 +78,7 @@ export default function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_isNumber(raw) || _isUndefined(raw) || _isNull(raw)) return raw;
+            if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
             // replace percent sign, n-dash & m-dash
             var number = raw
                 .replace('%', '')
@@ -155,12 +152,12 @@ export default function(sample) {
         },
 
         isValid: function(val) {
-            return val === '' || naStrings[String(val).toLowerCase()] || _isNumber(type.parse(val));
+            return val === '' || naStrings[String(val).toLowerCase()] || _.isNumber(type.parse(val));
         },
 
         ambiguousFormats: function() {
             var candidates = [];
-            _each(matches, function(cnt, fmt) {
+            _.each(matches, function(cnt, fmt) {
                 if (cnt === bestMatch[1]) {
                     candidates.push([fmt, formatLabels[fmt]]); // key, label
                 }

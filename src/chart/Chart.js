@@ -1,9 +1,6 @@
 import { Store } from 'svelte/store.js';
 
-import _some from 'underscore-es/some';
-import _isUndefined from 'underscore-es/isUndefined';
-import _isNull from 'underscore-es/isNull';
-import _debounce from 'underscore-es/debounce';
+import _ from 'underscore';
 
 import delimited from './dataset/delimited.js';
 import json from './dataset/json.js';
@@ -15,14 +12,14 @@ import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
 import { putJSON } from '../shared/utils.js';
 import { observeDeep } from 'svelte-extras';
 
-const storeChanges = _debounce((chart, callback) => {
+const storeChanges = _.debounce((chart, callback) => {
     const state = chart.serialize();
     putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
         if (callback) callback();
     });
 }, 1000);
 
-const storeData = _debounce((chart, callback) => {
+const storeData = _.debounce((chart, callback) => {
     const data = chart.getMetadata('data.json') ? JSON.stringify(chart.dataset()) : chart.rawData();
     // const data = chart.rawData();
     putJSON(`/api/2/charts/${chart.get('id')}/data`, data, () => {
@@ -112,12 +109,12 @@ class Chart extends Store {
         const keys = key.split('.');
         let pt = metadata;
 
-        _some(keys, key => {
-            if (_isUndefined(pt) || _isNull(pt)) return true; // break out of the loop
+        _.some(keys, key => {
+            if (_.isUndefined(pt) || _.isNull(pt)) return true; // break out of the loop
             pt = pt[key];
             return false;
         });
-        return _isUndefined(pt) || _isNull(pt) ? _default : pt;
+        return _.isUndefined(pt) || _.isNull(pt) ? _default : pt;
     }
 
     setMetadata(key, value) {
@@ -128,7 +125,7 @@ class Chart extends Store {
 
         // resolve property until the parent dict
         keys.forEach(key => {
-            if (_isUndefined(pt[key]) || _isNull(pt[key])) {
+            if (_.isUndefined(pt[key]) || _.isNull(pt[key])) {
                 pt[key] = {};
             }
             pt = pt[key];

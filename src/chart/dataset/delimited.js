@@ -13,8 +13,7 @@
 
 /* globals Promise */
 
-import _range from 'underscore-es/range';
-import _isString from 'underscore-es/isString';
+import _ from 'underscore';
 import dataset from './dataset.js';
 import column from './column.js';
 
@@ -181,7 +180,7 @@ class DelimitedParser {
             // check that columns names are unique and not empty
 
             for (var c = 0; c < columnCount; c++) {
-                let col = _isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '';
+                let col = _.isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '';
                 let suffix = col !== '' ? '' : 1;
                 col = col !== '' ? col : 'X.';
                 while (columnNames[col + suffix] !== undefined) {
@@ -194,7 +193,7 @@ class DelimitedParser {
                 columnNames[col + suffix] = true;
             }
 
-            _range(rowIndex, rowCount).forEach(row => {
+            _.range(rowIndex, rowCount).forEach(row => {
                 columns.forEach((c, i) => {
                     c.data.push(arrData[row][i] !== '' ? arrData[row][i] : opts.emptyValue);
                 });
