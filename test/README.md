@@ -16,6 +16,7 @@ npx ava -w ./src/example/ExampleComponent.test.js
 # or use patterns:
 npx ava -w ./src/example/*
 ```
+The main reason the `test:watch` mode exists is to make it easier to write tests. Instead of having to manually re-run `npm test` again and again, you can just watch the tests passing or failing in the background.
 
 ## Adding new tests
 
