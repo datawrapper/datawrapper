@@ -7,10 +7,12 @@
         class:dropbefore="!dropafter"
         data-pos="{index}"
         draggable="true"
-        on:click="select(event, item, index)"
         on:dragstart="dragstart(event, index)"
+        on:click|preventDefault="select(event, item, index)"
     >
-        <svelte:component bind:item this="{itemRenderer}" />
+        <a on:click|preventDefault="select(event, item, index)" href="#item-{index}">
+            <svelte:component bind:item this="{itemRenderer}" />
+        </a>
     </li>
     {/each}
 </ul>
@@ -145,6 +147,12 @@
         /*display: inline-block;*/
     }
 
+    ul > li > a {
+        color: #222222;
+    }
+    ul > li > a:hover {
+        text-decoration: none;
+    }
     ul > li:first-child {
         border-top: 0;
     }
