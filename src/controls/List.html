@@ -2,8 +2,6 @@
     {#each items as item, index}
     <li
         class:selected="selected.indexOf(item.id ) > -1"
-        class:not-visible="!item.visible"
-        class:locked="item.locked"
         class:dragtarget="dragtarget === index"
         class:dropafter="dropafter"
         class:dropbefore="!dropafter"
