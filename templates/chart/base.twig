@@ -6,6 +6,8 @@
   {% trans "Your changes have been saved." %}
 </div>
 
+{{ hook('before_editor_nav', chart) }}
+
 <div class="row create-nav">
     {% for step in steps %}
         {% if not step.readonly and (createstep > step.index or createstep != step.index and chart.lastEditStep >= step.index) %}
