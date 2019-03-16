@@ -1,4 +1,4 @@
-<ul class="unstyled {dragging ? 'dragging':''}" ref:list on:drop="drop(event)" on:dragover="dragover(event)">
+<ul class="unstyled" class:dragging="dragging" ref:list on:drop|preventDefault="drop(event)" on:dragover|preventDefault="dragover(event)">
     {#each items as item, index}
     <li
         class:selected="selected.indexOf(item.id ) > -1"
