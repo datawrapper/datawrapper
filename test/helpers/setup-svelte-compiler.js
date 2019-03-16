@@ -21,6 +21,8 @@ sourceMapSupport.install({
 // https://github.com/sveltejs/svelte/blob/master/src/preprocess/
 const removeStyles = code => {
     const styleBlocks = code.match(/<style([^]*?)>([^]*?)<\/style>/gi);
+    // if no style blocks are found, just return the code
+    if (!styleBlocks) return code;
     styleBlocks.forEach(block => {
         const lines = block.split(/\r\n|\r|\n/);
         const placeholder = lines.map(() => '<!-- This line replaces LESS code! -->').join('\n');
