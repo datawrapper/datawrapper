@@ -18,11 +18,13 @@
 </ul>
 
 <script type="text/javascript">
+    import ListItem from './ListItem.html';
+
     export default {
         data() {
             return {
                 items: [],
-                itemRenderer: null,
+                itemRenderer: ListItem,
                 selected: [],
                 // internal state
                 dragging: false,
