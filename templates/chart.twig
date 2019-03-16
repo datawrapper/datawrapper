@@ -50,6 +50,9 @@
 
     <style type="text/css">
         {{ themeCSS | raw }}
+        {% if nopointer %}
+        body { pointer-events: none }
+        {% endif %}
     </style>
 
     {{ hook('chart_html_head_end', chart) }}
@@ -178,7 +181,7 @@
                         {% if theme.getThemeData("options.footer.createdWithDatawrapper") %}
                         <span class="footer-block attribution">
                             <span class="separator"></span>
-                            <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{% trans "Created with" %}  {% trans "Datawrapper" %}</a>
+                            <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{{ theme.getThemeData("options.footer.createdWithCaption") }}  {% trans "Datawrapper" %}</a>
                         </span>
                         {% endif %}
                     {% endblock %}

@@ -7,7 +7,10 @@
     margin-top: 20px;
     color: #000;
 
-    h2, h3, h4, p {
+    h2,
+    h3,
+    h4,
+    p {
         font-family: @base-font;
         font-weight: 300;
         line-height: 1.5;
@@ -26,7 +29,8 @@
         font-size: 15px;
     }
 
-    input, label {
+    input,
+    label {
         font-family: @base-font-cd;
         font-weight: 300;
     }
@@ -37,7 +41,6 @@
         color: #ababab;
         font-weight: 400;
     }
-
 }
 
 .dw .create-nav {
@@ -71,6 +74,39 @@
         box-shadow: none;
     }
 
+    // use clip-path solution for chrome if clip-path is supported
+    @supports (-webkit-clip-path: polygon(0% 0%, 100% 100%)) {
+        & > * {
+            clip-path: polygon(
+                0% 0%,
+                93% 0%,
+                93.5% 0.5%,
+                94% 2%,
+                99.95% 48%,
+                99.95% 52%,
+                94% 98%,
+                93.5% 99.5%,
+                93% 100%,
+                0% 100%
+            );
+            -webkit-clip-path: polygon(
+                0% 0%,
+                93% 0%,
+                93.5% 0.5%,
+                94% 2%,
+                99.95% 48%,
+                99.95% 52%,
+                94% 98%,
+                93.5% 99.5%,
+                93% 100%,
+                0% 100%
+            );
+        }
+        .corner {
+            display: none;
+        }
+    }
+
     & > .active {
         background: @dw_red;
         box-shadow: none;
@@ -102,6 +138,6 @@
         top: 3px;
         margin-left: 18px;
         margin-right: 5px;
-        text-shadow: 1px 1px 0px rgba(0,0,0,.1);
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
     }
 }

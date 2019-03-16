@@ -1,12 +1,10 @@
-
 body.dw-mycharts {
-
     .chart-move-message {
         position: fixed;
         top: 20px;
         left: 240px;
         right: 240px;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0, 0, 0, 0.7);
         color: white;
         font-size: 18px;
         line-height: 24px;
@@ -15,8 +13,8 @@ body.dw-mycharts {
     }
 
     .pagination-right {
-        position:relative;
-        top:-10px;
+        position: relative;
+        top: -10px;
         margin-left: 10px;
     }
 
@@ -78,37 +76,66 @@ body.dw-mycharts {
         width: 100%;
     }
 
-    .gallery-filter h1 { margin-top: 0; }
-    .gallery-filter a { cursor: pointer; }
+    .gallery-filter h1 {
+        margin-top: 0;
+    }
+    .gallery-filter a {
+        cursor: pointer;
+    }
 
-    .gallery-filter .folder-line { align-self: flex-start; }
-    .gallery-filter form { margin-left: auto; }
-    .gallery-filter form .btn-group { margin-left: 10px; }
+    .gallery-filter .folder-line {
+        align-self: flex-start;
+    }
+    .gallery-filter form {
+        margin-left: auto;
+    }
+    .gallery-filter form .btn-group {
+        margin-left: 10px;
+    }
 
-    .folders-and-gallery { display: flex; }
-    .folders-and-gallery .folders { flex: 1 0 0; }
-    .folders-and-gallery .gallery { flex: 3 0 0;}
+    .folders-and-gallery {
+        display: flex;
+    }
+    .folders-and-gallery .folders {
+        flex: 1 0 0;
+    }
+    .folders-and-gallery .gallery {
+        flex: 3 0 0;
+    }
 
     .folders ul {
         list-style-type: none;
         margin-left: 0;
     }
 
-    .folders ul ul { margin-left: 1em; }
-    .folders li { line-height: 20px; font-size: 16px;}
-    .folders li.active { }
-    .folders li.active a { font-weight: bold; color: black; }
-    .folders li.dragtar a { font-weight: bold; color: black; background-color: white; }
+    .folders ul ul {
+        margin-left: 1em;
+    }
+    .folders li {
+        line-height: 20px;
+        font-size: 16px;
+    }
+    .folders li.active {
+    }
+    .folders li.active a {
+        font-weight: bold;
+        color: black;
+    }
+    .folders li.dragtar a {
+        font-weight: bold;
+        color: black;
+        background-color: white;
+    }
     .folders li a {
         cursor: pointer;
         margin-right: 1em;
     }
     .folders ul.folders-left {
-        position:sticky;
-        top:50px;
+        position: sticky;
+        top: 50px;
     }
     .folder-line {
-        border-bottom:1px solid #ddd;
+        border-bottom: 1px solid #ddd;
         margin-bottom: 40px;
     }
     h1#current-folder {
@@ -133,18 +160,22 @@ body.dw-mycharts {
         margin-right: 14px;
         color: #999;
     }
-    .folder-list-separator { display: none; }
+    .folder-list-separator {
+        display: none;
+    }
     @media (min-width: 1200px) {
-        .span2 { width: 191px;  }
+        .span2 {
+            width: 191px;
+        }
     }
 
     .gallery .thumbnail h3 {
         overflow: hidden;
         text-overflow: ellipsis;
         -webkit-box-orient: vertical;
-        margin-top:10px;
-        height:40px;
-        margin-bottom:0;
+        margin-top: 10px;
+        height: 40px;
+        margin-bottom: 0;
         -webkit-line-clamp: 2;
         display: block;
         display: -webkit-box;
@@ -168,6 +199,9 @@ body.dw-mycharts {
     .gallery .subfolders .thumbnail .fa {
         color: #999;
     }
+    div.folders > ul.folders-left {
+        padding-left: 18px;
+    }
     div.folders > ul {
         margin-bottom: 40px;
     }
@@ -179,15 +213,27 @@ body.dw-mycharts {
     div.folders ul > li > a > .fa {
         color: #999;
         position: absolute;
-        left:0px;
-        top:3px;
+        left: 0px;
+        top: 3px;
     }
-    div.folders ul > li.active > a > .im-folder-open { display: inline-block; }
-    div.folders ul > li.active > a > .im-folder { display: none; }
-    div.folders ul > li.dragtar > a > .im-folder-open { display: inline-block; }
-    div.folders ul > li.dragtar > a > .im-folder { display: none; }
-    div.folders ul > li > a > .im-folder-open { display: none; }
-    div.folders ul > li > a > .im-folder { display: inline-block; }
+    div.folders ul > li.active > a > .im-folder-open {
+        display: inline-block;
+    }
+    div.folders ul > li.active > a > .im-folder {
+        display: none;
+    }
+    div.folders ul > li.dragtar > a > .im-folder-open {
+        display: inline-block;
+    }
+    div.folders ul > li.dragtar > a > .im-folder {
+        display: none;
+    }
+    div.folders ul > li > a > .im-folder-open {
+        display: none;
+    }
+    div.folders ul > li > a > .im-folder {
+        display: inline-block;
+    }
     div.folders ul > li > a > span {
         display: inline-block;
         margin-left: 23px;
@@ -199,6 +245,46 @@ body.dw-mycharts {
         margin-left: 5px;
         font-size: 14px;
     }
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
+        .collapse-toggle:before {
+            content: '\e013';
+        }
+
+        &.subtree-collapsed {
+            position: relative;
+            & + ul {
+                display: none;
+            }
+            .collapse-toggle:before {
+                content: '\e03d';
+            }
+        }
+    }
+
+    div.folders li.has-subtree,
+    div.folders li.root-folder {
+        .collapse-toggle {
+            font: normal normal normal 16px/1 'iconmonstr-iconic-font';
+            vertical-align: middle;
+
+            &:hover:before {
+                color: #adadad;
+            }
+            &:before {
+                color: #d4d4d4;
+                top: 2px;
+                left: -18px;
+                height: 10px;
+                line-height: 20px;
+                font-weight: bold;
+                font-size: 11px;
+                display: block;
+                position: absolute;
+            }
+        }
+    }
+
     .thumbnails.subfolders li {
         position: relative;
     }
@@ -227,17 +313,17 @@ body.dw-mycharts {
         top: 10px;
         left: 10px;
         border: 1px solid #ddd;
-        background: rgba(255,255,255,.8);
+        background: rgba(255, 255, 255, 0.8);
         text-align: center;
         cursor: pointer;
         display: none;
-        box-shadow: 0px 0px 5px rgba(0,0,0,.1);
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     }
     .thumbnail:hover {
-        border-color: #acf!important;
+        border-color: #acf !important;
     }
     .thumbnail.checked {
-        border-color: #09c!important;
+        border-color: #09c !important;
     }
     .thumbnail:hover .dw-checkbox {
         display: block;
@@ -309,12 +395,10 @@ body.dw-mycharts {
     }
 }
 
-
 .mycharts-modal {
     border-radius: 2px;
     background: #f8f8f8;
     padding: 25px 25px 28px;
-
 
     .close {
         position: absolute;
@@ -326,11 +410,11 @@ body.dw-mycharts {
     .close:hover {
         opacity: 0.5;
         color: #300;
-        -webkit-transition: opacity .25s linear;
-           -moz-transition: opacity .25s linear;
-            -ms-transition: opacity .25s linear;
-             -o-transition: opacity .25s linear;
-                transition: opacity .25s linear;
+        -webkit-transition: opacity 0.25s linear;
+        -moz-transition: opacity 0.25s linear;
+        -ms-transition: opacity 0.25s linear;
+        -o-transition: opacity 0.25s linear;
+        transition: opacity 0.25s linear;
     }
 
     iframe {
@@ -377,7 +461,7 @@ body.dw-mycharts {
         top: 25px;
         left: 25px;
         padding: 10px;
-        background: rgba(80,80,80,.7);
+        background: rgba(80, 80, 80, 0.7);
         border-radius: 5px;
     }
 
@@ -402,8 +486,6 @@ body.dw-mycharts {
         display: none;
     }
 }
-
-
 
 #mycharts-modal {
     width: 622px;

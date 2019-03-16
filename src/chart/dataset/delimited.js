@@ -1,25 +1,23 @@
 /*
-* dataset source for delimited files (CSV, TSV, ...)
-*/
+ * dataset source for delimited files (CSV, TSV, ...)
+ */
 
 /**
-* Smart delimited data parser.
-* - Handles CSV and other delimited data.
-* Includes auto-guessing of delimiter character
-* Parameters:
-*   options
-*     delimiter : ","
-*/
+ * Smart delimited data parser.
+ * - Handles CSV and other delimited data.
+ * Includes auto-guessing of delimiter character
+ * Parameters:
+ *   options
+ *     delimiter : ","
+ */
 
 /* globals Promise */
 
-import _range from 'underscore-es/range';
-import _isString from 'underscore-es/isString';
+import _ from 'underscore';
 import dataset from './dataset.js';
 import column from './column.js';
 
 export default function(opts) {
-
     function loadAndParseCsv() {
         if (opts.url) {
             // return $.ajax({
@@ -30,15 +28,15 @@ export default function(opts) {
             //     return new DelimitedParser(opts).parse(raw);
             // });
         } else if (opts.csv) {
-            const dfd = new Promise((resolve) => {
+            const dfd = new Promise(resolve => {
                 resolve(opts.csv);
             });
-            const parsed = dfd.then((raw) => {
+            const parsed = dfd.then(raw => {
                 return new DelimitedParser(opts).parse(raw);
             });
             return parsed;
         }
-        throw 'you need to provide either an URL or CSV data.';
+        throw new Error('you need to provide either an URL or CSV data.');
     }
 
     return {
@@ -51,14 +49,17 @@ export default function(opts) {
 
 class DelimitedParser {
     constructor(opts) {
-        opts = Object.assign({
-            delimiter: "auto",
-            quoteChar: "\"",
-            skipRows: 0,
-            emptyValue: null,
-            transpose: false,
-            firstRowIsHeader: true
-        }, opts);
+        opts = Object.assign(
+            {
+                delimiter: 'auto',
+                quoteChar: '"',
+                skipRows: 0,
+                emptyValue: null,
+                transpose: false,
+                firstRowIsHeader: true
+            },
+            opts
+        );
 
         this.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
         this.opts = opts;
@@ -68,12 +69,12 @@ class DelimitedParser {
         this.__rawData = data;
         const opts = this.opts;
 
-        if (opts.delimiter == 'auto') {
+        if (opts.delimiter === 'auto') {
             opts.delimiter = this.guessDelimiter(data, opts.skipRows);
             this.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
         }
-        var closure = opts.delimiter != '|' ? '|' : '#',
-            arrData;
+        const closure = opts.delimiter !== '|' ? '|' : '#';
+        let arrData;
 
         data = closure + '\n' + data.replace(/\s+$/g, '') + closure;
 
@@ -83,18 +84,16 @@ class DelimitedParser {
 
             // Check to see if the delimiter is defined. If not,
             // then default to comma.
-            strDelimiter = (strDelimiter || ",");
+            strDelimiter = strDelimiter || ',';
 
             // Create an array to hold our data. Give the array
             // a default empty first row.
-            var arrData = [
-                []
-            ];
+            let arrData = [[]];
 
             // Create an array to hold our individual pattern
             // matching groups.
-            var arrMatches = null,
-                strMatchedValue;
+            let arrMatches = null;
+            let strMatchedValue;
 
             // Keep looping over the regular expression matches
             // until we can no longer find a match.
@@ -106,32 +105,23 @@ class DelimitedParser {
                 // (is not the start of string) and if it matches
                 // field delimiter. If id does not, then we know
                 // that this delimiter is a row delimiter.
-                if (
-                    strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-
+                if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter) {
                     // Since we have reached a new row of data,
                     // add an empty row to our data array.
                     arrData.push([]);
-
                 }
-
 
                 // Now that we have our delimiter out of the way,
                 // let's check to see which kind of value we
                 // captured (quoted or unquoted).
                 if (arrMatches[2]) {
-
                     // We found a quoted value. When we capture
                     // this value, unescape any double quotes.
-                    strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"");
-
+                    strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
                 } else {
-
                     // We found a non-quoted value.
                     strMatchedValue = arrMatches[3];
-
                 }
-
 
                 // Now that we have our value string, let's add
                 // it to the data array.
@@ -139,30 +129,31 @@ class DelimitedParser {
             }
 
             // remove closure
-            if (arrData[0][0].substr(0, 1) == closure) {
+            if (arrData[0][0].substr(0, 1) === closure) {
                 arrData[0][0] = arrData[0][0].substr(1);
             }
-            var p = arrData.length - 1,
-                q = arrData[p].length - 1,
-                r = arrData[p][q].length - 1;
-            if (arrData[p][q].substr(r) == closure) {
+            const p = arrData.length - 1;
+            const q = arrData[p].length - 1;
+            const r = arrData[p][q].length - 1;
+            if (arrData[p][q].substr(r) === closure) {
                 arrData[p][q] = arrData[p][q].substr(0, r);
             }
 
             // Return the parsed data.
-            return (arrData.slice(1));
+            return arrData.slice(1);
         } // end parseCSV
 
         function transpose(arrMatrix) {
             // borrowed from:
             // http://www.shamasis.net/2010/02/transpose-an-array-in-javascript-and-jquery/
-            var a = arrMatrix,
-                w = a.length ? a.length : 0,
-                h = a[0] instanceof Array ? a[0].length : 0;
+            const a = arrMatrix;
+            const w = a.length ? a.length : 0;
+            const h = a[0] instanceof Array ? a[0].length : 0;
             if (h === 0 || w === 0) {
                 return [];
             }
-            var i, j, t = [];
+            let i, j;
+            let t = [];
             for (i = 0; i < h; i++) {
                 t[i] = [];
                 for (j = 0; j < w; j++) {
@@ -173,11 +164,11 @@ class DelimitedParser {
         }
 
         function makeDataset(arrData) {
-            var columns = [],
-                columnNames = {},
-                rowCount = arrData.length,
-                columnCount = arrData[0].length,
-                rowIndex = opts.skipRows;
+            let columns = [];
+            const columnNames = {};
+            const rowCount = arrData.length;
+            const columnCount = arrData[0].length;
+            let rowIndex = opts.skipRows;
 
             // compute series
             var srcColumns = [];
@@ -189,8 +180,8 @@ class DelimitedParser {
             // check that columns names are unique and not empty
 
             for (var c = 0; c < columnCount; c++) {
-                var col = _isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '',
-                    suffix = col !== '' ? '' : 1;
+                let col = _.isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '';
+                let suffix = col !== '' ? '' : 1;
                 col = col !== '' ? col : 'X.';
                 while (columnNames[col + suffix] !== undefined) {
                     suffix = suffix === '' ? 1 : suffix + 1;
@@ -202,7 +193,7 @@ class DelimitedParser {
                 columnNames[col + suffix] = true;
             }
 
-            _range(rowIndex, rowCount).forEach((row) => {
+            _.range(rowIndex, rowCount).forEach(row => {
                 columns.forEach((c, i) => {
                     c.data.push(arrData[row][i] !== '' ? arrData[row][i] : opts.emptyValue);
                 });
@@ -221,14 +212,14 @@ class DelimitedParser {
 
     guessDelimiter(strData) {
         // find delimiter which occurs most often
-        var maxMatchCount = 0,
-            k = -1,
-            me = this,
-            delimiters = ['\t', ';', '|', ','];
+        let maxMatchCount = 0;
+        let k = -1;
+        const me = this;
+        const delimiters = ['\t', ';', '|', ','];
         delimiters.forEach((delimiter, i) => {
-            var regex = getDelimiterPatterns(delimiter, me.quoteChar),
-                c = strData.match(regex).length;
-            if  (delimiter == '\t') c *= 1.15;
+            const regex = getDelimiterPatterns(delimiter, me.quoteChar);
+            let c = strData.match(regex).length;
+            if (delimiter === '\t') c *= 1.15; // give tab delimiters more weight
             if (c > maxMatchCount) {
                 maxMatchCount = c;
                 k = i;
@@ -240,11 +231,28 @@ class DelimitedParser {
 
 function getDelimiterPatterns(delimiter, quoteChar) {
     return new RegExp(
-    (
-    // Delimiters.
-    "(\\" + delimiter + "|\\r?\\n|\\r|^)" +
-    // Quoted fields.
-    "(?:" + quoteChar + "([^" + quoteChar + "]*(?:" + quoteChar + "\"[^" + quoteChar + "]*)*)" + quoteChar + "|" +
-    // Standard fields.
-    "([^" + quoteChar + "\\" + delimiter + "\\r\\n]*))"), "gi");
+        // Delimiters.
+        '(\\' +
+            delimiter +
+            '|\\r?\\n|\\r|^)' +
+            // Quoted fields.
+            '(?:' +
+            quoteChar +
+            '([^' +
+            quoteChar +
+            ']*(?:' +
+            quoteChar +
+            '"[^' +
+            quoteChar +
+            ']*)*)' +
+            quoteChar +
+            '|' +
+            // Standard fields.
+            '([^' +
+            quoteChar +
+            '\\' +
+            delimiter +
+            '\\r\\n]*))',
+        'gi'
+    );
 }

@@ -4,15 +4,10 @@
 <p style="margin-bottom: 20px">{@html __('publish / publish-intro') }</p>
 {/if}
 
-<button
-    disabled="{ publishing }"
-    on:click="publish()"
-    class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}"
->
+<button disabled="{ publishing }" on:click="publish()" class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}">
     {#if published}
     <span class="re-publish"
-        ><i class="fa fa-fw fa-refresh {publishing ? 'fa-spin' : ''}"></i>
-        <span class="title">{ __('publish / republish-btn') }</span></span
+        ><i class="fa fa-fw fa-refresh {publishing ? 'fa-spin' : ''}"></i> <span class="title">{ __('publish / republish-btn') }</span></span
     >
     {:else}
     <span class="publish"
@@ -60,25 +55,12 @@
             <div class="h">
                 <b>{@html __('publish / share-url') }</b>
                 <div class="embed-options">
-                    <label class="radio"
-                        ><input
-                            bind:group="shareurl_type"
-                            value="default"
-                            type="radio"
-                            name="url-type"
-                        />
-                        {@html __('publish / share-url / fullscreen') }</label
-                    >
+                    <label class="radio">
+                        <input bind:group="shareurl_type" value="default" type="radio" name="url-type" />
+                        {@html __('publish / share-url / fullscreen') }
+                    </label>
                     {#each plugin_shareurls as tpl}
-                    <label class="radio"
-                        ><input
-                            bind:group="shareurl_type"
-                            value="{tpl.id}"
-                            type="radio"
-                            name="url-type"
-                        />
-                        {@html tpl.name}</label
-                    >
+                    <label class="radio"> <input bind:group="shareurl_type" value="{tpl.id}" type="radio" name="url-type" /> {@html tpl.name} </label>
                     {/each}
                 </div>
             </div>
@@ -98,24 +80,13 @@
                 <b>{@html __('publish / embed') }</b>
                 <div class="embed-options">
                     {#each embed_templates as tpl}
-                    <label class="radio"
-                        ><input type="radio" bind:group="embed_type" value="{tpl.id}" /> {@html
-                        tpl.title }</label
-                    >
+                    <label class="radio"><input type="radio" bind:group="embed_type" value="{tpl.id}" /> {@html tpl.title }</label>
                     {/each}
                 </div>
             </div>
             <div class="inpt">
-                <input
-                    ref:embedInput
-                    type="text"
-                    class="input embed-code"
-                    readonly
-                    value="{embedCode}"
-                />
-                <button class="btn btn-copy" on:click="copy(embedCode)" title="copy">
-                    <i class="fa fa-copy"></i> { __('publish / copy') }
-                </button>
+                <input ref:embedInput type="text" class="input embed-code" readonly value="{embedCode}" />
+                <button class="btn btn-copy" on:click="copy(embedCode)" title="copy"><i class="fa fa-copy"></i> { __('publish / copy') }</button>
                 <div class="copy-success {copy_success ? 'show':''}">
                     { __('publish / copy-success') }
                 </div>
@@ -240,7 +211,25 @@
 
     export default {
         components: { Help },
-        helpers: { __ },
+        data() {
+            return {
+                chart: {
+                    id: ''
+                },
+                embed_templates: [],
+                plugin_shareurls: [],
+                published: false,
+                publishing: false,
+                needs_republish: false,
+                publish_error: false,
+                auto_publish: false,
+                progress: 0,
+                shareurl_type: 'default',
+                embed_type: 'responsive',
+                copy_success: false
+            };
+        },
+
         computed: {
             shareUrl({ shareurl_type, chart, plugin_shareurls, published }) {
                 if (!published) return 'https://www.datawrapper.de/...';
@@ -261,6 +250,7 @@
                 return chart.metadata.publish['embed-codes']['embed-method-' + embed_type];
             }
         },
+        helpers: { __ },
         methods: {
             publish() {
                 const me = this;
@@ -278,10 +268,7 @@
                     publish_error: false
                 });
                 // generate embed codes
-                chart.metadata.publish['embed-heights'] = computeEmbedHeights(
-                    chart,
-                    me.get('embed_templates')
-                );
+                chart.metadata.publish['embed-heights'] = computeEmbedHeights(chart, me.get('embed_templates'));
                 // update charts
                 me.set({ chart });
                 // save embed heights and wait until it's done before
@@ -377,35 +364,15 @@
                 window.dw.backend.setUserData(data);
             }
             if (changed.published) {
-                window.document
-                    .querySelector('.dw-create-publish .publish-step')
-                    .classList[current.published ? 'add' : 'remove']('is-published');
+                window.document.querySelector('.dw-create-publish .publish-step').classList[current.published ? 'add' : 'remove']('is-published');
             }
             if (changed.auto_publish) {
                 if (current.auto_publish && initial_auto_publish) {
                     this.publish();
                     initial_auto_publish = false;
-                    window.history.replaceState('', '', location.pathname);
+                    window.history.replaceState('', '', window.location.pathname);
                 }
             }
-        },
-        data() {
-            return {
-                chart: {
-                    id: ''
-                },
-                embed_templates: [],
-                plugin_shareurls: [],
-                published: false,
-                publishing: false,
-                needs_republish: false,
-                publish_error: false,
-                auto_publish: false,
-                progress: 0,
-                shareurl_type: 'default',
-                embed_type: 'responsive',
-                copy_success: false
-            };
         }
     };
 </script>

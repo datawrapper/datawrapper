@@ -9,45 +9,6 @@
     import _findWhere from 'underscore-es/findWhere';
 
     export default {
-        methods: {
-            select(event, step) {
-                if (step.redirect) return;
-                event.preventDefault();
-                if (step.readonly) return;
-                this.fire('select', step);
-                if (location.pathname.substr(0,6) == '/edit/') {
-                    const {id} = this.store.get();
-                    window.history.pushState({step, id}, '', `/edit/${id}/${step.id}`);
-                }
-            }
-        },
-        computed: {
-            active_i ({active, steps}) {
-                return steps.indexOf(_findWhere(steps, {id:active}));
-            },
-            passed ({index, active_i, maxStep}) {
-                return index < maxStep && index != active_i;
-            },
-            class_ ({step, index, active, passed, $lastEditStep}) {
-                const list = [];
-                if (step.readonly) list.push('readonly');
-                if (active == step.id) list.push('active');
-                else {
-                    if (index > $lastEditStep+1) list.push('unseen');
-                    if (passed) list.push('passed');
-                }
-                return list.join(' ');
-            }
-        },
-        onupdate({changed, current}) {
-            if (changed.active_i) {
-                const step = current.steps[current.active_i];
-                if (step) {
-                    const {id, title} = this.store.get();
-                    window.document.title = `${title} - ${id} - ${step.title} | Datawrapper`;
-                }
-            }
-        },
         data() {
             return {
                 step: {
@@ -56,7 +17,48 @@
                 },
                 maxStep: 1,
                 active: 1
+            };
+        },
+
+        computed: {
+            activeIndex({ active, steps }) {
+                return steps.indexOf(_findWhere(steps, { id: active }));
+            },
+            passed({ index, activeIndex, maxStep }) {
+                return index < maxStep && index !== activeIndex;
+            },
+            class_({ step, index, active, passed, $lastEditStep }) {
+                const list = [];
+                if (step.readonly) list.push('readonly');
+                if (active === step.id) list.push('active');
+                else {
+                    if (index > $lastEditStep + 1) list.push('unseen');
+                    if (passed) list.push('passed');
+                }
+                return list.join(' ');
+            }
+        },
+        methods: {
+            select(event, step) {
+                if (step.redirect) return;
+                event.preventDefault();
+                if (step.readonly) return;
+                this.fire('select', step);
+                if (window.location.pathname.substr(0, 6) === '/edit/') {
+                    const { id } = this.store.get();
+                    window.history.pushState({ step, id }, '', `/edit/${id}/${step.id}`);
+                }
+            }
+        },
+        // eslint-disable-next-line
+        onupdate({ changed, current }) {
+            if (changed.activeIndex) {
+                const step = current.steps[current.activeIndex];
+                if (step) {
+                    const { id, title } = this.store.get();
+                    window.document.title = `${title} - ${id} - ${step.title} | Datawrapper`;
+                }
             }
         }
-    }
+    };
 </script>

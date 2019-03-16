@@ -1,13 +1,13 @@
 <ControlGroup disabled="{disabled}" width="{width}" label="{label}" help="{help}">
-    <input disabled="{disabled}" type="text" class="input-large" placeholder={placeholder} bind:value />
+    <input disabled="{disabled}" type="text" class="input-large" placeholder="{placeholder}" bind:value />
 </ControlGroup>
 
 {#if disabled && disabled_msg}
-    <div transition:slide>
-        <div class="disabled-msg">
-            {@html disabled_msg}
-        </div>
+<div transition:slide>
+    <div class="disabled-msg">
+        {@html disabled_msg}
     </div>
+</div>
 {/if}
 
 <style>
@@ -32,17 +32,17 @@
     import slide from 'svelte-transitions-slide';
 
     export default {
-        transitions: { slide },
-        components: {ControlGroup},
-        data () {
+        components: { ControlGroup },
+        data() {
             return {
                 disabled: false,
                 disabled_msg: '',
                 unit: '',
                 width: '100px',
                 help: '',
-                placeholder:''
+                placeholder: ''
             };
-        }
+        },
+        transitions: { slide }
     };
 </script>

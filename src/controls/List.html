@@ -1,0 +1,243 @@
+<ul class="unstyled" class:dragging="dragging" ref:list on:drop|preventDefault="drop(event)" on:dragover|preventDefault="dragover(event)">
+    {#each items as item, index}
+    <li
+        class:selected="selected.indexOf(item.id ) > -1"
+        class:dragtarget="dragtarget === index"
+        class:dropafter="dropafter"
+        class:dropbefore="!dropafter"
+        data-pos="{index}"
+        draggable="{draggable}"
+        on:dragstart="dragstart(event, index)"
+        on:click|preventDefault="select(event, item, index)"
+    >
+        <a on:click|preventDefault="select(event, item, index)" href="#item-{index}">
+            <svelte:component bind:item this="{itemRenderer}" />
+        </a>
+    </li>
+    {/each}
+</ul>
+<script type="text/javascript">
+    import ListItem from './ListItem.html';
+
+    export default {
+        data() {
+            return {
+                items: [],
+                itemRenderer: ListItem,
+                selected: [],
+                selectable: true,
+                draggable: true,
+                multiselectable: true,
+                // internal state
+                dragging: false,
+                dragtarget: -1,
+                dropafter: false
+            };
+        },
+        computed: {},
+        methods: {
+            select(event, item, index) {
+                const { multiselectable, selectable } = this.get();
+                if (!selectable) return;
+                event.stopPropagation();
+                // if (event.__ignoreSelect) return;
+                if (multiselectable && event.shiftKey) {
+                    // shift-select for selecting ranges
+                    return this.selectShift(event, item);
+                }
+                if (multiselectable && (event.ctrlKey || event.metaKey)) {
+                    // ctrl-select for multi-selection
+                    return this.selectCtrl(event, item);
+                }
+                // normal single item selection
+                this.selectNormal(event, item);
+            },
+
+            /*
+             * the normal selection unselects the previously selected
+             * item and selects the new one
+             */
+            selectNormal(event, item) {
+                const { selected } = this.get();
+                const isSelected = selected.length === 0 && item.id === selected[0];
+                if (isSelected) {
+                    selected.length = 0;
+                } else {
+                    selected.length = 1;
+                    selected[0] = item.id;
+                }
+                this.set({
+                    selected
+                });
+            },
+
+            /*
+             * multiple selection using control key toggles the
+             * selection status for each item indiviually
+             */
+            selectCtrl(event, item) {
+                const { selected } = this.get();
+                // check if item is already in selection
+                const pos = selected.indexOf(item.id);
+                if (pos > -1) {
+                    // item is already in selection, so let's remove it
+                    selected.splice(pos, 1);
+                } else {
+                    // item is not in selection, let's add it
+                    selected.push(item.id);
+                }
+                // save selection
+                this.set({ selected });
+            },
+
+            /*
+             * multi-selection using shift key selects everything between
+             * the first selected item and the last selected item
+             */
+            selectShift(event, item) {
+                const { selected, items } = this.get();
+                // shift --> select range
+                const itemIds = items.map(m => m.id);
+
+                if (selected.length === 1) {
+                    // find index of activeItem
+                    const activeIndex = itemIds.indexOf(selected[0]);
+                    if (activeIndex > -1) {
+                        // find index of the newly selected item
+                        const newIndex = items.indexOf(item);
+                        if (newIndex > -1) {
+                            // now select everything between the two items
+                            selected.length = 0;
+                            selected.push.apply(selected, itemIds.slice(Math.min(newIndex, activeIndex), Math.max(newIndex, activeIndex) + 1));
+                        }
+                    }
+                } else if (selected.length > 1) {
+                    // extend selection either down or up
+                    let selMin = itemIds.indexOf(selected[0]);
+                    let selMax = itemIds.indexOf(selected[selected.length - 1]);
+                    const newIndex = items.indexOf(item);
+
+                    if (Math.abs(newIndex - selMin) < Math.abs(newIndex - selMax)) {
+                        // new index is closer to lower end
+                        selMin = newIndex;
+                    } else {
+                        selMax = newIndex;
+                    }
+
+                    // now select everything between the two items
+                    selected.length = 0;
+                    selected.push.apply(selected, itemIds.slice(selMin, selMax + 1));
+                }
+                // save selection
+                this.set({ selected });
+            },
+
+            dragstart(ev, itemIndex) {
+                const { draggable, items, selected } = this.get();
+                if (!draggable) return;
+                selected.length = 1;
+                selected[0] = items[itemIndex].id;
+                // store the item to the drag event data
+                ev.dataTransfer.setData('item', itemIndex);
+                this.set({ dragging: true, selected });
+            },
+
+            dragover(ev) {
+                if (!this.get().draggable) return;
+                const li = ev.target;
+                const target = li.parentElement === this.refs.list ? +li.getAttribute('data-pos') : -1;
+                const liBbox = li.getBoundingClientRect();
+                const y = (ev.clientY - liBbox.top) / liBbox.height;
+
+                this.set({
+                    dragtarget: target,
+                    dropafter: y > 0.5
+                });
+                ev.dataTransfer.dropEffect = 'move';
+            },
+
+            drop(ev) {
+                if (!this.get().draggable) return;
+                const i = ev.dataTransfer.getData('item');
+                // const ds = this.store.dataset();
+                const { dragtarget, dropafter, items } = this.get();
+                if (i !== dragtarget) {
+                    const tgt = items[dragtarget];
+                    const item = items.splice(i, 1)[0];
+                    const newTargetPos = items.indexOf(tgt);
+                    if (!newTargetPos && !dropafter) {
+                        // move to beginning of list
+                        items.unshift(item);
+                    } else {
+                        items.splice(newTargetPos + (dropafter ? 1 : 0), 0, item);
+                    }
+                }
+
+                this.set({
+                    dragging: false,
+                    dragtarget: -1,
+                    items
+                });
+                this.fire('item:dragged', {});
+            }
+        }
+    };
+</script>
+
+<style type="text/css">
+    ul {
+        border-radius: 5px;
+        max-height: 220px;
+        overflow: auto;
+        padding: 3px 0;
+        margin-bottom: 4px;
+        background: #fff;
+        border-top: 1px solid #aaa;
+        border-left: 1px solid #aaa;
+        border-bottom: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+    }
+
+    ul > li {
+        padding: 5px 10px 5px 8px;
+        cursor: pointer;
+        border-top: 1px solid rgba(0, 0, 0, 0.075);
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        /*display: inline-block;*/
+    }
+
+    ul > li > a {
+        color: #222222;
+    }
+    ul > li > a:hover {
+        text-decoration: none;
+    }
+
+    ul > li:first-child {
+        border-top: 0;
+    }
+
+    ul > li:nth-child(2n) {
+        background: rgba(128, 128, 128, 0.05);
+    }
+
+    ul > li.selected {
+        background: #18a1cd22;
+    }
+
+    ul > li.selected + li {
+        border-top-color: #c6d9df;
+    }
+
+    ul :global(li.dragtarget.dropbefore) {
+        border-top: 3px solid #18a1cd !important;
+    }
+
+    ul :global(li.dragtarget.dropafter) {
+        border-bottom: 3px solid #18a1cd !important;
+    }
+</style>

@@ -11,7 +11,7 @@
     <column name="created_at" type="timestamp" required="true" />
     <column name="last_modified_at" type="timestamp" required="true" />
     <column name="type" type="varchar" size="200" required="true" />
-    <column name="metadata" type="clob" required="true" />
+    <column name="metadata" type="json" required="true" />
     <column name="deleted" type="boolean" default="false" />
     <column name="deleted_at" type="timestamp" />
     <column name="author_id" type="integer" required="false"/>

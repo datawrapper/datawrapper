@@ -36,6 +36,9 @@ class DatawrapperPlugin {
 
         $this->copyStaticFiles();
         $this->copyTemplates();
+
+        require_once ROOT_PATH . 'lib/Migrations.php';
+        dw\Migrations::sync($this->getName());
     }
 
     /*

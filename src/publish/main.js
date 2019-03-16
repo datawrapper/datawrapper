@@ -21,4 +21,4 @@ const data = {
     copy_success: false
 };
 
-export default { App, store, data };
+export default { App, data, store };

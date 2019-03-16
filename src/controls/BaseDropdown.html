@@ -24,15 +24,15 @@
         },
         methods: {
             toggle() {
-                const {visible} = this.get();
-                this.set({visible: !visible});
+                const { visible } = this.get();
+                this.set({ visible: !visible });
             },
             windowClick(event) {
-                if (!event.target || event.target == this.refs.button) return;
+                if (!event.target || event.target === this.refs.button) return;
                 // this is a hack for the colorpicker, need to find out how to get rid of
                 if (event.target.classList.contains('hex')) return;
-                this.set({visible:false});
+                this.set({ visible: false });
             }
         }
-    }
+    };
 </script>

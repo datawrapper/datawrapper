@@ -1,4 +1,3 @@
-
 /*
  * column abstracts the functionality of each column
  * of a dataset. A column has a type (text|number|date).
@@ -14,68 +13,56 @@
  *
  */
 
-import _range from 'underscore-es/range';
-import _every from 'underscore-es/every';
-import _each from 'underscore-es/each';
-import _find from 'underscore-es/find';
-import _isNumber from 'underscore-es/isNumber';
-import _isString from 'underscore-es/isString';
-import _isUndefined from 'underscore-es/isUndefined';
-import _isDate from 'underscore-es/isDate';
-import _isNaN from 'underscore-es/isNaN';
-import _shuffle from 'underscore-es/shuffle';
-import _map from 'underscore-es/map';
+import _ from 'underscore';
+import columnTypes from './columnTypes';
+import purifyHtml from '../../shared/purifyHtml';
 
-import columnTypes from './columnTypes.js';
-import purifyHtml from '../../shared/purifyHtml.js';
-
-/* globals */
+/**
+ * @class dw.Column
+ */
 export default function(name, rows, type) {
-
     function notEmpty(d) {
         return d !== null && d !== undefined && d !== '';
     }
 
     function guessType(sample) {
-
-        if (_every(rows, _isNumber)) return columnTypes.number();
-        if (_every(rows, _isDate)) return columnTypes.date();
+        if (_.every(rows, _.isNumber)) return columnTypes.number();
+        if (_.every(rows, _.isDate)) return columnTypes.date();
         // guessing column type by counting parsing errors
         // for every known type
-        var types = [
-                columnTypes.date(sample),
-                columnTypes.number(sample),
-                columnTypes.text()
-            ],
-            type,
-            k = rows.filter(notEmpty).length,
-            tolerance = 0.1; // allowing 10% mis-parsed values
+        const types = [columnTypes.date(sample), columnTypes.number(sample), columnTypes.text()];
+        let type;
+        const tolerance = 0.1 * rows.filter(notEmpty).length; // allowing 10% mis-parsed values
 
-        _each(rows, function(val) {
-            _each(types, function(t) {
+        _.each(rows, function(val) {
+            _.each(types, function(t) {
                 t.parse(val);
             });
         });
-        _every(types, function(t) {
-            if (t.errors() / k < tolerance) type = t;
+        _.every(types, function(t) {
+            if (t.errors() < tolerance) type = t;
             return !type;
         });
-        if (_isUndefined(type)) type = types[2]; // default to text;
+        if (_.isUndefined(type)) type = types[2]; // default to text;
         return type;
     }
 
     // we pick random 200 non-empty values for column type testing
-    var sample = _shuffle(_range(rows.length))
-        .filter(function(i) { return notEmpty(rows[i]); })
+    const sample = _.shuffle(_.range(rows.length))
+        .filter(function(i) {
+            return notEmpty(rows[i]);
+        })
         .slice(0, 200)
-        .map(function(i) { return rows[i]; });
+        .map(function(i) {
+            return rows[i];
+        });
 
     type = type ? columnTypes[type](sample) : guessType(sample);
 
-    var range,
-        total,
-        origRows = rows.slice(0),
-        title;
+    let range;
+    let total;
+    const origRows = rows.slice(0);
+    let title;
 
     // public interface
     var column = {
@@ -91,8 +78,8 @@ export default function(name, rows, type) {
         // column title (used for presentation)
         title: function() {
             if (arguments.length) {
-              title = arguments[0];
-              return column;
+                title = arguments[0];
+                return column;
             }
             return purifyHtml(title || name);
         },
@@ -120,15 +107,17 @@ export default function(name, rows, type) {
          */
         values: function(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = _map(r, function(d) { return purifyHtml(d); });
-            return _map(r, type.parse);
+            r = _.map(r, function(d) {
+                return purifyHtml(d);
+            });
+            return _.map(r, type.parse);
         },
 
         /**
          * apply function to each value
          */
         each: function(f) {
-            for (var i=0; i<rows.length; i++) {
+            for (var i = 0; i < rows.length; i++) {
                 f(column.val(i), i);
             }
         },
@@ -136,7 +125,7 @@ export default function(name, rows, type) {
         // access to raw values
         raw: function(i, val) {
             if (!arguments.length) return rows;
-            if (arguments.length == 2) {
+            if (arguments.length === 2) {
                 rows[i] = val;
                 return column;
             }
@@ -150,12 +139,12 @@ export default function(name, rows, type) {
          */
         type: function(o) {
             if (o === true) return type;
-            if (_isString(o)) {
+            if (_.isString(o)) {
                 if (columnTypes[o]) {
                     type = columnTypes[o](sample);
                     return column;
                 } else {
-                    throw 'unknown column type: '+o;
+                    throw new Error('unknown column type: ' + o);
                 }
             }
             return type.name();
@@ -165,10 +154,10 @@ export default function(name, rows, type) {
         range: function() {
             if (!type.toNum) return false;
             if (!range) {
-                range = [Number.MAX_VALUE, -Number.MAX_VALUE];
+                range = [Number.MAX_.VALUE, -Number.MAX_.VALUE];
                 column.each(function(v) {
                     v = type.toNum(v);
-                    if (!_isNumber(v) || _isNaN(v)) return;
+                    if (!_.isNumber(v) || _.isNaN(v)) return;
                     if (v < range[0]) range[0] = v;
                     if (v > range[1]) range[1] = v;
                 });
@@ -194,7 +183,7 @@ export default function(name, rows, type) {
         filterRows: function(r) {
             rows = [];
             if (arguments.length) {
-                _each(r, function(i) {
+                _.each(r, function(i) {
                     rows.push(origRows[i]);
                 });
             } else {
@@ -207,12 +196,12 @@ export default function(name, rows, type) {
         },
 
         toString: function() {
-            return name + ' ('+type.name()+')';
+            return name + ' (' + type.name() + ')';
         },
 
         indexOf: function(val) {
-            return _find(_range(rows.length), function(i) {
-                return column.val(i) == val;
+            return _.find(_.range(rows.length), function(i) {
+                return column.val(i) === val;
             });
         },
 

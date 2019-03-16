@@ -14,4 +14,4 @@ const data = {
     skipRows: 0
 };
 
-export default { App, store, data };
+export default { App, data, store };

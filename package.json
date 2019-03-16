@@ -1,20 +1,23 @@
 {
     "name": "datawrapper",
     "version": "1.23.0",
+    "scripts": {
+        "format": "prettier 'src/**/*.{js,html}' --write",
+        "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
+        "install": "grunt",
+        "watch": "watch 'make assets' assets/",
+        "pretest-legacy": "cd test_legacy/build && rollup -c",
+        "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
+        "test": "ava",
+        "test:watch": "ava --watch --verbose"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/datawrapper/datawrapper.git"
     },
-    "scripts": {
-        "format": "prettier --write 'src/**/*.{js,html}'",
-        "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
-        "install": "grunt",
-        "watch": "watch 'make assets' assets/",
-        "test": "./node_modules/mocha/bin/mocha --require reify"
-    },
     "dependencies": {
         "crypto-js": "^3.1.9-1",
-        "d3-array": "^1.2.1",
+        "d3-array": "^1.2.4",
         "d3-scale": "^2.0.0",
         "fontfaceobserver": "2.1.0",
         "jschardet": "^1.6.0",
@@ -24,12 +27,15 @@
     "devDependencies": {
         "@datawrapper/polyfills": "^1.0.4",
         "@tivac/eslint-plugin-svelte": "^1.2.1",
+        "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
+        "browser-env": "^3.2.6",
         "chalk": "^2.3.0",
         "crypto-js": "^3.1.9-1",
         "d3-dsv": "^1.0.8",
         "d3-queue": "^3.0.7",
         "eslint-plugin-html": "^5.0.3",
+        "esm": "^3.2.11",
         "grunt": "^1.0.3",
         "grunt-subgrunt": "^1.2.0",
         "healthier": "^2.0.0",
@@ -39,6 +45,7 @@
         "lint-staged": "^8.1.0",
         "mocha": "^5.2.0",
         "node.extend": "^2.0.2",
+        "pirates": "^4.0.1",
         "prettier": "^1.16.4",
         "prettier-plugin-svelte": "^0.3.0",
         "reify": "^0.17.3",
@@ -50,6 +57,7 @@
         "rollup-plugin-node-resolve": "*",
         "rollup-plugin-svelte": "4.1.0",
         "rollup-plugin-uglify": "*",
+        "source-map-support": "^0.5.11",
         "svelte": "1.64.0",
         "svelte-extras": "^2.0.2",
         "svelte-transitions-slide": "^1.0.0",
@@ -61,14 +69,11 @@
     "prettier": {
         "tabWidth": 4,
         "semi": true,
-        "printWidth": 100,
+        "printWidth": 150,
         "singleQuote": true
     },
     "eslintConfig": {
         "parser": "babel-eslint",
-        "extends": [
-            "plugin:@tivac/svelte/svelte"
-        ],
         "rules": {
             "no-console": [
                 "error",
@@ -80,9 +85,16 @@
                 }
             ],
             "camelcase": [
-                "warn"
+                "warn",
+                {
+                    "ignoreDestructuring": true,
+                    "properties": "never"
+                }
             ]
         },
+        "extends": [
+            "plugin:@tivac/svelte/svelte"
+        ],
         "plugins": [
             "html",
             "@tivac/svelte"
@@ -106,6 +118,19 @@
             "**/dw-2.0.js",
             "**/vendor/**/.js",
             "www/static/js/svelte/**/*.js"
+        ]
+    },
+    "ava": {
+        "require": [
+            "esm",
+            "./test/helpers/setup-browser-env.js",
+            "./test/helpers/setup-svelte-compiler.js"
+        ],
+        "files": [
+            "./src/**/*.test.js"
+        ],
+        "sources": [
+            "./src/**/*.{js,html}"
         ]
     }
 }
