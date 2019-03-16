@@ -6,7 +6,7 @@
         class:dropafter="dropafter"
         class:dropbefore="!dropafter"
         data-pos="{index}"
-        draggable="true"
+        draggable="{draggable}"
         on:dragstart="dragstart(event, index)"
         on:click|preventDefault="select(event, item, index)"
     >
@@ -143,6 +143,7 @@
             },
 
             dragover(ev) {
+                if (!this.get().draggable) return;
                 const li = ev.target;
                 const target = li.parentElement === this.refs.list ? +li.getAttribute('data-pos') : -1;
                 const liBbox = li.getBoundingClientRect();
@@ -156,6 +157,7 @@
             },
 
             drop(ev) {
+                if (!this.get().draggable) return;
                 const i = ev.dataTransfer.getData('item');
                 // const ds = this.store.dataset();
                 const { dragtarget, dropafter, items } = this.get();
