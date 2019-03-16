@@ -16,7 +16,6 @@
     </li>
     {/each}
 </ul>
-
 <script type="text/javascript">
     import ListItem from './ListItem.html';
 
@@ -26,6 +25,9 @@
                 items: [],
                 itemRenderer: ListItem,
                 selected: [],
+                selectable: true,
+                draggable: true,
+                multiselectable: true,
                 // internal state
                 dragging: false,
                 dragtarget: -1,
@@ -35,11 +37,19 @@
         computed: {},
         methods: {
             select(event, item, index) {
-                event.preventDefault();
+                const { multiselectable, selectable } = this.get();
+                if (!selectable) return;
                 event.stopPropagation();
-                if (event.__ignoreSelect) return;
-                if (event.shiftKey) return this.selectShift(event, item);
-                if (event.ctrlKey || event.metaKey) return this.selectCtrl(event, item);
+                // if (event.__ignoreSelect) return;
+                if (multiselectable && event.shiftKey) {
+                    // shift-select for selecting ranges
+                    return this.selectShift(event, item);
+                }
+                if (multiselectable && (event.ctrlKey || event.metaKey)) {
+                    // ctrl-select for multi-selection
+                    return this.selectCtrl(event, item);
+                }
+                // normal single item selection
                 this.selectNormal(event, item);
             },
 
@@ -50,8 +60,14 @@
             selectNormal(event, item) {
                 const { selected } = this.get();
                 const isSelected = selected.length === 0 && item.id === selected[0];
+                if (isSelected) {
+                    selected.length = 0;
+                } else {
+                    selected.length = 1;
+                    selected[0] = item.id;
+                }
                 this.set({
-                    selected: isSelected ? [] : [item.id]
+                    selected
                 });
             },
 
@@ -71,7 +87,7 @@
                     selected.push(item.id);
                 }
                 // save selection
-                this.set({ selected: selected.slice(0) });
+                this.set({ selected });
             },
 
             /*
@@ -113,9 +129,54 @@
                     selected.push.apply(selected, itemIds.slice(selMin, selMax + 1));
                 }
                 // save selection
+                this.set({ selected });
+            },
+
+            dragstart(ev, itemIndex) {
+                const { draggable, items, selected } = this.get();
+                if (!draggable) return;
+                selected.length = 1;
+                selected[0] = items[itemIndex].id;
+                // store the item to the drag event data
+                ev.dataTransfer.setData('item', itemIndex);
+                this.set({ dragging: true, selected });
+            },
+
+            dragover(ev) {
+                const li = ev.target;
+                const target = li.parentElement === this.refs.list ? +li.getAttribute('data-pos') : -1;
+                const liBbox = li.getBoundingClientRect();
+                const y = (ev.clientY - liBbox.top) / liBbox.height;
+
                 this.set({
-                    selected: selected.slice(0)
+                    dragtarget: target,
+                    dropafter: y > 0.5
                 });
+                ev.dataTransfer.dropEffect = 'move';
+            },
+
+            drop(ev) {
+                const i = ev.dataTransfer.getData('item');
+                // const ds = this.store.dataset();
+                const { dragtarget, dropafter, items } = this.get();
+                if (i !== dragtarget) {
+                    const tgt = items[dragtarget];
+                    const item = items.splice(i, 1)[0];
+                    const newTargetPos = items.indexOf(tgt);
+                    if (!newTargetPos && !dropafter) {
+                        // move to beginning of list
+                        items.unshift(item);
+                    } else {
+                        items.splice(newTargetPos + (dropafter ? 1 : 0), 0, item);
+                    }
+                }
+
+                this.set({
+                    dragging: false,
+                    dragtarget: -1,
+                    items
+                });
+                this.fire('item:dragged', {});
             }
         }
     };
@@ -153,6 +214,7 @@
     ul > li > a:hover {
         text-decoration: none;
     }
+
     ul > li:first-child {
         border-top: 0;
     }
@@ -167,5 +229,13 @@
 
     ul > li.selected + li {
         border-top-color: #c6d9df;
+    }
+
+    ul :global(li.dragtarget.dropbefore) {
+        border-top: 3px solid #18a1cd !important;
+    }
+
+    ul :global(li.dragtarget.dropafter) {
+        border-bottom: 3px solid #18a1cd !important;
     }
 </style>
