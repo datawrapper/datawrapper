@@ -30,7 +30,7 @@ CREATE TABLE `chart`
     `external_data` VARCHAR(255),
     `forkable` TINYINT(1) DEFAULT 0,
     `is_fork` TINYINT(1) DEFAULT 0,
-    `in_folder` INTEGER
+    `in_folder` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `chart_FI_1` (`author_id`),
     INDEX `chart_FI_2` (`organization_id`),
