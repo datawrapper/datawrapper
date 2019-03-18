@@ -48,7 +48,7 @@ CREATE TABLE `chart`
     CONSTRAINT `chart_FK_4`
         FOREIGN KEY (`in_folder`)
         REFERENCES `folder` (`folder_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `chart_public`
@@ -65,7 +65,7 @@ CREATE TABLE `chart_public`
     CONSTRAINT `chart_public_FK_1`
         FOREIGN KEY (`id`)
         REFERENCES `chart` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `user`
@@ -85,7 +85,7 @@ CREATE TABLE `user`
     `oauth_signin` VARCHAR(512),
     `customer_id` VARCHAR(512),
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `organization`
@@ -98,7 +98,7 @@ CREATE TABLE `organization`
     `default_theme` VARCHAR(128) DEFAULT '',
     `settings` LONGTEXT,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `user_organization`
@@ -115,7 +115,7 @@ CREATE TABLE `user_organization`
     CONSTRAINT `user_organization_FK_2`
         FOREIGN KEY (`organization_id`)
         REFERENCES `organization` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 
@@ -132,7 +132,7 @@ CREATE TABLE `action`
     CONSTRAINT `action_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `stats`
@@ -142,7 +142,7 @@ CREATE TABLE `stats`
     `metric` VARCHAR(255) NOT NULL,
     `value` INTEGER NOT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `session`
@@ -152,7 +152,7 @@ CREATE TABLE `session`
     `last_updated` DATETIME NOT NULL,
     `session_data` LONGTEXT NOT NULL,
     PRIMARY KEY (`session_id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `job`
@@ -175,7 +175,7 @@ CREATE TABLE `job`
     CONSTRAINT `job_FK_2`
         FOREIGN KEY (`chart_id`)
         REFERENCES `chart` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `plugin`
@@ -185,7 +185,7 @@ CREATE TABLE `plugin`
     `enabled` TINYINT(1) DEFAULT 0,
     `is_private` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `plugin_organization`
@@ -200,7 +200,7 @@ CREATE TABLE `plugin_organization`
     CONSTRAINT `plugin_organization_FK_2`
         FOREIGN KEY (`organization_id`)
         REFERENCES `organization` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `plugin_data`
@@ -215,7 +215,7 @@ CREATE TABLE `plugin_data`
     CONSTRAINT `plugin_data_FK_1`
         FOREIGN KEY (`plugin_id`)
         REFERENCES `plugin` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `product`
@@ -227,7 +227,7 @@ CREATE TABLE `product`
     `priority` INTEGER DEFAULT 0,
     `data` LONGTEXT,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `product_plugin`
 (
@@ -241,7 +241,7 @@ CREATE TABLE `product_plugin`
     CONSTRAINT `product_plugin_FK_2`
         FOREIGN KEY (`plugin_id`)
         REFERENCES `plugin` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `user_product`
 (
@@ -258,7 +258,7 @@ CREATE TABLE `user_product`
     CONSTRAINT `user_product_FK_2`
         FOREIGN KEY (`product_id`)
         REFERENCES `product` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `organization_product`
 (
@@ -275,7 +275,7 @@ CREATE TABLE `organization_product`
     CONSTRAINT `organization_product_FK_2`
         FOREIGN KEY (`product_id`)
         REFERENCES `product` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `theme`
 (
@@ -287,7 +287,7 @@ CREATE TABLE `theme`
     `less` LONGTEXT,
     `assets` LONGTEXT,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `organization_theme`
@@ -302,7 +302,7 @@ CREATE TABLE `organization_theme`
     CONSTRAINT `organization_theme_FK_2`
         FOREIGN KEY (`theme_id`)
         REFERENCES `theme` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `user_theme`
 (
@@ -316,7 +316,7 @@ CREATE TABLE `user_theme`
     CONSTRAINT `user_theme_FK_2`
         FOREIGN KEY (`theme_id`)
         REFERENCES `theme` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `folder`
@@ -339,7 +339,7 @@ CREATE TABLE `folder`
     CONSTRAINT `folder_FK_3`
         FOREIGN KEY (`org_id`)
         REFERENCES `organization` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 CREATE TABLE `user_data`
 (
@@ -353,7 +353,7 @@ CREATE TABLE `user_data`
     CONSTRAINT `user_data_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `user_plugin_cache`
@@ -364,7 +364,7 @@ CREATE TABLE `user_plugin_cache`
     CONSTRAINT `user_plugin_cache_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `auth_token`
@@ -380,7 +380,7 @@ CREATE TABLE `auth_token`
     CONSTRAINT `auth_token_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 
 CREATE TABLE `login_token`
@@ -394,7 +394,7 @@ CREATE TABLE `login_token`
     CONSTRAINT `login_token_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `user` (`id`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB CHARSET=utf8;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
