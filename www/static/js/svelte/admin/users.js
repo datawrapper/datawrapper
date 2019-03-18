@@ -583,19 +583,34 @@ var queryString_4 = queryString.parseUrl;
 
 /* globals dw */
 
+/**
+ * translates a message key. translations are originally stored in a
+ * Google spreadsheet that we're pulling into Datawrapper using the
+ * `scripts/update-translations` script, which stores them as `:locale.json`
+ * files in the /locale folders (both in core as well as inside plugin folders)
+ *
+ * for the client-side translation to work we are also storing the translations
+ * in the global `window.dw.backend.__messages` object. plugins that need
+ * client-side translations must set `"svelte": true` in their plugin.json
+ *
+ * @export
+ * @param {string} key -- the key to be translated, e.g. "signup / hed"
+ * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+ * @returns {string} -- the translated text
+ */
 function __(key, scope) {
-	var arguments$1 = arguments;
-	if ( scope === void 0 ) scope='core';
+    var arguments$1 = arguments;
+    if ( scope === void 0 ) scope = 'core';
 
-	key = key.trim();
-	if (!dw.backend.__messages[scope]) { return 'MISSING:'+key; }
+    key = key.trim();
+    if (!dw.backend.__messages[scope]) { return 'MISSING:' + key; }
     var translation = dw.backend.__messages[scope][key] || dw.backend.__messages.core[key] || key;
 
     if (arguments.length > 2) {
-        for (var i=2; i<arguments.length; i++) {
-            var index = i-1;
-            translation = translation.replace("$"+index, arguments$1[i]);
-        }    
+        for (var i = 2; i < arguments.length; i++) {
+            var index = i - 1;
+            translation = translation.replace('$' + index, arguments$1[i]);
+        }
     }
 
     return translation;
@@ -607,35 +622,38 @@ function __(key, scope) {
 
 function fetchJSON(url, method, credentials, body, callback) {
     var opts = {
-        method: method, body: body,
+        method: method,
+        body: body,
         mode: 'cors',
         credentials: credentials
     };
 
-    window.fetch(url, opts)
-    .then(function (res) {
-        if (res.status !== 200) { return new Error(res.statusText); }
-        return res.text();
-    })
-    .then(function (text) {
-        try {
-            return JSON.parse(text);
-        } catch (Error) {
-            // could not parse json, so just return text
-            console.warn('malformed json input', text);
-            return text;
-        }
-    })
-    .then(callback)
-    .catch(function (err) {
-        console.error(err);
-    });
+    var promise = window
+        .fetch(url, opts)
+        .then(function (res) {
+            if (res.status !== 200) { return new Error(res.statusText); }
+            return res.text();
+        })
+        .then(function (text) {
+            try {
+                return JSON.parse(text);
+            } catch (Error) {
+                // could not parse json, so just return text
+                console.warn('malformed json input', text);
+                return text;
+            }
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+
+    return callback ? promise.then(callback) : promise;
 }
 
 function getJSON(url, credentials, callback) {
     if (arguments.length === 2) {
         callback = credentials;
-        credentials = "include";
+        credentials = 'include';
     }
 
     return fetchJSON(url, 'GET', credentials, null, callback);

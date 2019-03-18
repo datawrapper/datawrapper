@@ -8,7 +8,7 @@ export function fetchJSON(url, method, credentials, body, callback) {
         credentials
     };
 
-    window
+    const promise = window
         .fetch(url, opts)
         .then(res => {
             if (res.status !== 200) return new Error(res.statusText);
@@ -23,10 +23,11 @@ export function fetchJSON(url, method, credentials, body, callback) {
                 return text;
             }
         })
-        .then(callback)
         .catch(err => {
             console.error(err);
         });
+
+    return callback ? promise.then(callback) : promise;
 }
 
 export function getJSON(url, credentials, callback) {
