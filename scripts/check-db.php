@@ -17,12 +17,10 @@ do {
     } catch(Exception $e) {
         $connected = false;
         print $e->getMessage()."\n";
-    }
-
-    if (!$connected) {
         print "Sleeping another second to wait for DB.\n";
         sleep(1);
     }
+
 } while (!$connected);
 
 print "DB is up!.\n";
