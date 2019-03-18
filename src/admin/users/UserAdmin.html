@@ -34,6 +34,7 @@
 </ul>
 
 <script>
+    import { parse } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
     import UserAdminRow from './UserAdminRow.html';
@@ -69,8 +70,8 @@
         },
 
         oncreate() {
-            // 'location: ' + document.location + ', state: ' + JSON.stringify(event.state);
-
+            const urlQuery = parse(window.location.search);
+            this.set(urlQuery);
             this.updateList();
         }
     };

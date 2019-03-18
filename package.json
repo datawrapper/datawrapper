@@ -21,6 +21,7 @@
         "d3-scale": "^2.0.0",
         "fontfaceobserver": "2.1.0",
         "jschardet": "^1.6.0",
+        "query-string": "^6.2.0",
         "request": "^2.88.0",
         "rollup-plugin-alias": "^1.4.0"
     },
