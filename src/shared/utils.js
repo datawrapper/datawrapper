@@ -15,7 +15,6 @@ export function fetchJSON(url, method, credentials, body, callback) {
             return res.text();
         })
         .then(text => {
-            // console.log('status', res);
             try {
                 return JSON.parse(text);
             } catch (Error) {
@@ -123,15 +122,9 @@ export function toFixed(value) {
     return (+value).toFixed(tailLength(value));
 }
 
-/**
- * checks if a given string is a valid URL
- *
- * @param {string} input
- * @returns {boolean}
- */
-export function isValidUrl(input) {
+export function isValidUrl(textval) {
     var urlregex = /^(http|https):\/\/(([a-zA-Z0-9$\-_.+!*'(),;:&=]|%[0-9a-fA-F]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-zA-Z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?(\/(([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*(\/([a-zA-Z0-9$\-_.+!*'(),;:@&=]|%[0-9a-fA-F]{2})*)*)?(\?([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9$\-_.+!*'(),;:@&=/?]|%[0-9a-fA-F]{2})*)?)?$/;
-    return urlregex.test(input);
+    return urlregex.test(textval);
 }
 
 /**
