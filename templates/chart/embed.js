@@ -1,1 +1,14 @@
-!function(){"use strict";window.addEventListener("message",function(a){if(void 0!==a.data["datawrapper-height"])for(var t in a.data["datawrapper-height"]){var e=document.getElementById("datawrapper-chart-"+t);e&&(e.style.height=a.data["datawrapper-height"][t]+"px")}})}();
+(function () {
+'use strict';
+
+window.addEventListener("message", function(event) {
+    if (typeof event.data["datawrapper-height"] != "undefined") {
+        for (var chartId in event.data["datawrapper-height"]) {
+            var iframe = document.getElementById("datawrapper-chart-" + chartId);
+            if (!iframe) { continue; }
+            iframe.style.height = event.data["datawrapper-height"][chartId] + "px";
+        }
+    }
+});
+
+}());

@@ -1,4 +1,3 @@
-
 <h1>Hello world ({count})</h1>
 
 <button on:click="set({count: count+1})">increment</button>
@@ -6,19 +5,60 @@
 <hr>
 
 <ul>
-{#each users as user}
-<li>{user.email}</li>
-{/each}
+	<table class="table users">
+		<thead>
+			<tr>
+				<th><a href="?sort=id">#</a></th>
+				<th><a href="?sort=name">Name</a></th>
+				<th><a href="?sort=email">Sign-In</a></th>
+				<th>Status</th>
+				<th><a href="?sort=created_at">Created at</a></th>
+				<th class="center">Charts</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody class="users">
+			{#each users as user}
+			<tr class="user editor " data-id="{user.Id}">
+				<td class="id out"><a href="/admin/users/{user.Id}">{user.Id}</a></td>
+				<td class="name out">{user.Name || ''}</td>
+				<td class="email out">{user.Email}</td>
+				<td>
+					<i class="icon-user" title="Editor"></i>
+					{user.Role}
+				</td>
+				<td class="creation out">{user.CreatedAt}</td>
+				<td class="center">
+					<a href="/admin/chart/by/{user.Id}"></a></td>
+				<td class="actions">
+					<a href="#" class="do" data-action="editAction"><i class="icon-pencil" title="edit"></i></a>
+					<a href="#" class="do" data-action="resetAction"><i class="icon-envelope" title="reset the password and send a mail"></i></a>
+					<a href="#" class="do" data-action="removeAction"><i class="icon-trash" title="delete"></i></a>
+				</td>
+			</tr>
+			{/each}
+		</tbody>
+	</table>
 </ul>
 
 <script>
-	export default {
-		data() {
-			return {
-				users: [],
-				count: 0
-			}
-		}
-	}
+    import { getJSON } from '../../shared/utils';
 
+    export default {
+        data() {
+            return {
+                users: [],
+                count: 0,
+            };
+        },
+
+        oncreate() {
+            // get a list of signin methods
+            getJSON('/api/users', res => {
+                if (res.status === 'ok') {
+                    this.set({ users: res.data });
+                }
+            });
+        },
+    };
 </script>
