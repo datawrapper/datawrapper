@@ -1,6 +1,6 @@
 <script type="text/javascript" src="/static/js/svelte/{{ app_id }}.js?v={{sha}}"></script>
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/{{ app_id }}.css?v={{sha}}">
-<div id="svelte-{{ app_id }}"></div>
+<div id="svelte-{{ app_id | replace({'/':'-'}) }}"></div>
 
 <script type="text/javascript">
 
@@ -18,7 +18,7 @@ require(['svelte/{{ app_id }}'], function(mod) {
 
     var app = mod.app = new App({
         store: store,
-        target: document.querySelector('#svelte-{{ app_id }}'),
+        target: document.querySelector('#svelte-{{ app_id | replace({'/':'-'}) }}'),
         data: data
     });
 

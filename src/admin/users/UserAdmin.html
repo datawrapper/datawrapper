@@ -1,0 +1,24 @@
+
+<h1>Hello world ({count})</h1>
+
+<button on:click="set({count: count+1})">increment</button>
+
+<hr>
+
+<ul>
+{#each users as user}
+<li>{user.email}</li>
+{/each}
+</ul>
+
+<script>
+	export default {
+		data() {
+			return {
+				users: [],
+				count: 0
+			}
+		}
+	}
+
+</script>

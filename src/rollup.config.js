@@ -21,8 +21,9 @@ build('publish/sidebar', { noAMD: true });
 build('highlight');
 build('editor');
 build('account');
+build('admin/users');
 
-targets.push({
+if (checkTarget('render')) targets.push({
     input: 'render/index.js',
     output: {
         name: 'render',
@@ -47,7 +48,7 @@ targets.push({
     ]
 });
 
-targets.push({
+if (checkTarget('embed')) targets.push({
     input: 'embed/index.js',
     output: {
         name: 'embed',
@@ -71,19 +72,12 @@ targets.push({
 export default targets;
 
 function build(appId, opts) {
-    const { noAMD, entry, append } = Object.assign(
-        {
-            noAMD: false,
-            entry: 'main.js',
-            append: ''
-        },
-        opts
-    );
-    if (process.env.ROLLUP_TARGET) {
-        if (appId !== process.env.ROLLUP_TARGET) {
-            return;
-        }
-    }
+    const {noAMD, entry, append} = Object.assign({
+        noAMD: false,
+        entry: 'main.js',
+        append: ''
+    }, opts);
+    if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
         external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
@@ -155,4 +149,9 @@ function build(appId, opts) {
                 })
         ]
     });
+}
+
+function checkTarget(appId) {
+    if (!process.env.ROLLUP_TGT_APP) return true;
+    return process.env.ROLLUP_TGT_APP === appId;
 }
