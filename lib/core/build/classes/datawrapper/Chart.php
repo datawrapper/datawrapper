@@ -537,9 +537,7 @@ class Chart extends BaseChart {
             $this->getID(),
             $this->getPublicUrl(),
             htmlentities(strip_tags($this->getTitle())),
-            str_replace(':', '', $this->getNamespace() == 'map' ?
-                $theme->getThemeData('options.footer.mapCaption') :
-                $theme->getThemeData('options.footer.chartCaption')),
+            $this->getAriaLabel($theme),
             htmlentities(strip_tags($this->getMetadata('describe.intro'))),
             $this->getMetadata('publish.embed-width'),
             $this->getMetadata('publish.embed-height'),
@@ -691,6 +689,22 @@ class Chart extends BaseChart {
         if (!DatawrapperVisualization::has($this->getType())) return 'chart';
         $vis = DatawrapperVisualization::get($this->getType());
         return $vis['namespace'] ?? 'chart';
+    }
+
+    /**
+     * returns the text to be used in `aria-label` meta attribute
+     * in iframe embed codes. visualizations may define a custom
+     * aria label, otherwise we fall back to just "chart" or "map"
+     */
+    public function getAriaLabel($theme) {
+        $vis = DatawrapperVisualization::get($this->getType());
+        if ($vis !== false && !empty($vis['aria-label'])) {
+            return $vis['aria-label'];
+        }
+        // fall back to namespace caption
+        return str_replace(':', '', $this->getNamespace() == 'map' ?
+            $theme->getThemeData('options.footer.mapCaption') :
+            $theme->getThemeData('options.footer.chartCaption'));
     }
 
     public function getDefaultStep() {
