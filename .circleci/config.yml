@@ -8,13 +8,13 @@ cache: &cache
 
 version: 2.1
 orbs:
-  git: ganta/git@1.2.0
+  git-shallow-checkout: eporta/git-shallow-checkout@0.0.1
 
 jobs:
     install:
         <<: *defaults
         steps:
-            - shallow-clone-checkout
+            - git-shallow-checkout
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
 
@@ -33,7 +33,7 @@ jobs:
     test:
         <<: *defaults
         steps:
-            - shallow-clone-checkout
+            - git-shallow-checkout
             - restore_cache:
                   <<: *cache
 
@@ -42,7 +42,7 @@ jobs:
     lint:
         <<: *defaults
         steps:
-            - shallow-clone-checkout
+            - git-shallow-checkout
             - restore_cache:
                   <<: *cache
 
@@ -51,7 +51,7 @@ jobs:
     # publish:
     #   <<: *defaults
     #   steps:
-    #     - shallow-clone-checkout
+    #     - git-shallow-checkout
     #     - restore_cache:
     #         <<: *cache
     #     - run:
