@@ -701,6 +701,10 @@ class Chart extends BaseChart {
         if ($vis !== false && !empty($vis['aria-label'])) {
             return $vis['aria-label'];
         }
+        // fall back to chart type title
+        if ($vis !== false && !empty($vis['title'])) {
+            return $vis['title'];
+        }
         // fall back to namespace caption
         return str_replace(':', '', $this->getNamespace() == 'map' ?
             $theme->getThemeData('options.footer.mapCaption') :
