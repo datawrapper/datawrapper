@@ -6,9 +6,7 @@ defaults: &defaults
 cache: &cache
     key: v3-dependency-cache-{{ checksum "package-lock.json" }}
 
-version: 2.1
-orbs:
-  git-shallow-checkout: eporta/git-shallow-checkout@0.0.1
+version: 2
 
 jobs:
     install:
