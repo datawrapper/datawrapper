@@ -16,10 +16,7 @@
             <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
         </button>
         <button class="action">
-            <i
-                class="icon-envelope"
-                title="{__('reset the password and send a mail', 'admin-users')}"
-            ></i>
+            <i class="icon-envelope" title="{__('reset the password and send a mail', 'admin-users')}"></i>
         </button>
         <button class="action">
             <i class="icon-trash" title="{__('delete', 'admin-users')}"></i>
@@ -70,16 +67,6 @@
     import { __ } from '../../shared/l10n';
 
     export default {
-        helpers: {
-            __
-        },
-
-        computed: {
-            isCurrentStatus: ({ user }) => status => user.role === status,
-            status: ({ user, statusOptions }) =>
-                statusOptions.find(({ slug }) => slug === user.role)
-        },
-
         data() {
             return {
                 user: {},
@@ -87,12 +74,22 @@
 
                 // TODO: status options should probably be dynamic – how to load them?
                 statusOptions: [
-                    { slug: 3, name: 'Pending', icon: 'user' },
-                    { slug: 5, name: 'Editor', icon: 'user' },
+                    { slug: 0, name: 'Administrator', icon: 'fire' },
                     { slug: 1, name: 'Graphic Editor', icon: 'user' },
-                    { slug: 0, name: 'Administrator', icon: 'fire' }
+                    { slug: 2, name: 'Pending', icon: 'user' },
+                    { slug: 3, name: 'Pending', icon: 'user' },
+                    { slug: 5, name: 'Editor', icon: 'user' }
                 ]
             };
+        },
+
+        computed: {
+            isCurrentStatus: ({ user }) => status => user.role === status,
+            status: ({ user, statusOptions }) => statusOptions.find(({ slug }) => slug === user.role)
+        },
+
+        helpers: {
+            __
         },
 
         methods: {

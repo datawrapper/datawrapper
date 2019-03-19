@@ -29,6 +29,10 @@ function destroyEach(iterations) {
 	}
 }
 
+function createFragment() {
+	return document.createDocumentFragment();
+}
+
 function createElement(name) {
 	return document.createElement(name);
 }
@@ -693,10 +697,11 @@ function data() {
 
         // TODO: status options should probably be dynamic – how to load them?
         statusOptions: [
-            { slug: 3, name: 'Pending', icon: 'user' },
-            { slug: 5, name: 'Editor', icon: 'user' },
+            { slug: 0, name: 'Administrator', icon: 'fire' },
             { slug: 1, name: 'Graphic Editor', icon: 'user' },
-            { slug: 0, name: 'Administrator', icon: 'fire' }
+            { slug: 2, name: 'Pending', icon: 'user' },
+            { slug: 3, name: 'Pending', icon: 'user' },
+            { slug: 5, name: 'Editor', icon: 'user' }
         ]
     };
 }
@@ -779,7 +784,7 @@ function create_main_fragment(component, state) {
 	};
 }
 
-// (34:12) {#each statusOptions as status}
+// (31:12) {#each statusOptions as status}
 function create_each_block(component, state) {
 	var status_1 = state.status, each_value = state.each_value, status_index = state.status_index;
 	var option, text_value = __(status_1.name, 'admin-users'), text, option_value_value, option_selected_value;
@@ -969,7 +974,7 @@ function create_if_block(component, state) {
 	};
 }
 
-// (28:4) {:else}
+// (25:4) {:else}
 function create_if_block_1(component, state) {
 	var td, input, input_value_value, text_1, td_1, select, text_3, td_2, text_5, td_3, text_7, td_4, text_9, td_5, button, i, i_title_value, text_11, button_1, i_1, i_1_title_value;
 
@@ -1175,11 +1180,12 @@ function items(ref) {
 
     var firstItem = pages[0].state;
     var lastItem = pages[pages.length - 1].state;
+    var getUrl = url || (function (state) { return ("?" + (queryString_3(state))); });
 
     return [
         {
             text: '«',
-            href: url(firstItem),
+            href: getUrl(firstItem),
             active: currentPageNum === 0,
             state: firstItem
         } ].concat( pages.map(function (ref, i) {
@@ -1187,14 +1193,14 @@ function items(ref) {
 
         	return ({
             text: i + 1,
-            href: url(state),
+            href: getUrl(state),
             active: currentPageNum === i,
             state: state
         });
     }),
         [{
             text: '»',
-            href: url(lastItem),
+            href: getUrl(lastItem),
             active: currentPageNum === pages.length - 1,
             state: lastItem
         }]
@@ -1420,10 +1426,6 @@ function data$1() {
         total: 0
     };
 }
-function paginationUrl(state) {
-	return ("?" + (queryString_3(state)));
-}
-
 var methods$2 = {
     orderBy: function orderBy(event, orderBy$1) {
         event.preventDefault();
@@ -1452,16 +1454,13 @@ var methods$2 = {
         var offset = ref.offset;
         var limit = ref.limit;
         var orderBy = ref.orderBy;
-        var loader = getJSON(
-            (BASE_URL + "?" + (queryString_3({ offset: offset, limit: limit, orderBy: orderBy }))),
-            function (data) {
-                if (data && data.list) {
-                    var total = data.total;
-                    var list = data.list;
-                    this$1.set({ list: list, total: total });
-                }
+        var loader = getJSON((BASE_URL + "?" + (queryString_3({ offset: offset, limit: limit, orderBy: orderBy }))), function (data) {
+            if (data && data.list) {
+                var total = data.total;
+                var list = data.list;
+                this$1.set({ list: list, total: total });
             }
-        );
+        });
         this.set({ loader: loader });
     }
 };
@@ -1894,11 +1893,11 @@ function create_if_block_1$1(component, state) {
 
 	var useradminpagination_initial_data = {
 	 	pages: state.paginationItems,
-	 	url: paginationUrl,
 	 	currentPageNum: state.currentPageNum
 	 };
 	var useradminpagination = new UserAdminPagination({
 		root: component.root,
+		slots: { default: createFragment() },
 		data: useradminpagination_initial_data
 	});
 
@@ -1925,7 +1924,6 @@ function create_if_block_1$1(component, state) {
 		p: function update(changed, state) {
 			var useradminpagination_changes = {};
 			if (changed.paginationItems) { useradminpagination_changes.pages = state.paginationItems; }
-			useradminpagination_changes.url = paginationUrl;
 			if (changed.currentPageNum) { useradminpagination_changes.currentPageNum = state.currentPageNum; }
 			useradminpagination._set(useradminpagination_changes);
 		},
@@ -2178,3 +2176,4 @@ var main = { App: UserAdmin, store: store, data: {} };
 return main;
 
 })));
+//# sourceMappingURL=users.js.map
