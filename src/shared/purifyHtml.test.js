@@ -33,8 +33,6 @@ test('should keep script tags if we explicitly allow it', t => {
     t.is(purifyHtml('<script>alert("foo")</script>', '<script>'), '<script>alert("foo")</script>');
 });
 
-test.todo('test if styles are kept in');
-
-test.todo('test if onclick handlers are removed');
-
-test.todo('test if javascript:... links are removed');
+// test.todo('test if styles are kept in');
+// test.todo('test if onclick handlers are removed');
+// test.todo('test if javascript:... links are removed');
