@@ -6,12 +6,15 @@ defaults: &defaults
 cache: &cache
     key: v3-dependency-cache-{{ checksum "package-lock.json" }}
 
-version: 2
+version: 2.1
+orbs:
+  git: ganta/git@1.2.0
+
 jobs:
     install:
         <<: *defaults
         steps:
-            - checkout
+            - shallow-clone-checkout
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
 
@@ -30,7 +33,7 @@ jobs:
     test:
         <<: *defaults
         steps:
-            - checkout
+            - shallow-clone-checkout
             - restore_cache:
                   <<: *cache
 
@@ -39,7 +42,7 @@ jobs:
     lint:
         <<: *defaults
         steps:
-            - checkout
+            - shallow-clone-checkout
             - restore_cache:
                   <<: *cache
 
@@ -48,7 +51,7 @@ jobs:
     # publish:
     #   <<: *defaults
     #   steps:
-    #     - checkout
+    #     - shallow-clone-checkout
     #     - restore_cache:
     #         <<: *cache
     #     - run:
