@@ -537,9 +537,9 @@ class Chart extends BaseChart {
             $this->getID(),
             $this->getPublicUrl(),
             htmlentities(strip_tags($this->getTitle())),
-            $this->getNamespace() == 'map' ?
+            str_replace(':', '', $this->getNamespace() == 'map' ?
                 $theme->getThemeData('options.footer.mapCaption') :
-                $theme->getThemeData('options.footer.chartCaption'),
+                $theme->getThemeData('options.footer.chartCaption')),
             htmlentities(strip_tags($this->getMetadata('describe.intro'))),
             $this->getMetadata('publish.embed-width'),
             $this->getMetadata('publish.embed-height'),
