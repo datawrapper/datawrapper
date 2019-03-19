@@ -37,11 +37,7 @@ const compileSvelte = (rawCode, filename) => {
         filename,
 
         // component name, useful for debugging
-        name: path.basename(filename, SVELTE_EXTENSION),
-
-        // explicitly set parser for svelte-upgrade
-        // TODO: Properly upgrade to v2 (or v3?!)
-        parser: 'v2'
+        name: path.basename(filename, SVELTE_EXTENSION)
     });
 
     // make the sourcemap available to be retrieved via "source-map-support"

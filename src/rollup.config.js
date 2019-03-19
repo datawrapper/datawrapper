@@ -101,7 +101,6 @@ function build(appId, opts) {
         plugins: [
             svelte({
                 dev: !production,
-                parser: 'v2',
                 // we'll extract any component CSS out into
                 // a separate file — better for performance
                 css: css => {
