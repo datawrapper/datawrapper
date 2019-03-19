@@ -12,7 +12,7 @@ jobs:
     install:
         <<: *defaults
         steps:
-            - git-shallow-checkout
+            - checkout
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
 
@@ -31,7 +31,7 @@ jobs:
     test:
         <<: *defaults
         steps:
-            - git-shallow-checkout
+            - checkout
             - restore_cache:
                   <<: *cache
 
@@ -40,7 +40,7 @@ jobs:
     lint:
         <<: *defaults
         steps:
-            - git-shallow-checkout
+            - checkout
             - restore_cache:
                   <<: *cache
 
@@ -49,7 +49,7 @@ jobs:
     # publish:
     #   <<: *defaults
     #   steps:
-    #     - git-shallow-checkout
+    #     - checkout
     #     - restore_cache:
     #         <<: *cache
     #     - run:
