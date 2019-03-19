@@ -23,66 +23,71 @@ build('editor');
 build('account');
 build('admin/users');
 
-if (checkTarget('render')) targets.push({
-    input: 'render/index.js',
-    output: {
-        name: 'render',
-        file: '../templates/chart/render.js.twig',
-        format: 'iife',
-        banner: `/*! {#
+if (checkTarget('render'))
+    targets.push({
+        input: 'render/index.js',
+        output: {
+            name: 'render',
+            file: '../templates/chart/render.js.twig',
+            format: 'iife',
+            banner: `/*! {#
      # This file is auto-generated. Do NOT attempt to edit directly.
      # Instead, edit \`src/render/index.js\` and run make build
      #} */`
-    },
-    plugins: [
-        resolve(),
-        commonjs(),
-        buble({
-            transforms: { dangerousForOf: true }
-        }),
-        production &&
-            uglify({
-                mangle: true,
-                output: { comments: /^!/ }
-            })
-    ]
-});
+        },
+        plugins: [
+            resolve(),
+            commonjs(),
+            buble({
+                transforms: { dangerousForOf: true }
+            }),
+            production &&
+                uglify({
+                    mangle: true,
+                    output: { comments: /^!/ }
+                })
+        ]
+    });
 
-if (checkTarget('embed')) targets.push({
-    input: 'embed/index.js',
-    output: {
-        name: 'embed',
-        file: '../templates/chart/embed.js',
-        format: 'iife'
-    },
-    plugins: [
-        resolve(),
-        commonjs(),
-        buble({
-            transforms: { dangerousForOf: true }
-        }),
-        production &&
-            uglify({
-                mangle: true,
-                output: { comments: /^!/ }
-            })
-    ]
-});
+if (checkTarget('embed'))
+    targets.push({
+        input: 'embed/index.js',
+        output: {
+            name: 'embed',
+            file: '../templates/chart/embed.js',
+            format: 'iife'
+        },
+        plugins: [
+            resolve(),
+            commonjs(),
+            buble({
+                transforms: { dangerousForOf: true }
+            }),
+            production &&
+                uglify({
+                    mangle: true,
+                    output: { comments: /^!/ }
+                })
+        ]
+    });
 
 export default targets;
 
 function build(appId, opts) {
-    const {noAMD, entry, append} = Object.assign({
-        noAMD: false,
-        entry: 'main.js',
-        append: ''
-    }, opts);
+    const { noAMD, entry, append } = Object.assign(
+        {
+            noAMD: false,
+            entry: 'main.js',
+            append: ''
+        },
+        opts
+    );
     if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
         external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
         output: {
-            sourcemap: false,
+            sourcemap: !production,
             name: appId,
             file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',

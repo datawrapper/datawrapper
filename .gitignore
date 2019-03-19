@@ -1,5 +1,6 @@
 *.bts
 *.css.map
+*.js.map
 *.log
 *.sublime-project
 *.sublime-workspace
