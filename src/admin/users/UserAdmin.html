@@ -41,12 +41,7 @@
 
     {#if paginationItems.length > 0}
     <div class="pull-right">
-        <UserAdminPagination
-            pages="{paginationItems}"
-            url="{paginationUrl}"
-            on:navigate="gotoPage(event)"
-            {currentPageNum}
-        ></UserAdminPagination>
+        <UserAdminPagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}> </UserAdminPagination>
     </div>
     {/if}
 </div>
@@ -86,8 +81,7 @@
         },
 
         helpers: {
-            __,
-            paginationUrl: state => `?${stringify(state)}`
+            __
         },
 
         methods: {
@@ -109,15 +103,12 @@
 
             loadUsers() {
                 const { offset, limit, orderBy } = this.get();
-                const loader = getJSON(
-                    `${BASE_URL}?${stringify({ offset, limit, orderBy })}`,
-                    data => {
-                        if (data && data.list) {
-                            const { total, list } = data;
-                            this.set({ list, total });
-                        }
+                const loader = getJSON(`${BASE_URL}?${stringify({ offset, limit, orderBy })}`, data => {
+                    if (data && data.list) {
+                        const { total, list } = data;
+                        this.set({ list, total });
                     }
-                );
+                });
                 this.set({ loader });
             }
         },

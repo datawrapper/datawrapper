@@ -31,6 +31,7 @@
         "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.6",
+        "cash-dom": "^3.0.0",
         "chalk": "^2.3.0",
         "crypto-js": "^3.1.9-1",
         "d3-dsv": "^1.0.8",
