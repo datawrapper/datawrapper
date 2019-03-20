@@ -1,31 +1,6 @@
 <div>
     <table class="table users">
-        <thead>
-            <tr>
-                <th>
-                    <a href="?orderBy=id" on:click="orderBy(event, 'id')">#</a>
-                </th>
-                <th>
-                    <a href="?orderBy=name" on:click="orderBy(event, 'name')">
-                        {__("Name", "admin-users")}
-                    </a>
-                </th>
-                <th>
-                    <a href="?orderBy=email" on:click="orderBy(event, 'email')">
-                        {__("Sign-In", "admin-users")}
-                    </a>
-                </th>
-                <th>{__("Status", "admin-users")}</th>
-                <th>
-                    <a href="?orderBy=createdAt" on:click="orderBy(event, 'createdAt')">
-                        {__("Created at", "admin-users")}
-                    </a>
-                </th>
-                <th class="center">{__("Charts", "admin-users")}</th>
-                <th>{__("Actions", "admin-users")}</th>
-            </tr>
-        </thead>
-
+        <UserAdminTableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></UserAdminTableHeader>
         {#if loader} {#await loader}
         <p>Loading</p>
         {:then answer}
@@ -41,7 +16,7 @@
 
     {#if paginationItems.length > 0}
     <div class="pull-right">
-        <UserAdminPagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}> </UserAdminPagination>
+        <UserAdminPagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></UserAdminPagination>
     </div>
     {/if}
 </div>
@@ -50,6 +25,7 @@
     import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
+    import UserAdminTableHeader from './UserAdminTableHeader.html';
     import UserAdminRow from './UserAdminRow.html';
     import UserAdminPagination from './UserAdminPagination.html';
 
@@ -57,6 +33,7 @@
 
     export default {
         components: {
+            UserAdminTableHeader,
             UserAdminRow,
             UserAdminPagination
         },
@@ -68,7 +45,16 @@
                 loader: null,
                 offset: 0,
                 limit: 3,
-                total: 0
+                total: 0,
+                columnHeaders: [
+                    { name: '#', orderBy: 'id' },
+                    { name: __('Name', 'admin-users'), orderBy: 'name' },
+                    { name: __('Sign-in', 'admin-users'), orderBy: 'email' },
+                    { name: __('Status', 'admin-users') },
+                    { name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
+                    { name: __('Charts', 'admin-users') },
+                    { name: __('Actions', 'admin-users') }
+                ]
             };
         },
 
@@ -85,8 +71,7 @@
         },
 
         methods: {
-            orderBy(event, orderBy) {
-                event.preventDefault();
+            sort(orderBy) {
                 this.set({ orderBy, offset: 0 });
                 const state = { orderBy };
                 window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
