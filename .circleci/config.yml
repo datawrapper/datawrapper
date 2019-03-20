@@ -6,13 +6,27 @@ defaults: &defaults
 cache: &cache
     key: v3-dependency-cache-{{ checksum "package-lock.json" }}
 
+aliases:
+    - &restore_source
+      restore_cache:
+          keys:
+              - source-v1-{{ .Branch }}-{{ .Revision }}
+              - source-v1-{{ .Branch }}-
+              - source-v1-
+
 version: 2
 
 jobs:
     install:
         <<: *defaults
         steps:
+            - *restore_source
+
             - checkout
+            - save_cache:
+                  key: source-v1-{{ .Branch }}-{{ .Revision }}
+                  paths:
+                      - ".git"
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
 
@@ -31,6 +45,7 @@ jobs:
     test:
         <<: *defaults
         steps:
+            - *restore_source
             - checkout
             - restore_cache:
                   <<: *cache
@@ -40,6 +55,7 @@ jobs:
     lint:
         <<: *defaults
         steps:
+            - *restore_source
             - checkout
             - restore_cache:
                   <<: *cache
