@@ -18,6 +18,7 @@
   "negative-values": "Negative Werte lassen sich nicht übereinander stapeln. Bitte verwende stattdessen einen anderen Diagrammtyp (z.B. die Gruppierten Säulen).",
   "no": "nein",
   "Outer margin (%)": "Äußerer Abstand (%)",
+  "Space between bars (%)": "Abstand zwischen Säulen",
   "Reverse order": "Reihenfolge umkehren",
   "Rotate labels": "Rotate labels",
   "same as destkop": "wie Desktop",

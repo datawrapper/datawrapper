@@ -18,6 +18,7 @@
   "negative-values": "Negative values, as contained in your dataset, cannot be stacked on top of each other in a stacked column chart. Please consider using a different chart type instead (eg. a grouped column chart).",
   "no": "no",
   "Outer margin (%)": "Outer margin (%)",
+  "Space between bars (%)": "Space between bars",
   "Reverse order": "Reverse order",
   "Rotate labels": "Rotate labels",
   "same as destkop": "same as destkop",

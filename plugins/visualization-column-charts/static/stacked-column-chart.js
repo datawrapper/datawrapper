@@ -106,7 +106,7 @@
             var me = this,
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
-                pad = me.get("padding", 30) / 100,
+                pad = me.get("series-padding", 30) / 100,
                 gridLabelSpace = me.gridLabelSpace(),                
                 cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding() / 2;
 
@@ -126,7 +126,8 @@
                 bw = me.barWidth(),
                 barLabelWidth = me.barLabelWidth(),
                 gridLabelSpace = me.gridLabelSpace(),
-                gridLabelPosition = me.gridLabelPosition();         
+                gridLabelPosition = me.gridLabelPosition();  
+                cw = c.w - c.lpad - c.rpad - gridLabelSpace - me.outerPadding() / 2;       
             
             if (r === 0) yo = 0;
             w = bw;
@@ -142,11 +143,11 @@
                 y = y - yo;
                 me.__yoffset = yo + h;
             }
-
-            var leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
+            var padWidth = (barLabelWidth-bw),
+                leftPad = c.lpad + me.outerPadding() / 2 + (gridLabelPosition == "left" ? gridLabelSpace : 0),
                 otherBars = s * barLabelWidth;
 
-            x = Math.round(leftPad + otherBars);  
+            x = Math.round(leftPad + cw*(s/n)+padWidth/2);  
 
             return { w: w, h: h, x: x, y: y, bx: x + w/2, bw: bw, tw: barLabelWidth };
         },
