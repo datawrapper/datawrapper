@@ -138,7 +138,8 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "label" => __("Space between bars (%)"),
                             "default" => 30,
                             "min" => 0,
-                            "max" => 100
+                            "max" => 100,
+                            'html_after' => '%',
                         ),
                         "value-labels" => array(
                             "type" => "radio",
@@ -340,6 +341,14 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'label' => __('stacked / connect-bars'),
                             'default' => false,
                         ],
+                        "series-padding" => array(
+                            "type" => "slider",
+                            "label" => __("Space between bars (%)"),
+                            "default" => 30,
+                            "min" => 0,
+                            "max" => 100,
+                            'html_after' => '%',
+                        ),
                         "value-labels" => array(
                             "type" => "radio",
                             "label" => __("Value labels"),
