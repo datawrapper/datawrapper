@@ -441,9 +441,10 @@
 
             // cycle through palette opts.usePalette is true
             var palette = me.theme().colors.palette,
-                baseColor = me._baseColor();
+                baseColor = me._baseColor(),
+                numSeries = me.meta['color-by'] === 'row' ? this.dataset.numRows() : me.axesDef.columns.length;
 
-            if (opts.usePalette) {
+            if (me.theme().colors.colorMode && numSeries <= me.theme().colors.colorMode.maxRows) {
                 return palette[(Math.max(0, palette.indexOf(baseColor)) + row) % palette.length];
             }
 
