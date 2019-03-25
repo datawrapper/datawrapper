@@ -39,7 +39,10 @@ export default function(chart, dataset) {
             .map((row, rowIndex) => {
                 var context = [];
                 context.push('var __row = ' + rowIndex + ';');
-                row.forEach((val, key) => {
+
+                Object.keys(row).forEach(key => {
+                    const val = row[key];
+
                     if (!columnNameToVar[key]) return;
                     context.push('var ' + columnNameToVar[key] + ' = ' + JSON.stringify(val) + ';');
                     if (dataset.column(key).type() === 'number') {
@@ -50,6 +53,7 @@ export default function(chart, dataset) {
                         context.push('var ' + columnNameToVar[key] + '__median = ' + columnAggregates[key].median + ';');
                     }
                 });
+
                 context.push('var max = Math.max, min = Math.min;');
                 // console.log(context.join('\n'));
                 return function() {
