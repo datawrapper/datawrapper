@@ -126,14 +126,14 @@
             this.observe('selected', (sel, old) => {
                 if (sel === old || !sel || !old) return;
                 const { custom } = this.get();
-                this.set({ value: sel !== 'custom' ? sel : custom + ' ' });
+                this.set({ value: sel !== 'custom' ? sel : custom });
             });
             // watch external value changes
             this.observe('value', (val, old) => {
                 if (val === old) return;
-                const { options } = this.get();
+                const { options, selected } = this.get();
                 for (let o of options) {
-                    if (o.f === val) return this.set({ selected: val });
+                    if (o.f === val && selected !== 'custom') return this.set({ selected: val });
                 }
                 this.set({ selected: 'custom', custom: val });
             });
