@@ -124,7 +124,7 @@
         oncreate() {
             // watch select input
             this.observe('selected', (sel, old) => {
-                if (sel === old) return;
+                if (sel === old || !sel || !old) return;
                 const { custom } = this.get();
                 this.set({ value: sel !== 'custom' ? sel : custom + ' ' });
             });
