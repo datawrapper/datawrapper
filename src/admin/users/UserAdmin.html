@@ -1,4 +1,8 @@
 <div>
+    {#if userDetails}
+    <UserAdminDetails user="{userDetails}" />
+    {/if}
+
     <table class="table users">
         <UserAdminTableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></UserAdminTableHeader>
         {#if loader} {#await loader}
@@ -25,14 +29,17 @@
     import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
+    import UserAdminDetails from './UserAdminDetails.html';
     import UserAdminTableHeader from './UserAdminTableHeader.html';
     import UserAdminRow from './UserAdminRow.html';
     import UserAdminPagination from './UserAdminPagination.html';
 
-    const BASE_URL = '//datawrapper.local:3000/admin/users';
+    // const BASE_URL = '//datawrapper.local:3000/admin/users';
+    const BASE_URL = '//api.datawrapper.local:18080/v3/users';
 
     export default {
         components: {
+            UserAdminDetails,
             UserAdminTableHeader,
             UserAdminRow,
             UserAdminPagination
@@ -75,7 +82,7 @@
                 this.set({ orderBy, offset: 0 });
                 const state = { orderBy };
                 window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
-                this.loadUsers();
+                this.loadUserList();
             },
 
             gotoPage({ offset, limit }) {
@@ -83,10 +90,10 @@
                 const { orderBy } = this.get();
                 const state = { offset, limit, orderBy };
                 window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
-                this.loadUsers();
+                this.loadUserList();
             },
 
-            loadUsers() {
+            loadUserList() {
                 const { offset, limit, orderBy } = this.get();
                 const loader = getJSON(`${BASE_URL}?${stringify({ offset, limit, orderBy })}`, data => {
                     if (data && data.list) {
@@ -95,13 +102,23 @@
                     }
                 });
                 this.set({ loader });
+            },
+
+            loadUserDetails() {
+                const { currentUser } = this.get();
+                if (currentUser) {
+                    getJSON(`${BASE_URL}/${currentUser}`, data => {
+                        if (data) this.set({ userDetails: data });
+                    });
+                }
             }
         },
 
         oncreate() {
             const urlQuery = parse(window.location.search);
             this.set(urlQuery);
-            this.loadUsers();
+            this.loadUserList();
+            this.loadUserDetails();
         }
     };
 </script>
