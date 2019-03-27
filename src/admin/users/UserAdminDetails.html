@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-test="close-top" aria-label="Close">
+                <button type="button" class="close" aria-label="Close" on:click="close()">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">{ user.email }</h4>
@@ -43,7 +43,7 @@
                 <p>-</p>
             </div>
             <div class="modal-footer">
-                <button type="button" data-test="close-top" class="btn btn-default">Close</button>
+                <button type="button" class="btn btn-default" on:click="close()">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
@@ -60,6 +60,10 @@
 
 <script>
     export default {
-        methods: {}
+        methods: {
+            close() {
+                this.fire('close');
+            }
+        }
     };
 </script>

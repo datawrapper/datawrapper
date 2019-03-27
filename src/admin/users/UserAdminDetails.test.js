@@ -34,3 +34,19 @@ test('Render a modal view', t => {
     t.is(rootElement.attr('role'), 'dialog');
     t.is(rootElement.attr('tabindex'), '-1');
 });
+
+test.cb('Fire a "close" event when close button is clicked', t => {
+    t.plan(1);
+
+    const userAdminDetails = new UserAdminDetails({
+        target: t.context[0],
+        data: { user }
+    });
+
+    userAdminDetails.on('close', () => {
+        t.pass();
+        t.end();
+    });
+
+    t.context.find('[aria-label="Close"]').trigger('click');
+});

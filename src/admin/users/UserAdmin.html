@@ -1,6 +1,6 @@
 <div>
     {#if userDetails}
-    <UserAdminDetails user="{userDetails}" />
+    <UserAdminDetails user="{userDetails}" on:close="closeDetails()"></UserAdminDetails>
     {/if}
 
     <table class="table users">
@@ -80,7 +80,7 @@
             sort(orderBy) {
                 this.set({ orderBy, offset: 0 });
                 const state = { orderBy };
-                window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
+                window.history.replaceState(state, '', `?${stringify(state)}`);
                 this.loadUserList();
             },
 
@@ -88,14 +88,20 @@
                 this.set({ offset, limit });
                 const { orderBy } = this.get();
                 const state = { offset, limit, orderBy };
-                window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
+                window.history.replaceState(state, '', `?${stringify(state)}`);
                 this.loadUserList();
             },
 
             showDetails(currentUser) {
                 this.set({ currentUser });
-                window.history.replaceState({ currentUser }, '', `/admin/users?currentUser=${currentUser}`);
+                window.history.replaceState({ currentUser }, '', `?currentUser=${currentUser}`);
                 this.loadUserDetails();
+            },
+
+            closeDetails() {
+                const state = { currentUser: null, userDetails: null };
+                this.set(state);
+                window.history.replaceState(state, '', '?');
             },
 
             loadUserList() {
