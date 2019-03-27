@@ -5,17 +5,12 @@
 
     <table class="table users">
         <UserAdminTableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></UserAdminTableHeader>
-        {#if loader} {#await loader}
-        <p>Loading</p>
-        {:then answer}
+
         <tbody class="users">
             {#each list as user}
             <UserAdminTableRow {user} on:navigate="showDetails(event)"></UserAdminTableRow>
             {/each}
         </tbody>
-        {:catch error}
-        <p>An error occured while loading user list.</p>
-        {/await} {/if}
     </table>
 
     {#if paginationItems.length > 0}
