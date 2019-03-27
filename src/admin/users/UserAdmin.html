@@ -10,7 +10,7 @@
         {:then answer}
         <tbody class="users">
             {#each list as user}
-            <UserAdminRow {user} on:navigate="showDetails(event)"></UserAdminRow>
+            <UserAdminTableRow {user} on:navigate="showDetails(event)"></UserAdminTableRow>
             {/each}
         </tbody>
         {:catch error}
@@ -31,7 +31,7 @@
     import { getJSON } from '../../shared/utils';
     import UserAdminDetails from './UserAdminDetails.html';
     import UserAdminTableHeader from './UserAdminTableHeader.html';
-    import UserAdminRow from './UserAdminRow.html';
+    import UserAdminTableRow from './UserAdminTableRow.html';
     import UserAdminPagination from './UserAdminPagination.html';
 
     const BASE_URL = '//api.datawrapper.local:18080/v3/users';
@@ -40,7 +40,7 @@
         components: {
             UserAdminDetails,
             UserAdminTableHeader,
-            UserAdminRow,
+            UserAdminTableRow,
             UserAdminPagination
         },
 
