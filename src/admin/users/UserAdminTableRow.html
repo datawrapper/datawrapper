@@ -22,13 +22,13 @@
         <button class="action">
             <i class="icon-envelope" title="{__('reset the password and send a mail', 'admin-users')}"></i>
         </button>
-        <button class="action">
-            <i class="icon-trash" title="{__('delete', 'admin-users')}"></i>
-        </button>
     </td>
     {:else}
+    <td>
+        <input type="text" value="{user.name}" />
+    </td>
     <td class="email">
-        <input type="text" value="{user.email}" />
+        <input type="email" value="{user.email}" />
     </td>
     <td>
         <select name="status">
@@ -40,8 +40,9 @@
         </select>
     </td>
     <td class="creation out">2019-01-31 11:46:25</td>
-    <td class="center">--</td>
-    <td class="center">--</td>
+    <td class="center">
+        <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
+    </td>
     <td class="actions">
         <button class="action" on:click="save()">
             <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
@@ -54,6 +55,16 @@
 </tr>
 
 <style>
+    input,
+    select {
+        max-width: 150px;
+    }
+
+    .actions {
+        white-space: nowrap;
+        width: 30px;
+    }
+
     .action {
         border: 0;
         margin: 0 20px 0 0;
