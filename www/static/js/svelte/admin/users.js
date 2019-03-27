@@ -676,7 +676,7 @@ function getJSON(url, credentials, callback) {
 var methods = {};
 
 function create_main_fragment(component, state) {
-	var section, div, div_1, div_2, button, text_1, h4, text_2_value = state.user.id, text_2, text_3, text_4_value = state.user.email, text_4, text_6, div_3, text_9, div_4;
+	var section, div, div_1, div_2, button, text_2, h4, text_3_value = state.user.email, text_3, text_5, div_3, ul, li, b, text_7, text_8_value = state.user.id, text_8, li_1, b_1, text_10, text_11_value = state.user.name || "–", text_11, li_2, b_2, text_13, text_14_value = state.user.email, text_14, li_3, b_3, text_16, a, text_17_value = state.user.chartCount, text_17, a_href_value, li_4, b_4, text_21, text_22_value = state.user.createdAt, text_22, li_5, b_5, text_24, text_25_value = state.user.role, text_25, text_27, div_4;
 
 	return {
 		c: function create() {
@@ -686,27 +686,64 @@ function create_main_fragment(component, state) {
 			div_2 = createElement("div");
 			button = createElement("button");
 			button.innerHTML = "<span aria-hidden=\"true\">×</span>";
-			text_1 = createText("\n                ");
+			text_2 = createText("\n                ");
 			h4 = createElement("h4");
-			text_2 = createText(text_2_value);
-			text_3 = createText(" / ");
-			text_4 = createText(text_4_value);
-			text_6 = createText("\n            ");
+			text_3 = createText(text_3_value);
+			text_5 = createText("\n            ");
 			div_3 = createElement("div");
-			div_3.innerHTML = "<p>One fine body…</p>";
-			text_9 = createText("\n            ");
+			ul = createElement("ul");
+			li = createElement("li");
+			b = createElement("b");
+			b.textContent = "ID:";
+			text_7 = createText(" ");
+			text_8 = createText(text_8_value);
+			li_1 = createElement("li");
+			b_1 = createElement("b");
+			b_1.textContent = "Name:";
+			text_10 = createText(" ");
+			text_11 = createText(text_11_value);
+			li_2 = createElement("li");
+			b_2 = createElement("b");
+			b_2.textContent = "E-Mail:";
+			text_13 = createText(" ");
+			text_14 = createText(text_14_value);
+			li_3 = createElement("li");
+			b_3 = createElement("b");
+			b_3.textContent = "Charts:";
+			text_16 = createText("\n                        ");
+			a = createElement("a");
+			text_17 = createText(text_17_value);
+			li_4 = createElement("li");
+			b_4 = createElement("b");
+			b_4.textContent = "Created At:";
+			text_21 = createText(" ");
+			text_22 = createText(text_22_value);
+			li_5 = createElement("li");
+			b_5 = createElement("b");
+			b_5.textContent = "Role:";
+			text_24 = createText(" ");
+			text_25 = createText(text_25_value);
+			text_27 = createText("\n            ");
 			div_4 = createElement("div");
-			div_4.innerHTML = "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>";
+			div_4.innerHTML = "<button type=\"button\" data-test=\"close-top\" class=\"btn btn-default\">Close</button>\n                <button type=\"button\" class=\"btn btn-primary\">Save changes</button>";
 			this.h();
 		},
 
 		h: function hydrate() {
 			button.type = "button";
 			button.className = "close";
-			button.dataset.dismiss = "modal";
+			button.dataset.test = "close-top";
 			setAttribute(button, "aria-label", "Close");
 			h4.className = "modal-title";
 			div_2.className = "modal-header";
+			b.className = "svelte-1fdkti1";
+			b_1.className = "svelte-1fdkti1";
+			b_2.className = "svelte-1fdkti1";
+			b_3.className = "svelte-1fdkti1";
+			a.href = a_href_value = "/admin/chart/by/" + state.user.id;
+			b_4.className = "svelte-1fdkti1";
+			b_5.className = "svelte-1fdkti1";
+			ul.className = "unstyled props svelte-1fdkti1";
 			div_3.className = "modal-body";
 			div_4.className = "modal-footer";
 			div_1.className = "modal-content";
@@ -723,24 +760,72 @@ function create_main_fragment(component, state) {
 			appendNode(div_1, div);
 			appendNode(div_2, div_1);
 			appendNode(button, div_2);
-			appendNode(text_1, div_2);
+			appendNode(text_2, div_2);
 			appendNode(h4, div_2);
-			appendNode(text_2, h4);
 			appendNode(text_3, h4);
-			appendNode(text_4, h4);
-			appendNode(text_6, div_1);
+			appendNode(text_5, div_1);
 			appendNode(div_3, div_1);
-			appendNode(text_9, div_1);
+			appendNode(ul, div_3);
+			appendNode(li, ul);
+			appendNode(b, li);
+			appendNode(text_7, li);
+			appendNode(text_8, li);
+			appendNode(li_1, ul);
+			appendNode(b_1, li_1);
+			appendNode(text_10, li_1);
+			appendNode(text_11, li_1);
+			appendNode(li_2, ul);
+			appendNode(b_2, li_2);
+			appendNode(text_13, li_2);
+			appendNode(text_14, li_2);
+			appendNode(li_3, ul);
+			appendNode(b_3, li_3);
+			appendNode(text_16, li_3);
+			appendNode(a, li_3);
+			appendNode(text_17, a);
+			appendNode(li_4, ul);
+			appendNode(b_4, li_4);
+			appendNode(text_21, li_4);
+			appendNode(text_22, li_4);
+			appendNode(li_5, ul);
+			appendNode(b_5, li_5);
+			appendNode(text_24, li_5);
+			appendNode(text_25, li_5);
+			appendNode(text_27, div_1);
 			appendNode(div_4, div_1);
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_2_value !== (text_2_value = state.user.id)) {
-				text_2.data = text_2_value;
+			if ((changed.user) && text_3_value !== (text_3_value = state.user.email)) {
+				text_3.data = text_3_value;
 			}
 
-			if ((changed.user) && text_4_value !== (text_4_value = state.user.email)) {
-				text_4.data = text_4_value;
+			if ((changed.user) && text_8_value !== (text_8_value = state.user.id)) {
+				text_8.data = text_8_value;
+			}
+
+			if ((changed.user) && text_11_value !== (text_11_value = state.user.name || "–")) {
+				text_11.data = text_11_value;
+			}
+
+			if ((changed.user) && text_14_value !== (text_14_value = state.user.email)) {
+				text_14.data = text_14_value;
+			}
+
+			if ((changed.user) && text_17_value !== (text_17_value = state.user.chartCount)) {
+				text_17.data = text_17_value;
+			}
+
+			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.id)) {
+				a.href = a_href_value;
+			}
+
+			if ((changed.user) && text_22_value !== (text_22_value = state.user.createdAt)) {
+				text_22.data = text_22_value;
+			}
+
+			if ((changed.user) && text_25_value !== (text_25_value = state.user.role)) {
+				text_25.data = text_25_value;
 			}
 		},
 
@@ -1822,7 +1907,7 @@ var methods$4 = {
 
     showDetails: function showDetails(currentUser) {
         this.set({ currentUser: currentUser });
-        window.history.replaceState({ currentUser: currentUser }, '', ("/admin/users?curretUser=" + currentUser));
+        window.history.replaceState({ currentUser: currentUser }, '', ("/admin/users?currentUser=" + currentUser));
         this.loadUserDetails();
     },
 
@@ -1838,7 +1923,6 @@ var methods$4 = {
                 var total = data.total;
                 var list = data.list;
                 this$1.set({ list: list, total: total });
-                console.log(list);
             }
         });
         this.set({ loader: loader });

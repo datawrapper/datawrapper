@@ -94,7 +94,7 @@
 
             showDetails(currentUser) {
                 this.set({ currentUser });
-                window.history.replaceState({ currentUser }, '', `/admin/users?curretUser=${currentUser}`);
+                window.history.replaceState({ currentUser }, '', `/admin/users?currentUser=${currentUser}`);
                 this.loadUserDetails();
             },
 

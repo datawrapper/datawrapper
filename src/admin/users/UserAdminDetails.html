@@ -1,6 +1,42 @@
-<section>
-    <h1>{ user.id } / { user.email }</h1>
+<section class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-test="close-top" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{ user.email }</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="unstyled props">
+                    <li><b>ID:</b> { user.id }</li>
+                    <li><b>Name:</b> { user.name || "–" }</li>
+                    <li><b>E-Mail:</b> { user.email }</li>
+                    <li>
+                        <b>Charts:</b>
+                        <a href="/admin/chart/by/{ user.id }">
+                            {user.chartCount}
+                        </a>
+                    </li>
+                    <li><b>Created At:</b> {user.createdAt}</li>
+                    <li><b>Role:</b> {user.role}</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-test="close-top" class="btn btn-default">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </section>
+
+<style>
+    .props b {
+        width: 90px;
+        display: inline-block;
+        font-weight: bold;
+    }
+</style>
 
 <script>
     export default {
