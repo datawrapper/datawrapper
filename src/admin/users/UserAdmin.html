@@ -10,7 +10,7 @@
         {:then answer}
         <tbody class="users">
             {#each list as user}
-            <UserAdminRow {user}></UserAdminRow>
+            <UserAdminRow {user} on:navigate="showDetails(event)"></UserAdminRow>
             {/each}
         </tbody>
         {:catch error}
@@ -34,7 +34,6 @@
     import UserAdminRow from './UserAdminRow.html';
     import UserAdminPagination from './UserAdminPagination.html';
 
-    // const BASE_URL = '//datawrapper.local:3000/admin/users';
     const BASE_URL = '//api.datawrapper.local:18080/v3/users';
 
     export default {
@@ -51,7 +50,7 @@
                 orderBy: 'id',
                 loader: null,
                 offset: 0,
-                limit: 3,
+                limit: 10,
                 total: 0,
                 columnHeaders: [
                     { name: '#', orderBy: 'id' },
@@ -91,6 +90,12 @@
                 const state = { offset, limit, orderBy };
                 window.history.replaceState(state, '', `/admin/users?${stringify(state)}`);
                 this.loadUserList();
+            },
+
+            showDetails(currentUser) {
+                this.set({ currentUser });
+                window.history.replaceState({ currentUser }, '', `/admin/users?curretUser=${currentUser}`);
+                this.loadUserDetails();
             },
 
             loadUserList() {

@@ -1,5 +1,9 @@
 <tr class="user role-{user.role}">
-    <td class="id out"><a href="/admin/users/?currentUser={user.id}">{user.id}</a></td>
+    <td class="id out">
+        <a href="/admin/users/?currentUser={user.id}" on:click="navigate(event, user.id)">
+            {user.id}
+        </a>
+    </td>
     {#if !edit}
     <td class="name out">{user.name || ''}</td>
     <td class="email out">{user.email}</td>
@@ -96,6 +100,11 @@
             save() {
                 // TODO: save changes through API
                 this.set({ edit: false });
+            },
+
+            navigate(event, userId) {
+                event.preventDefault();
+                this.fire('navigate', userId);
             }
         }
     };
