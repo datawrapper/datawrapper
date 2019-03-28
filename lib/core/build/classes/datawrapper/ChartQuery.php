@@ -44,8 +44,6 @@ class ChartQuery extends BaseChartQuery {
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());
 
-
-        // todo: use global default theme
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
 
         if ($user->isLoggedIn()) {
@@ -64,17 +62,10 @@ class ChartQuery extends BaseChartQuery {
         }
 
         $defaultMeta = Chart::defaultMetaData();
+        $themeMeta = ThemeQuery::create()->findPk($chart->getTheme())->getThemeData('metadata') ?? [];
+        $meta = array_merge_recursive_simple($defaultMeta, $themeMeta);
+        $chart->setMetadata(json_encode($meta));
 
-        if (isset($def_org_theme_default_width)) {
-            $defaultMeta['publish']['embed-width'] = $def_org_theme_default_width;
-        }
-
-        if (isset($def_org_theme_default_height)) {
-            $defaultMeta['publish']['embed-height'] = $def_org_theme_default_height;
-        }
-
-        $chart->setMetadata(json_encode($defaultMeta));
-        // $chart->setLanguage($user->getLanguage());  // defaults to user language
         $chart->setShowInGallery(isset($defaults['show_in_gallery']) ? $defaults['show_in_gallery'] : false);
         $chart->save();
         return $chart;
