@@ -3,7 +3,7 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import Pagination from './UserAdminPagination.html';
+import Pagination from './Pagination.html';
 
 const paginationItems = [
     { state: { limit: 3, offset: 0 } },

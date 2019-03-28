@@ -3,7 +3,7 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import UserAdminTableRow from './UserAdminTableRow.html';
+import TableRow from './TableRow.html';
 
 const user = {
     chartCount: 0,
@@ -24,7 +24,7 @@ test.beforeEach(t => {
 });
 
 test('Render a "tr" element', t => {
-    new UserAdminTableRow({
+    new TableRow({
         target: t.context[0],
         data: { user }
     });
@@ -34,7 +34,7 @@ test('Render a "tr" element', t => {
 });
 
 test('Render a link to the details page', t => {
-    new UserAdminTableRow({
+    new TableRow({
         target: t.context[0],
         data: { user }
     });
@@ -46,7 +46,7 @@ test('Render a link to the details page', t => {
 test.cb('Clicking links should trigger a "navigate" event', t => {
     t.plan(1);
 
-    const tableRow = new UserAdminTableRow({
+    const tableRow = new TableRow({
         target: t.context[0],
         data: { user }
     });

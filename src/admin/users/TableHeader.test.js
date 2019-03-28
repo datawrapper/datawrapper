@@ -3,7 +3,7 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import TableHeader from './UserAdminTableHeader.html';
+import TableHeader from './TableHeader.html';
 
 const headerItems = [
     { name: 'One sortable header', orderBy: 'foo' },

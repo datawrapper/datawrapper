@@ -1,21 +1,21 @@
 <div>
     {#if userDetails}
-    <UserAdminDetails user="{userDetails}" on:close="closeDetails()"></UserAdminDetails>
+    <details user="{userDetails}" on:close="closeDetails()"></details>
     {/if}
 
     <table class="table users">
-        <UserAdminTableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></UserAdminTableHeader>
+        <TableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></TableHeader>
 
         <tbody class="users">
             {#each list as user}
-            <UserAdminTableRow {user} on:navigate="showDetails(event)"></UserAdminTableRow>
+            <TableRow {user} on:navigate="showDetails(event)"></TableRow>
             {/each}
         </tbody>
     </table>
 
     {#if paginationItems.length > 0}
     <div class="pull-right">
-        <UserAdminPagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></UserAdminPagination>
+        <Pagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></Pagination>
     </div>
     {/if}
 </div>
@@ -24,19 +24,19 @@
     import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON } from '../../shared/utils';
-    import UserAdminDetails from './UserAdminDetails.html';
-    import UserAdminTableHeader from './UserAdminTableHeader.html';
-    import UserAdminTableRow from './UserAdminTableRow.html';
-    import UserAdminPagination from './UserAdminPagination.html';
+    import Details from './Details.html';
+    import TableHeader from './TableHeader.html';
+    import TableRow from './TableRow.html';
+    import Pagination from './Pagination.html';
 
     const BASE_URL = '//api.datawrapper.local:18080/v3/users';
 
     export default {
         components: {
-            UserAdminDetails,
-            UserAdminTableHeader,
-            UserAdminTableRow,
-            UserAdminPagination
+            Details,
+            TableHeader,
+            TableRow,
+            Pagination
         },
 
         data() {

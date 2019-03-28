@@ -3,7 +3,7 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import UserAdminDetails from './UserAdminDetails.html';
+import Details from './Details.html';
 
 const user = {
     chartCount: 0,
@@ -24,7 +24,7 @@ test.beforeEach(t => {
 });
 
 test('Render a modal view', t => {
-    new UserAdminDetails({
+    new Details({
         target: t.context[0],
         data: { user }
     });
@@ -38,12 +38,12 @@ test('Render a modal view', t => {
 test.cb('Fire a "close" event when close button is clicked', t => {
     t.plan(1);
 
-    const userAdminDetails = new UserAdminDetails({
+    const details = new Details({
         target: t.context[0],
         data: { user }
     });
 
-    userAdminDetails.on('close', () => {
+    details.on('close', () => {
         t.pass();
         t.end();
     });
