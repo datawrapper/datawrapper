@@ -1,21 +1,22 @@
 <div>
     {#if userDetails}
     <details user="{userDetails}" on:close="closeDetails()"></details>
-    {/if}
+    {:else}
+    <div>
+        <table class="table users">
+            <TableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></TableHeader>
 
-    <table class="table users">
-        <TableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></TableHeader>
-
-        <tbody class="users">
-            {#each list as user}
-            <TableRow {user} on:navigate="showDetails(event)"></TableRow>
-            {/each}
-        </tbody>
-    </table>
-
-    {#if paginationItems.length > 0}
-    <div class="pull-right">
-        <Pagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></Pagination>
+            <tbody class="users">
+                {#each list as user}
+                <TableRow {user} on:navigate="showDetails(event)" on:save="saveUser(event)"></TableRow>
+                {/each}
+            </tbody>
+        </table>
+        {#if paginationItems.length > 0}
+        <div class="pull-right">
+            <Pagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></Pagination>
+        </div>
+        {/if}
     </div>
     {/if}
 </div>
@@ -23,7 +24,7 @@
 <script>
     import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
-    import { getJSON } from '../../shared/utils';
+    import { getJSON, patchJSON } from '../../shared/utils';
     import Details from './Details.html';
     import TableHeader from './TableHeader.html';
     import TableRow from './TableRow.html';
@@ -92,7 +93,7 @@
             showDetails(currentUser) {
                 this.set({ currentUser });
                 window.history.replaceState({ currentUser }, '', `?currentUser=${currentUser}`);
-                this.loadUserDetails();
+                this.loadUser();
             },
 
             closeDetails() {
@@ -112,13 +113,21 @@
                 this.set({ loader });
             },
 
-            loadUserDetails() {
+            loadUser() {
                 const { currentUser } = this.get();
                 if (currentUser) {
                     getJSON(`${BASE_URL}/${currentUser}`, data => {
                         if (data) this.set({ userDetails: data });
                     });
                 }
+            },
+
+            saveUser({ id, name, email }) {
+                const requestBody = JSON.stringify({ name, email }, (key, value) => {
+                    return value !== null ? value : undefined;
+                });
+
+                patchJSON(`${BASE_URL}/${id}`, requestBody);
             }
         },
 
@@ -126,7 +135,7 @@
             const { offset, orderBy, currentUser } = parse(window.location.search);
             this.set({ offset, orderBy, currentUser });
             this.loadUserList();
-            this.loadUserDetails();
+            this.loadUser();
         }
     };
 </script>

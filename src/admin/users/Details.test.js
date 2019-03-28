@@ -23,18 +23,6 @@ test.beforeEach(t => {
         .append(t.context);
 });
 
-test('Render a modal view', t => {
-    new Details({
-        target: t.context[0],
-        data: { user }
-    });
-
-    const rootElement = t.context.children();
-    t.true(rootElement.hasClass('modal'));
-    t.is(rootElement.attr('role'), 'dialog');
-    t.is(rootElement.attr('tabindex'), '-1');
-});
-
 test.cb('Fire a "close" event when close button is clicked', t => {
     t.plan(1);
 
@@ -48,5 +36,5 @@ test.cb('Fire a "close" event when close button is clicked', t => {
         t.end();
     });
 
-    t.context.find('[aria-label="Close"]').trigger('click');
+    t.context.find('[data-test=close]').trigger('click');
 });

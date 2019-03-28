@@ -672,110 +672,92 @@ var methods = {
 };
 
 function create_main_fragment(component, state) {
-	var section, div, div_1, div_2, button, text_2, h4, text_3_value = state.user.email, text_3, text_5, div_3, ul, li, b, text_7, text_8_value = state.user.id, text_8, li_1, b_1, text_10, text_11_value = state.user.name || "–", text_11, li_2, b_2, text_13, text_14_value = state.user.email, text_14, li_3, b_3, text_16, a, text_17_value = state.user.chartCount, text_17, a_href_value, li_4, b_4, text_21, text_22_value = state.user.createdAt, text_22, li_5, b_5, text_24, text_25_value = state.user.role, text_25, text_26, hr, text_27, h4_1, text_29, p, text_31, hr_1, text_32, h4_2, text_34, p_1, text_36, hr_2, text_37, h4_3, text_39, p_2, text_41, hr_3, text_42, h4_4, text_44, p_3, text_47, div_4, button_1, text_49, button_2;
+	var section, h4, text_value = state.user.email, text, text_1, ul, li, b, text_3, text_4_value = state.user.id, text_4, li_1, b_1, text_6, text_7_value = state.user.name || "–", text_7, li_2, b_2, text_9, text_10_value = state.user.email, text_10, li_3, b_3, text_12, a, text_13_value = state.user.chartCount, text_13, a_href_value, li_4, b_4, text_17, text_18_value = state.user.createdAt, text_18, li_5, b_5, text_20, text_21_value = state.user.role, text_21, text_22, hr, text_23, h4_1, text_25, p, text_27, hr_1, text_28, h4_2, text_30, p_1, text_32, hr_2, text_33, h4_3, text_35, p_2, text_37, hr_3, text_38, h4_4, text_40, p_3, text_42, button, text_44, button_1;
 
 	function click_handler(event) {
-		component.close();
-	}
-
-	function click_handler_1(event) {
 		component.close();
 	}
 
 	return {
 		c: function create() {
 			section = createElement("section");
-			div = createElement("div");
-			div_1 = createElement("div");
-			div_2 = createElement("div");
-			button = createElement("button");
-			button.innerHTML = "<span aria-hidden=\"true\">×</span>";
-			text_2 = createText("\n                ");
 			h4 = createElement("h4");
-			text_3 = createText(text_3_value);
-			text_5 = createText("\n            ");
-			div_3 = createElement("div");
+			text = createText(text_value);
+			text_1 = createText("\n\n    ");
 			ul = createElement("ul");
 			li = createElement("li");
 			b = createElement("b");
 			b.textContent = "ID:";
-			text_7 = createText(" ");
-			text_8 = createText(text_8_value);
+			text_3 = createText(" ");
+			text_4 = createText(text_4_value);
 			li_1 = createElement("li");
 			b_1 = createElement("b");
 			b_1.textContent = "Name:";
-			text_10 = createText(" ");
-			text_11 = createText(text_11_value);
+			text_6 = createText(" ");
+			text_7 = createText(text_7_value);
 			li_2 = createElement("li");
 			b_2 = createElement("b");
 			b_2.textContent = "E-Mail:";
-			text_13 = createText(" ");
-			text_14 = createText(text_14_value);
+			text_9 = createText(" ");
+			text_10 = createText(text_10_value);
 			li_3 = createElement("li");
 			b_3 = createElement("b");
 			b_3.textContent = "Charts:";
-			text_16 = createText("\n                        ");
+			text_12 = createText("\n            ");
 			a = createElement("a");
-			text_17 = createText(text_17_value);
+			text_13 = createText(text_13_value);
 			li_4 = createElement("li");
 			b_4 = createElement("b");
 			b_4.textContent = "Created At:";
-			text_21 = createText(" ");
-			text_22 = createText(text_22_value);
+			text_17 = createText(" ");
+			text_18 = createText(text_18_value);
 			li_5 = createElement("li");
 			b_5 = createElement("b");
 			b_5.textContent = "Role:";
-			text_24 = createText(" ");
-			text_25 = createText(text_25_value);
-			text_26 = createText("\n\n                ");
+			text_20 = createText(" ");
+			text_21 = createText(text_21_value);
+			text_22 = createText("\n\n    ");
 			hr = createElement("hr");
-			text_27 = createText("\n\n                ");
+			text_23 = createText("\n\n    ");
 			h4_1 = createElement("h4");
 			h4_1.textContent = "History";
-			text_29 = createText("\n                ");
+			text_25 = createText("\n    ");
 			p = createElement("p");
 			p.textContent = "-";
-			text_31 = createText("\n\n                ");
+			text_27 = createText("\n\n    ");
 			hr_1 = createElement("hr");
-			text_32 = createText("\n\n                ");
+			text_28 = createText("\n\n    ");
 			h4_2 = createElement("h4");
 			h4_2.textContent = "Private Plugins";
-			text_34 = createText("\n                ");
+			text_30 = createText("\n    ");
 			p_1 = createElement("p");
 			p_1.textContent = "-";
-			text_36 = createText("\n\n                ");
+			text_32 = createText("\n\n    ");
 			hr_2 = createElement("hr");
-			text_37 = createText("\n\n                ");
+			text_33 = createText("\n\n    ");
 			h4_3 = createElement("h4");
 			h4_3.textContent = "Products";
-			text_39 = createText("\n                ");
+			text_35 = createText("\n    ");
 			p_2 = createElement("p");
 			p_2.textContent = "-";
-			text_41 = createText("\n\n                ");
+			text_37 = createText("\n\n    ");
 			hr_3 = createElement("hr");
-			text_42 = createText("\n\n                ");
+			text_38 = createText("\n\n    ");
 			h4_4 = createElement("h4");
 			h4_4.textContent = "Organizations";
-			text_44 = createText("\n                ");
+			text_40 = createText("\n    ");
 			p_3 = createElement("p");
 			p_3.textContent = "-";
-			text_47 = createText("\n            ");
-			div_4 = createElement("div");
+			text_42 = createText("\n    ");
+			button = createElement("button");
+			button.textContent = "Back";
+			text_44 = createText("\n    ");
 			button_1 = createElement("button");
-			button_1.textContent = "Close";
-			text_49 = createText("\n                ");
-			button_2 = createElement("button");
-			button_2.textContent = "Save changes";
+			button_1.textContent = "Save changes";
 			this.h();
 		},
 
 		h: function hydrate() {
-			addListener(button, "click", click_handler);
-			button.type = "button";
-			button.className = "close";
-			setAttribute(button, "aria-label", "Close");
-			h4.className = "modal-title";
-			div_2.className = "modal-header";
 			b.className = "svelte-1fdkti1";
 			b_1.className = "svelte-1fdkti1";
 			b_2.className = "svelte-1fdkti1";
@@ -784,120 +766,106 @@ function create_main_fragment(component, state) {
 			b_4.className = "svelte-1fdkti1";
 			b_5.className = "svelte-1fdkti1";
 			ul.className = "unstyled props svelte-1fdkti1";
-			div_3.className = "modal-body";
-			addListener(button_1, "click", click_handler_1);
+			addListener(button, "click", click_handler);
+			button.type = "button";
+			button.className = "btn btn-default";
+			button.dataset.test = "close";
 			button_1.type = "button";
-			button_1.className = "btn btn-default";
-			button_2.type = "button";
-			button_2.className = "btn btn-primary";
-			div_4.className = "modal-footer";
-			div_1.className = "modal-content";
-			div.className = "modal-dialog";
-			setAttribute(div, "role", "document");
-			section.className = "modal";
-			section.tabIndex = "-1";
-			setAttribute(section, "role", "dialog");
+			button_1.className = "btn btn-primary";
 		},
 
 		m: function mount(target, anchor) {
 			insertNode(section, target, anchor);
-			appendNode(div, section);
-			appendNode(div_1, div);
-			appendNode(div_2, div_1);
-			appendNode(button, div_2);
-			appendNode(text_2, div_2);
-			appendNode(h4, div_2);
-			appendNode(text_3, h4);
-			appendNode(text_5, div_1);
-			appendNode(div_3, div_1);
-			appendNode(ul, div_3);
+			appendNode(h4, section);
+			appendNode(text, h4);
+			appendNode(text_1, section);
+			appendNode(ul, section);
 			appendNode(li, ul);
 			appendNode(b, li);
-			appendNode(text_7, li);
-			appendNode(text_8, li);
+			appendNode(text_3, li);
+			appendNode(text_4, li);
 			appendNode(li_1, ul);
 			appendNode(b_1, li_1);
-			appendNode(text_10, li_1);
-			appendNode(text_11, li_1);
+			appendNode(text_6, li_1);
+			appendNode(text_7, li_1);
 			appendNode(li_2, ul);
 			appendNode(b_2, li_2);
-			appendNode(text_13, li_2);
-			appendNode(text_14, li_2);
+			appendNode(text_9, li_2);
+			appendNode(text_10, li_2);
 			appendNode(li_3, ul);
 			appendNode(b_3, li_3);
-			appendNode(text_16, li_3);
+			appendNode(text_12, li_3);
 			appendNode(a, li_3);
-			appendNode(text_17, a);
+			appendNode(text_13, a);
 			appendNode(li_4, ul);
 			appendNode(b_4, li_4);
-			appendNode(text_21, li_4);
-			appendNode(text_22, li_4);
+			appendNode(text_17, li_4);
+			appendNode(text_18, li_4);
 			appendNode(li_5, ul);
 			appendNode(b_5, li_5);
-			appendNode(text_24, li_5);
-			appendNode(text_25, li_5);
-			appendNode(text_26, div_3);
-			appendNode(hr, div_3);
-			appendNode(text_27, div_3);
-			appendNode(h4_1, div_3);
-			appendNode(text_29, div_3);
-			appendNode(p, div_3);
-			appendNode(text_31, div_3);
-			appendNode(hr_1, div_3);
-			appendNode(text_32, div_3);
-			appendNode(h4_2, div_3);
-			appendNode(text_34, div_3);
-			appendNode(p_1, div_3);
-			appendNode(text_36, div_3);
-			appendNode(hr_2, div_3);
-			appendNode(text_37, div_3);
-			appendNode(h4_3, div_3);
-			appendNode(text_39, div_3);
-			appendNode(p_2, div_3);
-			appendNode(text_41, div_3);
-			appendNode(hr_3, div_3);
-			appendNode(text_42, div_3);
-			appendNode(h4_4, div_3);
-			appendNode(text_44, div_3);
-			appendNode(p_3, div_3);
-			appendNode(text_47, div_1);
-			appendNode(div_4, div_1);
-			appendNode(button_1, div_4);
-			appendNode(text_49, div_4);
-			appendNode(button_2, div_4);
+			appendNode(text_20, li_5);
+			appendNode(text_21, li_5);
+			appendNode(text_22, section);
+			appendNode(hr, section);
+			appendNode(text_23, section);
+			appendNode(h4_1, section);
+			appendNode(text_25, section);
+			appendNode(p, section);
+			appendNode(text_27, section);
+			appendNode(hr_1, section);
+			appendNode(text_28, section);
+			appendNode(h4_2, section);
+			appendNode(text_30, section);
+			appendNode(p_1, section);
+			appendNode(text_32, section);
+			appendNode(hr_2, section);
+			appendNode(text_33, section);
+			appendNode(h4_3, section);
+			appendNode(text_35, section);
+			appendNode(p_2, section);
+			appendNode(text_37, section);
+			appendNode(hr_3, section);
+			appendNode(text_38, section);
+			appendNode(h4_4, section);
+			appendNode(text_40, section);
+			appendNode(p_3, section);
+			appendNode(text_42, section);
+			appendNode(button, section);
+			appendNode(text_44, section);
+			appendNode(button_1, section);
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_3_value !== (text_3_value = state.user.email)) {
-				text_3.data = text_3_value;
+			if ((changed.user) && text_value !== (text_value = state.user.email)) {
+				text.data = text_value;
 			}
 
-			if ((changed.user) && text_8_value !== (text_8_value = state.user.id)) {
-				text_8.data = text_8_value;
+			if ((changed.user) && text_4_value !== (text_4_value = state.user.id)) {
+				text_4.data = text_4_value;
 			}
 
-			if ((changed.user) && text_11_value !== (text_11_value = state.user.name || "–")) {
-				text_11.data = text_11_value;
+			if ((changed.user) && text_7_value !== (text_7_value = state.user.name || "–")) {
+				text_7.data = text_7_value;
 			}
 
-			if ((changed.user) && text_14_value !== (text_14_value = state.user.email)) {
-				text_14.data = text_14_value;
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.email)) {
+				text_10.data = text_10_value;
 			}
 
-			if ((changed.user) && text_17_value !== (text_17_value = state.user.chartCount)) {
-				text_17.data = text_17_value;
+			if ((changed.user) && text_13_value !== (text_13_value = state.user.chartCount)) {
+				text_13.data = text_13_value;
 			}
 
 			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.id)) {
 				a.href = a_href_value;
 			}
 
-			if ((changed.user) && text_22_value !== (text_22_value = state.user.createdAt)) {
-				text_22.data = text_22_value;
+			if ((changed.user) && text_18_value !== (text_18_value = state.user.createdAt)) {
+				text_18.data = text_18_value;
 			}
 
-			if ((changed.user) && text_25_value !== (text_25_value = state.user.role)) {
-				text_25.data = text_25_value;
+			if ((changed.user) && text_21_value !== (text_21_value = state.user.role)) {
+				text_21.data = text_21_value;
 			}
 		},
 
@@ -907,7 +875,6 @@ function create_main_fragment(component, state) {
 
 		d: function destroy$$1() {
 			removeListener(button, "click", click_handler);
-			removeListener(button_1, "click", click_handler_1);
 		}
 	};
 }
@@ -2046,196 +2013,51 @@ function oncreate() {
     this.loadUserDetails();
 }
 function create_main_fragment$4(component, state) {
-	var div, text, table, text_1, tbody, text_4;
+	var div;
 
-	var if_block = (state.userDetails) && create_if_block$2(component, state);
-
-	var tableheader_initial_data = { headerItems: state.columnHeaders };
-	var tableheader = new TableHeader({
-		root: component.root,
-		data: tableheader_initial_data
-	});
-
-	tableheader.on("sort", function(event) {
-		component.sort(event);
-	});
-
-	var each_value = state.list;
-
-	var each_blocks = [];
-
-	for (var i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block$3(component, assign(assign({}, state), {
-			each_value: each_value,
-			user: each_value[i],
-			user_index: i
-		}));
+	function select_block_type(state) {
+		if (state.userDetails) { return create_if_block$2; }
+		return create_if_block_1$2;
 	}
 
-	var if_block_1 = (state.paginationItems.length > 0) && create_if_block_1$2(component, state);
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type(component, state);
 
 	return {
 		c: function create() {
 			div = createElement("div");
-			if (if_block) { if_block.c(); }
-			text = createText("\n\n    ");
-			table = createElement("table");
-			tableheader._fragment.c();
-			text_1 = createText("\n\n        ");
-			tbody = createElement("tbody");
-
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			text_4 = createText("\n\n    ");
-			if (if_block_1) { if_block_1.c(); }
-			this.h();
-		},
-
-		h: function hydrate() {
-			tbody.className = "users";
-			table.className = "table users";
+			if_block.c();
 		},
 
 		m: function mount(target, anchor) {
 			insertNode(div, target, anchor);
-			if (if_block) { if_block.m(div, null); }
-			appendNode(text, div);
-			appendNode(table, div);
-			tableheader._mount(table, null);
-			appendNode(text_1, table);
-			appendNode(tbody, table);
-
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(tbody, null);
-			}
-
-			appendNode(text_4, div);
-			if (if_block_1) { if_block_1.m(div, null); }
+			if_block.m(div, null);
 		},
 
 		p: function update(changed, state) {
-			if (state.userDetails) {
-				if (if_block) {
-					if_block.p(changed, state);
-				} else {
-					if_block = create_if_block$2(component, state);
-					if_block.c();
-					if_block.m(div, text);
-				}
-			} else if (if_block) {
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+				if_block.p(changed, state);
+			} else {
 				if_block.u();
 				if_block.d();
-				if_block = null;
-			}
-
-			var tableheader_changes = {};
-			if (changed.columnHeaders) { tableheader_changes.headerItems = state.columnHeaders; }
-			tableheader._set(tableheader_changes);
-
-			var each_value = state.list;
-
-			if (changed.list) {
-				for (var i = 0; i < each_value.length; i += 1) {
-					var each_context = assign(assign({}, state), {
-						each_value: each_value,
-						user: each_value[i],
-						user_index: i
-					});
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(changed, each_context);
-					} else {
-						each_blocks[i] = create_each_block$3(component, each_context);
-						each_blocks[i].c();
-						each_blocks[i].m(tbody, null);
-					}
-				}
-
-				for (; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
-					each_blocks[i].d();
-				}
-				each_blocks.length = each_value.length;
-			}
-
-			if (state.paginationItems.length > 0) {
-				if (if_block_1) {
-					if_block_1.p(changed, state);
-				} else {
-					if_block_1 = create_if_block_1$2(component, state);
-					if_block_1.c();
-					if_block_1.m(div, null);
-				}
-			} else if (if_block_1) {
-				if_block_1.u();
-				if_block_1.d();
-				if_block_1 = null;
+				if_block = current_block_type(component, state);
+				if_block.c();
+				if_block.m(div, null);
 			}
 		},
 
 		u: function unmount() {
 			detachNode(div);
-			if (if_block) { if_block.u(); }
-
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].u();
-			}
-
-			if (if_block_1) { if_block_1.u(); }
+			if_block.u();
 		},
 
 		d: function destroy$$1() {
-			if (if_block) { if_block.d(); }
-			tableheader.destroy(false);
-
-			destroyEach(each_blocks);
-
-			if (if_block_1) { if_block_1.d(); }
+			if_block.d();
 		}
 	};
 }
 
-// (2:4) {#if userDetails}
-function create_if_block$2(component, state) {
-
-	var details_initial_data = { user: state.userDetails };
-	var details = new Details({
-		root: component.root,
-		data: details_initial_data
-	});
-
-	details.on("close", function(event) {
-		component.closeDetails();
-	});
-
-	return {
-		c: function create() {
-			details._fragment.c();
-		},
-
-		m: function mount(target, anchor) {
-			details._mount(target, anchor);
-		},
-
-		p: function update(changed, state) {
-			var details_changes = {};
-			if (changed.userDetails) { details_changes.user = state.userDetails; }
-			details._set(details_changes);
-		},
-
-		u: function unmount() {
-			details._unmount();
-		},
-
-		d: function destroy$$1() {
-			details.destroy(false);
-		}
-	};
-}
-
-// (10:12) {#each list as user}
+// (10:16) {#each list as user}
 function create_each_block$3(component, state) {
 	var user = state.user, each_value = state.each_value, user_index = state.user_index;
 
@@ -2277,8 +2099,8 @@ function create_each_block$3(component, state) {
 	};
 }
 
-// (16:4) {#if paginationItems.length > 0}
-function create_if_block_1$2(component, state) {
+// (15:8) {#if paginationItems.length > 0}
+function create_if_block_2(component, state) {
 	var div;
 
 	var pagination_initial_data = {
@@ -2323,6 +2145,176 @@ function create_if_block_1$2(component, state) {
 
 		d: function destroy$$1() {
 			pagination.destroy(false);
+		}
+	};
+}
+
+// (2:4) {#if userDetails}
+function create_if_block$2(component, state) {
+	var details;
+
+	function close_handler(event) {
+		component.closeDetails();
+	}
+
+	return {
+		c: function create() {
+			details = createElement("details");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(details, "close", close_handler);
+			setAttribute(details, "user", state.userDetails);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(details, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (changed.userDetails) {
+				setAttribute(details, "user", state.userDetails);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(details);
+		},
+
+		d: function destroy$$1() {
+			removeListener(details, "close", close_handler);
+		}
+	};
+}
+
+// (4:4) {:else}
+function create_if_block_1$2(component, state) {
+	var div, table, text, tbody, text_3;
+
+	var tableheader_initial_data = { headerItems: state.columnHeaders };
+	var tableheader = new TableHeader({
+		root: component.root,
+		data: tableheader_initial_data
+	});
+
+	tableheader.on("sort", function(event) {
+		component.sort(event);
+	});
+
+	var each_value = state.list;
+
+	var each_blocks = [];
+
+	for (var i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$3(component, assign(assign({}, state), {
+			each_value: each_value,
+			user: each_value[i],
+			user_index: i
+		}));
+	}
+
+	var if_block = (state.paginationItems.length > 0) && create_if_block_2(component, state);
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			table = createElement("table");
+			tableheader._fragment.c();
+			text = createText("\n\n            ");
+			tbody = createElement("tbody");
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			text_3 = createText("\n        ");
+			if (if_block) { if_block.c(); }
+			this.h();
+		},
+
+		h: function hydrate() {
+			tbody.className = "users";
+			table.className = "table users";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(table, div);
+			tableheader._mount(table, null);
+			appendNode(text, table);
+			appendNode(tbody, table);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(tbody, null);
+			}
+
+			appendNode(text_3, div);
+			if (if_block) { if_block.m(div, null); }
+		},
+
+		p: function update(changed, state) {
+			var tableheader_changes = {};
+			if (changed.columnHeaders) { tableheader_changes.headerItems = state.columnHeaders; }
+			tableheader._set(tableheader_changes);
+
+			var each_value = state.list;
+
+			if (changed.list) {
+				for (var i = 0; i < each_value.length; i += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						user: each_value[i],
+						user_index: i
+					});
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(changed, each_context);
+					} else {
+						each_blocks[i] = create_each_block$3(component, each_context);
+						each_blocks[i].c();
+						each_blocks[i].m(tbody, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+					each_blocks[i].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (state.paginationItems.length > 0) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block_2(component, state);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].u();
+			}
+
+			if (if_block) { if_block.u(); }
+		},
+
+		d: function destroy$$1() {
+			tableheader.destroy(false);
+
+			destroyEach(each_blocks);
+
+			if (if_block) { if_block.d(); }
 		}
 	};
 }
@@ -2561,7 +2553,11 @@ assign(Store.prototype, {
 
 var store = new Store({});
 
-var main = { App: App, store: store, data: {} };
+var main = {
+    data: {},
+    store: store,
+    App: App
+};
 
 return main;
 
