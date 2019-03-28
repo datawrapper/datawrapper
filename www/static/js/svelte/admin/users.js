@@ -2035,8 +2035,12 @@ var methods$4 = {
 };
 
 function oncreate() {
-    var urlQuery = queryString_2(window.location.search);
-    this.set(urlQuery);
+    var ref = queryString_2(window.location.search);
+    var offset = ref.offset;
+    var limit = ref.limit;
+    var orderBy = ref.orderBy;
+    var currentUser = ref.currentUser;
+    this.set({ offset: offset, limit: limit, orderBy: orderBy, currentUser: currentUser });
     this.loadUserList();
     this.loadUserDetails();
 }

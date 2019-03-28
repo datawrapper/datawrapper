@@ -47,6 +47,8 @@
                 offset: 0,
                 limit: 10,
                 total: 0,
+                currentUser: null,
+                userDetails: null,
                 columnHeaders: [
                     { name: '#', orderBy: 'id' },
                     { name: __('Name', 'admin-users'), orderBy: 'name' },
@@ -121,8 +123,8 @@
         },
 
         oncreate() {
-            const urlQuery = parse(window.location.search);
-            this.set(urlQuery);
+            const { offset, orderBy, currentUser } = parse(window.location.search);
+            this.set({ offset, orderBy, currentUser });
             this.loadUserList();
             this.loadUserDetails();
         }
