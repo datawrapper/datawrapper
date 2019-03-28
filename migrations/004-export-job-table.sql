@@ -16,9 +16,7 @@ CREATE TABLE `export_job` (
   `chart_id` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `chart_id` (`chart_id`),
-  CONSTRAINT `export_job_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `export_job_ibfk_2` FOREIGN KEY (`chart_id`) REFERENCES `chart` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  KEY `chart_id` (`chart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 -- Down
