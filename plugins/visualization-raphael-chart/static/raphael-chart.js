@@ -100,8 +100,8 @@
             if (!hovered_key) hovered_key = me.getKeyByLabel();
 
             if (!hovered_key) {
-                // nothing hovered            
-                if (theme.hover) me.hover();                
+                // nothing hovered
+                if (theme.hover) me.hover();
             } else {
                 if (theme.hover) me.hover(hovered_key, row);
             }
@@ -346,8 +346,8 @@
 
             lbl = document.createElement('div');
             lbl.style.position = 'absolute';
-            lbl.style.left = '-10000px';            
-            span = document.createElement('span');            
+            lbl.style.left = '-10000px';
+            span = document.createElement('span');
             lbl.appendChild(span);
             $span = $(span);
 
@@ -362,10 +362,10 @@
                 lbl.setAttribute('class', 'label '+(className ? ' '+className : ''));
                 lbl.style.width = width+'px';
                 span.style.fontSize = fontSize ? fontSize : null;
-                span.innerHTML = txt;                
+                span.innerHTML = txt;
                 return oh();
             }
-            this.labelHeight = labelHeight;            
+            this.labelHeight = labelHeight;
             return labelHeight(txt, className, width, fontSize);
         },
 
@@ -417,7 +417,11 @@
 
         _getColor: function(series, row, opts) {
             var me = this,
-                key = opts.key;
+                key = opts.key,
+                theme = me.theme(),
+                palette = me.theme().colors.palette,
+                baseColor = me._baseColor(),
+                numSeries = me.meta['color-by'] === 'row' ? this.dataset.numRows() : me.axesDef.columns.length;
 
             if (!key && series) {
                 key = series.name();
@@ -439,13 +443,25 @@
                 return me.__colors[key];
             }
 
-            // cycle through palette opts.usePalette is true
-            var palette = me.theme().colors.palette,
-                baseColor = me._baseColor(),
-                numSeries = me.meta['color-by'] === 'row' ? this.dataset.numRows() : me.axesDef.columns.length;
+            // first one gets unaltered base color
+            if (row == 0) {
+                return baseColor;
+            }
 
-            if (me.theme().colors.colorMode && numSeries <= me.theme().colors.colorMode.maxRows) {
-                return palette[(Math.max(0, palette.indexOf(baseColor)) + row) % palette.length];
+            // if theme wants us to rotate through the palette, do that
+            if (theme.colors.mode && theme.colors.mode.rotateLimit >= numSeries) {
+                return '' + palette[(Math.max(0, palette.indexOf(baseColor)) + row) % palette.length];
+            }
+
+            // if theme defines particular shades for the selected base color, use those
+            if (theme.colors.mode && theme.colors.mode.shades) {
+                for (var hex in theme.colors.mode.shades) {
+                    if (hex.toLowerCase() == baseColor.toLowerCase()) {
+                        if (theme.colors.mode.shades[hex].length > row) {
+                            return '' + theme.colors.mode.shades[hex][row-1];
+                        }
+                    }
+                }
             }
 
             // opts.varyLightness for each row
