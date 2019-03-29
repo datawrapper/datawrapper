@@ -227,6 +227,20 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             ),
                             "default" => 'outside'
                         ),
+                        "color-key" => array(
+                            "type" => "checkbox",
+                            "label" => __("Show color key"),
+                            "default" => true
+                        ),
+                        'no-legend-warning' => [
+                            'type' => 'radio',
+                            'label' => __('Can your chart be understood without labels?<br>Try turning your title into a legend! Check out <a href=#">this tutorial<a>'),
+                            'options' => [
+                                [],
+                            ],'depends-on' => [
+                                'color-key' => false
+                            ]
+                        ]
                     ]
                 ]
             ),
@@ -302,40 +316,6 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "type" => "base-color",
                             "label" => __("Base color")
                         ],
-                        'direct-labeling' => [
-                            'type' => 'radio',
-                            'label' => __('Direct labeling'),
-                            'default' => 'always',
-                            'options' => [
-                                [
-                                    'value' => 'no',
-                                    'label' => __('no')
-                                ],
-                                [
-                                    'value' => 'always',
-                                    'label' => __('yes'),
-                                ],
-                            ]
-                        ],
-                        "use-line-color" => array(
-                            "type" => "checkbox",
-                            "label" => __("Use column color for labels"),
-                            "default" => false,
-                            'depends-on' => [
-                                'direct-labeling' => 'always'
-                            ]
-                        ),
-                        'label-space' => [
-                            'type' => 'slider',
-                            'depends-on' => [
-                                'direct-labeling' => 'always'
-                            ],
-                            'label' => __('Direct label space (%)'),
-                            'default' => 30,
-                            'min' => 10,
-                            'max' => 50,
-                            'step' => 1
-                        ],
                         'connect-bars' => [
                             'type' => 'checkbox',
                             'label' => __('stacked / connect-bars'),
@@ -348,7 +328,13 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "min" => 0,
                             "max" => 100,
                             'html_after' => '%',
-                        ),
+                        )
+                    ]
+                ],
+                "g-labeling" => [
+                    "type" => "group",
+                    "label" => __("settings / labeling"),
+                    "options" => [
                         "value-labels" => array(
                             "type" => "radio",
                             "label" => __("Value labels"),
@@ -358,7 +344,54 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                                 array("value" => "hover", "label" => __("Hover"))
                             ),
                             "default" => 'hover'
-                        )
+                        ),
+                        'direct-labeling' => [
+                            'type' => 'radio',
+                            'label' => __('settings / series labels'),
+                            'default' => 'always',
+                            'options' => [
+                                [
+                                    'value' => 'always',
+                                    'label' => __('settings / direct'),
+                                ],
+                                [
+                                    'value' => 'no',
+                                    'label' => __('settings / color key')
+                                ],
+                                [
+                                    'value' => 'off',
+                                    'label' => __('settings / none'),
+                                ],
+                            ]
+                        ],
+                        'label-space' => [
+                            'type' => 'slider',
+                            'depends-on' => [
+                                'direct-labeling' => 'always'
+                            ],
+                            'label' => __('Direct label space (%)'),
+                            'default' => 30,
+                            'min' => 10,
+                            'max' => 50,
+                            'step' => 1
+                        ],
+                        "use-line-color" => array(
+                            "type" => "checkbox",
+                            "label" => __("Use column color for labels"),
+                            "default" => false,
+                            'depends-on' => [
+                                'direct-labeling' => 'always'
+                            ]
+                        ),
+                        'no-legend-warning' => [
+                            'type' => 'alert',
+                            'label' => __('warning / no legend'),
+                            'options' => [
+                                [],
+                            ],'depends-on' => [
+                                'direct-labeling' => 'off'
+                            ]
+                        ]
                     ]
                 ]
             ],

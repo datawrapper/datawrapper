@@ -59,7 +59,7 @@
                         });
                     });
 
-                    me.addLegend(items, $('#chart'));
+                    if (( !me._isStacked() && me.get('color-key')) || ( me._isStacked() && me.get('direct-labeling') === false) ) { me.addLegend(items, $('#chart'));}
                 }
             }
 
@@ -158,7 +158,7 @@
                 y: d3.scale.linear().domain(me.__domain)
             };
 
-            var lh = $('.legend div:last').offset().top - $('.legend div:first').offset().top,
+            var lh = me.get('color-key') ? $('.legend div:last').offset().top - $('.legend div:first').offset().top : 0,
                 svg = $(me._svgCanvas()),
                 ch = $(svg.parent());
 
@@ -166,7 +166,7 @@
             $(ch).height($(ch).height());
 
             // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (lh + 10)]);
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (me.get('color-key') ? (lh + 20) : 0)]);
         },
 
         outerPadding: function() {

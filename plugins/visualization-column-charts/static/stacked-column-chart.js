@@ -86,7 +86,7 @@
                 y: d3.scale.linear().domain(me.__domain)
             };
 
-            var lh = me.useDirectLabeling() ? 0 : ($('.legend div:last').offset().top - $('.legend div:first').offset().top),
+            var lh = !me.useDirectLabeling() && me.get('direct-labeling') === false ? ($('.legend div:last').offset().top - $('.legend div:first').offset().top) : 0,
                 svg = $(me._svgCanvas()),
                 ch = $(svg.parent());
 
@@ -94,7 +94,7 @@
             $(ch).height($(ch).height());
 
             // -- substract a few pixel to get space for the legend!
-            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - (!me.useDirectLabeling() ? (lh + 20) : 0)]);
+            me.__scales.y.rangeRound([0, c.h - c.bpad - c.tpad - ((!me.useDirectLabeling() && me.get('direct-labeling') === false) ? (lh + 20) : 0)]);
             return;
         },
 
