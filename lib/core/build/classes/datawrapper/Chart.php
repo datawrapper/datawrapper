@@ -621,9 +621,16 @@ class Chart extends BaseChart {
     }
 
     public function thumbUrl($forceLocal = false) {
-        return $forceLocal ?
-            '//' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/m.png' :
-            $this->assetUrl('m.png');
+        global $dw_config;
+
+        $me = ChartQuery::create()
+            ->withColumn('MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))', 'hash')
+            ->findPk($this->getID());
+
+        $path = $dw_config["screenshot_path"] ?? $me->getHash();
+
+        return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
+            . $this->getID() . "/" . $path . "/plain.png";
     }
 
     public function getThumbFilename($thumb) {
