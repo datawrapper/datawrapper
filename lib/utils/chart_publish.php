@@ -272,8 +272,8 @@ function download($url, $outf) {
 function chart_publish_directory() {
     $dir = ROOT_PATH.'charts';
 
-    if (isset($_GLOBALS['dw-config']['publish_directory'])) {
-        $dir = $_GLOBALS['dw-config']['publish_directory'];
+    if (isset($GLOBALS['dw_config']['publish_directory'])) {
+        $dir = $GLOBALS['dw_config']['publish_directory'];
     }
 
     if (!is_dir($dir)) {
