@@ -15,21 +15,20 @@ function check_path_permissions() {
 
     $err = array();
     foreach ($paths as $path) {
-        if (!is_writable($path)) {
-            if (!is_dir($path)) {
-                try {
-                    mkdir($path);
+        if (!is_dir($path)) {
+            try {
+                mkdir($path);
 
-                    if (!is_writable($path)) {
-                        $err[] = $path;
-                    }
-                } catch (Exception $ex) {
+                if (!is_writable($path)) {
                     $err[] = $path;
                 }
-            } else {
+            } catch (Exception $ex) {
                 $err[] = $path;
             }
+        } else if (!is_writable($path)) {
+            $err[] = $path;
         }
+
     }
 
     if (count($err) > 0) {
@@ -192,12 +191,30 @@ function check_plugins() {
         }
 }
 
+function check_paths() {
+    $check = array();
+    $check[] = 'check_path_permissions';
+
+    foreach ($check as $func) {
+        $msg = call_user_func($func);
+        if (!empty($msg)) {
+            http_response_code(500);
+            print '<html><head><title>Datawrapper</title></head><body>';
+            print '<div style="border-radius:20px;background:#ffc; border:1px solid #eea; padding: 30px;width:700px;margin:30px auto;font-size:18px;font-family:Helvetica Neue;font-weight:300">';
+            print '<style>h2 { font-weight: 400; font-size: 28px; color: #b20 } ul li { font-size: 18px }</style>';
+            print '<h1 style="margin:0 0 30px;font-size:32px;line-height:30px;letter-spacing:-1px;color:#531">Whoops! Something is wrong with your Datawrapper instance!</h1>';
+
+            print $msg;
+            print '</div></body></html>';
+            exit();
+        }
+     }
+}
+
 function check_server() {
     $check = array();
     $check[] = 'check_config';
-    $check[] = 'check_path_permissions';
     $check[] = 'check_database';
-    // $check[] = 'check_plugins';
 
     foreach ($check as $func) {
         $msg = call_user_func($func);
