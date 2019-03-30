@@ -239,12 +239,14 @@ function mycharts_group_by_folder($charts, $user) {
 }
 
 function prepare_short_arrays($charts) {
+    global $dw_config;
+
     $shorty = [];
 
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
         unset($flat['metadata']['publish']['embed-codes']);
-        $flat['hash'] = $chart->getHash();
+        $flat['hash'] = $dw_config["screenshot_path"] ?? $chart->getHash();
         $shorty[$flat['id']] = $flat;
     }
 
@@ -252,6 +254,8 @@ function prepare_short_arrays($charts) {
 }
 
 function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_id = false, $query = false) {
+    global $dw_config;
+
     $curPage = $app->request()->params('page');
     $q = $app->request()->params('q');
     $key = $app->request()->params('key');
@@ -315,7 +319,9 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 
     $total = count($chart_ids);
     $chartQuery = ChartQuery::create()
-        ->withColumn('MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))', 'hash');
+        ->withColumn(($dw_config["screenshot_path"] ?
+                ('"' . $dw_config["screenshot_path"] '"') :
+                'MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))'), 'hash');
 
     switch ($sort_by) {
         case 'title': $chartQuery->orderByTitle(); break;
