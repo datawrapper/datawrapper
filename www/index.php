@@ -24,6 +24,8 @@ define('APP_DOMAIN', explode('.', $_SERVER['HTTP_HOST'])[0]);
 
 require ROOT_PATH . 'lib/bootstrap.php';
 
+check_paths();
+
 $twig = $app->view()->getEnvironment();
 dwInitTwigEnvironment($twig);
 
@@ -80,11 +82,11 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
 
     if ($req->getResourceUri() != '/login' &&
         // and doesn't start with '/account/invite/'
-        strncmp($req->getResourceUri(), '/account/invite/', 16) && 
+        strncmp($req->getResourceUri(), '/account/invite/', 16) &&
         // and doesn't start with '/account/reset-password/'
         strncmp($req->getResourceUri(), '/account/reset-password/', 24)) {
 
-        if (empty($dw_config['login_urls']) || !in_array($req->getResourceUri(), $dw_config['login_urls'])) {            
+        if (empty($dw_config['login_urls']) || !in_array($req->getResourceUri(), $dw_config['login_urls'])) {
             $app->redirect('/login');
         }
     }
