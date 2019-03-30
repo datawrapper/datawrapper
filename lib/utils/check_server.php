@@ -16,7 +16,19 @@ function check_path_permissions() {
     $err = array();
     foreach ($paths as $path) {
         if (!is_writable($path)) {
-            $err[] = $path;
+            if (!is_dir($path)) {
+                try {
+                    mkdir($path);
+
+                    if (!is_writable($path)) {
+                        $err[] = $path;
+                    }
+                } catch (Exception $ex) {
+                    $err[] = $path;
+                }
+            } else {
+                $err[] = $path;
+            }
         }
     }
 
