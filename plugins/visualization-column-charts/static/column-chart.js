@@ -72,22 +72,23 @@
             if (!column) return;            
 
             me.calculateGridLabelSpace();
-            me.addSeriesLabelSpace(c, bars);    
+            var autoRotate = me.autoRotate();
+            me.addSeriesLabelSpace(c, bars, autoRotate);    
             
             me.initDimensions();
             me.horzGrid();
 
             var barValues = me.getBarValues(sortBars, reverse);
 
-            _.each(barValues, _.bind(me.__barEnter, me));        
 
+            _.each(barValues, _.bind(me.__barEnter, me, autoRotate));
             // enable mouse events
             el.mousemove(_.bind(me.onMouseMove, me));            
             
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
-        addSeriesLabelSpace: function(c, bars) {
+        addSeriesLabelSpace: function(c, bars, autoRotate) {
             var me = this,
                 mm = me.getDomain(),
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
@@ -95,7 +96,7 @@
                 labelSpace = me.barLabelWidth(),                
                 labelClass = 'label series x-tick-values chart-text' + (me.useSmallerLabels() ? " smaller" : "");
 
-            if (me.rotateLabels()) {                
+            if (me.rotateLabels(autoRotate)) {
                 maxLabelHeight = Math.min(d3.max(bars, function(d) {
                     return me.labelWidth(d.name, labelClass);
                 }) + 10, 100);
@@ -126,6 +127,30 @@
 
                 return me.labelWidth(txt, 'label axis');
             }) + 14;
+        },
+
+        autoRotate: function() {
+            debugger;
+            /* compare smallest possible width of labels with label space to determine if labels should rotate or not */
+            var me = this,
+                axisLabel = this.axesDef.labels,
+                lw = me.barLabelWidth(),
+                lblcl = ['series x-tick-values chart-text measure-word'],
+                rotate = false;
+            //Replication of normal series label rendering except without positioning and with width = 0px
+            this.dataset.list().forEach(function(bar,i){
+                if (rotate === true) return;
+                if (!/^X\.\d+$/.test(bar[axisLabel])) {
+                    me.registerLabel(me.label(0, 0, bar[axisLabel], {
+                        w: "0px",
+                        cl: lblcl
+                    }), bar[axisLabel], me.axes().labels, i);
+
+                if ($($('.measure-word span')[i]).width() > lw) {rotate = true;};
+                }
+            })
+            $('.measure-word').remove();
+            return rotate;
         },    
 
         getDataRowByPoint: function(x, y) {
@@ -140,7 +165,7 @@
 
         },
 
-        __barEnter: function(barv, s) {
+        __barEnter: function(autoRotate, barv, s) {
             var me = this,
                 c = me.__canvas,
                 d = me.barDimensions(barv, s),
@@ -152,8 +177,8 @@
                 bar,
                 formatter = chart.columnFormatter(me.getBarColumn()),
                 cm = me.colorMap(),
-                rectD = JSON.parse(JSON.stringify(d));
-            
+                rectD = JSON.parse(JSON.stringify(d)),
+                autoRotate = autoRotate;
             rectD.x = d.bx;
 
             if (typeof barv.value == "undefined" || barv.value == null) barv.value = "";
@@ -184,7 +209,7 @@
                 valueLabels = me.get('value-labels');
 
             var lpos = me.labelPosition(barv, s, 'value'),
-                spos = me.labelPosition(barv, s, 'series', barv.name);
+                spos = me.labelPosition(barv, s, 'series', autoRotate, barv.name);
 
             // add value labels
             if (valueLabels != "hide") {                
@@ -201,8 +226,10 @@
             if (me.useSmallerLabels()) {
                 lblcl.push('smaller');
             }
-            if (me.rotateLabels()) {
+            if (me.rotateLabels(autoRotate)) {
                 lblcl.push('rotate90');
+                if (barv.value >= 0) {lblcl.push('lbl-align-right')}
+                else {lblcl.push('lbl-align-left')}
             }
 
             // add column label
@@ -211,11 +238,7 @@
                     w: spos.width,
                     align: spos.halign,
                     valign: spos.valign,
-                    cl: lblcl.join(' '),
-                    rotate: me.rotateLabels() ? -90 : 0,
-                    css: {
-                        "word-break": "break-word"
-                    }
+                    cl: lblcl.join(' ')
                 }), barv.name, me.axes().labels, barv.row);
             }
         },
@@ -236,7 +259,7 @@
             return this.barLabelWidth() < 30;
         },
 
-        rotateLabels: function() {
+        rotateLabels: function(autoRotate) {
             var me = this,
                 rotateLabels = me.get("rotate-labels", "auto"),
                 barLabelWidth = me.barLabelWidth();
@@ -244,9 +267,10 @@
             if (rotateLabels === true || rotateLabels == "on") {
                 return true;
             } else if (rotateLabels === "off") {
+                $('.label.series span').css("word-break","break-word")
                 return false;
             } else {
-                return barLabelWidth < 30;
+                return autoRotate;
             }
         },
 
@@ -259,7 +283,7 @@
                 fmt = labels.type(true).formatter();
 
             column.each(function(val, i) {
-                if (!isNaN(val) || !me.get('ignore-missing-values', false)) {                    
+                if (!isNaN(val) || !me.get('ignore-missing-values', false)) {
                     values.push({
                         name: fmt(labels.val(i)),
                         value: val,
@@ -288,7 +312,8 @@
         update: function(row) {
             var me = this,
                 theme = me.theme(),
-                formatter = me.chart().columnFormatter(me.getBarColumn());
+                formatter = me.chart().columnFormatter(me.getBarColumn()),
+                autoRotate = me.autoRotate();
 
             me.calculateGridLabelSpace();
 
@@ -324,7 +349,9 @@
                         lpos = me.labelPosition(bar, s, 'value');
                     } else if (lbl.hasClass('series')) {
                         // update column label position
-                        lpos = me.labelPosition(bar, s, 'series');
+
+                        lpos = me.labelPosition(bar, s, 'series',autoRotate);
+
                     }
                     if (lpos) {
                         lbl.animate({
@@ -335,9 +362,9 @@
                         }, theme.duration, theme.easing);
 
                         if (!lbl.hasClass('value')) {
-                            if (lpos.valign == "bottom") {
+                            if (bar.value<0) {
                                 $(lbl.el).addClass("lbl-align-left").removeClass("lbl-align-right");
-                            } else if (lpos.valign == "top") {
+                            } else {
                                 $(lbl.el).addClass("lbl-align-right").removeClass("lbl-align-left");
                             }
                         }
@@ -474,21 +501,23 @@
             return { width: Math.round(bw), height: h, x: x, y: y, bx: x, bw: bw, pad: pad };
         },
 
-        labelPosition: function(bar, s, type, txt) {
+        labelPosition: function(bar, s, type, autoRotate, txt) {
             var me = this,
                 d = me.barDimensions(bar, s), 
                 lbl_w,
+                rotated = me.rotateLabels(autoRotate),
                 val = bar.value,
                 c = me.__canvas,
                 lbl_top = val >= 0 || isNaN(val),
-                valign = lbl_top ? 'top' : 'bottom',
+                valign = lbl_top || rotated ? 'top' : 'bottom',
                 halign = 'center',
                 val_y = lbl_top ? d.y - 10 : d.y + d.height + 10,
                 lbl_y = !lbl_top ? d.y - 5 : d.y + d.height + 5,
                 pad = pad = me.get("bar-padding", 30) / 100,
                 gridLabelPosition = me.get("grid-label-position", "left");
                 formatter = me.chart().columnFormatter(me.getBarColumn()),
-                left = d.bx + d.width * 0.5;
+                left = d.bx + d.width * 0.5,
+                autoRotate = autoRotate;
 
             if (type == "value") {
                 lbl_w = me.labelWidth(formatter(val, true), 'value outline hover');
@@ -503,16 +532,15 @@
             } else if (type == "series") {
                 lbl_w = me.barLabelWidth();
 
-                if (me.rotateLabels()) {
+                if (me.rotateLabels(autoRotate)) {
                     var height = me.labelHeight(txt, "label series x-tick-values chart-text" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
 
-                    lbl_y -= 10;  // move towards zero axis
                     lbl_w = 100;
-                    
-                    left = left - height/3 + 5;
                     halign = 'right'; // lbl_top ? 'right' : 'left';
-                }
+                    lbl_y = val >= 0 ? lbl_y + lbl_w/2 - 10 : lbl_y - lbl_w/2 - 10;  // move towards zero axis
 
+                    left = d.bx + d.width/2 + lbl_w/2;
+                }
                 return { left: left, top: lbl_y, width: lbl_w, halign: halign, valign: valign };
             }
         },
