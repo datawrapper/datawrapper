@@ -130,7 +130,6 @@
         },
 
         autoRotate: function() {
-            debugger;
             /* compare smallest possible width of labels with label space to determine if labels should rotate or not */
             var me = this,
                 axisLabel = this.axesDef.labels,
@@ -146,7 +145,7 @@
                         cl: lblcl
                     }), bar[axisLabel], me.axes().labels, i);
 
-                if ($($('.measure-word span')[i]).width() > lw) {rotate = true;};
+                    if ($($('.measure-word span')[i]).width() > lw) rotate = true;
                 }
             })
             $('.measure-word').remove();
