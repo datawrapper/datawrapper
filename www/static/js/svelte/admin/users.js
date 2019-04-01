@@ -581,8 +581,6 @@ var queryString_2 = queryString.parse;
 var queryString_3 = queryString.stringify;
 var queryString_4 = queryString.parseUrl;
 
-/* globals dw */
-
 /**
  * translates a message key. translations are originally stored in a
  * Google spreadsheet that we're pulling into Datawrapper using the
@@ -599,7 +597,6 @@ var queryString_4 = queryString.parseUrl;
  * @returns {string} -- the translated text
  */
 
-// TODO: Clarify whether this makes sense!
 var dw = window.dw;
 
 function __(key, scope) {

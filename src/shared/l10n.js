@@ -1,5 +1,3 @@
-/* globals dw */
-
 /**
  * translates a message key. translations are originally stored in a
  * Google spreadsheet that we're pulling into Datawrapper using the
@@ -15,6 +13,9 @@
  * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
  * @returns {string} -- the translated text
  */
+
+const dw = window.dw;
+
 function __(key, scope = 'core') {
     key = key.trim();
     if (!dw.backend.__messages[scope]) return 'MISSING:' + key;
