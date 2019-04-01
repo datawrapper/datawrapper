@@ -97,6 +97,7 @@ class User extends BaseUser {
 
     public function getRecentCharts($count=10) {
         return ChartQuery::create()
+            ->withColumn('MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))', 'hash')
             ->filterByUser($this)
             ->filterByDeleted(false)
             ->filterByLastEditStep(array("min" => 3))
