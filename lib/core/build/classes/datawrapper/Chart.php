@@ -623,11 +623,7 @@ class Chart extends BaseChart {
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
-        $me = ChartQuery::create()
-            ->withColumn('MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))', 'hash')
-            ->findPk($this->getID());
-
-        $path = $dw_config["screenshot_path"] ?? $me->getHash();
+        $path = $dw_config["screenshot_path"] ?? $this->getHash();
 
         return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
             . $this->getID() . "/" . $path . "/plain.png";
