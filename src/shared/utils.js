@@ -44,6 +44,9 @@ export function postJSON(url, body, callback) {
 export function putJSON(url, body, callback) {
     return fetchJSON(url, 'PUT', 'include', body, callback);
 }
+export function patchJSON(url, body, callback) {
+    return fetchJSON(url, 'PATCH', 'include', body, callback);
+}
 export function deleteJSON(url, callback) {
     return fetchJSON(url, 'DELETE', 'include', null, callback);
 }

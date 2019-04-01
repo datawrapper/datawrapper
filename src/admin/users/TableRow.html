@@ -16,7 +16,7 @@
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
     <td class="actions">
-        <button class="action" on:click="set({ edit: true })">
+        <button class="action" on:click="set({ edit: true })" data-test="action-edit">
             <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
         </button>
         <button class="action">
@@ -25,10 +25,10 @@
     </td>
     {:else}
     <td>
-        <input type="text" value="{user.name}" />
+        <input type="text" bind:value="user.name" data-test="input-name" />
     </td>
     <td class="email">
-        <input type="email" value="{user.email}" />
+        <input type="email" bind:value="user.email" data-test="input-email" />
     </td>
     <td>
         <select name="status">
@@ -44,10 +44,10 @@
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
     <td class="actions">
-        <button class="action" on:click="save()">
+        <button class="action" on:click="save()" data-test="action-save">
             <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
         </button>
-        <button class="action" on:click="set({ edit: false })">
+        <button class="action" on:click="set({ edit: false })" data-test="action-close">
             <i class="icon-remove" title="{__('cancel', 'admin-users')}"></i>
         </button>
     </td>
@@ -109,8 +109,11 @@
 
         methods: {
             save() {
-                // TODO: save changes through API
                 this.set({ edit: false });
+                const {
+                    user: { id, name, email, role }
+                } = this.get();
+                this.fire('save', { id, name, email, role });
             },
 
             navigate(event, userId) {
