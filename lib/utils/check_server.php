@@ -11,6 +11,7 @@ function check_path_permissions() {
     $paths[] = $publishRoot.'data';
     $paths[] = $publishRoot.'images';
     $paths[] = $publishRoot.'data/tmp';
+    $paths[] = $publishRoot.'tmp';
     $paths[] = ROOT_PATH.'tmp';
 
     $err = array();
