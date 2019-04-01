@@ -124,7 +124,13 @@
 
             saveUser({ id, name, email }) {
                 const requestBody = JSON.stringify({ name, email }, (key, value) => {
-                    return value !== null ? value : undefined;
+                    if (value === null) {
+                        return undefined; // do not pass `null` (`null` means value not set)
+                    } else if (value === '') {
+                        return null; // pass `null` to set value to empty string
+                    } else {
+                        return value;
+                    }
                 });
 
                 patchJSON(`${BASE_URL}/${id}`, requestBody);
