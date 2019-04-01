@@ -319,7 +319,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
 
     $total = count($chart_ids);
     $chartQuery = ChartQuery::create()
-        ->withColumn(($dw_config["screenshot_path"] ?
+        ->withColumn((isset($dw_config["screenshot_path"]) ?
                 ('"' . $dw_config["screenshot_path"] . '"') :
                 'MD5(CONCAT(id, "--",UNIX_TIMESTAMP(created_at)))'), 'hash');
 
