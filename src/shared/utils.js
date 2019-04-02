@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 import _isArray from 'underscore-es/isArray';
 
 export function fetchJSON(url, method, credentials, body, callback) {

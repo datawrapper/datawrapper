@@ -1,3 +1,7 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+/* globals dw */
+
 /**
  * translates a message key. translations are originally stored in a
  * Google spreadsheet that we're pulling into Datawrapper using the
