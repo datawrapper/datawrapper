@@ -122,8 +122,8 @@
                 }
             },
 
-            saveUser({ id, name, email }) {
-                const requestBody = JSON.stringify({ name, email }, (key, value) => {
+            saveUser({ id, name, email, role }) {
+                const requestBody = JSON.stringify({ name, email, role }, (key, value) => {
                     if (value === null) {
                         return undefined; // do not pass `null` (`null` means value not set)
                     } else if (value === '') {
