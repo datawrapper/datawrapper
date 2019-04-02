@@ -16,7 +16,7 @@
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
     <td class="actions">
-        <button class="action" on:click="set({ edit: true })" data-test="action-edit">
+        <button class="action" on:click="edit()" data-test="action-edit">
             <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
         </button>
         <button class="action">
@@ -25,13 +25,13 @@
     </td>
     {:else}
     <td>
-        <input type="text" bind:value="user.name" data-test="input-name" />
+        <input type="text" bind:value="updates.name" data-test="input-name" />
     </td>
     <td class="email">
-        <input type="email" bind:value="user.email" data-test="input-email" />
+        <input type="email" bind:value="updates.email" data-test="input-email" />
     </td>
     <td>
-        <select name="role" bind:value="user.role">
+        <select name="role" bind:value="updates.role">
             {#each roleOptions as role}
             <option value="{role.slug}" selected="{user.role === role.slug}">
                 {__(role.name, 'admin-users')}
@@ -89,6 +89,7 @@
         data() {
             return {
                 user: {},
+                updates: {},
                 edit: false,
                 roleOptions: [
                     { slug: 'admin', name: 'Administrator', icon: 'fire' },
@@ -109,12 +110,24 @@
         },
 
         methods: {
+            edit() {
+                this.set({
+                    edit: true,
+                    updates: Object.assign({}, this.get().user) // clone original user data
+                });
+            },
+
             save() {
-                this.set({ edit: false });
-                const {
-                    user: { id, name, email, role }
-                } = this.get();
-                this.fire('save', { id, name, email, role });
+                const { user, updates } = this.get();
+                const changes = Object.keys(user).reduce((diff, key) => {
+                    if (updates[key] !== user[key]) {
+                        diff[key] = updates[key];
+                    }
+                    return diff;
+                }, {});
+
+                this.set({ edit: false, user: updates });
+                this.fire('save', { userId: user.id, changes });
             },
 
             navigate(event, userId) {

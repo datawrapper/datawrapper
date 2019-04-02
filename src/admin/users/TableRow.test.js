@@ -9,10 +9,10 @@ const user = {
     chartCount: 0,
     createdAt: '2019-03-18T17:19:59.000Z',
     email: 'abby@example.com',
-    id: 4711,
+    id: '4711',
     language: 'en_US',
     name: 'Abby Example',
-    role: 3,
+    role: 'editor',
     url: 'http://api.datawrapper.local:18080/v3/users/2'
 };
 
@@ -51,7 +51,7 @@ test.cb('Fire a "navigate" event when link is clicked', t => {
 
     t.plan(1);
     tableRow.on('navigate', userId => {
-        t.is(userId, 4711);
+        t.is(userId, '4711');
         t.end();
     });
     t.context.find('a[href$="4711"]').trigger('click');
@@ -79,10 +79,38 @@ test.cb('Fire a "save" event with name & email when save button is clicked', t =
         .trigger('input');
 
     // Expect `save` to be fired with updated name & email:
-    t.plan(2);
-    tableRow.on('save', ({ name, email }) => {
+    t.plan(3);
+    tableRow.on('save', ({ userId, changes: { name, email } }) => {
+        t.is(userId, '4711');
         t.is(name, 'Bob Example');
         t.is(email, 'bob@example.com');
+        t.end();
+    });
+
+    t.context.find('[data-test="action-save"]').trigger('click');
+});
+
+test.cb('Fire a "save" event with only the changed properties', t => {
+    const tableRow = new TableRow({
+        target: t.context[0],
+        data: { user }
+    });
+
+    // Click on edit button:
+    t.context.find('[data-test="action-edit"]').trigger('click');
+
+    // Enter new name:
+    t.context
+        .find('[data-test="input-name"]')
+        .val('Bob Example')
+        .trigger('input');
+
+    // Expect `save` to be fired with only the new name
+    t.plan(3);
+    tableRow.on('save', ({ userId, changes }) => {
+        t.is(userId, '4711');
+        t.is(changes.name, 'Bob Example');
+        t.is(Object.keys(changes).length, 1);
         t.end();
     });
 

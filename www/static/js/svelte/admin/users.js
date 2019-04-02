@@ -1183,6 +1183,7 @@ function role(ref) {
 function data() {
     return {
         user: {},
+        updates: {},
         edit: false,
         roleOptions: [
             { slug: 'admin', name: 'Administrator', icon: 'fire' },
@@ -1194,15 +1195,26 @@ function data() {
     };
 }
 var methods$2 = {
+    edit: function edit() {
+        this.set({
+            edit: true,
+            updates: Object.assign({}, this.get().user) // clone original user data
+        });
+    },
+
     save: function save() {
-        this.set({ edit: false });
         var ref = this.get();
-        var ref_user = ref.user;
-        var id = ref_user.id;
-        var name = ref_user.name;
-        var email = ref_user.email;
-        var role = ref_user.role;
-        this.fire('save', { id: id, name: name, email: email, role: role });
+        var user = ref.user;
+        var updates = ref.updates;
+        var changes = Object.keys(user).reduce(function (diff, key) {
+            if (updates[key] !== user[key]) {
+                diff[key] = updates[key];
+            }
+            return diff;
+        }, {});
+
+        this.set({ edit: false, user: updates });
+        this.fire('save', { userId: user.id, changes: changes });
     },
 
     navigate: function navigate(event, userId) {
@@ -1344,7 +1356,7 @@ function create_if_block$1(component, state) {
 	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.role.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, text_10_value = state.user.chartCount, text_10, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value;
 
 	function click_handler(event) {
-		component.set({ edit: true });
+		component.edit();
 	}
 
 	return {
@@ -1479,16 +1491,16 @@ function create_if_block_1$1(component, state) {
 	function input_input_handler() {
 		var state = component.get();
 		input_updating = true;
-		state.user.name = input.value;
-		component.set({ user: state.user, roleOptions: state.roleOptions });
+		state.updates.name = input.value;
+		component.set({ updates: state.updates, roleOptions: state.roleOptions });
 		input_updating = false;
 	}
 
 	function input_1_input_handler() {
 		var state = component.get();
 		input_1_updating = true;
-		state.user.email = input_1.value;
-		component.set({ user: state.user, roleOptions: state.roleOptions });
+		state.updates.email = input_1.value;
+		component.set({ updates: state.updates, roleOptions: state.roleOptions });
 		input_1_updating = false;
 	}
 
@@ -1507,8 +1519,8 @@ function create_if_block_1$1(component, state) {
 	function select_change_handler() {
 		var state = component.get();
 		select_updating = true;
-		state.user.role = selectValue(select);
-		component.set({ user: state.user, roleOptions: state.roleOptions });
+		state.updates.role = selectValue(select);
+		component.set({ updates: state.updates, roleOptions: state.roleOptions });
 		select_updating = false;
 	}
 
@@ -1563,7 +1575,7 @@ function create_if_block_1$1(component, state) {
 			input_1.className = "svelte-10l9aqc";
 			td_1.className = "email";
 			addListener(select, "change", select_change_handler);
-			if (!('user' in state)) { component.root._beforecreate.push(select_change_handler); }
+			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
 			select.className = "svelte-10l9aqc";
 			td_3.className = "creation out";
@@ -1586,13 +1598,13 @@ function create_if_block_1$1(component, state) {
 			insertNode(td, target, anchor);
 			appendNode(input, td);
 
-			input.value = state.user.name;
+			input.value = state.updates.name;
 
 			insertNode(text_1, target, anchor);
 			insertNode(td_1, target, anchor);
 			appendNode(input_1, td_1);
 
-			input_1.value = state.user.email;
+			input_1.value = state.updates.email;
 
 			insertNode(text_3, target, anchor);
 			insertNode(td_2, target, anchor);
@@ -1602,7 +1614,7 @@ function create_if_block_1$1(component, state) {
 				each_blocks[i_2].m(select, null);
 			}
 
-			selectOption(select, state.user.role);
+			selectOption(select, state.updates.role);
 
 			insertNode(text_5, target, anchor);
 			insertNode(td_3, target, anchor);
@@ -1620,8 +1632,8 @@ function create_if_block_1$1(component, state) {
 		},
 
 		p: function update(changed, state) {
-			if (!input_updating) { input.value = state.user.name; }
-			if (!input_1_updating) { input_1.value = state.user.email; }
+			if (!input_updating) { input.value = state.updates.name; }
+			if (!input_1_updating) { input_1.value = state.updates.email; }
 
 			var each_value = state.roleOptions;
 
@@ -1649,7 +1661,7 @@ function create_if_block_1$1(component, state) {
 				each_blocks.length = each_value.length;
 			}
 
-			if (!select_updating) { selectOption(select, state.user.role); }
+			if (!select_updating) { selectOption(select, state.updates.role); }
 			if ((changed.user) && text_8_value !== (text_8_value = state.user.chartCount)) {
 				text_8.data = text_8_value;
 			}
@@ -1700,6 +1712,8 @@ function TableRow(options) {
 	if (!('user' in this._state)) { console.warn("<TableRow> was created without expected data property 'user'"); }
 	if (!('roleOptions' in this._state)) { console.warn("<TableRow> was created without expected data property 'roleOptions'"); }
 	if (!('edit' in this._state)) { console.warn("<TableRow> was created without expected data property 'edit'"); }
+
+	if (!('updates' in this._state)) { console.warn("<TableRow> was created without expected data property 'updates'"); }
 
 	if (!options.root) {
 		this._oncreate = [];
@@ -2058,12 +2072,10 @@ var methods$4 = {
     },
 
     saveUser: function saveUser(ref) {
-        var id = ref.id;
-        var name = ref.name;
-        var email = ref.email;
-        var role = ref.role;
+        var userId = ref.userId;
+        var changes = ref.changes;
 
-        var requestBody = JSON.stringify({ name: name, email: email, role: role }, function (key, value) {
+        var requestBody = JSON.stringify(changes, function (key, value) {
             if (value === null) {
                 return undefined; // do not pass `null` (`null` means value not set)
             } else if (value === '') {
@@ -2073,7 +2085,7 @@ var methods$4 = {
             }
         });
 
-        patchJSON((BASE_URL + "/" + id), requestBody);
+        patchJSON((BASE_URL + "/" + userId), requestBody);
     }
 };
 
@@ -2228,39 +2240,38 @@ function create_if_block_2(component, state) {
 
 // (2:4) {#if userDetails}
 function create_if_block$2(component, state) {
-	var details;
 
-	function close_handler(event) {
+	var details_initial_data = { user: state.userDetails };
+	var details = new Details({
+		root: component.root,
+		data: details_initial_data
+	});
+
+	details.on("close", function(event) {
 		component.closeDetails();
-	}
+	});
 
 	return {
 		c: function create() {
-			details = createElement("details");
-			this.h();
-		},
-
-		h: function hydrate() {
-			addListener(details, "close", close_handler);
-			setAttribute(details, "user", state.userDetails);
+			details._fragment.c();
 		},
 
 		m: function mount(target, anchor) {
-			insertNode(details, target, anchor);
+			details._mount(target, anchor);
 		},
 
 		p: function update(changed, state) {
-			if (changed.userDetails) {
-				setAttribute(details, "user", state.userDetails);
-			}
+			var details_changes = {};
+			if (changed.userDetails) { details_changes.user = state.userDetails; }
+			details._set(details_changes);
 		},
 
 		u: function unmount() {
-			detachNode(details);
+			details._unmount();
 		},
 
 		d: function destroy$$1() {
-			removeListener(details, "close", close_handler);
+			details.destroy(false);
 		}
 	};
 }
