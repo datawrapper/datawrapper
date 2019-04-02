@@ -5,12 +5,13 @@
         </a>
     </td>
     {#if !edit}
-    <td class="name out">{user.name || ''}</td>
+    <td class="name out">{user.name || '–'}</td>
     <td class="email out">{user.email}</td>
     <td>
         <i class="icon-{role.icon}" title="Editor"></i>
         {__(role.name, 'admin-users')}
     </td>
+    <td data-test="display-teams">{teams}</td>
     <td class="creation out">{user.createdAt}</td>
     <td class="center">
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
@@ -39,6 +40,7 @@
             {/each}
         </select>
     </td>
+    <td data-test="display-teams">{teams}</td>
     <td class="creation out">2019-01-31 11:46:25</td>
     <td class="center">
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
@@ -102,7 +104,8 @@
         },
 
         computed: {
-            role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role)
+            role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
+            teams: ({ user }) => user.teams.map(({ name }) => name).join(', ') || '–'
         },
 
         helpers: {

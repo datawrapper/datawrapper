@@ -1180,6 +1180,16 @@ function role(ref) {
 	});
 }
 
+function teams(ref) {
+	var user = ref.user;
+
+	return user.teams.map(function (ref) {
+		var name = ref.name;
+
+		return name;
+	}).join(', ') || '–';
+}
+
 function data() {
     return {
         user: {},
@@ -1302,7 +1312,7 @@ function create_main_fragment$2(component, state) {
 	};
 }
 
-// (35:12) {#each roleOptions as role}
+// (36:12) {#each roleOptions as role}
 function create_each_block$1(component, state) {
 	var role_1 = state.role, each_value = state.each_value, role_index = state.role_index;
 	var option, text_value = __(role_1.name, 'admin-users'), text, option_value_value, option_selected_value;
@@ -1353,7 +1363,7 @@ function create_each_block$1(component, state) {
 
 // (7:4) {#if !edit}
 function create_if_block$1(component, state) {
-	var td, text_value = state.user.name || '', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.role.name, 'admin-users'), text_5, text_7, td_3, text_8_value = state.user.createdAt, text_8, text_9, td_4, a, text_10_value = state.user.chartCount, text_10, a_href_value, text_12, td_5, button, i_1, i_1_title_value, text_14, button_1, i_2, i_2_title_value;
+	var td, text_value = state.user.name || '–', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.role.name, 'admin-users'), text_5, text_7, td_3, text_8, text_9, td_4, text_10_value = state.user.createdAt, text_10, text_11, td_5, a, text_12_value = state.user.chartCount, text_12, a_href_value, text_14, td_6, button, i_1, i_1_title_value, text_16, button_1, i_2, i_2_title_value;
 
 	function click_handler(event) {
 		component.edit();
@@ -1373,16 +1383,19 @@ function create_if_block$1(component, state) {
 			text_5 = createText(text_5_value);
 			text_7 = createText("\n    ");
 			td_3 = createElement("td");
-			text_8 = createText(text_8_value);
+			text_8 = createText(state.teams);
 			text_9 = createText("\n    ");
 			td_4 = createElement("td");
-			a = createElement("a");
 			text_10 = createText(text_10_value);
-			text_12 = createText("\n    ");
+			text_11 = createText("\n    ");
 			td_5 = createElement("td");
+			a = createElement("a");
+			text_12 = createText(text_12_value);
+			text_14 = createText("\n    ");
+			td_6 = createElement("td");
 			button = createElement("button");
 			i_1 = createElement("i");
-			text_14 = createText("\n        ");
+			text_16 = createText("\n        ");
 			button_1 = createElement("button");
 			i_2 = createElement("i");
 			this.h();
@@ -1393,9 +1406,10 @@ function create_if_block$1(component, state) {
 			td_1.className = "email out";
 			i.className = i_class_value = "icon-" + state.role.icon + " svelte-10l9aqc";
 			i.title = "Editor";
-			td_3.className = "creation out";
+			td_3.dataset.test = "display-teams";
+			td_4.className = "creation out";
 			a.href = a_href_value = "/admin/chart/by/" + state.user.id;
-			td_4.className = "center";
+			td_5.className = "center";
 			i_1.className = "icon-pencil";
 			i_1.title = i_1_title_value = __('edit', 'admin-users');
 			addListener(button, "click", click_handler);
@@ -1404,7 +1418,7 @@ function create_if_block$1(component, state) {
 			i_2.className = "icon-envelope";
 			i_2.title = i_2_title_value = __('reset the password and send a mail', 'admin-users');
 			button_1.className = "action svelte-10l9aqc";
-			td_5.className = "actions svelte-10l9aqc";
+			td_6.className = "actions svelte-10l9aqc";
 		},
 
 		m: function mount(target, anchor) {
@@ -1423,19 +1437,22 @@ function create_if_block$1(component, state) {
 			appendNode(text_8, td_3);
 			insertNode(text_9, target, anchor);
 			insertNode(td_4, target, anchor);
-			appendNode(a, td_4);
-			appendNode(text_10, a);
-			insertNode(text_12, target, anchor);
+			appendNode(text_10, td_4);
+			insertNode(text_11, target, anchor);
 			insertNode(td_5, target, anchor);
-			appendNode(button, td_5);
+			appendNode(a, td_5);
+			appendNode(text_12, a);
+			insertNode(text_14, target, anchor);
+			insertNode(td_6, target, anchor);
+			appendNode(button, td_6);
 			appendNode(i_1, button);
-			appendNode(text_14, td_5);
-			appendNode(button_1, td_5);
+			appendNode(text_16, td_6);
+			appendNode(button_1, td_6);
 			appendNode(i_2, button_1);
 		},
 
 		p: function update(changed, state) {
-			if ((changed.user) && text_value !== (text_value = state.user.name || '')) {
+			if ((changed.user) && text_value !== (text_value = state.user.name || '–')) {
 				text.data = text_value;
 			}
 
@@ -1451,12 +1468,16 @@ function create_if_block$1(component, state) {
 				text_5.data = text_5_value;
 			}
 
-			if ((changed.user) && text_8_value !== (text_8_value = state.user.createdAt)) {
-				text_8.data = text_8_value;
+			if (changed.teams) {
+				text_8.data = state.teams;
 			}
 
-			if ((changed.user) && text_10_value !== (text_10_value = state.user.chartCount)) {
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.createdAt)) {
 				text_10.data = text_10_value;
+			}
+
+			if ((changed.user) && text_12_value !== (text_12_value = state.user.chartCount)) {
+				text_12.data = text_12_value;
 			}
 
 			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.id)) {
@@ -1474,8 +1495,10 @@ function create_if_block$1(component, state) {
 			detachNode(td_3);
 			detachNode(text_9);
 			detachNode(td_4);
-			detachNode(text_12);
+			detachNode(text_11);
 			detachNode(td_5);
+			detachNode(text_14);
+			detachNode(td_6);
 		},
 
 		d: function destroy$$1() {
@@ -1484,9 +1507,9 @@ function create_if_block$1(component, state) {
 	};
 }
 
-// (26:4) {:else}
+// (27:4) {:else}
 function create_if_block_1$1(component, state) {
-	var td, input, input_updating = false, text_1, td_1, input_1, input_1_updating = false, text_3, td_2, select, select_updating = false, text_5, td_3, text_7, td_4, a, text_8_value = state.user.chartCount, text_8, a_href_value, text_10, td_5, button, i, i_title_value, text_12, button_1, i_1, i_1_title_value;
+	var td, input, input_updating = false, text_1, td_1, input_1, input_1_updating = false, text_3, td_2, select, select_updating = false, text_5, td_3, text_6, text_7, td_4, text_9, td_5, a, text_10_value = state.user.chartCount, text_10, a_href_value, text_12, td_6, button, i, i_title_value, text_14, button_1, i_1, i_1_title_value;
 
 	function input_input_handler() {
 		var state = component.get();
@@ -1549,16 +1572,19 @@ function create_if_block_1$1(component, state) {
 
 			text_5 = createText("\n    ");
 			td_3 = createElement("td");
-			td_3.textContent = "2019-01-31 11:46:25";
+			text_6 = createText(state.teams);
 			text_7 = createText("\n    ");
 			td_4 = createElement("td");
-			a = createElement("a");
-			text_8 = createText(text_8_value);
-			text_10 = createText("\n    ");
+			td_4.textContent = "2019-01-31 11:46:25";
+			text_9 = createText("\n    ");
 			td_5 = createElement("td");
+			a = createElement("a");
+			text_10 = createText(text_10_value);
+			text_12 = createText("\n    ");
+			td_6 = createElement("td");
 			button = createElement("button");
 			i = createElement("i");
-			text_12 = createText("\n        ");
+			text_14 = createText("\n        ");
 			button_1 = createElement("button");
 			i_1 = createElement("i");
 			this.h();
@@ -1578,9 +1604,10 @@ function create_if_block_1$1(component, state) {
 			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
 			select.className = "svelte-10l9aqc";
-			td_3.className = "creation out";
+			td_3.dataset.test = "display-teams";
+			td_4.className = "creation out";
 			a.href = a_href_value = "/admin/chart/by/" + state.user.id;
-			td_4.className = "center";
+			td_5.className = "center";
 			i.className = "icon-ok";
 			i.title = i_title_value = __('save', 'admin-users');
 			addListener(button, "click", click_handler);
@@ -1591,7 +1618,7 @@ function create_if_block_1$1(component, state) {
 			addListener(button_1, "click", click_handler_1);
 			button_1.className = "action svelte-10l9aqc";
 			button_1.dataset.test = "action-close";
-			td_5.className = "actions svelte-10l9aqc";
+			td_6.className = "actions svelte-10l9aqc";
 		},
 
 		m: function mount(target, anchor) {
@@ -1618,16 +1645,19 @@ function create_if_block_1$1(component, state) {
 
 			insertNode(text_5, target, anchor);
 			insertNode(td_3, target, anchor);
+			appendNode(text_6, td_3);
 			insertNode(text_7, target, anchor);
 			insertNode(td_4, target, anchor);
-			appendNode(a, td_4);
-			appendNode(text_8, a);
-			insertNode(text_10, target, anchor);
+			insertNode(text_9, target, anchor);
 			insertNode(td_5, target, anchor);
-			appendNode(button, td_5);
+			appendNode(a, td_5);
+			appendNode(text_10, a);
+			insertNode(text_12, target, anchor);
+			insertNode(td_6, target, anchor);
+			appendNode(button, td_6);
 			appendNode(i, button);
-			appendNode(text_12, td_5);
-			appendNode(button_1, td_5);
+			appendNode(text_14, td_6);
+			appendNode(button_1, td_6);
 			appendNode(i_1, button_1);
 		},
 
@@ -1662,8 +1692,12 @@ function create_if_block_1$1(component, state) {
 			}
 
 			if (!select_updating) { selectOption(select, state.updates.role); }
-			if ((changed.user) && text_8_value !== (text_8_value = state.user.chartCount)) {
-				text_8.data = text_8_value;
+			if (changed.teams) {
+				text_6.data = state.teams;
+			}
+
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.chartCount)) {
+				text_10.data = text_10_value;
 			}
 
 			if ((changed.user) && a_href_value !== (a_href_value = "/admin/chart/by/" + state.user.id)) {
@@ -1686,8 +1720,10 @@ function create_if_block_1$1(component, state) {
 			detachNode(td_3);
 			detachNode(text_7);
 			detachNode(td_4);
-			detachNode(text_10);
+			detachNode(text_9);
 			detachNode(td_5);
+			detachNode(text_12);
+			detachNode(td_6);
 		},
 
 		d: function destroy$$1() {
@@ -1713,6 +1749,7 @@ function TableRow(options) {
 	if (!('roleOptions' in this._state)) { console.warn("<TableRow> was created without expected data property 'roleOptions'"); }
 	if (!('edit' in this._state)) { console.warn("<TableRow> was created without expected data property 'edit'"); }
 
+
 	if (!('updates' in this._state)) { console.warn("<TableRow> was created without expected data property 'updates'"); }
 
 	if (!options.root) {
@@ -1736,11 +1773,16 @@ assign(TableRow.prototype, methods$2);
 
 TableRow.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	if ('role' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'role'"); }
+	if ('teams' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'teams'"); }
 };
 
 TableRow.prototype._recompute = function _recompute(changed, state) {
 	if (changed.user || changed.roleOptions) {
 		if (this._differs(state.role, (state.role = role(state)))) { changed.role = true; }
+	}
+
+	if (changed.user) {
+		if (this._differs(state.teams, (state.teams = teams(state)))) { changed.teams = true; }
 	}
 };
 
@@ -2004,6 +2046,7 @@ function data$1() {
             { name: __('Name', 'admin-users'), orderBy: 'name' },
             { name: __('Sign-in', 'admin-users'), orderBy: 'email' },
             { name: __('Status', 'admin-users') },
+            { name: __('Teams', 'admin-users') },
             { name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
             { name: __('Charts', 'admin-users') },
             { name: __('Actions', 'admin-users') }
@@ -2240,38 +2283,39 @@ function create_if_block_2(component, state) {
 
 // (2:4) {#if userDetails}
 function create_if_block$2(component, state) {
+	var details;
 
-	var details_initial_data = { user: state.userDetails };
-	var details = new Details({
-		root: component.root,
-		data: details_initial_data
-	});
-
-	details.on("close", function(event) {
+	function close_handler(event) {
 		component.closeDetails();
-	});
+	}
 
 	return {
 		c: function create() {
-			details._fragment.c();
+			details = createElement("details");
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(details, "close", close_handler);
+			setAttribute(details, "user", state.userDetails);
 		},
 
 		m: function mount(target, anchor) {
-			details._mount(target, anchor);
+			insertNode(details, target, anchor);
 		},
 
 		p: function update(changed, state) {
-			var details_changes = {};
-			if (changed.userDetails) { details_changes.user = state.userDetails; }
-			details._set(details_changes);
+			if (changed.userDetails) {
+				setAttribute(details, "user", state.userDetails);
+			}
 		},
 
 		u: function unmount() {
-			details._unmount();
+			detachNode(details);
 		},
 
 		d: function destroy$$1() {
-			details.destroy(false);
+			removeListener(details, "close", close_handler);
 		}
 	};
 }

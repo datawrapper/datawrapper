@@ -13,7 +13,8 @@ const user = {
     language: 'en_US',
     name: 'Abby Example',
     role: 'editor',
-    url: 'http://api.datawrapper.local:18080/v3/users/2'
+    url: 'http://api.datawrapper.local:18080/v3/users/2',
+    teams: [{ name: 'foo' }, { name: 'bar' }]
 };
 
 test.beforeEach(t => {
@@ -41,6 +42,16 @@ test('Render a link to the details page', t => {
 
     const linkElements = t.context.find('a');
     t.is(linkElements.attr('href'), '?currentUser=4711');
+});
+
+test('Render a list of teams', t => {
+    new TableRow({
+        target: t.context[0],
+        data: { user }
+    });
+
+    const teams = t.context.find('[data-test="display-teams"]');
+    t.is(teams.text(), 'foo, bar');
 });
 
 test.cb('Fire a "navigate" event when link is clicked', t => {
