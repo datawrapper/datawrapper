@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 /**
  * returns true if two numeric values are close enough
  * @param {number} a

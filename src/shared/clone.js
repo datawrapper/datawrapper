@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 export default function clone(o) {
     if (!o || typeof o !== 'object') return o;
     try {

@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 /**
  * converts a column name to a variable name that can be used in the custom
  * column editor. variable names can't contain spaces and special characters

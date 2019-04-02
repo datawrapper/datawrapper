@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 /**
  * Remove all html tags from the given string
  *

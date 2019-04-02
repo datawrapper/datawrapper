@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 import test from 'ava';
 import purifyHtml from './purifyHtml';
 

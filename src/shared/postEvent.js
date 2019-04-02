@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 export default function(chartId) {
     return function(event, data) {
         if (window.parent && window.parent.postMessage) {

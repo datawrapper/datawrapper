@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 /* global dw */
 export default function(curPwd, pwd, pwd2) {
     var msg;
