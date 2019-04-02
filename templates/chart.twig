@@ -101,8 +101,14 @@
     {% if not plain %}
         <div class="dw-chart-footer" id="footer">
             <div class="footer-left">
-                {% if theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.position') == "left" %}
-                    <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                {% if theme.getThemeData('options.footer.logo.position') == "left" and theme.getThemeData('options.footer.logo.enabled') %}
+                    {% if theme.getThemeData('options.footer.logo.url') %}
+                        <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                    {% endif %}
+
+                    {% if theme.getThemeData('options.footer.logo.text') %}
+                        <span class="logo-text"> {{ theme.getThemeData('options.footer.logo.text')}} </span>
+                    {% endif %}
                 {% endif %}
 
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" or theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
@@ -193,7 +199,12 @@
                 {% endif %}
 
                 {% if theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.position') == "right" %}
-                    <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                    {% if theme.getThemeData('options.footer.logo.url') %}
+                        <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
+                    {% endif %}
+                    {% if theme.getThemeData('options.footer.logo.text') %}
+                        <span class="logo-text"> {{ theme.getThemeData('options.footer.logo.text')}} </span>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
