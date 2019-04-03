@@ -30,7 +30,7 @@
     </td>
     {/if}
 
-    <td data-test="display-teams">{teamsFormatted}</td>
+    <td data-test="display-teams">{@html teamsFormatted}</td>
     <td data-test="display-createdat">{createdAtFormatted}</td>
     <td class="center">
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
@@ -89,6 +89,8 @@
     import { __ } from '../../shared/l10n';
     import moment from 'moment';
 
+    const linkToTeam = ({ name, id }) => `<a href="/admin/organizations/${id}">${name}</a>`;
+
     export default {
         data() {
             return {
@@ -107,8 +109,8 @@
 
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
-            teamsFormatted: ({ user }) => user.teams.map(({ name }) => name).join(', ') || '–',
-            createdAtFormatted: ({ user }) => moment(user.createdAt).format('lll')
+            createdAtFormatted: ({ user }) => moment(user.createdAt).format('lll'),
+            teamsFormatted: ({ user }) => user.teams.map(linkToTeam).join(', ') || '–'
         },
 
         helpers: {
