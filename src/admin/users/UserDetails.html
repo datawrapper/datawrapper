@@ -18,25 +18,16 @@
     <hr />
 
     <h4>Authentication</h4>
-    <button on:click="resetPassword(user.email)" class="btn btn-default btn-sm">
-        Send password reset link
-    </button>
-    <code>{user.resetPasswordToken}</code>
-
+    <div>
+        <input type="text" bind:value="resetPasswordToken" data-test="input-name" />
+        <button on:click="resetPassword(user.email, user.token)" class="btn btn-default btn-sm">
+            Send password reset link
+        </button>
+    </div>
+    {#if user.resetPasswordToken}
+    <code>/account/reset-password/{user.resetPasswordToken}</code>
+    {/if}
     <hr />
-
-    <h4>Private Plugins</h4>
-    <p>-</p>
-
-    <hr />
-
-    <h4>Products</h4>
-    <p>-</p>
-
-    <hr />
-
-    <h4>Organizations</h4>
-    <p>-</p>
     <button type="button" class="btn btn-default" on:click="close()" data-test="close">Back</button>
     <button type="button" class="btn btn-primary">Save changes</button>
 </section>
@@ -51,12 +42,17 @@
 
 <script>
     export default {
+        data: () => ({
+            resetPasswordToken: ''
+        }),
+
         methods: {
             close() {
                 this.fire('close');
             },
             resetPassword(email) {
-                this.fire('resetPassword', { email });
+                const { resetPasswordToken } = this.get();
+                this.fire('resetPassword', { email, token: resetPasswordToken });
             }
         }
     };

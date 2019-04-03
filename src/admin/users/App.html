@@ -40,28 +40,26 @@
             Pagination
         },
 
-        data() {
-            return {
-                list: [],
-                orderBy: 'id',
-                loader: null,
-                offset: 0,
-                limit: 10,
-                total: 0,
-                currentUser: null,
-                userDetails: null,
-                columnHeaders: [
-                    { name: '#', orderBy: 'id' },
-                    { name: __('Name', 'admin-users'), orderBy: 'name' },
-                    { name: __('Sign-in', 'admin-users'), orderBy: 'email' },
-                    { name: __('Status', 'admin-users') },
-                    { name: __('Teams', 'admin-users') },
-                    { name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
-                    { name: __('Charts', 'admin-users') },
-                    { name: __('Actions', 'admin-users') }
-                ]
-            };
-        },
+        data: () => ({
+            list: [],
+            orderBy: 'id',
+            loader: null,
+            offset: 0,
+            limit: 10,
+            total: 0,
+            currentUser: null,
+            userDetails: null,
+            columnHeaders: [
+                { name: '#', orderBy: 'id' },
+                { name: __('Name', 'admin-users'), orderBy: 'name' },
+                { name: __('Sign-in', 'admin-users'), orderBy: 'email' },
+                { name: __('Status', 'admin-users') },
+                { name: __('Teams', 'admin-users') },
+                { name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
+                { name: __('Charts', 'admin-users') },
+                { name: __('Actions', 'admin-users') }
+            ]
+        }),
 
         computed: {
             currentPageNum: ({ limit, offset }) => Math.ceil(offset / limit),
@@ -138,8 +136,20 @@
             },
 
             resetPassword({ email, token }) {
-                const body = JSON.stringify({ email, token });
-                window.fetch(`${BASE_URL}/auth/reset-password`, { method: 'POST', body });
+                const body = JSON.stringify({ email, token }, (key, value) => value || undefined);
+
+                window
+                    .fetch(`${BASE_URL}/auth/reset-password`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        body
+                    })
+                    .then(() => {
+                        this.loadUser();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
             }
         },
 
