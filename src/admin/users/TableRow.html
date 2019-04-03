@@ -4,25 +4,13 @@
             {user.id}
         </a>
     </td>
+
     {#if !edit}
-    <td class="name out">{user.name || '–'}</td>
-    <td class="email out">{user.email}</td>
+    <td>{user.name || '–'}</td>
+    <td>{user.email}</td>
     <td>
         <i class="icon-{role.icon}" title="Editor"></i>
         {__(role.name, 'admin-users')}
-    </td>
-    <td data-test="display-teams">{teams}</td>
-    <td class="creation out">{user.createdAt}</td>
-    <td class="center">
-        <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
-    </td>
-    <td class="actions">
-        <button class="action" on:click="edit()" data-test="action-edit">
-            <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
-        </button>
-        <button class="action">
-            <i class="icon-envelope" title="{__('reset the password and send a mail', 'admin-users')}"></i>
-        </button>
     </td>
     {:else}
     <td>
@@ -40,11 +28,24 @@
             {/each}
         </select>
     </td>
-    <td data-test="display-teams">{teams}</td>
-    <td class="creation out">2019-01-31 11:46:25</td>
+    {/if}
+
+    <td data-test="display-teams">{teamsFormatted}</td>
+    <td data-test="display-createdat">{createdAtFormatted}</td>
     <td class="center">
         <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
+
+    {#if !edit}
+    <td class="actions">
+        <button class="action" on:click="edit()" data-test="action-edit">
+            <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
+        </button>
+        <button class="action">
+            <i class="icon-envelope" title="{__('reset the password and send a mail', 'admin-users')}"></i>
+        </button>
+    </td>
+    {:else}
     <td class="actions">
         <button class="action" on:click="save()" data-test="action-save">
             <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
@@ -86,6 +87,7 @@
 
 <script>
     import { __ } from '../../shared/l10n';
+    import moment from 'moment';
 
     export default {
         data() {
@@ -105,7 +107,8 @@
 
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
-            teams: ({ user }) => user.teams.map(({ name }) => name).join(', ') || '–'
+            teamsFormatted: ({ user }) => user.teams.map(({ name }) => name).join(', ') || '–',
+            createdAtFormatted: ({ user }) => moment(user.createdAt).format('lll')
         },
 
         helpers: {

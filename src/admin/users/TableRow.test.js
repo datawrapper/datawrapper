@@ -54,6 +54,16 @@ test('Render a list of teams', t => {
     t.is(teams.text(), 'foo, bar');
 });
 
+test('Render a formatted creation date', t => {
+    new TableRow({
+        target: t.context[0],
+        data: { user }
+    });
+
+    const teams = t.context.find('[data-test="display-createdat"]');
+    t.is(teams.text(), 'Mar 18, 2019 6:19 PM');
+});
+
 test.cb('Fire a "navigate" event when link is clicked', t => {
     const tableRow = new TableRow({
         target: t.context[0],
