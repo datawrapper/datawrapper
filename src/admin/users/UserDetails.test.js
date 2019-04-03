@@ -3,7 +3,7 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import Details from './Details.html';
+import UserDetails from './UserDetails.html';
 
 const user = {
     chartCount: 0,
@@ -26,7 +26,7 @@ test.beforeEach(t => {
 test.cb('Fire a "close" event when close button is clicked', t => {
     t.plan(1);
 
-    const details = new Details({
+    const details = new UserDetails({
         target: t.context[0],
         data: { user }
     });

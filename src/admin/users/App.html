@@ -1,6 +1,6 @@
 <div>
     {#if userDetails}
-    <details user="{userDetails}" on:close="closeDetails()"></details>
+    <UserDetails user="{userDetails}" on:close="closeDetails()"></UserDetails>
     {:else}
     <div>
         <table class="table users">
@@ -25,7 +25,7 @@
     import { parse, stringify } from 'query-string';
     import { __ } from '../../shared/l10n';
     import { getJSON, patchJSON } from '../../shared/utils';
-    import Details from './Details.html';
+    import UserDetails from './UserDetails.html';
     import TableHeader from './TableHeader.html';
     import TableRow from './TableRow.html';
     import Pagination from './Pagination.html';
@@ -34,7 +34,7 @@
 
     export default {
         components: {
-            Details,
+            UserDetails,
             TableHeader,
             TableRow,
             Pagination
