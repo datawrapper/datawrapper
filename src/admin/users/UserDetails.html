@@ -17,8 +17,11 @@
 
     <hr />
 
-    <h4>History</h4>
-    <p>-</p>
+    <h4>Authentication</h4>
+    <button on:click="resetPassword(user.email)" class="btn btn-default btn-sm">
+        Send password reset link
+    </button>
+    <code>{user.resetPasswordToken}</code>
 
     <hr />
 
@@ -51,6 +54,9 @@
         methods: {
             close() {
                 this.fire('close');
+            },
+            resetPassword(email) {
+                this.fire('resetPassword', { email });
             }
         }
     };

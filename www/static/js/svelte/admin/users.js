@@ -690,13 +690,21 @@ function patchJSON(url, body, callback) {
 var methods = {
     close: function close() {
         this.fire('close');
+    },
+    resetPassword: function resetPassword(email) {
+        this.fire('resetPassword', { email: email });
     }
 };
 
 function create_main_fragment(component, state) {
-	var section, h4, text_value = state.user.email, text, text_1, ul, li, b, text_3, text_4_value = state.user.id, text_4, li_1, b_1, text_6, text_7_value = state.user.name || "–", text_7, li_2, b_2, text_9, text_10_value = state.user.email, text_10, li_3, b_3, text_12, a, text_13_value = state.user.chartCount, text_13, a_href_value, li_4, b_4, text_17, text_18_value = state.user.createdAt, text_18, li_5, b_5, text_20, text_21_value = state.user.role, text_21, text_22, hr, text_23, h4_1, text_25, p, text_27, hr_1, text_28, h4_2, text_30, p_1, text_32, hr_2, text_33, h4_3, text_35, p_2, text_37, hr_3, text_38, h4_4, text_40, p_3, text_42, button, text_44, button_1;
+	var section, h4, text_value = state.user.email, text, text_1, ul, li, b, text_3, text_4_value = state.user.id, text_4, li_1, b_1, text_6, text_7_value = state.user.name || "–", text_7, li_2, b_2, text_9, text_10_value = state.user.email, text_10, li_3, b_3, text_12, a, text_13_value = state.user.chartCount, text_13, a_href_value, li_4, b_4, text_17, text_18_value = state.user.createdAt, text_18, li_5, b_5, text_20, text_21_value = state.user.role, text_21, text_22, hr, text_23, h4_1, text_25, button, text_27, code, text_28_value = state.user.resetPasswordToken, text_28, text_29, hr_1, text_30, h4_2, text_32, p, text_34, hr_2, text_35, h4_3, text_37, p_1, text_39, hr_3, text_40, h4_4, text_42, p_2, text_44, button_1, text_46, button_2;
 
 	function click_handler(event) {
+		var state = component.get();
+		component.resetPassword(state.user.email);
+	}
+
+	function click_handler_1(event) {
 		component.close();
 	}
 
@@ -742,40 +750,43 @@ function create_main_fragment(component, state) {
 			hr = createElement("hr");
 			text_23 = createText("\n\n    ");
 			h4_1 = createElement("h4");
-			h4_1.textContent = "History";
+			h4_1.textContent = "Authentication";
 			text_25 = createText("\n    ");
-			p = createElement("p");
-			p.textContent = "-";
-			text_27 = createText("\n\n    ");
+			button = createElement("button");
+			button.textContent = "Send password reset link";
+			text_27 = createText("\n    ");
+			code = createElement("code");
+			text_28 = createText(text_28_value);
+			text_29 = createText("\n\n    ");
 			hr_1 = createElement("hr");
-			text_28 = createText("\n\n    ");
+			text_30 = createText("\n\n    ");
 			h4_2 = createElement("h4");
 			h4_2.textContent = "Private Plugins";
-			text_30 = createText("\n    ");
-			p_1 = createElement("p");
-			p_1.textContent = "-";
-			text_32 = createText("\n\n    ");
+			text_32 = createText("\n    ");
+			p = createElement("p");
+			p.textContent = "-";
+			text_34 = createText("\n\n    ");
 			hr_2 = createElement("hr");
-			text_33 = createText("\n\n    ");
+			text_35 = createText("\n\n    ");
 			h4_3 = createElement("h4");
 			h4_3.textContent = "Products";
-			text_35 = createText("\n    ");
-			p_2 = createElement("p");
-			p_2.textContent = "-";
-			text_37 = createText("\n\n    ");
+			text_37 = createText("\n    ");
+			p_1 = createElement("p");
+			p_1.textContent = "-";
+			text_39 = createText("\n\n    ");
 			hr_3 = createElement("hr");
-			text_38 = createText("\n\n    ");
+			text_40 = createText("\n\n    ");
 			h4_4 = createElement("h4");
 			h4_4.textContent = "Organizations";
-			text_40 = createText("\n    ");
-			p_3 = createElement("p");
-			p_3.textContent = "-";
 			text_42 = createText("\n    ");
-			button = createElement("button");
-			button.textContent = "Back";
+			p_2 = createElement("p");
+			p_2.textContent = "-";
 			text_44 = createText("\n    ");
 			button_1 = createElement("button");
-			button_1.textContent = "Save changes";
+			button_1.textContent = "Back";
+			text_46 = createText("\n    ");
+			button_2 = createElement("button");
+			button_2.textContent = "Save changes";
 			this.h();
 		},
 
@@ -789,11 +800,13 @@ function create_main_fragment(component, state) {
 			b_5.className = "svelte-1fdkti1";
 			ul.className = "unstyled props svelte-1fdkti1";
 			addListener(button, "click", click_handler);
-			button.type = "button";
-			button.className = "btn btn-default";
-			button.dataset.test = "close";
+			button.className = "btn btn-default btn-sm";
+			addListener(button_1, "click", click_handler_1);
 			button_1.type = "button";
-			button_1.className = "btn btn-primary";
+			button_1.className = "btn btn-default";
+			button_1.dataset.test = "close";
+			button_2.type = "button";
+			button_2.className = "btn btn-primary";
 		},
 
 		m: function mount(target, anchor) {
@@ -832,29 +845,32 @@ function create_main_fragment(component, state) {
 			appendNode(text_23, section);
 			appendNode(h4_1, section);
 			appendNode(text_25, section);
-			appendNode(p, section);
-			appendNode(text_27, section);
-			appendNode(hr_1, section);
-			appendNode(text_28, section);
-			appendNode(h4_2, section);
-			appendNode(text_30, section);
-			appendNode(p_1, section);
-			appendNode(text_32, section);
-			appendNode(hr_2, section);
-			appendNode(text_33, section);
-			appendNode(h4_3, section);
-			appendNode(text_35, section);
-			appendNode(p_2, section);
-			appendNode(text_37, section);
-			appendNode(hr_3, section);
-			appendNode(text_38, section);
-			appendNode(h4_4, section);
-			appendNode(text_40, section);
-			appendNode(p_3, section);
-			appendNode(text_42, section);
 			appendNode(button, section);
+			appendNode(text_27, section);
+			appendNode(code, section);
+			appendNode(text_28, code);
+			appendNode(text_29, section);
+			appendNode(hr_1, section);
+			appendNode(text_30, section);
+			appendNode(h4_2, section);
+			appendNode(text_32, section);
+			appendNode(p, section);
+			appendNode(text_34, section);
+			appendNode(hr_2, section);
+			appendNode(text_35, section);
+			appendNode(h4_3, section);
+			appendNode(text_37, section);
+			appendNode(p_1, section);
+			appendNode(text_39, section);
+			appendNode(hr_3, section);
+			appendNode(text_40, section);
+			appendNode(h4_4, section);
+			appendNode(text_42, section);
+			appendNode(p_2, section);
 			appendNode(text_44, section);
 			appendNode(button_1, section);
+			appendNode(text_46, section);
+			appendNode(button_2, section);
 		},
 
 		p: function update(changed, state) {
@@ -889,6 +905,10 @@ function create_main_fragment(component, state) {
 			if ((changed.user) && text_21_value !== (text_21_value = state.user.role)) {
 				text_21.data = text_21_value;
 			}
+
+			if ((changed.user) && text_28_value !== (text_28_value = state.user.resetPasswordToken)) {
+				text_28.data = text_28_value;
+			}
 		},
 
 		u: function unmount() {
@@ -897,6 +917,7 @@ function create_main_fragment(component, state) {
 
 		d: function destroy$$1() {
 			removeListener(button, "click", click_handler);
+			removeListener(button_1, "click", click_handler_1);
 		}
 	};
 }
@@ -5797,6 +5818,13 @@ var moment = createCommonjsModule(function (module, exports) {
 
 /* admin/users/TableRow.html generated by Svelte v1.64.0 */
 
+var linkToTeam = function (ref) {
+	var name = ref.name;
+	var id = ref.id;
+
+	return ("<a href=\"/admin/organizations/" + id + "\">" + name + "</a>");
+};
+
 function role(ref) {
 	var user = ref.user;
 	var roleOptions = ref.roleOptions;
@@ -5808,20 +5836,16 @@ function role(ref) {
 	});
 }
 
-function teamsFormatted(ref) {
-	var user = ref.user;
-
-	return user.teams.map(function (ref) {
-		var name = ref.name;
-
-		return name;
-	}).join(', ') || '–';
-}
-
 function createdAtFormatted(ref) {
 	var user = ref.user;
 
 	return moment(user.createdAt).format('lll');
+}
+
+function teamsFormatted(ref) {
+	var user = ref.user;
+
+	return user.teams.map(linkToTeam).join(', ') || '–';
 }
 
 function data() {
@@ -5868,7 +5892,7 @@ var methods$2 = {
 };
 
 function create_main_fragment$2(component, state) {
-	var tr, td, a, text_value = state.user.id, text, a_href_value, text_3, text_4, td_1, text_5, text_6, td_2, text_7, text_8, td_3, a_1, text_9_value = state.user.chartCount, text_9, a_1_href_value, text_11, tr_class_value;
+	var tr, td, a, text_value = state.user.id, text, a_href_value, text_3, text_4, td_1, text_5, td_2, text_6, text_7, td_3, a_1, text_8_value = state.user.chartCount, text_8, a_1_href_value, text_10, tr_class_value;
 
 	function click_handler(event) {
 		var state = component.get();
@@ -5901,15 +5925,14 @@ function create_main_fragment$2(component, state) {
 			if_block.c();
 			text_4 = createText("\n\n    ");
 			td_1 = createElement("td");
-			text_5 = createText(state.teamsFormatted);
-			text_6 = createText("\n    ");
+			text_5 = createText("\n    ");
 			td_2 = createElement("td");
-			text_7 = createText(state.createdAtFormatted);
-			text_8 = createText("\n    ");
+			text_6 = createText(state.createdAtFormatted);
+			text_7 = createText("\n    ");
 			td_3 = createElement("td");
 			a_1 = createElement("a");
-			text_9 = createText(text_9_value);
-			text_11 = createText("\n\n    ");
+			text_8 = createText(text_8_value);
+			text_10 = createText("\n\n    ");
 			if_block_1.c();
 			this.h();
 		},
@@ -5934,15 +5957,15 @@ function create_main_fragment$2(component, state) {
 			if_block.m(tr, null);
 			appendNode(text_4, tr);
 			appendNode(td_1, tr);
-			appendNode(text_5, td_1);
-			appendNode(text_6, tr);
+			td_1.innerHTML = state.teamsFormatted;
+			appendNode(text_5, tr);
 			appendNode(td_2, tr);
-			appendNode(text_7, td_2);
-			appendNode(text_8, tr);
+			appendNode(text_6, td_2);
+			appendNode(text_7, tr);
 			appendNode(td_3, tr);
 			appendNode(a_1, td_3);
-			appendNode(text_9, a_1);
-			appendNode(text_11, tr);
+			appendNode(text_8, a_1);
+			appendNode(text_10, tr);
 			if_block_1.m(tr, null);
 		},
 
@@ -5966,15 +5989,15 @@ function create_main_fragment$2(component, state) {
 			}
 
 			if (changed.teamsFormatted) {
-				text_5.data = state.teamsFormatted;
+				td_1.innerHTML = state.teamsFormatted;
 			}
 
 			if (changed.createdAtFormatted) {
-				text_7.data = state.createdAtFormatted;
+				text_6.data = state.createdAtFormatted;
 			}
 
-			if ((changed.user) && text_9_value !== (text_9_value = state.user.chartCount)) {
-				text_9.data = text_9_value;
+			if ((changed.user) && text_8_value !== (text_8_value = state.user.chartCount)) {
+				text_8.data = text_8_value;
 			}
 
 			if ((changed.user) && a_1_href_value !== (a_1_href_value = "/admin/chart/by/" + state.user.id)) {
@@ -5995,6 +6018,8 @@ function create_main_fragment$2(component, state) {
 		},
 
 		u: function unmount() {
+			td_1.innerHTML = '';
+
 			detachNode(tr);
 			if_block.u();
 			if_block_1.u();
@@ -6416,8 +6441,8 @@ assign(TableRow.prototype, methods$2);
 
 TableRow.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	if ('role' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'role'"); }
-	if ('teamsFormatted' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'teamsFormatted'"); }
 	if ('createdAtFormatted' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'createdAtFormatted'"); }
+	if ('teamsFormatted' in newState && !this._updatingReadonlyProperty) { throw new Error("<TableRow>: Cannot set read-only property 'teamsFormatted'"); }
 };
 
 TableRow.prototype._recompute = function _recompute(changed, state) {
@@ -6426,8 +6451,8 @@ TableRow.prototype._recompute = function _recompute(changed, state) {
 	}
 
 	if (changed.user) {
-		if (this._differs(state.teamsFormatted, (state.teamsFormatted = teamsFormatted(state)))) { changed.teamsFormatted = true; }
 		if (this._differs(state.createdAtFormatted, (state.createdAtFormatted = createdAtFormatted(state)))) { changed.createdAtFormatted = true; }
+		if (this._differs(state.teamsFormatted, (state.teamsFormatted = teamsFormatted(state)))) { changed.teamsFormatted = true; }
 	}
 };
 
@@ -6657,7 +6682,7 @@ Pagination.prototype._recompute = function _recompute(changed, state) {
 
 /* admin/users/App.html generated by Svelte v1.64.0 */
 
-var BASE_URL = '//api.datawrapper.local:18080/v3/users';
+var BASE_URL = '//api.datawrapper.local:18080/v3';
 
 function currentPageNum(ref) {
 	var limit = ref.limit;
@@ -6737,7 +6762,7 @@ var methods$4 = {
         var offset = ref.offset;
         var limit = ref.limit;
         var orderBy = ref.orderBy;
-        var loader = getJSON((BASE_URL + "?" + (queryString_3({ offset: offset, limit: limit, orderBy: orderBy }))), function (data) {
+        var loader = getJSON((BASE_URL + "/users?" + (queryString_3({ offset: offset, limit: limit, orderBy: orderBy }))), function (data) {
             if (data && data.list) {
                 var total = data.total;
                 var list = data.list;
@@ -6753,7 +6778,7 @@ var methods$4 = {
         var ref = this.get();
         var currentUser = ref.currentUser;
         if (currentUser) {
-            getJSON((BASE_URL + "/" + currentUser), function (data) {
+            getJSON((BASE_URL + "/users/" + currentUser), function (data) {
                 if (data) { this$1.set({ userDetails: data }); }
             });
         }
@@ -6763,7 +6788,7 @@ var methods$4 = {
         var userId = ref.userId;
         var changes = ref.changes;
 
-        var requestBody = JSON.stringify(changes, function (key, value) {
+        var body = JSON.stringify(changes, function (key, value) {
             if (value === null) {
                 return undefined; // do not pass `null` (`null` means value not set)
             } else if (value === '') {
@@ -6773,7 +6798,15 @@ var methods$4 = {
             }
         });
 
-        patchJSON((BASE_URL + "/" + userId), requestBody);
+        patchJSON((BASE_URL + "/users/" + userId), body);
+    },
+
+    resetPassword: function resetPassword(ref) {
+        var email = ref.email;
+        var token = ref.token;
+
+        var body = JSON.stringify({ email: email, token: token });
+        window.fetch((BASE_URL + "/auth/reset-password"), { method: 'POST', body: body });
     }
 };
 
@@ -6937,6 +6970,9 @@ function create_if_block$2(component, state) {
 
 	userdetails.on("close", function(event) {
 		component.closeDetails();
+	});
+	userdetails.on("resetPassword", function(event) {
+		component.resetPassword(event);
 	});
 
 	return {

@@ -1,6 +1,6 @@
 <div>
     {#if userDetails}
-    <UserDetails user="{userDetails}" on:close="closeDetails()"></UserDetails>
+    <UserDetails user="{userDetails}" on:close="closeDetails()" on:resetPassword="resetPassword(event)"></UserDetails>
     {:else}
     <div>
         <table class="table users">
@@ -30,7 +30,7 @@
     import TableRow from './TableRow.html';
     import Pagination from './Pagination.html';
 
-    const BASE_URL = '//api.datawrapper.local:18080/v3/users';
+    const BASE_URL = '//api.datawrapper.local:18080/v3';
 
     export default {
         components: {
@@ -105,7 +105,7 @@
 
             loadUserList() {
                 const { offset, limit, orderBy } = this.get();
-                const loader = getJSON(`${BASE_URL}?${stringify({ offset, limit, orderBy })}`, data => {
+                const loader = getJSON(`${BASE_URL}/users?${stringify({ offset, limit, orderBy })}`, data => {
                     if (data && data.list) {
                         const { total, list } = data;
                         this.set({ list, total });
@@ -117,14 +117,14 @@
             loadUser() {
                 const { currentUser } = this.get();
                 if (currentUser) {
-                    getJSON(`${BASE_URL}/${currentUser}`, data => {
+                    getJSON(`${BASE_URL}/users/${currentUser}`, data => {
                         if (data) this.set({ userDetails: data });
                     });
                 }
             },
 
             saveUser({ userId, changes }) {
-                const requestBody = JSON.stringify(changes, (key, value) => {
+                const body = JSON.stringify(changes, (key, value) => {
                     if (value === null) {
                         return undefined; // do not pass `null` (`null` means value not set)
                     } else if (value === '') {
@@ -134,7 +134,12 @@
                     }
                 });
 
-                patchJSON(`${BASE_URL}/${userId}`, requestBody);
+                patchJSON(`${BASE_URL}/users/${userId}`, body);
+            },
+
+            resetPassword({ email, token }) {
+                const body = JSON.stringify({ email, token });
+                window.fetch(`${BASE_URL}/auth/reset-password`, { method: 'POST', body });
             }
         },
 
