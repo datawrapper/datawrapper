@@ -1,3 +1,5 @@
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
 /**
  * computes the polygon area
  *
