@@ -105,10 +105,6 @@
                     {% if theme.getThemeData('options.footer.logo.url') %}
                         <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
                     {% endif %}
-
-                    {% if theme.getThemeData('options.footer.logo.text') %}
-                        <span class="logo-text"> {{ theme.getThemeData('options.footer.logo.text')}} </span>
-                    {% endif %}
                 {% endif %}
 
                 {% if theme.getThemeData("options.footer.sourcePosition") == "left" or theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
@@ -189,6 +185,10 @@
                             <span class="separator"></span>
                             <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{{ theme.getThemeData("options.footer.createdWithCaption") }}  {% trans "Datawrapper" %}</a>
                         </span>
+                        {% endif %}
+                        
+                        {% if theme.getThemeData('options.footer.logo.position') == "left" and theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.text') %}
+                            <div class="logo-text"> <span class="logo-text">{{ theme.getThemeData('options.footer.logo.text')}} </span></div>
                         {% endif %}
                     {% endblock %}
                 {% endif %}
