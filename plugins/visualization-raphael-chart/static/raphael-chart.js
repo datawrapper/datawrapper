@@ -457,7 +457,7 @@
             if (theme.colors.mode && theme.colors.mode.shades) {
                 for (var hex in theme.colors.mode.shades) {
                     if (hex.toLowerCase() == baseColor.toLowerCase()) {
-                        if (theme.colors.mode.shades[hex].length > row) {
+                        if (theme.colors.mode.shades[hex].length > row-1) {
                             return '' + theme.colors.mode.shades[hex][row-1];
                         }
                     }
