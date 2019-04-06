@@ -65,12 +65,13 @@
 
             me.initColorOptions(el);
             me.calculateGridLabelSpace();
+            var autoRotate = me.autoRotate();
             me.addSeriesLabelSpace(
                 c,
                 barColumns.map(function(d) {
                     return { name: d.title() };
                 })
-            );
+            ,autoRotate);
 
             _.each(barColumns, function(column, s) {
                 column.each(function(val) {
@@ -236,6 +237,7 @@
             var me = this,
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
+                autoRotate = me.autoRotate();
                 columns = me.getBarColumns(me.get('sort-values'), me.get('reverse-order')),
                 lblFmt = me.chart().columnFormatter(me.axes(true).labels);
 
@@ -249,6 +251,7 @@
 
             // draw bars
             _.each(columns, function(column, s) {
+                var autoRotate = this.valueOf();
                 column.each(function(val, r) {
                     me._color_opts.key = me.axes(true).labels.val(r);
                     var d = me.barDimensions(column, s, r),
@@ -319,9 +322,11 @@
                     if (me.useSmallerLabels()) {
                         lblcl.push('smaller');
                     }
-                    if (me.rotateLabels()) {
+                    if (me.rotateLabels(autoRotate)) {
                         lbl_w = 100;
-                        (lbl_y = val < 0 ? d.y - 10 : d.y + d.h - 2), lblcl.push('rotate90');
+                        lbl_y = val < 0 ? d.y - 20 : d.y + d.h - 2;
+                        lblcl.push('rotate90 lbl-align-' + (val < 0 ? 'left' : 'right'));
+
                         var height = me.labelHeight(
                             column.title(),
                             'label series x-tick-values chart-text' + (me.useSmallerLabels() ? ' smaller' : ''),
@@ -355,10 +360,7 @@
                                 align: halign,
                                 valign: valign,
                                 cl: lblcl.join(' '),
-                                css: {
-                                    'word-break': 'break-word'
-                                },
-                                rotate: me.rotateLabels() ? -90 : 0
+                                rotate: me.rotateLabels(autoRotate) ? -90 : 0
                             },
                             sl = (me.__series_names[column.name()] =
                                 me.__series_names[column.name()] || me.registerLabel(me.label(la.x, la.y, column.title(), la), column.name()));
@@ -386,7 +388,7 @@
                         directLbls.push(sl2);
                     }
                 });
-            });
+            },autoRotate);
 
             function getFill(col, el) {
                 var row = typeof el === 'object' ? el.data('row') : el,

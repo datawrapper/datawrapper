@@ -135,15 +135,18 @@
                 axisLabel = this.axesDef.labels,
                 lw = me.barLabelWidth(),
                 lblcl = ['series x-tick-values chart-text measure-word'],
+                labelList = me.meta.id === "column-chart" ? me.dataset.list() : me.axesDef.columns,
                 rotate = false;
-            //Replication of normal series label rendering except without positioning and with width = 0px
-            this.dataset.list().forEach(function(bar,i){
+            // Replication of normal series label rendering except without positioning and with width = 0px
+
+            labelList.forEach(function(bar,i){
+                var label = me.meta.id === "column-chart" ? bar[axisLabel] : me.axesDef.columns[i];
                 if (rotate === true) return;
-                if (!/^X\.\d+$/.test(bar[axisLabel])) {
-                    me.registerLabel(me.label(0, 0, bar[axisLabel], {
+                if (!/^X\.\d+$/.test(label)) {
+                    me.registerLabel(me.label(0, 0, label, {
                         w: "0px",
                         cl: lblcl
-                    }), bar[axisLabel], me.axes().labels, i);
+                    }), label, me.axes().labels, i);
 
                     if ($($('.measure-word span')[i]).width() > lw) rotate = true;
                 }
