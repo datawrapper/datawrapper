@@ -10,8 +10,10 @@ $app->get('/charts', function() use ($app) {
         if ($app->request()->get('filter')) {
             $f = explode("|", $app->request()->get('filter'));
             foreach ($f as $e) {
-                list($key, $val) = explode(":", $e);
-                $filter[$key] = $val;
+                $vals = explode(":", $e);
+                if (sizeof($vals) == 2) {
+                    $filter[$vals[0]] = $vals[1];
+                }
             }
         }
 
