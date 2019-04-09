@@ -238,7 +238,7 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             'options' => [
                                 [],
                             ],'depends-on' => [
-                                'direct-labeling' => 'off'
+                                'color-key' => false
                             ]
                         ]
                     ]
