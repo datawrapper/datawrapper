@@ -233,12 +233,12 @@ class DatawrapperPlugin_VisualizationColumnCharts extends DatawrapperPlugin_Visu
                             "default" => true
                         ),
                         'no-legend-warning' => [
-                            'type' => 'radio',
-                            'label' => __('Can your chart be understood without labels?<br>Try turning your title into a legend! Check out <a href=#">this tutorial<a>'),
+                            'type' => 'alert',
+                            'label' => __('warning / no legend'),
                             'options' => [
                                 [],
                             ],'depends-on' => [
-                                'color-key' => false
+                                'direct-labeling' => 'off'
                             ]
                         ]
                     ]
