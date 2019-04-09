@@ -3,9 +3,9 @@
 import test from 'ava';
 import $ from 'cash-dom';
 
-import TableHeader from './TableHeader.html';
+import Table from './Table.html';
 
-const headerItems = [
+const columnHeaders = [
     { name: 'One sortable header', orderBy: 'foo' },
     { name: 'Two sortable headers', orderBy: 'bar' },
     { name: 'Three sortable headers', orderBy: 'baz' },
@@ -14,26 +14,38 @@ const headerItems = [
 ];
 
 test.beforeEach(t => {
-    t.context = $('<table />');
+    t.context = $('<div />');
     $(document.body)
         .empty()
         .append(t.context);
 });
 
-test('Render a "thead" element', t => {
-    new TableHeader({
+test('Render a table with `thead` and `tbody` elements', t => {
+    new Table({
         target: t.context[0],
-        data: { headerItems }
+        data: { columnHeaders }
     });
 
-    const rootElement = t.context.children();
-    t.is(rootElement.prop('tagName'), 'THEAD');
+    const tableElement = t.context.children();
+    t.is(tableElement.get(0).tagName, 'TABLE');
+    t.is(tableElement.children().get(0).tagName, 'THEAD');
+    t.is(tableElement.children().get(1).tagName, 'TBODY');
+});
+
+test('Render table rows passed as children', t => {
+    new Table({
+        target: t.context[0],
+        data: { columnHeaders },
+        slots: { default: $('<tr><td>TEST</td></tr>').get(0) }
+    });
+
+    t.is(t.context.find('tbody').html(), '<tr><td>TEST</td></tr>');
 });
 
 test('Render a "th" element for each header item', t => {
-    new TableHeader({
+    new Table({
         target: t.context[0],
-        data: { headerItems }
+        data: { columnHeaders }
     });
 
     t.is(t.context.find('th').get().length, 5);
@@ -45,9 +57,9 @@ test('Render a "th" element for each header item', t => {
 });
 
 test('Render links for items where an "orderBy" prop is provided', t => {
-    new TableHeader({
+    new Table({
         target: t.context[0],
-        data: { headerItems }
+        data: { columnHeaders }
     });
 
     const linkElements = t.context.find('a');
@@ -60,12 +72,12 @@ test('Render links for items where an "orderBy" prop is provided', t => {
 test.cb('Clicking links should trigger a "sort" event', t => {
     t.plan(1);
 
-    const tableHeader = new TableHeader({
+    const table = new Table({
         target: t.context[0],
-        data: { headerItems }
+        data: { columnHeaders }
     });
 
-    tableHeader.on('sort', item => {
+    table.on('sort', item => {
         t.deepEqual(item, 'bar');
         t.end();
     });

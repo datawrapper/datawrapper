@@ -3,15 +3,11 @@
     <UserDetails user="{userDetails}" on:close="closeDetails()" on:resetPassword="resetPassword(event)"></UserDetails>
     {:else}
     <div>
-        <table class="table users">
-            <TableHeader headerItems="{columnHeaders}" on:sort="sort(event)"></TableHeader>
-
-            <tbody class="users">
-                {#each list as user}
-                <TableRow {user} on:navigate="showDetails(event)" on:save="saveUser(event)"></TableRow>
-                {/each}
-            </tbody>
-        </table>
+        <UserTable {columnHeaders} on:sort="sort(event)">
+            {#each list as user}
+            <UserTableRow {user} on:navigate="showDetails(event)" on:save="saveUser(event)"></UserTableRow>
+            {/each}
+        </UserTable>
         {#if paginationItems.length > 0}
         <div class="pull-right">
             <Pagination pages="{paginationItems}" on:navigate="gotoPage(event)" {currentPageNum}></Pagination>
@@ -26,8 +22,8 @@
     import { __ } from '../../shared/l10n';
     import { getJSON, patchJSON } from '../../shared/utils';
     import UserDetails from './UserDetails.html';
-    import TableHeader from './TableHeader.html';
-    import TableRow from './TableRow.html';
+    import UserTable from './Table.html';
+    import UserTableRow from './TableRow.html';
     import Pagination from './Pagination.html';
 
     const BASE_URL = '//api.datawrapper.local:18080/v3';
@@ -35,8 +31,8 @@
     export default {
         components: {
             UserDetails,
-            TableHeader,
-            TableRow,
+            UserTable,
+            UserTableRow,
             Pagination
         },
 
@@ -137,7 +133,6 @@
 
             resetPassword({ email, token }) {
                 const body = JSON.stringify({ email, token }, (key, value) => value || undefined);
-
                 window
                     .fetch(`${BASE_URL}/auth/reset-password`, {
                         method: 'POST',

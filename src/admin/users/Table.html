@@ -1,0 +1,30 @@
+<table class="table users">
+    <thead>
+        <tr>
+            {#each columnHeaders as item}
+            <th>
+                {#if item.orderBy}
+                <a href="{`?orderBy=${item.orderBy}`}" on:click="sort(event, item.orderBy)">{item.name}</a>
+                {:else}
+                <span>{item.name}</span>
+                {/if}
+            </th>
+            {/each}
+        </tr>
+    </thead>
+
+    <tbody class="users">
+        <slot><!-- table rows go here --></slot>
+    </tbody>
+</table>
+
+<script>
+    export default {
+        methods: {
+            sort(event, orderBy) {
+                event.preventDefault();
+                this.fire('sort', orderBy);
+            }
+        }
+    };
+</script>
