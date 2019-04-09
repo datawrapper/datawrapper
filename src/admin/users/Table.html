@@ -1,22 +1,46 @@
-<table class="table users">
-    <thead>
-        <tr>
+<div class="table-container">
+    <table class="table">
+        <colgroup>
             {#each columnHeaders as item}
-            <th>
-                {#if item.orderBy}
-                <a href="{`?orderBy=${item.orderBy}`}" on:click="sort(event, item.orderBy)">{item.name}</a>
-                {:else}
-                <span>{item.name}</span>
-                {/if}
-            </th>
+            <col style="width: {item.width}" />
             {/each}
-        </tr>
-    </thead>
+        </colgroup>
 
-    <tbody class="users">
-        <slot><!-- table rows go here --></slot>
-    </tbody>
-</table>
+        <thead>
+            <tr>
+                {#each columnHeaders as item}
+                <th class="{item.className}">
+                    {#if item.orderBy}
+                    <a class="col" href="{`?orderBy=${item.orderBy}`}" on:click="sort(event, item.orderBy)">{item.name}</a>
+                    {:else}
+                    <span class="col">{item.name}</span>
+                    {/if}
+                </th>
+                {/each}
+            </tr>
+        </thead>
+
+        <tbody>
+            <slot></slot>
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table {
+        min-width: 780px;
+    }
+
+    .table-container {
+        width: 100%;
+        overflow: scroll;
+    }
+
+    .col-num {
+        text-align: right;
+        padding-right: 1em;
+    }
+</style>
 
 <script>
     export default {

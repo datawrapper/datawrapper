@@ -1,16 +1,22 @@
 <tr class="user role-{user.role}">
-    <td class="id out">
+    <td class="col-num">
         <a href="?currentUser={user.id}" on:click="navigate(event, user.id)">
             {user.id}
         </a>
     </td>
 
     {#if !edit}
-    <td>{user.name || '–'}</td>
-    <td>{user.email}</td>
     <td>
-        <i class="icon-{role.icon}" title="Editor"></i>
-        {__(role.name, 'admin-users')}
+        <span class="col">{user.name || '–'}</span>
+    </td>
+    <td>
+        <span class="col">{user.email || '–'}</span>
+    </td>
+    <td>
+        <span class="col">
+            <i class="icon-{role.icon}" title="Editor"></i>
+            {__(role.name, 'admin-users')}
+        </span>
     </td>
     {:else}
     <td>
@@ -30,48 +36,68 @@
     </td>
     {/if}
 
-    <td data-test="display-teams">{@html teamsFormatted}</td>
-    <td data-test="display-createdat">{createdAtFormatted}</td>
-    <td class="center">
-        <a href="/admin/chart/by/{user.id}">{user.chartCount}</a>
+    <td data-test="display-teams">
+        <span class="col">{@html teamsFormatted}</span>
+    </td>
+    <td data-test="display-createdat">
+        <span class="col">{createdAtFormatted}</span>
+    </td>
+    <td>
+        <a class="col col-num" href="/admin/chart/by/{user.id}">{user.chartCount}</a>
     </td>
 
-    {#if !edit}
     <td class="actions">
+        {#if !edit}
         <button class="action" on:click="edit()" data-test="action-edit">
             <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
         </button>
-        <button class="action">
-            <i class="icon-envelope" title="{__('reset the password and send a mail', 'admin-users')}"></i>
-        </button>
-    </td>
-    {:else}
-    <td class="actions">
+        {:else}
         <button class="action" on:click="save()" data-test="action-save">
             <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
         </button>
         <button class="action" on:click="set({ edit: false })" data-test="action-close">
             <i class="icon-remove" title="{__('cancel', 'admin-users')}"></i>
         </button>
+        {/if}
     </td>
-    {/if}
 </tr>
 
 <style>
     input,
     select {
-        max-width: 150px;
+        width: calc(100% - 10px);
+        margin: -6px 0;
+        padding: 3px 5px;
+        font-size: 0.9em;
+        line-height: 0.9em;
+    }
+
+    td {
+        position: relative;
+    }
+
+    .col {
+        position: absolute;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: calc(100% - 20px);
+    }
+
+    .col-num {
+        text-align: right;
+        padding-right: 1em;
     }
 
     .actions {
         white-space: nowrap;
-        width: 30px;
+        text-align: center;
     }
 
     .action {
         border: 0;
-        margin: 0 20px 0 0;
-        padding: 0;
+        margin: 0;
+        padding: 0 5px;
         background: transparent;
         display: inline;
     }
@@ -89,7 +115,7 @@
     import { __ } from '../../shared/l10n';
     import moment from 'moment';
 
-    const linkToTeam = ({ name, id }) => `<a href="/admin/organizations/${id}">${name}</a>`;
+    const teamLink = ({ name, id }) => `<a href="/admin/organizations/${id}">${name}</a>`;
 
     export default {
         data() {
@@ -110,7 +136,7 @@
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
             createdAtFormatted: ({ user }) => moment(user.createdAt).format('lll'),
-            teamsFormatted: ({ user }) => user.teams.map(linkToTeam).join(', ') || '–'
+            teamsFormatted: ({ user }) => user.teams.map(teamLink).join(', ') || '–'
         },
 
         helpers: {

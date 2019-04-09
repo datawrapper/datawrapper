@@ -61,6 +61,10 @@ function setAttribute(node, attribute, value) {
 	node.setAttribute(attribute, value);
 }
 
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
 function selectOption(select, value) {
 	for (var i = 0; i < select.options.length; i += 1) {
 		var option = select.options[i];
@@ -1001,7 +1005,7 @@ var methods$1 = {
 };
 
 function create_main_fragment$1(component, state) {
-	var table, thead, tr, text_2, tbody, slot_content_default = component._slotted.default;
+	var div, table, colgroup, text_1, thead, tr, text_4, tbody, slot_content_default = component._slotted.default;
 
 	var each_value = state.columnHeaders;
 
@@ -1015,36 +1019,64 @@ function create_main_fragment$1(component, state) {
 		}));
 	}
 
+	var each_value_1 = state.columnHeaders;
+
+	var each_1_blocks = [];
+
+	for (var i = 0; i < each_value_1.length; i += 1) {
+		each_1_blocks[i] = create_each_block_1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			item: each_value_1[i],
+			item_index_1: i
+		}));
+	}
+
 	return {
 		c: function create() {
+			div = createElement("div");
 			table = createElement("table");
-			thead = createElement("thead");
-			tr = createElement("tr");
+			colgroup = createElement("colgroup");
 
 			for (var i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
 			}
 
-			text_2 = createText("\n\n    ");
+			text_1 = createText("\n\n        ");
+			thead = createElement("thead");
+			tr = createElement("tr");
+
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].c();
+			}
+
+			text_4 = createText("\n\n        ");
 			tbody = createElement("tbody");
 			this.h();
 		},
 
 		h: function hydrate() {
-			tbody.className = "users";
-			table.className = "table users";
+			table.className = "table svelte-1a6fop4";
+			div.className = "table-container svelte-1a6fop4";
 		},
 
 		m: function mount(target, anchor) {
-			insertNode(table, target, anchor);
+			insertNode(div, target, anchor);
+			appendNode(table, div);
+			appendNode(colgroup, table);
+
+			for (var i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(colgroup, null);
+			}
+
+			appendNode(text_1, table);
 			appendNode(thead, table);
 			appendNode(tr, thead);
 
-			for (var i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(tr, null);
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].m(tr, null);
 			}
 
-			appendNode(text_2, table);
+			appendNode(text_4, table);
 			appendNode(tbody, table);
 
 			if (slot_content_default) {
@@ -1068,7 +1100,7 @@ function create_main_fragment$1(component, state) {
 					} else {
 						each_blocks[i] = create_each_block(component, each_context);
 						each_blocks[i].c();
-						each_blocks[i].m(tr, null);
+						each_blocks[i].m(colgroup, null);
 					}
 				}
 
@@ -1078,13 +1110,43 @@ function create_main_fragment$1(component, state) {
 				}
 				each_blocks.length = each_value.length;
 			}
+
+			var each_value_1 = state.columnHeaders;
+
+			if (changed.columnHeaders) {
+				for (var i = 0; i < each_value_1.length; i += 1) {
+					var each_1_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						item: each_value_1[i],
+						item_index_1: i
+					});
+
+					if (each_1_blocks[i]) {
+						each_1_blocks[i].p(changed, each_1_context);
+					} else {
+						each_1_blocks[i] = create_each_block_1(component, each_1_context);
+						each_1_blocks[i].c();
+						each_1_blocks[i].m(tr, null);
+					}
+				}
+
+				for (; i < each_1_blocks.length; i += 1) {
+					each_1_blocks[i].u();
+					each_1_blocks[i].d();
+				}
+				each_1_blocks.length = each_value_1.length;
+			}
 		},
 
 		u: function unmount() {
-			detachNode(table);
+			detachNode(div);
 
 			for (var i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].u();
+			}
+
+			for (var i = 0; i < each_1_blocks.length; i += 1) {
+				each_1_blocks[i].u();
 			}
 
 			if (slot_content_default) {
@@ -1094,6 +1156,8 @@ function create_main_fragment$1(component, state) {
 
 		d: function destroy$$1() {
 			destroyEach(each_blocks);
+
+			destroyEach(each_1_blocks);
 		}
 	};
 }
@@ -1101,7 +1165,43 @@ function create_main_fragment$1(component, state) {
 // (4:12) {#each columnHeaders as item}
 function create_each_block(component, state) {
 	var item = state.item, each_value = state.each_value, item_index = state.item_index;
-	var th;
+	var col;
+
+	return {
+		c: function create() {
+			col = createElement("col");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(col, "width", item.width);
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(col, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			item = state.item;
+			each_value = state.each_value;
+			item_index = state.item_index;
+			if (changed.columnHeaders) {
+				setStyle(col, "width", item.width);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(col);
+		},
+
+		d: noop
+	};
+}
+
+// (11:16) {#each columnHeaders as item}
+function create_each_block_1(component, state) {
+	var item = state.item, each_value_1 = state.each_value_1, item_index_1 = state.item_index_1;
+	var th, th_class_value;
 
 	function select_block_type(state) {
 		if (item.orderBy) { return create_if_block$1; }
@@ -1115,6 +1215,11 @@ function create_each_block(component, state) {
 		c: function create() {
 			th = createElement("th");
 			if_block.c();
+			this.h();
+		},
+
+		h: function hydrate() {
+			th.className = th_class_value = "" + item.className + " svelte-1a6fop4";
 		},
 
 		m: function mount(target, anchor) {
@@ -1124,8 +1229,8 @@ function create_each_block(component, state) {
 
 		p: function update(changed, state) {
 			item = state.item;
-			each_value = state.each_value;
-			item_index = state.item_index;
+			each_value_1 = state.each_value_1;
+			item_index_1 = state.item_index_1;
 			if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
 				if_block.p(changed, state);
 			} else {
@@ -1134,6 +1239,10 @@ function create_each_block(component, state) {
 				if_block = current_block_type(component, state);
 				if_block.c();
 				if_block.m(th, null);
+			}
+
+			if ((changed.columnHeaders) && th_class_value !== (th_class_value = "" + item.className + " svelte-1a6fop4")) {
+				th.className = th_class_value;
 			}
 		},
 
@@ -1148,9 +1257,9 @@ function create_each_block(component, state) {
 	};
 }
 
-// (6:16) {#if item.orderBy}
+// (13:20) {#if item.orderBy}
 function create_if_block$1(component, state) {
-	var item = state.item, each_value = state.each_value, item_index = state.item_index;
+	var item = state.item, each_value_1 = state.each_value_1, item_index_1 = state.item_index_1;
 	var a, text_value = item.name, text, a_href_value;
 
 	return {
@@ -1162,12 +1271,13 @@ function create_if_block$1(component, state) {
 
 		h: function hydrate() {
 			addListener(a, "click", click_handler);
+			a.className = "col";
 			a.href = a_href_value = "?orderBy=" + (item.orderBy);
 
 			a._svelte = {
 				component: component,
-				each_value: state.each_value,
-				item_index: state.item_index
+				each_value_1: state.each_value_1,
+				item_index_1: state.item_index_1
 			};
 		},
 
@@ -1178,8 +1288,8 @@ function create_if_block$1(component, state) {
 
 		p: function update(changed, state) {
 			item = state.item;
-			each_value = state.each_value;
-			item_index = state.item_index;
+			each_value_1 = state.each_value_1;
+			item_index_1 = state.item_index_1;
 			if ((changed.columnHeaders) && text_value !== (text_value = item.name)) {
 				text.data = text_value;
 			}
@@ -1188,8 +1298,8 @@ function create_if_block$1(component, state) {
 				a.href = a_href_value;
 			}
 
-			a._svelte.each_value = state.each_value;
-			a._svelte.item_index = state.item_index;
+			a._svelte.each_value_1 = state.each_value_1;
+			a._svelte.item_index_1 = state.item_index_1;
 		},
 
 		u: function unmount() {
@@ -1202,15 +1312,20 @@ function create_if_block$1(component, state) {
 	};
 }
 
-// (8:16) {:else}
+// (15:20) {:else}
 function create_if_block_1(component, state) {
-	var item = state.item, each_value = state.each_value, item_index = state.item_index;
+	var item = state.item, each_value_1 = state.each_value_1, item_index_1 = state.item_index_1;
 	var span, text_value = item.name, text;
 
 	return {
 		c: function create() {
 			span = createElement("span");
 			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			span.className = "col";
 		},
 
 		m: function mount(target, anchor) {
@@ -1220,8 +1335,8 @@ function create_if_block_1(component, state) {
 
 		p: function update(changed, state) {
 			item = state.item;
-			each_value = state.each_value;
-			item_index = state.item_index;
+			each_value_1 = state.each_value_1;
+			item_index_1 = state.item_index_1;
 			if ((changed.columnHeaders) && text_value !== (text_value = item.name)) {
 				text.data = text_value;
 			}
@@ -1237,7 +1352,7 @@ function create_if_block_1(component, state) {
 
 function click_handler(event) {
 	var component = this._svelte.component;
-	var each_value = this._svelte.each_value, item_index = this._svelte.item_index, item = each_value[item_index];
+	var each_value_1 = this._svelte.each_value_1, item_index_1 = this._svelte.item_index_1, item = each_value_1[item_index_1];
 	component.sort(event, item.orderBy);
 }
 
@@ -5965,7 +6080,7 @@ var methods$2 = {
 };
 
 function create_main_fragment$2(component, state) {
-	var tr, td, a, text_value = state.user.id, text, a_href_value, text_3, text_4, td_1, text_5, td_2, text_6, text_7, td_3, a_1, text_8_value = state.user.chartCount, text_8, a_1_href_value, text_10, tr_class_value;
+	var tr, td, a, text_value = state.user.id, text, a_href_value, text_3, text_4, td_1, span, text_6, td_2, span_1, text_7, text_9, td_3, a_1, text_10_value = state.user.chartCount, text_10, a_1_href_value, text_12, td_4, tr_class_value;
 
 	function click_handler(event) {
 		var state = component.get();
@@ -5998,14 +6113,17 @@ function create_main_fragment$2(component, state) {
 			if_block.c();
 			text_4 = createText("\n\n    ");
 			td_1 = createElement("td");
-			text_5 = createText("\n    ");
+			span = createElement("span");
+			text_6 = createText("\n    ");
 			td_2 = createElement("td");
-			text_6 = createText(state.createdAtFormatted);
-			text_7 = createText("\n    ");
+			span_1 = createElement("span");
+			text_7 = createText(state.createdAtFormatted);
+			text_9 = createText("\n    ");
 			td_3 = createElement("td");
 			a_1 = createElement("a");
-			text_8 = createText(text_8_value);
-			text_10 = createText("\n\n    ");
+			text_10 = createText(text_10_value);
+			text_12 = createText("\n\n    ");
+			td_4 = createElement("td");
 			if_block_1.c();
 			this.h();
 		},
@@ -6013,14 +6131,18 @@ function create_main_fragment$2(component, state) {
 		h: function hydrate() {
 			addListener(a, "click", click_handler);
 			a.href = a_href_value = "?currentUser=" + state.user.id;
-			td.className = "col-id svelte-13l80oo";
+			td.className = "col-num svelte-17aubmt";
+			span.className = "col svelte-17aubmt";
 			td_1.dataset.test = "display-teams";
-			td_1.className = "svelte-13l80oo";
+			td_1.className = "svelte-17aubmt";
+			span_1.className = "col svelte-17aubmt";
 			td_2.dataset.test = "display-createdat";
-			td_2.className = "svelte-13l80oo";
+			td_2.className = "svelte-17aubmt";
+			a_1.className = "col col-num svelte-17aubmt";
 			a_1.href = a_1_href_value = "/admin/chart/by/" + state.user.id;
-			td_3.className = "center svelte-13l80oo";
-			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-13l80oo";
+			td_3.className = "svelte-17aubmt";
+			td_4.className = "actions svelte-17aubmt";
+			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-17aubmt";
 		},
 
 		m: function mount(target, anchor) {
@@ -6032,16 +6154,19 @@ function create_main_fragment$2(component, state) {
 			if_block.m(tr, null);
 			appendNode(text_4, tr);
 			appendNode(td_1, tr);
-			td_1.innerHTML = state.teamsFormatted;
-			appendNode(text_5, tr);
+			appendNode(span, td_1);
+			span.innerHTML = state.teamsFormatted;
+			appendNode(text_6, tr);
 			appendNode(td_2, tr);
-			appendNode(text_6, td_2);
-			appendNode(text_7, tr);
+			appendNode(span_1, td_2);
+			appendNode(text_7, span_1);
+			appendNode(text_9, tr);
 			appendNode(td_3, tr);
 			appendNode(a_1, td_3);
-			appendNode(text_8, a_1);
-			appendNode(text_10, tr);
-			if_block_1.m(tr, null);
+			appendNode(text_10, a_1);
+			appendNode(text_12, tr);
+			appendNode(td_4, tr);
+			if_block_1.m(td_4, null);
 		},
 
 		p: function update(changed, state) {
@@ -6064,15 +6189,15 @@ function create_main_fragment$2(component, state) {
 			}
 
 			if (changed.teamsFormatted) {
-				td_1.innerHTML = state.teamsFormatted;
+				span.innerHTML = state.teamsFormatted;
 			}
 
 			if (changed.createdAtFormatted) {
-				text_6.data = state.createdAtFormatted;
+				text_7.data = state.createdAtFormatted;
 			}
 
-			if ((changed.user) && text_8_value !== (text_8_value = state.user.chartCount)) {
-				text_8.data = text_8_value;
+			if ((changed.user) && text_10_value !== (text_10_value = state.user.chartCount)) {
+				text_10.data = text_10_value;
 			}
 
 			if ((changed.user) && a_1_href_value !== (a_1_href_value = "/admin/chart/by/" + state.user.id)) {
@@ -6084,16 +6209,16 @@ function create_main_fragment$2(component, state) {
 				if_block_1.d();
 				if_block_1 = current_block_type_1(component, state);
 				if_block_1.c();
-				if_block_1.m(tr, null);
+				if_block_1.m(td_4, null);
 			}
 
-			if ((changed.user) && tr_class_value !== (tr_class_value = "user role-" + state.user.role + " svelte-13l80oo")) {
+			if ((changed.user) && tr_class_value !== (tr_class_value = "user role-" + state.user.role + " svelte-17aubmt")) {
 				tr.className = tr_class_value;
 			}
 		},
 
 		u: function unmount() {
-			td_1.innerHTML = '';
+			span.innerHTML = '';
 
 			detachNode(tr);
 			if_block.u();
@@ -6108,7 +6233,7 @@ function create_main_fragment$2(component, state) {
 	};
 }
 
-// (24:12) {#each roleOptions as role}
+// (30:12) {#each roleOptions as role}
 function create_each_block$1(component, state) {
 	var role_1 = state.role, each_value = state.each_value, role_index = state.role_index;
 	var option, text_value = __(role_1.name, 'admin-users'), text, option_value_value, option_selected_value;
@@ -6159,42 +6284,51 @@ function create_each_block$1(component, state) {
 
 // (8:4) {#if !edit}
 function create_if_block$2(component, state) {
-	var td, text_value = state.user.name || '–', text, text_1, td_1, text_2_value = state.user.email, text_2, text_3, td_2, i, i_class_value, text_4, text_5_value = __(state.role.name, 'admin-users'), text_5;
+	var td, span, text_value = state.user.name || '–', text, text_2, td_1, span_1, text_3_value = state.user.email || '–', text_3, text_5, td_2, span_2, i, i_class_value, text_6, text_7_value = __(state.role.name, 'admin-users'), text_7;
 
 	return {
 		c: function create() {
 			td = createElement("td");
+			span = createElement("span");
 			text = createText(text_value);
-			text_1 = createText("\n    ");
+			text_2 = createText("\n    ");
 			td_1 = createElement("td");
-			text_2 = createText(text_2_value);
-			text_3 = createText("\n    ");
+			span_1 = createElement("span");
+			text_3 = createText(text_3_value);
+			text_5 = createText("\n    ");
 			td_2 = createElement("td");
+			span_2 = createElement("span");
 			i = createElement("i");
-			text_4 = createText("\n        ");
-			text_5 = createText(text_5_value);
+			text_6 = createText("\n            ");
+			text_7 = createText(text_7_value);
 			this.h();
 		},
 
 		h: function hydrate() {
-			td.className = "col-name svelte-13l80oo";
-			td_1.className = "col-email svelte-13l80oo";
-			i.className = i_class_value = "icon-" + state.role.icon + " svelte-13l80oo";
+			span.className = "col svelte-17aubmt";
+			td.className = "svelte-17aubmt";
+			span_1.className = "col svelte-17aubmt";
+			td_1.className = "svelte-17aubmt";
+			i.className = i_class_value = "icon-" + state.role.icon + " svelte-17aubmt";
 			i.title = "Editor";
-			td_2.className = "col-role svelte-13l80oo";
+			span_2.className = "col svelte-17aubmt";
+			td_2.className = "svelte-17aubmt";
 		},
 
 		m: function mount(target, anchor) {
 			insertNode(td, target, anchor);
-			appendNode(text, td);
-			insertNode(text_1, target, anchor);
+			appendNode(span, td);
+			appendNode(text, span);
+			insertNode(text_2, target, anchor);
 			insertNode(td_1, target, anchor);
-			appendNode(text_2, td_1);
-			insertNode(text_3, target, anchor);
+			appendNode(span_1, td_1);
+			appendNode(text_3, span_1);
+			insertNode(text_5, target, anchor);
 			insertNode(td_2, target, anchor);
-			appendNode(i, td_2);
-			appendNode(text_4, td_2);
-			appendNode(text_5, td_2);
+			appendNode(span_2, td_2);
+			appendNode(i, span_2);
+			appendNode(text_6, span_2);
+			appendNode(text_7, span_2);
 		},
 
 		p: function update(changed, state) {
@@ -6202,24 +6336,24 @@ function create_if_block$2(component, state) {
 				text.data = text_value;
 			}
 
-			if ((changed.user) && text_2_value !== (text_2_value = state.user.email)) {
-				text_2.data = text_2_value;
+			if ((changed.user) && text_3_value !== (text_3_value = state.user.email || '–')) {
+				text_3.data = text_3_value;
 			}
 
-			if ((changed.role) && i_class_value !== (i_class_value = "icon-" + state.role.icon + " svelte-13l80oo")) {
+			if ((changed.role) && i_class_value !== (i_class_value = "icon-" + state.role.icon + " svelte-17aubmt")) {
 				i.className = i_class_value;
 			}
 
-			if ((changed.role) && text_5_value !== (text_5_value = __(state.role.name, 'admin-users'))) {
-				text_5.data = text_5_value;
+			if ((changed.role) && text_7_value !== (text_7_value = __(state.role.name, 'admin-users'))) {
+				text_7.data = text_7_value;
 			}
 		},
 
 		u: function unmount() {
 			detachNode(td);
-			detachNode(text_1);
+			detachNode(text_2);
 			detachNode(td_1);
-			detachNode(text_3);
+			detachNode(text_5);
 			detachNode(td_2);
 		},
 
@@ -6227,7 +6361,7 @@ function create_if_block$2(component, state) {
 	};
 }
 
-// (15:4) {:else}
+// (21:4) {:else}
 function create_if_block_1$1(component, state) {
 	var td, input, input_updating = false, text_1, td_1, input_1, input_1_updating = false, text_3, td_2, select, select_updating = false;
 
@@ -6288,18 +6422,18 @@ function create_if_block_1$1(component, state) {
 			addListener(input, "input", input_input_handler);
 			setAttribute(input, "type", "text");
 			input.dataset.test = "input-name";
-			input.className = "svelte-13l80oo";
-			td.className = "svelte-13l80oo";
+			input.className = "svelte-17aubmt";
+			td.className = "svelte-17aubmt";
 			addListener(input_1, "input", input_1_input_handler);
 			setAttribute(input_1, "type", "email");
 			input_1.dataset.test = "input-email";
-			input_1.className = "svelte-13l80oo";
-			td_1.className = "email svelte-13l80oo";
+			input_1.className = "svelte-17aubmt";
+			td_1.className = "email svelte-17aubmt";
 			addListener(select, "change", select_change_handler);
 			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
-			select.className = "svelte-13l80oo";
-			td_2.className = "svelte-13l80oo";
+			select.className = "svelte-17aubmt";
+			td_2.className = "svelte-17aubmt";
 		},
 
 		m: function mount(target, anchor) {
@@ -6381,9 +6515,9 @@ function create_if_block_1$1(component, state) {
 	};
 }
 
-// (39:4) {#if !edit}
+// (50:8) {#if !edit}
 function create_if_block_2(component, state) {
-	var td, button, i, i_title_value;
+	var button, i, i_title_value;
 
 	function click_handler(event) {
 		component.edit();
@@ -6391,7 +6525,6 @@ function create_if_block_2(component, state) {
 
 	return {
 		c: function create() {
-			td = createElement("td");
 			button = createElement("button");
 			i = createElement("i");
 			this.h();
@@ -6401,19 +6534,17 @@ function create_if_block_2(component, state) {
 			i.className = "icon-pencil";
 			i.title = i_title_value = __('edit', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-13l80oo";
+			button.className = "action svelte-17aubmt";
 			button.dataset.test = "action-edit";
-			td.className = "actions svelte-13l80oo";
 		},
 
 		m: function mount(target, anchor) {
-			insertNode(td, target, anchor);
-			appendNode(button, td);
+			insertNode(button, target, anchor);
 			appendNode(i, button);
 		},
 
 		u: function unmount() {
-			detachNode(td);
+			detachNode(button);
 		},
 
 		d: function destroy$$1() {
@@ -6422,9 +6553,9 @@ function create_if_block_2(component, state) {
 	};
 }
 
-// (45:4) {:else}
+// (54:8) {:else}
 function create_if_block_3(component, state) {
-	var td, button, i, i_title_value, text_1, button_1, i_1, i_1_title_value;
+	var button, i, i_title_value, text_1, button_1, i_1, i_1_title_value;
 
 	function click_handler(event) {
 		component.save();
@@ -6436,7 +6567,6 @@ function create_if_block_3(component, state) {
 
 	return {
 		c: function create() {
-			td = createElement("td");
 			button = createElement("button");
 			i = createElement("i");
 			text_1 = createText("\n        ");
@@ -6449,27 +6579,27 @@ function create_if_block_3(component, state) {
 			i.className = "icon-ok";
 			i.title = i_title_value = __('save', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-13l80oo";
+			button.className = "action svelte-17aubmt";
 			button.dataset.test = "action-save";
 			i_1.className = "icon-remove";
 			i_1.title = i_1_title_value = __('cancel', 'admin-users');
 			addListener(button_1, "click", click_handler_1);
-			button_1.className = "action svelte-13l80oo";
+			button_1.className = "action svelte-17aubmt";
 			button_1.dataset.test = "action-close";
-			td.className = "actions svelte-13l80oo";
 		},
 
 		m: function mount(target, anchor) {
-			insertNode(td, target, anchor);
-			appendNode(button, td);
+			insertNode(button, target, anchor);
 			appendNode(i, button);
-			appendNode(text_1, td);
-			appendNode(button_1, td);
+			insertNode(text_1, target, anchor);
+			insertNode(button_1, target, anchor);
 			appendNode(i_1, button_1);
 		},
 
 		u: function unmount() {
-			detachNode(td);
+			detachNode(button);
+			detachNode(text_1);
+			detachNode(button_1);
 		},
 
 		d: function destroy$$1() {
@@ -6783,14 +6913,14 @@ function data$2() {
     currentUser: null,
     userDetails: null,
     columnHeaders: [
-        { name: '#', orderBy: 'id' },
-        { name: __('Name', 'admin-users'), orderBy: 'name' },
-        { name: __('Sign-in', 'admin-users'), orderBy: 'email' },
-        { name: __('Status', 'admin-users') },
-        { name: __('Teams', 'admin-users') },
-        { name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
-        { name: __('Charts', 'admin-users') },
-        { name: __('Actions', 'admin-users') }
+        { width: '10%', name: '#', orderBy: 'id', className: 'col-num' },
+        { width: '15%', name: __('Name', 'admin-users'), orderBy: 'name' },
+        { width: '20%', name: __('Sign-in', 'admin-users'), orderBy: 'email' },
+        { width: '15%', name: __('Status', 'admin-users') },
+        { width: '15%', name: __('Teams', 'admin-users') },
+        { width: '14%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
+        { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
+        { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
     ]
 };
 }
