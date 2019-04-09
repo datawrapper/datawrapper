@@ -65,7 +65,7 @@
 
             me.initColorOptions(el);
             me.calculateGridLabelSpace();
-            var autoRotate = me.autoRotate();
+            var autoRotate = me.autoRotate(); 
             me.addSeriesLabelSpace(
                 c,
                 barColumns.map(function(d) {
@@ -237,7 +237,7 @@
             var me = this,
                 c = me.__canvas,
                 n = me.axesDef.columns.length,
-                autoRotate = me.autoRotate();
+                autoRotate = me.autoRotate(),
                 columns = me.getBarColumns(me.get('sort-values'), me.get('reverse-order')),
                 lblFmt = me.chart().columnFormatter(me.axes(true).labels);
 
