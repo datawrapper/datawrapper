@@ -141,7 +141,7 @@ plugins:
 
 
 translation:
-  core: https://docs.google.com/spreadsheets/d...
+  core: https://docs.google.com/spreadsheets/d... <-- YOU NEED THE FULL URLS TO UPDATE TRANSLATIONS
   plugins: https://docs.google.com/spreadsheets/d...
 
 ## PHANTOMJS (optional)
