@@ -66,8 +66,8 @@
     input,
     select {
         width: calc(100% - 10px);
-        margin: -6px 0;
-        padding: 3px 5px;
+        margin: -6px;
+        padding: 3px 6px;
         font-size: 0.9em;
         line-height: 0.9em;
     }
@@ -135,7 +135,7 @@
 
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
-            createdAtFormatted: ({ user }) => moment(user.createdAt).format('lll'),
+            createdAtFormatted: ({ user }) => moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users')),
             teamsFormatted: ({ user }) => user.teams.map(teamLink).join(', ') || '–'
         },
 

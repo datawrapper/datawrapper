@@ -6027,7 +6027,7 @@ function role(ref) {
 function createdAtFormatted(ref) {
 	var user = ref.user;
 
-	return moment(user.createdAt).format('lll');
+	return moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users'));
 }
 
 function teamsFormatted(ref) {
@@ -6131,18 +6131,18 @@ function create_main_fragment$2(component, state) {
 		h: function hydrate() {
 			addListener(a, "click", click_handler);
 			a.href = a_href_value = "?currentUser=" + state.user.id;
-			td.className = "col-num svelte-17aubmt";
-			span.className = "col svelte-17aubmt";
+			td.className = "col-num svelte-d019lu";
+			span.className = "col svelte-d019lu";
 			td_1.dataset.test = "display-teams";
-			td_1.className = "svelte-17aubmt";
-			span_1.className = "col svelte-17aubmt";
+			td_1.className = "svelte-d019lu";
+			span_1.className = "col svelte-d019lu";
 			td_2.dataset.test = "display-createdat";
-			td_2.className = "svelte-17aubmt";
-			a_1.className = "col col-num svelte-17aubmt";
+			td_2.className = "svelte-d019lu";
+			a_1.className = "col col-num svelte-d019lu";
 			a_1.href = a_1_href_value = "/admin/chart/by/" + state.user.id;
-			td_3.className = "svelte-17aubmt";
-			td_4.className = "actions svelte-17aubmt";
-			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-17aubmt";
+			td_3.className = "svelte-d019lu";
+			td_4.className = "actions svelte-d019lu";
+			tr.className = tr_class_value = "user role-" + state.user.role + " svelte-d019lu";
 		},
 
 		m: function mount(target, anchor) {
@@ -6212,7 +6212,7 @@ function create_main_fragment$2(component, state) {
 				if_block_1.m(td_4, null);
 			}
 
-			if ((changed.user) && tr_class_value !== (tr_class_value = "user role-" + state.user.role + " svelte-17aubmt")) {
+			if ((changed.user) && tr_class_value !== (tr_class_value = "user role-" + state.user.role + " svelte-d019lu")) {
 				tr.className = tr_class_value;
 			}
 		},
@@ -6305,14 +6305,14 @@ function create_if_block$2(component, state) {
 		},
 
 		h: function hydrate() {
-			span.className = "col svelte-17aubmt";
-			td.className = "svelte-17aubmt";
-			span_1.className = "col svelte-17aubmt";
-			td_1.className = "svelte-17aubmt";
-			i.className = i_class_value = "icon-" + state.role.icon + " svelte-17aubmt";
+			span.className = "col svelte-d019lu";
+			td.className = "svelte-d019lu";
+			span_1.className = "col svelte-d019lu";
+			td_1.className = "svelte-d019lu";
+			i.className = i_class_value = "icon-" + state.role.icon + " svelte-d019lu";
 			i.title = "Editor";
-			span_2.className = "col svelte-17aubmt";
-			td_2.className = "svelte-17aubmt";
+			span_2.className = "col svelte-d019lu";
+			td_2.className = "svelte-d019lu";
 		},
 
 		m: function mount(target, anchor) {
@@ -6340,7 +6340,7 @@ function create_if_block$2(component, state) {
 				text_3.data = text_3_value;
 			}
 
-			if ((changed.role) && i_class_value !== (i_class_value = "icon-" + state.role.icon + " svelte-17aubmt")) {
+			if ((changed.role) && i_class_value !== (i_class_value = "icon-" + state.role.icon + " svelte-d019lu")) {
 				i.className = i_class_value;
 			}
 
@@ -6422,18 +6422,18 @@ function create_if_block_1$1(component, state) {
 			addListener(input, "input", input_input_handler);
 			setAttribute(input, "type", "text");
 			input.dataset.test = "input-name";
-			input.className = "svelte-17aubmt";
-			td.className = "svelte-17aubmt";
+			input.className = "svelte-d019lu";
+			td.className = "svelte-d019lu";
 			addListener(input_1, "input", input_1_input_handler);
 			setAttribute(input_1, "type", "email");
 			input_1.dataset.test = "input-email";
-			input_1.className = "svelte-17aubmt";
-			td_1.className = "email svelte-17aubmt";
+			input_1.className = "svelte-d019lu";
+			td_1.className = "email svelte-d019lu";
 			addListener(select, "change", select_change_handler);
 			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
-			select.className = "svelte-17aubmt";
-			td_2.className = "svelte-17aubmt";
+			select.className = "svelte-d019lu";
+			td_2.className = "svelte-d019lu";
 		},
 
 		m: function mount(target, anchor) {
@@ -6534,7 +6534,7 @@ function create_if_block_2(component, state) {
 			i.className = "icon-pencil";
 			i.title = i_title_value = __('edit', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-17aubmt";
+			button.className = "action svelte-d019lu";
 			button.dataset.test = "action-edit";
 		},
 
@@ -6579,12 +6579,12 @@ function create_if_block_3(component, state) {
 			i.className = "icon-ok";
 			i.title = i_title_value = __('save', 'admin-users');
 			addListener(button, "click", click_handler);
-			button.className = "action svelte-17aubmt";
+			button.className = "action svelte-d019lu";
 			button.dataset.test = "action-save";
 			i_1.className = "icon-remove";
 			i_1.title = i_1_title_value = __('cancel', 'admin-users');
 			addListener(button_1, "click", click_handler_1);
-			button_1.className = "action svelte-17aubmt";
+			button_1.className = "action svelte-d019lu";
 			button_1.dataset.test = "action-close";
 		},
 
@@ -6913,12 +6913,12 @@ function data$2() {
     currentUser: null,
     userDetails: null,
     columnHeaders: [
-        { width: '10%', name: '#', orderBy: 'id', className: 'col-num' },
-        { width: '15%', name: __('Name', 'admin-users'), orderBy: 'name' },
+        { width: '9%', name: '#', orderBy: 'id', className: 'col-num' },
+        { width: '12%', name: __('Name', 'admin-users'), orderBy: 'name' },
         { width: '20%', name: __('Sign-in', 'admin-users'), orderBy: 'email' },
         { width: '15%', name: __('Status', 'admin-users') },
         { width: '15%', name: __('Teams', 'admin-users') },
-        { width: '14%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
+        { width: '18%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
         { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
         { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
     ]
