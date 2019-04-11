@@ -1,11 +1,17 @@
 <div>
     {#if userDetails}
-    <UserDetails user="{userDetails}" on:close="closeDetails()" on:resetPassword="resetPassword(event)"></UserDetails>
+    <UserDetails
+        {roleOptions}
+        user="{userDetails}"
+        on:close="closeDetails()"
+        on:save="saveUser(event)"
+        on:resetPassword="resetPassword(event)"
+    ></UserDetails>
     {:else}
     <div>
         <UserTable {columnHeaders} on:sort="sort(event)">
             {#each list as user}
-            <UserTableRow {user} on:navigate="showDetails(event)" on:save="saveUser(event)"></UserTableRow>
+            <UserTableRow {user} {roleOptions} on:navigate="showDetails(event)" on:save="saveUser(event)"></UserTableRow>
             {/each}
         </UserTable>
         {#if paginationItems.length > 0}
@@ -44,17 +50,7 @@
             limit: 10,
             total: 0,
             currentUser: null,
-            userDetails: null,
-            columnHeaders: [
-                { width: '9%', name: '#', orderBy: 'id', className: 'col-num' },
-                { width: '12%', name: __('Name', 'admin-users'), orderBy: 'name' },
-                { width: '20%', name: __('Sign-in', 'admin-users'), orderBy: 'email' },
-                { width: '15%', name: __('Status', 'admin-users') },
-                { width: '15%', name: __('Teams', 'admin-users') },
-                { width: '18%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
-                { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
-                { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
-            ]
+            userDetails: null
         }),
 
         computed: {
@@ -66,7 +62,24 @@
         },
 
         helpers: {
-            __
+            __,
+            columnHeaders: [
+                { width: '9%', name: '#', orderBy: 'id', className: 'col-num' },
+                { width: '12%', name: __('Name', 'admin-users'), orderBy: 'name' },
+                { width: '20%', name: __('Email', 'admin-users'), orderBy: 'email' },
+                { width: '15%', name: __('Status', 'admin-users') },
+                { width: '15%', name: __('Teams', 'admin-users') },
+                { width: '18%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
+                { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
+                { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
+            ],
+            roleOptions: [
+                { slug: 'admin', name: 'Administrator', icon: 'fire' },
+                { slug: 'editor', name: 'Editor', icon: 'user' },
+                { slug: 'pending', name: 'Pending', icon: 'user' },
+                { slug: 'sysadmin', name: 'System Administrator', icon: 'user' },
+                { slug: 'graphic-editor', name: 'Editor', icon: 'user' }
+            ]
         },
 
         methods: {
@@ -92,9 +105,10 @@
             },
 
             closeDetails() {
-                const state = { currentUser: null, userDetails: null };
+                const { orderBy, offset, limit } = this.get();
+                const state = { orderBy, offset, limit, currentUser: '', userDetails: '' };
+                window.history.replaceState(state, '', `?${stringify(state)}`);
                 this.set(state);
-                window.history.replaceState(state, '', '?');
             },
 
             loadUserList() {
@@ -110,6 +124,7 @@
 
             loadUser() {
                 const { currentUser } = this.get();
+
                 if (currentUser) {
                     getJSON(`${BASE_URL}/users/${currentUser}`, data => {
                         if (data) this.set({ userDetails: data });
@@ -128,7 +143,14 @@
                     }
                 });
 
-                patchJSON(`${BASE_URL}/users/${userId}`, body);
+                patchJSON(`${BASE_URL}/users/${userId}`, body)
+                    .then(() => {
+                        this.loadUserList();
+                        this.closeDetails();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
             },
 
             resetPassword({ email, token }) {

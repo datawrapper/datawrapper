@@ -28,5 +28,7 @@
     "Pending": "Pending",
     "save": "save",
     "cancel": "cancel",
-    "YYYY-MM-DD, hh:mm a": "YYYY-MM-DD, hh:mm a"
+    "YYYY-MM-DD, hh:mm a": "YYYY-MM-DD, hh:mm a",
+    "reset password": "reset password",
+    "optional: one-time password": "optional: one-time password"
 }

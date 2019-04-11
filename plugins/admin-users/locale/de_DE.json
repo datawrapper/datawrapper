@@ -28,5 +28,7 @@
     "Pending": "Nicht aktiviert",
     "save": "Speichern",
     "cancel": "Abbrechen",
-    "YYYY-MM-DD, hh:mm a": "DD.MM.YYYY, HH:mm U\\hr"
+    "YYYY-MM-DD, hh:mm a": "DD.MM.YYYY, HH:mm U\\hr",
+    "reset password": "Password zurücksetzen",
+    "optional: one-time password": "optional: Einmal-Password"
 }
