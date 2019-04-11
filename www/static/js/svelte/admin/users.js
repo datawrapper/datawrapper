@@ -5349,7 +5349,7 @@ function createdAtFormatted(ref) {
 function passwordResetLink(ref) {
 	var user = ref.user;
 
-	return (protocol + "//" + host + "/account/reset-password/" + (user.resetPasswordToken));
+	return (protocol + "//" + host + "/account/reset-password/" + (encodeURI(user.resetPasswordToken)));
 }
 
 function data() {
@@ -5388,6 +5388,12 @@ var methods = {
             email: user.email,
             token: resetPasswordToken
         });
+    },
+
+    resendActivation: function resendActivation() {
+        var ref = this.get();
+        var user = ref.user;
+        this.fire('resendActivation', { email: user.email });
     }
 };
 
@@ -5395,12 +5401,13 @@ function oncreate() {
     // clone original user & token data:
     var ref = this.get();
     var user = ref.user;
+
     this.set({
         updates: Object.assign({}, user)
     });
 }
 function create_main_fragment(component, state) {
-	var section, h4, text_value = state.user.email, text, text_1, form, div, label, text_3, div_1, span, text_4_value = state.user.id, text_4, text_7, div_2, label_1, text_8_value = __('Name', 'admin-users'), text_8, text_9, div_3, input, input_updating = false, text_12, div_4, label_2, text_13_value = __('Email', 'admin-users'), text_13, text_14, div_5, input_1, input_1_updating = false, text_17, div_6, label_3, text_18_value = __('Status', 'admin-users'), text_18, text_19, div_7, select, select_updating = false, text_22, div_8, label_4, text_23_value = __('Charts', 'admin-users'), text_23, text_24, div_9, a, text_25_value = state.user.chartCount, text_25, a_href_value, text_29, div_10, label_5, text_30_value = __('Created at', 'admin-users'), text_30, text_31, div_11, span_1, text_32, text_35, div_12, label_6, text_36_value = __('Password', 'admin-users'), text_36, text_37, div_13, input_2, input_2_updating = false, text_38, button, text_39_value = __('reset password', 'admin-users'), text_39, text_41, text_44, div_14, div_15, button_1, text_45_value = __('save', 'admin-users'), text_45, text_47, button_2, text_48_value = __('cancel', 'admin-users'), text_48;
+	var section, h4, text_value = state.user.email, text, text_1, form, div, label, text_3, div_1, span, text_4_value = state.user.id, text_4, text_7, div_2, label_1, text_8_value = __('Name', 'admin-users'), text_8, text_9, div_3, input, input_updating = false, text_12, div_4, label_2, text_13_value = __('Email', 'admin-users'), text_13, text_14, div_5, input_1, input_1_updating = false, text_17, div_6, label_3, text_18_value = __('Status', 'admin-users'), text_18, text_19, div_7, select, select_updating = false, text_22, div_8, label_4, text_23_value = __('Charts', 'admin-users'), text_23, text_24, div_9, a, text_25_value = state.user.chartCount, text_25, a_href_value, text_29, div_10, label_5, text_30_value = __('Created at', 'admin-users'), text_30, text_31, div_11, span_1, text_32, text_35, div_12, label_6, text_36_value = __('Password', 'admin-users'), text_36, text_37, div_13, div_14, text_38, input_2, input_2_updating = false, text_39, button, text_40_value = __('reset password', 'admin-users'), text_40, text_45, text_46, div_15, div_16, button_1, text_47_value = __('save', 'admin-users'), text_47, text_49, button_2, text_50_value = __('cancel', 'admin-users'), text_50;
 
 	function input_input_handler() {
 		var state = component.get();
@@ -5438,6 +5445,8 @@ function create_main_fragment(component, state) {
 		select_updating = false;
 	}
 
+	var if_block = (state.user.resetPasswordToken) && create_if_block(component, state);
+
 	function input_2_input_handler() {
 		input_2_updating = true;
 		component.set({ resetPasswordToken: input_2.value });
@@ -5448,7 +5457,7 @@ function create_main_fragment(component, state) {
 		component.resetPassword();
 	}
 
-	var if_block = (state.user.resetPasswordToken) && create_if_block(component, state);
+	var if_block_1 = (state.user.activateToken) && create_if_block_1(component, state);
 
 	function click_handler_1(event) {
 		component.close();
@@ -5520,78 +5529,82 @@ function create_main_fragment(component, state) {
 			text_36 = createText(text_36_value);
 			text_37 = createText("\n            ");
 			div_13 = createElement("div");
-			input_2 = createElement("input");
-			text_38 = createText("\n                ");
-			button = createElement("button");
-			text_39 = createText(text_39_value);
-			text_41 = createText("\n                ");
-			if (if_block) { if_block.c(); }
-			text_44 = createText("\n\n        ");
 			div_14 = createElement("div");
+			if (if_block) { if_block.c(); }
+			text_38 = createText("\n                    ");
+			input_2 = createElement("input");
+			text_39 = createText("\n                    ");
+			button = createElement("button");
+			text_40 = createText(text_40_value);
+			text_45 = createText("\n\n        ");
+			if (if_block_1) { if_block_1.c(); }
+			text_46 = createText("\n\n        ");
 			div_15 = createElement("div");
+			div_16 = createElement("div");
 			button_1 = createElement("button");
-			text_45 = createText(text_45_value);
-			text_47 = createText("\n                ");
+			text_47 = createText(text_47_value);
+			text_49 = createText("\n                ");
 			button_2 = createElement("button");
-			text_48 = createText(text_48_value);
+			text_50 = createText(text_50_value);
 			this.h();
 		},
 
 		h: function hydrate() {
-			label.className = "control-label svelte-1ui53tq";
-			span.className = "value svelte-1ui53tq";
+			label.className = "control-label svelte-rok92v";
+			span.className = "value svelte-rok92v";
 			div_1.className = "controls";
-			div.className = "control-group svelte-1ui53tq";
-			label_1.className = "control-label svelte-1ui53tq";
+			div.className = "control-group svelte-rok92v";
+			label_1.className = "control-label svelte-rok92v";
 			label_1.htmlFor = "name";
 			addListener(input, "input", input_input_handler);
 			setAttribute(input, "type", "text");
 			input.id = "name";
 			div_3.className = "controls";
-			div_2.className = "control-group svelte-1ui53tq";
-			label_2.className = "control-label svelte-1ui53tq";
+			div_2.className = "control-group svelte-rok92v";
+			label_2.className = "control-label svelte-rok92v";
 			label_2.htmlFor = "email";
 			addListener(input_1, "input", input_1_input_handler);
 			setAttribute(input_1, "type", "text");
 			input_1.id = "email";
 			div_5.className = "controls";
-			div_4.className = "control-group svelte-1ui53tq";
-			label_3.className = "control-label svelte-1ui53tq";
+			div_4.className = "control-group svelte-rok92v";
+			label_3.className = "control-label svelte-rok92v";
 			label_3.htmlFor = "role";
 			addListener(select, "change", select_change_handler);
 			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
 			div_7.className = "controls";
-			div_6.className = "control-group svelte-1ui53tq";
-			label_4.className = "control-label svelte-1ui53tq";
-			a.className = "value svelte-1ui53tq";
+			div_6.className = "control-group svelte-rok92v";
+			label_4.className = "control-label svelte-rok92v";
+			a.className = "value svelte-rok92v";
 			a.href = a_href_value = "/admin/chart/by/" + state.user.id;
 			div_9.className = "controls";
-			div_8.className = "control-group svelte-1ui53tq";
-			label_5.className = "control-label svelte-1ui53tq";
-			span_1.className = "value svelte-1ui53tq";
+			div_8.className = "control-group svelte-rok92v";
+			label_5.className = "control-label svelte-rok92v";
+			span_1.className = "value svelte-rok92v";
 			div_11.className = "controls";
-			div_10.className = "control-group svelte-1ui53tq";
-			label_6.className = "control-label svelte-1ui53tq";
+			div_10.className = "control-group svelte-rok92v";
+			label_6.className = "control-label svelte-rok92v";
 			label_6.htmlFor = "passwordToken";
 			addListener(input_2, "input", input_2_input_handler);
 			setAttribute(input_2, "type", "text");
-			input_2.id = "email";
+			input_2.id = "passwordToken";
 			input_2.placeholder = "optional: one-time password";
 			addListener(button, "click", click_handler);
 			button.type = "button";
-			button.className = "btn btn-default btn-sm";
+			button.className = "btn btn-default";
+			div_14.className = "token-block svelte-rok92v";
 			div_13.className = "controls";
-			div_12.className = "control-group svelte-1ui53tq";
+			div_12.className = "control-group svelte-rok92v";
 			button_1.type = "submit";
-			button_1.className = "btn btn-primary svelte-1ui53tq";
+			button_1.className = "btn btn-primary svelte-rok92v";
 			button_1.dataset.test = "save";
 			addListener(button_2, "click", click_handler_1);
 			button_2.type = "button";
-			button_2.className = "btn btn-default svelte-1ui53tq";
+			button_2.className = "btn btn-default svelte-rok92v";
 			button_2.dataset.test = "close";
-			div_15.className = "controls controls-submit svelte-1ui53tq";
-			div_14.className = "control-group svelte-1ui53tq";
+			div_16.className = "controls controls-submit svelte-rok92v";
+			div_15.className = "control-group svelte-rok92v";
 			addListener(form, "submit", submit_handler);
 			form.className = "form-horizontal";
 		},
@@ -5664,23 +5677,26 @@ function create_main_fragment(component, state) {
 			appendNode(text_36, label_6);
 			appendNode(text_37, div_12);
 			appendNode(div_13, div_12);
-			appendNode(input_2, div_13);
+			appendNode(div_14, div_13);
+			if (if_block) { if_block.m(div_14, null); }
+			appendNode(text_38, div_14);
+			appendNode(input_2, div_14);
 
 			input_2.value = state.resetPasswordToken;
 
-			appendNode(text_38, div_13);
-			appendNode(button, div_13);
-			appendNode(text_39, button);
-			appendNode(text_41, div_13);
-			if (if_block) { if_block.m(div_13, null); }
-			appendNode(text_44, form);
-			appendNode(div_14, form);
-			appendNode(div_15, div_14);
-			appendNode(button_1, div_15);
-			appendNode(text_45, button_1);
-			appendNode(text_47, div_15);
-			appendNode(button_2, div_15);
-			appendNode(text_48, button_2);
+			appendNode(text_39, div_14);
+			appendNode(button, div_14);
+			appendNode(text_40, button);
+			appendNode(text_45, form);
+			if (if_block_1) { if_block_1.m(form, null); }
+			appendNode(text_46, form);
+			appendNode(div_15, form);
+			appendNode(div_16, div_15);
+			appendNode(button_1, div_16);
+			appendNode(text_47, button_1);
+			appendNode(text_49, div_16);
+			appendNode(button_2, div_16);
+			appendNode(text_50, button_2);
 		},
 
 		p: function update(changed, state) {
@@ -5734,20 +5750,34 @@ function create_main_fragment(component, state) {
 				text_32.data = state.createdAtFormatted;
 			}
 
-			if (!input_2_updating) { input_2.value = state.resetPasswordToken; }
-
 			if (state.user.resetPasswordToken) {
 				if (if_block) {
 					if_block.p(changed, state);
 				} else {
 					if_block = create_if_block(component, state);
 					if_block.c();
-					if_block.m(div_13, null);
+					if_block.m(div_14, text_38);
 				}
 			} else if (if_block) {
 				if_block.u();
 				if_block.d();
 				if_block = null;
+			}
+
+			if (!input_2_updating) { input_2.value = state.resetPasswordToken; }
+
+			if (state.user.activateToken) {
+				if (if_block_1) {
+					if_block_1.p(changed, state);
+				} else {
+					if_block_1 = create_if_block_1(component, state);
+					if_block_1.c();
+					if_block_1.m(form, text_46);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
 			}
 		},
 
@@ -5759,6 +5789,7 @@ function create_main_fragment(component, state) {
 			}
 
 			if (if_block) { if_block.u(); }
+			if (if_block_1) { if_block_1.u(); }
 		},
 
 		d: function destroy$$1() {
@@ -5768,9 +5799,10 @@ function create_main_fragment(component, state) {
 			destroyEach(each_blocks);
 
 			removeListener(select, "change", select_change_handler);
+			if (if_block) { if_block.d(); }
 			removeListener(input_2, "input", input_2_input_handler);
 			removeListener(button, "click", click_handler);
-			if (if_block) { if_block.d(); }
+			if (if_block_1) { if_block_1.d(); }
 			removeListener(button_2, "click", click_handler_1);
 			removeListener(form, "submit", submit_handler);
 		}
@@ -5826,25 +5858,23 @@ function create_each_block(component, state) {
 	};
 }
 
-// (57:16) {#if user.resetPasswordToken}
+// (54:20) {#if user.resetPasswordToken}
 function create_if_block(component, state) {
-	var div, code, text;
+	var code, text;
 
 	return {
 		c: function create() {
-			div = createElement("div");
 			code = createElement("code");
 			text = createText(state.passwordResetLink);
 			this.h();
 		},
 
 		h: function hydrate() {
-			div.className = "token-url svelte-1ui53tq";
+			code.className = "token svelte-rok92v";
 		},
 
 		m: function mount(target, anchor) {
-			insertNode(div, target, anchor);
-			appendNode(code, div);
+			insertNode(code, target, anchor);
 			appendNode(text, code);
 		},
 
@@ -5855,10 +5885,75 @@ function create_if_block(component, state) {
 		},
 
 		u: function unmount() {
-			detachNode(div);
+			detachNode(code);
 		},
 
 		d: noop
+	};
+}
+
+// (65:8) {#if user.activateToken}
+function create_if_block_1(component, state) {
+	var div, label, text_value = __('Activation token', 'admin-users'), text, text_1, div_1, div_2, code, text_2_value = state.user.activateToken, text_2, text_3, button, text_4_value = __('resend activation link', 'admin-users'), text_4;
+
+	function click_handler(event) {
+		component.resendActivation();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			label = createElement("label");
+			text = createText(text_value);
+			text_1 = createText("\n            ");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			code = createElement("code");
+			text_2 = createText(text_2_value);
+			text_3 = createText("\n                    ");
+			button = createElement("button");
+			text_4 = createText(text_4_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			label.className = "control-label svelte-rok92v";
+			code.className = "token svelte-rok92v";
+			addListener(button, "click", click_handler);
+			button.type = "button";
+			button.className = "btn btn-default";
+			div_2.className = "token-block svelte-rok92v";
+			div_1.className = "controls";
+			div.className = "control-group svelte-rok92v";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(label, div);
+			appendNode(text, label);
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			appendNode(code, div_2);
+			appendNode(text_2, code);
+			appendNode(text_3, div_2);
+			appendNode(button, div_2);
+			appendNode(text_4, button);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.user) && text_2_value !== (text_2_value = state.user.activateToken)) {
+				text_2.data = text_2_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			removeListener(button, "click", click_handler);
+		}
 	};
 }
 
@@ -5872,11 +5967,12 @@ function UserDetails(options) {
 	if (!('roleOptions' in this._state)) { console.warn("<UserDetails> was created without expected data property 'roleOptions'"); }
 	if (!('updates' in this._state)) { console.warn("<UserDetails> was created without expected data property 'updates'"); }
 
+
 	if (!('resetPasswordToken' in this._state)) { console.warn("<UserDetails> was created without expected data property 'resetPasswordToken'"); }
 
 	var self = this;
 	var _oncreate = function() {
-		var changed = { user: 1, roleOptions: 1, updates: 1, createdAtFormatted: 1, resetPasswordToken: 1, passwordResetLink: 1 };
+		var changed = { user: 1, roleOptions: 1, updates: 1, createdAtFormatted: 1, passwordResetLink: 1, resetPasswordToken: 1 };
 		oncreate.call(self);
 		self.fire("update", { changed: changed, current: self._state });
 	};
@@ -6130,7 +6226,7 @@ function create_each_block_1(component, state) {
 
 	function select_block_type(state) {
 		if (item.orderBy) { return create_if_block$1; }
-		return create_if_block_1;
+		return create_if_block_1$1;
 	}
 
 	var current_block_type = select_block_type(state);
@@ -6238,7 +6334,7 @@ function create_if_block$1(component, state) {
 }
 
 // (15:20) {:else}
-function create_if_block_1(component, state) {
+function create_if_block_1$1(component, state) {
 	var item = state.item, each_value_1 = state.each_value_1, item_index_1 = state.item_index_1;
 	var span, text_value = item.name, text;
 
@@ -6386,7 +6482,7 @@ function create_main_fragment$2(component, state) {
 
 	function select_block_type(state) {
 		if (!state.edit) { return create_if_block$2; }
-		return create_if_block_1$1;
+		return create_if_block_1$2;
 	}
 
 	var current_block_type = select_block_type(state);
@@ -6659,7 +6755,7 @@ function create_if_block$2(component, state) {
 }
 
 // (21:4) {:else}
-function create_if_block_1$1(component, state) {
+function create_if_block_1$2(component, state) {
 	var td, input, input_updating = false, text_1, td_1, input_1, input_1_updating = false, text_3, td_2, select, select_updating = false;
 
 	function input_input_handler() {
@@ -7214,13 +7310,13 @@ function data$2() {
 
 var columnHeaders = [
     { width: '9%', name: '#', orderBy: 'id', className: 'col-num' },
-    { width: '12%', name: __('Name', 'admin-users'), orderBy: 'name' },
-    { width: '20%', name: __('Email', 'admin-users'), orderBy: 'email' },
-    { width: '15%', name: __('Status', 'admin-users') },
-    { width: '15%', name: __('Teams', 'admin-users') },
-    { width: '18%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
-    { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
-    { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
+    { width: '12%', name: __('name', 'admin-users'), orderBy: 'name' },
+    { width: '20%', name: __('email', 'admin-users'), orderBy: 'email' },
+    { width: '15%', name: __('status', 'admin-users') },
+    { width: '15%', name: __('teams', 'admin-users') },
+    { width: '18%', name: __('created-at', 'admin-users'), orderBy: 'createdAt' },
+    { width: '05%', name: __('charts', 'admin-users'), className: 'col-num' },
+    { width: '06%', name: __('actions', 'admin-users'), className: 'col-num' }
 ];
 
 var roleOptions = [
@@ -7340,6 +7436,24 @@ var methods$4 = {
             .catch(function (err) {
                 console.error(err);
             });
+    },
+
+    resendActivation: function resendActivation(ref) {
+        var this$1 = this;
+        var email = ref.email;
+
+        window
+            .fetch((BASE_URL + "/auth/resend-activation"), {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify({ email: email })
+            })
+            .then(function () {
+                this$1.loadUser();
+            })
+            .catch(function (err) {
+                console.error(err);
+            });
     }
 };
 
@@ -7357,7 +7471,7 @@ function create_main_fragment$4(component, state) {
 
 	function select_block_type(state) {
 		if (state.userDetails) { return create_if_block$3; }
-		return create_if_block_1$2;
+		return create_if_block_1$3;
 	}
 
 	var current_block_type = select_block_type(state);
@@ -7397,7 +7511,7 @@ function create_main_fragment$4(component, state) {
 	};
 }
 
-// (13:12) {#each list as user}
+// (14:12) {#each list as user}
 function create_each_block$4(component, state) {
 	var user = state.user, each_value = state.each_value, user_index = state.user_index;
 
@@ -7446,7 +7560,7 @@ function create_each_block$4(component, state) {
 	};
 }
 
-// (17:8) {#if paginationItems.length > 0}
+// (18:8) {#if paginationItems.length > 0}
 function create_if_block_2$1(component, state) {
 	var div;
 
@@ -7514,6 +7628,9 @@ function create_if_block$3(component, state) {
 	userdetails.on("resetPassword", function(event) {
 		component.resetPassword(event);
 	});
+	userdetails.on("resendActivation", function(event) {
+		component.resendActivation(event);
+	});
 
 	return {
 		c: function create() {
@@ -7541,8 +7658,8 @@ function create_if_block$3(component, state) {
 	};
 }
 
-// (10:4) {:else}
-function create_if_block_1$2(component, state) {
+// (11:4) {:else}
+function create_if_block_1$3(component, state) {
 	var div, text, each_anchor, text_1, text_2;
 
 	var each_value = state.list;

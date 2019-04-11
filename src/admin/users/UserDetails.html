@@ -50,17 +50,31 @@
         <div class="control-group">
             <label class="control-label" for="passwordToken">{__('Password', 'admin-users')}</label>
             <div class="controls">
-                <input type="text" id="passwordToken" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
-                <button type="button" on:click="resetPassword()" class="btn btn-default">
-                    {__('reset password', 'admin-users')}
-                </button>
-                {#if user.resetPasswordToken}
-                <div class="token-url">
-                    <code>{passwordResetLink}</code>
+                <div class="token-block">
+                    {#if user.resetPasswordToken}
+                    <code class="token">{passwordResetLink}</code>
+                    {/if}
+                    <input type="text" id="passwordToken" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
+                    <button type="button" on:click="resetPassword()" class="btn btn-default">
+                        {__('reset password', 'admin-users')}
+                    </button>
                 </div>
-                {/if}
             </div>
         </div>
+
+        {#if user.activateToken}
+        <div class="control-group">
+            <label class="control-label">{__('Activation token', 'admin-users')}</label>
+            <div class="controls">
+                <div class="token-block">
+                    <code class="token">{user.activateToken}</code>
+                    <button type="button" on:click="resendActivation()" class="btn btn-default">
+                        {__('resend activation link', 'admin-users')}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {/if}
 
         <div class="control-group">
             <div class="controls controls-submit">
@@ -89,8 +103,14 @@
         margin-bottom: 0.35em;
     }
 
-    .token-url {
-        margin: 0.35em 0 0.7em 0;
+    .token-block {
+        margin: 0.35em 0;
+    }
+
+    .token {
+        margin: 0.35em 0;
+        padding: 0.5em 1em;
+        display: block;
     }
 
     .controls-submit button {
@@ -145,12 +165,18 @@
                     email: user.email,
                     token: resetPasswordToken
                 });
+            },
+
+            resendActivation() {
+                const { user } = this.get();
+                this.fire('resendActivation', { email: user.email });
             }
         },
 
         oncreate() {
             // clone original user & token data:
             const { user } = this.get();
+
             this.set({
                 updates: Object.assign({}, user)
             });

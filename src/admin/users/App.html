@@ -6,6 +6,7 @@
         on:close="closeDetails()"
         on:save="saveUser(event)"
         on:resetPassword="resetPassword(event)"
+        on:resendActivation="resendActivation(event)"
     ></UserDetails>
     {:else}
     <div>
@@ -160,6 +161,21 @@
                         method: 'POST',
                         credentials: 'include',
                         body
+                    })
+                    .then(() => {
+                        this.loadUser();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+
+            resendActivation({ email }) {
+                window
+                    .fetch(`${BASE_URL}/auth/resend-activation`, {
+                        method: 'POST',
+                        credentials: 'include',
+                        body: JSON.stringify({ email })
                     })
                     .then(() => {
                         this.loadUser();
