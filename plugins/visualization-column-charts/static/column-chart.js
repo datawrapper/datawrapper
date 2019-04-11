@@ -627,7 +627,12 @@
                 tickLabels = (me.__tickLabels = me.__tickLabels || {}),
                 gridLines = (me.__gridLines = me.__gridLines || {}),
                 position = me.get('grid-labels', 'outside'),
-                formatter = me.chart().columnFormatter(column ? column : me.getBarColumn()),
+                justInteger = (ticks.filter(function(v) { return v % 1 != 0; }).length > 0),
+                formatter = justInteger ? me.chart().columnFormatter(column ? column : me.getBarColumn())
+                    : function(v, x, c) {
+                        var val = me.chart().columnFormatter(column ? column : me.getBarColumn())(v,x,c);
+                        return (""+val).split(".")[0];
+                    },
                 duration = animate ? theme.duration : 0,
                 gridVisible = me.gridVisible(),
                 gridLabelPosition = me.gridLabelPosition();
