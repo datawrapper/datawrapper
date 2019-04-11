@@ -50,13 +50,13 @@
         <div class="control-group">
             <label class="control-label" for="passwordToken">{__('Password', 'admin-users')}</label>
             <div class="controls">
-                <input type="text" id="email" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
-                <button type="button" on:click="resetPassword()" class="btn btn-default btn-sm">
+                <input type="text" id="passwordToken" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
+                <button type="button" on:click="resetPassword()" class="btn btn-default">
                     {__('reset password', 'admin-users')}
                 </button>
                 {#if user.resetPasswordToken}
                 <div class="token-url">
-                    <code>/account/reset-password/{user.resetPasswordToken}</code>
+                    <code>{passwordResetLink}</code>
                 </div>
                 {/if}
             </div>
@@ -102,6 +102,8 @@
     import { __ } from '../../shared/l10n';
     import moment from 'moment';
 
+    const { protocol, host } = window.location;
+
     export default {
         data: () => ({
             resetPasswordToken: '',
@@ -111,7 +113,8 @@
 
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
-            createdAtFormatted: ({ user }) => moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users'))
+            createdAtFormatted: ({ user }) => moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users')),
+            passwordResetLink: ({ user }) => `${protocol}//${host}/account/reset-password/${encodeURI(user.resetPasswordToken)}`
         },
 
         helpers: {
