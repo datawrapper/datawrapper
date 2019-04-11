@@ -49,14 +49,14 @@
     <td class="actions">
         {#if !edit}
         <button class="action" on:click="edit()" data-test="action-edit">
-            <i class="icon-pencil" title="{__('edit', 'admin-users')}"></i>
+            <i class="icon-pencil" title="{__('actions / edit', 'admin-users')}"></i>
         </button>
         {:else}
         <button class="action" on:click="save()" data-test="action-save">
-            <i class="icon-ok" title="{__('save', 'admin-users')}"></i>
+            <i class="icon-ok" title="{__('actions / save', 'admin-users')}"></i>
         </button>
         <button class="action" on:click="set({ edit: false })" data-test="action-close">
-            <i class="icon-remove" title="{__('cancel', 'admin-users')}"></i>
+            <i class="icon-remove" title="{__('actions / cancel', 'admin-users')}"></i>
         </button>
         {/if}
     </td>
@@ -129,7 +129,7 @@
 
         computed: {
             role: ({ user, roleOptions }) => roleOptions.find(({ slug }) => slug === user.role),
-            createdAtFormatted: ({ user }) => moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users')),
+            createdAtFormatted: ({ user }) => moment(user.createdAt).format(__('date-time-format', 'admin-users')),
             teamsFormatted: ({ user }) => user.teams.map(teamLink).join(', ') || '–'
         },
 

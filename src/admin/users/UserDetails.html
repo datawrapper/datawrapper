@@ -9,19 +9,19 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="name">{__('Name', 'admin-users')}</label>
+            <label class="control-label" for="name">{__('name', 'admin-users')}</label>
             <div class="controls">
                 <input type="text" id="name" bind:value="updates.name" />
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="email">{__('Email', 'admin-users')}</label>
+            <label class="control-label" for="email">{__('email', 'admin-users')}</label>
             <div class="controls">
                 <input type="text" id="email" bind:value="updates.email" />
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="role">{__('Status', 'admin-users')}</label>
+            <label class="control-label" for="role">{__('status', 'admin-users')}</label>
             <div class="controls">
                 <select name="role" bind:value="updates.role">
                     {#each roleOptions as role}
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">{__('Charts', 'admin-users')}</label>
+            <label class="control-label">{__('charts', 'admin-users')}</label>
             <div class="controls">
                 <a class="value" href="/admin/chart/by/{ user.id }">
                     {user.chartCount}
@@ -41,14 +41,14 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">{__('Created at', 'admin-users')}</label>
+            <label class="control-label">{__('created-at', 'admin-users')}</label>
             <div class="controls">
                 <span class="value">{createdAtFormatted}</span>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="passwordToken">{__('Password', 'admin-users')}</label>
+            <label class="control-label" for="passwordToken">{__('password-reset', 'admin-users')}</label>
             <div class="controls">
                 <div class="token-block">
                     {#if user.resetPasswordToken}
@@ -56,7 +56,7 @@
                     {/if}
                     <input type="text" id="passwordToken" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
                     <button type="button" on:click="resetPassword()" class="btn btn-default">
-                        {__('reset password', 'admin-users')}
+                        {__('password-reset / send', 'admin-users')}
                     </button>
                 </div>
             </div>
@@ -64,12 +64,12 @@
 
         {#if user.activateToken}
         <div class="control-group">
-            <label class="control-label">{__('Activation token', 'admin-users')}</label>
+            <label class="control-label">{__('activation-token', 'admin-users')}</label>
             <div class="controls">
                 <div class="token-block">
                     <code class="token">{user.activateToken}</code>
                     <button type="button" on:click="resendActivation()" class="btn btn-default">
-                        {__('resend activation link', 'admin-users')}
+                        {__('activation-token / send', 'admin-users')}
                     </button>
                 </div>
             </div>
@@ -79,10 +79,10 @@
         <div class="control-group">
             <div class="controls controls-submit">
                 <button type="submit" class="btn btn-primary" data-test="save">
-                    {__('save', 'admin-users')}
+                    {__('actions / save', 'admin-users')}
                 </button>
                 <button type="button" class="btn btn-default" on:click="close()" data-test="close">
-                    {__('cancel', 'admin-users')}
+                    {__('actions / cancel', 'admin-users')}
                 </button>
             </div>
         </div>

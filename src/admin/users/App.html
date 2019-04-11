@@ -66,20 +66,18 @@
             __,
             columnHeaders: [
                 { width: '9%', name: '#', orderBy: 'id', className: 'col-num' },
-                { width: '12%', name: __('Name', 'admin-users'), orderBy: 'name' },
-                { width: '20%', name: __('Email', 'admin-users'), orderBy: 'email' },
-                { width: '15%', name: __('Status', 'admin-users') },
-                { width: '15%', name: __('Teams', 'admin-users') },
-                { width: '18%', name: __('Created at', 'admin-users'), orderBy: 'createdAt' },
-                { width: '05%', name: __('Charts', 'admin-users'), className: 'col-num' },
-                { width: '06%', name: __('Actions', 'admin-users'), className: 'col-num' }
+                { width: '12%', name: __('name', 'admin-users'), orderBy: 'name' },
+                { width: '20%', name: __('email', 'admin-users'), orderBy: 'email' },
+                { width: '15%', name: __('status', 'admin-users') },
+                { width: '15%', name: __('teams', 'admin-users') },
+                { width: '18%', name: __('created-at', 'admin-users'), orderBy: 'createdAt' },
+                { width: '05%', name: __('charts', 'admin-users'), className: 'col-num' },
+                { width: '06%', name: __('actions', 'admin-users'), className: 'col-num' }
             ],
             roleOptions: [
-                { slug: 'admin', name: 'Administrator', icon: 'fire' },
-                { slug: 'editor', name: 'Editor', icon: 'user' },
-                { slug: 'pending', name: 'Pending', icon: 'user' },
-                { slug: 'sysadmin', name: 'System Administrator', icon: 'user' },
-                { slug: 'graphic-editor', name: 'Editor', icon: 'user' }
+                { name: 'role / admin', slug: 'admin', icon: 'fire' },
+                { name: 'role / editor', slug: 'editor', icon: 'user' },
+                { name: 'role / pending', slug: 'pending', icon: 'user' }
             ]
         },
 

@@ -20,18 +20,6 @@ test.beforeEach(t => {
         .append(t.context);
 });
 
-test('Render a table with `thead` and `tbody` elements', t => {
-    new Table({
-        target: t.context[0],
-        data: { columnHeaders }
-    });
-
-    const tableElement = t.context.children();
-    t.is(tableElement.get(0).tagName, 'TABLE');
-    t.is(tableElement.children().get(0).tagName, 'THEAD');
-    t.is(tableElement.children().get(1).tagName, 'TBODY');
-});
-
 test('Render table rows passed as children', t => {
     new Table({
         target: t.context[0],

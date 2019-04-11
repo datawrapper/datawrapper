@@ -5407,7 +5407,7 @@ function oncreate() {
     });
 }
 function create_main_fragment(component, state) {
-	var section, h4, text_value = state.user.email, text, text_1, form, div, label, text_3, div_1, span, text_4_value = state.user.id, text_4, text_7, div_2, label_1, text_8_value = __('Name', 'admin-users'), text_8, text_9, div_3, input, input_updating = false, text_12, div_4, label_2, text_13_value = __('Email', 'admin-users'), text_13, text_14, div_5, input_1, input_1_updating = false, text_17, div_6, label_3, text_18_value = __('Status', 'admin-users'), text_18, text_19, div_7, select, select_updating = false, text_22, div_8, label_4, text_23_value = __('Charts', 'admin-users'), text_23, text_24, div_9, a, text_25_value = state.user.chartCount, text_25, a_href_value, text_29, div_10, label_5, text_30_value = __('Created at', 'admin-users'), text_30, text_31, div_11, span_1, text_32, text_35, div_12, label_6, text_36_value = __('Password', 'admin-users'), text_36, text_37, div_13, div_14, text_38, input_2, input_2_updating = false, text_39, button, text_40_value = __('reset password', 'admin-users'), text_40, text_45, text_46, div_15, div_16, button_1, text_47_value = __('save', 'admin-users'), text_47, text_49, button_2, text_50_value = __('cancel', 'admin-users'), text_50;
+	var section, h4, text_value = state.user.email, text, text_1, form, div, label, text_3, div_1, span, text_4_value = state.user.id, text_4, text_7, div_2, label_1, text_8_value = __('name', 'admin-users'), text_8, text_9, div_3, input, input_updating = false, text_12, div_4, label_2, text_13_value = __('email', 'admin-users'), text_13, text_14, div_5, input_1, input_1_updating = false, text_17, div_6, label_3, text_18_value = __('status', 'admin-users'), text_18, text_19, div_7, select, select_updating = false, text_22, div_8, label_4, text_23_value = __('charts', 'admin-users'), text_23, text_24, div_9, a, text_25_value = state.user.chartCount, text_25, a_href_value, text_29, div_10, label_5, text_30_value = __('created-at', 'admin-users'), text_30, text_31, div_11, span_1, text_32, text_35, div_12, label_6, text_36_value = __('password-reset', 'admin-users'), text_36, text_37, div_13, div_14, text_38, input_2, input_2_updating = false, text_39, button, text_40_value = __('password-reset / send', 'admin-users'), text_40, text_45, text_46, div_15, div_16, button_1, text_47_value = __('actions / save', 'admin-users'), text_47, text_49, button_2, text_50_value = __('actions / cancel', 'admin-users'), text_50;
 
 	function input_input_handler() {
 		var state = component.get();
@@ -5894,7 +5894,7 @@ function create_if_block(component, state) {
 
 // (65:8) {#if user.activateToken}
 function create_if_block_1(component, state) {
-	var div, label, text_value = __('Activation token', 'admin-users'), text, text_1, div_1, div_2, code, text_2_value = state.user.activateToken, text_2, text_3, button, text_4_value = __('resend activation link', 'admin-users'), text_4;
+	var div, label, text_value = __('activation-token', 'admin-users'), text, text_1, div_1, div_2, code, text_2_value = state.user.activateToken, text_2, text_3, button, text_4_value = __('activation-token / send', 'admin-users'), text_4;
 
 	function click_handler(event) {
 		component.resendActivation();
@@ -6426,7 +6426,7 @@ function role$1(ref) {
 function createdAtFormatted$1(ref) {
 	var user = ref.user;
 
-	return moment(user.createdAt).format(__('YYYY-MM-DD, hh:mm a', 'admin-users'));
+	return moment(user.createdAt).format(__('date-time-format', 'admin-users'));
 }
 
 function teamsFormatted(ref) {
@@ -6925,7 +6925,7 @@ function create_if_block_2(component, state) {
 
 		h: function hydrate() {
 			i.className = "icon-pencil";
-			i.title = i_title_value = __('edit', 'admin-users');
+			i.title = i_title_value = __('actions / edit', 'admin-users');
 			addListener(button, "click", click_handler);
 			button.className = "action svelte-d019lu";
 			button.dataset.test = "action-edit";
@@ -6970,12 +6970,12 @@ function create_if_block_3(component, state) {
 
 		h: function hydrate() {
 			i.className = "icon-ok";
-			i.title = i_title_value = __('save', 'admin-users');
+			i.title = i_title_value = __('actions / save', 'admin-users');
 			addListener(button, "click", click_handler);
 			button.className = "action svelte-d019lu";
 			button.dataset.test = "action-save";
 			i_1.className = "icon-remove";
-			i_1.title = i_1_title_value = __('cancel', 'admin-users');
+			i_1.title = i_1_title_value = __('actions / cancel', 'admin-users');
 			addListener(button_1, "click", click_handler_1);
 			button_1.className = "action svelte-d019lu";
 			button_1.dataset.test = "action-close";
@@ -7320,11 +7320,9 @@ var columnHeaders = [
 ];
 
 var roleOptions = [
-    { slug: 'admin', name: 'Administrator', icon: 'fire' },
-    { slug: 'editor', name: 'Editor', icon: 'user' },
-    { slug: 'pending', name: 'Pending', icon: 'user' },
-    { slug: 'sysadmin', name: 'System Administrator', icon: 'user' },
-    { slug: 'graphic-editor', name: 'Editor', icon: 'user' }
+    { name: 'role / admin', slug: 'admin', icon: 'fire' },
+    { name: 'role / editor', slug: 'editor', icon: 'user' },
+    { name: 'role / pending', slug: 'pending', icon: 'user' }
 ];
 
 var methods$4 = {

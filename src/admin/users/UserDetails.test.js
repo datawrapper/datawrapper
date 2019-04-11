@@ -5,6 +5,12 @@ import $ from 'cash-dom';
 
 import UserDetails from './UserDetails.html';
 
+const roleOptions = [
+    { name: 'role / admin', slug: 'admin', icon: 'fire' },
+    { name: 'role / editor', slug: 'editor', icon: 'user' },
+    { name: 'role / pending', slug: 'pending', icon: 'user' }
+];
+
 const user = {
     chartCount: 0,
     createdAt: '2019-03-18T17:19:59.000Z',
@@ -28,7 +34,7 @@ test.cb('Fire a "close" event when close button is clicked', t => {
 
     const details = new UserDetails({
         target: t.context[0],
-        data: { user }
+        data: { user, roleOptions }
     });
 
     details.on('close', () => {
