@@ -13,19 +13,19 @@
             }
 
             dataset.limitRows(100);
-            dataset.limitColumns(500);            
+            dataset.limitColumns(500);
             me.setRoot(el);
             me.axesDef = me.axes();
-            me.__lastRow = 0;            
+            me.__lastRow = 0;
         },
 
         render: function(el) {
-            var me = this, 
+            var me = this,
                 dataset = me.dataset,
                 theme = me.theme(),
-                filter, 
-                filterUI, 
-                c,                 
+                filter,
+                filterUI,
+                c,
                 chart_width,
                 barColumns = _.map(me.axes().columns, function(i) { return dataset.column(i); }),
                 filter = dw.utils.filter(dw.utils.columnNameColumn(barColumns), 0),
@@ -34,7 +34,7 @@
 
             me.checkDataset(el);
             if (!me.axesDef) return;
-                               
+
             if (filterUI) {
                 (function() {
                     var $h = $('#header'),
@@ -51,30 +51,30 @@
             c = me.initCanvas({ tpad: 20 }, 0, filterH);
             c.rpad = 0;
             c.lpad = 0;
-            c.bpad = 10;    
+            c.bpad = 10;
             if (filterUI) c.tpad += 5;
 
             me.renderChart(el, c);
-            
+
             me.renderingComplete();
         },
 
-        renderChart: function(el, c, chart_width) {            
+        renderChart: function(el, c, chart_width) {
             var me = this,
                 column = me.getBarColumn(),
                 bars = me.getBarValues(),
-                sortBars = me.get('sort-values'), 
+                sortBars = me.get('sort-values'),
                 reverse = me.get('reverse-order'),
                 chart_width = c.w - c.lpad - c.rpad;
 
             me.init();
 
-            if (!column) return;            
+            if (!column) return;
 
             me.calculateGridLabelSpace();
             var autoRotate = me.autoRotate();
-            me.addSeriesLabelSpace(c, bars, autoRotate);    
-            
+            me.addSeriesLabelSpace(c, bars, autoRotate);
+
             me.initDimensions();
             me.horzGrid();
 
@@ -83,8 +83,8 @@
 
             _.each(barValues, _.bind(me.__barEnter, me, autoRotate));
             // enable mouse events
-            el.mousemove(_.bind(me.onMouseMove, me));            
-            
+            el.mousemove(_.bind(me.onMouseMove, me));
+
             if (me.__gridLines && me.__gridLines['0']) me.__gridLines['0'].toFront();
         },
 
@@ -93,18 +93,18 @@
                 mm = me.getDomain(),
                 mm_r = mm[0] >= 0 ? 1 : mm[1] <= 0 ? 0 : mm[1] / (mm[1] - mm[0]),
                 maxLabelHeight = 0,
-                labelSpace = me.barLabelWidth(),                
+                labelSpace = me.barLabelWidth(),
                 labelClass = 'label series x-tick-values chart-text' + (me.useSmallerLabels() ? " smaller" : "");
 
             if (me.rotateLabels(autoRotate)) {
                 maxLabelHeight = Math.min(d3.max(bars, function(d) {
                     return me.labelWidth(d.name, labelClass);
                 }) + 10, 100);
-            } else {                
-                maxLabelHeight = d3.max(bars, function(d) {         
+            } else {
+                maxLabelHeight = d3.max(bars, function(d) {
                     return me.labelHeight(d.name, labelClass, labelSpace);
-                });                                      
-            }       
+                });
+            }
 
             c.bpad += maxLabelHeight * mm_r;
             c.tpad += maxLabelHeight * (1-mm_r);
@@ -153,7 +153,7 @@
             })
             $('.measure-word').remove();
             return rotate;
-        },    
+        },
 
         getDataRowByPoint: function(x, y) {
             return 0;
@@ -214,7 +214,7 @@
                 spos = me.labelPosition(barv, s, 'series', autoRotate, barv.name);
 
             // add value labels
-            if (valueLabels != "hide") {                
+            if (valueLabels != "hide") {
                 me.registerLabel(me.label(lpos.left, lpos.top, formatter(barv.value, true),{
                     w: lpos.width,
                     align: 'center',
@@ -224,7 +224,7 @@
 
             if (chart.hasHighlight() && chart.isHighlighted(barv.name)) {
                 lblcl.push('highlighted');
-            }            
+            }
             if (me.useSmallerLabels()) {
                 lblcl.push('smaller');
             }
@@ -255,7 +255,7 @@
             });
             me.__elements[bar_name] = undefined;
             me.__labels[bar_name] = undefined;
-        },        
+        },
 
         useSmallerLabels: function() {
             return this.barLabelWidth() < 30;
@@ -345,7 +345,7 @@
                 _.each(me.__labels[bar.name], function(lbl) {
                     var lpos;
                     if (lbl.hasClass('value')) {
-                        // update value    
+                        // update value
                         if (typeof bar.value == "undefined" || bar.value == null || bar.value == "undefined") bar.value = "";
                         lbl.text(formatter(bar.value, true));
                         lpos = me.labelPosition(bar, s, 'value');
@@ -392,11 +392,11 @@
         getDomain: function() {
             var me = this,
                 domain = me.getBarColumn().range(),
-                customRange = me.get("custom-range");        
+                customRange = me.get("custom-range");
 
             if (me.get('absolute-scale', false)) {
                 domain = dw.utils.minMax(_.map(me.axesDef.columns, function(c) { return me.dataset.column(c); }));
-            }    
+            }
 
             if (customRange && typeof customRange[0] !== "undefined" && customRange[0] !== null && customRange[0] !== "") {
                 domain[0] = customRange[0];
@@ -435,11 +435,11 @@
             return {
                 barWidth: cw / (n + (n > 2 ? (n - 1) : (n)) * pad),
                 labelWidth: cw / n
-            };            
+            };
         },
 
         barWidth: function() {
-            return this.barAndLabelWidth().barWidth;            
+            return this.barAndLabelWidth().barWidth;
         },
 
         barLabelWidth: function() {
@@ -452,7 +452,7 @@
                 gridVisible = me.gridVisible();
 
             if (gridVisible && position == "outside") {
-                return me.__gridLabelSpace;             
+                return me.__gridLabelSpace;
             } else {
                 return 5;
             }
@@ -473,18 +473,18 @@
                 sc = me.__scales,
                 c = me.__canvas,
                 n = me.getBarValues().length,
-                w, h, x, y, i, cw, bw,                
+                w, h, x, y, i, cw, bw,
                 gridLabelSpace = me.gridLabelSpace(),
                 val = bar.value,
                 bw = me.barWidth(),
-                barLabelWidth = me.barLabelWidth(),                
+                barLabelWidth = me.barLabelWidth(),
                 pad = me.get("bar-padding", 30) / 100,
                 gridLabelPosition = me.gridLabelPosition();
 
-            if (isNaN(val)) val = 0;           
-           
+            if (isNaN(val)) val = 0;
+
             h = sc.y(val) - sc.y(0);
-            
+
             if (h >= 0) {
                 y = c.h - c.bpad - sc.y(0) - h;
             } else {
@@ -498,14 +498,14 @@
                 otherBars = s * barLabelWidth,
                 pad = bw * pad;
 
-            x = Math.round(leftPad + otherBars + pad/2);        
+            x = Math.round(leftPad + otherBars + pad/2);
 
             return { width: Math.round(bw), height: h, x: x, y: y, bx: x, bw: bw, pad: pad };
         },
 
         labelPosition: function(bar, s, type, autoRotate, txt) {
             var me = this,
-                d = me.barDimensions(bar, s), 
+                d = me.barDimensions(bar, s),
                 lbl_w,
                 rotated = me.rotateLabels(autoRotate),
                 val = bar.value,
@@ -535,7 +535,7 @@
                 lbl_w = me.barLabelWidth();
 
                 if (me.rotateLabels(autoRotate)) {
-                    var height = me.labelHeight(txt, "label series x-tick-values chart-text" + (me.useSmallerLabels() ? " smaller" : ""), 100);                    
+                    var height = me.labelHeight(txt, "label series x-tick-values chart-text" + (me.useSmallerLabels() ? " smaller" : ""), 100);
 
                     lbl_w = 100;
                     halign = 'right'; // lbl_top ? 'right' : 'left';
@@ -555,7 +555,7 @@
                 customTicks = me.get('custom-ticks'),
                 gridVisible = me.gridVisible(),
                 domain = me.__domain
-        
+
             if (typeof customTicks !== "undefined" && customTicks !== null && customTicks !== "") {
                 ticks = customTicks.split(",");
                 ticks.forEach(function (el, i) {
@@ -573,7 +573,7 @@
 
             return ticks;
         },
- 
+
         horzGrid: function(animate, column) {
             // draw tick marks and labels
             var me = this,
@@ -593,7 +593,7 @@
 
 
             _.each(ticks, function(val, t) {
-                var y = c.h - c.bpad - yscale(val),                     
+                var y = c.h - c.bpad - yscale(val),
                     ly = y-(position == "inside" ? 10 : 0),
                     key = String(val);
 
@@ -607,7 +607,7 @@
                     }
                 } else {
                     if (position == "outside") {
-                        align = "left";                        
+                        align = "left";
                         x = c.w - me.__gridLabelSpace + 8;
                     } else {
                         align = "right";
@@ -625,14 +625,14 @@
                         lbl.text(me.formatValue(val, true));
                     } else {
                         lbl.text(formatter(val, t == ticks.length-1, false));
-                    }                    
+                    }
 
                     lbl.animate({ x: x, y: ly, css: { opacity: 1 } }, duration, theme.easing);
                 }
                 if (theme.yTicks) {
                     me.path([['M', c.lpad-25, y], ['L', c.lpad-20,y]], 'tick');
                 }
-                if (theme.horizontalGrid) {       
+                if (theme.horizontalGrid) {
                     var x = c.lpad,
                         x2 = c.w - c.rpad;
 
@@ -642,9 +642,9 @@
                                 x += me.__gridLabelSpace;
                             } else if (gridLabelPosition == "right") {
                                 x2 -= me.__gridLabelSpace;
-                            }                            
+                            }
                         }
-                    }                 
+                    }
 
                     var lattrs = { path: [['M', x, y], ['L', x2, y]], opacity: 1 },
                         l = gridLines[key] = gridLines[key] || me.path(lattrs.path, 'grid y-gridline');
@@ -666,7 +666,7 @@
                             old_path = [['M', c.lpad, y], ['L', c.w - c.rpad,y]];
                         }
                         l.attr({ opacity: 0, path: old_path });
-                    }                    
+                    }
                     l.animate(lattrs, duration * (me.__lastTicks ? 1 : 0.2), theme.easing);
                 }
             });
@@ -692,20 +692,20 @@
 
             me.__lastTicks = ticks;
             me.__lastDomain = domain.slice(0);
-        },   
+        },
 
         hover: function(hover_key) {
             var me = this,
                 cm = this.colorMap(),
                 barvalues = me.getBarValues(),
                 l = barvalues.length;
- 
+
             _.each(barvalues, function(bar) {
                 _.each(me.__labels[bar.name], function(lbl) {
                     if (hover_key !== undefined && bar.name == hover_key) {
-                        lbl.addClass('hover');                        
+                        lbl.addClass('hover');
                     } else {
-                        lbl.removeClass('hover');                        
+                        lbl.removeClass('hover');
                     }
                 });
                 _.each(me.__elements[bar.name], function(el) {
