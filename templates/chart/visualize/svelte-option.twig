@@ -180,9 +180,15 @@ require(['{{ path }}'], function(mod) {
 
 
     // observe changes to old chart object
-    dw.backend.currentChart.onChange(function() {
+    dw.backend.currentChart.onChange(function(ds, changed) {
         passiveMode = true;
-        chart.set(dw.backend.currentChart.attributes());
+        var attr = dw.backend.currentChart.attributes();
+        chart.set(attr);
+        if (changed == 'metadata.data.changes') {
+            chart.load(dw.backend.__currentData).then((ds) => {
+                chart.set({ dataset: ds });
+            });
+        }
         setTimeout(function() {
             passiveMode = false;
         }, 100)
