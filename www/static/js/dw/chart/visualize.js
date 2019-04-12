@@ -7,10 +7,8 @@ define([
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
     'js/misc/classify',
-    'js/misc/jquery.easing'],
-
-function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
-
+    'js/misc/jquery.easing'
+], function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
     var _typeHasChanged = false,
         _themeHasChanged = false,
         _axesHaveChanged = false,
@@ -33,7 +31,7 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         });
 
         dw.backend.on('dataset-changed', function() {
-            iframe.attr('src', "");
+            iframe.attr('src', '');
 
             // reload options
             loadOptions().done(function() {
@@ -41,7 +39,7 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
                 loadVis();
             });
             // remove all notifications
-            $("#notifications .notification").fadeOutAndRemove();
+            $('#notifications .notification').fadeOutAndRemove();
         });
 
         dw.backend.fire('vis-metas', _visMetas);
@@ -51,10 +49,9 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         chart.load(dw.backend.__currentData).done(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
-        if (iframe[0].contentDocument.readyState == "complete") {            
+        if (iframe[0].contentDocument.readyState == 'complete') {
             iframeLoaded();
         }
-
 
         // initialize some UI actions
         if (!visMetas[chart.get('type')]['svelte-sidebar']) {
@@ -64,6 +61,10 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         }
 
         initScrollToFix();
+
+        if (window.location.hash === '' && chart.get('metadata.visualize.chart-type-set')) {
+            window.location.hash = '#refine-the-chart';
+        }
 
         $(window).on('keyup', function(e) {
             if (e.ctrlKey && e.keyCode == 82) {
@@ -105,10 +106,10 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
                 loadVis();
             });
             // remove all notifications
-            $("#notifications .notification").fadeOutAndRemove();
+            $('#notifications .notification').fadeOutAndRemove();
         } else if (_axesHaveChanged && svelteControls) {
             loadVis();
-            $("#notifications .notification").fadeOutAndRemove();
+            $('#notifications .notification').fadeOutAndRemove();
         }
 
         _themeHasChanged = false;
@@ -136,27 +137,27 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
 
         $('#text-title').focus(function(evt) {
             var val = $(evt.target).val();
-            if (val.substr(0,2) == '[ ' && val.substr(val.length-2) == ' ]') {
+            if (val.substr(0, 2) == '[ ' && val.substr(val.length - 2) == ' ]') {
                 evt.target.select();
             }
         });
 
         chart.onChange(function(chart, key, value) {
-            function changed (test) {
-                return (key.substr(0, test.length) == test ||
-                    key.replace(/metadata/, "metadata.print").substr(0, test.length) == test);
+            function changed(test) {
+                return key.substr(0, test.length) == test || key.replace(/metadata/, 'metadata.print').substr(0, test.length) == test;
             }
 
             if (key == 'type') _typeHasChanged = true;
             if (key == 'theme') _themeHasChanged = true;
             if (changed('metadata.data.transpose')) _transposed = true;
 
-            if (changed('metadata.axes') ||
+            if (
+                changed('metadata.axes') ||
                 changed('metadata.data.column-format') ||
                 changed('metadata.data.changes') ||
                 changed('metadata.data.column-order') ||
-                changed('metadata.describe.computed-columns')) {
-
+                changed('metadata.describe.computed-columns')
+            ) {
                 _axesHaveChanged = true;
             }
 
@@ -234,12 +235,8 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         _optionsSynchronized = false;
         var l = 0;
 
-        $('.vis-options-refine').load(
-            '/xhr/'+chart.get('id')+'/vis-options?nocache='+Math.random(), _loaded
-        );
-        $('.vis-options-annotate').load(
-            '/xhr/'+chart.get('id')+'/vis-options?annotate=1&nocache='+Math.random(), _loaded
-        );
+        $('.vis-options-refine').load('/xhr/' + chart.get('id') + '/vis-options?nocache=' + Math.random(), _loaded);
+        $('.vis-options-annotate').load('/xhr/' + chart.get('id') + '/vis-options?annotate=1&nocache=' + Math.random(), _loaded);
         function _loaded() {
             l++;
             if (l == 2) {
@@ -272,13 +269,16 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
             selVis = $('.vis-selected'),
             archived = $('.vis-archive-select select');
 
-        unfolded.show().data('h', unfolded.height()).hide();
+        unfolded
+            .show()
+            .data('h', unfolded.height())
+            .hide();
         thumbs.click(function(e) {
             var thumb = $(e.target);
             if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
             thumbs.removeClass('active');
             thumb.addClass('active');
-            selVis.html('<img src="'+thumb.data('static-path')+thumb.data('id')+'.png" width="24" />' + thumb.data('title'));
+            selVis.html('<img src="' + thumb.data('static-path') + thumb.data('id') + '.png" width="24" />' + thumb.data('title'));
 
             if (thumb.data('id') != chart.get('type')) showLoadingIndicator();
 
@@ -288,6 +288,7 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
                     unfolded.hide();
                 });*/
                 chart.set('type', thumb.data('id'));
+                chart.set('metadata.visualize.chart-type-set', true);
             }, 100);
             if (archived.length) {
                 archived.prop('value', '');
@@ -296,7 +297,10 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
 
         folded.click(function() {
             folded.hide();
-            unfolded.height(0).show().animate({ height: unfolded.data('h') }, 300);
+            unfolded
+                .height(0)
+                .show()
+                .animate({ height: unfolded.data('h') }, 300);
         });
 
         unfolded.show();
@@ -327,10 +331,21 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
 
     /** Set into `dw.backend.currentVis` the edited visualization (editor side) */
     function loadVis() {
-        if (iframe.attr('src') === "") {
+        if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            function getParameterByName(e,n){n||(n=window.location.href),e=e.replace(/[\[\]]/g,"\\$&");var r=new RegExp("[?&]"+e+"(=([^&#]*)|&|#|$)").exec(n);return r?r[2]?decodeURIComponent(r[2].replace(/\+/g," ")):"":null}
-            iframe.attr('src', '/chart/'+chart.get('id')+'/preview?innersvg=1&random='+Math.floor(Math.random()*100000)+(getParameterByName('mode')=='print'?"&mode=print":""));
+            function getParameterByName(e, n) {
+                n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
+                var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
+                return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
+            }
+            iframe.attr(
+                'src',
+                '/chart/' +
+                    chart.get('id') +
+                    '/preview?innersvg=1&random=' +
+                    Math.floor(Math.random() * 100000) +
+                    (getParameterByName('mode') == 'print' ? '&mode=print' : '')
+            );
         }
         dw.backend.currentVis = dw.visualization(chart.get('type'));
         dw.backend.currentVis.chart(chart);
@@ -346,10 +361,10 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         loadVisDfd.resolve();
     }
 
-
-    function updateVisBackground() {  // and show msg if chart needs more space
+    function updateVisBackground() {
+        // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents(),
-            bgcol =  $('body', iframe).css('background-color'),
+            bgcol = $('body', iframe).css('background-color'),
             white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
             border = white ? '#ffffff' : '#ddd';
 
@@ -365,9 +380,9 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
         var scrollFixCont = $('.scrollfix-cont');
         scrollFixCont.scrollToFixed({
             marginTop: 0,
-            zIndex : 999,
+            zIndex: 999,
             limit: function() {
-                var sftop =  scrollFixCont.offset().top,
+                var sftop = scrollFixCont.offset().top,
                     ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
                 // if (sftop > ftminsfh) return sftop+10;
                 return ftminsfh;
@@ -378,5 +393,4 @@ function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUp
     return {
         init: init
     };
-
 });

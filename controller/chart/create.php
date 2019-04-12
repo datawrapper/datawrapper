@@ -27,8 +27,9 @@ $app->map('/chart/create', function() use ($app) {
                 $chart->setTitle($req->post('title'));
             }
         }
-        if ($req->post('type') != null) {
-            $chart->setType($req->post('type'));
+        if ($req->params('type') != null) {
+            $chart->setType($req->params('type'));
+            $chart->updateMetadata('visualize.chart-type-set', true);
         }
         if ($req->post('basemap')) {
             $chart->updateMetadata('visualize.map-type-set', 'true');
