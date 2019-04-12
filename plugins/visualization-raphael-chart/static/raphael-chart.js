@@ -233,9 +233,12 @@
                     height: h
                 };
                 if (attrs.valign == 'bottom') {
-                    css.top = 'auto';
+                    css.top = 'initial';
                     css.bottom = me.__canvas.h - y + (attrs.rotate == -90 ? -20 : 0);
                     css.height = 'auto';
+                }
+                if (attrs.valign == 'top') {
+                    css.bottom = 'initial';
                 }
                 if (attrs.size) {
                     css['font-size'] = attrs.size;
