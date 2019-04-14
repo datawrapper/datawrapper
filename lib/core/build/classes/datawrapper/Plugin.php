@@ -24,7 +24,7 @@ class Plugin extends BasePlugin {
     }
 
     public function getPath() {
-        return ROOT_PATH . 'plugins/' . $this->getName() . '/';
+        return get_plugin_path() . $this->getName() . '/';
     }
 
     private $packageInfo;
@@ -75,7 +75,7 @@ class Plugin extends BasePlugin {
     public function getLastModifiedTime($as_timestamp = false) {
         if (isset($this->__lastModTime)) return $this->__lastModTime;
         $lastm = 0;
-        $path = ROOT_PATH . 'plugins/' . $this->getId() . '/';
+        $path = get_plugin_path() . $this->getId() . '/';
         $files = array_filter(glob('{'.$path.'*,'.$path.'*/*,'.$path.'*/*/*}', GLOB_BRACE));
         foreach ($files as $file) {
             if (strpos($file, '/locale/') > 0) continue; // ignore locales file

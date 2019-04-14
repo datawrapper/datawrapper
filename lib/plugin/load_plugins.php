@@ -29,9 +29,10 @@ class DatawrapperPluginManager {
 
         $could_not_install = array();
         $init_queue = array();
+        $plugin_path = get_plugin_path();
 
-        $load_plugin = function ($plugin) use (&$init_queue) {
-            $plugin_path = ROOT_PATH . 'plugins/' . $plugin->getName();;
+        $load_plugin = function ($plugin) use (&$init_queue, $plugin_path) {
+            $plugin_path = $plugin_path . $plugin->getName();;
             // first if this plugin uses composer, require the autoloader
             if (file_exists($plugin_path . '/vendor/autoload.php')) {
                 require_once $plugin_path . '/vendor/autoload.php';
@@ -73,7 +74,7 @@ class DatawrapperPluginManager {
                     foreach ($deps as $dep => $version) {
                         if (!isset(self::$loaded[$dep])) {  // dependency not loaded
                             $can_load = false;
-                            if (!file_exists(ROOT_PATH . 'plugins/' . $dep) || isset($could_not_install[$dep])) {
+                            if (!file_exists(get_plugin_path() . $dep) || isset($could_not_install[$dep])) {
                                 // dependency does not exists, not good
                                 $could_not_install[$id] = true;
                             }
@@ -143,7 +144,7 @@ class DatawrapperPluginManager {
                             ->endUse()
                             ->where(
                                 '(
-                                    product.deleted = false AND 
+                                    product.deleted = false AND
                                         ((user_product.user_id = ? AND (user_product.expires >= NOW() OR user_product.expires IS NULL))
                                             OR
                                         (user_organization.user_id= ? AND user_organization.invite_token = "" AND (organization_product.expires >= NOW() OR organization_product.expires IS NULL))))',
