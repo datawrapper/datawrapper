@@ -36,6 +36,7 @@ log.txt
 node_modules
 node_modules/*
 plugins/*
+!plugins/.gitignore
 !plugins/admin-jobs
 !plugins/admin-users
 !plugins/email-native
