@@ -38,13 +38,6 @@ node_modules
 node_modules/*
 plugins/*
 !plugins/.gitignore
-!plugins/admin-jobs
-!plugins/admin-users
-!plugins/email-native
-!plugins/visualization-column-charts
-!plugins/visualization-data-table
-!plugins/visualization-raphael-chart
-!plugins/visualization
 scripts/execute_jobs.lock
 scripts/history.php
 scripts/lib/execute_jobs.lock
