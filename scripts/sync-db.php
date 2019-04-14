@@ -11,6 +11,9 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 Propel::init(ROOT_PATH . "lib/core/build/conf/datawrapper-conf.php");
 require_once ROOT_PATH . 'lib/Migrations.php';
 
+// load YAML parser and config
+$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad(ROOT_PATH . 'config.yaml'));
+
 use dw\Migrations as Migrations;
 
 try {
@@ -28,7 +31,7 @@ try {
 $scopes = ['core'];
 
 // add scope for plugins with a migrations folder
-foreach (glob(ROOT_PATH . 'plugins/*/migrations') as $path) {
+foreach (glob(get_plugin_path() . '*/migrations') as $path) {
     $parts = explode('/', $path);
     $scopes[] = $parts[count($parts)-2];
 }
