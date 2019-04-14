@@ -29,10 +29,11 @@ class DatawrapperPluginManager {
 
         $could_not_install = array();
         $init_queue = array();
-        $plugin_path = get_plugin_path();
+        $plugin_root = get_plugin_path();
 
-        $load_plugin = function ($plugin) use (&$init_queue, $plugin_path) {
-            $plugin_path = $plugin_path . $plugin->getName();;
+        $load_plugin = function ($plugin) use (&$init_queue, $plugin_root) {
+            $plugin_path = $plugin_root . $plugin->getName();
+
             // first if this plugin uses composer, require the autoloader
             if (file_exists($plugin_path . '/vendor/autoload.php')) {
                 require_once $plugin_path . '/vendor/autoload.php';

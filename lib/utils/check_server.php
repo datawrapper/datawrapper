@@ -121,8 +121,8 @@ function check_plugins() {
     $installed = array();
 
     foreach ($res as $row) {
-        $plugin_json = ROOT_PATH . 'plugins/' . $row['id'] . '/plugin.json';
-        $package_json = ROOT_PATH . 'plugins/' . $row['id'] . '/package.json';
+        $plugin_json = get_plugin_path() . $row['id'] . '/plugin.json';
+        $package_json = get_plugin_path() . $row['id'] . '/package.json';
         if (!file_exists($package_json) && !file_exists($plugin_json)) {
             $missing[] = $row['id'];
         } else {
@@ -178,7 +178,7 @@ function check_plugins() {
             . 'files could not be found:</p>'
             . '<ul><li><code>'. join('</li></code><li><code>', $missing) . '</code></li></ul>';
     }
-    $missing_dep = array_unique($missing_dep);
+
     if (count($missing_dep) > 0) {
         return '<h2>Some plugins are missing</h2>'
             . '<p>The following plugins are declared as dependencies by other plugins:</p>'

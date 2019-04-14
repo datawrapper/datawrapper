@@ -279,7 +279,7 @@ class DatawrapperPlugin {
             if (empty($regex) || preg_match($regex, $uri)) {
                 $plugin_assets = array();
                 foreach ($assets as $file) {
-                    $asset_file = ROOT_PATH . "plugins/" . $plugin->getName() . "/static/$file";
+                    $asset_file = get_plugin_path() . $plugin->getName() . "/static/$file";
                     if (!file_exists($asset_file)) continue;
                     $sha = substr(md5(file_get_contents($asset_file)), 0, 8);
                     $plugin_assets[] = array($plugin->getName() . '/' . $file, $plugin, $sha);
