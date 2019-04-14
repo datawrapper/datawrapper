@@ -60,7 +60,7 @@ class Chart extends Store {
         // set a new dataset, or reset the old one if ds===true
         if (arguments.length) {
             if (ds !== true) this._dataset_cache = ds;
-            const jsonData = typeof ds.list !== 'function';
+            const jsonData = ds !== true && typeof ds.list !== 'function';
             this._dataset = jsonData
                 ? ds
                 : reorderColumns(this, applyChanges(this, addComputedColumns(this, ds === true ? this._dataset_cache : ds)));

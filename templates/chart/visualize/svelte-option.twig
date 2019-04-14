@@ -26,6 +26,7 @@ require(['{{ path }}'], function(mod) {
     );
 
     var chart = new mod.Chart(chartData);
+    window.chart2 = chart;
     var getJSON = mod.utils.getJSON;
 
     var themeCache = {};
@@ -185,9 +186,8 @@ require(['{{ path }}'], function(mod) {
         var attr = dw.backend.currentChart.attributes();
         chart.set(attr);
         if (changed == 'metadata.data.changes') {
-            chart.load(dw.backend.__currentData).then((ds) => {
-                chart.set({ dataset: ds });
-            });
+            const dataset = chart.dataset(true);
+            chart.set({ dataset });
         }
         setTimeout(function() {
             passiveMode = false;

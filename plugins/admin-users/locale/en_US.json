@@ -1,0 +1,20 @@
+{
+  "name": "Name",
+  "email": "Email",
+  "status": "Status",
+  "teams": "Teams",
+  "created-at": "Created at",
+  "charts": "Charts",
+  "actions": "Actions",
+  "actions / edit": "Edit",
+  "actions / save": "Save",
+  "actions / cancel": "Cancel",
+  "date-time-format": "YYYY-MM-DD, hh:mm a",
+  "role / admin": "Admin",
+  "role / editor": "Editor",
+  "role / pending": "Pending",
+  "activation-token": "Account activation",
+  "activation-token / send": "Resend activation token",
+  "password-reset": "Password reset",
+  "password-reset / send": "Send password reset"
+}
