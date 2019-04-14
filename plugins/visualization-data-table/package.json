@@ -1,9 +1,0 @@
-{
-    "name": "visualization-data-table",
-    "version": "1.7.1",
-    "author": "Gregor Aisch & Edouard Richard",
-    "dependencies": {
-        "core": "1.7.3",
-        "visualization": "*"
-    }
-}

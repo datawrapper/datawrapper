@@ -1,6 +1,0 @@
-{
-    "name": "admin-jobs",
-    "author": "Gregor Aisch",
-    "version": "1.0",
-    "description": "For monitoring background jobs running on Datawrapper, such as static thumbnail generation."
-}
