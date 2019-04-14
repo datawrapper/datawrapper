@@ -94,14 +94,17 @@ class Datawrapper_L10N {
 
         $domain = false;
         $backtrace = debug_backtrace();
+        $pluginPathnames = explode('/', get_plugin_path());
+        $check = $pluginPathnames[sizeof($pluginPathnames)-2];
+
         // check the entire backtrace for a plugin path
         foreach ($backtrace as $b) {
-            if (isset($b['file']) && preg_match('#/plugins/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['file']) : $b['file'], $m)) {
+            if (isset($b['file']) && preg_match('#/'.$check.'/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['file']) : $b['file'], $m)) {
                 return $m[1];
             }
             if (isset($b['function']) && $b['function'] == 'doDisplay') {
                 if (isset($b['args'][0]['l10n__domain']) &&
-                    preg_match('#/plugins/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['args'][0]['l10n__domain']) : $b['args'][0]['l10n__domain'], $m)) {
+                    preg_match('#/'.$check.'/([^/]+)/#', $evil ? str_replace(DIRECTORY_SEPARATOR, '/', $b['args'][0]['l10n__domain']) : $b['args'][0]['l10n__domain'], $m)) {
                     return $m[1];
                 }
             }
