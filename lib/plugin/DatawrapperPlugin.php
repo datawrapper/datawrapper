@@ -47,7 +47,7 @@ class DatawrapperPlugin {
      */
     private function copyStaticFiles() {
         // check if there's a /static in plugin directory
-        $source_path = realpath(ROOT_PATH . 'plugins/') . '/' . $this->getName() . '/static';
+        $source_path = realpath(get_plugin_path()) . '/' . $this->getName() . '/static';
         if (!file_exists($source_path)) return;
 
         // create directory in www/static/plugins/ if not exists
@@ -71,7 +71,7 @@ class DatawrapperPlugin {
      */
     private function copyTemplates() {
         // check if there's a /templates in plugin directory
-        $source_path = realpath(ROOT_PATH . 'plugins/') . '/' . $this->getName() . '/templates';
+        $source_path = realpath(get_plugin_path()) . '/' . $this->getName() . '/templates';
         if (!file_exists($source_path)) return;
 
         // create directory in /templates/plugins/ if not exists
@@ -119,7 +119,7 @@ class DatawrapperPlugin {
      */
     private function getPackageJSON() {
         if (!empty($this->__packageJson)) return $this->__packageJson;
-        $plugin_path = ROOT_PATH . 'plugins/' . $this->getName();
+        $plugin_path = get_plugin_path() . $this->getName();
         if (file_exists($plugin_path . '/plugin.json')) {
             $meta = json_decode(file_get_contents($plugin_path . '/plugin.json'),true);
         } else {
@@ -141,7 +141,7 @@ class DatawrapperPlugin {
      * returns the timestamp of the last install
      */
     public function getLastInstallTime() {
-        $pluginDir = ROOT_PATH . 'plugins/' . $this->getName();
+        $pluginDir = get_plugin_path() . $this->getName();
         if (file_exists($pluginDir . '/plugin.json')) {
             return filemtime($pluginDir . '/plugin.json');
         }

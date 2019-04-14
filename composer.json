@@ -36,6 +36,7 @@
             "lib/utils/copy_recursively.php",
             "lib/utils/disable_cache.php",
             "lib/utils/errors.php",
+            "lib/utils/get_plugin_path.php",
             "lib/utils/i18n.php",
             "lib/utils/pagination.php",
             "lib/utils/parse_config.php",

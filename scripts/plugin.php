@@ -179,7 +179,7 @@ function download_from_git($url) {
                 return true;
             }
             if (!empty($pkg_info['name'])) {
-                $plugin_path = ROOT_PATH . 'plugins' . DIRECTORY_SEPARATOR . $pkg_info['name'];
+                $plugin_path = (get_plugin_path()) . $pkg_info['name'];
                 if (!file_exists($plugin_path)) {
                     recurse_copy($tmp_name, $plugin_path);
                     install($pkg_info['name']);
@@ -393,7 +393,7 @@ exit();
 function _apply($pattern, $func) {
     $plugin_ids = array();
     if (strpos($pattern, '*') > -1) {
-        $base_path = ROOT_PATH . "plugins" . DIRECTORY_SEPARATOR . $pattern . DIRECTORY_SEPARATOR;
+        $base_path = get_plugin_path() . $pattern . DIRECTORY_SEPARATOR;
         $paths = array_merge(
             glob($base_path . "package.json"),
             glob($base_path . "plugin.json")
