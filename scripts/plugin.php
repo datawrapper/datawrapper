@@ -208,7 +208,7 @@ function removeOrphans() {
     $plugins = PluginQuery::create()->find();
     foreach ($plugins as $plugin) {
         if (!file_exists($plugin->getPath())) {
-            $plugin->remove();
+            $plugin->delete();
             print "Removed plugin " . $plugin->getId() . " from db.\n";
         }
     }
