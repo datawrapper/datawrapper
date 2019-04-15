@@ -202,13 +202,15 @@ function download_from_git($url) {
 }
 
 /*
- * uninstalls all plugins in db
+ * uninstalls plugins in db that are not in filesystem
  */
-function purge() {
-    $plugins = PluginQuery::create()->findAll();
+function removeOrphans() {
+    $plugins = PluginQuery::create()->find();
     foreach ($plugins as $plugin) {
-        uninstall($plugin->getId());
-        print "Uninstalled plugin " . $plugin->getId() . ".\n";
+        if (!file_exists($plugin->getPath())) {
+            $plugin->remove();
+            print "Removed plugin " . $plugin->getId() . " from db.\n";
+        }
     }
 }
 
@@ -385,7 +387,7 @@ switch ($cmd) {
     case 'reload': reload(); break;
     case 'install': install($argv[2]); break;
     case 'uninstall': uninstall($argv[2]); break;
-    case 'purge': purge(); break;
+    case 'remove-orphans': removeOrphans(); break;
     case 'enable': enable($argv[2]); break;
     case 'disable': disable($argv[2]); break;
     case 'update': update($argv[2]); break;
