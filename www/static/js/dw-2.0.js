@@ -547,9 +547,10 @@ dw.column.types.number = function(sample) {
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 if (prepend.indexOf("{+/-}") > -1) {
-                    if (val < 0) { val = val.replace("-",""); prepend = prepend.replace("{+/-}","-"); }
-                    else if (val > 0) prepend = prepend.replace("{+/-}","+");
-                    else prepend = prepend.replace("{+/-}","");
+                    let testVal=Number(val.replace(/[^\d-]/g,""));
+                    if (testVal < 0) { val = val.replace("-",""); prepend = prepend.replace("{+/-}","-"); }
+                    else if (testVal > 0) prepend = prepend.replace("{+/-}","+");
+                    else { prepend = prepend.replace("{+/-}","")};
                 }
 
                 return full ? prepend + val + append : val;
