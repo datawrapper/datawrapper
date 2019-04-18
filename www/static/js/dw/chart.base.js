@@ -1,31 +1,25 @@
-
 /*
  * This piece of code is inserted at the bottom of every Datawrapper
  * chart. It's main purpose is to trigger the chart rendering.
  *
  */
 
-/* globals dw,$,__dw */
+/* globals dw,$,__dw,Blob */
 (function() {
-
-    var chart,
-        old_chart_attributes,
-        reload_timer;
+    var chart, reloadTimer;
 
     function renderChart() {
-
         if (__dw.vis && !__dw.vis.supportsSmartRendering()) {
             // a current visualization exists but it is not smart
             // enough to re-render itself properly, so we need to
             // reset and remove it
             __dw.vis.reset();
         }
-        var $chart = $('#chart'),
-            $body = $('body');
+        var $chart = $('#chart');
 
         // compute chart dimensions
-        var w = $chart.width(),
-            h = dw.utils.getMaxChartHeight($('#chart'));
+        var w = $chart.width();
+        var h = dw.utils.getMaxChartHeight($('#chart'));
 
         if (!$.support.leadingWhitespace) w -= 10; // IE Fix
 
@@ -46,12 +40,12 @@
 
         // update data link to point to edited dataset
         var csv = chart.dataset().toCSV && chart.dataset().toCSV();
-        if (!csv || csv && csv.trim && csv.trim() == 'X.1') {
+        if (!csv || (csv && csv.trim && csv.trim() === 'X.1')) {
             // hide get the data link
             $('.chart-action-data').addClass('hidden');
         } else {
             if (!window['__ltie9']) {
-                if (window.navigator.msSaveOrOpenBlob){
+                if (window.navigator.msSaveOrOpenBlob) {
                     var blobObject = new Blob([csv]);
                     $('a[href=data]')
                         .addClass('dw-data-link')
@@ -62,9 +56,8 @@
                 } else {
                     $('a[href=data]')
                         .addClass('dw-data-link')
-                        .attr('download', 'data-'+chart.get('id')+'.csv')
-                        .attr('href', 'data:application/octet-stream;charset=utf-8,' +
-                            encodeURIComponent(csv));
+                        .attr('download', 'data-' + chart.get('id') + '.csv')
+                        .attr('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(csv));
                 }
             }
         }
@@ -73,10 +66,11 @@
     }
 
     function chartLoaded() {
-        chart = dw.chart(__dw.params.chartJSON)
-                .locale(__dw.params.chartLocale)
-                .metricPrefix(__dw.params.metricPrefix)
-                .theme(dw.theme(__dw.params.themeId));
+        chart = dw
+            .chart(__dw.params.chartJSON)
+            .locale(__dw.params.chartLocale)
+            .metricPrefix(__dw.params.metricPrefix)
+            .theme(dw.theme(__dw.params.themeId));
         return chart.load(__dw.params.data, __dw.params.preview ? undefined : __dw.params.chartJSON.externalData);
     }
 
@@ -88,16 +82,16 @@
     }
 
     function renderLater() {
-        clearTimeout(reload_timer);
-        reload_timer = setTimeout(function() {
+        clearTimeout(reloadTimer);
+        reloadTimer = setTimeout(function() {
             renderChart();
         }, 300);
     }
 
     function initResizeHandler(vis, container) {
-        var height = vis.meta.height || 'fit',
-            curWidth = container.width(),
-            resize = (height == 'fixed' ? resizeFixed : renderLater);
+        var height = vis.meta.height || 'fit';
+        var curWidth = container.width();
+        var resize = height === 'fixed' ? resizeFixed : renderLater;
 
         // IE continuosly reloads the chart for some strange reasons
         if (navigator.userAgent.match(/msie/i) === null) {
@@ -108,7 +102,7 @@
 
         function resizeFixed() {
             var w = container.width();
-            if (curWidth != w) {
+            if (curWidth !== w) {
                 curWidth = w;
                 renderLater();
             }
@@ -118,8 +112,8 @@
     window.__dw = {
         init: function(params) {
             __dw.params = params;
-            __dw.old_attrs = old_chart_attributes = params.chartJSON;
-            if(!getVis().checkBrowserCompatibility()){
+            __dw.old_attrs = params.chartJSON;
+            if (!getVis().checkBrowserCompatibility()) {
                 window.location.href = 'static.html';
                 return;
             }
@@ -130,5 +124,4 @@
         render: renderLater,
         renderNow: renderChart
     };
-
 })();
