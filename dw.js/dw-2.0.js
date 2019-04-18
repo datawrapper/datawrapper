@@ -1836,15 +1836,21 @@ dw.chart = function(attributes) {
         locale: function(_locale, callback) {
             if (arguments.length) {
                 locale = _locale.replace('_', '-');
-                if (Globalize.cultures.hasOwnProperty(locale)) {
-                    Globalize.culture(locale);
-                    if (typeof callback == "function") callback();
-                } else {
-                    $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
-                      locale + ".js", function () {
-                        chart.locale(locale);
+                if (window["Globalize"]) {
+                    if (Globalize.cultures.hasOwnProperty(locale)) {
+                        Globalize.culture(locale);
                         if (typeof callback == "function") callback();
-                    });
+                    } else {
+                        $.getScript(
+                            "/static/vendor/globalize/cultures/globalize.culture." +
+                                locale +
+                                ".js",
+                            function() {
+                                chart.locale(locale);
+                                if (typeof callback == "function") callback();
+                            }
+                        );
+                    }
                 }
                 return chart;
             }
