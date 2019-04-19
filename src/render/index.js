@@ -9,7 +9,19 @@ import getBrowser from '@datawrapper/polyfills';
 
 import observeFonts from '../shared/observe-fonts';
 
-export default function({ visJSON, chartJSON, chartData, isPreview, chartLocale, metricPrefix, themeId, templateJS, fontsJSON, typographyJSON }) {
+export default function({
+    visJSON,
+    chartJSON,
+    chartData,
+    isPreview,
+    chartLocale,
+    metricPrefix,
+    themeId,
+    templateJS,
+    fontsJSON,
+    typographyJSON,
+    locales
+}) {
     window.visJSON = visJSON;
 
     // load polyfills
@@ -54,6 +66,7 @@ export default function({ visJSON, chartJSON, chartData, isPreview, chartLocale,
                     data: chartData,
                     preview: isPreview,
                     chartLocale,
+                    locales,
                     themeId: themeId,
                     visId: chartJSON.type,
                     lang: chartLocale.substr(0, 2),

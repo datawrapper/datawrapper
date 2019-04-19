@@ -36,6 +36,24 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
     $culture = str_replace('_', '-', $locale);
 
+    // load numeral & dayjs locales, if needed
+    $visDependencyLocales = '{';
+    foreach (['numeral', 'dayjs'] as $key) {
+        if ($dependencies[$key] ?? false) {
+            $localePath = ROOT_PATH . 'www/static/vendor/'.$key.'/locales/' . strtolower($culture) . '.js';
+            if (!file_exists($localePath)) {
+                // try just language
+                $localePath = ROOT_PATH . 'www/static/vendor/'.$key.'/locales/' . strtolower(substr($culture, 0, 2)) . '.js';
+            }
+            if (file_exists($localePath)) {
+                $rawLocale = file_get_contents($localePath);
+                $visDependencyLocales .= "\n$key: ".substr(trim(preg_replace('#\n\s+#', '', str_replace('export default ', '', preg_replace('#^\s*//.*\n#m', '', $rawLocale)))),0,-1).",";
+            }
+        }
+    }
+
+    $visDependencyLocales .= '}';
+
     if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
         $base_js = [
             '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'
@@ -234,6 +252,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'theme' => $theme,
         'themeCSS' => $theme->getCSS($vis_less),
         'chartLocale' => str_replace('_', '-', $locale),
+        'locales' => $visDependencyLocales,
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,

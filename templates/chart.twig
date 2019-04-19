@@ -186,7 +186,7 @@
                             <a href="{% if has_hook('chart_created_with_datawrapper_url') %}{{ hook_return('chart_created_with_datawrapper_url', chart)[0] }}{% else %}{{ DW_DOMAIN }}{% endif %}" target="_blank">{{ theme.getThemeData("options.footer.createdWithCaption") }}  {% trans "Datawrapper" %}</a>
                         </span>
                         {% endif %}
-                        
+
                         {% if theme.getThemeData('options.footer.logo.position') == "left" and theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.text') %}
                             <div class="logo-text"> <span class="logo-text">{{ theme.getThemeData('options.footer.logo.text')}} </span></div>
                         {% endif %}
@@ -231,6 +231,7 @@
             chartData: {{ chartData | json | raw }},
             isPreview: {{ preview ? 'true' : 'false' }},
             chartLocale: '{{ chartLocale }}',
+            locales: {{ locales | raw }},
             metricPrefix: {{ metricPrefix | json | raw }},
             themeId: "{{ theme.getId() }}",
             fontsJSON: {{ theme.getAssetFonts() | json | raw }},
