@@ -7,10 +7,10 @@ export default {
         decimal: ','
     },
     abbreviations: {
-        thousand: 'tsd',
-        million: 'mio',
-        billion: 'mrd',
-        trillion: 'bil'
+        thousand: ' Tsd.',
+        million: ' Mio.',
+        billion: ' Mrd.',
+        trillion: ' Bio.'
     },
     ordinal: function(number) {
         return '.';
