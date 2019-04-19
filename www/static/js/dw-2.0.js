@@ -547,9 +547,10 @@ dw.column.types.number = function(sample) {
                 }
                 val = Globalize.format(val, _fmt != '-' ? _fmt : null);
                 if (prepend.indexOf("{+/-}") > -1) {
-                    if (val < 0) { val = val.replace("-",""); prepend = prepend.replace("{+/-}","-"); }
-                    else if (val > 0) prepend = prepend.replace("{+/-}","+");
-                    else prepend = prepend.replace("{+/-}","");
+                    var testVal=Number(val.replace(/[^\d-]/g,""));
+                    if (testVal < 0) { val = val.replace("-",""); prepend = prepend.replace("{+/-}","-"); }
+                    else if (testVal > 0) { prepend = prepend.replace("{+/-}","+"); }
+                    else { prepend = prepend.replace("{+/-}","")};
                 }
 
                 return full ? prepend + val + append : val;
@@ -1835,15 +1836,21 @@ dw.chart = function(attributes) {
         locale: function(_locale, callback) {
             if (arguments.length) {
                 locale = _locale.replace('_', '-');
-                if (Globalize.cultures.hasOwnProperty(locale)) {
-                    Globalize.culture(locale);
-                    if (typeof callback == "function") callback();
-                } else {
-                    $.getScript("/static/vendor/globalize/cultures/globalize.culture." +
-                      locale + ".js", function () {
-                        chart.locale(locale);
+                if (window["Globalize"]) {
+                    if (Globalize.cultures.hasOwnProperty(locale)) {
+                        Globalize.culture(locale);
                         if (typeof callback == "function") callback();
-                    });
+                    } else {
+                        $.getScript(
+                            "/static/vendor/globalize/cultures/globalize.culture." +
+                                locale +
+                                ".js",
+                            function() {
+                                chart.locale(locale);
+                                if (typeof callback == "function") callback();
+                            }
+                        );
+                    }
                 }
                 return chart;
             }

@@ -23,6 +23,10 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         $locale = $chart->getLanguage();
     }
 
+    // decide if we still need jquery, globalize etc.
+    $vis = DatawrapperVisualization::get($chart->getType());
+    $dependencies = $vis['dependencies'] ?? ['globalize' => true, 'jquery' => true];
+
     $static_path = $GLOBALS['dw_config']['static_path'];
     $abs = $protocol . '://' . $GLOBALS['dw_config']['domain'];
     if ($static_path == 'static/') $static_path = $abs . $static_path;
@@ -32,21 +36,47 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     $debug = $GLOBALS['dw_config']['debug'] == true || $debug;
     $culture = str_replace('_', '-', $locale);
 
+    // load numeral & dayjs locales, if needed
+    $visDependencyLocales = '{';
+    foreach (['numeral', 'dayjs'] as $key) {
+        if ($dependencies[$key] ?? false) {
+            $localePath = ROOT_PATH . 'www/static/vendor/'.$key.'/locales/' . strtolower($culture) . '.js';
+            if (!file_exists($localePath)) {
+                // try just language
+                $localePath = ROOT_PATH . 'www/static/vendor/'.$key.'/locales/' . strtolower(substr($culture, 0, 2)) . '.js';
+            }
+            if (file_exists($localePath)) {
+                $rawLocale = file_get_contents($localePath);
+                $visDependencyLocales .= "\n$key: ".substr(trim(preg_replace('#\n\s+#', '', str_replace('export default ', '', preg_replace('#^\s*//.*\n#m', '', $rawLocale)))),0,-1).",";
+            }
+        }
+    }
+
+    $visDependencyLocales .= '}';
+
     if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
-        $base_js = array(
-            '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js',
-            '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js',
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js'
-        );
+        $base_js = [
+            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'
+        ];
+        if ($dependencies['globalize']) {
+            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js';
+            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js';
+        }
+        if ($dependencies['jquery']) {
+            $base_js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js';
+        }
     } else {
         // use "local" assets
         $base_js = array(
-            $abs . '/static/vendor/globalize/globalize.min.js',
-            $abs . '/static/vendor/globalize/cultures/globalize.culture.' . $culture . '.js',
-            $abs . '/static/vendor/underscore/underscore-min.js',
-            $abs . '/static/vendor/jquery/jquery.min.js'
+            $abs . '/static/vendor/underscore/underscore-min.js'
         );
+        if ($dependencies['globalize']) {
+            $base_js[] = $abs . '/static/vendor/globalize/globalize.min.js';
+            $base_js[] = $abs . '/static/vendor/globalize/cultures/globalize.culture.' . $culture . '.js';
+        }
+        if ($dependencies['jquery']) {
+            $base_js[] = $abs . '/static/vendor/jquery/jquery.min.js';
+        }
     }
 
     $vis_js = array();
@@ -222,6 +252,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'theme' => $theme,
         'themeCSS' => $theme->getCSS($vis_less),
         'chartLocale' => str_replace('_', '-', $locale),
+        'locales' => $visDependencyLocales,
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,
