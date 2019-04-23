@@ -337,24 +337,52 @@ define([
                     (getParameterByName('mode') === 'print' ? '&mode=print' : '')
             );
         }
-        dw.backend.currentVis = dw.visualization(chart.get('type'));
-        dw.backend.currentVis.chart(chart);
-        dw.backend.currentVis.dataset = chart.dataset().reset();
-        dw.backend.currentVis.meta = visMetas[chart.get('type')];
-        dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
-
-        visOptions.init(chart, visMetas[chart.get('type')]);
-        if (!_optionsSynchronized) {
-            _optionsSynchronized = true;
-            visOptions.sync();
+        var vis = dw.visualization(chart.get('type'));
+        if (vis) loadVisDone(vis);
+        else {
+            // we need to load the vis render code
+            loadVisJS(chart.get('type'), function() {
+                loadVisDone(dw.visualization(chart.get('type')));
+            });
         }
-        loadVisDfd.resolve();
+        function loadVisDone(vis) {
+            dw.backend.currentVis = vis;
+            dw.backend.currentVis.chart(chart);
+            dw.backend.currentVis.dataset = chart.dataset().reset();
+            dw.backend.currentVis.meta = visMetas[chart.get('type')];
+            dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
+
+            visOptions.init(chart, visMetas[chart.get('type')]);
+            if (!_optionsSynchronized) {
+                _optionsSynchronized = true;
+                visOptions.sync();
+            }
+            loadVisDfd.resolve();
+        }
+
         function getParameterByName(e, n) {
             // n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
             if (!n) n = window.location.href;
             e = e.replace(/[[\]]/g, '\\$&');
             var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
             return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
+        }
+
+        function loadVisJS(type, callback) {
+            if (dw.backend.__visLoaded[type]) return callback();
+            if (dw.backend.__visDependencies[type] && !dw.backend.__visLoaded[dw.backend.__visDependencies[type]]) {
+                // first load dependency
+                loadVisJS(dw.backend.__visDependencies[type], function() {
+                    // then load this type
+                    loadVisJS(type, callback);
+                });
+            } else {
+                $.getScript(dw.backend.__visRenderUrls[type], function() {
+                    // if (!dw.backend.__visLoaded[type]) console.log('loaded visualization', type);
+                    dw.backend.__visLoaded[type] = true;
+                    callback();
+                });
+            }
         }
     }
 

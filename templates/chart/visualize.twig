@@ -8,12 +8,21 @@
 <script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.bundle.min.js"></script>
 <script type="text/javascript" src="/static/vendor/scrolltofixed/jquery-scrolltofixed-min.js"></script>
 
-{% for vis in visualizations_deps %}
-<script type="text/javascript" charset="utf-8" src="{{ vis.__static_path }}/{{ vis.id }}.js?v={{ vis.version }}"></script>
-{% endfor %}
+
 
 <script type="text/javascript">
 var visData = {{ vis_data | raw }};
+dw.backend.__visRenderUrls = {
+    {% for vis in visualizations_deps %}
+    '{{ vis.id }}': '{{ vis.__static_path }}/{{ vis.id }}.js?v={{ vis.version }}',
+    {% endfor %}
+};
+dw.backend.__visDependencies = {
+    {% for vis in visualizations_deps %}{% if vis.extends %}
+    '{{ vis.id }}': '{{ vis.extends }}',
+    {% endif %}{% endfor %}
+}
+dw.backend.__visLoaded = {};
 
 dw.backend.ready(function() {
     require(['dw/chart/visualize'], function(visualize) {
