@@ -33,7 +33,7 @@
     import UserTableRow from './TableRow.html';
     import Pagination from './Pagination.html';
 
-    const BASE_URL = '//api.datawrapper.local:18080/v3';
+    const API_BASE_PATH = '/v3';
 
     export default {
         components: {
@@ -59,7 +59,8 @@
             paginationItems: ({ total, limit, offset }) =>
                 Array.from({ length: Math.ceil(total / limit) }, (v, i) => ({
                     state: { limit, offset: i * limit }
-                }))
+                })),
+            baseUrl: ({ api_domain }) => `//${api_domain}${API_BASE_PATH}`
         },
 
         helpers: {
@@ -111,8 +112,8 @@
             },
 
             loadUserList() {
-                const { offset, limit, orderBy } = this.get();
-                const loader = getJSON(`${BASE_URL}/users?${stringify({ offset, limit, orderBy })}`, data => {
+                const { offset, limit, orderBy, baseUrl } = this.get();
+                const loader = getJSON(`${baseUrl}/users?${stringify({ offset, limit, orderBy })}`, data => {
                     if (data && data.list) {
                         const { total, list } = data;
                         this.set({ list, total });
@@ -122,10 +123,10 @@
             },
 
             loadUser() {
-                const { currentUser } = this.get();
+                const { currentUser, baseUrl } = this.get();
 
                 if (currentUser) {
-                    getJSON(`${BASE_URL}/users/${currentUser}`, data => {
+                    getJSON(`${baseUrl}/users/${currentUser}`, data => {
                         if (data) this.set({ userDetails: data });
                     });
                 }
@@ -142,7 +143,9 @@
                     }
                 });
 
-                patchJSON(`${BASE_URL}/users/${userId}`, body)
+                const { baseUrl } = this.get();
+
+                patchJSON(`${baseUrl}/users/${userId}`, body)
                     .then(() => {
                         this.loadUserList();
                         this.closeDetails();
@@ -154,8 +157,10 @@
 
             resetPassword({ email, token }) {
                 const body = JSON.stringify({ email, token }, (key, value) => value || undefined);
+                const { baseUrl } = this.get();
+
                 window
-                    .fetch(`${BASE_URL}/auth/reset-password`, {
+                    .fetch(`${baseUrl}/auth/reset-password`, {
                         method: 'POST',
                         credentials: 'include',
                         body
@@ -169,8 +174,10 @@
             },
 
             resendActivation({ email }) {
+                const { baseUrl } = this.get();
+
                 window
-                    .fetch(`${BASE_URL}/auth/resend-activation`, {
+                    .fetch(`${baseUrl}/auth/resend-activation`, {
                         method: 'POST',
                         credentials: 'include',
                         body: JSON.stringify({ email })
