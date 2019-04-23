@@ -28,6 +28,7 @@
         "rollup-plugin-alias": "^1.4.0"
     },
     "devDependencies": {
+        "@datawrapper/controls": "^2.3.1",
         "@datawrapper/polyfills": "^1.0.4",
         "@tivac/eslint-plugin-svelte": "^1.2.1",
         "ava": "^1.2.1",

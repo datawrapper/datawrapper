@@ -1,83 +1,62 @@
 <section>
     <h4>{ user.email }</h4>
 
-    <form class="form-horizontal" on:submit="save()">
-        <div class="control-group">
-            <label class="control-label">#</label>
-            <div class="controls">
-                <span class="value">{user.id}</span>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="name">{__('name', 'admin-users')}</label>
-            <div class="controls">
-                <input type="text" id="name" bind:value="updates.name" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="email">{__('email', 'admin-users')}</label>
-            <div class="controls">
-                <input type="text" id="email" bind:value="updates.email" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="role">{__('status', 'admin-users')}</label>
-            <div class="controls">
-                <select name="role" bind:value="updates.role">
-                    {#each roleOptions as role}
-                    <option value="{role.slug}" selected="{user.role === role.slug}">
-                        {__(role.name, 'admin-users')}
-                    </option>
-                    {/each}
-                </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{__('charts', 'admin-users')}</label>
-            <div class="controls">
-                <a class="value" href="/admin/chart/by/{ user.id }">
-                    {user.chartCount}
-                </a>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{__('created-at', 'admin-users')}</label>
-            <div class="controls">
-                <span class="value">{createdAtFormatted}</span>
-            </div>
-        </div>
+    <form class="form-horizontal" on:submit="save(event)">
+        <ControlGroup label="#">
+            <span class="value">{user.id}</span>
+        </ControlGroup>
 
-        <div class="control-group">
-            <label class="control-label" for="passwordToken">{__('password-reset', 'admin-users')}</label>
-            <div class="controls">
-                <div class="token-block">
-                    {#if user.resetPasswordToken}
-                    <code class="token">{passwordResetLink}</code>
-                    {/if}
-                    <input type="text" id="passwordToken" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
-                    <button type="button" on:click="resetPassword()" class="btn btn-default">
-                        {__('password-reset / send', 'admin-users')}
-                    </button>
-                </div>
+        <ControlGroup label="{__('name', 'admin-users')}">
+            <input type="text" bind:value="updates.name" />
+        </ControlGroup>
+
+        <ControlGroup label="{__('email', 'admin-users')}">
+            <input type="text" bind:value="updates.email" />
+        </ControlGroup>
+
+        <ControlGroup label="{__('status', 'admin-users')}">
+            <select name="role" bind:value="updates.role">
+                {#each roleOptions as role}
+                <option value="{role.slug}" selected="{user.role === role.slug}">
+                    {__(role.name, 'admin-users')}
+                </option>
+                {/each}
+            </select>
+        </ControlGroup>
+
+        <ControlGroup label="{__('charts', 'admin-users')}">
+            <a class="value" href="/admin/chart/by/{ user.id }">{user.chartCount}</a>
+        </ControlGroup>
+
+        <ControlGroup label="{__('created-at', 'admin-users')}">
+            <span class="value">{createdAtFormatted}</span>
+        </ControlGroup>
+
+        <ControlGroup label="{__('password-reset', 'admin-users')}">
+            <div class="token-block">
+                {#if user.resetPasswordToken}
+                <code class="token">{passwordResetLink}</code>
+                {/if}
+                <input type="text" bind:value="resetPasswordToken" placeholder="optional: one-time password" />
+                <button type="button" on:click="resetPassword()" class="btn btn-default">
+                    {__('password-reset / send', 'admin-users')}
+                </button>
             </div>
-        </div>
+        </ControlGroup>
 
         {#if user.activateToken}
-        <div class="control-group">
-            <label class="control-label">{__('activation-token', 'admin-users')}</label>
-            <div class="controls">
-                <div class="token-block">
-                    <code class="token">{user.activateToken}</code>
-                    <button type="button" on:click="resendActivation()" class="btn btn-default">
-                        {__('activation-token / send', 'admin-users')}
-                    </button>
-                </div>
+        <ControlGroup label="{__('activation-token', 'admin-users')}">
+            <div class="token-block">
+                <code class="token">{user.activateToken}</code>
+                <button type="button" on:click="resendActivation()" class="btn btn-default">
+                    {__('activation-token / send', 'admin-users')}
+                </button>
             </div>
-        </div>
+        </ControlGroup>
         {/if}
 
-        <div class="control-group">
-            <div class="controls controls-submit">
+        <ControlGroup label="{__('status', 'admin-users')}">
+            <div class="controls-submit">
                 <button type="submit" class="btn btn-primary" data-test="save">
                     {__('actions / save', 'admin-users')}
                 </button>
@@ -85,22 +64,14 @@
                     {__('actions / cancel', 'admin-users')}
                 </button>
             </div>
-        </div>
+        </ControlGroup>
     </form>
 </section>
 
 <style>
-    .control-group .control-label {
-        text-align: right;
-    }
-
     .value {
         padding: 0.35em;
         display: inline-block;
-    }
-
-    .control-group {
-        margin-bottom: 0.35em;
     }
 
     .token-block {
@@ -121,10 +92,15 @@
 <script>
     import { __ } from '../../shared/l10n';
     import moment from 'moment';
+    import { ControlGroup } from '@datawrapper/controls';
 
     const { protocol, host } = window.location;
 
     export default {
+        components: {
+            ControlGroup
+        },
+
         data: () => ({
             resetPasswordToken: '',
             user: {},
@@ -147,6 +123,7 @@
             },
 
             save(event) {
+                event.preventDefault();
                 const { user, updates } = this.get();
                 const changes = Object.keys(user).reduce((diff, key) => {
                     if (updates[key] !== user[key]) {
