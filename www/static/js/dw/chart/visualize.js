@@ -1,4 +1,4 @@
-/* globals dw */
+/* globals dw, define, $ */
 define([
     './visualize/options',
     './visualize/themes',
@@ -9,15 +9,15 @@ define([
     'js/misc/classify',
     'js/misc/jquery.easing'
 ], function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
-    var _typeHasChanged = false,
-        _themeHasChanged = false,
-        _axesHaveChanged = false,
-        _transposed = false,
-        __thumbTimer,
-        _optionsSynchronized = false,
-        chart = dw.backend.currentChart,
-        visMetas = {},
-        iframe = $('#iframe-vis');
+    var _typeHasChanged = false;
+    var _themeHasChanged = false;
+    var _axesHaveChanged = false;
+    var _transposed = false;
+
+    var _optionsSynchronized = false;
+    var chart = dw.backend.currentChart;
+    var visMetas = {};
+    var iframe = $('#iframe-vis');
 
     function init(themesJSON, _visMetas, visJSON, mode) {
         themes.init(themesJSON);
@@ -49,7 +49,7 @@ define([
         chart.load(dw.backend.__currentData).done(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
-        if (iframe[0].contentDocument.readyState == 'complete') {
+        if (iframe[0].contentDocument.readyState === 'complete') {
             iframeLoaded();
         }
 
@@ -67,7 +67,7 @@ define([
         }
 
         $(window).on('keyup', function(e) {
-            if (e.ctrlKey && e.keyCode == 82) {
+            if (e.ctrlKey && e.keyCode === 82) {
                 // reload iframe on ctrl+r
                 iframe.get(0).contentWindow.location.reload();
             }
@@ -137,18 +137,18 @@ define([
 
         $('#text-title').focus(function(evt) {
             var val = $(evt.target).val();
-            if (val.substr(0, 2) == '[ ' && val.substr(val.length - 2) == ' ]') {
+            if (val.substr(0, 2) === '[ ' && val.substr(val.length - 2) === ' ]') {
                 evt.target.select();
             }
         });
 
         chart.onChange(function(chart, key, value) {
             function changed(test) {
-                return key.substr(0, test.length) == test || key.replace(/metadata/, 'metadata.print').substr(0, test.length) == test;
+                return key.substr(0, test.length) === test || key.replace(/metadata/, 'metadata.print').substr(0, test.length) === test;
             }
 
-            if (key == 'type') _typeHasChanged = true;
-            if (key == 'theme') _themeHasChanged = true;
+            if (key === 'type') _typeHasChanged = true;
+            if (key === 'theme') _themeHasChanged = true;
             if (changed('metadata.data.transpose')) _transposed = true;
 
             if (
@@ -168,8 +168,8 @@ define([
     function iframeLoaded() {
         dw.backend.fire('vis-loaded');
         updateVisBackground();
-        var win = iframe.get(0).contentWindow,
-            chk;
+        var win = iframe.get(0).contentWindow;
+        var chk;
 
         // periodically check if vis is initialized in iframe
         chk = setInterval(function() {
@@ -196,16 +196,16 @@ define([
 
         $(window).on('message', function(evt) {
             evt = evt.originalEvent;
-            if (evt.source == win) {
-                if (evt.data == 'datawrapper:vis:init') {
+            if (evt.source === win) {
+                if (evt.data === 'datawrapper:vis:init') {
                     dw.backend.fire('vis-msg-init');
                     win.dw_alert = dw.backend.alert;
                     win.__dw.backend = dw.backend;
                 }
-                if (evt.data && evt.data.slice && evt.data.slice(0, 7) == 'notify:') {
+                if (evt.data && evt.data.slice && evt.data.slice(0, 7) === 'notify:') {
                     dw.backend.notify(evt.data.slice(7));
                 }
-                if (evt.data == 'datawrapper:vis:rendered') {
+                if (evt.data === 'datawrapper:vis:rendered') {
                     dw.backend.fire('vis-rendered');
                 }
             }
@@ -239,7 +239,7 @@ define([
         $('.vis-options-annotate').load('/xhr/' + chart.get('id') + '/vis-options?annotate=1&nocache=' + Math.random(), _loaded);
         function _loaded() {
             l++;
-            if (l == 2) {
+            if (l === 2) {
                 loaded.resolve();
                 syncUI();
                 loadVis();
@@ -263,11 +263,11 @@ define([
 
     function initVisSelector() {
         // graphical vis selector
-        var unfolded = $('.vis-selector-unfolded'),
-            folded = $('.vis-selector-folded'),
-            thumbs = $('.vis-thumb'),
-            selVis = $('.vis-selected'),
-            archived = $('.vis-archive-select select');
+        var unfolded = $('.vis-selector-unfolded');
+        var folded = $('.vis-selector-folded');
+        var thumbs = $('.vis-thumb');
+        var selVis = $('.vis-selected');
+        var archived = $('.vis-archive-select select');
 
         unfolded
             .show()
@@ -280,13 +280,15 @@ define([
             thumb.addClass('active');
             selVis.html('<img src="' + thumb.data('static-path') + thumb.data('id') + '.png" width="24" />' + thumb.data('title'));
 
-            if (thumb.data('id') != chart.get('type')) showLoadingIndicator();
+            if (thumb.data('id') !== chart.get('type')) showLoadingIndicator();
 
             setTimeout(function() {
-                /*folded.show();
+                /*
+                folded.show();
                 unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
                     unfolded.hide();
-                });*/
+                });
+                */
                 chart.set('type', thumb.data('id'));
                 chart.set('metadata.visualize.chart-type-set', true);
             }, 100);
@@ -308,20 +310,13 @@ define([
 
         if (archived.length) {
             archived.on('change', function() {
-                var vis_id = archived.prop('value');
-                if (vis_id && vis_id != '---') {
+                var visId = archived.prop('value');
+                if (visId && visId !== '---') {
                     thumbs.removeClass('active');
-                    chart.set('type', vis_id);
+                    chart.set('type', visId);
                 }
             });
         }
-    }
-
-    function scheduleThumbnail() {
-        // clearTimeout(__thumbTimer);
-        // __thumbTimer = setTimeout(function() {
-        //     dw.backend.snapshot(iframe, dw.backend.currentChart.get('id'));
-        // }, 1500);
     }
 
     function onDatasetLoaded() {
@@ -333,18 +328,13 @@ define([
     function loadVis() {
         if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            function getParameterByName(e, n) {
-                n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
-                var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
-                return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
-            }
             iframe.attr(
                 'src',
                 '/chart/' +
                     chart.get('id') +
                     '/preview?innersvg=1&random=' +
                     Math.floor(Math.random() * 100000) +
-                    (getParameterByName('mode') == 'print' ? '&mode=print' : '')
+                    (getParameterByName('mode') === 'print' ? '&mode=print' : '')
             );
         }
         dw.backend.currentVis = dw.visualization(chart.get('type'));
@@ -359,14 +349,21 @@ define([
             visOptions.sync();
         }
         loadVisDfd.resolve();
+        function getParameterByName(e, n) {
+            // n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
+            if (!n) n = window.location.href;
+            e = e.replace(/[[\]]/g, '\\$&');
+            var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
+            return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
+        }
     }
 
     function updateVisBackground() {
         // and show msg if chart needs more space
-        var iframe = $('#iframe-vis').contents(),
-            bgcol = $('body', iframe).css('background-color'),
-            white = bgcol == 'rgb(255, 255, 255)' || bgcol == '#ffffff' || bgcol == 'white' || bgcol == 'transparent',
-            border = white ? '#ffffff' : '#ddd';
+        var iframe = $('#iframe-vis').contents();
+        var bgcol = $('body', iframe).css('background-color');
+        var white = bgcol === 'rgb(255, 255, 255)' || bgcol === '#ffffff' || bgcol === 'white' || bgcol === 'transparent';
+        var border = white ? '#ffffff' : '#ddd';
 
         bgcol = dw.backend.currentChart.get('metadata.publish.contextBg') || dw.backend.currentChart.get('metadata.publish.background');
 
@@ -382,8 +379,8 @@ define([
             marginTop: 0,
             zIndex: 999,
             limit: function() {
-                var sftop = scrollFixCont.offset().top,
-                    ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
+                // var sftop = scrollFixCont.offset().top;
+                var ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
                 // if (sftop > ftminsfh) return sftop+10;
                 return ftminsfh;
             }
