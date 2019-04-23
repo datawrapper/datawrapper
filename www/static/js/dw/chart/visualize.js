@@ -337,9 +337,9 @@ define([
                     (getParameterByName('mode') === 'print' ? '&mode=print' : '')
             );
         }
-        var vis = dw.visualization(chart.get('type'));
-        if (vis) loadVisDone(vis);
-        else {
+        if (dw.visualization.has(chart.get('type'))) {
+            loadVisDone(dw.visualization(chart.get('type')));
+        } else {
             // we need to load the vis render code
             loadVisJS(chart.get('type'), function() {
                 loadVisDone(dw.visualization(chart.get('type')));
