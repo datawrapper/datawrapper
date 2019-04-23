@@ -19748,6 +19748,7 @@ var methods$12 = {
     },
 
     save: function save(event) {
+        event.preventDefault();
         var ref = this.get();
         var user = ref.user;
         var updates = ref.updates;
@@ -19902,7 +19903,7 @@ function create_main_fragment$24(component, state) {
 	});
 
 	function submit_handler(event) {
-		component.save();
+		component.save(event);
 	}
 
 	return {
@@ -19981,7 +19982,6 @@ function create_main_fragment$24(component, state) {
 			setAttribute(input, "type", "text");
 			addListener(input_1, "input", input_1_input_handler);
 			setAttribute(input_1, "type", "text");
-			input_1.id = "email";
 			addListener(select, "change", select_change_handler);
 			if (!('updates' in state)) { component.root._beforecreate.push(select_change_handler); }
 			select.name = "role";
@@ -19990,7 +19990,6 @@ function create_main_fragment$24(component, state) {
 			span_1.className = "value svelte-1wvoqzi";
 			addListener(input_2, "input", input_2_input_handler);
 			setAttribute(input_2, "type", "text");
-			input_2.id = "passwordToken";
 			input_2.placeholder = "optional: one-time password";
 			addListener(button, "click", click_handler);
 			button.type = "button";
@@ -21767,10 +21766,24 @@ var roleOptions = [
 ];
 
 var methods$16 = {
+    update: function update(ref) {
+        var offset = ref.offset;
+        var orderBy = ref.orderBy;
+        var currentUser = ref.currentUser;
+        var userDetails = ref.userDetails;
+
+        this.set({ offset: offset, orderBy: orderBy, currentUser: currentUser, userDetails: userDetails });
+        if (currentUser) {
+            this.loadUser();
+        } else {
+            this.loadUserList();
+        }
+    },
+
     sort: function sort(orderBy) {
         this.set({ orderBy: orderBy, offset: 0 });
         var state = { orderBy: orderBy };
-        window.history.replaceState(state, '', ("?" + (queryString_3(state))));
+        window.history.pushState(state, '', ("?" + (queryString_3(state))));
         this.loadUserList();
     },
 
@@ -21782,13 +21795,13 @@ var methods$16 = {
         var ref$1 = this.get();
         var orderBy = ref$1.orderBy;
         var state = { offset: offset, limit: limit, orderBy: orderBy };
-        window.history.replaceState(state, '', ("?" + (queryString_3(state))));
+        window.history.pushState(state, '', ("?" + (queryString_3(state))));
         this.loadUserList();
     },
 
     showDetails: function showDetails(currentUser) {
         this.set({ currentUser: currentUser });
-        window.history.replaceState({ currentUser: currentUser }, '', ("?currentUser=" + currentUser));
+        window.history.pushState({ currentUser: currentUser }, '', ("?currentUser=" + currentUser));
         this.loadUser();
     },
 
@@ -21797,8 +21810,8 @@ var methods$16 = {
         var orderBy = ref.orderBy;
         var offset = ref.offset;
         var limit = ref.limit;
-        var state = { orderBy: orderBy, offset: offset, limit: limit, currentUser: '', userDetails: '' };
-        window.history.replaceState(state, '', ("?" + (queryString_3(state))));
+        var state = { orderBy: orderBy, offset: offset, limit: limit, currentUser: null, userDetails: null };
+        window.history.pushState(state, '', ("?" + (queryString_3(state))));
         this.set(state);
     },
 
@@ -21826,12 +21839,9 @@ var methods$16 = {
         var ref = this.get();
         var currentUser = ref.currentUser;
         var baseUrl = ref.baseUrl;
-
-        if (currentUser) {
-            getJSON((baseUrl + "/users/" + currentUser), function (data) {
-                if (data) { this$1.set({ userDetails: data }); }
-            });
-        }
+        getJSON((baseUrl + "/users/" + currentUser), function (data) {
+            if (data) { this$1.set({ userDetails: data }); }
+        });
     },
 
     saveUser: function saveUser(ref) {
@@ -21908,13 +21918,18 @@ var methods$16 = {
 };
 
 function oncreate$5() {
+    var this$1 = this;
+
     var ref = queryString_2(window.location.search);
     var offset = ref.offset;
     var orderBy = ref.orderBy;
     var currentUser = ref.currentUser;
-    this.set({ offset: offset, orderBy: orderBy, currentUser: currentUser });
-    this.loadUserList();
-    this.loadUser();
+    this.update({ offset: offset, orderBy: orderBy, currentUser: currentUser });
+    window.onpopstate = function (ref) {
+    	var state = ref.state;
+
+    	return this$1.update(state);
+    };
 }
 function create_main_fragment$28(component, state) {
 	var div;

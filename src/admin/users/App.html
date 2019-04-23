@@ -83,10 +83,19 @@
         },
 
         methods: {
+            update({ offset, orderBy, currentUser, userDetails }) {
+                this.set({ offset, orderBy, currentUser, userDetails });
+                if (currentUser) {
+                    this.loadUser();
+                } else {
+                    this.loadUserList();
+                }
+            },
+
             sort(orderBy) {
                 this.set({ orderBy, offset: 0 });
                 const state = { orderBy };
-                window.history.replaceState(state, '', `?${stringify(state)}`);
+                window.history.pushState(state, '', `?${stringify(state)}`);
                 this.loadUserList();
             },
 
@@ -94,20 +103,20 @@
                 this.set({ offset, limit });
                 const { orderBy } = this.get();
                 const state = { offset, limit, orderBy };
-                window.history.replaceState(state, '', `?${stringify(state)}`);
+                window.history.pushState(state, '', `?${stringify(state)}`);
                 this.loadUserList();
             },
 
             showDetails(currentUser) {
                 this.set({ currentUser });
-                window.history.replaceState({ currentUser }, '', `?currentUser=${currentUser}`);
+                window.history.pushState({ currentUser }, '', `?currentUser=${currentUser}`);
                 this.loadUser();
             },
 
             closeDetails() {
                 const { orderBy, offset, limit } = this.get();
-                const state = { orderBy, offset, limit, currentUser: '', userDetails: '' };
-                window.history.replaceState(state, '', `?${stringify(state)}`);
+                const state = { orderBy, offset, limit, currentUser: null, userDetails: null };
+                window.history.pushState(state, '', `?${stringify(state)}`);
                 this.set(state);
             },
 
@@ -124,12 +133,9 @@
 
             loadUser() {
                 const { currentUser, baseUrl } = this.get();
-
-                if (currentUser) {
-                    getJSON(`${baseUrl}/users/${currentUser}`, data => {
-                        if (data) this.set({ userDetails: data });
-                    });
-                }
+                getJSON(`${baseUrl}/users/${currentUser}`, data => {
+                    if (data) this.set({ userDetails: data });
+                });
             },
 
             saveUser({ userId, changes }) {
@@ -193,9 +199,8 @@
 
         oncreate() {
             const { offset, orderBy, currentUser } = parse(window.location.search);
-            this.set({ offset, orderBy, currentUser });
-            this.loadUserList();
-            this.loadUser();
+            this.update({ offset, orderBy, currentUser });
+            window.onpopstate = ({ state }) => this.update(state);
         }
     };
 </script>
