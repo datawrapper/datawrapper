@@ -1,7 +1,0 @@
-{
-    "name": "admin-users",
-    "author": "Datawrapper GmbH",
-    "version": "2.0.0",
-    "description": "For managing user accounts. Very important sometimes...",
-    "svelte": true
-}
