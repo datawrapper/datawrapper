@@ -1,7 +1,7 @@
 <?php
 
 // redirects to the last edited step of the chart editor (todo)
-$app->get('/(chart|map)/:id/edit', function($chartid) use ($app) {
+$app->get('/(chart|map|table)/:id/edit', function($chartid) use ($app) {
     disable_cache($app);
 
     check_chart_exists($chartid, function($chart) use ($app) {

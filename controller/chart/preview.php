@@ -5,7 +5,7 @@ require_once ROOT_PATH . 'lib/utils/check_iframe_origin.php';
 /*
  * Shows a preview of a chart for display in an iFrame
  */
-$app->get('/(chart|map)/:id/preview', function ($id) use ($app) {
+$app->get('/(chart|map|table)/:id/preview', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
@@ -45,7 +45,7 @@ $app->get('/chart/:id/preview/', function ($id) use ($app) {
 });
 
 // static route to emulate published vis files
-$app->get('/(chart|map)/:id/_static/:file+', function($id, $parts) use ($app) {
+$app->get('/(chart|map|table)/:id/_static/:file+', function($id, $parts) use ($app) {
     check_chart_readable($id, function($user, $chart) use ($app, $parts) {
         $fn = implode('/', $parts);
         $vis = DatawrapperVisualization::get($chart->getType());
