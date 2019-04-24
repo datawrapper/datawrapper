@@ -3,7 +3,7 @@
 /*
  * VISUALIZE STEP
  */
-$app->get('/(chart|map)/:id/:step', function ($id, $step) use ($app) {
+$app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app, $step) {

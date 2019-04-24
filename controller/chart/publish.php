@@ -3,7 +3,7 @@
 /*
  * PUBLISH STEP - shows progress of publishing action and thumbnail generation
  */
-$app->get('/(chart|map)/:id/publish(/:sub_page)?', function ($id) use ($app) {
+$app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {

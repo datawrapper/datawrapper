@@ -3,7 +3,7 @@
 /*
  * DESCRIBE STEP
  */
-$app->get('/chart/:id/describe', function ($id) use ($app) {
+$app->get('/(chart|table)/:id/describe', function ($id) use ($app) {
     disable_cache($app);
 
     check_chart_writable($id, function($user, $chart) use ($app) {
