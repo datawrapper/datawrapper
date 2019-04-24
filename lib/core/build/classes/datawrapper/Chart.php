@@ -711,6 +711,8 @@ class Chart extends BaseChart {
         // fall back to namespace caption
         return str_replace(':', '', $this->getNamespace() == 'map' ?
             $theme->getThemeData('options.footer.mapCaption') :
+            $this->getNamespace() == 'table' ?
+            $theme->getThemeData('options.footer.tableCaption') :
             $theme->getThemeData('options.footer.chartCaption'));
     }
 
