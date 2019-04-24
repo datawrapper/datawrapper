@@ -1,20 +1,20 @@
-<script type="text/javascript" src="/static/js/svelte/{{ app_id }}.js?v={{sha}}"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/svelte/{{ app_id }}.css?v={{sha}}">
+<script type="text/javascript" src="{{ app_js }}?v={{sha}}"></script>
+<link rel="stylesheet" type="text/css" href="{{ app_css }}?v={{sha}}">
 <div id="svelte-{{ app_id | replace({'/':'-'}) }}"></div>
 
 <script type="text/javascript">
 
 require(['svelte/{{ app_id }}'], function(mod) {
 
-    var store = mod.store,
-        App = mod.App,
-        data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
+    var store = mod.store;
+    var App = mod.App;
+    var data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
     if (dw.backend.currentChart) {
         store.set({ dw_chart: dw.backend.currentChart });
     }
 
-    store.set({language: '{{language}}'});
+    store.set({ language: '{{language}}' });
 
     var app = mod.app = new App({
         store: store,

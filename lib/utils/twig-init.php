@@ -105,11 +105,21 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     // adding new svelte() twig function
     $twig->addFunction(new Twig_SimpleFunction('svelte', function($app_id, $data = null) {
         $locale = DatawrapperSession::getLanguage();
+        $is_plugin = substr($app_id, 0, 7) === 'plugin/';
+        if ($is_plugin) {
+            $app_js = '/static/plugins/'.substr($app_id, 7).'.js';
+            $app_css = '/static/plugins/'.substr($app_id, 7).'.css';
+        } else {
+            $app_js = '/static/js/svelte/'.$app_id.'.js';
+            $app_css = '/static/css/svelte/'.$app_id.'.css';
+        }
         // compute a sha for cache busting
         $context = [
-            'sha' => substr(md5(file_get_contents(ROOT_PATH."www/static/js/svelte/$app_id.js")), 0, 8),
+            'sha' => substr(md5(file_get_contents(ROOT_PATH."www".$app_js)), 0, 8),
             'locale' => $locale,
             'app_id' => $app_id,
+            'app_js' => $app_js,
+            'app_css' => $app_css,
             'twig_data' => $data ?? false
         ];
 
