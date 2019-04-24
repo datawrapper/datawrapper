@@ -44,7 +44,7 @@
     &.vis-height-fit {
         overflow:hidden;
     }
-    
+
     #header {
         min-height: 1px;
         position: relative;
@@ -277,36 +277,37 @@
             color: @typography_footer_color;
         {% endif %}
 
-        a {
-            {% if typography_links_typeface %}
-                font-family: @typography_links_typeface;
-            {% endif %}
+    }
 
-            {% if typography_links_fontWeight %}
-                font-weight: @typography_links_fontWeight;
-            {% endif %}
+    .dw-chart-notes a,
+    .dw-chart-footer a {
+        {% if typography_links_typeface %}
+            font-family: @typography_links_typeface;
+        {% endif %}
 
-            {% if typography_links_lineHeight %}
-                line-height: @typography_links_lineHeight;
-            {% endif %}
+        {% if typography_links_fontWeight %}
+            font-weight: @typography_links_fontWeight;
+        {% endif %}
 
-            {% if typography_links_cursive %}
-                font-style: italic;
-            {% else %}
-                font-style: normal;
-            {% endif %}
+        {% if typography_links_lineHeight %}
+            line-height: @typography_links_lineHeight;
+        {% endif %}
 
-            {% if typography_links_underlined %}
-                text-decoration: underline;
-            {% else %}
-                text-decoration: none;
-            {% endif %}
+        {% if typography_links_cursive %}
+            font-style: italic;
+        {% else %}
+            font-style: normal;
+        {% endif %}
 
-            {% if typography_links_color %}
-                color: @typography_links_color;
-            {% endif %}
-        }
+        {% if typography_links_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
+        {% endif %}
 
+        {% if typography_links_color %}
+            color: @typography_links_color;
+        {% endif %}
     }
 
     a img {
