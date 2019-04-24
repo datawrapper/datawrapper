@@ -1,6 +1,6 @@
 <?php
 
-$app->map('/chart/create', function() use ($app) {
+$app->map('/(chart|table)/create', function() use ($app) {
     disable_cache($app);
 
     $cfg = $GLOBALS['dw_config'];
