@@ -50,4 +50,4 @@ const compileSvelte = (rawCode, filename) => {
     return js.code;
 };
 
-addHook(compileSvelte, { exts: [SVELTE_EXTENSION] });
+addHook(compileSvelte, { exts: [SVELTE_EXTENSION], ignoreNodeModules: false });
