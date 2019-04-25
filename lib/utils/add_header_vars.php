@@ -257,6 +257,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
+    $page['COMMIT_SHA'] = DATAWRAPPER_VERSION;
     $page['ASSET_DOMAIN'] = $config['asset_domain'];
     $page['APP_DOMAIN'] = defined('APP_DOMAIN') ? APP_DOMAIN : "app";
     $page['API_DOMAIN'] = $config['api_domain'];
