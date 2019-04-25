@@ -1,4 +1,4 @@
-/*! datawrapper - v1.23.0 *///
+/*! datawrapper - v1.24.0 *///
 // NOTE: This file is auto-generated using /dw.js/make
 // from the source files /dw.js/src/*.js.
 //
@@ -223,7 +223,7 @@ dw.dataset = function(columns, opts) {
  */
 dw.column = function(name, rows, type) {
     function notEmpty(d) {
-        return d !== null && d !== undefined && d !== "";
+        return d !== null && d !== undefined && d !== '';
     }
 
     function guessType(sample) {
@@ -231,11 +231,7 @@ dw.column = function(name, rows, type) {
         if (_.every(rows, _.isDate)) return dw.column.types.date();
         // guessing column type by counting parsing errors
         // for every known type
-        var types = [
-            dw.column.types.date(sample),
-            dw.column.types.number(sample),
-            dw.column.types.text()
-        ];
+        var types = [dw.column.types.date(sample), dw.column.types.number(sample), dw.column.types.text()];
         var type;
         var k = rows.filter(notEmpty).length;
         var tolerance = 0.1; // allowing 10% mis-parsed values
@@ -247,8 +243,7 @@ dw.column = function(name, rows, type) {
             });
         });
         _.every(types, function(t) {
-            if (t.errors() / k < tolerance || t.errors() <= maxAllowedAbsError)
-                type = t;
+            if (t.errors() / k < tolerance || t.errors() <= maxAllowedAbsError) type = t;
             return !type;
         });
         if (_.isUndefined(type)) type = types[2]; // default to text;
@@ -352,7 +347,7 @@ dw.column = function(name, rows, type) {
                     type = dw.column.types[o](sample);
                     return column;
                 } else {
-                    throw new Error("unknown column type: " + o);
+                    throw new Error('unknown column type: ' + o);
                 }
             }
             return type.name();
@@ -404,7 +399,7 @@ dw.column = function(name, rows, type) {
         },
 
         toString: function() {
-            return name + " (" + type.name() + ")";
+            return name + ' (' + type.name() + ')';
         },
 
         indexOf: function(val) {
