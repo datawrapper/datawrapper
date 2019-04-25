@@ -1,5 +1,5 @@
-
-/*
+/* globals _, dw */
+/**
  * DataColumn abstracts the functionality of each column
  * of a dataset. A column has a type (text|number|date).
  *
@@ -14,25 +14,20 @@
  *
  */
 dw.column = function(name, rows, type) {
-
     function notEmpty(d) {
         return d !== null && d !== undefined && d !== '';
     }
 
     function guessType(sample) {
-
         if (_.every(rows, _.isNumber)) return dw.column.types.number();
         if (_.every(rows, _.isDate)) return dw.column.types.date();
         // guessing column type by counting parsing errors
         // for every known type
-        var types = [
-                dw.column.types.date(sample),
-                dw.column.types.number(sample),
-                dw.column.types.text()
-            ],
-            type,
-            k = rows.filter(notEmpty).length,
-            tolerance = 0.1; // allowing 10% mis-parsed values
+        var types = [dw.column.types.date(sample), dw.column.types.number(sample), dw.column.types.text()];
+        var type;
+        var k = rows.filter(notEmpty).length;
+        var tolerance = 0.1; // allowing 10% mis-parsed values
+        var maxAllowedAbsError = 1; // allowing 1 mis-parsed value
 
         _.each(rows, function(val) {
             _.each(types, function(t) {
@@ -40,7 +35,7 @@ dw.column = function(name, rows, type) {
             });
         });
         _.every(types, function(t) {
-            if (t.errors() / k < tolerance) type = t;
+            if (t.errors() / k < tolerance || t.errors() <= maxAllowedAbsError) type = t;
             return !type;
         });
         if (_.isUndefined(type)) type = types[2]; // default to text;
@@ -49,16 +44,20 @@ dw.column = function(name, rows, type) {
 
     // we pick random 200 non-empty values for column type testing
     var sample = _.shuffle(_.range(rows.length))
-        .filter(function(i) { return notEmpty(rows[i]); })
+        .filter(function(i) {
+            return notEmpty(rows[i]);
+        })
         .slice(0, 200)
-        .map(function(i) { return rows[i]; });
+        .map(function(i) {
+            return rows[i];
+        });
 
     type = type ? dw.column.types[type](sample) : guessType(sample);
 
-    var range,
-        total,
-        origRows = rows.slice(0),
-        title;
+    var range;
+    var total;
+    var origRows = rows.slice(0);
+    var title;
 
     // public interface
     var column = {
@@ -74,8 +73,8 @@ dw.column = function(name, rows, type) {
         // column title (used for presentation)
         title: function() {
             if (arguments.length) {
-              title = arguments[0];
-              return column;
+                title = arguments[0];
+                return column;
             }
             return dw.utils.purifyHtml(title || name);
         },
@@ -103,7 +102,9 @@ dw.column = function(name, rows, type) {
          */
         values: function(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = _.map(r, function(d) { return dw.utils.purifyHtml(d); });
+            r = _.map(r, function(d) {
+                return dw.utils.purifyHtml(d);
+            });
             return _.map(r, type.parse);
         },
 
@@ -111,7 +112,7 @@ dw.column = function(name, rows, type) {
          * apply function to each value
          */
         each: function(f) {
-            for (var i=0; i<rows.length; i++) {
+            for (var i = 0; i < rows.length; i++) {
                 f(column.val(i), i);
             }
         },
@@ -119,7 +120,7 @@ dw.column = function(name, rows, type) {
         // access to raw values
         raw: function(i, val) {
             if (!arguments.length) return rows;
-            if (arguments.length == 2) {
+            if (arguments.length === 2) {
                 rows[i] = val;
                 return column;
             }
@@ -138,7 +139,7 @@ dw.column = function(name, rows, type) {
                     type = dw.column.types[o](sample);
                     return column;
                 } else {
-                    throw 'unknown column type: '+o;
+                    throw new Error('unknown column type: ' + o);
                 }
             }
             return type.name();
@@ -190,12 +191,12 @@ dw.column = function(name, rows, type) {
         },
 
         toString: function() {
-            return name + ' ('+type.name()+')';
+            return name + ' (' + type.name() + ')';
         },
 
         indexOf: function(val) {
             return _.find(_.range(rows.length), function(i) {
-                return column.val(i) == val;
+                return column.val(i) === val;
             });
         },
 

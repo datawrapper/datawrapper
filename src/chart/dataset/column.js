@@ -32,7 +32,7 @@ export default function(name, rows, type) {
         // for every known type
         const types = [columnTypes.date(sample), columnTypes.number(sample), columnTypes.text()];
         let type;
-        const tolerance = 0.1 * rows.filter(notEmpty).length; // allowing 10% mis-parsed values
+        const tolerance = Math.max(1, 0.1 * rows.filter(notEmpty).length); // allowing 10% mis-parsed values
 
         _.each(rows, function(val) {
             _.each(types, function(t) {
@@ -40,7 +40,7 @@ export default function(name, rows, type) {
             });
         });
         _.every(types, function(t) {
-            if (t.errors() < tolerance) type = t;
+            if (t.errors() <= tolerance) type = t;
             return !type;
         });
         if (_.isUndefined(type)) type = types[2]; // default to text;
