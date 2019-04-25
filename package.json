@@ -106,7 +106,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "lint-staged && git rev-parse HEAD > sha && git add sha"
         }
     },
     "lint-staged": {
