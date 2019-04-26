@@ -1,5 +1,5 @@
 import App from './ChartEditor.html';
-import Chart from '../chart/Chart.js';
+import Chart from '@datawrapper/shared/chart';
 
 const data = {};
 
