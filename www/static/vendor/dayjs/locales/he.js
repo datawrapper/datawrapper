@@ -31,5 +31,17 @@ export default {
         ll: 'D MMM YYYY',
         lll: 'D MMM YYYY HH:mm',
         llll: 'ddd, D MMM YYYY HH:mm'
+    },
+    formats: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD/MM/YYYY',
+        LL: 'D [ב]MMMM YYYY',
+        LLL: 'D [ב]MMMM YYYY HH:mm',
+        LLLL: 'dddd, D [ב]MMMM YYYY HH:mm',
+        l: 'D/M/YYYY',
+        ll: 'D MMM YYYY',
+        lll: 'D MMM YYYY HH:mm',
+        llll: 'ddd, D MMM YYYY HH:mm'
     }
 };

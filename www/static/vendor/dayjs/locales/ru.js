@@ -3,8 +3,24 @@ export default {
     weekdays: 'воскресенье_понедельник_вторник_среда_четверг_пятница_суббота'.split('_'),
     weekdaysShort: 'вск_пнд_втр_срд_чтв_птн_сбт'.split('_'),
     weekdaysMin: 'вс_пн_вт_ср_чт_пт_сб'.split('_'),
-    months: 'январь_февраль_март_апрель_май_июнь_июль_август_сентябрь_октябрь_ноябрь_декабрь'.split('_'),
-    monthsShort: 'янв_фев_мар_апр_май_июн_июл_авг_сен_окт_ноя_дек'.split('_'),
+    months: (dayjsInstance, format) => {
+        const monthFormat = 'января_февраля_марта_апреля_мая_июня_июля_августа_сентября_октября_ноября_декабря'.split('_');
+        const monthStandalone = 'январь_февраль_март_апрель_май_июнь_июль_август_сентябрь_октябрь_ноябрь_декабрь'.split('_');
+        const MONTHS_IN_FORMAT = /D[oD]?(\[[^[\]]*\]|\s)+MMMM?/;
+        if (MONTHS_IN_FORMAT.test(format)) {
+            return monthFormat[dayjsInstance.month()];
+        }
+        return monthStandalone[dayjsInstance.month()];
+    },
+    monthsShort: (dayjsInstance, format) => {
+        const monthShortFormat = 'янв._февр._мар._апр._мая_июня_июля_авг._сент._окт._нояб._дек.'.split('_');
+        const monthShortStandalone = 'янв._февр._март_апр._май_июнь_июль_авг._сент._окт._нояб._дек.'.split('_');
+        const MONTHS_IN_FORMAT = /D[oD]?(\[[^[\]]*\]|\s)+MMMM?/;
+        if (MONTHS_IN_FORMAT.test(format)) {
+            return monthShortFormat[dayjsInstance.month()];
+        }
+        return monthShortStandalone[dayjsInstance.month()];
+    },
     weekStart: 1,
     formats: {
         LT: 'H:mm',

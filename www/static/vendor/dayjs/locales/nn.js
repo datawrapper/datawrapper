@@ -21,5 +21,13 @@ export default {
         MM: '%d månadar',
         y: 'eitt år',
         yy: '%d år'
+    },
+    formats: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'DD.MM.YYYY',
+        LL: 'D. MMMM YYYY',
+        LLL: 'D. MMMM YYYY [kl.] H:mm',
+        LLLL: 'dddd D. MMMM YYYY [kl.] HH:mm'
     }
 };

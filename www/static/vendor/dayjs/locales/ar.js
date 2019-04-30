@@ -18,5 +18,13 @@ export default {
         y: 'عام واحد',
         yy: 'أعوام %d'
     },
-    ordinal: n => n
+    ordinal: n => n,
+    formats: {
+        LT: 'HH:mm',
+        LTS: 'HH:mm:ss',
+        L: 'D/‏M/‏YYYY',
+        LL: 'D MMMM YYYY',
+        LLL: 'D MMMM YYYY HH:mm',
+        LLLL: 'dddd D MMMM YYYY HH:mm'
+    }
 };

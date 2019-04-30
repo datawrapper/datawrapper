@@ -19,5 +19,13 @@ export default {
         MM: '%d μήνες',
         y: 'ένα χρόνο',
         yy: '%d χρόνια'
+    },
+    formats: {
+        LT: 'h:mm A',
+        LTS: 'h:mm:ss A',
+        L: 'DD/MM/YYYY',
+        LL: 'D MMMM YYYY',
+        LLL: 'D MMMM YYYY h:mm A',
+        LLLL: 'dddd, D MMMM YYYY h:mm A'
     }
 };
