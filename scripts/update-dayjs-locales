@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+/* eslint-env node */
+/* eslint no-console: "off" */
+
+/**
+ * this script updates our copy of the dayjs locales.
+ *
+ */
+const chalk = require('chalk');
+
+const glob = require('glob');
+const path = require('path');
+const { exec } = require('child_process');
+const fs = require('fs');
+
+const tmp = path.resolve(__dirname, '../tmp/dayjs');
+const out = path.resolve(__dirname, '../www/static/vendor/dayjs/locales');
+
+console.log('updating dayjs locales');
+console.log('cloning dayjs repository into tmp/dayjs');
+
+exec(
+    `rm -Rf ${tmp} &&
+    git clone https://github.com/iamkun/dayjs.git ${tmp} --depth 1`,
+    (err, stdout, stderr) => {
+        if (err) return console.error(err);
+        const warnings = [];
+        console.log(stdout);
+        console.log(path.resolve(tmp, 'src/locale/*.js'));
+        glob.sync(path.resolve(tmp, 'src/locale/*.js')).forEach(fn => {
+            const file = path.basename(fn);
+            const locale = fs
+                .readFileSync(fn, 'utf-8')
+                .replace(/import dayjs from 'dayjs';?\n+/, '')
+                .replace(/dayjs.locale\(locale, null, true\);?/, '')
+                .replace(/export default locale;?/, '')
+                .replace(`const locale =`, 'export default')
+                .trim();
+
+            if (locale.substr(0, 16) !== 'export default {' || locale.substr(-1) !== '}') {
+                warnings.push(`please manually fix ${file}!`);
+            }
+
+            fs.writeFileSync(path.resolve(out, file), locale);
+            process.stdout.write(file.split('.')[0] + ' ');
+        });
+        console.log('\nall done');
+        if (warnings.length > 0) {
+            warnings.forEach(w => console.log(chalk.yellowBright(w)));
+        }
+
+        exec(`rm -Rf ${tmp}`, err => {
+            if (err) return console.error(err);
+            console.log('cleaned temporary files');
+        });
+
+        exec(`npx prettier ${out}/*.js --write`, err => {
+            if (err) return console.error(err);
+            console.log('prettified locales');
+        });
+    }
+);
