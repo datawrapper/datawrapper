@@ -41,7 +41,7 @@ exec(
                 warnings.push(`please manually fix ${file}!`);
             }
 
-            fs.writeFileSync(path.resolve(out, file), locale);
+            fs.writeFileSync(path.resolve(out, file.toLowerCase()), locale);
             process.stdout.write(file.split('.')[0] + ' ');
         });
         console.log('\nall done');
