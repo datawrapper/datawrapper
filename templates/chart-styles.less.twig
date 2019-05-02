@@ -26,9 +26,13 @@
 
     {% if typography_chart_color %}
         color: @typography_chart_color;
+    {% else %}
+        color: @colors_text
     {% endif %}
 
-    font-size: 12px;
+    {% if typography_chart_fontSize %}
+        font-size: ~'@{typography_chart_fontSize}px';
+    {% endif %}
 
     {% if colors_general_background %}
         background: @colors_general_background;
@@ -59,6 +63,52 @@
 
     #chart, .dw-chart-body {
 
+    {% if style_axes_gridlines_color %}
+
+        path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick{
+            stroke: @style_axes_gridlines_color;
+        }
+        .bc-grid-line {
+            background-color: @style_axes_gridlines_color;
+        }
+        .y-gridline {
+            border-top-color:@style_axes_gridlines_color;
+        }
+
+
+    {% elseif colors_grid %}
+
+        path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick {
+            stroke: @colors_grid;
+        }
+        .bc-grid-line {
+            background-color: @colors_grid;
+        }
+        .y-gridline {
+            border-top-color:@colors_grid;
+        }
+
+    {% endif %}
+
+
+
+    {% if style_axes_gridlines_baselineColor %}
+    
+        path.grid.x-axis, line.x-axis, .vis-frame line.axis {
+            stroke: @style_axes_gridlines_baselineColor;
+        }
+        .bc-grid-baseline {
+            background-color: @style_axes_gridlines_baselineColor
+        }
+    {% elseif colors_axis %}
+
+        path.grid.x-axis, line.x-axis, .vis-frame line.axis {
+            stroke: @colors_axis;
+        }
+        .bc-grid-baseline {
+            background-color: @colors_axis
+        }
+    {% endif %}
     }
 
     h1 {
@@ -351,37 +401,68 @@
         opacity: 1;
     }
 
-    .label {
-        font-size: 12px;
+    .labels text {
 
-        span {
-            color: #333;
-            text-shadow: 0 0 2px #fff;
+        {% if typography_chart_fontSize %}
+            font-size: ~'@{typography_chart_fontSize}px';
+        {% endif %}
+    }
+
+    .label {
+        
+        span, tspan {
+
+            {% if typography_chart_fontSize %}
+                font-size: ~'@{typography_chart_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_color %}
+                color: @typography_chart_color;
+                fill: @typography_chart_color;
+            {% else %}
+                color: @colors_text;
+                fill: @colors_text
+            {% endif %}
         }
 
+        {% if colors_background %}
+            span {
+                text-shadow: ~'0 0 2px @{colors_background}';
+            }
+        {% endif %}
         &.inverted span {
             text-shadow: 0 0px 2px #000000;
             color: #fff;
         }
 
-        &.outline span {
-            text-shadow: 0 1px 0 #FFFFFF, 1px 0 0 #FFFFFF, 0 -1px 0 #FFFFFF, -1px 0 0 #FFFFFF,
-            1px 1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF,
-            0 2px 1px #FFFFFF, 2px 0 1px #FFFFFF, 0 -2px 1px #FFFFFF, -2px 0 1px #FFFFFF,
-            -1px 2px 0px #FFFFFF, 2px -1px 0px #FFFFFF, -1px -2px 0px #FFFFFF, -2px -1px 0px #FFFFFF,
-            1px 2px 0px #FFFFFF, 2px 1px 0px #FFFFFF, 1px -2px 0px #FFFFFF, -2px 1px 0px #FFFFFF;
-
-            sup {
-                text-shadow: none;
-            }
+        &.inside:not(.inverted) span {
+            text-shadow: 0 0px 2px #ffffff;
+            color: #333333;
         }
+
+        {% if colors_background %}
+            &.outline span {
+                text-shadow: ~'0 1px 0 @{colors_background}, 1px 0 0 @{colors_background}, 0 -1px 0 @{colors_background}, -1px 0 0 @{colors_background},1px 1px 0 @{colors_background}, 1px -1px 0 @{colors_background}, -1px -1px 0 @{colors_background}, -1px 1px 0 @{colors_background},0 2px 1px @{colors_background}, 2px 0 1px @{colors_background}, 0 -2px 1px @{colors_background}, -2px 0 1px @{colors_background},-1px 2px 0px @{colors_background}, 2px -1px 0px @{colors_background}, -1px -2px 0px @{colors_background}, -2px -1px 0px @{colors_background},1px 2px 0px @{colors_background}, 2px 1px 0px @{colors_background}, 1px -2px 0px @{colors_background}, -2px 1px 0px @{colors_background}';
+            }
+
+            &.axis-label span {
+                text-shadow:~'-1px -1px 2px @{colors_background}, -1px 0px 2px @{colors_background}, -1px 1px 2px @{colors_background}, 0px -1px 2px @{colors_background}, 0px 1px 2px @{colors_background}, 1px -1px 2px @{colors_background}, 1px 0px 2px @{colors_background}, 1px 1px 2px @{colors_background}';
+            }
+        {% endif %}
+
+        sup {
+            text-shadow: none;
+        }
+        
 
         &.highlighted {
             font-weight: bold;
         }
 
         &.highlighted, .label.axis {
-            font-size: 12px;
+            {% if typography_chart_fontSize %}
+                font-size: ~'@{typography_chart_fontSize}px';
+            {% endif %}
             z-index: 100;
         }
 
@@ -389,12 +470,38 @@
             font-weight: bold;
         }
 
-        &.value span {
-            font-size: 12px;
+        &.value span, {
+            {% if typography_chart_value_fontSize %}
+                font-size: ~'@{typography_value_fontSize}px';
+            {% endif %} 
+        }
+
+        &.value:not(.inside) span, .value tspan  {
+            {% if typography_chart_value_color %}
+                color: @typography_chart_value_color;
+            {% endif %}
         }
 
         &.series span {
-            font-size: 12px;
+            {% if typography_chart_series_fontSize %}
+                font-size: ~'@{typography_chart_axes_series_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_series_color %}
+                color: @typography_chart_series_color;
+            {% endif %}
+
+        }
+
+        &.legend-text span {
+            {% if typography_chart_legend_fontSize %}
+                font-size: ~'@{typography_chart_legend_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_legend_color %}
+                color: @typography_chart_legend_color;
+            {% endif %}
+
         }
 
         &.rotate90 {
@@ -408,6 +515,38 @@
         &.smaller span {
             font-size: 80%;
         }
+    }
+
+        .secondary.tick span, .secondary.tick text, text.secondary.tick {
+            {% if typography_chart_axes_secondary_fontSize %}
+                font-size: ~'@{typography_secondary_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_axes_secondary_color %}
+                color: @typography_chart_axes_secondary_color;
+                fill: @typography_chart_axes_secondary_color;
+            {% endif %}
+
+        }
+
+        .primary.tick span, .primary.tick text, .primary.tick tspan {
+            {% if typography_chart_axes_primary_fontSize %}
+                font-size: ~'@{typography_chart_axes_primary_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_axes_primary_color %}
+                color: @typography_chart_axes_primary_color;
+                fill: @typography_chart_axes_primary_color;
+            {% endif %}
+
+        }
+
+    .dw-tooltip {
+        {% if style_tooltip_color %}
+                color:@style_tooltip_text_color;
+        {% else %}
+                color:#333333;
+        {% endif %}
     }
 
     .tooltip {
@@ -448,7 +587,9 @@
         overflow-x: hidden;
         overflow-y: hidden;
         border-bottom: 1px solid #ccc;
-        font-size: 12px;
+        {% if typography_chart_fontSize %}
+            font-size: ~'@{typography_chart_fontSize}px';
+        {% endif %}
 
 
         a {
@@ -481,7 +622,9 @@
         border-radius: 4px 4px 4px 4px;
         padding: 4px 6px;
         vertical-align: middle;
-        font-size: 12px;
+        {% if typography_chart_fontSize %}
+            font-size: ~'@{typography_chart_fontSize}px';
+        {% endif %}
     }
 
     &.plain #footer {

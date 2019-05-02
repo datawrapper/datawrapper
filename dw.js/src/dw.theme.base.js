@@ -1,22 +1,20 @@
-
 // Every theme must extend this class.
 // It provides the basic API between the chart template
 // page and the visualization class.
 
 dw.theme.base = {
-
     /*
      * colors used in the theme
      */
     colors: {
-        palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
+        palette: ['#6E7DA1', '#64A4C4', '#53CCDD', '#4EF4E8'],
         secondary: [],
 
         positive: '#85B4D4',
         negative: '#E31A1C',
         // colors background and text needs to be set in CSS as well!
         background: '#ffffff',
-        text: '#000000',
+        text: '#333333',
 
         /*
          * gradients that might be used by color gradient selectors
@@ -26,13 +24,13 @@ dw.theme.base = {
          */
         gradients: [
             ['#fefaca', '#008b15'], // simple yellow to green
-            ['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac'],  // GnBu
-            ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
-            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
+            ['#f0f9e8', '#ccebc5', '#a8ddb5', '#7bccc4', '#43a2ca', '#0868ac'], // GnBu
+            ['#feebe2', '#fcc5c0', '#fa9fb5', '#f768a1', '#c51b8a', '#7a0177'], // RdPu
+            ['#ffffcc', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'], // YlGnbu
 
-            ['#8c510a','#d8b365','#f6e8c3','#f5f7ea','#c7eae5','#5ab4ac','#01665e'],  // BrBG
-            ['#c51b7d','#e9a3c9','#fde0ef','#faf6ea','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
-            ['#b2182b','#ef8a62','#fddbc7','#f8f6e9','#d1e5f0','#67a9cf','#2166ac'],  // RdBu
+            ['#8c510a', '#d8b365', '#f6e8c3', '#f5f7ea', '#c7eae5', '#5ab4ac', '#01665e'], // BrBG
+            ['#c51b7d', '#e9a3c9', '#fde0ef', '#faf6ea', '#e6f5d0', '#a1d76a', '#4d9221'], // PiYG
+            ['#b2182b', '#ef8a62', '#fddbc7', '#f8f6e9', '#d1e5f0', '#67a9cf', '#2166ac'] // RdBu
             //['#b35806','#f1a340','#fee0b6','#f7f7f7','#d8daeb','#998ec3','#542788'],  // PuOr
         ],
 
@@ -43,9 +41,9 @@ dw.theme.base = {
          * Geography, Pennsylvania State University.
          */
         categories: [
-            ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"], // Accent
-            ["#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"], // Pastel1
-            ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"] // Paired
+            ['#7fc97f', '#beaed4', '#fdc086', '#ffff99', '#386cb0', '#f0027f', '#bf5b17', '#666666'], // Accent
+            ['#fbb4ae', '#b3cde3', '#ccebc5', '#decbe4', '#fed9a6', '#ffffcc', '#e5d8bd', '#fddaec', '#f2f2f2'], // Pastel1
+            ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'] // Paired
         ]
     },
 
@@ -117,7 +115,6 @@ dw.theme.base = {
         strokeWidth: 1
     },
 
-
     /*
      * attributes applied to horizontal grids if displayed
      * e.g. in line charts, column charts, ...
@@ -157,7 +154,6 @@ dw.theme.base = {
      */
     yTicks: false,
 
-
     hover: true,
     tooltip: true,
 
@@ -183,6 +179,5 @@ dw.theme.base = {
     /*
      * easing for animated transitions
      */
-     easing: 'expoInOut'
-
+    easing: 'expoInOut'
 };
