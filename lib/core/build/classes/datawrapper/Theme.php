@@ -31,18 +31,6 @@ class Theme extends BaseTheme
 
         $allThemeLess = $this->getLess();
 
-        while (!empty($theme->getExtend())) {
-            $theme = ThemeQuery::create()->findPk($theme->getExtend());
-            $allThemeLess = $theme->getLess() . "\n\n\n" . $allThemeLess;
-        }
-
-        $allVisLess = "";
-
-        foreach ($visLess as $vis) {
-            $allVisLess .= "\n\n\n" . file_get_contents($vis);
-        }
-
-
         $data['colors_perceived_bg'] =
             empty($data['colors_background']) ||
                 $data['colors_background'] == '~"transparent"' ? '~"white"' :
@@ -50,6 +38,28 @@ class Theme extends BaseTheme
 
         $less = new lessc;
         $less->setVariables($data);
+
+        while (!empty($theme->getExtend())) {
+            $theme = ThemeQuery::create()->findPk($theme->getExtend());
+            $allThemeLess = $theme->getLess() . "\n\n\n" . $allThemeLess;
+        }
+
+        $allVisLess = "";
+
+        foreach ($visLess as $visPath) {                                              
+            $parts = explode("/", $visPath);
+            $filename = $parts[sizeof($parts)-1];
+            unset($parts[sizeof($parts)-1]);
+            $dir = implode("/", $parts);
+
+            $visTwig = new \Twig_Environment(new \Twig_Loader_Filesystem($dir));
+            $vis = $visTwig->render($filename, $twigData);
+            $less->setImportDir($dir);
+
+            $allVisLess .= $less->compile($vis);
+        }
+
+        
         return $less->compile($baseLess . "\n" . $allVisLess . "\n" . $allThemeLess);
     }
 
