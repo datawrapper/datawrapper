@@ -30,6 +30,10 @@
         color: @colors_text
     {% endif %}
 
+    {% if typography_chart_letterSpacing %}
+        letter-spacing: ~'@{typography_chart_letterSpacing}px';
+    {% endif %} 
+
     {% if typography_chart_fontSize %}
         font-size: ~'@{typography_chart_fontSize}px';
     {% endif %}
@@ -125,7 +129,11 @@
         {% endif %}
 
         {% if typography_headline_lineHeight %}
-            line-height: @typography_headline_lineHeight;
+            line-height: ~'@{typography_headline_lineHeight}px';
+        {% endif %}
+
+        {% if typography_headline_letterSpacing %}
+            letter-spacing: ~'@{typography_headline_letterSpacing}px';
         {% endif %}
 
         {% if typography_headline_cursive %}
@@ -163,7 +171,11 @@
         {% endif %}
 
         {% if typography_description_lineHeight %}
-            line-height: @typography_description_lineHeight;
+            line-height: ~'@{typography_description_lineHeight}px';
+        {% endif %}
+
+        {% if typography_description_letterSpacing %}
+            letter-spacing: ~'@{typography_description_letterSpacing}px';
         {% endif %}
 
         {% if typography_description_cursive %}
@@ -470,9 +482,17 @@
             font-weight: bold;
         }
 
-        &.value span, {
+        &.value span, &.outside-label span, .inside-label span, &.value tspan{
             {% if typography_chart_value_fontSize %}
-                font-size: ~'@{typography_value_fontSize}px';
+                font-size: ~'@{typography_chart_value_fontSize}px';
+            {% endif %}
+
+            {% if typography_chart_value_fontSize %}
+                font-family: @typography_chart_value_typeface;
+            {% endif %}
+
+            {% if typography_chart_value_fontWeight %}
+                font-weight: @typography_chart_value_fontWeight;
             {% endif %} 
         }
 
@@ -484,13 +504,16 @@
 
         &.series span {
             {% if typography_chart_series_fontSize %}
-                font-size: ~'@{typography_chart_axes_series_fontSize}px';
+                font-size: ~'@{typography_chart_series_fontSize}px';
             {% endif %}
 
             {% if typography_chart_series_color %}
                 color: @typography_chart_series_color;
             {% endif %}
 
+            {% if typography_chart_series_typeface %}
+                font-family: @typography_chart_series_typeface;
+            {% endif %}
         }
 
         &.legend-text span {
@@ -518,25 +541,47 @@
     }
 
         .secondary.tick span, .secondary.tick text, text.secondary.tick {
+            
             {% if typography_chart_axes_secondary_fontSize %}
-                font-size: ~'@{typography_secondary_fontSize}px';
+                font-size: ~'@{typography_chart_axes_secondary_fontSize}px';
+            {% elseif typography_chart_axes_fontSize %}
+                font-size: ~'@{typography_chart_axes_fontSize}px';
             {% endif %}
 
             {% if typography_chart_axes_secondary_color %}
                 color: @typography_chart_axes_secondary_color;
                 fill: @typography_chart_axes_secondary_color;
+            {% elseif typography_chart_axes_color %}
+                color: @typography_chart_axes_color;
+                fill: @typography_chart_axes_color;
             {% endif %}
+
 
         }
 
         .primary.tick span, .primary.tick text, .primary.tick tspan {
+
             {% if typography_chart_axes_primary_fontSize %}
+
                 font-size: ~'@{typography_chart_axes_primary_fontSize}px';
+            
+            {% elseif typography_chart_axes_fontSize %}
+            
+                font-size: ~'@{typography_chart_axes_fontSize}px';
+            
             {% endif %}
 
             {% if typography_chart_axes_primary_color %}
+
                 color: @typography_chart_axes_primary_color;
                 fill: @typography_chart_axes_primary_color;
+
+
+            {% elseif typography_chart_axes_color %}
+                
+                color: @typography_chart_axes_color;
+                fill: @typography_chart_axes_color;
+
             {% endif %}
 
         }
