@@ -85,9 +85,17 @@ export default function({
             window.onload = __dw.render();
         }
 
+        let themeFitChart = false;
+        const theme = dw.theme(themeId);
+        if (theme && theme.pieChart && theme.pieChart.fitchart) {
+            themeFitChart = theme.pieChart.fitchart === 1 || theme.pieChart.fitchart === true;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const isFitChart = urlParams.get('fitchart') === '1' || themeFitChart;
+
         setInterval(function() {
             let desiredHeight;
-            if (visJSON.height === 'fixed') {
+            if (visJSON.height === 'fixed' && !isFitChart) {
                 desiredHeight = $('html').outerHeight(true);
             } else {
                 if (__dw.params.preview || !__dw.vis.chart().get('metadata.publish.chart-height')) {
