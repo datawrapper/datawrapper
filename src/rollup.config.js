@@ -21,7 +21,6 @@ build('publish/sidebar', { noAMD: true });
 build('highlight');
 build('editor');
 build('account');
-// build('admin/users');
 
 if (checkTarget('render'))
     targets.push({
