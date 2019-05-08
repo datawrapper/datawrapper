@@ -1,12 +1,11 @@
-
+/* globals dw, _, $ */
 // Every visualization must extend this class.
 // It provides the basic API between the chart template
 // page and the visualization class.
 
-dw.visualization.base = (function() {}).prototype;
+dw.visualization.base = function() {}.prototype;
 
 _.extend(dw.visualization.base, {
-
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
@@ -25,13 +24,13 @@ _.extend(dw.visualization.base, {
     theme: function(theme) {
         if (!arguments.length) return this.__theme;
         this.__theme = theme;
-        var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
-        _.each(attr_properties, function(prop) {
+        var attrProperties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
+        _.each(attrProperties, function(prop) {
             // convert camel-case to dashes
             if (theme.hasOwnProperty(prop)) {
                 for (var key in theme[prop]) {
                     // dasherize
-                    var lkey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+                    var lkey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
                     if (!theme[prop].hasOwnProperty(lkey)) {
                         theme[prop][lkey] = theme[prop][key];
                     }
@@ -53,7 +52,7 @@ _.extend(dw.visualization.base, {
      * short-cut for this.chart.get('metadata.visualize.*')
      */
     get: function(str, _default) {
-        return this.chart().get('metadata.visualize'+(str ? '.'+str : ''), _default);
+        return this.chart().get('metadata.visualize' + (str ? '.' + str : ''), _default);
     },
 
     notify: function(str) {
@@ -61,8 +60,9 @@ _.extend(dw.visualization.base, {
             return dw.backend.notify(str);
         } else {
             if (window.parent && window.parent['postMessage']) {
-                window.parent.postMessage('notify:'+str, '*');
+                window.parent.postMessage('notify:' + str, '*');
             } else if (window['console']) {
+                // eslint-disable-next-line
                 console.log(str);
             }
         }
@@ -78,12 +78,11 @@ _.extend(dw.visualization.base, {
     },
 
     translate: function(str) {
-        var locale = this.meta.locale, lang = this.lang;
-        return locale[str] ? locale[str][lang] || locale[str].en ||
-            locale[str] : str;
+        var locale = this.meta.locale;
+        return locale[str] || str;
     },
 
-    checkBrowserCompatibility: function(){
+    checkBrowserCompatibility: function() {
         return true;
     },
 
@@ -103,19 +102,18 @@ _.extend(dw.visualization.base, {
     },
 
     axes: function(returnAsColumns, noCache) {
-
         var me = this;
 
         if (!noCache && me.__axisCache) {
             return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
         }
 
-        var dataset = me.dataset,
-            usedColumns = {},
-            axes = {},
-            axesDef,
-            axesAsColumns = {},
-            errors = [];
+        var dataset = me.dataset;
+        var usedColumns = {};
+        var axes = {};
+        var axesDef;
+        var axesAsColumns = {};
+        var errors = [];
 
         // get user preference
         axesDef = me.chart().get('metadata.axes', {});
@@ -137,25 +135,24 @@ _.extend(dw.visualization.base, {
         // auto-populate remaining axes
         _.each(me.meta.axes, function(axisDef, key) {
             function checkColumn(col) {
-                return !usedColumns[col.name()] &&
-                    _.indexOf(axisDef.accepts, col.type()) >= 0;
+                return !usedColumns[col.name()] && _.indexOf(axisDef.accepts, col.type()) >= 0;
             }
             function errMissingColumn() {
-                var msg = dw.backend ?
-                        dw.backend.messages.insufficientData :
-                        'The visualization needs at least one column of the type %type to populate axis %key';
+                var msg = dw.backend
+                    ? dw.backend.messages.insufficientData
+                    : 'The visualization needs at least one column of the type %type to populate axis %key';
                 errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
             }
             function remainingRequiredColumns(accepts) {
                 // returns how many required columns there are for the remaining axes
                 // either an integer or "multiple" if there's another multi-column axis coming up
                 function equalAccepts(a1, a2) {
-                    if (typeof a1 == "undefined" && typeof a2 != "undefined") return false;
-                    if (typeof a2 == "undefined" && typeof a1 != "undefined") return false;
-                    if (a1.length != a2.length) return false;
+                    if (typeof a1 === 'undefined' && typeof a2 !== 'undefined') return false;
+                    if (typeof a2 === 'undefined' && typeof a1 !== 'undefined') return false;
+                    if (a1.length !== a2.length) return false;
 
-                    for (var i=0; i<a1.length; i++) {
-                        if (a2.indexOf(a1[i]) == -1) return false;
+                    for (var i = 0; i < a1.length; i++) {
+                        if (a2.indexOf(a1[i]) === -1) return false;
                     }
                     return true;
                 }
@@ -164,10 +161,10 @@ _.extend(dw.visualization.base, {
                 _.each(me.meta.axes, function(axisDef, key) {
                     if (checked.indexOf(key) > -1) return;
                     if (!equalAccepts(axisDef.accepts, accepts)) return;
-                    if (typeof res == "string") return;
+                    if (typeof res === 'string') return;
                     if (axisDef.optional) return;
                     if (axisDef.multiple) {
-                        res = "multiple";
+                        res = 'multiple';
                         return;
                     }
                     res += 1;
@@ -184,16 +181,17 @@ _.extend(dw.visualization.base, {
                 return count;
             }
             checked.push(key);
-            if (axes[key]) return;  // user has defined this axis already
-            if (!axisDef.optional) { // we only populate mandatory axes
+            if (axes[key]) return; // user has defined this axis already
+            if (!axisDef.optional) {
+                // we only populate mandatory axes
                 if (!axisDef.multiple) {
-                    var accepted = _.filter(dataset.columns(), checkColumn),
-                        firstMatch;
+                    var accepted = _.filter(dataset.columns(), checkColumn);
+                    var firstMatch;
                     if (axisDef.preferred) {
                         // axis defined a regex for testing column names
                         var regex = new RegExp(axisDef.preferred, 'i');
                         firstMatch = _.find(accepted, function(col) {
-                            return regex.test(col.name()) || (col.title() != col.name() && regex.test(col.title()));
+                            return regex.test(col.name()) || (col.title() !== col.name() && regex.test(col.title()));
                         });
                     }
                     // simply use first colulmn accepted by axis
@@ -204,9 +202,13 @@ _.extend(dw.visualization.base, {
                     } else {
                         // try to auto-populate missing text column
                         if (_.indexOf(axisDef.accepts, 'text') >= 0) {
-                            var col = dw.column(key, _.map(_.range(dataset.numRows()), function(i) {
-                                return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
-                            }), 'text');
+                            var col = dw.column(
+                                key,
+                                _.map(_.range(dataset.numRows()), function(i) {
+                                    return (i > 25 ? String.fromCharCode(64 + i / 26) : '') + String.fromCharCode(65 + (i % 26));
+                                }),
+                                'text'
+                            );
                             dataset.add(col);
                             me.chart().dataset(dataset);
                             usedColumns[col.name()] = true;
@@ -216,13 +218,13 @@ _.extend(dw.visualization.base, {
                         }
                     }
                 } else {
-                    var required = remainingRequiredColumns(axisDef.accepts),
-                        available = remainingAvailableColumns(dataset);
+                    var required = remainingRequiredColumns(axisDef.accepts);
+                    var available = remainingAvailableColumns(dataset);
 
                     // fill axis with all accepted columns
                     axes[key] = [];
                     dataset.eachColumn(function(c) {
-                        if (required === "multiple" && axes[key].length) return;
+                        if (required === 'multiple' && axes[key].length) return;
                         else if (available <= required) return;
 
                         if (checkColumn(c)) {
@@ -248,7 +250,8 @@ _.extend(dw.visualization.base, {
         }
 
         if (usedColumnCount < dataset.numColumns()) {
-            var msg = 'Your dataset contains more columns than the chosen chart type can display. You can switch' +
+            var msg =
+                'Your dataset contains more columns than the chosen chart type can display. You can switch' +
                 ' the column to show in the <b>Refine</b> tab, or choose a different chart type.';
             errors.push(msg);
         }
@@ -275,7 +278,7 @@ _.extend(dw.visualization.base, {
 
         function columnExists(columns) {
             if (!_.isArray(columns)) columns = [columns];
-            for (var i=0; i<columns.length; i++) {
+            for (var i = 0; i < columns.length; i++) {
                 if (!dataset.hasColumn(columns[i])) return false;
             }
             return true;
@@ -285,12 +288,12 @@ _.extend(dw.visualization.base, {
     },
 
     keys: function() {
-        var me = this,
-            axesDef = me.axes();
+        var me = this;
+        var axesDef = me.axes();
         if (axesDef.labels) {
-            var lblCol = me.dataset.column(axesDef.labels),
-                fmt = me.chart().columnFormatter(lblCol),
-                keys = [];
+            var lblCol = me.dataset.column(axesDef.labels);
+            var fmt = me.chart().columnFormatter(lblCol);
+            var keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));
             });
@@ -309,14 +312,17 @@ _.extend(dw.visualization.base, {
      */
     reset: function() {
         this.clear();
-        $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
+        $('#chart')
+            .html('')
+            .off('click')
+            .off('mousemove')
+            .off('mouseenter')
+            .off('mouseover');
         $('.chart .filter-ui').remove();
         $('.chart .legend').remove();
     },
 
-    clear: function() {
-
-    },
+    clear: function() {},
 
     renderingComplete: function() {
         if (window.parent && window.parent['postMessage']) {
@@ -363,7 +369,4 @@ _.extend(dw.visualization.base, {
     colorsUsed: function() {
         return Object.keys(this.__colors);
     }
-
-
 });
-

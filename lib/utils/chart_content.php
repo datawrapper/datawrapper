@@ -131,7 +131,28 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
             foreach ($vis['locale'] as $term => $translations) {
-                if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
+                if (!isset($vis_locale[$term])) {
+                    // first we try to find the chart locale
+                    if (!empty($translations[$chartLocale])) {
+                        $vis_locale[$term] = $translations[$chartLocale];
+                    }
+                    // now we try to find a different locale of the
+                    // same language, e.g. en-US for en-GB
+                    else {
+                        foreach ($translations as $locale => $translation) {
+                            if (!empty($translations[$locale]) && substr($locale, 0, 2) == $chartLanguage) {
+                                $vis_locale[$term] = $translations[$locale];
+                                // stop after we found one
+                                break;
+                            }
+                        }
+                    }
+                    // if we still haven't found a translation
+                    // we fall back to en-US
+                    if (!isset($vis_locale[$term])) {
+                        $vis_locale[$term] = $translations['en-US'] ?? $term;
+                    }
+                }
             }
         }
         $vjs[] = $vis_static_path . $vis['id'] . '.js';
