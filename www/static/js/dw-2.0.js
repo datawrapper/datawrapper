@@ -2165,35 +2165,40 @@ dw.visualization = (function() {
     return visualization;
 })();
 
-
 // Every visualization must extend this class.
 // It provides the basic API between the chart template
 // page and the visualization class.
 
-dw.visualization.base = (function() {}).prototype;
+dw.visualization.base = function() {}.prototype;
 
 _.extend(dw.visualization.base, {
-
     // called before rendering
     __init: function() {
         this.__renderedDfd = $.Deferred();
         this.__rendered = false;
         this.__colors = {};
+        this.__callbacks = {};
+
         if (window.parent && window.parent.postMessage) {
-            window.parent.postMessage('datawrapper:vis:init', '*');
+            window.parent.postMessage("datawrapper:vis:init", "*");
         }
         return this;
     },
 
     render: function(el) {
-        $(el).html('implement me!');
+        $(el).html("implement me!");
     },
 
     theme: function(theme) {
         if (!arguments.length) return this.__theme;
         this.__theme = theme;
-        var attr_properties = ['horizontalGrid', 'verticalGrid', 'yAxis', 'xAxis'];
-        _.each(attr_properties, function(prop) {
+        var attrProperties = [
+            "horizontalGrid",
+            "verticalGrid",
+            "yAxis",
+            "xAxis"
+        ];
+        _.each(attrProperties, function(prop) {
             // convert camel-case to dashes
             if (theme.hasOwnProperty(prop)) {
                 for (var key in theme[prop]) {
@@ -2220,16 +2225,20 @@ _.extend(dw.visualization.base, {
      * short-cut for this.chart.get('metadata.visualize.*')
      */
     get: function(str, _default) {
-        return this.chart().get('metadata.visualize'+(str ? '.'+str : ''), _default);
+        return this.chart().get(
+            "metadata.visualize" + (str ? "." + str : ""),
+            _default
+        );
     },
 
     notify: function(str) {
         if (dw.backend && _.isFunction(dw.backend.notify)) {
             return dw.backend.notify(str);
         } else {
-            if (window.parent && window.parent['postMessage']) {
-                window.parent.postMessage('notify:'+str, '*');
-            } else if (window['console']) {
+            if (window.parent && window.parent["postMessage"]) {
+                window.parent.postMessage("notify:" + str, "*");
+            } else if (window["console"]) {
+                // eslint-disable-next-line
                 console.log(str);
             }
         }
@@ -2245,12 +2254,11 @@ _.extend(dw.visualization.base, {
     },
 
     translate: function(str) {
-        var locale = this.meta.locale, lang = this.lang;
-        return locale[str] ? locale[str][lang] || locale[str].en ||
-            locale[str] : str;
+        var locale = this.meta.locale;
+        return locale[str] || str;
     },
 
-    checkBrowserCompatibility: function(){
+    checkBrowserCompatibility: function() {
         return true;
     },
 
@@ -2260,7 +2268,7 @@ _.extend(dw.visualization.base, {
         me.dataset = chart.dataset();
         me.theme(chart.theme());
         me.__chart = chart;
-        var columnFormat = chart.get('metadata.data.column-format', {});
+        var columnFormat = chart.get("metadata.data.column-format", {});
         var ignore = {};
         _.each(columnFormat, function(format, key) {
             ignore[key] = !!format.ignore;
@@ -2270,22 +2278,21 @@ _.extend(dw.visualization.base, {
     },
 
     axes: function(returnAsColumns, noCache) {
-
         var me = this;
 
         if (!noCache && me.__axisCache) {
-            return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
+            return me.__axisCache[returnAsColumns ? "axesAsColumns" : "axes"];
         }
 
-        var dataset = me.dataset,
-            usedColumns = {},
-            axes = {},
-            axesDef,
-            axesAsColumns = {},
-            errors = [];
+        var dataset = me.dataset;
+        var usedColumns = {};
+        var axes = {};
+        var axesDef;
+        var axesAsColumns = {};
+        var errors = [];
 
         // get user preference
-        axesDef = me.chart().get('metadata.axes', {});
+        axesDef = me.chart().get("metadata.axes", {});
         _.each(me.meta.axes, function(o, key) {
             if (axesDef[key]) {
                 var columns = axesDef[key];
@@ -2304,25 +2311,31 @@ _.extend(dw.visualization.base, {
         // auto-populate remaining axes
         _.each(me.meta.axes, function(axisDef, key) {
             function checkColumn(col) {
-                return !usedColumns[col.name()] &&
-                    _.indexOf(axisDef.accepts, col.type()) >= 0;
+                return (
+                    !usedColumns[col.name()] &&
+                    _.indexOf(axisDef.accepts, col.type()) >= 0
+                );
             }
             function errMissingColumn() {
-                var msg = dw.backend ?
-                        dw.backend.messages.insufficientData :
-                        'The visualization needs at least one column of the type %type to populate axis %key';
-                errors.push(msg.replace('%type', axisDef.accepts).replace('%key', key));
+                var msg = dw.backend
+                    ? dw.backend.messages.insufficientData
+                    : "The visualization needs at least one column of the type %type to populate axis %key";
+                errors.push(
+                    msg.replace("%type", axisDef.accepts).replace("%key", key)
+                );
             }
             function remainingRequiredColumns(accepts) {
                 // returns how many required columns there are for the remaining axes
                 // either an integer or "multiple" if there's another multi-column axis coming up
                 function equalAccepts(a1, a2) {
-                    if (typeof a1 == "undefined" && typeof a2 != "undefined") return false;
-                    if (typeof a2 == "undefined" && typeof a1 != "undefined") return false;
-                    if (a1.length != a2.length) return false;
+                    if (typeof a1 === "undefined" && typeof a2 !== "undefined")
+                        return false;
+                    if (typeof a2 === "undefined" && typeof a1 !== "undefined")
+                        return false;
+                    if (a1.length !== a2.length) return false;
 
-                    for (var i=0; i<a1.length; i++) {
-                        if (a2.indexOf(a1[i]) == -1) return false;
+                    for (var i = 0; i < a1.length; i++) {
+                        if (a2.indexOf(a1[i]) === -1) return false;
                     }
                     return true;
                 }
@@ -2331,7 +2344,7 @@ _.extend(dw.visualization.base, {
                 _.each(me.meta.axes, function(axisDef, key) {
                     if (checked.indexOf(key) > -1) return;
                     if (!equalAccepts(axisDef.accepts, accepts)) return;
-                    if (typeof res == "string") return;
+                    if (typeof res === "string") return;
                     if (axisDef.optional) return;
                     if (axisDef.multiple) {
                         res = "multiple";
@@ -2351,16 +2364,21 @@ _.extend(dw.visualization.base, {
                 return count;
             }
             checked.push(key);
-            if (axes[key]) return;  // user has defined this axis already
-            if (!axisDef.optional) { // we only populate mandatory axes
+            if (axes[key]) return; // user has defined this axis already
+            if (!axisDef.optional) {
+                // we only populate mandatory axes
                 if (!axisDef.multiple) {
-                    var accepted = _.filter(dataset.columns(), checkColumn),
-                        firstMatch;
+                    var accepted = _.filter(dataset.columns(), checkColumn);
+                    var firstMatch;
                     if (axisDef.preferred) {
                         // axis defined a regex for testing column names
-                        var regex = new RegExp(axisDef.preferred, 'i');
+                        var regex = new RegExp(axisDef.preferred, "i");
                         firstMatch = _.find(accepted, function(col) {
-                            return regex.test(col.name()) || (col.title() != col.name() && regex.test(col.title()));
+                            return (
+                                regex.test(col.name()) ||
+                                (col.title() !== col.name() &&
+                                    regex.test(col.title()))
+                            );
                         });
                     }
                     // simply use first colulmn accepted by axis
@@ -2370,10 +2388,19 @@ _.extend(dw.visualization.base, {
                         axes[key] = firstMatch.name();
                     } else {
                         // try to auto-populate missing text column
-                        if (_.indexOf(axisDef.accepts, 'text') >= 0) {
-                            var col = dw.column(key, _.map(_.range(dataset.numRows()), function(i) {
-                                return (i > 25 ? String.fromCharCode(64+i/26) : '') + String.fromCharCode(65+(i%26));
-                            }), 'text');
+                        if (_.indexOf(axisDef.accepts, "text") >= 0) {
+                            var col = dw.column(
+                                key,
+                                _.map(_.range(dataset.numRows()), function(i) {
+                                    return (
+                                        (i > 25
+                                            ? String.fromCharCode(64 + i / 26)
+                                            : "") +
+                                        String.fromCharCode(65 + (i % 26))
+                                    );
+                                }),
+                                "text"
+                            );
                             dataset.add(col);
                             me.chart().dataset(dataset);
                             usedColumns[col.name()] = true;
@@ -2383,8 +2410,8 @@ _.extend(dw.visualization.base, {
                         }
                     }
                 } else {
-                    var required = remainingRequiredColumns(axisDef.accepts),
-                        available = remainingAvailableColumns(dataset);
+                    var required = remainingRequiredColumns(axisDef.accepts);
+                    var available = remainingAvailableColumns(dataset);
 
                     // fill axis with all accepted columns
                     axes[key] = [];
@@ -2415,22 +2442,25 @@ _.extend(dw.visualization.base, {
         }
 
         if (usedColumnCount < dataset.numColumns()) {
-            var msg = 'Your dataset contains more columns than the chosen chart type can display. You can switch' +
-                ' the column to show in the <b>Refine</b> tab, or choose a different chart type.';
+            var msg =
+                "Your dataset contains more columns than the chosen chart type can display. You can switch" +
+                " the column to show in the <b>Refine</b> tab, or choose a different chart type.";
             errors.push(msg);
         }
 
         if (errors.length) {
-            me.notify(errors.join('<br />'));
+            me.notify(errors.join("<br />"));
         }
 
         _.each(axes, function(columns, key) {
             if (!_.isArray(columns)) {
-                axesAsColumns[key] = columns !== false ? me.dataset.column(columns) : null;
+                axesAsColumns[key] =
+                    columns !== false ? me.dataset.column(columns) : null;
             } else {
                 axesAsColumns[key] = [];
                 _.each(columns, function(column, i) {
-                    axesAsColumns[key][i] = column !== false ? me.dataset.column(column) : null;
+                    axesAsColumns[key][i] =
+                        column !== false ? me.dataset.column(column) : null;
                 });
             }
         });
@@ -2442,7 +2472,7 @@ _.extend(dw.visualization.base, {
 
         function columnExists(columns) {
             if (!_.isArray(columns)) columns = [columns];
-            for (var i=0; i<columns.length; i++) {
+            for (var i = 0; i < columns.length; i++) {
                 if (!dataset.hasColumn(columns[i])) return false;
             }
             return true;
@@ -2452,12 +2482,12 @@ _.extend(dw.visualization.base, {
     },
 
     keys: function() {
-        var me = this,
-            axesDef = me.axes();
+        var me = this;
+        var axesDef = me.axes();
         if (axesDef.labels) {
-            var lblCol = me.dataset.column(axesDef.labels),
-                fmt = me.chart().columnFormatter(lblCol),
-                keys = [];
+            var lblCol = me.dataset.column(axesDef.labels);
+            var fmt = me.chart().columnFormatter(lblCol);
+            var keys = [];
             lblCol.each(function(val) {
                 keys.push(String(fmt(val)));
             });
@@ -2476,19 +2506,22 @@ _.extend(dw.visualization.base, {
      */
     reset: function() {
         this.clear();
-        $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
-        $('.chart .filter-ui').remove();
-        $('.chart .legend').remove();
+        $("#chart")
+            .html("")
+            .off("click")
+            .off("mousemove")
+            .off("mouseenter")
+            .off("mouseover");
+        $(".chart .filter-ui").remove();
+        $(".chart .legend").remove();
     },
 
-    clear: function() {
-
-    },
+    clear: function() {},
 
     renderingComplete: function() {
-        if (window.parent && window.parent['postMessage']) {
+        if (window.parent && window.parent["postMessage"]) {
             setTimeout(function() {
-                window.parent.postMessage('datawrapper:vis:rendered', '*');
+                window.parent.postMessage("datawrapper:vis:rendered", "*");
             }, 200);
         }
         this.__renderedDfd.resolve();
@@ -2529,11 +2562,29 @@ _.extend(dw.visualization.base, {
 
     colorsUsed: function() {
         return Object.keys(this.__colors);
+    },
+
+    /**
+     * register an event listener for custom vis events
+     */
+    on: function(eventType, callback) {
+        if (!this.__callbacks[eventType]) {
+            this.__callbacks[eventType] = [];
+        }
+        this.__callbacks[eventType].push(callback);
+    },
+
+    /**
+     * fire a custom vis event
+     */
+    fire: function(eventType, data) {
+        if (this.__callbacks[eventType]) {
+            this.__callbacks[eventType].forEach(function(cb) {
+                if (typeof cb === "function") cb(data);
+            });
+        }
     }
-
-
 });
-
 
 
 
@@ -2607,25 +2658,23 @@ dw.theme = (function(){
 })();
 
 
-
 // Every theme must extend this class.
 // It provides the basic API between the chart template
 // page and the visualization class.
 
 dw.theme.base = {
-
     /*
      * colors used in the theme
      */
     colors: {
-        palette: ['#6E7DA1', '#64A4C4', '#53CCDD',  '#4EF4E8'],
+        palette: ["#6E7DA1", "#64A4C4", "#53CCDD", "#4EF4E8"],
         secondary: [],
 
-        positive: '#85B4D4',
-        negative: '#E31A1C',
+        positive: "#85B4D4",
+        negative: "#E31A1C",
         // colors background and text needs to be set in CSS as well!
-        background: '#ffffff',
-        text: '#000000',
+        background: "#ffffff",
+        text: "#333333",
 
         /*
          * gradients that might be used by color gradient selectors
@@ -2634,15 +2683,39 @@ dw.theme.base = {
          * Geography, Pennsylvania State University.
          */
         gradients: [
-            ['#fefaca', '#008b15'], // simple yellow to green
-            ['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac'],  // GnBu
-            ['#feebe2','#fcc5c0','#fa9fb5','#f768a1','#c51b8a','#7a0177'],  // RdPu
-            ['#ffffcc','#c7e9b4','#7fcdbb','#41b6c4','#2c7fb8','#253494'],  // YlGnbu
+            ["#fefaca", "#008b15"], // simple yellow to green
+            ["#f0f9e8", "#ccebc5", "#a8ddb5", "#7bccc4", "#43a2ca", "#0868ac"], // GnBu
+            ["#feebe2", "#fcc5c0", "#fa9fb5", "#f768a1", "#c51b8a", "#7a0177"], // RdPu
+            ["#ffffcc", "#c7e9b4", "#7fcdbb", "#41b6c4", "#2c7fb8", "#253494"], // YlGnbu
 
-            ['#8c510a','#d8b365','#f6e8c3','#f5f7ea','#c7eae5','#5ab4ac','#01665e'],  // BrBG
-            ['#c51b7d','#e9a3c9','#fde0ef','#faf6ea','#e6f5d0','#a1d76a','#4d9221'],  // PiYG
-            ['#b2182b','#ef8a62','#fddbc7','#f8f6e9','#d1e5f0','#67a9cf','#2166ac'],  // RdBu
-            //['#b35806','#f1a340','#fee0b6','#f7f7f7','#d8daeb','#998ec3','#542788'],  // PuOr
+            [
+                "#8c510a",
+                "#d8b365",
+                "#f6e8c3",
+                "#f5f7ea",
+                "#c7eae5",
+                "#5ab4ac",
+                "#01665e"
+            ], // BrBG
+            [
+                "#c51b7d",
+                "#e9a3c9",
+                "#fde0ef",
+                "#faf6ea",
+                "#e6f5d0",
+                "#a1d76a",
+                "#4d9221"
+            ], // PiYG
+            [
+                "#b2182b",
+                "#ef8a62",
+                "#fddbc7",
+                "#f8f6e9",
+                "#d1e5f0",
+                "#67a9cf",
+                "#2166ac"
+            ] // RdBu
+            // ['#b35806','#f1a340','#fee0b6','#f7f7f7','#d8daeb','#998ec3','#542788'],  // PuOr
         ],
 
         /*
@@ -2652,14 +2725,46 @@ dw.theme.base = {
          * Geography, Pennsylvania State University.
          */
         categories: [
-            ["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"], // Accent
-            ["#fbb4ae", "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"], // Pastel1
-            ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"] // Paired
+            [
+                "#7fc97f",
+                "#beaed4",
+                "#fdc086",
+                "#ffff99",
+                "#386cb0",
+                "#f0027f",
+                "#bf5b17",
+                "#666666"
+            ], // Accent
+            [
+                "#fbb4ae",
+                "#b3cde3",
+                "#ccebc5",
+                "#decbe4",
+                "#fed9a6",
+                "#ffffcc",
+                "#e5d8bd",
+                "#fddaec",
+                "#f2f2f2"
+            ], // Pastel1
+            [
+                "#a6cee3",
+                "#1f78b4",
+                "#b2df8a",
+                "#33a02c",
+                "#fb9a99",
+                "#e31a1c",
+                "#fdbf6f",
+                "#ff7f00",
+                "#cab2d6",
+                "#6a3d9a",
+                "#ffff99",
+                "#b15928"
+            ] // Paired
         ]
     },
 
     annotation: {
-        background: '#000',
+        background: "#000",
         opacity: 0.08
     },
 
@@ -2696,7 +2801,7 @@ dw.theme.base = {
         cutGridLines: false,
         // you can customize bar attributes
         barAttrs: {
-            'stroke-width': 1
+            "stroke-width": 1
         },
         // make strokes a little darker than the fill
         darkenStroke: 18
@@ -2708,7 +2813,7 @@ dw.theme.base = {
     barChart: {
         // you can customize bar attributes
         barAttrs: {
-            'stroke-width': 1
+            "stroke-width": 1
         }
     },
 
@@ -2716,7 +2821,7 @@ dw.theme.base = {
      * attributes of x axis, if there is any
      */
     xAxis: {
-        stroke: '#333'
+        stroke: "#333"
     },
 
     /*
@@ -2725,7 +2830,6 @@ dw.theme.base = {
     yAxis: {
         strokeWidth: 1
     },
-
 
     /*
      * attributes applied to horizontal grids if displayed
@@ -2736,7 +2840,7 @@ dw.theme.base = {
      * strokeOpacity, etc.
      */
     horizontalGrid: {
-        stroke: '#d9d9d9'
+        stroke: "#d9d9d9"
     },
 
     /*
@@ -2766,7 +2870,6 @@ dw.theme.base = {
      */
     yTicks: false,
 
-
     hover: true,
     tooltip: true,
 
@@ -2782,7 +2885,7 @@ dw.theme.base = {
     /*
      * theme locale, probably unused
      */
-    locale: 'de_DE',
+    locale: "de_DE",
 
     /*
      * duration for animated transitions (ms)
@@ -2792,8 +2895,8 @@ dw.theme.base = {
     /*
      * easing for animated transitions
      */
-     easing: 'expoInOut'
-
+    easing: "expoInOut"
 };
+
 
 }).call(this);

@@ -11,6 +11,8 @@ _.extend(dw.visualization.base, {
         this.__renderedDfd = $.Deferred();
         this.__rendered = false;
         this.__colors = {};
+        this.__callbacks = {};
+
         if (window.parent && window.parent.postMessage) {
             window.parent.postMessage('datawrapper:vis:init', '*');
         }
@@ -368,5 +370,26 @@ _.extend(dw.visualization.base, {
 
     colorsUsed: function() {
         return Object.keys(this.__colors);
+    },
+
+    /**
+     * register an event listener for custom vis events
+     */
+    on: function(eventType, callback) {
+        if (!this.__callbacks[eventType]) {
+            this.__callbacks[eventType] = [];
+        }
+        this.__callbacks[eventType].push(callback);
+    },
+
+    /**
+     * fire a custom vis event
+     */
+    fire: function(eventType, data) {
+        if (this.__callbacks[eventType]) {
+            this.__callbacks[eventType].forEach(function(cb) {
+                if (typeof cb === 'function') cb(data);
+            });
+        }
     }
 });
