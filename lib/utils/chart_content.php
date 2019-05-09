@@ -139,11 +139,13 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                     // now we try to find a different locale of the
                     // same language, e.g. en-US for en-GB
                     else {
-                        foreach ($translations as $locale => $translation) {
-                            if (!empty($translations[$locale]) && substr($locale, 0, 2) == $chartLanguage) {
-                                $vis_locale[$term] = $translations[$locale];
-                                // stop after we found one
-                                break;
+                        if (is_array($translations)) {
+                            foreach ($translations as $locale => $translation) {
+                                if (!empty($translations[$locale]) && substr($locale, 0, 2) == $chartLanguage) {
+                                    $vis_locale[$term] = $translations[$locale];
+                                    // stop after we found one
+                                    break;
+                                }
                             }
                         }
                     }
