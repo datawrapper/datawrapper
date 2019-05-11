@@ -137,6 +137,7 @@ define(function() {
         // log in on email,pwd enter press
         $('.login-form input').keyup(function(evt) {
             if (evt.keyCode == 13) loginEvent(evt);
+            evt.preventDefault();
         });
     }; // end initialize signup
 });
