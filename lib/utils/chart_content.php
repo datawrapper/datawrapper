@@ -4,8 +4,8 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     if (!function_exists('unique_scripts')) {
         function unique_scripts($scripts) {
-            $exist = array();
-            $out = array();
+            $exist = [];
+            $out = [];
             foreach ($scripts as $s) {
                 $src = is_array($s) ? $s['src'] : $s;
                 if (isset($exist[$src])) continue;
@@ -79,15 +79,19 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         }
     }
 
-    $vis_js = array();
-    $vis_less = array();
+    $vis_js = [];
+    $vis_less = [];
     $next_vis_id = $chart->getType();
 
-    $vis_libs = array();
-    $vis_libs_cdn = array();
-    $vis_libs_local = array();
+    $vis_libs = [];
+    $vis_libs_cdn = [];
+    $vis_libs_local = [];
 
-    $vis_locale = array();  // visualizations may define localized strings, e.g. "other"
+    $chartLocale = str_replace('_', '-', $locale);
+    $chartLanguage = substr($locale, 0, 2);
+
+    // visualizations may define localized strings, e.g. "other"
+    $vis_locale = [];
     $vis_versions = [];
 
     while (!empty($next_vis_id)) {
@@ -95,7 +99,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         // $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
         $vis_static_path = $vis['__static_path'];
         $vis_versions[] = $vis['version'];
-        $vjs = array();
+        $vjs = [];
         if (!empty($vis['libraries'])) {
             foreach ($vis['libraries'] as $script) {
                 if (!is_array($script)) {
@@ -127,7 +131,30 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         }
         if (!empty($vis['locale']) && is_array($vis['locale'])) {
             foreach ($vis['locale'] as $term => $translations) {
-                if (!isset($vis_locale[$term])) $vis_locale[$term] = $translations;
+                if (!isset($vis_locale[$term])) {
+                    // first we try to find the chart locale
+                    if (!empty($translations[$chartLocale])) {
+                        $vis_locale[$term] = $translations[$chartLocale];
+                    }
+                    // now we try to find a different locale of the
+                    // same language, e.g. en-US for en-GB
+                    else {
+                        if (is_array($translations)) {
+                            foreach ($translations as $locale => $translation) {
+                                if (!empty($translations[$locale]) && substr($locale, 0, 2) == $chartLanguage) {
+                                    $vis_locale[$term] = $translations[$locale];
+                                    // stop after we found one
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    // if we still haven't found a translation
+                    // we fall back to en-US
+                    if (!isset($vis_locale[$term])) {
+                        $vis_locale[$term] = $translations['en-US'] ?? $term;
+                    }
+                }
             }
         }
         $vjs[] = $vis_static_path . $vis['id'] . '.js';
@@ -138,7 +165,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         $next_vis_id = !empty($vis['extends']) ? $vis['extends'] : null;
     }
 
-    $stylesheets = array();
+    $stylesheets = [];
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
@@ -251,7 +278,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'visualization' => $the_vis,
         'theme' => $theme,
         'themeCSS' => $theme->getCSS($vis_less),
-        'chartLocale' => str_replace('_', '-', $locale),
+        'chartLocale' => $chartLocale,
         'locales' => $visDependencyLocales,
 
         // the following is used by chart_publish.php

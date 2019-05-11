@@ -226,6 +226,9 @@ class Theme extends BaseTheme
                 if (isset($meta['options']['footer']['chartCaption']) && empty($meta['options']['footer']['chartCaption'])) {
                     unset($meta['options']['footer']['chartCaption']);
                 }
+                if (isset($meta['options']['footer']['tableCaption']) && empty($meta['options']['footer']['tableCaption'])) {
+                    unset($meta['options']['footer']['tableCaption']);
+                }
             }
             return $meta;
         }

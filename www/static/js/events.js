@@ -1,5 +1,5 @@
 (function() {
-    if (typeof window.datawrapper == 'undefined') window.datawrapper = {};
+    if (typeof window.datawrapper === 'undefined') window.datawrapper = {};
 
     var datawrapper = window.datawrapper;
     var listeners = {};
@@ -7,19 +7,16 @@
     window.addEventListener('message', receiveMessage, false);
 
     function receiveMessage(event) {
-        if (event.data &&
-            event.data.source === 'datawrapper' &&
-            event.data.chart_id &&
-            listeners[event.data.type]) {
+        if (event.data && event.data.source === 'datawrapper' && event.data.chartId && listeners[event.data.type]) {
             listeners[event.data.type].forEach(function(cb) {
-                cb.call(null, event.data);
+                if (typeof cb === 'function') cb(event.data);
             });
         }
     }
 
     datawrapper.on = function(event, callback) {
-        if (typeof event != 'string') throw new Error('event name must be a string');
-        if (typeof callback != 'function') throw new Error('callback must be a function');
+        if (typeof event !== 'string') throw new Error('event name must be a string');
+        if (typeof callback !== 'function') throw new Error('callback must be a function');
         if (!listeners[event]) listeners[event] = [];
         listeners[event].push(callback);
         return datawrapper;
@@ -40,6 +37,5 @@
             listeners[event].splice(i, 1);
         }
         return datawrapper;
-    }
-
+    };
 })();
