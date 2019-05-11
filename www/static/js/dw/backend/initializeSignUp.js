@@ -90,6 +90,7 @@ define(function() {
                     pwhash: CryptoJS.HmacSHA256(pwd, auth_salt).toString(),
                     keeplogin: $('.keep-login', loginForm).prop('checked')
                 };
+
             if (pwd === '') {
                 $('.login-pwd', loginForm)
                     .parent()
@@ -111,7 +112,7 @@ define(function() {
                         if (loginForm.data('target')) location.href = loginForm.data('target');
                         else {
                             if (location.pathname == '/login') location.pathname = '/';
-                            else location.reload();
+                            else $('.login-form').submit();
                         }
                     } else {
                         if (data.code == 'login-invalid') {
@@ -127,6 +128,8 @@ define(function() {
                     }
                 }
             });
+
+            evt.preventDefault();
         }
 
         // log in on login button click

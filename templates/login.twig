@@ -14,31 +14,30 @@
 
                     <p>{% trans "login / login / intro" %}</p>
 
-                    <div class="login-form form-vertical">
-                        <form>
-                            <div class="control-group"><input class="login-email input-xxlarge span3" type="email" value="" placeholder="{% trans "email" %}" /></div>
-                            <div class="control-group"><input class="login-pwd input-xxlarge span3" type="password" value="" placeholder="{% trans "password" %}" /></div>
-                        </form>
+                    <form action="/" method=="POST" class="login-form form-vertical">
+                        <div>
+                            <div class="control-group"><input class="login-email input-xxlarge span3" autocomplete="username" type="email" value="" placeholder="{% trans "email" %}" /></div>
+                            <div class="control-group"><input class="login-pwd input-xxlarge span3" autocomplete="current-password" type="password" value="" placeholder="{% trans "password" %}" /></div>
+                        </div>
+                        <div>
+                            <input type="submit" class="btn btn-login btn-primary" value="Login" /
+>                            <label class="checkbox" for="keep-login" style="margin-top: 10px;">
+                                <input id="keep-login" class="keep-login" type="checkbox" checked="checked"> {% trans "Remember login?" %}
+                            </label>
+                        </div>
+                    </form>
 
-                        <div class="row">
-                            <div class="span2" style="padding-bottom:10px">
-                                <a class="btn btn-login btn-primary">
-                                    <i class="fa fa-sign-in fa-fw"></i> {% trans "Login" %}
-                                </a>
-                                <a style="display:none" class="btn btn-send-pw btn-info">
-                                    {% trans "Send new password" %}
-                                </a>
-                            </div>
-                            <div class="span2">
-                                <label class="checkbox" for="keep-login">
-                                    <input id="keep-login" class="keep-login" type="checkbox" checked="checked"> {% trans "Remember login?" %}
-                                </label>
-                                <a id="forgot-password" href="#">{% trans "Can't recall your password?" %}</a>
-                                <a id="send-pw-cancel" style="display:none" href="#">{% trans "Return to login..." %}</a>
-                            </div>
+                    <div class="row">
+                        <div class="span2" style="padding-bottom:10px">
+                            <a style="display:none" class="btn btn-send-pw btn-info">
+                                {% trans "Send new password" %}
+                            </a>
+                        </div>
+                        <div class="span2">
+                            <a id="forgot-password" href="#">{% trans "Can't recall your password?" %}</a>
+                            <a id="send-pw-cancel" style="display:none" href="#">{% trans "Return to login..." %}</a>
                         </div>
                     </div>
-
                 </div>
                 {% if not noSignup %}
                 <div class="span3 row-signup">
@@ -47,13 +46,13 @@
                     <div class="signup-form form-vertcal">
                         <form>
                             <div class="control-group">
-                                <input type="email" class="input-xlarge span2 register-email" placeholder="{% trans "email" %}" />
+                                <input type="email" autocomplete="username" class="input-xlarge span2 register-email" placeholder="{% trans "email" %}" />
                             </div>
                             <div class="control-group">
-                                <input type="password" class="input-xlarge span2 register-pwd" placeholder="{% trans "password" %}" />
+                                <input autocomplete="new-password" type="password" class="input-xlarge span2 register-pwd" placeholder="{% trans "password" %}" />
                             </div>
                             <div class="control-group">
-                                <input type="password" class="input-xlarge span2 register-pwd-2" placeholder="{% trans "repeat password" %}" />
+                                <input autocomplete="new-password" type="password" class="input-xlarge span2 register-pwd-2" placeholder="{% trans "repeat password" %}" />
                             </div>
                         </form>
                         <a class="btn-register btn btn-default"><i class="fa fa-fw fa-pencil"></i> {% trans "Sign Up" %}</a>
