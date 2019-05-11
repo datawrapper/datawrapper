@@ -10,8 +10,14 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 // store flag if we're running from command-line
 define('CLI', php_sapi_name() == "cli");
 
+if (file_exists(ROOT_PATH . 'config.yaml')) {
+    $cfgPath = ROOT_PATH . 'config.yaml';
+} else {
+    $cfgPath = '/etc/datawrapper/config.yaml';
+}
+
 // load YAML parser and config
-$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad(ROOT_PATH . 'config.yaml'));
+$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad($cfgPath));
 
 
 if (isset($dw_config['debug']) && $dw_config['debug'] == true) {

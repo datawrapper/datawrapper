@@ -55,7 +55,7 @@ function check_path_permissions() {
 }
 
 function check_config() {
-    if (!file_exists(ROOT_PATH . 'config.yaml')) {
+    if (!file_exists(ROOT_PATH . 'config.yaml') && !file_exists('/etc/datawrapper/config.yaml')) {
         return '<h2>Could not find <b>config.yaml</b></h2>'
           . '<p>Please copy the template configuration from <code>config.template.yaml</code> to <code>config.yaml</code> and change the configuration according to your server.</p>';
     }
