@@ -12,7 +12,7 @@ Propel::init(ROOT_PATH . "lib/core/build/conf/datawrapper-conf.php");
 require_once ROOT_PATH . 'lib/Migrations.php';
 
 // load YAML parser and config
-$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad(ROOT_PATH . 'config.yaml'));
+$GLOBALS['dw_config'] = $dw_config = parse_config(Spyc::YAMLLoad(file_exists(ROOT_PATH . 'config.yaml') ? ROOT_PATH . 'config.yaml' : '/etc/datawrapper/config.yaml'));
 
 use dw\Migrations as Migrations;
 

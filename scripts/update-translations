@@ -10,7 +10,7 @@ const {csvParse} = require('d3-dsv');
 const {queue} = require('d3-queue');
 const request = require('request');
 
-const config = yaml.safeLoad(fs.readFileSync('./config.yaml'));
+const config = yaml.safeLoad(fs.existsSync('./config.yaml') ? fs.readFileSync('./config.yaml') : fs.readFileSync('/etc/datawrapper/config.yaml'));
 
 if (!config.translation || !config.translation.core) {
     console.error(chalk.bold.red('Error!'), chalk.yellowBright('You need to set up the translation spreadsheets in config.yaml!'));
