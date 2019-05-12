@@ -98,6 +98,8 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         $vis = DatawrapperVisualization::get($next_vis_id);
         // $vis_static_path = str_replace('/static/', $static_path . '/', $vis['__static_path']);
         $vis_static_path = $vis['__static_path'];
+        $vis_static_path_fs = $vis['__static_path_fs'];
+
         $vis_versions[] = $vis['version'];
         $vjs = [];
         if (!empty($vis['libraries'])) {
@@ -116,12 +118,12 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                 }
 
                 // at first we check if the library lives in ./lib of the vis module
-                if (file_exists(ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'])) {
+                if (file_exists($vis_static_path_fs . $script['local'])) {
                     $u = $vis_static_path . $script['local'];
                 } else if (file_exists(ROOT_PATH . 'www/static/vendor/' . $script['local'])) {
                     $u = '/static/vendor/' . $script['local'];
                 } else {
-                    print ROOT_PATH . 'www' . $vis['__static_path'] . $script['local'];
+                    print $vis_static_path_fs . $script['local'];
                     die("could not find required library ".$script["local"]);
                 }
                 $script['src'] = $u;
@@ -297,6 +299,9 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
  *   [1] minified source code
  */
 function get_vis_js($vis, $visJS) {
+    global $dw_config;
+    $rewritePaths = isset($dw_config['copy_plugin_assets']) && $dw_config['copy_plugin_assets'] === false;
+
     // merge vis js into a single file
     $all = '';
     $org = DatawrapperSession::getUser()->getCurrentOrganization();
@@ -306,8 +311,14 @@ function get_vis_js($vis, $visJS) {
     foreach ($visJS as $js) {
         if (is_array($js)) $js = $js['src'];
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
-            if (file_exists(ROOT_PATH . 'www' . $js)) {
-                $all .= "\n\n\n" . file_get_contents(ROOT_PATH . 'www' . $js);
+            if ($rewritePaths) {
+                $path = preg_replace('@/static/plugins/(.*)/(.*)@', get_plugin_path() . "$1/static/$2", $js);
+            } else {
+                $path = ROOT_PATH . 'www' . $js;
+            }
+
+            if (file_exists($path)) {
+                $all .= "\n\n\n" . file_get_contents($path);
             }
         }
     }
