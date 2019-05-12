@@ -7,6 +7,6 @@ function get_plugin_path() {
 function get_plugin_static_path($name) {
 	return (isset($GLOBALS['dw_config']['copy_plugin_assets']) &&
             $GLOBALS['dw_config']['copy_plugin_assets'] === false) ?
-		ROOT_PATH . '/plugins/' . $name . '/static/' :
+		get_plugin_path() . $name . '/static/' :
 		ROOT_PATH . '/www/static/plugins/' . $name . '/';
 }
