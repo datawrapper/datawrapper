@@ -47,16 +47,15 @@ class DatawrapperVisualization {
     public function _register($plugin, $meta, $asset_callback = null) {
         // we save the path to the static files of the visualization
         $meta['__static_path'] =  '/static/plugins/' . $plugin->getName() . '/';
+        $meta['__static_path_fs'] = get_plugin_static_path($plugin->getName());
         $meta['__plugin'] =  $plugin->getName();
         $meta['version'] = substr(md5($plugin->getLastInstallTime()), 0, 8);
         // $meta['version'] = $plugin->getVersion();
         if (!isset($meta['id'])) return;
-        $icon = $meta['__static_path'] . '/' . $meta['id'];
-        if (file_exists(ROOT_PATH . 'www/' . $icon . '.svg')) {
-            $meta['icon'] = file_get_contents(ROOT_PATH . 'www/' . $icon . '.svg');
-        } else {
-            $meta['icon'] = '<img src="'. $icon . '.png" />';
-        }
+
+        $icon = (get_plugin_path() . $plugin->getName() . '/static/' . $meta['id'] . '.svg');
+        $meta['icon'] = file_get_contents($icon);
+
         if (empty($meta['workflow'])) {
             // default workflow for charts
             $meta['workflow'] = [
