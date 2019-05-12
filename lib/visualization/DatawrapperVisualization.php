@@ -54,7 +54,7 @@ class DatawrapperVisualization {
         if (!isset($meta['id'])) return;
 
         $icon = (get_plugin_path() . $plugin->getName() . '/static/' . $meta['id'] . '.svg');
-        $meta['icon'] = file_get_contents($icon);
+        $meta['icon'] = file_exists($icon) ? file_get_contents($icon) : "";
 
         if (empty($meta['workflow'])) {
             // default workflow for charts
