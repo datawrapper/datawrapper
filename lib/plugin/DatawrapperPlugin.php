@@ -45,7 +45,13 @@ class DatawrapperPlugin {
      * copys all files from a plugins "static" directory to
      * the publicly visible /www/static/plugins/%PLUGIN%/
      */
-    private function copyStaticFiles() {
+    private function copyStaticFiles() {    
+        if (isset($GLOBALS['dw_config']['copy_plugin_assets']) && 
+            $GLOBALS['dw_config']['copy_plugin_assets'] === false) {
+
+            return;
+        }
+
         // check if there's a /static in plugin directory
         $source_path = realpath(get_plugin_path()) . '/' . $this->getName() . '/static';
         if (!file_exists($source_path)) return;
