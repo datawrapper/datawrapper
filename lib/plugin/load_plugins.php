@@ -158,10 +158,9 @@ class DatawrapperPluginManager {
                     $plugin_ids[] = $p->getId();
                 }
                 // save user plugins to cache
-                $c = new UserPluginCache();
-                $c->setUserId($user_id);
-                $c->setPlugins(implode(',', $plugin_ids));
-                $c->save();
+                $pdo = Propel::getConnection();
+                $pluginList = $pdo->quote(implode(',', $plugin_ids));
+                $pdo->query('INSERT INTO user_plugin_cache (user_id, plugins) VALUES ('.intval($user_id).', '.$pluginList.') ON DUPLICATE KEY UPDATE plugins = '.$pluginList);
             }
             $plugins->filterById($plugin_ids);
         }
