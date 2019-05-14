@@ -18,7 +18,9 @@ export default {
         y: 'rok',
         yy: '%d rokov'
     },
-    ordinal: n => `${n}º`,
+    ordinal: function(n) {
+        return n + 'º';
+    },
     formats: {
         LT: 'H:mm',
         LTS: 'H:mm:ss',

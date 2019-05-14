@@ -26,5 +26,7 @@ export default {
         y: 'setahun',
         yy: '%d tahun'
     },
-    ordinal: n => `${n}.`
+    ordinal: function(n) {
+        return n + '.';
+    }
 };

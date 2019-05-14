@@ -6,7 +6,9 @@ export default {
     weekdaysShort: 'нд_пн_ат_ср_чц_пт_сб'.split('_'),
     monthsShort: 'студ_лют_сак_крас_трав_чэрв_ліп_жнів_вер_каст_ліст_снеж'.split('_'),
     weekdaysMin: 'нд_пн_ат_ср_чц_пт_сб'.split('_'),
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

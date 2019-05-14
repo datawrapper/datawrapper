@@ -5,7 +5,9 @@ export default {
     weekStart: 1,
     weekdaysShort: 'si._mo._ti._wo._to._fr._so.'.split('_'),
     weekdaysMin: 'Si_Mo_Ti_Wo_To_Fr_So'.split('_'),
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

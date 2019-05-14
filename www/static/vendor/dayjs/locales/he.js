@@ -19,7 +19,9 @@ export default {
         y: 'שנה',
         yy: '%d שנים'
     },
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     format: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

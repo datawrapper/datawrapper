@@ -4,7 +4,9 @@ export default {
     weekdaysShort: '日_月_火_水_木_金_土'.split('_'),
     weekdaysMin: '日_月_火_水_木_金_土'.split('_'),
     months: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
-    ordinal: n => `${n}日`,
+    ordinal: function(n) {
+        return n + '日';
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',
@@ -17,7 +19,9 @@ export default {
         lll: 'YYYY年M月D日 HH:mm',
         llll: 'YYYY年M月D日(ddd) HH:mm'
     },
-    meridiem: hour => (hour < 12 ? '午前' : '午後'),
+    meridiem: function(hour) {
+        return hour < 12 ? '午前' : '午後';
+    },
     relativeTime: {
         future: '%s後',
         past: '%s前',
