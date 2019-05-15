@@ -1,1 +1,2693 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.publish=e()}(this,function(){"use strict";function t(){}function e(t,e){for(var n in e)t[n]=e[n];return t}function n(t,e){e.appendChild(t)}function i(t,e,n){e.insertBefore(t,n)}function s(t){t.parentNode.removeChild(t)}function r(t){for(;t.nextSibling;)t.parentNode.removeChild(t.nextSibling)}function a(t){for(var e=0;e<t.length;e+=1)t[e]&&t[e].d()}function u(){return document.createDocumentFragment()}function o(t){return document.createElement(t)}function c(t){return document.createTextNode(t)}function l(){return document.createComment("")}function h(t,e,n){t.addEventListener(e,n,!1)}function d(t,e,n){t.removeEventListener(e,n,!1)}function p(t,e,n){t.setAttribute(e,n)}function f(t,e,n){t.style.setProperty(e,n)}function _(e){this.destroy=t,this.fire("destroy"),this.set=this.get=t,!1!==e&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function m(t,e){t._handlers=Object.create(null),t._bind=e._bind,t.options=e,t.root=e.root||t,t.store=t.root.store||e.store}function b(t){for(;t&&t.length;)t.shift()()}function v(){this.store._remove(this)}var g={destroy:_,get:function(t){return t?this._state[t]:this._state},fire:function(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var i=0;i<n.length;i+=1){var s=n[i];s.__calling||(s.__calling=!0,s.call(this,e),s.__calling=!1)}},observe:function(t,e,n){var i=e.bind(this);return n&&!1===n.init||i(this.get()[t],void 0),this.on(n&&n.defer?"update":"state",function(e){e.changed[t]&&i(e.current[t],e.previous&&e.previous[t])})},on:function(t,e){if("teardown"===t)return this.on("destroy",e);var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}},set:function(t){this._set(e({},t)),this.root._lock||(this.root._lock=!0,b(this.root._beforecreate),b(this.root._oncreate),b(this.root._aftercreate),this.root._lock=!1)},teardown:_,_recompute:t,_set:function(t){var n=this._state,i={},s=!1;for(var r in t)this._differs(t[r],n[r])&&(i[r]=s=!0);s&&(this._state=e(e({},n),t),this._recompute(i,this._state),this._bind&&this._bind(i,this._state),this._fragment&&(this.fire("state",{changed:i,current:this._state,previous:n}),this._fragment.p(i,this._state),this.fire("update",{changed:i,current:this._state,previous:n})))},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:function(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}};var y={show:function(){var t=this,e=setTimeout(function(){t.set({visible:!0})},400);this.set({t:e})},hide:function(){var t=this.get().t;clearTimeout(t),this.set({visible:!1})}};function w(e,n){var r;return{c:function(){r=o("i"),this.h()},h:function(){r.className="im im-graduation-hat svelte-1mkn8ur"},m:function(t,e){i(r,t,e)},u:function(){s(r)},d:t}}function x(e,n){var r;return{c:function(){r=c("?")},m:function(t,e){i(r,t,e)},u:function(){s(r)},d:t}}function N(e,r){var a,u=e._slotted.default;return{c:function(){a=o("div"),this.h()},h:function(){a.className="content svelte-1mkn8ur"},m:function(t,e){i(a,t,e),u&&n(u,a)},u:function(){s(a),u&&function(t,e){for(;t.firstChild;)e.appendChild(t.firstChild)}(a,u)},d:t}}function H(t){m(this,t),this._state=e({visible:!1},t.data),this._slotted=t.slots||{},this.slots={},this._fragment=function(t,e){var r,a,u;function l(t){return t.visible?w:x}var p=l(e),f=p(t,e),_=e.visible&&N(t);function m(e){t.show()}function b(e){t.hide()}return{c:function(){r=o("div"),a=o("span"),f.c(),u=c("\n    "),_&&_.c(),this.h()},h:function(){a.className="svelte-1mkn8ur",h(r,"mouseenter",m),h(r,"mouseleave",b),r.className="help svelte-1mkn8ur"},m:function(t,e){i(r,t,e),n(a,r),f.m(a,null),n(u,r),_&&_.m(r,null)},p:function(e,n){p!==(p=l(n))&&(f.u(),f.d(),(f=p(t,n)).c(),f.m(a,null)),n.visible?_||((_=N(t)).c(),_.m(r,null)):_&&(_.u(),_.d(),_=null)},u:function(){s(r),f.u(),_&&_.u()},d:function(){f.d(),_&&_.d(),d(r,"mouseenter",m),d(r,"mouseleave",b)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function T(e,n){var r;return{c:function(){(r=o("p")).innerHTML='<i class="fa fa-spinner fa-pulse fa-fw"></i> loading...',this.h()},h:function(){r.className="mini-help"},m:function(t,e){i(r,t,e)},u:function(){s(r)},d:t}}function L(t){var n,r,a;m(this,t),this._state=e({loading:!1},t.data),this._fragment=(n=this._state,a=n.loading&&T(),{c:function(){a&&a.c(),r=l()},m:function(t,e){a&&a.m(t,e),i(r,t,e)},p:function(t,e){e.loading?a||((a=T()).c(),a.m(r.parentNode,r)):a&&(a.u(),a.d(),a=null)},u:function(){a&&a.u(),s(r)},d:function(){a&&a.d()}}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}e(H.prototype,g),e(H.prototype,y),e(L.prototype,g);var M=window.dw;function A(t,e){var n=arguments;if(void 0===e&&(e="core"),t=t.trim(),!M.backend.__messages[e])return"MISSING:"+t;var i=M.backend.__messages[e][t]||M.backend.__messages.core[t]||t;if(arguments.length>2)for(var s=2;s<arguments.length;s++){var r=s-1;i=i.replace("$"+r,n[s])}return i}function k(t,e,n,i){window._paq&&window._paq.push(["trackEvent",t,e,n,i])}function C(t,e,n,i,s){var r={method:e,body:i,mode:"cors",credentials:n},a=window.fetch(t,r).then(function(t){return 200!==t.status?new Error(t.statusText):t.text()}).then(function(t){try{return JSON.parse(t)}catch(e){return console.warn("malformed json input",t),t}}).catch(function(t){console.error(t)});return s?a.then(s):a}function q(t,e,n){return C(t,"POST","include",e,n)}var z=[100,200,300,400,500,700,800,900,1e3];var E=0,U=!0;var $={publish:function(){var t=this;this.set({publishing:!0,progress:0,publish_error:!1});var e,n,i,s,r,a=this.store;a.setMetadata("publish.embed-heights",(this.get().embed_templates,e={},n=window.$,i=n(n("#iframe-vis")[0].contentDocument),s=n("h1",i).height()+n(".chart-intro",i).height()+n(".dw-chart-notes",i).height(),r=n("#iframe-vis").height(),z.forEach(function(t){i.find("h1,.chart-intro,.dw-chart-notes").css("width",t+"px");var a=n("h1",i).height()+n(".chart-intro",i).height()+n(".dw-chart-notes",i).height();e[t]=r+(a-s)}),i.find("h1,.chart-intro,.dw-chart-notes").css("width","auto"),e)),k("Chart Editor","publish"),a.store(function(){q("/api/charts/"+a.get().id+"/publish",null,function(e){"ok"===e.status?(t.publishFinished(e.data),k("Chart Editor","publish-success")):(k("Chart Editor","publish-error",e.message),t.set({publish_error:e.message}))}),E=0,t.updateStatus()})},updateProgressBar:function(t){this.refs.bar&&(this.refs.bar.style.width=(100*t).toFixed()+"%")},updateStatus:function(){var t=this,e=this.store;E+=.05,function(t,e,n){2===arguments.length&&(n=e,e="include"),C(t,"GET",e,null,n)}("/api/charts/"+e.get().id+"/publish/status",function(e){e&&(e=+e/100+E,t.set({progress:Math.min(1,e)})),t.get().publishing&&setTimeout(function(){t.updateStatus()},400)})},publishFinished:function(t){var e=this;this.set({progress:1,published:!0,needs_republish:!1}),this.store.set({lastEditStep:5}),setTimeout(function(){return e.set({publishing:!1})},500),this.store.set(t)},copy:function(){var t=this;t.refs.embedInput.select();try{document.execCommand("copy")&&(k("Chart Editor","embedcode-copy"),t.set({copy_success:!0}),setTimeout(function(){return t.set({copy_success:!1})},300))}catch(t){}},select:function(t,e){var n=this;e.preventDefault();var i,s,r,a=this.get().active_action;if(t.id===a)return this.set({active_action:"",Action:L});this.set({active_action:t.id}),t.mod?t.mod.App?this.set({Action:t.mod.App}):(this.set({Action:L}),this.refs.action.set({loading:!0}),t.mod.css&&(i=t.mod.css,(r=document.createElement("link")).rel="stylesheet",r.href=i,r.onload=function(){s&&s()},document.head.appendChild(r)),function(t,e){var n=document.createElement("script");n.src=t,n.onload=function(){e&&e()},document.body.appendChild(n)}(t.mod.src,function(){setTimeout(function(){require([t.mod.id],function(e){Object.assign(t.mod,e),n.set({Action:t.mod.App}),e.init&&e.init(n.refs.action),t.mod.data&&n.refs.action.set(t.mod.data)})},200)})):t.action&&this[t.action]?(this.set({Action:L}),this[t.action]()):"function"==typeof t.action&&(this.set({Action:L}),t.action())},duplicate:function(){var t=this.store.get().id;k("Chart Editor","duplicate"),q("/api/charts/"+t+"/copy",null,function(t){"ok"===t.status?window.location.href="/edit/"+t.data.id+"/visualize":console.warn(t)})}};function I(t){var e=t.changed,n=t.current,i=window.dw&&window.dw.backend&&window.dw.backend.setUserData;if(e.publishing&&n.publishing&&this.updateProgressBar(n.progress),e.progress&&this.updateProgressBar(n.progress),e.embed_type&&i){var s=window.dw.backend.__userData;if(!n.embed_type||!s)return;s.embed_type=n.embed_type,window.dw.backend.setUserData(s)}if(e.shareurl_type&&i){var r=window.dw.backend.__userData;if(!n.shareurl_type||!r)return;r.shareurl_type=n.shareurl_type,window.dw.backend.setUserData(r)}e.published&&window.document.querySelector(".dw-create-publish .publish-step").classList[n.published?"add":"remove"]("is-published"),e.auto_publish&&n.auto_publish&&U&&(this.publish(),U=!1,window.history.replaceState("","",window.location.pathname))}function S(e,n){var r;return{c:function(){r=o("h2"),this.h()},h:function(){r.className="pad-top"},m:function(t,e){i(r,t,e),r.innerHTML=n.publishHed},p:function(t,e){t.publishHed&&(r.innerHTML=e.publishHed)},u:function(){r.innerHTML="",s(r)},d:t}}function j(e,n){var r;return{c:function(){r=o("p")},m:function(t,e){i(r,t,e),r.innerHTML=n.publishIntro},p:function(t,e){t.publishIntro&&(r.innerHTML=e.publishIntro)},u:function(){r.innerHTML="",s(r)},d:t}}function G(e,n){var r,a=A("publish / republish-intro");return{c:function(){r=o("p")},m:function(t,e){i(r,t,e),r.innerHTML=a},p:t,u:function(){r.innerHTML="",s(r)},d:t}}function D(e,n){var r,a=A("publish / publish-intro");return{c:function(){r=o("p"),this.h()},h:function(){f(r,"margin-bottom","20px")},m:function(t,e){i(r,t,e),r.innerHTML=a},p:t,u:function(){r.innerHTML="",s(r)},d:t}}function O(e,r){var a,u,l,h,d,p,f=A("publish / republish-btn");return{c:function(){a=o("span"),u=o("i"),h=c(" "),d=o("span"),p=c(f),this.h()},h:function(){u.className=l="fa fa-fw fa-refresh "+(r.publishing?"fa-spin":"")+" svelte-tulzqh",d.className="title svelte-tulzqh",a.className="re-publish"},m:function(t,e){i(a,t,e),n(u,a),n(h,a),n(d,a),n(p,d)},p:function(t,e){t.publishing&&l!==(l="fa fa-fw fa-refresh "+(e.publishing?"fa-spin":"")+" svelte-tulzqh")&&(u.className=l)},u:function(){s(a)},d:t}}function F(e,r){var a,u,l,h,d,p,f=A("publish / publish-btn");return{c:function(){a=o("span"),u=o("i"),h=c("\n            "),d=o("span"),p=c(f),this.h()},h:function(){u.className=l="fa fa-fw "+(r.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-tulzqh",d.className="title svelte-tulzqh",a.className="publish"},m:function(t,e){i(a,t,e),n(u,a),n(h,a),n(d,a),n(p,d)},p:function(t,e){t.publishing&&l!==(l="fa fa-fw "+(e.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-tulzqh")&&(u.className=l)},u:function(){s(a)},d:t}}function P(e,r){var a,u,l,h,d=A("publish / publish-btn-intro");return{c:function(){a=o("div"),(u=o("div")).innerHTML='<i class="fa fa-chevron-left"></i>',l=c("\n        "),h=o("div"),this.h()},h:function(){u.className="arrow svelte-tulzqh",h.className="text svelte-tulzqh",a.className="publish-intro svelte-tulzqh"},m:function(t,e){i(a,t,e),n(u,a),n(l,a),n(h,a),h.innerHTML=d},u:function(){h.innerHTML="",s(a)},d:t}}function B(e,n){var r,a=A("publish / republish-alert");return{c:function(){r=o("div"),this.h()},h:function(){r.className="btn-aside alert svelte-tulzqh"},m:function(t,e){i(r,t,e),r.innerHTML=a},u:function(){r.innerHTML="",s(r)},d:t}}function J(e,n){var r,a=A("publish / publish-success");return{c:function(){r=o("div"),this.h()},h:function(){r.className="alert alert-success svelte-tulzqh"},m:function(t,e){i(r,t,e),r.innerHTML=a},u:function(){r.innerHTML="",s(r)},d:t}}function K(e,n){var r;return{c:function(){r=o("div"),this.h()},h:function(){r.className="alert alert-error svelte-tulzqh"},m:function(t,e){i(r,t,e),r.innerHTML=n.publish_error},p:function(t,e){t.publish_error&&(r.innerHTML=e.publish_error)},u:function(){r.innerHTML="",s(r)},d:t}}function Q(t,e){var r,a,u,l,h,d,p,f=A("publish / progress / please-wait");return{c:function(){r=o("div"),a=c(f),u=c("\n        "),l=o("div"),h=o("div"),this.h()},h:function(){h.className=d="bar "+(e.progress<1?"":"bar-success")+" svelte-tulzqh",l.className="progress progress-striped active svelte-tulzqh",r.className=p="alert "+(e.progress<1?"alert-info":"alert-success")+" publishing svelte-tulzqh"},m:function(e,s){i(r,e,s),n(a,r),n(u,r),n(l,r),n(h,l),t.refs.bar=h},p:function(t,e){t.progress&&d!==(d="bar "+(e.progress<1?"":"bar-success")+" svelte-tulzqh")&&(h.className=d),t.progress&&p!==(p="alert "+(e.progress<1?"alert-info":"alert-success")+" publishing svelte-tulzqh")&&(r.className=p)},u:function(){s(r)},d:function(){t.refs.bar===h&&(t.refs.bar=null)}}}function R(t,e){var a,u,l,f,_,m=e.tpl,b=(e.each_value,e.tpl_index,m.name);function v(){t.set({shareurl_type:u.__value})}return{c:function(){a=o("label"),u=o("input"),f=c(" "),_=o("noscript"),this.h()},h:function(){t._bindingGroups[0].push(u),h(u,"change",v),u.__value=l=m.id,u.value=u.__value,p(u,"type","radio"),u.name="url-type",u.className="svelte-tulzqh",a.className="radio"},m:function(t,s){i(a,t,s),n(u,a),u.checked=u.__value===e.shareurl_type,n(f,a),n(_,a),_.insertAdjacentHTML("afterend",b)},p:function(t,e){m=e.tpl,e.each_value,e.tpl_index,u.checked=u.__value===e.shareurl_type,t.plugin_shareurls&&l!==(l=m.id)&&(u.__value=l),u.value=u.__value,t.plugin_shareurls&&b!==(b=m.name)&&(r(_),_.insertAdjacentHTML("afterend",b))},u:function(){r(_),s(a)},d:function(){t._bindingGroups[0].splice(t._bindingGroups[0].indexOf(u),1),d(u,"change",v)}}}function V(t,e){var a,u,l,f,_,m=e.tpl,b=(e.each_value_1,e.tpl_index_1,m.title);function v(){t.set({embed_type:u.__value})}return{c:function(){a=o("label"),u=o("input"),f=c(" "),_=o("noscript"),this.h()},h:function(){t._bindingGroups[1].push(u),h(u,"change",v),p(u,"type","radio"),u.__value=l=m.id,u.value=u.__value,u.className="svelte-tulzqh",a.className="radio"},m:function(t,s){i(a,t,s),n(u,a),u.checked=u.__value===e.embed_type,n(f,a),n(_,a),_.insertAdjacentHTML("afterend",b)},p:function(t,e){m=e.tpl,e.each_value_1,e.tpl_index_1,u.checked=u.__value===e.embed_type,t.embed_templates&&l!==(l=m.id)&&(u.__value=l),u.value=u.__value,t.embed_templates&&b!==(b=m.title)&&(r(_),_.insertAdjacentHTML("afterend",b))},u:function(){r(_),s(a)},d:function(){t._bindingGroups[1].splice(t._bindingGroups[1].indexOf(u),1),d(u,"change",v)}}}function W(e,a){var u,l,h,d,p,f,_=a.tpl,m=(a.each_value_2,a.tpl_index_2,_.title),b=_.text;return{c:function(){u=o("div"),l=o("b"),h=c(m),d=c(":"),p=c(" "),f=o("noscript")},m:function(t,e){i(u,t,e),n(l,u),n(h,l),n(d,l),n(p,u),n(f,u),f.insertAdjacentHTML("afterend",b)},p:function(t,e){_=e.tpl,e.each_value_2,e.tpl_index_2,t.embed_templates&&m!==(m=_.title)&&(h.data=m),t.embed_templates&&b!==(b=_.text)&&(r(f),f.insertAdjacentHTML("afterend",b))},u:function(){r(f),s(u)},d:t}}function X(e,n){var r;return{c:function(){r=o("p")},m:function(t,e){i(r,t,e),r.innerHTML=n.exportIntro},p:function(t,e){t.exportIntro&&(r.innerHTML=e.exportIntro)},u:function(){r.innerHTML="",s(r)},d:t}}function Y(t,e){var n,r=e.action,a=(e.each_value_3,e.action_index,r&&tt(t,e));return{c:function(){a&&a.c(),n=l()},m:function(t,e){a&&a.m(t,e),i(n,t,e)},p:function(e,i){r=i.action,i.each_value_3,i.action_index,r?a?a.p(e,i):((a=tt(t,i)).c(),a.m(n.parentNode,n)):a&&(a.u(),a.d(),a=null)},u:function(){a&&a.u(),s(n)},d:function(){a&&a.d()}}}function Z(e,r){var a,u,l,h=r.action,d=(r.each_value_3,r.action_index,h.banner.text);return{c:function(){a=o("div"),u=c(d),this.h()},h:function(){a.className="banner",a.style.cssText=l=h.banner.style},m:function(t,e){i(a,t,e),n(u,a)},p:function(t,e){h=e.action,e.each_value_3,e.action_index,t.sortedChartActions&&d!==(d=h.banner.text)&&(u.data=d),t.sortedChartActions&&l!==(l=h.banner.style)&&(a.style.cssText=l)},u:function(){s(a)},d:t}}function tt(t,e){var r,a,u,l,f,_,m,b,v=e.action,g=(e.each_value_3,e.action_index,v.title),y=v.banner&&"FALSE"!=v.banner.text&&"-"!=v.banner.text&&Z(0,e);return{c:function(){r=o("li"),a=o("a"),u=o("i"),f=o("span"),m=c("\n                "),y&&y.c(),this.h()},h:function(){u.className=l="fa fa-"+v.icon+" svelte-tulzqh",f.className="title svelte-tulzqh",h(a,"click",et),p(a,"role","button"),a.href=_=v.url?v.url:"#"+v.id,a._svelte={component:t,each_value_3:e.each_value_3,action_index:e.action_index},r.className=b="action action-"+v.id+" "+(v.class||"")+" "+(v.id==e.active_action?"active":"")+" svelte-tulzqh"},m:function(t,e){i(r,t,e),n(a,r),n(u,a),n(f,a),f.innerHTML=g,n(m,r),y&&y.m(r,null)},p:function(t,e){v=e.action,e.each_value_3,e.action_index,t.sortedChartActions&&l!==(l="fa fa-"+v.icon+" svelte-tulzqh")&&(u.className=l),t.sortedChartActions&&g!==(g=v.title)&&(f.innerHTML=g),t.sortedChartActions&&_!==(_=v.url?v.url:"#"+v.id)&&(a.href=_),a._svelte.each_value_3=e.each_value_3,a._svelte.action_index=e.action_index,v.banner&&"FALSE"!=v.banner.text&&"-"!=v.banner.text?y?y.p(t,e):((y=Z(0,e)).c(),y.m(r,null)):y&&(y.u(),y.d(),y=null),(t.sortedChartActions||t.active_action)&&b!==(b="action action-"+v.id+" "+(v.class||"")+" "+(v.id==e.active_action?"active":"")+" svelte-tulzqh")&&(r.className=b)},u:function(){f.innerHTML="",s(r),y&&y.u()},d:function(){d(a,"click",et),y&&y.d()}}}function et(t){var e=this._svelte.component,n=this._svelte.each_value_3[this._svelte.action_index];e.select(n,t)}function nt(t){m(this,t),this.refs={},this._state=e(e(this.store._init(["id","publicUrl","metadata","actions"]),{active_action:"",embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:0,shareurl_type:"default",embed_type:"responsive",copy_success:!1,Action:L,chartActions:[{id:"duplicate",icon:"code-fork",title:A("Duplicate"),order:500,action:"duplicate"}],publishHed:"",publishIntro:"",beforeExport:null,exportHed:A("publish / export-duplicate"),exportIntro:A("publish / export-duplicate / intro")}),t.data),this.store._add(this,["id","publicUrl","metadata","actions"]),this._recompute({shareurl_type:1,$id:1,$publicUrl:1,plugin_shareurls:1,published:1,embed_type:1,$metadata:1,chartActions:1,$actions:1},this._state),this._bindingGroups=[[],[]],this._handlers.state=[I],this._handlers.destroy=[v],this._slotted=t.slots||{};var _=this;t.root||(this._oncreate=[],this._beforecreate=[],this._aftercreate=[]),this.slots={},this._fragment=function(t,_){var m,b,v,g,y,w,x,N,T,L,M,k,C,q,z,E,U,$,I,Z,tt,et,nt,it,st,rt,at,ut,ot,ct,lt,ht,dt,pt,ft,_t,mt,bt,vt,gt,yt,wt,xt,Nt,Ht,Tt,Lt,Mt,At,kt,Ct,qt,zt,Et,Ut,$t,It,St,jt,Gt,Dt,Ot,Ft,Pt,Bt,Jt,Kt,Qt,Rt,Vt,Wt,Xt,Yt,Zt=A("publish / share-embed"),te=A("publish / share-url"),ee=A("publish / share-url / fullscreen"),ne=A("publish / help / share-url"),ie=A("publish / embed"),se=A("publish / copy"),re=A("publish / copy-success"),ae=A("publish / embed / help"),ue=t._slotted.export_actions_header,oe=_.publishHed&&S(0,_);function ce(t){return t.publishIntro?j:t.published?G:D}var le=ce(_),he=le(t,_);function de(t){return t.published?O:F}var pe=de(_),fe=pe(t,_);function _e(e){t.publish()}var me=!_.published&&P(),be=_.needs_republish&&!_.publishing&&B(),ve=_.published&&!_.needs_republish&&1===_.progress&&!_.publishing&&J(),ge=_.publish_error&&K(0,_),ye=_.publishing&&Q(t,_);function we(){t.set({shareurl_type:it.__value})}for(var xe=_.plugin_shareurls,Ne=[],He=0;He<xe.length;He+=1)Ne[He]=R(t,e(e({},_),{each_value:xe,tpl:xe[He],tpl_index:He}));var Te=new H({root:t.root,slots:{default:u()}}),Le=_.embed_templates,Me=[];for(He=0;He<Le.length;He+=1)Me[He]=V(t,e(e({},_),{each_value_1:Le,tpl:Le[He],tpl_index_1:He}));function Ae(e){var n=t.get();t.copy(n.embedCode)}var ke=_.embed_templates.slice(2),Ce=[];for(He=0;He<ke.length;He+=1)Ce[He]=W(0,e(e({},_),{each_value_2:ke,tpl:ke[He],tpl_index_2:He}));var qe=new H({root:t.root,slots:{default:u()}}),ze=_.beforeExport;function Ee(e){return{root:t.root}}if(ze)var Ue=new ze(Ee());var $e=_.exportIntro&&X(0,_),Ie=_.sortedChartActions,Se=[];for(He=0;He<Ie.length;He+=1)Se[He]=Y(t,e(e({},_),{each_value_3:Ie,action:Ie[He],action_index:He}));var je=_.Action;function Ge(e){return{root:t.root,data:{visible:!0,show:!0}}}if(je)var De=new je(Ge());return{c:function(){m=o("div"),oe&&oe.c(),b=c(" "),he.c(),v=c("\n\n    "),g=o("button"),fe.c(),w=c("\n\n    "),me&&me.c(),x=c(" "),be&&be.c(),N=c(" "),ve&&ve.c(),T=c(" "),ge&&ge.c(),L=c(" "),ye&&ye.c(),M=c("\n\n    "),k=o("div"),C=o("h2"),q=c("\n        "),z=o("div"),E=o("i"),U=c("\n            "),$=o("div"),I=o("div"),Z=o("b"),tt=c("\n                    "),et=o("div"),nt=o("label"),it=o("input"),st=c("\n                            "),rt=o("noscript"),at=c("\n                        ");for(var t=0;t<Ne.length;t+=1)Ne[t].c();for(ut=c("\n                "),ot=o("div"),ct=o("a"),lt=c(_.shareUrl),ht=c("\n            "),dt=c("\n                "),pt=o("div"),ft=c("\n            "),Te._fragment.c(),_t=c("\n\n        "),mt=o("div"),bt=o("i"),vt=c("\n            "),gt=o("div"),yt=o("div"),wt=o("b"),xt=c("\n                    "),Nt=o("div"),t=0;t<Me.length;t+=1)Me[t].c();for(Ht=c("\n                "),Tt=o("div"),Lt=o("input"),Mt=c("\n                    "),At=o("button"),kt=o("i"),Ct=c(" "),qt=c(se),zt=c("\n                    "),Et=o("div"),Ut=c(re),It=c("\n            "),St=c("\n                "),jt=o("div"),Gt=o("noscript"),Dt=c(" "),t=0;t<Ce.length;t+=1)Ce[t].c();for(Ot=c("\n            "),qe._fragment.c(),Pt=c("\n\n    \n    "),Ue&&Ue._fragment.c(),Bt=c("\n\n    \n    "),Jt=o("div"),ue||(Qt=o("h2"),Rt=c("\n            "),$e&&$e.c(),Vt=l()),Wt=c("\n\n        "),Xt=o("ul"),t=0;t<Se.length;t+=1)Se[t].c();Yt=c("\n\n        "),De&&De._fragment.c(),this.h()},h:function(){h(g,"click",_e),g.disabled=_.publishing,g.className=y="btn-publish btn btn-primary btn-large "+(_.published?"":"btn-first-publish")+" svelte-tulzqh",E.className="icon fa fa-link fa-fw",t._bindingGroups[0].push(it),h(it,"change",we),it.__value="default",it.value=it.__value,p(it,"type","radio"),it.name="url-type",it.className="svelte-tulzqh",nt.className="radio",et.className="embed-options svelte-tulzqh",I.className="h",ct.target="_blank",ct.className="share-url svelte-tulzqh",ct.href=_.shareUrl,ot.className="inpt",$.className="ctrls",z.className="block",bt.className="icon fa fa-code fa-fw",Nt.className="embed-options svelte-tulzqh",yt.className="h",p(Lt,"type","text"),Lt.className="input embed-code",Lt.readOnly=!0,Lt.value=_.embedCode,kt.className="fa fa-copy",h(At,"click",Ae),At.className="btn btn-copy",At.title="copy",Et.className=$t="copy-success "+(_.copy_success?"show":"")+" svelte-tulzqh",Tt.className="inpt",gt.className="ctrls",mt.className="block",f(k,"margin-top","30px"),k.className=Ft=_.published?"":"inactive",ue||(Qt.className="pad-top"),Xt.className="chart-actions",Jt.className="export-and-duplicate"},m:function(e,s){i(m,e,s),oe&&oe.m(m,null),n(b,m),he.m(m,null),n(v,m),n(g,m),fe.m(g,null),n(w,m),me&&me.m(m,null),n(x,m),be&&be.m(m,null),n(N,m),ve&&ve.m(m,null),n(T,m),ge&&ge.m(m,null),n(L,m),ye&&ye.m(m,null),n(M,m),n(k,m),n(C,k),C.innerHTML=Zt,n(q,k),n(z,k),n(E,z),n(U,z),n($,z),n(I,$),n(Z,I),Z.innerHTML=te,n(tt,I),n(et,I),n(nt,et),n(it,nt),it.checked=it.__value===_.shareurl_type,n(st,nt),n(rt,nt),rt.insertAdjacentHTML("afterend",ee),n(at,et);for(var r=0;r<Ne.length;r+=1)Ne[r].m(et,null);for(n(ut,$),n(ot,$),n(ct,ot),n(lt,ct),n(ht,z),n(dt,Te._slotted.default),n(pt,Te._slotted.default),pt.innerHTML=ne,n(ft,Te._slotted.default),Te._mount(z,null),n(_t,k),n(mt,k),n(bt,mt),n(vt,mt),n(gt,mt),n(yt,gt),n(wt,yt),wt.innerHTML=ie,n(xt,yt),n(Nt,yt),r=0;r<Me.length;r+=1)Me[r].m(Nt,null);for(n(Ht,gt),n(Tt,gt),n(Lt,Tt),t.refs.embedInput=Lt,n(Mt,Tt),n(At,Tt),n(kt,At),n(Ct,At),n(qt,At),n(zt,Tt),n(Et,Tt),n(Ut,Et),n(It,mt),n(St,qe._slotted.default),n(jt,qe._slotted.default),n(Gt,jt),Gt.insertAdjacentHTML("beforebegin",ae),n(Dt,jt),r=0;r<Ce.length;r+=1)Ce[r].m(jt,null);for(n(Ot,qe._slotted.default),qe._mount(mt,null),n(Pt,m),Ue&&Ue._mount(m,null),n(Bt,m),n(Jt,m),ue?(n(ue,Jt),n(Kt||(Kt=l()),Jt)):(n(Qt,Jt),Qt.innerHTML=_.exportHed,n(Rt,Jt),$e&&$e.m(Jt,null),n(Vt,Jt)),n(Wt,Jt),n(Xt,Jt),r=0;r<Se.length;r+=1)Se[r].m(Xt,null);n(Yt,Jt),De&&(De._mount(Jt,null),t.refs.action=De)},p:function(n,i){i.publishHed?oe?oe.p(n,i):((oe=S(0,i)).c(),oe.m(m,b)):oe&&(oe.u(),oe.d(),oe=null),le===(le=ce(i))&&he?he.p(n,i):(he.u(),he.d(),(he=le(t,i)).c(),he.m(m,v)),pe===(pe=de(i))&&fe?fe.p(n,i):(fe.u(),fe.d(),(fe=pe(t,i)).c(),fe.m(g,null)),n.publishing&&(g.disabled=i.publishing),n.published&&y!==(y="btn-publish btn btn-primary btn-large "+(i.published?"":"btn-first-publish")+" svelte-tulzqh")&&(g.className=y),i.published?me&&(me.u(),me.d(),me=null):me||((me=P()).c(),me.m(m,x)),i.needs_republish&&!i.publishing?be||((be=B()).c(),be.m(m,N)):be&&(be.u(),be.d(),be=null),!i.published||i.needs_republish||1!==i.progress||i.publishing?ve&&(ve.u(),ve.d(),ve=null):ve||((ve=J()).c(),ve.m(m,T)),i.publish_error?ge?ge.p(n,i):((ge=K(0,i)).c(),ge.m(m,L)):ge&&(ge.u(),ge.d(),ge=null),i.publishing?ye?ye.p(n,i):((ye=Q(t,i)).c(),ye.m(m,M)):ye&&(ye.u(),ye.d(),ye=null),it.checked=it.__value===i.shareurl_type;var s=i.plugin_shareurls;if(n.shareurl_type||n.plugin_shareurls){for(var r=0;r<s.length;r+=1){var a=e(e({},i),{each_value:s,tpl:s[r],tpl_index:r});Ne[r]?Ne[r].p(n,a):(Ne[r]=R(t,a),Ne[r].c(),Ne[r].m(et,null))}for(;r<Ne.length;r+=1)Ne[r].u(),Ne[r].d();Ne.length=s.length}n.shareUrl&&(lt.data=i.shareUrl,ct.href=i.shareUrl);var u=i.embed_templates;if(n.embed_type||n.embed_templates){for(r=0;r<u.length;r+=1){var o=e(e({},i),{each_value_1:u,tpl:u[r],tpl_index_1:r});Me[r]?Me[r].p(n,o):(Me[r]=V(t,o),Me[r].c(),Me[r].m(Nt,null))}for(;r<Me.length;r+=1)Me[r].u(),Me[r].d();Me.length=u.length}n.embedCode&&(Lt.value=i.embedCode),n.copy_success&&$t!==($t="copy-success "+(i.copy_success?"show":"")+" svelte-tulzqh")&&(Et.className=$t);var c=i.embed_templates.slice(2);if(n.embed_templates){for(r=0;r<c.length;r+=1){var l=e(e({},i),{each_value_2:c,tpl:c[r],tpl_index_2:r});Ce[r]?Ce[r].p(n,l):(Ce[r]=W(0,l),Ce[r].c(),Ce[r].m(jt,null))}for(;r<Ce.length;r+=1)Ce[r].u(),Ce[r].d();Ce.length=c.length}n.published&&Ft!==(Ft=i.published?"":"inactive")&&(k.className=Ft),ze!==(ze=i.beforeExport)&&(Ue&&Ue.destroy(),ze&&((Ue=new ze(Ee()))._fragment.c(),Ue._mount(m,Bt))),ue||(n.exportHed&&(Qt.innerHTML=i.exportHed),i.exportIntro?$e?$e.p(n,i):(($e=X(0,i)).c(),$e.m(Vt.parentNode,Vt)):$e&&($e.u(),$e.d(),$e=null));var h=i.sortedChartActions;if(n.sortedChartActions||n.active_action){for(r=0;r<h.length;r+=1){var d=e(e({},i),{each_value_3:h,action:h[r],action_index:r});Se[r]?Se[r].p(n,d):(Se[r]=Y(t,d),Se[r].c(),Se[r].m(Xt,null))}for(;r<Se.length;r+=1)Se[r].u(),Se[r].d();Se.length=h.length}if(je!==(je=i.Action))De&&De.destroy(),je?((De=new je(Ge()))._fragment.c(),De._mount(Jt,null),t.refs.action=De):t.refs.action===De&&(t.refs.action=null);else{var p={visible:!0,show:!0};De._set(p)}},u:function(){C.innerHTML="",Z.innerHTML="",r(rt),pt.innerHTML="",wt.innerHTML="",function(t){for(;t.previousSibling;)t.parentNode.removeChild(t.previousSibling)}(Gt),Qt.innerHTML="",s(m),oe&&oe.u(),he.u(),fe.u(),me&&me.u(),be&&be.u(),ve&&ve.u(),ge&&ge.u(),ye&&ye.u();for(var t=0;t<Ne.length;t+=1)Ne[t].u();for(t=0;t<Me.length;t+=1)Me[t].u();for(t=0;t<Ce.length;t+=1)Ce[t].u();for(ue?function(t,e){for(var n=t.parentNode;n.firstChild!==t;)e.appendChild(n.firstChild)}(Kt,ue):$e&&$e.u(),t=0;t<Se.length;t+=1)Se[t].u()},d:function(){oe&&oe.d(),he.d(),fe.d(),d(g,"click",_e),me&&me.d(),be&&be.d(),ve&&ve.d(),ge&&ge.d(),ye&&ye.d(),t._bindingGroups[0].splice(t._bindingGroups[0].indexOf(it),1),d(it,"change",we),a(Ne),Te.destroy(!1),a(Me),t.refs.embedInput===Lt&&(t.refs.embedInput=null),d(At,"click",Ae),a(Ce),qe.destroy(!1),Ue&&Ue.destroy(!1),ue||$e&&$e.d(),a(Se),De&&De.destroy(!1)}}}(this,this._state),this.root._oncreate.push(function(){var t={shareurl_type:1,$id:1,$publicUrl:1,plugin_shareurls:1,published:1,embed_type:1,$metadata:1,chartActions:1,$actions:1,publishHed:1,publishIntro:1,publishing:1,needs_republish:1,progress:1,publish_error:1,shareUrl:1,embed_templates:1,embedCode:1,copy_success:1,beforeExport:1,exportHed:1,exportIntro:1,sortedChartActions:1,active_action:1,Action:1};I.call(_,{changed:t,current:_._state}),function(){var t=this.store.get().lastEditStep;this.set({published:t>4}),window.dw.backend.fire("edit.publish.oncreate",this)}.call(_),_.fire("update",{changed:t,current:_._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),this._lock=!0,b(this._beforecreate),b(this._oncreate),b(this._aftercreate),this._lock=!1)}return e(nt.prototype,g),e(nt.prototype,$),nt.prototype._recompute=function(t,e){var n,i,s,r;(t.shareurl_type||t.$id||t.$publicUrl||t.plugin_shareurls||t.published)&&this._differs(e.shareUrl,e.shareUrl=function(t){var e=t.shareurl_type,n=t.$id,i=t.$publicUrl,s=t.plugin_shareurls;if(!t.published)return"https://www.datawrapper.de/...";if("default"===e)return i;var r="";return s.forEach(function(t){t.id===e&&(r=t.url.replace(/%chart_id%/g,n))}),r}(e))&&(t.shareUrl=!0),(t.embed_type||t.$metadata||t.$publicUrl)&&this._differs(e.embedCode,e.embedCode=(i=(n=e).embed_type,s=n.$metadata,r=n.$publicUrl,s?s.publish&&!s.publish["embed-codes"]?'<iframe src="'+r+'" width="100%" height="'+s.publish["embed-height"]+'" scrolling="no" frameborder="0" allowtransparency="true"></iframe>':s.publish["embed-codes"]["embed-method-"+i]:""))&&(t.embedCode=!0),(t.chartActions||t.$actions)&&this._differs(e.sortedChartActions,e.sortedChartActions=function(t){var e=t.chartActions,n=t.$actions;return e.concat(n).filter(function(t){return"publish-s3"!==t.id}).sort(function(t,e){return t.order-e.order})}(e))&&(t.sortedChartActions=!0)},{Publish:nt}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.publish = factory());
+}(this, (function () { 'use strict';
+
+function noop() {}
+
+function assign(tar, src) {
+	for (var k in src) { tar[k] = src[k]; }
+	return tar;
+}
+
+function appendNode(node, target) {
+	target.appendChild(node);
+}
+
+function insertNode(node, target, anchor) {
+	target.insertBefore(node, anchor);
+}
+
+function detachNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+function detachBefore(after) {
+	while (after.previousSibling) {
+		after.parentNode.removeChild(after.previousSibling);
+	}
+}
+
+function detachAfter(before) {
+	while (before.nextSibling) {
+		before.parentNode.removeChild(before.nextSibling);
+	}
+}
+
+function reinsertChildren(parent, target) {
+	while (parent.firstChild) { target.appendChild(parent.firstChild); }
+}
+
+function reinsertBefore(after, target) {
+	var parent = after.parentNode;
+	while (parent.firstChild !== after) { target.appendChild(parent.firstChild); }
+}
+
+function destroyEach(iterations) {
+	for (var i = 0; i < iterations.length; i += 1) {
+		if (iterations[i]) { iterations[i].d(); }
+	}
+}
+
+function createFragment() {
+	return document.createDocumentFragment();
+}
+
+function createElement(name) {
+	return document.createElement(name);
+}
+
+function createText(data) {
+	return document.createTextNode(data);
+}
+
+function createComment() {
+	return document.createComment('');
+}
+
+function addListener(node, event, handler) {
+	node.addEventListener(event, handler, false);
+}
+
+function removeListener(node, event, handler) {
+	node.removeEventListener(event, handler, false);
+}
+
+function setAttribute(node, attribute, value) {
+	node.setAttribute(attribute, value);
+}
+
+function setStyle(node, key, value) {
+	node.style.setProperty(key, value);
+}
+
+function blankObject() {
+	return Object.create(null);
+}
+
+function destroy(detach) {
+	this.destroy = noop;
+	this.fire('destroy');
+	this.set = this.get = noop;
+
+	if (detach !== false) { this._fragment.u(); }
+	this._fragment.d();
+	this._fragment = this._state = null;
+}
+
+function destroyDev(detach) {
+	destroy.call(this, detach);
+	this.destroy = function() {
+		console.warn('Component was already destroyed');
+	};
+}
+
+function _differs(a, b) {
+	return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+
+function fire(eventName, data) {
+	var this$1 = this;
+
+	var handlers =
+		eventName in this._handlers && this._handlers[eventName].slice();
+	if (!handlers) { return; }
+
+	for (var i = 0; i < handlers.length; i += 1) {
+		var handler = handlers[i];
+
+		if (!handler.__calling) {
+			handler.__calling = true;
+			handler.call(this$1, data);
+			handler.__calling = false;
+		}
+	}
+}
+
+function getDev(key) {
+	if (key) { console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead"); }
+	return get.call(this, key);
+}
+
+function get(key) {
+	return key ? this._state[key] : this._state;
+}
+
+function init(component, options) {
+	component._handlers = blankObject();
+	component._bind = options._bind;
+
+	component.options = options;
+	component.root = options.root || component;
+	component.store = component.root.store || options.store;
+}
+
+function observe(key, callback, options) {
+	var fn = callback.bind(this);
+
+	if (!options || options.init !== false) {
+		fn(this.get()[key], undefined);
+	}
+
+	return this.on(options && options.defer ? 'update' : 'state', function(event) {
+		if (event.changed[key]) { fn(event.current[key], event.previous && event.previous[key]); }
+	});
+}
+
+function observeDev(key, callback, options) {
+	console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+	var c = (key = '' + key).search(/[.[]/);
+	if (c > -1) {
+		var message =
+			'The first argument to component.observe(...) must be the name of a top-level property';
+		if (c > 0)
+			{ message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'"; }
+
+		throw new Error(message);
+	}
+
+	return observe.call(this, key, callback, options);
+}
+
+function on(eventName, handler) {
+	if (eventName === 'teardown') { return this.on('destroy', handler); }
+
+	var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	handlers.push(handler);
+
+	return {
+		cancel: function() {
+			var index = handlers.indexOf(handler);
+			if (~index) { handlers.splice(index, 1); }
+		}
+	};
+}
+
+function onDev(eventName, handler) {
+	if (eventName === 'teardown') {
+		console.warn(
+			"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+		);
+		return this.on('destroy', handler);
+	}
+
+	return on.call(this, eventName, handler);
+}
+
+function set(newState) {
+	this._set(assign({}, newState));
+	if (this.root._lock) { return; }
+	this.root._lock = true;
+	callAll(this.root._beforecreate);
+	callAll(this.root._oncreate);
+	callAll(this.root._aftercreate);
+	this.root._lock = false;
+}
+
+function _set(newState) {
+	var this$1 = this;
+
+	var oldState = this._state,
+		changed = {},
+		dirty = false;
+
+	for (var key in newState) {
+		if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+	}
+	if (!dirty) { return; }
+
+	this._state = assign(assign({}, oldState), newState);
+	this._recompute(changed, this._state);
+	if (this._bind) { this._bind(changed, this._state); }
+
+	if (this._fragment) {
+		this.fire("state", { changed: changed, current: this._state, previous: oldState });
+		this._fragment.p(changed, this._state);
+		this.fire("update", { changed: changed, current: this._state, previous: oldState });
+	}
+}
+
+function setDev(newState) {
+	if (typeof newState !== 'object') {
+		throw new Error(
+			this._debugName + '.set was called without an object of data key-values to update.'
+		);
+	}
+
+	this._checkReadOnly(newState);
+	set.call(this, newState);
+}
+
+function callAll(fns) {
+	while (fns && fns.length) { fns.shift()(); }
+}
+
+function _mount(target, anchor) {
+	this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+}
+
+function _unmount() {
+	if (this._fragment) { this._fragment.u(); }
+}
+
+function removeFromStore() {
+	this.store._remove(this);
+}
+
+var protoDev = {
+	destroy: destroyDev,
+	get: getDev,
+	fire: fire,
+	observe: observeDev,
+	on: onDev,
+	set: setDev,
+	teardown: destroyDev,
+	_recompute: noop,
+	_set: _set,
+	_mount: _mount,
+	_unmount: _unmount,
+	_differs: _differs
+};
+
+/* editor/Help.html generated by Svelte v1.64.0 */
+
+function data() {
+    return {
+        visible: false
+    };
+}
+var methods = {
+    show: function show() {
+        var this$1 = this;
+
+        var t = setTimeout(function () {
+            this$1.set({ visible: true });
+        }, 400);
+        this.set({ t: t });
+    },
+    hide: function hide() {
+        var ref = this.get();
+        var t = ref.t;
+        clearTimeout(t);
+        this.set({ visible: false });
+    }
+};
+
+function create_main_fragment(component, state) {
+	var div, span, text;
+
+	function select_block_type(state) {
+		if (state.visible) { return create_if_block; }
+		return create_if_block_1;
+	}
+
+	var current_block_type = select_block_type(state);
+	var if_block = current_block_type(component, state);
+
+	var if_block_1 = (state.visible) && create_if_block_2(component, state);
+
+	function mouseenter_handler(event) {
+		component.show();
+	}
+
+	function mouseleave_handler(event) {
+		component.hide();
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			span = createElement("span");
+			if_block.c();
+			text = createText("\n    ");
+			if (if_block_1) { if_block_1.c(); }
+			this.h();
+		},
+
+		h: function hydrate() {
+			span.className = "svelte-1mkn8ur";
+			addListener(div, "mouseenter", mouseenter_handler);
+			addListener(div, "mouseleave", mouseleave_handler);
+			div.className = "help svelte-1mkn8ur";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(span, div);
+			if_block.m(span, null);
+			appendNode(text, div);
+			if (if_block_1) { if_block_1.m(div, null); }
+		},
+
+		p: function update(changed, state) {
+			if (current_block_type !== (current_block_type = select_block_type(state))) {
+				if_block.u();
+				if_block.d();
+				if_block = current_block_type(component, state);
+				if_block.c();
+				if_block.m(span, null);
+			}
+
+			if (state.visible) {
+				if (!if_block_1) {
+					if_block_1 = create_if_block_2(component, state);
+					if_block_1.c();
+					if_block_1.m(div, null);
+				}
+			} else if (if_block_1) {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = null;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+			if_block.u();
+			if (if_block_1) { if_block_1.u(); }
+		},
+
+		d: function destroy$$1() {
+			if_block.d();
+			if (if_block_1) { if_block_1.d(); }
+			removeListener(div, "mouseenter", mouseenter_handler);
+			removeListener(div, "mouseleave", mouseleave_handler);
+		}
+	};
+}
+
+// (2:10) {#if visible}
+function create_if_block(component, state) {
+	var i;
+
+	return {
+		c: function create() {
+			i = createElement("i");
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = "im im-graduation-hat svelte-1mkn8ur";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(i, target, anchor);
+		},
+
+		u: function unmount() {
+			detachNode(i);
+		},
+
+		d: noop
+	};
+}
+
+// (2:59) {:else}
+function create_if_block_1(component, state) {
+	var text;
+
+	return {
+		c: function create() {
+			text = createText("?");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(text, target, anchor);
+		},
+
+		u: function unmount() {
+			detachNode(text);
+		},
+
+		d: noop
+	};
+}
+
+// (3:4) {#if visible}
+function create_if_block_2(component, state) {
+	var div, slot_content_default = component._slotted.default;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "content svelte-1mkn8ur";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+
+			if (slot_content_default) {
+				appendNode(slot_content_default, div);
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+
+			if (slot_content_default) {
+				reinsertChildren(div, slot_content_default);
+			}
+		},
+
+		d: noop
+	};
+}
+
+function Help(options) {
+	this._debugName = '<Help>';
+	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	init(this, options);
+	this._state = assign(data(), options.data);
+	if (!('visible' in this._state)) { console.warn("<Help> was created without expected data property 'visible'"); }
+
+	this._slotted = options.slots || {};
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Help.prototype, protoDev);
+assign(Help.prototype, methods);
+
+Help.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* publish/Action.html generated by Svelte v1.64.0 */
+
+function data$1() {
+    return { loading: false };
+}
+function create_main_fragment$1(component, state) {
+	var if_block_anchor;
+
+	var if_block = (state.loading) && create_if_block$1(component, state);
+
+	return {
+		c: function create() {
+			if (if_block) { if_block.c(); }
+			if_block_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			if (if_block) { if_block.m(target, anchor); }
+			insertNode(if_block_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			if (state.loading) {
+				if (!if_block) {
+					if_block = create_if_block$1(component, state);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			if (if_block) { if_block.u(); }
+			detachNode(if_block_anchor);
+		},
+
+		d: function destroy$$1() {
+			if (if_block) { if_block.d(); }
+		}
+	};
+}
+
+// (2:0) {#if loading}
+function create_if_block$1(component, state) {
+	var p;
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			p.innerHTML = "<i class=\"fa fa-spinner fa-pulse fa-fw\"></i> loading...";
+			this.h();
+		},
+
+		h: function hydrate() {
+			p.className = "mini-help";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+		},
+
+		u: function unmount() {
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+function Action(options) {
+	this._debugName = '<Action>';
+	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	init(this, options);
+	this._state = assign(data$1(), options.data);
+	if (!('loading' in this._state)) { console.warn("<Action> was created without expected data property 'loading'"); }
+
+	this._fragment = create_main_fragment$1(this, this._state);
+
+	if (options.target) {
+		if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+	}
+}
+
+assign(Action.prototype, protoDev);
+
+Action.prototype._checkReadOnly = function _checkReadOnly(newState) {
+};
+
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+/* globals dw */
+
+/**
+ * translates a message key. translations are originally stored in a
+ * Google spreadsheet that we're pulling into Datawrapper using the
+ * `scripts/update-translations` script, which stores them as `:locale.json`
+ * files in the /locale folders (both in core as well as inside plugin folders)
+ *
+ * for the client-side translation to work we are also storing the translations
+ * in the global `window.dw.backend.__messages` object. plugins that need
+ * client-side translations must set `"svelte": true` in their plugin.json
+ *
+ * @export
+ * @param {string} key -- the key to be translated, e.g. "signup / hed"
+ * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+ * @returns {string} -- the translated text
+ */
+
+var dw = window.dw;
+
+function __(key, scope) {
+    var arguments$1 = arguments;
+    if ( scope === void 0 ) scope = 'core';
+
+    key = key.trim();
+    if (!dw.backend.__messages[scope]) { return 'MISSING:' + key; }
+    var translation = dw.backend.__messages[scope][key] || dw.backend.__messages.core[key] || key;
+
+    if (arguments.length > 2) {
+        for (var i = 2; i < arguments.length; i++) {
+            var index = i - 1;
+            translation = translation.replace('$' + index, arguments$1[i]);
+        }
+    }
+
+    return translation;
+}
+
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+function trackEvent(category, action, name, value) {
+    if (window._paq) {
+        window._paq.push(['trackEvent', category, action, name, value]);
+    }
+}
+
+// quick reference variables for speed access
+
+// `_isArray` : an object's function
+
+/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+function fetchJSON(url, method, credentials, body, callback) {
+    var opts = {
+        method: method,
+        body: body,
+        mode: 'cors',
+        credentials: credentials
+    };
+
+    var promise = window
+        .fetch(url, opts)
+        .then(function (res) {
+            if (res.status !== 200) { return new Error(res.statusText); }
+            return res.text();
+        })
+        .then(function (text) {
+            try {
+                return JSON.parse(text);
+            } catch (Error) {
+                // could not parse json, so just return text
+                console.warn('malformed json input', text);
+                return text;
+            }
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+
+    return callback ? promise.then(callback) : promise;
+}
+
+function getJSON(url, credentials, callback) {
+    if (arguments.length === 2) {
+        callback = credentials;
+        credentials = 'include';
+    }
+
+    return fetchJSON(url, 'GET', credentials, null, callback);
+}
+function postJSON(url, body, callback) {
+    return fetchJSON(url, 'POST', 'include', body, callback);
+}
+
+/**
+ * injects a <script> element to the page to load a new JS script
+ *
+ * @param {string} src
+ * @param {function} callback
+ */
+function loadScript(src, callback) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.onload = function () {
+        if (callback) { callback(); }
+    };
+    document.body.appendChild(script);
+}
+
+/**
+ * injects a <link> element to the page to load a new stylesheet
+ *
+ * @param {string} src
+ * @param {function} callback
+ */
+function loadStylesheet(src, callback) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = src;
+    link.onload = function () {
+        if (callback) { callback(); }
+    };
+    document.head.appendChild(link);
+}
+
+var widths = [100, 200, 300, 400, 500, 700, 800, 900, 1000];
+
+function computeEmbedHeights() {
+    var embedHeights = {};
+
+    // compute embed deltas
+    var $ = window.$;
+    var previewChart = $($('#iframe-vis')[0].contentDocument);
+    // find out default heights
+    var defaultHeight = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+
+    var totalHeight = $('#iframe-vis').height();
+
+    widths.forEach(function (width) {
+        // now we resize headline, intro and footer
+        previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', width + 'px');
+
+        var height = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+
+        embedHeights[width] = totalHeight + (height - defaultHeight);
+    });
+
+    previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', 'auto');
+
+    return embedHeights;
+}
+
+/* publish/Publish.html generated by Svelte v1.64.0 */
+
+var fakeProgress = 0;
+var initial_auto_publish = true;
+
+function shareUrl(ref) {
+    var shareurl_type = ref.shareurl_type;
+    var $id = ref.$id;
+    var $publicUrl = ref.$publicUrl;
+    var plugin_shareurls = ref.plugin_shareurls;
+    var published = ref.published;
+
+    if (!published) { return 'https://www.datawrapper.de/...'; }
+    if (shareurl_type === 'default') { return $publicUrl; }
+    var url = '';
+    plugin_shareurls.forEach(function (t) {
+        if (t.id === shareurl_type) { url = t.url.replace(/%chart_id%/g, $id); }
+    });
+    return url;
+}
+function sortedChartActions(ref) {
+    var chartActions = ref.chartActions;
+    var $actions = ref.$actions;
+
+    return chartActions
+        .concat($actions)
+        .filter(function (a) { return a.id !== 'publish-s3'; })
+        .sort(function (a, b) { return a.order - b.order; });
+}
+function data$2() {
+    return {
+        active_action: '',
+        embed_templates: [],
+        plugin_shareurls: [],
+        published: false,
+        publishing: false,
+        needs_republish: false,
+        publish_error: false,
+        auto_publish: false,
+        progress: 0,
+        shareurl_type: 'default',
+        embed_type: 'responsive',
+        copy_success: false,
+        Action: Action,
+        chartActions: [
+            {
+                id: 'duplicate',
+                icon: 'code-fork',
+                title: __('Duplicate'),
+                order: 500,
+                action: 'duplicate'
+            }
+        ],
+        publishHed: '',
+        publishIntro: '',
+        beforeExport: null,
+        exportHed: __('publish / export-duplicate'),
+        exportIntro: __('publish / export-duplicate / intro'),
+        embedCode: ''
+    };
+}
+var methods$1 = {
+    publish: function publish() {
+        var this$1 = this;
+
+        this.set({
+            publishing: true,
+            progress: 0,
+            publish_error: false
+        });
+
+        var chart = this.store;
+        // generate embed codes
+        chart.setMetadata('publish.embed-heights', computeEmbedHeights(chart, this.get().embed_templates));
+
+        // save embed heights and wait until it's done before
+        // we start to publish the chart
+        trackEvent('Chart Editor', 'publish');
+
+        chart.store(function () {
+            // publish chart
+            postJSON(("/api/charts/" + (chart.get().id) + "/publish"), null, function (res) {
+                if (res.status === 'ok') {
+                    this$1.publishFinished(res.data);
+                    trackEvent('Chart Editor', 'publish-success');
+                } else {
+                    trackEvent('Chart Editor', 'publish-error', res.message);
+                    this$1.set({
+                        publish_error: res.message
+                    });
+                }
+            });
+            fakeProgress = 0;
+            this$1.updateStatus();
+        });
+    },
+
+    updateProgressBar: function updateProgressBar(p) {
+        if (this.refs.bar) {
+            this.refs.bar.style.width = (p * 100).toFixed() + '%';
+        }
+    },
+
+    updateStatus: function updateStatus() {
+        var this$1 = this;
+
+        var chart = this.store;
+        fakeProgress += 0.05;
+        getJSON(("/api/charts/" + (chart.get().id) + "/publish/status"), function (res) {
+            if (res) {
+                res = +res / 100 + fakeProgress;
+                this$1.set({ progress: Math.min(1, res) });
+            }
+            if (this$1.get().publishing) {
+                setTimeout(function () {
+                    this$1.updateStatus();
+                }, 400);
+            }
+        });
+    },
+
+    publishFinished: function publishFinished(chartInfo) {
+        var this$1 = this;
+
+        this.set({
+            progress: 1,
+            published: true,
+            needs_republish: false
+        });
+        this.store.set({
+            lastEditStep: 5
+        });
+        setTimeout(function () { return this$1.set({ publishing: false }); }, 500);
+        this.store.set(chartInfo);
+    },
+
+    setEmbedCode: function setEmbedCode() {
+        var chart = this.store;
+        var ref = this.get();
+        var embed_type = ref.embed_type;
+        var ref$1 = chart.get();
+        var publicUrl = ref$1.publicUrl;
+        var embedCodes = chart.getMetadata('publish.embed-codes');
+        var embedHeight = chart.getMetadata('publish.embed-height');
+        this.set({
+            embedCode: embedCodes[embed_type]
+                ? embedCodes[embed_type]
+                : ("<iframe src=\"" + publicUrl + "\" width=\"100%\" height=\"" + embedHeight + "\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\"></iframe>")
+        });
+    },
+
+    copy: function copy() {
+        var me = this;
+        me.refs.embedInput.select();
+        try {
+            var successful = document.execCommand('copy');
+            if (successful) {
+                trackEvent('Chart Editor', 'embedcode-copy');
+                me.set({ copy_success: true });
+                setTimeout(function () { return me.set({ copy_success: false }); }, 300);
+            }
+        } catch (err) {
+            // console.log('Oops, unable to copy');
+        }
+    },
+
+    select: function select(action, event) {
+        var this$1 = this;
+
+        event.preventDefault();
+        var ref = this.get();
+        var active_action = ref.active_action;
+        if (action.id === active_action) {
+            // unselect current action
+            return this.set({ active_action: '', Action: Action });
+        }
+        this.set({ active_action: action.id });
+        if (action.mod) {
+            if (action.mod.App) {
+                this.set({ Action: action.mod.App });
+            } else {
+                // todo: show loading indicator
+                this.set({ Action: Action });
+                this.refs.action.set({ loading: true });
+                if (action.mod.css) {
+                    loadStylesheet(action.mod.css);
+                }
+                loadScript(action.mod.src, function () {
+                    setTimeout(function () {
+                        require([action.mod.id], function (mod) {
+                            // todo: HIDE loading indicator
+                            Object.assign(action.mod, mod);
+                            this$1.set({ Action: action.mod.App });
+                            if (mod.init) { mod.init(this$1.refs.action); }
+                            if (action.mod.data) { this$1.refs.action.set(action.mod.data); }
+                        });
+                    }, 200);
+                });
+            }
+        } else if (action.action && this[action.action]) {
+            this.set({ Action: Action });
+            this[action.action]();
+        } else if (typeof action.action === 'function') {
+            this.set({ Action: Action });
+            action.action();
+        }
+    },
+
+    duplicate: function duplicate() {
+        var ref = this.store.get();
+        var id = ref.id;
+        trackEvent('Chart Editor', 'duplicate');
+        postJSON(("/api/charts/" + id + "/copy"), null, function (res) {
+            if (res.status === 'ok') {
+                // redirect to copied chart
+                window.location.href = "/edit/" + (res.data.id) + "/visualize";
+            } else {
+                console.warn(res);
+            }
+        });
+    }
+};
+
+function oncreate() {
+    var this$1 = this;
+
+    var ref = this.store.get();
+    var lastEditStep = ref.lastEditStep;
+    this.set({ published: lastEditStep > 4 });
+    // store reference to publish step
+    window.dw.backend.fire('edit.publish.oncreate', this);
+    // watch changes
+    this.setEmbedCode();
+    var chart = this.store;
+    chart.observeDeep('metadata.publish.embed-codes', function () { return this$1.setEmbedCode(); });
+    chart.observeDeep('metadata.publish.embed-height', function () { return this$1.setEmbedCode(); });
+    chart.observeDeep('publicUrl', function () { return this$1.setEmbedCode(); });
+}
+function onstate(ref) {
+    var changed = ref.changed;
+    var current = ref.current;
+
+    var userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
+    if (changed.publishing) {
+        if (current.publishing) { this.updateProgressBar(current.progress); }
+    }
+    if (changed.progress) {
+        this.updateProgressBar(current.progress);
+    }
+    if (changed.embed_type && userDataReady) {
+        var data = window.dw.backend.__userData;
+        if (!current.embed_type || !data) { return; }
+        data.embed_type = current.embed_type;
+        window.dw.backend.setUserData(data);
+    }
+    if (changed.embed_type) {
+        this.setEmbedCode();
+    }
+    if (changed.shareurl_type && userDataReady) {
+        var data$1 = window.dw.backend.__userData;
+        if (!current.shareurl_type || !data$1) { return; }
+        data$1.shareurl_type = current.shareurl_type;
+        window.dw.backend.setUserData(data$1);
+    }
+    if (changed.published) {
+        window.document.querySelector('.dw-create-publish .publish-step').classList[current.published ? 'add' : 'remove']('is-published');
+    }
+    if (changed.auto_publish) {
+        if (current.auto_publish && initial_auto_publish) {
+            this.publish();
+            initial_auto_publish = false;
+            window.history.replaceState('', '', window.location.pathname);
+        }
+    }
+}
+function create_main_fragment$2(component, state) {
+	var div, text, text_1, button, button_class_value, text_3, text_4, text_5, text_6, text_7, text_8, div_1, h2, raw_value = __('publish / share-embed'), text_9, div_2, i, text_10, div_3, div_4, b, raw_1_value = __('publish / share-url'), text_11, div_5, label, input, text_12, raw_2_value = __('publish / share-url / fullscreen'), raw_2_before, text_14, text_17, div_6, a, text_18, text_21, text_22, div_7, raw_3_value = __('publish / help / share-url'), text_23, text_25, div_8, i_1, text_26, div_9, div_10, b_1, raw_4_value = __('publish / embed'), text_27, div_11, text_30, div_12, input_1, text_31, button_1, i_2, text_32, text_33_value = __('publish / copy'), text_33, text_34, div_13, text_35_value = __('publish / copy-success'), text_35, div_13_class_value, text_39, text_40, div_14, raw_5_value = __('publish / embed / help'), raw_5_after, text_41, text_43, div_1_class_value, text_46, text_47, div_15, slot_content_export_actions_header = component._slotted.export_actions_header, slot_content_export_actions_header_after, h2_1, text_48, if_block_9_anchor, text_50, ul, text_51;
+
+	var if_block = (state.publishHed) && create_if_block$2(component, state);
+
+	function select_block_type(state) {
+		if (state.publishIntro) { return create_if_block_1$1; }
+		if (state.published) { return create_if_block_2$1; }
+		return create_if_block_3;
+	}
+
+	var current_block_type = select_block_type(state);
+	var if_block_1 = current_block_type(component, state);
+
+	function select_block_type_1(state) {
+		if (state.published) { return create_if_block_4; }
+		return create_if_block_5;
+	}
+
+	var current_block_type_1 = select_block_type_1(state);
+	var if_block_3 = current_block_type_1(component, state);
+
+	function click_handler(event) {
+		component.publish();
+	}
+
+	var if_block_4 = (!state.published) && create_if_block_6(component, state);
+
+	var if_block_5 = (state.needs_republish && !state.publishing) && create_if_block_7(component, state);
+
+	var if_block_6 = (state.published && !state.needs_republish && state.progress === 1 && !state.publishing) && create_if_block_8(component, state);
+
+	var if_block_7 = (state.publish_error) && create_if_block_9(component, state);
+
+	var if_block_8 = (state.publishing) && create_if_block_10(component, state);
+
+	function input_change_handler() {
+		component.set({ shareurl_type: input.__value });
+	}
+
+	var each_value = state.plugin_shareurls;
+
+	var each_blocks = [];
+
+	for (var i_3 = 0; i_3 < each_value.length; i_3 += 1) {
+		each_blocks[i_3] = create_each_block(component, assign(assign({}, state), {
+			each_value: each_value,
+			tpl: each_value[i_3],
+			tpl_index: i_3
+		}));
+	}
+
+	var help = new Help({
+		root: component.root,
+		slots: { default: createFragment() }
+	});
+
+	var each_value_1 = state.embed_templates;
+
+	var each_1_blocks = [];
+
+	for (var i_3 = 0; i_3 < each_value_1.length; i_3 += 1) {
+		each_1_blocks[i_3] = create_each_block_1(component, assign(assign({}, state), {
+			each_value_1: each_value_1,
+			tpl: each_value_1[i_3],
+			tpl_index_1: i_3
+		}));
+	}
+
+	function click_handler_1(event) {
+		var state = component.get();
+		component.copy(state.embedCode);
+	}
+
+	var each_value_2 = state.embed_templates.slice(2);
+
+	var each_2_blocks = [];
+
+	for (var i_3 = 0; i_3 < each_value_2.length; i_3 += 1) {
+		each_2_blocks[i_3] = create_each_block_2(component, assign(assign({}, state), {
+			each_value_2: each_value_2,
+			tpl: each_value_2[i_3],
+			tpl_index_2: i_3
+		}));
+	}
+
+	var help_1 = new Help({
+		root: component.root,
+		slots: { default: createFragment() }
+	});
+
+	var switch_value = state.beforeExport;
+
+	function switch_props(state) {
+		return {
+			root: component.root
+		};
+	}
+
+	if (switch_value) {
+		var switch_instance = new switch_value(switch_props(state));
+	}
+
+	var if_block_9 = (state.exportIntro) && create_if_block_11(component, state);
+
+	var each_value_3 = state.sortedChartActions;
+
+	var each_3_blocks = [];
+
+	for (var i_3 = 0; i_3 < each_value_3.length; i_3 += 1) {
+		each_3_blocks[i_3] = create_each_block_3(component, assign(assign({}, state), {
+			each_value_3: each_value_3,
+			action: each_value_3[i_3],
+			action_index: i_3
+		}));
+	}
+
+	var switch_value_1 = state.Action;
+
+	function switch_props_1(state) {
+		var switch_instance_1_initial_data = {
+		 	visible: true,
+		 	show: true
+		 };
+		return {
+			root: component.root,
+			data: switch_instance_1_initial_data
+		};
+	}
+
+	if (switch_value_1) {
+		var switch_instance_1 = new switch_value_1(switch_props_1(state));
+	}
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			if (if_block) { if_block.c(); }
+			text = createText(" ");
+			if_block_1.c();
+			text_1 = createText("\n\n    ");
+			button = createElement("button");
+			if_block_3.c();
+			text_3 = createText("\n\n    ");
+			if (if_block_4) { if_block_4.c(); }
+			text_4 = createText(" ");
+			if (if_block_5) { if_block_5.c(); }
+			text_5 = createText(" ");
+			if (if_block_6) { if_block_6.c(); }
+			text_6 = createText(" ");
+			if (if_block_7) { if_block_7.c(); }
+			text_7 = createText(" ");
+			if (if_block_8) { if_block_8.c(); }
+			text_8 = createText("\n\n    ");
+			div_1 = createElement("div");
+			h2 = createElement("h2");
+			text_9 = createText("\n        ");
+			div_2 = createElement("div");
+			i = createElement("i");
+			text_10 = createText("\n            ");
+			div_3 = createElement("div");
+			div_4 = createElement("div");
+			b = createElement("b");
+			text_11 = createText("\n                    ");
+			div_5 = createElement("div");
+			label = createElement("label");
+			input = createElement("input");
+			text_12 = createText("\n                            ");
+			raw_2_before = createElement('noscript');
+			text_14 = createText("\n                        ");
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].c();
+			}
+
+			text_17 = createText("\n                ");
+			div_6 = createElement("div");
+			a = createElement("a");
+			text_18 = createText(state.shareUrl);
+			text_21 = createText("\n            ");
+			text_22 = createText("\n                ");
+			div_7 = createElement("div");
+			text_23 = createText("\n            ");
+			help._fragment.c();
+			text_25 = createText("\n\n        ");
+			div_8 = createElement("div");
+			i_1 = createElement("i");
+			text_26 = createText("\n            ");
+			div_9 = createElement("div");
+			div_10 = createElement("div");
+			b_1 = createElement("b");
+			text_27 = createText("\n                    ");
+			div_11 = createElement("div");
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].c();
+			}
+
+			text_30 = createText("\n                ");
+			div_12 = createElement("div");
+			input_1 = createElement("input");
+			text_31 = createText("\n                    ");
+			button_1 = createElement("button");
+			i_2 = createElement("i");
+			text_32 = createText(" ");
+			text_33 = createText(text_33_value);
+			text_34 = createText("\n                    ");
+			div_13 = createElement("div");
+			text_35 = createText(text_35_value);
+			text_39 = createText("\n            ");
+			text_40 = createText("\n                ");
+			div_14 = createElement("div");
+			raw_5_after = createElement('noscript');
+			text_41 = createText(" ");
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].c();
+			}
+
+			text_43 = createText("\n            ");
+			help_1._fragment.c();
+			text_46 = createText("\n\n    \n    ");
+			if (switch_instance) { switch_instance._fragment.c(); }
+			text_47 = createText("\n\n    \n    ");
+			div_15 = createElement("div");
+			if (!slot_content_export_actions_header) {
+				h2_1 = createElement("h2");
+				text_48 = createText("\n            ");
+				if (if_block_9) { if_block_9.c(); }
+				if_block_9_anchor = createComment();
+			}
+			text_50 = createText("\n\n        ");
+			ul = createElement("ul");
+
+			for (var i_3 = 0; i_3 < each_3_blocks.length; i_3 += 1) {
+				each_3_blocks[i_3].c();
+			}
+
+			text_51 = createText("\n\n        ");
+			if (switch_instance_1) { switch_instance_1._fragment.c(); }
+			this.h();
+		},
+
+		h: function hydrate() {
+			addListener(button, "click", click_handler);
+			button.disabled = state.publishing;
+			button.className = button_class_value = "btn-publish btn btn-primary btn-large " + (state.published?'':'btn-first-publish') + " svelte-tulzqh";
+			i.className = "icon fa fa-link fa-fw";
+			component._bindingGroups[0].push(input);
+			addListener(input, "change", input_change_handler);
+			input.__value = "default";
+			input.value = input.__value;
+			setAttribute(input, "type", "radio");
+			input.name = "url-type";
+			input.className = "svelte-tulzqh";
+			label.className = "radio";
+			div_5.className = "embed-options svelte-tulzqh";
+			div_4.className = "h";
+			a.target = "_blank";
+			a.className = "share-url svelte-tulzqh";
+			a.href = state.shareUrl;
+			div_6.className = "inpt";
+			div_3.className = "ctrls";
+			div_2.className = "block";
+			i_1.className = "icon fa fa-code fa-fw";
+			div_11.className = "embed-options svelte-tulzqh";
+			div_10.className = "h";
+			setAttribute(input_1, "type", "text");
+			input_1.className = "input embed-code";
+			input_1.readOnly = true;
+			input_1.value = state.embedCode;
+			i_2.className = "fa fa-copy";
+			addListener(button_1, "click", click_handler_1);
+			button_1.className = "btn btn-copy";
+			button_1.title = "copy";
+			div_13.className = div_13_class_value = "copy-success " + (state.copy_success ? 'show':'') + " svelte-tulzqh";
+			div_12.className = "inpt";
+			div_9.className = "ctrls";
+			div_8.className = "block";
+			setStyle(div_1, "margin-top", "30px");
+			div_1.className = div_1_class_value = state.published?'':'inactive';
+			if (!slot_content_export_actions_header) {
+				h2_1.className = "pad-top";
+			}
+			ul.className = "chart-actions";
+			div_15.className = "export-and-duplicate";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			if (if_block) { if_block.m(div, null); }
+			appendNode(text, div);
+			if_block_1.m(div, null);
+			appendNode(text_1, div);
+			appendNode(button, div);
+			if_block_3.m(button, null);
+			appendNode(text_3, div);
+			if (if_block_4) { if_block_4.m(div, null); }
+			appendNode(text_4, div);
+			if (if_block_5) { if_block_5.m(div, null); }
+			appendNode(text_5, div);
+			if (if_block_6) { if_block_6.m(div, null); }
+			appendNode(text_6, div);
+			if (if_block_7) { if_block_7.m(div, null); }
+			appendNode(text_7, div);
+			if (if_block_8) { if_block_8.m(div, null); }
+			appendNode(text_8, div);
+			appendNode(div_1, div);
+			appendNode(h2, div_1);
+			h2.innerHTML = raw_value;
+			appendNode(text_9, div_1);
+			appendNode(div_2, div_1);
+			appendNode(i, div_2);
+			appendNode(text_10, div_2);
+			appendNode(div_3, div_2);
+			appendNode(div_4, div_3);
+			appendNode(b, div_4);
+			b.innerHTML = raw_1_value;
+			appendNode(text_11, div_4);
+			appendNode(div_5, div_4);
+			appendNode(label, div_5);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.shareurl_type;
+
+			appendNode(text_12, label);
+			appendNode(raw_2_before, label);
+			raw_2_before.insertAdjacentHTML("afterend", raw_2_value);
+			appendNode(text_14, div_5);
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].m(div_5, null);
+			}
+
+			appendNode(text_17, div_3);
+			appendNode(div_6, div_3);
+			appendNode(a, div_6);
+			appendNode(text_18, a);
+			appendNode(text_21, div_2);
+			appendNode(text_22, help._slotted.default);
+			appendNode(div_7, help._slotted.default);
+			div_7.innerHTML = raw_3_value;
+			appendNode(text_23, help._slotted.default);
+			help._mount(div_2, null);
+			appendNode(text_25, div_1);
+			appendNode(div_8, div_1);
+			appendNode(i_1, div_8);
+			appendNode(text_26, div_8);
+			appendNode(div_9, div_8);
+			appendNode(div_10, div_9);
+			appendNode(b_1, div_10);
+			b_1.innerHTML = raw_4_value;
+			appendNode(text_27, div_10);
+			appendNode(div_11, div_10);
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].m(div_11, null);
+			}
+
+			appendNode(text_30, div_9);
+			appendNode(div_12, div_9);
+			appendNode(input_1, div_12);
+			component.refs.embedInput = input_1;
+			appendNode(text_31, div_12);
+			appendNode(button_1, div_12);
+			appendNode(i_2, button_1);
+			appendNode(text_32, button_1);
+			appendNode(text_33, button_1);
+			appendNode(text_34, div_12);
+			appendNode(div_13, div_12);
+			appendNode(text_35, div_13);
+			appendNode(text_39, div_8);
+			appendNode(text_40, help_1._slotted.default);
+			appendNode(div_14, help_1._slotted.default);
+			appendNode(raw_5_after, div_14);
+			raw_5_after.insertAdjacentHTML("beforebegin", raw_5_value);
+			appendNode(text_41, div_14);
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].m(div_14, null);
+			}
+
+			appendNode(text_43, help_1._slotted.default);
+			help_1._mount(div_8, null);
+			appendNode(text_46, div);
+
+			if (switch_instance) {
+				switch_instance._mount(div, null);
+			}
+
+			appendNode(text_47, div);
+			appendNode(div_15, div);
+			if (!slot_content_export_actions_header) {
+				appendNode(h2_1, div_15);
+				h2_1.innerHTML = state.exportHed;
+				appendNode(text_48, div_15);
+				if (if_block_9) { if_block_9.m(div_15, null); }
+				appendNode(if_block_9_anchor, div_15);
+			}
+
+			else {
+				appendNode(slot_content_export_actions_header, div_15);
+				appendNode(slot_content_export_actions_header_after || (slot_content_export_actions_header_after = createComment()), div_15);
+			}
+
+			appendNode(text_50, div_15);
+			appendNode(ul, div_15);
+
+			for (var i_3 = 0; i_3 < each_3_blocks.length; i_3 += 1) {
+				each_3_blocks[i_3].m(ul, null);
+			}
+
+			appendNode(text_51, div_15);
+
+			if (switch_instance_1) {
+				switch_instance_1._mount(div_15, null);
+				component.refs.action = switch_instance_1;
+			}
+		},
+
+		p: function update(changed, state) {
+			if (state.publishHed) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block$2(component, state);
+					if_block.c();
+					if_block.m(div, text);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if (current_block_type === (current_block_type = select_block_type(state)) && if_block_1) {
+				if_block_1.p(changed, state);
+			} else {
+				if_block_1.u();
+				if_block_1.d();
+				if_block_1 = current_block_type(component, state);
+				if_block_1.c();
+				if_block_1.m(div, text_1);
+			}
+
+			if (current_block_type_1 === (current_block_type_1 = select_block_type_1(state)) && if_block_3) {
+				if_block_3.p(changed, state);
+			} else {
+				if_block_3.u();
+				if_block_3.d();
+				if_block_3 = current_block_type_1(component, state);
+				if_block_3.c();
+				if_block_3.m(button, null);
+			}
+
+			if (changed.publishing) {
+				button.disabled = state.publishing;
+			}
+
+			if ((changed.published) && button_class_value !== (button_class_value = "btn-publish btn btn-primary btn-large " + (state.published?'':'btn-first-publish') + " svelte-tulzqh")) {
+				button.className = button_class_value;
+			}
+
+			if (!state.published) {
+				if (!if_block_4) {
+					if_block_4 = create_if_block_6(component, state);
+					if_block_4.c();
+					if_block_4.m(div, text_4);
+				}
+			} else if (if_block_4) {
+				if_block_4.u();
+				if_block_4.d();
+				if_block_4 = null;
+			}
+
+			if (state.needs_republish && !state.publishing) {
+				if (!if_block_5) {
+					if_block_5 = create_if_block_7(component, state);
+					if_block_5.c();
+					if_block_5.m(div, text_5);
+				}
+			} else if (if_block_5) {
+				if_block_5.u();
+				if_block_5.d();
+				if_block_5 = null;
+			}
+
+			if (state.published && !state.needs_republish && state.progress === 1 && !state.publishing) {
+				if (!if_block_6) {
+					if_block_6 = create_if_block_8(component, state);
+					if_block_6.c();
+					if_block_6.m(div, text_6);
+				}
+			} else if (if_block_6) {
+				if_block_6.u();
+				if_block_6.d();
+				if_block_6 = null;
+			}
+
+			if (state.publish_error) {
+				if (if_block_7) {
+					if_block_7.p(changed, state);
+				} else {
+					if_block_7 = create_if_block_9(component, state);
+					if_block_7.c();
+					if_block_7.m(div, text_7);
+				}
+			} else if (if_block_7) {
+				if_block_7.u();
+				if_block_7.d();
+				if_block_7 = null;
+			}
+
+			if (state.publishing) {
+				if (if_block_8) {
+					if_block_8.p(changed, state);
+				} else {
+					if_block_8 = create_if_block_10(component, state);
+					if_block_8.c();
+					if_block_8.m(div, text_8);
+				}
+			} else if (if_block_8) {
+				if_block_8.u();
+				if_block_8.d();
+				if_block_8 = null;
+			}
+
+			input.checked = input.__value === state.shareurl_type;
+
+			var each_value = state.plugin_shareurls;
+
+			if (changed.shareurl_type || changed.plugin_shareurls) {
+				for (var i_3 = 0; i_3 < each_value.length; i_3 += 1) {
+					var each_context = assign(assign({}, state), {
+						each_value: each_value,
+						tpl: each_value[i_3],
+						tpl_index: i_3
+					});
+
+					if (each_blocks[i_3]) {
+						each_blocks[i_3].p(changed, each_context);
+					} else {
+						each_blocks[i_3] = create_each_block(component, each_context);
+						each_blocks[i_3].c();
+						each_blocks[i_3].m(div_5, null);
+					}
+				}
+
+				for (; i_3 < each_blocks.length; i_3 += 1) {
+					each_blocks[i_3].u();
+					each_blocks[i_3].d();
+				}
+				each_blocks.length = each_value.length;
+			}
+
+			if (changed.shareUrl) {
+				text_18.data = state.shareUrl;
+				a.href = state.shareUrl;
+			}
+
+			var each_value_1 = state.embed_templates;
+
+			if (changed.embed_type || changed.embed_templates) {
+				for (var i_3 = 0; i_3 < each_value_1.length; i_3 += 1) {
+					var each_1_context = assign(assign({}, state), {
+						each_value_1: each_value_1,
+						tpl: each_value_1[i_3],
+						tpl_index_1: i_3
+					});
+
+					if (each_1_blocks[i_3]) {
+						each_1_blocks[i_3].p(changed, each_1_context);
+					} else {
+						each_1_blocks[i_3] = create_each_block_1(component, each_1_context);
+						each_1_blocks[i_3].c();
+						each_1_blocks[i_3].m(div_11, null);
+					}
+				}
+
+				for (; i_3 < each_1_blocks.length; i_3 += 1) {
+					each_1_blocks[i_3].u();
+					each_1_blocks[i_3].d();
+				}
+				each_1_blocks.length = each_value_1.length;
+			}
+
+			if (changed.embedCode) {
+				input_1.value = state.embedCode;
+			}
+
+			if ((changed.copy_success) && div_13_class_value !== (div_13_class_value = "copy-success " + (state.copy_success ? 'show':'') + " svelte-tulzqh")) {
+				div_13.className = div_13_class_value;
+			}
+
+			var each_value_2 = state.embed_templates.slice(2);
+
+			if (changed.embed_templates) {
+				for (var i_3 = 0; i_3 < each_value_2.length; i_3 += 1) {
+					var each_2_context = assign(assign({}, state), {
+						each_value_2: each_value_2,
+						tpl: each_value_2[i_3],
+						tpl_index_2: i_3
+					});
+
+					if (each_2_blocks[i_3]) {
+						each_2_blocks[i_3].p(changed, each_2_context);
+					} else {
+						each_2_blocks[i_3] = create_each_block_2(component, each_2_context);
+						each_2_blocks[i_3].c();
+						each_2_blocks[i_3].m(div_14, null);
+					}
+				}
+
+				for (; i_3 < each_2_blocks.length; i_3 += 1) {
+					each_2_blocks[i_3].u();
+					each_2_blocks[i_3].d();
+				}
+				each_2_blocks.length = each_value_2.length;
+			}
+
+			if ((changed.published) && div_1_class_value !== (div_1_class_value = state.published?'':'inactive')) {
+				div_1.className = div_1_class_value;
+			}
+
+			if (switch_value !== (switch_value = state.beforeExport)) {
+				if (switch_instance) { switch_instance.destroy(); }
+
+				if (switch_value) {
+					switch_instance = new switch_value(switch_props(state));
+					switch_instance._fragment.c();
+					switch_instance._mount(div, text_47);
+				}
+			}
+
+			if (!slot_content_export_actions_header) {
+				if (changed.exportHed) {
+					h2_1.innerHTML = state.exportHed;
+				}
+
+					if (state.exportIntro) {
+					if (if_block_9) {
+						if_block_9.p(changed, state);
+					} else {
+						if_block_9 = create_if_block_11(component, state);
+						if_block_9.c();
+						if_block_9.m(if_block_9_anchor.parentNode, if_block_9_anchor);
+					}
+				} else if (if_block_9) {
+					if_block_9.u();
+					if_block_9.d();
+					if_block_9 = null;
+				}
+
+			}
+
+			var each_value_3 = state.sortedChartActions;
+
+			if (changed.sortedChartActions || changed.active_action) {
+				for (var i_3 = 0; i_3 < each_value_3.length; i_3 += 1) {
+					var each_3_context = assign(assign({}, state), {
+						each_value_3: each_value_3,
+						action: each_value_3[i_3],
+						action_index: i_3
+					});
+
+					if (each_3_blocks[i_3]) {
+						each_3_blocks[i_3].p(changed, each_3_context);
+					} else {
+						each_3_blocks[i_3] = create_each_block_3(component, each_3_context);
+						each_3_blocks[i_3].c();
+						each_3_blocks[i_3].m(ul, null);
+					}
+				}
+
+				for (; i_3 < each_3_blocks.length; i_3 += 1) {
+					each_3_blocks[i_3].u();
+					each_3_blocks[i_3].d();
+				}
+				each_3_blocks.length = each_value_3.length;
+			}
+
+			if (switch_value_1 !== (switch_value_1 = state.Action)) {
+				if (switch_instance_1) { switch_instance_1.destroy(); }
+
+				if (switch_value_1) {
+					switch_instance_1 = new switch_value_1(switch_props_1(state));
+					switch_instance_1._fragment.c();
+					switch_instance_1._mount(div_15, null);
+
+					component.refs.action = switch_instance_1;
+				}
+
+				else if (component.refs.action === switch_instance_1) {
+					component.refs.action = null;
+				}
+			}
+
+			else {
+				var switch_instance_1_changes = {};
+				switch_instance_1_changes.visible = true;
+				switch_instance_1_changes.show = true;
+				switch_instance_1._set(switch_instance_1_changes);
+			}
+		},
+
+		u: function unmount() {
+			h2.innerHTML = '';
+
+			b.innerHTML = '';
+
+			detachAfter(raw_2_before);
+
+			div_7.innerHTML = '';
+
+			b_1.innerHTML = '';
+
+			detachBefore(raw_5_after);
+
+			h2_1.innerHTML = '';
+
+			detachNode(div);
+			if (if_block) { if_block.u(); }
+			if_block_1.u();
+			if_block_3.u();
+			if (if_block_4) { if_block_4.u(); }
+			if (if_block_5) { if_block_5.u(); }
+			if (if_block_6) { if_block_6.u(); }
+			if (if_block_7) { if_block_7.u(); }
+			if (if_block_8) { if_block_8.u(); }
+
+			for (var i_3 = 0; i_3 < each_blocks.length; i_3 += 1) {
+				each_blocks[i_3].u();
+			}
+
+			for (var i_3 = 0; i_3 < each_1_blocks.length; i_3 += 1) {
+				each_1_blocks[i_3].u();
+			}
+
+			for (var i_3 = 0; i_3 < each_2_blocks.length; i_3 += 1) {
+				each_2_blocks[i_3].u();
+			}
+
+			if (!slot_content_export_actions_header) {
+				if (if_block_9) { if_block_9.u(); }
+			}
+
+			else {
+				reinsertBefore(slot_content_export_actions_header_after, slot_content_export_actions_header);
+			}
+
+			for (var i_3 = 0; i_3 < each_3_blocks.length; i_3 += 1) {
+				each_3_blocks[i_3].u();
+			}
+		},
+
+		d: function destroy$$1() {
+			if (if_block) { if_block.d(); }
+			if_block_1.d();
+			if_block_3.d();
+			removeListener(button, "click", click_handler);
+			if (if_block_4) { if_block_4.d(); }
+			if (if_block_5) { if_block_5.d(); }
+			if (if_block_6) { if_block_6.d(); }
+			if (if_block_7) { if_block_7.d(); }
+			if (if_block_8) { if_block_8.d(); }
+			component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+
+			destroyEach(each_blocks);
+
+			help.destroy(false);
+
+			destroyEach(each_1_blocks);
+
+			if (component.refs.embedInput === input_1) { component.refs.embedInput = null; }
+			removeListener(button_1, "click", click_handler_1);
+
+			destroyEach(each_2_blocks);
+
+			help_1.destroy(false);
+			if (switch_instance) { switch_instance.destroy(false); }
+			if (!slot_content_export_actions_header) {
+				if (if_block_9) { if_block_9.d(); }
+			}
+
+			destroyEach(each_3_blocks);
+
+			if (switch_instance_1) { switch_instance_1.destroy(false); }
+		}
+	};
+}
+
+// (3:4) {#if publishHed}
+function create_if_block$2(component, state) {
+	var h2;
+
+	return {
+		c: function create() {
+			h2 = createElement("h2");
+			this.h();
+		},
+
+		h: function hydrate() {
+			h2.className = "pad-top";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(h2, target, anchor);
+			h2.innerHTML = state.publishHed;
+		},
+
+		p: function update(changed, state) {
+			if (changed.publishHed) {
+				h2.innerHTML = state.publishHed;
+			}
+		},
+
+		u: function unmount() {
+			h2.innerHTML = '';
+
+			detachNode(h2);
+		},
+
+		d: noop
+	};
+}
+
+// (5:10) {#if publishIntro}
+function create_if_block_1$1(component, state) {
+	var p;
+
+	return {
+		c: function create() {
+			p = createElement("p");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = state.publishIntro;
+		},
+
+		p: function update(changed, state) {
+			if (changed.publishIntro) {
+				p.innerHTML = state.publishIntro;
+			}
+		},
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (7:12) {#if published}
+function create_if_block_2$1(component, state) {
+	var p, raw_value = __('publish / republish-intro');
+
+	return {
+		c: function create() {
+			p = createElement("p");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = raw_value;
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (9:4) {:else}
+function create_if_block_3(component, state) {
+	var p, raw_value = __('publish / publish-intro');
+
+	return {
+		c: function create() {
+			p = createElement("p");
+			this.h();
+		},
+
+		h: function hydrate() {
+			setStyle(p, "margin-bottom", "20px");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = raw_value;
+		},
+
+		p: noop,
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (14:8) {#if published}
+function create_if_block_4(component, state) {
+	var span, i, i_class_value, text, span_1, text_1_value = __('publish / republish-btn'), text_1;
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			i = createElement("i");
+			text = createText(" ");
+			span_1 = createElement("span");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = i_class_value = "fa fa-fw fa-refresh " + (state.publishing ? 'fa-spin' : '') + " svelte-tulzqh";
+			span_1.className = "title svelte-tulzqh";
+			span.className = "re-publish";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(i, span);
+			appendNode(text, span);
+			appendNode(span_1, span);
+			appendNode(text_1, span_1);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw fa-refresh " + (state.publishing ? 'fa-spin' : '') + " svelte-tulzqh")) {
+				i.className = i_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: noop
+	};
+}
+
+// (18:8) {:else}
+function create_if_block_5(component, state) {
+	var span, i, i_class_value, text, span_1, text_1_value = __('publish / publish-btn'), text_1;
+
+	return {
+		c: function create() {
+			span = createElement("span");
+			i = createElement("i");
+			text = createText("\n            ");
+			span_1 = createElement("span");
+			text_1 = createText(text_1_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = i_class_value = "fa fa-fw " + (state.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-tulzqh";
+			span_1.className = "title svelte-tulzqh";
+			span.className = "publish";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(span, target, anchor);
+			appendNode(i, span);
+			appendNode(text, span);
+			appendNode(span_1, span);
+			appendNode(text_1, span_1);
+		},
+
+		p: function update(changed, state) {
+			if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw " + (state.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-tulzqh")) {
+				i.className = i_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(span);
+		},
+
+		d: noop
+	};
+}
+
+// (26:4) {#if !published}
+function create_if_block_6(component, state) {
+	var div, div_1, text_1, div_2, raw_value = __('publish / publish-btn-intro');
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			div_1 = createElement("div");
+			div_1.innerHTML = "<i class=\"fa fa-chevron-left\"></i>";
+			text_1 = createText("\n        ");
+			div_2 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_1.className = "arrow svelte-tulzqh";
+			div_2.className = "text svelte-tulzqh";
+			div.className = "publish-intro svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(div_1, div);
+			appendNode(text_1, div);
+			appendNode(div_2, div);
+			div_2.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div_2.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (35:10) {#if needs_republish && !publishing}
+function create_if_block_7(component, state) {
+	var div, raw_value = __('publish / republish-alert');
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "btn-aside alert svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (39:10) {#if published && !needs_republish && progress === 1 && !publishing}
+function create_if_block_8(component, state) {
+	var div, raw_value = __('publish / publish-success');
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "alert alert-success svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = raw_value;
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (43:10) {#if publish_error}
+function create_if_block_9(component, state) {
+	var div;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "alert alert-error svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			div.innerHTML = state.publish_error;
+		},
+
+		p: function update(changed, state) {
+			if (changed.publish_error) {
+				div.innerHTML = state.publish_error;
+			}
+		},
+
+		u: function unmount() {
+			div.innerHTML = '';
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (47:10) {#if publishing}
+function create_if_block_10(component, state) {
+	var div, text_value = __("publish / progress / please-wait"), text, text_1, div_1, div_2, div_2_class_value, div_class_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText(text_value);
+			text_1 = createText("\n        ");
+			div_1 = createElement("div");
+			div_2 = createElement("div");
+			this.h();
+		},
+
+		h: function hydrate() {
+			div_2.className = div_2_class_value = "bar " + (state.progress < 1 ? '' : 'bar-success') + " svelte-tulzqh";
+			div_1.className = "progress progress-striped active svelte-tulzqh";
+			div.className = div_class_value = "alert " + (state.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(text, div);
+			appendNode(text_1, div);
+			appendNode(div_1, div);
+			appendNode(div_2, div_1);
+			component.refs.bar = div_2;
+		},
+
+		p: function update(changed, state) {
+			if ((changed.progress) && div_2_class_value !== (div_2_class_value = "bar " + (state.progress < 1 ? '' : 'bar-success') + " svelte-tulzqh")) {
+				div_2.className = div_2_class_value;
+			}
+
+			if ((changed.progress) && div_class_value !== (div_class_value = "alert " + (state.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-tulzqh")) {
+				div.className = div_class_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: function destroy$$1() {
+			if (component.refs.bar === div_2) { component.refs.bar = null; }
+		}
+	};
+}
+
+// (68:24) {#each plugin_shareurls as tpl}
+function create_each_block(component, state) {
+	var tpl = state.tpl, each_value = state.each_value, tpl_index = state.tpl_index;
+	var label, input, input_value_value, text, raw_value = tpl.name, raw_before;
+
+	function input_change_handler() {
+		component.set({ shareurl_type: input.__value });
+	}
+
+	return {
+		c: function create() {
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			raw_before = createElement('noscript');
+			this.h();
+		},
+
+		h: function hydrate() {
+			component._bindingGroups[0].push(input);
+			addListener(input, "change", input_change_handler);
+			input.__value = input_value_value = tpl.id;
+			input.value = input.__value;
+			setAttribute(input, "type", "radio");
+			input.name = "url-type";
+			input.className = "svelte-tulzqh";
+			label.className = "radio";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(label, target, anchor);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.shareurl_type;
+
+			appendNode(text, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state) {
+			tpl = state.tpl;
+			each_value = state.each_value;
+			tpl_index = state.tpl_index;
+			input.checked = input.__value === state.shareurl_type;
+			if ((changed.plugin_shareurls) && input_value_value !== (input_value_value = tpl.id)) {
+				input.__value = input_value_value;
+			}
+
+			input.value = input.__value;
+			if ((changed.plugin_shareurls) && raw_value !== (raw_value = tpl.name)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(label);
+		},
+
+		d: function destroy$$1() {
+			component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+// (90:24) {#each embed_templates as tpl}
+function create_each_block_1(component, state) {
+	var tpl = state.tpl, each_value_1 = state.each_value_1, tpl_index_1 = state.tpl_index_1;
+	var label, input, input_value_value, text, raw_value = tpl.title, raw_before;
+
+	function input_change_handler() {
+		component.set({ embed_type: input.__value });
+	}
+
+	return {
+		c: function create() {
+			label = createElement("label");
+			input = createElement("input");
+			text = createText(" ");
+			raw_before = createElement('noscript');
+			this.h();
+		},
+
+		h: function hydrate() {
+			component._bindingGroups[1].push(input);
+			addListener(input, "change", input_change_handler);
+			setAttribute(input, "type", "radio");
+			input.__value = input_value_value = tpl.id;
+			input.value = input.__value;
+			input.className = "svelte-tulzqh";
+			label.className = "radio";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(label, target, anchor);
+			appendNode(input, label);
+
+			input.checked = input.__value === state.embed_type;
+
+			appendNode(text, label);
+			appendNode(raw_before, label);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state) {
+			tpl = state.tpl;
+			each_value_1 = state.each_value_1;
+			tpl_index_1 = state.tpl_index_1;
+			input.checked = input.__value === state.embed_type;
+			if ((changed.embed_templates) && input_value_value !== (input_value_value = tpl.id)) {
+				input.__value = input_value_value;
+			}
+
+			input.value = input.__value;
+			if ((changed.embed_templates) && raw_value !== (raw_value = tpl.title)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(label);
+		},
+
+		d: function destroy$$1() {
+			component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input), 1);
+			removeListener(input, "change", input_change_handler);
+		}
+	};
+}
+
+// (105:58) {#each embed_templates.slice(2) as tpl}
+function create_each_block_2(component, state) {
+	var tpl = state.tpl, each_value_2 = state.each_value_2, tpl_index_2 = state.tpl_index_2;
+	var div, b, text_value = tpl.title, text, text_1, text_2, raw_value = tpl.text, raw_before;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			b = createElement("b");
+			text = createText(text_value);
+			text_1 = createText(":");
+			text_2 = createText(" ");
+			raw_before = createElement('noscript');
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(b, div);
+			appendNode(text, b);
+			appendNode(text_1, b);
+			appendNode(text_2, div);
+			appendNode(raw_before, div);
+			raw_before.insertAdjacentHTML("afterend", raw_value);
+		},
+
+		p: function update(changed, state) {
+			tpl = state.tpl;
+			each_value_2 = state.each_value_2;
+			tpl_index_2 = state.tpl_index_2;
+			if ((changed.embed_templates) && text_value !== (text_value = tpl.title)) {
+				text.data = text_value;
+			}
+
+			if ((changed.embed_templates) && raw_value !== (raw_value = tpl.text)) {
+				detachAfter(raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			}
+		},
+
+		u: function unmount() {
+			detachAfter(raw_before);
+
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (120:12) {#if exportIntro}
+function create_if_block_11(component, state) {
+	var p;
+
+	return {
+		c: function create() {
+			p = createElement("p");
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(p, target, anchor);
+			p.innerHTML = state.exportIntro;
+		},
+
+		p: function update(changed, state) {
+			if (changed.exportIntro) {
+				p.innerHTML = state.exportIntro;
+			}
+		},
+
+		u: function unmount() {
+			p.innerHTML = '';
+
+			detachNode(p);
+		},
+
+		d: noop
+	};
+}
+
+// (126:12) {#each sortedChartActions as action}
+function create_each_block_3(component, state) {
+	var action = state.action, each_value_3 = state.each_value_3, action_index = state.action_index;
+	var if_block_anchor;
+
+	var if_block = (action) && create_if_block_12(component, state);
+
+	return {
+		c: function create() {
+			if (if_block) { if_block.c(); }
+			if_block_anchor = createComment();
+		},
+
+		m: function mount(target, anchor) {
+			if (if_block) { if_block.m(target, anchor); }
+			insertNode(if_block_anchor, target, anchor);
+		},
+
+		p: function update(changed, state) {
+			action = state.action;
+			each_value_3 = state.each_value_3;
+			action_index = state.action_index;
+			if (action) {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block_12(component, state);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+		},
+
+		u: function unmount() {
+			if (if_block) { if_block.u(); }
+			detachNode(if_block_anchor);
+		},
+
+		d: function destroy$$1() {
+			if (if_block) { if_block.d(); }
+		}
+	};
+}
+
+// (131:16) {#if action.banner && action.banner.text != "FALSE" && action.banner.text != "-"}
+function create_if_block_13(component, state) {
+	var action = state.action, each_value_3 = state.each_value_3, action_index = state.action_index;
+	var div, text_value = action.banner.text, text, div_style_value;
+
+	return {
+		c: function create() {
+			div = createElement("div");
+			text = createText(text_value);
+			this.h();
+		},
+
+		h: function hydrate() {
+			div.className = "banner";
+			div.style.cssText = div_style_value = action.banner.style;
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(div, target, anchor);
+			appendNode(text, div);
+		},
+
+		p: function update(changed, state) {
+			action = state.action;
+			each_value_3 = state.each_value_3;
+			action_index = state.action_index;
+			if ((changed.sortedChartActions) && text_value !== (text_value = action.banner.text)) {
+				text.data = text_value;
+			}
+
+			if ((changed.sortedChartActions) && div_style_value !== (div_style_value = action.banner.style)) {
+				div.style.cssText = div_style_value;
+			}
+		},
+
+		u: function unmount() {
+			detachNode(div);
+		},
+
+		d: noop
+	};
+}
+
+// (126:49) {#if action}
+function create_if_block_12(component, state) {
+	var action = state.action, each_value_3 = state.each_value_3, action_index = state.action_index;
+	var li, a, i, i_class_value, span, raw_value = action.title, a_href_value, text_1, li_class_value;
+
+	var if_block = (action.banner && action.banner.text != "FALSE" && action.banner.text != "-") && create_if_block_13(component, state);
+
+	return {
+		c: function create() {
+			li = createElement("li");
+			a = createElement("a");
+			i = createElement("i");
+			span = createElement("span");
+			text_1 = createText("\n                ");
+			if (if_block) { if_block.c(); }
+			this.h();
+		},
+
+		h: function hydrate() {
+			i.className = i_class_value = "fa fa-" + action.icon + " svelte-tulzqh";
+			span.className = "title svelte-tulzqh";
+			addListener(a, "click", click_handler);
+			setAttribute(a, "role", "button");
+			a.href = a_href_value = action.url ? action.url : '#'+action.id;
+
+			a._svelte = {
+				component: component,
+				each_value_3: state.each_value_3,
+				action_index: state.action_index
+			};
+
+			li.className = li_class_value = "action action-" + action.id + " " + (action.class||'') + " " + (action.id == state.active_action ? 'active':'') + " svelte-tulzqh";
+		},
+
+		m: function mount(target, anchor) {
+			insertNode(li, target, anchor);
+			appendNode(a, li);
+			appendNode(i, a);
+			appendNode(span, a);
+			span.innerHTML = raw_value;
+			appendNode(text_1, li);
+			if (if_block) { if_block.m(li, null); }
+		},
+
+		p: function update(changed, state) {
+			action = state.action;
+			each_value_3 = state.each_value_3;
+			action_index = state.action_index;
+			if ((changed.sortedChartActions) && i_class_value !== (i_class_value = "fa fa-" + action.icon + " svelte-tulzqh")) {
+				i.className = i_class_value;
+			}
+
+			if ((changed.sortedChartActions) && raw_value !== (raw_value = action.title)) {
+				span.innerHTML = raw_value;
+			}
+
+			if ((changed.sortedChartActions) && a_href_value !== (a_href_value = action.url ? action.url : '#'+action.id)) {
+				a.href = a_href_value;
+			}
+
+			a._svelte.each_value_3 = state.each_value_3;
+			a._svelte.action_index = state.action_index;
+
+			if (action.banner && action.banner.text != "FALSE" && action.banner.text != "-") {
+				if (if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block = create_if_block_13(component, state);
+					if_block.c();
+					if_block.m(li, null);
+				}
+			} else if (if_block) {
+				if_block.u();
+				if_block.d();
+				if_block = null;
+			}
+
+			if ((changed.sortedChartActions || changed.active_action) && li_class_value !== (li_class_value = "action action-" + action.id + " " + (action.class||'') + " " + (action.id == state.active_action ? 'active':'') + " svelte-tulzqh")) {
+				li.className = li_class_value;
+			}
+		},
+
+		u: function unmount() {
+			span.innerHTML = '';
+
+			detachNode(li);
+			if (if_block) { if_block.u(); }
+		},
+
+		d: function destroy$$1() {
+			removeListener(a, "click", click_handler);
+			if (if_block) { if_block.d(); }
+		}
+	};
+}
+
+function click_handler(event) {
+	var component = this._svelte.component;
+	var each_value_3 = this._svelte.each_value_3, action_index = this._svelte.action_index, action = each_value_3[action_index];
+	component.select(action, event);
+}
+
+function Publish(options) {
+	this._debugName = '<Publish>';
+	if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	init(this, options);
+	this.refs = {};
+	this._state = assign(assign(this.store._init(["id","publicUrl","actions"]), data$2()), options.data);
+	this.store._add(this, ["id","publicUrl","actions"]);
+	this._recompute({ shareurl_type: 1, $id: 1, $publicUrl: 1, plugin_shareurls: 1, published: 1, chartActions: 1, $actions: 1 }, this._state);
+	if (!('shareurl_type' in this._state)) { console.warn("<Publish> was created without expected data property 'shareurl_type'"); }
+	if (!('$id' in this._state)) { console.warn("<Publish> was created without expected data property '$id'"); }
+	if (!('$publicUrl' in this._state)) { console.warn("<Publish> was created without expected data property '$publicUrl'"); }
+	if (!('plugin_shareurls' in this._state)) { console.warn("<Publish> was created without expected data property 'plugin_shareurls'"); }
+	if (!('published' in this._state)) { console.warn("<Publish> was created without expected data property 'published'"); }
+	if (!('chartActions' in this._state)) { console.warn("<Publish> was created without expected data property 'chartActions'"); }
+	if (!('$actions' in this._state)) { console.warn("<Publish> was created without expected data property '$actions'"); }
+	if (!('publishHed' in this._state)) { console.warn("<Publish> was created without expected data property 'publishHed'"); }
+	if (!('publishIntro' in this._state)) { console.warn("<Publish> was created without expected data property 'publishIntro'"); }
+	if (!('publishing' in this._state)) { console.warn("<Publish> was created without expected data property 'publishing'"); }
+	if (!('needs_republish' in this._state)) { console.warn("<Publish> was created without expected data property 'needs_republish'"); }
+	if (!('progress' in this._state)) { console.warn("<Publish> was created without expected data property 'progress'"); }
+	if (!('publish_error' in this._state)) { console.warn("<Publish> was created without expected data property 'publish_error'"); }
+
+	if (!('embed_templates' in this._state)) { console.warn("<Publish> was created without expected data property 'embed_templates'"); }
+	if (!('embed_type' in this._state)) { console.warn("<Publish> was created without expected data property 'embed_type'"); }
+	if (!('embedCode' in this._state)) { console.warn("<Publish> was created without expected data property 'embedCode'"); }
+	if (!('copy_success' in this._state)) { console.warn("<Publish> was created without expected data property 'copy_success'"); }
+	if (!('beforeExport' in this._state)) { console.warn("<Publish> was created without expected data property 'beforeExport'"); }
+	if (!('exportHed' in this._state)) { console.warn("<Publish> was created without expected data property 'exportHed'"); }
+	if (!('exportIntro' in this._state)) { console.warn("<Publish> was created without expected data property 'exportIntro'"); }
+
+	if (!('active_action' in this._state)) { console.warn("<Publish> was created without expected data property 'active_action'"); }
+	if (!('Action' in this._state)) { console.warn("<Publish> was created without expected data property 'Action'"); }
+	this._bindingGroups = [[], []];
+
+	this._handlers.state = [onstate];
+
+	this._handlers.destroy = [removeFromStore];
+
+	this._slotted = options.slots || {};
+
+	var self = this;
+	var _oncreate = function() {
+		var changed = { shareurl_type: 1, $id: 1, $publicUrl: 1, plugin_shareurls: 1, published: 1, chartActions: 1, $actions: 1, publishHed: 1, publishIntro: 1, publishing: 1, needs_republish: 1, progress: 1, publish_error: 1, shareUrl: 1, embed_templates: 1, embed_type: 1, embedCode: 1, copy_success: 1, beforeExport: 1, exportHed: 1, exportIntro: 1, sortedChartActions: 1, active_action: 1, Action: 1 };
+		onstate.call(self, { changed: changed, current: self._state });
+		oncreate.call(self);
+		self.fire("update", { changed: changed, current: self._state });
+	};
+
+	if (!options.root) {
+		this._oncreate = [];
+		this._beforecreate = [];
+		this._aftercreate = [];
+	}
+
+	this.slots = {};
+
+	this._fragment = create_main_fragment$2(this, this._state);
+
+	this.root._oncreate.push(_oncreate);
+
+	if (options.target) {
+		if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+		this._fragment.c();
+		this._mount(options.target, options.anchor);
+
+		this._lock = true;
+		callAll(this._beforecreate);
+		callAll(this._oncreate);
+		callAll(this._aftercreate);
+		this._lock = false;
+	}
+}
+
+assign(Publish.prototype, protoDev);
+assign(Publish.prototype, methods$1);
+
+Publish.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	if ('shareUrl' in newState && !this._updatingReadonlyProperty) { throw new Error("<Publish>: Cannot set read-only property 'shareUrl'"); }
+	if ('sortedChartActions' in newState && !this._updatingReadonlyProperty) { throw new Error("<Publish>: Cannot set read-only property 'sortedChartActions'"); }
+};
+
+Publish.prototype._recompute = function _recompute(changed, state) {
+	if (changed.shareurl_type || changed.$id || changed.$publicUrl || changed.plugin_shareurls || changed.published) {
+		if (this._differs(state.shareUrl, (state.shareUrl = shareUrl(state)))) { changed.shareUrl = true; }
+	}
+
+	if (changed.chartActions || changed.$actions) {
+		if (this._differs(state.sortedChartActions, (state.sortedChartActions = sortedChartActions(state)))) { changed.sortedChartActions = true; }
+	}
+};
+
+var index = { Publish: Publish };
+
+return index;
+
+})));
+//# sourceMappingURL=publish.js.map
