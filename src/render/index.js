@@ -6,6 +6,7 @@
  * the postMessage calls for automatic resizing etc.
  */
 import getBrowser from '@datawrapper/polyfills';
+import get from '@datawrapper/shared/get';
 
 import observeFonts from '../shared/observe-fonts';
 
@@ -87,11 +88,11 @@ export default function({
 
         let themeFitChart = false;
         const theme = dw.theme(themeId);
-        if (theme && theme.pieChart && theme.pieChart.fitchart) {
-            themeFitChart = theme.pieChart.fitchart === 1 || theme.pieChart.fitchart === true;
+        if (theme) {
+            themeFitChart = get(theme, 'vis.d3-pies.fitchart', 0);
         }
         const urlParams = new URLSearchParams(window.location.search);
-        const isFitChart = urlParams.get('fitchart') === '1' || themeFitChart;
+        const isFitChart = urlParams.get('fitchart') === '1' || themeFitChart === 1 || themeFitChart === true;
 
         setInterval(function() {
             let desiredHeight;
