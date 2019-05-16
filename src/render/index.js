@@ -7,8 +7,7 @@
  */
 import getBrowser from '@datawrapper/polyfills';
 import get from '@datawrapper/shared/get';
-
-import observeFonts from '../shared/observe-fonts';
+import observeFonts from '@datawrapper/shared/observeFonts';
 
 export default function({
     visJSON,
