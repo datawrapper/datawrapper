@@ -4,7 +4,9 @@ export default {
     weekdaysShort: 'Ndz_Pon_Wt_Śr_Czw_Pt_Sob'.split('_'),
     weekdaysMin: 'Nd_Pn_Wt_Śr_Cz_Pt_So'.split('_'),
     months: 'Styczeń_Luty_Marzec_Kwiecień_Maj_Czerwiec_Lipiec_Sierpień_Wrzesień_Październik_Listopad_Grudzień'.split('_'),
-    ordinal: n => `${n}.`,
+    ordinal: function(n) {
+        return n + '.';
+    },
     weekStart: 1,
     relativeTime: {
         future: 'za %s',

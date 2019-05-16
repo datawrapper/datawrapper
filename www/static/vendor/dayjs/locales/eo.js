@@ -6,7 +6,9 @@ export default {
     weekdaysShort: 'dim_lun_mard_merk_ĵaŭ_ven_sab'.split('_'),
     monthsShort: 'jan_feb_mar_apr_maj_jun_jul_aŭg_sep_okt_nov_dec'.split('_'),
     weekdaysMin: 'di_lu_ma_me_ĵa_ve_sa'.split('_'),
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

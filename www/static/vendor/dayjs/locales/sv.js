@@ -6,10 +6,10 @@ export default {
     months: 'januari_februari_mars_april_maj_juni_juli_augusti_september_oktober_november_december'.split('_'),
     monthsShort: 'jan_feb_mar_apr_maj_jun_jul_aug_sep_okt_nov_dec'.split('_'),
     weekStart: 1,
-    ordinal: n => {
-        const b = n % 10;
-        const o = b === 1 || b === 2 ? 'a' : 'e';
-        return `${n}${o}`;
+    ordinal: function(n) {
+        var b = n % 10;
+        var o = b === 1 || b === 2 ? 'a' : 'e';
+        return '' + n + o;
     },
     formats: {
         LT: 'HH:mm',

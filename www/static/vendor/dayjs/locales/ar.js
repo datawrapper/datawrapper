@@ -18,7 +18,9 @@ export default {
         y: 'عام واحد',
         yy: 'أعوام %d'
     },
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

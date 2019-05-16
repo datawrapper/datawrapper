@@ -26,5 +26,7 @@ export default {
         y: 'წელი',
         yy: '%d წლის'
     },
-    ordinal: n => n
+    ordinal: function(n) {
+        return n;
+    }
 };

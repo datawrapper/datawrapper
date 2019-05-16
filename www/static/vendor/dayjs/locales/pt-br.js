@@ -2,7 +2,9 @@ export default {
     name: 'pt-br',
     weekdays: 'Domingo_Segunda-feira_Terça-feira_Quarta-feira_Quinta-feira_Sexta-feira_Sábado'.split('_'),
     months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split('_'),
-    ordinal: n => `${n}º`,
+    ordinal: function(n) {
+        return n + 'º';
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

@@ -61,14 +61,16 @@ if (config.translation) {
 
 
             _.each(chartSrc, (rows, key) => {
-                const locale = {};
-                rows.forEach(row => {
-                    const key = row.key;
-                    delete row.key;
-                    delete row.plugin;
-                    locale[key] = row;
-                })
-                fs.writeFileSync(`./plugins/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
+                if (key) {
+                    const locale = {};
+                    rows.forEach(row => {
+                        const key = row.key;
+                        delete row.key;
+                        delete row.plugin;
+                        locale[key] = row;
+                    })
+                    fs.writeFileSync(`./plugins/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
+                }
             })
 
             // console.log(chartTranslations);

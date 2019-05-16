@@ -5,7 +5,9 @@ export default {
     weekdaysMin: 'su_ma_ti_ke_to_pe_la'.split('_'),
     months: 'tammikuu_helmikuu_maaliskuu_huhtikuu_toukokuu_kesäkuu_heinäkuu_elokuu_syyskuu_lokakuu_marraskuu_joulukuu'.split('_'), // Note month names are not capitalized in Finnish
     monthsShort: 'tammi_helmi_maalis_huhti_touko_kesä_heinä_elo_syys_loka_marras_joulu'.split('_'),
-    ordinal: n => `${n}.`,
+    ordinal: function(n) {
+        return n + '.';
+    },
     weekStart: 1,
     /*
      * This relativeTime is currently configured for having proper past

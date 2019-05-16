@@ -7,6 +7,7 @@
  *
  */
 const chalk = require('chalk');
+const buble = require('buble');
 
 const glob = require('glob');
 const path = require('path');
@@ -41,8 +42,14 @@ exec(
                 warnings.push(`please manually fix ${file}!`);
             }
 
-            fs.writeFileSync(path.resolve(out, file.toLowerCase()), locale);
             process.stdout.write(file.split('.')[0] + ' ');
+            try {
+                const es5Locale = buble.transform(locale, { transforms: { modules: false}});
+                fs.writeFileSync(path.resolve(out, file.toLowerCase()), es5Locale.code);
+            } catch (e) {
+                console.log(locale);
+                throw e;
+            }
         });
         console.log('\nall done');
         if (warnings.length > 0) {

@@ -28,5 +28,7 @@ export default {
         y: 'un an',
         yy: '%d ans'
     },
-    ordinal: n => `${n}º`
+    ordinal: function(n) {
+        return n + 'º';
+    }
 };

@@ -27,8 +27,8 @@ export default {
         y: 'un an',
         yy: '%d ans'
     },
-    ordinal: n => {
-        const o = n === 1 ? 'er' : '';
-        return `${n}${o}`;
+    ordinal: function(n) {
+        var o = n === 1 ? 'er' : '';
+        return '' + n + o;
     }
 };
