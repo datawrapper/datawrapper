@@ -26,5 +26,7 @@ export default {
         y: 'un an',
         yy: '%d ani'
     },
-    ordinal: n => n
+    ordinal: function(n) {
+        return n;
+    }
 };

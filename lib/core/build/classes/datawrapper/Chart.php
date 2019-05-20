@@ -695,6 +695,16 @@ class Chart extends BaseChart {
     }
 
     /**
+     * the caption decides what goes in front of the byline in the
+     * chart footer. can be either "chart:", "map:", or "table:"
+     */
+    public function getCaption() {
+        if (!DatawrapperVisualization::has($this->getType())) return 'chart';
+        $vis = DatawrapperVisualization::get($this->getType());
+        return $vis['caption'] ?? $vis['namespace'] ?? 'chart';
+    }
+
+    /**
      * returns the text to be used in `aria-label` meta attribute
      * in iframe embed codes. visualizations may define a custom
      * aria label, otherwise we fall back to just "chart" or "map"

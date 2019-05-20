@@ -17,7 +17,11 @@ export default {
         y: 'एक वर्ष',
         yy: '%d वर्ष'
     },
-    ordinal: n => `${n}`.replace(/\d/g, i => '०१२३४५६७८९'[i]),
+    ordinal: function(n) {
+        return ('' + n).replace(/\d/g, function(i) {
+            return '०१२३४५६७८९'[i];
+        });
+    },
     formats: {
         LT: 'Aको h:mm बजे',
         LTS: 'Aको h:mm:ss बजे',

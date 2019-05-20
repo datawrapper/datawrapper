@@ -29,5 +29,7 @@ export default {
         y: 'bir il',
         yy: '%d il'
     },
-    ordinal: n => n
+    ordinal: function(n) {
+        return n;
+    }
 };

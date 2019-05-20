@@ -28,5 +28,7 @@ export default {
         y: 'ปี',
         yy: '%d ปี'
     },
-    ordinal: n => `${n}.`
+    ordinal: function(n) {
+        return n + '.';
+    }
 };

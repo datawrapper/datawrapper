@@ -293,7 +293,7 @@ function publish_get_embed_templates() {
         "id" => "responsive",
         "title" => __("publish / embed / responsive"),
         "text" => __("publish / embed / responsive / text"),
-        "template" => '<iframe title="%chart_title%" aria-label="%chart_type%" id="datawrapper-chart-%chart_id%" src="%chart_url%" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important;" height="%chart_height%"></iframe><script type="text/javascript">'
+        "template" => '<iframe title="%chart_title%" aria-label="%chart_type%" id="datawrapper-chart-%chart_id%" src="%chart_url%" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="%chart_height%"></iframe><script type="text/javascript">'
                 . file_get_contents(ROOT_PATH . 'templates/chart/embed.js') .
             '</script>',
     ];
@@ -303,7 +303,7 @@ function publish_get_embed_templates() {
         "id" => "iframe",
         "title" => __("publish / embed / iframe"),
         "text" => __("publish / embed / iframe / text"),
-        "template" => '<iframe title="%chart_title%" aria-label="%chart_type%" src="%chart_url%" scrolling="no" frameborder="0" width="%chart_width%" height="%chart_height%"></iframe>',
+        "template" => '<iframe title="%chart_title%" aria-label="%chart_type%" src="%chart_url%" scrolling="no" frameborder="0" style="border: none;" width="%chart_width%" height="%chart_height%"></iframe>',
     ];
 
     // add team embed codes

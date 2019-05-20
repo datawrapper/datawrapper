@@ -13,8 +13,12 @@ export default {
     weekdaysShort: 'Sun._Mon._Tue._Wed._Thu._Fri._Sat.'.split('_'),
     monthsShort: 'Jan._Feb._March_April_May_June_July_Aug._Sept._Oct._Nov._Dec.'.split('_'),
     weekdaysMin: 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_'),
-    ordinal: n => n,
-    meridiem: hour => (hour < 12 ? 'a.m.' : 'p.m.'),
+    ordinal: function(n) {
+        return n;
+    },
+    meridiem: function(hour) {
+        return hour < 12 ? 'a.m.' : 'p.m.';
+    },
     relativeTime: {
         future: 'in %s',
         past: '%s ago',

@@ -21,7 +21,9 @@ export default {
         y: 'бір жыл',
         yy: '%d жыл'
     },
-    ordinal: n => n,
+    ordinal: function(n) {
+        return n;
+    },
     formats: {
         LT: 'HH:mm',
         LTS: 'HH:mm:ss',

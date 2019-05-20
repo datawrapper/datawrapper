@@ -18,7 +18,9 @@ export default {
         y: 'година',
         yy: '%d године'
     },
-    ordinal: n => `${n}.`,
+    ordinal: function(n) {
+        return n + '.';
+    },
     formats: {
         LT: 'H:mm',
         LTS: 'H:mm:ss',

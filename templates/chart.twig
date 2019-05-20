@@ -117,9 +117,9 @@
                         </span>
                         {% else %}
                         <span class="footer-block byline-block {% if not byline %}hidden{% endif %}">
-                            {{ chart.namespace == 'map' ?
+                            {{ chart.caption == 'map' ?
                                 theme.getThemeData('options.footer.mapCaption') :
-                                chart.namespace == 'table' ?
+                                chart.caption == 'table' ?
                                 theme.getThemeData('options.footer.tableCaption') :
                                 theme.getThemeData('options.footer.chartCaption') }}
                             <span class="chart-byline">{{ chartByline | purify | raw }}</span>
