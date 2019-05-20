@@ -8,6 +8,11 @@ require(['svelte/{{ app_id }}'], function(mod) {
 
     var App = mod.App;
     var data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
+    
+    // Initialize API wrapper with domain, if API wrapper is present in the default props
+    if (data.api && data.api.init) {
+        data.api.init({ domain: '{{ config.api_domain }}' })
+    }
 
     var app;
     if (mod.v3) {

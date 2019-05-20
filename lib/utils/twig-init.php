@@ -120,6 +120,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
             'app_id' => $app_id,
             'app_js' => $app_js,
             'app_css' => $app_css,
+            'config' => $GLOBALS['dw_config'],
             'twig_data' => $data ?? false
         ];
 
