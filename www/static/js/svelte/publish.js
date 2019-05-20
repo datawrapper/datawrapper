@@ -877,7 +877,7 @@ var methods$1 = {
         var embedCodes = chart.getMetadata('publish.embed-codes');
         var embedHeight = chart.getMetadata('publish.embed-height');
         this.set({
-            embedCode: embedCodes[embed_type]
+            embedCode: embedCodes && embedCodes[embed_type]
                 ? embedCodes[embed_type]
                 : ("<iframe src=\"" + publicUrl + "\" width=\"100%\" height=\"" + embedHeight + "\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\"></iframe>")
         });
