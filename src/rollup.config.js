@@ -16,7 +16,7 @@ build('describe');
 build('controls', { noAMD: true });
 build('controls/hot', { noAMD: true });
 build('publish', { append: '_old' });
-build('publish', { noAMD: true, entry: 'index.js' });
+// build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
 build('highlight');
 build('editor');
