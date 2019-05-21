@@ -7,28 +7,22 @@ import uglify from 'rollup-plugin-uglify';
 
 const production = !process.env.ROLLUP_WATCH;
 
-const targets = [];
-
-// build('publish', { append: '_old' });
-// build('publish', { noAMD: true, entry: 'index.js' });
-// build('publish/sidebar', { noAMD: true });
-
-build('publish');
-
-export default targets;
-
-function build(appId) {
-    targets.push({
+export default [
+    {
         input: 'index.js',
-        // input: 'main.js',
-        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
+        external: [
+            'chroma',
+            'Handsontable',
+            'cm',
+            'vendor',
+            '/static/vendor/jschardet/jschardet.min.js',
+            '/static/vendor/xlsx/xlsx.full.min.js'
+        ],
         output: {
             sourcemap: !production,
             name: 'publish',
             file: '../../www/static/js/svelte/publish.js',
-            // file: './output/publish.js',
             format: 'umd',
-            // amd: undefined,
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
                 '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
@@ -39,10 +33,8 @@ function build(appId) {
                 dev: !production,
                 css: css => {
                     css.write('../../www/static/css/svelte/publish.css');
-                    // css.write('./output/publish.css');
                 },
                 cascade: false
-                // store: true
             }),
 
             // If you have external dependencies installed from
@@ -64,5 +56,5 @@ function build(appId) {
                     mangle: true
                 })
         ]
-    });
-}
+    }
+];
