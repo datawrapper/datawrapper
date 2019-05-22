@@ -9,7 +9,7 @@ const production = !process.env.ROLLUP_WATCH;
 
 export default [
     {
-        input: 'index.js',
+        input: '../index.js',
         external: [
             'chroma',
             'Handsontable',
@@ -21,7 +21,7 @@ export default [
         output: {
             sourcemap: !production,
             name: 'publish',
-            file: '../../www/static/js/svelte/publish.js',
+            file: '../../../www/static/js/svelte/publish.js',
             format: 'umd',
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
@@ -32,7 +32,7 @@ export default [
             svelte({
                 dev: !production,
                 css: css => {
-                    css.write('../../www/static/css/svelte/publish.css');
+                    css.write('../../../www/static/css/svelte/publish.css');
                 },
                 cascade: false
             }),

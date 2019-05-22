@@ -16,6 +16,7 @@ build('describe');
 build('controls', { noAMD: true });
 build('controls/hot', { noAMD: true });
 build('publish', { append: '_old' });
+// publish.js now gets built in Svelte 2, in /publish/build-svelte-2
 // build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
 build('highlight');
