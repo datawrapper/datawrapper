@@ -17,7 +17,7 @@
         "rollup-plugin-json": "4.0.0",
         "rollup-plugin-node-resolve": "5.0.0",
         "rollup-plugin-svelte": "4.5.0",
-        "rollup-plugin-uglify": "3.0.0",
+        "rollup-plugin-terser": "^4.0.4",
         "svelte": "2.16.1"
     },
     "prettier": {
