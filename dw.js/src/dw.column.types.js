@@ -449,7 +449,7 @@ dw.column.types.date = (function() {
 
                 function guessTwoDigitYear(yr) {
                     yr = +yr;
-                    if (yr < 20) return 2000 + yr;
+                    if (yr < 30) return 2000 + yr;
                     else return 1900 + yr;
                 }
 
