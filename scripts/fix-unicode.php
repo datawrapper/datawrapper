@@ -4,7 +4,7 @@ define('ROOT_PATH', './');
 define('CLI', php_sapi_name() == "cli");
 require_once ROOT_PATH . 'vendor/autoload.php';
 
-$break_date = '2019-02-21';
+$break_date = '2019-03-01';
 $downtime = true;
 
 function run() {
@@ -19,12 +19,13 @@ function run() {
         fixTable('chart_public', ['title','metadata']);
         fixTable('river_chart', ['description']);
         fixTable('river_chart_tag', ['tag']);
-        fixTable('river_chart_tag_translations', ['tag_name']);
+        // fixTable('river_chart_tag_translations', ['tag_name']);
+        fixTable('auth_token', ['comment']);
     } else {
         // fix old charts before downtime
         fixTable('chart',
             ['title','metadata'],
-            'organization_id = "swissinfo" AND deleted = 0 AND utf8 = 0 AND last_modified_at < "'.$break_date.'" AND public_version < 4'
+            'deleted = 0 AND utf8 = 0 AND last_modified_at < "'.$break_date.'" AND public_version < 4'
         );
     }
 }
@@ -106,9 +107,30 @@ function fixTableRow($table, $fields, $id, $id_field) {
         $pdo_new->query('UPDATE '.$table.' SET '.implode(', ', $update).' WHERE '.$id_field.' = '.$pdo_new->quote($id));
         print "$id ";
     } catch (Exception $e) {
-        print $e->getMessage();
-        print "\033[1;31m$id\033[m ";
-        $fixed_ids[$table][] = $id;
+        $msg = $e->getMessage();
+        $worked = false;
+        if (strpos($msg, 'Incorrect string value') > -1) {
+            preg_match('#for column \'([^\']+)\'#', $msg, $m);
+            if (isset($m[1])) {
+                $field = $m[1];
+                foreach ($update as $key => $value) {
+                    if (substr($value, 0, strlen($field)+2) === $field.' =') {
+                        $update[$key] = $value = $field.' = '.$pdo_new->quote(substr($row[$field], 0, strlen($row[$field])-1));
+                        // re-try update
+                        try {
+                            $pdo_new->query('UPDATE '.$table.' SET '.implode(', ', $update).' WHERE '.$id_field.' = '.$pdo_new->quote($id));
+                            print "\033[1;33m$id\033[m ";
+                            $worked = true;
+                        } catch (Exception $f) {}
+                    }
+                }
+            }
+        }
+        if (!$worked) {
+            print $msg."\n";
+            print "\033[1;31m$id\033[m ";
+            $fixed_ids[$table][] = $id;
+        }
     }
     if ($table !== 'chart') {
         $fixed_ids[$table][] = $id;
@@ -117,6 +139,8 @@ function fixTableRow($table, $fields, $id, $id_field) {
 
 $t0 = microtime(true);
 run();
+// fixTableRow('chart', ['title'], '7WOfu', 'id');
+
 $t1 = microtime(true);
 
 print "took ".(1000*($t1 - $t0))." milliseconds\n";
