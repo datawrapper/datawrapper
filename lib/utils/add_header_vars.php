@@ -272,6 +272,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['alternative_signins'] = DatawrapperHooks::execute(DatawrapperHooks::ALTERNATIVE_SIGNIN);
     global $__l10n;
     $page['messages'] = $__l10n->getClientMessages();
+    if (empty($page['dependencies'])) {
+        $page['dependencies'] = ['dayjs' => false];
+    }
 
     if (isset ($config['maintenance']) && $config['maintenance'] == true) {
         $page['maintenance'] = true;

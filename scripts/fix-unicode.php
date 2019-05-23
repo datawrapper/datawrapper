@@ -4,23 +4,27 @@ define('ROOT_PATH', './');
 define('CLI', php_sapi_name() == "cli");
 require_once ROOT_PATH . 'vendor/autoload.php';
 
+$break_date = '2019-02-21';
 $downtime = true;
 
 function run() {
-    global $downtime;
+    global $downtime, $break_date;
     if ($downtime) {
         // fix everything
         fixTable('organization', ['name']);
-        fixTable('theme', ['title', 'data']);
+        fixTable('theme', ['title']);
         fixTable('user', ['name', 'website']);
         fixTable('folder', ['folder_name']);
-        fixTable('chart', ['title','metadata']);
+        fixTable('chart', ['title','metadata'], 'deleted = 0 AND utf8 = 0 AND last_modified_at >= "'.$break_date.'"');
         fixTable('chart_public', ['title','metadata']);
+        fixTable('river_chart', ['description']);
+        fixTable('river_chart_tag', ['tag']);
+        fixTable('river_chart_tag_translations', ['tag_name']);
     } else {
         // fix old charts before downtime
-        fixTable('chart_public',
+        fixTable('chart',
             ['title','metadata'],
-            'NOW() - last_modified_at > 86400 * 90 AND public_version < 4'
+            'organization_id = "swissinfo" AND deleted = 0 AND utf8 = 0 AND last_modified_at < "'.$break_date.'" AND public_version < 4'
         );
     }
 }
@@ -35,12 +39,12 @@ $pdo_new = Propel::getConnection();
 
 $fixed_ids = [];
 if (file_exists('./fixed-ids.json')) {
-    $fixed_ids = json_decode(file_get_contents('./fixed-ids.json'));
+    $fixed_ids = json_decode(file_get_contents('./fixed-ids.json'), true);
 }
 
 function storeFixedIds() {
     global $fixed_ids;
-    file_put_contents('./fixed-ids.json', $fixed_ids);
+    file_put_contents('./fixed-ids.json', json_encode($fixed_ids, JSON_PRETTY_PRINT));
 }
 
 function fixTable($table, $fields, $add_where='') {
@@ -48,14 +52,13 @@ function fixTable($table, $fields, $add_where='') {
     $id_field = $table === 'folder' ? 'folder_id' : 'id';
     // get ids
     $row_ids = getRowIds($table, $fields, $id_field, $add_where);
+
     while (count($row_ids) > 0) {
         foreach ($row_ids as $id) {
             fixTableRow($table, $fields, $id, $id_field);
-            $fixed++;
         }
         storeFixedIds();
-        print "fetching next batch of charts...\n";
-        $row_ids = getChartIds(true);
+        $row_ids = getRowIds($table, $fields, $id_field, $add_where);
     }
 }
 
@@ -70,6 +73,7 @@ function quoteIds($table) {
 
 function getRowIds($table, $fields, $id_field, $add_where) {
     global $pdo_old, $pdo_new, $fixed_ids;
+    print "\n\033[1;34mfetching next batch of $table's...\033[m\n";
     $check = [];
     foreach ($fields as $field) {
         if ($field === 'metadata' || $field === 'data') {
@@ -81,22 +85,34 @@ function getRowIds($table, $fields, $id_field, $add_where) {
     }
     $where = [];
     // ignore ids that have been fixed already
-    $where[] = $id_field.' NOT IN ('.implode(', ', quoteIds($table)).')';
-    $where[] = implode(' OR ', $where);
+    $fixed = quoteIds($table);
+    if (!empty($fixed)) $where[] = $id_field.' NOT IN ('.implode(', ', $fixed).')';
+    $where[] = implode(' OR ', $check);
     if (!empty($add_where)) $where[] = $add_where;
-    return $pdo_old->query('SELECT '.$id_field.' FROM '.$table.' WHERE '.implode(' AND '.$where).' LIMIT 1000')->fetchAll(PDO::FETCH_COLUMN, 0);
+    // print 'SELECT '.$id_field.' FROM '.$table.' WHERE ('.implode(') AND (', $where).') LIMIT 1000';
+    return $pdo_old->query('SELECT '.$id_field.' FROM '.$table.' WHERE ('.implode(') AND (', $where).') LIMIT 10000')->fetchAll(PDO::FETCH_COLUMN, 0);
 }
 
-function fixTableRow($table, $fields, $id, $id_field, $add_update) {
+function fixTableRow($table, $fields, $id, $id_field) {
     global $pdo_old, $pdo_new, $fixed_ids;
     $row = $pdo_old->query('SELECT '.implode(', ', $fields).' FROM '.$table.' WHERE '.$id_field.' = '.$pdo_old->quote($id))->fetch(PDO::FETCH_ASSOC);
     $update = [];
     foreach ($fields as $field) {
         $update[] = $field.' = '.$pdo_new->quote($row[$field]);
     }
-    $pdo_new->query('UPDATE '.$table.' SET '.implode(', ', $update).' WHERE '.$id_field.' = '.$pdo_new->quote($id));
+    if ($table === 'chart') $update[] = 'utf8 = 1';
     if (!isset($fixed[$table])) $fixed[$table] = [];
-    $fixed_ids[$table][] = $id;
+    try {
+        $pdo_new->query('UPDATE '.$table.' SET '.implode(', ', $update).' WHERE '.$id_field.' = '.$pdo_new->quote($id));
+        print "$id ";
+    } catch (Exception $e) {
+        print $e->getMessage();
+        print "\033[1;31m$id\033[m ";
+        $fixed_ids[$table][] = $id;
+    }
+    if ($table !== 'chart') {
+        $fixed_ids[$table][] = $id;
+    }
 }
 
 $t0 = microtime(true);

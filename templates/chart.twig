@@ -159,11 +159,17 @@
 
                             <div class="embed-code hide">
                                 <div class="close">×</div>
-                                <div>Please use the following HTML code to embed this chart:</div>
+                                <div>
+                                    {% if theme.getThemeData("options.footer.embed.text") %}
+                                        {{ theme.getThemeData("options.footer.embed.text") }}
+                                    {% else %}
+                                        Please use the following HTML code to embed this chart:
+                                    {% endif %}
+                                </div>
                                 <textarea>{{ embedCode }}</textarea>
                             </div>
                             <script type="text/javascript">
-                                $('a[href=#embed], .embed-code .close').click(function() { $('.embed-code').toggleClass('hide'); });
+                                $('a.chart-action-embed, .embed-code .close').click(function(e) { e.preventDefault(); $('.embed-code').toggleClass('hide'); });
                                 $('.embed-code textarea').click(function() { $(this).focus().select(); });
                             </script>
                         </span>
