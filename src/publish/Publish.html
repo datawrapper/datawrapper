@@ -115,12 +115,12 @@
 
     <!-- EXPORT -->
     <div class="export-and-duplicate">
-        <slot name="export_actions_header">
+        <div>
             <h2 class="pad-top">{@html exportHed}</h2>
             {#if exportIntro}
             <p>{@html exportIntro}</p>
             {/if}
-        </slot>
+        </div>
 
         <ul class="chart-actions">
             {#each sortedChartActions as action} {#if action}
@@ -282,7 +282,8 @@
                 publishIntro: '',
                 beforeExport: null,
                 exportHed: __('publish / export-duplicate'),
-                exportIntro: __('publish / export-duplicate / intro')
+                exportIntro: __('publish / export-duplicate / intro'),
+                embedCode: ''
             };
         },
         computed: {
@@ -294,15 +295,6 @@
                     if (t.id === shareurl_type) url = t.url.replace(/%chart_id%/g, $id);
                 });
                 return url;
-            },
-
-            embedCode({ embed_type, $metadata, $publicUrl }) {
-                if (!$metadata) return '';
-                if ($metadata.publish && !$metadata.publish['embed-codes'])
-                    return `<iframe src="${$publicUrl}" width="100%" height="${
-                        $metadata.publish['embed-height']
-                    }" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
-                return $metadata.publish['embed-codes']['embed-method-' + embed_type];
             },
 
             sortedChartActions({ chartActions, $actions }) {
@@ -382,6 +374,23 @@
                 this.store.set(chartInfo);
             },
 
+            setEmbedCode() {
+                const chart = this.store;
+                const state = this.get();
+                if (!state) return;
+                const embed_type = state.embed_type;
+
+                const { publicUrl } = chart.get();
+                const embedCodes = chart.getMetadata('publish.embed-codes');
+                const embedHeight = chart.getMetadata('publish.embed-height');
+                this.set({
+                    embedCode:
+                        embedCodes && embedCodes[embed_type]
+                            ? embedCodes[embed_type]
+                            : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
+                });
+            },
+
             copy() {
                 const me = this;
                 me.refs.embedInput.select();
@@ -399,6 +408,9 @@
 
             select(action, event) {
                 event.preventDefault();
+                // set hash which is used to show the action module
+                window.location.hash = action.id;
+
                 const { active_action } = this.get();
                 if (action.id === active_action) {
                     // unselect current action
@@ -453,9 +465,14 @@
         oncreate() {
             const { lastEditStep } = this.store.get();
             this.set({ published: lastEditStep > 4 });
-
             // store reference to publish step
             window.dw.backend.fire('edit.publish.oncreate', this);
+            // watch changes
+            this.setEmbedCode();
+            const chart = this.store;
+            chart.observeDeep('metadata.publish.embed-codes', () => this.setEmbedCode());
+            chart.observeDeep('metadata.publish.embed-height', () => this.setEmbedCode());
+            chart.observeDeep('publicUrl', () => this.setEmbedCode());
         },
 
         onstate({ changed, current }) {
@@ -472,6 +489,9 @@
                 data.embed_type = current.embed_type;
                 window.dw.backend.setUserData(data);
             }
+            if (changed.embed_type) {
+                this.setEmbedCode();
+            }
             if (changed.shareurl_type && userDataReady) {
                 const data = window.dw.backend.__userData;
                 if (!current.shareurl_type || !data) return;
@@ -479,7 +499,10 @@
                 window.dw.backend.setUserData(data);
             }
             if (changed.published) {
-                window.document.querySelector('.dw-create-publish .publish-step').classList[current.published ? 'add' : 'remove']('is-published');
+                const publishStep = window.document.querySelector('.dw-create-publish .publish-step');
+                if (publishStep) {
+                    publishStep.classList[current.published ? 'add' : 'remove']('is-published');
+                }
             }
             if (changed.auto_publish) {
                 if (current.auto_publish && initial_auto_publish) {
