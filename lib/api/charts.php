@@ -281,7 +281,10 @@ function if_chart_is_readable($chart_id, $callback) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
-    if_chart_is_readable($chart_id, function($user, $chart) use ($app) {
+    if (!Session::isLoggedIn()) {
+        return error('error', 'you need to be logged in to duplicate a chart');
+    }
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         if ($chart->getIsFork() == true) {
             // no duplicating allowed
             return error('not-allowed', __('You can not duplicate a forked chart.'));
