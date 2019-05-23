@@ -408,6 +408,9 @@
 
             select(action, event) {
                 event.preventDefault();
+                // set hash which is used to show the action module
+                window.location.hash = action.id;
+
                 const { active_action } = this.get();
                 if (action.id === active_action) {
                     // unselect current action
