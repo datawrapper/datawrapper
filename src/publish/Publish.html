@@ -115,12 +115,12 @@
 
     <!-- EXPORT -->
     <div class="export-and-duplicate">
-        <slot name="export_actions_header">
+        <div>
             <h2 class="pad-top">{@html exportHed}</h2>
             {#if exportIntro}
             <p>{@html exportIntro}</p>
             {/if}
-        </slot>
+        </div>
 
         <ul class="chart-actions">
             {#each sortedChartActions as action} {#if action}
