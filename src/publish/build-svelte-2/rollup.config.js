@@ -7,21 +7,15 @@ import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
-export default [
-    {
-        input: '../index.js',
-        external: [
-            'chroma',
-            'Handsontable',
-            'cm',
-            'vendor',
-            '/static/vendor/jschardet/jschardet.min.js',
-            '/static/vendor/xlsx/xlsx.full.min.js'
-        ],
+const targets = [];
+['publish', 'publish/sidebar'].forEach(id => {
+    targets.push({
+        input: id === 'publish' ? '../index.js' : '../sidebar/main.js',
+        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
         output: {
             sourcemap: !production,
-            name: 'publish',
-            file: '../../../www/static/js/svelte/publish.js',
+            name: id,
+            file: `../../../www/static/js/svelte/${id}.js`,
             format: 'umd',
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
@@ -32,7 +26,7 @@ export default [
             svelte({
                 dev: !production,
                 css: css => {
-                    css.write('../../../www/static/css/svelte/publish.css');
+                    css.write(`../../../www/static/css/svelte/${id}.css`);
                 },
                 cascade: false
             }),
@@ -54,5 +48,7 @@ export default [
                 }),
             production && terser()
         ]
-    }
-];
+    });
+});
+
+export default targets;
