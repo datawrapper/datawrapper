@@ -2,15 +2,10 @@
     "name": "publish-svelte-2",
     "version": "1.0.0",
     "scripts": {
-        "format": "prettier 'src/**/*.js' --write",
-        "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
         "build": "rollup -c",
         "dev": "rollup -cw"
     },
     "devDependencies": {
-        "babel-eslint": "^10.0.1",
-        "healthier": "^2.0.0",
-        "prettier": "^1.17.1",
         "rollup": "1.12.3",
         "rollup-plugin-buble": "0.19.6",
         "rollup-plugin-commonjs": "10.0.0",
@@ -19,32 +14,5 @@
         "rollup-plugin-svelte": "4.5.0",
         "rollup-plugin-terser": "^4.0.4",
         "svelte": "2.16.1"
-    },
-    "prettier": {
-        "tabWidth": 4,
-        "semi": true,
-        "printWidth": 100,
-        "singleQuote": true
-    },
-    "eslintConfig": {
-        "parser": "babel-eslint",
-        "rules": {
-            "no-console": [
-                "error",
-                {
-                    "allow": [
-                        "warn",
-                        "error"
-                    ]
-                }
-            ],
-            "camelcase": [
-                "warn",
-                {
-                    "ignoreDestructuring": true,
-                    "properties": "never"
-                }
-            ]
-        }
     }
 }
