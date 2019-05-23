@@ -28,6 +28,7 @@ exports/*
 fabfile.py*
 legacy/*
 lib/core/build/conf/datawrapper-conf.php
+lib/core/build/conf/datawrapper-conf*.php
 lib/core/buildtime-conf.xml
 lib/core/propel-gen
 lib/core/runtime-conf.xml
@@ -46,3 +47,4 @@ test/result/*
 tmp/*
 vendor/*
 www/static/custom/*
+db-schema.json
