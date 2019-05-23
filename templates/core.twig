@@ -47,6 +47,7 @@
                 imagesloaded: 'vendor/imagesloaded/imagesloaded.pkgd.min',
                 chroma:       'vendor/chroma-js/chroma.min',
                 cm:           'vendor/codemirror',
+                dayjs:        'vendor/dayjs/dayjs.min',
                 d3:           'vendor/d3/d3v4+jetpack.min'
             },
             waitSeconds: 0,
@@ -58,7 +59,22 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/cryptojs/hmac-sha256.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/globalize.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
-
+    {% if dependencies.dayjs %}
+    <script type="text/javascript">
+    require([
+        'dayjs',
+        'static/vendor/dayjs/plugin/advancedFormat.js',
+        'static/vendor/dayjs/plugin/localizedFormat.js',
+        'static/vendor/dayjs/plugin/relativeTime.js',
+        'static/vendor/dayjs/locales/umd/{{ locale[:2]  }}.js',
+    ], function(dayjs, advancedFormat, localizedFormat, relativeTime, locale) {
+        dayjs.extend(advancedFormat);
+        dayjs.extend(localizedFormat);
+        dayjs.extend(relativeTime);
+        dayjs.locale(locale);
+    });
+    </script>
+    {% endif %}
     {# javascript core 2.0 #}
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/misc/polyfills.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-2.0.js?v={{ COMMIT_SHA }}"></script>
@@ -105,7 +121,6 @@
 
 
   <body class="dw {{ pageClass }} {{ language }}" data-locale="{{ locale }}">
-
     <script type="text/javascript">
         if (window.top != window.self) {
             document.body.classList.add('cms-mode')
