@@ -65,13 +65,13 @@
         'dayjs',
         '/static/vendor/dayjs/plugin/advancedFormat.js',
         '/static/vendor/dayjs/plugin/localizedFormat.js',
-        '/static/vendor/dayjs/plugin/relativeTime.js',
-        '/static/vendor/dayjs/locales/umd/{{ locale[:2]  }}.js',
+        '/static/vendor/dayjs/plugin/relativeTime.js'
+        {% if locale[:2] != 'en' %},'/static/vendor/dayjs/locales/umd/{{ locale[:2] }}.js'{% endif %}
     ], function(dayjs, advancedFormat, localizedFormat, relativeTime, locale) {
         dayjs.extend(advancedFormat);
         dayjs.extend(localizedFormat);
         dayjs.extend(relativeTime);
-        dayjs.locale(locale);
+        if (locale) dayjs.locale(locale);
     });
     </script>
     {% endif %}
