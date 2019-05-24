@@ -378,15 +378,16 @@
                 const chart = this.store;
                 const state = this.get();
                 if (!state) return;
-                const embed_type = state.embed_type;
+                const embedType = state.embed_type ? `embed-method-${state.embed_type}` : null;
 
                 const { publicUrl } = chart.get();
                 const embedCodes = chart.getMetadata('publish.embed-codes');
                 const embedHeight = chart.getMetadata('publish.embed-height');
+
                 this.set({
                     embedCode:
-                        embedCodes && embedCodes[embed_type]
-                            ? embedCodes[embed_type]
+                        embedCodes && embedCodes[embedType]
+                            ? embedCodes[embedType]
                             : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
                 });
             },
