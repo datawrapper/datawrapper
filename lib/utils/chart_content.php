@@ -47,7 +47,8 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
             }
             if (file_exists($localePath)) {
                 $rawLocale = file_get_contents($localePath);
-                $visDependencyLocales .= "\n$key: ".substr(trim(preg_replace('#/\*.*\*/#', '', preg_replace('#\n\s+#', '', str_replace('export default ', '', preg_replace('#^\s*//.*\n#m', '', $rawLocale))))),0,-1).",";
+                $add = "\n$key: ".substr(trim(preg_replace('#^\s*//.*\n#m', '', preg_replace('#/\*.*\*/#', '', preg_replace('#\n\s+#', '', str_replace('export default ', '', preg_replace('#//.*#m', '', $rawLocale)))))),0,-1).",";
+                $visDependencyLocales .= $add;
             }
         }
     }
