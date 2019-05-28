@@ -86,9 +86,13 @@ export default function({
         }
 
         let themeFitChart = false;
+        const visType = visJSON.id;
         const theme = dw.theme(themeId);
-        if (theme) {
-            themeFitChart = get(theme, 'vis.d3-pies.fitchart', 0);
+        if (theme && visType) {
+            const isPies = visType === 'd3-pies' || visType === 'd3-donuts' || visType === 'd3-multiple-pies' || visType === 'd3-multiple-donuts';
+            if (isPies) {
+                themeFitChart = get(theme, 'vis.d3-pies.fitchart', 0);
+            }
         }
         const urlParams = new URLSearchParams(window.location.search);
         const isFitChart = urlParams.get('fitchart') === '1' || themeFitChart === 1 || themeFitChart === true;
