@@ -128,6 +128,9 @@ function if_chart_exists($id, $callback) {
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
     if_chart_is_writable($id, function($user, $chart) use ($app) {
+        if (!empty($GLOBALS['dw_config']['lock-utf8-charts']) && $chart->getUtf8() == 1) {
+            return error('chart-locked', 'the chart is temporarily locked due to a database migration');
+        }
         $json = json_decode($app->request()->getBody(), true);
 
         if ($app->request()->get('mode') == "print") $chart->usePrint();
