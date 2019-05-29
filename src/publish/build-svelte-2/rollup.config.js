@@ -10,8 +10,20 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 ['publish', 'publish/sidebar', 'publish_old'].forEach(id => {
     targets.push({
-        input: id === 'publish' ? '../index.js' : id === 'publish/sidebar' ? '../sidebar/main.js' : '../main.js',
-        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
+        input:
+            id === 'publish'
+                ? '../index.js'
+                : id === 'publish/sidebar'
+                ? '../sidebar/main.js'
+                : '../main.js',
+        external: [
+            'chroma',
+            'Handsontable',
+            'cm',
+            'vendor',
+            '/static/vendor/jschardet/jschardet.min.js',
+            '/static/vendor/xlsx/xlsx.full.min.js'
+        ],
         output: {
             sourcemap: !production,
             name: id,

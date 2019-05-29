@@ -14,5 +14,11 @@
         "rollup-plugin-svelte": "4.5.0",
         "rollup-plugin-terser": "^4.0.4",
         "svelte": "2.16.1"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": true,
+        "printWidth": 100,
+        "singleQuote": true
     }
 }
