@@ -8,15 +8,16 @@ import { terser } from 'rollup-plugin-terser';
 const production = !process.env.ROLLUP_WATCH;
 
 const targets = [];
-['publish', 'publish/sidebar'].forEach(id => {
+['publish', 'publish/sidebar', 'publish_old'].forEach(id => {
     targets.push({
-        input: id === 'publish' ? '../index.js' : '../sidebar/main.js',
+        input: id === 'publish' ? '../index.js' : id === 'publish/sidebar' ? '../sidebar/main.js' : '../main.js',
         external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
         output: {
             sourcemap: !production,
             name: id,
             file: `../../../www/static/js/svelte/${id}.js`,
             format: 'umd',
+            amd: id === 'publish_old' ? { id: `svelte/publish_old` } : undefined,
             globals: {
                 '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
                 '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
