@@ -9,7 +9,7 @@ $conf = array (
       'adapter' => 'mysql',
       'connection' =>
       array (
-        'dsn' => 'mysql:host=localhost;dbname=datawrapper',
+        'dsn' => 'mysql:host=localhost;dbname=datawrapper;charset=utf8mb4',
         'user' => 'root',
         'password' => '',
       ),
