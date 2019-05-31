@@ -21,23 +21,22 @@ class Theme extends BaseTheme
         $theme = $this;
 
         // compile: theme-variables, chart.base.less, visulization.less
-        $data = $this->getThemeDataAsFlatArray();
-
+        $lessData = $this->getThemeDataAsFlatArray();
         $twig = (empty($appTwig) ? $app->view()->getEnvironment() : $appTwig->view()->getEnvironment());
-        $twigData = $data;
+        $twigData = array_merge($this->getThemeData(), $lessData);
         $twigData['fonts'] = $this->getAssetFonts();
 
         $baseLess = $twig->render('chart-styles.less.twig', $twigData);
 
         $allThemeLess = $this->getLess();
 
-        $data['colors_perceived_bg'] =
-            empty($data['colors_background']) ||
-                $data['colors_background'] == '~"transparent"' ? '~"white"' :
-                $data['colors_background'];
+        $lessData['colors_perceived_bg'] =
+            empty($lessData['colors_background']) ||
+                $lessData['colors_background'] == '~"transparent"' ? '~"white"' :
+                $lessData['colors_background'];
 
         $less = new lessc;
-        $less->setVariables($data);
+        $less->setVariables($lessData);
 
         while (!empty($theme->getExtend())) {
             $theme = ThemeQuery::create()->findPk($theme->getExtend());
@@ -46,7 +45,7 @@ class Theme extends BaseTheme
 
         $allVisLess = "";
 
-        foreach ($visLess as $visPath) {                                              
+        foreach ($visLess as $visPath) {
             $parts = explode("/", $visPath);
             $filename = $parts[sizeof($parts)-1];
             unset($parts[sizeof($parts)-1]);
@@ -103,7 +102,7 @@ class Theme extends BaseTheme
     public function getThemeDataAsFlatArray($data = null, $prefix = "", $format = 'twig') {
         if ($data == null) $data = $this->getThemeData();
 
-        $f = array();
+        $f = [];
 
         foreach ($data as $k => $d) {
             $px = $prefix;
