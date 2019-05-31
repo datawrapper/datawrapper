@@ -32,7 +32,7 @@
 
     {% if typography_chart_letterSpacing %}
         letter-spacing: ~'@{typography_chart_letterSpacing}px';
-    {% endif %} 
+    {% endif %}
 
     {% if typography_chart_fontSize %}
         font-size: ~'@{typography_chart_fontSize}px';
@@ -42,18 +42,32 @@
         background: @colors_general_background;
     {% endif %}
 
-    {% if colors_general_padding %}
+
+    {% if style_body_padding %}
+        padding: @style_body_padding;
+    {% elseif colors_general_padding %}
         padding: ~'@{colors_general_padding}px';
     {% endif %}
 
-    margin: 0 0px;
+    {% if style_body_margin %}
+        margin: @style_body_margin;
+    {% else %}
+        margin: 0 0px;
+    {% endif %}
+
     height: 100%;
 
     &.vis-height-fit {
         overflow:hidden;
     }
 
-    #header {
+    a {
+        {% if typography_links_color %}
+            color: @typography_links_color;
+        {% endif %}
+    }
+
+    .dw-chart-header {
         min-height: 1px;
         position: relative;
         overflow: auto;
@@ -63,140 +77,406 @@
             right: 10px;
             z-index: 20;
         }
+
+        {% if style_header_padding %}
+            padding: @style_header_padding;
+        {% endif %}
+
+        {% if style_header_margin %}
+            margin: @style_header_margin;
+        {% endif %}
+
+        {% if style_header_background %}
+            background: @style_header_background;
+        {% endif %}
+
+        {% if style_header_border_top %}
+            border-top: @style_header_border_top;
+        {% endif %}
+
+        {% if style_header_border_bottom %}
+            border-bottom: @style_header_border_bottom;
+        {% endif %}
+
+        {% if style_header_border_left %}
+            border-left: @style_header_border_left;
+        {% endif %}
+
+        {% if style_header_border_right %}
+            border-right: @style_header_border_right;
+        {% endif %}
+
+        {% if style_header_textAlign %}
+            text-align: @style_header_textAlign;
+        {% endif %}
+
+
+        h1 {
+            {% if typography_headline_typeface %}
+                font-family: @typography_headline_typeface;
+            {% endif %}
+
+            {% if typography_headline_fontWeight %}
+                font-weight: @typography_headline_fontWeight;
+            {% endif %}
+
+            {% if typography_headline_fontSize %}
+                font-size: ~'@{typography_headline_fontSize}px';
+            {% endif %}
+
+            {% if typography_headline_lineHeight %}
+                line-height: ~'@{typography_headline_lineHeight}px';
+            {% endif %}
+
+            {% if typography_headline_letterSpacing %}
+                letter-spacing: ~'@{typography_headline_letterSpacing}px';
+            {% endif %}
+
+            {% if typography_headline_cursive %}
+                font-style: italic;
+            {% else %}
+                font-style: normal;
+            {% endif %}
+
+            {% if typography_headline_underlined %}
+                text-decoration: underline;
+            {% else %}
+                text-decoration: none;
+            {% endif %}
+
+            {% if typography_headline_color%}
+                color: @typography_headline_color;
+            {% endif %}
+
+            {% if style_header_title_textAlign %}
+                text-align: @style_header_title_textAlign;
+            {% else %}
+                text-align:left;
+            {% endif %}
+
+            {% if style_header_title_margin %}
+                margin: @style_header_title_margin;
+            {% else %}
+                margin:0 0 10px;;
+            {% endif %}
+
+            {% if style_header_title_padding %}
+                padding: @style_header_title_padding;
+            {% endif %}
+
+            {% if style_header_title_border_bottom %}
+                border-bottom: @style_header_title_border_top;
+            {% endif %}
+
+            {% if style_header_title_border_left %}
+                border-left: @style_header_title_border_top;
+            {% endif %}
+
+            {% if style_header_title_border_right %}
+                border-right: @style_header_title_border_top;
+            {% endif %}
+
+            {% if style_header_title_textAlign %}
+                text-align: @style_header_title_textAlign;
+            {% endif %}
+
+        }
+
+
+        p {
+            {% if typography_description_typeface %}
+                font-family: @typography_description_typeface;
+            {% endif %}
+
+            {% if typography_description_fontWeight %}
+                font-weight: @typography_description_fontWeight;
+            {% endif %}
+
+            {% if typography_description_fontSize %}
+                font-size: ~'@{typography_description_fontSize}px';
+            {% endif %}
+
+            {% if typography_description_lineHeight %}
+                line-height: ~'@{typography_description_lineHeight}px';
+            {% else %}
+                line-height:17px;
+            {% endif %}
+
+            {% if typography_description_letterSpacing %}
+                letter-spacing: ~'@{typography_description_letterSpacing}px';
+            {% endif %}
+
+            {% if typography_description_cursive %}
+                font-style: italic;
+            {% else %}
+                font-style: normal;
+            {% endif %}
+
+            {% if typography_description_underlined %}
+                text-decoration: underline;
+            {% else %}
+                text-decoration: none;
+            {% endif %}
+
+            {% if typography_description_color%}
+                color: @typography_description_color;
+            {% endif %}
+
+            {% if style_header_description_margin %}
+                margin: @style_header_description_margin;
+            {% else %}
+                margin: 5px 0 10px !important;
+            {% endif %}
+
+            {% if style_header_description_padding %}
+                padding: @style_header_description_padding;
+            {% endif %}
+
+            {% if style_header_description_textAlign %}
+                text-align: @style_header_description_textAlign;
+            {% endif %}
+
+            {% if style_header_description_border_bottom %}
+                border-bottom: @style_header_description_border_top;
+            {% endif %}
+
+            {% if style_header_description_border_left %}
+                border-left: @style_header_description_border_top;
+            {% endif %}
+
+            {% if style_header_description_border_right %}
+                border-right: @style_header_description_border_top;
+            {% endif %}
+
+            {% if style_header_description_textAlign %}
+                text-align: @style_header_description_textAlign;
+            {% endif %}
+
+        }
+
     }
 
-    #chart, .dw-chart-body {
+    .dw-chart-body {
 
-    {% if style_axes_gridlines_color %}
+        &.dark-bg .label span {
 
-        path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick{
-            stroke: @style_axes_gridlines_color;
-        }
-        .bc-grid-line {
-            background-color: @style_axes_gridlines_color;
-        }
-        .y-gridline {
-            border-top-color:@style_axes_gridlines_color;
-        }
-
-
-    {% elseif colors_grid %}
-
-        path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick {
-            stroke: @colors_grid;
-        }
-        .bc-grid-line {
-            background-color: @colors_grid;
-        }
-        .y-gridline {
-            border-top-color:@colors_grid;
+            {% if typography_chart_color %}
+                color: @typography_chart_color;
+                fill: @typography_chart_color;
+            {% else %}
+                color: #f1f1f1;
+                fill: #f1f1f1;
+            {% endif %}
         }
 
-    {% endif %}
+        {% if style_chart_axes_gridlines_color %}
+
+            path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick{
+                stroke: @style_chart_axes_gridlines_color;
+            }
+            .bc-grid-line {
+                border-left-color: @style_chart_axes_gridlines_color;
+            }
+            .y-gridline {
+                border-top-color:@style_chart_axes_gridlines_color;
+            }
+        {% endif %}
+
+        {% if style_chart_axes_gridlines_baselineColor %}
+
+            path.grid.x-axis, line.x-axis, .vis-frame line.axis {
+                stroke: @style_chart_axes_gridlines_baselineColor;
+            }
+            .bc-grid-baseline {
+                border-left-color: @style_chart_axes_gridlines_baselineColor
+            }
+        {% endif %}
+
+        {% if style_chart_axes_gridlines_style %}
+
+            path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick{
+                stroke-dasharray: 4 4;
+            }
+            .bc-grid-line {
+                border-left-style:@style_chart_axes_gridlines_style;
+            }
+        {% else %}
+            .bc-grid-line {
+                border-left-style:solid;
+            }
+        {% endif %}
+
+        {% if style_chart_axes_gridlines_width %}
+
+            path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick, path.grid.x-axis, line.x-axis, .vis-frame line.axis  {
+                stroke-width:~'@{style_chart_axes_gridlines_width}px';
+            }
+            .y-gridline {
+                border-top-width:~'@{style_chart_axes_gridlines_width}px';
+            }
+
+        {% endif %}
+
+        {% if style_chart_axes_gridlines_baselineWidth %}
+            path.grid.x-axis, line.x-axis, line.axis.y-axis  {
+                stroke-width:~'@{style_chart_axes_gridlines_baselineWidth}px';
+            }
+
+        {% endif %}
 
 
+        {% if style_chart_padding %}
+            padding: @style_chart_padding;
+        {% endif %}
 
-    {% if style_axes_gridlines_baselineColor %}
-    
-        path.grid.x-axis, line.x-axis, .vis-frame line.axis {
-            stroke: @style_axes_gridlines_baselineColor;
-        }
-        .bc-grid-baseline {
-            background-color: @style_axes_gridlines_baselineColor
-        }
-    {% elseif colors_axis %}
+        {% if style_chart_margin %}
+            margin: @style_chart_margin;
+        {% endif %}
 
-        path.grid.x-axis, line.x-axis, .vis-frame line.axis {
-            stroke: @colors_axis;
-        }
-        .bc-grid-baseline {
-            background-color: @colors_axis
-        }
-    {% endif %}
+        {% if style_chart_border_top %}
+            border-top: @style_chart_border_top;
+        {% endif %}
+
+        {% if style_chart_border_bottom %}
+            border-bottom: @style_chart_border_bottom;
+        {% endif %}
+
+        {% if style_chart_border_left %}
+            border-left: @style_chart_border_top;
+        {% endif %}
+
+        {% if style_chart_border_right %}
+            border-right: @style_chart_border_top;
+        {% endif %}
+
     }
 
-    h1 {
-        {% if typography_headline_typeface %}
-            font-family: @typography_headline_typeface;
-        {% endif %}
+        .labels text {
 
-        {% if typography_headline_fontWeight %}
-            font-weight: @typography_headline_fontWeight;
-        {% endif %}
+            {% if typography_chart_fontSize %}
+                font-size: ~'@{typography_chart_fontSize}px';
+            {% endif %}
+        }
 
-        {% if typography_headline_fontSize %}
-            font-size: ~'@{typography_headline_fontSize}px';
-        {% endif %}
+        .label {
 
-        {% if typography_headline_lineHeight %}
-            line-height: ~'@{typography_headline_lineHeight}px';
-        {% endif %}
+            span, tspan {
 
-        {% if typography_headline_letterSpacing %}
-            letter-spacing: ~'@{typography_headline_letterSpacing}px';
-        {% endif %}
+                {% if typography_chart_fontSize %}
+                    font-size: ~'@{typography_chart_fontSize}px';
+                {% endif %}
 
-        {% if typography_headline_cursive %}
-            font-style: italic;
-        {% else %}
-            font-style: normal;
-        {% endif %}
+                {% if typography_chart_color %}
+                    color: @typography_chart_color;
+                    fill: @typography_chart_color;
+                {% else %}
+                    color: #333333;
+                    fill: #333333
+                {% endif %}
+            }
 
-        {% if typography_headline_underlined %}
-            text-decoration: underline;
-        {% else %}
-            text-decoration: none;
-        {% endif %}
+            &.value span {
 
-        {% if typography_headline_color%}
-            color: @typography_headline_color;
-        {% endif %}
+                {% if style_chart_labels_values_tabularNums %}
+                    font-feature-settings: 'tnum';
+                    -webkit-font-feature-settings: 'tnum';
+                    -moz-font-feature-settings: 'tnum';
+                {% endif %}
 
-        margin: 0 0 10px;
-        text-align: left;
-    }
+                {% if style_chart_labels_values_fontSize %}
+                    font-size: ~'@{style_chart_labels_values_fontSize}px';
+                {% endif %}
+
+                {% if style_chart_labels_values_color %}
+                    color: @style_chart_labels_values_color;
+                {% endif %}
+
+                {% if style_chart_labels_values_typeface %}
+                    font-family: @style_chart_labels_values_typeface;
+                {% endif %}
+            }
+
+            {% if colors_background %}
+                span {
+                    text-shadow: ~'0 0 2px @{colors_background}';
+                }
+            {% endif %}
+
+            &.inverted span {
+                text-shadow: 0 0px 2px #000000;
+                {% if style_chart_labels_inside_inverted %}
+                    color: @style_chart_labels_inside_inverted;
+                {% else %}
+                    color: #ffffff;
+                {% endif %}
 
 
-    p {
-        {% if typography_description_typeface %}
-            font-family: @typography_description_typeface;
-        {% endif %}
+            }
 
-        {% if typography_description_fontWeight %}
-            font-weight: @typography_description_fontWeight;
-        {% endif %}
+            &.inside:not(.inverted) span {
+                text-shadow: 0 0px 2px #ffffff;
+                {% if style_chart_labels_inside_normal %}
+                    color: @style_chart_labels_inside_normal
+                {% else %}
+                    color: #333333;
+                {% endif %}
+            }
 
-        {% if typography_description_fontSize %}
-            font-size: ~'@{typography_description_fontSize}px';
-        {% endif %}
+            {% if colors_background %}
+                &.outline span {
+                    text-shadow: ~'0 1px 0 @{colors_background}, 1px 0 0 @{colors_background}, 0 -1px 0 @{colors_background}, -1px 0 0 @{colors_background},1px 1px 0 @{colors_background}, 1px -1px 0 @{colors_background}, -1px -1px 0 @{colors_background}, -1px 1px 0 @{colors_background},0 2px 1px @{colors_background}, 2px 0 1px @{colors_background}, 0 -2px 1px @{colors_background}, -2px 0 1px @{colors_background},-1px 2px 0px @{colors_background}, 2px -1px 0px @{colors_background}, -1px -2px 0px @{colors_background}, -2px -1px 0px @{colors_background},1px 2px 0px @{colors_background}, 2px 1px 0px @{colors_background}, 1px -2px 0px @{colors_background}, -2px 1px 0px @{colors_background}';
+                }
 
-        {% if typography_description_lineHeight %}
-            line-height: ~'@{typography_description_lineHeight}px';
-        {% endif %}
+                &.axis-label span {
+                    text-shadow:~'-1px -1px 2px @{colors_background}, -1px 0px 2px @{colors_background}, -1px 1px 2px @{colors_background}, 0px -1px 2px @{colors_background}, 0px 1px 2px @{colors_background}, 1px -1px 2px @{colors_background}, 1px 0px 2px @{colors_background}, 1px 1px 2px @{colors_background}';
+                }
+            {% endif %}
 
-        {% if typography_description_letterSpacing %}
-            letter-spacing: ~'@{typography_description_letterSpacing}px';
-        {% endif %}
+            sup {
+                text-shadow: none;
+            }
 
-        {% if typography_description_cursive %}
-            font-style: italic;
-        {% else %}
-            font-style: normal;
-        {% endif %}
 
-        {% if typography_description_underlined %}
-            text-decoration: underline;
-        {% else %}
-            text-decoration: none;
-        {% endif %}
+            &.highlighted {
+                font-weight: bold;
+            }
 
-        {% if typography_description_color%}
-            color: @typography_description_color;
-        {% endif %}
+            &.highlighted, .label.axis {
+                {% if typography_chart_fontSize %}
+                    font-size: ~'@{typography_chart_fontSize}px';
+                {% endif %}
+                z-index: 100;
+            }
 
-        margin: 5px 0 10px !important;
-        line-height: 17px;
-    }
+            &.hover {
+                font-weight: bold;
+            }
+
+            &.smaller span {
+                font-size: 80%;
+            }
+
+            &.legend-text span {
+
+                {% if style_chart_labels_legend_tabularNums %}
+                    font-feature-settings: 'tnum';
+                    -webkit-font-feature-settings: 'tnum';
+                    -moz-font-feature-settings: 'tnum';
+                {% endif %}
+
+                {% if style_chart_labels_legend_fontSize %}
+                    font-size: ~'@{style_chart_labels_legend_fontSize}px';
+                {% endif %}
+
+                {% if style_chart_labels_legend_color %}
+                    color: @typography_chart_legend_color;
+                {% endif %}
+
+                {% if style_chart_labels_legend_typeface %}
+                    font-family: @style_chart_labels_legend_typeface;
+                {% endif %}
+            }
+        }
 
     .dw-chart-notes {
         {% if typography_notes_typeface %}
@@ -231,14 +511,32 @@
             color: @typography_notes_color;
         {% endif %}
 
-        margin-bottom: 5px;
+        {% if style_notes_padding %}
+            padding: @style_notes_padding;
+        {% endif %}
+
+        {% if style_notes_margin %}
+            margin: @style_notes_margin;
+        {% else %}
+            margin: 10px 0px 5px 0px;
+        {% endif %}
+
         position: relative;
-        margin-top: 10px;
+
     }
     #footer, .dw-chart-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+
+        {% if style_footer_padding %}
+            padding: @style_footer_padding;
+        {% endif %}
+
+        {% if style_footer_margin %}
+            margin: @style_footer_margin;
+        {% endif %}
 
         & > div > .footer-block {
             display: inline-block;
@@ -413,182 +711,61 @@
         opacity: 1;
     }
 
-    .labels text {
+    .secondary.tick span, .secondary.tick text, text.secondary.tick {
 
-        {% if typography_chart_fontSize %}
-            font-size: ~'@{typography_chart_fontSize}px';
+
+        {% if style_chart_labels_ticks_secondary_tabularNums %}
+            font-feature-settings: 'tnum';
+            -webkit-font-feature-settings: 'tnum';
+            -moz-font-feature-settings: 'tnum';
         {% endif %}
+
+        {% if style_chart_labels_ticks_secondary_typeface %}
+            font-family: @style_chart_labels_ticks_secondary_typeface;
+        {% endif %}
+        {% if style.chart.labels.ticks.secondary.fontSize %}
+                font-size: {{ style.chart.labels.ticks.secondary.fontSize ~'px' }};
+        {% endif %}
+        {% if style_chart_labels_ticks_secondary_color %}
+            color: @style_chart_labels_ticks_secondary_color;
+            fill: @style_chart_labels_ticks_secondary_color;
+        {% elseif style_chart_labels_ticks_color %}
+            color: @style_chart_labels_ticks_color;
+            fill: @style_chart_labels_ticks_color;
+        {% endif %}
+
+
     }
 
-    .label {
-        
-        span, tspan {
+    .primary.tick span, .primary.tick text, .primary.tick tspan {
 
-            {% if typography_chart_fontSize %}
-                font-size: ~'@{typography_chart_fontSize}px';
-            {% endif %}
 
-            {% if typography_chart_color %}
-                color: @typography_chart_color;
-                fill: @typography_chart_color;
-            {% else %}
-                color: @colors_text;
-                fill: @colors_text
-            {% endif %}
-        }
-
-        {% if colors_background %}
-            span {
-                text-shadow: ~'0 0 2px @{colors_background}';
-            }
-        {% endif %}
-        &.inverted span {
-            text-shadow: 0 0px 2px #000000;
-            color: #fff;
-        }
-
-        &.inside:not(.inverted) span {
-            text-shadow: 0 0px 2px #ffffff;
-            color: #333333;
-        }
-
-        {% if colors_background %}
-            &.outline span {
-                text-shadow: ~'0 1px 0 @{colors_background}, 1px 0 0 @{colors_background}, 0 -1px 0 @{colors_background}, -1px 0 0 @{colors_background},1px 1px 0 @{colors_background}, 1px -1px 0 @{colors_background}, -1px -1px 0 @{colors_background}, -1px 1px 0 @{colors_background},0 2px 1px @{colors_background}, 2px 0 1px @{colors_background}, 0 -2px 1px @{colors_background}, -2px 0 1px @{colors_background},-1px 2px 0px @{colors_background}, 2px -1px 0px @{colors_background}, -1px -2px 0px @{colors_background}, -2px -1px 0px @{colors_background},1px 2px 0px @{colors_background}, 2px 1px 0px @{colors_background}, 1px -2px 0px @{colors_background}, -2px 1px 0px @{colors_background}';
-            }
-
-            &.axis-label span {
-                text-shadow:~'-1px -1px 2px @{colors_background}, -1px 0px 2px @{colors_background}, -1px 1px 2px @{colors_background}, 0px -1px 2px @{colors_background}, 0px 1px 2px @{colors_background}, 1px -1px 2px @{colors_background}, 1px 0px 2px @{colors_background}, 1px 1px 2px @{colors_background}';
-            }
+        {% if style_chart_labels_ticks_primary_tabularNums %}
+            font-feature-settings: 'tnum';
+            -webkit-font-feature-settings: 'tnum';
+            -moz-font-feature-settings: 'tnum';
         {% endif %}
 
-        sup {
-            text-shadow: none;
-        }
-        
+        {% if style_chart_labels_ticks_primary_typeface %}
+            font-family: @style_chart_labels_ticks_primary_typeface;
+        {% endif %}
+        {% if style.chart.labels.ticks.primary.fontSize %}
+            font-size: {{ style.chart.labels.ticks.primary.fontSize ~'px' }};
+        {% endif %}
 
-        &.highlighted {
-            font-weight: bold;
-        }
+        {% if style_chart_labels_ticks_primary_color %}
+            color: @style_chart_labels_ticks_primary_color;
+            fill: @style_chart_labels_ticks_primary_color;
+        {% elseif style_chart_labels_ticks_color %}
+            color: @style_chart_labels_ticks_color;
+            fill: @style_chart_labels_ticks_color;
+        {% endif %}
 
-        &.highlighted, .label.axis {
-            {% if typography_chart_fontSize %}
-                font-size: ~'@{typography_chart_fontSize}px';
-            {% endif %}
-            z-index: 100;
-        }
-
-        &.hover {
-            font-weight: bold;
-        }
-
-        &.value span, &.outside-label span, .inside-label span, &.value tspan{
-            {% if typography_chart_value_fontSize %}
-                font-size: ~'@{typography_chart_value_fontSize}px';
-            {% endif %}
-
-            {% if typography_chart_value_fontSize %}
-                font-family: @typography_chart_value_typeface;
-            {% endif %}
-
-            {% if typography_chart_value_fontWeight %}
-                font-weight: @typography_chart_value_fontWeight;
-            {% endif %} 
-        }
-
-        &.value:not(.inside) span, .value tspan  {
-            {% if typography_chart_value_color %}
-                color: @typography_chart_value_color;
-            {% endif %}
-        }
-
-        &.series span {
-            {% if typography_chart_series_fontSize %}
-                font-size: ~'@{typography_chart_series_fontSize}px';
-            {% endif %}
-
-            {% if typography_chart_series_color %}
-                color: @typography_chart_series_color;
-            {% endif %}
-
-            {% if typography_chart_series_typeface %}
-                font-family: @typography_chart_series_typeface;
-            {% endif %}
-        }
-
-        &.legend-text span {
-            {% if typography_chart_legend_fontSize %}
-                font-size: ~'@{typography_chart_legend_fontSize}px';
-            {% endif %}
-
-            {% if typography_chart_legend_color %}
-                color: @typography_chart_legend_color;
-            {% endif %}
-
-        }
-
-        &.rotate90 {
-            -moz-transform: rotate(-90deg);
-            -webkit-transform: rotate(-90deg);
-            -ms-transform: rotate(-90deg);
-            -o-transform: rotate(-90deg);
-            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-        }
-
-        &.smaller span {
-            font-size: 80%;
-        }
     }
-
-        .secondary.tick span, .secondary.tick text, text.secondary.tick {
-            
-            {% if typography_chart_axes_secondary_fontSize %}
-                font-size: ~'@{typography_chart_axes_secondary_fontSize}px';
-            {% elseif typography_chart_axes_fontSize %}
-                font-size: ~'@{typography_chart_axes_fontSize}px';
-            {% endif %}
-
-            {% if typography_chart_axes_secondary_color %}
-                color: @typography_chart_axes_secondary_color;
-                fill: @typography_chart_axes_secondary_color;
-            {% elseif typography_chart_axes_color %}
-                color: @typography_chart_axes_color;
-                fill: @typography_chart_axes_color;
-            {% endif %}
-
-
-        }
-
-        .primary.tick span, .primary.tick text, .primary.tick tspan {
-
-            {% if typography_chart_axes_primary_fontSize %}
-
-                font-size: ~'@{typography_chart_axes_primary_fontSize}px';
-            
-            {% elseif typography_chart_axes_fontSize %}
-            
-                font-size: ~'@{typography_chart_axes_fontSize}px';
-            
-            {% endif %}
-
-            {% if typography_chart_axes_primary_color %}
-
-                color: @typography_chart_axes_primary_color;
-                fill: @typography_chart_axes_primary_color;
-
-
-            {% elseif typography_chart_axes_color %}
-                
-                color: @typography_chart_axes_color;
-                fill: @typography_chart_axes_color;
-
-            {% endif %}
-
-        }
 
     .dw-tooltip {
         {% if style_tooltip_color %}
-                color:@style_tooltip_text_color;
+                color:@style_chart_tooltip_text_color;
         {% else %}
                 color:#333333;
         {% endif %}
