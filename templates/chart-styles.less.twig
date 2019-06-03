@@ -65,6 +65,11 @@
         {% if typography_links_color %}
             color: @typography_links_color;
         {% endif %}
+        {% if typography_links_underlined %}
+            text-decoration: underline;
+        {% else %}
+            text-decoration: none;
+        {% endif %}
     }
 
     .dw-chart-header {
@@ -164,16 +169,20 @@
                 padding: @style_header_title_padding;
             {% endif %}
 
+            {% if style_header_title_border_top %}
+                border-top: @style_header_title_border_top;
+            {% endif %}
+
             {% if style_header_title_border_bottom %}
-                border-bottom: @style_header_title_border_top;
+                border-bottom: @style_header_title_border_bottom;
             {% endif %}
 
             {% if style_header_title_border_left %}
-                border-left: @style_header_title_border_top;
+                border-left: @style_header_title_border_left;
             {% endif %}
 
             {% if style_header_title_border_right %}
-                border-right: @style_header_title_border_top;
+                border-right: @style_header_title_border_right;
             {% endif %}
 
             {% if style_header_title_textAlign %}
@@ -284,7 +293,7 @@
 
         {% if style_chart_axes_gridlines_baselineColor %}
 
-            path.grid.x-axis, line.x-axis, .vis-frame line.axis {
+            path.grid.x-axis, line.x-axis, .vis-frame line.axis, line.x-tick {
                 stroke: @style_chart_axes_gridlines_baselineColor;
             }
             .bc-grid-baseline {
@@ -292,19 +301,21 @@
             }
         {% endif %}
 
-        {% if style_chart_axes_gridlines_style %}
-
-            path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline, line.y-tick{
-                stroke-dasharray: 4 4;
+            path.y-gridline, line.gridline, .major-grid-line line, line.y-gridline {
+                {% if style_chart_axes_gridlines_style_strokeDasharray %}
+                    stroke-dasharray: @style_chart_axes_gridlines_style_strokeDasharray;
+                {% endif %}
+                {% if style_chart_axes_gridlines_style_strokeLinecap %}
+                    stroke-linecap: @style_chart_axes_gridlines_style_strokeLinecap;
+                {% endif %}
             }
             .bc-grid-line {
-                border-left-style:@style_chart_axes_gridlines_style;
+                {% if style_chart_axes_gridlines_style_style %}
+                    border-left-style:@style_chart_axes_gridlines_style_style;
+                {% else %}
+                    border-left-style: solid;
+                {% endif %}
             }
-        {% else %}
-            .bc-grid-line {
-                border-left-style:solid;
-            }
-        {% endif %}
 
         {% if style_chart_axes_gridlines_width %}
 
@@ -375,7 +386,7 @@
                 {% endif %}
             }
 
-            &.value span {
+            &.value, &.value span {
 
                 {% if style_chart_labels_values_tabularNums %}
                     font-feature-settings: 'tnum';
@@ -385,6 +396,10 @@
 
                 {% if style_chart_labels_values_fontSize %}
                     font-size: ~'@{style_chart_labels_values_fontSize}px';
+                {% endif %}
+
+                {% if style_chart_labels_values_letterSpacing %}
+                    letter-spacing: ~'@{style_chart_labels_values_letterSpacing}px';
                 {% endif %}
 
                 {% if style_chart_labels_values_color %}
@@ -511,6 +526,10 @@
             color: @typography_notes_color;
         {% endif %}
 
+        {% if style_notes_textAlign %}
+            text-align: @style_notes_textAlign;
+        {% endif %}
+
         {% if style_notes_padding %}
             padding: @style_notes_padding;
         {% endif %}
@@ -550,6 +569,8 @@
                 color: @typography_footer_color;
                 pointer-events: none;
                 text-decoration: none;
+                padding: 0;
+                border-bottom: 0;
             }
 
             .separator {
@@ -641,6 +662,15 @@
 
     .dw-chart-notes a,
     .dw-chart-footer a {
+
+        {% if style_footer_links_padding %}
+            padding: @style_footer_links_padding;
+        {% endif %}
+
+        {% if style_footer_links_border_bottom %}
+            border-bottom: @style_footer_links_border_bottom;
+        {% endif %}
+
         {% if typography_links_typeface %}
             font-family: @typography_links_typeface;
         {% endif %}
