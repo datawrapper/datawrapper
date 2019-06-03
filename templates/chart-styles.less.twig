@@ -658,6 +658,23 @@
             color: @typography_footer_color;
         {% endif %}
 
+        {% if style_footer_border_top %}
+            border-top: @style_footer_border_top;
+        {% endif %}
+
+        {% if style_footer_border_bottom %}
+            border-bottom: @style_footer_border_bottom;
+        {% endif %}
+
+        {% if style_footer_border_left %}
+            border-left: @style_footer_border_left;
+        {% endif %}
+
+        {% if style_footer_border_right %}
+            border-right: @style_footer_border_right;
+        {% endif %}
+
+
     }
 
     .dw-chart-notes a,
