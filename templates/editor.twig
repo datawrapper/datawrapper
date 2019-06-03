@@ -24,8 +24,7 @@ require(['{{workflow.module}}'], function(mod) {
             visualization: {{vis|json|raw}},
         },
         mod.data || {},
-        {{workflow.data|json|raw}} || {},
-        {{ twig_data | json | raw }});
+        {{workflow.data|json|raw }} || {});
 
     var chart = new mod.Chart({{chart.toStruct()|json|raw}});
     var getJSON = mod.utils.getJSON;
@@ -43,11 +42,18 @@ require(['{{workflow.module}}'], function(mod) {
         dataset: chartData ? JSON.parse(chartData) : {}
     });
 
+    var publishData = {{ publishData | json | raw }};
+
     {% if publishLogic %}
-chart.set({
-        publishLogic: {{publishLogic|json|raw}}
-    });
+    var pubLogic = {{ publishLogic | json | raw }};
+    pubLogic.data = _.extend({}, publishData, pubLogic.data);
+    {% else %}
+    var pubLogic = { data: publishData };
     {% endif %}
+
+    chart.set({
+        publishLogic: pubLogic
+    });
 
     if (window.location.pathname.split('/')[3] != '{{step}}') {
         window.history.replaceState({id:'{{chart.id}}'}, '', '/edit/{{chart.id}}/{{step}}');
