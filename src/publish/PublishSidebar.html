@@ -18,7 +18,7 @@
         oncreate() {
             this.store.observe = observe;
             this.store.observe('publishLogic', cfg => {
-                if (cfg) {
+                if (cfg && cfg.mod) {
                     loadStylesheet(cfg.css);
                     loadScript(cfg.src, () => {
                         require([cfg.mod], mod => {
@@ -28,6 +28,7 @@
                     });
                 } else {
                     this.set({ PublishLogic });
+                    this.refs.publish.set(cfg.data);
                 }
             });
         }

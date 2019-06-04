@@ -155,8 +155,6 @@
 
             {% if style_header_title_textAlign %}
                 text-align: @style_header_title_textAlign;
-            {% else %}
-                text-align:left;
             {% endif %}
 
             {% if style_header_title_margin %}
@@ -730,7 +728,7 @@
         text-transform: none;
         font-size: 1em;
         box-shadow: 2px 2px 0px rgba(0,0,0,.4);
-        z-index: 1;
+        z-index: 10;
     }
 
     .embed-code textarea {
