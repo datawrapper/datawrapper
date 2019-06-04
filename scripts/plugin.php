@@ -207,7 +207,7 @@ function download_from_git($url) {
 function removeOrphans() {
     $plugins = PluginQuery::create()->find();
     foreach ($plugins as $plugin) {
-        if (!file_exists($plugin->getPath())) {
+        if (!file_exists($plugin->getPath().'plugin.json') && !file_exists($plugin->getPath().'package.json')) {
             $plugin->delete();
             print "Removed plugin " . $plugin->getId() . " from db.\n";
         }
