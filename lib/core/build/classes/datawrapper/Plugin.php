@@ -76,12 +76,19 @@ class Plugin extends BasePlugin {
         if (isset($this->__lastModTime)) return $this->__lastModTime;
         $lastm = 0;
         $path = get_plugin_path() . $this->getId() . '/';
-        $files = array_filter(glob('{'.$path.'*,'.$path.'*/*,'.$path.'*/*/*}', GLOB_BRACE));
-        foreach ($files as $file) {
-            if (strpos($file, '/locale/') > 0) continue; // ignore locales file
-            $lm = filemtime($file);
-            if ($lm > $lastm) $lastm = $lm;
+
+        if (defined("GLOB_BRACE")) {
+            $files = array_filter(glob('{'.$path.'*,'.$path.'*/*,'.$path.'*/*/*}', GLOB_BRACE));
+            foreach ($files as $file) {
+                if (strpos($file, '/locale/') > 0) continue; // ignore locales file
+                $lm = filemtime($file);
+                if ($lm > $lastm) $lastm = $lm;
+            }
+        } else {
+            $lastm = file_exists($path . 'plugin.json') ? filemtime($path . 'plugin.json') : filemtime($path
+                . 'package.json');
         }
+
         $this->__lastModTime = strftime('%F %H:%M:%S', $lastm);
         $this->__lastModTimeTS = $lastm;
         return $as_timestamp ? $this->__lastModTimeTS : $this->__lastModTime;
