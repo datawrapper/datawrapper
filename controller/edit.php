@@ -122,6 +122,13 @@
                 $chart->writeData($data);
             }
 
+            $publishData = (object) [
+                'embedTemplates' => publish_get_embed_templates(),
+                'embedType' => publish_get_preferred_embed_type(),
+                'pluginShareurls' => publish_get_plugin_shareurls(),
+                'shareurlType' => publish_get_preferred_shareurl_type()
+            ];
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',
@@ -129,6 +136,7 @@
                 'chart' => $chart,
                 'dataReadonly' => !$chart->isDataWritable($user),
                 'chartData' => $data,
+                'publishData' => $publishData,
                 'workflow' => $workflows[$vis['svelte-workflow']],
                 'userArray' => $userArray,
                 'vis' => $vis,

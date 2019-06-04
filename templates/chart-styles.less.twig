@@ -155,8 +155,6 @@
 
             {% if style_header_title_textAlign %}
                 text-align: @style_header_title_textAlign;
-            {% else %}
-                text-align:left;
             {% endif %}
 
             {% if style_header_title_margin %}
@@ -658,6 +656,23 @@
             color: @typography_footer_color;
         {% endif %}
 
+        {% if style_footer_border_top %}
+            border-top: @style_footer_border_top;
+        {% endif %}
+
+        {% if style_footer_border_bottom %}
+            border-bottom: @style_footer_border_bottom;
+        {% endif %}
+
+        {% if style_footer_border_left %}
+            border-left: @style_footer_border_left;
+        {% endif %}
+
+        {% if style_footer_border_right %}
+            border-right: @style_footer_border_right;
+        {% endif %}
+
+
     }
 
     .dw-chart-notes a,
@@ -715,7 +730,7 @@
         text-transform: none;
         font-size: 1em;
         box-shadow: 2px 2px 0px rgba(0,0,0,.4);
-        z-index: 1;
+        z-index: 10;
     }
 
     .embed-code textarea {

@@ -1,6 +1,6 @@
 <!-- default publish logic: logged in users may publish, guests see sign-in prompt -->
 {#if $user.mayPublish}
-<Publish />
+<Publish embed_templates="{embedTemplates}" embed_type="{embedType}" plugin_shareurls="{pluginShareurls}" shareurl_type="{shareurlType}" />
 {:elseif !$user.isLoggedIn}
 <div class="alert alert-info" style="margin-top: 30px">
     To publish a chart, you need to be signed in to Datawrapper
@@ -15,6 +15,14 @@
     import SignInForm from '../signin/SignInForm.html';
 
     export default {
-        components: { Publish, SignInForm }
+        components: { Publish, SignInForm },
+        data() {
+            return {
+                embedTemplates: [],
+                embedType: 'responsive',
+                pluginShareurls: [],
+                shareurlType: 'default'
+            };
+        }
     };
 </script>
