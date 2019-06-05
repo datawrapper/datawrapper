@@ -338,6 +338,8 @@
 
         {% if style_chart_margin %}
             margin: @style_chart_margin;
+        {% else %}
+            margin: 0px 0px 20px 0px;
         {% endif %}
 
         {% if style_chart_border_top %}
@@ -533,7 +535,7 @@
         {% if style_notes_margin %}
             margin: @style_notes_margin;
         {% else %}
-            margin: 10px 0px 5px 0px;
+            margin: 0px 0px 5px 0px;
         {% endif %}
 
         position: relative;
