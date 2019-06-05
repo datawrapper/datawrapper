@@ -9,8 +9,9 @@ const chalk = require('chalk');
 const {csvParse} = require('d3-dsv');
 const {queue} = require('d3-queue');
 const request = require('request');
+const pluginDirectory = '../../plugins';
 
-const config = yaml.safeLoad(fs.existsSync('./config.yaml') ? fs.readFileSync('./config.yaml') : fs.readFileSync('/etc/datawrapper/config.yaml'));
+const config = yaml.safeLoad(fs.existsSync('./config.yaml') ? fs.readFileSync('./config.yaml') : fs.readFileSync('../../config.yaml'));
 
 if (!config.translation || !config.translation.core) {
     console.error(chalk.bold.red('Error!'), chalk.yellowBright('You need to set up the translation spreadsheets in config.yaml!'));
@@ -48,8 +49,8 @@ if (config.translation) {
                 }
 
                 if (k) {
-                    if (fs.existsSync(`./plugins/${k}`)) {
-                        writeLocales(src, `./plugins/${k}/locale`, languages);
+                    if (fs.existsSync(`${pluginDirectory}/${k}`)) {
+                        writeLocales(src, `${pluginDirectory}/${k}/locale`, languages);
                     } else {
                         console.log(chalk.yellowBright.bold(' ⚇ '), 'ignoring missing plugin', chalk.bold(k));
                     }
@@ -69,7 +70,7 @@ if (config.translation) {
                         delete row.plugin;
                         locale[key] = row;
                     })
-                    fs.writeFileSync(`./plugins/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
+                    fs.writeFileSync(`${pluginDirectory}/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
                 }
             })
 
