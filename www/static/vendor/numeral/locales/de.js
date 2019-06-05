@@ -4,7 +4,7 @@
 
 export default {
     delimiters: {
-        thousands: ' ',
+        thousands: '.',
         decimal: ','
     },
     abbreviations: {
