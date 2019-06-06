@@ -263,6 +263,10 @@
 
     .dw-chart-body {
 
+        {% if typography_chart_fontWeight %}
+            font-weight: @typography_chart_fontWeight;
+        {% endif %}
+
         &.dark-bg .label span {
 
             {% if typography_chart_color %}
@@ -369,11 +373,11 @@
 
         .label {
 
-            span, tspan {
-
                 {% if typography_chart_fontSize %}
                     font-size: ~'@{typography_chart_fontSize}px';
                 {% endif %}
+
+            span, tspan {
 
                 {% if typography_chart_color %}
                     color: @typography_chart_color;
@@ -469,7 +473,7 @@
                 font-size: 80%;
             }
 
-            &.legend-text span {
+            &.legend-text span, &.legend-text {
 
                 {% if style_chart_labels_legend_tabularNums %}
                     font-feature-settings: 'tnum';
@@ -756,8 +760,7 @@
         opacity: 1;
     }
 
-    .secondary.tick span, .secondary.tick text, text.secondary.tick {
-
+    .secondary.tick {
 
         {% if style_chart_labels_ticks_secondary_tabularNums %}
             font-feature-settings: 'tnum';
@@ -771,19 +774,31 @@
         {% if style.chart.labels.ticks.secondary.fontSize %}
                 font-size: {{ style.chart.labels.ticks.secondary.fontSize ~'px' }};
         {% endif %}
-        {% if style_chart_labels_ticks_secondary_color %}
-            color: @style_chart_labels_ticks_secondary_color;
-            fill: @style_chart_labels_ticks_secondary_color;
-        {% elseif style_chart_labels_ticks_color %}
-            color: @style_chart_labels_ticks_color;
-            fill: @style_chart_labels_ticks_color;
-        {% endif %}
+
+    &.text, span, text {
 
 
+            {% if style_chart_labels_ticks_secondary_color %}
+                color: @style_chart_labels_ticks_secondary_color;
+                fill: @style_chart_labels_ticks_secondary_color;
+            {% elseif style_chart_labels_ticks_color %}
+                color: @style_chart_labels_ticks_color;
+                fill: @style_chart_labels_ticks_color;
+            {% endif %}
+
+
+        }
     }
 
-    .primary.tick span, .primary.tick text, .primary.tick tspan {
+    .primary.tick {
 
+        {% if style_chart_labels_ticks_primary_typeface %}
+            font-family: @style_chart_labels_ticks_primary_typeface;
+        {% endif %}
+
+        {% if style.chart.labels.ticks.primary.fontSize %}
+            font-size: {{ style.chart.labels.ticks.primary.fontSize ~'px' }};
+        {% endif %}
 
         {% if style_chart_labels_ticks_primary_tabularNums %}
             font-feature-settings: 'tnum';
@@ -791,21 +806,17 @@
             -moz-font-feature-settings: 'tnum';
         {% endif %}
 
-        {% if style_chart_labels_ticks_primary_typeface %}
-            font-family: @style_chart_labels_ticks_primary_typeface;
-        {% endif %}
-        {% if style.chart.labels.ticks.primary.fontSize %}
-            font-size: {{ style.chart.labels.ticks.primary.fontSize ~'px' }};
-        {% endif %}
+          span, text, tspan {
 
-        {% if style_chart_labels_ticks_primary_color %}
-            color: @style_chart_labels_ticks_primary_color;
-            fill: @style_chart_labels_ticks_primary_color;
-        {% elseif style_chart_labels_ticks_color %}
-            color: @style_chart_labels_ticks_color;
-            fill: @style_chart_labels_ticks_color;
-        {% endif %}
+            {% if style_chart_labels_ticks_primary_color %}
+                color: @style_chart_labels_ticks_primary_color;
+                fill: @style_chart_labels_ticks_primary_color;
+            {% elseif style_chart_labels_ticks_color %}
+                color: @style_chart_labels_ticks_color;
+                fill: @style_chart_labels_ticks_color;
+            {% endif %}
 
+        }
     }
 
     .dw-tooltip {
