@@ -34,10 +34,10 @@
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
-    {% if config.sentry and config.sentry.dns %}
+    {% if config.sentry and config.sentry.dsn %}
     <script type="text/javascript" src="{{ config.static_path }}/vendor/sentry/bundle.min.js"></script>
     <script type="text/javascript">
-    Sentry.init({ dsn: '{{ config.sentry.dns }}' });
+    Sentry.init({ dsn: '{{ config.sentry.dsn }}' });
     </script>
     {% endif %}
 
