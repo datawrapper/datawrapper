@@ -10,11 +10,8 @@
         window.parent.postMessage('datawrapper:vis:reload', '*');
     }
     </script>
-    {% if preview and config.sentry and config.sentry.dsn %}
-    <script type="text/javascript" src="{{ config.static_path }}/vendor/sentry/bundle.min.js"></script>
-    <script type="text/javascript">
-    Sentry.init({ dsn: '{{ config.sentry.dsn }}' });
-    </script>
+    {% if preview %}
+    {% include "sentry.twig" %}
     {% endif %}
     {# <!--[if lt IE 7]>
     <meta http-equiv="refresh" content="0;URL='static.html'">

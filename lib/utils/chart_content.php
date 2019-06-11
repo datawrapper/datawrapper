@@ -283,6 +283,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'themeCSS' => $theme->getCSS($vis_less),
         'chartLocale' => $chartLocale,
         'locales' => $visDependencyLocales,
+        'SENTRY_RELEASE' => $the_vis['id'].'@'.substr(md5(join($vis_versions, '-')), 0, 8),
 
         // the following is used by chart_publish.php
         'vis_js' => $the_vis_js,

@@ -1,0 +1,11 @@
+{% if config.sentry and config.sentry.dsn %}
+<script type="text/javascript" src="{{ config.static_path }}/vendor/sentry/bundle.min.js"></script>
+<script type="text/javascript">
+Sentry.init({
+	dsn: '{{ config.sentry.dsn }}',
+	release: '{{ SENTRY_RELEASE }}'{% if config.sentry.sampleRate %},
+	sampleRate: {{config.sentry.sampleRate}}
+{% endif %}
+});
+</script>
+{% endif %}
