@@ -121,6 +121,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         } else {
             $app_js = '/static/js/svelte/'.$app_id.'.js';
             $app_css = '/static/css/svelte/'.$app_id.'.css';
+            $local_app_js = $app_js;
         }
         // compute a sha for cache busting
         $context = [
