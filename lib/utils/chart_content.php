@@ -314,7 +314,7 @@ function get_vis_js($vis, $visJS) {
         if (is_array($js)) $js = $js['src'];
         if (substr($js, 0, 7) != "http://" && substr($js, 0, 8) != "https://" && substr($js, 0, 2) != '//') {
             if ($rewritePaths) {
-                $path = preg_replace('@/static/plugins/(.*)/(.*)@', get_plugin_path() . "$1/static/$2", $js);
+                $path = preg_replace('@/static/plugins/(.*?)/(.*)@', get_plugin_path() . "$1/static/$2", $js);
             } else {
                 $path = ROOT_PATH . 'www' . $js;
             }
