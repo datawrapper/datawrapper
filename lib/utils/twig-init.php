@@ -106,7 +106,16 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
     $twig->addFunction(new Twig_SimpleFunction('svelte', function($app_id, $data = null) {
         $locale = DatawrapperSession::getLanguage();
         $is_plugin = substr($app_id, 0, 7) === 'plugin/';
+
+
+
         if ($is_plugin) {
+            $path = explode("/", $app_id);
+            $pl = array_shift($path);
+            $plugin = array_shift($path);
+            $filepath = implode("/", $path);
+            $local_app_js = get_plugin_path() . $plugin . '/static/' . $filepath . '.js';
+
             $app_js = '/static/plugins/'.substr($app_id, 7).'.js';
             $app_css = '/static/plugins/'.substr($app_id, 7).'.css';
         } else {
@@ -115,7 +124,7 @@ function dwInitTwigEnvironment(Twig_Environment $twig) {
         }
         // compute a sha for cache busting
         $context = [
-            'sha' => substr(md5(file_get_contents(ROOT_PATH."www".$app_js)), 0, 8),
+            'sha' => substr(md5(file_get_contents($local_app_js)), 0, 8),
             'locale' => $locale,
             'app_id' => $app_id,
             'app_js' => $app_js,
