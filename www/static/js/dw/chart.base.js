@@ -62,6 +62,14 @@
             }
         }
 
+        var belowChartHeight = $('.footer-left').height() + $('.footer-right').height() + $('.dw-chart-notes').height();
+
+        if (belowChartHeight > 0) {
+            $('.dw-chart-body').addClass('content-below-chart');
+        } else {
+            $('.dw-chart-body').removeClass('content-below-chart');
+        }
+
         chart.render($chart);
     }
 

@@ -335,7 +335,9 @@
         {% if style_chart_margin %}
             margin: @style_chart_margin;
         {% else %}
-            margin: 0px 0px 20px 0px;
+            &.content-below-chart {
+                margin: 0px 0px 20px 0px;
+            }
         {% endif %}
 
         {% if style_chart_border_top %}
