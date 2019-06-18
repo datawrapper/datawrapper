@@ -1,18 +1,3 @@
-<script type="text/javascript">
-    // load IE11 polyfill
-    var isIE = false || !!document.documentMode;
-    if (isIE) {
-        var raw = navigator.userAgent.toLowerCase().match(/(?:msie |rv:)([0-9]+).[0-9]+/);
-        var version = raw ? parseInt(raw[1], 10) : false;
-        if (version && version === 11) {
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/ie-11.js';
-            document.head.appendChild(script);
-        }
-    }
-</script>
-
 <script type="text/javascript" src="{{ app_js }}?v={{sha}}"></script>
 <link rel="stylesheet" type="text/css" href="{{ app_css }}?v={{sha}}">
 <div id="svelte-{{ app_id | replace({'/':'-'}) }}"></div>
