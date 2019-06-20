@@ -3,15 +3,18 @@
 /* eslint no-console: "off" */
 
 const fs = require('fs');
+const path = require('path');
 const yaml = require('js-yaml');
 const _ = require('underscore');
 const chalk = require('chalk');
 const {csvParse} = require('d3-dsv');
 const {queue} = require('d3-queue');
 const request = require('request');
-const pluginDirectory = '../../plugins';
+
+const pluginDirectory = fs.existsSync('../../plugins') ? '../../plugins' : path.resolve(__dirname, '../plugins');
 
 const config = yaml.safeLoad(fs.existsSync('./config.yaml') ? fs.readFileSync('./config.yaml') : fs.readFileSync('../../config.yaml'));
+
 
 if (!config.translation || !config.translation.core) {
     console.error(chalk.bold.red('Error!'), chalk.yellowBright('You need to set up the translation spreadsheets in config.yaml!'));
