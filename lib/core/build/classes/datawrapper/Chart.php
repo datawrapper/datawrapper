@@ -268,9 +268,13 @@ class Chart extends BaseChart {
                 CURLOPT_CONNECTTIMEOUT => 5,
             ]);
             $new_data = curl_exec($ch);
-            // check encoding of data
-            $new_data = str_to_unicode($new_data);
-            if (!empty($new_data)) $this->writeData($new_data);
+            // check status code to ignore error responses
+            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($statusCode < 400) {
+                // check encoding of data
+                $new_data = str_to_unicode($new_data);
+                if (!empty($new_data)) $this->writeData($new_data);
+            }
         }
         Hooks::execute(Hooks::CUSTOM_EXTERNAL_DATA, $this);
     }
