@@ -1,26 +1,28 @@
 /*
-* dataset source for delimited files (CSV, TSV, ...)
-*/
+ * dataset source for delimited files (CSV, TSV, ...)
+ */
 
 /**
-* Smart delimited data parser.
-* - Handles CSV and other delimited data.
-* Includes auto-guessing of delimiter character
-* Parameters:
-*   options
-*     delimiter : ","
-*/
+ * Smart delimited data parser.
+ * - Handles CSV and other delimited data.
+ * Includes auto-guessing of delimiter character
+ * Parameters:
+ *   options
+ *     delimiter : ","
+ */
 
 /* globals dw,$,_ */
 
 dw.datasource.delimited = function(opts) {
-
     function loadAndParseCsv() {
         if (opts.url) {
             return $.ajax({
-                url: opts.url + (opts.url.indexOf('?') > -1 ? '&' : '?') + 'v='+(new Date()).getTime(),
+                url: opts.url + (opts.url.indexOf('?') > -1 ? '&' : '?') + 'v=' + new Date().getTime(),
                 method: 'GET',
-                dataType: "text"
+                dataType: 'text',
+                xhrFields: {
+                    withCredentials: true
+                }
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
             });
@@ -43,17 +45,18 @@ dw.datasource.delimited = function(opts) {
     };
 };
 
-
 var DelimitedParser = function(opts) {
-
-    opts = _.extend({
-        delimiter: "auto",
-        quoteChar: "\"",
-        skipRows: 0,
-        emptyValue: null,
-        transpose: false,
-        firstRowIsHeader: true
-    }, opts);
+    opts = _.extend(
+        {
+            delimiter: 'auto',
+            quoteChar: '"',
+            skipRows: 0,
+            emptyValue: null,
+            transpose: false,
+            firstRowIsHeader: true
+        },
+        opts
+    );
 
     this.__delimiterPatterns = getDelimiterPatterns(opts.delimiter, opts.quoteChar);
     this.opts = opts;
@@ -61,19 +64,34 @@ var DelimitedParser = function(opts) {
 
 function getDelimiterPatterns(delimiter, quoteChar) {
     return new RegExp(
-    (
-    // Delimiters.
-    "(\\" + delimiter + "|\\r?\\n|\\r|^)" +
-    // Quoted fields.
-    "(?:" + quoteChar + "([^" + quoteChar + "]*(?:" + quoteChar + "\"[^" + quoteChar + "]*)*)" + quoteChar + "|" +
-    // Standard fields.
-    "([^" + quoteChar + "\\" + delimiter + "\\r\\n]*))"), "gi");
+        // Delimiters.
+        '(\\' +
+            delimiter +
+            '|\\r?\\n|\\r|^)' +
+            // Quoted fields.
+            '(?:' +
+            quoteChar +
+            '([^' +
+            quoteChar +
+            ']*(?:' +
+            quoteChar +
+            '"[^' +
+            quoteChar +
+            ']*)*)' +
+            quoteChar +
+            '|' +
+            // Standard fields.
+            '([^' +
+            quoteChar +
+            '\\' +
+            delimiter +
+            '\\r\\n]*))',
+        'gi'
+    );
 }
 
 _.extend(DelimitedParser.prototype, {
-
     parse: function(data) {
-
         var me = this,
             opts = this.opts;
 
@@ -94,13 +112,11 @@ _.extend(DelimitedParser.prototype, {
 
             // Check to see if the delimiter is defined. If not,
             // then default to comma.
-            strDelimiter = (strDelimiter || ",");
+            strDelimiter = strDelimiter || ',';
 
             // Create an array to hold our data. Give the array
             // a default empty first row.
-            var arrData = [
-                []
-            ];
+            var arrData = [[]];
 
             // Create an array to hold our individual pattern
             // matching groups.
@@ -109,7 +125,7 @@ _.extend(DelimitedParser.prototype, {
 
             // Keep looping over the regular expression matches
             // until we can no longer find a match.
-            while (arrMatches = delimiterPattern.exec(strData)) {
+            while ((arrMatches = delimiterPattern.exec(strData))) {
                 // Get the delimiter that was found.
                 var strMatchedDelimiter = arrMatches[1];
 
@@ -117,32 +133,23 @@ _.extend(DelimitedParser.prototype, {
                 // (is not the start of string) and if it matches
                 // field delimiter. If id does not, then we know
                 // that this delimiter is a row delimiter.
-                if (
-                    strMatchedDelimiter.length && (strMatchedDelimiter != strDelimiter)) {
-
+                if (strMatchedDelimiter.length && strMatchedDelimiter != strDelimiter) {
                     // Since we have reached a new row of data,
                     // add an empty row to our data array.
                     arrData.push([]);
-
                 }
-
 
                 // Now that we have our delimiter out of the way,
                 // let's check to see which kind of value we
                 // captured (quoted or unquoted).
                 if (arrMatches[2]) {
-
                     // We found a quoted value. When we capture
                     // this value, unescape any double quotes.
-                    strMatchedValue = arrMatches[2].replace(new RegExp("\"\"", "g"), "\"");
-
+                    strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
                 } else {
-
                     // We found a non-quoted value.
                     strMatchedValue = arrMatches[3];
-
                 }
-
 
                 // Now that we have our value string, let's add
                 // it to the data array.
@@ -161,7 +168,7 @@ _.extend(DelimitedParser.prototype, {
             }
 
             // Return the parsed data.
-            return (arrData.slice(1));
+            return arrData.slice(1);
         } // end parseCSV
 
         function transpose(arrMatrix) {
@@ -173,7 +180,9 @@ _.extend(DelimitedParser.prototype, {
             if (h === 0 || w === 0) {
                 return [];
             }
-            var i, j, t = [];
+            var i,
+                j,
+                t = [];
             for (i = 0; i < h; i++) {
                 t[i] = [];
                 for (j = 0; j < w; j++) {
@@ -219,7 +228,9 @@ _.extend(DelimitedParser.prototype, {
                 });
             });
 
-            columns = _.map(columns, function(c) { return dw.column(c.name, c.data); });
+            columns = _.map(columns, function(c) {
+                return dw.column(c.name, c.data);
+            });
             return dw.dataset(columns);
         } // end makeDataset
 
@@ -230,7 +241,6 @@ _.extend(DelimitedParser.prototype, {
         return makeDataset(arrData);
     }, // end parse
 
-
     guessDelimiter: function(strData) {
         // find delimiter which occurs most often
         var maxMatchCount = 0,
@@ -240,7 +250,7 @@ _.extend(DelimitedParser.prototype, {
         _.each(delimiters, function(delimiter, i) {
             var regex = getDelimiterPatterns(delimiter, me.quoteChar),
                 c = strData.match(regex).length;
-            if  (delimiter == '\t') c *= 1.15;
+            if (delimiter == '\t') c *= 1.15;
             if (c > maxMatchCount) {
                 maxMatchCount = c;
                 k = i;
@@ -248,6 +258,4 @@ _.extend(DelimitedParser.prototype, {
         });
         return delimiters[k];
     }
-
 }); // end _.extend(DelimitedParser)
-

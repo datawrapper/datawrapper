@@ -1079,7 +1079,10 @@ dw.datasource.delimited = function(opts) {
             return $.ajax({
                 url: opts.url + (opts.url.indexOf('?') > -1 ? '&' : '?') + 'v='+(new Date()).getTime(),
                 method: 'GET',
-                dataType: "text"
+                dataType: 'text',
+                xhrFields: {
+                    withCredentials: true
+                }
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
             });
