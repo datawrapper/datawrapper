@@ -39,6 +39,13 @@ class Organization extends BaseOrganization
             ->find();
     }
 
+    public function getOwner() {
+        return UserOrganizationQuery::create()
+            ->filterByOrganization($this)
+            ->filterByOrganizationRole(UserOrganizationPeer::ORGANIZATION_ROLE_OWNER)
+            ->findOne();
+    }
+
     public function getRole($user) {
         return UserOrganizationQuery::create()
             ->filterByOrganization($this)
@@ -82,7 +89,7 @@ class Organization extends BaseOrganization
     public function getSettings($key = null) {
         if ($this->settings == null) {
             return array();
-        } 
+        }
 
         $meta = json_decode($this->settings, true);
         if (!is_array($meta)) $meta = array();
