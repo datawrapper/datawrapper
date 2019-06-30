@@ -334,6 +334,38 @@ _.extend(dw.visualization.base, {
         }
         this.__renderedDfd.resolve();
         this.__rendered = true;
+        this.postRendering();
+    },
+
+    postRendering: function() {
+        var theme = this.theme();
+
+        function renderWatermark() {
+            var text = theme.options.watermark.text || 'CONFIDENTIAL';
+
+            $('.watermark', '#chart').remove();
+            $('.dw-chart-body').append('<div class="export-text marker-text watermark noscript"><span>' + text + '</span></div>');
+            $('.watermark', '#chart').css('font-size', '6px');
+
+            var $watermark = $('.watermark', '#chart');
+            var width = $watermark[0].getBoundingClientRect().width;
+            var angle = Math.atan(window.innerHeight / window.innerWidth);
+            var space = Math.sqrt(Math.pow(window.innerHeight, 2) + Math.pow(window.innerWidth, 2));
+            var fontSize = 6 * ((space * 0.8) / width);
+            var transform = 'rotate(' + -angle + 'rad)';
+
+            $watermark
+                .attr('data-rotate', (-1 * angle * 180) / Math.PI)
+                .css('font-size', fontSize)
+                .css('transform', transform);
+        }
+
+        if (this.theme() && this.theme().options && this.theme().options.watermark) {
+            renderWatermark();
+            $(window)
+                .off('resize', renderWatermark)
+                .on('resize', renderWatermark);
+        }
     },
 
     rendered: function() {
