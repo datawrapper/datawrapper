@@ -167,7 +167,6 @@ define([
 
     function iframeLoaded() {
         dw.backend.fire('vis-loaded');
-        updateVisBackground();
         var win = iframe.get(0).contentWindow;
         var chk;
 
@@ -176,6 +175,7 @@ define([
             if (win.__dw && win.__dw.vis) {
                 clearInterval(chk);
                 iframeReady();
+                updateVisBackground();
             }
         }, 100);
     }
@@ -390,14 +390,10 @@ define([
         // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents();
         var bgcol = $('body', iframe).css('background-color');
-        var white = bgcol === 'rgb(255, 255, 255)' || bgcol === '#ffffff' || bgcol === 'white' || bgcol === 'transparent';
-        var border = white ? '#ffffff' : '#ddd';
-
-        bgcol = dw.backend.currentChart.get('metadata.publish.contextBg') || dw.backend.currentChart.get('metadata.publish.background');
+        var isTransparent = bgcol === 'transparent' || bgcol === 'rgba(0, 0, 0, 0)';
 
         $('#iframe-wrapper').css({
-            'background-color': white ? '#ffffff' : bgcol,
-            'border-color': border
+            'background-color': isTransparent ? '#ffffff' : bgcol
         });
     }
 
