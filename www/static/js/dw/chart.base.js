@@ -17,6 +17,14 @@
         }
         var $chart = $('#chart');
 
+        var belowChartHeight = $('.footer-left').height() + $('.footer-right').height() + $('.dw-chart-notes').height();
+
+        if (belowChartHeight > 0) {
+            $('.dw-chart-body').addClass('content-below-chart');
+        } else {
+            $('.dw-chart-body').removeClass('content-below-chart');
+        }
+
         // compute chart dimensions
         var w = $chart.width();
         var h = dw.utils.getMaxChartHeight($('#chart'));
@@ -60,14 +68,6 @@
                         .attr('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(csv));
                 }
             }
-        }
-
-        var belowChartHeight = $('.footer-left').height() + $('.footer-right').height() + $('.dw-chart-notes').height();
-
-        if (belowChartHeight > 0) {
-            $('.dw-chart-body').addClass('content-below-chart');
-        } else {
-            $('.dw-chart-body').removeClass('content-below-chart');
         }
 
         chart.render($chart);
