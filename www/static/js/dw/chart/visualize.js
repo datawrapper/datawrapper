@@ -387,9 +387,10 @@ define([
     }
 
     function updateVisBackground() {
+        var theme = dw.theme(dw.backend.currentChart.get('theme'));
         // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents();
-        var bgcol = $('body', iframe).css('background-color');
+        var bgcol = theme && theme.colors && theme.colors.background ? theme.colors.background : $('body', iframe).css('background-color');
         var isTransparent = bgcol === 'transparent' || bgcol === 'rgba(0, 0, 0, 0)';
 
         $('#iframe-wrapper').css({
