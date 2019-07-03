@@ -45,6 +45,7 @@ require_once ROOT_PATH . 'controller/chart/publish.php';
 require_once ROOT_PATH . 'controller/mycharts.php';
 require_once ROOT_PATH . 'controller/xhr.php';
 require_once ROOT_PATH . 'controller/admin.php';
+require_once ROOT_PATH . 'controller/polyfill.php';
 
 
 $app->notFound(function() {

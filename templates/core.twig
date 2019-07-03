@@ -24,12 +24,7 @@
     <link href="{{ config.static_path }}/vendor/iconicfont/css/iconmonstr-iconic-font.min.css" rel="stylesheet" type="text/css">
 
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-      <script src="{{ config.static_path }}/vendor/json-js/json2.js"></script>
-      <link href="{{ config.static_path }}/css/datawrapper-ie.css" rel="stylesheet">
-    <![endif]-->
+    <script src="/polyfill"></script>
 
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
@@ -78,7 +73,6 @@
     </script>
     {% endif %}
     {# javascript core 2.0 #}
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/misc/polyfills.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-2.0.js?v={{ COMMIT_SHA }}"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-backend.js"></script>
 
