@@ -135,7 +135,7 @@
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
                             <span class="separator"></span>
                             {{ sourceCaption }}:
-                            <a href="{{sourceURL}}" target="_blank">{{ source | purify | raw }}</a>
+                            <a href="{{sourceURL}}" rel="nofollow noopener noreferrer" target="_blank">{{ source | purify | raw }}</a>
                         </span>
                         {% endif %}
 
