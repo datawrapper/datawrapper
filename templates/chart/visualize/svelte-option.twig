@@ -184,7 +184,7 @@ require(['{{ path }}'], function(mod) {
     dw.backend.currentChart.onChange(function(ds, changed) {
         passiveMode = true;
         var attr = dw.backend.currentChart.attributes();
-        // chart.set(attr);
+        chart.set(attr);
         // if (changed == 'metadata.data.changes') {
         //     const dataset = chart.dataset(true);
         //     chart.set({ dataset });
