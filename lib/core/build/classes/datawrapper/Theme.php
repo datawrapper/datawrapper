@@ -58,7 +58,7 @@ class Theme extends BaseTheme
             $allVisLess .= $less->compile($vis);
         }
 
-        
+
         return $less->compile($baseLess . "\n" . $allVisLess . "\n" . $allThemeLess);
     }
 
@@ -297,6 +297,8 @@ class Theme extends BaseTheme
             unset($data['Assets']);
             unset($data['Less']);
         }
+
+        if (empty($data["Data"])) $data["Data"] = new stdClass();
 
         return $this->lowercaseKeys($data);
     }
