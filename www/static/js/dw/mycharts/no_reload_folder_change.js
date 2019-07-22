@@ -181,10 +181,18 @@ define(function(require) {
     }
 
     function getOrganizationId(el) {
-        if ($(el).hasClass("root-folder")) {
-            return ($(el).attr("id") == "user-root" ? false : $(el).attr("id").replace("org-root-", ""));
+        if ($(el).hasClass('root-folder')) {
+            return $(el).attr('id') == 'user-root'
+                ? false
+                : $(el)
+                      .attr('id')
+                      .replace('org-root-', '');
         } else {
-            return getOrganizationId($(el).closest("ul").prev());
+            return getOrganizationId(
+                $(el)
+                    .closest('ul')
+                    .prev()
+            );
         }
     }
 
@@ -203,12 +211,12 @@ define(function(require) {
             return false;
         }
 
-        if (window.organizationSettings[orgId] && window.organizationSettings[orgId].folders == "collapsed") {
+        if (window.organizationSettings[orgId] && window.organizationSettings[orgId].folders == 'collapsed') {
             return true;
         }
 
         return false;
-     }
+    }
 
     function toggleSubtree() {
         $('li.has-subtree, .root-folder').each(function(index, el) {
