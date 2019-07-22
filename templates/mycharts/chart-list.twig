@@ -17,7 +17,7 @@
 
                     <a class="popup" href="#/_/{{ chart.id }}">
                         {% if organization_settings[chart.organizationId] and organization_settings[chart.organizationId].displayLocale %}
-                            <span class="locale">{{ chart.locale }}</span>
+                            <span class="locale">{{ chart.language }}</span>
                         {% endif %}
 
                         <div class="image" style="width:100%; height:130px; background:url(//{{ IMG_DOMAIN }}/{{chart.id}}/{{chart.getHash}}/plain.png) top left no-repeat;background-size:cover"></div>
