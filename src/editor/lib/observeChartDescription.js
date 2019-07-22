@@ -36,6 +36,8 @@ export default function(chart, chartCont) {
         const txt = chartCont.querySelector(text);
         const cont = chartCont.querySelector(block);
 
+        if (!txt) return;
+
         chart.observeDeep(key, (value, old) => {
             if (chart.isPassive()) return;
             if (value !== old) {
