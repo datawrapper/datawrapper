@@ -173,12 +173,24 @@ define(function(require) {
     }
 
     function toggleSubtree() {
+        $('li.has-subtree').each(function(el) {
+            if (window.localStorage.getItem('chart-folder-' + $(this).attr("folder-id")) == "collapsed") {
+                $(this).addClass('subtree-collapsed');
+            }
+        });
+
         $('.folders-left li a > .im,.folders-left li .collapse-toggle').click(function(evt) {
             var li = $(evt.currentTarget).parents('li');
             if (li.is('.has-subtree,.root-folder')) {
                 evt.preventDefault();
                 evt.stopPropagation();
                 li.toggleClass('subtree-collapsed');
+
+                if ($(this).parent().attr("folder-id")) {
+                    var folderId = $(this).parent().attr("folder-id"),
+                        isCollapsed = $(this).parent().hasClass("subtree-collapsed");
+                    window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? "collapsed" : "open");
+                }
             }
         });
     }
