@@ -415,8 +415,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $q = $app->request()->params('q');
 
     if ($is_xhr) {
-        $page = [
-        ];
+        $page = [];
     } else {
         $folders = FolderQuery::create()->getParsableFolders($user);
         $hasFolders = false;
@@ -435,6 +434,12 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'preload' => $folders,
             'hasFolders' => $hasFolders
         ];
+    }
+
+    $orgs = mycharts_list_organizations($user);
+    $page['organization_settings'] = [];
+    foreach ($orgs as $org) {
+        $page['organization_settings'][$org->id] = $org->settings;
     }
 
     $con = Propel::getConnection();

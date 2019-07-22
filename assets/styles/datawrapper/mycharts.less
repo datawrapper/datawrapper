@@ -319,8 +319,18 @@ body.dw-mycharts {
         display: none;
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     }
+    .locale {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        color: #888
+    }
     .thumbnail:hover {
         border-color: #acf !important;
+
+        .locale {
+            display: none;
+        }
     }
     .thumbnail.checked {
         border-color: #09c !important;

@@ -2822,8 +2822,17 @@ body.dw-mycharts .thumbnail .dw-checkbox {
   display: none;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
+body.dw-mycharts .locale {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #888;
+}
 body.dw-mycharts .thumbnail:hover {
   border-color: #acf !important;
+}
+body.dw-mycharts .thumbnail:hover .locale {
+  display: none;
 }
 body.dw-mycharts .thumbnail.checked {
   border-color: #09c !important;
