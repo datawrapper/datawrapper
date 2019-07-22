@@ -172,9 +172,17 @@ define(function(require) {
         });
     }
 
+    function getId(el) {
+        if ($(el).attr('folder-id')) {
+            return $(el).attr('folder-id');
+        } else {
+            return $(el).attr('id');
+        }
+    }
+
     function toggleSubtree() {
-        $('li.has-subtree').each(function(el) {
-            if (window.localStorage.getItem('chart-folder-' + $(this).attr("folder-id")) == "collapsed") {
+        $('li.has-subtree, .root-folder').each(function(el) {
+            if (window.localStorage.getItem('chart-folder-' + getId(this)) == 'collapsed') {
                 $(this).addClass('subtree-collapsed');
             }
         });
@@ -186,11 +194,12 @@ define(function(require) {
                 evt.stopPropagation();
                 li.toggleClass('subtree-collapsed');
 
-                if ($(this).parent().attr("folder-id")) {
-                    var folderId = $(this).parent().attr("folder-id"),
-                        isCollapsed = $(this).parent().hasClass("subtree-collapsed");
-                    window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? "collapsed" : "open");
-                }
+                var folderId = getId($(this).parent()),
+                    isCollapsed = $(this)
+                        .parent()
+                        .hasClass('subtree-collapsed');
+
+                window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? 'collapsed' : 'open');
             }
         });
     }
