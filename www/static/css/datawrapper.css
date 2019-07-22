@@ -2827,6 +2827,7 @@ body.dw-mycharts .locale {
   top: 5px;
   right: 5px;
   color: #888;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff, 1px 1px 0 #fff, 1px -1px 0 #fff, -1px -1px 0 #fff, -1px 1px 0 #fff, 0 2px 1px #fff, 2px 0 1px #fff, 0 -2px 1px #fff, -2px 0 1px #fff, -1px 2px 0px #fff, 2px -1px 0px #fff, -1px -2px 0px #fff, -2px -1px 0px #fff, 1px 2px 0px #fff, 2px 1px 0px #fff, 1px -2px 0px #fff, -2px 1px 0px #fff;
 }
 body.dw-mycharts .thumbnail:hover {
   border-color: #acf !important;
