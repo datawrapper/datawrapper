@@ -77,6 +77,7 @@ function mycharts_list_organizations($user) {
             $obj = new stdClass();
             $obj->id = $org->getId();
             $obj->name = $org->getName();
+            $obj->settings = $org->getSettings();
             $obj->tag = preg_replace(array('/[^[:alnum:] -]/', '/(\s+|\-+)/'), array('', '-'), $org->getId());
             $orgs[] = $obj;
         }

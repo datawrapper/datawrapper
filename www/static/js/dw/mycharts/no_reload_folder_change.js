@@ -180,9 +180,39 @@ define(function(require) {
         }
     }
 
+    function getOrganizationId(el) {
+        if ($(el).hasClass("root-folder")) {
+            return ($(el).attr("id") == "user-root" ? false : $(el).attr("id").replace("org-root-", ""));
+        } else {
+            return getOrganizationId($(el).closest("ul").prev());
+        }
+    }
+
+    function isCollapsed(el) {
+        if (window.localStorage.getItem('chart-folder-' + getId(el)) == 'collapsed') {
+            return true;
+        }
+
+        if (window.localStorage.getItem('chart-folder-' + getId(el)) == 'expanded') {
+            return false;
+        }
+
+        var orgId = getOrganizationId(el);
+
+        if (!orgId) {
+            return false;
+        }
+
+        if (window.organizationSettings[orgId] && window.organizationSettings[orgId].folders == "collapsed") {
+            return true;
+        }
+
+        return false;
+     }
+
     function toggleSubtree() {
-        $('li.has-subtree, .root-folder').each(function(el) {
-            if (window.localStorage.getItem('chart-folder-' + getId(this)) == 'collapsed') {
+        $('li.has-subtree, .root-folder').each(function(index, el) {
+            if (isCollapsed(el)) {
                 $(this).addClass('subtree-collapsed');
             }
         });
@@ -199,7 +229,7 @@ define(function(require) {
                         .parent()
                         .hasClass('subtree-collapsed');
 
-                window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? 'collapsed' : 'open');
+                window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? 'collapsed' : 'expanded');
             }
         });
     }

@@ -153,6 +153,13 @@
             user2: {{ user2 | json | raw }}
         });
     });
+
+    window.organizationSettings = {
+        {% for org in organizations %}
+            {{ loop.index0 > 0 ? "," : "" }}
+            "{{ org.id }}": {{ org.settings | json | raw }}
+        {% endfor %}
+    };
 </script>
 
 <div id="mycharts-modal" class="hidden">
