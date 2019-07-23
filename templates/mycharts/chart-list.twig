@@ -24,7 +24,6 @@
 
                         <h3 contenteditable spellcheck="false">
                             {% if chart.title != '' %}{{ chart.title | replace({'<br/>': ' - '}) | striptags | raw }}{% else %}{{ chart.id }}{% endif %}
-                            }
                         </h3>
                     </a>
 
