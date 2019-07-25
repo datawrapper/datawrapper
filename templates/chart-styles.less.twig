@@ -30,6 +30,10 @@
         color: @colors_text
     {% endif %}
 
+    {% if typography_chart_textTransform %}
+        text-transform: @typography_chart_textTransform;
+    {% endif %}
+
     {% if typography_chart_letterSpacing %}
         letter-spacing: ~'@{typography_chart_letterSpacing}px';
     {% endif %}
@@ -71,6 +75,11 @@
             text-decoration: none;
         {% endif %}
     }
+        {% if typography_links_hoverColor %}
+            a:hover {
+                color: @typography_links_hoverCcolor;
+            }
+        {% endif %}
 
     .dw-chart-header {
         min-height: 1px;
@@ -131,6 +140,10 @@
 
             {% if typography_headline_lineHeight %}
                 line-height: ~'@{typography_headline_lineHeight}px';
+            {% endif %}
+
+            {% if typography_headline_textTransform %}
+                text-transform: @typography_headline_textTransform;
             {% endif %}
 
             {% if typography_headline_letterSpacing %}
@@ -197,6 +210,10 @@
 
             {% if typography_description_fontSize %}
                 font-size: ~'@{typography_description_fontSize}px';
+            {% endif %}
+
+            {% if typography_description_textTransform %}
+                text-transform: @typography_description_textTransform;
             {% endif %}
 
             {% if typography_description_lineHeight %}
@@ -475,12 +492,16 @@
                     -moz-font-feature-settings: 'tnum';
                 {% endif %}
 
+                {% if style_chart_labels_legend_fontWeight %}
+                    font-weight: @style_chart_labels_legend_fontWeight;
+                {% endif %}
+
                 {% if style_chart_labels_legend_fontSize %}
                     font-size: ~'@{style_chart_labels_legend_fontSize}px';
                 {% endif %}
 
                 {% if style_chart_labels_legend_color %}
-                    color: @typography_chart_legend_color;
+                    color: @style_chart_labels_legend_color;
                 {% endif %}
 
                 {% if style_chart_labels_legend_typeface %}
@@ -496,6 +517,10 @@
 
         {% if typography_notes_fontWeight %}
             font-weight: @typography_notes_fontWeight;
+        {% endif %}
+
+        {% if typography_notes_textTransform %}
+            text-transform: @typography_notes_textTransform;
         {% endif %}
 
         {% if typography_notes_fontSize %}
@@ -632,6 +657,10 @@
 
         {% if typography_footer_fontSize %}
             font-size: ~'@{typography_footer_fontSize}px';
+        {% endif %}
+
+        {% if typography_footer_textTransform %}
+            text-transform: @typography_footer_textTransform;
         {% endif %}
 
         {% if typography_footer_lineHeight %}
