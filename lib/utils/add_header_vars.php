@@ -315,7 +315,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         if ($config['debug']) {
             try {
-                if (file_exists('../.git')) {
+                if (file_exists('../.git/HEAD')) {
                     // parse git branch
                     $head = file_get_contents('../.git/HEAD');
                     $parts = explode("/", $head);
