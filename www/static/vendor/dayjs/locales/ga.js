@@ -4,7 +4,7 @@ export default {
     months: 'Eanáir_Feabhra_Márta_Aibreán_Bealtaine_Méitheamh_Iúil_Lúnasa_Meán Fómhair_Deaireadh Fómhair_Samhain_Nollaig'.split('_'),
     weekStart: 1,
     weekdaysShort: 'Dom_Lua_Mái_Céa_Déa_hAo_Sat'.split('_'),
-    monthsShort: 'Eaná_Feab_Márt_Aibr_Beal_Méit_Iúil_Lúna_Meán_Deai_Samh_Noll'.split('_'),
+    monthsShort: 'Ean_Feabh_Márta_Aib_Bealt_Meith_Iúil_Lún_M.F._D.F._Samh_Noll'.split('_'),
     weekdaysMin: 'Do_Lu_Má_Ce_Dé_hA_Sa'.split('_'),
     ordinal: function(n) {
         return n;
