@@ -1,0 +1,4 @@
+diff a/dw.js/src/dw.visualization.base.js b/dw.js/src/dw.visualization.base.js	(rejected hunks)
+@@ -362 +362 @@ _.extend(dw.visualization.base, {
+-                .css('top', (window.innerHeight - (space * 0.8)) / 2);
++                .css('top', (window.innerHeight - space * 0.8) / 2);

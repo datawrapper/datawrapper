@@ -2627,9 +2627,7 @@ _.extend(dw.visualization.base, {
             $watermark
                 .attr('data-rotate', (-1 * angle * 180) / Math.PI)
                 .css('font-size', fontSize)
-                .css('transform', transform)
-                .css('left', (space - width) / 2)
-                .css('top', (window.innerHeight - (space * 0.8)) / 2);
+                .css('transform', transform);
         }
 
         if (this.theme() && this.theme().options && this.theme().options.watermark) {
