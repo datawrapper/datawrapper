@@ -8,10 +8,10 @@ export default {
         decimal: ','
     },
     abbreviations: {
-        thousand: 'тыс.',
-        million: 'млн.',
-        billion: 'млрд.',
-        trillion: 'трлн.'
+        thousand: ' тыс',
+        million: ' млн',
+        billion: ' млрд',
+        trillion: ' трлн'
     },
     ordinal: function() {
         // not ideal, but since in Russian it can taken on
