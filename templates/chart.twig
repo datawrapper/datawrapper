@@ -85,9 +85,11 @@
     <div class="dw-chart-body" id="chart"></div>
 
     {% if not plain %}
-    <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
-        {{ notes | purify | raw }}
-    </div>
+        {% if 'options.footer.notesPosition' != "under-footer" %}
+            <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
+                {{ notes | purify | raw }}
+            </div>
+        {% endif %}
     {% endif %}
 
     {% if chartSource and theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
@@ -220,6 +222,15 @@
             </div>
         </div>
     {% endif %}
+
+    {% if not plain %}
+        {% if 'options.footer.notesPosition' == "under-footer" %}
+            <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
+                {{ notes | purify | raw }}
+            </div>
+        {% endif %}
+    {% endif %}
+
 
     {# <div class="noscript" style="position: absolute;top: 0;left: 0;z-index: -10;">
         <a href="static.html"><img src="nojs.png" alt="{% trans "Please activate JavaScript to see the interactive chart." %}" /></a>
