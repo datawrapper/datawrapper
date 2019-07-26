@@ -350,7 +350,7 @@ _.extend(dw.visualization.base, {
             var $watermark = $('.watermark', '#chart');
             var width = $watermark[0].getBoundingClientRect().width;
             var space = Math.sqrt(Math.pow(window.innerHeight, 2) + Math.pow(window.innerWidth, 2));
-            var fontSize = 6 * ((space * 0.8) / width);
+            var fontSize = 6 * ((space * 0.7) / width);
             var angle = Math.atan(window.innerHeight / window.innerWidth);
             var transform = 'rotate(' + -angle + 'rad)';
 

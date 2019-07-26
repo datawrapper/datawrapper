@@ -2620,23 +2620,21 @@ _.extend(dw.visualization.base, {
             var $watermark = $('.watermark', '#chart');
             var width = $watermark[0].getBoundingClientRect().width;
             var space = Math.sqrt(Math.pow(window.innerHeight, 2) + Math.pow(window.innerWidth, 2));
-            var fontSize = 6 * ((space * 0.8) / width);
-            var angle = Math.atan((window.innerHeight) / window.innerWidth);
+            var fontSize = 6 * ((space * 0.7) / width);
+            var angle = Math.atan(window.innerHeight / window.innerWidth);
             var transform = 'rotate(' + -angle + 'rad)';
 
-            $watermark
-                .attr('data-rotate', (-1 * angle * 180) / Math.PI)
-                .css('font-size', fontSize)
+            $watermark.attr('data-rotate', (-1 * angle * 180) / Math.PI).css('font-size', fontSize);
 
             var height = $watermark[0].getBoundingClientRect().height;
             width = $watermark[0].getBoundingClientRect().width;
-            var diffx = (space - width)*Math.cos(angle);
-            var diffy = (space - width)*Math.sin(angle);
+            var diffx = (space - width) * Math.cos(angle);
+            var diffy = (space - width) * Math.sin(angle);
 
             $watermark
                 .css('transform', transform)
-                .css('bottom',-height/2+diffy/2+'px')
-                .css('left',diffx/2+'px')
+                .css('bottom', -height / 2 + diffy / 2 + 'px')
+                .css('left', diffx / 2 + 'px');
         }
 
         if (this.theme() && this.theme().options && this.theme().options.watermark) {
