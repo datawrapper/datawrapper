@@ -1,1 +1,2162 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define("svelte/account",t):e.account=t()}(this,function(){"use strict";function e(){}function t(e,t){for(var n in t)e[n]=t[n];return e}function n(e,t){t.appendChild(e)}function s(e,t,n){t.insertBefore(e,n)}function a(e){e.parentNode.removeChild(e)}function r(e){for(var t=0;t<e.length;t+=1)e[t]&&e[t].d()}function o(e){return document.createElement(e)}function i(e){return document.createTextNode(e)}function c(e,t,n){e.addEventListener(t,n,!1)}function u(e,t,n){e.removeEventListener(t,n,!1)}function l(e,t,n){e.setAttribute(t,n)}function d(e,t,n){e.style.setProperty(t,n)}function f(){return Object.create(null)}function h(t){this.destroy=e,this.fire("destroy"),this.set=this.get=e,!1!==t&&this._fragment.u(),this._fragment.d(),this._fragment=this._state=null}function m(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function g(e,t){return e!=e?t==t:e!==t}function p(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var s=0;s<n.length;s+=1){var a=n[s];a.__calling||(a.__calling=!0,a.call(this,t),a.__calling=!1)}}function v(e){return e?this._state[e]:this._state}function _(e,t,n){var s=t.bind(this);return n&&!1===n.init||s(this.get()[e],void 0),this.on(n&&n.defer?"update":"state",function(t){t.changed[e]&&s(t.current[e],t.previous&&t.previous[e])})}function w(e,t){if("teardown"===e)return this.on("destroy",t);var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}}function b(e){for(;e&&e.length;)e.shift()()}var N={destroy:h,get:v,fire:p,observe:_,on:w,set:function(e){this._set(t({},e)),this.root._lock||(this.root._lock=!0,b(this.root._beforecreate),b(this.root._oncreate),b(this.root._aftercreate),this.root._lock=!1)},teardown:h,_recompute:e,_set:function(e){var n=this._state,s={},a=!1;for(var r in e)this._differs(e[r],n[r])&&(s[r]=a=!0);a&&(this._state=t(t({},n),e),this._recompute(s,this._state),this._bind&&this._bind(s,this._state),this._fragment&&(this.fire("state",{changed:s,current:this._state,previous:n}),this._fragment.p(s,this._state),this.fire("update",{changed:s,current:this._state,previous:n})))},_mount:function(e,t){this._fragment[this._fragment.i?"i":"m"](e,t||null)},_unmount:function(){this._fragment&&this._fragment.u()},_differs:m},x=window.dw;function P(e,t){var n=arguments;if(void 0===t&&(t="core"),e=e.trim(),!x.backend.__messages[t])return"MISSING:"+e;var s=x.backend.__messages[t][e]||x.backend.__messages.core[e]||e;if(arguments.length>2)for(var a=2;a<arguments.length;a++){var r=a-1;s=s.replace("$"+r,n[a])}return s}function y(e,t,n,s,a){var r={method:t,body:s,mode:"cors",credentials:n},o=window.fetch(e,r).then(function(e){return 200!==e.status?new Error(e.statusText):e.text()}).then(function(e){try{return JSON.parse(e)}catch(t){return console.warn("malformed json input",e),e}}).catch(function(e){console.error(e)});return a?o.then(a):o}function k(e,t,n){return 2===arguments.length&&(n=t,t="include"),y(e,"GET",t,null,n)}function E(e,t,n){return y(e,"PUT","include",t,n)}var A={changeEmail:function(){var e=this,t=this.get(),n=t.email,s=t.userId;this.set({savingEmail:!0}),E("/api/users/"+s,JSON.stringify({email:n}),function(t){e.set({savingEmail:!1});var s=[],a=[];"error"===t.status&&a.push(t.message),t.data&&t.data.messages&&t.data.messages.forEach(function(e){s.push(e)}),t.data&&t.data.errors&&t.data.errors.forEach(function(e){a.push(e)}),0===a.length?e.set({originalEmail:n,changeEmail:!1,messages:s,errors:[]}):e.set({errors:a})})},changePassword:function(){var e,t,n,s=this,a=this.get(),r=a.currentPassword,o=a.newPassword1,i=a.newPassword2,c=a.userId,u=(e=o,t=i,""===r?n=dw.backend.messages.provideCurPwd:e.length<4?n=dw.backend.messages.pwdTooShort:e!==t&&(n=dw.backend.messages.pwdMismatch),n||!0);if(!0===u)this.set({savingPassword:!0}),k("/api/auth/salt",function(e){if("ok"===e.status){var t=e.data.salt,n={oldpwhash:CryptoJS.HmacSHA256(r,t).toString(),pwd:CryptoJS.HmacSHA256(o,t).toString()};E("/api/users/"+c,JSON.stringify(n),function(e){s.set({savingPassword:!1,currentPassword:"",newPassword1:"",newPassword2:""});var t=[],n=[];"error"===e.status&&n.push(e.message),e.data&&e.data.messages&&e.data.messages.forEach(function(e){t.push(e)}),e.data&&e.data.errors&&e.data.errors.forEach(function(e){n.push(e)}),0===n.length?(t.push("Your password was changed sucessfully"),s.set({changePassword:!1,messages:t,errors:[]})):s.set({errors:n})})}else s.set({errors:["Could not load salt."],savingPassword:!1})});else{var l=[u];this.set({errors:l})}},deleteAccount:function(){var e=this,t=this.get().confirmPassword;this.set({deletingAccount:!0}),k("/api/auth/salt",function(n){if("ok"===n.status){var s=CryptoJS.HmacSHA256(t,n.data.salt).toString();y("/api/users/current?pwd="+s,"DELETE","include",JSON.stringify({pwd:s}),function(t){e.set({deletingAccount:!1});var n=[];"error"===t.status&&n.push(t.message),t.data&&t.data.messages&&t.data.messages.forEach(function(e){}),t.data&&t.data.errors&&t.data.errors.forEach(function(e){n.push(e)}),0===n.length?e.set({deleteAccount2:!1,deleteAccount3:!0}):e.set({errors:n})})}else e.set({errors:["Could not load salt."],deletingAccount:!1})})}};function H(e){var t=e.changed,n=e.current,s=e.previous;t.email&&!s&&this.set({originalEmail:n.email})}function T(e,t){var r,c,u,l,d,f,h,m,g,p=P("Edit profile"),v=P("account / change-login");function _(e){return e.changePassword?Y:e.deleteAccount?B:e.deleteAccount2?G:e.deleteAccount3?$:e.changeEmail?z:D}var w=_(t),b=w(e,t);return{c:function(){r=o("div"),c=o("div"),u=o("h1"),l=i(p),d=i("\n        "),f=o("h2"),h=i(v),m=i("\n\n"),b.c(),g=document.createComment(""),this.h()},h:function(){c.className="span10 offset1",r.className="row"},m:function(e,t){s(r,e,t),n(c,r),n(u,c),n(l,u),n(d,c),n(f,c),n(h,f),s(m,e,t),b.m(e,t),s(g,e,t)},p:function(t,n){w===(w=_(n))&&b?b.p(t,n):(b.u(),b.d(),(b=w(e,n)).c(),b.m(g.parentNode,g))},u:function(){a(r),a(m),b.u(),a(g)},d:function(){b.d()}}}function M(t,n){var r,i=n.message,c=(n.each_value,n.message_index,i);return{c:function(){r=o("li")},m:function(e,t){s(r,e,t),r.innerHTML=c},p:function(e,t){i=t.message,t.each_value,t.message_index,e.errors&&c!==(c=i)&&(r.innerHTML=c)},u:function(){r.innerHTML="",a(r)},d:e}}function L(e,i){for(var c,u,l=i.errors,f=[],h=0;h<l.length;h+=1)f[h]=M(0,t(t({},i),{each_value:l,message:l[h],message_index:h}));return{c:function(){c=o("div"),u=o("ul");for(var e=0;e<f.length;e+=1)f[e].c();this.h()},h:function(){d(u,"margin-bottom","0"),c.className="alert"},m:function(e,t){s(c,e,t),n(u,c);for(var a=0;a<f.length;a+=1)f[a].m(u,null)},p:function(e,n){var s=n.errors;if(e.errors){for(var a=0;a<s.length;a+=1){var r=t(t({},n),{each_value:s,message:s[a],message_index:a});f[a]?f[a].p(e,r):(f[a]=M(0,r),f[a].c(),f[a].m(u,null))}for(;a<f.length;a+=1)f[a].u(),f[a].d();f.length=s.length}},u:function(){a(c);for(var e=0;e<f.length;e+=1)f[e].u()},d:function(){r(f)}}}function C(t,n){var r,i=n.message,c=(n.each_value_1,n.message_index_1,i);return{c:function(){r=o("li")},m:function(e,t){s(r,e,t),r.innerHTML=c},p:function(e,t){i=t.message,t.each_value_1,t.message_index_1,e.errors&&c!==(c=i)&&(r.innerHTML=c)},u:function(){r.innerHTML="",a(r)},d:e}}function S(e,i){for(var c,u,l=i.errors,f=[],h=0;h<l.length;h+=1)f[h]=C(0,t(t({},i),{each_value_1:l,message:l[h],message_index_1:h}));return{c:function(){c=o("div"),u=o("ul");for(var e=0;e<f.length;e+=1)f[e].c();this.h()},h:function(){d(u,"margin-bottom","0"),c.className="alert"},m:function(e,t){s(c,e,t),n(u,c);for(var a=0;a<f.length;a+=1)f[a].m(u,null)},p:function(e,n){var s=n.errors;if(e.errors){for(var a=0;a<s.length;a+=1){var r=t(t({},n),{each_value_1:s,message:s[a],message_index_1:a});f[a]?f[a].p(e,r):(f[a]=C(0,r),f[a].c(),f[a].m(u,null))}for(;a<f.length;a+=1)f[a].u(),f[a].d();f.length=s.length}},u:function(){a(c);for(var e=0;e<f.length;e+=1)f[e].u()},d:function(){r(f)}}}function I(t,n){var r,i=n.message,c=(n.each_value_2,n.message_index_2,i);return{c:function(){r=o("li")},m:function(e,t){s(r,e,t),r.innerHTML=c},p:function(e,t){i=t.message,t.each_value_2,t.message_index_2,e.errors&&c!==(c=i)&&(r.innerHTML=c)},u:function(){r.innerHTML="",a(r)},d:e}}function J(e,i){for(var c,u,l=i.errors,f=[],h=0;h<l.length;h+=1)f[h]=I(0,t(t({},i),{each_value_2:l,message:l[h],message_index_2:h}));return{c:function(){c=o("div"),u=o("ul");for(var e=0;e<f.length;e+=1)f[e].c();this.h()},h:function(){d(u,"margin-bottom","0"),c.className="alert"},m:function(e,t){s(c,e,t),n(u,c);for(var a=0;a<f.length;a+=1)f[a].m(u,null)},p:function(e,n){var s=n.errors;if(e.errors){for(var a=0;a<s.length;a+=1){var r=t(t({},n),{each_value_2:s,message:s[a],message_index_2:a});f[a]?f[a].p(e,r):(f[a]=I(0,r),f[a].c(),f[a].m(u,null))}for(;a<f.length;a+=1)f[a].u(),f[a].d();f.length=s.length}},u:function(){a(c);for(var e=0;e<f.length;e+=1)f[e].u()},d:function(){r(f)}}}function O(t,n){var r,i=n.message,c=(n.each_value_3,n.message_index_3,i);return{c:function(){r=o("li")},m:function(e,t){s(r,e,t),r.innerHTML=c},p:function(e,t){i=t.message,t.each_value_3,t.message_index_3,e.messages&&c!==(c=i)&&(r.innerHTML=c)},u:function(){r.innerHTML="",a(r)},d:e}}function j(e,i){for(var c,u,l,f,h=i.messages,m=[],g=0;g<h.length;g+=1)m[g]=O(0,t(t({},i),{each_value_3:h,message:h[g],message_index_3:g}));return{c:function(){c=o("div"),u=o("div"),l=o("div"),f=o("ul");for(var e=0;e<m.length;e+=1)m[e].c();this.h()},h:function(){d(f,"margin-bottom","0"),l.className="alert alert-success",u.className="span6 offset3",c.className="row",d(c,"margin-top","20px")},m:function(e,t){s(c,e,t),n(u,c),n(l,u),n(f,l);for(var a=0;a<m.length;a+=1)m[a].m(f,null)},p:function(e,n){var s=n.messages;if(e.messages){for(var a=0;a<s.length;a+=1){var r=t(t({},n),{each_value_3:s,message:s[a],message_index_3:a});m[a]?m[a].p(e,r):(m[a]=O(0,r),m[a].c(),m[a].m(f,null))}for(;a<m.length;a+=1)m[a].u(),m[a].d();m.length=s.length}},u:function(){a(c);for(var e=0;e<m.length;e+=1)m[e].u()},d:function(){r(m)}}}function Y(e,t){var r,f,h,m,g,p,v,_,w,b,N,x,y,k,E,A,H,T,M,C,S,I,J,O,j,Y,B,G,$,z,D,R,q,F,U,K,Q,V,W,X,Z,ee,te,ne,se=P("account / password"),ae=P("account / password / strong-password-note"),re=P("Current Password"),oe=!1,ie=P("account / password / current-password-note"),ce=P("New Password"),ue=!1,le=P("(repeat)"),de=!1,fe=P("Back"),he=P("account / password"),me=t.errors&&t.errors.length&&L(0,t);function ge(){oe=!0,e.set({currentPassword:H.value}),oe=!1}function pe(){ue=!0,e.set({newPassword1:B.value}),ue=!1}function ve(){de=!0,e.set({newPassword2:F.value}),de=!1}function _e(t){e.set({changePassword:!1})}function we(t){e.changePassword()}return{c:function(){r=o("div"),f=o("div"),h=o("div"),m=o("h2"),g=i(se),p=i("\n            "),v=o("p"),_=i(ae),w=i("\n\n            "),me&&me.c(),b=i("\n\n            "),N=o("fieldset"),x=o("div"),y=o("label"),k=i(re),E=i("\n                    "),A=o("div"),H=o("input"),T=i("\n                        "),M=o("p"),C=i(ie),S=i("\n                "),I=o("div"),J=o("label"),O=i(ce),j=i("\n                    "),Y=o("div"),B=o("input"),G=i("\n                "),$=o("div"),z=o("label"),D=i(le),R=i("\n                    "),q=o("div"),F=o("input"),U=i("\n\n                "),K=o("div"),Q=o("button"),V=i(fe),W=i("\n                    "),X=o("button"),Z=o("i"),te=i("  "),ne=i(he),this.h()},h:function(){y.className="control-label",c(H,"input",ge),l(H,"type","password"),H.className="input-xlarge",M.className="help-block",A.className="controls",x.className="control-group",J.className="control-label",c(B,"input",pe),l(B,"type","password"),B.className="input-xlarge",Y.className="controls",I.className="control-group",z.className="control-label",c(F,"input",ve),l(F,"type","password"),F.className="input-xlarge",q.className="controls",$.className="control-group",c(Q,"click",_e),Q.className="btn btn-save btn-default btn-back",Z.className=ee="fa "+(t.savingPassword?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal",c(X,"click",we),X.className="btn btn-primary",d(X,"float","right"),h.className="form-horizontal edit-account-confirm",f.className="span6 offset3",r.className="row"},m:function(e,a){s(r,e,a),n(f,r),n(h,f),n(m,h),n(g,m),n(p,h),n(v,h),n(_,v),n(w,h),me&&me.m(h,null),n(b,h),n(N,h),n(x,N),n(y,x),n(k,y),n(E,x),n(A,x),n(H,A),H.value=t.currentPassword,n(T,A),n(M,A),n(C,M),n(S,N),n(I,N),n(J,I),n(O,J),n(j,I),n(Y,I),n(B,Y),B.value=t.newPassword1,n(G,N),n($,N),n(z,$),n(D,z),n(R,$),n(q,$),n(F,q),F.value=t.newPassword2,n(U,N),n(K,N),n(Q,K),n(V,Q),n(W,K),n(X,K),n(Z,X),n(te,X),n(ne,X)},p:function(e,t){t.errors&&t.errors.length?me?me.p(e,t):((me=L(0,t)).c(),me.m(h,b)):me&&(me.u(),me.d(),me=null),oe||(H.value=t.currentPassword),ue||(B.value=t.newPassword1),de||(F.value=t.newPassword2),e.savingPassword&&ee!==(ee="fa "+(t.savingPassword?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal")&&(Z.className=ee)},u:function(){a(r),me&&me.u()},d:function(){me&&me.d(),u(H,"input",ge),u(B,"input",pe),u(F,"input",ve),u(Q,"click",_e),u(X,"click",we)}}}function B(t,r){var l,f,h,m,g,p,v,_,w,b,N,x,y,k,E,A,H,T,M,L,C=P("account / confirm-account-deletion"),S=P("account / confirm-account-deletion / no"),I=P("account / or"),J=P("account / confirm-account-deletion / yes");function O(e){t.set({deleteAccount:!1})}function j(e){t.set({deleteAccount:!1,deleteAccount2:!0})}return{c:function(){l=o("div"),f=o("div"),(h=o("div")).innerHTML='<i class="fa fa-times"></i>',m=i("\n\n        "),g=o("h2"),p=i(C),v=i("\n\n        "),_=o("div"),w=o("button"),b=o("i"),N=i("   "),x=i(S),y=i("\n\n            "),k=o("div"),E=i(I),A=i("\n\n            "),H=o("button"),T=o("i"),M=i("   "),L=i(J),this.h()},h:function(){h.className="iconholder svelte-u71xal",d(g,"margin-bottom","20px"),g.className="svelte-u71xal",b.className="fa fa-chevron-left",c(w,"click",O),w.className="btn btn-back btn-primary",d(k,"display","block"),d(k,"margin","0px 10px"),T.className="fa fa-times",c(H,"click",j),H.className="btn btn-default",d(_,"display","flex"),d(_,"justify-content","center"),d(_,"align-items","center"),f.className="span6 offset3",d(f,"text-align","center"),l.className="row delete-account svelte-u71xal"},m:function(e,t){s(l,e,t),n(f,l),n(h,f),n(m,f),n(g,f),n(p,g),n(v,f),n(_,f),n(w,_),n(b,w),n(N,w),n(x,w),n(y,_),n(k,_),n(E,k),n(A,_),n(H,_),n(T,H),n(M,H),n(L,H)},p:e,u:function(){a(l)},d:function(){u(w,"click",O),u(H,"click",j)}}}function G(e,t){var r,f,h,m,g,p,v,_,w,b,N,x,y,k,E,A,H,T,M,L,C,I,J,O,j,Y,B,G,$,z,D,R,q,F,U,K,Q,V,W,X,Z,ee=P("account / delete / hed"),te=P("account / delete / really"),ne=P("account / confirm-account-deletion / free"),se=P("You cannot login and logout anymore."),ae=P("You cannot edit or remove your charts anymore."),re=P("account / delete / charts-stay-online"),oe=P("Please enter your password to confirm the deletion request:"),ie=!1,ce=P("account / delete / really-really"),ue=P("No, I changed my mind.."),le=P("Yes, delete it!"),de=t.errors&&t.errors.length&&S(0,t);function fe(){ie=!0,e.set({confirmPassword:B.value}),ie=!1}function he(t){e.set({deleteAccount2:!1})}function me(t){e.deleteAccount()}return{c:function(){r=o("div"),f=o("div"),h=o("h2"),m=i(ee),g=i("\n\n        "),de&&de.c(),p=i("\n\n        "),v=o("p"),_=i(te),w=i("\n        "),b=o("ul"),N=o("li"),x=i(ne),y=o("li"),k=i(se),E=o("li"),A=i(ae),H=i("\n        "),T=o("p"),M=i(re),L=i("\n        "),C=o("div"),I=o("p"),J=o("b"),O=i(oe),j=i("\n            "),Y=o("div"),B=o("input"),G=i("\n            "),$=o("p"),z=i("\n            "),D=o("div"),R=o("button"),q=o("i"),F=i("  "),U=i(ue),K=i("\n                "),Q=o("button"),V=o("i"),X=i("  "),Z=i(le),this.h()},h:function(){d(h,"margin-bottom","20px"),h.className="svelte-u71xal",c(B,"input",fe),l(B,"type","password"),B.placeholder=P("Password"),Y.className="control-group",q.className="fa fa-chevron-left",c(R,"click",he),R.className="btn btn-info",V.className=W="fa "+(t.deletingAccount?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal",c(Q,"click",me),d(Q,"float","right"),Q.className="btn btn-danger",D.className="control-group",C.className="",f.className="span6 offset3",r.className="row delete-account svelte-u71xal"},m:function(e,a){s(r,e,a),n(f,r),n(h,f),n(m,h),n(g,f),de&&de.m(f,null),n(p,f),n(v,f),n(_,v),n(w,f),n(b,f),n(N,b),n(x,N),n(y,b),n(k,y),n(E,b),n(A,E),n(H,f),n(T,f),n(M,T),n(L,f),n(C,f),n(I,C),n(J,I),n(O,J),n(j,C),n(Y,C),n(B,Y),B.value=t.confirmPassword,n(G,C),n($,C),$.innerHTML=ce,n(z,C),n(D,C),n(R,D),n(q,R),n(F,R),n(U,R),n(K,D),n(Q,D),n(V,Q),n(X,Q),n(Z,Q)},p:function(e,t){t.errors&&t.errors.length?de?de.p(e,t):((de=S(0,t)).c(),de.m(f,p)):de&&(de.u(),de.d(),de=null),ie||(B.value=t.confirmPassword),e.deletingAccount&&W!==(W="fa "+(t.deletingAccount?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal")&&(V.className=W)},u:function(){$.innerHTML="",a(r),de&&de.u()},d:function(){de&&de.d(),u(B,"input",fe),u(R,"click",he),u(Q,"click",me)}}}function $(t,r){var c,u,l,f,h,m,g,p=P("Your account has been deleted."),v=P("Goodbye!");return{c:function(){c=o("div"),u=o("div"),l=o("h2"),f=i(p),h=i("\n        "),m=o("a"),g=i(v),this.h()},h:function(){d(l,"margin-bottom","20px"),d(l,"text-align","center"),l.className="svelte-u71xal",m.href="/",m.className="btn btn-primary btn-large",u.className="span6 offset3",d(u,"text-align","center"),c.className="row delete-account svelte-u71xal"},m:function(e,t){s(c,e,t),n(u,c),n(l,u),n(f,l),n(h,u),n(m,u),n(g,m)},p:e,u:function(){a(c)},d:e}}function z(e,t){var r,f,h,m,g,p,v,_,w,b,N,x,y,k,E,A,H,T,M,L,C,S,I,O,j,Y,B,G,$,z=P("account / email"),D=P("account / confirm-email-change"),R=P("E-Mail"),q=!1,F=P("Back"),U=P("account / email"),K=t.errors&&t.errors.length&&J(0,t);function Q(){q=!0,e.set({email:T.value}),q=!1}function V(t){e.set({changeEmail:!1})}function W(t){e.changeEmail()}return{c:function(){r=o("div"),f=o("div"),h=o("div"),m=o("h2"),g=i(z),p=i("\n            "),v=o("p"),_=i(D),w=i("\n\n            "),K&&K.c(),b=i("\n\n            "),N=o("fieldset"),x=o("div"),y=o("label"),k=i(R),E=i(":"),A=i("\n                    "),H=o("div"),T=o("input"),L=i("\n\n                "),C=o("div"),S=o("button"),I=i(F),O=i("\n                    "),j=o("button"),Y=o("i"),G=i("  "),$=i(U),this.h()},h:function(){y.className="control-label",y.htmlFor="email",c(T,"input",Q),T.disabled=M=!t.changeEmail,l(T,"type","text"),H.className="controls",x.className="control-group",c(S,"click",V),S.className="btn btn-default",Y.className=B="fa "+(t.savingEmail?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal",c(j,"click",W),d(j,"float","right"),j.className="btn btn-save btn-primary",C.className="",h.className="form-horizontal edit-account",f.className="span6 offset3",r.className="row"},m:function(e,a){s(r,e,a),n(f,r),n(h,f),n(m,h),n(g,m),n(p,h),n(v,h),n(_,v),n(w,h),K&&K.m(h,null),n(b,h),n(N,h),n(x,N),n(y,x),n(k,y),n(E,y),n(A,x),n(H,x),n(T,H),T.value=t.email,n(L,N),n(C,N),n(S,C),n(I,S),n(O,C),n(j,C),n(Y,j),n(G,j),n($,j)},p:function(e,t){t.errors&&t.errors.length?K?K.p(e,t):((K=J(0,t)).c(),K.m(h,b)):K&&(K.u(),K.d(),K=null),q||(T.value=t.email),e.changeEmail&&M!==(M=!t.changeEmail)&&(T.disabled=M),e.savingEmail&&B!==(B="fa "+(t.savingEmail?"fa-spin fa-spinner":"fa-check")+" svelte-u71xal")&&(Y.className=B)},u:function(){a(r),K&&K.u()},d:function(){K&&K.d(),u(T,"input",Q),u(S,"click",V),u(j,"click",W)}}}function D(e,t){var r,f,h,m,g,p,v,_,w,b,N,x,y,k,E,A,H,T,M,L,C,S,I,J,O,Y,B,G,$,z,D,R,q,F,U=P("E-Mail"),K=P("account / email"),Q=P("Password"),V=P("account / password"),W=P("account / or"),X=P("account / delete"),Z=t.messages&&t.messages.length&&j(0,t);function ee(t){e.set({changeEmail:!0})}function te(t){e.set({changePassword:!0})}function ne(t){e.set({deleteAccount:!0})}return{c:function(){Z&&Z.c(),r=i("\n\n"),f=o("div"),h=o("div"),m=o("div"),g=o("div"),p=i(U),v=i(":"),_=i("\n            "),w=o("div"),b=o("input"),x=i("\n            "),y=o("div"),k=o("button"),E=i(K),A=i("\n\n        "),H=o("div"),T=o("div"),M=i(Q),L=i(":"),C=i("\n            "),S=o("div"),I=o("input"),J=i("\n            "),O=o("div"),Y=o("button"),B=i(V),G=i("\n\n        "),$=o("div"),z=i(W),D=i("\n            "),R=o("span"),q=i(X),F=i("."),this.h()},h:function(){g.className="svelte-u71xal",b.disabled=N=!t.changeEmail,b.value=t.originalEmail,l(b,"type","text"),w.className="svelte-u71xal",c(k,"click",ee),k.className="btn btn-save btn-default",y.className="svelte-u71xal",m.className="svelte-u71xal",T.className="svelte-u71xal",I.disabled=!0,I.value="abcdefgh",l(I,"type","password"),S.className="svelte-u71xal",c(Y,"click",te),Y.className="btn btn-save btn-default",O.className="svelte-u71xal",H.className="svelte-u71xal",c(R,"click",ne),R.className="link svelte-u71xal",l(R,"href","#"),d($,"text-align","center"),d($,"display","block"),$.className="svelte-u71xal",h.className="span6 offset3",f.className="row edit-account svelte-u71xal",d(f,"margin-top",(t.messages&&t.messages.length?0:20)+"px")},m:function(e,t){Z&&Z.m(e,t),s(r,e,t),s(f,e,t),n(h,f),n(m,h),n(g,m),n(p,g),n(v,g),n(_,m),n(w,m),n(b,w),n(x,m),n(y,m),n(k,y),n(E,k),n(A,h),n(H,h),n(T,H),n(M,T),n(L,T),n(C,H),n(S,H),n(I,S),n(J,H),n(O,H),n(Y,O),n(B,Y),n(G,h),n($,h),n(z,$),n(D,$),n(R,$),n(q,R),n(F,$)},p:function(e,t){t.messages&&t.messages.length?Z?Z.p(e,t):((Z=j(0,t)).c(),Z.m(r.parentNode,r)):Z&&(Z.u(),Z.d(),Z=null),e.changeEmail&&N!==(N=!t.changeEmail)&&(b.disabled=N),e.originalEmail&&(b.value=t.originalEmail),e.messages&&d(f,"margin-top",(t.messages&&t.messages.length?0:20)+"px")},u:function(){Z&&Z.u(),a(r),a(f)},d:function(){Z&&Z.d(),u(k,"click",ee),u(Y,"click",te),u(R,"click",ne)}}}function R(e){!function(e,t){e._handlers=f(),e._bind=t._bind,e.options=t,e.root=t.root||e,e.store=e.root.store||t.store}(this,e),this._state=t({changePassword:!1,changeEmail:!1,deleteAccount:!1,showPasswordInPlaintext:!1,messages:[],currentPassword:"",newPassword1:"",newPassword2:"",confirmPassword:""},e.data),this._handlers.state=[H];var n=this;e.root||(this._oncreate=[]),this._fragment=T(this,this._state),this.root._oncreate.push(function(){var e={changePassword:1,errors:1,currentPassword:1,newPassword1:1,newPassword2:1,savingPassword:1,deleteAccount:1,deleteAccount2:1,confirmPassword:1,deletingAccount:1,deleteAccount3:1,changeEmail:1,email:1,savingEmail:1,messages:1,originalEmail:1};H.call(n,{changed:e,current:n._state}),n.fire("update",{changed:e,current:n._state})}),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),b(this._oncreate))}function q(e,n){this._observers={pre:f(),post:f()},this._handlers={},this._dependents=[],this._computed=f(),this._sortedComputedProperties=[],this._state=t({},e),this._differs=n&&n.immutable?g:m}t(R.prototype,N),t(R.prototype,A),t(q.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var s=e[n];t["$"+s]=this._state[s]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_sortComputedProperties:function(){var e,t=this._computed,n=this._sortedComputedProperties=[],s=f();function a(r){if(e[r])throw new Error("Cyclical dependency detected");if(!s[r]){s[r]=!0;var o=t[r];o&&(e[r]=!0,o.deps.forEach(a),n.push(o))}}for(var r in this._computed)e=f(),a(r)},compute:function(e,t,n){var s,a=this,r={deps:t,update:function(r,o,i){var c=t.map(function(e){return e in o&&(i=!0),r[e]});if(i){var u=n.apply(null,c);a._differs(u,s)&&(s=u,o[e]=!0,r[e]=s)}}};r.update(this._state,{},!0),this._computed[e]=r,this._sortComputedProperties()},fire:p,get:v,observe:_,on:w,onchange:function(e){return console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})"),this.on("state",function(t){e(t.current,t.changed)})},set:function(e){var n=this._state,s=this._changed={},a=!1;for(var r in e){if(this._computed[r])throw new Error("'"+r+"' is a read-only property");this._differs(e[r],n[r])&&(s[r]=a=!0)}if(a){this._state=t(t({},n),e);for(var o=0;o<this._sortedComputedProperties.length;o+=1)this._sortedComputedProperties[o].update(this._state,s);this.fire("state",{changed:s,current:this._state,previous:n});var i=this._dependents.slice();for(o=0;o<i.length;o+=1){var c=i[o],u={};a=!1;for(var l=0;l<c.props.length;l+=1){var d=c.props[l];d in s&&(u["$"+d]=this._state[d],a=!0)}a&&c.component.set(u)}this.fire("update",{changed:s,current:this._state,previous:n})}}});return{App:R,data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0},store:new q({})}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/account', factory) :
+	(global = global || self, global.account = factory());
+}(this, function () { 'use strict';
+
+	function noop() {}
+
+	function assign(tar, src) {
+		for (var k in src) { tar[k] = src[k]; }
+		return tar;
+	}
+
+	function appendNode(node, target) {
+		target.appendChild(node);
+	}
+
+	function insertNode(node, target, anchor) {
+		target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+		node.parentNode.removeChild(node);
+	}
+
+	function destroyEach(iterations) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) { iterations[i].d(); }
+		}
+	}
+
+	function createElement(name) {
+		return document.createElement(name);
+	}
+
+	function createText(data) {
+		return document.createTextNode(data);
+	}
+
+	function createComment() {
+		return document.createComment('');
+	}
+
+	function addListener(node, event, handler) {
+		node.addEventListener(event, handler, false);
+	}
+
+	function removeListener(node, event, handler) {
+		node.removeEventListener(event, handler, false);
+	}
+
+	function setAttribute(node, attribute, value) {
+		node.setAttribute(attribute, value);
+	}
+
+	function setStyle(node, key, value) {
+		node.style.setProperty(key, value);
+	}
+
+	function blankObject() {
+		return Object.create(null);
+	}
+
+	function destroy(detach) {
+		this.destroy = noop;
+		this.fire('destroy');
+		this.set = this.get = noop;
+
+		if (detach !== false) { this._fragment.u(); }
+		this._fragment.d();
+		this._fragment = this._state = null;
+	}
+
+	function destroyDev(detach) {
+		destroy.call(this, detach);
+		this.destroy = function() {
+			console.warn('Component was already destroyed');
+		};
+	}
+
+	function _differs(a, b) {
+		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+
+	function _differsImmutable(a, b) {
+		return a != a ? b == b : a !== b;
+	}
+
+	function fire(eventName, data) {
+		var this$1 = this;
+
+		var handlers =
+			eventName in this._handlers && this._handlers[eventName].slice();
+		if (!handlers) { return; }
+
+		for (var i = 0; i < handlers.length; i += 1) {
+			var handler = handlers[i];
+
+			if (!handler.__calling) {
+				handler.__calling = true;
+				handler.call(this$1, data);
+				handler.__calling = false;
+			}
+		}
+	}
+
+	function getDev(key) {
+		if (key) { console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead"); }
+		return get.call(this, key);
+	}
+
+	function get(key) {
+		return key ? this._state[key] : this._state;
+	}
+
+	function init(component, options) {
+		component._handlers = blankObject();
+		component._bind = options._bind;
+
+		component.options = options;
+		component.root = options.root || component;
+		component.store = component.root.store || options.store;
+	}
+
+	function observe(key, callback, options) {
+		var fn = callback.bind(this);
+
+		if (!options || options.init !== false) {
+			fn(this.get()[key], undefined);
+		}
+
+		return this.on(options && options.defer ? 'update' : 'state', function(event) {
+			if (event.changed[key]) { fn(event.current[key], event.previous && event.previous[key]); }
+		});
+	}
+
+	function observeDev(key, callback, options) {
+		console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
+
+		var c = (key = '' + key).search(/[.[]/);
+		if (c > -1) {
+			var message =
+				'The first argument to component.observe(...) must be the name of a top-level property';
+			if (c > 0)
+				{ message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'"; }
+
+			throw new Error(message);
+		}
+
+		return observe.call(this, key, callback, options);
+	}
+
+	function on(eventName, handler) {
+		if (eventName === 'teardown') { return this.on('destroy', handler); }
+
+		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+		handlers.push(handler);
+
+		return {
+			cancel: function() {
+				var index = handlers.indexOf(handler);
+				if (~index) { handlers.splice(index, 1); }
+			}
+		};
+	}
+
+	function onDev(eventName, handler) {
+		if (eventName === 'teardown') {
+			console.warn(
+				"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
+			);
+			return this.on('destroy', handler);
+		}
+
+		return on.call(this, eventName, handler);
+	}
+
+	function set(newState) {
+		this._set(assign({}, newState));
+		if (this.root._lock) { return; }
+		this.root._lock = true;
+		callAll(this.root._beforecreate);
+		callAll(this.root._oncreate);
+		callAll(this.root._aftercreate);
+		this.root._lock = false;
+	}
+
+	function _set(newState) {
+		var this$1 = this;
+
+		var oldState = this._state,
+			changed = {},
+			dirty = false;
+
+		for (var key in newState) {
+			if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+		}
+		if (!dirty) { return; }
+
+		this._state = assign(assign({}, oldState), newState);
+		this._recompute(changed, this._state);
+		if (this._bind) { this._bind(changed, this._state); }
+
+		if (this._fragment) {
+			this.fire("state", { changed: changed, current: this._state, previous: oldState });
+			this._fragment.p(changed, this._state);
+			this.fire("update", { changed: changed, current: this._state, previous: oldState });
+		}
+	}
+
+	function setDev(newState) {
+		if (typeof newState !== 'object') {
+			throw new Error(
+				this._debugName + '.set was called without an object of data key-values to update.'
+			);
+		}
+
+		this._checkReadOnly(newState);
+		set.call(this, newState);
+	}
+
+	function callAll(fns) {
+		while (fns && fns.length) { fns.shift()(); }
+	}
+
+	function _mount(target, anchor) {
+		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	function _unmount() {
+		if (this._fragment) { this._fragment.u(); }
+	}
+
+	var protoDev = {
+		destroy: destroyDev,
+		get: getDev,
+		fire: fire,
+		observe: observeDev,
+		on: onDev,
+		set: setDev,
+		teardown: destroyDev,
+		_recompute: noop,
+		_set: _set,
+		_mount: _mount,
+		_unmount: _unmount,
+		_differs: _differs
+	};
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @export
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+
+	var dw$1 = window.dw;
+
+	function __(key, scope) {
+	    var arguments$1 = arguments;
+	    if ( scope === void 0 ) scope = 'core';
+
+	    key = key.trim();
+	    if (!dw$1.backend.__messages[scope]) { return 'MISSING:' + key; }
+	    var translation = dw$1.backend.__messages[scope][key] || dw$1.backend.__messages.core[key] || key;
+
+	    if (arguments.length > 2) {
+	        for (var i = 2; i < arguments.length; i++) {
+	            var index = i - 1;
+	            translation = translation.replace('$' + index, arguments$1[i]);
+	        }
+	    }
+
+	    return translation;
+	}
+
+	// quick reference variables for speed access
+
+	// `_isArray` : an object's function
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+	function fetchJSON(url, method, credentials, body, callback) {
+	    var opts = {
+	        method: method,
+	        body: body,
+	        mode: 'cors',
+	        credentials: credentials
+	    };
+
+	    var promise = window
+	        .fetch(url, opts)
+	        .then(function (res) {
+	            if (res.status !== 200) { return new Error(res.statusText); }
+	            return res.text();
+	        })
+	        .then(function (text) {
+	            try {
+	                return JSON.parse(text);
+	            } catch (Error) {
+	                // could not parse json, so just return text
+	                console.warn('malformed json input', text);
+	                return text;
+	            }
+	        })
+	        .catch(function (err) {
+	            console.error(err);
+	        });
+
+	    return callback ? promise.then(callback) : promise;
+	}
+
+	function getJSON(url, credentials, callback) {
+	    if (arguments.length === 2) {
+	        callback = credentials;
+	        credentials = 'include';
+	    }
+
+	    return fetchJSON(url, 'GET', credentials, null, callback);
+	}
+	function putJSON(url, body, callback) {
+	    return fetchJSON(url, 'PUT', 'include', body, callback);
+	}
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+	/* global dw */
+	function checkPassword(curPwd, pwd, pwd2) {
+	    var msg;
+	    if (curPwd === '') {
+	        msg = dw.backend.messages.provideCurPwd;
+	    } else if (pwd.length < 4) {
+	        msg = dw.backend.messages.pwdTooShort;
+	    } else if (pwd !== pwd2) {
+	        msg = dw.backend.messages.pwdMismatch;
+	    }
+	    if (msg) {
+	        return msg;
+	    }
+	    return true;
+	}
+
+	/* account/App.html generated by Svelte v1.64.0 */
+
+	function data() {
+	    return {
+	        changePassword: false,
+	        changeEmail: false,
+	        deleteAccount: false,
+	        showPasswordInPlaintext: false,
+	        messages: [],
+	        currentPassword: '',
+	        newPassword1: '',
+	        newPassword2: '',
+	        confirmPassword: ''
+	    };
+	}
+	var methods = {
+	    changeEmail: function changeEmail() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var email = ref.email;
+	        var userId = ref.userId;
+
+	        this.set({ savingEmail: true });
+
+	        putJSON('/api/users/' + userId, JSON.stringify({ email: email }), function (res) {
+	            this$1.set({ savingEmail: false });
+
+	            var messages = [];
+	            var errors = [];
+
+	            if (res.status === 'error') {
+	                errors.push(res.message);
+	            }
+
+	            if (res.data && res.data.messages) {
+	                res.data.messages.forEach(function (msg) {
+	                    messages.push(msg);
+	                });
+	            }
+
+	            if (res.data && res.data.errors) {
+	                res.data.errors.forEach(function (msg) {
+	                    errors.push(msg);
+	                });
+	            }
+
+	            if (errors.length === 0) {
+	                this$1.set({
+	                    originalEmail: email,
+	                    changeEmail: false,
+	                    messages: messages,
+	                    errors: []
+	                });
+	            } else {
+	                this$1.set({ errors: errors });
+	            }
+	        });
+	    },
+	    changePassword: function changePassword() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var currentPassword = ref.currentPassword;
+	        var newPassword1 = ref.newPassword1;
+	        var newPassword2 = ref.newPassword2;
+	        var userId = ref.userId;
+	        var check = checkPassword(currentPassword, newPassword1, newPassword2);
+
+	        if (check === true) {
+	            this.set({ savingPassword: true });
+
+	            getJSON('/api/auth/salt', function (res) {
+	                if (res.status !== 'ok') {
+	                    this$1.set({
+	                        errors: ['Could not load salt.'],
+	                        savingPassword: false
+	                    });
+
+	                    return;
+	                }
+
+	                var salt = res.data.salt;
+	                var payload = {
+	                    oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
+	                    pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
+	                };
+
+	                putJSON('/api/users/' + userId, JSON.stringify(payload), function (res) {
+	                    this$1.set({
+	                        savingPassword: false,
+	                        currentPassword: '',
+	                        newPassword1: '',
+	                        newPassword2: ''
+	                    });
+
+	                    var messages = [];
+	                    var errors = [];
+
+	                    if (res.status === 'error') {
+	                        errors.push(res.message);
+	                    }
+
+	                    if (res.data && res.data.messages) {
+	                        res.data.messages.forEach(function (msg) {
+	                            messages.push(msg);
+	                        });
+	                    }
+
+	                    if (res.data && res.data.errors) {
+	                        res.data.errors.forEach(function (msg) {
+	                            errors.push(msg);
+	                        });
+	                    }
+
+	                    if (errors.length === 0) {
+	                        messages.push('Your password was changed sucessfully');
+	                        this$1.set({ changePassword: false, messages: messages, errors: [] });
+	                    } else {
+	                        this$1.set({ errors: errors });
+	                    }
+	                });
+	            });
+	        } else {
+	            var errors = [check];
+	            this.set({ errors: errors });
+	        }
+	    },
+	    deleteAccount: function deleteAccount() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var confirmPassword = ref.confirmPassword;
+
+	        this.set({ deletingAccount: true });
+
+	        getJSON('/api/auth/salt', function (res) {
+	            if (res.status !== 'ok') {
+	                this$1.set({
+	                    errors: ['Could not load salt.'],
+	                    deletingAccount: false
+	                });
+
+	                return;
+	            }
+
+	            var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
+
+	            fetchJSON('/api/users/current?pwd=' + passwordHash, 'DELETE', 'include', JSON.stringify({ pwd: passwordHash }), function (res) {
+	                this$1.set({ deletingAccount: false });
+	                var errors = [];
+
+	                if (res.status === 'error') {
+	                    errors.push(res.message);
+	                }
+
+	                if (res.data && res.data.messages) {
+	                    res.data.messages.forEach(function (msg) {
+	                    });
+	                }
+
+	                if (res.data && res.data.errors) {
+	                    res.data.errors.forEach(function (msg) {
+	                        errors.push(msg);
+	                    });
+	                }
+
+	                if (errors.length === 0) {
+	                    this$1.set({ deleteAccount2: false, deleteAccount3: true });
+	                } else {
+	                    this$1.set({ errors: errors });
+	                }
+	            });
+	        });
+	    }
+	};
+
+	function onstate(ref) {
+	    var changed = ref.changed;
+	    var current = ref.current;
+	    var previous = ref.previous;
+
+	    if (changed.email && !previous) {
+	        this.set({ originalEmail: current.email });
+	    }
+	}
+	function create_main_fragment(component, state) {
+		var div, div_1, h1, text_value = __("Edit profile"), text, text_1, h2, text_2_value = __("account / change-login"), text_2, text_5, if_block_anchor;
+
+		function select_block_type(state) {
+			if (state.changePassword) { return create_if_block; }
+			if (state.deleteAccount) { return create_if_block_2; }
+			if (state.deleteAccount2) { return create_if_block_3; }
+			if (state.deleteAccount3) { return create_if_block_5; }
+			if (state.changeEmail) { return create_if_block_6; }
+			return create_if_block_8;
+		}
+
+		var current_block_type = select_block_type(state);
+		var if_block = current_block_type(component, state);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				h1 = createElement("h1");
+				text = createText(text_value);
+				text_1 = createText("\n        ");
+				h2 = createElement("h2");
+				text_2 = createText(text_2_value);
+				text_5 = createText("\n\n");
+				if_block.c();
+				if_block_anchor = createComment();
+				this.h();
+			},
+
+			h: function hydrate() {
+				div_1.className = "span10 offset1";
+				div.className = "row";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(h1, div_1);
+				appendNode(text, h1);
+				appendNode(text_1, div_1);
+				appendNode(h2, div_1);
+				appendNode(text_2, h2);
+				insertNode(text_5, target, anchor);
+				if_block.m(target, anchor);
+				insertNode(if_block_anchor, target, anchor);
+			},
+
+			p: function update(changed, state) {
+				if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
+					if_block.p(changed, state);
+				} else {
+					if_block.u();
+					if_block.d();
+					if_block = current_block_type(component, state);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+				detachNode(text_5);
+				if_block.u();
+				detachNode(if_block_anchor);
+			},
+
+			d: function destroy() {
+				if_block.d();
+			}
+		};
+	}
+
+	// (21:20) {#each errors as message}
+	function create_each_block(component, state) {
+		var message = state.message, each_value = state.each_value, message_index = state.message_index;
+		var li, raw_value = message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(li, target, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, state) {
+				message = state.message;
+				each_value = state.each_value;
+				message_index = state.message_index;
+				if ((changed.errors) && raw_value !== (raw_value = message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			u: function unmount() {
+				li.innerHTML = '';
+
+				detachNode(li);
+			},
+
+			d: noop
+		};
+	}
+
+	// (18:12) {#if errors && errors.length }
+	function create_if_block_1(component, state) {
+		var div, ul;
+
+		var each_value = state.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(component, assign(assign({}, state), {
+				each_value: each_value,
+				message: each_value[i],
+				message_index: i
+			}));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(ul, "margin-bottom", "0");
+				div.className = "alert";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(ul, div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, state) {
+				var each_value = state.errors;
+
+				if (changed.errors) {
+					for (var i = 0; i < each_value.length; i += 1) {
+						var each_context = assign(assign({}, state), {
+							each_value: each_value,
+							message: each_value[i],
+							message_index: i
+						});
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, each_context);
+						} else {
+							each_blocks[i] = create_each_block(component, each_context);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].u();
+						each_blocks[i].d();
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+				}
+			},
+
+			d: function destroy() {
+				destroyEach(each_blocks);
+			}
+		};
+	}
+
+	// (97:16) {#each errors as message}
+	function create_each_block_1(component, state) {
+		var message = state.message, each_value_1 = state.each_value_1, message_index_1 = state.message_index_1;
+		var li, raw_value = message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(li, target, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, state) {
+				message = state.message;
+				each_value_1 = state.each_value_1;
+				message_index_1 = state.message_index_1;
+				if ((changed.errors) && raw_value !== (raw_value = message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			u: function unmount() {
+				li.innerHTML = '';
+
+				detachNode(li);
+			},
+
+			d: noop
+		};
+	}
+
+	// (94:8) {#if errors && errors.length }
+	function create_if_block_4(component, state) {
+		var div, ul;
+
+		var each_value_1 = state.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1(component, assign(assign({}, state), {
+				each_value_1: each_value_1,
+				message: each_value_1[i],
+				message_index_1: i
+			}));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(ul, "margin-bottom", "0");
+				div.className = "alert";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(ul, div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, state) {
+				var each_value_1 = state.errors;
+
+				if (changed.errors) {
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var each_context = assign(assign({}, state), {
+							each_value_1: each_value_1,
+							message: each_value_1[i],
+							message_index_1: i
+						});
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, each_context);
+						} else {
+							each_blocks[i] = create_each_block_1(component, each_context);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].u();
+						each_blocks[i].d();
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+				}
+			},
+
+			d: function destroy() {
+				destroyEach(each_blocks);
+			}
+		};
+	}
+
+	// (157:20) {#each errors as message}
+	function create_each_block_2(component, state) {
+		var message = state.message, each_value_2 = state.each_value_2, message_index_2 = state.message_index_2;
+		var li, raw_value = message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(li, target, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, state) {
+				message = state.message;
+				each_value_2 = state.each_value_2;
+				message_index_2 = state.message_index_2;
+				if ((changed.errors) && raw_value !== (raw_value = message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			u: function unmount() {
+				li.innerHTML = '';
+
+				detachNode(li);
+			},
+
+			d: noop
+		};
+	}
+
+	// (154:12) {#if errors && errors.length }
+	function create_if_block_7(component, state) {
+		var div, ul;
+
+		var each_value_2 = state.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_2.length; i += 1) {
+			each_blocks[i] = create_each_block_2(component, assign(assign({}, state), {
+				each_value_2: each_value_2,
+				message: each_value_2[i],
+				message_index_2: i
+			}));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(ul, "margin-bottom", "0");
+				div.className = "alert";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(ul, div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, state) {
+				var each_value_2 = state.errors;
+
+				if (changed.errors) {
+					for (var i = 0; i < each_value_2.length; i += 1) {
+						var each_context = assign(assign({}, state), {
+							each_value_2: each_value_2,
+							message: each_value_2[i],
+							message_index_2: i
+						});
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, each_context);
+						} else {
+							each_blocks[i] = create_each_block_2(component, each_context);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].u();
+						each_blocks[i].d();
+					}
+					each_blocks.length = each_value_2.length;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+				}
+			},
+
+			d: function destroy() {
+				destroyEach(each_blocks);
+			}
+		};
+	}
+
+	// (190:16) {#each messages as message}
+	function create_each_block_3(component, state) {
+		var message = state.message, each_value_3 = state.each_value_3, message_index_3 = state.message_index_3;
+		var li, raw_value = message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(li, target, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, state) {
+				message = state.message;
+				each_value_3 = state.each_value_3;
+				message_index_3 = state.message_index_3;
+				if ((changed.messages) && raw_value !== (raw_value = message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			u: function unmount() {
+				li.innerHTML = '';
+
+				detachNode(li);
+			},
+
+			d: noop
+		};
+	}
+
+	// (185:8) {#if messages && messages.length }
+	function create_if_block_9(component, state) {
+		var div, div_1, div_2, ul;
+
+		var each_value_3 = state.messages;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_3.length; i += 1) {
+			each_blocks[i] = create_each_block_3(component, assign(assign({}, state), {
+				each_value_3: each_value_3,
+				message: each_value_3[i],
+				message_index_3: i
+			}));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(ul, "margin-bottom", "0");
+				div_2.className = "alert alert-success";
+				div_1.className = "span6 offset3";
+				div.className = "row";
+				setStyle(div, "margin-top", "20px");
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(div_2, div_1);
+				appendNode(ul, div_2);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, state) {
+				var each_value_3 = state.messages;
+
+				if (changed.messages) {
+					for (var i = 0; i < each_value_3.length; i += 1) {
+						var each_context = assign(assign({}, state), {
+							each_value_3: each_value_3,
+							message: each_value_3[i],
+							message_index_3: i
+						});
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, each_context);
+						} else {
+							each_blocks[i] = create_each_block_3(component, each_context);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].u();
+						each_blocks[i].d();
+					}
+					each_blocks.length = each_value_3.length;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].u();
+				}
+			},
+
+			d: function destroy() {
+				destroyEach(each_blocks);
+			}
+		};
+	}
+
+	// (8:0) {#if changePassword }
+	function create_if_block(component, state) {
+		var div, div_1, div_2, h2, text_value = __("account / password"), text, text_1, p, text_2_value = __("account / password / strong-password-note"), text_2, text_4, text_5, fieldset, div_3, label, text_6_value = __("Current Password"), text_6, text_7, div_4, input, input_updating = false, text_8, p_1, text_9_value = __("account / password / current-password-note"), text_9, text_13, div_5, label_1, text_14_value = __("New Password"), text_14, text_15, div_6, input_1, input_1_updating = false, text_18, div_7, label_2, text_19_value = __("(repeat)"), text_19, text_20, div_8, input_2, input_2_updating = false, text_23, div_9, button, text_24_value = __("Back"), text_24, text_26, button_1, i, i_class_value, text_27, text_28_value = __("account / password"), text_28;
+
+		var if_block = (state.errors && state.errors.length) && create_if_block_1(component, state);
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ currentPassword: input.value });
+			input_updating = false;
+		}
+
+		function input_1_input_handler() {
+			input_1_updating = true;
+			component.set({ newPassword1: input_1.value });
+			input_1_updating = false;
+		}
+
+		function input_2_input_handler() {
+			input_2_updating = true;
+			component.set({ newPassword2: input_2.value });
+			input_2_updating = false;
+		}
+
+		function click_handler(event) {
+			component.set({changePassword: false});
+		}
+
+		function click_handler_1(event) {
+			component.changePassword();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				h2 = createElement("h2");
+				text = createText(text_value);
+				text_1 = createText("\n            ");
+				p = createElement("p");
+				text_2 = createText(text_2_value);
+				text_4 = createText("\n\n            ");
+				if (if_block) { if_block.c(); }
+				text_5 = createText("\n\n            ");
+				fieldset = createElement("fieldset");
+				div_3 = createElement("div");
+				label = createElement("label");
+				text_6 = createText(text_6_value);
+				text_7 = createText("\n                    ");
+				div_4 = createElement("div");
+				input = createElement("input");
+				text_8 = createText("\n                        ");
+				p_1 = createElement("p");
+				text_9 = createText(text_9_value);
+				text_13 = createText("\n                ");
+				div_5 = createElement("div");
+				label_1 = createElement("label");
+				text_14 = createText(text_14_value);
+				text_15 = createText("\n                    ");
+				div_6 = createElement("div");
+				input_1 = createElement("input");
+				text_18 = createText("\n                ");
+				div_7 = createElement("div");
+				label_2 = createElement("label");
+				text_19 = createText(text_19_value);
+				text_20 = createText("\n                    ");
+				div_8 = createElement("div");
+				input_2 = createElement("input");
+				text_23 = createText("\n\n                ");
+				div_9 = createElement("div");
+				button = createElement("button");
+				text_24 = createText(text_24_value);
+				text_26 = createText("\n                    ");
+				button_1 = createElement("button");
+				i = createElement("i");
+				text_27 = createText("  ");
+				text_28 = createText(text_28_value);
+				this.h();
+			},
+
+			h: function hydrate() {
+				label.className = "control-label";
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "password");
+				input.className = "input-xlarge";
+				p_1.className = "help-block";
+				div_4.className = "controls";
+				div_3.className = "control-group";
+				label_1.className = "control-label";
+				addListener(input_1, "input", input_1_input_handler);
+				setAttribute(input_1, "type", "password");
+				input_1.className = "input-xlarge";
+				div_6.className = "controls";
+				div_5.className = "control-group";
+				label_2.className = "control-label";
+				addListener(input_2, "input", input_2_input_handler);
+				setAttribute(input_2, "type", "password");
+				input_2.className = "input-xlarge";
+				div_8.className = "controls";
+				div_7.className = "control-group";
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-save btn-default btn-back";
+				i.className = i_class_value = "fa " + (state.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
+				addListener(button_1, "click", click_handler_1);
+				button_1.className = "btn btn-primary";
+				setStyle(button_1, "float", "right");
+				div_2.className = "form-horizontal edit-account-confirm";
+				div_1.className = "span6 offset3";
+				div.className = "row";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(div_2, div_1);
+				appendNode(h2, div_2);
+				appendNode(text, h2);
+				appendNode(text_1, div_2);
+				appendNode(p, div_2);
+				appendNode(text_2, p);
+				appendNode(text_4, div_2);
+				if (if_block) { if_block.m(div_2, null); }
+				appendNode(text_5, div_2);
+				appendNode(fieldset, div_2);
+				appendNode(div_3, fieldset);
+				appendNode(label, div_3);
+				appendNode(text_6, label);
+				appendNode(text_7, div_3);
+				appendNode(div_4, div_3);
+				appendNode(input, div_4);
+
+				input.value = state.currentPassword;
+
+				appendNode(text_8, div_4);
+				appendNode(p_1, div_4);
+				appendNode(text_9, p_1);
+				appendNode(text_13, fieldset);
+				appendNode(div_5, fieldset);
+				appendNode(label_1, div_5);
+				appendNode(text_14, label_1);
+				appendNode(text_15, div_5);
+				appendNode(div_6, div_5);
+				appendNode(input_1, div_6);
+
+				input_1.value = state.newPassword1;
+
+				appendNode(text_18, fieldset);
+				appendNode(div_7, fieldset);
+				appendNode(label_2, div_7);
+				appendNode(text_19, label_2);
+				appendNode(text_20, div_7);
+				appendNode(div_8, div_7);
+				appendNode(input_2, div_8);
+
+				input_2.value = state.newPassword2;
+
+				appendNode(text_23, fieldset);
+				appendNode(div_9, fieldset);
+				appendNode(button, div_9);
+				appendNode(text_24, button);
+				appendNode(text_26, div_9);
+				appendNode(button_1, div_9);
+				appendNode(i, button_1);
+				appendNode(text_27, button_1);
+				appendNode(text_28, button_1);
+			},
+
+			p: function update(changed, state) {
+				if (state.errors && state.errors.length) {
+					if (if_block) {
+						if_block.p(changed, state);
+					} else {
+						if_block = create_if_block_1(component, state);
+						if_block.c();
+						if_block.m(div_2, text_5);
+					}
+				} else if (if_block) {
+					if_block.u();
+					if_block.d();
+					if_block = null;
+				}
+
+				if (!input_updating) { input.value = state.currentPassword; }
+				if (!input_1_updating) { input_1.value = state.newPassword1; }
+				if (!input_2_updating) { input_2.value = state.newPassword2; }
+				if ((changed.savingPassword) && i_class_value !== (i_class_value = "fa " + (state.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
+					i.className = i_class_value;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+				if (if_block) { if_block.u(); }
+			},
+
+			d: function destroy() {
+				if (if_block) { if_block.d(); }
+				removeListener(input, "input", input_input_handler);
+				removeListener(input_1, "input", input_1_input_handler);
+				removeListener(input_2, "input", input_2_input_handler);
+				removeListener(button, "click", click_handler);
+				removeListener(button_1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (64:24) 
+	function create_if_block_2(component, state) {
+		var div, div_1, div_2, text_1, h2, text_2_value = __("account / confirm-account-deletion"), text_2, text_3, div_3, button, i_1, text_4, text_5_value = __("account / confirm-account-deletion / no"), text_5, text_7, div_4, text_8_value = __("account / or"), text_8, text_9, button_1, i_2, text_10, text_11_value = __("account / confirm-account-deletion / yes"), text_11;
+
+		function click_handler(event) {
+			component.set({deleteAccount: false});
+		}
+
+		function click_handler_1(event) {
+			component.set({deleteAccount: false, deleteAccount2: true});
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				div_2.innerHTML = "<i class=\"fa fa-times\"></i>";
+				text_1 = createText("\n\n        ");
+				h2 = createElement("h2");
+				text_2 = createText(text_2_value);
+				text_3 = createText("\n\n        ");
+				div_3 = createElement("div");
+				button = createElement("button");
+				i_1 = createElement("i");
+				text_4 = createText("   ");
+				text_5 = createText(text_5_value);
+				text_7 = createText("\n\n            ");
+				div_4 = createElement("div");
+				text_8 = createText(text_8_value);
+				text_9 = createText("\n\n            ");
+				button_1 = createElement("button");
+				i_2 = createElement("i");
+				text_10 = createText("   ");
+				text_11 = createText(text_11_value);
+				this.h();
+			},
+
+			h: function hydrate() {
+				div_2.className = "iconholder svelte-u71xal";
+				setStyle(h2, "margin-bottom", "20px");
+				h2.className = "svelte-u71xal";
+				i_1.className = "fa fa-chevron-left";
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-back btn-primary";
+				setStyle(div_4, "display", "block");
+				setStyle(div_4, "margin", "0px 10px");
+				i_2.className = "fa fa-times";
+				addListener(button_1, "click", click_handler_1);
+				button_1.className = "btn btn-default";
+				setStyle(div_3, "display", "flex");
+				setStyle(div_3, "justify-content", "center");
+				setStyle(div_3, "align-items", "center");
+				div_1.className = "span6 offset3";
+				setStyle(div_1, "text-align", "center");
+				div.className = "row delete-account svelte-u71xal";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(div_2, div_1);
+				appendNode(text_1, div_1);
+				appendNode(h2, div_1);
+				appendNode(text_2, h2);
+				appendNode(text_3, div_1);
+				appendNode(div_3, div_1);
+				appendNode(button, div_3);
+				appendNode(i_1, button);
+				appendNode(text_4, button);
+				appendNode(text_5, button);
+				appendNode(text_7, div_3);
+				appendNode(div_4, div_3);
+				appendNode(text_8, div_4);
+				appendNode(text_9, div_3);
+				appendNode(button_1, div_3);
+				appendNode(i_2, button_1);
+				appendNode(text_10, button_1);
+				appendNode(text_11, button_1);
+			},
+
+			p: noop,
+
+			u: function unmount() {
+				detachNode(div);
+			},
+
+			d: function destroy() {
+				removeListener(button, "click", click_handler);
+				removeListener(button_1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (88:25) 
+	function create_if_block_3(component, state) {
+		var div, div_1, h2, text_value = __("account / delete / hed"), text, text_1, text_2, p, text_3_value = __("account / delete / really"), text_3, text_5, ul, li, text_6_value = __("account / confirm-account-deletion / free"), text_6, li_1, text_7_value = __("You cannot login and logout anymore."), text_7, li_2, text_8_value = __("You cannot edit or remove your charts anymore."), text_8, text_9, p_1, text_10_value = __("account / delete / charts-stay-online"), text_10, text_12, div_2, p_2, b, text_13_value = __("Please enter your password to confirm the deletion request:"), text_13, text_14, div_3, input, input_updating = false, input_placeholder_value, text_16, p_3, raw_value = __("account / delete / really-really"), text_18, div_4, button, i, text_19, text_20_value = __("No, I changed my mind.."), text_20, text_22, button_1, i_1, i_1_class_value, text_23, text_24_value = __("Yes, delete it!"), text_24;
+
+		var if_block = (state.errors && state.errors.length) && create_if_block_4(component, state);
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ confirmPassword: input.value });
+			input_updating = false;
+		}
+
+		function click_handler(event) {
+			component.set({deleteAccount2: false});
+		}
+
+		function click_handler_1(event) {
+			component.deleteAccount();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				h2 = createElement("h2");
+				text = createText(text_value);
+				text_1 = createText("\n\n        ");
+				if (if_block) { if_block.c(); }
+				text_2 = createText("\n\n        ");
+				p = createElement("p");
+				text_3 = createText(text_3_value);
+				text_5 = createText("\n        ");
+				ul = createElement("ul");
+				li = createElement("li");
+				text_6 = createText(text_6_value);
+				li_1 = createElement("li");
+				text_7 = createText(text_7_value);
+				li_2 = createElement("li");
+				text_8 = createText(text_8_value);
+				text_9 = createText("\n        ");
+				p_1 = createElement("p");
+				text_10 = createText(text_10_value);
+				text_12 = createText("\n        ");
+				div_2 = createElement("div");
+				p_2 = createElement("p");
+				b = createElement("b");
+				text_13 = createText(text_13_value);
+				text_14 = createText("\n            ");
+				div_3 = createElement("div");
+				input = createElement("input");
+				text_16 = createText("\n            ");
+				p_3 = createElement("p");
+				text_18 = createText("\n            ");
+				div_4 = createElement("div");
+				button = createElement("button");
+				i = createElement("i");
+				text_19 = createText("  ");
+				text_20 = createText(text_20_value);
+				text_22 = createText("\n                ");
+				button_1 = createElement("button");
+				i_1 = createElement("i");
+				text_23 = createText("  ");
+				text_24 = createText(text_24_value);
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(h2, "margin-bottom", "20px");
+				h2.className = "svelte-u71xal";
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "password");
+				input.placeholder = input_placeholder_value = __("Password");
+				div_3.className = "control-group";
+				i.className = "fa fa-chevron-left";
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-info";
+				i_1.className = i_1_class_value = "fa " + (state.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
+				addListener(button_1, "click", click_handler_1);
+				setStyle(button_1, "float", "right");
+				button_1.className = "btn btn-danger";
+				div_4.className = "control-group";
+				div_2.className = "";
+				div_1.className = "span6 offset3";
+				div.className = "row delete-account svelte-u71xal";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(h2, div_1);
+				appendNode(text, h2);
+				appendNode(text_1, div_1);
+				if (if_block) { if_block.m(div_1, null); }
+				appendNode(text_2, div_1);
+				appendNode(p, div_1);
+				appendNode(text_3, p);
+				appendNode(text_5, div_1);
+				appendNode(ul, div_1);
+				appendNode(li, ul);
+				appendNode(text_6, li);
+				appendNode(li_1, ul);
+				appendNode(text_7, li_1);
+				appendNode(li_2, ul);
+				appendNode(text_8, li_2);
+				appendNode(text_9, div_1);
+				appendNode(p_1, div_1);
+				appendNode(text_10, p_1);
+				appendNode(text_12, div_1);
+				appendNode(div_2, div_1);
+				appendNode(p_2, div_2);
+				appendNode(b, p_2);
+				appendNode(text_13, b);
+				appendNode(text_14, div_2);
+				appendNode(div_3, div_2);
+				appendNode(input, div_3);
+
+				input.value = state.confirmPassword;
+
+				appendNode(text_16, div_2);
+				appendNode(p_3, div_2);
+				p_3.innerHTML = raw_value;
+				appendNode(text_18, div_2);
+				appendNode(div_4, div_2);
+				appendNode(button, div_4);
+				appendNode(i, button);
+				appendNode(text_19, button);
+				appendNode(text_20, button);
+				appendNode(text_22, div_4);
+				appendNode(button_1, div_4);
+				appendNode(i_1, button_1);
+				appendNode(text_23, button_1);
+				appendNode(text_24, button_1);
+			},
+
+			p: function update(changed, state) {
+				if (state.errors && state.errors.length) {
+					if (if_block) {
+						if_block.p(changed, state);
+					} else {
+						if_block = create_if_block_4(component, state);
+						if_block.c();
+						if_block.m(div_1, text_2);
+					}
+				} else if (if_block) {
+					if_block.u();
+					if_block.d();
+					if_block = null;
+				}
+
+				if (!input_updating) { input.value = state.confirmPassword; }
+				if ((changed.deletingAccount) && i_1_class_value !== (i_1_class_value = "fa " + (state.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
+					i_1.className = i_1_class_value;
+				}
+			},
+
+			u: function unmount() {
+				p_3.innerHTML = '';
+
+				detachNode(div);
+				if (if_block) { if_block.u(); }
+			},
+
+			d: function destroy() {
+				if (if_block) { if_block.d(); }
+				removeListener(input, "input", input_input_handler);
+				removeListener(button, "click", click_handler);
+				removeListener(button_1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (135:25) 
+	function create_if_block_5(component, state) {
+		var div, div_1, h2, text_value = __("Your account has been deleted."), text, text_2, a, text_3_value = __("Goodbye!"), text_3;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				h2 = createElement("h2");
+				text = createText(text_value);
+				text_2 = createText("\n        ");
+				a = createElement("a");
+				text_3 = createText(text_3_value);
+				this.h();
+			},
+
+			h: function hydrate() {
+				setStyle(h2, "margin-bottom", "20px");
+				setStyle(h2, "text-align", "center");
+				h2.className = "svelte-u71xal";
+				a.href = "/";
+				a.className = "btn btn-primary btn-large";
+				div_1.className = "span6 offset3";
+				setStyle(div_1, "text-align", "center");
+				div.className = "row delete-account svelte-u71xal";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(h2, div_1);
+				appendNode(text, h2);
+				appendNode(text_2, div_1);
+				appendNode(a, div_1);
+				appendNode(text_3, a);
+			},
+
+			p: noop,
+
+			u: function unmount() {
+				detachNode(div);
+			},
+
+			d: noop
+		};
+	}
+
+	// (146:21) 
+	function create_if_block_6(component, state) {
+		var div, div_1, div_2, h2, text_value = __("account / email"), text, text_1, p, text_2_value = __("account / confirm-email-change"), text_2, text_3, text_4, fieldset, div_3, label, text_5_value = __("E-Mail"), text_5, text_6, text_7, div_4, input, input_updating = false, input_disabled_value, text_10, div_5, button, text_11_value = __( "Back"), text_11, text_13, button_1, i, i_class_value, text_14, text_15_value = __( "account / email"), text_15;
+
+		var if_block = (state.errors && state.errors.length) && create_if_block_7(component, state);
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ email: input.value });
+			input_updating = false;
+		}
+
+		function click_handler(event) {
+			component.set({changeEmail: false});
+		}
+
+		function click_handler_1(event) {
+			component.changeEmail();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				h2 = createElement("h2");
+				text = createText(text_value);
+				text_1 = createText("\n            ");
+				p = createElement("p");
+				text_2 = createText(text_2_value);
+				text_3 = createText("\n\n            ");
+				if (if_block) { if_block.c(); }
+				text_4 = createText("\n\n            ");
+				fieldset = createElement("fieldset");
+				div_3 = createElement("div");
+				label = createElement("label");
+				text_5 = createText(text_5_value);
+				text_6 = createText(":");
+				text_7 = createText("\n                    ");
+				div_4 = createElement("div");
+				input = createElement("input");
+				text_10 = createText("\n\n                ");
+				div_5 = createElement("div");
+				button = createElement("button");
+				text_11 = createText(text_11_value);
+				text_13 = createText("\n                    ");
+				button_1 = createElement("button");
+				i = createElement("i");
+				text_14 = createText("  ");
+				text_15 = createText(text_15_value);
+				this.h();
+			},
+
+			h: function hydrate() {
+				label.className = "control-label";
+				label.htmlFor = "email";
+				addListener(input, "input", input_input_handler);
+				input.disabled = input_disabled_value = !state.changeEmail;
+				setAttribute(input, "type", "text");
+				div_4.className = "controls";
+				div_3.className = "control-group";
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-default";
+				i.className = i_class_value = "fa " + (state.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
+				addListener(button_1, "click", click_handler_1);
+				setStyle(button_1, "float", "right");
+				button_1.className = "btn btn-save btn-primary";
+				div_5.className = "";
+				div_2.className = "form-horizontal edit-account";
+				div_1.className = "span6 offset3";
+				div.className = "row";
+			},
+
+			m: function mount(target, anchor) {
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(div_2, div_1);
+				appendNode(h2, div_2);
+				appendNode(text, h2);
+				appendNode(text_1, div_2);
+				appendNode(p, div_2);
+				appendNode(text_2, p);
+				appendNode(text_3, div_2);
+				if (if_block) { if_block.m(div_2, null); }
+				appendNode(text_4, div_2);
+				appendNode(fieldset, div_2);
+				appendNode(div_3, fieldset);
+				appendNode(label, div_3);
+				appendNode(text_5, label);
+				appendNode(text_6, label);
+				appendNode(text_7, div_3);
+				appendNode(div_4, div_3);
+				appendNode(input, div_4);
+
+				input.value = state.email;
+
+				appendNode(text_10, fieldset);
+				appendNode(div_5, fieldset);
+				appendNode(button, div_5);
+				appendNode(text_11, button);
+				appendNode(text_13, div_5);
+				appendNode(button_1, div_5);
+				appendNode(i, button_1);
+				appendNode(text_14, button_1);
+				appendNode(text_15, button_1);
+			},
+
+			p: function update(changed, state) {
+				if (state.errors && state.errors.length) {
+					if (if_block) {
+						if_block.p(changed, state);
+					} else {
+						if_block = create_if_block_7(component, state);
+						if_block.c();
+						if_block.m(div_2, text_4);
+					}
+				} else if (if_block) {
+					if_block.u();
+					if_block.d();
+					if_block = null;
+				}
+
+				if (!input_updating) { input.value = state.email; }
+				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !state.changeEmail)) {
+					input.disabled = input_disabled_value;
+				}
+
+				if ((changed.savingEmail) && i_class_value !== (i_class_value = "fa " + (state.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
+					i.className = i_class_value;
+				}
+			},
+
+			u: function unmount() {
+				detachNode(div);
+				if (if_block) { if_block.u(); }
+			},
+
+			d: function destroy() {
+				if (if_block) { if_block.d(); }
+				removeListener(input, "input", input_input_handler);
+				removeListener(button, "click", click_handler);
+				removeListener(button_1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (185:0) {:else}
+	function create_if_block_8(component, state) {
+		var text, div, div_1, div_2, div_3, text_1_value = __("E-Mail"), text_1, text_2, text_3, div_4, input, input_disabled_value, text_5, div_5, button, text_6_value = __( "account / email"), text_6, text_10, div_6, div_7, text_11_value = __("Password"), text_11, text_12, text_13, div_8, input_1, text_15, div_9, button_1, text_16_value = __("account / password"), text_16, text_20, div_10, text_21_value = __("account / or"), text_21, text_22, span, text_23_value = __("account / delete"), text_23, text_24;
+
+		var if_block = (state.messages && state.messages.length) && create_if_block_9(component, state);
+
+		function click_handler(event) {
+			component.set({changeEmail: true});
+		}
+
+		function click_handler_1(event) {
+			component.set({changePassword: true});
+		}
+
+		function click_handler_2(event) {
+			component.set({deleteAccount: true});
+		}
+
+		return {
+			c: function create() {
+				if (if_block) { if_block.c(); }
+				text = createText("\n\n");
+				div = createElement("div");
+				div_1 = createElement("div");
+				div_2 = createElement("div");
+				div_3 = createElement("div");
+				text_1 = createText(text_1_value);
+				text_2 = createText(":");
+				text_3 = createText("\n            ");
+				div_4 = createElement("div");
+				input = createElement("input");
+				text_5 = createText("\n            ");
+				div_5 = createElement("div");
+				button = createElement("button");
+				text_6 = createText(text_6_value);
+				text_10 = createText("\n\n        ");
+				div_6 = createElement("div");
+				div_7 = createElement("div");
+				text_11 = createText(text_11_value);
+				text_12 = createText(":");
+				text_13 = createText("\n            ");
+				div_8 = createElement("div");
+				input_1 = createElement("input");
+				text_15 = createText("\n            ");
+				div_9 = createElement("div");
+				button_1 = createElement("button");
+				text_16 = createText(text_16_value);
+				text_20 = createText("\n\n        ");
+				div_10 = createElement("div");
+				text_21 = createText(text_21_value);
+				text_22 = createText("\n            ");
+				span = createElement("span");
+				text_23 = createText(text_23_value);
+				text_24 = createText(".");
+				this.h();
+			},
+
+			h: function hydrate() {
+				div_3.className = "svelte-u71xal";
+				input.disabled = input_disabled_value = !state.changeEmail;
+				input.value = state.originalEmail;
+				setAttribute(input, "type", "text");
+				div_4.className = "svelte-u71xal";
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-save btn-default";
+				div_5.className = "svelte-u71xal";
+				div_2.className = "svelte-u71xal";
+				div_7.className = "svelte-u71xal";
+				input_1.disabled = true;
+				input_1.value = "abcdefgh";
+				setAttribute(input_1, "type", "password");
+				div_8.className = "svelte-u71xal";
+				addListener(button_1, "click", click_handler_1);
+				button_1.className = "btn btn-save btn-default";
+				div_9.className = "svelte-u71xal";
+				div_6.className = "svelte-u71xal";
+				addListener(span, "click", click_handler_2);
+				span.className = "link svelte-u71xal";
+				setAttribute(span, "href", "#");
+				setStyle(div_10, "text-align", "center");
+				setStyle(div_10, "display", "block");
+				div_10.className = "svelte-u71xal";
+				div_1.className = "span6 offset3";
+				div.className = "row edit-account svelte-u71xal";
+				setStyle(div, "margin-top", "" + ( state.messages && state.messages.length ? 0 : 20 ) + "px");
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block) { if_block.m(target, anchor); }
+				insertNode(text, target, anchor);
+				insertNode(div, target, anchor);
+				appendNode(div_1, div);
+				appendNode(div_2, div_1);
+				appendNode(div_3, div_2);
+				appendNode(text_1, div_3);
+				appendNode(text_2, div_3);
+				appendNode(text_3, div_2);
+				appendNode(div_4, div_2);
+				appendNode(input, div_4);
+				appendNode(text_5, div_2);
+				appendNode(div_5, div_2);
+				appendNode(button, div_5);
+				appendNode(text_6, button);
+				appendNode(text_10, div_1);
+				appendNode(div_6, div_1);
+				appendNode(div_7, div_6);
+				appendNode(text_11, div_7);
+				appendNode(text_12, div_7);
+				appendNode(text_13, div_6);
+				appendNode(div_8, div_6);
+				appendNode(input_1, div_8);
+				appendNode(text_15, div_6);
+				appendNode(div_9, div_6);
+				appendNode(button_1, div_9);
+				appendNode(text_16, button_1);
+				appendNode(text_20, div_1);
+				appendNode(div_10, div_1);
+				appendNode(text_21, div_10);
+				appendNode(text_22, div_10);
+				appendNode(span, div_10);
+				appendNode(text_23, span);
+				appendNode(text_24, div_10);
+			},
+
+			p: function update(changed, state) {
+				if (state.messages && state.messages.length) {
+					if (if_block) {
+						if_block.p(changed, state);
+					} else {
+						if_block = create_if_block_9(component, state);
+						if_block.c();
+						if_block.m(text.parentNode, text);
+					}
+				} else if (if_block) {
+					if_block.u();
+					if_block.d();
+					if_block = null;
+				}
+
+				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !state.changeEmail)) {
+					input.disabled = input_disabled_value;
+				}
+
+				if (changed.originalEmail) {
+					input.value = state.originalEmail;
+				}
+
+				if (changed.messages) {
+					setStyle(div, "margin-top", "" + ( state.messages && state.messages.length ? 0 : 20 ) + "px");
+				}
+			},
+
+			u: function unmount() {
+				if (if_block) { if_block.u(); }
+				detachNode(text);
+				detachNode(div);
+			},
+
+			d: function destroy() {
+				if (if_block) { if_block.d(); }
+				removeListener(button, "click", click_handler);
+				removeListener(button_1, "click", click_handler_1);
+				removeListener(span, "click", click_handler_2);
+			}
+		};
+	}
+
+	function App(options) {
+		this._debugName = '<App>';
+		if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+		init(this, options);
+		this._state = assign(data(), options.data);
+		if (!('changePassword' in this._state)) { console.warn("<App> was created without expected data property 'changePassword'"); }
+		if (!('errors' in this._state)) { console.warn("<App> was created without expected data property 'errors'"); }
+		if (!('currentPassword' in this._state)) { console.warn("<App> was created without expected data property 'currentPassword'"); }
+		if (!('newPassword1' in this._state)) { console.warn("<App> was created without expected data property 'newPassword1'"); }
+		if (!('newPassword2' in this._state)) { console.warn("<App> was created without expected data property 'newPassword2'"); }
+		if (!('savingPassword' in this._state)) { console.warn("<App> was created without expected data property 'savingPassword'"); }
+		if (!('deleteAccount' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount'"); }
+		if (!('deleteAccount2' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount2'"); }
+		if (!('confirmPassword' in this._state)) { console.warn("<App> was created without expected data property 'confirmPassword'"); }
+		if (!('deletingAccount' in this._state)) { console.warn("<App> was created without expected data property 'deletingAccount'"); }
+		if (!('deleteAccount3' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount3'"); }
+		if (!('changeEmail' in this._state)) { console.warn("<App> was created without expected data property 'changeEmail'"); }
+		if (!('email' in this._state)) { console.warn("<App> was created without expected data property 'email'"); }
+		if (!('savingEmail' in this._state)) { console.warn("<App> was created without expected data property 'savingEmail'"); }
+		if (!('messages' in this._state)) { console.warn("<App> was created without expected data property 'messages'"); }
+		if (!('originalEmail' in this._state)) { console.warn("<App> was created without expected data property 'originalEmail'"); }
+
+		this._handlers.state = [onstate];
+
+		var self = this;
+		var _oncreate = function() {
+			var changed = { changePassword: 1, errors: 1, currentPassword: 1, newPassword1: 1, newPassword2: 1, savingPassword: 1, deleteAccount: 1, deleteAccount2: 1, confirmPassword: 1, deletingAccount: 1, deleteAccount3: 1, changeEmail: 1, email: 1, savingEmail: 1, messages: 1, originalEmail: 1 };
+			onstate.call(self, { changed: changed, current: self._state });
+			self.fire("update", { changed: changed, current: self._state });
+		};
+
+		if (!options.root) {
+			this._oncreate = [];
+		}
+
+		this._fragment = create_main_fragment(this, this._state);
+
+		this.root._oncreate.push(_oncreate);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			callAll(this._oncreate);
+		}
+	}
+
+	assign(App.prototype, protoDev);
+	assign(App.prototype, methods);
+
+	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	function Store(state, options) {
+		this._observers = { pre: blankObject(), post: blankObject() };
+		this._handlers = {};
+		this._dependents = [];
+
+		this._computed = blankObject();
+		this._sortedComputedProperties = [];
+
+		this._state = assign({}, state);
+		this._differs = options && options.immutable ? _differsImmutable : _differs;
+	}
+
+	assign(Store.prototype, {
+		_add: function(component, props) {
+			this._dependents.push({
+				component: component,
+				props: props
+			});
+		},
+
+		_init: function(props) {
+			var this$1 = this;
+
+			var state = {};
+			for (var i = 0; i < props.length; i += 1) {
+				var prop = props[i];
+				state['$' + prop] = this$1._state[prop];
+			}
+			return state;
+		},
+
+		_remove: function(component) {
+			var this$1 = this;
+
+			var i = this._dependents.length;
+			while (i--) {
+				if (this$1._dependents[i].component === component) {
+					this$1._dependents.splice(i, 1);
+					return;
+				}
+			}
+		},
+
+		_sortComputedProperties: function() {
+			var this$1 = this;
+
+			var computed = this._computed;
+			var sorted = this._sortedComputedProperties = [];
+			var cycles;
+			var visited = blankObject();
+
+			function visit(key) {
+				if (cycles[key]) {
+					throw new Error('Cyclical dependency detected');
+				}
+
+				if (visited[key]) { return; }
+				visited[key] = true;
+
+				var c = computed[key];
+
+				if (c) {
+					cycles[key] = true;
+					c.deps.forEach(visit);
+					sorted.push(c);
+				}
+			}
+
+			for (var key in this$1._computed) {
+				cycles = blankObject();
+				visit(key);
+			}
+		},
+
+		compute: function(key, deps, fn) {
+			var store = this;
+			var value;
+
+			var c = {
+				deps: deps,
+				update: function(state, changed, dirty) {
+					var values = deps.map(function(dep) {
+						if (dep in changed) { dirty = true; }
+						return state[dep];
+					});
+
+					if (dirty) {
+						var newValue = fn.apply(null, values);
+						if (store._differs(newValue, value)) {
+							value = newValue;
+							changed[key] = true;
+							state[key] = value;
+						}
+					}
+				}
+			};
+
+			c.update(this._state, {}, true);
+
+			this._computed[key] = c;
+			this._sortComputedProperties();
+		},
+
+		fire: fire,
+
+		get: get,
+
+		// TODO remove this method
+		observe: observe,
+
+		on: on,
+
+		onchange: function(callback) {
+			// TODO remove this method
+			console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})");
+
+			return this.on('state', function(event) {
+				callback(event.current, event.changed);
+			});
+		},
+
+		set: function(newState) {
+			var this$1 = this;
+
+			var oldState = this._state,
+				changed = this._changed = {},
+				dirty = false;
+
+			for (var key in newState) {
+				if (this$1._computed[key]) { throw new Error("'" + key + "' is a read-only property"); }
+				if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+			}
+			if (!dirty) { return; }
+
+			this._state = assign(assign({}, oldState), newState);
+
+			for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+				this$1._sortedComputedProperties[i].update(this$1._state, changed);
+			}
+
+			this.fire('state', {
+				changed: changed,
+				current: this._state,
+				previous: oldState
+			});
+
+			var dependents = this._dependents.slice(); // guard against mutations
+			for (var i = 0; i < dependents.length; i += 1) {
+				var dependent = dependents[i];
+				var componentState = {};
+				dirty = false;
+
+				for (var j = 0; j < dependent.props.length; j += 1) {
+					var prop = dependent.props[j];
+					if (prop in changed) {
+						componentState['$' + prop] = this$1._state[prop];
+						dirty = true;
+					}
+				}
+
+				if (dirty) { dependent.component.set(componentState); }
+			}
+
+			this.fire('update', {
+				changed: changed,
+				current: this._state,
+				previous: oldState
+			});
+		}
+	});
+
+	var store = new Store({});
+
+	var data$1 = {
+	    chart: {
+	        id: ''
+	    },
+	    readonly: false,
+	    chartData: '',
+	    transpose: false,
+	    firstRowIsHeader: true,
+	    skipRows: 0
+	};
+
+	var main = { App: App, data: data$1, store: store };
+
+	return main;
+
+}));
+//# sourceMappingURL=account.js.map
