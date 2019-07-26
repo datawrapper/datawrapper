@@ -2619,15 +2619,17 @@ _.extend(dw.visualization.base, {
 
             var $watermark = $('.watermark', '#chart');
             var width = $watermark[0].getBoundingClientRect().width;
-            var angle = Math.atan(window.innerHeight / window.innerWidth);
             var space = Math.sqrt(Math.pow(window.innerHeight, 2) + Math.pow(window.innerWidth, 2));
             var fontSize = 6 * ((space * 0.8) / width);
+            var angle = Math.atan((window.innerHeight - fontSize) / window.innerWidth);
             var transform = 'rotate(' + -angle + 'rad)';
 
             $watermark
                 .attr('data-rotate', (-1 * angle * 180) / Math.PI)
                 .css('font-size', fontSize)
-                .css('transform', transform);
+                .css('transform', transform)
+                .css('left', (space - width) / 2)
+                .css('top', (window.innerHeight - (space * 0.8)) / 2);
         }
 
         if (this.theme() && this.theme().options && this.theme().options.watermark) {
