@@ -85,7 +85,7 @@
     <div class="dw-chart-body" id="chart"></div>
 
     {% if not plain %}
-        {% if 'options.footer.notesPosition' != "under-footer" %}
+        {% if theme.getThemeData("options.footer.notesPosition") != "under-footer" %}
             <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
                 {{ notes | purify | raw }}
             </div>
@@ -224,7 +224,7 @@
     {% endif %}
 
     {% if not plain %}
-        {% if 'options.footer.notesPosition' == "under-footer" %}
+        {% if theme.getThemeData("options.footer.notesPosition") == "under-footer" %}
             <div class="dw-chart-notes {% if not notes %}hidden{% endif %}">
                 {{ notes | purify | raw }}
             </div>
