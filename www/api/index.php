@@ -92,7 +92,8 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
 
     if (isset($dw_config['allowed_origin'])) {
         if ($dw_config['allowed_origin'] == "*") {
-            $app->response()->header('Access-Control-Allow-Origin', "*");
+            $origin = empty($origin) ? '*' : $origin;
+            $app->response()->header('Access-Control-Allow-Origin', $origin);
             $app->response()->header('Access-Control-Allow-Credentials', 'true');
 
             if ($req->getMethod() == "OPTIONS") {
@@ -100,7 +101,7 @@ $app->hook('slim.before.router', function () use ($app, $dw_config) {
                 $app->response()->status(200);
                 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE');
                 header('Access-Control-Allow-Headers: Content-Type, X-Auth-Token, Origin, Authorization');
-                header('Access-Control-Allow-Origin: '.(empty($origin) ? '*' : $origin));
+                header('Access-Control-Allow-Origin: '.$origin);
                 header('Access-Control-Allow-Credentials: true');
                 die();
             }
