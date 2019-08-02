@@ -783,7 +783,7 @@
         opacity: 1;
     }
 
-    .secondary.tick {
+    .secondary.tick, text.secondary.tick, .secondary.tick text, .secondary.tick span {
 
         {% if style_chart_labels_ticks_secondary_tabularNums %}
             font-feature-settings: 'tnum';
@@ -798,19 +798,14 @@
             font-size: {{ style.chart.labels.ticks.secondary.fontSize ~'px' }};
         {% endif %}
 
-        &.text, span, text {
+        {% if style_chart_labels_ticks_secondary_color %}
+            color: @style_chart_labels_ticks_secondary_color;
+            fill: @style_chart_labels_ticks_secondary_color;
+        {% elseif style_chart_labels_ticks_color %}
+            color: @style_chart_labels_ticks_color;
+            fill: @style_chart_labels_ticks_color;
+        {% endif %}
 
-
-                {% if style_chart_labels_ticks_secondary_color %}
-                    color: @style_chart_labels_ticks_secondary_color;
-                    fill: @style_chart_labels_ticks_secondary_color;
-                {% elseif style_chart_labels_ticks_color %}
-                    color: @style_chart_labels_ticks_color;
-                    fill: @style_chart_labels_ticks_color;
-                {% endif %}
-
-
-            }
     }
 
     .primary.tick {
