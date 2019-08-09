@@ -39,7 +39,8 @@ require(['{{workflow.module}}'], function(mod) {
         locales: {{chartLocales|json|raw}},
         actions: {{chartActions|json|raw}},
         themes: {{userThemes|json|raw}},
-        dataset: chartData ? JSON.parse(chartData) : {}
+        dataset: chartData ? JSON.parse(chartData) : {},
+        apiDomain: '{{apiDomain}}'
     });
 
     var publishData = {{ publishData | json | raw }};

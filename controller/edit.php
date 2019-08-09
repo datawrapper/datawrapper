@@ -140,6 +140,7 @@
                 'workflow' => $workflows[$vis['svelte-workflow']],
                 'userArray' => $userArray,
                 'vis' => $vis,
+                'apiDomain' => $GLOBALS['dw_config']['api_domain'],
                 'chartLocales' => array_map(function($s) {
                     $s = explode('|', $s);
                     return ['value'=>$s[0], 'label'=>$s[1]];
