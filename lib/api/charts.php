@@ -94,15 +94,15 @@ $app->get('/charts/:id', function($id) use ($app) {
         // don't expose author info to non-authors
         if (!$chart->isWritable($user)) {
             unset($json['author']);
-        }
-
-        if (!empty($GLOBALS['dw_config']['img_domain'])) {
-            //var_dump($chart->getCreatedAt()); die();
-            $hash = md5($chart->getId() . "--" . strtotime($chart->getCreatedAt()));
-            $json['thumbnail'] = [
-                'full' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/full.png',
-                'plain' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/plain.png'
-            ];
+        } else {
+            if (!empty($GLOBALS['dw_config']['img_domain'])) {
+                //var_dump($chart->getCreatedAt()); die();
+                $hash = md5($chart->getId() . "--" . strtotime($chart->getCreatedAt()));
+                $json['thumbnail'] = [
+                    'full' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/full.png',
+                    'plain' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/plain.png'
+                ];
+            }
         }
 
         ok($json);
