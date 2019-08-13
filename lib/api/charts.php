@@ -26,6 +26,16 @@ $app->get('/charts', function() use ($app) {
     $res = array();
     foreach ($charts as $chart) {
         $res[] = $app->request()->get('expand') ? $chart->serialize() : $chart->shortArray();
+
+        if (!empty($GLOBALS['dw_config']['img_domain'])) {
+            $hash = md5($chart->getId() . "--" . strtotime($chart->getCreatedAt()));
+            $thumbnail = [
+                'full' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/full.png',
+                'plain' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/plain.png'
+            ];
+
+            $res[sizeof($res) - 1]['thumbnail'] = $thumbnail;
+        }
     }
     ok($res);
 });
@@ -85,6 +95,16 @@ $app->get('/charts/:id', function($id) use ($app) {
         if (!$chart->isWritable($user)) {
             unset($json['author']);
         }
+
+        if (!empty($GLOBALS['dw_config']['img_domain'])) {
+            //var_dump($chart->getCreatedAt()); die();
+            $hash = md5($chart->getId() . "--" . strtotime($chart->getCreatedAt()));
+            $json['thumbnail'] = [
+                'full' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/full.png',
+                'plain' => '//' . $GLOBALS['dw_config']['img_domain'] . '/' . $chart->getId() . '/' . $hash . '/plain.png'
+            ];
+        }
+
         ok($json);
     } else {
         error('chart-not-found', 'No chart with that id was found');
