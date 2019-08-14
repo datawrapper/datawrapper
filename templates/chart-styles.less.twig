@@ -338,7 +338,7 @@
         {% endif %}
 
         {% if style_chart_axes_gridlines_baselineWidth %}
-            path.grid.x-axis, line.x-axis, line.axis.y-axis  {
+            path.grid.x-axis, .vis-frame line.axis, line.x-axis, line.axis.y-axis  {
                 stroke-width:~'@{style_chart_axes_gridlines_baselineWidth}px';
             }
 
