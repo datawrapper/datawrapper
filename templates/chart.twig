@@ -61,7 +61,7 @@
     {{ hook('chart_html_head_end', chart) }}
 
 </head>
-<body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if png-export %} png-export{% endif %}{% if plain %} plain{% endif %} vis-height-{{ visualization.height ? visualization.height : "fit" }} theme-{{ chart.theme }} vis-{{ chart.type }}">
+<body class="dw-chart chart{% if fullscreen %} fullscreen{% endif %}{% if set_png_export_class %} png-export{% endif %}{% if plain %} plain{% endif %} vis-height-{{ visualization.height ? visualization.height : "fit" }} theme-{{ chart.theme }} vis-{{ chart.type }}">
     {{ hook('chart_before_body', chart, published) }}
 
     {# some convenient short cuts for theme templates #}
