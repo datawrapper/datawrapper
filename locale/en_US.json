@@ -423,8 +423,8 @@
   "none": "none",
   "invert": "invert",
   "controls / color / choose-color": "Choose a color:",
-  "invite / h1 / chart": "One more thing before your get your chart",
-  "invite / h1 / map": "One more thing before your get your map",
-  "invite / h1 / table": "One more thing before your get your table",
+  "invite / h1 / chart": "One more thing before you get your chart",
+  "invite / h1 / map": "One more thing before you get your map",
+  "invite / h1 / table": "One more thing before you get your table",
   "invite / p": "Quickly set up a password so you can access it again in future."
 }
