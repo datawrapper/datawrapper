@@ -40,8 +40,8 @@ $app->get('/account/invite/:token', function($token) use ($app) {
             'email' => $user->getEmail(),
             'auth_salt' => DW_AUTH_SALT,
             'redirect' => '/',
-            'message_h1' = __("invite / h1 / chart"),
-            'message_p' = __("invite / p / chart")
+            'message_h1' => __("invite / h1 / chart"),
+            'message_p' => __("invite / p / chart")
         );
 
         if (!empty($chartId)) {
