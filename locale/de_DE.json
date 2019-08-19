@@ -206,7 +206,7 @@
   "Pending": "Pending",
   "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else.": "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else.",
   "Having trouble with the account activation?": "Having trouble with the account activation?",
-  "Re-send activation link": "Aktivierungslink erneut senden",
+  "Re-send activation link": "E-Mail erneut senden",
   "Filling out your profile is optional. If you do, you can display these information below the charts you publish.": "Das Ausfüllen des Nutzerprofils ist optional. Wenn du es tust, kannst du diese Informationen unter deinen Diagrammen anzeigen.",
   "E-Mail": "E-Mail",
   "Your email address has been updated!": "Deine E-Mail-Adresse wurde aktualisiert!",
@@ -404,6 +404,13 @@
   "Insert title here": "Hier Titel einfügen",
   "Created with": "Erstellt mit",
   "controls / color / customize-colors": "Farben verändern",
+  "controls / gradient-editor / help / swatch": "Klicken um die Farbe zu ändern, verschieben um die Position zu ändern, oder nach oben ziehen zum Löschen",
+  "controls / gradient-editor / help / gradient": "In den Verlauf klicken um neue Farben hinzuzufügen",
+  "controls / gradient-editor / reverse": "Umkehren",
+  "controls / gradient-editor / import": "Importieren...",
+  "controls / gradient-editor / export": "Exportieren...",
+  "controls / gradient-editor / import / text": "Bitte gebe durch Komma oder Leerzeichen getrennte Farbcodes ein:",
+  "controls / gradient-editor / export / text": "Hier sind die Farbcodes für dich zum kopieren (strg+c)",
   "customize colors...": "Farben verändern",
   "Customize colors...": "Farben verändern",
   "controls / color / customize-colors / info": "Wähle links ein Element aus, um dessen Farbe zu verändern.",
@@ -415,5 +422,9 @@
   "all": "alle",
   "none": "keine",
   "invert": "umkehren",
-  "controls / color / choose-color": "Wähle eine Farbe aus"
+  "controls / color / choose-color": "Wähle eine Farbe aus",
+  "invite / h1 / chart": "Ein letzter Schritt vor deinem Diagramm",
+  "invite / h1 / map": "Ein letzter Schritt vor deiner Karte",
+  "invite / h1 / table": "Eine letzte Schritt vor deiner Tabelle",
+  "invite / p": "Wähle ein Passwort, um auch in Zukunft darauf zugreifen zu können."
 }
