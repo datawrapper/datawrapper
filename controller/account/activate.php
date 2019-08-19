@@ -39,9 +39,10 @@ $app->get('/account/invite/:token', function($token) use ($app) {
         $page = array(
             'email' => $user->getEmail(),
             'auth_salt' => DW_AUTH_SALT,
-            'redirect' => '/'
+            'redirect' => '/',
+            'message_h1' = __("invite / h1 / default"),
+            'message_p' = __("invite / p / default")
         );
-
 
         if (!empty($chartId)) {
             $chart = ChartQuery::create()->findPk($chartId);
@@ -49,7 +50,10 @@ $app->get('/account/invite/:token', function($token) use ($app) {
             if ($chart) {
                 $page['redirect'] = '/' . $chart->getNamespace()
                     . '/' . $chartId . '/publish';
-            } 
+            }                     
+            
+            $page["message_h1"] = __("invite / h1 / " . $chart->getNamespace());
+            $page["message_p"] = __("invite / h1 / " . $chart->getNamespace());
         }
 
         add_header_vars($page, 'about', 'account/invite.css');
