@@ -95,8 +95,9 @@
     {% if chartSource and theme.getThemeData("options.footer.sourcePosition") == "above-footer" %}
         {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
             <span class="footer-block source-block">
-                                    {{ sourceCaption }}:
-                {{ chartSource | purify | raw }}</span>
+                <span class="source-caption">{{ sourceCaption }}:</span>
+                {{ chartSource | purify | raw }}
+            </span>
     {% endif %}
 
     {% if theme.getThemeData('template.afterChart') %}
@@ -117,17 +118,21 @@
 
                         {% if chartBasedOn %}
                         <span class="footer-block byline-block">
-                            {{ theme.getThemeData('options.footer.forkCaption') | capitalize }}
+                            <span class="fork-caption">{{ theme.getThemeData('options.footer.forkCaption') | capitalize }}</span>
                             <span class="chart-based-on">{{ chartBasedOn | purify | raw }}</span>
                         </span>
                         {% else %}
                         <span class="footer-block byline-block {% if not byline %}hidden{% endif %}">
+                            <span class="byline-caption">
                             {{ chart.caption == 'map' ?
                                 theme.getThemeData('options.footer.mapCaption') :
                                 chart.caption == 'table' ?
                                 theme.getThemeData('options.footer.tableCaption') :
                                 theme.getThemeData('options.footer.chartCaption') }}
-                            <span class="chart-byline">{{ chartByline | purify | raw }}</span>
+                            </span>
+                            <span class="chart-byline">{{ chartByline | purify | raw }}
+                                <span class="byline-append">{{ theme.getThemeData('options.footer.bylineAppend') }}</span>
+                            </span>
                         </span>
                         {% endif %}
 
@@ -136,7 +141,7 @@
                         <span class="footer-block source-block {% if not source %}hidden{% endif %}">
                             {% set sourceCaption = theme.getThemeData('options.footer.sourceCaption') %}
                             <span class="separator"></span>
-                            {{ sourceCaption }}:
+                            <span class="source-caption">{{ sourceCaption }}:</span>
                             <a href="{{sourceURL}}" rel="nofollow noopener noreferrer" target="_blank">{{ source | purify | raw }}</a>
                         </span>
                         {% endif %}
