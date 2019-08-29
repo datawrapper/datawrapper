@@ -32,7 +32,7 @@
 
                     {% if config.vis_archive %}
                     <div class="vis-archive-select">
-                        {% trans "visualize / vis archive" %} <select>
+                        {% trans "visualize / vis archive" %} <select class="select-css">
                             <option value="---">{% trans "" %}</option>
                         {% for vis in visualizations %}{% if vis['svelte-workflow'] == 'chart'  and vis.namespace != 'map' and vis.id in config.vis_archive %}
                         {% if vis.title %}
@@ -82,7 +82,7 @@
 
                 <div style="">
                     <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
-                    <select id="select-theme" class="span2">
+                    <select id="select-theme" class="span2 select-css">
                         {% for theme in themes %}
                         <option value="{{ theme.id }}">{{ theme.title }}</option>
                         {% endfor %}

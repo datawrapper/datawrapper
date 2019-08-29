@@ -114,7 +114,7 @@
 
             <h3>{% trans "Switch User" %}</h3>
 
-            <select id="switch_user" style="width:80%">
+            <select class="select-css" id="switch_user" style="width:80%">
                 {% for user in all_users %}
                 <option {% if user == user2 %}selected="selected" {% endif %}value="{{ user.id }}">{{ user.email }}</option>
                 {% endfor %}
