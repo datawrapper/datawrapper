@@ -782,7 +782,7 @@ body.cms-mode .row.create-nav {
   font-weight: 700;
   color: #444;
   line-height: 1.3;
-  padding: 4px 6px;
+  padding: 4px 24px 4px 6px;
   max-width: 100%;
   /* useful when width is set to anything other than 100% */
   box-sizing: border-box;
