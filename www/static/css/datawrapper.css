@@ -805,7 +805,7 @@ body.cms-mode .row.create-nav {
   /* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
   background-position: right 0.7em top 50%, 0 0;
   /* icon size, then gradient */
-  background-size: 0.65em auto, 100%;
+  background-size: 0.6em auto, 100%;
 }
 /* Hide arrow icon in IE browsers */
 .select-css::-ms-expand {
