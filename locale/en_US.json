@@ -206,7 +206,7 @@
   "Pending": "Pending",
   "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else.": "Your account is pending because your email address has not been activated, yet. You can create charts, but they will not be visible for anybody else.",
   "Having trouble with the account activation?": "Having trouble with the account activation?",
-  "Re-send activation link": "Re-send activation link",
+  "Re-send activation link": "Re-send e-mail",
   "Filling out your profile is optional. If you do, you can display these information below the charts you publish.": "Filling out your profile is optional. If you do, you can display these information below the charts you publish.",
   "E-Mail": "E-Mail",
   "Your email address has been updated!": "Your email address has been updated!",
@@ -404,6 +404,13 @@
   "Insert title here": "Insert title here",
   "Created with": "Created with",
   "controls / color / customize-colors": "customize colors...",
+  "controls / gradient-editor / help / swatch": "Click to change color, move to change position, or drag upwards to delete",
+  "controls / gradient-editor / help / gradient": "Click anywhere in the gradient to add new color stops",
+  "controls / gradient-editor / reverse": "Reverse",
+  "controls / gradient-editor / import": "Import...",
+  "controls / gradient-editor / export": "Export...",
+  "controls / gradient-editor / import / text": "Please enter some comma- or space-separated color codes:",
+  "controls / gradient-editor / export / text": "Here are the colors for you to copy (ctrl+c)",
   "customize colors...": "customize colors...",
   "Customize colors...": "Customize colors...",
   "controls / color / customize-colors / info": "Please select an element on the left to change colors for individual elements...",
@@ -415,5 +422,9 @@
   "all": "all",
   "none": "none",
   "invert": "invert",
-  "controls / color / choose-color": "Choose a color:"
+  "controls / color / choose-color": "Choose a color:",
+  "invite / h1 / chart": "One more thing before you get your chart",
+  "invite / h1 / map": "One more thing before you get your map",
+  "invite / h1 / table": "One more thing before you get your table",
+  "invite / p": "Quickly set up a password so you can access it again in future."
 }

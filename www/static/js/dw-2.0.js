@@ -708,8 +708,8 @@ dw.column.types.date = (function() {
             precision: 'quarter'
         },
         'YYYY-M': {
-            test: reg(rx.YYYY.test, sM, rx.MM.test),
-            parse: reg(rx.YYYY.parse, sM, rx.MM.parse),
+            test: reg(rx.YYYY.test, s3, rx.MM.test),
+            parse: reg(rx.YYYY.parse, s3, rx.MM.parse),
             precision: 'month'
         },
         'M-YYYY': {
@@ -1531,7 +1531,7 @@ dw.utils = {
             for (var i=0; i<sel.length; i++) {
                 if (sel[i].nodeName.toLowerCase() === 'a') {
                     // special treatment for <a> elements
-                    sel[i].setAttribute('target', '_blank');
+                    if (sel[i].getAttribute('target') !== '_self') sel[i].setAttribute('target', '_blank');
                     sel[i].setAttribute('rel', 'nofollow noopener noreferrer');
                 }
                 for (var j=0; j<sel[i].attributes.length; j++) {

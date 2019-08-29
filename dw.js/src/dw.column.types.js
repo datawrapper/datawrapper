@@ -288,8 +288,8 @@ dw.column.types.date = (function() {
             precision: 'quarter'
         },
         'YYYY-M': {
-            test: reg(rx.YYYY.test, sM, rx.MM.test),
-            parse: reg(rx.YYYY.parse, sM, rx.MM.parse),
+            test: reg(rx.YYYY.test, s3, rx.MM.test),
+            parse: reg(rx.YYYY.parse, s3, rx.MM.parse),
             precision: 'month'
         },
         'M-YYYY': {
