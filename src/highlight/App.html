@@ -1,7 +1,7 @@
 <div class="story-highlight control-group" style="clear:both">
     <label class="separator">{@html __("Highlight the most import elements (optional)") }</label>
     <div>
-        <select bind:value="selected" id="highlight-series" class="span2">
+        <select bind:value="selected" id="highlight-series" class="select-css span2">
             <option value="---">- {@html __("select element") } -</option>
             {#each elements as element}
             <option value="{element.key}">{element.label}</option>
@@ -18,8 +18,9 @@
 </div>
 
 <script>
-    import { __ } from '../shared/l10n';
-    import _indexBy from 'underscore-es/indexBy';
+    import { __ } from '@datawrapper/shared/l10n';
+    import clone from '@datawrapper/shared/clone';
+    import { keyBy } from 'lodash-es';
 
     export default {
         data() {
@@ -30,7 +31,7 @@
         },
         computed: {
             highlightedElements({ highlighted, elements }) {
-                const els = _indexBy(elements, 'key');
+                const els = keyBy(elements, 'key');
                 return highlighted.map(k => {
                     return {
                         key: k,
@@ -91,8 +92,4 @@
             });
         }
     };
-
-    function clone(o) {
-        return JSON.parse(JSON.stringify(o));
-    }
 </script>
