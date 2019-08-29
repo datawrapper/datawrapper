@@ -22,6 +22,7 @@
         "d3-scale": "^2.0.0",
         "fontfaceobserver": "2.1.0",
         "jschardet": "^1.6.0",
+        "lodash-es": "^4.17.15",
         "moment": "^2.24.0",
         "query-string": "^6.2.0",
         "request": "^2.88.0",
@@ -30,7 +31,7 @@
     "devDependencies": {
         "@datawrapper/controls": "^2.3.1",
         "@datawrapper/polyfills": "^1.0.4",
-        "@datawrapper/shared": "^0.9.4",
+        "@datawrapper/shared": "^0.14.0",
         "@tivac/eslint-plugin-svelte": "^1.2.1",
         "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
@@ -68,7 +69,7 @@
         "svelte-extras": "^2.0.2",
         "svelte-transitions-slide": "^1.0.0",
         "svelte-upgrade": "^1.0.14",
-        "underscore": "^1.8.3",
+        "underscore": "^1.9.1",
         "underscore-es": "^1.9.8",
         "watch": "^1.0.2"
     },
