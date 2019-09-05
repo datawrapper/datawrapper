@@ -22,10 +22,14 @@ define(['chroma'], function(chroma) {
                 .appendTo('body');
             var colorAxes = [];
             let colorAxesConfig = {};
-            const readOnly = opts.config.readOnly ? 'readonly' : '';
-
-            Object.keys(opts.config.colorAxes).forEach(function(key) {
-                colorAxesConfig[key] = opts.config.colorAxes[key];
+            const readOnly = opts.config && opts.config.readOnly;
+            const perRow = opts.config && opts.config.perRow ? opts.config.perRow : false;
+            ['hue', 'saturation', 'lightness'].forEach(function(key) {
+                if (opts.config) {
+                    colorAxesConfig[key] = opts.config.colorAxes[key];
+                } else {
+                    colorAxesConfig[key] = true;
+                }
             });
 
             var palette = $('<div />')
@@ -52,7 +56,7 @@ define(['chroma'], function(chroma) {
             var bottom = $('<div />')
                 .addClass('footer')
                 .appendTo(popup);
-            var hexTf = $(`<input class='hex ${readOnly}' type="text" ${readOnly}/>`)
+            var hexTf = $(`<input class='hex ${readOnly ? 'readonly' : ''}' type="text" ${readOnly ? 'readonly' : ''}/>`)
                 .addClass('hex')
                 .appendTo(bottom);
             var okBtn = $('<button />')
@@ -111,10 +115,7 @@ define(['chroma'], function(chroma) {
                     'border-color': chroma(hex)
                         .darker()
                         .hex(),
-                    color:
-                        chroma(hex).luminance() > 0.45
-                            ? `rgba(0,0,0,${opts.config.readOnly ? 0.3 : 1})`
-                            : `rgba(255,255,255,${opts.config.readOnly ? 0.6 : 1})`
+                    color: chroma(hex).luminance() > 0.45 ? `rgba(0,0,0,${readOnly ? 0.3 : 1})` : `rgba(255,255,255,${readOnly ? 0.6 : 1})`
                 });
                 $('.color', popup)
                     .removeClass('selected')
@@ -150,9 +151,8 @@ define(['chroma'], function(chroma) {
             }
 
             function addcol(color, cont) {
-                const swatchDims = Math.round((157 - 2 * opts.config.perRow) / opts.config.perRow);
-                const styleString =
-                    cont[0].className === 'palette' && opts.config.perRow ? `style="width: ${swatchDims}px; height: ${swatchDims}px"` : '';
+                const swatchDims = perRow ? Math.round((157 - 2 * perRow) / perRow) : '';
+                const styleString = cont[0].className === 'palette' && perRow ? `style="width: ${swatchDims}px; height: ${swatchDims}px"` : '';
                 $(`<div ${styleString}/>`)
                     .addClass('color')
                     .data('color', color)
