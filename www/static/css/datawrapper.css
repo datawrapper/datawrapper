@@ -1273,7 +1273,8 @@ body.cms-mode .row.create-nav {
   display: inline-block;
   width: 24px;
   height: 23px;
-  margin: 0 2px 2px 0;
+  box-sizing: border-box;
+  margin: 1px;
   border-radius: 1px;
 }
 .color-selector .color {
@@ -1324,6 +1325,11 @@ body.cms-mode .row.create-nav {
   margin: 0;
   text-align: center;
 }
+
+.color-selector .hex.readOnly {
+  cursor:not-allowed;
+}
+
 .color-selector .btn.ok {
   position: absolute;
   bottom: 0px;
