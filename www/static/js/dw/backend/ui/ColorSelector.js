@@ -20,7 +20,7 @@ define(['chroma'], function(chroma) {
                     top: btn.offset().top - 40 // 30px = body.padding-top
                 })
                 .appendTo('body');
-            var colorAxes = [];
+            var colorAxes = {};
             let colorAxesConfig = {};
             const readOnly = opts.config && opts.config.readOnly;
             const perRow = opts.config && opts.config.perRow ? opts.config.perRow : false;
@@ -39,19 +39,19 @@ define(['chroma'], function(chroma) {
                 const lightness = $('<div />')
                     .addClass('color-axis lightness')
                     .appendTo(popup);
-                colorAxes.push(lightness);
+                colorAxes.lightness = lightness;
             }
             if (colorAxesConfig.saturation) {
                 const saturation = $('<div />')
                     .addClass('color-axis saturation')
                     .appendTo(popup);
-                colorAxes.push(saturation);
+                colorAxes.saturation = saturation;
             }
             if (colorAxesConfig.hue) {
                 const hue = $('<div />')
                     .addClass('color-axis hue')
                     .appendTo(popup);
-                colorAxes.push(hue);
+                colorAxes.hue = hue;
             }
             var bottom = $('<div />')
                 .addClass('footer')
@@ -65,11 +65,16 @@ define(['chroma'], function(chroma) {
                 .appendTo(bottom);
 
             addcol(opts.color, bottom);
-
             // initialize palette colors
-            $.each(opts.palette, function(i, color) {
-                addcol(color, palette);
-            });
+            if (_.isString(opts.palette[0])) {
+                $.each(opts.palette, function(i, color) {
+                    addcol(color, palette, true);
+                });
+            } else {
+                opts.palette.forEach(function(group, i) {
+                    addColorGroup(group, palette);
+                });
+            }
 
             setColor(opts.color);
 
@@ -88,7 +93,7 @@ define(['chroma'], function(chroma) {
             }, 300);
 
             function setColor(hex, cont) {
-                hex = hex || opts.palette[0];
+                hex = hex || getBaseColor(opts.palette);
                 var lch = chroma(hex).lch();
                 var center = [60, 50, lch[2]];
                 var spread_ = [55, 50, 70];
@@ -97,16 +102,16 @@ define(['chroma'], function(chroma) {
 
                 opts.color = hex;
 
-                _.each(colorAxes, function(cnt, i) {
-                    if (cont !== cnt || (colorAxesConfig.hue && cont === colorAxes.hue)) {
-                        cnt.html('');
+                Object.keys(colorAxes).forEach(function(key, i) {
+                    if (cont !== colorAxes[key] || (key === 'hue' && cont === colorAxes.hue)) {
+                        colorAxes[key].html('');
                         var values = spread(center[i], spread_[i], steps[i], steps2[i]);
                         // shift center to match color
                         center[i] += lch[i] - dw.utils.nearest(values, lch[i]);
                         _.each(spread(center[i], spread_[i], steps[i], steps2[i]), function(x) {
                             var lch_ = lch.slice(0);
                             lch_[i] = x;
-                            addcol(chroma.lch(lch_).hex(), cnt);
+                            addcol(chroma.lch(lch_).hex(), colorAxes[key]);
                         });
                     }
                 });
@@ -150,9 +155,40 @@ define(['chroma'], function(chroma) {
                 return r;
             }
 
-            function addcol(color, cont) {
+            function addColorGroup(colorGroup, cont) {
+                if (!_.isArray(colorGroup)) {
+                    const $colorGroup = $('<div/>')
+                        .addClass('color-group')
+                        .appendTo(cont);
+
+                    $('<div/>')
+                        .addClass('group-title')
+                        .append(`<span>${colorGroup.name}</span>`)
+                        .appendTo($colorGroup);
+
+                    colorGroup.colors.forEach(function(colors, i) {
+                        const $colors = $('<div/>')
+                            .addClass('colors')
+                            .appendTo($colorGroup);
+
+                        colors.forEach(function(color) {
+                            addcol(color, $colors, true);
+                        });
+                    });
+                } else {
+                    const $colors = $('<div/>')
+                        .addClass('colors')
+                        .appendTo(palette);
+
+                    colorGroup.forEach(function(color) {
+                        addcol(color, $colors, true);
+                    });
+                }
+            }
+
+            function addcol(color, cont, resizeSwatch) {
                 const swatchDims = perRow ? Math.round((157 - 2 * perRow) / perRow) : '';
-                const styleString = cont[0].className === 'palette' && perRow ? `style="width: ${swatchDims}px; height: ${swatchDims}px"` : '';
+                const styleString = resizeSwatch && perRow ? `style="width: ${swatchDims}px; height: ${swatchDims}px"` : '';
                 $(`<div ${styleString}/>`)
                     .addClass('color')
                     .data('color', color)
@@ -171,6 +207,15 @@ define(['chroma'], function(chroma) {
                     .appendTo(cont);
             }
 
+            function getBaseColor(palette) {
+                if (_.isString(palette[0])) {
+                    return palette[0];
+                } else if (_.isArray(palette[0])) {
+                    return palette[0][0];
+                } else {
+                    return palette.colors[0][0];
+                }
+            }
             function body_click(evt) {
                 var el = $(evt.target);
                 if (!el.is('.color-selector') && el.parents('.color-selector').length === 0) {
