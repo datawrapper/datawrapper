@@ -213,7 +213,7 @@ define(['chroma'], function(chroma) {
                 } else if (_.isArray(palette[0])) {
                     return palette[0][0];
                 } else {
-                    return palette.colors[0][0];
+                    return palette[0].colors[0][0];
                 }
             }
             function body_click(evt) {
