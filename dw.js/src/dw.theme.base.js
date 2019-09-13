@@ -14,6 +14,7 @@ dw.theme.base = {
 
         positive: '#85B4D4',
         negative: '#E31A1C',
+        neutral: '#CCCCCC',
         // colors background and text needs to be set in CSS as well!
         background: '#ffffff',
         text: '#333333',
