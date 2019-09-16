@@ -55,15 +55,12 @@
             if (!window['__ltie9']) {
                 if (window.navigator.msSaveOrOpenBlob) {
                     var blobObject = new Blob([csv]);
-                    $('a[href=data]')
-                        .addClass('dw-data-link')
-                        .click(function() {
-                            window.navigator.msSaveOrOpenBlob(blobObject, 'data-' + chart.get('id') + '.csv');
-                            return false;
-                        });
+                    $('a.dw-data-link').click(function() {
+                        window.navigator.msSaveOrOpenBlob(blobObject, 'data-' + chart.get('id') + '.csv');
+                        return false;
+                    });
                 } else {
-                    $('a[href=data]')
-                        .addClass('dw-data-link')
+                    $('a.dw-data-link')
                         .attr('download', 'data-' + chart.get('id') + '.csv')
                         .attr('href', 'data:application/octet-stream;charset=utf-8,' + encodeURIComponent(csv));
                 }
