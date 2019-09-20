@@ -12,11 +12,12 @@ dw.theme.base = {
         palette: ['#6E7DA1', '#64A4C4', '#53CCDD', '#4EF4E8'],
 
         paletteConfig: {
-            readOnly: false,
-            colorAxes: {
-                lightness: true,
+            rowCount: 7,
+            controls: {
+                hexEditable: true,
+                hue: true,
                 saturation: true,
-                hue: true
+                lightness: true
             }
         },
 

@@ -1325,7 +1325,7 @@ body.cms-mode .row.create-nav {
   text-align: center;
 }
 
-.color-selector .hex.readOnly {
+.color-selector .hex.readonly {
   cursor:not-allowed;
 }
 

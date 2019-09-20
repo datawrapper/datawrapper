@@ -21,12 +21,12 @@ define(['chroma'], function(chroma) {
                 })
                 .appendTo('body');
             var colorAxes = {};
-            let colorAxesConfig = {};
-            const readOnly = opts.config && opts.config.readOnly;
-            const perRow = opts.config && opts.config.perRow ? opts.config.perRow : false;
+            var colorAxesConfig = {};
+            var hexEditable = opts.config && opts.config.controls && opts.config.controls.hexEditable;
+            var rowCount = opts.config && opts.config.rowCount ? opts.config.rowCount : false;
             ['hue', 'saturation', 'lightness'].forEach(function(key) {
                 if (opts.config) {
-                    colorAxesConfig[key] = opts.config.colorAxes[key];
+                    colorAxesConfig[key] = opts.config.controls[key];
                 } else {
                     colorAxesConfig[key] = true;
                 }
@@ -36,19 +36,19 @@ define(['chroma'], function(chroma) {
                 .addClass('palette')
                 .appendTo(popup);
             if (colorAxesConfig.lightness) {
-                const lightness = $('<div />')
+                var lightness = $('<div />')
                     .addClass('color-axis lightness')
                     .appendTo(popup);
                 colorAxes.lightness = lightness;
             }
             if (colorAxesConfig.saturation) {
-                const saturation = $('<div />')
+                var saturation = $('<div />')
                     .addClass('color-axis saturation')
                     .appendTo(popup);
                 colorAxes.saturation = saturation;
             }
             if (colorAxesConfig.hue) {
-                const hue = $('<div />')
+                var hue = $('<div />')
                     .addClass('color-axis hue')
                     .appendTo(popup);
                 colorAxes.hue = hue;
@@ -56,7 +56,7 @@ define(['chroma'], function(chroma) {
             var bottom = $('<div />')
                 .addClass('footer')
                 .appendTo(popup);
-            var hexTf = $("<input class='hex" + (readOnly ? ' readonly' : '') + "' type='text'" + (readOnly ? ' readonly' : '') + '/>')
+            var hexTf = $("<input class='hex" + (hexEditable ? '' : ' readonly') + "' type='text'" + (hexEditable ? '' : ' readonly') + '/>')
                 .addClass('hex')
                 .appendTo(bottom);
             var okBtn = $('<button />')
@@ -115,7 +115,9 @@ define(['chroma'], function(chroma) {
                         .darker()
                         .hex(),
                     color:
-                        chroma(hex).luminance() > 0.45 ? 'rgba(0,0,0,' + (readOnly ? 0.3 : 1) + ')' : 'rgba(255,255,255,' + (readOnly ? 0.6 : 1) + ')'
+                        chroma(hex).luminance() > 0.45
+                            ? 'rgba(0,0,0,' + (hexEditable ? 1 : 0.3) + ')'
+                            : 'rgba(255,255,255,' + (hexEditable ? 1 : 0.6) + ')'
                 });
                 $('.color', popup)
                     .removeClass('selected')
@@ -151,8 +153,8 @@ define(['chroma'], function(chroma) {
             }
 
             function addcol(color, cont, resizeSwatch) {
-                const swatchDims = perRow ? (157 - 2 * perRow) / perRow : '';
-                const styleString = resizeSwatch && perRow ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'" : '';
+                var swatchDims = rowCount ? (157 - 2 * rowCount) / rowCount : '';
+                var styleString = resizeSwatch && rowCount ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'" : '';
                 $('<div ' + styleString + ' />')
                     .addClass('color')
                     .data('color', color)
