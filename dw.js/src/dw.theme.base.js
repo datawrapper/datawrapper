@@ -11,7 +11,7 @@ dw.theme.base = {
     colors: {
         palette: ['#6E7DA1', '#64A4C4', '#53CCDD', '#4EF4E8'],
 
-        paletteConfig: {
+        picker: {
             rowCount: 7,
             controls: {
                 hexEditable: true,
