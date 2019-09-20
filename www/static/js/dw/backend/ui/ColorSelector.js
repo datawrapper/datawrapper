@@ -66,7 +66,6 @@ define(['chroma'], function(chroma) {
 
             addcol(opts.color, bottom);
             // initialize palette colors
-
             $.each(opts.palette, function(i, color) {
                 addcol(color, palette, true);
             });
