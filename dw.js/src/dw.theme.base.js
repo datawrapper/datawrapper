@@ -10,6 +10,17 @@ dw.theme.base = {
      */
     colors: {
         palette: ['#6E7DA1', '#64A4C4', '#53CCDD', '#4EF4E8'],
+
+        paletteConfig: {
+            rowCount: 7,
+            controls: {
+                hexEditable: true,
+                hue: true,
+                saturation: true,
+                lightness: true
+            }
+        },
+
         secondary: [],
 
         positive: '#85B4D4',

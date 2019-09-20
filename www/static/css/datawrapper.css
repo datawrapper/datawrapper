@@ -1254,7 +1254,7 @@ body.cms-mode .row.create-nav {
 /*
  * visualization styles
  */
-.color-selector {
+ .color-selector {
   position: absolute;
   background: #fff;
   z-index: 9999;
@@ -1265,15 +1265,18 @@ body.cms-mode .row.create-nav {
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
+
 .color-selector .palette {
   line-height: 5px;
   margin-bottom: 10px;
 }
+
 .color-selector .palette .color {
   display: inline-block;
   width: 24px;
   height: 23px;
-  margin: 0 2px 2px 0;
+  box-sizing: border-box;
+  margin: 1px;
   border-radius: 1px;
 }
 .color-selector .color {
@@ -1285,10 +1288,7 @@ body.cms-mode .row.create-nav {
 .color-selector .color.selected.inverted {
   border-color: #ddd;
 }
-.color-selector .palette .color.selected {
-  width: 20px;
-  height: 19px;
-}
+
 .color-selector .color-axis {
   height: 22px;
   margin-bottom: 2px;
@@ -1324,6 +1324,11 @@ body.cms-mode .row.create-nav {
   margin: 0;
   text-align: center;
 }
+
+.color-selector .hex.readonly {
+  cursor:not-allowed;
+}
+
 .color-selector .btn.ok {
   position: absolute;
   bottom: 0px;

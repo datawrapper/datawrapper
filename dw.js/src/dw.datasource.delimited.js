@@ -16,17 +16,17 @@
 dw.datasource.delimited = function(opts) {
     function loadAndParseCsv() {
         if (opts.url) {
-            var host = (window.location.hostname || "").split("."),
-                rootDomain = "";
+            var host = (window.location.hostname || '').split('.'),
+                rootDomain = '';
 
-            if (host.length >= 2) var rootDomain = host[host.length-2] + "." + host[host.length-1];
+            if (host.length >= 2) var rootDomain = host[host.length - 2] + '.' + host[host.length - 1];
 
             return $.ajax({
                 url: opts.url + (opts.url.indexOf('?') > -1 ? '&' : '?') + 'v=' + new Date().getTime(),
                 method: 'GET',
                 dataType: 'text',
                 xhrFields: {
-                    withCredentials: (opts.url.indexOf(rootDomain) > -1 )
+                    withCredentials: opts.url.indexOf(rootDomain) > -1
                 }
             }).then(function(raw) {
                 return new DelimitedParser(opts).parse(raw);
