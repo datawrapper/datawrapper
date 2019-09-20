@@ -151,7 +151,7 @@ define(['chroma'], function(chroma) {
             }
 
             function addcol(color, cont, resizeSwatch) {
-                const swatchDims = perRow ? Math.round((157 - 2 * perRow) / perRow) : '';
+                const swatchDims = perRow ? (157 - 2 * perRow) / perRow : '';
                 const styleString = resizeSwatch && perRow ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'" : '';
                 $('<div ' + styleString + ' />')
                     .addClass('color')
