@@ -56,7 +56,7 @@ define(['chroma'], function(chroma) {
             var bottom = $('<div />')
                 .addClass('footer')
                 .appendTo(popup);
-            var hexTf = $(`<input class='hex ${readOnly ? 'readonly' : ''}' type="text" ${readOnly ? 'readonly' : ''}/>`)
+            var hexTf = $("<input class='hex" + (readOnly ? ' readonly' : '') + "' type='text'" + (readOnly ? ' readonly' : '') + '/>')
                 .addClass('hex')
                 .appendTo(bottom);
             var okBtn = $('<button />')
@@ -87,7 +87,7 @@ define(['chroma'], function(chroma) {
             }, 300);
 
             function setColor(hex, cont) {
-                hex = hex || palette[0];
+                hex = hex || opts.palette[0];
                 var lch = chroma(hex).lch();
                 var center = [60, 50, lch[2]];
                 var spread_ = [55, 50, 70];
@@ -114,7 +114,8 @@ define(['chroma'], function(chroma) {
                     'border-color': chroma(hex)
                         .darker()
                         .hex(),
-                    color: chroma(hex).luminance() > 0.45 ? `rgba(0,0,0,${readOnly ? 0.3 : 1})` : `rgba(255,255,255,${readOnly ? 0.6 : 1})`
+                    color:
+                        chroma(hex).luminance() > 0.45 ? 'rgba(0,0,0,' + (readOnly ? 0.3 : 1) + ')' : 'rgba(255,255,255,' + (readOnly ? 0.6 : 1) + ')'
                 });
                 $('.color', popup)
                     .removeClass('selected')
@@ -151,8 +152,8 @@ define(['chroma'], function(chroma) {
 
             function addcol(color, cont, resizeSwatch) {
                 const swatchDims = perRow ? Math.round((157 - 2 * perRow) / perRow) : '';
-                const styleString = resizeSwatch && perRow ? `style="width: ${swatchDims}px; height: ${swatchDims}px"` : '';
-                $(`<div ${styleString}/>`)
+                const styleString = resizeSwatch && perRow ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'" : '';
+                $('<div ' + styleString + ' />')
                     .addClass('color')
                     .data('color', color)
                     .css('background', color)
