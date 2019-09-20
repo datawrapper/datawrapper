@@ -1254,31 +1254,6 @@ body.cms-mode .row.create-nav {
 /*
  * visualization styles
  */
-.color-selector {
-  position: absolute;
-  background: #fff;
-  z-index: 9999;
-  width: 157px;
-  padding: 10px;
-  padding-right: 8px;
-  box-shadow: 3px 3px 3px #eee;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.color-selector .group-title {
-  line-height: initial;
-  font-size: 11px;
-  font-weight:bold;
-  text-transform: uppercase;
-  min-height: 5px;
-}
-.color-group {
-    margin-top: 4px;
-}
-.color-group:first-child {
-    margin-top: 0px;
-}
 
 .color-selector .palette {
   line-height: 5px;
