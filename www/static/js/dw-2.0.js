@@ -2792,7 +2792,7 @@ dw.theme.base = {
         palette: ['#6E7DA1', '#64A4C4', '#53CCDD', '#4EF4E8'],
 
         picker: {
-            rowCount: 7,
+            rowCount: 6,
             controls: {
                 hexEditable: true,
                 hue: true,
