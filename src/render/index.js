@@ -76,9 +76,7 @@ export default function({
             )
         );
 
-        observeFonts(fontsJSON, typographyJSON)
-            .then(() => __dw.render())
-            .catch(() => __dw.render());
+        observeFonts(fontsJSON, typographyJSON).then(() => __dw.render());
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
