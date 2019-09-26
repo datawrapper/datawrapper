@@ -280,6 +280,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
         'visualization' => $the_vis,
         'theme' => $theme,
         'themeCSS' => $theme->getCSS($vis_less),
+        'chartCSS' => $chart->getMetadata('publish.custom-css', ''),
         'chartLocale' => $chartLocale,
         'locales' => $visDependencyLocales,
         'SENTRY_RELEASE' => $the_vis['id'].'@'.substr(md5(join($vis_versions, '-')), 0, 8),
