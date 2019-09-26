@@ -223,7 +223,6 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $forked_from = $chart->getForkedFrom();
     $chart_byline = strip_tags($chart->getMetadata('describe.byline'));
-    if (!empty($chart_byline)) $chart_byline = '<span class="chart-byline">'.$chart_byline.'</span>';
     $chart_based_on = false;
 
     if (!empty($forked_from) && $chart->getIsFork()) {
