@@ -76,7 +76,7 @@ export default function({
             )
         );
 
-        observeFonts(fontsJSON, typographyJSON).then(() => __dw.render());
+        if (visJSON.id !== 'bar-chart') observeFonts(fontsJSON, typographyJSON).then(() => __dw.render());
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
