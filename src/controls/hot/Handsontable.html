@@ -123,6 +123,7 @@
                             column: col,
                             row,
                             value: newValue,
+                            previous: oldValue,
                             time: new Date().getTime()
                         });
                         chart.set('metadata.data.changes', changes);
