@@ -451,6 +451,7 @@
   "controls / color-scale / breaks / natural": "natürlich",
   "controls / color-scale / breaks / log": "logarithmisch",
   "controls / color-scale / breaks / custom": "benutzerdef.",
+  "controls / custom-format / info": "Lerne mehr über benutzerdefinierte Zahlenformate in unserem <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy-Artikel</a>.",
   "customize colors...": "Farben verändern",
   "Customize colors...": "Farben verändern",
   "controls / color / customize-colors / info": "Wähle links ein Element aus, um dessen Farbe zu verändern.",
