@@ -161,7 +161,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         if (count($userOrgs) > 1) {
             $acc['dropdown'][] = array(
-                'title' => __('Switch team...'),
+                'title' => __('Switch team'),
                 'icon' => "fa fa-users",
                 'dropdown' => []
             );
