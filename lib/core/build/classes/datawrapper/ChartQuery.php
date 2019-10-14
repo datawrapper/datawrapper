@@ -29,7 +29,17 @@ class ChartQuery extends BaseChartQuery {
         if ($user->isLoggedIn()) {
             $chart->setAuthorId($user->getId());
             $org = $user->getCurrentOrganization();
-            if (!empty($org)) $chart->setOrganization($org);
+            if (!empty($org)) {
+                $chart->setOrganization($org);
+
+                $settings = $org->getSettings();
+                if (isset($settings["default"]["folder"])) {
+                    $folder = FolderQuery::create()->findPk($settings["default"]["folder"]);
+                    if (!is_null($folder) && $folder->getOrgId() == $org->getId()) {
+                        $chart->setInFolder($folder->getId());
+                    }
+                 }
+            }
         } else {
             // remember session id to be able to assign this chart
             // to a newly registered user
