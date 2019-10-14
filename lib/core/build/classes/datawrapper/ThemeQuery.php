@@ -20,13 +20,23 @@ class ThemeQuery extends BaseThemeQuery
         global $dw_config;
 
         $user = DatawrapperSession::getUser();
+        $organization = $user->getCurrentOrganization();
+        $includeDefaultThemes = true;
 
         $themes = array();
 
         $defaultIds = $dw_config['default-themes'] ?? ["default"];
 
-        foreach ($defaultIds as $def) {
-            $themes[] = ThemeQuery::create()->findPk($def);
+        if ($organization) {
+            if ($organization->getSettings("includeDefaultThemes") === false) {
+                $includeDefaultThemes = false;
+            }
+        }
+
+        if ($includeDefaultThemes) {
+            foreach ($defaultIds as $def) {
+                $themes[] = ThemeQuery::create()->findPk($def);
+            }
         }
 
         if ($user->isAdmin()) {
@@ -45,8 +55,6 @@ class ThemeQuery extends BaseThemeQuery
             foreach ($userThemes as $theme) {
                 $themes[] = $theme->getTheme();
             }
-
-            $organization = $user->getCurrentOrganization();
 
             if ($organization) {
                 $orgThemes = OrganizationThemeQuery::create()
