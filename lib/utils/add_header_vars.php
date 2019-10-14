@@ -157,6 +157,28 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         header_nav_hook($headlinks, 'user');
         header_nav_hook($acc["dropdown"], 'hamburger');
 
+        $userOrgs = $user->getActiveOrganizations();
+
+        if (count($userOrgs) > 1) {
+            $acc['dropdown'][] = array(
+                'title' => __('switch-team'),
+                'icon' => "fa fa-users",
+                'dropdown' => []
+            );
+
+            // populate the dropdown with one entry per each team
+            foreach ($userOrgs as $org) {
+                if ($org != $user->getCurrentOrganization()) {
+                    $acc['dropdown'][sizeof($acc['dropdown']) - 1]['dropdown'][] = array(
+                        'url' => '#organization-activate',
+                        'title' => $org->getName(),
+                        'data' => array(
+                            'id' => $org->getId()
+                        )
+                    );
+                }
+            }
+        }
 
         if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
 

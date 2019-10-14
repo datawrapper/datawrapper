@@ -198,6 +198,30 @@ class User extends BaseUser {
     }
 
     /*
+     *  check if a user may administrate a team
+     */
+    public function canAdministrateTeam($org) {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        if (!$org->hasUser($this)) {
+            return false;
+        }
+
+        $ui = UserOrganizationQuery::create()
+              ->filterByUserId($this->getId())
+              ->filterByOrganizationId($org->getId())
+              ->findOne();
+
+        return (($ui->getOrganizationRole() ==
+                UserOrganizationPeer::ORGANIZATION_ROLE_ADMIN)
+                ||
+                ($ui->getOrganizationRole() ==
+                UserOrganizationPeer::ORGANIZATION_ROLE_OWNER));
+    }
+
+    /*
      * get a list of all enabled organiztions in which the membership
      * has been activated
      */

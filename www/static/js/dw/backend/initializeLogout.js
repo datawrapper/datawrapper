@@ -1,6 +1,4 @@
-
 define(function() {
-
     /*
      * initialize logout links
      */
@@ -16,6 +14,18 @@ define(function() {
             });
             return false;
         });
-    };
 
+        $('a[href=#organization-activate]').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/team/' + $(e.target).data('id') + '/activate',
+                method: 'PUT',
+                dataType: 'json'
+            }).done(function(res) {
+                if (res.status == 'ok') {
+                    location.reload();
+                }
+            });
+        });
+    };
 });
