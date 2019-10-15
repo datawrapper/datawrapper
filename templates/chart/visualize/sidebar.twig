@@ -22,7 +22,7 @@
                 <div class="vis-selector-unfolded">
                 {# <h3>{% trans "Select visualization" %}</h3> #}
                     <div class="vis-thumbs">
-                        {% for vis in visualizations %}{% if vis['svelte-workflow'] == 'chart' and vis.namespace != 'map' and vis.id not in config.vis_archive %}{% if vis.title %}
+                        {% for vis in visualizations %}{% if user.canCreateVisualization(vis.id) and vis['svelte-workflow'] == 'chart' and vis.namespace != 'map' and vis.id not in config.vis_archive %}{% if vis.title %}
                         <div class="vis-thumb{% if vis.id == chart.type %} active{% endif %}" data-id="{{ vis.id }}" data-title="{{ vis.title }}" data-static-path="{{ vis.__static_path }}">
                             {{ vis.icon | raw }}
                             <div class="title">{{ vis.title | raw }}</div>
@@ -34,7 +34,7 @@
                     <div class="vis-archive-select">
                         {% trans "visualize / vis archive" %} <select class="select-css">
                             <option value="---">{% trans "" %}</option>
-                        {% for vis in visualizations %}{% if vis['svelte-workflow'] == 'chart'  and vis.namespace != 'map' and vis.id in config.vis_archive %}
+                        {% for vis in visualizations %}{% if user.canCreateVisualization(vis.id) and vis['svelte-workflow'] == 'chart'  and vis.namespace != 'map' and vis.id in config.vis_archive %}
                         {% if vis.title %}
                             <option {% if vis.id == chart.type %} selected="selected" {% endif %}value="{{ vis.id }}">{{ vis.title | raw }}</option>
                         {% endif %}{% endif %}{% endfor %}

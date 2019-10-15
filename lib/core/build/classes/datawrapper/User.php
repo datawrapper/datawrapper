@@ -221,6 +221,17 @@ class User extends BaseUser {
                 UserOrganizationPeer::ORGANIZATION_ROLE_OWNER));
     }
 
+    public function canCreateVisualization($visId) {
+        $org = $this->getCurrentOrganization();
+
+        if (!$org) return true;
+        if ($org->getSettings("disableVisualizations.enabled") !== true) return true;
+        if ($org->getSettings("disableVisualizations.visualizations." . $visId) !== true) return true;
+        if ($org->getSettings("disableVisualizations.allowAdmins") && $this->canAdministrateTeam($org)) return true;
+
+        return false;
+    }
+
     /*
      * get a list of all enabled organiztions in which the membership
      * has been activated

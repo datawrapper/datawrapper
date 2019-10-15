@@ -11,6 +11,7 @@ $app->get('/(chart|table)/:id/upload', function ($id) use ($app) {
         $groups = array();
         if (is_array($datasets)) {
             foreach ($datasets as $ds) {
+                if (!$user->canCreateVisualization($ds['presets']['type'])) continue;
                 if (!isset($groups[$ds['type']])) $groups[$ds['type']] = array('type' => $ds['type'], 'datasets' => array());
                 $groups[$ds['type']]['datasets'][] = $ds;
             }
