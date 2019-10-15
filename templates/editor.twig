@@ -22,6 +22,7 @@ require(['{{workflow.module}}'], function(mod) {
             maxStep: {{chart.lastEditStep}},
             step: '{{step}}',
             visualization: {{vis|json|raw}},
+            customFields: {{customFields|json|raw}}
         },
         mod.data || {},
         {{workflow.data|json|raw }} || {});

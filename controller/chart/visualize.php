@@ -73,6 +73,25 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             $theme = ThemeQuery::create()->findPk("default");
         }
 
+        $org = $user->getCurrentOrganization();
+        $customFields = [];
+        if ($org) $customFields = $org->getSettings("customFields") ?? [];
+
+        if (sizeof($customFields) > 0) {
+            Hooks::register(Hooks::CUSTOM_ANNOTATION_CONTROLS, function($chart) use ($customFields) {
+                global $app;
+                $app->render('svelte.twig', [
+                    'app_id' => 'fields',
+                    'app_js' => '/static/js/svelte/fields.js',
+                    'app_css' => '/static/css/svelte/fields.css',
+                    'config' => $GLOBALS['dw_config'],
+                    'twig_data' => [
+                        'customFields' => $customFields
+                    ]
+                ]);
+            });
+        }
+
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
             'chartData' => $chart->loadData(),

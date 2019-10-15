@@ -20,6 +20,7 @@ build('controls/hot', { noAMD: true });
 // build('publish', { noAMD: true, entry: 'index.js' });
 // build('publish/sidebar', { noAMD: true });
 build('highlight');
+build('fields');
 build('editor');
 build('account');
 

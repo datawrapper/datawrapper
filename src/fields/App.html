@@ -1,0 +1,65 @@
+{#if customFields.length && initialized}
+<div class="vis-option-type-group group-open">
+    <label class="group-title" on:click="toggle()">
+        {#if !notoggle}
+        <i class="fa fa-chevron-up expand-group pull-right"></i>
+        <i class="fa fa-chevron-down collapse-group pull-right"></i>
+        {/if} Custom fields</label
+    >
+
+    <div class="option-group-content vis-option-type-chart-description">
+        <div ref:customFields>
+            {#each customFields as field} {#if field.type == "text"}
+            <Text labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
+            {:elseif field.type == "textArea"}
+            <textarea labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
+            {/if} {/each}
+        </div>
+    </div>
+</div>
+{/if}
+
+<script>
+    import { Text, TextArea } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        components: { Text, TextArea },
+        data() {
+            return {
+                customFields: [],
+                custom: {},
+                initialized: false
+            };
+        },
+        helpers: { __ },
+        onstate({ changed, current }) {
+            const { dw_chart } = this.store.get();
+
+            if (changed.customFields && current.customFields) {
+                const custom = dw_chart.get('metadata.custom', {});
+
+                current.customFields.forEach(field => {
+                    if (!custom[field.key]) custom[field.key] = '';
+                });
+
+                this.set({
+                    custom: custom,
+                    initialized: true
+                });
+            }
+
+            if (changed.custom && current.initialized) {
+                dw_chart.set(`metadata.custom`, current.custom);
+                if (dw_chart.saveSoon) dw_chart.saveSoon();
+            }
+        }
+    };
+</script>
+
+<style>
+    ref:customfields :global(textarea),
+    ref:customfields :global(input) {
+        margin-bottom: 10px;
+    }
+</style>

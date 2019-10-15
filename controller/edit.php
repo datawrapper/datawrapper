@@ -129,6 +129,12 @@
                 'shareurlType' => publish_get_preferred_shareurl_type()
             ];
 
+            $org = $user->getCurrentOrganization();
+            $customFields = [];
+            if ($org) {
+                $customFields = $org->getSettings("customFields") ?? [];
+            }
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',
@@ -140,6 +146,7 @@
                 'workflow' => $workflows[$vis['svelte-workflow']],
                 'userArray' => $userArray,
                 'vis' => $vis,
+                'customFields' => $customFields,
                 'apiDomain' => $GLOBALS['dw_config']['api_domain'],
                 'chartLocales' => array_map(function($s) {
                     $s = explode('|', $s);
