@@ -37,11 +37,21 @@ class Chart extends BaseChart {
         $this->usePrintVersion = true;
 
         $meta = $this->getMetadata();
+
         if (!isset($meta['print'])) {
             // copy web chart for print
             $meta['print'] = $meta;
             $meta['print']['describe']['title'] = parent::getTitle();
             $meta['print']['visualize']['type'] = parent::getType();
+
+            $themeId = parent::getTheme();
+            $theme = ThemeQuery::create()->findPk($themeId);
+
+            if (!empty($theme->getThemeData("printVersion"))) {
+                $meta['print']['visualize']['theme'] = $theme->getThemeData("printVersion");
+            } else {
+                $meta['print']['visualize']['theme'] = $theme->getId();
+            }
 
             $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
             $this->save();
@@ -90,10 +100,12 @@ class Chart extends BaseChart {
         if (isset($this->usePrintVersion) && $this->usePrintVersion) {
             if (isset($json['metadata'])) {
                 $json['metadata']['describe']['title'] = $json['title'];
+                $json['metadata']['visualize']['theme'] = $json['theme'];
                 $json['metadata']['visualize']['type'] = $json['type'];
             }
 
             $json['title'] = parent::getTitle();
+            $json['theme'] = parent::getTheme();
             $json['type'] = parent::getType();
         }
 
@@ -659,6 +671,14 @@ class Chart extends BaseChart {
             return $this->getMetadata('describe.title');
         } else {
             return parent::getTitle();
+        }
+    }
+
+    public function getTheme() {
+        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
+            return $this->getMetadata('visualize.theme');
+        } else {
+            return parent::getTheme();
         }
     }
 
