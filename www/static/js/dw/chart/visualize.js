@@ -334,7 +334,7 @@ define([
                     chart.get('id') +
                     '/preview?innersvg=1&random=' +
                     Math.floor(Math.random() * 100000) +
-                    (getParameterByName('mode') === 'print' ? '&mode=print' : '')
+                    (getParameterByName('mode') === 'print' ? '&mode=print&fitchart=1' : '')
             );
         }
         if (dw.visualization.has(chart.get('type'))) {
