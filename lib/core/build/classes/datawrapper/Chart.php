@@ -47,7 +47,7 @@ class Chart extends BaseChart {
             $themeId = parent::getTheme();
             $theme = ThemeQuery::create()->findPk($themeId);
 
-            if (!empty($theme->getThemeData("printVersion"))) {
+            if (!empty($theme->getThemeData("printTheme"))) {
                 $meta['print']['visualize']['theme'] = $theme->getThemeData("printTheme");
             } else {
                 $meta['print']['visualize']['theme'] = $theme->getId();
