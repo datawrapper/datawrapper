@@ -1,0 +1,422 @@
+{#if webToPrint}
+    <div class="toolbar-container">
+        <div class="toolbar-caption">Mode</div>
+
+        <div on:click="activate('web')" class="button {mode == 'web' ? 'active' : ''}">
+            Web
+        </div>
+        <div on:click="activate('print')" class="button {mode == 'print' ? 'active' : ''}">
+            Print
+        </div>
+    </div>
+{/if}
+
+<div class="toolbar-container" style="display:block;">
+    <div style="display:flex">
+        <div class="toolbar-caption">Chart size</div>
+
+        <div style="padding-top: 4px">
+            <input id="resize-w" class="input-resize input-large" type="text" on:change="changed()" bind:value="width_txt" />
+            ×
+            <input id="resize-h" class="input-resize input-large" type="text" on:change="changed()" bind:value="height_txt" />
+        </div>
+
+        {#if mode == "web"}
+            {#each breakpoints as preset, i}
+                <div class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
+                    on:click="setWidth(preset.width)">
+                    <i style="font-size:{preset.size}px" class="fa {preset.icon}"></i>
+                </div>
+            {/each}
+        {:elseif mode == "print"}
+            <div class="button" on:click="togglePrintOptions()" style="min-width:12px; border-right: none;">
+                <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
+            </div>
+        {/if}
+    </div>
+
+
+    {#if printExpanded}
+        <div class="toolbar-container options" style="display:block; height:auto; z-index: 1;">
+            <div style="padding: 12px 8px 0px 8px">
+                <!-- prettier-ignore -->
+                <Radio options="{units}" label="" bind:value="unit" />
+
+                {#if hasPresets}
+                    <div class="control-group" style="margin-bottom: 6px;">
+                        <div class="controls ">
+                            <select bind:value="preset" on:change="usePreset()" style="max-width:170px; margin-bottom:0">
+                                {#each presetOptions as option }
+                                    <option value="{option.value}">{ option.label }</option>
+                                {/each}
+                            </select>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+
+            <div class="button" on:click="reset()">
+                <i class="fa fa-undo"></i> &nbsp;Reset to web version
+            </div>
+        </div>
+    {/if}
+</div>
+
+<style>
+    .toolbar-container > div > *:last-child {
+        border-right: none !important;
+    }
+
+    .toolbar-container.options {
+        margin-left: 0px !important;
+        border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+        top: -1px;
+        left: -1px;
+        width: 100%;
+    }
+</style>
+
+<script>
+    import { Radio } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    const DPI = 96;
+    const IN2MM = 25.4;
+
+    export default {
+        components: { Radio },
+        helpers: { __ },
+        data() {
+            return {
+                webToPrint: true,
+                mode: "",
+                width: 600,
+                height: 400,
+                unit: "px",
+                units: [
+                    { value: "mm", label: "mm", step: 1, decimals: 0 },
+                    { value: "in", label: "in", step: 0.01, decimals: 2 },
+                    { value: "px", label: "px", step: 1, decimals: 0 },
+                ],
+                breakpoints: [
+                    {
+                        icon: "fa-mobile",
+                        iconSize: 14,
+                        minWidth: 0,
+                        maxWidth: 320,
+                        width: 320
+                    }, {
+                        icon: "fa-mobile",
+                        iconSize: 17,
+                        minWidth: 321,
+                        maxWidth: 400,
+                        width: 400
+                    }, {
+                        icon: "fa-desktop",
+                        iconSize: 14,
+                        minWidth: 401,
+                        maxWidth: Infinity,
+                        width: 600
+                    }
+                ],
+                hasPresets: false,
+                printExpanded: false
+            };
+        },
+        onstate({ changed, current, previous }) {
+            const { dw_chart } = this.store.get();
+            const app = this;
+
+            if (!previous) return;
+
+            if (changed.unit && !changed.width && !changed.height) {
+                // changed unit, let's recompute
+
+                const factor = current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1/DPI;
+
+                this.set({
+                    width: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
+                    height: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
+                    width_txt: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
+                    height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals)
+                });
+            }
+
+            if (changed.mode) {
+                if (current.mode == "web") {
+                    this.set({
+                        width: dw.backend.currentChart.get('metadata.publish.embed-width'),
+                        height: dw.backend.currentChart.get('metadata.publish.embed-height'),
+                        width_txt: dw.backend.currentChart.get('metadata.publish.embed-width'),
+                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height')
+                    });
+
+                    this.registerDragAndDropListener();
+                    this.registerTypeListener();
+                    this.registerChartHeightListener();
+
+                    app.updateSize();
+                } else {
+                    this.set({
+                        width: dw.backend.currentChart.get('metadata.publish.export-pdf.width', 120),
+                        height: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
+                        width_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.width', 120),
+                        height_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
+                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm')
+                    });
+
+                    app.updateSize();
+                }
+            }
+
+            if ((changed.width_px || changed.height_px) &&
+                (current.width_px && current.height_px)) {
+
+                app.updateSize();
+            }
+        },
+        oncreate() {
+             function getQueryVariable(variable) {
+                var query = window.location.search.substring(1);
+                var vars = query.split('&');
+                for (var i = 0; i < vars.length; i++) {
+                    var pair = vars[i].split('=');
+                    if (decodeURIComponent(pair[0]) == variable) {
+                        return decodeURIComponent(pair[1]);
+                    }
+                }
+            }
+
+            this.set({
+                mode: getQueryVariable("mode") || "web"
+            });
+        },
+        computed: {
+            width_px({width, unit}) {
+                return width * (unit === 'px' ? 1 : unit === 'mm' ? DPI/IN2MM : DPI);
+            },
+            height_px({height, unit}) {
+                return height * (unit === 'px' ? 1 : unit === 'mm' ? DPI/IN2MM : DPI);
+            },
+            theUnit({unit, units}) {
+                for (let i=0;i<units.length;i++) {
+                    if (units[i].value === unit) return units[i];
+                }
+            },
+            hasPresets({theme}) {
+                return theme &&
+                    theme &&
+                    theme.export &&
+                    theme.export.presets &&
+                    theme.export.presets.pdf &&
+                    theme.export.presets.pdf.length;
+            },
+            presets({hasPresets, theme}) {
+                if (!hasPresets) return [];
+                return theme.export.presets.pdf;
+            },
+            presetOptions({hasPresets, theme}) {
+                if (!hasPresets) return [];
+
+                var presets = theme.export.presets.pdf.map((el, i) => {
+                    return {
+                        value: i,
+                        label: el.title
+                    }
+                });
+
+                presets.unshift({
+                    value: "---",
+                    label: "Apply preset…"
+                });
+
+                return presets;
+            }
+        },
+        methods: {
+            usePreset() {
+                const { preset, presets } = this.get();
+                if (preset === "---") return;
+
+                this.set(presets[preset]);
+                this.updateSize();
+            },
+            changed() {
+                const app = this;
+
+                clearTimeout(this.debounceUpdateSize);
+                this.debounceUpdateSize = setTimeout(function() {
+                    app.set({
+                        width: app.get().width_txt,
+                        height: app.get().height_txt
+                    });
+                }, 100);
+            },
+            activate(mode) {
+                window.location = (window.location.protocol + "//" + window.location.host +
+                    window.location.pathname + `?mode=${mode}` + window.location.hash);
+            },
+            setWidth(w) {
+                this.set({width: w});
+            },
+            setHeight(h) {
+                this.set({height: h});
+            },
+            togglePrintOptions() {
+                this.set({printExpanded: !this.get().printExpanded});
+            },
+            reset() {
+                if (!window.confirm("Are you sure you want to reset to the web version?")) return;
+
+                $.ajax({
+                    url: "/api/plugin/webtoprint/"+chart.get('id'),
+                    method: "DELETE", success: function() {
+                        window.location.reload();
+                    }
+                });
+            },
+            updateSize() {
+                let { width, height,unit } = this.get(),
+                    w = this.get().width_px,
+                    h = this.get().height_px;
+
+                const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
+
+                console.log("resize to", w, h);
+
+                w = Math.min(maxW, w);
+
+                chart.set('metadata.publish.embed-width', w);
+                chart.set('metadata.publish.embed-height', h);
+
+                $('#iframe-wrapper').animate({
+                    width: w,
+                    height: h,
+                    'margin-left': (maxW - w) * 0.5,
+                }, {
+                    duration: 200,
+                    step: function () {
+                        $(this).css('overflow', 'visible');
+                    }
+                });
+
+                $('.visconfig')
+                    .css('min-height', (+h) + 250)
+                    .animate({
+                        left: Math.min(0, maxW - w)/2
+                    });
+
+                dw.backend.fire('chart-resize');
+
+                this.set({width_txt: width, height_txt: height});
+
+                if (this.get().mode == "web") {
+                    dw.backend.currentChart.set("metadata.publish.embed-width", Math.round(w));
+                    dw.backend.currentChart.set("metadata.publish.embed-height", Math.round(h));
+                } else {
+                    dw.backend.currentChart.set("metadata.publish.export-pdf.width", width);
+                    dw.backend.currentChart.set("metadata.publish.export-pdf.height", height);
+                    dw.backend.currentChart.set("metadata.publish.export-pdf.unit", unit);
+                }
+
+                this.measureChartHeight();
+            },
+            measureChartHeight() {
+                const app = this;
+
+                clearTimeout(window.measureChartHeightTimeout);
+
+                window.measureChartHeightTimeout = setTimeout(function() {
+                    const iframe = $('#iframe-vis').get(0).contentWindow;
+
+                    if (iframe) {
+                        var chartBody = iframe.document.querySelector('.dw-chart-body');
+
+                        if (chartBody && chartBody.getBoundingClientRect) {
+                            var h = chartBody.getBoundingClientRect().height;
+                            if (h != chart.get('metadata.publish.chart-height')) {
+                                if (dw.backend.currentVis) {
+                                    chart.set('metadata.publish.chart-height', h);
+                                    if (chart.save) chart.save();
+                                }
+                            }
+                        } else {
+                            setTimeout(app.measureChartHeight, 2000);
+                        }
+                    }
+                }, 2000);
+            },
+            registerDragAndDropListener() {
+                const app = this;
+                const iframe = $('#iframe-wrapper').addClass('resizable');
+                var startX, startY, startWidth, startHeight;
+
+                iframe.find('.resizer').remove();
+                iframe.append('<div class="resizer resizer-both icon-resize-horizontal"></div>');
+
+                $('.resizer', iframe).on('mousedown', dragStart);
+
+                function dragStart(e) {
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startWidth = iframe.width();
+                    startHeight = iframe.height();
+
+                    $(document).on('mousemove', doDrag);
+                    $(document).on('mouseup', stopDrag);
+                    $('#iframe-vis').addClass('resizing');
+                }
+
+                function doDrag(e) {
+                    iframe.height(startHeight + e.clientY - startY);
+                    iframe.width(startWidth + e.clientX - startX);
+                    iframe.css('pointer-events', 'none');
+                    e.preventDefault();
+                    return false;
+                }
+
+                function stopDrag(e) {
+                    $(document).unbind('mousemove', doDrag);
+                    $(document).unbind('mouseup', stopDrag);
+
+                    app.set({
+                        width: $('#iframe-vis').width(),
+                        height: $('#iframe-vis').height()
+                    });
+
+                    iframe.css('pointer-events', 'initial');
+                    $('#iframe-vis').removeClass('resizing');
+                }
+            },
+            registerTypeListener() {
+                const app = this;
+
+                dw.backend.on('type-changed', function (metas) {
+                    // switch from fixed to fit
+                    if (metas[0].height != "fixed" && metas[1].height == "fixed") {
+                        app.setHeight(Math.min(app.get().height_px, 500));
+                    }
+                });
+            },
+            registerChartHeightListener() {
+                const app = this;
+
+                window.addEventListener('message', function (e) {
+                    var message = e.data;
+
+                    if (typeof message['datawrapper-height'] != "undefined") {
+                        var h;
+
+                        for (var chartId in message['datawrapper-height']) {
+                            h = message['datawrapper-height'][chartId];
+                        }
+
+                        if (!$('#iframe-vis').hasClass('resizing') && $('#iframe-vis').is(':visible')) {
+                            app.setHeight(h);
+                        }
+                    }
+                });
+            }
+        }
+    };
+</script>

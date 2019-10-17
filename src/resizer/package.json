@@ -1,0 +1,25 @@
+{
+    "name": "resizer",
+    "scripts": {
+        "build": "rollup -c",
+        "dev": "rollup -cw"
+    },
+    "devDependencies": {
+        "rollup": "*",
+        "rollup-plugin-buble": "*",
+        "rollup-plugin-commonjs": "*",
+        "rollup-plugin-i18n": "*",
+        "rollup-plugin-json": "*",
+        "rollup-plugin-node-resolve": "*",
+        "rollup-plugin-svelte": "4.1.0",
+        "rollup-plugin-terser": "^5.1.2",
+        "source-map-support": "^0.5.11",
+        "svelte": "2.*",
+        "svelte-extras": "^2.0.2",
+        "svelte-transitions-slide": "^1.0.0",
+        "svelte-upgrade": "^1.0.14",
+        "underscore": "^1.9.1",
+        "underscore-es": "^1.9.8",
+        "watch": "^1.0.2"
+    }
+}
