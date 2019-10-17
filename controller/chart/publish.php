@@ -54,10 +54,6 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
 
         $chartUrlLocal = '/chart/' . $chart->getID() . '/preview';
 
-        if (!empty($chart->getMetadata('print'))) {
-            $chartUrlLocal .= '?mode=print';
-        }
-
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Publish'),
             'chartData' => $chart->loadData(),
