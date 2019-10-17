@@ -48,7 +48,7 @@ class Chart extends BaseChart {
             $theme = ThemeQuery::create()->findPk($themeId);
 
             if (!empty($theme->getThemeData("printVersion"))) {
-                $meta['print']['visualize']['theme'] = $theme->getThemeData("printVersion");
+                $meta['print']['visualize']['theme'] = $theme->getThemeData("printTheme");
             } else {
                 $meta['print']['visualize']['theme'] = $theme->getId();
             }
@@ -56,6 +56,13 @@ class Chart extends BaseChart {
             $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
             $this->save();
         }
+    }
+
+    public function deletePrintVersion() {
+        $meta = $this->getMetadata();
+        if (isset($meta['print'])) unset($meta['print']);
+        $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
+        $this->save();
     }
 
     /**
@@ -72,8 +79,6 @@ class Chart extends BaseChart {
 
         if (isset($this->usePrintVersion) && $this->usePrintVersion) {
             $json['metadata'] = $json['metadata']['print'];
-        } else {
-            unset($json['metadata']['print']);
         }
 
         if ($this->getUser()) $json['author'] = $this->getUser()->serialize();
