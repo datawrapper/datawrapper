@@ -28,7 +28,7 @@ class ThemeQuery extends BaseThemeQuery
         $defaultIds = $dw_config['default-themes'] ?? ["default"];
 
         if ($organization) {
-            if ($organization->getSettings("includeDefaultThemes") === false) {
+            if ($organization->getSettings("restrictDefaultThemes")) {
                 $includeDefaultThemes = false;
             }
         }
