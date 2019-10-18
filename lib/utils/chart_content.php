@@ -258,6 +258,9 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");
 
+    unset($the_vis['options']);
+    unset($the_vis['icon']);
+
     $page = array(
         'chartData' => $chart->loadData(),
         'chart' => $chart,
