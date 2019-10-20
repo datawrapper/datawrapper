@@ -120,7 +120,7 @@
                 );
             },
             chartIcon(chartType) {
-                return chartType === 'tables' ? 'fa fa-table' : chartType.indexOf('maps') > -1 ? 'fa fa-map-marker' : 'fa fa-bar-chart-o';
+                return chartType === 'tables' ? 'fa fa-table' : chartType.indexOf('map') > -1 ? 'fa fa-map-marker' : 'fa fa-bar-chart-o';
             },
             label(element) {
                 if (element.type === 'root') return 'All';
@@ -182,17 +182,17 @@
                     this.set({ folders });
                     if (typeof callback === 'function') callback(folders);
                 });
-            },
-            init() {
-                this.set({ loading: true });
-                this.updateFolders(folders => {
-                    this.set({ loading: false });
-                    const { current } = this.get();
-                    this.set({ position: find(folders, current) });
-                });
             }
         },
-        transitions: { slide, fade }
+        transitions: { slide, fade },
+        oncreate() {
+            this.set({ loading: true });
+            this.updateFolders(folders => {
+                this.set({ loading: false });
+                const { current } = this.get();
+                this.set({ position: find(folders, current) });
+            });
+        }
     };
 </script>
 

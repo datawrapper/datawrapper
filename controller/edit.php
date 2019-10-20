@@ -135,6 +135,33 @@
                 $customFields = $org->getSettings("customFields") ?? [];
             }
 
+            Hooks::register(Hooks::GET_CHART_ACTIONS, function($chart) {
+                $user = DatawrapperSession::getUser();
+
+                $folderId = $chart->getInFolder();
+                $organizationId = $chart->getOrganizationId();
+                $userId = $chart->getAuthorId();
+
+                return array(
+                    'id' => "move",
+                    'title' => __("Move"),
+                    'icon' => 'folder',
+                    'order' => 450,
+                    'mod' => [
+                        'id' => 'svelte/folder',
+                        'src' => "/static/js/svelte/folder.js",
+                        'css' => "/static/css/svelte/folder.css",
+                        'data' => [
+                            "chartId" => $chart->getId(),
+                            "current" => [
+                                "type" => !is_null($folderId) ? "folder" : (!is_null($organizationId) ? "team" : "user"),
+                                "id" => !is_null($folderId) ? $folderId : (!is_null($organizationId) ? $organizationId : $userId)
+                            ]
+                        ]
+                    ]
+                );
+            });
+
             $page = array(
                 'title' => '',
                 'pageClass' => 'editor',

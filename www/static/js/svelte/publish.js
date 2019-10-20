@@ -1,1 +1,2493 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t=t||self).publish=e()}(this,function(){"use strict";function t(){}function e(t,e){for(var n in e)t[n]=e[n];return t}function n(t,e){for(var n in e)t[n]=1;return t}function i(t,e){t.appendChild(e)}function s(t,e,n){t.insertBefore(e,n)}function r(t){t.parentNode.removeChild(t)}function a(t){for(;t.nextSibling;)t.parentNode.removeChild(t.nextSibling)}function o(t,e){for(var n=0;n<t.length;n+=1)t[n]&&t[n].d(e)}function c(){return document.createDocumentFragment()}function l(t){return document.createElement(t)}function u(t){return document.createTextNode(t)}function d(){return document.createComment("")}function h(t,e,n,i){t.addEventListener(e,n,i)}function p(t,e,n,i){t.removeEventListener(e,n,i)}function f(t,e,n){null==n?t.removeAttribute(e):t.setAttribute(e,n)}function b(t,e){t.data=""+e}function m(t,e,n){t.style.setProperty(e,n)}function _(){return Object.create(null)}function v(t){t._lock=!0,y(t._beforecreate),y(t._oncreate),y(t._aftercreate),t._lock=!1}function g(t,e){t._handlers=_(),t._slots=_(),t._bind=e._bind,t._staged={},t.options=e,t.root=e.root||t,t.store=e.store||t.root.store,e.root||(t._beforecreate=[],t._oncreate=[],t._aftercreate=[])}function y(t){for(;t&&t.length;)t.shift()()}function w(){this.store._remove(this)}var N={destroy:function(e){this.destroy=t,this.fire("destroy"),this.set=t,this._fragment.d(!1!==e),this._fragment=null,this._state={}},get:function(){return this._state},fire:function(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var i=0;i<n.length;i+=1){var s=n[i];if(!s.__calling)try{s.__calling=!0,s.call(this,e)}finally{s.__calling=!1}}},on:function(t,e){var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}},set:function(t){this._set(e({},t)),this.root._lock||v(this.root)},_recompute:t,_set:function(t){var n=this._state,i={},s=!1;for(var r in t=e(this._staged,t),this._staged={},t)this._differs(t[r],n[r])&&(i[r]=s=!0);s&&(this._state=e(e({},n),t),this._recompute(i,this._state),this._bind&&this._bind(i,this._state),this._fragment&&(this.fire("state",{changed:i,current:this._state,previous:n}),this._fragment.p(i,this._state),this.fire("update",{changed:i,current:this._state,previous:n})))},_stage:function(t){e(this._staged,t)},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_differs:function(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}};var j={show:function(){var t=this,e=setTimeout(function(){t.set({visible:!0})},400);this.set({t:e})},hide:function(){var t=this.get().t;clearTimeout(t),this.set({visible:!1})}};function x(t,e){var n;return{c:function(){n=u("?")},m:function(t,e){s(t,n,e)},d:function(t){t&&r(n)}}}function T(t,e){var n;return{c:function(){(n=l("i")).className="im im-graduation-hat svelte-1mkn8ur"},m:function(t,e){s(t,n,e)},d:function(t){t&&r(n)}}}function H(t,e){var n,a=t._slotted.default;return{c:function(){(n=l("div")).className="content svelte-1mkn8ur"},m:function(t,e){s(t,n,e),a&&i(n,a)},d:function(t){t&&r(n),a&&function(t,e){for(;t.firstChild;)e.appendChild(t.firstChild)}(n,a)}}}function A(t){g(this,t),this._state=e({visible:!1},t.data),this._intro=!0,this._slotted=t.slots||{},this._fragment=function(t,e){var n,a,o;function c(t){return t.visible?T:x}var d=c(e),f=d(t,e),b=e.visible&&H(t);function m(e){t.show()}function _(e){t.hide()}return{c:function(){n=l("div"),a=l("span"),f.c(),o=u("\n    "),b&&b.c(),a.className="svelte-1mkn8ur",h(n,"mouseenter",m),h(n,"mouseleave",_),n.className="help svelte-1mkn8ur"},m:function(t,e){s(t,n,e),i(n,a),f.m(a,null),i(n,o),b&&b.m(n,null)},p:function(e,i){d!==(d=c(i))&&(f.d(1),(f=d(t,i)).c(),f.m(a,null)),i.visible?b||((b=H(t)).c(),b.m(n,null)):b&&(b.d(1),b=null)},d:function(t){t&&r(n),f.d(),b&&b.d(),p(n,"mouseenter",m),p(n,"mouseleave",_)}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function C(t,e){var n;return{c:function(){(n=l("p")).innerHTML='<i class="fa fa-spinner fa-pulse fa-fw"></i> loading...',n.className="mini-help"},m:function(t,e){s(t,n,e)},d:function(t){t&&r(n)}}}function k(t){var n,i,a;g(this,t),this._state=e({loading:!1},t.data),this._intro=!0,this._fragment=(n=this._state,a=n.loading&&C(),{c:function(){a&&a.c(),i=d()},m:function(t,e){a&&a.m(t,e),s(t,i,e)},p:function(t,e){e.loading?a||((a=C()).c(),a.m(i.parentNode,i)):a&&(a.d(1),a=null)},d:function(t){a&&a.d(t),t&&r(i)}}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}e(A.prototype,N),e(A.prototype,j),e(k.prototype,N);var L=window.dw;function M(t,e){var n=arguments;if(void 0===e&&(e="core"),t=t.trim(),!L.backend.__messages[e])return"MISSING:"+t;var i=L.backend.__messages[e][t]||L.backend.__messages.core[t]||t;if(arguments.length>2)for(var s=2;s<arguments.length;s++){var r=s-1;i=i.replace("$"+r,n[s])}return i}function E(t,e,n,i){window._paq&&window._paq.push(["trackEvent",t,e,n,i])}function U(t,e,n,i,s){var r={method:e,body:i,mode:"cors",credentials:n},a=window.fetch(t,r).then(function(t){return 200!==t.status?new Error(t.statusText):t.text()}).then(function(t){try{return JSON.parse(t)}catch(e){return console.warn("malformed json input",t),t}}).catch(function(t){console.error(t)});return s?a.then(s):a}function I(t,e,n){return U(t,"POST","include",e,n)}var S=[100,200,300,400,500,700,800,900,1e3];var O=0,D=!0;var G={publish:function(){var t=this;this.set({publishing:!0,progress:0,publish_error:!1});var e,n,i,s,r,a=this.store;a.setMetadata("publish.embed-heights",(this.get().embed_templates,e={},n=window.$,i=n(n("#iframe-vis")[0].contentDocument),s=n("h1",i).height()+n(".chart-intro",i).height()+n(".dw-chart-notes",i).height(),r=n("#iframe-vis").height(),S.forEach(function(t){i.find("h1,.chart-intro,.dw-chart-notes").css("width",t+"px");var a=n("h1",i).height()+n(".chart-intro",i).height()+n(".dw-chart-notes",i).height();e[t]=r+(a-s)}),i.find("h1,.chart-intro,.dw-chart-notes").css("width","auto"),e)),E("Chart Editor","publish"),a.store(function(){I("/api/charts/"+a.get().id+"/publish",null,function(e){"ok"===e.status?(t.publishFinished(e.data),E("Chart Editor","publish-success")):(E("Chart Editor","publish-error",e.message),t.set({publish_error:e.message}))}),O=0,t.updateStatus()})},updateProgressBar:function(t){this.refs.bar&&(this.refs.bar.style.width=(100*t).toFixed()+"%")},updateStatus:function(){var t=this,e=this.store;O+=.05,function(t,e,n){2===arguments.length&&(n=e,e="include"),U(t,"GET",e,null,n)}("/api/charts/"+e.get().id+"/publish/status",function(e){e&&(e=+e/100+O,t.set({progress:Math.min(1,e)})),t.get().publishing&&setTimeout(function(){t.updateStatus()},400)})},publishFinished:function(t){var e=this;this.set({progress:1,published:!0,needs_republish:!1}),this.store.set({lastEditStep:5}),setTimeout(function(){return e.set({publishing:!1})},500),this.store.set(t)},setEmbedCode:function(){var t=this.store,e=this.get();if(e){var n=e.embed_type?"embed-method-"+e.embed_type:null,i=t.get().publicUrl,s=t.getMetadata("publish.embed-codes"),r=t.getMetadata("publish.embed-height");this.set({embedCode:s&&s[n]?s[n]:'<iframe src="'+i+'" width="100%" height="'+r+'" scrolling="no" frameborder="0" allowtransparency="true"></iframe>'})}},copy:function(){var t=this;t.refs.embedInput.select();try{document.execCommand("copy")&&(E("Chart Editor","embedcode-copy"),t.set({copy_success:!0}),setTimeout(function(){return t.set({copy_success:!1})},300))}catch(t){}},select:function(t,e){var n=this;e.preventDefault(),window.location.hash=t.id;var i,s,r,a=this.get().active_action;if(t.id===a)return this.set({active_action:"",Action:k});this.set({active_action:t.id}),t.mod?t.mod.App?this.set({Action:t.mod.App}):(this.set({Action:k}),this.refs.action.set({loading:!0}),t.mod.css&&(i=t.mod.css,(r=document.createElement("link")).rel="stylesheet",r.href=i,r.onload=function(){s&&s()},document.head.appendChild(r)),function(t,e){var n=document.createElement("script");n.src=t,n.onload=function(){e&&e()},document.body.appendChild(n)}(t.mod.src,function(){setTimeout(function(){require([t.mod.id],function(e){Object.assign(t.mod,e),n.set({Action:t.mod.App}),e.init&&e.init(n.refs.action),t.mod.data&&n.refs.action.set(t.mod.data)})},200)})):t.action&&this[t.action]?(this.set({Action:k}),this[t.action]()):"function"==typeof t.action&&(this.set({Action:k}),t.action())},duplicate:function(){var t=this.store.get().id;E("Chart Editor","duplicate"),I("/api/charts/"+t+"/copy",null,function(t){"ok"===t.status?window.location.href="/edit/"+t.data.id+"/visualize":console.warn(t)})}};function $(t){var e=t.changed,n=t.current,i=window.dw&&window.dw.backend&&window.dw.backend.setUserData;if(e.publishing&&n.publishing&&this.updateProgressBar(n.progress),e.progress&&this.updateProgressBar(n.progress),e.embed_type&&i){var s=window.dw.backend.__userData;if(!n.embed_type||!s)return;s.embed_type=n.embed_type,window.dw.backend.setUserData(s)}if(e.embed_type&&this.setEmbedCode(),e.shareurl_type&&i){var r=window.dw.backend.__userData;if(!n.shareurl_type||!r)return;r.shareurl_type=n.shareurl_type,window.dw.backend.setUserData(r)}if(e.published){var a=window.document.querySelector(".dw-create-publish .publish-step");a&&a.classList[n.published?"add":"remove"]("is-published")}e.auto_publish&&n.auto_publish&&D&&(this.publish(),D=!1,window.history.replaceState("","",window.location.pathname))}function F(t){var e=this._svelte,n=e.component,i=e.ctx;n.select(i.action,t)}function P(t,e,n){var i=Object.create(t);return i.action=e[n],i}function q(t,e,n){var i=Object.create(t);return i.tpl=e[n],i}function B(t,e,n){var i=Object.create(t);return i.tpl=e[n],i}function z(t,e,n){var i=Object.create(t);return i.tpl=e[n],i}function J(t,e){var n;return{c:function(){(n=l("h2")).className="pad-top"},m:function(t,i){s(t,n,i),n.innerHTML=e.publishHed},p:function(t,e){t.publishHed&&(n.innerHTML=e.publishHed)},d:function(t){t&&r(n)}}}function K(e,n){var i,a=M("publish / publish-intro");return{c:function(){m(i=l("p"),"margin-bottom","20px")},m:function(t,e){s(t,i,e),i.innerHTML=a},p:t,d:function(t){t&&r(i)}}}function Q(e,n){var i,a=M("publish / republish-intro");return{c:function(){i=l("p")},m:function(t,e){s(t,i,e),i.innerHTML=a},p:t,d:function(t){t&&r(i)}}}function R(t,e){var n;return{c:function(){n=l("p")},m:function(t,i){s(t,n,i),n.innerHTML=e.publishIntro},p:function(t,e){t.publishIntro&&(n.innerHTML=e.publishIntro)},d:function(t){t&&r(n)}}}function V(t,e){var n,a,o,c,d,h,p=M("publish / publish-btn");return{c:function(){n=l("span"),a=l("i"),c=u("\n            "),d=l("span"),h=u(p),a.className=o="fa fa-fw "+(e.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-1njbtly",d.className="title svelte-1njbtly",n.className="publish"},m:function(t,e){s(t,n,e),i(n,a),i(n,c),i(n,d),i(d,h)},p:function(t,e){t.publishing&&o!==(o="fa fa-fw "+(e.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-1njbtly")&&(a.className=o)},d:function(t){t&&r(n)}}}function W(t,e){var n,a,o,c,d,h,p=M("publish / republish-btn");return{c:function(){n=l("span"),a=l("i"),c=u(" "),d=l("span"),h=u(p),a.className=o="fa fa-fw fa-refresh "+(e.publishing?"fa-spin":"")+" svelte-1njbtly",d.className="title svelte-1njbtly",n.className="re-publish"},m:function(t,e){s(t,n,e),i(n,a),i(n,c),i(n,d),i(d,h)},p:function(t,e){t.publishing&&o!==(o="fa fa-fw fa-refresh "+(e.publishing?"fa-spin":"")+" svelte-1njbtly")&&(a.className=o)},d:function(t){t&&r(n)}}}function X(t,e){var n,a,o,c,d=M("publish / publish-btn-intro");return{c:function(){n=l("div"),(a=l("div")).innerHTML='<i class="fa fa-chevron-left"></i>',o=u("\n        "),c=l("div"),a.className="arrow svelte-1njbtly",c.className="text svelte-1njbtly",n.className="publish-intro svelte-1njbtly"},m:function(t,e){s(t,n,e),i(n,a),i(n,o),i(n,c),c.innerHTML=d},d:function(t){t&&r(n)}}}function Y(t,e){var n,i=M("publish / republish-alert");return{c:function(){(n=l("div")).className="btn-aside alert svelte-1njbtly"},m:function(t,e){s(t,n,e),n.innerHTML=i},d:function(t){t&&r(n)}}}function Z(t,e){var n,i=M("publish / publish-success");return{c:function(){(n=l("div")).className="alert alert-success svelte-1njbtly"},m:function(t,e){s(t,n,e),n.innerHTML=i},d:function(t){t&&r(n)}}}function tt(t,e){var n;return{c:function(){(n=l("div")).className="alert alert-error svelte-1njbtly"},m:function(t,i){s(t,n,i),n.innerHTML=e.publish_error},p:function(t,e){t.publish_error&&(n.innerHTML=e.publish_error)},d:function(t){t&&r(n)}}}function et(t,e){var n,a,o,c,d,h,p,f=M("publish / progress / please-wait");return{c:function(){n=l("div"),a=u(f),o=u("\n        "),c=l("div"),(d=l("div")).className=h="bar "+(e.progress<1?"":"bar-success")+" svelte-1njbtly",c.className="progress progress-striped active svelte-1njbtly",n.className=p="alert "+(e.progress<1?"alert-info":"alert-success")+" publishing svelte-1njbtly"},m:function(e,r){s(e,n,r),i(n,a),i(n,o),i(n,c),i(c,d),t.refs.bar=d},p:function(t,e){t.progress&&h!==(h="bar "+(e.progress<1?"":"bar-success")+" svelte-1njbtly")&&(d.className=h),t.progress&&p!==(p="alert "+(e.progress<1?"alert-info":"alert-success")+" publishing svelte-1njbtly")&&(n.className=p)},d:function(e){e&&r(n),t.refs.bar===d&&(t.refs.bar=null)}}}function nt(t,e){var n,o,c,d,b,m=e.tpl.name;function _(){t.set({shareurl_type:o.__value})}return{c:function(){n=l("label"),o=l("input"),d=u(" "),b=l("noscript"),t._bindingGroups[0].push(o),h(o,"change",_),o.__value=c=e.tpl.id,o.value=o.__value,f(o,"type","radio"),o.name="url-type",o.className="svelte-1njbtly",n.className="radio"},m:function(t,r){s(t,n,r),i(n,o),o.checked=o.__value===e.shareurl_type,i(n,d),i(n,b),b.insertAdjacentHTML("afterend",m)},p:function(t,e){t.shareurl_type&&(o.checked=o.__value===e.shareurl_type),t.plugin_shareurls&&c!==(c=e.tpl.id)&&(o.__value=c),o.value=o.__value,t.plugin_shareurls&&m!==(m=e.tpl.name)&&(a(b),b.insertAdjacentHTML("afterend",m))},d:function(e){e&&r(n),t._bindingGroups[0].splice(t._bindingGroups[0].indexOf(o),1),p(o,"change",_)}}}function it(t,e){var n,o,c,d,b,m=e.tpl.title;function _(){t.set({embed_type:o.__value})}return{c:function(){n=l("label"),o=l("input"),d=u(" "),b=l("noscript"),t._bindingGroups[1].push(o),h(o,"change",_),f(o,"type","radio"),o.__value=c=e.tpl.id,o.value=o.__value,o.className="svelte-1njbtly",n.className="radio"},m:function(t,r){s(t,n,r),i(n,o),o.checked=o.__value===e.embed_type,i(n,d),i(n,b),b.insertAdjacentHTML("afterend",m)},p:function(t,e){t.embed_type&&(o.checked=o.__value===e.embed_type),t.embed_templates&&c!==(c=e.tpl.id)&&(o.__value=c),o.value=o.__value,t.embed_templates&&m!==(m=e.tpl.title)&&(a(b),b.insertAdjacentHTML("afterend",m))},d:function(e){e&&r(n),t._bindingGroups[1].splice(t._bindingGroups[1].indexOf(o),1),p(o,"change",_)}}}function st(t,e){var n,o,c,d,h,p,f=e.tpl.title,m=e.tpl.text;return{c:function(){n=l("div"),o=l("b"),c=u(f),d=u(":"),h=u(" "),p=l("noscript")},m:function(t,e){s(t,n,e),i(n,o),i(o,c),i(o,d),i(n,h),i(n,p),p.insertAdjacentHTML("afterend",m)},p:function(t,e){t.embed_templates&&f!==(f=e.tpl.title)&&b(c,f),t.embed_templates&&m!==(m=e.tpl.text)&&(a(p),p.insertAdjacentHTML("afterend",m))},d:function(t){t&&r(n)}}}function rt(t,e){var n;return{c:function(){n=l("p")},m:function(t,i){s(t,n,i),n.innerHTML=e.exportIntro},p:function(t,e){t.exportIntro&&(n.innerHTML=e.exportIntro)},d:function(t){t&&r(n)}}}function at(t,e){var n,a,o,c,d,b,m,_,v=e.action.title,g=e.action.banner&&"FALSE"!=e.action.banner.text&&"-"!=e.action.banner.text&&ot(t,e);return{c:function(){n=l("li"),a=l("a"),o=l("i"),d=l("span"),m=u("\n                "),g&&g.c(),o.className=c="fa fa-"+e.action.icon+" svelte-1njbtly",d.className="title svelte-1njbtly",a._svelte={component:t,ctx:e},h(a,"click",F),f(a,"role","button"),a.href=b=e.action.url?e.action.url:"#"+e.action.id,n.className=_="action action-"+e.action.id+" "+(e.action.class||"")+" "+(e.action.id==e.active_action?"active":"")+" svelte-1njbtly"},m:function(t,e){s(t,n,e),i(n,a),i(a,o),i(a,d),d.innerHTML=v,i(n,m),g&&g.m(n,null)},p:function(i,s){e=s,i.sortedChartActions&&c!==(c="fa fa-"+e.action.icon+" svelte-1njbtly")&&(o.className=c),i.sortedChartActions&&v!==(v=e.action.title)&&(d.innerHTML=v),a._svelte.ctx=e,i.sortedChartActions&&b!==(b=e.action.url?e.action.url:"#"+e.action.id)&&(a.href=b),e.action.banner&&"FALSE"!=e.action.banner.text&&"-"!=e.action.banner.text?g?g.p(i,e):((g=ot(t,e)).c(),g.m(n,null)):g&&(g.d(1),g=null),(i.sortedChartActions||i.active_action)&&_!==(_="action action-"+e.action.id+" "+(e.action.class||"")+" "+(e.action.id==e.active_action?"active":"")+" svelte-1njbtly")&&(n.className=_)},d:function(t){t&&r(n),p(a,"click",F),g&&g.d()}}}function ot(t,e){var n,a,o,c=e.action.banner.text;return{c:function(){n=l("div"),a=u(c),n.className="banner",n.style.cssText=o=e.action.banner.style},m:function(t,e){s(t,n,e),i(n,a)},p:function(t,e){t.sortedChartActions&&c!==(c=e.action.banner.text)&&b(a,c),t.sortedChartActions&&o!==(o=e.action.banner.style)&&(n.style.cssText=o)},d:function(t){t&&r(n)}}}function ct(t,e){var n,i=e.action&&at(t,e);return{c:function(){i&&i.c(),n=d()},m:function(t,e){i&&i.m(t,e),s(t,n,e)},p:function(e,s){s.action?i?i.p(e,s):((i=at(t,s)).c(),i.m(n.parentNode,n)):i&&(i.d(1),i=null)},d:function(t){i&&i.d(t),t&&r(n)}}}function lt(t){var a=this;g(this,t),this.refs={},this._state=e(e(this.store._init(["id","publicUrl","actions"]),{active_action:"",embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:0,shareurl_type:"default",embed_type:"responsive",copy_success:!1,Action:k,chartActions:[{id:"duplicate",icon:"code-fork",title:M("Duplicate"),order:500,action:"duplicate"}],publishHed:"",publishIntro:"",beforeExport:null,exportHed:M("publish / export-duplicate"),exportIntro:M("publish / export-duplicate / intro"),embedCode:""}),t.data),this.store._add(this,["id","publicUrl","actions"]),this._recompute({shareurl_type:1,$id:1,$publicUrl:1,plugin_shareurls:1,published:1,chartActions:1,$actions:1},this._state),this._bindingGroups=[[],[]],this._intro=!0,this._handlers.state=[$],this._handlers.destroy=[w],$.call(this,{changed:n({},this._state),current:this._state}),this._fragment=function(t,e){var n,a,d,_,v,g,y,w,N,j,x,T,H,C,k,L,E,U,I,S,O,D,G,$,F,at,ot,lt,ut,dt,ht,pt,ft,bt,mt,_t,vt,gt,yt,wt,Nt,jt,xt,Tt,Ht,At,Ct,kt,Lt,Mt,Et,Ut,It,St,Ot,Dt,Gt,$t,Ft,Pt,qt,Bt,zt,Jt,Kt,Qt,Rt,Vt,Wt=M("publish / share-embed"),Xt=M("publish / share-url"),Yt=M("publish / share-url / fullscreen"),Zt=M("publish / help / share-url"),te=M("publish / embed"),ee=M("publish / copy"),ne=M("publish / copy-success"),ie=M("publish / embed / help"),se=e.publishHed&&J(0,e);function re(t){return t.publishIntro?R:t.published?Q:K}var ae=re(e),oe=ae(t,e);function ce(t){return t.published?W:V}var le=ce(e),ue=le(t,e);function de(e){t.publish()}var he=!e.published&&X(),pe=e.needs_republish&&!e.publishing&&Y(),fe=e.published&&!e.needs_republish&&1===e.progress&&!e.publishing&&Z(),be=e.publish_error&&tt(0,e),me=e.publishing&&et(t,e);function _e(){t.set({shareurl_type:$.__value})}for(var ve=e.plugin_shareurls,ge=[],ye=0;ye<ve.length;ye+=1)ge[ye]=nt(t,z(e,ve,ye));var we=new A({root:t.root,store:t.store,slots:{default:c()}}),Ne=e.embed_templates,je=[];for(ye=0;ye<Ne.length;ye+=1)je[ye]=it(t,B(e,Ne,ye));function xe(n){t.copy(e.embedCode)}var Te=e.embed_templates.slice(2),He=[];for(ye=0;ye<Te.length;ye+=1)He[ye]=st(0,q(e,Te,ye));var Ae=new A({root:t.root,store:t.store,slots:{default:c()}}),Ce=e.beforeExport;function ke(e){return{root:t.root,store:t.store}}if(Ce)var Le=new Ce(ke());var Me=e.exportIntro&&rt(0,e),Ee=e.sortedChartActions,Ue=[];for(ye=0;ye<Ee.length;ye+=1)Ue[ye]=ct(t,P(e,Ee,ye));var Ie=e.Action;function Se(e){return{root:t.root,store:t.store,data:{visible:!0,show:!0}}}if(Ie)var Oe=new Ie(Se());return{c:function(){n=l("div"),se&&se.c(),a=u(" "),oe.c(),d=u("\n\n    "),_=l("button"),ue.c(),g=u("\n\n    "),he&&he.c(),y=u(" "),pe&&pe.c(),w=u(" "),fe&&fe.c(),N=u(" "),be&&be.c(),j=u(" "),me&&me.c(),x=u("\n\n    "),T=l("div"),H=l("h2"),C=u("\n        "),k=l("div"),L=l("i"),E=u("\n            "),U=l("div"),I=l("div"),S=l("b"),O=u("\n                    "),D=l("div"),G=l("label"),$=l("input"),F=u("\n                            "),at=l("noscript"),ot=u("\n                        ");for(var i=0;i<ge.length;i+=1)ge[i].c();for(lt=u("\n                "),ut=l("div"),dt=l("a"),ht=u(e.shareUrl),pt=u("\n            "),ft=l("div"),we._fragment.c(),bt=u("\n\n        "),mt=l("div"),_t=l("i"),vt=u("\n            "),gt=l("div"),yt=l("div"),wt=l("b"),Nt=u("\n                    "),jt=l("div"),i=0;i<je.length;i+=1)je[i].c();for(xt=u("\n                "),Tt=l("div"),Ht=l("input"),At=u("\n                    "),Ct=l("button"),kt=l("i"),Lt=u(" "),Mt=u(ee),Et=u("\n                    "),Ut=l("div"),It=u(ne),Ot=u("\n            "),Dt=l("div"),Gt=l("noscript"),$t=u(" "),i=0;i<He.length;i+=1)He[i].c();for(Ae._fragment.c(),Pt=u("\n\n    \n    "),Le&&Le._fragment.c(),qt=u("\n\n    \n    "),Bt=l("div"),zt=l("div"),Jt=l("h2"),Kt=u("\n            "),Me&&Me.c(),Qt=u("\n\n        "),Rt=l("ul"),i=0;i<Ue.length;i+=1)Ue[i].c();Vt=u("\n\n        "),Oe&&Oe._fragment.c(),h(_,"click",de),_.disabled=e.publishing,_.className=v="btn-publish btn btn-primary btn-large "+(e.published?"":"btn-first-publish")+" svelte-1njbtly",L.className="icon fa fa-link fa-fw",t._bindingGroups[0].push($),h($,"change",_e),$.__value="default",$.value=$.__value,f($,"type","radio"),$.name="url-type",$.className="svelte-1njbtly",G.className="radio",D.className="embed-options svelte-1njbtly",I.className="h",dt.target="_blank",dt.className="share-url svelte-1njbtly",dt.href=e.shareUrl,ut.className="inpt",U.className="ctrls",k.className="block",_t.className="icon fa fa-code fa-fw",jt.className="embed-options svelte-1njbtly",yt.className="h",f(Ht,"type","text"),Ht.className="input embed-code",Ht.readOnly=!0,Ht.value=e.embedCode,kt.className="fa fa-copy",h(Ct,"click",xe),Ct.className="btn btn-copy",Ct.title="copy",Ut.className=St="copy-success "+(e.copy_success?"show":"")+" svelte-1njbtly",Tt.className="inpt",gt.className="ctrls",mt.className="block",m(T,"margin-top","30px"),T.className=Ft=e.published?"":"inactive",Jt.className="pad-top",Rt.className="chart-actions",Bt.className="export-and-duplicate"},m:function(r,o){s(r,n,o),se&&se.m(n,null),i(n,a),oe.m(n,null),i(n,d),i(n,_),ue.m(_,null),i(n,g),he&&he.m(n,null),i(n,y),pe&&pe.m(n,null),i(n,w),fe&&fe.m(n,null),i(n,N),be&&be.m(n,null),i(n,j),me&&me.m(n,null),i(n,x),i(n,T),i(T,H),H.innerHTML=Wt,i(T,C),i(T,k),i(k,L),i(k,E),i(k,U),i(U,I),i(I,S),S.innerHTML=Xt,i(I,O),i(I,D),i(D,G),i(G,$),$.checked=$.__value===e.shareurl_type,i(G,F),i(G,at),at.insertAdjacentHTML("afterend",Yt),i(D,ot);for(var c=0;c<ge.length;c+=1)ge[c].m(D,null);for(i(U,lt),i(U,ut),i(ut,dt),i(dt,ht),i(k,pt),i(we._slotted.default,ft),ft.innerHTML=Zt,we._mount(k,null),i(T,bt),i(T,mt),i(mt,_t),i(mt,vt),i(mt,gt),i(gt,yt),i(yt,wt),wt.innerHTML=te,i(yt,Nt),i(yt,jt),c=0;c<je.length;c+=1)je[c].m(jt,null);for(i(gt,xt),i(gt,Tt),i(Tt,Ht),t.refs.embedInput=Ht,i(Tt,At),i(Tt,Ct),i(Ct,kt),i(Ct,Lt),i(Ct,Mt),i(Tt,Et),i(Tt,Ut),i(Ut,It),i(mt,Ot),i(Ae._slotted.default,Dt),i(Dt,Gt),Gt.insertAdjacentHTML("beforebegin",ie),i(Dt,$t),c=0;c<He.length;c+=1)He[c].m(Dt,null);for(Ae._mount(mt,null),i(n,Pt),Le&&Le._mount(n,null),i(n,qt),i(n,Bt),i(Bt,zt),i(zt,Jt),Jt.innerHTML=e.exportHed,i(zt,Kt),Me&&Me.m(zt,null),i(Bt,Qt),i(Bt,Rt),c=0;c<Ue.length;c+=1)Ue[c].m(Rt,null);i(Bt,Vt),Oe&&(Oe._mount(Bt,null),t.refs.action=Oe)},p:function(i,s){if((e=s).publishHed?se?se.p(i,e):((se=J(0,e)).c(),se.m(n,a)):se&&(se.d(1),se=null),ae===(ae=re(e))&&oe?oe.p(i,e):(oe.d(1),(oe=ae(t,e)).c(),oe.m(n,d)),le===(le=ce(e))&&ue?ue.p(i,e):(ue.d(1),(ue=le(t,e)).c(),ue.m(_,null)),i.publishing&&(_.disabled=e.publishing),i.published&&v!==(v="btn-publish btn btn-primary btn-large "+(e.published?"":"btn-first-publish")+" svelte-1njbtly")&&(_.className=v),e.published?he&&(he.d(1),he=null):he||((he=X()).c(),he.m(n,y)),e.needs_republish&&!e.publishing?pe||((pe=Y()).c(),pe.m(n,w)):pe&&(pe.d(1),pe=null),!e.published||e.needs_republish||1!==e.progress||e.publishing?fe&&(fe.d(1),fe=null):fe||((fe=Z()).c(),fe.m(n,N)),e.publish_error?be?be.p(i,e):((be=tt(0,e)).c(),be.m(n,j)):be&&(be.d(1),be=null),e.publishing?me?me.p(i,e):((me=et(t,e)).c(),me.m(n,x)):me&&(me.d(1),me=null),i.shareurl_type&&($.checked=$.__value===e.shareurl_type),i.plugin_shareurls||i.shareurl_type){ve=e.plugin_shareurls;for(var r=0;r<ve.length;r+=1){var o=z(e,ve,r);ge[r]?ge[r].p(i,o):(ge[r]=nt(t,o),ge[r].c(),ge[r].m(D,null))}for(;r<ge.length;r+=1)ge[r].d(1);ge.length=ve.length}if(i.shareUrl&&(b(ht,e.shareUrl),dt.href=e.shareUrl),i.embed_templates||i.embed_type){for(Ne=e.embed_templates,r=0;r<Ne.length;r+=1){var c=B(e,Ne,r);je[r]?je[r].p(i,c):(je[r]=it(t,c),je[r].c(),je[r].m(jt,null))}for(;r<je.length;r+=1)je[r].d(1);je.length=Ne.length}if(i.embedCode&&(Ht.value=e.embedCode),i.copy_success&&St!==(St="copy-success "+(e.copy_success?"show":"")+" svelte-1njbtly")&&(Ut.className=St),i.embed_templates){for(Te=e.embed_templates.slice(2),r=0;r<Te.length;r+=1){var l=q(e,Te,r);He[r]?He[r].p(i,l):(He[r]=st(0,l),He[r].c(),He[r].m(Dt,null))}for(;r<He.length;r+=1)He[r].d(1);He.length=Te.length}if(i.published&&Ft!==(Ft=e.published?"":"inactive")&&(T.className=Ft),Ce!==(Ce=e.beforeExport)&&(Le&&Le.destroy(),Ce?((Le=new Ce(ke()))._fragment.c(),Le._mount(n,qt)):Le=null),i.exportHed&&(Jt.innerHTML=e.exportHed),e.exportIntro?Me?Me.p(i,e):((Me=rt(0,e)).c(),Me.m(zt,null)):Me&&(Me.d(1),Me=null),i.sortedChartActions||i.active_action){for(Ee=e.sortedChartActions,r=0;r<Ee.length;r+=1){var u=P(e,Ee,r);Ue[r]?Ue[r].p(i,u):(Ue[r]=ct(t,u),Ue[r].c(),Ue[r].m(Rt,null))}for(;r<Ue.length;r+=1)Ue[r].d(1);Ue.length=Ee.length}Ie!==(Ie=e.Action)&&(Oe&&Oe.destroy(),Ie?((Oe=new Ie(Se()))._fragment.c(),Oe._mount(Bt,null),t.refs.action=Oe):(Oe=null,t.refs.action===Oe&&(t.refs.action=null)))},d:function(e){e&&r(n),se&&se.d(),oe.d(),ue.d(),p(_,"click",de),he&&he.d(),pe&&pe.d(),fe&&fe.d(),be&&be.d(),me&&me.d(),t._bindingGroups[0].splice(t._bindingGroups[0].indexOf($),1),p($,"change",_e),o(ge,e),we.destroy(),o(je,e),t.refs.embedInput===Ht&&(t.refs.embedInput=null),p(Ct,"click",xe),o(He,e),Ae.destroy(),Le&&Le.destroy(),Me&&Me.d(),o(Ue,e),Oe&&Oe.destroy()}}}(this,this._state),this.root._oncreate.push(function(){(function(){var t=this,e=this.store.get().lastEditStep;this.set({published:e>4}),window.dw.backend.fire("edit.publish.oncreate",this),this.setEmbedCode();var n=this.store;n.observeDeep("metadata.publish.embed-codes",function(){return t.setEmbedCode()}),n.observeDeep("metadata.publish.embed-height",function(){return t.setEmbedCode()}),n.observeDeep("publicUrl",function(){return t.setEmbedCode()})}).call(a),a.fire("update",{changed:n({},a._state),current:a._state})}),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),v(this))}return e(lt.prototype,N),e(lt.prototype,G),lt.prototype._recompute=function(t,e){var n,i,s;(t.shareurl_type||t.$id||t.$publicUrl||t.plugin_shareurls||t.published)&&this._differs(e.shareUrl,e.shareUrl=function(t){var e=t.shareurl_type,n=t.$id,i=t.$publicUrl,s=t.plugin_shareurls;if(!t.published)return"https://www.datawrapper.de/...";if("default"===e)return i;var r="";return s.forEach(function(t){t.id===e&&(r=t.url.replace(/%chart_id%/g,n))}),r}(e))&&(t.shareUrl=!0),(t.chartActions||t.$actions)&&this._differs(e.sortedChartActions,e.sortedChartActions=(i=(n=e).chartActions,s=n.$actions,i.concat(s).filter(function(t){return"publish-s3"!==t.id}).sort(function(t,e){return t.order-e.order})))&&(t.sortedChartActions=!0)},{Publish:lt}});
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global = global || self, global.publish = factory());
+}(this, function () { 'use strict';
+
+	function noop() {}
+
+	function assign(tar, src) {
+		for (var k in src) tar[k] = src[k];
+		return tar;
+	}
+
+	function assignTrue(tar, src) {
+		for (var k in src) tar[k] = 1;
+		return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+		element.__svelte_meta = {
+			loc: { file, line, column, char }
+		};
+	}
+
+	function append(target, node) {
+		target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+		target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+		node.parentNode.removeChild(node);
+	}
+
+	function detachAfter(before) {
+		while (before.nextSibling) {
+			before.parentNode.removeChild(before.nextSibling);
+		}
+	}
+
+	function reinsertChildren(parent, target) {
+		while (parent.firstChild) target.appendChild(parent.firstChild);
+	}
+
+	function destroyEach(iterations, detach) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) iterations[i].d(detach);
+		}
+	}
+
+	function createFragment() {
+		return document.createDocumentFragment();
+	}
+
+	function createElement(name) {
+		return document.createElement(name);
+	}
+
+	function createText(data) {
+		return document.createTextNode(data);
+	}
+
+	function createComment() {
+		return document.createComment('');
+	}
+
+	function addListener(node, event, handler, options) {
+		node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+		node.removeEventListener(event, handler, options);
+	}
+
+	function setAttribute(node, attribute, value) {
+		if (value == null) node.removeAttribute(attribute);
+		else node.setAttribute(attribute, value);
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
+	}
+
+	function setStyle(node, key, value) {
+		node.style.setProperty(key, value);
+	}
+
+	function blankObject() {
+		return Object.create(null);
+	}
+
+	function destroy(detach) {
+		this.destroy = noop;
+		this.fire('destroy');
+		this.set = noop;
+
+		this._fragment.d(detach !== false);
+		this._fragment = null;
+		this._state = {};
+	}
+
+	function destroyDev(detach) {
+		destroy.call(this, detach);
+		this.destroy = function() {
+			console.warn('Component was already destroyed');
+		};
+	}
+
+	function _differs(a, b) {
+		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+
+	function fire(eventName, data) {
+		var handlers =
+			eventName in this._handlers && this._handlers[eventName].slice();
+		if (!handlers) return;
+
+		for (var i = 0; i < handlers.length; i += 1) {
+			var handler = handlers[i];
+
+			if (!handler.__calling) {
+				try {
+					handler.__calling = true;
+					handler.call(this, data);
+				} finally {
+					handler.__calling = false;
+				}
+			}
+		}
+	}
+
+	function flush(component) {
+		component._lock = true;
+		callAll(component._beforecreate);
+		callAll(component._oncreate);
+		callAll(component._aftercreate);
+		component._lock = false;
+	}
+
+	function get() {
+		return this._state;
+	}
+
+	function init(component, options) {
+		component._handlers = blankObject();
+		component._slots = blankObject();
+		component._bind = options._bind;
+		component._staged = {};
+
+		component.options = options;
+		component.root = options.root || component;
+		component.store = options.store || component.root.store;
+
+		if (!options.root) {
+			component._beforecreate = [];
+			component._oncreate = [];
+			component._aftercreate = [];
+		}
+	}
+
+	function on(eventName, handler) {
+		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+		handlers.push(handler);
+
+		return {
+			cancel: function() {
+				var index = handlers.indexOf(handler);
+				if (~index) handlers.splice(index, 1);
+			}
+		};
+	}
+
+	function set(newState) {
+		this._set(assign({}, newState));
+		if (this.root._lock) return;
+		flush(this.root);
+	}
+
+	function _set(newState) {
+		var oldState = this._state,
+			changed = {},
+			dirty = false;
+
+		newState = assign(this._staged, newState);
+		this._staged = {};
+
+		for (var key in newState) {
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign(assign({}, oldState), newState);
+		this._recompute(changed, this._state);
+		if (this._bind) this._bind(changed, this._state);
+
+		if (this._fragment) {
+			this.fire("state", { changed: changed, current: this._state, previous: oldState });
+			this._fragment.p(changed, this._state);
+			this.fire("update", { changed: changed, current: this._state, previous: oldState });
+		}
+	}
+
+	function _stage(newState) {
+		assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+		if (typeof newState !== 'object') {
+			throw new Error(
+				this._debugName + '.set was called without an object of data key-values to update.'
+			);
+		}
+
+		this._checkReadOnly(newState);
+		set.call(this, newState);
+	}
+
+	function callAll(fns) {
+		while (fns && fns.length) fns.shift()();
+	}
+
+	function _mount(target, anchor) {
+		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	function removeFromStore() {
+		this.store._remove(this);
+	}
+
+	var protoDev = {
+		destroy: destroyDev,
+		get,
+		fire,
+		on,
+		set: setDev,
+		_recompute: noop,
+		_set,
+		_stage,
+		_mount,
+		_differs
+	};
+
+	/* home/david/Projects/core/services/datawrapper/src/editor/Help.html generated by Svelte v2.16.1 */
+
+	function data() {
+	    return {
+	        visible: false
+	    };
+	}
+	var methods = {
+	    show() {
+	        const t = setTimeout(() => {
+	            this.set({ visible: true });
+	        }, 400);
+	        this.set({ t });
+	    },
+	    hide() {
+	        const { t } = this.get();
+	        clearTimeout(t);
+	        this.set({ visible: false });
+	    }
+	};
+
+	const file = "home/david/Projects/core/services/datawrapper/src/editor/Help.html";
+
+	function create_main_fragment(component, ctx) {
+		var div, span, text;
+
+		function select_block_type(ctx) {
+			if (ctx.visible) return create_if_block_1;
+			return create_else_block;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		var if_block1 = (ctx.visible) && create_if_block(component, ctx);
+
+		function mouseenter_handler(event) {
+			component.show();
+		}
+
+		function mouseleave_handler(event) {
+			component.hide();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				span = createElement("span");
+				if_block0.c();
+				text = createText("\n    ");
+				if (if_block1) if_block1.c();
+				span.className = "svelte-1mkn8ur";
+				addLoc(span, file, 1, 4, 69);
+				addListener(div, "mouseenter", mouseenter_handler);
+				addListener(div, "mouseleave", mouseleave_handler);
+				div.className = "help svelte-1mkn8ur";
+				addLoc(div, file, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, span);
+				if_block0.m(span, null);
+				append(div, text);
+				if (if_block1) if_block1.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(span, null);
+				}
+
+				if (ctx.visible) {
+					if (!if_block1) {
+						if_block1 = create_if_block(component, ctx);
+						if_block1.c();
+						if_block1.m(div, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if_block0.d();
+				if (if_block1) if_block1.d();
+				removeListener(div, "mouseenter", mouseenter_handler);
+				removeListener(div, "mouseleave", mouseleave_handler);
+			}
+		};
+	}
+
+	// (2:59) {:else}
+	function create_else_block(component, ctx) {
+		var text;
+
+		return {
+			c: function create() {
+				text = createText("?");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (2:10) {#if visible}
+	function create_if_block_1(component, ctx) {
+		var i;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				i.className = "im im-graduation-hat svelte-1mkn8ur";
+				addLoc(i, file, 1, 23, 88);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (3:4) {#if visible}
+	function create_if_block(component, ctx) {
+		var div, slot_content_default = component._slotted.default;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "content svelte-1mkn8ur";
+				addLoc(div, file, 3, 4, 167);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (slot_content_default) {
+					append(div, slot_content_default);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_default) {
+					reinsertChildren(div, slot_content_default);
+				}
+			}
+		};
+	}
+
+	function Help(options) {
+		this._debugName = '<Help>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data(), options.data);
+		if (!('visible' in this._state)) console.warn("<Help> was created without expected data property 'visible'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(Help.prototype, protoDev);
+	assign(Help.prototype, methods);
+
+	Help.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/services/datawrapper/src/publish/Action.html generated by Svelte v2.16.1 */
+
+	function data$1() {
+	    return { loading: false };
+	}
+	const file$1 = "home/david/Projects/core/services/datawrapper/src/publish/Action.html";
+
+	function create_main_fragment$1(component, ctx) {
+		var if_block_anchor;
+
+		var if_block = (ctx.loading) && create_if_block$1(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.loading) {
+					if (!if_block) {
+						if_block = create_if_block$1(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (2:0) {#if loading}
+	function create_if_block$1(component, ctx) {
+		var p, i, text;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				i = createElement("i");
+				text = createText(" loading...");
+				i.className = "fa fa-spinner fa-pulse fa-fw";
+				addLoc(i, file$1, 2, 21, 60);
+				p.className = "mini-help";
+				addLoc(p, file$1, 2, 0, 39);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				append(p, i);
+				append(p, text);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	function Action(options) {
+		this._debugName = '<Action>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$1(), options.data);
+		if (!('loading' in this._state)) console.warn("<Action> was created without expected data property 'loading'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$1(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(Action.prototype, protoDev);
+
+	Action.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @export
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+
+	const dw = window.dw;
+
+	function __(key, scope = 'core') {
+	    key = key.trim();
+	    if (!dw.backend.__messages[scope]) return 'MISSING:' + key;
+	    var translation = dw.backend.__messages[scope][key] || dw.backend.__messages.core[key] || key;
+
+	    if (arguments.length > 2) {
+	        for (var i = 2; i < arguments.length; i++) {
+	            var index = i - 1;
+	            translation = translation.replace('$' + index, arguments[i]);
+	        }
+	    }
+
+	    return translation;
+	}
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+	function trackEvent(category, action, name, value) {
+	    if (window._paq) {
+	        window._paq.push(['trackEvent', category, action, name, value]);
+	    }
+	}
+
+	// quick reference variables for speed access
+
+	// `_isArray` : an object's function
+
+	/* @DEPRECATED: plase use @datawrapper/shared instead */
+
+	function fetchJSON(url, method, credentials, body, callback) {
+	    var opts = {
+	        method,
+	        body,
+	        mode: 'cors',
+	        credentials
+	    };
+
+	    const promise = window
+	        .fetch(url, opts)
+	        .then(res => {
+	            if (res.status !== 200) return new Error(res.statusText);
+	            return res.text();
+	        })
+	        .then(text => {
+	            try {
+	                return JSON.parse(text);
+	            } catch (Error) {
+	                // could not parse json, so just return text
+	                console.warn('malformed json input', text);
+	                return text;
+	            }
+	        })
+	        .catch(err => {
+	            console.error(err);
+	        });
+
+	    return callback ? promise.then(callback) : promise;
+	}
+
+	function getJSON(url, credentials, callback) {
+	    if (arguments.length === 2) {
+	        callback = credentials;
+	        credentials = 'include';
+	    }
+
+	    return fetchJSON(url, 'GET', credentials, null, callback);
+	}
+	function postJSON(url, body, callback) {
+	    return fetchJSON(url, 'POST', 'include', body, callback);
+	}
+
+	/**
+	 * injects a <script> element to the page to load a new JS script
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 */
+	function loadScript(src, callback) {
+	    const script = document.createElement('script');
+	    script.src = src;
+	    script.onload = () => {
+	        if (callback) callback();
+	    };
+	    document.body.appendChild(script);
+	}
+
+	/**
+	 * injects a <link> element to the page to load a new stylesheet
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 */
+	function loadStylesheet(src, callback) {
+	    const link = document.createElement('link');
+	    link.rel = 'stylesheet';
+	    link.href = src;
+	    link.onload = () => {
+	        if (callback) callback();
+	    };
+	    document.head.appendChild(link);
+	}
+
+	const widths = [100, 200, 300, 400, 500, 700, 800, 900, 1000];
+
+	function computeEmbedHeights() {
+	    const embedHeights = {};
+
+	    // compute embed deltas
+	    const $ = window.$;
+	    const previewChart = $($('#iframe-vis')[0].contentDocument);
+	    // find out default heights
+	    const defaultHeight = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+
+	    const totalHeight = $('#iframe-vis').height();
+
+	    widths.forEach(width => {
+	        // now we resize headline, intro and footer
+	        previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', width + 'px');
+
+	        const height = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+
+	        embedHeights[width] = totalHeight + (height - defaultHeight);
+	    });
+
+	    previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', 'auto');
+
+	    return embedHeights;
+	}
+
+	/* home/david/Projects/core/services/datawrapper/src/publish/Publish.html generated by Svelte v2.16.1 */
+
+
+
+	let fakeProgress = 0;
+	let initial_auto_publish = true;
+
+	function shareUrl({ shareurl_type, $id, $publicUrl, plugin_shareurls, published }) {
+	    if (!published) return 'https://www.datawrapper.de/...';
+	    if (shareurl_type === 'default') return $publicUrl;
+	    let url = '';
+	    plugin_shareurls.forEach(t => {
+	        if (t.id === shareurl_type) url = t.url.replace(/%chart_id%/g, $id);
+	    });
+	    return url;
+	}
+	function sortedChartActions({ chartActions, $actions }) {
+	    return chartActions
+	        .concat($actions)
+	        .filter(a => a.id !== 'publish-s3')
+	        .sort((a, b) => a.order - b.order);
+	}
+	function data$2() {
+	    return {
+	        active_action: '',
+	        embed_templates: [],
+	        plugin_shareurls: [],
+	        published: false,
+	        publishing: false,
+	        needs_republish: false,
+	        publish_error: false,
+	        auto_publish: false,
+	        progress: 0,
+	        shareurl_type: 'default',
+	        embed_type: 'responsive',
+	        copy_success: false,
+	        Action,
+	        chartActions: [
+	            {
+	                id: 'duplicate',
+	                icon: 'code-fork',
+	                title: __('Duplicate'),
+	                order: 500,
+	                action: 'duplicate'
+	            }
+	        ],
+	        publishHed: '',
+	        publishIntro: '',
+	        beforeExport: null,
+	        exportHed: __('publish / export-duplicate'),
+	        exportIntro: __('publish / export-duplicate / intro'),
+	        embedCode: ''
+	    };
+	}
+	var methods$1 = {
+	    publish() {
+	        this.set({
+	            publishing: true,
+	            progress: 0,
+	            publish_error: false
+	        });
+
+	        const chart = this.store;
+	        // generate embed codes
+	        chart.setMetadata('publish.embed-heights', computeEmbedHeights(chart, this.get().embed_templates));
+
+	        // save embed heights and wait until it's done before
+	        // we start to publish the chart
+	        trackEvent('Chart Editor', 'publish');
+
+	        chart.store(() => {
+	            // publish chart
+	            postJSON(`/api/charts/${chart.get().id}/publish`, null, res => {
+	                if (res.status === 'ok') {
+	                    this.publishFinished(res.data);
+	                    trackEvent('Chart Editor', 'publish-success');
+	                } else {
+	                    trackEvent('Chart Editor', 'publish-error', res.message);
+	                    this.set({
+	                        publish_error: res.message
+	                    });
+	                }
+	            });
+	            fakeProgress = 0;
+	            this.updateStatus();
+	        });
+	    },
+
+	    updateProgressBar(p) {
+	        if (this.refs.bar) {
+	            this.refs.bar.style.width = (p * 100).toFixed() + '%';
+	        }
+	    },
+
+	    updateStatus() {
+	        const chart = this.store;
+	        fakeProgress += 0.05;
+	        getJSON(`/api/charts/${chart.get().id}/publish/status`, res => {
+	            if (res) {
+	                res = +res / 100 + fakeProgress;
+	                this.set({ progress: Math.min(1, res) });
+	            }
+	            if (this.get().publishing) {
+	                setTimeout(() => {
+	                    this.updateStatus();
+	                }, 400);
+	            }
+	        });
+	    },
+
+	    publishFinished(chartInfo) {
+	        this.set({
+	            progress: 1,
+	            published: true,
+	            needs_republish: false
+	        });
+	        this.store.set({
+	            lastEditStep: 5
+	        });
+	        setTimeout(() => this.set({ publishing: false }), 500);
+	        this.store.set(chartInfo);
+	    },
+
+	    setEmbedCode() {
+	        const chart = this.store;
+	        const state = this.get();
+	        if (!state) return;
+	        const embedType = state.embed_type ? `embed-method-${state.embed_type}` : null;
+
+	        const { publicUrl } = chart.get();
+	        const embedCodes = chart.getMetadata('publish.embed-codes');
+	        const embedHeight = chart.getMetadata('publish.embed-height');
+
+	        this.set({
+	            embedCode:
+	                embedCodes && embedCodes[embedType]
+	                    ? embedCodes[embedType]
+	                    : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
+	        });
+	    },
+
+	    copy() {
+	        const me = this;
+	        me.refs.embedInput.select();
+	        try {
+	            var successful = document.execCommand('copy');
+	            if (successful) {
+	                trackEvent('Chart Editor', 'embedcode-copy');
+	                me.set({ copy_success: true });
+	                setTimeout(() => me.set({ copy_success: false }), 300);
+	            }
+	        } catch (err) {
+	            // console.log('Oops, unable to copy');
+	        }
+	    },
+
+	    select(action, event) {
+	        event.preventDefault();
+	        // set hash which is used to show the action module
+	        window.location.hash = action.id;
+
+	        const { active_action } = this.get();
+	        if (action.id === active_action) {
+	            // unselect current action
+	            return this.set({ active_action: '', Action });
+	        }
+	        this.set({ active_action: action.id });
+	        if (action.mod) {
+	            if (action.mod.App) {
+	                this.set({ Action: action.mod.App });
+	            } else {
+	                // todo: show loading indicator
+	                this.set({ Action });
+	                this.refs.action.set({ loading: true });
+	                if (action.mod.css) {
+	                    loadStylesheet(action.mod.css);
+	                }
+	                loadScript(action.mod.src, () => {
+	                    setTimeout(() => {
+	                        require([action.mod.id], mod => {
+	                            // todo: HIDE loading indicator
+	                            Object.assign(action.mod, mod);
+	                            this.set({ Action: action.mod.App });
+	                            if (mod.init) mod.init(this.refs.action);
+	                            if (action.mod.data) this.refs.action.set(action.mod.data);
+	                        });
+	                    }, 200);
+	                });
+	            }
+	        } else if (action.action && this[action.action]) {
+	            this.set({ Action });
+	            this[action.action]();
+	        } else if (typeof action.action === 'function') {
+	            this.set({ Action });
+	            action.action();
+	        }
+	    },
+
+	    duplicate() {
+	        const { id } = this.store.get();
+	        trackEvent('Chart Editor', 'duplicate');
+	        postJSON(`/api/charts/${id}/copy`, null, res => {
+	            if (res.status === 'ok') {
+	                // redirect to copied chart
+	                window.location.href = `/edit/${res.data.id}/visualize`;
+	            } else {
+	                console.warn(res);
+	            }
+	        });
+	    }
+	};
+
+	function oncreate() {
+	    const { lastEditStep } = this.store.get();
+	    this.set({ published: lastEditStep > 4 });
+	    // store reference to publish step
+	    window.dw.backend.fire('edit.publish.oncreate', this);
+	    // watch changes
+	    this.setEmbedCode();
+	    const chart = this.store;
+	    chart.observeDeep('metadata.publish.embed-codes', () => this.setEmbedCode());
+	    chart.observeDeep('metadata.publish.embed-height', () => this.setEmbedCode());
+	    chart.observeDeep('publicUrl', () => this.setEmbedCode());
+	}
+	function onstate({ changed, current }) {
+	    const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
+	    if (changed.publishing) {
+	        if (current.publishing) this.updateProgressBar(current.progress);
+	    }
+	    if (changed.progress) {
+	        this.updateProgressBar(current.progress);
+	    }
+	    if (changed.embed_type && userDataReady) {
+	        const data = window.dw.backend.__userData;
+	        if (!current.embed_type || !data) return;
+	        data.embed_type = current.embed_type;
+	        window.dw.backend.setUserData(data);
+	    }
+	    if (changed.embed_type) {
+	        this.setEmbedCode();
+	    }
+	    if (changed.shareurl_type && userDataReady) {
+	        const data = window.dw.backend.__userData;
+	        if (!current.shareurl_type || !data) return;
+	        data.shareurl_type = current.shareurl_type;
+	        window.dw.backend.setUserData(data);
+	    }
+	    if (changed.published) {
+	        const publishStep = window.document.querySelector('.dw-create-publish .publish-step');
+	        if (publishStep) {
+	            publishStep.classList[current.published ? 'add' : 'remove']('is-published');
+	        }
+	    }
+	    if (changed.auto_publish) {
+	        if (current.auto_publish && initial_auto_publish) {
+	            this.publish();
+	            initial_auto_publish = false;
+	            window.history.replaceState('', '', window.location.pathname);
+	        }
+	    }
+	}
+	const file$2 = "home/david/Projects/core/services/datawrapper/src/publish/Publish.html";
+
+	function click_handler(event) {
+		const { component, ctx } = this._svelte;
+
+		component.select(ctx.action, event);
+	}
+
+	function get_each3_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.action = list[i];
+		return child_ctx;
+	}
+
+	function get_each2_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function get_each1_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function get_each0_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$2(component, ctx) {
+		var div16, text0, text1, button0, button0_class_value, text2, text3, text4, text5, text6, text7, div13, h20, raw0_value = __('publish / share-embed'), text8, div5, i0, text9, div3, div1, b0, raw1_value = __('publish / share-url'), text10, div0, label, input0, text11, raw2_value = __('publish / share-url / fullscreen'), raw2_before, text12, text13, div2, a, text14, text15, div4, raw3_value = __('publish / help / share-url'), text16, div12, i1, text17, div10, div7, b1, raw4_value = __('publish / embed'), text18, div6, text19, div9, input1, text20, button1, i2, text21, text22_value = __('publish / copy'), text22, text23, div8, text24_value = __('publish / copy-success'), text24, div8_class_value, text25, div11, raw5_value = __('publish / embed / help'), raw5_after, text26, div13_class_value, text27, text28, div15, div14, h21, text29, text30, ul, text31;
+
+		var if_block0 = (ctx.publishHed) && create_if_block_11(component, ctx);
+
+		function select_block_type(ctx) {
+			if (ctx.publishIntro) return create_if_block_9;
+			if (ctx.published) return create_if_block_10;
+			return create_else_block_1;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block1 = current_block_type(component, ctx);
+
+		function select_block_type_1(ctx) {
+			if (ctx.published) return create_if_block_8;
+			return create_else_block$1;
+		}
+
+		var current_block_type_1 = select_block_type_1(ctx);
+		var if_block2 = current_block_type_1(component, ctx);
+
+		function click_handler(event) {
+			component.publish();
+		}
+
+		var if_block3 = (!ctx.published) && create_if_block_7(component, ctx);
+
+		var if_block4 = (ctx.needs_republish && !ctx.publishing) && create_if_block_6(component, ctx);
+
+		var if_block5 = (ctx.published && !ctx.needs_republish && ctx.progress === 1 && !ctx.publishing) && create_if_block_5(component, ctx);
+
+		var if_block6 = (ctx.publish_error) && create_if_block_4(component, ctx);
+
+		var if_block7 = (ctx.publishing) && create_if_block_3(component, ctx);
+
+		function input0_change_handler() {
+			component.set({ shareurl_type: input0.__value });
+		}
+
+		var each0_value = ctx.plugin_shareurls;
+
+		var each0_blocks = [];
+
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_3(component, get_each0_context(ctx, each0_value, i));
+		}
+
+		var help0 = new Help({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		var each1_value = ctx.embed_templates;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block_2(component, get_each1_context(ctx, each1_value, i));
+		}
+
+		function click_handler_1(event) {
+			component.copy(ctx.embedCode);
+		}
+
+		var each2_value = ctx.embed_templates.slice(2);
+
+		var each2_blocks = [];
+
+		for (var i = 0; i < each2_value.length; i += 1) {
+			each2_blocks[i] = create_each_block_1(component, get_each2_context(ctx, each2_value, i));
+		}
+
+		var help1 = new Help({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		var switch_value = ctx.beforeExport;
+
+		function switch_props(ctx) {
+			return {
+				root: component.root,
+				store: component.store
+			};
+		}
+
+		if (switch_value) {
+			var switch_instance0 = new switch_value(switch_props(ctx));
+		}
+
+		var if_block8 = (ctx.exportIntro) && create_if_block_2(component, ctx);
+
+		var each3_value = ctx.sortedChartActions;
+
+		var each3_blocks = [];
+
+		for (var i = 0; i < each3_value.length; i += 1) {
+			each3_blocks[i] = create_each_block(component, get_each3_context(ctx, each3_value, i));
+		}
+
+		var switch_value_1 = ctx.Action;
+
+		function switch_props_1(ctx) {
+			var switch_instance1_initial_data = {
+			 	visible: true,
+			 	show: true
+			 };
+			return {
+				root: component.root,
+				store: component.store,
+				data: switch_instance1_initial_data
+			};
+		}
+
+		if (switch_value_1) {
+			var switch_instance1 = new switch_value_1(switch_props_1(ctx));
+		}
+
+		return {
+			c: function create() {
+				div16 = createElement("div");
+				if (if_block0) if_block0.c();
+				text0 = createText(" ");
+				if_block1.c();
+				text1 = createText("\n\n    ");
+				button0 = createElement("button");
+				if_block2.c();
+				text2 = createText("\n\n    ");
+				if (if_block3) if_block3.c();
+				text3 = createText(" ");
+				if (if_block4) if_block4.c();
+				text4 = createText(" ");
+				if (if_block5) if_block5.c();
+				text5 = createText(" ");
+				if (if_block6) if_block6.c();
+				text6 = createText(" ");
+				if (if_block7) if_block7.c();
+				text7 = createText("\n\n    ");
+				div13 = createElement("div");
+				h20 = createElement("h2");
+				text8 = createText("\n        ");
+				div5 = createElement("div");
+				i0 = createElement("i");
+				text9 = createText("\n            ");
+				div3 = createElement("div");
+				div1 = createElement("div");
+				b0 = createElement("b");
+				text10 = createText("\n                    ");
+				div0 = createElement("div");
+				label = createElement("label");
+				input0 = createElement("input");
+				text11 = createText("\n                            ");
+				raw2_before = createElement('noscript');
+				text12 = createText("\n                        ");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
+				}
+
+				text13 = createText("\n                ");
+				div2 = createElement("div");
+				a = createElement("a");
+				text14 = createText(ctx.shareUrl);
+				text15 = createText("\n            ");
+				div4 = createElement("div");
+				help0._fragment.c();
+				text16 = createText("\n\n        ");
+				div12 = createElement("div");
+				i1 = createElement("i");
+				text17 = createText("\n            ");
+				div10 = createElement("div");
+				div7 = createElement("div");
+				b1 = createElement("b");
+				text18 = createText("\n                    ");
+				div6 = createElement("div");
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
+				}
+
+				text19 = createText("\n                ");
+				div9 = createElement("div");
+				input1 = createElement("input");
+				text20 = createText("\n                    ");
+				button1 = createElement("button");
+				i2 = createElement("i");
+				text21 = createText(" ");
+				text22 = createText(text22_value);
+				text23 = createText("\n                    ");
+				div8 = createElement("div");
+				text24 = createText(text24_value);
+				text25 = createText("\n            ");
+				div11 = createElement("div");
+				raw5_after = createElement('noscript');
+				text26 = createText(" ");
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].c();
+				}
+
+				help1._fragment.c();
+				text27 = createText("\n\n    \n    ");
+				if (switch_instance0) switch_instance0._fragment.c();
+				text28 = createText("\n\n    \n    ");
+				div15 = createElement("div");
+				div14 = createElement("div");
+				h21 = createElement("h2");
+				text29 = createText("\n            ");
+				if (if_block8) if_block8.c();
+				text30 = createText("\n\n        ");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each3_blocks.length; i += 1) {
+					each3_blocks[i].c();
+				}
+
+				text31 = createText("\n\n        ");
+				if (switch_instance1) switch_instance1._fragment.c();
+				addListener(button0, "click", click_handler);
+				button0.disabled = ctx.publishing;
+				button0.className = button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published?'':'btn-first-publish') + " svelte-1njbtly";
+				addLoc(button0, file$2, 12, 4, 353);
+				addLoc(h20, file$2, 56, 8, 2041);
+				i0.className = "icon fa fa-link fa-fw";
+				addLoc(i0, file$2, 58, 12, 2127);
+				addLoc(b0, file$2, 61, 20, 2249);
+				component._bindingGroups[0].push(input0);
+				addListener(input0, "change", input0_change_handler);
+				input0.__value = "default";
+				input0.value = input0.__value;
+				setAttribute(input0, "type", "radio");
+				input0.name = "url-type";
+				input0.className = "svelte-1njbtly";
+				addLoc(input0, file$2, 64, 28, 2413);
+				label.className = "radio";
+				addLoc(label, file$2, 63, 24, 2363);
+				div0.className = "embed-options svelte-1njbtly";
+				addLoc(div0, file$2, 62, 20, 2311);
+				div1.className = "h";
+				addLoc(div1, file$2, 60, 16, 2213);
+				a.target = "_blank";
+				a.className = "share-url svelte-1njbtly";
+				a.href = ctx.shareUrl;
+				addLoc(a, file$2, 75, 20, 3004);
+				div2.className = "inpt";
+				addLoc(div2, file$2, 74, 16, 2965);
+				div3.className = "ctrls";
+				addLoc(div3, file$2, 59, 12, 2177);
+				addLoc(div4, file$2, 79, 16, 3151);
+				div5.className = "block";
+				addLoc(div5, file$2, 57, 8, 2095);
+				i1.className = "icon fa fa-code fa-fw";
+				addLoc(i1, file$2, 84, 12, 3280);
+				addLoc(b1, file$2, 87, 20, 3402);
+				div6.className = "embed-options svelte-1njbtly";
+				addLoc(div6, file$2, 88, 20, 3460);
+				div7.className = "h";
+				addLoc(div7, file$2, 86, 16, 3366);
+				setAttribute(input1, "type", "text");
+				input1.className = "input embed-code";
+				input1.readOnly = true;
+				input1.value = ctx.embedCode;
+				addLoc(input1, file$2, 95, 20, 3816);
+				i2.className = "fa fa-copy";
+				addLoc(i2, file$2, 96, 89, 3996);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-copy";
+				button1.title = "copy";
+				addLoc(button1, file$2, 96, 20, 3927);
+				div8.className = div8_class_value = "copy-success " + (ctx.copy_success ? 'show':'') + " svelte-1njbtly";
+				addLoc(div8, file$2, 97, 20, 4077);
+				div9.className = "inpt";
+				addLoc(div9, file$2, 94, 16, 3777);
+				div10.className = "ctrls";
+				addLoc(div10, file$2, 85, 12, 3330);
+				addLoc(div11, file$2, 103, 16, 4292);
+				div12.className = "block";
+				addLoc(div12, file$2, 83, 8, 3248);
+				setStyle(div13, "margin-top", "30px");
+				div13.className = div13_class_value = ctx.published?'':'inactive';
+				addLoc(div13, file$2, 55, 4, 1969);
+				h21.className = "pad-top";
+				addLoc(h21, file$2, 118, 12, 4722);
+				addLoc(div14, file$2, 117, 8, 4704);
+				ul.className = "chart-actions";
+				addLoc(ul, file$2, 124, 8, 4876);
+				div15.className = "export-and-duplicate";
+				addLoc(div15, file$2, 116, 4, 4661);
+				addLoc(div16, file$2, 1, 0, 26);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div16, anchor);
+				if (if_block0) if_block0.m(div16, null);
+				append(div16, text0);
+				if_block1.m(div16, null);
+				append(div16, text1);
+				append(div16, button0);
+				if_block2.m(button0, null);
+				append(div16, text2);
+				if (if_block3) if_block3.m(div16, null);
+				append(div16, text3);
+				if (if_block4) if_block4.m(div16, null);
+				append(div16, text4);
+				if (if_block5) if_block5.m(div16, null);
+				append(div16, text5);
+				if (if_block6) if_block6.m(div16, null);
+				append(div16, text6);
+				if (if_block7) if_block7.m(div16, null);
+				append(div16, text7);
+				append(div16, div13);
+				append(div13, h20);
+				h20.innerHTML = raw0_value;
+				append(div13, text8);
+				append(div13, div5);
+				append(div5, i0);
+				append(div5, text9);
+				append(div5, div3);
+				append(div3, div1);
+				append(div1, b0);
+				b0.innerHTML = raw1_value;
+				append(div1, text10);
+				append(div1, div0);
+				append(div0, label);
+				append(label, input0);
+
+				input0.checked = input0.__value === ctx.shareurl_type;
+
+				append(label, text11);
+				append(label, raw2_before);
+				raw2_before.insertAdjacentHTML("afterend", raw2_value);
+				append(div0, text12);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(div0, null);
+				}
+
+				append(div3, text13);
+				append(div3, div2);
+				append(div2, a);
+				append(a, text14);
+				append(div5, text15);
+				append(help0._slotted.default, div4);
+				div4.innerHTML = raw3_value;
+				help0._mount(div5, null);
+				append(div13, text16);
+				append(div13, div12);
+				append(div12, i1);
+				append(div12, text17);
+				append(div12, div10);
+				append(div10, div7);
+				append(div7, b1);
+				b1.innerHTML = raw4_value;
+				append(div7, text18);
+				append(div7, div6);
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(div6, null);
+				}
+
+				append(div10, text19);
+				append(div10, div9);
+				append(div9, input1);
+				component.refs.embedInput = input1;
+				append(div9, text20);
+				append(div9, button1);
+				append(button1, i2);
+				append(button1, text21);
+				append(button1, text22);
+				append(div9, text23);
+				append(div9, div8);
+				append(div8, text24);
+				append(div12, text25);
+				append(help1._slotted.default, div11);
+				append(div11, raw5_after);
+				raw5_after.insertAdjacentHTML("beforebegin", raw5_value);
+				append(div11, text26);
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].m(div11, null);
+				}
+
+				help1._mount(div12, null);
+				append(div16, text27);
+
+				if (switch_instance0) {
+					switch_instance0._mount(div16, null);
+				}
+
+				append(div16, text28);
+				append(div16, div15);
+				append(div15, div14);
+				append(div14, h21);
+				h21.innerHTML = ctx.exportHed;
+				append(div14, text29);
+				if (if_block8) if_block8.m(div14, null);
+				append(div15, text30);
+				append(div15, ul);
+
+				for (var i = 0; i < each3_blocks.length; i += 1) {
+					each3_blocks[i].m(ul, null);
+				}
+
+				append(div15, text31);
+
+				if (switch_instance1) {
+					switch_instance1._mount(div15, null);
+					component.refs.action = switch_instance1;
+				}
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (ctx.publishHed) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_11(component, ctx);
+						if_block0.c();
+						if_block0.m(div16, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type(component, ctx);
+					if_block1.c();
+					if_block1.m(div16, text1);
+				}
+
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block2) {
+					if_block2.p(changed, ctx);
+				} else {
+					if_block2.d(1);
+					if_block2 = current_block_type_1(component, ctx);
+					if_block2.c();
+					if_block2.m(button0, null);
+				}
+
+				if (changed.publishing) {
+					button0.disabled = ctx.publishing;
+				}
+
+				if ((changed.published) && button0_class_value !== (button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published?'':'btn-first-publish') + " svelte-1njbtly")) {
+					button0.className = button0_class_value;
+				}
+
+				if (!ctx.published) {
+					if (!if_block3) {
+						if_block3 = create_if_block_7(component, ctx);
+						if_block3.c();
+						if_block3.m(div16, text3);
+					}
+				} else if (if_block3) {
+					if_block3.d(1);
+					if_block3 = null;
+				}
+
+				if (ctx.needs_republish && !ctx.publishing) {
+					if (!if_block4) {
+						if_block4 = create_if_block_6(component, ctx);
+						if_block4.c();
+						if_block4.m(div16, text4);
+					}
+				} else if (if_block4) {
+					if_block4.d(1);
+					if_block4 = null;
+				}
+
+				if (ctx.published && !ctx.needs_republish && ctx.progress === 1 && !ctx.publishing) {
+					if (!if_block5) {
+						if_block5 = create_if_block_5(component, ctx);
+						if_block5.c();
+						if_block5.m(div16, text5);
+					}
+				} else if (if_block5) {
+					if_block5.d(1);
+					if_block5 = null;
+				}
+
+				if (ctx.publish_error) {
+					if (if_block6) {
+						if_block6.p(changed, ctx);
+					} else {
+						if_block6 = create_if_block_4(component, ctx);
+						if_block6.c();
+						if_block6.m(div16, text6);
+					}
+				} else if (if_block6) {
+					if_block6.d(1);
+					if_block6 = null;
+				}
+
+				if (ctx.publishing) {
+					if (if_block7) {
+						if_block7.p(changed, ctx);
+					} else {
+						if_block7 = create_if_block_3(component, ctx);
+						if_block7.c();
+						if_block7.m(div16, text7);
+					}
+				} else if (if_block7) {
+					if_block7.d(1);
+					if_block7 = null;
+				}
+
+				if (changed.shareurl_type) input0.checked = input0.__value === ctx.shareurl_type;
+
+				if (changed.plugin_shareurls || changed.shareurl_type) {
+					each0_value = ctx.plugin_shareurls;
+
+					for (var i = 0; i < each0_value.length; i += 1) {
+						const child_ctx = get_each0_context(ctx, each0_value, i);
+
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
+						} else {
+							each0_blocks[i] = create_each_block_3(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
+					}
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (changed.shareUrl) {
+					setData(text14, ctx.shareUrl);
+					a.href = ctx.shareUrl;
+				}
+
+				if (changed.embed_templates || changed.embed_type) {
+					each1_value = ctx.embed_templates;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						const child_ctx = get_each1_context(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx);
+						} else {
+							each1_blocks[i] = create_each_block_2(component, child_ctx);
+							each1_blocks[i].c();
+							each1_blocks[i].m(div6, null);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
+				}
+
+				if (changed.embedCode) {
+					input1.value = ctx.embedCode;
+				}
+
+				if ((changed.copy_success) && div8_class_value !== (div8_class_value = "copy-success " + (ctx.copy_success ? 'show':'') + " svelte-1njbtly")) {
+					div8.className = div8_class_value;
+				}
+
+				if (changed.embed_templates) {
+					each2_value = ctx.embed_templates.slice(2);
+
+					for (var i = 0; i < each2_value.length; i += 1) {
+						const child_ctx = get_each2_context(ctx, each2_value, i);
+
+						if (each2_blocks[i]) {
+							each2_blocks[i].p(changed, child_ctx);
+						} else {
+							each2_blocks[i] = create_each_block_1(component, child_ctx);
+							each2_blocks[i].c();
+							each2_blocks[i].m(div11, null);
+						}
+					}
+
+					for (; i < each2_blocks.length; i += 1) {
+						each2_blocks[i].d(1);
+					}
+					each2_blocks.length = each2_value.length;
+				}
+
+				if ((changed.published) && div13_class_value !== (div13_class_value = ctx.published?'':'inactive')) {
+					div13.className = div13_class_value;
+				}
+
+				if (switch_value !== (switch_value = ctx.beforeExport)) {
+					if (switch_instance0) {
+						switch_instance0.destroy();
+					}
+
+					if (switch_value) {
+						switch_instance0 = new switch_value(switch_props(ctx));
+						switch_instance0._fragment.c();
+						switch_instance0._mount(div16, text28);
+					} else {
+						switch_instance0 = null;
+					}
+				}
+
+				if (changed.exportHed) {
+					h21.innerHTML = ctx.exportHed;
+				}
+
+				if (ctx.exportIntro) {
+					if (if_block8) {
+						if_block8.p(changed, ctx);
+					} else {
+						if_block8 = create_if_block_2(component, ctx);
+						if_block8.c();
+						if_block8.m(div14, null);
+					}
+				} else if (if_block8) {
+					if_block8.d(1);
+					if_block8 = null;
+				}
+
+				if (changed.sortedChartActions || changed.active_action) {
+					each3_value = ctx.sortedChartActions;
+
+					for (var i = 0; i < each3_value.length; i += 1) {
+						const child_ctx = get_each3_context(ctx, each3_value, i);
+
+						if (each3_blocks[i]) {
+							each3_blocks[i].p(changed, child_ctx);
+						} else {
+							each3_blocks[i] = create_each_block(component, child_ctx);
+							each3_blocks[i].c();
+							each3_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each3_blocks.length; i += 1) {
+						each3_blocks[i].d(1);
+					}
+					each3_blocks.length = each3_value.length;
+				}
+
+				if (switch_value_1 !== (switch_value_1 = ctx.Action)) {
+					if (switch_instance1) {
+						switch_instance1.destroy();
+					}
+
+					if (switch_value_1) {
+						switch_instance1 = new switch_value_1(switch_props_1(ctx));
+						switch_instance1._fragment.c();
+						switch_instance1._mount(div15, null);
+
+						component.refs.action = switch_instance1;
+					} else {
+						switch_instance1 = null;
+						if (component.refs.action === switch_instance1) {
+							component.refs.action = null;
+						}
+					}
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div16);
+				}
+
+				if (if_block0) if_block0.d();
+				if_block1.d();
+				if_block2.d();
+				removeListener(button0, "click", click_handler);
+				if (if_block3) if_block3.d();
+				if (if_block4) if_block4.d();
+				if (if_block5) if_block5.d();
+				if (if_block6) if_block6.d();
+				if (if_block7) if_block7.d();
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input0), 1);
+				removeListener(input0, "change", input0_change_handler);
+
+				destroyEach(each0_blocks, detach);
+
+				help0.destroy();
+
+				destroyEach(each1_blocks, detach);
+
+				if (component.refs.embedInput === input1) component.refs.embedInput = null;
+				removeListener(button1, "click", click_handler_1);
+
+				destroyEach(each2_blocks, detach);
+
+				help1.destroy();
+				if (switch_instance0) switch_instance0.destroy();
+				if (if_block8) if_block8.d();
+
+				destroyEach(each3_blocks, detach);
+
+				if (switch_instance1) switch_instance1.destroy();
+			}
+		};
+	}
+
+	// (3:4) {#if publishHed}
+	function create_if_block_11(component, ctx) {
+		var h2;
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				h2.className = "pad-top";
+				addLoc(h2, file$2, 3, 4, 57);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				h2.innerHTML = ctx.publishHed;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.publishHed) {
+					h2.innerHTML = ctx.publishHed;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+				}
+			}
+		};
+	}
+
+	// (9:4) {:else}
+	function create_else_block_1(component, ctx) {
+		var p, raw_value = __('publish / publish-intro');
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				setStyle(p, "margin-bottom", "20px");
+				addLoc(p, file$2, 9, 4, 258);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (7:12) {#if published}
+	function create_if_block_10(component, ctx) {
+		var p, raw_value = __('publish / republish-intro');
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				addLoc(p, file$2, 7, 4, 194);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (5:10) {#if publishIntro}
+	function create_if_block_9(component, ctx) {
+		var p;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				addLoc(p, file$2, 5, 4, 134);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = ctx.publishIntro;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.publishIntro) {
+					p.innerHTML = ctx.publishIntro;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (18:8) {:else}
+	function create_else_block$1(component, ctx) {
+		var span1, i, i_class_value, text0, span0, text1_value = __('publish / publish-btn'), text1;
+
+		return {
+			c: function create() {
+				span1 = createElement("span");
+				i = createElement("i");
+				text0 = createText("\n            ");
+				span0 = createElement("span");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-1njbtly";
+				addLoc(i, file$2, 19, 13, 762);
+				span0.className = "title svelte-1njbtly";
+				addLoc(span0, file$2, 20, 12, 855);
+				span1.className = "publish";
+				addLoc(span1, file$2, 18, 8, 727);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span1, anchor);
+				append(span1, i);
+				append(span1, text0);
+				append(span1, span0);
+				append(span0, text1);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-1njbtly")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span1);
+				}
+			}
+		};
+	}
+
+	// (14:8) {#if published}
+	function create_if_block_8(component, ctx) {
+		var span1, i, i_class_value, text0, span0, text1_value = __('publish / republish-btn'), text1;
+
+		return {
+			c: function create() {
+				span1 = createElement("span");
+				i = createElement("i");
+				text0 = createText(" ");
+				span0 = createElement("span");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-1njbtly";
+				addLoc(i, file$2, 15, 13, 560);
+				span0.className = "title svelte-1njbtly";
+				addLoc(span0, file$2, 15, 79, 626);
+				span1.className = "re-publish";
+				addLoc(span1, file$2, 14, 8, 522);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span1, anchor);
+				append(span1, i);
+				append(span1, text0);
+				append(span1, span0);
+				append(span0, text1);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-1njbtly")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span1);
+				}
+			}
+		};
+	}
+
+	// (26:4) {#if !published}
+	function create_if_block_7(component, ctx) {
+		var div2, div0, i, text, div1, raw_value = __('publish / publish-btn-intro');
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				div0 = createElement("div");
+				i = createElement("i");
+				text = createText("\n        ");
+				div1 = createElement("div");
+				i.className = "fa fa-chevron-left";
+				addLoc(i, file$2, 28, 12, 1052);
+				div0.className = "arrow svelte-1njbtly";
+				addLoc(div0, file$2, 27, 8, 1020);
+				div1.className = "text svelte-1njbtly";
+				addLoc(div1, file$2, 30, 8, 1110);
+				div2.className = "publish-intro svelte-1njbtly";
+				addLoc(div2, file$2, 26, 4, 984);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, div0);
+				append(div0, i);
+				append(div2, text);
+				append(div2, div1);
+				div1.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+			}
+		};
+	}
+
+	// (35:10) {#if needs_republish && !publishing}
+	function create_if_block_6(component, ctx) {
+		var div, raw_value = __('publish / republish-alert');
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "btn-aside alert svelte-1njbtly";
+				addLoc(div, file$2, 35, 4, 1261);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (39:10) {#if published && !needs_republish && progress === 1 && !publishing}
+	function create_if_block_5(component, ctx) {
+		var div, raw_value = __('publish / publish-success');
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "alert alert-success svelte-1njbtly";
+				addLoc(div, file$2, 39, 4, 1434);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (43:10) {#if publish_error}
+	function create_if_block_4(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "alert alert-error svelte-1njbtly";
+				addLoc(div, file$2, 43, 4, 1562);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.publish_error;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.publish_error) {
+					div.innerHTML = ctx.publish_error;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (47:10) {#if publishing}
+	function create_if_block_3(component, ctx) {
+		var div2, text0_value = __("publish / progress / please-wait"), text0, text1, div1, div0, div0_class_value, div2_class_value;
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				div1 = createElement("div");
+				div0 = createElement("div");
+				div0.className = div0_class_value = "bar " + (ctx.progress < 1 ? '' : 'bar-success') + " svelte-1njbtly";
+				addLoc(div0, file$2, 50, 12, 1864);
+				div1.className = "progress progress-striped active svelte-1njbtly";
+				addLoc(div1, file$2, 49, 8, 1805);
+				div2.className = div2_class_value = "alert " + (ctx.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-1njbtly";
+				addLoc(div2, file$2, 47, 4, 1667);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, text0);
+				append(div2, text1);
+				append(div2, div1);
+				append(div1, div0);
+				component.refs.bar = div0;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.progress) && div0_class_value !== (div0_class_value = "bar " + (ctx.progress < 1 ? '' : 'bar-success') + " svelte-1njbtly")) {
+					div0.className = div0_class_value;
+				}
+
+				if ((changed.progress) && div2_class_value !== (div2_class_value = "alert " + (ctx.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-1njbtly")) {
+					div2.className = div2_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				if (component.refs.bar === div0) component.refs.bar = null;
+			}
+		};
+	}
+
+	// (68:24) {#each plugin_shareurls as tpl}
+	function create_each_block_3(component, ctx) {
+		var label, input, input_value_value, text, raw_value = ctx.tpl.name, raw_before;
+
+		function input_change_handler() {
+			component.set({ shareurl_type: input.__value });
+		}
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text = createText(" ");
+				raw_before = createElement('noscript');
+				component._bindingGroups[0].push(input);
+				addListener(input, "change", input_change_handler);
+				input.__value = input_value_value = ctx.tpl.id;
+				input.value = input.__value;
+				setAttribute(input, "type", "radio");
+				input.name = "url-type";
+				input.className = "svelte-1njbtly";
+				addLoc(input, file$2, 69, 29, 2734);
+				label.className = "radio";
+				addLoc(label, file$2, 68, 24, 2684);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.shareurl_type;
+
+				append(label, text);
+				append(label, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.shareurl_type) input.checked = input.__value === ctx.shareurl_type;
+				if ((changed.plugin_shareurls) && input_value_value !== (input_value_value = ctx.tpl.id)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if ((changed.plugin_shareurls) && raw_value !== (raw_value = ctx.tpl.name)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+			}
+		};
+	}
+
+	// (90:24) {#each embed_templates as tpl}
+	function create_each_block_2(component, ctx) {
+		var label, input, input_value_value, text, raw_value = ctx.tpl.title, raw_before;
+
+		function input_change_handler() {
+			component.set({ embed_type: input.__value });
+		}
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text = createText(" ");
+				raw_before = createElement('noscript');
+				component._bindingGroups[1].push(input);
+				addListener(input, "change", input_change_handler);
+				setAttribute(input, "type", "radio");
+				input.__value = input_value_value = ctx.tpl.id;
+				input.value = input.__value;
+				input.className = "svelte-1njbtly";
+				addLoc(input, file$2, 90, 45, 3588);
+				label.className = "radio";
+				addLoc(label, file$2, 90, 24, 3567);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.embed_type;
+
+				append(label, text);
+				append(label, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.embed_type) input.checked = input.__value === ctx.embed_type;
+				if ((changed.embed_templates) && input_value_value !== (input_value_value = ctx.tpl.id)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if ((changed.embed_templates) && raw_value !== (raw_value = ctx.tpl.title)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+			}
+		};
+	}
+
+	// (105:58) {#each embed_templates.slice(2) as tpl}
+	function create_each_block_1(component, ctx) {
+		var div, b, text0_value = ctx.tpl.title, text0, text1, text2, raw_value = ctx.tpl.text, raw_before;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				b = createElement("b");
+				text0 = createText(text0_value);
+				text1 = createText(":");
+				text2 = createText(" ");
+				raw_before = createElement('noscript');
+				addLoc(b, file$2, 105, 25, 4421);
+				addLoc(div, file$2, 105, 20, 4416);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, b);
+				append(b, text0);
+				append(b, text1);
+				append(div, text2);
+				append(div, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.embed_templates) && text0_value !== (text0_value = ctx.tpl.title)) {
+					setData(text0, text0_value);
+				}
+
+				if ((changed.embed_templates) && raw_value !== (raw_value = ctx.tpl.text)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (120:12) {#if exportIntro}
+	function create_if_block_2(component, ctx) {
+		var p;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				addLoc(p, file$2, 120, 12, 4807);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = ctx.exportIntro;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.exportIntro) {
+					p.innerHTML = ctx.exportIntro;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (126:49) {#if action}
+	function create_if_block$2(component, ctx) {
+		var li, a, i, i_class_value, span, raw_value = ctx.action.title, a_href_value, text, li_class_value;
+
+		var if_block = (ctx.action.banner && ctx.action.banner.text != "FALSE" && ctx.action.banner.text != "-") && create_if_block_1$1(component, ctx);
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				a = createElement("a");
+				i = createElement("i");
+				span = createElement("span");
+				text = createText("\n                ");
+				if (if_block) if_block.c();
+				i.className = i_class_value = "fa fa-" + ctx.action.icon + " svelte-1njbtly";
+				addLoc(i, file$2, 128, 20, 5214);
+				span.className = "title svelte-1njbtly";
+				addLoc(span, file$2, 128, 55, 5249);
+
+				a._svelte = { component, ctx };
+
+				addListener(a, "click", click_handler);
+				setAttribute(a, "role", "button");
+				a.href = a_href_value = ctx.action.url ? ctx.action.url : '#'+ctx.action.id;
+				addLoc(a, file$2, 127, 16, 5094);
+				li.className = li_class_value = "action action-" + ctx.action.id + " " + (ctx.action.class||'') + " " + (ctx.action.id == ctx.active_action ? 'active':'') + " svelte-1njbtly";
+				addLoc(li, file$2, 126, 12, 4977);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, a);
+				append(a, i);
+				append(a, span);
+				span.innerHTML = raw_value;
+				append(li, text);
+				if (if_block) if_block.m(li, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.sortedChartActions) && i_class_value !== (i_class_value = "fa fa-" + ctx.action.icon + " svelte-1njbtly")) {
+					i.className = i_class_value;
+				}
+
+				if ((changed.sortedChartActions) && raw_value !== (raw_value = ctx.action.title)) {
+					span.innerHTML = raw_value;
+				}
+
+				a._svelte.ctx = ctx;
+				if ((changed.sortedChartActions) && a_href_value !== (a_href_value = ctx.action.url ? ctx.action.url : '#'+ctx.action.id)) {
+					a.href = a_href_value;
+				}
+
+				if (ctx.action.banner && ctx.action.banner.text != "FALSE" && ctx.action.banner.text != "-") {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_1$1(component, ctx);
+						if_block.c();
+						if_block.m(li, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if ((changed.sortedChartActions || changed.active_action) && li_class_value !== (li_class_value = "action action-" + ctx.action.id + " " + (ctx.action.class||'') + " " + (ctx.action.id == ctx.active_action ? 'active':'') + " svelte-1njbtly")) {
+					li.className = li_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+
+				removeListener(a, "click", click_handler);
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (131:16) {#if action.banner && action.banner.text != "FALSE" && action.banner.text != "-"}
+	function create_if_block_1$1(component, ctx) {
+		var div, text_value = ctx.action.banner.text, text, div_style_value;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text = createText(text_value);
+				div.className = "banner";
+				div.style.cssText = div_style_value = ctx.action.banner.style;
+				addLoc(div, file$2, 131, 16, 5432);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.sortedChartActions) && text_value !== (text_value = ctx.action.banner.text)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.sortedChartActions) && div_style_value !== (div_style_value = ctx.action.banner.style)) {
+					div.style.cssText = div_style_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (126:12) {#each sortedChartActions as action}
+	function create_each_block(component, ctx) {
+		var if_block_anchor;
+
+		var if_block = (ctx.action) && create_if_block$2(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.action) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$2(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	function Publish(options) {
+		this._debugName = '<Publish>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+		if (!options.store) {
+			throw new Error("<Publish> references store properties, but no store was provided");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(assign(this.store._init(["id","publicUrl","actions"]), data$2()), options.data);
+		this.store._add(this, ["id","publicUrl","actions"]);
+
+		this._recompute({ shareurl_type: 1, $id: 1, $publicUrl: 1, plugin_shareurls: 1, published: 1, chartActions: 1, $actions: 1 }, this._state);
+		if (!('shareurl_type' in this._state)) console.warn("<Publish> was created without expected data property 'shareurl_type'");
+		if (!('$id' in this._state)) console.warn("<Publish> was created without expected data property '$id'");
+		if (!('$publicUrl' in this._state)) console.warn("<Publish> was created without expected data property '$publicUrl'");
+		if (!('plugin_shareurls' in this._state)) console.warn("<Publish> was created without expected data property 'plugin_shareurls'");
+		if (!('published' in this._state)) console.warn("<Publish> was created without expected data property 'published'");
+		if (!('chartActions' in this._state)) console.warn("<Publish> was created without expected data property 'chartActions'");
+		if (!('$actions' in this._state)) console.warn("<Publish> was created without expected data property '$actions'");
+		if (!('publishHed' in this._state)) console.warn("<Publish> was created without expected data property 'publishHed'");
+		if (!('publishIntro' in this._state)) console.warn("<Publish> was created without expected data property 'publishIntro'");
+		if (!('publishing' in this._state)) console.warn("<Publish> was created without expected data property 'publishing'");
+		if (!('needs_republish' in this._state)) console.warn("<Publish> was created without expected data property 'needs_republish'");
+		if (!('progress' in this._state)) console.warn("<Publish> was created without expected data property 'progress'");
+		if (!('publish_error' in this._state)) console.warn("<Publish> was created without expected data property 'publish_error'");
+
+		if (!('embed_templates' in this._state)) console.warn("<Publish> was created without expected data property 'embed_templates'");
+		if (!('embed_type' in this._state)) console.warn("<Publish> was created without expected data property 'embed_type'");
+		if (!('embedCode' in this._state)) console.warn("<Publish> was created without expected data property 'embedCode'");
+		if (!('copy_success' in this._state)) console.warn("<Publish> was created without expected data property 'copy_success'");
+		if (!('beforeExport' in this._state)) console.warn("<Publish> was created without expected data property 'beforeExport'");
+		if (!('exportHed' in this._state)) console.warn("<Publish> was created without expected data property 'exportHed'");
+		if (!('exportIntro' in this._state)) console.warn("<Publish> was created without expected data property 'exportIntro'");
+
+		if (!('active_action' in this._state)) console.warn("<Publish> was created without expected data property 'active_action'");
+		if (!('Action' in this._state)) console.warn("<Publish> was created without expected data property 'Action'");
+		this._bindingGroups = [[], []];
+		this._intro = true;
+
+		this._handlers.state = [onstate];
+
+		this._handlers.destroy = [removeFromStore];
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$2(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(Publish.prototype, protoDev);
+	assign(Publish.prototype, methods$1);
+
+	Publish.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('shareUrl' in newState && !this._updatingReadonlyProperty) throw new Error("<Publish>: Cannot set read-only property 'shareUrl'");
+		if ('sortedChartActions' in newState && !this._updatingReadonlyProperty) throw new Error("<Publish>: Cannot set read-only property 'sortedChartActions'");
+	};
+
+	Publish.prototype._recompute = function _recompute(changed, state) {
+		if (changed.shareurl_type || changed.$id || changed.$publicUrl || changed.plugin_shareurls || changed.published) {
+			if (this._differs(state.shareUrl, (state.shareUrl = shareUrl(state)))) changed.shareUrl = true;
+		}
+
+		if (changed.chartActions || changed.$actions) {
+			if (this._differs(state.sortedChartActions, (state.sortedChartActions = sortedChartActions(state)))) changed.sortedChartActions = true;
+		}
+	};
+
+	var index = { Publish };
+
+	return index;
+
+}));
+//# sourceMappingURL=publish.js.map
