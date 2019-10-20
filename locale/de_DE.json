@@ -482,5 +482,12 @@
   "invite / h1 / map": "Ein letzter Schritt vor deiner Karte",
   "invite / h1 / table": "Eine letzte Schritt vor deiner Tabelle",
   "invite / p": "Wähle ein Passwort, um auch in Zukunft darauf zugreifen zu können.",
-  "switch-team": "Team wechseln"
+  "switch-team": "Team wechseln",
+  "folders / loading": "Ordner werden geladen…",
+  "folders / create": "Erstelle einen neuen Unterordner von %folder%.",
+  "folders / empty": "Dieser Ordner ist leer.",
+  "folders / move": "Hierhin Verschieben",
+  "folders / all": "Alles",
+  "folders / my": "Meine Diagramme",
+  "folders / untitled": "Unbenannter Ordner"
 }

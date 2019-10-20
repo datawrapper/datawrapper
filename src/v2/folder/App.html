@@ -2,7 +2,7 @@
 <div class="cont" style="left:{x}px; top:{y}px;">
     {#if loading}
     <div class="header" style="border-bottom:none;">
-        <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; Loading folders…
+        <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { __('folders / loading') }
     </div>
     {:elseif create}
     <div class="header">
@@ -10,7 +10,7 @@
             <i class="im im-angle-left"></i>
         </div>
 
-        <input autofocus placeholder="Untitled folder" type="text" on:keydown="key(event.keyCode)" bind:value="folderName" />
+        <input autofocus placeholder="{ __('folders / untitled') }" type="text" on:keydown="key(event.keyCode)" bind:value="folderName" />
 
         <button on:click="add()" disabled="{folderName.length === 0}" class="btn btn-primary">
             <i class="{ creating ? 'fa fa-circle-o-notch fa-spin' : 'im im-plus-circle' }"></i>
@@ -18,7 +18,7 @@
     </div>
     <div class="body" in:fade="{duration:200}">
         <div class="empty">
-            Create a new folder in { label(position) }.
+            {@html __('folders / create').replace("%folder%", label(position)) }
         </div>
     </div>
     <div class="footer"></div>
@@ -56,7 +56,7 @@
         </div>
         {/each} {#if chartList.length === 0 && folderList.length === 0}
         <div class="empty">
-            This folder is empty.
+            { __('folders / empty') }
         </div>
         {/if}
     </div>
@@ -67,7 +67,7 @@
 
         <button class="btn btn-primary" on:click="move()" disabled="{isRoot}">
             <i class="{ moving ? 'fa fa-circle-o-notch fa-spin' : 'im im-check-mark-circle-o' }"></i>
-            Move Here
+            { __('folders / move') }
         </button>
     </div>
     {/if}
@@ -77,6 +77,7 @@
 <script>
     /* globals $,dw */
     import { getJSON, patchJSON, postJSON } from '@datawrapper/shared/fetch';
+    import { __ } from '@datawrapper/shared/l10n';
     import { slide, fade } from 'svelte-transitions';
 
     const find = function(folders, position, ret, parent, team) {
@@ -136,6 +137,7 @@
             }
         },
         helpers: {
+            __,
             icon(type) {
                 return (
                     {
@@ -148,8 +150,8 @@
                 return chartType === 'tables' ? 'fa fa-table' : chartType.indexOf('map') > -1 ? 'fa fa-map-marker' : 'fa fa-bar-chart-o';
             },
             label(element) {
-                if (element.type === 'root') return 'All';
-                if (element.type === 'user') return 'My Charts';
+                if (element.type === 'root') return __('folders / all');
+                if (element.type === 'user') return __('folders / my');
                 else return element.name;
             }
         },
