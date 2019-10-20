@@ -47,6 +47,31 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'order' => 500
         );
 
+        $chartActions[] = array(
+            'id' => 'move',
+            'icon' => 'folder',
+            'title' => __('Move'),
+            'order' => 450
+        );
+
+        Hooks::register(Hooks::PUBLISH_AFTER_CHART_ACTIONS, function($chart) {
+            global $app;
+            $user = DatawrapperSession::getUser();
+
+            $folderId = $chart->getInFolder();
+            $organizationId = $chart->getOrganizationId();
+            $userId = $chart->getAuthorId();
+
+            $app->render('chart/publish/move.twig', [
+                'state' => [
+                    "current" => [
+                        "type" => !is_null($folderId) ? "folder" : (!is_null($organizationId) ? "team" : "user"),
+                        "id" => !is_null($folderId) ? $folderId : (!is_null($organizationId) ? $organizationId : $userId)
+                    ]
+                ]
+            ]);
+        });
+
         // sort actions by self-defined order
         usort($chartActions, function($a, $b) {
             return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);

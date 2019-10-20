@@ -1,0 +1,304 @@
+{#if show}
+<div class="cont">
+    {#if loading}
+    <div class="header" style="border-bottom:none;">
+        <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; Loading folders…
+    </div>
+    {:elseif creating}
+    <div class="header">
+        <div class="up" on:click="up()" style="{ isRoot ? 'visibility: hidden' : '' }">
+            <i class="im im-angle-left"></i>
+        </div>
+
+        <input autofocus placeholder="Untitled folder" type="text" bind:value="folderName" />
+
+        <button on:click="add()" class="btn btn-primary">
+            <i class="im im-plus-circle"></i>
+        </button>
+    </div>
+    <div class="body" in:fade="{duration:200}">
+        <div class="empty">
+            Create a new folder in { label(position) }.
+        </div>
+    </div>
+    <div class="footer"></div>
+    {:else}
+    <div class="header">
+        <div class="up" on:click="up()" style="{ isRoot ? 'visibility: hidden' : '' }">
+            <i class="im im-angle-left"></i>
+        </div>
+
+        <div class="title">
+            { label(position) }
+        </div>
+    </div>
+    <div class="body">
+        {#each folderList as element}
+        <div on:click="set({ position: element })" class="li folder" transition:slide="{duration:200}">
+            <i class="{ icon(element.type) }"></i> &nbsp;
+            <div>
+                { label(element) }
+            </div>
+            <i class="im im-angle-right"></i>
+        </div>
+        {/each} {#each chartList as element}
+        <div class="li chart" transition:fade="{duration:200}">
+            <i class="fa fa-bar-chart"></i> &nbsp;
+            <div>
+                { element.title }
+            </div>
+        </div>
+        {/each} {#if chartList.length === 0 && folderList.length === 0}
+        <div class="empty">
+            This folder is empty.
+        </div>
+        {/if}
+    </div>
+    <div class="footer">
+        <button class="btn" on:click="set({creating: true})" disabled="{isRoot}">
+            <i class="im im-folder-add"></i>
+        </button>
+
+        <button class="btn btn-primary" disabled="{isRoot}">
+            <i class="im im-check-mark-circle-o"></i>
+            Move Here
+        </button>
+    </div>
+    {/if}
+</div>
+{/if}
+
+<script>
+    /* globals dw */
+    import { getJSON } from '@datawrapper/shared/fetch';
+    import { slide, fly, draw, fade } from 'svelte-transitions';
+
+    const find = function(folders, position, returnParent, parent) {
+        if (returnParent) {
+            if (position.type === 'root') return null;
+            if (['user', 'team'].indexOf(position.type) > -1) return { type: 'root', id: null };
+        }
+
+        for (var i = 0; i < folders.length; i++) {
+            if ((!folders[i].type || folders[i].type === position.type) && folders[i].id === position.id) return returnParent ? parent : folders[i];
+            const child = find(folders[i].folders, position, returnParent, folders[i]);
+            if (child) return child;
+        }
+    };
+
+    export default {
+        data() {
+            return {
+                position: {
+                    type: 'root', // root | user | team | folder
+                    id: null
+                },
+                folderName: ''
+            };
+        },
+        computed: {
+            isRoot({ position }) {
+                return position.type === 'root';
+            },
+            folderList({ position, folders }) {
+                if (!folders || !folders.length) return [];
+                return position.type === 'root' ? folders : find(folders, position).folders;
+            },
+            chartList({ position, folders }) {
+                if (!folders || !folders.length) return [];
+                return position.type === 'root' ? [] : find(folders, position).charts;
+            }
+        },
+        helpers: {
+            icon(type) {
+                return (
+                    {
+                        user: 'fa fa-user',
+                        team: 'fa fa-users'
+                    }[type] || 'im im-folder'
+                );
+            },
+            label(element) {
+                if (element.type === 'root') return 'All';
+                if (element.type === 'user') return 'My Charts';
+                else return element.name;
+            }
+        },
+        methods: {
+            add() {},
+            up() {
+                const { position, folders, creating } = this.get();
+                if (creating) {
+                    this.set({ creating: false });
+                    return;
+                }
+                const folder = find(folders, position, true);
+                this.set({ position: folder });
+            },
+            async loadFolders() {
+                this.set({ loading: true });
+
+                getJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/folders`, 'include', folders => {
+                    this.set({ folders, loading: false });
+
+                    const { current } = this.get();
+                    this.set({ position: find(folders, current) });
+                });
+            }
+        },
+        transitions: { slide, fly, draw, fade }
+    };
+</script>
+
+<style lang="less">
+    .cont:before {
+        border: 13px solid transparent;
+        border-bottom-color: #ddd;
+        margin-left: -13px;
+        margin-top: -13px;
+    }
+
+    .cont:after {
+        border: 12px solid transparent;
+        border-bottom-color: #f2f2f2;
+        margin-left: -12px;
+        margin-top: -12px;
+    }
+
+    .cont {
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50px;
+            width: 0;
+            height: 0;
+            border-top: 0;
+        }
+
+        position: absolute;
+        width: 350px;
+
+        margin-top: 4px;
+        border: 1px solid #ddd;
+        max-width: 350px;
+        background: white;
+
+        .header i,
+        .body i {
+            color: #555;
+            cursor: pointer;
+        }
+
+        .header,
+        .footer {
+            display: flex;
+            align-items: center;
+        }
+
+        .header {
+            padding: 8px 12px 8px 4px;
+            height: 32px;
+            background: #f2f2f2;
+            border-bottom: 1px solid #ddd;
+
+            .up {
+                border-radius: 100%;
+                height: 24px;
+                width: 24px;
+                padding: 3px 0px 0px 6px;
+                box-sizing: border-box;
+                height: 32px;
+                width: 32px;
+                padding: 7px 0px 0px 10px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background: #ddd;
+                }
+
+                i {
+                    font-size: 12px;
+                }
+            }
+
+            input {
+                margin-bottom: 0;
+                flex-grow: 1;
+            }
+
+            .btn {
+                i {
+                    color: white;
+                }
+                margin-left: -2px;
+                border-radius: 0;
+            }
+
+            .title {
+                flex-grow: 1;
+                margin-left: 4px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+
+        .footer {
+            padding: 8px 12px;
+            height: 35px;
+            justify-content: space-between;
+            border-top: 1px solid #ddd;
+        }
+
+        .body {
+            height: 150px;
+            overflow-y: auto;
+
+            .empty {
+                display: flex;
+                height: 100%;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+                padding: 0;
+                color: #888;
+            }
+
+            .li {
+                display: flex;
+                padding: 5px 12px;
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+
+                i:first-child {
+                    width: 16px;
+                    &.im-folder {
+                        font-size: 12px;
+                    }
+                }
+
+                .im-angle-right {
+                    font-size: 12px;
+                }
+                &.folder:hover {
+                    background: #f2f2f2;
+                }
+                &.chart {
+                    color: #666;
+                }
+                &.folder {
+                    color: black;
+                }
+
+                div {
+                    font-size: 12px;
+                    flex-grow: 1;
+                }
+            }
+        }
+    }
+</style>
