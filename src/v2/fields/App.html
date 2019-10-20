@@ -12,7 +12,8 @@
             {#each customFields as field} {#if field.type == "text"}
             <Text labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
             {:elseif field.type == "textArea"}
-            <textarea labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
+            <!-- prettier-ignore -->
+            <TextArea labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
             {/if} {/each}
         </div>
     </div>
@@ -58,8 +59,8 @@
 </script>
 
 <style>
-    ref:customfields :global(textarea),
-    ref:customfields :global(input) {
-        margin-bottom: 10px;
+    :global(textarea),
+    :global(input) {
+        margin-bottom: 10px !important;
     }
 </style>
