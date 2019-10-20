@@ -1,0 +1,77 @@
+{% use "utils.twig" %}{% extends "core.twig" %}
+
+{% block content %}
+
+<style type="text/css">
+	.base-dropdown-content {
+	    top: 30px !important;
+	}
+</style>
+
+<div id="team-settings"></div>
+
+<script type="text/javascript" src="/static/js/svelte/team-settings.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/team-settings.css"></script>
+
+<script type="text/javascript">
+	require(['svelte/team-settings'], function(mod) {
+		var data = {{data|json|raw}};
+
+		data.settings = Object.assign({
+			folders: "expanded",
+			embed: {
+				preferred_embed: "responsive-iframe",
+			    custom_embed: {
+			        title: "",
+			        text: "",
+			        template:  ""
+			    }
+			},
+			default: {
+				locale: ""
+			},
+			slack_enabled: false,
+			slack_webhook_url: "",
+			ftp: {
+				enabled: false,
+				server: "",
+				user: "",
+				password: "",
+				directory: "",
+				filename: ""
+			},
+			disableVisualizations: {
+				enabled: false,
+				allowAdmins: false,
+				visualizations: {}
+			}
+		}, data.settings);
+
+		if (!data.settings.embed.custom_embed) {
+			data.settings.embed.custom_embed = {
+		        title: "",
+		        text: "",
+		        template:  ""
+		    };
+		}
+
+		if (!data.settings.ftp) {
+			data.settings.ftp = {
+				enabled: false,
+				server: "",
+				user: "",
+				password: "",
+				directory: "",
+				filename: ""
+			};
+		}
+
+		mod.set(data);
+
+		mod.updateUsers();
+
+		window.teamSettings = mod;
+	});
+</script>
+
+{% endblock %}

@@ -12,7 +12,8 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 
 build('fields');
-build('folder');
+build('team-settings');
+build('team-create');
 
 export default targets;
 
@@ -72,7 +73,8 @@ function build(appId, opts) {
             json(),
 
             buble({
-                transforms: { dangerousForOf: true, asyncAwait: false }
+                transforms: { dangerousForOf: true, asyncAwait: false },
+                objectAssign: 'Object.assign'
             }),
             production && terser()
         ]
