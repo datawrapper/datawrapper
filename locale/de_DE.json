@@ -599,5 +599,11 @@
   "teams / delete / yes": "Ja, ich möchte mein Team unwiderruflich löschen",
   "teams / delete / really": "Du kannst diese Entscheidung nicht rückgängig machen. Bitte bestätige, dass du dir dessen bewusst bist.",
   "teams / delete / really-yes": "Ja, ich verstehe, dass ich diese Entscheidung nicht rückgängig machen kann.",
-  "teams / delete / action": "Team löschen"
+  "teams / delete / action": "Team löschen",
+  "nav / team / activate": "Zu Team wechseln",
+  "nav / team / create": "Neues Team",
+  "nav / team / leave": "Team verlassen",
+  "nav / team / settings": "Team-Einstellungen",
+  "nav / team / charts": "Team-Diagramme",
+  "nav / team / teams": "Teams"
 }

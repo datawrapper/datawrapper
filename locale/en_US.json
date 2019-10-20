@@ -599,5 +599,11 @@
   "teams / delete / yes": "Yes, I want to delete my team irrevocably.",
   "teams / delete / really": "You cannot undo this action. Please confirm that you are aware of this.",
   "teams / delete / really-yes": "Yes, I understand that I cannot undo this action.",
-  "teams / delete / action": "Delete team"
+  "teams / delete / action": "Delete team",
+  "nav / team / activate": "Switch to this team",
+  "nav / team / create": "Create team",
+  "nav / team / leave": "Leave team",
+  "nav / team / settings": "Team settings",
+  "nav / team / charts": "Team charts",
+  "nav / team / teams": "Teams"
 }

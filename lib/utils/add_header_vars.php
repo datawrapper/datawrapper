@@ -168,14 +168,14 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 ];
 
                 $team['dropdown'][] = [
-                    'title' => __('Team charts'),
+                    'title' => __('nav / team / charts'),
                     'icon' => 'fa fa-bar-chart-o',
                     'url' => '/team/' . $org->getId()
                 ];
 
                 if ($user->canAdministrateTeam($org)) {
                     $team['dropdown'][] = [
-                        'title' => __('Team settings'),
+                        'title' => __('nav / team / settings'),
                         'icon' => 'fa fa-gears',
                         'url' => '/team/' . $org->getId() . '/settings'
                     ];
@@ -185,7 +185,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                     $team['dropdown'][] = [
                         'url' => '#team-activate',
                         'icon' => 'fa fa-check-circle',
-                        'title' => "Set as active",
+                        'title' => __('nav / team / activate'),
                         'data' => [
                             'id' => $org->getId()
                         ]
@@ -193,7 +193,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 }
 
                 $team['dropdown'][] = [
-                    'title' => __('Leave team'),
+                    'title' => __('nav / team / leave'),
                     'icon' => 'fa fa-sign-out',
                     'url' => '#team-leave',
                     'data' => [
@@ -206,7 +206,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             };
 
             $teams = [
-                'title' => __('Teams'),
+                'title' => __('nav / team / teams'),
                 'icon' => "fa fa-users",
                 'dropdown' => []
             ];
@@ -218,7 +218,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $teams['dropdown'][] = 'divider';
 
             $teams['dropdown'][] = [
-                'title' => __('Add team'),
+                'title' => __('nav / team / create'),
                 'icon' => 'fa fa-plus',
                 'url' => '/team/new/setup'
             ];
@@ -226,7 +226,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $acc['dropdown'][] = $teams;
         } else {
             $acc['dropdown'][] = [
-                'title' => __('Add team'),
+                'title' => __('nav / team / create'),
                 'icon' => 'fa fa-plus',
                 'url' => '/team/new/setup'
             ];
