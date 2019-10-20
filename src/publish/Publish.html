@@ -135,7 +135,7 @@
             {/if} {/each}
         </ul>
 
-        <svelte:component ref:action this="{Action}" visible="{true}" show="{true}" />
+        <svelte:component ref:action this="{Action}" on:close="close()" visible="{true}" show="{true}" />
     </div>
 </div>
 
@@ -406,6 +406,11 @@
                 } catch (err) {
                     // console.log('Oops, unable to copy');
                 }
+            },
+
+            close() {
+                // unselect current action
+                this.set({ active_action: '', Action });
             },
 
             select(action, event) {

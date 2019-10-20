@@ -1,5 +1,5 @@
 {#if show}
-<div class="cont" style="left:{x}px; top:{y}px;">
+<div class="cont" on:click|stopPropagation style="left:{x}px; top:{y}px;">
     {#if loading}
     <div class="header" style="border-bottom:none;">
         <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { __('folders / loading') }
@@ -159,10 +159,12 @@
             key(keyCode) {
                 if (keyCode === 13) this.add();
             },
+            show() {
+                this.set({ show: true });
+            },
             hide() {
                 if (this.store) {
-                    this.set({ show: false });
-                    $('.action-move').removeClass('active');
+                    this.fire('close');
                 } else {
                     window.location.hash = '#';
                 }
@@ -223,6 +225,11 @@
         oncreate() {
             const pos = $('.action-move').position();
             this.set({ x: pos.left, y: pos.top + $('.action-move').outerHeight() + 20 });
+            $(window).on('click', event => {
+                if (this.get().show && !event.target.closest('.action-move')) {
+                    this.hide();
+                }
+            });
         },
         onstate({ changed, current, previous }) {
             if (changed.chartId && current.chartId) {
