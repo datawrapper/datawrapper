@@ -233,7 +233,9 @@
                             id: chart.inFolder ? chart.inFolder : chart.organizationId ? chart.organizationId : chart.authorId
                         };
 
-                        this.set({ current, loading: false, position: find(folders, current) });
+                        const position = find(folders, current) || { type: 'root' };
+
+                        this.set({ current, loading: false, position });
                     });
                 });
             }
