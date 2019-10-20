@@ -482,5 +482,13 @@
   "invite / h1 / map": "One more thing before you get your map",
   "invite / h1 / table": "One more thing before you get your table",
   "invite / p": "Quickly set up a password so you can access it again in future.",
-  "switch-team": "Switch team"
+  "switch-team": "Switch team",
+  "folders / loading": "Loading folders…",
+  "folders / create": "Create a new folder in %folder%.",
+  "folders / empty": "This folder is empty.",
+  "folders / move": "Move Here",
+  "folders / all": "All",
+  "folders / my": "My Charts",
+  "folders / untitled": "Untitled folder",
+  "svelte-option / loading": "Loading chart options…"
 }

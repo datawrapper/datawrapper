@@ -221,7 +221,9 @@ define([
 
     function showLoadingIndicator() {
         $('.vis-options-refine-loading').remove();
-        $('.vis-options-refine, .vis-options-annotate').append('<div class="vis-options-refine-loading"><i class="fa fa-spinner fa-spin"></i></div>');
+        $('.vis-options-refine, .vis-options-annotate').append(
+            '<div class="vis-options-refine-loading"><i class="fa fa-circle-o-notch fa-spin"></i></div>'
+        );
         $('.vis-options-refine > fieldset, .vis-options-annotate > fieldset').css('opacity', '0.5');
     }
 

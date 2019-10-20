@@ -1,7 +1,9 @@
 {% if option.type == type %}
 
 <div class="{{ type }}" id="{{ type }}-{{ key }}">
- <i class="fa fa-spinner fa-spin fa-2x fa-cog"></i> Loading...
+    <div style="color: #333;">
+        <i class="fa fa-circle-o-notch fa-spin fa-cog"></i> {% trans "svelte-option / loading" %}
+    </div>
 </div>
 
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
