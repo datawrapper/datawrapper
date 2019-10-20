@@ -418,10 +418,12 @@
                     // unselect current action
                     return this.set({ active_action: '', Action });
                 }
+
                 this.set({ active_action: action.id });
                 if (action.mod) {
                     if (action.mod.App) {
                         this.set({ Action: action.mod.App });
+                        if (action.mod.data) this.refs.action.set(action.mod.data);
                     } else {
                         // todo: show loading indicator
                         this.set({ Action });

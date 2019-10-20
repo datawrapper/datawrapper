@@ -1,5 +1,5 @@
 {#if show}
-<div class="cont">
+<div class="cont" style="left:{x}px; top:{y}px;">
     {#if loading}
     <div class="header" style="border-bottom:none;">
         <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; Loading folders…
@@ -29,7 +29,13 @@
         </div>
 
         <div class="title">
-            { label(position) }
+            {#if !isRoot}
+            <a href="{ openLink }" target="_blank"> { label(position) } <i class="im im-external-link"></i> </a>
+            {:else} { label(position) } {/if}
+        </div>
+
+        <div class="close" on:click="hide()">
+            <i class="im im-x-mark"></i>
         </div>
     </div>
     <div class="body">
@@ -69,19 +75,27 @@
 {/if}
 
 <script>
-    /* globals dw */
+    /* globals $,dw */
     import { getJSON, patchJSON, postJSON } from '@datawrapper/shared/fetch';
     import { slide, fade } from 'svelte-transitions';
 
-    const find = function(folders, position, returnParent, parent) {
-        if (returnParent) {
+    const find = function(folders, position, ret, parent, team) {
+        if (!folders) return;
+
+        if (ret === 'parent') {
             if (position.type === 'root') return null;
             if (['user', 'team'].indexOf(position.type) > -1) return { type: 'root', id: null };
         }
 
         for (var i = 0; i < folders.length; i++) {
-            if ((!folders[i].type || folders[i].type === position.type) && folders[i].id === position.id) return returnParent ? parent : folders[i];
-            const child = find(folders[i].folders, position, returnParent, folders[i]);
+            if ((!folders[i].type || folders[i].type === position.type) && folders[i].id === position.id) {
+                if (ret === 'parent') return parent;
+                else if (ret === 'team') return team;
+                else return folders[i];
+            }
+
+            if (folders[i].type === 'team') team = folders[i];
+            const child = find(folders[i].folders, position, ret, folders[i], team);
             if (child) return child;
         }
     };
@@ -89,12 +103,15 @@
     export default {
         data() {
             return {
+                x: 0,
+                y: 0,
                 chartId: null,
                 position: {
                     type: 'root', // root | user | team | folder
                     id: null
                 },
-                folderName: ''
+                folderName: '',
+                loading: true
             };
         },
         computed: {
@@ -108,6 +125,14 @@
             chartList({ position, folders }) {
                 if (!folders || !folders.length) return [];
                 return position.type === 'root' ? [] : find(folders, position).charts;
+            },
+            openLink({ folders, position }) {
+                const team = find(folders, position, 'team');
+
+                if (position.type === 'user') return '/mycharts';
+                else if (position.type === 'team') return `/team/${position.id}`;
+                else if (team) return `/team/${team.id}/${position.id}`;
+                else return `/mycharts/${position.id}`;
             }
         },
         helpers: {
@@ -132,6 +157,14 @@
             key(keyCode) {
                 if (keyCode === 13) this.add();
             },
+            hide() {
+                if (this.store) {
+                    this.set({ show: false });
+                    $('.action-move').removeClass('active');
+                } else {
+                    window.location.hash = '#';
+                }
+            },
             add() {
                 this.set({ creating: true });
                 const { position, folderName } = this.get();
@@ -152,7 +185,7 @@
                     this.set({ create: false });
                     return;
                 }
-                const folder = find(folders, position, true);
+                const folder = find(folders, position, 'parent');
                 this.set({ position: folder });
             },
             move() {
@@ -186,12 +219,24 @@
         },
         transitions: { slide, fade },
         oncreate() {
-            this.set({ loading: true });
-            this.updateFolders(folders => {
-                this.set({ loading: false });
-                const { current } = this.get();
-                this.set({ position: find(folders, current) });
-            });
+            const pos = $('.action-move').position();
+            this.set({ x: pos.left, y: pos.top + $('.action-move').outerHeight() + 20 });
+        },
+        onstate({ changed, current, previous }) {
+            if (changed.chartId && current.chartId) {
+                this.set({ loading: true });
+
+                getJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/charts/${current.chartId}`, chart => {
+                    this.updateFolders(folders => {
+                        const current = {
+                            type: chart.inFolder ? 'folder' : chart.organizationId ? 'team' : 'user',
+                            id: chart.inFolder ? chart.inFolder : chart.organizationId ? chart.organizationId : chart.authorId
+                        };
+
+                        this.set({ current, loading: false, position: find(folders, current) });
+                    });
+                });
+            }
         }
     };
 </script>
@@ -225,6 +270,7 @@
 
         position: absolute;
         width: 350px;
+        z-index: 1;
 
         margin-top: 4px;
         border: 1px solid #ddd;
@@ -288,6 +334,20 @@
                 margin-left: 4px;
                 font-size: 16px;
                 font-weight: bold;
+
+                a {
+                    color: black;
+                    text-decoration: none;
+                    .im {
+                        font-size: 12px;
+                        margin-left: 5px;
+                    }
+                }
+            }
+
+            .close .im {
+                color: black;
+                font-size: 12px;
             }
         }
 
