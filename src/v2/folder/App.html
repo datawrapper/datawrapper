@@ -10,7 +10,7 @@
             <i class="im im-angle-left"></i>
         </div>
 
-        <input autofocus placeholder="Untitled folder" type="text" bind:value="folderName" />
+        <input autofocus placeholder="Untitled folder" type="text" on:keydown="key(event.keyCode)" bind:value="folderName" />
 
         <button on:click="add()" disabled="{folderName.length === 0}" class="btn btn-primary">
             <i class="{ creating ? 'fa fa-circle-o-notch fa-spin' : 'im im-plus-circle' }"></i>
@@ -129,6 +129,9 @@
             }
         },
         methods: {
+            key(keyCode) {
+                if (keyCode === 13) this.add();
+            },
             add() {
                 this.set({ creating: true });
                 const { position, folderName } = this.get();
@@ -139,7 +142,7 @@
 
                 postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/folders`, JSON.stringify(param), res => {
                     this.updateFolders(folders => {
-                        this.set({ position: res, create: false, creating: false });
+                        this.set({ folderName: '', position: res, create: false, creating: false });
                     });
                 });
             },
