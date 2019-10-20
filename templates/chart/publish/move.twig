@@ -19,7 +19,7 @@ require(['svelte/folder'], function(mod) {
 		data: {{ state | json | raw }}
 	});
 
-	app.loadFolders();
+	app.init();
 
 	var btn = $('.action-move');
 

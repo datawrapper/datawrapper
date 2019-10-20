@@ -64,6 +64,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
 
             $app->render('chart/publish/move.twig', [
                 'state' => [
+                    "chartId" => $chart->getId(),
                     "current" => [
                         "type" => !is_null($folderId) ? "folder" : (!is_null($organizationId) ? "team" : "user"),
                         "id" => !is_null($folderId) ? $folderId : (!is_null($organizationId) ? $organizationId : $userId)

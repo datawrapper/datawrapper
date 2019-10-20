@@ -4,7 +4,7 @@
     <div class="header" style="border-bottom:none;">
         <i style="margin: 0px 6px 0px 10px" class="fa fa-circle-o-notch fa-spin"></i> &nbsp; Loading folders…
     </div>
-    {:elseif creating}
+    {:elseif create}
     <div class="header">
         <div class="up" on:click="up()" style="{ isRoot ? 'visibility: hidden' : '' }">
             <i class="im im-angle-left"></i>
@@ -12,8 +12,8 @@
 
         <input autofocus placeholder="Untitled folder" type="text" bind:value="folderName" />
 
-        <button on:click="add()" class="btn btn-primary">
-            <i class="im im-plus-circle"></i>
+        <button on:click="add()" disabled="{folderName.length === 0}" class="btn btn-primary">
+            <i class="{ creating ? 'fa fa-circle-o-notch fa-spin' : 'im im-plus-circle' }"></i>
         </button>
     </div>
     <div class="body" in:fade="{duration:200}">
@@ -43,7 +43,7 @@
         </div>
         {/each} {#each chartList as element}
         <div class="li chart" transition:fade="{duration:200}">
-            <i class="fa fa-bar-chart"></i> &nbsp;
+            <i class="fa { chartIcon(element.type) } "></i> &nbsp;
             <div>
                 { element.title }
             </div>
@@ -55,12 +55,12 @@
         {/if}
     </div>
     <div class="footer">
-        <button class="btn" on:click="set({creating: true})" disabled="{isRoot}">
+        <button class="btn" on:click="set({create: true})" disabled="{isRoot}">
             <i class="im im-folder-add"></i>
         </button>
 
-        <button class="btn btn-primary" disabled="{isRoot}">
-            <i class="im im-check-mark-circle-o"></i>
+        <button class="btn btn-primary" on:click="move()" disabled="{isRoot}">
+            <i class="{ moving ? 'fa fa-circle-o-notch fa-spin' : 'im im-check-mark-circle-o' }"></i>
             Move Here
         </button>
     </div>
@@ -70,8 +70,8 @@
 
 <script>
     /* globals dw */
-    import { getJSON } from '@datawrapper/shared/fetch';
-    import { slide, fly, draw, fade } from 'svelte-transitions';
+    import { getJSON, patchJSON, postJSON } from '@datawrapper/shared/fetch';
+    import { slide, fade } from 'svelte-transitions';
 
     const find = function(folders, position, returnParent, parent) {
         if (returnParent) {
@@ -89,6 +89,7 @@
     export default {
         data() {
             return {
+                chartId: null,
                 position: {
                     type: 'root', // root | user | team | folder
                     id: null
@@ -118,6 +119,9 @@
                     }[type] || 'im im-folder'
                 );
             },
+            chartIcon(chartType) {
+                return chartType === 'tables' ? 'fa fa-table' : chartType.indexOf('maps') > -1 ? 'fa fa-map-marker' : 'fa fa-bar-chart-o';
+            },
             label(element) {
                 if (element.type === 'root') return 'All';
                 if (element.type === 'user') return 'My Charts';
@@ -125,28 +129,67 @@
             }
         },
         methods: {
-            add() {},
+            add() {
+                this.set({ creating: true });
+                const { position, folderName } = this.get();
+                let param = { name: folderName };
+
+                if (position.type === 'team') param.organizationId = position.id;
+                else if (!position.type) param.parentId = position.id;
+
+                postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/folders`, JSON.stringify(param), res => {
+                    this.updateFolders(folders => {
+                        this.set({ position: res, create: false, creating: false });
+                    });
+                });
+            },
             up() {
-                const { position, folders, creating } = this.get();
-                if (creating) {
-                    this.set({ creating: false });
+                const { position, folders, create } = this.get();
+                if (create) {
+                    this.set({ create: false });
                     return;
                 }
                 const folder = find(folders, position, true);
                 this.set({ position: folder });
             },
-            async loadFolders() {
-                this.set({ loading: true });
+            move() {
+                this.set({ moving: true });
 
+                const { position, chartId } = this.get();
+                let param = {};
+
+                if (position.type === 'user') {
+                    param = { organizationId: null, folderId: null };
+                } else if (position.type === 'team') {
+                    param = { organizationId: position.id, folderId: null };
+                } else {
+                    param = { folderId: position.id };
+                }
+
+                patchJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/charts/${chartId}`, JSON.stringify(param), res => {
+                    this.set({ current: position });
+
+                    this.updateFolders(folders => {
+                        this.set({ moving: false, position: find(folders, position) });
+                    });
+                });
+            },
+            updateFolders(callback) {
                 getJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/folders`, 'include', folders => {
-                    this.set({ folders, loading: false });
-
+                    this.set({ folders });
+                    if (typeof callback === 'function') callback(folders);
+                });
+            },
+            init() {
+                this.set({ loading: true });
+                this.updateFolders(folders => {
+                    this.set({ loading: false });
                     const { current } = this.get();
                     this.set({ position: find(folders, current) });
                 });
             }
         },
-        transitions: { slide, fly, draw, fade }
+        transitions: { slide, fade }
     };
 </script>
 
@@ -289,6 +332,9 @@
                 }
                 &.chart {
                     color: #666;
+                    .fa-map-marker {
+                        text-align: center;
+                    }
                 }
                 &.folder {
                     color: black;
