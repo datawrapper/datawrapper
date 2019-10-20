@@ -159,25 +159,77 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $userOrgs = $user->getActiveOrganizations();
 
-        if (count($userOrgs) > 1) {
-            $acc['dropdown'][] = array(
-                'title' => __('switch-team'),
+        if (count($userOrgs)) {
+            $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
+                $team = [
+                    'title' => $org->getName(),
+                    'icon' => ($isActive ? 'fa fa-check-circle' : ''),
+                    'dropdown' => []
+                ];
+
+                $team['dropdown'][] = [
+                    'title' => __('Team charts'),
+                    'icon' => 'fa fa-bar-chart-o',
+                    'url' => '/team/' . $org->getId()
+                ];
+
+                if ($user->canAdministrateTeam($org)) {
+                    $team['dropdown'][] = [
+                        'title' => __('Team settings'),
+                        'icon' => 'fa fa-gears',
+                        'url' => '/team/' . $org->getId() . '/settings'
+                    ];
+                }
+
+                if (!$isActive) {
+                    $team['dropdown'][] = [
+                        'url' => '#team-activate',
+                        'icon' => 'fa fa-check-circle',
+                        'title' => "Set as active",
+                        'data' => [
+                            'id' => $org->getId()
+                        ]
+                    ];
+                }
+
+                $team['dropdown'][] = [
+                    'title' => __('Leave team'),
+                    'icon' => 'fa fa-sign-out',
+                    'url' => '#team-leave',
+                    'data' => [
+                        'id' => $org->getId(),
+                        'title' => $org->getName()
+                    ]
+                ];
+
+                $dropdown[] = $team;
+            };
+
+            $teams = [
+                'title' => __('Teams'),
                 'icon' => "fa fa-users",
                 'dropdown' => []
-            );
+            ];
 
-            // populate the dropdown with one entry per each team
             foreach ($userOrgs as $org) {
-                if ($org != $user->getCurrentOrganization()) {
-                    $acc['dropdown'][sizeof($acc['dropdown']) - 1]['dropdown'][] = array(
-                        'url' => '#organization-activate',
-                        'title' => $org->getName(),
-                        'data' => array(
-                            'id' => $org->getId()
-                        )
-                    );
-                }
+                $addToDropdown($teams['dropdown'], $org, $org == $user->getCurrentOrganization());
             }
+
+            $teams['dropdown'][] = 'divider';
+
+            $teams['dropdown'][] = [
+                'title' => __('Add team'),
+                'icon' => 'fa fa-plus',
+                'url' => '/team/new/setup'
+            ];
+
+            $acc['dropdown'][] = $teams;
+        } else {
+            $acc['dropdown'][] = [
+                'title' => __('Add team'),
+                'icon' => 'fa fa-plus',
+                'url' => '/team/new/setup'
+            ];
         }
 
         if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
