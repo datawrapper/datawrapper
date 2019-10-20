@@ -1,0 +1,71 @@
+<Switch label="{ __('teams / disable / h1' ) }" bind:value="settings.disableVisualizations.enabled">
+    <p style="margin-top: 10px">
+        { @html __('teams / disable / p2' ) }
+    </p>
+
+    <div class="namespace">{ @html __('teams / disable / charts' ) }</div>
+
+    <div style="columns: auto 4;">
+        {#each charts as vis}
+        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+        {/each}
+    </div>
+
+    <div class="namespace">{ @html __('teams / disable / maps' ) }</div>
+
+    <div style="columns: auto 4;">
+        {#each maps as vis}
+        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+        {/each}
+    </div>
+
+    <div class="namespace">{ @html __('teams / disable / archived' ) }</div>
+
+    <div style="columns: auto 4;">
+        {#each archived as vis}
+        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+        {/each}
+    </div>
+
+    <div style="margin-top: 10px;">
+        <Switch label="{ __('teams / disable / enable-admins' ) }" bind:value="settings.disableVisualizations.allowAdmins" />
+    </div>
+</Switch>
+
+<style>
+    .namespace {
+        font-weight: bold;
+        margin: 16px 0px 8px 0px;
+    }
+</style>
+
+<script>
+    import { Switch, Checkbox } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        components: { Switch, Checkbox },
+        data() {
+            return {
+                visualizations: [],
+                visualizationArchive: []
+            };
+        },
+        computed: {
+            charts({ visualizations, visualizationArchive }) {
+                return visualizations.filter(
+                    el => el.title && el['svelte-workflow'] === 'chart' && el.namespace !== 'map' && visualizationArchive.indexOf(el.id) === -1
+                );
+            },
+            maps({ visualizations, visualizationArchive }) {
+                return visualizations.filter(
+                    el => el.title && (el.namespace === 'map' || el.id === 'locator-map') && visualizationArchive.indexOf(el.id) === -1
+                );
+            },
+            archived({ visualizations, visualizationArchive }) {
+                return visualizations.filter(el => el.title && visualizationArchive.indexOf(el.id) > -1);
+            }
+        },
+        helpers: { __ }
+    };
+</script>

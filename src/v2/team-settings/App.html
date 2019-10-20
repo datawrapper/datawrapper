@@ -1,0 +1,280 @@
+<div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
+    <div class="visconfig">
+        <div class="span12 vis-options settings-section">
+            <h1>{__('teams / h1' )}</h1>
+
+            <p style="margin-bottom:10px;">
+                {__('teams / p' )}
+            </p>
+
+            <ul style="margin-bottom:20px">
+                <li>
+                    { @html __('teams / permissions / members' ) }
+                </li>
+                <li>
+                    { @html __('teams / permissions / admins' ) }
+                </li>
+                <li>
+                    { @html __('teams / permissions / owners' ) }
+                </li>
+            </ul>
+
+            <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
+
+            {#if loadingUsers}
+            <p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
+            {:else}
+            <UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
+            {/if}
+        </div>
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ @html __('teams / defaults / h1' ) }</h1>
+            <p>
+                { @html __('teams / defaults / p' ) }
+            </p>
+
+            <Settings bind:team bind:defaultTheme bind:settings bind:themes bind:folders bind:locales bind:embedCodes />
+        </div>
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ __('teams / cf / h1' ) }</h1>
+            <p>{ @html __('teams / cf / p' ) }</p>
+
+            <CustomFields on:change="debounceUpdateTeam()" bind:team bind:settings />
+        </div>
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ __('teams / slack / h1' ) }</h1>
+
+            <Switch label="{ __('teams / slack / enable' ) }" bind:value="settings.slack_enabled">
+                <Text
+                    label="{ __('teams / slack / webhook' ) }"
+                    bind:value="settings.slack_webhook_url"
+                    placeholder="e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+                    help="{ __('teams / slack / webhook / p' ) }"
+                />
+            </Switch>
+        </div>
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ @html __('teams / ftp / h1' ) }</h1>
+            <p>{ @html __('teams / ftp / p' ) }</p>
+
+            <Switch label="{ __('teams / ftp / enable' ) }" bind:value="settings.ftp.enabled">
+                <Text
+                    label="{ __('teams / ftp / server' ) }"
+                    bind:value="settings.ftp.server"
+                    placeholder="e.g. ftp.company.com"
+                    help="{ __('teams / ftp / server / p' ) }"
+                />
+                <Text
+                    label="{ __('teams / ftp / user' ) }"
+                    bind:value="settings.ftp.user"
+                    placeholder="e.g. user"
+                    help="{ __('teams / ftp / user / p' ) }"
+                />
+                <Text
+                    label="{ __('teams / ftp / password' ) }"
+                    bind:value="settings.ftp.password"
+                    placeholder="e.g. password"
+                    help="{ __('teams / ftp / password / p' ) }"
+                />
+                <Text
+                    label="{ __('teams / ftp / dir' ) }"
+                    bind:value="settings.ftp.directory"
+                    placeholder="e.g. my/directory"
+                    help="{ __('teams / ftp / dir / p' ) }"
+                />
+
+                <!--
+				<Text
+					label="{ __('teams / ftp / file' ) }"
+					bind:value="settings.ftp.filename"
+					placeholder="e.g. filename"
+					help="{ __('teams / ftp / file / p' ) }" />
+        -->
+            </Switch>
+        </div>
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ @html __('teams / disable / h1' ) }</h1>
+            <p>{ @html __('teams / disable / p' ) }</p>
+
+            <Visualizations bind:settings bind:visualizationArchive bind:visualizations />
+        </div>
+
+        {#if isAdmin || (role && role === "owner") }
+        <div class="span12 vis-options settings-section">
+            <h1>{ @html __('teams / delete / h1') }</h1>
+            <p>
+                { @html __('teams / delete / p') }
+            </p>
+
+            <Switch label="{ __('teams / delete / yes') }" bind:value="deleteTeam">
+                {#if deleteTeam}
+                <p>
+                    { @html __('teams / delete / really') }
+                </p>
+
+                <Checkbox label="{ __('teams / delete / really-yes') }" bind:value="deleteTeam2" />
+
+                {#if deleteTeam2}
+                <button on:click="deleteTeam()" class="btn btn-danger">
+                    <i class="fa { deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times' }"></i>&nbsp; { @html __('teams / delete / action') }
+                </button>
+                {/if} {/if}
+            </Switch>
+        </div>
+        {/if}
+    </div>
+</div>
+
+<style lang="less">
+    .settings-section {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        border-top: 1px solid #eee;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        .base-dropdown-content {
+            top: 30px !important;
+        }
+
+        ul {
+            font-weight: 300;
+        }
+    }
+</style>
+
+<script>
+    /* globals dw */
+    import { Text, Switch, Checkbox } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+    import UserTable from './UserTable.html';
+    import InviteUser from './InviteUser.html';
+    import Settings from './Settings.html';
+    import CustomFields from './CustomFields.html';
+    import Visualizations from './Visualizations.html';
+
+    export default {
+        components: {
+            InviteUser,
+            UserTable,
+            Settings,
+            CustomFields,
+            Text,
+            Switch,
+            Checkbox,
+            Visualizations
+        },
+        data() {
+            return {
+                loadingUsers: true,
+                team: {
+                    name: ''
+                },
+                settings: {
+                    folders: 'expanded',
+                    embed: {
+                        preferred_embed: 'responsive',
+                        custom_embed: {
+                            title: '',
+                            text: '',
+                            template: ''
+                        }
+                    },
+                    default: {
+                        locale: ''
+                    },
+                    ftp: {
+                        enabled: false,
+                        server: '',
+                        user: '',
+                        password: '',
+                        directory: '',
+                        filename: ''
+                    },
+                    disableVisualizations: {
+                        enabled: false,
+                        allowAdmins: false,
+                        visualizations: {}
+                    }
+                },
+                users: [],
+                userId: null,
+                visualizations: [],
+                deleteTeam: false,
+                deleteTeam2: false,
+                deleting: false
+            };
+        },
+        computed: {
+            role({ users, userId }) {
+                if (!users || !users.length || !userId) return false;
+                return users.find(el => el.id === userId).role;
+            }
+        },
+        helpers: {
+            __
+        },
+        methods: {
+            async updateUsers() {
+                const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const json = await res.json();
+
+                this.set({ loadingUsers: false, updatingUsers: false, inviteeEmail: '', users: json.list });
+            },
+            async debounceUpdateTeam() {
+                window.clearTimeout(window.updateTeam);
+
+                window.updateTeam = setTimeout(() => {
+                    this.updateTeam();
+                }, 200);
+            },
+            async updateTeam() {
+                const { team, defaultTheme, settings } = this.get();
+
+                await this.fetchAPI(`teams/${this.get().team.id}`, {
+                    method: 'PATCH',
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        name: team.name,
+                        defaultTheme,
+                        settings
+                    })
+                });
+            },
+            fetchAPI(url, opts) {
+                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
+            },
+            async deleteTeam() {
+                this.set({ deleting: true });
+
+                await this.fetchAPI(`teams/${this.get().team.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                window.location = '/';
+            }
+        },
+        onstate({ changed, current, previous }) {
+            if (previous && previous.team && previous.team.name) {
+                if (changed.team || changed.defaultTheme || changed.settings) {
+                    this.debounceUpdateTeam();
+                }
+            }
+        }
+    };
+</script>
