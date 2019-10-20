@@ -17,7 +17,8 @@
             <Text width="0px" bind:value="field.key" help="{ __('teams / cf / key' ) }" placeholder="{ __('teams / cf / key / eg' ) }" />
         </td>
         <td>
-            <select label="" labelWidth="0px" width="100px" bind:value="field.type" options="{fieldTypes}" />
+            <!-- prettier-ignore -->
+            <Select label="" labelWidth="0px" width="100px" bind:value="field.type" options="{fieldTypes}" />
         </td>
         <td>
             <button on:click="toggleEdit(i)" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }</button>
