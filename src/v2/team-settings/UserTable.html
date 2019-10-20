@@ -1,2 +1,138 @@
-<!-- prettier-ignore -->
-<Table columnHeaders={userHeaders}>
+<MemberTable columnHeaders="{userHeaders}">
+    {#each sortedUsers as user, i}
+    <tr>
+        <td>
+            { user.email }
+        </td>
+        {#if isAdmin}
+        <td>
+            <a href="/admin/users/{user.id}">{ user.id }</a>
+        </td>
+        {/if}
+        <td>
+            { user.charts }
+        </td>
+        <td>
+            {#if editId === user.id }
+            <select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            {:else} { role(user.role) } {#if user.token}
+            <i>{ __('teams / invite-pending' ) } </i>
+            {/if} {/if}
+        </td>
+        <td>
+            {#if isAdmin || user.role != 'owner'} {#if editId === user.id }
+            <button on:click="toggleEdit(user.id)" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }</button>
+            {:elseif updating[user.id]}
+            <button disabled class="btn btn-primary"><i class="fa fa-spin fa-circle-o-notch"></i>&nbsp; { __('teams / save' ) }</button>
+            {:else}
+            <button on:click="toggleEdit(user.id)" class="btn"><i class="fa fa-edit"></i>&nbsp; { __('teams / edit' ) }</button>
+
+            <button on:click="removeUser(user)" class="btn"><i class="fa fa-times"></i>&nbsp; { __('teams / remove' ) }</button>
+            {/if} {/if}
+        </td>
+    </tr>
+    {/each}
+</MemberTable>
+
+<script>
+    /* globals dw */
+    import { Table, Select } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        components: { MemberTable: Table, Select },
+        data() {
+            return {
+                editId: false,
+                updating: {},
+                users: [],
+                roles: [{ value: 'owner', label: 'Owner' }, { value: 'admin', label: 'Admin' }, { value: 'member', label: 'Member' }]
+            };
+        },
+        computed: {
+            sortedUsers({ users, isAdmin }) {
+                return users
+                    .sort((a, b) => {
+                        const roles = ['owner', 'admin', 'member'];
+
+                        if (roles.indexOf(a.role) > roles.indexOf(b.role)) {
+                            return 1;
+                        } else if (roles.indexOf(a.role) < roles.indexOf(b.role)) {
+                            return -1;
+                        } else {
+                            return a.email > b.email ? 1 : a.email < b.email ? -1 : 0;
+                        }
+                    })
+                    .filter(user => isAdmin || !user.isAdmin);
+            },
+            userHeaders({ isAdmin }) {
+                const userHeaders = [
+                    { title: __('teams / user', 'organizations'), width: '25%' },
+                    { title: 'ID', width: '10%' },
+                    { title: 'Charts', width: '15%' },
+                    { title: __('teams / status', 'organizations'), width: '25%' },
+                    { title: __('teams / actions', 'organizations'), width: '25%' }
+                ];
+
+                if (!isAdmin) userHeaders.splice(1, 1);
+
+                return userHeaders;
+            }
+        },
+        helpers: {
+            role(role) {
+                return {
+                    member: __('teams / member'),
+                    admin: __('teams / admin'),
+                    owner: __('teams / owner')
+                }[role];
+            },
+            __
+        },
+        methods: {
+            toggleEdit(userId) {
+                if (this.get().editId === userId) {
+                    this.set({ editId: false });
+                    this.updateRole(userId);
+                } else {
+                    this.set({
+                        editId: userId
+                    });
+                }
+            },
+            async removeUser(user) {
+                if (!window.confirm("Are you sure you want to remove this user's access to your team?")) return;
+
+                await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                var { users } = this.get();
+                users = users.filter(el => el.id !== user.id);
+                this.set({ users });
+            },
+            async updateRole(userId) {
+                var { updating, users } = this.get();
+                const user = users.filter(u => u.id === userId)[0];
+                updating[user.id] = true;
+                this.set({ updating });
+
+                await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}/status`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        status: user.role
+                    })
+                });
+
+                updating = this.get().updating;
+                updating[user.id] = false;
+                this.set({ updating });
+            },
+            fetchAPI(url, opts) {
+                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
+            }
+        }
+    };
+</script>

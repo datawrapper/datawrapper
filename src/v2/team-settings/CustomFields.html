@@ -1,3 +1,147 @@
 {#if customFields.length}
-<!-- prettier-ignore -->
-<Table columnHeaders={headers}>
+<FieldTable columnHeaders="{headers}">
+    {#each customFields as field, i} {#if editIndex === i }
+    <tr>
+        <td>
+            <Text width="0px" bind:value="field.title" help="{ __('teams / cf / title' ) }" placeholder="{ __('teams / cf / title / eg' ) }" />
+        </td>
+        <td>
+            <Text
+                width="0px"
+                bind:value="field.description"
+                help="{ __('teams / cf / description' ) }"
+                placeholder="{ __('teams / cf / description / eg' ) }"
+            />
+        </td>
+        <td>
+            <Text width="0px" bind:value="field.key" help="{ __('teams / cf / key' ) }" placeholder="{ __('teams / cf / key / eg' ) }" />
+        </td>
+        <td>
+            <select label="" labelWidth="0px" width="100px" bind:value="field.type" options="{fieldTypes}" />
+        </td>
+        <td>
+            <button on:click="toggleEdit(i)" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }</button>
+        </td>
+    </tr>
+
+    {#if field.title }
+    <tr>
+        <td colspan="1">
+            <p class="mini-help">
+                { @html __('teams / cf / preview' ) }
+            </p>
+        </td>
+        <td colspan="4" style="pointer-events: none">
+            {#if field.type == "text"}
+            <Text labelWidth="auto" label="{field.title}" help="{field.description}" value="" />
+            {:elseif field.type == "textArea"}
+            <!-- prettier-ignore -->
+            <TextArea
+									labelWidth="auto"
+									label={field.title}
+									help={field.description}
+									value="" />
+            {/if}
+        </td>
+    </tr>
+    {/if} {:else}
+    <tr>
+        <td>
+            { field.title }
+        </td>
+        <td>
+            { field.description }
+        </td>
+        <td>
+            { field.key }
+        </td>
+        <td>
+            { getType(field.type) }
+        </td>
+        <td>
+            <button on:click="toggleEdit(i)" class="btn"><i class="fa fa-edit"></i>&nbsp; { __('teams / edit' ) }</button>
+
+            <button on:click="remove(field)" class="btn"><i class="fa fa-times"></i>&nbsp; { __('teams / remove' ) }</button>
+        </td>
+    </tr>
+    {/if} {/each}
+</FieldTable>
+
+{/if}
+
+<button on:click="addCustomField()" class="btn"><i class="fa fa-plus"></i> { @html __('teams / cf / add' ) }</button>
+
+<script>
+    import { Table, Text, TextArea, Select } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        components: { FieldTable: Table, Text, TextArea, Select },
+        data() {
+            return {
+                headers: [
+                    { title: __('teams / cf / hed / title'), width: '10%' },
+                    { title: __('teams / cf / hed / description'), width: '20%' },
+                    { title: __('teams / cf / hed / key'), width: '10%' },
+                    { title: __('teams / cf / hed / type'), width: '15%' },
+                    { title: __('teams / cf / hed / actions'), width: '15%' }
+                ],
+                fieldTypes: [{ value: 'text', label: __('teams / cf / text') }, { value: 'textArea', label: __('teams / cf / textarea') }]
+            };
+        },
+        computed: {
+            customFields({ settings }) {
+                return settings.customFields || [];
+            }
+        },
+        helpers: {
+            __,
+            getType(t) {
+                return {
+                    text: __('teams / cf / text', 'organizations'),
+                    textArea: __('teams / cf / textarea', 'organizations')
+                }[t];
+            }
+        },
+        methods: {
+            toggleEdit(index) {
+                if (this.get().editIndex === index) {
+                    this.set({ editIndex: false });
+                    this.save();
+                } else {
+                    this.set({
+                        editIndex: index
+                    });
+                }
+            },
+            addCustomField() {
+                const { settings } = this.get();
+                if (!settings.customFields) settings.customFields = [];
+
+                settings.customFields.push({
+                    key: '',
+                    title: '',
+                    description: '',
+                    type: 'text'
+                });
+
+                this.set({ editIndex: settings.customFields.length - 1, settings });
+            },
+            remove(field) {
+                if (
+                    !window.confirm(
+                        'Are you sure you want to remove this custom field? Existing values that have been set will remain available through the API.'
+                    )
+                )
+                    return;
+
+                const { settings } = this.get();
+                settings.customFields = settings.customFields.filter(el => el.key !== field.key);
+                this.set({ settings });
+            },
+            save() {
+                this.fire('change');
+            }
+        }
+    };
+</script>
