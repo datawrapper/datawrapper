@@ -14,6 +14,7 @@
 </Switch>
 
 <script>
+    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import { Switch, Checkbox } from '@datawrapper/controls';
 
@@ -22,6 +23,28 @@
             Switch,
             Checkbox
         },
-        helpers: { __ }
+        data() {
+            return {
+                deleteTeam: false,
+                deleteTeam2: false,
+                deleting: false
+            };
+        },
+        helpers: { __ },
+        methods: {
+            fetchAPI(url, opts) {
+                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
+            },
+            async deleteTeam() {
+                this.set({ deleting: true });
+
+                await this.fetchAPI(`teams/${this.get().team.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                window.location = '/';
+            }
+        }
     };
 </script>

@@ -135,6 +135,9 @@
                         adminOnly: true
                     }
                 ],
+                pluginTabs: [],
+                activeTab: 'members',
+                app: Members,
                 team: {
                     name: ''
                 },
@@ -165,16 +168,10 @@
                         visualizations: {}
                     }
                 },
-                loadingUsers: true,
                 users: [],
                 userId: null,
                 visualizations: [],
-                deleteTeam: false,
-                deleteTeam2: false,
-                deleting: false,
-                pluginTabs: [],
-                activeTab: 'members',
-                app: Members
+                loadingUsers: true
             };
         },
         computed: {
@@ -295,16 +292,6 @@
             },
             fetchAPI(url, opts) {
                 return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
-            },
-            async deleteTeam() {
-                this.set({ deleting: true });
-
-                await this.fetchAPI(`teams/${this.get().team.id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
-                window.location = '/';
             }
         },
         onstate({ changed, current, previous }) {
