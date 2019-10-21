@@ -1,4 +1,4 @@
-{#if loadingTeamProducts || loadingAllProducts}
+{#if isAdmin} {#if loadingTeamProducts || loadingAllProducts}
 <p><i class="fa fa-spin fa-circle-o-notch"></i> &nbsp; {@html __('teams / products / loading') }</p>
 {:else} {#if products.length > 0}
 <ProductTable columnHeaders="{productHeaders}">
@@ -49,7 +49,7 @@
     </div>
     {/if}
 </div>
-{/if} {/if}
+{/if} {/if} {/if}
 
 <script>
     /* globals dw */
@@ -69,8 +69,8 @@
                 ],
                 editId: false,
                 updating: {},
-                loadingTeamProducts: false,
-                loadingAllProducts: false
+                loadingTeamProducts: true,
+                loadingAllProducts: true
             };
         },
         computed: {
@@ -154,17 +154,13 @@
             }
         },
         oncreate() {
-            this.set({ loadingAllProducts: true });
-            getJSON(`//${dw.backend.__api_domain}/v3/products`, 'include', allProducts => this.set({ loadingAllProducts: false, allProducts }));
-        },
-        onstate({ changed, current }) {
-            if (changed.team && current.team) {
-                this.set({ loadingTeamProducts: true });
+            const current = this.get();
 
-                getJSON(`//${dw.backend.__api_domain}/v3/teams/${current.team.id}/products`, 'include', products =>
-                    this.set({ loadingTeamProducts: false, products })
-                );
-            }
+            getJSON(`//${dw.backend.__api_domain}/v3/teams/${current.team.id}/products`, 'include', products =>
+                this.set({ loadingTeamProducts: false, products })
+            );
+
+            getJSON(`//${dw.backend.__api_domain}/v3/products`, 'include', allProducts => this.set({ loadingAllProducts: false, allProducts }));
         }
     };
 </script>

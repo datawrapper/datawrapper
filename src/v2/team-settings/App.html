@@ -127,14 +127,14 @@
             </Switch>
         </div>
         {/if} {#if isAdmin}
-
         <div class="span12 vis-options settings-section">
             <h1>{ @html __('teams / products / h1') }</h1>
+
             <p>
                 { @html __('teams / products / p') }
             </p>
 
-            <ProductTable bind:team />
+            <ProductTable bind:isAdmin bind:team />
         </div>
 
         {/if}
