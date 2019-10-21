@@ -14,7 +14,8 @@
         </td>
         <td>
             {#if editId === user.id }
-            <select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            <!-- prettier-ignore -->
+            <Select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
             {:else} { role(user.role) } {#if user.token}
             <i>{ __('teams / invite-pending' ) } </i>
             {/if} {/if}
@@ -67,11 +68,11 @@
             },
             userHeaders({ isAdmin }) {
                 const userHeaders = [
-                    { title: __('teams / user', 'organizations'), width: '25%' },
+                    { title: __('teams / user'), width: '25%' },
                     { title: 'ID', width: '10%' },
                     { title: 'Charts', width: '15%' },
-                    { title: __('teams / status', 'organizations'), width: '25%' },
-                    { title: __('teams / actions', 'organizations'), width: '25%' }
+                    { title: __('teams / status'), width: '25%' },
+                    { title: __('teams / actions'), width: '25%' }
                 ];
 
                 if (!isAdmin) userHeaders.splice(1, 1);

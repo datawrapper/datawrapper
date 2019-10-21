@@ -126,6 +126,17 @@
                 {/if} {/if}
             </Switch>
         </div>
+        {/if} {#if isAdmin}
+
+        <div class="span12 vis-options settings-section">
+            <h1>{ @html __('teams / products / h1') }</h1>
+            <p>
+                { @html __('teams / products / p') }
+            </p>
+
+            <ProductTable bind:team />
+        </div>
+
         {/if}
     </div>
 </div>
@@ -158,6 +169,7 @@
     import { Text, Switch, Checkbox } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
     import UserTable from './UserTable.html';
+    import ProductTable from './ProductTable.html';
     import InviteUser from './InviteUser.html';
     import Settings from './Settings.html';
     import CustomFields from './CustomFields.html';
@@ -167,6 +179,7 @@
         components: {
             InviteUser,
             UserTable,
+            ProductTable,
             Settings,
             CustomFields,
             Text,

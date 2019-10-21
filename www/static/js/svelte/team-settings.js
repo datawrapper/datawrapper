@@ -22029,11 +22029,11 @@
 	    var isAdmin = ref.isAdmin;
 
 	    var userHeaders = [
-	        { title: __$1('teams / user', 'organizations'), width: '25%' },
+	        { title: __$1('teams / user'), width: '25%' },
 	        { title: 'ID', width: '10%' },
 	        { title: 'Charts', width: '15%' },
-	        { title: __$1('teams / status', 'organizations'), width: '25%' },
-	        { title: __$1('teams / actions', 'organizations'), width: '25%' }
+	        { title: __$1('teams / status'), width: '25%' },
+	        { title: __$1('teams / actions'), width: '25%' }
 	    ];
 
 	    if (!isAdmin) { userHeaders.splice(1, 1); }
@@ -22249,7 +22249,7 @@
 		};
 	}
 
-	// (18:12) {:else}
+	// (19:12) {:else}
 	function create_else_block_1(component, ctx) {
 		var text0_value = role(ctx.user.role), text0, text1, if_block_anchor;
 
@@ -22303,53 +22303,67 @@
 
 	// (16:12) {#if editId === user.id }
 	function create_if_block_3$4(component, ctx) {
-		var select, select_updating = false;
+		var select_updating = {};
 
-		function select_change_handler() {
-			select_updating = true;
-			ctx.each_value[ctx.i].role = selectValue(select);
-			component.set({ sortedUsers: ctx.sortedUsers });
-			select_updating = false;
+		var select_initial_data = {
+		 	label: "",
+		 	width: "200px",
+		 	labelWidth: "0px",
+		 	help: __$1('teams / role / p' ),
+		 	options: ctx.roles
+		 };
+		if (ctx.user.role !== void 0) {
+			select_initial_data.value = ctx.user.role;
+			select_updating.value = true;
 		}
+		var select = new Select({
+			root: component.root,
+			store: component.store,
+			data: select_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!select_updating.value && changed.value) {
+					ctx.user.role = childState.value;
+
+					newState.sortedUsers = ctx.sortedUsers;
+				}
+				component._set(newState);
+				select_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			select._bind({ value: 1 }, select.get());
+		});
 
 		return {
 			c: function create() {
-				select = createElement("select");
-				addListener(select, "change", select_change_handler);
-				if (!('user' in ctx)) { component.root._beforecreate.push(select_change_handler); }
-				setAttribute(select, "label", "");
-				setAttribute(select, "width", "200px");
-				setAttribute(select, "labelwidth", "0px");
-				setAttribute(select, "help", __$1('teams / role / p' ));
-				setAttribute(select, "options", ctx.roles);
-				addLoc(select, file$C, 16, 12, 384);
+				select._fragment.c();
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, select, anchor);
-
-				selectOption(select, ctx.user.role);
+				select._mount(target, anchor);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				if (!select_updating && changed.sortedUsers) { selectOption(select, ctx.user.role); }
-				if (changed.roles) {
-					setAttribute(select, "options", ctx.roles);
+				var select_changes = {};
+				if (changed.roles) { select_changes.options = ctx.roles; }
+				if (!select_updating.value && changed.sortedUsers) {
+					select_changes.value = ctx.user.role;
+					select_updating.value = ctx.user.role !== void 0;
 				}
+				select._set(select_changes);
+				select_updating = {};
 			},
 
 			d: function destroy(detach) {
-				if (detach) {
-					detachNode(select);
-				}
-
-				removeListener(select, "change", select_change_handler);
+				select.destroy(detach);
 			}
 		};
 	}
 
-	// (18:40) {#if user.token}
+	// (19:40) {#if user.token}
 	function create_if_block_4$3(component, ctx) {
 		var i, text_value = __$1('teams / invite-pending' ), text;
 
@@ -22357,7 +22371,7 @@
 			c: function create() {
 				i = createElement("i");
 				text = createText(text_value);
-				addLoc(i, file$C, 18, 12, 580);
+				addLoc(i, file$C, 19, 12, 617);
 			},
 
 			m: function mount(target, anchor) {
@@ -22373,7 +22387,7 @@
 		};
 	}
 
-	// (23:12) {#if isAdmin || user.role != 'owner'}
+	// (24:12) {#if isAdmin || user.role != 'owner'}
 	function create_if_block$v(component, ctx) {
 		var if_block_anchor;
 
@@ -22417,7 +22431,7 @@
 		};
 	}
 
-	// (27:12) {:else}
+	// (28:12) {:else}
 	function create_else_block$6(component, ctx) {
 		var button0, i0, text0, text1_value = __$1('teams / edit' ), text1, text2, button1, i1, text3, text4_value = __$1('teams / remove' ), text4;
 
@@ -22433,21 +22447,21 @@
 				text3 = createText("  ");
 				text4 = createText(text4_value);
 				i0.className = "fa fa-edit";
-				addLoc(i0, file$C, 27, 63, 1151);
+				addLoc(i0, file$C, 28, 63, 1188);
 
 				button0._svelte = { component: component, ctx: ctx };
 
 				addListener(button0, "click", click_handler_1$3);
 				button0.className = "btn";
-				addLoc(button0, file$C, 27, 12, 1100);
+				addLoc(button0, file$C, 28, 12, 1137);
 				i1.className = "fa fa-times";
-				addLoc(i1, file$C, 29, 60, 1278);
+				addLoc(i1, file$C, 30, 60, 1315);
 
 				button1._svelte = { component: component, ctx: ctx };
 
 				addListener(button1, "click", click_handler_2$1);
 				button1.className = "btn";
-				addLoc(button1, file$C, 29, 12, 1230);
+				addLoc(button1, file$C, 30, 12, 1267);
 			},
 
 			m: function mount(target, anchor) {
@@ -22484,7 +22498,7 @@
 		};
 	}
 
-	// (25:39) 
+	// (26:39) 
 	function create_if_block_2$7(component, ctx) {
 		var button, i, text0, text1_value = __$1('teams / save' ), text1;
 
@@ -22495,10 +22509,10 @@
 				text0 = createText("  ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-spin fa-circle-o-notch";
-				addLoc(i, file$C, 25, 53, 984);
+				addLoc(i, file$C, 26, 53, 1021);
 				button.disabled = true;
 				button.className = "btn btn-primary";
-				addLoc(button, file$C, 25, 12, 943);
+				addLoc(button, file$C, 26, 12, 980);
 			},
 
 			m: function mount(target, anchor) {
@@ -22518,7 +22532,7 @@
 		};
 	}
 
-	// (23:50) {#if editId === user.id }
+	// (24:50) {#if editId === user.id }
 	function create_if_block_1$i(component, ctx) {
 		var button, i, text0, text1_value = __$1('teams / save' ), text1;
 
@@ -22529,13 +22543,13 @@
 				text0 = createText("  ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-check";
-				addLoc(i, file$C, 23, 75, 824);
+				addLoc(i, file$C, 24, 75, 861);
 
 				button._svelte = { component: component, ctx: ctx };
 
 				addListener(button, "click", click_handler$9);
 				button.className = "btn btn-primary";
-				addLoc(button, file$C, 23, 12, 761);
+				addLoc(button, file$C, 24, 12, 798);
 			},
 
 			m: function mount(target, anchor) {
@@ -22596,7 +22610,7 @@
 				addLoc(td0, file$C, 3, 8, 96);
 				addLoc(td1, file$C, 11, 8, 274);
 				addLoc(td2, file$C, 14, 8, 329);
-				addLoc(td3, file$C, 21, 8, 668);
+				addLoc(td3, file$C, 22, 8, 705);
 				addLoc(tr, file$C, 2, 4, 83);
 			},
 
@@ -22723,6 +22737,978 @@
 		}
 	};
 
+	/**
+	 * Download and parse a remote JSON document
+	 *
+	 * @param {string} url
+	 * @param {string} method - HTTP method, either GET, POST or PUT
+	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { fetchJSON } from '@datawrapper/shared/fetch';
+	 * fetchJSON('http://api.example.org', 'GET', 'include');
+	 */
+	function fetchJSON(url, method, credentials, body, callback) {
+	    var opts = {
+	        method: method,
+	        body: body,
+	        mode: 'cors',
+	        credentials: credentials
+	    };
+
+	    return window
+	        .fetch(url, opts)
+	        .then(function (res) {
+	            if (!res.ok) { throw new Error(res.statusText); }
+	            return res.text();
+	        })
+	        .then(function (text) {
+	            try {
+	                return JSON.parse(text);
+	            } catch (Error) {
+	                // could not parse json, so just return text
+	                console.warn('malformed json input', text);
+	                return text;
+	            }
+	        })
+	        .then(function (res) {
+	            if (callback) { callback(res); }
+	            return res;
+	        })
+	        .catch(function (err) {
+	            console.error(err);
+	        });
+	}
+
+	/**
+	 * Download and parse a JSON document via GET
+	 *
+	 * @param {string} url
+	 * @param {string|undefined} credentials - optional, set to undefined to disable credentials
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { getJSON } from '@datawrapper/shared/fetch';
+	 * // use it callback style
+	 * getJSON('http://api.example.org', 'include', function(data) {
+	 *     console.log(data);
+	 * });
+	 * // or promise-style
+	 * getJSON('http://api.example.org')
+	 *   .then(data => {
+	 *      console.log(data);
+	 *   });
+	 */
+	function getJSON(url, credentials, callback) {
+	    if (arguments.length === 2) {
+	        callback = credentials;
+	        credentials = 'include';
+	    }
+
+	    return fetchJSON(url, 'GET', credentials, null, callback);
+	}
+
+	/**
+	 * Download and parse a remote JSON endpoint via POST. credentials
+	 * are included automatically
+	 *
+	 * @param {string} url
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 * @example
+	 * import { postJSON } from '@datawrapper/shared/fetch';
+	 *
+	 * postJSON('http://api.example.org', JSON.stringify({
+	 *    query: 'foo',
+	 *    page: 12
+	 * }));
+	 */
+	function postJSON(url, body, callback) {
+	    return fetchJSON(url, 'POST', 'include', body, callback);
+	}
+
+	/* team-settings/ProductTable.html generated by Svelte v2.16.1 */
+
+
+
+	var ProductTable = Table;
+
+	function addableProducts(ref) {
+	    var products = ref.products;
+	    var allProducts = ref.allProducts;
+
+	    if (!allProducts || !products) { return []; }
+
+	    return allProducts
+	        .filter(function (el) {
+	            return !products.filter(function (pr) { return pr.id == el.id; }).length;
+	        })
+	        .map(function (el) {
+	            return {
+	                value: el.id,
+	                label: el.name
+	            };
+	        });
+	}
+	function data$B() {
+	    return {
+	        productHeaders: [
+	            { title: __$1('teams / products / id'), width: '10%' },
+	            { title: __$1('teams / products / name'), width: '30%' },
+	            { title: __$1('teams / products / expires'), width: '30%' },
+	            { title: __$1('teams / products / actions'), width: '30%' }
+	        ],
+	        editId: false,
+	        updating: {},
+	        loadingTeamProducts: false,
+	        loadingAllProducts: false
+	    };
+	}
+	var methods$n = {
+	    edit: function edit(productId) {
+	        if (this.get().editId === productId) {
+	            this.set({ editId: false });
+	            this.update(productId);
+	        } else {
+	            this.set({
+	                editId: productId
+	            });
+	        }
+	    },
+	    addProduct: async function addProduct() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var team = ref.team;
+	        var addProduct = ref.addProduct;
+
+	        this.set({ addingProduct: true });
+
+	        await postJSON(
+	            ("//" + (dw.backend.__api_domain) + "/v3/teams/" + (team.id) + "/products"),
+	            JSON.stringify({
+	                productId: addProduct
+	            })
+	        );
+
+	        await getJSON(("//" + (dw.backend.__api_domain) + "/v3/teams/" + (team.id) + "/products"), 'include', function (products) {
+	            this$1.set({ products: products, addingProduct: false });
+	        });
+	    },
+	    remove: async function remove(product) {
+	        if (!window.confirm('Are you sure you want to remove this product?')) { return; }
+
+	        await this.fetchAPI(("teams/" + (this.get().team.id) + "/products/" + (product.id)), {
+	            method: 'DELETE',
+	            credentials: 'include'
+	        });
+
+	        var ref = this.get();
+	        var products = ref.products;
+	        products = products.filter(function (el) { return el.id !== product.id; });
+	        this.set({ products: products });
+	    },
+	    update: async function update(productId) {
+	        var ref = this.get();
+	        var updating = ref.updating;
+	        var products = ref.products;
+	        var product = products.filter(function (u) { return u.id === productId; })[0];
+	        updating[product.id] = true;
+	        this.set({ updating: updating });
+
+	        await this.fetchAPI(("teams/" + (this.get().team.id) + "/products/" + (product.id)), {
+	            method: 'PUT',
+	            credentials: 'include',
+	            body: JSON.stringify({
+	                expires: product.expires
+	            })
+	        });
+
+	        updating = this.get().updating;
+	        updating[product.id] = false;
+	        this.set({ updating: updating });
+	    },
+	    fetchAPI: function fetchAPI(url, opts) {
+	        return window.fetch(("//" + (dw.backend.__api_domain) + "/v3/" + url), opts);
+	    }
+	};
+
+	function oncreate$9() {
+	    var this$1 = this;
+
+	    this.set({ loadingAllProducts: true });
+	    getJSON(("//" + (dw.backend.__api_domain) + "/v3/products"), 'include', function (allProducts) { return this$1.set({ loadingAllProducts: false, allProducts: allProducts }); });
+	}
+	function onstate$5(ref) {
+	    var this$1 = this;
+	    var changed = ref.changed;
+	    var current = ref.current;
+
+	    if (changed.team && current.team) {
+	        this.set({ loadingTeamProducts: true });
+
+	        getJSON(("//" + (dw.backend.__api_domain) + "/v3/teams/" + (current.team.id) + "/products"), 'include', function (products) { return this$1.set({ loadingTeamProducts: false, products: products }); }
+	        );
+	    }
+	}
+	var file$D = "team-settings/ProductTable.html";
+
+	function click_handler_2$2(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.remove(ctx.product);
+	}
+
+	function click_handler_1$4(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.edit(ctx.product.id);
+	}
+
+	function click_handler$a(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.edit(ctx.product.id);
+	}
+
+	function get_each_context$g(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.product = list[i];
+		child_ctx.each_value = list;
+		child_ctx.i = i;
+		return child_ctx;
+	}
+
+	function create_main_fragment$I(component, ctx) {
+		var if_block_anchor;
+
+		function select_block_type(ctx) {
+			if (ctx.loadingTeamProducts || ctx.loadingAllProducts) { return create_if_block$w; }
+			return create_else_block$7;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			},
+
+			d: function destroy(detach) {
+				if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (3:0) {:else}
+	function create_else_block$7(component, ctx) {
+		var text, if_block1_anchor;
+
+		var if_block0 = (ctx.products.length > 0) && create_if_block_3$5(component, ctx);
+
+		var if_block1 = (ctx.addableProducts.length) && create_if_block_1$j(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block0) { if_block0.c(); }
+				text = createText(" ");
+				if (if_block1) { if_block1.c(); }
+				if_block1_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block0) { if_block0.m(target, anchor); }
+				insert(target, text, anchor);
+				if (if_block1) { if_block1.m(target, anchor); }
+				insert(target, if_block1_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.products.length > 0) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_3$5(component, ctx);
+						if_block0.c();
+						if_block0.m(text.parentNode, text);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.addableProducts.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_1$j(component, ctx);
+						if_block1.c();
+						if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) { if_block0.d(detach); }
+				if (detach) {
+					detachNode(text);
+				}
+
+				if (if_block1) { if_block1.d(detach); }
+				if (detach) {
+					detachNode(if_block1_anchor);
+				}
+			}
+		};
+	}
+
+	// (1:0) {#if loadingTeamProducts || loadingAllProducts}
+	function create_if_block$w(component, ctx) {
+		var p, i, text, raw_value = __$1('teams / products / loading'), raw_before;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				i = createElement("i");
+				text = createText("   ");
+				raw_before = createElement('noscript');
+				i.className = "fa fa-spin fa-circle-o-notch";
+				addLoc(i, file$D, 1, 3, 51);
+				addLoc(p, file$D, 1, 0, 48);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				append(p, i);
+				append(p, text);
+				append(p, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (3:8) {#if products.length > 0}
+	function create_if_block_3$5(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.products;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$h(component, get_each_context$g(ctx, each_value, i));
+		}
+
+		var producttable_initial_data = { columnHeaders: ctx.productHeaders };
+		var producttable = new ProductTable({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: producttable_initial_data
+		});
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+				producttable._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(producttable._slotted.default, null);
+				}
+
+				append(producttable._slotted.default, each_anchor);
+				producttable._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.editId || changed.products || changed.updating) {
+					each_value = ctx.products;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$g(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$h(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				var producttable_changes = {};
+				if (changed.productHeaders) { producttable_changes.columnHeaders = ctx.productHeaders; }
+				producttable._set(producttable_changes);
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				producttable.destroy(detach);
+			}
+		};
+	}
+
+	// (16:12) {:else}
+	function create_else_block_2(component, ctx) {
+		var text_value = ctx.product.expires || __$1('teams / products / never'), text;
+
+		return {
+			c: function create() {
+				text = createText(text_value);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.products) && text_value !== (text_value = ctx.product.expires || __$1('teams / products / never'))) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (14:12) {#if editId === product.id }
+	function create_if_block_6$1(component, ctx) {
+		var input, input_updating = false;
+
+		function input_input_handler() {
+			input_updating = true;
+			ctx.each_value[ctx.i].expires = input.value;
+			component.set({ products: ctx.products });
+			input_updating = false;
+		}
+
+		return {
+			c: function create() {
+				input = createElement("input");
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				addLoc(input, file$D, 14, 12, 451);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, input, anchor);
+
+				input.value = ctx.product.expires;
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (!input_updating && changed.products) { input.value = ctx.product.expires; }
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(input);
+				}
+
+				removeListener(input, "input", input_input_handler);
+			}
+		};
+	}
+
+	// (23:12) {:else}
+	function create_else_block_1$1(component, ctx) {
+		var button0, i0, text0, text1_value = __$1('teams / edit' ), text1, text2, button1, i1, text3, text4_value = __$1('teams / remove' ), text4;
+
+		return {
+			c: function create() {
+				button0 = createElement("button");
+				i0 = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				text2 = createText("\n\n            ");
+				button1 = createElement("button");
+				i1 = createElement("i");
+				text3 = createText("  ");
+				text4 = createText(text4_value);
+				i0.className = "fa fa-edit";
+				addLoc(i0, file$D, 23, 60, 1049);
+
+				button0._svelte = { component: component, ctx: ctx };
+
+				addListener(button0, "click", click_handler_1$4);
+				button0.className = "btn";
+				addLoc(button0, file$D, 23, 12, 1001);
+				i1.className = "fa fa-times";
+				addLoc(i1, file$D, 25, 59, 1175);
+
+				button1._svelte = { component: component, ctx: ctx };
+
+				addListener(button1, "click", click_handler_2$2);
+				button1.className = "btn";
+				addLoc(button1, file$D, 25, 12, 1128);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button0, anchor);
+				append(button0, i0);
+				append(button0, text0);
+				append(button0, text1);
+				insert(target, text2, anchor);
+				insert(target, button1, anchor);
+				append(button1, i1);
+				append(button1, text3);
+				append(button1, text4);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button0._svelte.ctx = ctx;
+				button1._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button0);
+				}
+
+				removeListener(button0, "click", click_handler_1$4);
+				if (detach) {
+					detachNode(text2);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_2$2);
+			}
+		};
+	}
+
+	// (21:42) 
+	function create_if_block_5$2(component, ctx) {
+		var button, i, text0, text1_value = __$1('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-spin fa-circle-o-notch";
+				addLoc(i, file$D, 21, 53, 885);
+				button.disabled = true;
+				button.className = "btn btn-primary";
+				addLoc(button, file$D, 21, 12, 844);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+			}
+		};
+	}
+
+	// (19:12) {#if editId === product.id }
+	function create_if_block_4$4(component, ctx) {
+		var button, i, text0, text1_value = __$1('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-check";
+				addLoc(i, file$D, 19, 72, 722);
+
+				button._svelte = { component: component, ctx: ctx };
+
+				addListener(button, "click", click_handler$a);
+				button.className = "btn btn-primary";
+				addLoc(button, file$D, 19, 12, 662);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler$a);
+			}
+		};
+	}
+
+	// (5:4) {#each products as product, i}
+	function create_each_block$h(component, ctx) {
+		var tr, td0, text0_value = ctx.product.id, text0, text1, td1, text2_value = ctx.product.name, text2, text3, td2, text4, td3;
+
+		function select_block_type_1(ctx) {
+			if (ctx.editId === ctx.product.id) { return create_if_block_6$1; }
+			return create_else_block_2;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		function select_block_type_2(ctx) {
+			if (ctx.editId === ctx.product.id) { return create_if_block_4$4; }
+			if (ctx.updating[ctx.product.id]) { return create_if_block_5$2; }
+			return create_else_block_1$1;
+		}
+
+		var current_block_type_1 = select_block_type_2(ctx);
+		var if_block1 = current_block_type_1(component, ctx);
+
+		return {
+			c: function create() {
+				tr = createElement("tr");
+				td0 = createElement("td");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				td1 = createElement("td");
+				text2 = createText(text2_value);
+				text3 = createText("\n        ");
+				td2 = createElement("td");
+				if_block0.c();
+				text4 = createText("\n        ");
+				td3 = createElement("td");
+				if_block1.c();
+				addLoc(td0, file$D, 6, 8, 283);
+				addLoc(td1, file$D, 9, 8, 337);
+				addLoc(td2, file$D, 12, 8, 393);
+				addLoc(td3, file$D, 17, 8, 604);
+				addLoc(tr, file$D, 5, 4, 270);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, tr, anchor);
+				append(tr, td0);
+				append(td0, text0);
+				append(tr, text1);
+				append(tr, td1);
+				append(td1, text2);
+				append(tr, text3);
+				append(tr, td2);
+				if_block0.m(td2, null);
+				append(tr, text4);
+				append(tr, td3);
+				if_block1.m(td3, null);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.products) && text0_value !== (text0_value = ctx.product.id)) {
+					setData(text0, text0_value);
+				}
+
+				if ((changed.products) && text2_value !== (text2_value = ctx.product.name)) {
+					setData(text2, text2_value);
+				}
+
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block0) {
+					if_block0.p(changed, ctx);
+				} else {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(td2, null);
+				}
+
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_2(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type_1(component, ctx);
+					if_block1.c();
+					if_block1.m(td3, null);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(tr);
+				}
+
+				if_block0.d();
+				if_block1.d();
+			}
+		};
+	}
+
+	// (33:6) {#if addableProducts.length }
+	function create_if_block_1$j(component, ctx) {
+		var div1, div0, select_updating = {}, text;
+
+		var select_initial_data = {
+		 	label: __$1('teams / products / add-product'),
+		 	options: ctx.addableProducts
+		 };
+		if (ctx.addProduct !== void 0) {
+			select_initial_data.value = ctx.addProduct;
+			select_updating.value = true;
+		}
+		var select = new Select({
+			root: component.root,
+			store: component.store,
+			data: select_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!select_updating.value && changed.value) {
+					newState.addProduct = childState.value;
+				}
+				component._set(newState);
+				select_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			select._bind({ value: 1 }, select.get());
+		});
+
+		var if_block = (ctx.addProduct) && create_if_block_2$8(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				select._fragment.c();
+				text = createText("\n\n    ");
+				if (if_block) { if_block.c(); }
+				setStyle(div0, "display", "block");
+				addLoc(div0, file$D, 34, 4, 1382);
+				setStyle(div1, "display", "flex");
+				addLoc(div1, file$D, 33, 0, 1351);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				select._mount(div0, null);
+				append(div1, text);
+				if (if_block) { if_block.m(div1, null); }
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var select_changes = {};
+				if (changed.addableProducts) { select_changes.options = ctx.addableProducts; }
+				if (!select_updating.value && changed.addProduct) {
+					select_changes.value = ctx.addProduct;
+					select_updating.value = ctx.addProduct !== void 0;
+				}
+				select._set(select_changes);
+				select_updating = {};
+
+				if (ctx.addProduct) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_2$8(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				select.destroy();
+				if (if_block) { if_block.d(); }
+			}
+		};
+	}
+
+	// (43:4) {#if addProduct}
+	function create_if_block_2$8(component, ctx) {
+		var div, button, i, i_class_value, text, raw_value = __$1('teams / products / add'), raw_before;
+
+		function click_handler_3(event) {
+			component.addProduct();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				button = createElement("button");
+				i = createElement("i");
+				text = createText("\n            ");
+				raw_before = createElement('noscript');
+				i.className = i_class_value = "fa " + (ctx.addingProduct ? 'fa fa-spin fa-circle-o-notch' : 'fa-plus');
+				addLoc(i, file$D, 45, 12, 1793);
+				addListener(button, "click", click_handler_3);
+				button.className = "btn btn-primary";
+				setStyle(button, "margin-left", "10px");
+				addLoc(button, file$D, 44, 8, 1698);
+				setStyle(div, "display", "block");
+				addLoc(div, file$D, 43, 4, 1660);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, button);
+				append(button, i);
+				append(button, text);
+				append(button, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.addingProduct) && i_class_value !== (i_class_value = "fa " + (ctx.addingProduct ? 'fa fa-spin fa-circle-o-notch' : 'fa-plus'))) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				removeListener(button, "click", click_handler_3);
+			}
+		};
+	}
+
+	function ProductTable_1(options) {
+		var this$1 = this;
+
+		this._debugName = '<ProductTable_1>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$B(), options.data);
+
+		this._recompute({ products: 1, allProducts: 1 }, this._state);
+		if (!('products' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'products'"); }
+		if (!('allProducts' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'allProducts'"); }
+		if (!('loadingTeamProducts' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'loadingTeamProducts'"); }
+		if (!('loadingAllProducts' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'loadingAllProducts'"); }
+		if (!('productHeaders' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'productHeaders'"); }
+		if (!('editId' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'editId'"); }
+		if (!('updating' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'updating'"); }
+
+		if (!('addProduct' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'addProduct'"); }
+		if (!('addingProduct' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'addingProduct'"); }
+		this._intro = true;
+
+		this._handlers.state = [onstate$5];
+
+		onstate$5.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$I(this, this._state);
+
+		this.root._oncreate.push(function () {
+			oncreate$9.call(this$1);
+			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(ProductTable_1.prototype, protoDev);
+	assign(ProductTable_1.prototype, methods$n);
+
+	ProductTable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('addableProducts' in newState && !this._updatingReadonlyProperty) { throw new Error("<ProductTable_1>: Cannot set read-only property 'addableProducts'"); }
+	};
+
+	ProductTable_1.prototype._recompute = function _recompute(changed, state) {
+		if (changed.products || changed.allProducts) {
+			if (this._differs(state.addableProducts, (state.addableProducts = addableProducts(state)))) { changed.addableProducts = true; }
+		}
+	};
+
 	/* team-settings/InviteUser.html generated by Svelte v2.16.1 */
 
 
@@ -22793,13 +23779,13 @@
 
 	    return options;
 	}
-	function data$B() {
+	function data$C() {
 	    return {
 	        inviteeEmail: '',
 	        updatingUsers: false
 	    };
 	}
-	var methods$n = {
+	var methods$o = {
 	    addUser: async function addUser(role) {
 	        var ref = this.get();
 	        var inviteeExists = ref.inviteeExists;
@@ -22883,10 +23869,10 @@
 	    }
 	};
 
-	function oncreate$9() {
+	function oncreate$a() {
 	    window.teamSettingsInvite = this;
 	}
-	function onstate$5(ref) {
+	function onstate$6(ref) {
 	    var changed = ref.changed;
 	    var current = ref.current;
 	    var previous = ref.previous;
@@ -22896,9 +23882,9 @@
 	        this.debounceCheckUser();
 	    }
 	}
-	var file$D = "team-settings/InviteUser.html";
+	var file$E = "team-settings/InviteUser.html";
 
-	function create_main_fragment$I(component, ctx) {
+	function create_main_fragment$J(component, ctx) {
 		var text0_updating = {}, text1, div, text2_updating = {}, text3;
 
 		var text0_initial_data = {
@@ -22976,7 +23962,7 @@
 				text3 = createText("\n\n    ");
 				dropdownmenu._fragment.c();
 				setStyle(div, "display", "flex");
-				addLoc(div, file$D, 2, 0, 114);
+				addLoc(div, file$E, 2, 0, 114);
 			},
 
 			m: function mount(target, anchor) {
@@ -23035,7 +24021,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$B(), options.data);
+		this._state = assign(data$C(), options.data);
 
 		this._recompute({ inviteeEmail: 1, isAdmin: 1, isValidEmail: 1, inviteeExistsLoading: 1, inviteeExists: 1 }, this._state);
 		if (!('inviteeEmail' in this._state)) { console.warn("<InviteUser> was created without expected data property 'inviteeEmail'"); }
@@ -23047,14 +24033,14 @@
 		if (!('updatingUsers' in this._state)) { console.warn("<InviteUser> was created without expected data property 'updatingUsers'"); }
 		this._intro = true;
 
-		this._handlers.state = [onstate$5];
+		this._handlers.state = [onstate$6];
 
-		onstate$5.call(this, { changed: assignTrue({}, this._state), current: this._state });
+		onstate$6.call(this, { changed: assignTrue({}, this._state), current: this._state });
 
-		this._fragment = create_main_fragment$I(this, this._state);
+		this._fragment = create_main_fragment$J(this, this._state);
 
 		this.root._oncreate.push(function () {
-			oncreate$9.call(this$1);
+			oncreate$a.call(this$1);
 			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
 		});
 
@@ -23068,7 +24054,7 @@
 	}
 
 	assign(InviteUser.prototype, protoDev);
-	assign(InviteUser.prototype, methods$n);
+	assign(InviteUser.prototype, methods$o);
 
 	InviteUser.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('isValidEmail' in newState && !this._updatingReadonlyProperty) { throw new Error("<InviteUser>: Cannot set read-only property 'isValidEmail'"); }
@@ -23099,7 +24085,7 @@
 	        } ].concat( locales
 	    );
 	}
-	function data$C() {
+	function data$D() {
 	    return {
 	        embedCodes: [
 	            { value: 'responsive', label: __$1('teams / defaults / responsive-iframe') },
@@ -23112,9 +24098,9 @@
 	        defaultTheme: ''
 	    };
 	}
-	var file$E = "team-settings/Settings.html";
+	var file$F = "team-settings/Settings.html";
 
-	function create_main_fragment$J(component, ctx) {
+	function create_main_fragment$K(component, ctx) {
 		var select0_updating = {}, text0, select1_updating = {}, text1, select2_updating = {}, text2, select3_updating = {}, text3, select4_updating = {}, text4, switch_1_updating = {}, text5, if_block_anchor;
 
 		var select0_initial_data = {
@@ -23290,7 +24276,7 @@
 			switch_1._bind({ value: 1 }, switch_1.get());
 		});
 
-		var if_block = (ctx.settings.embed.preferred_embed == "custom") && create_if_block$w(component, ctx);
+		var if_block = (ctx.settings.embed.preferred_embed == "custom") && create_if_block$x(component, ctx);
 
 		return {
 			c: function create() {
@@ -23385,7 +24371,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$w(component, ctx);
+						if_block = create_if_block$x(component, ctx);
 						if_block.c();
 						if_block.m(if_block_anchor.parentNode, if_block_anchor);
 					}
@@ -23435,7 +24421,7 @@
 	}
 
 	// (53:0) {#if settings.embed.preferred_embed == "custom"}
-	function create_if_block$w(component, ctx) {
+	function create_if_block$x(component, ctx) {
 		var div, text0_updating = {}, text1, textarea0_updating = {}, text2, textarea1_updating = {};
 
 		var text0_initial_data = {
@@ -23528,7 +24514,7 @@
 				textarea0._fragment.c();
 				text2 = createText("\n\n    \n    ");
 				textarea1._fragment.c();
-				addLoc(div, file$E, 53, 0, 1508);
+				addLoc(div, file$F, 53, 0, 1508);
 			},
 
 			m: function mount(target, anchor) {
@@ -23586,7 +24572,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$C(), options.data);
+		this._state = assign(data$D(), options.data);
 
 		this._recompute({ locales: 1 }, this._state);
 		if (!('locales' in this._state)) { console.warn("<Settings> was created without expected data property 'locales'"); }
@@ -23598,7 +24584,7 @@
 		if (!('embedCodes' in this._state)) { console.warn("<Settings> was created without expected data property 'embedCodes'"); }
 		this._intro = true;
 
-		this._fragment = create_main_fragment$J(this, this._state);
+		this._fragment = create_main_fragment$K(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
@@ -23632,7 +24618,7 @@
 
 	    return settings.customFields || [];
 	}
-	function data$D() {
+	function data$E() {
 	    return {
 	        headers: [
 	            { title: __$1('teams / cf / hed / title'), width: '10%' },
@@ -23650,7 +24636,7 @@
 	        textArea: __$1('teams / cf / textarea', 'organizations')
 	    }[t];
 	}
-	var methods$o = {
+	var methods$p = {
 	    toggleEdit: function toggleEdit(index) {
 	        if (this.get().editIndex === index) {
 	            this.set({ editIndex: false });
@@ -23693,9 +24679,9 @@
 	    }
 	};
 
-	var file$F = "team-settings/CustomFields.html";
+	var file$G = "team-settings/CustomFields.html";
 
-	function click_handler_2$2(event) {
+	function click_handler_2$3(event) {
 		var ref = this._svelte;
 		var component = ref.component;
 		var ctx = ref.ctx;
@@ -23703,7 +24689,7 @@
 		component.remove(ctx.field);
 	}
 
-	function click_handler_1$4(event) {
+	function click_handler_1$5(event) {
 		var ref = this._svelte;
 		var component = ref.component;
 		var ctx = ref.ctx;
@@ -23711,7 +24697,7 @@
 		component.toggleEdit(ctx.i);
 	}
 
-	function click_handler$a(event) {
+	function click_handler$b(event) {
 		var ref = this._svelte;
 		var component = ref.component;
 		var ctx = ref.ctx;
@@ -23719,7 +24705,7 @@
 		component.toggleEdit(ctx.i);
 	}
 
-	function get_each_context$g(ctx, list, i) {
+	function get_each_context$h(ctx, list, i) {
 		var child_ctx = Object.create(ctx);
 		child_ctx.field = list[i];
 		child_ctx.each_value = list;
@@ -23727,10 +24713,10 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$K(component, ctx) {
+	function create_main_fragment$L(component, ctx) {
 		var text0, button, i, text1, raw_value = __$1('teams / cf / add' ), raw_before;
 
-		var if_block = (ctx.customFields.length) && create_if_block$x(component, ctx);
+		var if_block = (ctx.customFields.length) && create_if_block$y(component, ctx);
 
 		function click_handler_3(event) {
 			component.addCustomField();
@@ -23745,10 +24731,10 @@
 				text1 = createText(" ");
 				raw_before = createElement('noscript');
 				i.className = "fa fa-plus";
-				addLoc(i, file$F, 72, 48, 2339);
+				addLoc(i, file$G, 72, 48, 2342);
 				addListener(button, "click", click_handler_3);
 				button.className = "btn";
-				addLoc(button, file$F, 72, 0, 2291);
+				addLoc(button, file$G, 72, 0, 2294);
 			},
 
 			m: function mount(target, anchor) {
@@ -23766,7 +24752,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block$x(component, ctx);
+						if_block = create_if_block$y(component, ctx);
 						if_block.c();
 						if_block.m(text0.parentNode, text0);
 					}
@@ -23789,7 +24775,7 @@
 	}
 
 	// (1:0) {#if customFields.length}
-	function create_if_block$x(component, ctx) {
+	function create_if_block$y(component, ctx) {
 		var each_anchor;
 
 		var each_value = ctx.customFields;
@@ -23797,7 +24783,7 @@
 		var each_blocks = [];
 
 		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$h(component, get_each_context$g(ctx, each_value, i));
+			each_blocks[i] = create_each_block$i(component, get_each_context$h(ctx, each_value, i));
 		}
 
 		var fieldtable_initial_data = { columnHeaders: ctx.headers };
@@ -23832,12 +24818,12 @@
 					each_value = ctx.customFields;
 
 					for (var i = 0; i < each_value.length; i += 1) {
-						var child_ctx = get_each_context$g(ctx, each_value, i);
+						var child_ctx = get_each_context$h(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$h(component, child_ctx);
+							each_blocks[i] = create_each_block$i(component, child_ctx);
 							each_blocks[i].c();
 							each_blocks[i].m(each_anchor.parentNode, each_anchor);
 						}
@@ -23863,7 +24849,7 @@
 	}
 
 	// (48:10) {:else}
-	function create_else_block$7(component, ctx) {
+	function create_else_block$8(component, ctx) {
 		var tr, td0, text0_value = ctx.field.title, text0, text1, td1, text2_value = ctx.field.description, text2, text3, td2, text4_value = ctx.field.key, text4, text5, td3, text6_value = getType(ctx.field.type), text6, text7, td4, button0, i0, text8, text9_value = __$1('teams / edit' ), text9, text10, button1, i1, text11, text12_value = __$1('teams / remove' ), text12;
 
 		return {
@@ -23891,28 +24877,28 @@
 				i1 = createElement("i");
 				text11 = createText("  ");
 				text12 = createText(text12_value);
-				addLoc(td0, file$F, 49, 8, 1740);
-				addLoc(td1, file$F, 52, 8, 1795);
-				addLoc(td2, file$F, 55, 8, 1856);
-				addLoc(td3, file$F, 58, 8, 1909);
+				addLoc(td0, file$G, 49, 8, 1743);
+				addLoc(td1, file$G, 52, 8, 1798);
+				addLoc(td2, file$G, 55, 8, 1859);
+				addLoc(td3, file$G, 58, 8, 1912);
 				i0.className = "fa fa-edit";
-				addLoc(i0, file$F, 62, 57, 2034);
+				addLoc(i0, file$G, 62, 57, 2037);
 
 				button0._svelte = { component: component, ctx: ctx };
 
-				addListener(button0, "click", click_handler_1$4);
+				addListener(button0, "click", click_handler_1$5);
 				button0.className = "btn";
-				addLoc(button0, file$F, 62, 12, 1989);
+				addLoc(button0, file$G, 62, 12, 1992);
 				i1.className = "fa fa-times";
-				addLoc(i1, file$F, 64, 57, 2158);
+				addLoc(i1, file$G, 64, 57, 2161);
 
 				button1._svelte = { component: component, ctx: ctx };
 
-				addListener(button1, "click", click_handler_2$2);
+				addListener(button1, "click", click_handler_2$3);
 				button1.className = "btn";
-				addLoc(button1, file$F, 64, 12, 2113);
-				addLoc(td4, file$F, 61, 8, 1972);
-				addLoc(tr, file$F, 48, 4, 1727);
+				addLoc(button1, file$G, 64, 12, 2116);
+				addLoc(td4, file$G, 61, 8, 1975);
+				addLoc(tr, file$G, 48, 4, 1730);
 			},
 
 			m: function mount(target, anchor) {
@@ -23968,14 +24954,14 @@
 					detachNode(tr);
 				}
 
-				removeListener(button0, "click", click_handler_1$4);
-				removeListener(button1, "click", click_handler_2$2);
+				removeListener(button0, "click", click_handler_1$5);
+				removeListener(button1, "click", click_handler_2$3);
 			}
 		};
 	}
 
 	// (3:37) {#if editIndex === i }
-	function create_if_block_1$j(component, ctx) {
+	function create_if_block_1$k(component, ctx) {
 		var tr, td0, text0_updating = {}, text1, td1, text2_updating = {}, text3, td2, text4_updating = {}, text5, td3, select_updating = {}, text6, td4, button, i, text7, text8_value = __$1('teams / save' ), text8, text9, if_block_anchor;
 
 		var text0_initial_data = {
@@ -24095,7 +25081,7 @@
 			select._bind({ value: 1 }, select.get());
 		});
 
-		var if_block = (ctx.field.title) && create_if_block_2$8(component, ctx);
+		var if_block = (ctx.field.title) && create_if_block_2$9(component, ctx);
 
 		return {
 			c: function create() {
@@ -24120,20 +25106,20 @@
 				text9 = createText("\n\n    ");
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
-				addLoc(td0, file$F, 4, 8, 142);
-				addLoc(td1, file$F, 7, 8, 313);
-				addLoc(td2, file$F, 15, 8, 578);
-				addLoc(td3, file$F, 18, 8, 743);
+				addLoc(td0, file$G, 4, 8, 142);
+				addLoc(td1, file$G, 7, 8, 313);
+				addLoc(td2, file$G, 15, 8, 578);
+				addLoc(td3, file$G, 18, 8, 743);
 				i.className = "fa fa-check";
-				addLoc(i, file$F, 23, 69, 988);
+				addLoc(i, file$G, 23, 69, 991);
 
 				button._svelte = { component: component, ctx: ctx };
 
-				addListener(button, "click", click_handler$a);
+				addListener(button, "click", click_handler$b);
 				button.className = "btn btn-primary";
-				addLoc(button, file$F, 23, 12, 931);
-				addLoc(td4, file$F, 22, 8, 914);
-				addLoc(tr, file$F, 3, 4, 129);
+				addLoc(button, file$G, 23, 12, 934);
+				addLoc(td4, file$G, 22, 8, 917);
+				addLoc(tr, file$G, 3, 4, 129);
 			},
 
 			m: function mount(target, anchor) {
@@ -24201,7 +25187,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_2$8(component, ctx);
+						if_block = create_if_block_2$9(component, ctx);
 						if_block.c();
 						if_block.m(if_block_anchor.parentNode, if_block_anchor);
 					}
@@ -24220,7 +25206,7 @@
 				text2.destroy();
 				text4.destroy();
 				select.destroy();
-				removeListener(button, "click", click_handler$a);
+				removeListener(button, "click", click_handler$b);
 				if (detach) {
 					detachNode(text9);
 				}
@@ -24234,12 +25220,12 @@
 	}
 
 	// (28:4) {#if field.title }
-	function create_if_block_2$8(component, ctx) {
+	function create_if_block_2$9(component, ctx) {
 		var tr, td0, p, raw_value = __$1('teams / cf / preview' ), text, td1;
 
 		function select_block_type_1(ctx) {
-			if (ctx.field.type == "text") { return create_if_block_3$5; }
-			if (ctx.field.type == "textArea") { return create_if_block_4$4; }
+			if (ctx.field.type == "text") { return create_if_block_3$6; }
+			if (ctx.field.type == "textArea") { return create_if_block_4$5; }
 		}
 
 		var current_block_type = select_block_type_1(ctx);
@@ -24254,13 +25240,13 @@
 				td1 = createElement("td");
 				if (if_block) { if_block.c(); }
 				p.className = "mini-help";
-				addLoc(p, file$F, 30, 12, 1149);
+				addLoc(p, file$G, 30, 12, 1152);
 				td0.colSpan = "1";
-				addLoc(td0, file$F, 29, 8, 1120);
+				addLoc(td0, file$G, 29, 8, 1123);
 				td1.colSpan = "4";
 				setStyle(td1, "pointer-events", "none");
-				addLoc(td1, file$F, 34, 8, 1264);
-				addLoc(tr, file$F, 28, 4, 1107);
+				addLoc(td1, file$G, 34, 8, 1267);
+				addLoc(tr, file$G, 28, 4, 1110);
 			},
 
 			m: function mount(target, anchor) {
@@ -24295,7 +25281,7 @@
 	}
 
 	// (38:46) 
-	function create_if_block_4$4(component, ctx) {
+	function create_if_block_4$5(component, ctx) {
 
 		var textarea_initial_data = {
 		 	labelWidth: "auto",
@@ -24332,7 +25318,7 @@
 	}
 
 	// (36:12) {#if field.type == "text"}
-	function create_if_block_3$5(component, ctx) {
+	function create_if_block_3$6(component, ctx) {
 
 		var text_initial_data = {
 		 	labelWidth: "auto",
@@ -24369,12 +25355,12 @@
 	}
 
 	// (3:4) {#each customFields as field, i}
-	function create_each_block$h(component, ctx) {
+	function create_each_block$i(component, ctx) {
 		var if_block_anchor;
 
 		function select_block_type(ctx) {
-			if (ctx.editIndex === ctx.i) { return create_if_block_1$j; }
-			return create_else_block$7;
+			if (ctx.editIndex === ctx.i) { return create_if_block_1$k; }
+			return create_else_block$8;
 		}
 
 		var current_block_type = select_block_type(ctx);
@@ -24418,7 +25404,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$D(), options.data);
+		this._state = assign(data$E(), options.data);
 
 		this._recompute({ settings: 1 }, this._state);
 		if (!('settings' in this._state)) { console.warn("<CustomFields> was created without expected data property 'settings'"); }
@@ -24428,7 +25414,7 @@
 		if (!('fieldTypes' in this._state)) { console.warn("<CustomFields> was created without expected data property 'fieldTypes'"); }
 		this._intro = true;
 
-		this._fragment = create_main_fragment$K(this, this._state);
+		this._fragment = create_main_fragment$L(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
@@ -24440,7 +25426,7 @@
 	}
 
 	assign(CustomFields.prototype, protoDev);
-	assign(CustomFields.prototype, methods$o);
+	assign(CustomFields.prototype, methods$p);
 
 	CustomFields.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('customFields' in newState && !this._updatingReadonlyProperty) { throw new Error("<CustomFields>: Cannot set read-only property 'customFields'"); }
@@ -24478,13 +25464,13 @@
 
 	    return visualizations.filter(function (el) { return el.title && visualizationArchive.indexOf(el.id) > -1; });
 	}
-	function data$E() {
+	function data$F() {
 	    return {
 	        visualizations: [],
 	        visualizationArchive: []
 	    };
 	}
-	var file$G = "team-settings/Visualizations.html";
+	var file$H = "team-settings/Visualizations.html";
 
 	function get_each2_context$1(ctx, list, i) {
 		var child_ctx = Object.create(ctx);
@@ -24504,7 +25490,7 @@
 		return child_ctx;
 	}
 
-	function create_main_fragment$L(component, ctx) {
+	function create_main_fragment$M(component, ctx) {
 		var p, raw0_value = __$1('teams / disable / p2' ), text0, div0, raw1_value = __$1('teams / disable / charts' ), text1, div1, text2, div2, raw2_value = __$1('teams / disable / maps' ), text3, div3, text4, div4, raw3_value = __$1('teams / disable / archived' ), text5, div5, text6, div6, switch0_updating = {}, switch1_updating = {};
 
 		var each0_value = ctx.charts;
@@ -24528,7 +25514,7 @@
 		var each2_blocks = [];
 
 		for (var i = 0; i < each2_value.length; i += 1) {
-			each2_blocks[i] = create_each_block$i(component, get_each2_context$1(ctx, each2_value, i));
+			each2_blocks[i] = create_each_block$j(component, get_each2_context$1(ctx, each2_value, i));
 		}
 
 		var switch0_initial_data = { label: __$1('teams / disable / enable-admins' ) };
@@ -24615,21 +25601,21 @@
 				switch0._fragment.c();
 				switch1._fragment.c();
 				setStyle(p, "margin-top", "10px");
-				addLoc(p, file$G, 1, 4, 105);
+				addLoc(p, file$H, 1, 4, 105);
 				div0.className = "namespace svelte-7quwjs";
-				addLoc(div0, file$G, 5, 4, 194);
+				addLoc(div0, file$H, 5, 4, 194);
 				setStyle(div1, "columns", "auto 4");
-				addLoc(div1, file$G, 7, 4, 270);
+				addLoc(div1, file$H, 7, 4, 270);
 				div2.className = "namespace svelte-7quwjs";
-				addLoc(div2, file$G, 13, 4, 471);
+				addLoc(div2, file$H, 13, 4, 471);
 				setStyle(div3, "columns", "auto 4");
-				addLoc(div3, file$G, 15, 4, 545);
+				addLoc(div3, file$H, 15, 4, 545);
 				div4.className = "namespace svelte-7quwjs";
-				addLoc(div4, file$G, 21, 4, 744);
+				addLoc(div4, file$H, 21, 4, 744);
 				setStyle(div5, "columns", "auto 4");
-				addLoc(div5, file$G, 23, 4, 822);
+				addLoc(div5, file$H, 23, 4, 822);
 				setStyle(div6, "margin-top", "10px");
-				addLoc(div6, file$G, 29, 4, 1025);
+				addLoc(div6, file$H, 29, 4, 1025);
 			},
 
 			m: function mount(target, anchor) {
@@ -24724,7 +25710,7 @@
 						if (each2_blocks[i]) {
 							each2_blocks[i].p(changed, child_ctx$2);
 						} else {
-							each2_blocks[i] = create_each_block$i(component, child_ctx$2);
+							each2_blocks[i] = create_each_block$j(component, child_ctx$2);
 							each2_blocks[i].c();
 							each2_blocks[i].m(div5, null);
 						}
@@ -24877,7 +25863,7 @@
 	}
 
 	// (25:8) {#each archived as vis}
-	function create_each_block$i(component, ctx) {
+	function create_each_block$j(component, ctx) {
 		var checkbox_updating = {};
 
 		var checkbox_initial_data = { label: ctx.vis.title };
@@ -24938,7 +25924,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$E(), options.data);
+		this._state = assign(data$F(), options.data);
 
 		this._recompute({ visualizations: 1, visualizationArchive: 1 }, this._state);
 		if (!('visualizations' in this._state)) { console.warn("<Visualizations> was created without expected data property 'visualizations'"); }
@@ -24946,7 +25932,7 @@
 		if (!('settings' in this._state)) { console.warn("<Visualizations> was created without expected data property 'settings'"); }
 		this._intro = true;
 
-		this._fragment = create_main_fragment$L(this, this._state);
+		this._fragment = create_main_fragment$M(this, this._state);
 
 		if (options.target) {
 			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
@@ -24984,7 +25970,7 @@
 	    if (!users || !users.length || !userId) { return false; }
 	    return users.find(function (el) { return el.id === userId; }).role;
 	}
-	function data$F() {
+	function data$G() {
 	    return {
 	        loadingUsers: true,
 	        team: {
@@ -25025,7 +26011,7 @@
 	        deleting: false
 	    };
 	}
-	var methods$p = {
+	var methods$q = {
 	    updateUsers: async function updateUsers() {
 	        var res = await this.fetchAPI(("teams/" + (this.get().team.id) + "/members"), {
 	            method: 'GET',
@@ -25076,7 +26062,7 @@
 	    }
 	};
 
-	function onstate$6(ref) {
+	function onstate$7(ref) {
 	    var changed = ref.changed;
 	    var current = ref.current;
 	    var previous = ref.previous;
@@ -25087,10 +26073,10 @@
 	        }
 	    }
 	}
-	var file$H = "team-settings/App.html";
+	var file$I = "team-settings/App.html";
 
-	function create_main_fragment$M(component, ctx) {
-		var div7, div6, div0, h10, text0_value = __$1('teams / h1' ), text0, text1, p0, text2_value = __$1('teams / p' ), text2, text3, ul, li0, raw0_value = __$1('teams / permissions / members' ), text4, li1, raw1_value = __$1('teams / permissions / admins' ), text5, li2, raw2_value = __$1('teams / permissions / owners' ), text6, inviteuser_updating = {}, text7, text8, div1, h11, raw3_value = __$1('teams / defaults / h1' ), text9, p1, raw4_value = __$1('teams / defaults / p' ), text10, settings_updating = {}, text11, div2, h12, text12_value = __$1('teams / cf / h1' ), text12, text13, p2, raw5_value = __$1('teams / cf / p' ), text14, customfields_updating = {}, text15, div3, h13, text16_value = __$1('teams / slack / h1' ), text16, text17, text18_updating = {}, switch0_updating = {}, text19, div4, h14, raw6_value = __$1('teams / ftp / h1' ), text20, p3, raw7_value = __$1('teams / ftp / p' ), text21, text22_updating = {}, text23, text24_updating = {}, text25, text26_updating = {}, text27, text28_updating = {}, switch1_updating = {}, text29, div5, h15, raw8_value = __$1('teams / disable / h1' ), text30, p4, raw9_value = __$1('teams / disable / p' ), text31, visualizations_updating = {}, text32;
+	function create_main_fragment$N(component, ctx) {
+		var div7, div6, div0, h10, text0_value = __$1('teams / h1' ), text0, text1, p0, text2_value = __$1('teams / p' ), text2, text3, ul, li0, raw0_value = __$1('teams / permissions / members' ), text4, li1, raw1_value = __$1('teams / permissions / admins' ), text5, li2, raw2_value = __$1('teams / permissions / owners' ), text6, inviteuser_updating = {}, text7, text8, div1, h11, raw3_value = __$1('teams / defaults / h1' ), text9, p1, raw4_value = __$1('teams / defaults / p' ), text10, settings_updating = {}, text11, div2, h12, text12_value = __$1('teams / cf / h1' ), text12, text13, p2, raw5_value = __$1('teams / cf / p' ), text14, customfields_updating = {}, text15, div3, h13, text16_value = __$1('teams / slack / h1' ), text16, text17, text18_updating = {}, switch0_updating = {}, text19, div4, h14, raw6_value = __$1('teams / ftp / h1' ), text20, p3, raw7_value = __$1('teams / ftp / p' ), text21, text22_updating = {}, text23, text24_updating = {}, text25, text26_updating = {}, text27, text28_updating = {}, switch1_updating = {}, text29, div5, h15, raw8_value = __$1('teams / disable / h1' ), text30, p4, raw9_value = __$1('teams / disable / p' ), text31, visualizations_updating = {}, text32, text33;
 
 		var inviteuser_initial_data = {};
 		if (ctx.team  !== void 0) {
@@ -25136,8 +26122,8 @@
 		});
 
 		function select_block_type(ctx) {
-			if (ctx.loadingUsers) { return create_if_block_3$6; }
-			return create_else_block$8;
+			if (ctx.loadingUsers) { return create_if_block_4$6; }
+			return create_else_block$9;
 		}
 
 		var current_block_type = select_block_type(ctx);
@@ -25478,7 +26464,9 @@
 			visualizations._bind({ settings: 1, visualizationArchive: 1, visualizations: 1 }, visualizations.get());
 		});
 
-		var if_block1 = (ctx.isAdmin || (ctx.role && ctx.role === "owner")) && create_if_block$y(component, ctx);
+		var if_block1 = (ctx.isAdmin || (ctx.role && ctx.role === "owner")) && create_if_block_1$l(component, ctx);
+
+		var if_block2 = (ctx.isAdmin) && create_if_block$z(component, ctx);
 
 		return {
 			c: function create() {
@@ -25546,41 +26534,43 @@
 				visualizations._fragment.c();
 				text32 = createText("\n\n        ");
 				if (if_block1) { if_block1.c(); }
-				addLoc(h10, file$H, 3, 12, 193);
+				text33 = createText(" ");
+				if (if_block2) { if_block2.c(); }
+				addLoc(h10, file$I, 3, 12, 193);
 				setStyle(p0, "margin-bottom", "10px");
-				addLoc(p0, file$H, 5, 12, 235);
-				addLoc(li0, file$H, 10, 16, 380);
-				addLoc(li1, file$H, 13, 16, 490);
-				addLoc(li2, file$H, 16, 16, 599);
+				addLoc(p0, file$I, 5, 12, 235);
+				addLoc(li0, file$I, 10, 16, 380);
+				addLoc(li1, file$I, 13, 16, 490);
+				addLoc(li2, file$I, 16, 16, 599);
 				setStyle(ul, "margin-bottom", "20px");
 				ul.className = "svelte-63ljwi";
-				addLoc(ul, file$H, 9, 12, 332);
+				addLoc(ul, file$I, 9, 12, 332);
 				div0.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div0, file$H, 2, 8, 131);
-				addLoc(h11, file$H, 31, 12, 1160);
-				addLoc(p1, file$H, 32, 12, 1220);
+				addLoc(div0, file$I, 2, 8, 131);
+				addLoc(h11, file$I, 31, 12, 1160);
+				addLoc(p1, file$I, 32, 12, 1220);
 				div1.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div1, file$H, 30, 8, 1098);
-				addLoc(h12, file$H, 40, 12, 1503);
-				addLoc(p2, file$H, 41, 12, 1551);
+				addLoc(div1, file$I, 30, 8, 1098);
+				addLoc(h12, file$I, 40, 12, 1503);
+				addLoc(p2, file$I, 41, 12, 1551);
 				div2.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div2, file$H, 39, 8, 1441);
-				addLoc(h13, file$H, 47, 12, 1763);
+				addLoc(div2, file$I, 39, 8, 1441);
+				addLoc(h13, file$I, 47, 12, 1763);
 				div3.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div3, file$H, 46, 8, 1701);
-				addLoc(h14, file$H, 60, 12, 2357);
-				addLoc(p3, file$H, 61, 12, 2412);
+				addLoc(div3, file$I, 46, 8, 1701);
+				addLoc(h14, file$I, 60, 12, 2357);
+				addLoc(p3, file$I, 61, 12, 2412);
 				div4.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div4, file$H, 59, 8, 2295);
-				addLoc(h15, file$H, 100, 12, 3929);
-				addLoc(p4, file$H, 101, 12, 3988);
+				addLoc(div4, file$I, 59, 8, 2295);
+				addLoc(h15, file$I, 100, 12, 3929);
+				addLoc(p4, file$I, 101, 12, 3988);
 				div5.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div5, file$H, 99, 8, 3867);
+				addLoc(div5, file$I, 99, 8, 3867);
 				div6.className = "visconfig";
-				addLoc(div6, file$H, 1, 4, 99);
+				addLoc(div6, file$I, 1, 4, 99);
 				div7.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div7, "margin-top", "-20px");
-				addLoc(div7, file$H, 0, 0, 0);
+				addLoc(div7, file$I, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -25658,6 +26648,8 @@
 				visualizations._mount(div5, null);
 				append(div6, text32);
 				if (if_block1) { if_block1.m(div6, null); }
+				append(div6, text33);
+				if (if_block2) { if_block2.m(div6, null); }
 			},
 
 			p: function update(changed, _ctx) {
@@ -25807,13 +26799,26 @@
 					if (if_block1) {
 						if_block1.p(changed, ctx);
 					} else {
-						if_block1 = create_if_block$y(component, ctx);
+						if_block1 = create_if_block_1$l(component, ctx);
 						if_block1.c();
-						if_block1.m(div6, null);
+						if_block1.m(div6, text33);
 					}
 				} else if (if_block1) {
 					if_block1.d(1);
 					if_block1 = null;
+				}
+
+				if (ctx.isAdmin) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block$z(component, ctx);
+						if_block2.c();
+						if_block2.m(div6, null);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
 				}
 			},
 
@@ -25835,12 +26840,13 @@
 				switch1.destroy();
 				visualizations.destroy();
 				if (if_block1) { if_block1.d(); }
+				if (if_block2) { if_block2.d(); }
 			}
 		};
 	}
 
 	// (26:12) {:else}
-	function create_else_block$8(component, ctx) {
+	function create_else_block$9(component, ctx) {
 		var usertable_updating = {};
 
 		var usertable_initial_data = {};
@@ -25941,7 +26947,7 @@
 	}
 
 	// (24:12) {#if loadingUsers}
-	function create_if_block_3$6(component, ctx) {
+	function create_if_block_4$6(component, ctx) {
 		var p, i, text, raw_value = __$1('teams / loading' ), raw_before;
 
 		return {
@@ -25951,8 +26957,8 @@
 				text = createText("   ");
 				raw_before = createElement('noscript');
 				i.className = "fa fa-circle-o-notch fa-spin";
-				addLoc(i, file$H, 24, 15, 858);
-				addLoc(p, file$H, 24, 12, 855);
+				addLoc(i, file$I, 24, 15, 858);
+				addLoc(p, file$I, 24, 12, 855);
 			},
 
 			m: function mount(target, anchor) {
@@ -25974,10 +26980,10 @@
 	}
 
 	// (107:8) {#if isAdmin || (role && role === "owner") }
-	function create_if_block$y(component, ctx) {
+	function create_if_block_1$l(component, ctx) {
 		var div, h1, raw0_value = __$1('teams / delete / h1'), text0, p, raw1_value = __$1('teams / delete / p'), text1, if_block_anchor, switch_1_updating = {};
 
-		var if_block = (ctx.deleteTeam) && create_if_block_1$k(component, ctx);
+		var if_block = (ctx.deleteTeam) && create_if_block_2$a(component, ctx);
 
 		var switch_1_initial_data = { label: __$1('teams / delete / yes') };
 		if (ctx.deleteTeam !== void 0) {
@@ -26013,10 +27019,10 @@
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
 				switch_1._fragment.c();
-				addLoc(h1, file$H, 108, 12, 4263);
-				addLoc(p, file$H, 109, 12, 4320);
+				addLoc(h1, file$I, 108, 12, 4263);
+				addLoc(p, file$I, 109, 12, 4320);
 				div.className = "span12 vis-options settings-section svelte-63ljwi";
-				addLoc(div, file$H, 107, 8, 4201);
+				addLoc(div, file$I, 107, 8, 4201);
 			},
 
 			m: function mount(target, anchor) {
@@ -26038,7 +27044,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_1$k(component, ctx);
+						if_block = create_if_block_2$a(component, ctx);
 						if_block.c();
 						if_block.m(if_block_anchor.parentNode, if_block_anchor);
 					}
@@ -26068,7 +27074,7 @@
 	}
 
 	// (115:16) {#if deleteTeam}
-	function create_if_block_1$k(component, ctx) {
+	function create_if_block_2$a(component, ctx) {
 		var p, raw_value = __$1('teams / delete / really'), text0, checkbox_updating = {}, text1, if_block_anchor;
 
 		var checkbox_initial_data = { label: __$1('teams / delete / really-yes') };
@@ -26094,7 +27100,7 @@
 			checkbox._bind({ value: 1 }, checkbox.get());
 		});
 
-		var if_block = (ctx.deleteTeam2) && create_if_block_2$9(component, ctx);
+		var if_block = (ctx.deleteTeam2) && create_if_block_3$7(component, ctx);
 
 		return {
 			c: function create() {
@@ -26104,7 +27110,7 @@
 				text1 = createText("\n\n                ");
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
-				addLoc(p, file$H, 115, 16, 4526);
+				addLoc(p, file$I, 115, 16, 4526);
 			},
 
 			m: function mount(target, anchor) {
@@ -26131,7 +27137,7 @@
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_2$9(component, ctx);
+						if_block = create_if_block_3$7(component, ctx);
 						if_block.c();
 						if_block.m(if_block_anchor.parentNode, if_block_anchor);
 					}
@@ -26161,7 +27167,7 @@
 	}
 
 	// (122:16) {#if deleteTeam2}
-	function create_if_block_2$9(component, ctx) {
+	function create_if_block_3$7(component, ctx) {
 		var button, i, i_class_value, text, raw_value = __$1('teams / delete / action'), raw_before;
 
 		function click_handler(event) {
@@ -26175,10 +27181,10 @@
 				text = createText("  ");
 				raw_before = createElement('noscript');
 				i.className = i_class_value = "fa " + (ctx.deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times') + " svelte-63ljwi";
-				addLoc(i, file$H, 123, 20, 4839);
+				addLoc(i, file$I, 123, 20, 4839);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-danger";
-				addLoc(button, file$H, 122, 16, 4763);
+				addLoc(button, file$I, 122, 16, 4763);
 			},
 
 			m: function mount(target, anchor) {
@@ -26205,6 +27211,79 @@
 		};
 	}
 
+	// (129:14) {#if isAdmin}
+	function create_if_block$z(component, ctx) {
+		var div, h1, raw0_value = __$1('teams / products / h1'), text0, p, raw1_value = __$1('teams / products / p'), text1, producttable_updating = {};
+
+		var producttable_initial_data = {};
+		if (ctx.team  !== void 0) {
+			producttable_initial_data.team = ctx.team ;
+			producttable_updating.team = true;
+		}
+		var producttable = new ProductTable_1({
+			root: component.root,
+			store: component.store,
+			data: producttable_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!producttable_updating.team && changed.team) {
+					newState.team = childState.team;
+				}
+				component._set(newState);
+				producttable_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			producttable._bind({ team: 1 }, producttable.get());
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				h1 = createElement("h1");
+				text0 = createText("\n            ");
+				p = createElement("p");
+				text1 = createText("\n\n            ");
+				producttable._fragment.c();
+				addLoc(h1, file$I, 131, 12, 5150);
+				addLoc(p, file$I, 132, 12, 5209);
+				div.className = "span12 vis-options settings-section svelte-63ljwi";
+				addLoc(div, file$I, 130, 8, 5088);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, h1);
+				h1.innerHTML = raw0_value;
+				append(div, text0);
+				append(div, p);
+				p.innerHTML = raw1_value;
+				append(div, text1);
+				producttable._mount(div, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var producttable_changes = {};
+				if (!producttable_updating.team && changed.team) {
+					producttable_changes.team = ctx.team ;
+					producttable_updating.team = ctx.team  !== void 0;
+				}
+				producttable._set(producttable_changes);
+				producttable_updating = {};
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				producttable.destroy();
+			}
+		};
+	}
+
 	function App(options) {
 		var this$1 = this;
 
@@ -26214,7 +27293,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$F(), options.data);
+		this._state = assign(data$G(), options.data);
 
 		this._recompute({ users: 1, userId: 1 }, this._state);
 		if (!('users' in this._state)) { console.warn("<App> was created without expected data property 'users'"); }
@@ -26239,11 +27318,11 @@
 		if (!('deleting' in this._state)) { console.warn("<App> was created without expected data property 'deleting'"); }
 		this._intro = true;
 
-		this._handlers.state = [onstate$6];
+		this._handlers.state = [onstate$7];
 
-		onstate$6.call(this, { changed: assignTrue({}, this._state), current: this._state });
+		onstate$7.call(this, { changed: assignTrue({}, this._state), current: this._state });
 
-		this._fragment = create_main_fragment$M(this, this._state);
+		this._fragment = create_main_fragment$N(this, this._state);
 
 		this.root._oncreate.push(function () {
 			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
@@ -26259,7 +27338,7 @@
 	}
 
 	assign(App.prototype, protoDev);
-	assign(App.prototype, methods$p);
+	assign(App.prototype, methods$q);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('role' in newState && !this._updatingReadonlyProperty) { throw new Error("<App>: Cannot set read-only property 'role'"); }

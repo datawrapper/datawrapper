@@ -605,5 +605,15 @@
   "nav / team / leave": "Leave team",
   "nav / team / settings": "Team settings",
   "nav / team / charts": "Team charts",
-  "nav / team / teams": "Teams"
+  "nav / team / teams": "Teams",
+  "teams / products / h1": "Manage products",
+  "teams / products / p": "As a Datawrapper administrator, you can add and remove products to the organization.",
+  "teams / products / id": "ID",
+  "teams / products / name": "Name",
+  "teams / products / expires": "Expires",
+  "teams / products / actions": "Actions",
+  "teams / products / add-product": "Add Product:",
+  "teams / products / add": "Add",
+  "teams / products / loading": "Loading products…",
+  "teams / products / never": "never"
 }

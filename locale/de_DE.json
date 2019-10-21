@@ -605,5 +605,15 @@
   "nav / team / leave": "Team verlassen",
   "nav / team / settings": "Team-Einstellungen",
   "nav / team / charts": "Team-Diagramme",
-  "nav / team / teams": "Teams"
+  "nav / team / teams": "Teams",
+  "teams / products / h1": "Produkte verwalten",
+  "teams / products / p": "Als Datawrapper-Administrator kannst Du die Produkte verwalten, die dem Team zugewiesen sind.",
+  "teams / products / id": "ID",
+  "teams / products / name": "Name",
+  "teams / products / expires": "Läuft bis",
+  "teams / products / actions": "Aktionen",
+  "teams / products / add-product": "Produkt hinzufügen:",
+  "teams / products / add": "Hinzufügen",
+  "teams / products / loading": "Produkte werden geladen…",
+  "teams / products / never": "für immer"
 }
