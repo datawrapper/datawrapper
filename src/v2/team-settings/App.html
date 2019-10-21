@@ -231,7 +231,9 @@
         computed: {
             role({ users, userId }) {
                 if (!users || !users.length || !userId) return false;
-                return users.find(el => el.id === userId).role;
+                const user = users.find(el => el.id === userId);
+                if (user) return user.role;
+                else return 'admin';
             }
         },
         helpers: {
