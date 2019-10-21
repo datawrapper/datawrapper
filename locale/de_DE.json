@@ -555,6 +555,7 @@
   "teams / custom / embedcode": "Embed-Template:",
   "teams / custom / embedcode / help": "Du kannst die Platzhalter <b>%chart_url%</b>, <b>%chart_id%</b>, <b>%chart_width%</b> und <b>%chart_height%</b> in deiner Embed-Code-Vorlage verwenden.",
   "teams / slack / h1": "Slack-Integration",
+  "teams / slack / p": "Aktiviere die Slack-Integration um in einem Channel deiner Wahl benachrichtigt zu werden, wenn ein Diagramm deines Teams veröffentlicht oder aktualisiert wird.",
   "teams / slack / enable": "Slack-Integration aktivieren",
   "teams / slack / webhook": "Webhook URL:",
   "teams / slack / webhook / p": "Aktiviere Slack-Benachrichtigungen, um bei jeder Veröffentlichung einer Grafik eine Nachricht zu bekommen.",

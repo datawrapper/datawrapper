@@ -1,195 +1,165 @@
-<div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
-    <div class="visconfig">
-        <div class="span12 vis-options settings-section">
-            <h1>{__('teams / h1' )}</h1>
-
-            <p style="margin-bottom:10px;">
-                {__('teams / p' )}
-            </p>
-
-            <ul style="margin-bottom:20px">
-                <li>
-                    { @html __('teams / permissions / members' ) }
-                </li>
-                <li>
-                    { @html __('teams / permissions / admins' ) }
-                </li>
-                <li>
-                    { @html __('teams / permissions / owners' ) }
-                </li>
-            </ul>
-
-            <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
-
-            {#if loadingUsers}
-            <p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
-            {:else}
-            <UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
-            {/if}
-        </div>
-
-        <div class="span12 vis-options settings-section">
-            <h1>{ @html __('teams / defaults / h1' ) }</h1>
-            <p>
-                { @html __('teams / defaults / p' ) }
-            </p>
-
-            <Settings bind:team bind:defaultTheme bind:settings bind:themes bind:folders bind:locales bind:embedCodes />
-        </div>
-
-        <div class="span12 vis-options settings-section">
-            <h1>{ __('teams / cf / h1' ) }</h1>
-            <p>{ @html __('teams / cf / p' ) }</p>
-
-            <CustomFields on:change="debounceUpdateTeam()" bind:team bind:settings />
-        </div>
-
-        <div class="span12 vis-options settings-section">
-            <h1>{ __('teams / slack / h1' ) }</h1>
-
-            <Switch label="{ __('teams / slack / enable' ) }" bind:value="settings.slack_enabled">
-                <Text
-                    label="{ __('teams / slack / webhook' ) }"
-                    bind:value="settings.slack_webhook_url"
-                    placeholder="e.g. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
-                    help="{ __('teams / slack / webhook / p' ) }"
-                />
-            </Switch>
-        </div>
-
-        <div class="span12 vis-options settings-section">
-            <h1>{ @html __('teams / ftp / h1' ) }</h1>
-            <p>{ @html __('teams / ftp / p' ) }</p>
-
-            <Switch label="{ __('teams / ftp / enable' ) }" bind:value="settings.ftp.enabled">
-                <Text
-                    label="{ __('teams / ftp / server' ) }"
-                    bind:value="settings.ftp.server"
-                    placeholder="e.g. ftp.company.com"
-                    help="{ __('teams / ftp / server / p' ) }"
-                />
-                <Text
-                    label="{ __('teams / ftp / user' ) }"
-                    bind:value="settings.ftp.user"
-                    placeholder="e.g. user"
-                    help="{ __('teams / ftp / user / p' ) }"
-                />
-                <Text
-                    label="{ __('teams / ftp / password' ) }"
-                    bind:value="settings.ftp.password"
-                    placeholder="e.g. password"
-                    help="{ __('teams / ftp / password / p' ) }"
-                />
-                <Text
-                    label="{ __('teams / ftp / dir' ) }"
-                    bind:value="settings.ftp.directory"
-                    placeholder="e.g. my/directory"
-                    help="{ __('teams / ftp / dir / p' ) }"
-                />
-
-                <!--
-				<Text
-					label="{ __('teams / ftp / file' ) }"
-					bind:value="settings.ftp.filename"
-					placeholder="e.g. filename"
-					help="{ __('teams / ftp / file / p' ) }" />
-        -->
-            </Switch>
-        </div>
-
-        <div class="span12 vis-options settings-section">
-            <h1>{ @html __('teams / disable / h1' ) }</h1>
-            <p>{ @html __('teams / disable / p' ) }</p>
-
-            <Visualizations bind:settings bind:visualizationArchive bind:visualizations />
-        </div>
-
-        {#if isAdmin || (role && role === "owner") }
-        <div class="span12 vis-options settings-section">
-            <h1>{ @html __('teams / delete / h1') }</h1>
-            <p>
-                { @html __('teams / delete / p') }
-            </p>
-
-            <Switch label="{ __('teams / delete / yes') }" bind:value="deleteTeam">
-                {#if deleteTeam}
-                <p>
-                    { @html __('teams / delete / really') }
-                </p>
-
-                <Checkbox label="{ __('teams / delete / really-yes') }" bind:value="deleteTeam2" />
-
-                {#if deleteTeam2}
-                <button on:click="deleteTeam()" class="btn btn-danger">
-                    <i class="fa { deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times' }"></i>&nbsp; { @html __('teams / delete / action') }
-                </button>
-                {/if} {/if}
-            </Switch>
-        </div>
-        {/if} {#if isAdmin}
-        <div class="span12 vis-options settings-section">
-            <h1>{ @html __('teams / products / h1') }</h1>
-
-            <p>
-                { @html __('teams / products / p') }
-            </p>
-
-            <ProductTable bind:isAdmin bind:team />
-        </div>
-
-        {/if}
+<div class="row" style="">
+    <div class="span12 admin">
+        <h1 class="title"><b>{ team.name }</b> » Team settings</h1>
     </div>
 </div>
 
-<style lang="less">
-    .settings-section {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+<div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
+    <div class="visconfig">
+        <div class="span2">
+            {#each groups as group}
+            <div class="group">{ group.title }</div>
 
-        border-top: 1px solid #eee;
+            <ul class="nav nav-stacked nav-tabs">
+                {#each group.tabs as tab}
+                <li class:active="activeTab === tab.id" on:click="set({activeTab: tab.id})">
+                    <a href="#{ tab.id }"><i class="{ tab.icon }"></i> &nbsp; { tab.title } </a>
+                </li>
+                {/each}
+            </ul>
+            {/each}
+        </div>
 
-        &:first-child {
-            border-top: none;
-        }
+        <div class="span10">
+            {#if currentTab}
+            <div class="vis-options settings-section">
+                <h1>{ @html currentTab.h1 }</h1>
 
-        .base-dropdown-content {
-            top: 30px !important;
-        }
+                <p style="margin-bottom:10px;">
+                    { @html currentTab.p }
+                </p>
 
-        ul {
-            font-weight: 300;
-        }
-    }
-</style>
+                <svelte:component
+                    this="{ currentTab.app }"
+                    bind:team
+                    bind:defaultTheme
+                    bind:settings
+                    bind:loadingUsers
+                    bind:users
+                    bind:userId
+                    bind:visualizations
+                    bind:folders
+                    bind:themes
+                    bind:isAdmin
+                    bind:updatingUsers
+                    on:change="debounceUpdateTeam()"
+                />
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
 
 <script>
     /* globals dw */
-    import { Text, Switch, Checkbox } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
-    import UserTable from './UserTable.html';
-    import ProductTable from './ProductTable.html';
-    import InviteUser from './InviteUser.html';
-    import Settings from './Settings.html';
-    import CustomFields from './CustomFields.html';
-    import Visualizations from './Visualizations.html';
+
+    import Members from './tabs/Members.html';
+    import Settings from './tabs/Settings.html';
+    import Slack from './tabs/Slack.html';
+    import CustomFields from './tabs/CustomFields.html';
+    import PdfToFtp from './tabs/PdfToFtp.html';
+    import Visualizations from './tabs/Visualizations.html';
+    import DeleteTeam from './tabs/DeleteTeam.html';
+    import ProductTable from './tabs/ProductTable.html';
 
     export default {
         components: {
-            InviteUser,
-            UserTable,
-            ProductTable,
+            Members,
             Settings,
+            Slack,
             CustomFields,
-            Text,
-            Switch,
-            Checkbox,
-            Visualizations
+            PdfToFtp,
+            Visualizations,
+            DeleteTeam,
+            ProductTable
         },
         data() {
             return {
-                loadingUsers: true,
+                allTabs: [
+                    {
+                        id: 'members',
+                        title: 'Members',
+                        icon: 'fa fa-users',
+                        group: 'Users',
+                        order: 1,
+                        h1: __('teams / h1'),
+                        p: __('teams / p'),
+                        app: Members
+                    },
+                    {
+                        id: 'settings',
+                        title: 'Settings',
+                        icon: 'fa fa-gears',
+                        group: 'Users',
+                        order: 2,
+                        h1: __('teams / defaults / h1'),
+                        p: __('teams / defaults / p'),
+                        app: Settings
+                    },
+                    {
+                        id: 'slack',
+                        title: 'Slack-Notifications',
+                        icon: 'fa fa-at',
+                        group: 'Advanced',
+                        order: 1,
+                        h1: __('teams / slack / h1'),
+                        p: __('teams / slack / p'),
+                        app: Slack
+                    },
+                    {
+                        id: 'customFields',
+                        title: 'Custom Fields',
+                        icon: 'fa fa-list',
+                        group: 'Advanced',
+                        order: 2,
+                        h1: __('teams / cf / h1'),
+                        p: __('teams / cf / p'),
+                        app: Settings
+                    },
+                    {
+                        id: 'pdfToFtp',
+                        title: 'PDF to FTP',
+                        icon: 'fa fa-cloud-upload',
+                        group: 'Advanced',
+                        order: 3,
+                        h1: __('teams / ftp / h1'),
+                        p: __('teams / ftp / p'),
+                        app: PdfToFtp
+                    },
+                    {
+                        id: 'visTypes',
+                        title: 'Visualizations',
+                        icon: 'fa fa-ban',
+                        group: 'Advanced',
+                        order: 4,
+                        h1: __('teams / disable / h1'),
+                        p: __('teams / disable / p'),
+                        app: Visualizations
+                    },
+                    {
+                        id: 'deleteTeam',
+                        title: 'Delete team',
+                        icon: 'fa fa-times',
+                        group: 'Advanced',
+                        order: 5,
+                        h1: __('teams / delete / h1'),
+                        p: __('teams / delete / p'),
+                        app: DeleteTeam,
+                        ownerOnly: true
+                    },
+                    {
+                        id: 'adminProducts',
+                        title: 'Products',
+                        icon: 'fa fa-list-alt',
+                        group: 'Internal',
+                        order: 1,
+                        h1: __('teams / products / h1'),
+                        p: __('teams / products / p'),
+                        app: ProductTable,
+                        adminOnly: true
+                    }
+                ],
                 team: {
                     name: ''
                 },
@@ -220,12 +190,14 @@
                         visualizations: {}
                     }
                 },
+                loadingUsers: true,
                 users: [],
                 userId: null,
                 visualizations: [],
                 deleteTeam: false,
                 deleteTeam2: false,
-                deleting: false
+                deleting: false,
+                activeTab: 'members'
             };
         },
         computed: {
@@ -234,6 +206,39 @@
                 const user = users.find(el => el.id === userId);
                 if (user) return user.role;
                 else return 'admin';
+            },
+            currentTab({ activeTab, tabs }) {
+                if (!tabs || !activeTab) return null;
+                const t = tabs.filter(el => el.id === activeTab);
+                return t[0];
+            },
+            tabs({ allTabs, isAdmin, role }) {
+                return allTabs.filter(tab => {
+                    if (tab.adminOnly && !isAdmin) return false;
+                    if (tab.ownerOnly && (!isAdmin && role !== 'owner')) return false;
+                    return true;
+                });
+            },
+            groups({ tabs }) {
+                const groups = [];
+
+                function get(groups, groupId) {
+                    let g = groups.filter(el => el.title === groupId);
+                    if (g.length) return g[0];
+
+                    groups.push({
+                        title: groupId,
+                        tabs: []
+                    });
+
+                    return groups[groups.length - 1];
+                }
+
+                tabs.forEach(tab => {
+                    get(groups, tab.group).tabs.push(tab);
+                });
+
+                return groups;
             }
         },
         helpers: {
@@ -293,3 +298,35 @@
         }
     };
 </script>
+
+<style lang="less">
+    .settings-section {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        border-top: 1px solid #eee;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        .base-dropdown-content {
+            top: 30px !important;
+        }
+    }
+
+    .group {
+        text-transform: uppercase;
+        padding: 8px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    li.active a {
+        background: #08c;
+        color: #fff;
+        font-weight: bold;
+    }
+</style>

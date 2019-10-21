@@ -1,0 +1,42 @@
+<Switch label="{ __('teams / ftp / enable' ) }" bind:value="settings.ftp.enabled">
+    <Text
+        label="{ __('teams / ftp / server' ) }"
+        bind:value="settings.ftp.server"
+        placeholder="e.g. ftp.company.com"
+        help="{ __('teams / ftp / server / p' ) }"
+    />
+    <Text label="{ __('teams / ftp / user' ) }" bind:value="settings.ftp.user" placeholder="e.g. user" help="{ __('teams / ftp / user / p' ) }" />
+    <Text
+        label="{ __('teams / ftp / password' ) }"
+        bind:value="settings.ftp.password"
+        placeholder="e.g. password"
+        help="{ __('teams / ftp / password / p' ) }"
+    />
+    <Text
+        label="{ __('teams / ftp / dir' ) }"
+        bind:value="settings.ftp.directory"
+        placeholder="e.g. my/directory"
+        help="{ __('teams / ftp / dir / p' ) }"
+    />
+
+    <!--
+        <Text
+            label="{ __('teams / ftp / file' ) }"
+            bind:value="settings.ftp.filename"
+            placeholder="e.g. filename"
+            help="{ __('teams / ftp / file / p' ) }" />
+    -->
+</Switch>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import { Switch, Text } from '@datawrapper/controls';
+
+    export default {
+        components: {
+            Switch,
+            Text
+        },
+        helpers: { __ }
+    };
+</script>

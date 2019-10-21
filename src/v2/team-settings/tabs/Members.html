@@ -1,0 +1,39 @@
+<ul style="margin-bottom:20px">
+    <li>
+        { @html __('teams / permissions / members' ) }
+    </li>
+    <li>
+        { @html __('teams / permissions / admins' ) }
+    </li>
+    <li>
+        { @html __('teams / permissions / owners' ) }
+    </li>
+</ul>
+
+<InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
+
+{#if loadingUsers}
+<p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
+{:else}
+<UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
+{/if}
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import UserTable from './members/UserTable.html';
+    import InviteUser from './members/InviteUser.html';
+
+    export default {
+        components: {
+            InviteUser,
+            UserTable
+        },
+        helpers: { __ }
+    };
+</script>
+
+<style>
+    ul {
+        font-weight: 300;
+    }
+</style>

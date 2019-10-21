@@ -555,6 +555,7 @@
   "teams / custom / embedcode": "Embed template:",
   "teams / custom / embedcode / help": "You can use the placeholders <b>%chart_url%</b>, <b>%chart_id%</b>, <b>%chart_width%</b> and <b>%chart_height%</b> in your embed code template.",
   "teams / slack / h1": "Slack integration",
+  "teams / slack / p": "Activate integration with Slack to be notified in channel of your choice whenever a chart created by your team is published or updated.",
   "teams / slack / enable": "Enable Slack integration",
   "teams / slack / webhook": "Webhook URL:",
   "teams / slack / webhook / p": "Enable Slack notifications to get a message every time a chart is published or updated by your team.",
