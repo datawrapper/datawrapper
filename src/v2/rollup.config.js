@@ -72,7 +72,8 @@ function build(appId, opts) {
             json(),
 
             buble({
-                transforms: { dangerousForOf: true, asyncAwait: false }
+                transforms: { dangerousForOf: true, asyncAwait: false },
+                objectAssign: 'Object.assign'
             }),
             production && terser()
         ]
