@@ -1,0 +1,106 @@
+<!-- prettier-ignore -->
+<Select
+    label="{ __('teams / defaults / theme' ) }"
+    bind:value="defaultTheme"
+    width="200px"
+    labelWidth="100px"
+    help="{ __('teams / defaults / theme / p' ) }"
+    options="{themes}"
+/>
+
+<!-- prettier-ignore -->
+<Select
+    label="{ __('teams / defaults / folder' ) }"
+    bind:value="settings.default.folder"
+    width="200px"
+    labelWidth="100px"
+    help="{ __('teams / defaults / folder / p' ) }"
+    options="{folders}"
+/>
+
+<!-- prettier-ignore -->
+<Select
+    label="{ __('teams / defaults / folder-status' ) }"
+    bind:value="settings.folders"
+    width="200px"
+    labelWidth="100px"
+    help="{ __('teams / defaults / folder-status / p' ) }"
+    options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
+/>
+
+<!-- prettier-ignore -->
+<Select
+    label="{ __('teams / defaults / locale' ) }"
+    bind:value="settings.default.locale"
+    width="200px"
+    labelWidth="100px"
+    help="{ __('teams / defaults / locale / p' ) }"
+    options="{localeOptions}"
+/>
+
+<!-- prettier-ignore -->
+<Select
+    label="{ __('teams / defaults / embedcode' ) }"
+    bind:value="settings.embed.preferred_embed"
+    width="200px"
+    labelWidth="100px"
+    help="{ __('teams / defaults / embedcode / p' ) }"
+    options="{embedCodes}"
+/>
+
+<Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
+
+{#if settings.embed.preferred_embed == "custom"}
+<div>
+    <Text label="{ __('teams / custom / title' ) }" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
+
+    <!-- prettier-ignore -->
+    <TextArea
+        label="{ __('teams / custom / help' ) }"
+        bind:value="settings.embed.custom_embed.text"
+        placeholder="e.g. This is a custom embed code for our CMS"
+    />
+
+    <!-- prettier-ignore -->
+    <TextArea
+        label="{ __('teams / custom / embedcode' ) }"
+        bind:value="settings.embed.custom_embed.template"
+        placeholder=""
+        help="{ __('teams / custom / embedcode / help' ) }"
+    />
+</div>
+{/if}
+
+<script>
+    import { Text, TextArea, Select, Switch } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        components: { Text, TextArea, Select, Switch },
+        data() {
+            return {
+                embedCodes: [
+                    { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
+                    { value: 'iframe', label: __('teams / defaults / iframe') },
+                    { value: 'custom', label: __('teams / defaults / custom') }
+                ],
+                themes: [],
+                folders: [],
+                locales: [],
+                defaultTheme: ''
+            };
+        },
+        computed: {
+            localeOptions({ locales }) {
+                return [
+                    {
+                        value: null,
+                        label: __('teams / defaults / none', 'organizations')
+                    },
+                    ...locales
+                ];
+            }
+        },
+        helpers: { __ }
+    };
+</script>

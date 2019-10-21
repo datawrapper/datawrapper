@@ -107,6 +107,8 @@
 	    $user = DatawrapperSession::getUser();
 	    if (!$user->canAdministrateTeam($org)) return $app->notFound();
 
+	    $tabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
+
 	    $page = [
 	        'data' => [
 	            'team' => [
@@ -122,6 +124,7 @@
 	            'visualizations' => $getVisualizations(),
 	            'visualizationArchive' => $getVisArchive(),
 	            'defaultTheme' => $org->getDefaultTheme() ? $org->getDefaultTheme() : $getSystemDefaultTheme(),
+	            'pluginTabs' => $tabs ? $tabs : []
 	        ]
 	    ];
 

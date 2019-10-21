@@ -12,7 +12,7 @@
 
             <ul class="nav nav-stacked nav-tabs">
                 {#each group.tabs as tab}
-                <li class:active="activeTab === tab.id" on:click="set({activeTab: tab.id})">
+                <li class:active="activeTab === tab.id" on:click="activate(tab.id)">
                     <a href="#{ tab.id }"><i class="{ tab.icon }"></i> &nbsp; { tab.title } </a>
                 </li>
                 {/each}
@@ -23,14 +23,13 @@
         <div class="span10">
             {#if currentTab}
             <div class="vis-options settings-section">
+                {#if currentTab.h1 }
                 <h1>{ @html currentTab.h1 }</h1>
-
-                <p style="margin-bottom:10px;">
-                    { @html currentTab.p }
-                </p>
+                {/if}
 
                 <svelte:component
-                    this="{ currentTab.app }"
+                    ref:app
+                    this="{ app }"
                     bind:team
                     bind:defaultTheme
                     bind:settings
@@ -53,26 +52,25 @@
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import { loadScript, loadStylesheet } from '../../shared/utils';
 
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
-    import Slack from './tabs/Slack.html';
     import CustomFields from './tabs/CustomFields.html';
-    import PdfToFtp from './tabs/PdfToFtp.html';
     import Visualizations from './tabs/Visualizations.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
+    import Loading from './tabs/Loading.html';
 
     export default {
         components: {
             Members,
             Settings,
-            Slack,
             CustomFields,
-            PdfToFtp,
             Visualizations,
             DeleteTeam,
-            ProductTable
+            ProductTable,
+            Loading
         },
         data() {
             return {
@@ -98,16 +96,6 @@
                         app: Settings
                     },
                     {
-                        id: 'slack',
-                        title: 'Slack-Notifications',
-                        icon: 'fa fa-at',
-                        group: 'Advanced',
-                        order: 1,
-                        h1: __('teams / slack / h1'),
-                        p: __('teams / slack / p'),
-                        app: Slack
-                    },
-                    {
                         id: 'customFields',
                         title: 'Custom Fields',
                         icon: 'fa fa-list',
@@ -116,16 +104,6 @@
                         h1: __('teams / cf / h1'),
                         p: __('teams / cf / p'),
                         app: Settings
-                    },
-                    {
-                        id: 'pdfToFtp',
-                        title: 'PDF to FTP',
-                        icon: 'fa fa-cloud-upload',
-                        group: 'Advanced',
-                        order: 3,
-                        h1: __('teams / ftp / h1'),
-                        p: __('teams / ftp / p'),
-                        app: PdfToFtp
                     },
                     {
                         id: 'visTypes',
@@ -197,7 +175,9 @@
                 deleteTeam: false,
                 deleteTeam2: false,
                 deleting: false,
-                activeTab: 'members'
+                pluginTabs: [],
+                activeTab: 'members',
+                app: Members
             };
         },
         computed: {
@@ -212,8 +192,10 @@
                 const t = tabs.filter(el => el.id === activeTab);
                 return t[0];
             },
-            tabs({ allTabs, isAdmin, role }) {
-                return allTabs.filter(tab => {
+            tabs({ allTabs, pluginTabs, isAdmin, role }) {
+                const tabs = [].concat(allTabs, pluginTabs);
+
+                return tabs.filter(tab => {
                     if (tab.adminOnly && !isAdmin) return false;
                     if (tab.ownerOnly && (!isAdmin && role !== 'owner')) return false;
                     return true;
@@ -238,6 +220,10 @@
                     get(groups, tab.group).tabs.push(tab);
                 });
 
+                groups.forEach(group => {
+                    group.tabs.sort((a, b) => a.order - b.order);
+                });
+
                 return groups;
             }
         },
@@ -245,6 +231,41 @@
             __
         },
         methods: {
+            activate(id) {
+                const { tabs } = this.get();
+                const tab = tabs.filter(el => el.id === id)[0];
+
+                if (tab.src) {
+                    if (tab.App) {
+                        this.set({
+                            activeTab: tab.id,
+                            app: tab.App
+                        });
+                    } else {
+                        this.set({
+                            activeTab: tab.id,
+                            app: Loading
+                        });
+
+                        if (tab.css) loadStylesheet(tab.css);
+
+                        loadScript(tab.src, () => {
+                            setTimeout(() => {
+                                require([tab.id], mod => {
+                                    Object.assign(tab, mod);
+                                    this.set({ app: tab.App });
+                                    if (tab.data) this.refs.app.set(tab.data);
+                                });
+                            }, 200);
+                        });
+                    }
+                } else {
+                    this.set({
+                        activeTab: tab.id,
+                        app: tab.app
+                    });
+                }
+            },
             async updateUsers() {
                 const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
                     method: 'GET',
@@ -302,15 +323,7 @@
 <style lang="less">
     .settings-section {
         padding-top: 10px;
-        padding-bottom: 10px;
         margin-top: 10px;
-        margin-bottom: 10px;
-
-        border-top: 1px solid #eee;
-
-        &:first-child {
-            border-top: none;
-        }
 
         .base-dropdown-content {
             top: 30px !important;
