@@ -1,3 +1,7 @@
+<p style="margin-bottom: 10px">
+    {@html __('teams / cf / p') }
+</p>
+
 {#if customFields.length}
 <FieldTable columnHeaders="{headers}">
     {#each customFields as field, i} {#if editIndex === i }
@@ -82,10 +86,10 @@
             return {
                 headers: [
                     { title: __('teams / cf / hed / title'), width: '10%' },
-                    { title: __('teams / cf / hed / description'), width: '20%' },
+                    { title: __('teams / cf / hed / description'), width: '15%' },
                     { title: __('teams / cf / hed / key'), width: '10%' },
                     { title: __('teams / cf / hed / type'), width: '15%' },
-                    { title: __('teams / cf / hed / actions'), width: '15%' }
+                    { title: __('teams / cf / hed / actions'), width: '20%' }
                 ],
                 fieldTypes: [{ value: 'text', label: __('teams / cf / text') }, { value: 'textArea', label: __('teams / cf / textarea') }]
             };

@@ -37,10 +37,13 @@
                     bind:users
                     bind:userId
                     bind:visualizations
+                    bind:visualizationArchive
                     bind:folders
+                    bind:locales
                     bind:themes
                     bind:isAdmin
                     bind:updatingUsers
+                    on:updateUsers="updateUsers()"
                     on:change="debounceUpdateTeam()"
                 />
             </div>
@@ -77,63 +80,57 @@
                 allTabs: [
                     {
                         id: 'members',
-                        title: 'Members',
+                        title: __('teams / tab / members'),
                         icon: 'fa fa-users',
-                        group: 'Users',
+                        group: __('teams / group / users'),
                         order: 1,
                         h1: __('teams / h1'),
-                        p: __('teams / p'),
                         app: Members
                     },
                     {
                         id: 'settings',
-                        title: 'Settings',
+                        title: __('teams / tab / settings'),
                         icon: 'fa fa-gears',
-                        group: 'Users',
+                        group: __('teams / group / users'),
                         order: 2,
                         h1: __('teams / defaults / h1'),
-                        p: __('teams / defaults / p'),
                         app: Settings
                     },
                     {
                         id: 'customFields',
-                        title: 'Custom Fields',
+                        title: __('teams / tab / customFields'),
                         icon: 'fa fa-list',
-                        group: 'Advanced',
+                        group: __('teams / group / advanced'),
                         order: 2,
                         h1: __('teams / cf / h1'),
-                        p: __('teams / cf / p'),
-                        app: Settings
+                        app: CustomFields
                     },
                     {
                         id: 'visTypes',
-                        title: 'Visualizations',
+                        title: __('teams / tab / visTypes'),
                         icon: 'fa fa-ban',
-                        group: 'Advanced',
+                        group: __('teams / group / advanced'),
                         order: 4,
                         h1: __('teams / disable / h1'),
-                        p: __('teams / disable / p'),
                         app: Visualizations
                     },
                     {
                         id: 'deleteTeam',
-                        title: 'Delete team',
+                        title: __('teams / tab / deleteTeam'),
                         icon: 'fa fa-times',
-                        group: 'Advanced',
+                        group: __('teams / group / advanced'),
                         order: 5,
                         h1: __('teams / delete / h1'),
-                        p: __('teams / delete / p'),
                         app: DeleteTeam,
                         ownerOnly: true
                     },
                     {
                         id: 'adminProducts',
-                        title: 'Products',
+                        title: __('teams / tab / adminProducts'),
                         icon: 'fa fa-list-alt',
-                        group: 'Internal',
+                        group: __('teams / group / internal'),
                         order: 1,
                         h1: __('teams / products / h1'),
-                        p: __('teams / products / p'),
                         app: ProductTable,
                         adminOnly: true
                     }
@@ -341,5 +338,9 @@
         background: #08c;
         color: #fff;
         font-weight: bold;
+    }
+
+    .span2 .nav a i {
+        width: 15px;
     }
 </style>

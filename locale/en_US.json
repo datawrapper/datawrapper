@@ -604,5 +604,15 @@
   "teams / products / add-product": "Add Product:",
   "teams / products / add": "Add",
   "teams / products / loading": "Loading products…",
-  "teams / products / never": "never"
+  "teams / products / never": "never",
+  "teams / loading-page": "Loading settings…",
+  "teams / tab / members": "Members",
+  "teams / tab / settings": "Settings",
+  "teams / tab / customFields": "Custom fields",
+  "teams / tab / visTypes": "Visualizations",
+  "teams / tab / deleteTeam": "Delete teams",
+  "teams / tab / adminProducts": "Products",
+  "teams / group / users": "Users",
+  "teams / group / advanced": "Advanced",
+  "teams / group / internal": "Internal"
 }

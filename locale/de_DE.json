@@ -604,5 +604,15 @@
   "teams / products / add-product": "Produkt hinzufügen:",
   "teams / products / add": "Hinzufügen",
   "teams / products / loading": "Produkte werden geladen…",
-  "teams / products / never": "für immer"
+  "teams / products / never": "für immer",
+  "teams / loading-page": "Einstellungen werden geladen…",
+  "teams / tab / members": "Mitglieder",
+  "teams / tab / settings": "Einstellungen",
+  "teams / tab / customFields": "Custom-Fields",
+  "teams / tab / visTypes": "Visualisierungen",
+  "teams / tab / deleteTeam": "Team löschen",
+  "teams / tab / adminProducts": "Produkte",
+  "teams / group / users": "Nutzer",
+  "teams / group / advanced": "Erweitert",
+  "teams / group / internal": "Intern"
 }

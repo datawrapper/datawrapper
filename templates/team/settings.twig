@@ -68,6 +68,10 @@
 
 		mod.set(data);
 
+		if (window.location.hash.replace("#", "")) {
+			mod.activate(window.location.hash.replace("#", ""))
+		}
+
 		mod.updateUsers();
 
 		window.teamSettings = mod;
