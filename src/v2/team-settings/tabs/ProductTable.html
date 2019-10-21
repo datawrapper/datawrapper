@@ -120,7 +120,7 @@
                 );
 
                 await getJSON(`//${dw.backend.__api_domain}/v3/teams/${team.id}/products`, 'include', products => {
-                    this.set({ products, addingProduct: false });
+                    this.set({ products: products.list, addingProduct: false });
                 });
             },
             async remove(product) {
@@ -161,10 +161,12 @@
             const current = this.get();
 
             getJSON(`//${dw.backend.__api_domain}/v3/teams/${current.team.id}/products`, 'include', products =>
-                this.set({ loadingTeamProducts: false, products })
+                this.set({ loadingTeamProducts: false, products: products.list })
             );
 
-            getJSON(`//${dw.backend.__api_domain}/v3/products`, 'include', allProducts => this.set({ loadingAllProducts: false, allProducts }));
+            getJSON(`//${dw.backend.__api_domain}/v3/products`, 'include', allProducts =>
+                this.set({ loadingAllProducts: false, allProducts: allProducts.list })
+            );
         }
     };
 </script>
