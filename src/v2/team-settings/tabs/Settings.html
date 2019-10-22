@@ -2,11 +2,13 @@
     {@html __('teams / defaults / p') }
 </p>
 
+<Text label="{__('teams / name' )}" bind:value="team.name" help="{__('teams / name / help' )}" placeholder="" />
+
 <!-- prettier-ignore -->
 <Select
     label="{ __('teams / defaults / theme' ) }"
     bind:value="defaultTheme"
-    width="200px"
+    width="225px"
     labelWidth="100px"
     help="{ __('teams / defaults / theme / p' ) }"
     options="{themes}"
@@ -16,7 +18,7 @@
 <Select
     label="{ __('teams / defaults / folder' ) }"
     bind:value="settings.default.folder"
-    width="200px"
+    width="225px"
     labelWidth="100px"
     help="{ __('teams / defaults / folder / p' ) }"
     options="{folders}"
@@ -26,7 +28,7 @@
 <Select
     label="{ __('teams / defaults / folder-status' ) }"
     bind:value="settings.folders"
-    width="200px"
+    width="225px"
     labelWidth="100px"
     help="{ __('teams / defaults / folder-status / p' ) }"
     options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
@@ -36,7 +38,7 @@
 <Select
     label="{ __('teams / defaults / locale' ) }"
     bind:value="settings.default.locale"
-    width="200px"
+    width="225px"
     labelWidth="100px"
     help="{ __('teams / defaults / locale / p' ) }"
     options="{localeOptions}"
@@ -46,13 +48,11 @@
 <Select
     label="{ __('teams / defaults / embedcode' ) }"
     bind:value="settings.embed.preferred_embed"
-    width="200px"
+    width="225px"
     labelWidth="100px"
     help="{ __('teams / defaults / embedcode / p' ) }"
     options="{embedCodes}"
 />
-
-<Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
 
 {#if settings.embed.preferred_embed == "custom"}
 <div>
@@ -74,6 +74,8 @@
     />
 </div>
 {/if}
+
+<Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
 
 <script>
     import { Text, TextArea, Select, Switch } from '@datawrapper/controls';
