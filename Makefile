@@ -50,6 +50,12 @@ svelte-all:
 svelte-dev:
 	cd src && ../node_modules/.bin/rollup -cw
 
+svelte-all-v2:
+	cd src/v2 && npm run build
+
+svelte-dev-v2:
+	cd src/v2 && npm run dev
+
 plugins:
 	scripts/install-plugins
 
