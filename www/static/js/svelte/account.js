@@ -77,6 +77,44 @@
 		element.classList[toggle ? 'add' : 'remove'](name);
 	}
 
+	function getSpreadUpdate(levels, updates) {
+		var update = {};
+
+		var to_null_out = {};
+		var accounted_for = {};
+
+		var i = levels.length;
+		while (i--) {
+			var o = levels[i];
+			var n = updates[i];
+
+			if (n) {
+				for (var key in o) {
+					if (!(key in n)) { to_null_out[key] = 1; }
+				}
+
+				for (var key in n) {
+					if (!accounted_for[key]) {
+						update[key] = n[key];
+						accounted_for[key] = 1;
+					}
+				}
+
+				levels[i] = n;
+			} else {
+				for (var key in o) {
+					accounted_for[key] = 1;
+				}
+			}
+		}
+
+		for (var key in to_null_out) {
+			if (!(key in update)) { update[key] = undefined; }
+		}
+
+		return update;
+	}
+
 	function blankObject() {
 		return Object.create(null);
 	}
@@ -406,6 +444,7 @@
 
 
 
+
 	function data() {
 	    return {
 	        changePassword: false,
@@ -651,7 +690,7 @@
 				text1 = createText("\n\n\n");
 				if_block.c();
 				if_block_anchor = createComment();
-				addLoc(h2, file, 2, 0, 2);
+				addLoc(h2, file, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
@@ -687,7 +726,7 @@
 		};
 	}
 
-	// (183:0) {:else}
+	// (181:0) {:else}
 	function create_else_block(component, ctx) {
 		var text0, div11, div9, div3, div0, text1_value = __("E-Mail"), text1, text2, text3, div1, input0, input0_disabled_value, text4, div2, button0, text5_value = __( "account / email"), text5, text6, div7, div4, text7_value = __("Password"), text7, text8, text9, div5, input1, text10, div6, button1, text11_value = __("account / password"), text11, text12, div8, text13_value = __("account / or"), text13, text14, span, text15_value = __("account / delete"), text15, text16, text17, div10, p, text18_value = __("account / change-login"), text18;
 
@@ -746,52 +785,52 @@
 				p = createElement("p");
 				text18 = createText(text18_value);
 				div0.className = "svelte-1gfuyl2";
-				addLoc(div0, file, 199, 12, 7234);
+				addLoc(div0, file, 197, 12, 7232);
 				input0.disabled = input0_disabled_value = !ctx.changeEmail;
 				input0.value = ctx.originalEmail;
 				setAttribute(input0, "type", "text");
-				addLoc(input0, file, 203, 16, 7327);
+				addLoc(input0, file, 201, 16, 7325);
 				div1.className = "svelte-1gfuyl2";
-				addLoc(div1, file, 202, 12, 7305);
+				addLoc(div1, file, 200, 12, 7303);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-save btn-default";
-				addLoc(button0, file, 206, 16, 7456);
+				addLoc(button0, file, 204, 16, 7454);
 				div2.className = "svelte-1gfuyl2";
-				addLoc(div2, file, 205, 12, 7434);
+				addLoc(div2, file, 203, 12, 7432);
 				div3.className = "svelte-1gfuyl2";
-				addLoc(div3, file, 198, 8, 7216);
+				addLoc(div3, file, 196, 8, 7214);
 				div4.className = "svelte-1gfuyl2";
-				addLoc(div4, file, 213, 12, 7668);
+				addLoc(div4, file, 211, 12, 7666);
 				input1.disabled = true;
 				input1.value = "abcdefgh";
 				setAttribute(input1, "type", "password");
-				addLoc(input1, file, 217, 16, 7763);
+				addLoc(input1, file, 215, 16, 7761);
 				div5.className = "svelte-1gfuyl2";
-				addLoc(div5, file, 216, 12, 7741);
+				addLoc(div5, file, 214, 12, 7739);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-save btn-default";
-				addLoc(button1, file, 220, 16, 7868);
+				addLoc(button1, file, 218, 16, 7866);
 				div6.className = "svelte-1gfuyl2";
-				addLoc(div6, file, 219, 12, 7846);
+				addLoc(div6, file, 217, 12, 7844);
 				div7.className = "svelte-1gfuyl2";
-				addLoc(div7, file, 212, 8, 7650);
+				addLoc(div7, file, 210, 8, 7648);
 				addListener(span, "click", click_handler_2);
 				span.className = "link svelte-1gfuyl2";
 				setAttribute(span, "href", "#");
-				addLoc(span, file, 228, 12, 8164);
+				addLoc(span, file, 226, 12, 8162);
 				setStyle(div8, "text-align", "center");
 				setStyle(div8, "display", "block");
 				div8.className = "svelte-1gfuyl2";
-				addLoc(div8, file, 226, 8, 8067);
+				addLoc(div8, file, 224, 8, 8065);
 				div9.className = "span6";
-				addLoc(div9, file, 197, 4, 7188);
+				addLoc(div9, file, 195, 4, 7186);
 				p.className = "help";
-				addLoc(p, file, 232, 5, 8320);
+				addLoc(p, file, 230, 5, 8318);
 				div10.className = "span4";
-				addLoc(div10, file, 231, 4, 8295);
+				addLoc(div10, file, 229, 4, 8293);
 				div11.className = "row edit-account svelte-1gfuyl2";
 				setStyle(div11, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
-				addLoc(div11, file, 196, 0, 7089);
+				addLoc(div11, file, 194, 0, 7087);
 			},
 
 			m: function mount(target, anchor) {
@@ -876,7 +915,7 @@
 		};
 	}
 
-	// (144:21) 
+	// (142:21) 
 	function create_if_block_6(component, ctx) {
 		var div5, div4, div3, h2, text0_value = __("account / email"), text0, text1, p, text2_value = __("account / confirm-email-change"), text2, text3, text4, fieldset, div1, label, text5_value = __("E-Mail"), text5, text6, text7, div0, input, input_updating = false, input_disabled_value, text8, div2, button0, text9_value = __( "Back"), text9, text10, button1, i, i_class_value, text11, text12_value = __( "account / email"), text12;
 
@@ -926,37 +965,37 @@
 				i = createElement("i");
 				text11 = createText("  ");
 				text12 = createText(text12_value);
-				addLoc(h2, file, 148, 12, 5439);
-				addLoc(p, file, 149, 12, 5486);
+				addLoc(h2, file, 146, 12, 5437);
+				addLoc(p, file, 147, 12, 5484);
 				label.className = "control-label";
 				label.htmlFor = "email";
-				addLoc(label, file, 163, 20, 5924);
+				addLoc(label, file, 161, 20, 5922);
 				addListener(input, "input", input_input_handler);
 				input.disabled = input_disabled_value = !ctx.changeEmail;
 				setAttribute(input, "type", "text");
-				addLoc(input, file, 165, 24, 6058);
+				addLoc(input, file, 163, 24, 6056);
 				div0.className = "controls";
-				addLoc(div0, file, 164, 20, 6011);
+				addLoc(div0, file, 162, 20, 6009);
 				div1.className = "control-group";
-				addLoc(div1, file, 162, 16, 5876);
+				addLoc(div1, file, 160, 16, 5874);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-default";
-				addLoc(button0, file, 170, 20, 6229);
+				addLoc(button0, file, 168, 20, 6227);
 				i.className = i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
-				addLoc(i, file, 174, 24, 6502);
+				addLoc(i, file, 172, 24, 6500);
 				addListener(button1, "click", click_handler_1);
 				setStyle(button1, "float", "right");
 				button1.className = "btn btn-save btn-primary";
-				addLoc(button1, file, 173, 20, 6389);
+				addLoc(button1, file, 171, 20, 6387);
 				div2.className = "";
-				addLoc(div2, file, 169, 16, 6194);
-				addLoc(fieldset, file, 161, 12, 5849);
+				addLoc(div2, file, 167, 16, 6192);
+				addLoc(fieldset, file, 159, 12, 5847);
 				div3.className = "form-horizontal edit-account";
-				addLoc(div3, file, 147, 8, 5384);
+				addLoc(div3, file, 145, 8, 5382);
 				div4.className = "span6 offset3";
-				addLoc(div4, file, 146, 4, 5348);
+				addLoc(div4, file, 144, 4, 5346);
 				div5.className = "row";
-				addLoc(div5, file, 145, 0, 5326);
+				addLoc(div5, file, 143, 0, 5324);
 			},
 
 			m: function mount(target, anchor) {
@@ -1030,7 +1069,7 @@
 		};
 	}
 
-	// (133:25) 
+	// (131:25) 
 	function create_if_block_5(component, ctx) {
 		var div1, div0, h2, text0_value = __("Your account has been deleted."), text0, text1, a, text2_value = __("Goodbye!"), text2;
 
@@ -1045,14 +1084,14 @@
 				text2 = createText(text2_value);
 				setStyle(h2, "margin-bottom", "20px");
 				h2.className = "svelte-1gfuyl2";
-				addLoc(h2, file, 136, 8, 5107);
+				addLoc(h2, file, 134, 8, 5105);
 				a.href = "/";
 				a.className = "btn btn-primary btn-large";
-				addLoc(a, file, 139, 8, 5215);
+				addLoc(a, file, 137, 8, 5213);
 				div0.className = "span6 offset3";
-				addLoc(div0, file, 135, 4, 5062);
+				addLoc(div0, file, 133, 4, 5060);
 				div1.className = "row delete-account svelte-1gfuyl2";
-				addLoc(div1, file, 134, 0, 5025);
+				addLoc(div1, file, 132, 0, 5023);
 			},
 
 			m: function mount(target, anchor) {
@@ -1075,7 +1114,7 @@
 		};
 	}
 
-	// (86:25) 
+	// (84:25) 
 	function create_if_block_3(component, ctx) {
 		var div4, div3, h2, text0_value = __("account / delete / hed"), text0, text1, text2, p0, text3_value = __("account / delete / really"), text3, text4, ul, li0, text5_value = __("account / confirm-account-deletion / free"), text5, text6, li1, text7_value = __("You cannot login and logout anymore."), text7, text8, li2, text9_value = __("You cannot edit or remove your charts anymore."), text9, text10, p1, text11_value = __("account / delete / charts-stay-online"), text11, text12, div2, p2, b, text13_value = __("Please enter your password to confirm the deletion request:"), text13, text14, div0, input, input_updating = false, text15, p3, raw_value = __("account / delete / really-really"), text16, div1, button0, i0, text17, text18_value = __("No, I changed my mind.."), text18, text19, button1, i1, i1_class_value, text20, text21_value = __("Yes, delete it!"), text21;
 
@@ -1142,41 +1181,41 @@
 				text21 = createText(text21_value);
 				setStyle(h2, "margin-bottom", "20px");
 				h2.className = "svelte-1gfuyl2";
-				addLoc(h2, file, 89, 8, 3331);
-				addLoc(p0, file, 101, 8, 3675);
-				addLoc(li0, file, 105, 12, 3765);
-				addLoc(li1, file, 106, 12, 3838);
-				addLoc(li2, file, 107, 12, 3906);
-				addLoc(ul, file, 104, 8, 3748);
-				addLoc(p1, file, 109, 8, 3994);
-				addLoc(b, file, 113, 15, 4109);
-				addLoc(p2, file, 113, 12, 4106);
+				addLoc(h2, file, 87, 8, 3329);
+				addLoc(p0, file, 99, 8, 3673);
+				addLoc(li0, file, 103, 12, 3763);
+				addLoc(li1, file, 104, 12, 3836);
+				addLoc(li2, file, 105, 12, 3904);
+				addLoc(ul, file, 102, 8, 3746);
+				addLoc(p1, file, 107, 8, 3992);
+				addLoc(b, file, 111, 15, 4107);
+				addLoc(p2, file, 111, 12, 4104);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "password");
 				input.placeholder = __("Password");
-				addLoc(input, file, 115, 16, 4246);
+				addLoc(input, file, 113, 16, 4244);
 				div0.className = "control-group";
-				addLoc(div0, file, 114, 12, 4202);
-				addLoc(p3, file, 117, 12, 4365);
+				addLoc(div0, file, 112, 12, 4200);
+				addLoc(p3, file, 115, 12, 4363);
 				i0.className = "fa fa-chevron-left";
-				addLoc(i0, file, 122, 20, 4596);
+				addLoc(i0, file, 120, 20, 4594);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-info";
-				addLoc(button0, file, 121, 16, 4506);
+				addLoc(button0, file, 119, 16, 4504);
 				i1.className = i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
-				addLoc(i1, file, 125, 20, 4812);
+				addLoc(i1, file, 123, 20, 4810);
 				addListener(button1, "click", click_handler_1);
 				setStyle(button1, "float", "right");
 				button1.className = "btn btn-danger";
-				addLoc(button1, file, 124, 16, 4713);
+				addLoc(button1, file, 122, 16, 4711);
 				div1.className = "control-group";
-				addLoc(div1, file, 120, 12, 4462);
+				addLoc(div1, file, 118, 12, 4460);
 				div2.className = "";
-				addLoc(div2, file, 112, 8, 4079);
+				addLoc(div2, file, 110, 8, 4077);
 				div3.className = "span6 offset3";
-				addLoc(div3, file, 88, 4, 3295);
+				addLoc(div3, file, 86, 4, 3293);
 				div4.className = "row delete-account svelte-1gfuyl2";
-				addLoc(div4, file, 87, 0, 3258);
+				addLoc(div4, file, 85, 0, 3256);
 			},
 
 			m: function mount(target, anchor) {
@@ -1262,7 +1301,7 @@
 		};
 	}
 
-	// (62:24) 
+	// (60:24) 
 	function create_if_block_2(component, ctx) {
 		var div4, div3, div0, i0, text0, h2, text1_value = __("account / confirm-account-deletion"), text1, text2, div2, button0, i1, text3, text4_value = __("account / confirm-account-deletion / no"), text4, text5, div1, text6_value = __("account / or"), text6, text7, button1, i2, text8, text9_value = __("account / confirm-account-deletion / yes"), text9;
 
@@ -1298,33 +1337,33 @@
 				text8 = createText("   ");
 				text9 = createText(text9_value);
 				i0.className = "fa fa-times";
-				addLoc(i0, file, 66, 12, 2440);
+				addLoc(i0, file, 64, 12, 2438);
 				div0.className = "iconholder svelte-1gfuyl2";
-				addLoc(div0, file, 65, 8, 2403);
+				addLoc(div0, file, 63, 8, 2401);
 				setStyle(h2, "margin-bottom", "20px");
 				h2.className = "svelte-1gfuyl2";
-				addLoc(h2, file, 69, 8, 2492);
+				addLoc(h2, file, 67, 8, 2490);
 				i1.className = "fa fa-chevron-left";
-				addLoc(i1, file, 73, 16, 2766);
+				addLoc(i1, file, 71, 16, 2764);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-back btn-primary";
-				addLoc(button0, file, 72, 12, 2669);
+				addLoc(button0, file, 70, 12, 2667);
 				setStyle(div1, "display", "block");
 				setStyle(div1, "margin", "0px 10px");
-				addLoc(div1, file, 76, 12, 2893);
+				addLoc(div1, file, 74, 12, 2891);
 				i2.className = "fa fa-times";
-				addLoc(i2, file, 79, 16, 3089);
+				addLoc(i2, file, 77, 16, 3087);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-default";
-				addLoc(button1, file, 78, 12, 2979);
+				addLoc(button1, file, 76, 12, 2977);
 				setStyle(div2, "display", "flex");
 				setStyle(div2, "justify-content", "center");
 				setStyle(div2, "align-items", "center");
-				addLoc(div2, file, 71, 8, 2582);
+				addLoc(div2, file, 69, 8, 2580);
 				div3.className = "span6 offset3";
-				addLoc(div3, file, 64, 4, 2358);
+				addLoc(div3, file, 62, 4, 2356);
 				div4.className = "row delete-account svelte-1gfuyl2";
-				addLoc(div4, file, 63, 0, 2321);
+				addLoc(div4, file, 61, 0, 2319);
 			},
 
 			m: function mount(target, anchor) {
@@ -1364,7 +1403,7 @@
 		};
 	}
 
-	// (6:0) {#if changePassword }
+	// (4:0) {#if changePassword }
 	function create_if_block(component, ctx) {
 		var div9, div8, div7, h2, text0_value = __("account / password"), text0, text1, p0, text2_value = __("account / password / strong-password-note"), text2, text3, text4, fieldset, div1, label0, text5_value = __("Current Password"), text5, text6, div0, input0, input0_updating = false, text7, p1, text8_value = __("account / password / current-password-note"), text8, text9, div3, label1, text10_value = __("New Password"), text10, text11, div2, input1, input1_updating = false, text12, div5, label2, text13_value = __("(repeat)"), text13, text14, div4, input2, input2_updating = false, text15, div6, button0, text16_value = __("Back"), text16, text17, button1, i, i_class_value, text18, text19_value = __("account / password"), text19;
 
@@ -1442,57 +1481,57 @@
 				i = createElement("i");
 				text18 = createText("  ");
 				text19 = createText(text19_value);
-				addLoc(h2, file, 10, 12, 180);
-				addLoc(p0, file, 11, 12, 230);
+				addLoc(h2, file, 8, 12, 178);
+				addLoc(p0, file, 9, 12, 228);
 				label0.className = "control-label";
-				addLoc(label0, file, 27, 20, 709);
+				addLoc(label0, file, 25, 20, 707);
 				addListener(input0, "input", input0_input_handler);
 				setAttribute(input0, "type", "password");
 				input0.className = "input-xlarge";
-				addLoc(input0, file, 29, 24, 840);
+				addLoc(input0, file, 27, 24, 838);
 				p1.className = "help-block";
-				addLoc(p1, file, 30, 24, 940);
+				addLoc(p1, file, 28, 24, 938);
 				div0.className = "controls";
-				addLoc(div0, file, 28, 20, 793);
+				addLoc(div0, file, 26, 20, 791);
 				div1.className = "control-group";
-				addLoc(div1, file, 26, 16, 661);
+				addLoc(div1, file, 24, 16, 659);
 				label1.className = "control-label";
-				addLoc(label1, file, 36, 20, 1187);
+				addLoc(label1, file, 34, 20, 1185);
 				addListener(input1, "input", input1_input_handler);
 				setAttribute(input1, "type", "password");
 				input1.className = "input-xlarge";
-				addLoc(input1, file, 38, 24, 1314);
+				addLoc(input1, file, 36, 24, 1312);
 				div2.className = "controls";
-				addLoc(div2, file, 37, 20, 1267);
+				addLoc(div2, file, 35, 20, 1265);
 				div3.className = "control-group";
-				addLoc(div3, file, 35, 16, 1139);
+				addLoc(div3, file, 33, 16, 1137);
 				label2.className = "control-label";
-				addLoc(label2, file, 42, 20, 1501);
+				addLoc(label2, file, 40, 20, 1499);
 				addListener(input2, "input", input2_input_handler);
 				setAttribute(input2, "type", "password");
 				input2.className = "input-xlarge";
-				addLoc(input2, file, 44, 24, 1624);
+				addLoc(input2, file, 42, 24, 1622);
 				div4.className = "controls";
-				addLoc(div4, file, 43, 20, 1577);
+				addLoc(div4, file, 41, 20, 1575);
 				div5.className = "control-group";
-				addLoc(div5, file, 41, 16, 1453);
+				addLoc(div5, file, 39, 16, 1451);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-save btn-default btn-back";
-				addLoc(button0, file, 49, 20, 1790);
+				addLoc(button0, file, 47, 20, 1788);
 				i.className = i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
-				addLoc(i, file, 53, 24, 2075);
+				addLoc(i, file, 51, 24, 2073);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-primary";
 				setStyle(button1, "float", "right");
-				addLoc(button1, file, 52, 20, 1970);
-				addLoc(div6, file, 48, 16, 1764);
-				addLoc(fieldset, file, 25, 12, 634);
+				addLoc(button1, file, 50, 20, 1968);
+				addLoc(div6, file, 46, 16, 1762);
+				addLoc(fieldset, file, 23, 12, 632);
 				div7.className = "form-horizontal edit-account-confirm";
-				addLoc(div7, file, 9, 8, 117);
+				addLoc(div7, file, 7, 8, 115);
 				div8.className = "span6 offset3";
-				addLoc(div8, file, 8, 4, 81);
+				addLoc(div8, file, 6, 4, 79);
 				div9.className = "row";
-				addLoc(div9, file, 7, 0, 59);
+				addLoc(div9, file, 5, 0, 57);
 			},
 
 			m: function mount(target, anchor) {
@@ -1588,7 +1627,7 @@
 		};
 	}
 
-	// (183:8) {#if messages && messages.length }
+	// (181:8) {#if messages && messages.length }
 	function create_if_block_8(component, ctx) {
 		var div2, div1, div0, ul;
 
@@ -1611,14 +1650,14 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file, 186, 12, 6890);
+				addLoc(ul, file, 184, 12, 6888);
 				div0.className = "alert alert-success";
-				addLoc(div0, file, 185, 8, 6844);
+				addLoc(div0, file, 183, 8, 6842);
 				div1.className = "span6 offset3";
-				addLoc(div1, file, 184, 4, 6808);
+				addLoc(div1, file, 182, 4, 6806);
 				div2.className = "row";
 				setStyle(div2, "margin-top", "20px");
-				addLoc(div2, file, 183, 0, 6760);
+				addLoc(div2, file, 181, 0, 6758);
 			},
 
 			m: function mount(target, anchor) {
@@ -1665,14 +1704,14 @@
 		};
 	}
 
-	// (188:16) {#each messages as message}
+	// (186:16) {#each messages as message}
 	function create_each_block_3(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file, 188, 16, 6981);
+				addLoc(li, file, 186, 16, 6979);
 			},
 
 			m: function mount(target, anchor) {
@@ -1694,7 +1733,7 @@
 		};
 	}
 
-	// (152:12) {#if errors && errors.length }
+	// (150:12) {#if errors && errors.length }
 	function create_if_block_7(component, ctx) {
 		var div, ul;
 
@@ -1715,9 +1754,9 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file, 153, 16, 5626);
+				addLoc(ul, file, 151, 16, 5624);
 				div.className = "alert";
-				addLoc(div, file, 152, 12, 5590);
+				addLoc(div, file, 150, 12, 5588);
 			},
 
 			m: function mount(target, anchor) {
@@ -1762,14 +1801,14 @@
 		};
 	}
 
-	// (155:20) {#each errors as message}
+	// (153:20) {#each errors as message}
 	function create_each_block_2(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file, 155, 20, 5723);
+				addLoc(li, file, 153, 20, 5721);
 			},
 
 			m: function mount(target, anchor) {
@@ -1791,7 +1830,7 @@
 		};
 	}
 
-	// (92:8) {#if errors && errors.length }
+	// (90:8) {#if errors && errors.length }
 	function create_if_block_4(component, ctx) {
 		var div, ul;
 
@@ -1812,9 +1851,9 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file, 93, 12, 3480);
+				addLoc(ul, file, 91, 12, 3478);
 				div.className = "alert";
-				addLoc(div, file, 92, 8, 3448);
+				addLoc(div, file, 90, 8, 3446);
 			},
 
 			m: function mount(target, anchor) {
@@ -1859,14 +1898,14 @@
 		};
 	}
 
-	// (95:16) {#each errors as message}
+	// (93:16) {#each errors as message}
 	function create_each_block_1(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file, 95, 16, 3569);
+				addLoc(li, file, 93, 16, 3567);
 			},
 
 			m: function mount(target, anchor) {
@@ -1888,7 +1927,7 @@
 		};
 	}
 
-	// (16:12) {#if errors && errors.length }
+	// (14:12) {#if errors && errors.length }
 	function create_if_block_1(component, ctx) {
 		var div, ul;
 
@@ -1909,9 +1948,9 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file, 17, 16, 411);
+				addLoc(ul, file, 15, 16, 409);
 				div.className = "alert";
-				addLoc(div, file, 16, 12, 375);
+				addLoc(div, file, 14, 12, 373);
 			},
 
 			m: function mount(target, anchor) {
@@ -1956,14 +1995,14 @@
 		};
 	}
 
-	// (19:20) {#each errors as message}
+	// (17:20) {#each errors as message}
 	function create_each_block(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file, 19, 20, 508);
+				addLoc(li, file, 17, 20, 506);
 			},
 
 			m: function mount(target, anchor) {
@@ -2049,7 +2088,13 @@
 	    ui: EditProfile
 	};
 
-	function data$1() {
+	function data$1(ref) {
+	    var email = ref.email;
+	    var userId = ref.userId;
+
+	    return { email: email, userId: userId };
+	}
+	function data_1() {
 	    return {
 	        hash: 'profile',
 	        activeTab: null,
@@ -2099,6 +2144,25 @@
 
 	    var ref = this.get();
 	    var groups = ref.groups;
+	    var teams = ref.teams;
+
+	    if (teams.length) {
+	        teams.forEach(function (ref) {
+	            var Id = ref.Id;
+	            var Name = ref.Name;
+
+	            groups[1].tabs.push({
+	                title: Name,
+	                url: ("/team/" + Id + "/settings"),
+	                icon: 'fa fa-group fa-fw'
+	            });
+	        });
+	        // move "create team" to end
+	        groups[1].tabs.push(groups[1].tabs.shift());
+	        console.log('x', groups);
+	        this.set({groups: groups});
+	    }
+
 	    var foundTab = false;
 	    groups.forEach(function (group) {
 	        group.tabs.forEach(function (tab) {
@@ -2396,12 +2460,21 @@
 	function create_if_block$1(component, ctx) {
 		var div, div_class_value;
 
+		var switch_instance_spread_levels = [
+			ctx.data
+		];
+
 		var switch_value = ctx.activeTab.ui;
 
 		function switch_props(ctx) {
+			var switch_instance_initial_data = {};
+			for (var i = 0; i < switch_instance_spread_levels.length; i += 1) {
+				switch_instance_initial_data = assign(switch_instance_initial_data, switch_instance_spread_levels[i]);
+			}
 			return {
 				root: component.root,
-				store: component.store
+				store: component.store,
+				data: switch_instance_initial_data
 			};
 		}
 
@@ -2426,6 +2499,10 @@
 			},
 
 			p: function update(changed, ctx) {
+				var switch_instance_changes = changed.data ? getSpreadUpdate(switch_instance_spread_levels, [
+					ctx.data
+				]) : {};
+
 				if (switch_value !== (switch_value = ctx.activeTab.ui)) {
 					if (switch_instance) {
 						switch_instance.destroy();
@@ -2438,6 +2515,10 @@
 					} else {
 						switch_instance = null;
 					}
+				}
+
+				else if (switch_value) {
+					switch_instance._set(switch_instance_changes);
 				}
 
 				if ((changed.activeTab) && div_class_value !== (div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-yq9vlw")) {
@@ -2464,7 +2545,11 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$1(), options.data);
+		this._state = assign(data_1(), options.data);
+
+		this._recompute({ email: 1, userId: 1 }, this._state);
+		if (!('email' in this._state)) { console.warn("<App> was created without expected data property 'email'"); }
+		if (!('userId' in this._state)) { console.warn("<App> was created without expected data property 'userId'"); }
 		if (!('groups' in this._state)) { console.warn("<App> was created without expected data property 'groups'"); }
 		if (!('activeTab' in this._state)) { console.warn("<App> was created without expected data property 'activeTab'"); }
 		this._intro = true;
@@ -2493,6 +2578,13 @@
 	assign(App.prototype, methods$1);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('data' in newState && !this._updatingReadonlyProperty) { throw new Error("<App>: Cannot set read-only property 'data'"); }
+	};
+
+	App.prototype._recompute = function _recompute(changed, state) {
+		if (changed.email || changed.userId) {
+			if (this._differs(state.data, (state.data = data$1(state)))) { changed.data = true; }
+		}
 	};
 
 	function Store(state, options) {

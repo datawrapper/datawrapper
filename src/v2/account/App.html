@@ -17,7 +17,7 @@
         </div>
         {#if activeTab}
         <div class="span10 account-page-content tab-{activeTab.id}">
-            <svelte:component this="{activeTab.ui}" />
+            <svelte:component this="{activeTab.ui}" {...data} />
         </div>
         {/if}
     </div>
@@ -72,6 +72,11 @@
                 this.set({groups})
             }
         },
+        computed: {
+            data({ email, userId }) {
+                return { email, userId };
+            }
+        },
         onstate({ changed, current }) {
             if (changed.activeTab && current.activeTab) {
                 console.log(current.activeTab);
@@ -88,7 +93,22 @@
 
             dw.backend.__svelteApps.account = this;
 
-            const {groups} = this.get();
+            const {groups, teams} = this.get();
+
+            if (teams.length) {
+                teams.forEach(({Id, Name}) => {
+                    groups[1].tabs.push({
+                        title: Name,
+                        url: `/team/${Id}/settings`,
+                        icon: 'fa fa-group fa-fw'
+                    })
+                });
+                // move "create team" to end
+                groups[1].tabs.push(groups[1].tabs.shift());
+                console.log('x', groups);
+                this.set({groups});
+            }
+
             let foundTab = false;
             groups.forEach(group => {
                 group.tabs.forEach(tab => {
