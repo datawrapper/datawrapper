@@ -1,6 +1,6 @@
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px"><b>{ team.name }</b> » { __('nav / team / settings') }</h1>
+        <h1 class="title" style="margin-bottom:18px">Teams » { team.name } » { __('Settings') }</h1>
     </div>
 </div>
 
@@ -24,7 +24,7 @@
             {#if currentTab}
             <div class="vis-options settings-section">
                 {#if currentTab.h1 }
-                <h1>{ @html currentTab.h1 }</h1>
+                <h2>{ @html currentTab.h1 }</h2>
                 {/if}
 
                 <svelte:component
@@ -328,5 +328,19 @@
     }
     .span2 .nav a i {
         width: 15px;
+    }
+
+    .settings-section {
+        :global(h2) {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1em;
+            padding-bottom: 1ex;
+        }
+
+        :global(p.help) {
+            font-size: 16px;
+            color: #888;
+            line-height: 1.5;
+        }
     }
 </style>
