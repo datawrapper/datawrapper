@@ -25571,7 +25571,28 @@
 
 
 
+	function data$F() {
+	    return {
+	        deleteTeam: false,
+	        deleteTeam2: false,
+	        deleting: false
+	    };
+	}
+	var methods$q = {
+	    fetchAPI: function fetchAPI(url, opts) {
+	        return window.fetch(("//" + (dw.backend.__api_domain) + "/v3/" + url), opts);
+	    },
+	    deleteTeam: async function deleteTeam() {
+	        this.set({ deleting: true });
 
+	        await this.fetchAPI(("teams/" + (this.get().team.id)), {
+	            method: 'DELETE',
+	            credentials: 'include'
+	        });
+
+	        window.location = '/';
+	    }
+	};
 
 	var file$I = "team-settings/tabs/DeleteTeam.html";
 
@@ -25793,7 +25814,7 @@
 		}
 
 		init(this, options);
-		this._state = assign({}, options.data);
+		this._state = assign(data$F(), options.data);
 		if (!('deleteTeam' in this._state)) { console.warn("<DeleteTeam> was created without expected data property 'deleteTeam'"); }
 		if (!('deleteTeam2' in this._state)) { console.warn("<DeleteTeam> was created without expected data property 'deleteTeam2'"); }
 		if (!('deleting' in this._state)) { console.warn("<DeleteTeam> was created without expected data property 'deleting'"); }
@@ -25811,6 +25832,7 @@
 	}
 
 	assign(DeleteTeam.prototype, protoDev);
+	assign(DeleteTeam.prototype, methods$q);
 
 	DeleteTeam.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
@@ -25936,7 +25958,7 @@
 	            };
 	        });
 	}
-	function data$F() {
+	function data$G() {
 	    return {
 	        productHeaders: [
 	            { title: __('teams / products / id'), width: '10%' },
@@ -25950,7 +25972,7 @@
 	        loadingAllProducts: true
 	    };
 	}
-	var methods$q = {
+	var methods$r = {
 	    edit: function edit(productId) {
 	        if (this.get().editId === productId) {
 	            this.set({ editId: false });
@@ -26027,7 +26049,8 @@
 	    getJSON(("//" + (dw.backend.__api_domain) + "/v3/teams/" + (current.team.id) + "/products"), 'include', function (products) { return this$1.set({ loadingTeamProducts: false, products: products.list }); }
 	    );
 
-	    getJSON(("//" + (dw.backend.__api_domain) + "/v3/products"), 'include', function (allProducts) { return this$1.set({ loadingAllProducts: false, allProducts: allProducts.list }); });
+	    getJSON(("//" + (dw.backend.__api_domain) + "/v3/products"), 'include', function (allProducts) { return this$1.set({ loadingAllProducts: false, allProducts: allProducts.list }); }
+	    );
 	}
 	var file$J = "team-settings/tabs/ProductTable.html";
 
@@ -26784,7 +26807,7 @@
 		}
 
 		init(this, options);
-		this._state = assign(data$F(), options.data);
+		this._state = assign(data$G(), options.data);
 
 		this._recompute({ products: 1, allProducts: 1 }, this._state);
 		if (!('products' in this._state)) { console.warn("<ProductTable_1> was created without expected data property 'products'"); }
@@ -26817,7 +26840,7 @@
 	}
 
 	assign(ProductTable_1.prototype, protoDev);
-	assign(ProductTable_1.prototype, methods$q);
+	assign(ProductTable_1.prototype, methods$r);
 
 	ProductTable_1.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('addableProducts' in newState && !this._updatingReadonlyProperty) { throw new Error("<ProductTable_1>: Cannot set read-only property 'addableProducts'"); }
@@ -26951,7 +26974,7 @@
 
 	    return groups;
 	}
-	function data$G() {
+	function data$H() {
 	    return {
 	        allTabs: [
 	            {
@@ -27011,6 +27034,9 @@
 	                adminOnly: true
 	            }
 	        ],
+	        pluginTabs: [],
+	        activeTab: 'members',
+	        app: Members,
 	        team: {
 	            name: ''
 	        },
@@ -27041,19 +27067,13 @@
 	                visualizations: {}
 	            }
 	        },
-	        loadingUsers: true,
 	        users: [],
 	        userId: null,
 	        visualizations: [],
-	        deleteTeam: false,
-	        deleteTeam2: false,
-	        deleting: false,
-	        pluginTabs: [],
-	        activeTab: 'members',
-	        app: Members
+	        loadingUsers: true
 	    };
 	}
-	var methods$r = {
+	var methods$s = {
 	    activate: function activate(id) {
 	        var this$1 = this;
 
@@ -27129,16 +27149,6 @@
 	    },
 	    fetchAPI: function fetchAPI(url, opts) {
 	        return window.fetch(("//" + (dw.backend.__api_domain) + "/v3/" + url), opts);
-	    },
-	    deleteTeam: async function deleteTeam() {
-	        this.set({ deleting: true });
-
-	        await this.fetchAPI(("teams/" + (this.get().team.id)), {
-	            method: 'DELETE',
-	            credentials: 'include'
-	        });
-
-	        window.location = '/';
 	    }
 	};
 
@@ -27209,22 +27219,23 @@
 				text4 = createText("\n\n        ");
 				div3 = createElement("div");
 				if (if_block) { if_block.c(); }
-				addLoc(b, file$L, 2, 26, 84);
+				addLoc(b, file$L, 2, 53, 111);
 				h1.className = "title";
+				setStyle(h1, "margin-bottom", "18px");
 				addLoc(h1, file$L, 2, 8, 66);
 				div0.className = "span12 admin";
 				addLoc(div0, file$L, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$L, 0, 0, 0);
 				div2.className = "span2 svelte-mf4roy";
-				addLoc(div2, file$L, 8, 8, 294);
+				addLoc(div2, file$L, 8, 8, 321);
 				div3.className = "span10";
-				addLoc(div3, file$L, 22, 8, 786);
+				addLoc(div3, file$L, 22, 8, 813);
 				div4.className = "visconfig";
-				addLoc(div4, file$L, 7, 4, 262);
+				addLoc(div4, file$L, 7, 4, 289);
 				div5.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div5, "margin-top", "-20px");
-				addLoc(div5, file$L, 6, 0, 163);
+				addLoc(div5, file$L, 6, 0, 190);
 			},
 
 			m: function mount(target, anchor) {
@@ -27315,17 +27326,17 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-mf4roy";
-				addLoc(i, file$L, 15, 42, 623);
+				addLoc(i, file$L, 15, 42, 650);
 				a.href = a_href_value = "#" + ctx.tab.id;
 				a.className = "svelte-mf4roy";
-				addLoc(a, file$L, 15, 20, 601);
+				addLoc(a, file$L, 15, 20, 628);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
 				li.className = "svelte-mf4roy";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
-				addLoc(li, file$L, 14, 16, 512);
+				addLoc(li, file$L, 14, 16, 539);
 			},
 
 			m: function mount(target, anchor) {
@@ -27389,9 +27400,9 @@
 					each_blocks[i].c();
 				}
 				div.className = "group svelte-mf4roy";
-				addLoc(div, file$L, 10, 12, 362);
+				addLoc(div, file$L, 10, 12, 389);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$L, 12, 12, 416);
+				addLoc(ul, file$L, 12, 12, 443);
 			},
 
 			m: function mount(target, anchor) {
@@ -27621,7 +27632,7 @@
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = "vis-options settings-section svelte-mf4roy";
-				addLoc(div, file$L, 24, 12, 848);
+				addLoc(div, file$L, 24, 12, 875);
 			},
 
 			m: function mount(target, anchor) {
@@ -27807,7 +27818,7 @@
 		return {
 			c: function create() {
 				h1 = createElement("h1");
-				addLoc(h1, file$L, 26, 16, 944);
+				addLoc(h1, file$L, 26, 16, 971);
 			},
 
 			m: function mount(target, anchor) {
@@ -27839,7 +27850,7 @@
 
 		init(this, options);
 		this.refs = {};
-		this._state = assign(data$G(), options.data);
+		this._state = assign(data$H(), options.data);
 
 		this._recompute({ users: 1, userId: 1, allTabs: 1, pluginTabs: 1, isAdmin: 1, role: 1, activeTab: 1, tabs: 1 }, this._state);
 		if (!('users' in this._state)) { console.warn("<App> was created without expected data property 'users'"); }
@@ -27885,7 +27896,7 @@
 	}
 
 	assign(App.prototype, protoDev);
-	assign(App.prototype, methods$r);
+	assign(App.prototype, methods$s);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('role' in newState && !this._updatingReadonlyProperty) { throw new Error("<App>: Cannot set read-only property 'role'"); }
