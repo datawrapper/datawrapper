@@ -253,39 +253,9 @@
 </script>
 
 <style lang="less">
-    .cont:before {
-        border: 13px solid transparent;
-        border-bottom-color: #ddd;
-        margin-left: -13px;
-        margin-top: -13px;
-    }
-
-    .cont:after {
-        border: 12px solid transparent;
-        border-bottom-color: #f2f2f2;
-        margin-left: -12px;
-        margin-top: -12px;
-    }
-
     .cont {
-        &:before,
-        &:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50px;
-            width: 0;
-            height: 0;
-            border-top: 0;
-        }
-
-        position: absolute;
-        width: 350px;
-        z-index: 1;
-
         margin-top: 4px;
         border: 1px solid #ddd;
-        max-width: 350px;
         background: white;
 
         .header i,
