@@ -25597,7 +25597,7 @@
 	var file$I = "team-settings/tabs/DeleteTeam.html";
 
 	function create_main_fragment$N(component, ctx) {
-		var if_block_anchor, switch_1_updating = {};
+		var p, raw_value = __('teams / delete / p'), text, if_block_anchor, switch_1_updating = {};
 
 		var if_block = (ctx.deleteTeam) && create_if_block$z(component, ctx);
 
@@ -25627,12 +25627,18 @@
 
 		return {
 			c: function create() {
+				p = createElement("p");
+				text = createText("\n\n");
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
 				switch_1._fragment.c();
+				addLoc(p, file$I, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+				insert(target, text, anchor);
 				if (if_block) { if_block.m(switch_1._slotted.default, null); }
 				append(switch_1._slotted.default, if_block_anchor);
 				switch_1._mount(target, anchor);
@@ -25663,13 +25669,18 @@
 			},
 
 			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+					detachNode(text);
+				}
+
 				if (if_block) { if_block.d(); }
 				switch_1.destroy(detach);
 			}
 		};
 	}
 
-	// (2:4) {#if deleteTeam}
+	// (6:4) {#if deleteTeam}
 	function create_if_block$z(component, ctx) {
 		var p, raw_value = __('teams / delete / really'), text0, checkbox_updating = {}, text1, if_block_anchor;
 
@@ -25706,7 +25717,7 @@
 				text1 = createText("\n\n    ");
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
-				addLoc(p, file$I, 2, 4, 97);
+				addLoc(p, file$I, 6, 4, 146);
 			},
 
 			m: function mount(target, anchor) {
@@ -25762,7 +25773,7 @@
 		};
 	}
 
-	// (9:4) {#if deleteTeam2}
+	// (13:4) {#if deleteTeam2}
 	function create_if_block_1$k(component, ctx) {
 		var button, i, i_class_value, text, raw_value = __('teams / delete / action'), raw_before;
 
@@ -25777,10 +25788,10 @@
 				text = createText("  ");
 				raw_before = createElement('noscript');
 				i.className = i_class_value = "fa " + (ctx.deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times');
-				addLoc(i, file$I, 10, 8, 338);
+				addLoc(i, file$I, 14, 8, 387);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-danger";
-				addLoc(button, file$I, 9, 4, 274);
+				addLoc(button, file$I, 13, 4, 323);
 			},
 
 			m: function mount(target, anchor) {
