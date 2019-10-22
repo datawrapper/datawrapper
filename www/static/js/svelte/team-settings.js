@@ -26982,7 +26982,7 @@
 	                title: __('teams / tab / members'),
 	                icon: 'fa fa-users',
 	                group: __('teams / group / users'),
-	                order: 1,
+	                order: 10,
 	                h1: __('teams / h1'),
 	                app: Members
 	            },
@@ -26991,7 +26991,7 @@
 	                title: __('teams / tab / settings'),
 	                icon: 'fa fa-gears',
 	                group: __('teams / group / users'),
-	                order: 2,
+	                order: 20,
 	                h1: __('teams / defaults / h1'),
 	                app: Settings
 	            },
@@ -27000,7 +27000,7 @@
 	                title: __('teams / tab / customFields'),
 	                icon: 'fa fa-list',
 	                group: __('teams / group / advanced'),
-	                order: 2,
+	                order: 20,
 	                h1: __('teams / cf / h1'),
 	                app: CustomFields
 	            },
@@ -27009,7 +27009,7 @@
 	                title: __('teams / tab / visTypes'),
 	                icon: 'fa fa-ban',
 	                group: __('teams / group / advanced'),
-	                order: 4,
+	                order: 70,
 	                h1: __('teams / disable / h1'),
 	                app: Visualizations
 	            },
@@ -27018,7 +27018,7 @@
 	                title: __('teams / tab / deleteTeam'),
 	                icon: 'fa fa-times',
 	                group: __('teams / group / advanced'),
-	                order: 5,
+	                order: 80,
 	                h1: __('teams / delete / h1'),
 	                app: DeleteTeam,
 	                ownerOnly: true
@@ -27028,7 +27028,7 @@
 	                title: __('teams / tab / adminProducts'),
 	                icon: 'fa fa-list-alt',
 	                group: __('teams / group / internal'),
-	                order: 1,
+	                order: 90,
 	                h1: __('teams / products / h1'),
 	                app: ProductTable_1,
 	                adminOnly: true

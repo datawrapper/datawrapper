@@ -6,10 +6,7 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
     $user = DatawrapperSession::getUser();
 
     if ($user->isLoggedIn()) {
-          error_page(1, "You're already logged in.", "This link is an invitation".
-              " for new users. You're already logged into a Datawrapper account,".
-              " so it's probably not meant for you. If you still want to accept".
-              " this invitation with a new account, log out and open this link again.");
+          error_page(1, __("settings / invite / logged-in / heading"), __("settings / invite / logged-in / message"));
           return;
     }
 
@@ -19,8 +16,8 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
         ->findOne();
 
     if (empty($invitee)) {
-          error_page(1, "Expired Link", "This link is invalid or has expired.");
-          return;
+        error_page(1, "Expired Link", "This link is invalid or has expired.");
+         return;
     }
 
     $page = array();
@@ -40,18 +37,6 @@ $app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) u
             ->findOne();
 
         if (empty($invite)) {
-            /*
-             * if we don't have a pending org invite yet,
-             * the newly created user will be the team admin.
-             * so we need to tell chargebee the user id of the user,
-             * and then sync
-             */
-
-            /*
-            $subscriptions = DatawrapperPluginManager::getInstance('subscriptions');
-            $subscriptions->identifyUserByEmail();
-            Subscription::activateSubscriptionProducts(DatawrapperSession::getUser()->getId());
-            */
             $app->redirect('/team/new/setup');
             return;
         }

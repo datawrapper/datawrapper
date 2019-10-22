@@ -612,7 +612,16 @@
   "teams / tab / visTypes": "Visualisierungen",
   "teams / tab / deleteTeam": "Team löschen",
   "teams / tab / adminProducts": "Produkte",
-  "teams / group / users": "Nutzer",
+  "teams / group / users": "Allgemein",
   "teams / group / advanced": "Erweitert",
-  "teams / group / internal": "Intern"
+  "teams / group / internal": "Intern",
+  "settings / invite / logged-in / heading": "Du bist bereits eingeloggt.",
+  "settings / invite / logged-in / message": "Dieser Einladungslink ist für einen neuen Nutzer. Du bist allerdings bereits mit einem Datawrapper-Account eingeloggt. Um die Einladung anzunehmen, logge dich bitte aus und öffne dne Einladungslink noch einmal.",
+  "settings / invite / expired / heading": "Abgelaufener Link",
+  "settings / invite / expired / message": "Dieser Link ist invalide oder abgelaufen.",
+  "settings / invite / set-password-alert": "Bitte wähle das Passwort für deinen Datawrapper-Account:",
+  "settings / invite / wrong-user / heading": "Diese Einladung ist für einen anderen Account bestimmt.",
+  "settings / invite / wrong-user / message": "Diese Einladung wurde an den Account %email% geschickt. Um die Einladung anzunehmen, logge dich bitte unter der E-Mail-Adresse ein und öffne den Einladungslink erneut.",
+  "settings / invite / not-logged-in / heading": "Bitte logge dich ein, um die Einladung anzunehmen.",
+  "settings / invite / not-logged-in / message": "Diese Einladung wurde an den Account %email% geschickt. Um die Einladung anzunehmen, logge dich bitte unter der E-Mail-Adresse ein und öffne den Einladungslink erneut."
 }
