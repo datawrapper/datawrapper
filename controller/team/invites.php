@@ -16,7 +16,7 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
         ->findOne();
 
     if (empty($invitee)) {
-        error_page(1, "Expired Link", "This link is invalid or has expired.");
+        error_page(1, __("settings / invite / expired / heading"), __("settings / invite / expired / message"));
          return;
     }
 
