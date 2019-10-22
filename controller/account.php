@@ -22,7 +22,8 @@ call_user_func(function() {
                 $app->render('account/edit-profile.twig', array(
                     "svelte_data" => [
                         "email" => $user->getEmail(),
-                        "userId" => $user->getId()
+                        "userId" => $user->getId(),
+                        'teams' => $user->getOrganizations()->toArray()
                     ]
                 ));
               };
@@ -44,7 +45,6 @@ call_user_func(function() {
             foreach ($pages as $page) {
                 if (!isset($page['order'])) $page['order'] = 999;
             }
-
 
             usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
 
@@ -68,7 +68,7 @@ call_user_func(function() {
 
             $context = array(
                 "user" => $user,
-                'teams' => $user->getOrganizations()->asArray()
+                'teams' => $user->getOrganizations()->toArray()
             );
 
             add_header_vars($page, 'account');
