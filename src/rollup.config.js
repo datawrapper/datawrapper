@@ -21,7 +21,6 @@ build('controls/hot', { noAMD: true });
 // build('publish/sidebar', { noAMD: true });
 build('highlight');
 build('editor');
-build('account');
 
 if (checkTarget('render'))
     targets.push({

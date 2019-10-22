@@ -1,9 +1,7 @@
-<div class="row">
-    <div class="span10 offset1">
-        <h1>{ __("Edit profile") }</h1>
-        <h2>{ __("account / change-login") }</h2>
-    </div>
-</div>
+
+
+<h2>{ __("Edit profile") }</h2>
+
 
 {#if changePassword }
 
@@ -64,7 +62,7 @@
 {:elseif deleteAccount }
 
 <div class="row delete-account">
-    <div class="span6 offset3" style="text-align:center">
+    <div class="span6 offset3" style="">
         <div class="iconholder">
             <i class="fa fa-times"></i>
         </div>
@@ -135,8 +133,8 @@
 {:elseif deleteAccount3 }
 
 <div class="row delete-account">
-    <div class="span6 offset3" style="text-align:center">
-        <h2 style="margin-bottom:20px;text-align:center">
+    <div class="span6 offset3" style="">
+        <h2 style="margin-bottom:20px;">
             { __("Your account has been deleted.") }
         </h2>
         <a href="/" class="btn btn-primary btn-large">{ __("Goodbye!") }</a>
@@ -197,7 +195,7 @@
 {/if}
 
 <div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
-    <div class="span6 offset3">
+    <div class="span6">
         <div>
             <div>
                 { __("E-Mail") }:
@@ -231,15 +229,18 @@
             <span class="link" on:click="set({deleteAccount: true})" href="#">{ __("account / delete") }</span>.
         </div>
     </div>
+    <div class="span4">
+    	<p class="help">{ __("account / change-login") }</p>
+    </div>
 </div>
 
 {/if}
 
 <script>
     /* globals CryptoJS */
-    import { __ } from '../shared/l10n';
-    import { getJSON, putJSON, fetchJSON } from '../shared/utils';
-    import checkPassword from '../shared/checkPassword';
+    import { __ } from '@datawrapper/shared/l10n';
+    import { getJSON, putJSON, fetchJSON } from '@datawrapper/shared/fetch';
+    import checkPassword from '@datawrapper/shared/checkPassword';
 
     export default {
         data() {
@@ -252,7 +253,20 @@
                 currentPassword: '',
                 newPassword1: '',
                 newPassword2: '',
-                confirmPassword: ''
+                confirmPassword: '',
+                groups: [
+                    {
+                        title: 'Account settings',
+                        tabs: [{
+                            title: 'Profile',
+                            icon: 'fa fa-fw fa-user'
+                        }]
+                    },
+                    {
+                        title: 'Team settings',
+                        tabs: []
+                    }
+                ]
             };
         },
         helpers: {
@@ -425,6 +439,8 @@
         }
     }
 
+
+
     .edit-account > .span6 > div {
         display: flex;
         justify-content: space-around;
@@ -448,7 +464,6 @@
 
         .iconholder {
             color: #c71e1d;
-            text-align: center;
             display: block;
             font-size: 48px;
             height: 55px;
@@ -460,4 +475,15 @@
         font-weight: bold;
         cursor: pointer;
     }
+
+    .settings-section {
+        padding-top: 10px;
+        margin-top: 10px;
+
+        .base-dropdown-content {
+            top: 30px !important;
+        }
+    }
+
 </style>
+

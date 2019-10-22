@@ -11,11 +11,22 @@
 		return tar;
 	}
 
-	function appendNode(node, target) {
+	function assignTrue(tar, src) {
+		for (var k in src) { tar[k] = 1; }
+		return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+		element.__svelte_meta = {
+			loc: { file: file, line: line, column: column, char: char }
+		};
+	}
+
+	function append(target, node) {
 		target.appendChild(node);
 	}
 
-	function insertNode(node, target, anchor) {
+	function insert(target, node, anchor) {
 		target.insertBefore(node, anchor);
 	}
 
@@ -23,9 +34,9 @@
 		node.parentNode.removeChild(node);
 	}
 
-	function destroyEach(iterations) {
+	function destroyEach(iterations, detach) {
 		for (var i = 0; i < iterations.length; i += 1) {
-			if (iterations[i]) { iterations[i].d(); }
+			if (iterations[i]) { iterations[i].d(detach); }
 		}
 	}
 
@@ -41,20 +52,29 @@
 		return document.createComment('');
 	}
 
-	function addListener(node, event, handler) {
-		node.addEventListener(event, handler, false);
+	function addListener(node, event, handler, options) {
+		node.addEventListener(event, handler, options);
 	}
 
-	function removeListener(node, event, handler) {
-		node.removeEventListener(event, handler, false);
+	function removeListener(node, event, handler, options) {
+		node.removeEventListener(event, handler, options);
 	}
 
 	function setAttribute(node, attribute, value) {
-		node.setAttribute(attribute, value);
+		if (value == null) { node.removeAttribute(attribute); }
+		else { node.setAttribute(attribute, value); }
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
 	}
 
 	function setStyle(node, key, value) {
 		node.style.setProperty(key, value);
+	}
+
+	function toggleClass(element, name, toggle) {
+		element.classList[toggle ? 'add' : 'remove'](name);
 	}
 
 	function blankObject() {
@@ -64,11 +84,11 @@
 	function destroy(detach) {
 		this.destroy = noop;
 		this.fire('destroy');
-		this.set = this.get = noop;
+		this.set = noop;
 
-		if (detach !== false) { this._fragment.u(); }
-		this._fragment.d();
-		this._fragment = this._state = null;
+		this._fragment.d(detach !== false);
+		this._fragment = null;
+		this._state = {};
 	}
 
 	function destroyDev(detach) {
@@ -87,8 +107,6 @@
 	}
 
 	function fire(eventName, data) {
-		var this$1 = this;
-
 		var handlers =
 			eventName in this._handlers && this._handlers[eventName].slice();
 		if (!handlers) { return; }
@@ -97,62 +115,46 @@
 			var handler = handlers[i];
 
 			if (!handler.__calling) {
-				handler.__calling = true;
-				handler.call(this$1, data);
-				handler.__calling = false;
+				try {
+					handler.__calling = true;
+					handler.call(this, data);
+				} finally {
+					handler.__calling = false;
+				}
 			}
 		}
 	}
 
-	function getDev(key) {
-		if (key) { console.warn("`let x = component.get('x')` is deprecated. Use `let { x } = component.get()` instead"); }
-		return get.call(this, key);
+	function flush(component) {
+		component._lock = true;
+		callAll(component._beforecreate);
+		callAll(component._oncreate);
+		callAll(component._aftercreate);
+		component._lock = false;
 	}
 
-	function get(key) {
-		return key ? this._state[key] : this._state;
+	function get() {
+		return this._state;
 	}
 
 	function init(component, options) {
 		component._handlers = blankObject();
+		component._slots = blankObject();
 		component._bind = options._bind;
+		component._staged = {};
 
 		component.options = options;
 		component.root = options.root || component;
-		component.store = component.root.store || options.store;
-	}
+		component.store = options.store || component.root.store;
 
-	function observe(key, callback, options) {
-		var fn = callback.bind(this);
-
-		if (!options || options.init !== false) {
-			fn(this.get()[key], undefined);
+		if (!options.root) {
+			component._beforecreate = [];
+			component._oncreate = [];
+			component._aftercreate = [];
 		}
-
-		return this.on(options && options.defer ? 'update' : 'state', function(event) {
-			if (event.changed[key]) { fn(event.current[key], event.previous && event.previous[key]); }
-		});
-	}
-
-	function observeDev(key, callback, options) {
-		console.warn("this.observe(key, (newValue, oldValue) => {...}) is deprecated. Use\n\n  // runs before DOM updates\n  this.on('state', ({ changed, current, previous }) => {...});\n\n  // runs after DOM updates\n  this.on('update', ...);\n\n...or add the observe method from the svelte-extras package");
-
-		var c = (key = '' + key).search(/[.[]/);
-		if (c > -1) {
-			var message =
-				'The first argument to component.observe(...) must be the name of a top-level property';
-			if (c > 0)
-				{ message += ", i.e. '" + key.slice(0, c) + "' rather than '" + key + "'"; }
-
-			throw new Error(message);
-		}
-
-		return observe.call(this, key, callback, options);
 	}
 
 	function on(eventName, handler) {
-		if (eventName === 'teardown') { return this.on('destroy', handler); }
-
 		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
 		handlers.push(handler);
 
@@ -164,36 +166,22 @@
 		};
 	}
 
-	function onDev(eventName, handler) {
-		if (eventName === 'teardown') {
-			console.warn(
-				"Use component.on('destroy', ...) instead of component.on('teardown', ...) which has been deprecated and will be unsupported in Svelte 2"
-			);
-			return this.on('destroy', handler);
-		}
-
-		return on.call(this, eventName, handler);
-	}
-
 	function set(newState) {
 		this._set(assign({}, newState));
 		if (this.root._lock) { return; }
-		this.root._lock = true;
-		callAll(this.root._beforecreate);
-		callAll(this.root._oncreate);
-		callAll(this.root._aftercreate);
-		this.root._lock = false;
+		flush(this.root);
 	}
 
 	function _set(newState) {
-		var this$1 = this;
-
 		var oldState = this._state,
 			changed = {},
 			dirty = false;
 
+		newState = assign(this._staged, newState);
+		this._staged = {};
+
 		for (var key in newState) {
-			if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+			if (this._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
 		}
 		if (!dirty) { return; }
 
@@ -206,6 +194,10 @@
 			this._fragment.p(changed, this._state);
 			this.fire("update", { changed: changed, current: this._state, previous: oldState });
 		}
+	}
+
+	function _stage(newState) {
+		assign(this._staged, newState);
 	}
 
 	function setDev(newState) {
@@ -227,26 +219,40 @@
 		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
 	}
 
-	function _unmount() {
-		if (this._fragment) { this._fragment.u(); }
-	}
-
 	var protoDev = {
 		destroy: destroyDev,
-		get: getDev,
+		get: get,
 		fire: fire,
-		observe: observeDev,
-		on: onDev,
+		on: on,
 		set: setDev,
-		teardown: destroyDev,
 		_recompute: noop,
 		_set: _set,
+		_stage: _stage,
 		_mount: _mount,
-		_unmount: _unmount,
 		_differs: _differs
 	};
 
-	/* @DEPRECATED: plase use @datawrapper/shared instead */
+	/* globals dw */
+
+	var __messages = {};
+
+	function initMessages(scope) {
+	    if ( scope === void 0 ) scope = 'core';
+
+	    // let's check if we're in a chart
+	    if (scope === 'chart') {
+	        if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	            // use in-chart translations
+	            __messages[scope] = window.__dw.vis.meta.locale || {};
+	        }
+	    } else {
+	        // use backend translations
+	        __messages[scope] =
+	            scope === 'core'
+	                ? dw.backend.__messages.core
+	                : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	    }
+	}
 
 	/**
 	 * translates a message key. translations are originally stored in a
@@ -258,38 +264,45 @@
 	 * in the global `window.dw.backend.__messages` object. plugins that need
 	 * client-side translations must set `"svelte": true` in their plugin.json
 	 *
-	 * @export
 	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
 	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
 	 * @returns {string} -- the translated text
 	 */
-
-	var dw$1 = window.dw;
-
 	function __(key, scope) {
 	    var arguments$1 = arguments;
 	    if ( scope === void 0 ) scope = 'core';
 
 	    key = key.trim();
-	    if (!dw$1.backend.__messages[scope]) { return 'MISSING:' + key; }
-	    var translation = dw$1.backend.__messages[scope][key] || dw$1.backend.__messages.core[key] || key;
+	    if (!__messages[scope]) { initMessages(scope); }
+	    if (!__messages[scope][key]) { return 'MISSING:' + key; }
+	    var translation = __messages[scope][key];
 
-	    if (arguments.length > 2) {
-	        for (var i = 2; i < arguments.length; i++) {
-	            var index = i - 1;
-	            translation = translation.replace('$' + index, arguments$1[i]);
-	        }
+	    if (typeof translation === 'string' && arguments.length > 2) {
+	        // replace $0, $1 etc with remaining arguments
+	        translation = translation.replace(/\$(\d)/g, function (m, i) {
+	            i = 2 + Number(i);
+	            if (arguments$1[i] === undefined) { return m; }
+	            return arguments$1[i];
+	        });
 	    }
-
 	    return translation;
 	}
 
-	// quick reference variables for speed access
-
-	// `_isArray` : an object's function
-
-	/* @DEPRECATED: plase use @datawrapper/shared instead */
-
+	/**
+	 * Download and parse a remote JSON document
+	 *
+	 * @param {string} url
+	 * @param {string} method - HTTP method, either GET, POST or PUT
+	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { fetchJSON } from '@datawrapper/shared/fetch';
+	 * fetchJSON('http://api.example.org', 'GET', 'include');
+	 */
 	function fetchJSON(url, method, credentials, body, callback) {
 	    var opts = {
 	        method: method,
@@ -298,10 +311,10 @@
 	        credentials: credentials
 	    };
 
-	    var promise = window
+	    return window
 	        .fetch(url, opts)
 	        .then(function (res) {
-	            if (res.status !== 200) { return new Error(res.statusText); }
+	            if (!res.ok) { throw new Error(res.statusText); }
 	            return res.text();
 	        })
 	        .then(function (text) {
@@ -313,13 +326,36 @@
 	                return text;
 	            }
 	        })
+	        .then(function (res) {
+	            if (callback) { callback(res); }
+	            return res;
+	        })
 	        .catch(function (err) {
 	            console.error(err);
 	        });
-
-	    return callback ? promise.then(callback) : promise;
 	}
 
+	/**
+	 * Download and parse a JSON document via GET
+	 *
+	 * @param {string} url
+	 * @param {string|undefined} credentials - optional, set to undefined to disable credentials
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { getJSON } from '@datawrapper/shared/fetch';
+	 * // use it callback style
+	 * getJSON('http://api.example.org', 'include', function(data) {
+	 *     console.log(data);
+	 * });
+	 * // or promise-style
+	 * getJSON('http://api.example.org')
+	 *   .then(data => {
+	 *      console.log(data);
+	 *   });
+	 */
 	function getJSON(url, credentials, callback) {
 	    if (arguments.length === 2) {
 	        callback = credentials;
@@ -328,11 +364,27 @@
 
 	    return fetchJSON(url, 'GET', credentials, null, callback);
 	}
+
+	/**
+	 * Download and parse a remote JSON endpoint via PUT. credentials
+	 * are included automatically
+	 *
+	 * @param {string} url
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 * @example
+	 * import { putJSON } from '@datawrapper/shared/fetch';
+	 *
+	 * putJSON('http://api.example.org', JSON.stringify({
+	 *    query: 'foo',
+	 *    page: 12
+	 * }));
+	 */
 	function putJSON(url, body, callback) {
 	    return fetchJSON(url, 'PUT', 'include', body, callback);
 	}
-
-	/* @DEPRECATED: plase use @datawrapper/shared instead */
 
 	/* global dw */
 	function checkPassword(curPwd, pwd, pwd2) {
@@ -350,7 +402,9 @@
 	    return true;
 	}
 
-	/* account/App.html generated by Svelte v1.64.0 */
+	/* account/EditProfile.html generated by Svelte v2.16.1 */
+
+
 
 	function data() {
 	    return {
@@ -362,7 +416,20 @@
 	        currentPassword: '',
 	        newPassword1: '',
 	        newPassword2: '',
-	        confirmPassword: ''
+	        confirmPassword: '',
+	        groups: [
+	            {
+	                title: 'Account settings',
+	                tabs: [{
+	                    title: 'Profile',
+	                    icon: 'fa fa-fw fa-user'
+	                }]
+	            },
+	            {
+	                title: 'Team settings',
+	                tabs: []
+	            }
+	        ]
 	    };
 	}
 	var methods = {
@@ -536,1078 +603,284 @@
 	        this.set({ originalEmail: current.email });
 	    }
 	}
-	function create_main_fragment(component, state) {
-		var div, div_1, h1, text_value = __("Edit profile"), text, text_1, h2, text_2_value = __("account / change-login"), text_2, text_5, if_block_anchor;
+	var file = "account/EditProfile.html";
 
-		function select_block_type(state) {
-			if (state.changePassword) { return create_if_block; }
-			if (state.deleteAccount) { return create_if_block_2; }
-			if (state.deleteAccount2) { return create_if_block_3; }
-			if (state.deleteAccount3) { return create_if_block_5; }
-			if (state.changeEmail) { return create_if_block_6; }
-			return create_if_block_8;
+	function get_each_context_3(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context_2(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context_1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment(component, ctx) {
+		var h2, text0_value = __("Edit profile"), text0, text1, if_block_anchor;
+
+		function select_block_type(ctx) {
+			if (ctx.changePassword) { return create_if_block; }
+			if (ctx.deleteAccount) { return create_if_block_2; }
+			if (ctx.deleteAccount2) { return create_if_block_3; }
+			if (ctx.deleteAccount3) { return create_if_block_5; }
+			if (ctx.changeEmail) { return create_if_block_6; }
+			return create_else_block;
 		}
 
-		var current_block_type = select_block_type(state);
-		var if_block = current_block_type(component, state);
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
 
 		return {
 			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				h1 = createElement("h1");
-				text = createText(text_value);
-				text_1 = createText("\n        ");
 				h2 = createElement("h2");
-				text_2 = createText(text_2_value);
-				text_5 = createText("\n\n");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n\n");
 				if_block.c();
 				if_block_anchor = createComment();
-				this.h();
-			},
-
-			h: function hydrate() {
-				div_1.className = "span10 offset1";
-				div.className = "row";
+				addLoc(h2, file, 2, 0, 2);
 			},
 
 			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(h1, div_1);
-				appendNode(text, h1);
-				appendNode(text_1, div_1);
-				appendNode(h2, div_1);
-				appendNode(text_2, h2);
-				insertNode(text_5, target, anchor);
+				insert(target, h2, anchor);
+				append(h2, text0);
+				insert(target, text1, anchor);
 				if_block.m(target, anchor);
-				insertNode(if_block_anchor, target, anchor);
+				insert(target, if_block_anchor, anchor);
 			},
 
-			p: function update(changed, state) {
-				if (current_block_type === (current_block_type = select_block_type(state)) && if_block) {
-					if_block.p(changed, state);
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+					if_block.p(changed, ctx);
 				} else {
-					if_block.u();
-					if_block.d();
-					if_block = current_block_type(component, state);
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
 					if_block.c();
 					if_block.m(if_block_anchor.parentNode, if_block_anchor);
 				}
 			},
 
-			u: function unmount() {
-				detachNode(div);
-				detachNode(text_5);
-				if_block.u();
-				detachNode(if_block_anchor);
-			},
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+					detachNode(text1);
+				}
 
-			d: function destroy() {
-				if_block.d();
+				if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
 			}
 		};
 	}
 
-	// (21:20) {#each errors as message}
-	function create_each_block(component, state) {
-		var message = state.message, each_value = state.each_value, message_index = state.message_index;
-		var li, raw_value = message;
+	// (183:0) {:else}
+	function create_else_block(component, ctx) {
+		var text0, div11, div9, div3, div0, text1_value = __("E-Mail"), text1, text2, text3, div1, input0, input0_disabled_value, text4, div2, button0, text5_value = __( "account / email"), text5, text6, div7, div4, text7_value = __("Password"), text7, text8, text9, div5, input1, text10, div6, button1, text11_value = __("account / password"), text11, text12, div8, text13_value = __("account / or"), text13, text14, span, text15_value = __("account / delete"), text15, text16, text17, div10, p, text18_value = __("account / change-login"), text18;
 
-		return {
-			c: function create() {
-				li = createElement("li");
-			},
+		var if_block = (ctx.messages && ctx.messages.length) && create_if_block_8(component, ctx);
 
-			m: function mount(target, anchor) {
-				insertNode(li, target, anchor);
-				li.innerHTML = raw_value;
-			},
+		function click_handler(event) {
+			component.set({changeEmail: true});
+		}
 
-			p: function update(changed, state) {
-				message = state.message;
-				each_value = state.each_value;
-				message_index = state.message_index;
-				if ((changed.errors) && raw_value !== (raw_value = message)) {
-					li.innerHTML = raw_value;
-				}
-			},
+		function click_handler_1(event) {
+			component.set({changePassword: true});
+		}
 
-			u: function unmount() {
-				li.innerHTML = '';
-
-				detachNode(li);
-			},
-
-			d: noop
-		};
-	}
-
-	// (18:12) {#if errors && errors.length }
-	function create_if_block_1(component, state) {
-		var div, ul;
-
-		var each_value = state.errors;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block(component, assign(assign({}, state), {
-				each_value: each_value,
-				message: each_value[i],
-				message_index: i
-			}));
+		function click_handler_2(event) {
+			component.set({deleteAccount: true});
 		}
 
 		return {
 			c: function create() {
-				div = createElement("div");
-				ul = createElement("ul");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(ul, "margin-bottom", "0");
-				div.className = "alert";
+				if (if_block) { if_block.c(); }
+				text0 = createText("\n\n");
+				div11 = createElement("div");
+				div9 = createElement("div");
+				div3 = createElement("div");
+				div0 = createElement("div");
+				text1 = createText(text1_value);
+				text2 = createText(":");
+				text3 = createText("\n            ");
+				div1 = createElement("div");
+				input0 = createElement("input");
+				text4 = createText("\n            ");
+				div2 = createElement("div");
+				button0 = createElement("button");
+				text5 = createText(text5_value);
+				text6 = createText("\n\n        ");
+				div7 = createElement("div");
+				div4 = createElement("div");
+				text7 = createText(text7_value);
+				text8 = createText(":");
+				text9 = createText("\n            ");
+				div5 = createElement("div");
+				input1 = createElement("input");
+				text10 = createText("\n            ");
+				div6 = createElement("div");
+				button1 = createElement("button");
+				text11 = createText(text11_value);
+				text12 = createText("\n\n        ");
+				div8 = createElement("div");
+				text13 = createText(text13_value);
+				text14 = createText("\n            ");
+				span = createElement("span");
+				text15 = createText(text15_value);
+				text16 = createText(".");
+				text17 = createText("\n    ");
+				div10 = createElement("div");
+				p = createElement("p");
+				text18 = createText(text18_value);
+				div0.className = "svelte-1gfuyl2";
+				addLoc(div0, file, 199, 12, 7234);
+				input0.disabled = input0_disabled_value = !ctx.changeEmail;
+				input0.value = ctx.originalEmail;
+				setAttribute(input0, "type", "text");
+				addLoc(input0, file, 203, 16, 7327);
+				div1.className = "svelte-1gfuyl2";
+				addLoc(div1, file, 202, 12, 7305);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-save btn-default";
+				addLoc(button0, file, 206, 16, 7456);
+				div2.className = "svelte-1gfuyl2";
+				addLoc(div2, file, 205, 12, 7434);
+				div3.className = "svelte-1gfuyl2";
+				addLoc(div3, file, 198, 8, 7216);
+				div4.className = "svelte-1gfuyl2";
+				addLoc(div4, file, 213, 12, 7668);
+				input1.disabled = true;
+				input1.value = "abcdefgh";
+				setAttribute(input1, "type", "password");
+				addLoc(input1, file, 217, 16, 7763);
+				div5.className = "svelte-1gfuyl2";
+				addLoc(div5, file, 216, 12, 7741);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-save btn-default";
+				addLoc(button1, file, 220, 16, 7868);
+				div6.className = "svelte-1gfuyl2";
+				addLoc(div6, file, 219, 12, 7846);
+				div7.className = "svelte-1gfuyl2";
+				addLoc(div7, file, 212, 8, 7650);
+				addListener(span, "click", click_handler_2);
+				span.className = "link svelte-1gfuyl2";
+				setAttribute(span, "href", "#");
+				addLoc(span, file, 228, 12, 8164);
+				setStyle(div8, "text-align", "center");
+				setStyle(div8, "display", "block");
+				div8.className = "svelte-1gfuyl2";
+				addLoc(div8, file, 226, 8, 8067);
+				div9.className = "span6";
+				addLoc(div9, file, 197, 4, 7188);
+				p.className = "help";
+				addLoc(p, file, 232, 5, 8320);
+				div10.className = "span4";
+				addLoc(div10, file, 231, 4, 8295);
+				div11.className = "row edit-account svelte-1gfuyl2";
+				setStyle(div11, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
+				addLoc(div11, file, 196, 0, 7089);
 			},
 
 			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(ul, div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(ul, null);
-				}
+				if (if_block) { if_block.m(target, anchor); }
+				insert(target, text0, anchor);
+				insert(target, div11, anchor);
+				append(div11, div9);
+				append(div9, div3);
+				append(div3, div0);
+				append(div0, text1);
+				append(div0, text2);
+				append(div3, text3);
+				append(div3, div1);
+				append(div1, input0);
+				append(div3, text4);
+				append(div3, div2);
+				append(div2, button0);
+				append(button0, text5);
+				append(div9, text6);
+				append(div9, div7);
+				append(div7, div4);
+				append(div4, text7);
+				append(div4, text8);
+				append(div7, text9);
+				append(div7, div5);
+				append(div5, input1);
+				append(div7, text10);
+				append(div7, div6);
+				append(div6, button1);
+				append(button1, text11);
+				append(div9, text12);
+				append(div9, div8);
+				append(div8, text13);
+				append(div8, text14);
+				append(div8, span);
+				append(span, text15);
+				append(div8, text16);
+				append(div11, text17);
+				append(div11, div10);
+				append(div10, p);
+				append(p, text18);
 			},
 
-			p: function update(changed, state) {
-				var each_value = state.errors;
-
-				if (changed.errors) {
-					for (var i = 0; i < each_value.length; i += 1) {
-						var each_context = assign(assign({}, state), {
-							each_value: each_value,
-							message: each_value[i],
-							message_index: i
-						});
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, each_context);
-						} else {
-							each_blocks[i] = create_each_block(component, each_context);
-							each_blocks[i].c();
-							each_blocks[i].m(ul, null);
-						}
+			p: function update(changed, ctx) {
+				if (ctx.messages && ctx.messages.length) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_8(component, ctx);
+						if_block.c();
+						if_block.m(text0.parentNode, text0);
 					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].u();
-						each_blocks[i].d();
-					}
-					each_blocks.length = each_value.length;
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
 				}
-			},
 
-			u: function unmount() {
-				detachNode(div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
+				if ((changed.changeEmail) && input0_disabled_value !== (input0_disabled_value = !ctx.changeEmail)) {
+					input0.disabled = input0_disabled_value;
 				}
-			},
 
-			d: function destroy() {
-				destroyEach(each_blocks);
-			}
-		};
-	}
-
-	// (97:16) {#each errors as message}
-	function create_each_block_1(component, state) {
-		var message = state.message, each_value_1 = state.each_value_1, message_index_1 = state.message_index_1;
-		var li, raw_value = message;
-
-		return {
-			c: function create() {
-				li = createElement("li");
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(li, target, anchor);
-				li.innerHTML = raw_value;
-			},
-
-			p: function update(changed, state) {
-				message = state.message;
-				each_value_1 = state.each_value_1;
-				message_index_1 = state.message_index_1;
-				if ((changed.errors) && raw_value !== (raw_value = message)) {
-					li.innerHTML = raw_value;
+				if (changed.originalEmail) {
+					input0.value = ctx.originalEmail;
 				}
-			},
-
-			u: function unmount() {
-				li.innerHTML = '';
-
-				detachNode(li);
-			},
-
-			d: noop
-		};
-	}
-
-	// (94:8) {#if errors && errors.length }
-	function create_if_block_4(component, state) {
-		var div, ul;
-
-		var each_value_1 = state.errors;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value_1.length; i += 1) {
-			each_blocks[i] = create_each_block_1(component, assign(assign({}, state), {
-				each_value_1: each_value_1,
-				message: each_value_1[i],
-				message_index_1: i
-			}));
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				ul = createElement("ul");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(ul, "margin-bottom", "0");
-				div.className = "alert";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(ul, div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(ul, null);
-				}
-			},
-
-			p: function update(changed, state) {
-				var each_value_1 = state.errors;
-
-				if (changed.errors) {
-					for (var i = 0; i < each_value_1.length; i += 1) {
-						var each_context = assign(assign({}, state), {
-							each_value_1: each_value_1,
-							message: each_value_1[i],
-							message_index_1: i
-						});
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, each_context);
-						} else {
-							each_blocks[i] = create_each_block_1(component, each_context);
-							each_blocks[i].c();
-							each_blocks[i].m(ul, null);
-						}
-					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].u();
-						each_blocks[i].d();
-					}
-					each_blocks.length = each_value_1.length;
-				}
-			},
-
-			u: function unmount() {
-				detachNode(div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
-				}
-			},
-
-			d: function destroy() {
-				destroyEach(each_blocks);
-			}
-		};
-	}
-
-	// (157:20) {#each errors as message}
-	function create_each_block_2(component, state) {
-		var message = state.message, each_value_2 = state.each_value_2, message_index_2 = state.message_index_2;
-		var li, raw_value = message;
-
-		return {
-			c: function create() {
-				li = createElement("li");
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(li, target, anchor);
-				li.innerHTML = raw_value;
-			},
-
-			p: function update(changed, state) {
-				message = state.message;
-				each_value_2 = state.each_value_2;
-				message_index_2 = state.message_index_2;
-				if ((changed.errors) && raw_value !== (raw_value = message)) {
-					li.innerHTML = raw_value;
-				}
-			},
-
-			u: function unmount() {
-				li.innerHTML = '';
-
-				detachNode(li);
-			},
-
-			d: noop
-		};
-	}
-
-	// (154:12) {#if errors && errors.length }
-	function create_if_block_7(component, state) {
-		var div, ul;
-
-		var each_value_2 = state.errors;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value_2.length; i += 1) {
-			each_blocks[i] = create_each_block_2(component, assign(assign({}, state), {
-				each_value_2: each_value_2,
-				message: each_value_2[i],
-				message_index_2: i
-			}));
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				ul = createElement("ul");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(ul, "margin-bottom", "0");
-				div.className = "alert";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(ul, div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(ul, null);
-				}
-			},
-
-			p: function update(changed, state) {
-				var each_value_2 = state.errors;
-
-				if (changed.errors) {
-					for (var i = 0; i < each_value_2.length; i += 1) {
-						var each_context = assign(assign({}, state), {
-							each_value_2: each_value_2,
-							message: each_value_2[i],
-							message_index_2: i
-						});
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, each_context);
-						} else {
-							each_blocks[i] = create_each_block_2(component, each_context);
-							each_blocks[i].c();
-							each_blocks[i].m(ul, null);
-						}
-					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].u();
-						each_blocks[i].d();
-					}
-					each_blocks.length = each_value_2.length;
-				}
-			},
-
-			u: function unmount() {
-				detachNode(div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
-				}
-			},
-
-			d: function destroy() {
-				destroyEach(each_blocks);
-			}
-		};
-	}
-
-	// (190:16) {#each messages as message}
-	function create_each_block_3(component, state) {
-		var message = state.message, each_value_3 = state.each_value_3, message_index_3 = state.message_index_3;
-		var li, raw_value = message;
-
-		return {
-			c: function create() {
-				li = createElement("li");
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(li, target, anchor);
-				li.innerHTML = raw_value;
-			},
-
-			p: function update(changed, state) {
-				message = state.message;
-				each_value_3 = state.each_value_3;
-				message_index_3 = state.message_index_3;
-				if ((changed.messages) && raw_value !== (raw_value = message)) {
-					li.innerHTML = raw_value;
-				}
-			},
-
-			u: function unmount() {
-				li.innerHTML = '';
-
-				detachNode(li);
-			},
-
-			d: noop
-		};
-	}
-
-	// (185:8) {#if messages && messages.length }
-	function create_if_block_9(component, state) {
-		var div, div_1, div_2, ul;
-
-		var each_value_3 = state.messages;
-
-		var each_blocks = [];
-
-		for (var i = 0; i < each_value_3.length; i += 1) {
-			each_blocks[i] = create_each_block_3(component, assign(assign({}, state), {
-				each_value_3: each_value_3,
-				message: each_value_3[i],
-				message_index_3: i
-			}));
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				div_2 = createElement("div");
-				ul = createElement("ul");
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
-				}
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(ul, "margin-bottom", "0");
-				div_2.className = "alert alert-success";
-				div_1.className = "span6 offset3";
-				div.className = "row";
-				setStyle(div, "margin-top", "20px");
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(div_2, div_1);
-				appendNode(ul, div_2);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(ul, null);
-				}
-			},
-
-			p: function update(changed, state) {
-				var each_value_3 = state.messages;
 
 				if (changed.messages) {
-					for (var i = 0; i < each_value_3.length; i += 1) {
-						var each_context = assign(assign({}, state), {
-							each_value_3: each_value_3,
-							message: each_value_3[i],
-							message_index_3: i
-						});
-
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, each_context);
-						} else {
-							each_blocks[i] = create_each_block_3(component, each_context);
-							each_blocks[i].c();
-							each_blocks[i].m(ul, null);
-						}
-					}
-
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].u();
-						each_blocks[i].d();
-					}
-					each_blocks.length = each_value_3.length;
+					setStyle(div11, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
 				}
 			},
 
-			u: function unmount() {
-				detachNode(div);
-
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].u();
+			d: function destroy(detach) {
+				if (if_block) { if_block.d(detach); }
+				if (detach) {
+					detachNode(text0);
+					detachNode(div11);
 				}
-			},
 
-			d: function destroy() {
-				destroyEach(each_blocks);
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
+				removeListener(span, "click", click_handler_2);
 			}
 		};
 	}
 
-	// (8:0) {#if changePassword }
-	function create_if_block(component, state) {
-		var div, div_1, div_2, h2, text_value = __("account / password"), text, text_1, p, text_2_value = __("account / password / strong-password-note"), text_2, text_4, text_5, fieldset, div_3, label, text_6_value = __("Current Password"), text_6, text_7, div_4, input, input_updating = false, text_8, p_1, text_9_value = __("account / password / current-password-note"), text_9, text_13, div_5, label_1, text_14_value = __("New Password"), text_14, text_15, div_6, input_1, input_1_updating = false, text_18, div_7, label_2, text_19_value = __("(repeat)"), text_19, text_20, div_8, input_2, input_2_updating = false, text_23, div_9, button, text_24_value = __("Back"), text_24, text_26, button_1, i, i_class_value, text_27, text_28_value = __("account / password"), text_28;
+	// (144:21) 
+	function create_if_block_6(component, ctx) {
+		var div5, div4, div3, h2, text0_value = __("account / email"), text0, text1, p, text2_value = __("account / confirm-email-change"), text2, text3, text4, fieldset, div1, label, text5_value = __("E-Mail"), text5, text6, text7, div0, input, input_updating = false, input_disabled_value, text8, div2, button0, text9_value = __( "Back"), text9, text10, button1, i, i_class_value, text11, text12_value = __( "account / email"), text12;
 
-		var if_block = (state.errors && state.errors.length) && create_if_block_1(component, state);
-
-		function input_input_handler() {
-			input_updating = true;
-			component.set({ currentPassword: input.value });
-			input_updating = false;
-		}
-
-		function input_1_input_handler() {
-			input_1_updating = true;
-			component.set({ newPassword1: input_1.value });
-			input_1_updating = false;
-		}
-
-		function input_2_input_handler() {
-			input_2_updating = true;
-			component.set({ newPassword2: input_2.value });
-			input_2_updating = false;
-		}
-
-		function click_handler(event) {
-			component.set({changePassword: false});
-		}
-
-		function click_handler_1(event) {
-			component.changePassword();
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				div_2 = createElement("div");
-				h2 = createElement("h2");
-				text = createText(text_value);
-				text_1 = createText("\n            ");
-				p = createElement("p");
-				text_2 = createText(text_2_value);
-				text_4 = createText("\n\n            ");
-				if (if_block) { if_block.c(); }
-				text_5 = createText("\n\n            ");
-				fieldset = createElement("fieldset");
-				div_3 = createElement("div");
-				label = createElement("label");
-				text_6 = createText(text_6_value);
-				text_7 = createText("\n                    ");
-				div_4 = createElement("div");
-				input = createElement("input");
-				text_8 = createText("\n                        ");
-				p_1 = createElement("p");
-				text_9 = createText(text_9_value);
-				text_13 = createText("\n                ");
-				div_5 = createElement("div");
-				label_1 = createElement("label");
-				text_14 = createText(text_14_value);
-				text_15 = createText("\n                    ");
-				div_6 = createElement("div");
-				input_1 = createElement("input");
-				text_18 = createText("\n                ");
-				div_7 = createElement("div");
-				label_2 = createElement("label");
-				text_19 = createText(text_19_value);
-				text_20 = createText("\n                    ");
-				div_8 = createElement("div");
-				input_2 = createElement("input");
-				text_23 = createText("\n\n                ");
-				div_9 = createElement("div");
-				button = createElement("button");
-				text_24 = createText(text_24_value);
-				text_26 = createText("\n                    ");
-				button_1 = createElement("button");
-				i = createElement("i");
-				text_27 = createText("  ");
-				text_28 = createText(text_28_value);
-				this.h();
-			},
-
-			h: function hydrate() {
-				label.className = "control-label";
-				addListener(input, "input", input_input_handler);
-				setAttribute(input, "type", "password");
-				input.className = "input-xlarge";
-				p_1.className = "help-block";
-				div_4.className = "controls";
-				div_3.className = "control-group";
-				label_1.className = "control-label";
-				addListener(input_1, "input", input_1_input_handler);
-				setAttribute(input_1, "type", "password");
-				input_1.className = "input-xlarge";
-				div_6.className = "controls";
-				div_5.className = "control-group";
-				label_2.className = "control-label";
-				addListener(input_2, "input", input_2_input_handler);
-				setAttribute(input_2, "type", "password");
-				input_2.className = "input-xlarge";
-				div_8.className = "controls";
-				div_7.className = "control-group";
-				addListener(button, "click", click_handler);
-				button.className = "btn btn-save btn-default btn-back";
-				i.className = i_class_value = "fa " + (state.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
-				addListener(button_1, "click", click_handler_1);
-				button_1.className = "btn btn-primary";
-				setStyle(button_1, "float", "right");
-				div_2.className = "form-horizontal edit-account-confirm";
-				div_1.className = "span6 offset3";
-				div.className = "row";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(div_2, div_1);
-				appendNode(h2, div_2);
-				appendNode(text, h2);
-				appendNode(text_1, div_2);
-				appendNode(p, div_2);
-				appendNode(text_2, p);
-				appendNode(text_4, div_2);
-				if (if_block) { if_block.m(div_2, null); }
-				appendNode(text_5, div_2);
-				appendNode(fieldset, div_2);
-				appendNode(div_3, fieldset);
-				appendNode(label, div_3);
-				appendNode(text_6, label);
-				appendNode(text_7, div_3);
-				appendNode(div_4, div_3);
-				appendNode(input, div_4);
-
-				input.value = state.currentPassword;
-
-				appendNode(text_8, div_4);
-				appendNode(p_1, div_4);
-				appendNode(text_9, p_1);
-				appendNode(text_13, fieldset);
-				appendNode(div_5, fieldset);
-				appendNode(label_1, div_5);
-				appendNode(text_14, label_1);
-				appendNode(text_15, div_5);
-				appendNode(div_6, div_5);
-				appendNode(input_1, div_6);
-
-				input_1.value = state.newPassword1;
-
-				appendNode(text_18, fieldset);
-				appendNode(div_7, fieldset);
-				appendNode(label_2, div_7);
-				appendNode(text_19, label_2);
-				appendNode(text_20, div_7);
-				appendNode(div_8, div_7);
-				appendNode(input_2, div_8);
-
-				input_2.value = state.newPassword2;
-
-				appendNode(text_23, fieldset);
-				appendNode(div_9, fieldset);
-				appendNode(button, div_9);
-				appendNode(text_24, button);
-				appendNode(text_26, div_9);
-				appendNode(button_1, div_9);
-				appendNode(i, button_1);
-				appendNode(text_27, button_1);
-				appendNode(text_28, button_1);
-			},
-
-			p: function update(changed, state) {
-				if (state.errors && state.errors.length) {
-					if (if_block) {
-						if_block.p(changed, state);
-					} else {
-						if_block = create_if_block_1(component, state);
-						if_block.c();
-						if_block.m(div_2, text_5);
-					}
-				} else if (if_block) {
-					if_block.u();
-					if_block.d();
-					if_block = null;
-				}
-
-				if (!input_updating) { input.value = state.currentPassword; }
-				if (!input_1_updating) { input_1.value = state.newPassword1; }
-				if (!input_2_updating) { input_2.value = state.newPassword2; }
-				if ((changed.savingPassword) && i_class_value !== (i_class_value = "fa " + (state.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
-					i.className = i_class_value;
-				}
-			},
-
-			u: function unmount() {
-				detachNode(div);
-				if (if_block) { if_block.u(); }
-			},
-
-			d: function destroy() {
-				if (if_block) { if_block.d(); }
-				removeListener(input, "input", input_input_handler);
-				removeListener(input_1, "input", input_1_input_handler);
-				removeListener(input_2, "input", input_2_input_handler);
-				removeListener(button, "click", click_handler);
-				removeListener(button_1, "click", click_handler_1);
-			}
-		};
-	}
-
-	// (64:24) 
-	function create_if_block_2(component, state) {
-		var div, div_1, div_2, text_1, h2, text_2_value = __("account / confirm-account-deletion"), text_2, text_3, div_3, button, i_1, text_4, text_5_value = __("account / confirm-account-deletion / no"), text_5, text_7, div_4, text_8_value = __("account / or"), text_8, text_9, button_1, i_2, text_10, text_11_value = __("account / confirm-account-deletion / yes"), text_11;
-
-		function click_handler(event) {
-			component.set({deleteAccount: false});
-		}
-
-		function click_handler_1(event) {
-			component.set({deleteAccount: false, deleteAccount2: true});
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				div_2 = createElement("div");
-				div_2.innerHTML = "<i class=\"fa fa-times\"></i>";
-				text_1 = createText("\n\n        ");
-				h2 = createElement("h2");
-				text_2 = createText(text_2_value);
-				text_3 = createText("\n\n        ");
-				div_3 = createElement("div");
-				button = createElement("button");
-				i_1 = createElement("i");
-				text_4 = createText("   ");
-				text_5 = createText(text_5_value);
-				text_7 = createText("\n\n            ");
-				div_4 = createElement("div");
-				text_8 = createText(text_8_value);
-				text_9 = createText("\n\n            ");
-				button_1 = createElement("button");
-				i_2 = createElement("i");
-				text_10 = createText("   ");
-				text_11 = createText(text_11_value);
-				this.h();
-			},
-
-			h: function hydrate() {
-				div_2.className = "iconholder svelte-u71xal";
-				setStyle(h2, "margin-bottom", "20px");
-				h2.className = "svelte-u71xal";
-				i_1.className = "fa fa-chevron-left";
-				addListener(button, "click", click_handler);
-				button.className = "btn btn-back btn-primary";
-				setStyle(div_4, "display", "block");
-				setStyle(div_4, "margin", "0px 10px");
-				i_2.className = "fa fa-times";
-				addListener(button_1, "click", click_handler_1);
-				button_1.className = "btn btn-default";
-				setStyle(div_3, "display", "flex");
-				setStyle(div_3, "justify-content", "center");
-				setStyle(div_3, "align-items", "center");
-				div_1.className = "span6 offset3";
-				setStyle(div_1, "text-align", "center");
-				div.className = "row delete-account svelte-u71xal";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(div_2, div_1);
-				appendNode(text_1, div_1);
-				appendNode(h2, div_1);
-				appendNode(text_2, h2);
-				appendNode(text_3, div_1);
-				appendNode(div_3, div_1);
-				appendNode(button, div_3);
-				appendNode(i_1, button);
-				appendNode(text_4, button);
-				appendNode(text_5, button);
-				appendNode(text_7, div_3);
-				appendNode(div_4, div_3);
-				appendNode(text_8, div_4);
-				appendNode(text_9, div_3);
-				appendNode(button_1, div_3);
-				appendNode(i_2, button_1);
-				appendNode(text_10, button_1);
-				appendNode(text_11, button_1);
-			},
-
-			p: noop,
-
-			u: function unmount() {
-				detachNode(div);
-			},
-
-			d: function destroy() {
-				removeListener(button, "click", click_handler);
-				removeListener(button_1, "click", click_handler_1);
-			}
-		};
-	}
-
-	// (88:25) 
-	function create_if_block_3(component, state) {
-		var div, div_1, h2, text_value = __("account / delete / hed"), text, text_1, text_2, p, text_3_value = __("account / delete / really"), text_3, text_5, ul, li, text_6_value = __("account / confirm-account-deletion / free"), text_6, li_1, text_7_value = __("You cannot login and logout anymore."), text_7, li_2, text_8_value = __("You cannot edit or remove your charts anymore."), text_8, text_9, p_1, text_10_value = __("account / delete / charts-stay-online"), text_10, text_12, div_2, p_2, b, text_13_value = __("Please enter your password to confirm the deletion request:"), text_13, text_14, div_3, input, input_updating = false, input_placeholder_value, text_16, p_3, raw_value = __("account / delete / really-really"), text_18, div_4, button, i, text_19, text_20_value = __("No, I changed my mind.."), text_20, text_22, button_1, i_1, i_1_class_value, text_23, text_24_value = __("Yes, delete it!"), text_24;
-
-		var if_block = (state.errors && state.errors.length) && create_if_block_4(component, state);
-
-		function input_input_handler() {
-			input_updating = true;
-			component.set({ confirmPassword: input.value });
-			input_updating = false;
-		}
-
-		function click_handler(event) {
-			component.set({deleteAccount2: false});
-		}
-
-		function click_handler_1(event) {
-			component.deleteAccount();
-		}
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				h2 = createElement("h2");
-				text = createText(text_value);
-				text_1 = createText("\n\n        ");
-				if (if_block) { if_block.c(); }
-				text_2 = createText("\n\n        ");
-				p = createElement("p");
-				text_3 = createText(text_3_value);
-				text_5 = createText("\n        ");
-				ul = createElement("ul");
-				li = createElement("li");
-				text_6 = createText(text_6_value);
-				li_1 = createElement("li");
-				text_7 = createText(text_7_value);
-				li_2 = createElement("li");
-				text_8 = createText(text_8_value);
-				text_9 = createText("\n        ");
-				p_1 = createElement("p");
-				text_10 = createText(text_10_value);
-				text_12 = createText("\n        ");
-				div_2 = createElement("div");
-				p_2 = createElement("p");
-				b = createElement("b");
-				text_13 = createText(text_13_value);
-				text_14 = createText("\n            ");
-				div_3 = createElement("div");
-				input = createElement("input");
-				text_16 = createText("\n            ");
-				p_3 = createElement("p");
-				text_18 = createText("\n            ");
-				div_4 = createElement("div");
-				button = createElement("button");
-				i = createElement("i");
-				text_19 = createText("  ");
-				text_20 = createText(text_20_value);
-				text_22 = createText("\n                ");
-				button_1 = createElement("button");
-				i_1 = createElement("i");
-				text_23 = createText("  ");
-				text_24 = createText(text_24_value);
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(h2, "margin-bottom", "20px");
-				h2.className = "svelte-u71xal";
-				addListener(input, "input", input_input_handler);
-				setAttribute(input, "type", "password");
-				input.placeholder = input_placeholder_value = __("Password");
-				div_3.className = "control-group";
-				i.className = "fa fa-chevron-left";
-				addListener(button, "click", click_handler);
-				button.className = "btn btn-info";
-				i_1.className = i_1_class_value = "fa " + (state.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
-				addListener(button_1, "click", click_handler_1);
-				setStyle(button_1, "float", "right");
-				button_1.className = "btn btn-danger";
-				div_4.className = "control-group";
-				div_2.className = "";
-				div_1.className = "span6 offset3";
-				div.className = "row delete-account svelte-u71xal";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(h2, div_1);
-				appendNode(text, h2);
-				appendNode(text_1, div_1);
-				if (if_block) { if_block.m(div_1, null); }
-				appendNode(text_2, div_1);
-				appendNode(p, div_1);
-				appendNode(text_3, p);
-				appendNode(text_5, div_1);
-				appendNode(ul, div_1);
-				appendNode(li, ul);
-				appendNode(text_6, li);
-				appendNode(li_1, ul);
-				appendNode(text_7, li_1);
-				appendNode(li_2, ul);
-				appendNode(text_8, li_2);
-				appendNode(text_9, div_1);
-				appendNode(p_1, div_1);
-				appendNode(text_10, p_1);
-				appendNode(text_12, div_1);
-				appendNode(div_2, div_1);
-				appendNode(p_2, div_2);
-				appendNode(b, p_2);
-				appendNode(text_13, b);
-				appendNode(text_14, div_2);
-				appendNode(div_3, div_2);
-				appendNode(input, div_3);
-
-				input.value = state.confirmPassword;
-
-				appendNode(text_16, div_2);
-				appendNode(p_3, div_2);
-				p_3.innerHTML = raw_value;
-				appendNode(text_18, div_2);
-				appendNode(div_4, div_2);
-				appendNode(button, div_4);
-				appendNode(i, button);
-				appendNode(text_19, button);
-				appendNode(text_20, button);
-				appendNode(text_22, div_4);
-				appendNode(button_1, div_4);
-				appendNode(i_1, button_1);
-				appendNode(text_23, button_1);
-				appendNode(text_24, button_1);
-			},
-
-			p: function update(changed, state) {
-				if (state.errors && state.errors.length) {
-					if (if_block) {
-						if_block.p(changed, state);
-					} else {
-						if_block = create_if_block_4(component, state);
-						if_block.c();
-						if_block.m(div_1, text_2);
-					}
-				} else if (if_block) {
-					if_block.u();
-					if_block.d();
-					if_block = null;
-				}
-
-				if (!input_updating) { input.value = state.confirmPassword; }
-				if ((changed.deletingAccount) && i_1_class_value !== (i_1_class_value = "fa " + (state.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
-					i_1.className = i_1_class_value;
-				}
-			},
-
-			u: function unmount() {
-				p_3.innerHTML = '';
-
-				detachNode(div);
-				if (if_block) { if_block.u(); }
-			},
-
-			d: function destroy() {
-				if (if_block) { if_block.d(); }
-				removeListener(input, "input", input_input_handler);
-				removeListener(button, "click", click_handler);
-				removeListener(button_1, "click", click_handler_1);
-			}
-		};
-	}
-
-	// (135:25) 
-	function create_if_block_5(component, state) {
-		var div, div_1, h2, text_value = __("Your account has been deleted."), text, text_2, a, text_3_value = __("Goodbye!"), text_3;
-
-		return {
-			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				h2 = createElement("h2");
-				text = createText(text_value);
-				text_2 = createText("\n        ");
-				a = createElement("a");
-				text_3 = createText(text_3_value);
-				this.h();
-			},
-
-			h: function hydrate() {
-				setStyle(h2, "margin-bottom", "20px");
-				setStyle(h2, "text-align", "center");
-				h2.className = "svelte-u71xal";
-				a.href = "/";
-				a.className = "btn btn-primary btn-large";
-				div_1.className = "span6 offset3";
-				setStyle(div_1, "text-align", "center");
-				div.className = "row delete-account svelte-u71xal";
-			},
-
-			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(h2, div_1);
-				appendNode(text, h2);
-				appendNode(text_2, div_1);
-				appendNode(a, div_1);
-				appendNode(text_3, a);
-			},
-
-			p: noop,
-
-			u: function unmount() {
-				detachNode(div);
-			},
-
-			d: noop
-		};
-	}
-
-	// (146:21) 
-	function create_if_block_6(component, state) {
-		var div, div_1, div_2, h2, text_value = __("account / email"), text, text_1, p, text_2_value = __("account / confirm-email-change"), text_2, text_3, text_4, fieldset, div_3, label, text_5_value = __("E-Mail"), text_5, text_6, text_7, div_4, input, input_updating = false, input_disabled_value, text_10, div_5, button, text_11_value = __( "Back"), text_11, text_13, button_1, i, i_class_value, text_14, text_15_value = __( "account / email"), text_15;
-
-		var if_block = (state.errors && state.errors.length) && create_if_block_7(component, state);
+		var if_block = (ctx.errors && ctx.errors.length) && create_if_block_7(component, ctx);
 
 		function input_input_handler() {
 			input_updating = true;
@@ -1625,353 +898,1604 @@
 
 		return {
 			c: function create() {
-				div = createElement("div");
-				div_1 = createElement("div");
-				div_2 = createElement("div");
+				div5 = createElement("div");
+				div4 = createElement("div");
+				div3 = createElement("div");
 				h2 = createElement("h2");
-				text = createText(text_value);
-				text_1 = createText("\n            ");
+				text0 = createText(text0_value);
+				text1 = createText("\n            ");
 				p = createElement("p");
-				text_2 = createText(text_2_value);
-				text_3 = createText("\n\n            ");
+				text2 = createText(text2_value);
+				text3 = createText("\n\n            ");
 				if (if_block) { if_block.c(); }
-				text_4 = createText("\n\n            ");
+				text4 = createText("\n\n            ");
 				fieldset = createElement("fieldset");
-				div_3 = createElement("div");
+				div1 = createElement("div");
 				label = createElement("label");
-				text_5 = createText(text_5_value);
-				text_6 = createText(":");
-				text_7 = createText("\n                    ");
-				div_4 = createElement("div");
+				text5 = createText(text5_value);
+				text6 = createText(":");
+				text7 = createText("\n                    ");
+				div0 = createElement("div");
 				input = createElement("input");
-				text_10 = createText("\n\n                ");
-				div_5 = createElement("div");
-				button = createElement("button");
-				text_11 = createText(text_11_value);
-				text_13 = createText("\n                    ");
-				button_1 = createElement("button");
+				text8 = createText("\n\n                ");
+				div2 = createElement("div");
+				button0 = createElement("button");
+				text9 = createText(text9_value);
+				text10 = createText("\n                    ");
+				button1 = createElement("button");
 				i = createElement("i");
-				text_14 = createText("  ");
-				text_15 = createText(text_15_value);
-				this.h();
-			},
-
-			h: function hydrate() {
+				text11 = createText("  ");
+				text12 = createText(text12_value);
+				addLoc(h2, file, 148, 12, 5439);
+				addLoc(p, file, 149, 12, 5486);
 				label.className = "control-label";
 				label.htmlFor = "email";
+				addLoc(label, file, 163, 20, 5924);
 				addListener(input, "input", input_input_handler);
-				input.disabled = input_disabled_value = !state.changeEmail;
+				input.disabled = input_disabled_value = !ctx.changeEmail;
 				setAttribute(input, "type", "text");
-				div_4.className = "controls";
-				div_3.className = "control-group";
-				addListener(button, "click", click_handler);
-				button.className = "btn btn-default";
-				i.className = i_class_value = "fa " + (state.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal";
-				addListener(button_1, "click", click_handler_1);
-				setStyle(button_1, "float", "right");
-				button_1.className = "btn btn-save btn-primary";
-				div_5.className = "";
-				div_2.className = "form-horizontal edit-account";
-				div_1.className = "span6 offset3";
-				div.className = "row";
+				addLoc(input, file, 165, 24, 6058);
+				div0.className = "controls";
+				addLoc(div0, file, 164, 20, 6011);
+				div1.className = "control-group";
+				addLoc(div1, file, 162, 16, 5876);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-default";
+				addLoc(button0, file, 170, 20, 6229);
+				i.className = i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
+				addLoc(i, file, 174, 24, 6502);
+				addListener(button1, "click", click_handler_1);
+				setStyle(button1, "float", "right");
+				button1.className = "btn btn-save btn-primary";
+				addLoc(button1, file, 173, 20, 6389);
+				div2.className = "";
+				addLoc(div2, file, 169, 16, 6194);
+				addLoc(fieldset, file, 161, 12, 5849);
+				div3.className = "form-horizontal edit-account";
+				addLoc(div3, file, 147, 8, 5384);
+				div4.className = "span6 offset3";
+				addLoc(div4, file, 146, 4, 5348);
+				div5.className = "row";
+				addLoc(div5, file, 145, 0, 5326);
 			},
 
 			m: function mount(target, anchor) {
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(div_2, div_1);
-				appendNode(h2, div_2);
-				appendNode(text, h2);
-				appendNode(text_1, div_2);
-				appendNode(p, div_2);
-				appendNode(text_2, p);
-				appendNode(text_3, div_2);
-				if (if_block) { if_block.m(div_2, null); }
-				appendNode(text_4, div_2);
-				appendNode(fieldset, div_2);
-				appendNode(div_3, fieldset);
-				appendNode(label, div_3);
-				appendNode(text_5, label);
-				appendNode(text_6, label);
-				appendNode(text_7, div_3);
-				appendNode(div_4, div_3);
-				appendNode(input, div_4);
+				insert(target, div5, anchor);
+				append(div5, div4);
+				append(div4, div3);
+				append(div3, h2);
+				append(h2, text0);
+				append(div3, text1);
+				append(div3, p);
+				append(p, text2);
+				append(div3, text3);
+				if (if_block) { if_block.m(div3, null); }
+				append(div3, text4);
+				append(div3, fieldset);
+				append(fieldset, div1);
+				append(div1, label);
+				append(label, text5);
+				append(label, text6);
+				append(div1, text7);
+				append(div1, div0);
+				append(div0, input);
 
-				input.value = state.email;
+				input.value = ctx.email;
 
-				appendNode(text_10, fieldset);
-				appendNode(div_5, fieldset);
-				appendNode(button, div_5);
-				appendNode(text_11, button);
-				appendNode(text_13, div_5);
-				appendNode(button_1, div_5);
-				appendNode(i, button_1);
-				appendNode(text_14, button_1);
-				appendNode(text_15, button_1);
+				append(fieldset, text8);
+				append(fieldset, div2);
+				append(div2, button0);
+				append(button0, text9);
+				append(div2, text10);
+				append(div2, button1);
+				append(button1, i);
+				append(button1, text11);
+				append(button1, text12);
 			},
 
-			p: function update(changed, state) {
-				if (state.errors && state.errors.length) {
+			p: function update(changed, ctx) {
+				if (ctx.errors && ctx.errors.length) {
 					if (if_block) {
-						if_block.p(changed, state);
+						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_7(component, state);
+						if_block = create_if_block_7(component, ctx);
 						if_block.c();
-						if_block.m(div_2, text_4);
+						if_block.m(div3, text4);
 					}
 				} else if (if_block) {
-					if_block.u();
-					if_block.d();
+					if_block.d(1);
 					if_block = null;
 				}
 
-				if (!input_updating) { input.value = state.email; }
-				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !state.changeEmail)) {
+				if (!input_updating && changed.email) { input.value = ctx.email; }
+				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !ctx.changeEmail)) {
 					input.disabled = input_disabled_value;
 				}
 
-				if ((changed.savingEmail) && i_class_value !== (i_class_value = "fa " + (state.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-u71xal")) {
+				if ((changed.savingEmail) && i_class_value !== (i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2")) {
 					i.className = i_class_value;
 				}
 			},
 
-			u: function unmount() {
-				detachNode(div);
-				if (if_block) { if_block.u(); }
-			},
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div5);
+				}
 
-			d: function destroy() {
 				if (if_block) { if_block.d(); }
 				removeListener(input, "input", input_input_handler);
-				removeListener(button, "click", click_handler);
-				removeListener(button_1, "click", click_handler_1);
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
 			}
 		};
 	}
 
-	// (185:0) {:else}
-	function create_if_block_8(component, state) {
-		var text, div, div_1, div_2, div_3, text_1_value = __("E-Mail"), text_1, text_2, text_3, div_4, input, input_disabled_value, text_5, div_5, button, text_6_value = __( "account / email"), text_6, text_10, div_6, div_7, text_11_value = __("Password"), text_11, text_12, text_13, div_8, input_1, text_15, div_9, button_1, text_16_value = __("account / password"), text_16, text_20, div_10, text_21_value = __("account / or"), text_21, text_22, span, text_23_value = __("account / delete"), text_23, text_24;
+	// (133:25) 
+	function create_if_block_5(component, ctx) {
+		var div1, div0, h2, text0_value = __("Your account has been deleted."), text0, text1, a, text2_value = __("Goodbye!"), text2;
 
-		var if_block = (state.messages && state.messages.length) && create_if_block_9(component, state);
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				a = createElement("a");
+				text2 = createText(text2_value);
+				setStyle(h2, "margin-bottom", "20px");
+				h2.className = "svelte-1gfuyl2";
+				addLoc(h2, file, 136, 8, 5107);
+				a.href = "/";
+				a.className = "btn btn-primary btn-large";
+				addLoc(a, file, 139, 8, 5215);
+				div0.className = "span6 offset3";
+				addLoc(div0, file, 135, 4, 5062);
+				div1.className = "row delete-account svelte-1gfuyl2";
+				addLoc(div1, file, 134, 0, 5025);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				append(div0, h2);
+				append(h2, text0);
+				append(div0, text1);
+				append(div0, a);
+				append(a, text2);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+			}
+		};
+	}
+
+	// (86:25) 
+	function create_if_block_3(component, ctx) {
+		var div4, div3, h2, text0_value = __("account / delete / hed"), text0, text1, text2, p0, text3_value = __("account / delete / really"), text3, text4, ul, li0, text5_value = __("account / confirm-account-deletion / free"), text5, text6, li1, text7_value = __("You cannot login and logout anymore."), text7, text8, li2, text9_value = __("You cannot edit or remove your charts anymore."), text9, text10, p1, text11_value = __("account / delete / charts-stay-online"), text11, text12, div2, p2, b, text13_value = __("Please enter your password to confirm the deletion request:"), text13, text14, div0, input, input_updating = false, text15, p3, raw_value = __("account / delete / really-really"), text16, div1, button0, i0, text17, text18_value = __("No, I changed my mind.."), text18, text19, button1, i1, i1_class_value, text20, text21_value = __("Yes, delete it!"), text21;
+
+		var if_block = (ctx.errors && ctx.errors.length) && create_if_block_4(component, ctx);
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ confirmPassword: input.value });
+			input_updating = false;
+		}
 
 		function click_handler(event) {
-			component.set({changeEmail: true});
+			component.set({deleteAccount2: false});
 		}
 
 		function click_handler_1(event) {
-			component.set({changePassword: true});
-		}
-
-		function click_handler_2(event) {
-			component.set({deleteAccount: true});
+			component.deleteAccount();
 		}
 
 		return {
 			c: function create() {
+				div4 = createElement("div");
+				div3 = createElement("div");
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n        ");
 				if (if_block) { if_block.c(); }
-				text = createText("\n\n");
-				div = createElement("div");
-				div_1 = createElement("div");
-				div_2 = createElement("div");
-				div_3 = createElement("div");
-				text_1 = createText(text_1_value);
-				text_2 = createText(":");
-				text_3 = createText("\n            ");
-				div_4 = createElement("div");
+				text2 = createText("\n\n        ");
+				p0 = createElement("p");
+				text3 = createText(text3_value);
+				text4 = createText("\n        ");
+				ul = createElement("ul");
+				li0 = createElement("li");
+				text5 = createText(text5_value);
+				text6 = createText("\n            ");
+				li1 = createElement("li");
+				text7 = createText(text7_value);
+				text8 = createText("\n            ");
+				li2 = createElement("li");
+				text9 = createText(text9_value);
+				text10 = createText("\n        ");
+				p1 = createElement("p");
+				text11 = createText(text11_value);
+				text12 = createText("\n        ");
+				div2 = createElement("div");
+				p2 = createElement("p");
+				b = createElement("b");
+				text13 = createText(text13_value);
+				text14 = createText("\n            ");
+				div0 = createElement("div");
 				input = createElement("input");
-				text_5 = createText("\n            ");
-				div_5 = createElement("div");
-				button = createElement("button");
-				text_6 = createText(text_6_value);
-				text_10 = createText("\n\n        ");
-				div_6 = createElement("div");
-				div_7 = createElement("div");
-				text_11 = createText(text_11_value);
-				text_12 = createText(":");
-				text_13 = createText("\n            ");
-				div_8 = createElement("div");
-				input_1 = createElement("input");
-				text_15 = createText("\n            ");
-				div_9 = createElement("div");
-				button_1 = createElement("button");
-				text_16 = createText(text_16_value);
-				text_20 = createText("\n\n        ");
-				div_10 = createElement("div");
-				text_21 = createText(text_21_value);
-				text_22 = createText("\n            ");
-				span = createElement("span");
-				text_23 = createText(text_23_value);
-				text_24 = createText(".");
-				this.h();
-			},
-
-			h: function hydrate() {
-				div_3.className = "svelte-u71xal";
-				input.disabled = input_disabled_value = !state.changeEmail;
-				input.value = state.originalEmail;
-				setAttribute(input, "type", "text");
-				div_4.className = "svelte-u71xal";
-				addListener(button, "click", click_handler);
-				button.className = "btn btn-save btn-default";
-				div_5.className = "svelte-u71xal";
-				div_2.className = "svelte-u71xal";
-				div_7.className = "svelte-u71xal";
-				input_1.disabled = true;
-				input_1.value = "abcdefgh";
-				setAttribute(input_1, "type", "password");
-				div_8.className = "svelte-u71xal";
-				addListener(button_1, "click", click_handler_1);
-				button_1.className = "btn btn-save btn-default";
-				div_9.className = "svelte-u71xal";
-				div_6.className = "svelte-u71xal";
-				addListener(span, "click", click_handler_2);
-				span.className = "link svelte-u71xal";
-				setAttribute(span, "href", "#");
-				setStyle(div_10, "text-align", "center");
-				setStyle(div_10, "display", "block");
-				div_10.className = "svelte-u71xal";
-				div_1.className = "span6 offset3";
-				div.className = "row edit-account svelte-u71xal";
-				setStyle(div, "margin-top", "" + ( state.messages && state.messages.length ? 0 : 20 ) + "px");
+				text15 = createText("\n            ");
+				p3 = createElement("p");
+				text16 = createText("\n            ");
+				div1 = createElement("div");
+				button0 = createElement("button");
+				i0 = createElement("i");
+				text17 = createText("  ");
+				text18 = createText(text18_value);
+				text19 = createText("\n                ");
+				button1 = createElement("button");
+				i1 = createElement("i");
+				text20 = createText("  ");
+				text21 = createText(text21_value);
+				setStyle(h2, "margin-bottom", "20px");
+				h2.className = "svelte-1gfuyl2";
+				addLoc(h2, file, 89, 8, 3331);
+				addLoc(p0, file, 101, 8, 3675);
+				addLoc(li0, file, 105, 12, 3765);
+				addLoc(li1, file, 106, 12, 3838);
+				addLoc(li2, file, 107, 12, 3906);
+				addLoc(ul, file, 104, 8, 3748);
+				addLoc(p1, file, 109, 8, 3994);
+				addLoc(b, file, 113, 15, 4109);
+				addLoc(p2, file, 113, 12, 4106);
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "password");
+				input.placeholder = __("Password");
+				addLoc(input, file, 115, 16, 4246);
+				div0.className = "control-group";
+				addLoc(div0, file, 114, 12, 4202);
+				addLoc(p3, file, 117, 12, 4365);
+				i0.className = "fa fa-chevron-left";
+				addLoc(i0, file, 122, 20, 4596);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-info";
+				addLoc(button0, file, 121, 16, 4506);
+				i1.className = i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
+				addLoc(i1, file, 125, 20, 4812);
+				addListener(button1, "click", click_handler_1);
+				setStyle(button1, "float", "right");
+				button1.className = "btn btn-danger";
+				addLoc(button1, file, 124, 16, 4713);
+				div1.className = "control-group";
+				addLoc(div1, file, 120, 12, 4462);
+				div2.className = "";
+				addLoc(div2, file, 112, 8, 4079);
+				div3.className = "span6 offset3";
+				addLoc(div3, file, 88, 4, 3295);
+				div4.className = "row delete-account svelte-1gfuyl2";
+				addLoc(div4, file, 87, 0, 3258);
 			},
 
 			m: function mount(target, anchor) {
-				if (if_block) { if_block.m(target, anchor); }
-				insertNode(text, target, anchor);
-				insertNode(div, target, anchor);
-				appendNode(div_1, div);
-				appendNode(div_2, div_1);
-				appendNode(div_3, div_2);
-				appendNode(text_1, div_3);
-				appendNode(text_2, div_3);
-				appendNode(text_3, div_2);
-				appendNode(div_4, div_2);
-				appendNode(input, div_4);
-				appendNode(text_5, div_2);
-				appendNode(div_5, div_2);
-				appendNode(button, div_5);
-				appendNode(text_6, button);
-				appendNode(text_10, div_1);
-				appendNode(div_6, div_1);
-				appendNode(div_7, div_6);
-				appendNode(text_11, div_7);
-				appendNode(text_12, div_7);
-				appendNode(text_13, div_6);
-				appendNode(div_8, div_6);
-				appendNode(input_1, div_8);
-				appendNode(text_15, div_6);
-				appendNode(div_9, div_6);
-				appendNode(button_1, div_9);
-				appendNode(text_16, button_1);
-				appendNode(text_20, div_1);
-				appendNode(div_10, div_1);
-				appendNode(text_21, div_10);
-				appendNode(text_22, div_10);
-				appendNode(span, div_10);
-				appendNode(text_23, span);
-				appendNode(text_24, div_10);
+				insert(target, div4, anchor);
+				append(div4, div3);
+				append(div3, h2);
+				append(h2, text0);
+				append(div3, text1);
+				if (if_block) { if_block.m(div3, null); }
+				append(div3, text2);
+				append(div3, p0);
+				append(p0, text3);
+				append(div3, text4);
+				append(div3, ul);
+				append(ul, li0);
+				append(li0, text5);
+				append(ul, text6);
+				append(ul, li1);
+				append(li1, text7);
+				append(ul, text8);
+				append(ul, li2);
+				append(li2, text9);
+				append(div3, text10);
+				append(div3, p1);
+				append(p1, text11);
+				append(div3, text12);
+				append(div3, div2);
+				append(div2, p2);
+				append(p2, b);
+				append(b, text13);
+				append(div2, text14);
+				append(div2, div0);
+				append(div0, input);
+
+				input.value = ctx.confirmPassword;
+
+				append(div2, text15);
+				append(div2, p3);
+				p3.innerHTML = raw_value;
+				append(div2, text16);
+				append(div2, div1);
+				append(div1, button0);
+				append(button0, i0);
+				append(button0, text17);
+				append(button0, text18);
+				append(div1, text19);
+				append(div1, button1);
+				append(button1, i1);
+				append(button1, text20);
+				append(button1, text21);
 			},
 
-			p: function update(changed, state) {
-				if (state.messages && state.messages.length) {
+			p: function update(changed, ctx) {
+				if (ctx.errors && ctx.errors.length) {
 					if (if_block) {
-						if_block.p(changed, state);
+						if_block.p(changed, ctx);
 					} else {
-						if_block = create_if_block_9(component, state);
+						if_block = create_if_block_4(component, ctx);
 						if_block.c();
-						if_block.m(text.parentNode, text);
+						if_block.m(div3, text2);
 					}
 				} else if (if_block) {
-					if_block.u();
-					if_block.d();
+					if_block.d(1);
 					if_block = null;
 				}
 
-				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !state.changeEmail)) {
-					input.disabled = input_disabled_value;
-				}
-
-				if (changed.originalEmail) {
-					input.value = state.originalEmail;
-				}
-
-				if (changed.messages) {
-					setStyle(div, "margin-top", "" + ( state.messages && state.messages.length ? 0 : 20 ) + "px");
+				if (!input_updating && changed.confirmPassword) { input.value = ctx.confirmPassword; }
+				if ((changed.deletingAccount) && i1_class_value !== (i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2")) {
+					i1.className = i1_class_value;
 				}
 			},
 
-			u: function unmount() {
-				if (if_block) { if_block.u(); }
-				detachNode(text);
-				detachNode(div);
-			},
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div4);
+				}
 
-			d: function destroy() {
 				if (if_block) { if_block.d(); }
-				removeListener(button, "click", click_handler);
-				removeListener(button_1, "click", click_handler_1);
-				removeListener(span, "click", click_handler_2);
+				removeListener(input, "input", input_input_handler);
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
 			}
 		};
 	}
 
-	function App(options) {
-		this._debugName = '<App>';
-		if (!options || (!options.target && !options.root)) { throw new Error("'target' is a required option"); }
+	// (62:24) 
+	function create_if_block_2(component, ctx) {
+		var div4, div3, div0, i0, text0, h2, text1_value = __("account / confirm-account-deletion"), text1, text2, div2, button0, i1, text3, text4_value = __("account / confirm-account-deletion / no"), text4, text5, div1, text6_value = __("account / or"), text6, text7, button1, i2, text8, text9_value = __("account / confirm-account-deletion / yes"), text9;
+
+		function click_handler(event) {
+			component.set({deleteAccount: false});
+		}
+
+		function click_handler_1(event) {
+			component.set({deleteAccount: false, deleteAccount2: true});
+		}
+
+		return {
+			c: function create() {
+				div4 = createElement("div");
+				div3 = createElement("div");
+				div0 = createElement("div");
+				i0 = createElement("i");
+				text0 = createText("\n\n        ");
+				h2 = createElement("h2");
+				text1 = createText(text1_value);
+				text2 = createText("\n\n        ");
+				div2 = createElement("div");
+				button0 = createElement("button");
+				i1 = createElement("i");
+				text3 = createText("   ");
+				text4 = createText(text4_value);
+				text5 = createText("\n\n            ");
+				div1 = createElement("div");
+				text6 = createText(text6_value);
+				text7 = createText("\n\n            ");
+				button1 = createElement("button");
+				i2 = createElement("i");
+				text8 = createText("   ");
+				text9 = createText(text9_value);
+				i0.className = "fa fa-times";
+				addLoc(i0, file, 66, 12, 2440);
+				div0.className = "iconholder svelte-1gfuyl2";
+				addLoc(div0, file, 65, 8, 2403);
+				setStyle(h2, "margin-bottom", "20px");
+				h2.className = "svelte-1gfuyl2";
+				addLoc(h2, file, 69, 8, 2492);
+				i1.className = "fa fa-chevron-left";
+				addLoc(i1, file, 73, 16, 2766);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-back btn-primary";
+				addLoc(button0, file, 72, 12, 2669);
+				setStyle(div1, "display", "block");
+				setStyle(div1, "margin", "0px 10px");
+				addLoc(div1, file, 76, 12, 2893);
+				i2.className = "fa fa-times";
+				addLoc(i2, file, 79, 16, 3089);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-default";
+				addLoc(button1, file, 78, 12, 2979);
+				setStyle(div2, "display", "flex");
+				setStyle(div2, "justify-content", "center");
+				setStyle(div2, "align-items", "center");
+				addLoc(div2, file, 71, 8, 2582);
+				div3.className = "span6 offset3";
+				addLoc(div3, file, 64, 4, 2358);
+				div4.className = "row delete-account svelte-1gfuyl2";
+				addLoc(div4, file, 63, 0, 2321);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div4, anchor);
+				append(div4, div3);
+				append(div3, div0);
+				append(div0, i0);
+				append(div3, text0);
+				append(div3, h2);
+				append(h2, text1);
+				append(div3, text2);
+				append(div3, div2);
+				append(div2, button0);
+				append(button0, i1);
+				append(button0, text3);
+				append(button0, text4);
+				append(div2, text5);
+				append(div2, div1);
+				append(div1, text6);
+				append(div2, text7);
+				append(div2, button1);
+				append(button1, i2);
+				append(button1, text8);
+				append(button1, text9);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div4);
+				}
+
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (6:0) {#if changePassword }
+	function create_if_block(component, ctx) {
+		var div9, div8, div7, h2, text0_value = __("account / password"), text0, text1, p0, text2_value = __("account / password / strong-password-note"), text2, text3, text4, fieldset, div1, label0, text5_value = __("Current Password"), text5, text6, div0, input0, input0_updating = false, text7, p1, text8_value = __("account / password / current-password-note"), text8, text9, div3, label1, text10_value = __("New Password"), text10, text11, div2, input1, input1_updating = false, text12, div5, label2, text13_value = __("(repeat)"), text13, text14, div4, input2, input2_updating = false, text15, div6, button0, text16_value = __("Back"), text16, text17, button1, i, i_class_value, text18, text19_value = __("account / password"), text19;
+
+		var if_block = (ctx.errors && ctx.errors.length) && create_if_block_1(component, ctx);
+
+		function input0_input_handler() {
+			input0_updating = true;
+			component.set({ currentPassword: input0.value });
+			input0_updating = false;
+		}
+
+		function input1_input_handler() {
+			input1_updating = true;
+			component.set({ newPassword1: input1.value });
+			input1_updating = false;
+		}
+
+		function input2_input_handler() {
+			input2_updating = true;
+			component.set({ newPassword2: input2.value });
+			input2_updating = false;
+		}
+
+		function click_handler(event) {
+			component.set({changePassword: false});
+		}
+
+		function click_handler_1(event) {
+			component.changePassword();
+		}
+
+		return {
+			c: function create() {
+				div9 = createElement("div");
+				div8 = createElement("div");
+				div7 = createElement("div");
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n            ");
+				p0 = createElement("p");
+				text2 = createText(text2_value);
+				text3 = createText("\n\n            ");
+				if (if_block) { if_block.c(); }
+				text4 = createText("\n\n            ");
+				fieldset = createElement("fieldset");
+				div1 = createElement("div");
+				label0 = createElement("label");
+				text5 = createText(text5_value);
+				text6 = createText("\n                    ");
+				div0 = createElement("div");
+				input0 = createElement("input");
+				text7 = createText("\n                        ");
+				p1 = createElement("p");
+				text8 = createText(text8_value);
+				text9 = createText("\n                ");
+				div3 = createElement("div");
+				label1 = createElement("label");
+				text10 = createText(text10_value);
+				text11 = createText("\n                    ");
+				div2 = createElement("div");
+				input1 = createElement("input");
+				text12 = createText("\n                ");
+				div5 = createElement("div");
+				label2 = createElement("label");
+				text13 = createText(text13_value);
+				text14 = createText("\n                    ");
+				div4 = createElement("div");
+				input2 = createElement("input");
+				text15 = createText("\n\n                ");
+				div6 = createElement("div");
+				button0 = createElement("button");
+				text16 = createText(text16_value);
+				text17 = createText("\n                    ");
+				button1 = createElement("button");
+				i = createElement("i");
+				text18 = createText("  ");
+				text19 = createText(text19_value);
+				addLoc(h2, file, 10, 12, 180);
+				addLoc(p0, file, 11, 12, 230);
+				label0.className = "control-label";
+				addLoc(label0, file, 27, 20, 709);
+				addListener(input0, "input", input0_input_handler);
+				setAttribute(input0, "type", "password");
+				input0.className = "input-xlarge";
+				addLoc(input0, file, 29, 24, 840);
+				p1.className = "help-block";
+				addLoc(p1, file, 30, 24, 940);
+				div0.className = "controls";
+				addLoc(div0, file, 28, 20, 793);
+				div1.className = "control-group";
+				addLoc(div1, file, 26, 16, 661);
+				label1.className = "control-label";
+				addLoc(label1, file, 36, 20, 1187);
+				addListener(input1, "input", input1_input_handler);
+				setAttribute(input1, "type", "password");
+				input1.className = "input-xlarge";
+				addLoc(input1, file, 38, 24, 1314);
+				div2.className = "controls";
+				addLoc(div2, file, 37, 20, 1267);
+				div3.className = "control-group";
+				addLoc(div3, file, 35, 16, 1139);
+				label2.className = "control-label";
+				addLoc(label2, file, 42, 20, 1501);
+				addListener(input2, "input", input2_input_handler);
+				setAttribute(input2, "type", "password");
+				input2.className = "input-xlarge";
+				addLoc(input2, file, 44, 24, 1624);
+				div4.className = "controls";
+				addLoc(div4, file, 43, 20, 1577);
+				div5.className = "control-group";
+				addLoc(div5, file, 41, 16, 1453);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-save btn-default btn-back";
+				addLoc(button0, file, 49, 20, 1790);
+				i.className = i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2";
+				addLoc(i, file, 53, 24, 2075);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-primary";
+				setStyle(button1, "float", "right");
+				addLoc(button1, file, 52, 20, 1970);
+				addLoc(div6, file, 48, 16, 1764);
+				addLoc(fieldset, file, 25, 12, 634);
+				div7.className = "form-horizontal edit-account-confirm";
+				addLoc(div7, file, 9, 8, 117);
+				div8.className = "span6 offset3";
+				addLoc(div8, file, 8, 4, 81);
+				div9.className = "row";
+				addLoc(div9, file, 7, 0, 59);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div9, anchor);
+				append(div9, div8);
+				append(div8, div7);
+				append(div7, h2);
+				append(h2, text0);
+				append(div7, text1);
+				append(div7, p0);
+				append(p0, text2);
+				append(div7, text3);
+				if (if_block) { if_block.m(div7, null); }
+				append(div7, text4);
+				append(div7, fieldset);
+				append(fieldset, div1);
+				append(div1, label0);
+				append(label0, text5);
+				append(div1, text6);
+				append(div1, div0);
+				append(div0, input0);
+
+				input0.value = ctx.currentPassword;
+
+				append(div0, text7);
+				append(div0, p1);
+				append(p1, text8);
+				append(fieldset, text9);
+				append(fieldset, div3);
+				append(div3, label1);
+				append(label1, text10);
+				append(div3, text11);
+				append(div3, div2);
+				append(div2, input1);
+
+				input1.value = ctx.newPassword1;
+
+				append(fieldset, text12);
+				append(fieldset, div5);
+				append(div5, label2);
+				append(label2, text13);
+				append(div5, text14);
+				append(div5, div4);
+				append(div4, input2);
+
+				input2.value = ctx.newPassword2;
+
+				append(fieldset, text15);
+				append(fieldset, div6);
+				append(div6, button0);
+				append(button0, text16);
+				append(div6, text17);
+				append(div6, button1);
+				append(button1, i);
+				append(button1, text18);
+				append(button1, text19);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.errors && ctx.errors.length) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_1(component, ctx);
+						if_block.c();
+						if_block.m(div7, text4);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (!input0_updating && changed.currentPassword) { input0.value = ctx.currentPassword; }
+				if (!input1_updating && changed.newPassword1) { input1.value = ctx.newPassword1; }
+				if (!input2_updating && changed.newPassword2) { input2.value = ctx.newPassword2; }
+				if ((changed.savingPassword) && i_class_value !== (i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-1gfuyl2")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div9);
+				}
+
+				if (if_block) { if_block.d(); }
+				removeListener(input0, "input", input0_input_handler);
+				removeListener(input1, "input", input1_input_handler);
+				removeListener(input2, "input", input2_input_handler);
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (183:8) {#if messages && messages.length }
+	function create_if_block_8(component, ctx) {
+		var div2, div1, div0, ul;
+
+		var each_value_3 = ctx.messages;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_3.length; i += 1) {
+			each_blocks[i] = create_each_block_3(component, get_each_context_3(ctx, each_value_3, i));
+		}
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				div1 = createElement("div");
+				div0 = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file, 186, 12, 6890);
+				div0.className = "alert alert-success";
+				addLoc(div0, file, 185, 8, 6844);
+				div1.className = "span6 offset3";
+				addLoc(div1, file, 184, 4, 6808);
+				div2.className = "row";
+				setStyle(div2, "margin-top", "20px");
+				addLoc(div2, file, 183, 0, 6760);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, div1);
+				append(div1, div0);
+				append(div0, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.messages) {
+					each_value_3 = ctx.messages;
+
+					for (var i = 0; i < each_value_3.length; i += 1) {
+						var child_ctx = get_each_context_3(ctx, each_value_3, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_3(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_3.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (188:16) {#each messages as message}
+	function create_each_block_3(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file, 188, 16, 6981);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.messages) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (152:12) {#if errors && errors.length }
+	function create_if_block_7(component, ctx) {
+		var div, ul;
+
+		var each_value_2 = ctx.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_2.length; i += 1) {
+			each_blocks[i] = create_each_block_2(component, get_each_context_2(ctx, each_value_2, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file, 153, 16, 5626);
+				div.className = "alert";
+				addLoc(div, file, 152, 12, 5590);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.errors) {
+					each_value_2 = ctx.errors;
+
+					for (var i = 0; i < each_value_2.length; i += 1) {
+						var child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_2.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (155:20) {#each errors as message}
+	function create_each_block_2(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file, 155, 20, 5723);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.errors) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (92:8) {#if errors && errors.length }
+	function create_if_block_4(component, ctx) {
+		var div, ul;
+
+		var each_value_1 = ctx.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1(component, get_each_context_1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file, 93, 12, 3480);
+				div.className = "alert";
+				addLoc(div, file, 92, 8, 3448);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.errors) {
+					each_value_1 = ctx.errors;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (95:16) {#each errors as message}
+	function create_each_block_1(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file, 95, 16, 3569);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.errors) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (16:12) {#if errors && errors.length }
+	function create_if_block_1(component, ctx) {
+		var div, ul;
+
+		var each_value = ctx.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file, 17, 16, 411);
+				div.className = "alert";
+				addLoc(div, file, 16, 12, 375);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.errors) {
+					each_value = ctx.errors;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (19:20) {#each errors as message}
+	function create_each_block(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file, 19, 20, 508);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.errors) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	function EditProfile(options) {
+		var this$1 = this;
+
+		this._debugName = '<EditProfile>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
 		init(this, options);
 		this._state = assign(data(), options.data);
-		if (!('changePassword' in this._state)) { console.warn("<App> was created without expected data property 'changePassword'"); }
-		if (!('errors' in this._state)) { console.warn("<App> was created without expected data property 'errors'"); }
-		if (!('currentPassword' in this._state)) { console.warn("<App> was created without expected data property 'currentPassword'"); }
-		if (!('newPassword1' in this._state)) { console.warn("<App> was created without expected data property 'newPassword1'"); }
-		if (!('newPassword2' in this._state)) { console.warn("<App> was created without expected data property 'newPassword2'"); }
-		if (!('savingPassword' in this._state)) { console.warn("<App> was created without expected data property 'savingPassword'"); }
-		if (!('deleteAccount' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount'"); }
-		if (!('deleteAccount2' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount2'"); }
-		if (!('confirmPassword' in this._state)) { console.warn("<App> was created without expected data property 'confirmPassword'"); }
-		if (!('deletingAccount' in this._state)) { console.warn("<App> was created without expected data property 'deletingAccount'"); }
-		if (!('deleteAccount3' in this._state)) { console.warn("<App> was created without expected data property 'deleteAccount3'"); }
-		if (!('changeEmail' in this._state)) { console.warn("<App> was created without expected data property 'changeEmail'"); }
-		if (!('email' in this._state)) { console.warn("<App> was created without expected data property 'email'"); }
-		if (!('savingEmail' in this._state)) { console.warn("<App> was created without expected data property 'savingEmail'"); }
-		if (!('messages' in this._state)) { console.warn("<App> was created without expected data property 'messages'"); }
-		if (!('originalEmail' in this._state)) { console.warn("<App> was created without expected data property 'originalEmail'"); }
+		if (!('changePassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'changePassword'"); }
+		if (!('errors' in this._state)) { console.warn("<EditProfile> was created without expected data property 'errors'"); }
+		if (!('currentPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'currentPassword'"); }
+		if (!('newPassword1' in this._state)) { console.warn("<EditProfile> was created without expected data property 'newPassword1'"); }
+		if (!('newPassword2' in this._state)) { console.warn("<EditProfile> was created without expected data property 'newPassword2'"); }
+		if (!('savingPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'savingPassword'"); }
+		if (!('deleteAccount' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount'"); }
+		if (!('deleteAccount2' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount2'"); }
+		if (!('confirmPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'confirmPassword'"); }
+		if (!('deletingAccount' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deletingAccount'"); }
+		if (!('deleteAccount3' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount3'"); }
+		if (!('changeEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'changeEmail'"); }
+		if (!('email' in this._state)) { console.warn("<EditProfile> was created without expected data property 'email'"); }
+		if (!('savingEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'savingEmail'"); }
+		if (!('messages' in this._state)) { console.warn("<EditProfile> was created without expected data property 'messages'"); }
+		if (!('originalEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'originalEmail'"); }
+		this._intro = true;
 
 		this._handlers.state = [onstate];
 
-		var self = this;
-		var _oncreate = function() {
-			var changed = { changePassword: 1, errors: 1, currentPassword: 1, newPassword1: 1, newPassword2: 1, savingPassword: 1, deleteAccount: 1, deleteAccount2: 1, confirmPassword: 1, deletingAccount: 1, deleteAccount3: 1, changeEmail: 1, email: 1, savingEmail: 1, messages: 1, originalEmail: 1 };
-			onstate.call(self, { changed: changed, current: self._state });
-			self.fire("update", { changed: changed, current: self._state });
-		};
-
-		if (!options.root) {
-			this._oncreate = [];
-		}
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
 
 		this._fragment = create_main_fragment(this, this._state);
 
-		this.root._oncreate.push(_oncreate);
+		this.root._oncreate.push(function () {
+			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
+		});
 
 		if (options.target) {
 			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
 			this._fragment.c();
 			this._mount(options.target, options.anchor);
 
-			callAll(this._oncreate);
+			flush(this);
+		}
+	}
+
+	assign(EditProfile.prototype, protoDev);
+	assign(EditProfile.prototype, methods);
+
+	EditProfile.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* account/App.html generated by Svelte v2.16.1 */
+
+
+
+	var EditProfileTab = {
+	    title: 'Profile',
+	    id: 'profile',
+	    icon: 'fa fa-fw fa-user',
+	    ui: EditProfile
+	};
+
+	function data$1() {
+	    return {
+	        hash: 'profile',
+	        activeTab: null,
+	        groups: [
+	            {
+	                title: 'Account settings',
+	                tabs: [EditProfileTab]
+	            },
+	            {
+	                title: 'Team settings',
+	                tabs: [{
+	                    title: 'Create team',
+	                    icon: 'fa fa-fw fa-plus',
+	                    url: '/team/new/setup'
+	                }]
+	            }
+	        ]
+	    };
+	}
+	var methods$1 = {
+	    activateTab: function activateTab(tab, event) {
+	        if (tab.ui) {
+	            event.preventDefault();
+	            this.set({activeTab: tab});
+	        }
+	    },
+	    addTab: function addTab(tab) {
+	        var ref = this.get();
+	        var groups = ref.groups;
+	        var wasLookingFor = ref.wasLookingFor;
+	        console.log('groups', groups);
+	        groups[0].tabs.push(tab);
+	        if (wasLookingFor && tab.id === wasLookingFor) {
+	            this.set({activeTab: tab, wasLookingFor: null});
+	        }
+	        this.set({groups: groups});
+	    }
+	};
+
+	function oncreate() {
+	    var this$1 = this;
+
+	    var path = window.location.pathname.split('/').slice(1);
+	    var initialTab = path[1] || 'profile';
+
+	    dw.backend.__svelteApps.account = this;
+
+	    var ref = this.get();
+	    var groups = ref.groups;
+	    var foundTab = false;
+	    groups.forEach(function (group) {
+	        group.tabs.forEach(function (tab) {
+	            if (tab.id === initialTab) {
+	                this$1.set({activeTab: tab});
+	                foundTab = true;
+	            }
+	        });
+	    });
+	    if (!foundTab) {
+	        this.set({
+	            activeTab: EditProfileTab,
+	            wasLookingFor: initialTab
+	        });
+	    }
+	}
+	function onstate$1(ref) {
+	    var changed = ref.changed;
+	    var current = ref.current;
+
+	    if (changed.activeTab && current.activeTab) {
+	        console.log(current.activeTab);
+	        window.history.pushState(
+	            {id: current.activeTab.id },
+	            '',
+	            ("/account/" + (current.activeTab.id))
+	        );
+	    }
+	}
+	var file$1 = "account/App.html";
+
+	function click_handler(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.activateTab(ctx.tab, event);
+	}
+
+	function get_each_context_1$1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.tab = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context$1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.group = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$1(component, ctx) {
+		var div2, h1, text1, div1, div0, text2;
+
+		var each_value = ctx.groups;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$1(component, get_each_context$1(ctx, each_value, i));
+		}
+
+		var if_block = (ctx.activeTab) && create_if_block$1(component, ctx);
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				h1 = createElement("h1");
+				h1.textContent = "Settings";
+				text1 = createText("\n\n    ");
+				div1 = createElement("div");
+				div0 = createElement("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				text2 = createText("\n        ");
+				if (if_block) { if_block.c(); }
+				h1.className = "title";
+				addLoc(h1, file$1, 1, 4, 24);
+				div0.className = "span2 svelte-yq9vlw";
+				addLoc(div0, file$1, 4, 8, 87);
+				div1.className = "row";
+				addLoc(div1, file$1, 3, 4, 61);
+				div2.className = "admin";
+				addLoc(div2, file$1, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, h1);
+				append(div2, text1);
+				append(div2, div1);
+				append(div1, div0);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div0, null);
+				}
+
+				append(div1, text2);
+				if (if_block) { if_block.m(div1, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.groups || changed.activeTab) {
+					each_value = ctx.groups;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$1(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				if (ctx.activeTab) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$1(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				destroyEach(each_blocks, detach);
+
+				if (if_block) { if_block.d(); }
+			}
+		};
+	}
+
+	// (10:16) {#each group.tabs as tab}
+	function create_each_block_1$1(component, ctx) {
+		var li, a, i, i_class_value, text0, text1_value = ctx.tab.title, text1, a_href_value;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				a = createElement("a");
+				i = createElement("i");
+				text0 = createText("   ");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "" + ctx.tab.icon + " svelte-yq9vlw";
+				addLoc(i, file$1, 11, 101, 444);
+
+				a._svelte = { component: component, ctx: ctx };
+
+				addListener(a, "click", click_handler);
+				a.href = a_href_value = ctx.tab.url || ("/account/" + (ctx.tab.id));
+				a.className = "svelte-yq9vlw";
+				addLoc(a, file$1, 11, 20, 363);
+				li.className = "svelte-yq9vlw";
+				toggleClass(li, "active", ctx.activeTab === ctx.tab);
+				addLoc(li, file$1, 10, 16, 305);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, a);
+				append(a, i);
+				append(a, text0);
+				append(a, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-yq9vlw")) {
+					i.className = i_class_value;
+				}
+
+				if ((changed.groups) && text1_value !== (text1_value = ctx.tab.title)) {
+					setData(text1, text1_value);
+				}
+
+				a._svelte.ctx = ctx;
+				if ((changed.groups) && a_href_value !== (a_href_value = ctx.tab.url || ("/account/" + (ctx.tab.id)))) {
+					a.href = a_href_value;
+				}
+
+				if ((changed.activeTab || changed.groups)) {
+					toggleClass(li, "active", ctx.activeTab === ctx.tab);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+
+				removeListener(a, "click", click_handler);
+			}
+		};
+	}
+
+	// (6:12) {#each groups as group}
+	function create_each_block$1(component, ctx) {
+		var div, text0_value = ctx.group.title, text0, text1, ul;
+
+		var each_value_1 = ctx.group.tabs;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1$1(component, get_each_context_1$1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n            ");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				div.className = "group svelte-yq9vlw";
+				addLoc(div, file$1, 6, 12, 155);
+				ul.className = "nav nav-stacked nav-tabs";
+				addLoc(ul, file$1, 8, 12, 209);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				insert(target, text1, anchor);
+				insert(target, ul, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.groups) && text0_value !== (text0_value = ctx.group.title)) {
+					setData(text0, text0_value);
+				}
+
+				if (changed.activeTab || changed.groups) {
+					each_value_1 = ctx.group.tabs;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1$1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+					detachNode(text1);
+					detachNode(ul);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (18:8) {#if activeTab}
+	function create_if_block$1(component, ctx) {
+		var div, div_class_value;
+
+		var switch_value = ctx.activeTab.ui;
+
+		function switch_props(ctx) {
+			return {
+				root: component.root,
+				store: component.store
+			};
+		}
+
+		if (switch_value) {
+			var switch_instance = new switch_value(switch_props());
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				if (switch_instance) { switch_instance._fragment.c(); }
+				div.className = div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-yq9vlw";
+				addLoc(div, file$1, 18, 8, 630);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (switch_instance) {
+					switch_instance._mount(div, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (switch_value !== (switch_value = ctx.activeTab.ui)) {
+					if (switch_instance) {
+						switch_instance.destroy();
+					}
+
+					if (switch_value) {
+						switch_instance = new switch_value(switch_props());
+						switch_instance._fragment.c();
+						switch_instance._mount(div, null);
+					} else {
+						switch_instance = null;
+					}
+				}
+
+				if ((changed.activeTab) && div_class_value !== (div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-yq9vlw")) {
+					div.className = div_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (switch_instance) { switch_instance.destroy(); }
+			}
+		};
+	}
+
+	function App(options) {
+		var this$1 = this;
+
+		this._debugName = '<App>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$1(), options.data);
+		if (!('groups' in this._state)) { console.warn("<App> was created without expected data property 'groups'"); }
+		if (!('activeTab' in this._state)) { console.warn("<App> was created without expected data property 'activeTab'"); }
+		this._intro = true;
+
+		this._handlers.state = [onstate$1];
+
+		onstate$1.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$1(this, this._state);
+
+		this.root._oncreate.push(function () {
+			oncreate.call(this$1);
+			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
 		}
 	}
 
 	assign(App.prototype, protoDev);
-	assign(App.prototype, methods);
+	assign(App.prototype, methods$1);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
 	function Store(state, options) {
-		this._observers = { pre: blankObject(), post: blankObject() };
 		this._handlers = {};
 		this._dependents = [];
 
@@ -1983,82 +2507,123 @@
 	}
 
 	assign(Store.prototype, {
-		_add: function(component, props) {
+		_add: function _add(component, props) {
 			this._dependents.push({
 				component: component,
 				props: props
 			});
 		},
 
-		_init: function(props) {
-			var this$1 = this;
-
+		_init: function _init(props) {
 			var state = {};
 			for (var i = 0; i < props.length; i += 1) {
 				var prop = props[i];
-				state['$' + prop] = this$1._state[prop];
+				state['$' + prop] = this._state[prop];
 			}
 			return state;
 		},
 
-		_remove: function(component) {
-			var this$1 = this;
-
+		_remove: function _remove(component) {
 			var i = this._dependents.length;
 			while (i--) {
-				if (this$1._dependents[i].component === component) {
-					this$1._dependents.splice(i, 1);
+				if (this._dependents[i].component === component) {
+					this._dependents.splice(i, 1);
 					return;
 				}
 			}
 		},
 
-		_sortComputedProperties: function() {
+		_set: function _set(newState, changed) {
 			var this$1 = this;
 
+			var previous = this._state;
+			this._state = assign(assign({}, previous), newState);
+
+			for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+				this._sortedComputedProperties[i].update(this._state, changed);
+			}
+
+			this.fire('state', {
+				changed: changed,
+				previous: previous,
+				current: this._state
+			});
+
+			this._dependents
+				.filter(function (dependent) {
+					var componentState = {};
+					var dirty = false;
+
+					for (var j = 0; j < dependent.props.length; j += 1) {
+						var prop = dependent.props[j];
+						if (prop in changed) {
+							componentState['$' + prop] = this$1._state[prop];
+							dirty = true;
+						}
+					}
+
+					if (dirty) {
+						dependent.component._stage(componentState);
+						return true;
+					}
+				})
+				.forEach(function (dependent) {
+					dependent.component.set({});
+				});
+
+			this.fire('update', {
+				changed: changed,
+				previous: previous,
+				current: this._state
+			});
+		},
+
+		_sortComputedProperties: function _sortComputedProperties() {
 			var computed = this._computed;
 			var sorted = this._sortedComputedProperties = [];
-			var cycles;
 			var visited = blankObject();
+			var currentKey;
 
 			function visit(key) {
-				if (cycles[key]) {
-					throw new Error('Cyclical dependency detected');
-				}
-
-				if (visited[key]) { return; }
-				visited[key] = true;
-
 				var c = computed[key];
 
 				if (c) {
-					cycles[key] = true;
-					c.deps.forEach(visit);
-					sorted.push(c);
+					c.deps.forEach(function (dep) {
+						if (dep === currentKey) {
+							throw new Error(("Cyclical dependency detected between " + dep + " <-> " + key));
+						}
+
+						visit(dep);
+					});
+
+					if (!visited[key]) {
+						visited[key] = true;
+						sorted.push(c);
+					}
 				}
 			}
 
-			for (var key in this$1._computed) {
-				cycles = blankObject();
-				visit(key);
+			for (var key in this._computed) {
+				visit(currentKey = key);
 			}
 		},
 
-		compute: function(key, deps, fn) {
-			var store = this;
+		compute: function compute(key, deps, fn) {
+			var this$1 = this;
+
 			var value;
 
 			var c = {
 				deps: deps,
-				update: function(state, changed, dirty) {
-					var values = deps.map(function(dep) {
+				update: function (state, changed, dirty) {
+					var values = deps.map(function (dep) {
 						if (dep in changed) { dirty = true; }
 						return state[dep];
 					});
 
 					if (dirty) {
 						var newValue = fn.apply(null, values);
-						if (store._differs(newValue, value)) {
+						if (this$1._differs(newValue, value)) {
 							value = newValue;
 							changed[key] = true;
 							state[key] = value;
@@ -2067,83 +2632,39 @@
 				}
 			};
 
-			c.update(this._state, {}, true);
-
 			this._computed[key] = c;
 			this._sortComputedProperties();
+
+			var state = assign({}, this._state);
+			var changed = {};
+			c.update(state, changed, true);
+			this._set(state, changed);
 		},
 
 		fire: fire,
 
 		get: get,
 
-		// TODO remove this method
-		observe: observe,
-
 		on: on,
 
-		onchange: function(callback) {
-			// TODO remove this method
-			console.warn("store.onchange is deprecated in favour of store.on('state', event => {...})");
-
-			return this.on('state', function(event) {
-				callback(event.current, event.changed);
-			});
-		},
-
-		set: function(newState) {
-			var this$1 = this;
-
-			var oldState = this._state,
-				changed = this._changed = {},
-				dirty = false;
+		set: function set(newState) {
+			var oldState = this._state;
+			var changed = this._changed = {};
+			var dirty = false;
 
 			for (var key in newState) {
-				if (this$1._computed[key]) { throw new Error("'" + key + "' is a read-only property"); }
-				if (this$1._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+				if (this._computed[key]) { throw new Error(("'" + key + "' is a read-only computed property")); }
+				if (this._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
 			}
 			if (!dirty) { return; }
 
-			this._state = assign(assign({}, oldState), newState);
-
-			for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
-				this$1._sortedComputedProperties[i].update(this$1._state, changed);
-			}
-
-			this.fire('state', {
-				changed: changed,
-				current: this._state,
-				previous: oldState
-			});
-
-			var dependents = this._dependents.slice(); // guard against mutations
-			for (var i = 0; i < dependents.length; i += 1) {
-				var dependent = dependents[i];
-				var componentState = {};
-				dirty = false;
-
-				for (var j = 0; j < dependent.props.length; j += 1) {
-					var prop = dependent.props[j];
-					if (prop in changed) {
-						componentState['$' + prop] = this$1._state[prop];
-						dirty = true;
-					}
-				}
-
-				if (dirty) { dependent.component.set(componentState); }
-			}
-
-			this.fire('update', {
-				changed: changed,
-				current: this._state,
-				previous: oldState
-			});
+			this._set(newState, changed);
 		}
 	});
 
 	var store = new Store({});
 
-	var data$1 = {
+	var data$2 = {
 	    chart: {
 	        id: ''
 	    },
@@ -2154,7 +2675,7 @@
 	    skipRows: 0
 	};
 
-	var main = { App: App, data: data$1, store: store };
+	var main = { App: App, data: data$2, store: store };
 
 	return main;
 

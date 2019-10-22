@@ -60,14 +60,15 @@ call_user_func(function() {
         $app->redirect('/account');
     });
 
-    $app->get('/account', function() use ($app) {
+    $app->get('/account(/:tab)?', function($tab = null) use ($app) {
         disable_cache($app);
 
         if (Session::isLoggedIn()) {
             $user = Session::getUser();
 
             $context = array(
-                "user" => $user
+                "user" => $user,
+                'teams' => $user->getOrganizations()->asArray()
             );
 
             add_header_vars($page, 'account');
