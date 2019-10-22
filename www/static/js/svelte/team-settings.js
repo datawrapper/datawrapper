@@ -23328,7 +23328,15 @@
 	var file$E = "team-settings/tabs/Members.html";
 
 	function create_main_fragment$J(component, ctx) {
-		var p, raw0_value = __('teams / p'), text0, ul, li0, raw1_value = __('teams / permissions / members' ), text1, li1, raw2_value = __('teams / permissions / admins' ), text2, li2, raw3_value = __('teams / permissions / owners' ), text3, inviteuser_updating = {}, text4, if_block_anchor;
+		var text0, div2, div0, inviteuser_updating = {}, text1, div1, p, raw0_value = __('teams / p'), text2, ul, li0, raw1_value = __('teams / permissions / members' ), text3, li1, raw2_value = __('teams / permissions / admins' ), text4, li2, raw3_value = __('teams / permissions / owners' );
+
+		function select_block_type(ctx) {
+			if (ctx.loadingUsers) { return create_if_block$w; }
+			return create_else_block$7;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
 
 		var inviteuser_initial_data = {};
 		if (ctx.team  !== void 0) {
@@ -23373,61 +23381,73 @@
 			component.updateUsers();
 		});
 
-		function select_block_type(ctx) {
-			if (ctx.loadingUsers) { return create_if_block$w; }
-			return create_else_block$7;
-		}
-
-		var current_block_type = select_block_type(ctx);
-		var if_block = current_block_type(component, ctx);
-
 		return {
 			c: function create() {
-				p = createElement("p");
+				if_block.c();
 				text0 = createText("\n\n");
+				div2 = createElement("div");
+				div0 = createElement("div");
+				inviteuser._fragment.c();
+				text1 = createText("\n    ");
+				div1 = createElement("div");
+				p = createElement("p");
+				text2 = createText("\n\n        ");
 				ul = createElement("ul");
 				li0 = createElement("li");
-				text1 = createText("\n    ");
+				text3 = createText("\n            ");
 				li1 = createElement("li");
-				text2 = createText("\n    ");
+				text4 = createText("\n            ");
 				li2 = createElement("li");
-				text3 = createText("\n\n");
-				inviteuser._fragment.c();
-				text4 = createText("\n\n");
-				if_block.c();
-				if_block_anchor = createComment();
+				div0.className = "span6";
+				addLoc(div0, file$E, 7, 4, 225);
+				p.className = "help";
 				setStyle(p, "margin-bottom", "10px");
-				addLoc(p, file$E, 0, 0, 0);
-				addLoc(li0, file$E, 5, 4, 103);
-				addLoc(li1, file$E, 8, 4, 177);
-				addLoc(li2, file$E, 11, 4, 250);
+				addLoc(p, file$E, 12, 8, 385);
+				addLoc(li0, file$E, 17, 12, 533);
+				addLoc(li1, file$E, 20, 12, 631);
+				addLoc(li2, file$E, 23, 12, 728);
 				setStyle(ul, "margin-bottom", "20px");
 				ul.className = "svelte-1wrcwrk";
-				addLoc(ul, file$E, 4, 0, 67);
+				addLoc(ul, file$E, 16, 8, 489);
+				div1.className = "span4";
+				addLoc(div1, file$E, 10, 4, 356);
+				div2.className = "row";
+				addLoc(div2, file$E, 6, 0, 203);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, p, anchor);
-				p.innerHTML = raw0_value;
+				if_block.m(target, anchor);
 				insert(target, text0, anchor);
-				insert(target, ul, anchor);
+				insert(target, div2, anchor);
+				append(div2, div0);
+				inviteuser._mount(div0, null);
+				append(div2, text1);
+				append(div2, div1);
+				append(div1, p);
+				p.innerHTML = raw0_value;
+				append(div1, text2);
+				append(div1, ul);
 				append(ul, li0);
 				li0.innerHTML = raw1_value;
-				append(ul, text1);
+				append(ul, text3);
 				append(ul, li1);
 				li1.innerHTML = raw2_value;
-				append(ul, text2);
+				append(ul, text4);
 				append(ul, li2);
 				li2.innerHTML = raw3_value;
-				insert(target, text3, anchor);
-				inviteuser._mount(target, anchor);
-				insert(target, text4, anchor);
-				if_block.m(target, anchor);
-				insert(target, if_block_anchor, anchor);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(text0.parentNode, text0);
+				}
+
 				var inviteuser_changes = {};
 				if (!inviteuser_updating.team && changed.team) {
 					inviteuser_changes.team = ctx.team ;
@@ -23443,39 +23463,21 @@
 				}
 				inviteuser._set(inviteuser_changes);
 				inviteuser_updating = {};
-
-				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
-					if_block.p(changed, ctx);
-				} else {
-					if_block.d(1);
-					if_block = current_block_type(component, ctx);
-					if_block.c();
-					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-				}
 			},
 
 			d: function destroy(detach) {
-				if (detach) {
-					detachNode(p);
-					detachNode(text0);
-					detachNode(ul);
-					detachNode(text3);
-				}
-
-				inviteuser.destroy(detach);
-				if (detach) {
-					detachNode(text4);
-				}
-
 				if_block.d(detach);
 				if (detach) {
-					detachNode(if_block_anchor);
+					detachNode(text0);
+					detachNode(div2);
 				}
+
+				inviteuser.destroy();
 			}
 		};
 	}
 
-	// (21:0) {:else}
+	// (3:0) {:else}
 	function create_else_block$7(component, ctx) {
 		var usertable_updating = {};
 
@@ -23576,7 +23578,7 @@
 		};
 	}
 
-	// (19:0) {#if loadingUsers}
+	// (1:0) {#if loadingUsers}
 	function create_if_block$w(component, ctx) {
 		var p, i, text, raw_value = __('teams / loading' ), raw_before;
 
@@ -23587,8 +23589,8 @@
 				text = createText("   ");
 				raw_before = createElement('noscript');
 				i.className = "fa fa-circle-o-notch fa-spin";
-				addLoc(i, file$E, 19, 3, 437);
-				addLoc(p, file$E, 19, 0, 434);
+				addLoc(i, file$E, 1, 3, 22);
+				addLoc(p, file$E, 1, 0, 19);
 			},
 
 			m: function mount(target, anchor) {
@@ -23617,13 +23619,13 @@
 
 		init(this, options);
 		this._state = assign({}, options.data);
-		if (!('team' in this._state)) { console.warn("<Members> was created without expected data property 'team'"); }
-		if (!('isAdmin' in this._state)) { console.warn("<Members> was created without expected data property 'isAdmin'"); }
-		if (!('updatingUsers' in this._state)) { console.warn("<Members> was created without expected data property 'updatingUsers'"); }
 		if (!('loadingUsers' in this._state)) { console.warn("<Members> was created without expected data property 'loadingUsers'"); }
+		if (!('isAdmin' in this._state)) { console.warn("<Members> was created without expected data property 'isAdmin'"); }
+		if (!('team' in this._state)) { console.warn("<Members> was created without expected data property 'team'"); }
 		if (!('users' in this._state)) { console.warn("<Members> was created without expected data property 'users'"); }
 		if (!('editIndex' in this._state)) { console.warn("<Members> was created without expected data property 'editIndex'"); }
 		if (!('updating' in this._state)) { console.warn("<Members> was created without expected data property 'updating'"); }
+		if (!('updatingUsers' in this._state)) { console.warn("<Members> was created without expected data property 'updatingUsers'"); }
 		this._intro = true;
 
 		this._fragment = create_main_fragment$J(this, this._state);
@@ -27197,7 +27199,7 @@
 	}
 
 	function create_main_fragment$Q(component, ctx) {
-		var div1, div0, h1, b, text0_value = ctx.team.name, text0, text1, text2_value = __('nav / team / settings'), text2, text3, div5, div4, div2, text4, div3;
+		var div1, div0, h1, text0, text1_value = ctx.team.name, text1, text2, text3_value = __('Settings'), text3, text4, div5, div4, div2, text5, div3;
 
 		var each_value = ctx.groups;
 
@@ -27214,11 +27216,11 @@
 				div1 = createElement("div");
 				div0 = createElement("div");
 				h1 = createElement("h1");
-				b = createElement("b");
-				text0 = createText(text0_value);
-				text1 = createText(" » ");
-				text2 = createText(text2_value);
-				text3 = createText("\n\n");
+				text0 = createText("Teams » ");
+				text1 = createText(text1_value);
+				text2 = createText(" » ");
+				text3 = createText(text3_value);
+				text4 = createText("\n\n");
 				div5 = createElement("div");
 				div4 = createElement("div");
 				div2 = createElement("div");
@@ -27227,10 +27229,9 @@
 					each_blocks[i].c();
 				}
 
-				text4 = createText("\n\n        ");
+				text5 = createText("\n\n        ");
 				div3 = createElement("div");
 				if (if_block) { if_block.c(); }
-				addLoc(b, file$L, 2, 53, 111);
 				h1.className = "title";
 				setStyle(h1, "margin-bottom", "18px");
 				addLoc(h1, file$L, 2, 8, 66);
@@ -27238,26 +27239,26 @@
 				addLoc(div0, file$L, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$L, 0, 0, 0);
-				div2.className = "span2 svelte-188dk8z";
-				addLoc(div2, file$L, 8, 8, 321);
+				div2.className = "span2 svelte-1lvpjo0";
+				addLoc(div2, file$L, 8, 8, 309);
 				div3.className = "span10";
-				addLoc(div3, file$L, 22, 8, 813);
+				addLoc(div3, file$L, 22, 8, 801);
 				div4.className = "visconfig";
-				addLoc(div4, file$L, 7, 4, 289);
+				addLoc(div4, file$L, 7, 4, 277);
 				div5.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div5, "margin-top", "-20px");
-				addLoc(div5, file$L, 6, 0, 190);
+				addLoc(div5, file$L, 6, 0, 178);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, div1, anchor);
 				append(div1, div0);
 				append(div0, h1);
-				append(h1, b);
-				append(b, text0);
+				append(h1, text0);
 				append(h1, text1);
 				append(h1, text2);
-				insert(target, text3, anchor);
+				append(h1, text3);
+				insert(target, text4, anchor);
 				insert(target, div5, anchor);
 				append(div5, div4);
 				append(div4, div2);
@@ -27266,14 +27267,14 @@
 					each_blocks[i].m(div2, null);
 				}
 
-				append(div4, text4);
+				append(div4, text5);
 				append(div4, div3);
 				if (if_block) { if_block.m(div3, null); }
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.team) && text0_value !== (text0_value = ctx.team.name)) {
-					setData(text0, text0_value);
+				if ((changed.team) && text1_value !== (text1_value = ctx.team.name)) {
+					setData(text1, text1_value);
 				}
 
 				if (changed.groups || changed.activeTab) {
@@ -27314,7 +27315,7 @@
 			d: function destroy(detach) {
 				if (detach) {
 					detachNode(div1);
-					detachNode(text3);
+					detachNode(text4);
 					detachNode(div5);
 				}
 
@@ -27336,18 +27337,18 @@
 				i = createElement("i");
 				text0 = createText("   ");
 				text1 = createText(text1_value);
-				i.className = i_class_value = "" + ctx.tab.icon + " svelte-188dk8z";
-				addLoc(i, file$L, 15, 42, 650);
+				i.className = i_class_value = "" + ctx.tab.icon + " svelte-1lvpjo0";
+				addLoc(i, file$L, 15, 42, 638);
 				a.href = a_href_value = "#" + ctx.tab.id;
-				a.className = "svelte-188dk8z";
-				addLoc(a, file$L, 15, 20, 628);
+				a.className = "svelte-1lvpjo0";
+				addLoc(a, file$L, 15, 20, 616);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
-				li.className = "svelte-188dk8z";
+				li.className = "svelte-1lvpjo0";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
-				addLoc(li, file$L, 14, 16, 539);
+				addLoc(li, file$L, 14, 16, 527);
 			},
 
 			m: function mount(target, anchor) {
@@ -27360,7 +27361,7 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-188dk8z")) {
+				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-1lvpjo0")) {
 					i.className = i_class_value;
 				}
 
@@ -27410,10 +27411,10 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "group svelte-188dk8z";
-				addLoc(div, file$L, 10, 12, 389);
+				div.className = "group svelte-1lvpjo0";
+				addLoc(div, file$L, 10, 12, 377);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$L, 12, 12, 443);
+				addLoc(ul, file$L, 12, 12, 431);
 			},
 
 			m: function mount(target, anchor) {
@@ -27642,8 +27643,8 @@
 				if (if_block) { if_block.c(); }
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
-				div.className = "vis-options settings-section svelte-188dk8z";
-				addLoc(div, file$L, 24, 12, 875);
+				div.className = "vis-options settings-section svelte-1lvpjo0";
+				addLoc(div, file$L, 24, 12, 863);
 			},
 
 			m: function mount(target, anchor) {
@@ -27824,28 +27825,28 @@
 
 	// (26:16) {#if currentTab.h1 }
 	function create_if_block_1$m(component, ctx) {
-		var h1, raw_value = ctx.currentTab.h1;
+		var h2, raw_value = ctx.currentTab.h1;
 
 		return {
 			c: function create() {
-				h1 = createElement("h1");
-				addLoc(h1, file$L, 26, 16, 971);
+				h2 = createElement("h2");
+				addLoc(h2, file$L, 26, 16, 959);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, h1, anchor);
-				h1.innerHTML = raw_value;
+				insert(target, h2, anchor);
+				h2.innerHTML = raw_value;
 			},
 
 			p: function update(changed, ctx) {
 				if ((changed.currentTab) && raw_value !== (raw_value = ctx.currentTab.h1)) {
-					h1.innerHTML = raw_value;
+					h2.innerHTML = raw_value;
 				}
 			},
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(h1);
+					detachNode(h2);
 				}
 			}
 		};
