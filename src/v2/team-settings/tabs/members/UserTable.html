@@ -135,7 +135,7 @@
                 }
             },
             async removeUser(user) {
-                if (!window.confirm("Are you sure you want to remove this user's access to your team?")) return;
+                if (!window.confirm(__('teams / remove / alert'))) return;
 
                 await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}`, {
                     method: 'DELETE',

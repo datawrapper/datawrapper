@@ -1,19 +1,12 @@
-{#if loadingUsers}
-<p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
-{:else}
-<UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
-{/if}
+<p style="margin-bottom: 10px">
+    {@html __('teams / p') }
+</p>
 
 <div class="row">
-    <div class="span6">
+    <div class="span5">
         <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
     </div>
-    <div class="span4">
-
-        <p class="help" style="margin-bottom: 10px">
-            {@html __('teams / p') }
-        </p>
-
+    <div class="span5">
         <ul style="margin-bottom:20px">
             <li>
                 { @html __('teams / permissions / members' ) }
@@ -28,7 +21,11 @@
     </div>
 </div>
 
-
+{#if loadingUsers}
+<p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
+{:else}
+<UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
+{/if}
 
 <script>
     import { __ } from '@datawrapper/shared/l10n';
@@ -38,7 +35,8 @@
     export default {
         components: {
             InviteUser,
-            UserTable
+            UserTable,
+            FormBlock
         },
         helpers: { __ },
         methods: {
@@ -52,5 +50,12 @@
 <style>
     ul {
         font-weight: 300;
+        list-style: none;
+    }
+    li {
+        margin-top: 1em;
+    }
+    li :global(b) {
+        font-weight: 700;
     }
 </style>

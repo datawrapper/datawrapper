@@ -2,87 +2,85 @@
     {@html __('teams / defaults / p') }
 </p>
 
-<Text label="{__('teams / name' )}" bind:value="team.name" help="{__('teams / name / help' )}" placeholder="" />
+<div class="row">
+    <div class="span5">
+        <FormBlock label="{__('teams / name' )}" help="{__('teams / name / help' )}">
+            <Text bind:value="team.name" placeholder="" />
+        </FormBlock>
 
-<!-- prettier-ignore -->
-<Select
-    label="{ __('teams / defaults / theme' ) }"
-    bind:value="defaultTheme"
-    width="225px"
-    labelWidth="100px"
-    help="{ __('teams / defaults / theme / p' ) }"
-    options="{themes}"
-/>
+        <FormBlock label="{ __('teams / defaults / theme' ) }" help="{ __('teams / defaults / theme / p' ) }">
+            <!-- prettier-ignore -->
+            <Select
+                bind:value="defaultTheme"
+                labelWidth="100px"
+                options="{themes}"
+            />
+        </FormBlock>
 
-<!-- prettier-ignore -->
-<Select
-    label="{ __('teams / defaults / folder' ) }"
-    bind:value="settings.default.folder"
-    width="225px"
-    labelWidth="100px"
-    help="{ __('teams / defaults / folder / p' ) }"
-    options="{folders}"
-/>
+        <FormBlock label="{ __('teams / defaults / folder' ) }" help="{ __('teams / defaults / folder / p' ) }">
+            <!-- prettier-ignore -->
+            <Select
+                bind:value="settings.default.folder"
+                labelWidth="100px"
+                options="{folders}"
+            />
+        </FormBlock>
 
-<!-- prettier-ignore -->
-<Select
-    label="{ __('teams / defaults / folder-status' ) }"
-    bind:value="settings.folders"
-    width="225px"
-    labelWidth="100px"
-    help="{ __('teams / defaults / folder-status / p' ) }"
-    options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
-/>
+        <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
+            <!-- prettier-ignore -->
+            <Select
+                bind:value="settings.folders"
+                options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
+            />
+        </FormBlock>
 
-<!-- prettier-ignore -->
-<Select
-    label="{ __('teams / defaults / locale' ) }"
-    bind:value="settings.default.locale"
-    width="225px"
-    labelWidth="100px"
-    help="{ __('teams / defaults / locale / p' ) }"
-    options="{localeOptions}"
-/>
+        <FormBlock label="{ __('teams / defaults / locale' ) }" help="{ __('teams / defaults / locale / p' ) }">
+            <!-- prettier-ignore -->
+            <Select
+                bind:value="settings.default.locale"
+                options="{localeOptions}"
+            />
+        </FormBlock>
 
-<!-- prettier-ignore -->
-<Select
-    label="{ __('teams / defaults / embedcode' ) }"
-    bind:value="settings.embed.preferred_embed"
-    width="225px"
-    labelWidth="100px"
-    help="{ __('teams / defaults / embedcode / p' ) }"
-    options="{embedCodes}"
-/>
+        <FormBlock label="{ __('teams / defaults / embedcode' ) }" help="{ __('teams / defaults / embedcode / p' ) }">
+            <!-- prettier-ignore -->
+            <Select
+                bind:value="settings.embed.preferred_embed"
+                options="{embedCodes}"
+            />
+        </FormBlock>
 
-{#if settings.embed.preferred_embed == "custom"}
-<div>
-    <Text label="{ __('teams / custom / title' ) }" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
+        {#if settings.embed.preferred_embed == "custom"}
+        <div>
+            <Text label="{ __('teams / custom / title' ) }" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
 
-    <!-- prettier-ignore -->
-    <TextArea
-        label="{ __('teams / custom / help' ) }"
-        bind:value="settings.embed.custom_embed.text"
-        placeholder="e.g. This is a custom embed code for our CMS"
-    />
+            <!-- prettier-ignore -->
+            <TextArea
+                label="{ __('teams / custom / help' ) }"
+                bind:value="settings.embed.custom_embed.text"
+                placeholder="e.g. This is a custom embed code for our CMS"
+            />
 
-    <!-- prettier-ignore -->
-    <TextArea
-        label="{ __('teams / custom / embedcode' ) }"
-        bind:value="settings.embed.custom_embed.template"
-        placeholder=""
-        help="{ __('teams / custom / embedcode / help' ) }"
-    />
+            <!-- prettier-ignore -->
+            <TextArea
+                label="{ __('teams / custom / embedcode' ) }"
+                bind:value="settings.embed.custom_embed.template"
+                placeholder=""
+                help="{ __('teams / custom / embedcode / help' ) }"
+            />
+        </div>
+        {/if}
+
+        <Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
+    </div>
 </div>
-{/if}
-
-<Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
-
 <script>
+    import FormBlock from '../shared/FormBlock.html';
     import { Text, TextArea, Select, Switch } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { Text, TextArea, Select, Switch },
+        components: { Text, TextArea, Select, Switch, FormBlock },
         data() {
             return {
                 embedCodes: [

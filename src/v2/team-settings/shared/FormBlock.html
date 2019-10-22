@@ -1,0 +1,49 @@
+<div class="form-block">
+    <label class="control-label">{@html label}</label>
+    <div class="form-controls">
+        <slot />
+    </div>
+    <div class="help">{@html help}</div>
+</div>
+
+<script>
+    export default {
+        data() {
+            return {
+                label: '',
+                help: ''
+            };
+        }
+    };
+</script>
+
+<style>
+    .form-block {
+        margin-bottom: 20px;
+    }
+    .form-block :global(.control-group) {
+        margin-bottom: 0 !important;
+        width: 100%;
+    }
+    .span2 :global(.controls) {
+        width: 100% !important;
+    }
+    .form-block :global(input) {
+        margin-bottom: 0;
+    }
+    .form-controls :global(select) {
+        width: 100% !important;
+    }
+    label {
+        padding-left: 2px;
+        font-weight: bold !important;
+    }
+    .help {
+        padding-left: 2px;
+        font-weight: 400;
+        color: #888;
+    }
+    .form-controls {
+        margin: 5px 0;
+    }
+</style>
