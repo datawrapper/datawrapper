@@ -27227,7 +27227,7 @@
 				addLoc(div0, file$L, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$L, 0, 0, 0);
-				div2.className = "span2 svelte-mf4roy";
+				div2.className = "span2 svelte-188dk8z";
 				addLoc(div2, file$L, 8, 8, 321);
 				div3.className = "span10";
 				addLoc(div3, file$L, 22, 8, 813);
@@ -27325,16 +27325,16 @@
 				i = createElement("i");
 				text0 = createText("   ");
 				text1 = createText(text1_value);
-				i.className = i_class_value = "" + ctx.tab.icon + " svelte-mf4roy";
+				i.className = i_class_value = "" + ctx.tab.icon + " svelte-188dk8z";
 				addLoc(i, file$L, 15, 42, 650);
 				a.href = a_href_value = "#" + ctx.tab.id;
-				a.className = "svelte-mf4roy";
+				a.className = "svelte-188dk8z";
 				addLoc(a, file$L, 15, 20, 628);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
-				li.className = "svelte-mf4roy";
+				li.className = "svelte-188dk8z";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
 				addLoc(li, file$L, 14, 16, 539);
 			},
@@ -27349,7 +27349,7 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-mf4roy")) {
+				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-188dk8z")) {
 					i.className = i_class_value;
 				}
 
@@ -27399,7 +27399,7 @@
 				for (var i = 0; i < each_blocks.length; i += 1) {
 					each_blocks[i].c();
 				}
-				div.className = "group svelte-mf4roy";
+				div.className = "group svelte-188dk8z";
 				addLoc(div, file$L, 10, 12, 389);
 				ul.className = "nav nav-stacked nav-tabs";
 				addLoc(ul, file$L, 12, 12, 443);
@@ -27631,7 +27631,7 @@
 				if (if_block) { if_block.c(); }
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
-				div.className = "vis-options settings-section svelte-mf4roy";
+				div.className = "vis-options settings-section svelte-188dk8z";
 				addLoc(div, file$L, 24, 12, 875);
 			},
 
