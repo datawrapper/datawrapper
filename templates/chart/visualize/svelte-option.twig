@@ -8,13 +8,13 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
 
-<script type="text/javascript" src="/static/plugins/{{ plugin }}/controls.js?v={{ sha }}"></script>
-<link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/controls.css">
+<script type="text/javascript" src="/static/plugins/{{ filePath }}.js?v={{ sha }}"></script>
+<link rel="stylesheet" type="text/css" href="/static/plugins/{{ filePath }}.css">
 
 
 <script type="text/javascript">
 
-require(['{{ path }}'], function(mod) {
+require(['{{ amdPath }}'], function(mod) {
 
     var App = mod.App,
         data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
@@ -75,10 +75,11 @@ require(['{{ path }}'], function(mod) {
 
             document.querySelector('#{{ type }}-{{ key }}').innerHTML = '';
 
+
             app = mod.app = new App({
                 store: chart,
                 target: document.querySelector('#{{ type }}-{{ key }}'),
-                data: data
+                // data: data
             });
         });
     });

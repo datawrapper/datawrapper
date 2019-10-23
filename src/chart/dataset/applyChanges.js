@@ -14,8 +14,16 @@ export default function(chart, dataset) {
 
         if (dataset.hasColumn(change[column])) {
             if (change[row] === 0) {
+                if (change.previous) {
+                    const oldTitle = dataset.column(change[column]).title();
+                    if (oldTitle !== change.previous) return;
+                }
                 dataset.column(change[column]).title(change.value);
             } else {
+                if (change.previous) {
+                    const curValue = dataset.column(change[column]).raw(change[row] - 1);
+                    if (curValue !== change.previous) return;
+                }
                 dataset.column(change[column]).raw(change[row] - 1, change.value);
             }
         }
