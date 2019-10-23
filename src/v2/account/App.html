@@ -26,6 +26,7 @@
     /* globals CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
     import EditProfile from './EditProfile.html';
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     const EditProfileTab = {
         title: 'Profile',
@@ -56,20 +57,29 @@
             };
         },
         methods: {
-            activateTab(tab, event) {
+            activateTab(tab, event=null) {
+                if (tab.module) {
+                    if (event) event.preventDefault();
+                    Promise.all([
+                        loadStylesheet(tab.css),
+                        loadScript(tab.js)
+                    ]).then(() => {
+                        require([tab.module], (mod) => {
+                            tab.ui = mod.App;
+                            tab.module = null;
+                            const {groups} = this.get();
+                            this.set({
+                                groups,
+                                activeTab: tab
+                            });
+                        });
+                    });
+                    return;
+                }
                 if (tab.ui) {
-                    event.preventDefault();
+                    if (event) event.preventDefault();
                     this.set({activeTab: tab});
                 }
-            },
-            addTab(tab) {
-                const {groups, wasLookingFor} = this.get();
-                console.log('groups', groups);
-                groups[0].tabs.push(tab);
-                if (wasLookingFor && tab.id === wasLookingFor) {
-                    this.set({activeTab: tab, wasLookingFor: null});
-                }
-                this.set({groups})
             }
         },
         computed: {
@@ -93,7 +103,12 @@
 
             dw.backend.__svelteApps.account = this;
 
-            const {groups, teams} = this.get();
+            const {groups, teams, pages} = this.get();
+
+            if (pages.length) {
+                groups[0].tabs.push.apply(groups[0].tabs, pages);
+                this.set({groups});
+            }
 
             if (teams.length) {
                 teams.forEach(({Id, Name}) => {
@@ -113,7 +128,7 @@
             groups.forEach(group => {
                 group.tabs.forEach(tab => {
                     if (tab.id === initialTab) {
-                        this.set({activeTab: tab});
+                        this.activateTab(tab);
                         foundTab = true;
                     }
                 });
