@@ -1,9 +1,13 @@
-<div class="form-block">
+<div class="form-block" style="width:{width}">
+    {#if label}
     <label class="control-label">{@html label}</label>
+    {/if}
     <div class="form-controls">
         <slot />
     </div>
+    {#if help}
     <div class="help">{@html help}</div>
+    {/if}
 </div>
 
 <script>
@@ -11,7 +15,8 @@
         data() {
             return {
                 label: '',
-                help: ''
+                help: '',
+                width: 'auto'
             };
         }
     };

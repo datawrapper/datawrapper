@@ -202,7 +202,7 @@ class User extends BaseUser {
      */
     public function canAdministrateTeam($org) {
         if ($this->isAdmin()) {
-            return true;
+            // return true;
         }
 
         if (!$org->hasUser($this)) {

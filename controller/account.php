@@ -30,12 +30,22 @@ call_user_func(function() {
             }
             usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
 
+            $teams = $user->getActiveOrganizations();
+            $adminTeams = [];
+            foreach ($teams as $team) {
+                if ($user->canAdministrateTeam($team)) {
+                    $adminTeams[] = $team->toArray();
+                }
+            }
+            $current = $user->getCurrentOrganization();
             $context = [
                 'svelte_data' => [
                     "user" => $user,
                     "email" => $user->getEmail(),
                     "userId" => $user->getId(),
-                    'teams' => $user->getOrganizations()->toArray(),
+                    'currentTeam' => $current ? $current->getId() : null,
+                    'teams' => $teams->toArray(),
+                    'adminTeams' => $adminTeams,
                     'pages' => $pages
                 ]
             ];

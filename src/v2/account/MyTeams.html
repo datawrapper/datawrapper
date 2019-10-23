@@ -1,0 +1,116 @@
+<!-- <h2>{ __("account / my-teams") }</h2>
+ -->
+<h2>My Teams</h2>
+
+{#if teams.length}
+<p>Here's a list of the teams you're in:</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Slug*</th>
+            <th>Your role</th>
+            <th>Team charts</th>
+            <th>Settings</th>
+            <th>Leave team</th>
+        </tr>
+    </thead>
+    <tbody>
+        {#each teams as team}
+        <tr class:current="team.Id === currentTeam">
+            <td>
+                {team.Name}
+                {#if team.Id === currentTeam}
+                <i class="fa fa-check-circle"></i>
+                {/if}
+            </td>
+            <td>
+                <div class="id">{team.Id}</div>
+            </td>
+            <td>Member</td>
+            <td><a href="/team/{team.Id}">12 charts</a></td>
+            <td>
+                <button class="btn btn-small">settings</button>
+            </td>
+            <td>
+                <button class="btn btn-small btn-danger"><i class="fa fa-sign-out"></i> leave team</button>
+            </td>
+        </tr>
+        {/each}
+    </tbody>
+</table>
+<p class="mini-help">* The slug is used in internal Datawrapper URLs and can't be changed after team creation.</p>
+{:else}
+<p>You're not in any teams, yet.</p>
+{/if}
+
+<div class="row">
+    <div class="span5">
+        <h3>Create a team</h3>
+        <div class="hed">
+            <p>Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to join them.</p>
+            <a href="/team/new/setup" class="btn btn-large" class:btn-primary="!teams.length"><i class="fa fa-plus fa-fw"></i> Create team</a>
+        </div>
+    </div>
+    <div class="span5">
+        {#if teams.length > 1}
+        <h3>Select default team</h3>
+        <p>Since you are a member of multiple teams, you have to pick which one you want to be used as <b>default team</b> (indicated with <i class="fa fa-check-circle"></i>). Newly created charts will automatically be added to this team, and might also inherit some settings from the team.</p>
+        <FormBlock width="350px" help="You can change the default team at any time.">
+            <!-- prettier-ignore -->
+            <Select options="{teamOptions}" />
+        </FormBlock>
+        {/if}
+    </div>
+</div>
+
+
+<script>
+    /* globals CryptoJS */
+    import { __ } from '@datawrapper/shared/l10n';
+    import { getJSON, putJSON, fetchJSON } from '@datawrapper/shared/fetch';
+    import checkPassword from '@datawrapper/shared/checkPassword';
+    import FormBlock from '../shared/FormBlock.html';
+    import Select from '@datawrapper/controls/Select.html';
+
+    export default {
+        components: { FormBlock, Select },
+        data() {
+            return {
+                teams: []
+            };
+        },
+        computed: {
+            teamOptions({ teams }) {
+                return teams.map(({Id, Name}) => ({
+                    value: Id,
+                    label: Name
+                }))
+            }
+        },
+        helpers: { __ }
+    }
+</script>
+
+<style type="text/css">
+    .hed {
+        margin-bottom: 20px;
+    }
+    p.mini-help {
+        font-size: 12px;
+        color: #a8a8a8;
+        font-style: italic;
+        line-height: 1.2;
+    }
+    h3 {
+        margin-top: 2em;
+    }
+    .current .name {
+        font-weight: bold;
+    }
+    .id {
+        font-family: Roboto Mono;
+        color: #888;
+    }
+</style>

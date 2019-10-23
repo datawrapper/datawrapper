@@ -1,5 +1,5 @@
 <div class="admin">
-    <h1 class="title">Settings</h1>
+    <h1 class="title">Account Settings</h1>
 
     <div class="row">
         <div class="span2">
@@ -26,13 +26,21 @@
     /* globals CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
     import EditProfile from './EditProfile.html';
+    import MyTeams from './MyTeams.html';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     const EditProfileTab = {
         title: 'Profile',
         id: 'profile',
-        icon: 'fa fa-fw fa-user',
+        icon: 'im im-user-male',
         ui: EditProfile
+    };
+
+    const MyTeamsTab = {
+        title: 'My Teams',
+        id: 'teams',
+        icon: 'im im-users',
+        ui: MyTeams
     };
 
     export default {
@@ -42,17 +50,9 @@
                 activeTab: null,
                 groups: [
                     {
-                        title: 'Account settings',
-                        tabs: [EditProfileTab]
+                        title: 'Personal settings',
+                        tabs: [EditProfileTab, MyTeamsTab]
                     },
-                    {
-                        title: 'Team settings',
-                        tabs: [{
-                            title: 'Create team',
-                            icon: 'fa fa-fw fa-plus',
-                            url: '/team/new/setup'
-                        }]
-                    }
                 ]
             };
         },
@@ -83,8 +83,8 @@
             }
         },
         computed: {
-            data({ email, userId }) {
-                return { email, userId };
+            data({ email, userId, teams, currentTeam }) {
+                return { email, userId, teams, currentTeam };
             }
         },
         onstate({ changed, current }) {
@@ -103,24 +103,25 @@
 
             dw.backend.__svelteApps.account = this;
 
-            const {groups, teams, pages} = this.get();
+            const {groups, adminTeams, pages} = this.get();
 
             if (pages.length) {
                 groups[0].tabs.push.apply(groups[0].tabs, pages);
                 this.set({groups});
             }
 
-            if (teams.length) {
-                teams.forEach(({Id, Name}) => {
+            if (adminTeams.length) {
+                groups.push({
+                    title: 'Team settings',
+                    tabs: []
+                });
+                adminTeams.forEach(({Id, Name}) => {
                     groups[1].tabs.push({
                         title: Name,
                         url: `/team/${Id}/settings`,
-                        icon: 'fa fa-group fa-fw'
+                        icon: 'im im-users'
                     })
                 });
-                // move "create team" to end
-                groups[1].tabs.push(groups[1].tabs.shift());
-                console.log('x', groups);
                 this.set({groups});
             }
 
@@ -168,6 +169,12 @@
         border-color: #18a1cd;
         color: #fff;
         font-weight: bold;
+    }
+
+    li i.im {
+        font-size: 14px;
+        position: relative;
+        top: 1px;
     }
 
     .span2 .nav a i {
