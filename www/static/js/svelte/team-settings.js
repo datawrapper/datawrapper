@@ -22111,7 +22111,11 @@
 	        editId: false,
 	        updating: {},
 	        users: [],
-	        roles: [{ value: 'owner', label: __('teams / role / owner').replace('&shy;', '') }, { value: 'admin', label: __('teams / role / admin').replace('&shy;', '') }, { value: 'member', label: __('teams / role / member').replace('&shy;', '') }]
+	        roles: [
+	            { value: 'owner', label: __('teams / role / owner').replace('&shy;', '') },
+	            { value: 'admin', label: __('teams / role / admin').replace('&shy;', '') },
+	            { value: 'member', label: __('teams / role / member').replace('&shy;', '') }
+	        ]
 	    };
 	}
 	function role(role) {
