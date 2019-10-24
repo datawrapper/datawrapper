@@ -22065,8 +22065,8 @@
 	        { title: __('teams / user'), width: '25%' },
 	        { title: 'ID', width: '10%' },
 	        { title: 'Charts', width: '15%' },
-	        { title: __('teams / status'), width: '25%' },
-	        { title: __('teams / actions'), width: '25%' }
+	        { title: __('teams / status'), width: '15%' },
+	        { title: __('teams / actions'), width: '30%' }
 	    ];
 
 	    if (!isAdmin) { userHeaders.splice(1, 1); }
@@ -22116,9 +22116,9 @@
 	}
 	function role(role) {
 	    return {
-	        member: __('teams / member'),
-	        admin: __('teams / admin'),
-	        owner: __('teams / owner')
+	        member: __('teams / role / member'),
+	        admin: __('teams / role / admin'),
+	        owner: __('teams / role / owner')
 	    }[role];
 	}
 	var methods$m = {
@@ -22451,28 +22451,32 @@
 
 	// (25:12) {:else}
 	function create_else_block_1(component, ctx) {
-		var text0_value = role(ctx.user.role), text0, text1, if_block_anchor;
+		var raw_value = role(ctx.user.role), raw_before, raw_after, text, if_block_anchor;
 
 		var if_block = (ctx.user.token) && create_if_block_5$1();
 
 		return {
 			c: function create() {
-				text0 = createText(text0_value);
-				text1 = createText(" ");
+				raw_before = createElement('noscript');
+				raw_after = createElement('noscript');
+				text = createText(" ");
 				if (if_block) { if_block.c(); }
 				if_block_anchor = createComment();
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, text0, anchor);
-				insert(target, text1, anchor);
+				insert(target, raw_before, anchor);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+				insert(target, raw_after, anchor);
+				insert(target, text, anchor);
 				if (if_block) { if_block.m(target, anchor); }
 				insert(target, if_block_anchor, anchor);
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.sortedUsers) && text0_value !== (text0_value = role(ctx.user.role))) {
-					setData(text0, text0_value);
+				if ((changed.sortedUsers) && raw_value !== (raw_value = role(ctx.user.role))) {
+					detachBetween(raw_before, raw_after);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
 				}
 
 				if (ctx.user.token) {
@@ -22489,8 +22493,10 @@
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(text0);
-					detachNode(text1);
+					detachBetween(raw_before, raw_after);
+					detachNode(raw_before);
+					detachNode(raw_after);
+					detachNode(text);
 				}
 
 				if (if_block) { if_block.d(detach); }
@@ -22563,7 +22569,7 @@
 		};
 	}
 
-	// (25:40) {#if user.token}
+	// (25:45) {#if user.token}
 	function create_if_block_5$1(component, ctx) {
 		var i, text_value = __('teams / invite-pending' ), text;
 
@@ -22571,7 +22577,7 @@
 			c: function create() {
 				i = createElement("i");
 				text = createText(text_value);
-				addLoc(i, file$C, 25, 12, 814);
+				addLoc(i, file$C, 25, 12, 819);
 			},
 
 			m: function mount(target, anchor) {
@@ -22647,21 +22653,21 @@
 				text3 = createText("  ");
 				text4 = createText(text4_value);
 				i0.className = "fa fa-edit";
-				addLoc(i0, file$C, 34, 63, 1385);
+				addLoc(i0, file$C, 34, 63, 1390);
 
 				button0._svelte = { component: component, ctx: ctx };
 
 				addListener(button0, "click", click_handler_1$3);
 				button0.className = "btn";
-				addLoc(button0, file$C, 34, 12, 1334);
+				addLoc(button0, file$C, 34, 12, 1339);
 				i1.className = "fa fa-times";
-				addLoc(i1, file$C, 36, 60, 1512);
+				addLoc(i1, file$C, 36, 60, 1517);
 
 				button1._svelte = { component: component, ctx: ctx };
 
 				addListener(button1, "click", click_handler_2$1);
 				button1.className = "btn";
-				addLoc(button1, file$C, 36, 12, 1464);
+				addLoc(button1, file$C, 36, 12, 1469);
 			},
 
 			m: function mount(target, anchor) {
@@ -22709,10 +22715,10 @@
 				text0 = createText("  ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-spin fa-circle-o-notch";
-				addLoc(i, file$C, 32, 53, 1218);
+				addLoc(i, file$C, 32, 53, 1223);
 				button.disabled = true;
 				button.className = "btn btn-primary";
-				addLoc(button, file$C, 32, 12, 1177);
+				addLoc(button, file$C, 32, 12, 1182);
 			},
 
 			m: function mount(target, anchor) {
@@ -22743,13 +22749,13 @@
 				text0 = createText("  ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-check";
-				addLoc(i, file$C, 30, 75, 1058);
+				addLoc(i, file$C, 30, 75, 1063);
 
 				button._svelte = { component: component, ctx: ctx };
 
 				addListener(button, "click", click_handler$9);
 				button.className = "btn btn-primary";
-				addLoc(button, file$C, 30, 12, 995);
+				addLoc(button, file$C, 30, 12, 1000);
 			},
 
 			m: function mount(target, anchor) {
@@ -22810,7 +22816,7 @@
 				addLoc(td0, file$C, 9, 8, 293);
 				addLoc(td1, file$C, 17, 8, 471);
 				addLoc(td2, file$C, 20, 8, 526);
-				addLoc(td3, file$C, 28, 8, 902);
+				addLoc(td3, file$C, 28, 8, 907);
 				addLoc(tr, file$C, 8, 4, 280);
 			},
 
@@ -23214,14 +23220,14 @@
 
 	    var options = [
 	        {
-	            label: ("<i class=\"fa fa-envelope\"></i> &nbsp;" + (dw.backend.__messages.core['teams / invite-as-member'])),
+	            label: ("<i class=\"fa fa-envelope\"></i> &nbsp;..." + (__('teams / role / member'))),
 	            disabled: !isValidEmail,
 	            action: function action() {
 	                teamSettingsInvite.inviteUser('member');
 	            }
 	        },
 	        {
-	            label: ("<i class=\"fa fa-envelope\"></i> &nbsp;" + (dw.backend.__messages.core['teams / invite-as-admin'])),
+	            label: ("<i class=\"fa fa-envelope\"></i> &nbsp;..." + (__('teams / role / admin'))),
 	            disabled: !isValidEmail,
 	            action: function action() {
 	                teamSettingsInvite.inviteUser('admin');
@@ -23232,28 +23238,34 @@
 	    if (isAdmin) {
 	        options.push(
 	            {
-	                label: ("<i class=\"fa fa-envelope\"></i> &nbsp;" + (dw.backend.__messages.core['teams / invite-as-owner'])),
+	                label: ("<span class=\"red\"><i class=\"fa fa-envelope\"></i> &nbsp;..." + (__('teams / role / owner')) + "</span>"),
 	                disabled: !isValidEmail,
 	                action: function action() {
 	                    teamSettingsInvite.inviteUser('owner');
 	                }
 	            },
 	            {
-	                label: ("<i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (dw.backend.__messages.core['teams / add-as-member'])),
+	                label: ("<span class=\"red\"><i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (__(
+	                    'teams / add-as'
+	                ).replace('%s', __('teams / role / member'))) + "</span>"),
 	                disabled: !inviteeExists,
 	                action: function action() {
 	                    teamSettingsInvite.addUser('member');
 	                }
 	            },
 	            {
-	                label: ("<i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (dw.backend.__messages.core['teams / add-as-admin'])),
+	                label: ("<span class=\"red\"><i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (__(
+	                    'teams / add-as'
+	                ).replace('%s', __('teams / role / admin'))) + "</span>"),
 	                disabled: !inviteeExists,
 	                action: function action() {
 	                    teamSettingsInvite.addUser('admin');
 	                }
 	            },
 	            {
-	                label: ("<i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (dw.backend.__messages.core['teams / add-as-owner'])),
+	                label: ("<span class=\"red\"><i class=\"fa " + (inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus') + "\"></i> &nbsp;" + (__(
+	                    'teams / add-as'
+	                ).replace('%s', __('teams / role / owner'))) + "</span>"),
 	                disabled: !inviteeExists,
 	                action: function action() {
 	                    teamSettingsInvite.addUser('owner');
@@ -23408,9 +23420,9 @@
 				setAttribute(input, "type", "text");
 				input.width = "1px";
 				input.placeholder = __('teams / invite-user / eg' );
-				input.className = "svelte-c4l3qm";
+				input.className = "svelte-m6ws61";
 				addLoc(input, file$E, 2, 8, 123);
-				div.className = "flex svelte-c4l3qm";
+				div.className = "flex svelte-m6ws61";
 				addLoc(div, file$E, 1, 4, 96);
 			},
 
@@ -23514,7 +23526,7 @@
 	var file$F = "team-settings/tabs/Members.html";
 
 	function create_main_fragment$K(component, ctx) {
-		var p, raw0_value = __('teams / p'), text0, div2, div0, inviteuser_updating = {}, text1, div1, table, tr0, td0, text2, th0, text3, br0, text4, text5, th1, text6, br1, text7, text8, th2, text9, br2, text10, text11, tr1, td1, raw1_value = __('teams / roles / edit-charts' ), text12, td2, i0, text13, td3, i1, text14, td4, i2, text15, tr2, td5, raw2_value = __('teams / roles / edit-folders' ), text16, td6, i3, text17, td7, i4, text18, td8, i5, text19, tr3, td9, raw3_value = __('teams / roles / access-settings' ), text20, td10, i6, text21, td11, i7, text22, td12, i8, text23, tr4, td13, raw4_value = __('teams / roles / invite-users' ), text24, td14, i9, text25, td15, i10, text26, td16, i11, text27, tr5, td17, raw5_value = __('teams / roles / subscription-options' ), text28, td18, i12, text29, td19, i13, text30, td20, i14, text31, tr6, td21, raw6_value = __('teams / roles / remove-team' ), text32, td22, i15, text33, td23, i16, text34, td24, i17, text35, if_block_anchor;
+		var p, raw0_value = __('teams / p'), text0, div2, div0, inviteuser_updating = {}, text1, div1, table, tr0, td0, text2, th0, raw1_value = __('teams / role / member'), text3, th1, raw2_value = __('teams / role / admin'), text4, th2, raw3_value = __('teams / role / owner'), text5, tr1, td1, raw4_value = __('teams / roles / edit-charts' ), text6, td2, i0, text7, td3, i1, text8, td4, i2, text9, tr2, td5, raw5_value = __('teams / roles / edit-folders' ), text10, td6, i3, text11, td7, i4, text12, td8, i5, text13, tr3, td9, raw6_value = __('teams / roles / access-settings' ), text14, td10, i6, text15, td11, i7, text16, td12, i8, text17, tr4, td13, raw7_value = __('teams / roles / invite-users' ), text18, td14, i9, text19, td15, i10, text20, td16, i11, text21, tr5, td17, raw8_value = __('teams / roles / subscription-options' ), text22, td18, i12, text23, td19, i13, text24, td20, i14, text25, tr6, td21, raw9_value = __('teams / roles / remove-team' ), text26, td22, i15, text27, td23, i16, text28, td24, i17, text29, if_block_anchor;
 
 		var inviteuser_initial_data = {};
 		if (ctx.team  !== void 0) {
@@ -23581,92 +23593,83 @@
 				td0 = createElement("td");
 				text2 = createText("\n                ");
 				th0 = createElement("th");
-				text3 = createText("Team");
-				br0 = createElement("br");
-				text4 = createText("member");
-				text5 = createText("\n                ");
+				text3 = createText("\n                ");
 				th1 = createElement("th");
-				text6 = createText("Team");
-				br1 = createElement("br");
-				text7 = createText("admin");
-				text8 = createText("\n                ");
+				text4 = createText("\n                ");
 				th2 = createElement("th");
-				text9 = createText("Team");
-				br2 = createElement("br");
-				text10 = createText("owner");
-				text11 = createText("\n            ");
+				text5 = createText("\n            ");
 				tr1 = createElement("tr");
 				td1 = createElement("td");
-				text12 = createText("\n                ");
+				text6 = createText("\n                ");
 				td2 = createElement("td");
 				i0 = createElement("i");
-				text13 = createText("\n                ");
+				text7 = createText("\n                ");
 				td3 = createElement("td");
 				i1 = createElement("i");
-				text14 = createText("\n                ");
+				text8 = createText("\n                ");
 				td4 = createElement("td");
 				i2 = createElement("i");
-				text15 = createText("\n\n            ");
+				text9 = createText("\n\n            ");
 				tr2 = createElement("tr");
 				td5 = createElement("td");
-				text16 = createText("\n                ");
+				text10 = createText("\n                ");
 				td6 = createElement("td");
 				i3 = createElement("i");
-				text17 = createText("\n                ");
+				text11 = createText("\n                ");
 				td7 = createElement("td");
 				i4 = createElement("i");
-				text18 = createText("\n                ");
+				text12 = createText("\n                ");
 				td8 = createElement("td");
 				i5 = createElement("i");
-				text19 = createText("\n\n            ");
+				text13 = createText("\n\n            ");
 				tr3 = createElement("tr");
 				td9 = createElement("td");
-				text20 = createText("\n                ");
+				text14 = createText("\n                ");
 				td10 = createElement("td");
 				i6 = createElement("i");
-				text21 = createText("\n                ");
+				text15 = createText("\n                ");
 				td11 = createElement("td");
 				i7 = createElement("i");
-				text22 = createText("\n                ");
+				text16 = createText("\n                ");
 				td12 = createElement("td");
 				i8 = createElement("i");
-				text23 = createText("\n\n            ");
+				text17 = createText("\n\n            ");
 				tr4 = createElement("tr");
 				td13 = createElement("td");
-				text24 = createText("\n                ");
+				text18 = createText("\n                ");
 				td14 = createElement("td");
 				i9 = createElement("i");
-				text25 = createText("\n                ");
+				text19 = createText("\n                ");
 				td15 = createElement("td");
 				i10 = createElement("i");
-				text26 = createText("\n                ");
+				text20 = createText("\n                ");
 				td16 = createElement("td");
 				i11 = createElement("i");
-				text27 = createText("\n\n            ");
+				text21 = createText("\n\n            ");
 				tr5 = createElement("tr");
 				td17 = createElement("td");
-				text28 = createText("\n                ");
+				text22 = createText("\n                ");
 				td18 = createElement("td");
 				i12 = createElement("i");
-				text29 = createText("\n                ");
+				text23 = createText("\n                ");
 				td19 = createElement("td");
 				i13 = createElement("i");
-				text30 = createText("\n                ");
+				text24 = createText("\n                ");
 				td20 = createElement("td");
 				i14 = createElement("i");
-				text31 = createText("\n\n            ");
+				text25 = createText("\n\n            ");
 				tr6 = createElement("tr");
 				td21 = createElement("td");
-				text32 = createText("\n                ");
+				text26 = createText("\n                ");
 				td22 = createElement("td");
 				i15 = createElement("i");
-				text33 = createText("\n                ");
+				text27 = createText("\n                ");
 				td23 = createElement("td");
 				i16 = createElement("i");
-				text34 = createText("\n                ");
+				text28 = createText("\n                ");
 				td24 = createElement("td");
 				i17 = createElement("i");
-				text35 = createText("\n\n");
+				text29 = createText("\n\n");
 				if_block.c();
 				if_block_anchor = createComment();
 				setStyle(p, "margin-bottom", "10px");
@@ -23675,106 +23678,103 @@
 				addLoc(div0, file$F, 5, 4, 116);
 				td0.className = "svelte-1cbvjfi";
 				addLoc(td0, file$F, 11, 16, 350);
-				addLoc(br0, file$F, 12, 24, 381);
 				th0.className = "svelte-1cbvjfi";
 				addLoc(th0, file$F, 12, 16, 373);
-				addLoc(br1, file$F, 13, 24, 423);
 				th1.className = "svelte-1cbvjfi";
-				addLoc(th1, file$F, 13, 16, 415);
-				addLoc(br2, file$F, 14, 24, 464);
+				addLoc(th1, file$F, 13, 16, 434);
 				th2.className = "svelte-1cbvjfi";
-				addLoc(th2, file$F, 14, 16, 456);
+				addLoc(th2, file$F, 14, 16, 494);
 				addLoc(tr0, file$F, 10, 12, 329);
 				td1.className = "svelte-1cbvjfi";
-				addLoc(td1, file$F, 17, 16, 532);
+				addLoc(td1, file$F, 17, 16, 589);
 				i0.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i0, file$F, 18, 20, 606);
+				addLoc(i0, file$F, 18, 20, 663);
 				td2.className = "svelte-1cbvjfi";
-				addLoc(td2, file$F, 18, 16, 602);
+				addLoc(td2, file$F, 18, 16, 659);
 				i1.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i1, file$F, 19, 20, 664);
+				addLoc(i1, file$F, 19, 20, 721);
 				td3.className = "svelte-1cbvjfi";
-				addLoc(td3, file$F, 19, 16, 660);
+				addLoc(td3, file$F, 19, 16, 717);
 				i2.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i2, file$F, 20, 20, 722);
+				addLoc(i2, file$F, 20, 20, 779);
 				td4.className = "svelte-1cbvjfi";
-				addLoc(td4, file$F, 20, 16, 718);
-				addLoc(tr1, file$F, 16, 12, 511);
+				addLoc(td4, file$F, 20, 16, 775);
+				addLoc(tr1, file$F, 16, 12, 568);
 				td5.className = "svelte-1cbvjfi";
-				addLoc(td5, file$F, 24, 16, 812);
+				addLoc(td5, file$F, 24, 16, 869);
 				i3.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i3, file$F, 25, 20, 887);
+				addLoc(i3, file$F, 25, 20, 944);
 				td6.className = "svelte-1cbvjfi";
-				addLoc(td6, file$F, 25, 16, 883);
+				addLoc(td6, file$F, 25, 16, 940);
 				i4.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i4, file$F, 26, 20, 945);
+				addLoc(i4, file$F, 26, 20, 1002);
 				td7.className = "svelte-1cbvjfi";
-				addLoc(td7, file$F, 26, 16, 941);
+				addLoc(td7, file$F, 26, 16, 998);
 				i5.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i5, file$F, 27, 20, 1003);
+				addLoc(i5, file$F, 27, 20, 1060);
 				td8.className = "svelte-1cbvjfi";
-				addLoc(td8, file$F, 27, 16, 999);
-				addLoc(tr2, file$F, 23, 12, 791);
+				addLoc(td8, file$F, 27, 16, 1056);
+				addLoc(tr2, file$F, 23, 12, 848);
 				td9.className = "svelte-1cbvjfi";
-				addLoc(td9, file$F, 31, 16, 1093);
+				addLoc(td9, file$F, 31, 16, 1150);
 				i6.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i6, file$F, 32, 20, 1171);
+				addLoc(i6, file$F, 32, 20, 1228);
 				td10.className = "svelte-1cbvjfi";
-				addLoc(td10, file$F, 32, 16, 1167);
+				addLoc(td10, file$F, 32, 16, 1224);
 				i7.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i7, file$F, 33, 20, 1225);
+				addLoc(i7, file$F, 33, 20, 1282);
 				td11.className = "svelte-1cbvjfi";
-				addLoc(td11, file$F, 33, 16, 1221);
+				addLoc(td11, file$F, 33, 16, 1278);
 				i8.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i8, file$F, 34, 20, 1283);
+				addLoc(i8, file$F, 34, 20, 1340);
 				td12.className = "svelte-1cbvjfi";
-				addLoc(td12, file$F, 34, 16, 1279);
-				addLoc(tr3, file$F, 30, 12, 1072);
+				addLoc(td12, file$F, 34, 16, 1336);
+				addLoc(tr3, file$F, 30, 12, 1129);
 				td13.className = "svelte-1cbvjfi";
-				addLoc(td13, file$F, 38, 16, 1373);
+				addLoc(td13, file$F, 38, 16, 1430);
 				i9.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i9, file$F, 39, 20, 1448);
+				addLoc(i9, file$F, 39, 20, 1505);
 				td14.className = "svelte-1cbvjfi";
-				addLoc(td14, file$F, 39, 16, 1444);
+				addLoc(td14, file$F, 39, 16, 1501);
 				i10.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i10, file$F, 40, 20, 1502);
+				addLoc(i10, file$F, 40, 20, 1559);
 				td15.className = "svelte-1cbvjfi";
-				addLoc(td15, file$F, 40, 16, 1498);
+				addLoc(td15, file$F, 40, 16, 1555);
 				i11.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i11, file$F, 41, 20, 1560);
+				addLoc(i11, file$F, 41, 20, 1617);
 				td16.className = "svelte-1cbvjfi";
-				addLoc(td16, file$F, 41, 16, 1556);
-				addLoc(tr4, file$F, 37, 12, 1352);
+				addLoc(td16, file$F, 41, 16, 1613);
+				addLoc(tr4, file$F, 37, 12, 1409);
 				td17.className = "svelte-1cbvjfi";
-				addLoc(td17, file$F, 45, 16, 1650);
+				addLoc(td17, file$F, 45, 16, 1707);
 				i12.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i12, file$F, 46, 20, 1733);
+				addLoc(i12, file$F, 46, 20, 1790);
 				td18.className = "svelte-1cbvjfi";
-				addLoc(td18, file$F, 46, 16, 1729);
+				addLoc(td18, file$F, 46, 16, 1786);
 				i13.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i13, file$F, 47, 20, 1787);
+				addLoc(i13, file$F, 47, 20, 1844);
 				td19.className = "svelte-1cbvjfi";
-				addLoc(td19, file$F, 47, 16, 1783);
+				addLoc(td19, file$F, 47, 16, 1840);
 				i14.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i14, file$F, 48, 20, 1841);
+				addLoc(i14, file$F, 48, 20, 1898);
 				td20.className = "svelte-1cbvjfi";
-				addLoc(td20, file$F, 48, 16, 1837);
-				addLoc(tr5, file$F, 44, 12, 1629);
+				addLoc(td20, file$F, 48, 16, 1894);
+				addLoc(tr5, file$F, 44, 12, 1686);
 				td21.className = "svelte-1cbvjfi";
-				addLoc(td21, file$F, 52, 16, 1931);
+				addLoc(td21, file$F, 52, 16, 1988);
 				i15.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i15, file$F, 53, 20, 2005);
+				addLoc(i15, file$F, 53, 20, 2062);
 				td22.className = "svelte-1cbvjfi";
-				addLoc(td22, file$F, 53, 16, 2001);
+				addLoc(td22, file$F, 53, 16, 2058);
 				i16.className = "im im-x-mark svelte-1cbvjfi";
-				addLoc(i16, file$F, 54, 20, 2059);
+				addLoc(i16, file$F, 54, 20, 2116);
 				td23.className = "svelte-1cbvjfi";
-				addLoc(td23, file$F, 54, 16, 2055);
+				addLoc(td23, file$F, 54, 16, 2112);
 				i17.className = "im im-check-mark svelte-1cbvjfi";
-				addLoc(i17, file$F, 55, 20, 2113);
+				addLoc(i17, file$F, 55, 20, 2170);
 				td24.className = "svelte-1cbvjfi";
-				addLoc(td24, file$F, 55, 16, 2109);
-				addLoc(tr6, file$F, 51, 12, 1910);
+				addLoc(td24, file$F, 55, 16, 2166);
+				addLoc(tr6, file$F, 51, 12, 1967);
 				table.className = "role-descriptions svelte-1cbvjfi";
 				addLoc(table, file$F, 9, 8, 283);
 				div1.className = "span5 offset1";
@@ -23798,98 +23798,92 @@
 				append(tr0, td0);
 				append(tr0, text2);
 				append(tr0, th0);
-				append(th0, text3);
-				append(th0, br0);
-				append(th0, text4);
-				append(tr0, text5);
+				th0.innerHTML = raw1_value;
+				append(tr0, text3);
 				append(tr0, th1);
-				append(th1, text6);
-				append(th1, br1);
-				append(th1, text7);
-				append(tr0, text8);
+				th1.innerHTML = raw2_value;
+				append(tr0, text4);
 				append(tr0, th2);
-				append(th2, text9);
-				append(th2, br2);
-				append(th2, text10);
-				append(table, text11);
+				th2.innerHTML = raw3_value;
+				append(table, text5);
 				append(table, tr1);
 				append(tr1, td1);
-				td1.innerHTML = raw1_value;
-				append(tr1, text12);
+				td1.innerHTML = raw4_value;
+				append(tr1, text6);
 				append(tr1, td2);
 				append(td2, i0);
-				append(tr1, text13);
+				append(tr1, text7);
 				append(tr1, td3);
 				append(td3, i1);
-				append(tr1, text14);
+				append(tr1, text8);
 				append(tr1, td4);
 				append(td4, i2);
-				append(table, text15);
+				append(table, text9);
 				append(table, tr2);
 				append(tr2, td5);
-				td5.innerHTML = raw2_value;
-				append(tr2, text16);
+				td5.innerHTML = raw5_value;
+				append(tr2, text10);
 				append(tr2, td6);
 				append(td6, i3);
-				append(tr2, text17);
+				append(tr2, text11);
 				append(tr2, td7);
 				append(td7, i4);
-				append(tr2, text18);
+				append(tr2, text12);
 				append(tr2, td8);
 				append(td8, i5);
-				append(table, text19);
+				append(table, text13);
 				append(table, tr3);
 				append(tr3, td9);
-				td9.innerHTML = raw3_value;
-				append(tr3, text20);
+				td9.innerHTML = raw6_value;
+				append(tr3, text14);
 				append(tr3, td10);
 				append(td10, i6);
-				append(tr3, text21);
+				append(tr3, text15);
 				append(tr3, td11);
 				append(td11, i7);
-				append(tr3, text22);
+				append(tr3, text16);
 				append(tr3, td12);
 				append(td12, i8);
-				append(table, text23);
+				append(table, text17);
 				append(table, tr4);
 				append(tr4, td13);
-				td13.innerHTML = raw4_value;
-				append(tr4, text24);
+				td13.innerHTML = raw7_value;
+				append(tr4, text18);
 				append(tr4, td14);
 				append(td14, i9);
-				append(tr4, text25);
+				append(tr4, text19);
 				append(tr4, td15);
 				append(td15, i10);
-				append(tr4, text26);
+				append(tr4, text20);
 				append(tr4, td16);
 				append(td16, i11);
-				append(table, text27);
+				append(table, text21);
 				append(table, tr5);
 				append(tr5, td17);
-				td17.innerHTML = raw5_value;
-				append(tr5, text28);
+				td17.innerHTML = raw8_value;
+				append(tr5, text22);
 				append(tr5, td18);
 				append(td18, i12);
-				append(tr5, text29);
+				append(tr5, text23);
 				append(tr5, td19);
 				append(td19, i13);
-				append(tr5, text30);
+				append(tr5, text24);
 				append(tr5, td20);
 				append(td20, i14);
-				append(table, text31);
+				append(table, text25);
 				append(table, tr6);
 				append(tr6, td21);
-				td21.innerHTML = raw6_value;
-				append(tr6, text32);
+				td21.innerHTML = raw9_value;
+				append(tr6, text26);
 				append(tr6, td22);
 				append(td22, i15);
-				append(tr6, text33);
+				append(tr6, text27);
 				append(tr6, td23);
 				append(td23, i16);
-				append(tr6, text34);
+				append(tr6, text28);
 				append(tr6, td24);
 				append(td24, i17);
-				insert(target, text35, anchor);
+				insert(target, text29, anchor);
 				if_block.m(target, anchor);
 				insert(target, if_block_anchor, anchor);
 			},
@@ -23931,7 +23925,7 @@
 
 				inviteuser.destroy();
 				if (detach) {
-					detachNode(text35);
+					detachNode(text29);
 				}
 
 				if_block.d(detach);
@@ -24054,8 +24048,8 @@
 				text = createText("   ");
 				raw_before = createElement('noscript');
 				i.className = "fa fa-circle-o-notch fa-spin";
-				addLoc(i, file$F, 62, 3, 2227);
-				addLoc(p, file$F, 62, 0, 2224);
+				addLoc(i, file$F, 62, 3, 2284);
+				addLoc(p, file$F, 62, 0, 2281);
 			},
 
 			m: function mount(target, anchor) {

@@ -22,7 +22,7 @@
             {#if editId === user.id }
             <!-- prettier-ignore -->
             <Select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
-            {:else} { role(user.role) } {#if user.token}
+            {:else} {@html role(user.role) } {#if user.token}
             <i>{ __('teams / invite-pending' ) } </i>
             {/if} {/if}
         </td>
@@ -79,8 +79,8 @@
                     { title: __('teams / user'), width: '25%' },
                     { title: 'ID', width: '10%' },
                     { title: 'Charts', width: '15%' },
-                    { title: __('teams / status'), width: '25%' },
-                    { title: __('teams / actions'), width: '25%' }
+                    { title: __('teams / status'), width: '15%' },
+                    { title: __('teams / actions'), width: '30%' }
                 ];
 
                 if (!isAdmin) userHeaders.splice(1, 1);
@@ -116,9 +116,9 @@
         helpers: {
             role(role) {
                 return {
-                    member: __('teams / member'),
-                    admin: __('teams / admin'),
-                    owner: __('teams / owner')
+                    member: __('teams / role / member'),
+                    admin: __('teams / role / admin'),
+                    owner: __('teams / role / owner')
                 }[role];
             },
             __

@@ -10,9 +10,9 @@
         <table class="role-descriptions">
             <tr>
                 <td />
-                <th>Team<br />member</th>
-                <th>Team<br />admin</th>
-                <th>Team<br />owner</th>
+                <th>{@html __('teams / role / member')}</th>
+                <th>{@html __('teams / role / admin')}</th>
+                <th>{@html __('teams / role / owner')}</th>
             </tr>
             <tr>
                 <td>{ @html __('teams / roles / edit-charts' ) }</td>
@@ -73,8 +73,7 @@
     export default {
         components: {
             InviteUser,
-            UserTable,
-            FormBlock
+            UserTable
         },
         helpers: { __ },
         methods: {
