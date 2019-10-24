@@ -147,7 +147,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             "dropdown" => [
                 [
                     "id" => "my-account",
-                    'icon' => 'fa fa-lock',
+                    'icon' => 'fa fa-cog',
                     "url" => "/account",
                     "title" => "&nbsp;" . __('My account')
                 ]
