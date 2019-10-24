@@ -69,6 +69,9 @@
                 <a href="/team/{{ org.id }}">
                     <i class="im im-users"></i>
                     <span>{{ org.name }}</span>
+                    {% if org.id == user.currentOrganization.id %}
+                    <i class="fa fa-check-circle"></i>
+                    {% endif %}
                 </a>
             </li>
             <ul id="dynamic-tree-{{ org.tag }}" style="margin-bottom:40px">
