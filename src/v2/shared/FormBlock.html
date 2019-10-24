@@ -1,11 +1,13 @@
-<div class="form-block" style="width:{width}">
+<div class="form-block" class:error style="width:{width}">
     {#if label}
     <label class="control-label">{@html label}</label>
     {/if}
     <div class="form-controls">
         <slot />
     </div>
-    {#if help}
+    {#if error}
+    <div class="help error">{@html error}</div>
+    {/if} {#if !error && help}
     <div class="help">{@html help}</div>
     {/if}
 </div>
@@ -16,6 +18,7 @@
             return {
                 label: '',
                 help: '',
+                error: false,
                 width: 'auto'
             };
         }
@@ -25,6 +28,16 @@
 <style>
     .form-block {
         margin-bottom: 20px;
+    }
+    .form-block.error .control-label {
+        color: #c71e1d;
+    }
+    .form-block .help.error {
+        color: #c71e1d;
+    }
+    .form-block.error .form-controls :global(input) {
+        border-color: #c71e1d;
+        color: #c71e1d;
     }
     .form-block :global(.control-group) {
         margin-bottom: 0 !important;
