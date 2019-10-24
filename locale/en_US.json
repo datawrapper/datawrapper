@@ -224,7 +224,7 @@
   "Reset Code": "Reset Code",
   "This reset token is valid.": "This reset token is valid.",
   "Now please enter a new password.": "Now please enter a new password.",
-  "The password should contain at least four characters.": "The password should contain at least four characters.",
+  "account / pwd-too-short": "The password should contain at least %num characters.",
   "Password (repeat)": "Password (repeat)",
   "Set New Password": "Set New Password",
   "Congrats! Your password has been changed. You can log in with your new password now.": "Congrats! Your password has been changed. You can log in with your new password now.",
