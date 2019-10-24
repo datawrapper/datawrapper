@@ -62,6 +62,8 @@
     <div class="folders span2">
         <ul class="folders-left">
             {% for org in organizations %}
+            {% if org.id != 'my charts' %}
+
             <li id="org-root-{{ org.tag }}" {% if not current.folder and current.organization == org.id %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
                 <div class="collapse-toggle"></div>
                 <a href="/team/{{ org.id }}">
@@ -71,21 +73,22 @@
             </li>
             <ul id="dynamic-tree-{{ org.tag }}" style="margin-bottom:40px">
             </ul>
-            {% endfor %}
+            {% else %}
             <li id="user-root" {% if not current.folder and not current.organization %}class="active root-folder"{% else %}class="root-folder"{% endif %}>
                 <div class="collapse-toggle"></div>
                 <a href="{{ mycharts_base }}">
                 <i class="im im-user-male"></i>
                 <span>{% trans "My Charts" %}</span></a>
             </li>
-            <ul id="dynamic-tree">
-            </ul>
-                {% if not hasFolders and not userData.mycharts_folder_intro %}
-                <div data-notification-key="mycharts_folder_intro" class="welcome-to-folders did-you-know" style="margin-top:84px">
-                    <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a><i class="im im-gift"></i> {% trans 'mycharts / new-feature' %}</h3>
-                    <p>{% trans 'mycharts / welcome-folders' %}</p>
-                </div>
-                {% endif %}
+            <ul id="dynamic-tree" style="margin-bottom:40px"></ul>
+            {% if not hasFolders and not userData.mycharts_folder_intro %}
+            <div data-notification-key="mycharts_folder_intro" class="welcome-to-folders did-you-know" style="margin-top:84px">
+                <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a><i class="im im-gift"></i> {% trans 'mycharts / new-feature' %}</h3>
+                <p>{% trans 'mycharts / welcome-folders' %}</p>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
         </ul>
 
     </div>
