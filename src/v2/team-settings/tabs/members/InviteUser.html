@@ -1,23 +1,19 @@
-<div class="row">
-    <div class="span5">
-        <FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}">
-            <div class="flex">
-                <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
-                <DropdownMenu
-                    disabled="{!isValidEmail}"
-                    label="<i class='fa { updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
-                    items="{inviteOptions}"
-                />
-            </div>
-        </FormBlock>
+<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}">
+    <div class="flex">
+        <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
+        <DropdownMenu
+            disabled="{!isValidEmail}"
+            label="<i class='fa { updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
+            items="{inviteOptions}"
+        />
     </div>
-</div>
+</FormBlock>
 
 <script>
     /* globals dw, teamSettingsInvite */
     import { Text, DropdownMenu } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
-    import FormBlock from '../../shared/FormBlock.html';
+    import FormBlock from '../../../shared/FormBlock.html';
 
     export default {
         components: { Text, DropdownMenu, FormBlock },
@@ -185,6 +181,9 @@
         display: flex;
     }
     .flex input {
-        width: 300px;
+        width: 100%;
+    }
+    :global(.base-drop-btn) {
+        white-space: nowrap;
     }
 </style>
