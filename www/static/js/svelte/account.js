@@ -773,7 +773,6 @@
 
 
 
-
 	function data$1() {
 	    return {
 	        changePassword: false,
@@ -788,10 +787,12 @@
 	        groups: [
 	            {
 	                title: 'Account settings',
-	                tabs: [{
-	                    title: 'Profile',
-	                    icon: 'fa fa-fw fa-user'
-	                }]
+	                tabs: [
+	                    {
+	                        title: 'Profile',
+	                        icon: 'fa fa-fw fa-user'
+	                    }
+	                ]
 	            },
 	            {
 	                title: 'Team settings',
@@ -1041,9 +1042,9 @@
 			c: function create() {
 				h2 = createElement("h2");
 				text0 = createText(text0_value);
-				text1 = createText("\n\n\n");
+				text1 = createText("\n\n");
 				if (if_block0) { if_block0.c(); }
-				text2 = createText("\n\n");
+				text2 = createText(" ");
 				if (if_block1) { if_block1.c(); }
 				text3 = createText("\n\n");
 				div2 = createElement("div");
@@ -1055,7 +1056,7 @@
 				formblock._fragment.c();
 				text5 = createText("\n\n        ");
 				if_block3.c();
-				text6 = createText("\n\n        ");
+				text6 = createText(" ");
 				if_block4.c();
 				text7 = createText("\n    ");
 				div1 = createElement("div");
@@ -1065,16 +1066,16 @@
 				input.disabled = input_disabled_value = !ctx.changeEmail;
 				input.value = ctx.originalEmail;
 				setAttribute(input, "type", "text");
-				addLoc(input, file$1, 89, 12, 3087);
+				addLoc(input, file$1, 80, 12, 3077);
 				div0.className = "span6";
-				addLoc(div0, file$1, 87, 4, 2945);
+				addLoc(div0, file$1, 78, 4, 2935);
 				p.className = "help";
-				addLoc(p, file$1, 196, 5, 8226);
+				addLoc(p, file$1, 194, 8, 8340);
 				div1.className = "span4";
-				addLoc(div1, file$1, 195, 4, 8201);
+				addLoc(div1, file$1, 193, 4, 8312);
 				div2.className = "row edit-account";
 				setStyle(div2, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
-				addLoc(div2, file$1, 86, 0, 2846);
+				addLoc(div2, file$1, 77, 0, 2836);
 			},
 
 			m: function mount(target, anchor) {
@@ -1192,7 +1193,7 @@
 		};
 	}
 
-	// (64:25) 
+	// (59:76) 
 	function create_if_block_10(component, ctx) {
 		var div1, div0;
 
@@ -1201,9 +1202,9 @@
 				div1 = createElement("div");
 				div0 = createElement("div");
 				div0.className = "span6 offset3";
-				addLoc(div0, file$1, 66, 4, 2419);
+				addLoc(div0, file$1, 61, 4, 2416);
 				div1.className = "row delete-account";
-				addLoc(div1, file$1, 65, 0, 2382);
+				addLoc(div1, file$1, 60, 0, 2379);
 			},
 
 			m: function mount(target, anchor) {
@@ -1219,7 +1220,7 @@
 		};
 	}
 
-	// (62:25) 
+	// (59:50) 
 	function create_if_block_9(component, ctx) {
 
 		return {
@@ -1231,7 +1232,7 @@
 		};
 	}
 
-	// (60:24) 
+	// (59:24) 
 	function create_if_block_8(component, ctx) {
 
 		return {
@@ -1243,7 +1244,7 @@
 		};
 	}
 
-	// (4:0) {#if changePassword }
+	// (3:0) {#if changePassword }
 	function create_if_block_7(component, ctx) {
 
 		return {
@@ -1255,7 +1256,7 @@
 		};
 	}
 
-	// (73:0) {#if messages && messages.length }
+	// (64:6) {#if messages && messages.length }
 	function create_if_block_6(component, ctx) {
 		var div2, div1, div0, ul;
 
@@ -1278,14 +1279,14 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file$1, 76, 12, 2647);
+				addLoc(ul, file$1, 67, 12, 2637);
 				div0.className = "alert alert-success";
-				addLoc(div0, file$1, 75, 8, 2601);
+				addLoc(div0, file$1, 66, 8, 2591);
 				div1.className = "span6 offset3";
-				addLoc(div1, file$1, 74, 4, 2565);
+				addLoc(div1, file$1, 65, 4, 2555);
 				div2.className = "row";
 				setStyle(div2, "margin-top", "20px");
-				addLoc(div2, file$1, 73, 0, 2517);
+				addLoc(div2, file$1, 64, 0, 2507);
 			},
 
 			m: function mount(target, anchor) {
@@ -1332,14 +1333,14 @@
 		};
 	}
 
-	// (78:16) {#each messages as message}
+	// (69:16) {#each messages as message}
 	function create_each_block_1(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file$1, 78, 16, 2738);
+				addLoc(li, file$1, 69, 16, 2728);
 			},
 
 			m: function mount(target, anchor) {
@@ -1361,7 +1362,7 @@
 		};
 	}
 
-	// (98:12) {:else}
+	// (89:12) {:else}
 	function create_else_block_2(component, ctx) {
 		var button, text_value = __( "account / email"), text;
 
@@ -1375,7 +1376,7 @@
 				text = createText(text_value);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-save btn-default";
-				addLoc(button, file$1, 98, 12, 3583);
+				addLoc(button, file$1, 89, 12, 3572);
 			},
 
 			m: function mount(target, anchor) {
@@ -1395,7 +1396,7 @@
 		};
 	}
 
-	// (91:12) {#if changeEmail}
+	// (82:12) {#if changeEmail}
 	function create_if_block_5(component, ctx) {
 		var button0, text0_value = __( "Back"), text0, text1, button1, i, i_class_value, text2, text3_value = __( "account / email"), text3;
 
@@ -1418,12 +1419,12 @@
 				text3 = createText(text3_value);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-default";
-				addLoc(button0, file$1, 91, 12, 3205);
+				addLoc(button0, file$1, 82, 12, 3195);
 				i.className = i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
-				addLoc(i, file$1, 95, 16, 3425);
+				addLoc(i, file$1, 86, 16, 3414);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-save btn-primary";
-				addLoc(button1, file$1, 94, 12, 3341);
+				addLoc(button1, file$1, 85, 12, 3331);
 			},
 
 			m: function mount(target, anchor) {
@@ -1458,7 +1459,7 @@
 		};
 	}
 
-	// (112:8) {:else}
+	// (103:8) {:else}
 	function create_else_block_1(component, ctx) {
 		var h3, text0_value = __("account / password"), text0, text1, button0, text2_value = __("Back"), text2, text3, text4, input0, input0_updating = false, text5, input1, input1_updating = false, text6, input2, input2_updating = false, text7, button1, i, i_class_value, text8, text9_value = __("account / password"), text9, text10, hr;
 
@@ -1529,7 +1530,7 @@
 			c: function create() {
 				h3 = createElement("h3");
 				text0 = createText(text0_value);
-				text1 = createText(" ");
+				text1 = createText("\n            ");
 				button0 = createElement("button");
 				text2 = createText(text2_value);
 				text3 = createText("\n        ");
@@ -1552,26 +1553,26 @@
 				hr = createElement("hr");
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-save btn-default btn-back";
-				addLoc(button0, file$1, 112, 41, 4153);
-				addLoc(h3, file$1, 112, 8, 4120);
+				addLoc(button0, file$1, 105, 12, 4167);
+				addLoc(h3, file$1, 103, 8, 4109);
 				addListener(input0, "input", input0_input_handler);
 				setAttribute(input0, "type", "password");
 				input0.className = "input-xlarge";
-				addLoc(input0, file$1, 125, 12, 4704);
+				addLoc(input0, file$1, 119, 12, 4735);
 				addListener(input1, "input", input1_input_handler);
 				setAttribute(input1, "type", "password");
 				input1.className = "input-xlarge";
-				addLoc(input1, file$1, 128, 12, 5012);
+				addLoc(input1, file$1, 126, 12, 5088);
 				addListener(input2, "input", input2_input_handler);
 				setAttribute(input2, "type", "password");
 				input2.className = "input-xlarge";
-				addLoc(input2, file$1, 131, 12, 5268);
+				addLoc(input2, file$1, 129, 12, 5344);
 				i.className = i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
-				addLoc(i, file$1, 135, 12, 5444);
+				addLoc(i, file$1, 133, 12, 5520);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-primary";
-				addLoc(button1, file$1, 134, 8, 5371);
-				addLoc(hr, file$1, 137, 8, 5579);
+				addLoc(button1, file$1, 132, 8, 5447);
+				addLoc(hr, file$1, 135, 8, 5655);
 			},
 
 			m: function mount(target, anchor) {
@@ -1684,7 +1685,7 @@
 		};
 	}
 
-	// (105:8) {#if !changePassword}
+	// (96:8) {#if !changePassword}
 	function create_if_block_3(component, ctx) {
 		var input, text0, button, text1_value = __("account / password"), text1;
 
@@ -1710,10 +1711,10 @@
 				input.disabled = true;
 				input.value = "abcdefgh";
 				setAttribute(input, "type", "password");
-				addLoc(input, file$1, 106, 12, 3863);
+				addLoc(input, file$1, 97, 12, 3852);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-save btn-default";
-				addLoc(button, file$1, 107, 12, 3927);
+				addLoc(button, file$1, 98, 12, 3916);
 			},
 
 			m: function mount(target, anchor) {
@@ -1733,7 +1734,7 @@
 		};
 	}
 
-	// (116:8) {#if changePassword && errors && errors.length }
+	// (110:8) {#if changePassword && errors && errors.length }
 	function create_if_block_4(component, ctx) {
 		var div, ul;
 
@@ -1754,9 +1755,9 @@
 					each_blocks[i].c();
 				}
 				setStyle(ul, "margin-bottom", "0");
-				addLoc(ul, file$1, 117, 12, 4391);
+				addLoc(ul, file$1, 111, 12, 4422);
 				div.className = "alert";
-				addLoc(div, file$1, 116, 8, 4359);
+				addLoc(div, file$1, 110, 8, 4390);
 			},
 
 			m: function mount(target, anchor) {
@@ -1801,14 +1802,14 @@
 		};
 	}
 
-	// (119:16) {#each errors as message}
+	// (113:16) {#each errors as message}
 	function create_each_block(component, ctx) {
 		var li, raw_value = ctx.message;
 
 		return {
 			c: function create() {
 				li = createElement("li");
-				addLoc(li, file$1, 119, 16, 4480);
+				addLoc(li, file$1, 113, 16, 4511);
 			},
 
 			m: function mount(target, anchor) {
@@ -1830,7 +1831,7 @@
 		};
 	}
 
-	// (190:8) {:else}
+	// (188:8) {:else}
 	function create_else_block(component, ctx) {
 		var button, text_value = __("account / delete"), text;
 
@@ -1854,7 +1855,7 @@
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-danger";
 				setAttribute(button, "href", "#");
-				addLoc(button, file$1, 191, 12, 8037);
+				addLoc(button, file$1, 189, 12, 8148);
 			},
 
 			m: function mount(target, anchor) {
@@ -1872,7 +1873,7 @@
 		};
 	}
 
-	// (179:31) 
+	// (177:31) 
 	function create_if_block_2$1(component, ctx) {
 		var h3, i0, text0, text1_value = __("account / confirm-account-deletion"), text1, text2, button0, i1, text3, text4_value = __("account / confirm-account-deletion / no"), text4, text5, text6_value = __("account / or"), text6, text7, button1, i2, text8, text9_value = __("account / confirm-account-deletion / yes"), text9;
 
@@ -1903,19 +1904,19 @@
 				text8 = createText("   ");
 				text9 = createText(text9_value);
 				i0.className = "fa fa-times svelte-19q3a7q";
-				addLoc(i0, file$1, 179, 12, 7418);
+				addLoc(i0, file$1, 177, 12, 7529);
 				h3.className = "svelte-19q3a7q";
-				addLoc(h3, file$1, 179, 8, 7414);
+				addLoc(h3, file$1, 177, 8, 7525);
 				i1.className = "fa fa-chevron-left";
-				addLoc(i1, file$1, 181, 12, 7597);
+				addLoc(i1, file$1, 179, 12, 7708);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-back btn-primary";
-				addLoc(button0, file$1, 180, 8, 7504);
+				addLoc(button0, file$1, 178, 8, 7615);
 				i2.className = "fa fa-times";
-				addLoc(i2, file$1, 187, 12, 7854);
+				addLoc(i2, file$1, 185, 12, 7965);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-default";
-				addLoc(button1, file$1, 186, 8, 7748);
+				addLoc(button1, file$1, 184, 8, 7859);
 			},
 
 			m: function mount(target, anchor) {
@@ -1959,7 +1960,7 @@
 		};
 	}
 
-	// (148:32) 
+	// (144:32) 
 	function create_if_block_1$1(component, ctx) {
 		var h2, text0_value = __("account / delete / hed"), text0, text1, div1, p0, text2_value = __("account / delete / really"), text2, text3, ul, li0, text4_value = __("account / confirm-account-deletion / free"), text4, text5, li1, text6_value = __("You cannot login and logout anymore."), text6, text7, li2, text8_value = __("You cannot edit or remove your charts anymore."), text8, text9, p1, text10_value = __("account / delete / charts-stay-online"), text10, text11, input, input_updating = false, text12, p2, raw_value = __("account / delete / really-really"), text13, div0, button0, i0, text14, text15_value = __("No, I changed my mind.."), text15, text16, button1, i1, i1_class_value, text17, text18_value = __("Yes, delete it!"), text18;
 
@@ -2026,33 +2027,33 @@
 				text17 = createText("  ");
 				text18 = createText(text18_value);
 				setStyle(h2, "margin-bottom", "20px");
-				addLoc(h2, file$1, 148, 8, 5906);
-				addLoc(p0, file$1, 151, 12, 6025);
-				addLoc(li0, file$1, 155, 16, 6131);
-				addLoc(li1, file$1, 156, 16, 6208);
-				addLoc(li2, file$1, 157, 16, 6280);
-				addLoc(ul, file$1, 154, 12, 6110);
-				addLoc(p1, file$1, 159, 12, 6376);
+				addLoc(h2, file$1, 144, 8, 5973);
+				addLoc(p0, file$1, 146, 12, 6091);
+				addLoc(li0, file$1, 150, 16, 6197);
+				addLoc(li1, file$1, 151, 16, 6274);
+				addLoc(li2, file$1, 152, 16, 6346);
+				addLoc(ul, file$1, 149, 12, 6176);
+				addLoc(p1, file$1, 154, 12, 6442);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "password");
 				input.placeholder = __("Password");
-				addLoc(input, file$1, 164, 16, 6642);
+				addLoc(input, file$1, 162, 16, 6753);
 				p2.className = "lead";
-				addLoc(p2, file$1, 166, 12, 6767);
+				addLoc(p2, file$1, 164, 12, 6878);
 				i0.className = "fa fa-chevron-left";
-				addLoc(i0, file$1, 171, 20, 7011);
+				addLoc(i0, file$1, 169, 20, 7122);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-info";
-				addLoc(button0, file$1, 170, 16, 6921);
+				addLoc(button0, file$1, 168, 16, 7032);
 				i1.className = i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
-				addLoc(i1, file$1, 174, 20, 7207);
+				addLoc(i1, file$1, 172, 20, 7318);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn btn-danger";
-				addLoc(button1, file$1, 173, 16, 7128);
+				addLoc(button1, file$1, 171, 16, 7239);
 				div0.className = "control-group";
-				addLoc(div0, file$1, 169, 12, 6877);
+				addLoc(div0, file$1, 167, 12, 6988);
 				div1.className = "delete-account";
-				addLoc(div1, file$1, 149, 8, 5983);
+				addLoc(div1, file$1, 145, 8, 6050);
 			},
 
 			m: function mount(target, anchor) {
@@ -2124,7 +2125,7 @@
 		};
 	}
 
-	// (141:8) {#if deleteAccount3}
+	// (137:14) {#if deleteAccount3}
 	function create_if_block$1(component, ctx) {
 		var h2, text0_value = __("account / delete / hed"), text0, text1, h3, text2_value = __("Your account has been deleted."), text2, text3, a, text4_value = __("Goodbye!"), text4;
 
@@ -2139,11 +2140,11 @@
 				a = createElement("a");
 				text4 = createText(text4_value);
 				setStyle(h2, "margin-bottom", "20px");
-				addLoc(h2, file$1, 141, 8, 5638);
-				addLoc(h3, file$1, 142, 8, 5715);
+				addLoc(h2, file$1, 137, 8, 5705);
+				addLoc(h3, file$1, 138, 8, 5782);
 				a.href = "/";
 				a.className = "btn btn-primary btn-large";
-				addLoc(a, file$1, 145, 8, 5795);
+				addLoc(a, file$1, 141, 8, 5862);
 			},
 
 			m: function mount(target, anchor) {
