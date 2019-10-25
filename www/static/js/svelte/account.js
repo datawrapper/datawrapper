@@ -3234,7 +3234,7 @@
 				addLoc(i, file$3, 62, 12, 2012);
 				addLoc(p, file$3, 60, 8, 1857);
 				div.className = "flex";
-				addLoc(div, file$3, 66, 12, 2377);
+				addLoc(div, file$3, 69, 12, 2410);
 			},
 
 			m: function mount(target, anchor) {
@@ -3294,7 +3294,7 @@
 		};
 	}
 
-	// (70:16) {#if awaitActiveTeam}
+	// (73:16) {#if awaitActiveTeam}
 	function create_if_block_1$3(component, ctx) {
 		var await_block_anchor, promise;
 
@@ -3344,7 +3344,7 @@
 		};
 	}
 
-	// (71:24) {:catch}
+	// (74:24) {:catch}
 	function create_catch_block(component, ctx) {
 
 		return {
@@ -3356,7 +3356,7 @@
 		};
 	}
 
-	// (71:16) {:then}
+	// (74:16) {:then}
 	function create_then_block(component, ctx) {
 
 		return {
@@ -3368,7 +3368,7 @@
 		};
 	}
 
-	// (70:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
+	// (73:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
 	function create_pending_block(component, ctx) {
 		var text, i;
 
@@ -3377,7 +3377,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$3, 69, 69, 2600);
+				addLoc(i, file$3, 72, 69, 2633);
 			},
 
 			m: function mount(target, anchor) {
@@ -3450,7 +3450,7 @@
 	var EditProfileTab = {
 	    title: 'Profile',
 	    id: 'profile',
-	    icon: 'im im-user-male',
+	    icon: 'im im-user-settings',
 	    ui: EditProfile
 	};
 
