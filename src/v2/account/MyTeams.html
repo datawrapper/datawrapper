@@ -20,8 +20,7 @@
         {#each teams as team}
         <tr class:current="team.Id === currentTeam">
             <td>
-                {team.Name}
-                {#if team.Id === currentTeam}
+                {team.Name} {#if team.Id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
             </td>
@@ -49,14 +48,21 @@
     <div class="span5">
         <h3>Create a team</h3>
         <div class="hed">
-            <p>Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to join them.</p>
+            <p>
+                Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to
+                join them.
+            </p>
             <a href="/team/new/setup" class="btn btn-large" class:btn-primary="!teams.length"><i class="fa fa-plus fa-fw"></i> Create team</a>
         </div>
     </div>
     <div class="span5">
         {#if teams.length > 1}
         <h3>Select default team</h3>
-        <p>Since you are a member of multiple teams, you have to pick which one you want to be used as <b>default team</b> (indicated with <i class="fa fa-check-circle"></i>). Newly created charts will automatically be added to this team, and might also inherit some settings from the team.</p>
+        <p>
+            Since you are a member of multiple teams, you have to pick which one you want to be used as <b>default team</b> (indicated with
+            <i class="fa fa-check-circle"></i>). Newly created charts will automatically be added to this team, and might also inherit some settings
+            from the team.
+        </p>
         <FormBlock width="350px" help="You can change the default team at any time.">
             <!-- prettier-ignore -->
             <Select options="{teamOptions}" />
@@ -64,7 +70,6 @@
         {/if}
     </div>
 </div>
-
 
 <script>
     /* globals CryptoJS */
@@ -83,14 +88,14 @@
         },
         computed: {
             teamOptions({ teams }) {
-                return teams.map(({Id, Name}) => ({
+                return teams.map(({ Id, Name }) => ({
                     value: Id,
                     label: Name
-                }))
+                }));
             }
         },
         helpers: { __ }
-    }
+    };
 </script>
 
 <style type="text/css">

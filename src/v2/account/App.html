@@ -9,7 +9,9 @@
             <ul class="nav nav-stacked nav-tabs">
                 {#each group.tabs as tab}
                 <li class:active="activeTab === tab">
-                    <a href="{ tab.url || `/account/${tab.id}` }" on:click="activateTab(tab, event)"><i class="{ tab.icon }"></i> &nbsp; { tab.title } </a>
+                    <a href="{ tab.url || `/account/${tab.id}` }" on:click="activateTab(tab, event)"
+                        ><i class="{ tab.icon }"></i> &nbsp; { tab.title }
+                    </a>
                 </li>
                 {/each}
             </ul>
@@ -52,22 +54,19 @@
                     {
                         title: 'Personal settings',
                         tabs: [EditProfileTab, MyTeamsTab]
-                    },
+                    }
                 ]
             };
         },
         methods: {
-            activateTab(tab, event=null) {
+            activateTab(tab, event = null) {
                 if (tab.module) {
                     if (event) event.preventDefault();
-                    Promise.all([
-                        loadStylesheet(tab.css),
-                        loadScript(tab.js)
-                    ]).then(() => {
-                        require([tab.module], (mod) => {
+                    Promise.all([loadStylesheet(tab.css), loadScript(tab.js)]).then(() => {
+                        require([tab.module], mod => {
                             tab.ui = mod.App;
                             tab.module = null;
-                            const {groups} = this.get();
+                            const { groups } = this.get();
                             this.set({
                                 groups,
                                 activeTab: tab
@@ -78,7 +77,7 @@
                 }
                 if (tab.ui) {
                     if (event) event.preventDefault();
-                    this.set({activeTab: tab});
+                    this.set({ activeTab: tab });
                 }
             }
         },
@@ -90,11 +89,7 @@
         onstate({ changed, current }) {
             if (changed.activeTab && current.activeTab) {
                 console.log(current.activeTab);
-                window.history.pushState(
-                    {id: current.activeTab.id },
-                    '',
-                    `/account/${current.activeTab.id}`
-                );
+                window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
             }
         },
         oncreate() {
@@ -103,11 +98,11 @@
 
             dw.backend.__svelteApps.account = this;
 
-            const {groups, adminTeams, pages} = this.get();
+            const { groups, adminTeams, pages } = this.get();
 
             if (pages.length) {
                 groups[0].tabs.push.apply(groups[0].tabs, pages);
-                this.set({groups});
+                this.set({ groups });
             }
 
             if (adminTeams.length) {
@@ -115,14 +110,14 @@
                     title: 'Team settings',
                     tabs: []
                 });
-                adminTeams.forEach(({Id, Name}) => {
+                adminTeams.forEach(({ Id, Name }) => {
                     groups[1].tabs.push({
                         title: Name,
                         url: `/team/${Id}/settings`,
                         icon: 'im im-users'
-                    })
+                    });
                 });
-                this.set({groups});
+                this.set({ groups });
             }
 
             let foundTab = false;
@@ -194,5 +189,4 @@
             line-height: 1.5;
         }
     }
-
 </style>
