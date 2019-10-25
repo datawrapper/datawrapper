@@ -120,7 +120,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $langDropdown = array(
             'url' => '',
             'id' => 'lang',
-            'icon' => 'fa fa-globe',
+            'icon' => 'im im-globe',
             'dropdown' => array(),
             'title' => __('Language'), //strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
             'tooltip' => "&nbsp;" . __('Switch language')
@@ -147,9 +147,14 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             "dropdown" => [
                 [
                     "id" => "my-account",
-                    'icon' => 'fa fa-cog',
+                    'icon' => 'im im-user-settings',
                     "url" => "/account",
                     "title" => __('Settings')
+                ],[
+                    "id" => "my-account",
+                    'icon' => 'im im-users',
+                    "url" => "/account/teams",
+                    "title" => __('My teams')
                 ]
             ]
         ];
@@ -165,12 +170,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         if (count($userOrgs) > 0) {
             $acc['dropdown'][] = 'divider';
-            $acc['dropdown'][] = [
-                "id" => "my-account",
-                'icon' => 'im im-users',
-                "url" => "/account/teams",
-                "title" => __('My teams')
-            ];
             $acc['dropdown'][] = ['group' => true, 'title' => __('nav / select-active-team')];
 
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
@@ -207,7 +206,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'url' => '#logout',
                 'id' => 'signout',
                 'title' => 'Logout',
-                'icon' => 'fa fa-sign-out',
+                'icon' => 'im im-sign-out',
                 'justicon' => true,
                 'tooltip' => __('Sign out')
             );

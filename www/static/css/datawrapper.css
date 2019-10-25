@@ -384,6 +384,8 @@ html .navbar .navbar-inner .nav > li .im {
 html .navbar .navbar-inner .nav > li .im {
   position: relative;
   top: 2px;
+  font-size: 14px;
+  line-height: 18px;
 }
 html .navbar .navbar-inner .nav > li .no-icon {
   display: inline;
