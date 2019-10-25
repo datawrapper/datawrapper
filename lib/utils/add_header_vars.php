@@ -184,7 +184,10 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 $dropdown[] = $team;
             };
 
+            $i = 0;
+            $maxTeamsInDropdown = 10;
             foreach ($userOrgs as $org) {
+                if (++$i > $maxTeamsInDropdown) break;
                 $addToDropdown($acc['dropdown'], $org, $org == $user->getCurrentOrganization());
             }
             $acc['dropdown'][] = [
