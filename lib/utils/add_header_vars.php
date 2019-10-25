@@ -147,9 +147,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             "dropdown" => [
                 [
                     "id" => "my-account",
-                    'icon' => 'fa fa-lock',
+                    'icon' => 'fa fa-gears',
                     "url" => "/account",
-                    "title" => "&nbsp;" . __('My account')
+                    "title" => "&nbsp;" . __('Settings')
                 ]
             ]
         );
@@ -159,14 +159,17 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $userOrgs = $user->getActiveOrganizations();
 
-        if (count($userOrgs)) {
+        if (count($userOrgs) > 1) {
             $acc['dropdown'][] = 'divider';
 
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
                 $team = [
                     'url' => '#team-activate',
                     'title' => $org->getName(),
-                    'icon' => ($isActive ? 'fa fa-check-circle' : '')
+                    'icon' => ($isActive ? 'fa fa-check-circle' : ''),
+                    'data' => [
+                        'id' => $org->getId()
+                    ]
                 ];
 
                 $dropdown[] = $team;
