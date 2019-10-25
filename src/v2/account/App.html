@@ -19,13 +19,13 @@
         </div>
         {#if activeTab}
         <div class="span10 account-page-content tab-{activeTab.id}">
-            <svelte:component this="{activeTab.ui}" {...data} />
+            <svelte:component this="{activeTab.ui}" {...activeTab.data} />
         </div>
         {/if}
     </div>
 </div>
 <script>
-    /* globals CryptoJS */
+    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import EditProfile from './EditProfile.html';
     import MyTeams from './MyTeams.html';
@@ -50,6 +50,7 @@
             return {
                 hash: 'profile',
                 activeTab: null,
+                activeData: {},
                 groups: [
                     {
                         title: 'Personal settings',
@@ -57,6 +58,14 @@
                     }
                 ]
             };
+        },
+        computed: {
+            data({ email, userId, teams, currentTeam }) {
+                return { email, userId, teams, currentTeam };
+            }
+        },
+        helpers: {
+            __
         },
         methods: {
             activateTab(tab, event = null) {
@@ -79,17 +88,6 @@
                     if (event) event.preventDefault();
                     this.set({ activeTab: tab });
                 }
-            }
-        },
-        computed: {
-            data({ email, userId, teams, currentTeam }) {
-                return { email, userId, teams, currentTeam };
-            }
-        },
-        onstate({ changed, current }) {
-            if (changed.activeTab && current.activeTab) {
-                console.log(current.activeTab);
-                window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
             }
         },
         oncreate() {
@@ -136,8 +134,10 @@
                 });
             }
         },
-        helpers: {
-            __
+        onstate({ changed, current }) {
+            if (changed.activeTab && current.activeTab) {
+                window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
+            }
         }
     };
 </script>

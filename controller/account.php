@@ -25,8 +25,11 @@ call_user_func(function() {
             $user = Session::getUser();
 
             $pages = Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user);
-            foreach ($pages as $page) {
+            foreach ($pages as &$page) {
                 if (!isset($page['order'])) $page['order'] = 999;
+                if (isset($page['data']) && is_callable($page['data'])) {
+                    $page['data'] = $page['data']();
+                }
             }
             usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
 

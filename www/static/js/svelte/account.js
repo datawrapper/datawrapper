@@ -3622,6 +3622,7 @@
 	    return {
 	        hash: 'profile',
 	        activeTab: null,
+	        activeData: {},
 	        groups: [
 	            {
 	                title: 'Personal settings',
@@ -3994,7 +3995,7 @@
 		var div, div_class_value;
 
 		var switch_instance_spread_levels = [
-			ctx.data
+			ctx.activeTab.data
 		];
 
 		var switch_value = ctx.activeTab.ui;
@@ -4032,8 +4033,8 @@
 			},
 
 			p: function update(changed, ctx) {
-				var switch_instance_changes = changed.data ? getSpreadUpdate(switch_instance_spread_levels, [
-					ctx.data
+				var switch_instance_changes = changed.activeTab ? getSpreadUpdate(switch_instance_spread_levels, [
+					ctx.activeTab.data
 				]) : {};
 
 				if (switch_value !== (switch_value = ctx.activeTab.ui)) {
