@@ -56,14 +56,17 @@
         </div>
     </div>
     <div class="span5">
-        {#if teams.length > 1}
-        <h3>Select default team</h3>
+        {#if teams.length > 0}
+        <h3>Select active team</h3>
         <p>
-            Since you are a member of multiple teams, you have to pick which one you want to be used as <b>default team</b> (indicated with
+            Since you are a member of multiple teams, you have to pick which one you want to be used as <b>active team</b> (indicated with
             <i class="fa fa-check-circle"></i>). Newly created charts will automatically be added to this team, and might also inherit some settings
             from the team.
         </p>
-        <FormBlock width="350px" help="You can change the default team at any time.">
+        <FormBlock
+            width="350px"
+            help="Hint: you can also change the active team at any time using the &nbsp;<i class='fa fa-bars'></i>&nbsp; menu in the top navigation bar."
+        >
             <div class="flex">
                 <!-- prettier-ignore -->
                 <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />

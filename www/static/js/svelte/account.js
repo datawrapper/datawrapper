@@ -2763,7 +2763,7 @@
 		var current_block_type = select_block_type(ctx);
 		var if_block0 = current_block_type(component, ctx);
 
-		var if_block1 = (ctx.teams.length > 1) && create_if_block$3(component, ctx);
+		var if_block1 = (ctx.teams.length > 0) && create_if_block$3(component, ctx);
 
 		return {
 			c: function create() {
@@ -2841,7 +2841,7 @@
 					toggleClass(a, "btn-primary", !ctx.teams.length);
 				}
 
-				if (ctx.teams.length > 1) {
+				if (ctx.teams.length > 0) {
 					if (if_block1) {
 						if_block1.p(changed, ctx);
 					} else {
@@ -3169,7 +3169,7 @@
 		};
 	}
 
-	// (59:8) {#if teams.length > 1}
+	// (59:8) {#if teams.length > 0}
 	function create_if_block$3(component, ctx) {
 		var h3, text1, p, text2, b, text4, i, text5, text6, div, baseselect_updating = {}, text7;
 
@@ -3200,7 +3200,7 @@
 
 		var formblock_initial_data = {
 		 	width: "350px",
-		 	help: "You can change the default team at any time."
+		 	help: "Hint: you can also change the active team at any time using the  <i class='fa fa-bars'></i>  menu in the top navigation bar."
 		 };
 		var formblock = new FormBlock({
 			root: component.root,
@@ -3212,12 +3212,12 @@
 		return {
 			c: function create() {
 				h3 = createElement("h3");
-				h3.textContent = "Select default team";
+				h3.textContent = "Select active team";
 				text1 = createText("\n        ");
 				p = createElement("p");
 				text2 = createText("Since you are a member of multiple teams, you have to pick which one you want to be used as ");
 				b = createElement("b");
-				b.textContent = "default team";
+				b.textContent = "active team";
 				text4 = createText(" (indicated with\n            ");
 				i = createElement("i");
 				text5 = createText("). Newly created charts will automatically be added to this team, and might also inherit some settings\n            from the team.");
@@ -3229,12 +3229,12 @@
 				formblock._fragment.c();
 				h3.className = "svelte-c2pbd6";
 				addLoc(h3, file$3, 59, 8, 1821);
-				addLoc(b, file$3, 61, 104, 1966);
+				addLoc(b, file$3, 61, 104, 1965);
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$3, 62, 12, 2014);
-				addLoc(p, file$3, 60, 8, 1858);
+				addLoc(i, file$3, 62, 12, 2012);
+				addLoc(p, file$3, 60, 8, 1857);
 				div.className = "flex";
-				addLoc(div, file$3, 66, 12, 2289);
+				addLoc(div, file$3, 66, 12, 2377);
 			},
 
 			m: function mount(target, anchor) {
@@ -3377,7 +3377,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$3, 69, 69, 2512);
+				addLoc(i, file$3, 69, 69, 2600);
 			},
 
 			m: function mount(target, anchor) {
