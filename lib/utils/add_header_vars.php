@@ -1,4 +1,5 @@
 <?php
+@require_once ROOT_PATH.'lib/utils/truncate.php';
 
 function add_header_vars(&$page, $active = null, $page_css = null) {
 
@@ -175,7 +176,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
                 $team = [
                     'url' => '#team-activate',
-                    'title' => $org->getName(),
+                    'title' => truncate($org->getName()),
                     'icon' => ($isActive ? 'fa fa-check-circle' : 'no-icon'),
                     'data' => [
                         'id' => $org->getId()
