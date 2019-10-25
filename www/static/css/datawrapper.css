@@ -380,6 +380,10 @@ html .navbar .navbar-inner .nav > li .fa {
   font-size: 15px;
   margin-right: 2px;
 }
+html .navbar .navbar-inner .nav > li .no-icon {
+  display: inline;
+  margin-right: 19px;
+}
 html .navbar .navbar-inner .nav > li > a {
   padding-top: 11px;
   padding-bottom: 10px;

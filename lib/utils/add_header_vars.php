@@ -166,7 +166,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 $team = [
                     'url' => '#team-activate',
                     'title' => $org->getName(),
-                    'icon' => ($isActive ? 'fa fa-check-circle' : ''),
+                    'icon' => ($isActive ? 'fa fa-check-circle' : 'no-icon'),
                     'data' => [
                         'id' => $org->getId()
                     ]
