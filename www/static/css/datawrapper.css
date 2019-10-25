@@ -375,10 +375,15 @@ html .navbar .navbar-inner .nav > li.icon > a {
   padding: 10px 9px 10px;
   line-height: 26px;
 }
-html .navbar .navbar-inner .nav > li .fa {
+html .navbar .navbar-inner .nav > li .fa,
+html .navbar .navbar-inner .nav > li .im {
   color: #222;
   font-size: 15px;
   margin-right: 2px;
+}
+html .navbar .navbar-inner .nav > li .im {
+  position: relative;
+  top: 2px;
 }
 html .navbar .navbar-inner .nav > li .no-icon {
   display: inline;
@@ -418,6 +423,7 @@ html .navbar .navbar-inner .nav .dropdown a.group {
   font-weight: bold;
   text-transform: uppercase;
   pointer-events: none;
+  margin-left: -2px;
 }
 html .navbar .navbar-inner .brand {
   font-weight: 400;

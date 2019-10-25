@@ -3044,7 +3044,7 @@
 	        value: Id,
 	        label: Name
 	    });
-	    })
+	    });
 	}
 	function data$5() {
 	    return {
@@ -3086,7 +3086,7 @@
 				text4 = createText("\n        ");
 				div0 = createElement("div");
 				p = createElement("p");
-				p.textContent = "Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to join them.";
+				p.textContent = "Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to\n                join them.";
 				text6 = createText("\n            ");
 				a = createElement("a");
 				i = createElement("i");
@@ -3096,22 +3096,22 @@
 				if (if_block1) { if_block1.c(); }
 				addLoc(h2, file$4, 2, 0, 48);
 				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$4, 49, 8, 1345);
-				addLoc(p, file$4, 51, 12, 1406);
+				addLoc(h3, file$4, 48, 8, 1329);
+				addLoc(p, file$4, 50, 12, 1390);
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$4, 52, 94, 1653);
+				addLoc(i, file$4, 54, 94, 1683);
 				a.href = "/team/new/setup";
 				a.className = "btn btn-large";
 				toggleClass(a, "btn-primary", !ctx.teams.length);
-				addLoc(a, file$4, 52, 12, 1571);
+				addLoc(a, file$4, 54, 12, 1601);
 				div0.className = "hed svelte-c2pbd6";
-				addLoc(div0, file$4, 50, 8, 1376);
+				addLoc(div0, file$4, 49, 8, 1360);
 				div1.className = "span5";
-				addLoc(div1, file$4, 48, 4, 1317);
+				addLoc(div1, file$4, 47, 4, 1301);
 				div2.className = "span5";
-				addLoc(div2, file$4, 55, 4, 1732);
+				addLoc(div2, file$4, 57, 4, 1762);
 				div3.className = "row";
-				addLoc(div3, file$4, 47, 0, 1295);
+				addLoc(div3, file$4, 46, 0, 1279);
 			},
 
 			m: function mount(target, anchor) {
@@ -3179,7 +3179,7 @@
 		};
 	}
 
-	// (44:0) {:else}
+	// (43:0) {:else}
 	function create_else_block$1(component, ctx) {
 		var p;
 
@@ -3187,7 +3187,7 @@
 			c: function create() {
 				p = createElement("p");
 				p.textContent = "You're not in any teams, yet.";
-				addLoc(p, file$4, 44, 0, 1251);
+				addLoc(p, file$4, 43, 0, 1235);
 			},
 
 			m: function mount(target, anchor) {
@@ -3264,7 +3264,7 @@
 				table.className = "table";
 				addLoc(table, file$4, 7, 0, 132);
 				p1.className = "mini-help svelte-c2pbd6";
-				addLoc(p1, file$4, 42, 0, 1128);
+				addLoc(p1, file$4, 41, 0, 1112);
 			},
 
 			m: function mount(target, anchor) {
@@ -3335,7 +3335,7 @@
 		};
 	}
 
-	// (24:16) {#if team.Id === currentTeam}
+	// (23:28) {#if team.Id === currentTeam}
 	function create_if_block_2$2(component, ctx) {
 		var i;
 
@@ -3343,7 +3343,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$4, 24, 16, 587);
+				addLoc(i, file$4, 23, 16, 571);
 			},
 
 			m: function mount(target, anchor) {
@@ -3369,7 +3369,7 @@
 				tr = createElement("tr");
 				td0 = createElement("td");
 				text0 = createText(text0_value);
-				text1 = createText("\n                ");
+				text1 = createText(" ");
 				if (if_block) { if_block.c(); }
 				text2 = createText("\n            ");
 				td1 = createElement("td");
@@ -3393,20 +3393,20 @@
 				text11 = createText(" leave team");
 				addLoc(td0, file$4, 21, 12, 492);
 				div.className = "id svelte-c2pbd6";
-				addLoc(div, file$4, 28, 16, 695);
-				addLoc(td1, file$4, 27, 12, 674);
-				addLoc(td2, file$4, 30, 12, 757);
+				addLoc(div, file$4, 27, 16, 679);
+				addLoc(td1, file$4, 26, 12, 658);
+				addLoc(td2, file$4, 29, 12, 741);
 				a.href = a_href_value = "/team/" + ctx.team.Id;
-				addLoc(a, file$4, 31, 16, 789);
-				addLoc(td3, file$4, 31, 12, 785);
+				addLoc(a, file$4, 30, 16, 773);
+				addLoc(td3, file$4, 30, 12, 769);
 				button0.className = "btn btn-small";
-				addLoc(button0, file$4, 33, 16, 867);
-				addLoc(td4, file$4, 32, 12, 846);
+				addLoc(button0, file$4, 32, 16, 851);
+				addLoc(td4, file$4, 31, 12, 830);
 				i.className = "fa fa-sign-out";
-				addLoc(i, file$4, 36, 57, 1007);
+				addLoc(i, file$4, 35, 57, 991);
 				button1.className = "btn btn-small btn-danger";
-				addLoc(button1, file$4, 36, 16, 966);
-				addLoc(td5, file$4, 35, 12, 945);
+				addLoc(button1, file$4, 35, 16, 950);
+				addLoc(td5, file$4, 34, 12, 929);
 				toggleClass(tr, "current", ctx.team.Id === ctx.currentTeam);
 				addLoc(tr, file$4, 20, 8, 435);
 			},
@@ -3476,7 +3476,7 @@
 		};
 	}
 
-	// (57:8) {#if teams.length > 1}
+	// (59:8) {#if teams.length > 1}
 	function create_if_block$4(component, ctx) {
 		var h3, text1, p, text2, b, text4, i, text5, text6;
 
@@ -3507,18 +3507,18 @@
 				text2 = createText("Since you are a member of multiple teams, you have to pick which one you want to be used as ");
 				b = createElement("b");
 				b.textContent = "default team";
-				text4 = createText(" (indicated with ");
+				text4 = createText(" (indicated with\n            ");
 				i = createElement("i");
-				text5 = createText("). Newly created charts will automatically be added to this team, and might also inherit some settings from the team.");
+				text5 = createText("). Newly created charts will automatically be added to this team, and might also inherit some settings\n            from the team.");
 				text6 = createText("\n        ");
 				select._fragment.c();
 				formblock._fragment.c();
 				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$4, 57, 8, 1791);
-				addLoc(b, file$4, 58, 103, 1923);
+				addLoc(h3, file$4, 59, 8, 1821);
+				addLoc(b, file$4, 61, 104, 1966);
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$4, 58, 139, 1959);
-				addLoc(p, file$4, 58, 8, 1828);
+				addLoc(i, file$4, 62, 12, 2014);
+				addLoc(p, file$4, 60, 8, 1858);
 			},
 
 			m: function mount(target, anchor) {
@@ -3627,20 +3627,18 @@
 	            {
 	                title: 'Personal settings',
 	                tabs: [EditProfileTab, MyTeamsTab]
-	            } ]
+	            }
+	        ]
 	    };
 	}
 	var methods$1 = {
 	    activateTab: function activateTab(tab, event) {
 	        var this$1 = this;
-	        if ( event === void 0 ) event=null;
+	        if ( event === void 0 ) event = null;
 
 	        if (tab.module) {
 	            if (event) { event.preventDefault(); }
-	            Promise.all([
-	                loadStylesheet(tab.css),
-	                loadScript(tab.js)
-	            ]).then(function () {
+	            Promise.all([loadStylesheet(tab.css), loadScript(tab.js)]).then(function () {
 	                require([tab.module], function (mod) {
 	                    tab.ui = mod.App;
 	                    tab.module = null;
@@ -3656,7 +3654,18 @@
 	        }
 	        if (tab.ui) {
 	            if (event) { event.preventDefault(); }
-	            this.set({activeTab: tab});
+	            if (tab.id === 'teams') {
+	                var ref = this.get();
+	                var teams = ref.teams;
+	                var currentTeam = ref.currentTeam;
+	                tab.data = { teams: teams, currentTeam: currentTeam };
+	            } else if (tab.id === 'profile') {
+	                var ref$1 = this.get();
+	                var email = ref$1.email;
+	                var userId = ref$1.userId;
+	                tab.data = { email: email, userId: userId };
+	            }
+	            this.set({ activeTab: tab });
 	        }
 	    }
 	};
@@ -3676,7 +3685,7 @@
 
 	    if (pages.length) {
 	        groups[0].tabs.push.apply(groups[0].tabs, pages);
-	        this.set({groups: groups});
+	        this.set({ groups: groups });
 	    }
 
 	    if (adminTeams.length) {
@@ -3694,7 +3703,7 @@
 	                icon: 'im im-users'
 	            });
 	        });
-	        this.set({groups: groups});
+	        this.set({ groups: groups });
 	    }
 
 	    var foundTab = false;
@@ -3718,12 +3727,7 @@
 	    var current = ref.current;
 
 	    if (changed.activeTab && current.activeTab) {
-	        console.log(current.activeTab);
-	        window.history.pushState(
-	            {id: current.activeTab.id },
-	            '',
-	            ("/account/" + (current.activeTab.id))
-	        );
+	        window.history.pushState({ id: current.activeTab.id }, '', ("/account/" + (current.activeTab.id)));
 	    }
 	}
 	var file$5 = "account/App.html";
@@ -3861,7 +3865,7 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-1yvqupy";
-				addLoc(i, file$5, 11, 101, 452);
+				addLoc(i, file$5, 12, 25, 477);
 
 				a._svelte = { component: component, ctx: ctx };
 
@@ -3990,7 +3994,7 @@
 		};
 	}
 
-	// (18:8) {#if activeTab}
+	// (20:8) {#if activeTab}
 	function create_if_block$5(component, ctx) {
 		var div, div_class_value;
 
@@ -4021,7 +4025,7 @@
 				div = createElement("div");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-1yvqupy";
-				addLoc(div, file$5, 18, 8, 638);
+				addLoc(div, file$5, 20, 8, 683);
 			},
 
 			m: function mount(target, anchor) {

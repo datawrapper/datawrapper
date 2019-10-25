@@ -141,7 +141,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     if ($user->isLoggedIn()) {
         $headlinks[] = 'divider';
 
-        $acc = array(
+        $acc = [
             "id" => "account",
             "icon" => "fa fa-bars",
             "dropdown" => [
@@ -152,8 +152,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                     "title" => __('Settings')
                 ]
             ]
-        );
+        ];
+    }
 
+    if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
+
+    if ($user->isLoggedIn()) {
         header_nav_hook($headlinks, 'user');
         header_nav_hook($acc["dropdown"], 'hamburger');
 
@@ -161,6 +165,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         if (count($userOrgs) > 0) {
             $acc['dropdown'][] = 'divider';
+            $acc['dropdown'][] = [
+                "id" => "my-account",
+                'icon' => 'im im-users',
+                "url" => "/account/teams",
+                "title" => __('My teams')
+            ];
             $acc['dropdown'][] = ['group' => true, 'title' => __('nav / select-active-team')];
 
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
@@ -189,8 +199,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
             $acc['dropdown'][] = 'divider';
         }
-
-        if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
 
         header_nav_hook($headlinks, 'languages');
 
