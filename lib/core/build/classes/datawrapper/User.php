@@ -113,6 +113,7 @@ class User extends BaseUser {
         $organizations = $this->getActiveOrganizations();
         if (count($organizations) < 1) return null;
         if (!empty($_SESSION['dw-user-organization'])) {
+            if ($_SESSION['dw-user-organization'] === '%none%') return null;
             foreach ($organizations as $org) {
                 if ($org->getId() == $_SESSION['dw-user-organization']) {
                     return $org;

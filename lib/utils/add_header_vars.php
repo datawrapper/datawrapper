@@ -159,8 +159,9 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
         $userOrgs = $user->getActiveOrganizations();
 
-        if (count($userOrgs) > 1) {
+        if (count($userOrgs) > 0) {
             $acc['dropdown'][] = 'divider';
+            $acc['dropdown'][] = ['group' => true, 'title' => __('nav / select-active-team')];
 
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
                 $team = [
@@ -171,13 +172,20 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                         'id' => $org->getId()
                     ]
                 ];
-
                 $dropdown[] = $team;
             };
 
             foreach ($userOrgs as $org) {
                 $addToDropdown($acc['dropdown'], $org, $org == $user->getCurrentOrganization());
             }
+            $acc['dropdown'][] = [
+                'url' => '#team-activate',
+                'title' => __('nav / no-team'),
+                'icon' => (empty($user->getCurrentOrganization()) ? 'fa fa-check-circle' : 'no-icon'),
+                'data' => [
+                    'id' => '@none'
+                ]
+            ];
 
             $acc['dropdown'][] = 'divider';
         }
