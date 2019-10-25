@@ -64,8 +64,12 @@
             from the team.
         </p>
         <FormBlock width="350px" help="You can change the default team at any time.">
-            <!-- prettier-ignore -->
-            <Select options="{teamOptions}" />
+            <div class="flex">
+                <!-- prettier-ignore -->
+                <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
+                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
+                {:then} {:catch}{/await} {/if}
+            </div>
         </FormBlock>
         {/if}
     </div>
@@ -74,24 +78,45 @@
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import FormBlock from '../shared/FormBlock.html';
-    import Select from '@datawrapper/controls/Select.html';
+    import BaseSelect from '@datawrapper/controls/BaseSelect.html';
+    import { putJSON } from '@datawrapper/shared/fetch';
+
+    let initialCurrentTeam = null;
 
     export default {
-        components: { FormBlock, Select },
+        components: { FormBlock, BaseSelect },
         data() {
             return {
-                teams: []
+                teams: [],
+                awaitActiveTeam: null,
+                currentTeam: ''
             };
         },
         computed: {
             teamOptions({ teams }) {
-                return teams.map(({ Id, Name }) => ({
-                    value: Id,
-                    label: Name
-                }));
+                return teams
+                    .map(({ Id, Name }) => ({
+                        value: Id,
+                        label: Name
+                    }))
+                    .concat({
+                        value: null,
+                        label: __('nav / no-team')
+                    });
             }
         },
-        helpers: { __ }
+        helpers: { __ },
+        onstate({ changed, current }) {
+            if (changed.currentTeam && current.currentTeam !== undefined) {
+                if (!initialCurrentTeam) initialCurrentTeam = current.currentTeam;
+                else if (current.currentTeam !== initialCurrentTeam) {
+                    initialCurrentTeam = current.currentTeam;
+                    this.set({
+                        awaitActiveTeam: putJSON(`/team/${current.currentTeam || '@none'}/activate`, {})
+                    });
+                }
+            }
+        }
     };
 </script>
 
