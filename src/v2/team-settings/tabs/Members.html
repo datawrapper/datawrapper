@@ -2,22 +2,60 @@
     {@html __('teams / p') }
 </p>
 
-<div class="row">
-    <div class="span5">
+<div class="row" style="margin-bottom: 2em">
+    <div class="span4">
         <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
     </div>
-    <div class="span5">
-        <ul style="margin-bottom:20px">
-            <li>
-                { @html __('teams / permissions / members' ) }
-            </li>
-            <li>
-                { @html __('teams / permissions / admins' ) }
-            </li>
-            <li>
-                { @html __('teams / permissions / owners' ) }
-            </li>
-        </ul>
+    <div class="span5 offset1">
+        <table class="role-descriptions">
+            <tr>
+                <td />
+                <th>{@html __('teams / role / member')}</th>
+                <th>{@html __('teams / role / admin')}</th>
+                <th>{@html __('teams / role / owner')}</th>
+            </tr>
+            <tr>
+                <td>{ @html __('teams / roles / edit-charts' ) }</td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+
+            <tr>
+                <td>{ @html __('teams / roles / edit-folders' ) }</td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+
+            <tr>
+                <td>{ @html __('teams / roles / access-settings' ) }</td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+
+            <tr>
+                <td>{ @html __('teams / roles / invite-users' ) }</td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+
+            <tr>
+                <td>{ @html __('teams / roles / subscription-options' ) }</td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+
+            <tr>
+                <td>{ @html __('teams / roles / remove-team' ) }</td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-x-mark"></i></td>
+                <td><i class="im im-check-mark"></i></td>
+            </tr>
+        </table>
     </div>
 </div>
 
@@ -35,8 +73,7 @@
     export default {
         components: {
             InviteUser,
-            UserTable,
-            FormBlock
+            UserTable
         },
         helpers: { __ },
         methods: {
@@ -57,5 +94,22 @@
     }
     li :global(b) {
         font-weight: 700;
+    }
+    .im-x-mark,
+    .im-check-mark {
+        font-size: 18px;
+    }
+    .im-check-mark {
+        color: #09bb9f;
+    }
+    .im-x-mark {
+        color: #c71e1d;
+    }
+    .role-descriptions th {
+        text-align: center;
+        padding: 0 1ex 1ex;
+    }
+    .role-descriptions td + td {
+        text-align: center;
     }
 </style>

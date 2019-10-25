@@ -1,1 +1,4310 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define("svelte/account",e):(t=t||self).account=e()}(this,(function(){"use strict";function t(){}function e(t,e){for(var n in e)t[n]=e[n];return t}function n(t,e){for(var n in e)t[n]=1;return t}function a(t,e){t.appendChild(e)}function s(t,e,n){t.insertBefore(e,n)}function r(t){t.parentNode.removeChild(t)}function o(t,e){for(var n=0;n<t.length;n+=1)t[n]&&t[n].d(e)}function i(t){return document.createElement(t)}function c(t){return document.createTextNode(t)}function l(t,e,n,a){t.addEventListener(e,n,a)}function u(t,e,n,a){t.removeEventListener(e,n,a)}function f(t,e,n){null==n?t.removeAttribute(e):t.setAttribute(e,n)}function d(t,e){t.data=""+e}function m(t,e,n){t.style.setProperty(e,n)}function h(t,e,n){t.classList[n?"add":"remove"](e)}function g(){return Object.create(null)}function p(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function v(t,e){return t!=t?e==e:t!==e}function b(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var a=0;a<n.length;a+=1){var s=n[a];if(!s.__calling)try{s.__calling=!0,s.call(this,e)}finally{s.__calling=!1}}}function w(t){t._lock=!0,P(t._beforecreate),P(t._oncreate),P(t._aftercreate),t._lock=!1}function _(){return this._state}function N(t,e){t._handlers=g(),t._slots=g(),t._bind=e._bind,t._staged={},t.options=e,t.root=e.root||t,t.store=e.store||t.root.store,e.root||(t._beforecreate=[],t._oncreate=[],t._aftercreate=[])}function y(t,e){var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}}function P(t){for(;t&&t.length;)t.shift()()}var k={destroy:function(e){this.destroy=t,this.fire("destroy"),this.set=t,this._fragment.d(!1!==e),this._fragment=null,this._state={}},get:_,fire:b,on:y,set:function(t){this._set(e({},t)),this.root._lock||w(this.root)},_recompute:t,_set:function(t){var n=this._state,a={},s=!1;for(var r in t=e(this._staged,t),this._staged={},t)this._differs(t[r],n[r])&&(a[r]=s=!0);s&&(this._state=e(e({},n),t),this._recompute(a,this._state),this._bind&&this._bind(a,this._state),this._fragment&&(this.fire("state",{changed:a,current:this._state,previous:n}),this._fragment.p(a,this._state),this.fire("update",{changed:a,current:this._state,previous:n})))},_stage:function(t){e(this._staged,t)},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_differs:p},E={};function T(t,e){var n=arguments;if(void 0===e&&(e="core"),t=t.trim(),E[e]||function(t){void 0===t&&(t="core"),"chart"===t?window.__dw&&window.__dw.vis&&window.__dw.vis.meta&&(E[t]=window.__dw.vis.meta.locale||{}):E[t]="core"===t?dw.backend.__messages.core:Object.assign({},dw.backend.__messages.core,dw.backend.__messages[t])}(e),!E[e][t])return"MISSING:"+t;var a=E[e][t];return"string"==typeof a&&arguments.length>2&&(a=a.replace(/\$(\d)/g,(function(t,e){return e=2+Number(e),void 0===n[e]?t:n[e]}))),a}function A(t,e,n,a,s){var r={method:e,body:a,mode:"cors",credentials:n};return window.fetch(t,r).then((function(t){if(!t.ok)throw new Error(t.statusText);return t.text()})).then((function(t){try{return JSON.parse(t)}catch(e){return console.warn("malformed json input",t),t}})).then((function(t){return s&&s(t),t})).catch((function(t){console.error(t)}))}function x(t,e,n){return 2===arguments.length&&(n=e,e="include"),A(t,"GET",e,null,n)}function C(t,e,n){return A(t,"PUT","include",e,n)}var H={changeEmail:function(){var t=this,e=this.get(),n=e.email,a=e.userId;this.set({savingEmail:!0}),C("/api/users/"+a,JSON.stringify({email:n}),(function(e){t.set({savingEmail:!1});var a=[],s=[];"error"===e.status&&s.push(e.message),e.data&&e.data.messages&&e.data.messages.forEach((function(t){a.push(t)})),e.data&&e.data.errors&&e.data.errors.forEach((function(t){s.push(t)})),0===s.length?t.set({originalEmail:n,changeEmail:!1,messages:a,errors:[]}):t.set({errors:s})}))},changePassword:function(){var t,e,n,a=this,s=this.get(),r=s.currentPassword,o=s.newPassword1,i=s.newPassword2,c=s.userId,l=(t=o,e=i,""===r?n=dw.backend.messages.provideCurPwd:t.length<4?n=dw.backend.messages.pwdTooShort:t!==e&&(n=dw.backend.messages.pwdMismatch),n||!0);if(!0===l)this.set({savingPassword:!0}),x("/api/auth/salt",(function(t){if("ok"===t.status){var e=t.data.salt,n={oldpwhash:CryptoJS.HmacSHA256(r,e).toString(),pwd:CryptoJS.HmacSHA256(o,e).toString()};C("/api/users/"+c,JSON.stringify(n),(function(t){a.set({savingPassword:!1,currentPassword:"",newPassword1:"",newPassword2:""});var e=[],n=[];"error"===t.status&&n.push(t.message),t.data&&t.data.messages&&t.data.messages.forEach((function(t){e.push(t)})),t.data&&t.data.errors&&t.data.errors.forEach((function(t){n.push(t)})),0===n.length?(e.push("Your password was changed sucessfully"),a.set({changePassword:!1,messages:e,errors:[]})):a.set({errors:n})}))}else a.set({errors:["Could not load salt."],savingPassword:!1})}));else{var u=[l];this.set({errors:u})}},deleteAccount:function(){var t=this,e=this.get().confirmPassword;this.set({deletingAccount:!0}),x("/api/auth/salt",(function(n){if("ok"===n.status){var a=CryptoJS.HmacSHA256(e,n.data.salt).toString();A("/api/users/current?pwd="+a,"DELETE","include",JSON.stringify({pwd:a}),(function(e){t.set({deletingAccount:!1});var n=[];"error"===e.status&&n.push(e.message),e.data&&e.data.messages&&e.data.messages.forEach((function(t){})),e.data&&e.data.errors&&e.data.errors.forEach((function(t){n.push(t)})),0===n.length?t.set({deleteAccount2:!1,deleteAccount3:!0}):t.set({errors:n})}))}else t.set({errors:["Could not load salt."],deletingAccount:!1})}))}};function L(t){var e=t.changed,n=t.current,a=t.previous;e.email&&!a&&this.set({originalEmail:n.email})}function S(t,e,n){var a=Object.create(t);return a.message=e[n],a}function M(t,e,n){var a=Object.create(t);return a.message=e[n],a}function O(t,e,n){var a=Object.create(t);return a.message=e[n],a}function j(t,e,n){var a=Object.create(t);return a.message=e[n],a}function I(t,e){var n,o,l,u,f=T("Edit profile");function d(t){return t.changePassword?D:t.deleteAccount?B:t.deleteAccount2?F:t.deleteAccount3?Y:t.changeEmail?J:q}var m=d(e),h=m(t,e);return{c:function(){n=i("h2"),o=c(f),l=c("\n\n\n"),h.c(),u=document.createComment("")},m:function(t,e){s(t,n,e),a(n,o),s(t,l,e),h.m(t,e),s(t,u,e)},p:function(e,n){m===(m=d(n))&&h?h.p(e,n):(h.d(1),(h=m(t,n)).c(),h.m(u.parentNode,u))},d:function(t){t&&(r(n),r(l)),h.d(t),t&&r(u)}}}function q(t,e){var n,o,d,h,g,p,v,b,w,_,N,y,P,k,E,A,x,C,H,L,S,M,O,j,I,q,J,Y,F,B,D,$,z,R,U,K,Q,V=T("E-Mail"),W=T("account / email"),X=T("Password"),Z=T("account / password"),tt=T("account / or"),et=T("account / delete"),nt=T("account / change-login"),at=e.messages&&e.messages.length&&G(t,e);function st(e){t.set({changeEmail:!0})}function rt(e){t.set({changePassword:!0})}function ot(e){t.set({deleteAccount:!0})}return{c:function(){at&&at.c(),n=c("\n\n"),o=i("div"),d=i("div"),h=i("div"),g=i("div"),p=c(V),v=c(":"),b=c("\n            "),w=i("div"),_=i("input"),y=c("\n            "),P=i("div"),k=i("button"),E=c(W),A=c("\n\n        "),x=i("div"),C=i("div"),H=c(X),L=c(":"),S=c("\n            "),(M=i("div")).innerHTML='<input disabled="" value="abcdefgh" type="password">',O=c("\n            "),j=i("div"),I=i("button"),q=c(Z),J=c("\n\n        "),Y=i("div"),F=c(tt),B=c("\n            "),D=i("span"),$=c(et),z=c("."),R=c("\n    "),U=i("div"),K=i("p"),Q=c(nt),g.className="svelte-1gfuyl2",_.disabled=N=!e.changeEmail,_.value=e.originalEmail,f(_,"type","text"),w.className="svelte-1gfuyl2",l(k,"click",st),k.className="btn btn-save btn-default",P.className="svelte-1gfuyl2",h.className="svelte-1gfuyl2",C.className="svelte-1gfuyl2",M.className="svelte-1gfuyl2",l(I,"click",rt),I.className="btn btn-save btn-default",j.className="svelte-1gfuyl2",x.className="svelte-1gfuyl2",l(D,"click",ot),D.className="link svelte-1gfuyl2",f(D,"href","#"),m(Y,"text-align","center"),m(Y,"display","block"),Y.className="svelte-1gfuyl2",d.className="span6",K.className="help",U.className="span4",o.className="row edit-account svelte-1gfuyl2",m(o,"margin-top",(e.messages&&e.messages.length?0:20)+"px")},m:function(t,e){at&&at.m(t,e),s(t,n,e),s(t,o,e),a(o,d),a(d,h),a(h,g),a(g,p),a(g,v),a(h,b),a(h,w),a(w,_),a(h,y),a(h,P),a(P,k),a(k,E),a(d,A),a(d,x),a(x,C),a(C,H),a(C,L),a(x,S),a(x,M),a(x,O),a(x,j),a(j,I),a(I,q),a(d,J),a(d,Y),a(Y,F),a(Y,B),a(Y,D),a(D,$),a(Y,z),a(o,R),a(o,U),a(U,K),a(K,Q)},p:function(e,a){a.messages&&a.messages.length?at?at.p(e,a):((at=G(t,a)).c(),at.m(n.parentNode,n)):at&&(at.d(1),at=null),e.changeEmail&&N!==(N=!a.changeEmail)&&(_.disabled=N),e.originalEmail&&(_.value=a.originalEmail),e.messages&&m(o,"margin-top",(a.messages&&a.messages.length?0:20)+"px")},d:function(t){at&&at.d(t),t&&(r(n),r(o)),u(k,"click",st),u(I,"click",rt),u(D,"click",ot)}}}function J(t,e){var n,o,d,h,g,p,v,b,w,_,N,y,P,k,E,A,x,C,H,L,S,M,O,j,I,q,J,Y,F,B=T("account / email"),D=T("account / confirm-email-change"),G=T("E-Mail"),$=!1,R=T("Back"),U=T("account / email"),K=e.errors&&e.errors.length&&z(t,e);function Q(){$=!0,t.set({email:C.value}),$=!1}function V(e){t.set({changeEmail:!1})}function W(e){t.changeEmail()}return{c:function(){n=i("div"),o=i("div"),d=i("div"),h=i("h2"),g=c(B),p=c("\n            "),v=i("p"),b=c(D),w=c("\n\n            "),K&&K.c(),_=c("\n\n            "),N=i("fieldset"),y=i("div"),P=i("label"),k=c(G),E=c(":"),A=c("\n                    "),x=i("div"),C=i("input"),L=c("\n\n                "),S=i("div"),M=i("button"),O=c(R),j=c("\n                    "),I=i("button"),q=i("i"),Y=c("  "),F=c(U),P.className="control-label",P.htmlFor="email",l(C,"input",Q),C.disabled=H=!e.changeEmail,f(C,"type","text"),x.className="controls",y.className="control-group",l(M,"click",V),M.className="btn btn-default",q.className=J="fa "+(e.savingEmail?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2",l(I,"click",W),m(I,"float","right"),I.className="btn btn-save btn-primary",S.className="",d.className="form-horizontal edit-account",o.className="span6 offset3",n.className="row"},m:function(t,r){s(t,n,r),a(n,o),a(o,d),a(d,h),a(h,g),a(d,p),a(d,v),a(v,b),a(d,w),K&&K.m(d,null),a(d,_),a(d,N),a(N,y),a(y,P),a(P,k),a(P,E),a(y,A),a(y,x),a(x,C),C.value=e.email,a(N,L),a(N,S),a(S,M),a(M,O),a(S,j),a(S,I),a(I,q),a(I,Y),a(I,F)},p:function(e,n){n.errors&&n.errors.length?K?K.p(e,n):((K=z(t,n)).c(),K.m(d,_)):K&&(K.d(1),K=null),!$&&e.email&&(C.value=n.email),e.changeEmail&&H!==(H=!n.changeEmail)&&(C.disabled=H),e.savingEmail&&J!==(J="fa "+(n.savingEmail?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2")&&(q.className=J)},d:function(t){t&&r(n),K&&K.d(),u(C,"input",Q),u(M,"click",V),u(I,"click",W)}}}function Y(e,n){var o,l,u,f,d,h,g,p=T("Your account has been deleted."),v=T("Goodbye!");return{c:function(){o=i("div"),l=i("div"),u=i("h2"),f=c(p),d=c("\n        "),h=i("a"),g=c(v),m(u,"margin-bottom","20px"),u.className="svelte-1gfuyl2",h.href="/",h.className="btn btn-primary btn-large",l.className="span6 offset3",o.className="row delete-account svelte-1gfuyl2"},m:function(t,e){s(t,o,e),a(o,l),a(l,u),a(u,f),a(l,d),a(l,h),a(h,g)},p:t,d:function(t){t&&r(o)}}}function F(t,e){var n,o,d,h,g,p,v,b,w,_,N,y,P,k,E,A,x,C,H,L,S,M,O,j,I,q,J,Y,F,B,D,G,$,z,R,K,Q,V,W,X,Z,tt,et,nt=T("account / delete / hed"),at=T("account / delete / really"),st=T("account / confirm-account-deletion / free"),rt=T("You cannot login and logout anymore."),ot=T("You cannot edit or remove your charts anymore."),it=T("account / delete / charts-stay-online"),ct=T("Please enter your password to confirm the deletion request:"),lt=!1,ut=T("account / delete / really-really"),ft=T("No, I changed my mind.."),dt=T("Yes, delete it!"),mt=e.errors&&e.errors.length&&U(t,e);function ht(){lt=!0,t.set({confirmPassword:F.value}),lt=!1}function gt(e){t.set({deleteAccount2:!1})}function pt(e){t.deleteAccount()}return{c:function(){n=i("div"),o=i("div"),d=i("h2"),h=c(nt),g=c("\n\n        "),mt&&mt.c(),p=c("\n\n        "),v=i("p"),b=c(at),w=c("\n        "),_=i("ul"),N=i("li"),y=c(st),P=c("\n            "),k=i("li"),E=c(rt),A=c("\n            "),x=i("li"),C=c(ot),H=c("\n        "),L=i("p"),S=c(it),M=c("\n        "),O=i("div"),j=i("p"),I=i("b"),q=c(ct),J=c("\n            "),Y=i("div"),F=i("input"),B=c("\n            "),D=i("p"),G=c("\n            "),$=i("div"),z=i("button"),R=i("i"),K=c("  "),Q=c(ft),V=c("\n                "),W=i("button"),X=i("i"),tt=c("  "),et=c(dt),m(d,"margin-bottom","20px"),d.className="svelte-1gfuyl2",l(F,"input",ht),f(F,"type","password"),F.placeholder=T("Password"),Y.className="control-group",R.className="fa fa-chevron-left",l(z,"click",gt),z.className="btn btn-info",X.className=Z="fa "+(e.deletingAccount?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2",l(W,"click",pt),m(W,"float","right"),W.className="btn btn-danger",$.className="control-group",O.className="",o.className="span6 offset3",n.className="row delete-account svelte-1gfuyl2"},m:function(t,r){s(t,n,r),a(n,o),a(o,d),a(d,h),a(o,g),mt&&mt.m(o,null),a(o,p),a(o,v),a(v,b),a(o,w),a(o,_),a(_,N),a(N,y),a(_,P),a(_,k),a(k,E),a(_,A),a(_,x),a(x,C),a(o,H),a(o,L),a(L,S),a(o,M),a(o,O),a(O,j),a(j,I),a(I,q),a(O,J),a(O,Y),a(Y,F),F.value=e.confirmPassword,a(O,B),a(O,D),D.innerHTML=ut,a(O,G),a(O,$),a($,z),a(z,R),a(z,K),a(z,Q),a($,V),a($,W),a(W,X),a(W,tt),a(W,et)},p:function(e,n){n.errors&&n.errors.length?mt?mt.p(e,n):((mt=U(t,n)).c(),mt.m(o,p)):mt&&(mt.d(1),mt=null),!lt&&e.confirmPassword&&(F.value=n.confirmPassword),e.deletingAccount&&Z!==(Z="fa "+(n.deletingAccount?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2")&&(X.className=Z)},d:function(t){t&&r(n),mt&&mt.d(),u(F,"input",ht),u(z,"click",gt),u(W,"click",pt)}}}function B(e,n){var o,f,d,h,g,p,v,b,w,_,N,y,P,k,E,A,x,C,H,L,S=T("account / confirm-account-deletion"),M=T("account / confirm-account-deletion / no"),O=T("account / or"),j=T("account / confirm-account-deletion / yes");function I(t){e.set({deleteAccount:!1})}function q(t){e.set({deleteAccount:!1,deleteAccount2:!0})}return{c:function(){o=i("div"),f=i("div"),(d=i("div")).innerHTML='<i class="fa fa-times"></i>',h=c("\n\n        "),g=i("h2"),p=c(S),v=c("\n\n        "),b=i("div"),w=i("button"),_=i("i"),N=c("   "),y=c(M),P=c("\n\n            "),k=i("div"),E=c(O),A=c("\n\n            "),x=i("button"),C=i("i"),H=c("   "),L=c(j),d.className="iconholder svelte-1gfuyl2",m(g,"margin-bottom","20px"),g.className="svelte-1gfuyl2",_.className="fa fa-chevron-left",l(w,"click",I),w.className="btn btn-back btn-primary",m(k,"display","block"),m(k,"margin","0px 10px"),C.className="fa fa-times",l(x,"click",q),x.className="btn btn-default",m(b,"display","flex"),m(b,"justify-content","center"),m(b,"align-items","center"),f.className="span6 offset3",o.className="row delete-account svelte-1gfuyl2"},m:function(t,e){s(t,o,e),a(o,f),a(f,d),a(f,h),a(f,g),a(g,p),a(f,v),a(f,b),a(b,w),a(w,_),a(w,N),a(w,y),a(b,P),a(b,k),a(k,E),a(b,A),a(b,x),a(x,C),a(x,H),a(x,L)},p:t,d:function(t){t&&r(o),u(w,"click",I),u(x,"click",q)}}}function D(t,e){var n,o,d,h,g,p,v,b,w,_,N,y,P,k,E,A,x,C,H,L,S,M,O,j,I,q,J,Y,F,B,D,G,$,z,R,U,K,V,W,X,Z,tt,et,nt,at=T("account / password"),st=T("account / password / strong-password-note"),rt=T("Current Password"),ot=!1,it=T("account / password / current-password-note"),ct=T("New Password"),lt=!1,ut=T("(repeat)"),ft=!1,dt=T("Back"),mt=T("account / password"),ht=e.errors&&e.errors.length&&Q(t,e);function gt(){ot=!0,t.set({currentPassword:x.value}),ot=!1}function pt(){lt=!0,t.set({newPassword1:J.value}),lt=!1}function vt(){ft=!0,t.set({newPassword2:z.value}),ft=!1}function bt(e){t.set({changePassword:!1})}function wt(e){t.changePassword()}return{c:function(){n=i("div"),o=i("div"),d=i("div"),h=i("h2"),g=c(at),p=c("\n            "),v=i("p"),b=c(st),w=c("\n\n            "),ht&&ht.c(),_=c("\n\n            "),N=i("fieldset"),y=i("div"),P=i("label"),k=c(rt),E=c("\n                    "),A=i("div"),x=i("input"),C=c("\n                        "),H=i("p"),L=c(it),S=c("\n                "),M=i("div"),O=i("label"),j=c(ct),I=c("\n                    "),q=i("div"),J=i("input"),Y=c("\n                "),F=i("div"),B=i("label"),D=c(ut),G=c("\n                    "),$=i("div"),z=i("input"),R=c("\n\n                "),U=i("div"),K=i("button"),V=c(dt),W=c("\n                    "),X=i("button"),Z=i("i"),et=c("  "),nt=c(mt),P.className="control-label",l(x,"input",gt),f(x,"type","password"),x.className="input-xlarge",H.className="help-block",A.className="controls",y.className="control-group",O.className="control-label",l(J,"input",pt),f(J,"type","password"),J.className="input-xlarge",q.className="controls",M.className="control-group",B.className="control-label",l(z,"input",vt),f(z,"type","password"),z.className="input-xlarge",$.className="controls",F.className="control-group",l(K,"click",bt),K.className="btn btn-save btn-default btn-back",Z.className=tt="fa "+(e.savingPassword?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2",l(X,"click",wt),X.className="btn btn-primary",m(X,"float","right"),d.className="form-horizontal edit-account-confirm",o.className="span6 offset3",n.className="row"},m:function(t,r){s(t,n,r),a(n,o),a(o,d),a(d,h),a(h,g),a(d,p),a(d,v),a(v,b),a(d,w),ht&&ht.m(d,null),a(d,_),a(d,N),a(N,y),a(y,P),a(P,k),a(y,E),a(y,A),a(A,x),x.value=e.currentPassword,a(A,C),a(A,H),a(H,L),a(N,S),a(N,M),a(M,O),a(O,j),a(M,I),a(M,q),a(q,J),J.value=e.newPassword1,a(N,Y),a(N,F),a(F,B),a(B,D),a(F,G),a(F,$),a($,z),z.value=e.newPassword2,a(N,R),a(N,U),a(U,K),a(K,V),a(U,W),a(U,X),a(X,Z),a(X,et),a(X,nt)},p:function(e,n){n.errors&&n.errors.length?ht?ht.p(e,n):((ht=Q(t,n)).c(),ht.m(d,_)):ht&&(ht.d(1),ht=null),!ot&&e.currentPassword&&(x.value=n.currentPassword),!lt&&e.newPassword1&&(J.value=n.newPassword1),!ft&&e.newPassword2&&(z.value=n.newPassword2),e.savingPassword&&tt!==(tt="fa "+(n.savingPassword?"fa-spin fa-spinner":"fa-check")+" svelte-1gfuyl2")&&(Z.className=tt)},d:function(t){t&&r(n),ht&&ht.d(),u(x,"input",gt),u(J,"input",pt),u(z,"input",vt),u(K,"click",bt),u(X,"click",wt)}}}function G(t,e){for(var n,c,l,u,f=e.messages,d=[],h=0;h<f.length;h+=1)d[h]=$(t,S(e,f,h));return{c:function(){n=i("div"),c=i("div"),l=i("div"),u=i("ul");for(var t=0;t<d.length;t+=1)d[t].c();m(u,"margin-bottom","0"),l.className="alert alert-success",c.className="span6 offset3",n.className="row",m(n,"margin-top","20px")},m:function(t,e){s(t,n,e),a(n,c),a(c,l),a(l,u);for(var r=0;r<d.length;r+=1)d[r].m(u,null)},p:function(e,n){if(e.messages){f=n.messages;for(var a=0;a<f.length;a+=1){var s=S(n,f,a);d[a]?d[a].p(e,s):(d[a]=$(t,s),d[a].c(),d[a].m(u,null))}for(;a<d.length;a+=1)d[a].d(1);d.length=f.length}},d:function(t){t&&r(n),o(d,t)}}}function $(t,e){var n,a=e.message;return{c:function(){n=i("li")},m:function(t,e){s(t,n,e),n.innerHTML=a},p:function(t,e){t.messages&&a!==(a=e.message)&&(n.innerHTML=a)},d:function(t){t&&r(n)}}}function z(t,e){for(var n,c,l=e.errors,u=[],f=0;f<l.length;f+=1)u[f]=R(t,M(e,l,f));return{c:function(){n=i("div"),c=i("ul");for(var t=0;t<u.length;t+=1)u[t].c();m(c,"margin-bottom","0"),n.className="alert"},m:function(t,e){s(t,n,e),a(n,c);for(var r=0;r<u.length;r+=1)u[r].m(c,null)},p:function(e,n){if(e.errors){l=n.errors;for(var a=0;a<l.length;a+=1){var s=M(n,l,a);u[a]?u[a].p(e,s):(u[a]=R(t,s),u[a].c(),u[a].m(c,null))}for(;a<u.length;a+=1)u[a].d(1);u.length=l.length}},d:function(t){t&&r(n),o(u,t)}}}function R(t,e){var n,a=e.message;return{c:function(){n=i("li")},m:function(t,e){s(t,n,e),n.innerHTML=a},p:function(t,e){t.errors&&a!==(a=e.message)&&(n.innerHTML=a)},d:function(t){t&&r(n)}}}function U(t,e){for(var n,c,l=e.errors,u=[],f=0;f<l.length;f+=1)u[f]=K(t,O(e,l,f));return{c:function(){n=i("div"),c=i("ul");for(var t=0;t<u.length;t+=1)u[t].c();m(c,"margin-bottom","0"),n.className="alert"},m:function(t,e){s(t,n,e),a(n,c);for(var r=0;r<u.length;r+=1)u[r].m(c,null)},p:function(e,n){if(e.errors){l=n.errors;for(var a=0;a<l.length;a+=1){var s=O(n,l,a);u[a]?u[a].p(e,s):(u[a]=K(t,s),u[a].c(),u[a].m(c,null))}for(;a<u.length;a+=1)u[a].d(1);u.length=l.length}},d:function(t){t&&r(n),o(u,t)}}}function K(t,e){var n,a=e.message;return{c:function(){n=i("li")},m:function(t,e){s(t,n,e),n.innerHTML=a},p:function(t,e){t.errors&&a!==(a=e.message)&&(n.innerHTML=a)},d:function(t){t&&r(n)}}}function Q(t,e){for(var n,c,l=e.errors,u=[],f=0;f<l.length;f+=1)u[f]=V(t,j(e,l,f));return{c:function(){n=i("div"),c=i("ul");for(var t=0;t<u.length;t+=1)u[t].c();m(c,"margin-bottom","0"),n.className="alert"},m:function(t,e){s(t,n,e),a(n,c);for(var r=0;r<u.length;r+=1)u[r].m(c,null)},p:function(e,n){if(e.errors){l=n.errors;for(var a=0;a<l.length;a+=1){var s=j(n,l,a);u[a]?u[a].p(e,s):(u[a]=V(t,s),u[a].c(),u[a].m(c,null))}for(;a<u.length;a+=1)u[a].d(1);u.length=l.length}},d:function(t){t&&r(n),o(u,t)}}}function V(t,e){var n,a=e.message;return{c:function(){n=i("li")},m:function(t,e){s(t,n,e),n.innerHTML=a},p:function(t,e){t.errors&&a!==(a=e.message)&&(n.innerHTML=a)},d:function(t){t&&r(n)}}}function W(t){var a=this;N(this,t),this._state=e({changePassword:!1,changeEmail:!1,deleteAccount:!1,showPasswordInPlaintext:!1,messages:[],currentPassword:"",newPassword1:"",newPassword2:"",confirmPassword:"",groups:[{title:"Account settings",tabs:[{title:"Profile",icon:"fa fa-fw fa-user"}]},{title:"Team settings",tabs:[]}]},t.data),this._intro=!0,this._handlers.state=[L],L.call(this,{changed:n({},this._state),current:this._state}),this._fragment=I(this,this._state),this.root._oncreate.push((function(){a.fire("update",{changed:n({},a._state),current:a._state})})),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),w(this))}e(W.prototype,k),e(W.prototype,H);var X={title:"Profile",id:"profile",icon:"fa fa-fw fa-user",ui:W};var Z={activateTab:function(t,e){t.ui&&(e.preventDefault(),this.set({activeTab:t}))},addTab:function(t){var e=this.get(),n=e.groups,a=e.wasLookingFor;console.log("groups",n),n[0].tabs.push(t),a&&t.id===a&&this.set({activeTab:t,wasLookingFor:null}),this.set({groups:n})}};function tt(){var t=this,e=window.location.pathname.split("/").slice(1)[1]||"profile";dw.backend.__svelteApps.account=this;var n=this.get(),a=n.groups,s=n.teams;s.length&&(s.forEach((function(t){var e=t.Id,n=t.Name;a[1].tabs.push({title:n,url:"/team/"+e+"/settings",icon:"fa fa-group fa-fw"})})),a[1].tabs.push(a[1].tabs.shift()),console.log("x",a),this.set({groups:a}));var r=!1;a.forEach((function(n){n.tabs.forEach((function(n){n.id===e&&(t.set({activeTab:n}),r=!0)}))})),r||this.set({activeTab:X,wasLookingFor:e})}function et(t){var e=t.changed,n=t.current;e.activeTab&&n.activeTab&&(console.log(n.activeTab),window.history.pushState({id:n.activeTab.id},"","/account/"+n.activeTab.id))}function nt(t){var e=this._svelte,n=e.component,a=e.ctx;n.activateTab(a.tab,t)}function at(t,e,n){var a=Object.create(t);return a.tab=e[n],a}function st(t,e,n){var a=Object.create(t);return a.group=e[n],a}function rt(t,e){var n,o,f,m,g,p,v,b=e.tab.title;return{c:function(){n=i("li"),o=i("a"),f=i("i"),g=c("   "),p=c(b),f.className=m=e.tab.icon+" svelte-yq9vlw",o._svelte={component:t,ctx:e},l(o,"click",nt),o.href=v=e.tab.url||"/account/"+e.tab.id,o.className="svelte-yq9vlw",n.className="svelte-yq9vlw",h(n,"active",e.activeTab===e.tab)},m:function(t,e){s(t,n,e),a(n,o),a(o,f),a(o,g),a(o,p)},p:function(t,a){e=a,t.groups&&m!==(m=e.tab.icon+" svelte-yq9vlw")&&(f.className=m),t.groups&&b!==(b=e.tab.title)&&d(p,b),o._svelte.ctx=e,t.groups&&v!==(v=e.tab.url||"/account/"+e.tab.id)&&(o.href=v),(t.activeTab||t.groups)&&h(n,"active",e.activeTab===e.tab)},d:function(t){t&&r(n),u(o,"click",nt)}}}function ot(t,e){for(var n,l,u,f,m=e.group.title,h=e.group.tabs,g=[],p=0;p<h.length;p+=1)g[p]=rt(t,at(e,h,p));return{c:function(){n=i("div"),l=c(m),u=c("\n\n            "),f=i("ul");for(var t=0;t<g.length;t+=1)g[t].c();n.className="group svelte-yq9vlw",f.className="nav nav-stacked nav-tabs"},m:function(t,e){s(t,n,e),a(n,l),s(t,u,e),s(t,f,e);for(var r=0;r<g.length;r+=1)g[r].m(f,null)},p:function(e,n){if(e.groups&&m!==(m=n.group.title)&&d(l,m),e.activeTab||e.groups){h=n.group.tabs;for(var a=0;a<h.length;a+=1){var s=at(n,h,a);g[a]?g[a].p(e,s):(g[a]=rt(t,s),g[a].c(),g[a].m(f,null))}for(;a<g.length;a+=1)g[a].d(1);g.length=h.length}},d:function(t){t&&(r(n),r(u),r(f)),o(g,t)}}}function it(t,n){var a,o,c=[n.data],l=n.activeTab.ui;function u(n){for(var a={},s=0;s<c.length;s+=1)a=e(a,c[s]);return{root:t.root,store:t.store,data:a}}if(l)var f=new l(u());return{c:function(){a=i("div"),f&&f._fragment.c(),a.className=o="span10 account-page-content tab-"+n.activeTab.id+" svelte-yq9vlw"},m:function(t,e){s(t,a,e),f&&f._mount(a,null)},p:function(t,e){var n=t.data?function(t,e){for(var n={},a={},s={},r=t.length;r--;){var o=t[r],i=e[r];if(i){for(var c in o)c in i||(a[c]=1);for(var c in i)s[c]||(n[c]=i[c],s[c]=1);t[r]=i}else for(var c in o)s[c]=1}for(var c in a)c in n||(n[c]=void 0);return n}(c,[e.data]):{};l!==(l=e.activeTab.ui)?(f&&f.destroy(),l?((f=new l(u()))._fragment.c(),f._mount(a,null)):f=null):l&&f._set(n),t.activeTab&&o!==(o="span10 account-page-content tab-"+e.activeTab.id+" svelte-yq9vlw")&&(a.className=o)},d:function(t){t&&r(a),f&&f.destroy()}}}function ct(t){var l=this;N(this,t),this._state=e({hash:"profile",activeTab:null,groups:[{title:"Account settings",tabs:[X]},{title:"Team settings",tabs:[{title:"Create team",icon:"fa fa-fw fa-plus",url:"/team/new/setup"}]}]},t.data),this._recompute({email:1,userId:1},this._state),this._intro=!0,this._handlers.state=[et],et.call(this,{changed:n({},this._state),current:this._state}),this._fragment=function(t,e){for(var n,l,u,f,d,m,h=e.groups,g=[],p=0;p<h.length;p+=1)g[p]=ot(t,st(e,h,p));var v=e.activeTab&&it(t,e);return{c:function(){n=i("div"),(l=i("h1")).textContent="Settings",u=c("\n\n    "),f=i("div"),d=i("div");for(var t=0;t<g.length;t+=1)g[t].c();m=c("\n        "),v&&v.c(),l.className="title",d.className="span2 svelte-yq9vlw",f.className="row",n.className="admin"},m:function(t,e){s(t,n,e),a(n,l),a(n,u),a(n,f),a(f,d);for(var r=0;r<g.length;r+=1)g[r].m(d,null);a(f,m),v&&v.m(f,null)},p:function(e,n){if(e.groups||e.activeTab){h=n.groups;for(var a=0;a<h.length;a+=1){var s=st(n,h,a);g[a]?g[a].p(e,s):(g[a]=ot(t,s),g[a].c(),g[a].m(d,null))}for(;a<g.length;a+=1)g[a].d(1);g.length=h.length}n.activeTab?v?v.p(e,n):((v=it(t,n)).c(),v.m(f,null)):v&&(v.d(1),v=null)},d:function(t){t&&r(n),o(g,t),v&&v.d()}}}(this,this._state),this.root._oncreate.push((function(){tt.call(l),l.fire("update",{changed:n({},l._state),current:l._state})})),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor),w(this))}function lt(t,n){this._handlers={},this._dependents=[],this._computed=g(),this._sortedComputedProperties=[],this._state=e({},t),this._differs=n&&n.immutable?v:p}e(ct.prototype,k),e(ct.prototype,Z),ct.prototype._recompute=function(t,e){var n;(t.email||t.userId)&&this._differs(e.data,e.data={email:(n=e).email,userId:n.userId})&&(t.data=!0)},e(lt.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},n=0;n<t.length;n+=1){var a=t[n];e["$"+a]=this._state[a]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_set:function(t,n){var a=this,s=this._state;this._state=e(e({},s),t);for(var r=0;r<this._sortedComputedProperties.length;r+=1)this._sortedComputedProperties[r].update(this._state,n);this.fire("state",{changed:n,previous:s,current:this._state}),this._dependents.filter((function(t){for(var e={},s=!1,r=0;r<t.props.length;r+=1){var o=t.props[r];o in n&&(e["$"+o]=a._state[o],s=!0)}if(s)return t.component._stage(e),!0})).forEach((function(t){t.component.set({})})),this.fire("update",{changed:n,previous:s,current:this._state})},_sortComputedProperties:function(){var t,e=this._computed,n=this._sortedComputedProperties=[],a=g();function s(r){var o=e[r];o&&(o.deps.forEach((function(e){if(e===t)throw new Error("Cyclical dependency detected between "+e+" <-> "+r);s(e)})),a[r]||(a[r]=!0,n.push(o)))}for(var r in this._computed)s(t=r)},compute:function(t,n,a){var s,r=this,o={deps:n,update:function(e,o,i){var c=n.map((function(t){return t in o&&(i=!0),e[t]}));if(i){var l=a.apply(null,c);r._differs(l,s)&&(s=l,o[t]=!0,e[t]=s)}}};this._computed[t]=o,this._sortComputedProperties();var i=e({},this._state),c={};o.update(i,c,!0),this._set(i,c)},fire:b,get:_,on:y,set:function(t){var e=this._state,n=this._changed={},a=!1;for(var s in t){if(this._computed[s])throw new Error("'"+s+"' is a read-only computed property");this._differs(t[s],e[s])&&(n[s]=a=!0)}a&&this._set(t,n)}});return{App:ct,data:{chart:{id:""},readonly:!1,chartData:"",transpose:!1,firstRowIsHeader:!0,skipRows:0},store:new lt({})}}));
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/account', factory) :
+	(global = global || self, global.account = factory());
+}(this, function () { 'use strict';
+
+	function noop() {}
+
+	function assign(tar, src) {
+		for (var k in src) { tar[k] = src[k]; }
+		return tar;
+	}
+
+	function assignTrue(tar, src) {
+		for (var k in src) { tar[k] = 1; }
+		return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+		element.__svelte_meta = {
+			loc: { file: file, line: line, column: column, char: char }
+		};
+	}
+
+	function append(target, node) {
+		target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+		target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+		node.parentNode.removeChild(node);
+	}
+
+	function reinsertChildren(parent, target) {
+		while (parent.firstChild) { target.appendChild(parent.firstChild); }
+	}
+
+	function reinsertBefore(after, target) {
+		var parent = after.parentNode;
+		while (parent.firstChild !== after) { target.appendChild(parent.firstChild); }
+	}
+
+	function destroyEach(iterations, detach) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) { iterations[i].d(detach); }
+		}
+	}
+
+	function createFragment() {
+		return document.createDocumentFragment();
+	}
+
+	function createElement(name) {
+		return document.createElement(name);
+	}
+
+	function createText(data) {
+		return document.createTextNode(data);
+	}
+
+	function createComment() {
+		return document.createComment('');
+	}
+
+	function addListener(node, event, handler, options) {
+		node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+		node.removeEventListener(event, handler, options);
+	}
+
+	function setAttribute(node, attribute, value) {
+		if (value == null) { node.removeAttribute(attribute); }
+		else { node.setAttribute(attribute, value); }
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
+	}
+
+	function setStyle(node, key, value) {
+		node.style.setProperty(key, value);
+	}
+
+	function selectOption(select, value) {
+		for (var i = 0; i < select.options.length; i += 1) {
+			var option = select.options[i];
+
+			if (option.__value === value) {
+				option.selected = true;
+				return;
+			}
+		}
+	}
+
+	function selectValue(select) {
+		var selectedOption = select.querySelector(':checked') || select.options[0];
+		return selectedOption && selectedOption.__value;
+	}
+
+	function toggleClass(element, name, toggle) {
+		element.classList[toggle ? 'add' : 'remove'](name);
+	}
+
+	function getSpreadUpdate(levels, updates) {
+		var update = {};
+
+		var to_null_out = {};
+		var accounted_for = {};
+
+		var i = levels.length;
+		while (i--) {
+			var o = levels[i];
+			var n = updates[i];
+
+			if (n) {
+				for (var key in o) {
+					if (!(key in n)) { to_null_out[key] = 1; }
+				}
+
+				for (var key in n) {
+					if (!accounted_for[key]) {
+						update[key] = n[key];
+						accounted_for[key] = 1;
+					}
+				}
+
+				levels[i] = n;
+			} else {
+				for (var key in o) {
+					accounted_for[key] = 1;
+				}
+			}
+		}
+
+		for (var key in to_null_out) {
+			if (!(key in update)) { update[key] = undefined; }
+		}
+
+		return update;
+	}
+
+	function blankObject() {
+		return Object.create(null);
+	}
+
+	function destroy(detach) {
+		this.destroy = noop;
+		this.fire('destroy');
+		this.set = noop;
+
+		this._fragment.d(detach !== false);
+		this._fragment = null;
+		this._state = {};
+	}
+
+	function destroyDev(detach) {
+		destroy.call(this, detach);
+		this.destroy = function() {
+			console.warn('Component was already destroyed');
+		};
+	}
+
+	function _differs(a, b) {
+		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+
+	function _differsImmutable(a, b) {
+		return a != a ? b == b : a !== b;
+	}
+
+	function fire(eventName, data) {
+		var handlers =
+			eventName in this._handlers && this._handlers[eventName].slice();
+		if (!handlers) { return; }
+
+		for (var i = 0; i < handlers.length; i += 1) {
+			var handler = handlers[i];
+
+			if (!handler.__calling) {
+				try {
+					handler.__calling = true;
+					handler.call(this, data);
+				} finally {
+					handler.__calling = false;
+				}
+			}
+		}
+	}
+
+	function flush(component) {
+		component._lock = true;
+		callAll(component._beforecreate);
+		callAll(component._oncreate);
+		callAll(component._aftercreate);
+		component._lock = false;
+	}
+
+	function get() {
+		return this._state;
+	}
+
+	function init(component, options) {
+		component._handlers = blankObject();
+		component._slots = blankObject();
+		component._bind = options._bind;
+		component._staged = {};
+
+		component.options = options;
+		component.root = options.root || component;
+		component.store = options.store || component.root.store;
+
+		if (!options.root) {
+			component._beforecreate = [];
+			component._oncreate = [];
+			component._aftercreate = [];
+		}
+	}
+
+	function on(eventName, handler) {
+		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+		handlers.push(handler);
+
+		return {
+			cancel: function() {
+				var index = handlers.indexOf(handler);
+				if (~index) { handlers.splice(index, 1); }
+			}
+		};
+	}
+
+	function set(newState) {
+		this._set(assign({}, newState));
+		if (this.root._lock) { return; }
+		flush(this.root);
+	}
+
+	function _set(newState) {
+		var oldState = this._state,
+			changed = {},
+			dirty = false;
+
+		newState = assign(this._staged, newState);
+		this._staged = {};
+
+		for (var key in newState) {
+			if (this._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+		}
+		if (!dirty) { return; }
+
+		this._state = assign(assign({}, oldState), newState);
+		this._recompute(changed, this._state);
+		if (this._bind) { this._bind(changed, this._state); }
+
+		if (this._fragment) {
+			this.fire("state", { changed: changed, current: this._state, previous: oldState });
+			this._fragment.p(changed, this._state);
+			this.fire("update", { changed: changed, current: this._state, previous: oldState });
+		}
+	}
+
+	function _stage(newState) {
+		assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+		if (typeof newState !== 'object') {
+			throw new Error(
+				this._debugName + '.set was called without an object of data key-values to update.'
+			);
+		}
+
+		this._checkReadOnly(newState);
+		set.call(this, newState);
+	}
+
+	function callAll(fns) {
+		while (fns && fns.length) { fns.shift()(); }
+	}
+
+	function _mount(target, anchor) {
+		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	var protoDev = {
+		destroy: destroyDev,
+		get: get,
+		fire: fire,
+		on: on,
+		set: setDev,
+		_recompute: noop,
+		_set: _set,
+		_stage: _stage,
+		_mount: _mount,
+		_differs: _differs
+	};
+
+	/* globals dw */
+
+	var __messages = {};
+
+	function initMessages(scope) {
+	    if ( scope === void 0 ) scope = 'core';
+
+	    // let's check if we're in a chart
+	    if (scope === 'chart') {
+	        if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	            // use in-chart translations
+	            __messages[scope] = window.__dw.vis.meta.locale || {};
+	        }
+	    } else {
+	        // use backend translations
+	        __messages[scope] =
+	            scope === 'core'
+	                ? dw.backend.__messages.core
+	                : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	    }
+	}
+
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+	function __(key, scope) {
+	    var arguments$1 = arguments;
+	    if ( scope === void 0 ) scope = 'core';
+
+	    key = key.trim();
+	    if (!__messages[scope]) { initMessages(scope); }
+	    if (!__messages[scope][key]) { return 'MISSING:' + key; }
+	    var translation = __messages[scope][key];
+
+	    if (typeof translation === 'string' && arguments.length > 2) {
+	        // replace $0, $1 etc with remaining arguments
+	        translation = translation.replace(/\$(\d)/g, function (m, i) {
+	            i = 2 + Number(i);
+	            if (arguments$1[i] === undefined) { return m; }
+	            return arguments$1[i];
+	        });
+	    }
+	    return translation;
+	}
+
+	/**
+	 * Download and parse a remote JSON document
+	 *
+	 * @param {string} url
+	 * @param {string} method - HTTP method, either GET, POST or PUT
+	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { fetchJSON } from '@datawrapper/shared/fetch';
+	 * fetchJSON('http://api.example.org', 'GET', 'include');
+	 */
+	function fetchJSON(url, method, credentials, body, callback) {
+	    var opts = {
+	        method: method,
+	        body: body,
+	        mode: 'cors',
+	        credentials: credentials
+	    };
+
+	    return window
+	        .fetch(url, opts)
+	        .then(function (res) {
+	            if (!res.ok) { throw new Error(res.statusText); }
+	            return res.text();
+	        })
+	        .then(function (text) {
+	            try {
+	                return JSON.parse(text);
+	            } catch (Error) {
+	                // could not parse json, so just return text
+	                console.warn('malformed json input', text);
+	                return text;
+	            }
+	        })
+	        .then(function (res) {
+	            if (callback) { callback(res); }
+	            return res;
+	        })
+	        .catch(function (err) {
+	            console.error(err);
+	        });
+	}
+
+	/**
+	 * Download and parse a JSON document via GET
+	 *
+	 * @param {string} url
+	 * @param {string|undefined} credentials - optional, set to undefined to disable credentials
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { getJSON } from '@datawrapper/shared/fetch';
+	 * // use it callback style
+	 * getJSON('http://api.example.org', 'include', function(data) {
+	 *     console.log(data);
+	 * });
+	 * // or promise-style
+	 * getJSON('http://api.example.org')
+	 *   .then(data => {
+	 *      console.log(data);
+	 *   });
+	 */
+	function getJSON(url, credentials, callback) {
+	    if (arguments.length === 2) {
+	        callback = credentials;
+	        credentials = 'include';
+	    }
+
+	    return fetchJSON(url, 'GET', credentials, null, callback);
+	}
+
+	/**
+	 * Download and parse a remote JSON endpoint via PUT. credentials
+	 * are included automatically
+	 *
+	 * @param {string} url
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 * @example
+	 * import { putJSON } from '@datawrapper/shared/fetch';
+	 *
+	 * putJSON('http://api.example.org', JSON.stringify({
+	 *    query: 'foo',
+	 *    page: 12
+	 * }));
+	 */
+	function putJSON(url, body, callback) {
+	    return fetchJSON(url, 'PUT', 'include', body, callback);
+	}
+
+	/**
+	 * injects a `<script>` element to the page to load a new JS script
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadScript } from '@datawrapper/shared/fetch';
+	 *
+	 * loadScript('/static/js/library.js', () => {
+	 *     console.log('library is loaded');
+	 * })
+	 */
+	function loadScript(src, callback) {
+	    if ( callback === void 0 ) callback = null;
+
+	    return new Promise(function (resolve, reject) {
+	        var script = document.createElement('script');
+	        script.src = src;
+	        script.onload = function () {
+	            if (callback) { callback(); }
+	            resolve();
+	        };
+	        script.onerror = reject;
+	        document.body.appendChild(script);
+	    });
+	}
+
+	/**
+	 * injects a `<link>` element to the page to load a new stylesheet
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadStylesheet } from '@datawrapper/shared/fetch';
+	 *
+	 * loadStylesheet('/static/css/library.css', () => {
+	 *     console.log('library styles are loaded');
+	 * })
+	 */
+	function loadStylesheet(src, callback) {
+	    if ( callback === void 0 ) callback = null;
+
+	    return new Promise(function (resolve, reject) {
+	        var link = document.createElement('link');
+	        link.rel = 'stylesheet';
+	        link.href = src;
+	        link.onload = function () {
+	            if (callback) { callback(); }
+	            resolve();
+	        };
+	        link.onerror = reject;
+	        document.head.appendChild(link);
+	    });
+	}
+
+	/* global dw */
+	var MIN_PASSWORD_LENGTH = 10;
+
+	function checkPassword(curPwd, pwd, pwd2) {
+	    var msg;
+	    if (curPwd === '') {
+	        msg = dw.backend.messages.provideCurPwd;
+	    } else if (pwd.length < MIN_PASSWORD_LENGTH) {
+	        msg = dw.backend.messages.pwdTooShort.replace('%num', MIN_PASSWORD_LENGTH);
+	    } else if (pwd !== pwd2) {
+	        msg = dw.backend.messages.pwdMismatch;
+	    }
+	    if (msg) {
+	        return msg;
+	    }
+	    return false;
+	}
+
+	/* shared/FormBlock.html generated by Svelte v2.16.1 */
+
+	function data() {
+	    return {
+	        label: '',
+	        help: '',
+	        error: false,
+	        width: 'auto'
+	    };
+	}
+	var file = "shared/FormBlock.html";
+
+	function create_main_fragment(component, ctx) {
+		var div1, text0, div0, slot_content_default = component._slotted.default, text1, text2;
+
+		var if_block0 = (ctx.label) && create_if_block_2(component, ctx);
+
+		var if_block1 = (ctx.error) && create_if_block_1(component, ctx);
+
+		var if_block2 = (!ctx.error && ctx.help) && create_if_block(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				if (if_block0) { if_block0.c(); }
+				text0 = createText("\n    ");
+				div0 = createElement("div");
+				text1 = createText("\n    ");
+				if (if_block1) { if_block1.c(); }
+				text2 = createText(" ");
+				if (if_block2) { if_block2.c(); }
+				div0.className = "form-controls svelte-1jqrjze";
+				addLoc(div0, file, 4, 4, 144);
+				div1.className = "form-block svelte-1jqrjze";
+				setStyle(div1, "width", ctx.width);
+				toggleClass(div1, "error", ctx.error);
+				addLoc(div1, file, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				if (if_block0) { if_block0.m(div1, null); }
+				append(div1, text0);
+				append(div1, div0);
+
+				if (slot_content_default) {
+					append(div0, slot_content_default);
+				}
+
+				append(div1, text1);
+				if (if_block1) { if_block1.m(div1, null); }
+				append(div1, text2);
+				if (if_block2) { if_block2.m(div1, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.label) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_2(component, ctx);
+						if_block0.c();
+						if_block0.m(div1, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.error) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_1(component, ctx);
+						if_block1.c();
+						if_block1.m(div1, text2);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (!ctx.error && ctx.help) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block(component, ctx);
+						if_block2.c();
+						if_block2.m(div1, null);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
+				}
+
+				if (changed.width) {
+					setStyle(div1, "width", ctx.width);
+				}
+
+				if (changed.error) {
+					toggleClass(div1, "error", ctx.error);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				if (if_block0) { if_block0.d(); }
+
+				if (slot_content_default) {
+					reinsertChildren(div0, slot_content_default);
+				}
+
+				if (if_block1) { if_block1.d(); }
+				if (if_block2) { if_block2.d(); }
+			}
+		};
+	}
+
+	// (2:4) {#if label}
+	function create_if_block_2(component, ctx) {
+		var label;
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				label.className = "control-label svelte-1jqrjze";
+				addLoc(label, file, 2, 4, 79);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				label.innerHTML = ctx.label;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.label) {
+					label.innerHTML = ctx.label;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+			}
+		};
+	}
+
+	// (8:4) {#if error}
+	function create_if_block_1(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help error svelte-1jqrjze";
+				addLoc(div, file, 8, 4, 220);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.error;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.error) {
+					div.innerHTML = ctx.error;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (10:10) {#if !error && help}
+	function create_if_block(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help svelte-1jqrjze";
+				addLoc(div, file, 10, 4, 299);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.help;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					div.innerHTML = ctx.help;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	function FormBlock(options) {
+		this._debugName = '<FormBlock>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data(), options.data);
+		if (!('width' in this._state)) { console.warn("<FormBlock> was created without expected data property 'width'"); }
+		if (!('label' in this._state)) { console.warn("<FormBlock> was created without expected data property 'label'"); }
+		if (!('error' in this._state)) { console.warn("<FormBlock> was created without expected data property 'error'"); }
+		if (!('help' in this._state)) { console.warn("<FormBlock> was created without expected data property 'help'"); }
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(FormBlock.prototype, protoDev);
+
+	FormBlock.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* account/EditProfile.html generated by Svelte v2.16.1 */
+
+
+
+	function data$1() {
+	    return {
+	        changePassword: false,
+	        changeEmail: false,
+	        deleteAccount: false,
+	        showPasswordInPlaintext: false,
+	        messages: [],
+	        currentPassword: '',
+	        newPassword1: '',
+	        newPassword2: '',
+	        confirmPassword: '',
+	        groups: [
+	            {
+	                title: 'Account settings',
+	                tabs: [
+	                    {
+	                        title: 'Profile',
+	                        icon: 'fa fa-fw fa-user'
+	                    }
+	                ]
+	            },
+	            {
+	                title: 'Team settings',
+	                tabs: []
+	            }
+	        ]
+	    };
+	}
+	var methods = {
+	    changeEmail: function changeEmail() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var email = ref.email;
+	        var userId = ref.userId;
+
+	        this.set({ savingEmail: true });
+
+	        putJSON('/api/users/' + userId, JSON.stringify({ email: email }), function (res) {
+	            this$1.set({ savingEmail: false });
+
+	            var messages = [];
+	            var errors = [];
+
+	            if (res.status === 'error') {
+	                errors.push(res.message);
+	            }
+
+	            if (res.data && res.data.messages) {
+	                res.data.messages.forEach(function (msg) {
+	                    messages.push(msg);
+	                });
+	            }
+
+	            if (res.data && res.data.errors) {
+	                res.data.errors.forEach(function (msg) {
+	                    errors.push(msg);
+	                });
+	            }
+
+	            if (errors.length === 0) {
+	                this$1.set({
+	                    originalEmail: email,
+	                    changeEmail: false,
+	                    messages: messages,
+	                    errors: []
+	                });
+	            } else {
+	                this$1.set({ errors: errors });
+	            }
+	        });
+	    },
+	    changePassword: function changePassword() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var currentPassword = ref.currentPassword;
+	        var newPassword1 = ref.newPassword1;
+	        var newPassword2 = ref.newPassword2;
+	        var userId = ref.userId;
+	        var check = checkPassword(currentPassword, newPassword1, newPassword2);
+
+	        if (check === false) {
+	            this.set({ savingPassword: true });
+
+	            getJSON('/api/auth/salt', function (res) {
+	                if (res.status !== 'ok') {
+	                    this$1.set({
+	                        errors: ['Could not load salt.'],
+	                        savingPassword: false
+	                    });
+
+	                    return;
+	                }
+
+	                var salt = res.data.salt;
+	                var payload = {
+	                    oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
+	                    pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
+	                };
+
+	                putJSON('/api/users/' + userId, JSON.stringify(payload), function (res) {
+	                    this$1.set({
+	                        savingPassword: false,
+	                        currentPassword: '',
+	                        newPassword1: '',
+	                        newPassword2: ''
+	                    });
+
+	                    var messages = [];
+	                    var errors = [];
+
+	                    if (res.status === 'error') {
+	                        errors.push(res.message);
+	                    }
+
+	                    if (res.data && res.data.messages) {
+	                        res.data.messages.forEach(function (msg) {
+	                            messages.push(msg);
+	                        });
+	                    }
+
+	                    if (res.data && res.data.errors) {
+	                        res.data.errors.forEach(function (msg) {
+	                            errors.push(msg);
+	                        });
+	                    }
+
+	                    if (errors.length === 0) {
+	                        messages.push('Your password was changed sucessfully');
+	                        this$1.set({ changePassword: false, messages: messages, errors: [] });
+	                    } else {
+	                        this$1.set({ errors: errors });
+	                    }
+	                });
+	            });
+	        } else {
+	            var errors = [check];
+	            this.set({ errors: errors });
+	        }
+	    },
+	    deleteAccount: function deleteAccount() {
+	        var this$1 = this;
+
+	        var ref = this.get();
+	        var confirmPassword = ref.confirmPassword;
+
+	        this.set({ deletingAccount: true });
+
+	        getJSON('/api/auth/salt', function (res) {
+	            if (res.status !== 'ok') {
+	                this$1.set({
+	                    errors: ['Could not load salt.'],
+	                    deletingAccount: false
+	                });
+
+	                return;
+	            }
+
+	            var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
+
+	            fetchJSON('/api/users/current?pwd=' + passwordHash, 'DELETE', 'include', JSON.stringify({ pwd: passwordHash }), function (res) {
+	                this$1.set({ deletingAccount: false });
+	                var errors = [];
+
+	                if (res.status === 'error') {
+	                    errors.push(res.message);
+	                }
+
+	                if (res.data && res.data.messages) {
+	                    res.data.messages.forEach(function (msg) {
+	                    });
+	                }
+
+	                if (res.data && res.data.errors) {
+	                    res.data.errors.forEach(function (msg) {
+	                        errors.push(msg);
+	                    });
+	                }
+
+	                if (errors.length === 0) {
+	                    this$1.set({ deleteAccount2: false, deleteAccount3: true });
+	                } else {
+	                    this$1.set({ errors: errors });
+	                }
+	            });
+	        });
+	    }
+	};
+
+	function onstate(ref) {
+	    var changed = ref.changed;
+	    var current = ref.current;
+	    var previous = ref.previous;
+
+	    if (changed.email && !previous) {
+	        this.set({ originalEmail: current.email });
+	    }
+	}
+	var file$1 = "account/EditProfile.html";
+
+	function get_each_context_1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.message = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$1(component, ctx) {
+		var h2, text0_value = __("Edit profile"), text0, text1, text2, text3, div2, div0, input, input_disabled_value, text4, if_block2_anchor, text5, text6, text7, div1, p, text8_value = __("account / change-login"), text8;
+
+		function select_block_type(ctx) {
+			if (ctx.changePassword) { return create_if_block_7; }
+			if (ctx.deleteAccount) { return create_if_block_8; }
+			if (ctx.deleteAccount2) { return create_if_block_9; }
+			if (ctx.deleteAccount3) { return create_if_block_10; }
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block0 = current_block_type && current_block_type(component, ctx);
+
+		var if_block1 = (ctx.messages && ctx.messages.length) && create_if_block_6(component, ctx);
+
+		function select_block_type_1(ctx) {
+			if (ctx.changeEmail) { return create_if_block_5; }
+			return create_else_block_2;
+		}
+
+		var current_block_type_1 = select_block_type_1(ctx);
+		var if_block2 = current_block_type_1(component, ctx);
+
+		var formblock_initial_data = {
+		 	label: __('E-Mail'),
+		 	help: ctx.changeEmail ? __('account / confirm-email-change') : ''
+		 };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		function select_block_type_2(ctx) {
+			if (!ctx.changePassword) { return create_if_block_3; }
+			return create_else_block_1;
+		}
+
+		var current_block_type_2 = select_block_type_2(ctx);
+		var if_block3 = current_block_type_2(component, ctx);
+
+		function select_block_type_3(ctx) {
+			if (ctx.deleteAccount3) { return create_if_block$1; }
+			if (ctx.deleteAccount2) { return create_if_block_1$1; }
+			if (ctx.deleteAccount) { return create_if_block_2$1; }
+			return create_else_block;
+		}
+
+		var current_block_type_3 = select_block_type_3(ctx);
+		var if_block4 = current_block_type_3(component, ctx);
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n");
+				if (if_block0) { if_block0.c(); }
+				text2 = createText(" ");
+				if (if_block1) { if_block1.c(); }
+				text3 = createText("\n\n");
+				div2 = createElement("div");
+				div0 = createElement("div");
+				input = createElement("input");
+				text4 = createText("\n            ");
+				if_block2.c();
+				if_block2_anchor = createComment();
+				formblock._fragment.c();
+				text5 = createText("\n\n        ");
+				if_block3.c();
+				text6 = createText(" ");
+				if_block4.c();
+				text7 = createText("\n    ");
+				div1 = createElement("div");
+				p = createElement("p");
+				text8 = createText(text8_value);
+				addLoc(h2, file$1, 0, 0, 0);
+				input.disabled = input_disabled_value = !ctx.changeEmail;
+				input.value = ctx.originalEmail;
+				setAttribute(input, "type", "text");
+				addLoc(input, file$1, 80, 12, 3077);
+				div0.className = "span6";
+				addLoc(div0, file$1, 78, 4, 2935);
+				p.className = "help";
+				addLoc(p, file$1, 194, 8, 8340);
+				div1.className = "span4";
+				addLoc(div1, file$1, 193, 4, 8312);
+				div2.className = "row edit-account";
+				setStyle(div2, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
+				addLoc(div2, file$1, 77, 0, 2836);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				append(h2, text0);
+				insert(target, text1, anchor);
+				if (if_block0) { if_block0.m(target, anchor); }
+				insert(target, text2, anchor);
+				if (if_block1) { if_block1.m(target, anchor); }
+				insert(target, text3, anchor);
+				insert(target, div2, anchor);
+				append(div2, div0);
+				append(formblock._slotted.default, input);
+				append(formblock._slotted.default, text4);
+				if_block2.m(formblock._slotted.default, null);
+				append(formblock._slotted.default, if_block2_anchor);
+				formblock._mount(div0, null);
+				append(div0, text5);
+				if_block3.m(div0, null);
+				append(div0, text6);
+				if_block4.m(div0, null);
+				append(div2, text7);
+				append(div2, div1);
+				append(div1, p);
+				append(p, text8);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+					if (if_block0) { if_block0.d(1); }
+					if_block0 = current_block_type && current_block_type(component, ctx);
+					if (if_block0) { if_block0.c(); }
+					if (if_block0) { if_block0.m(text2.parentNode, text2); }
+				}
+
+				if (ctx.messages && ctx.messages.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_6(component, ctx);
+						if_block1.c();
+						if_block1.m(text3.parentNode, text3);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if ((changed.changeEmail) && input_disabled_value !== (input_disabled_value = !ctx.changeEmail)) {
+					input.disabled = input_disabled_value;
+				}
+
+				if (changed.originalEmail) {
+					input.value = ctx.originalEmail;
+				}
+
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block2) {
+					if_block2.p(changed, ctx);
+				} else {
+					if_block2.d(1);
+					if_block2 = current_block_type_1(component, ctx);
+					if_block2.c();
+					if_block2.m(if_block2_anchor.parentNode, if_block2_anchor);
+				}
+
+				var formblock_changes = {};
+				if (changed.changeEmail) { formblock_changes.help = ctx.changeEmail ? __('account / confirm-email-change') : ''; }
+				formblock._set(formblock_changes);
+
+				if (current_block_type_2 === (current_block_type_2 = select_block_type_2(ctx)) && if_block3) {
+					if_block3.p(changed, ctx);
+				} else {
+					if_block3.d(1);
+					if_block3 = current_block_type_2(component, ctx);
+					if_block3.c();
+					if_block3.m(div0, text6);
+				}
+
+				if (current_block_type_3 === (current_block_type_3 = select_block_type_3(ctx)) && if_block4) {
+					if_block4.p(changed, ctx);
+				} else {
+					if_block4.d(1);
+					if_block4 = current_block_type_3(component, ctx);
+					if_block4.c();
+					if_block4.m(div0, null);
+				}
+
+				if (changed.messages) {
+					setStyle(div2, "margin-top", "" + (ctx.messages && ctx.messages.length ? 0 : 20) + "px");
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+					detachNode(text1);
+				}
+
+				if (if_block0) { if_block0.d(detach); }
+				if (detach) {
+					detachNode(text2);
+				}
+
+				if (if_block1) { if_block1.d(detach); }
+				if (detach) {
+					detachNode(text3);
+					detachNode(div2);
+				}
+
+				if_block2.d();
+				formblock.destroy();
+				if_block3.d();
+				if_block4.d();
+			}
+		};
+	}
+
+	// (59:76) 
+	function create_if_block_10(component, ctx) {
+		var div1, div0;
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				div0.className = "span6 offset3";
+				addLoc(div0, file$1, 61, 4, 2416);
+				div1.className = "row delete-account";
+				addLoc(div1, file$1, 60, 0, 2379);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+			}
+		};
+	}
+
+	// (59:50) 
+	function create_if_block_9(component, ctx) {
+
+		return {
+			c: noop,
+
+			m: noop,
+
+			d: noop
+		};
+	}
+
+	// (59:24) 
+	function create_if_block_8(component, ctx) {
+
+		return {
+			c: noop,
+
+			m: noop,
+
+			d: noop
+		};
+	}
+
+	// (3:0) {#if changePassword }
+	function create_if_block_7(component, ctx) {
+
+		return {
+			c: noop,
+
+			m: noop,
+
+			d: noop
+		};
+	}
+
+	// (64:6) {#if messages && messages.length }
+	function create_if_block_6(component, ctx) {
+		var div2, div1, div0, ul;
+
+		var each_value = ctx.messages;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block_1(component, get_each_context(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				div1 = createElement("div");
+				div0 = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file$1, 67, 12, 2637);
+				div0.className = "alert alert-success";
+				addLoc(div0, file$1, 66, 8, 2591);
+				div1.className = "span6 offset3";
+				addLoc(div1, file$1, 65, 4, 2555);
+				div2.className = "row";
+				setStyle(div2, "margin-top", "20px");
+				addLoc(div2, file$1, 64, 0, 2507);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, div1);
+				append(div1, div0);
+				append(div0, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.messages) {
+					each_value = ctx.messages;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (69:16) {#each messages as message}
+	function create_each_block_1(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file$1, 69, 16, 2728);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.messages) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (89:12) {:else}
+	function create_else_block_2(component, ctx) {
+		var button, text_value = __( "account / email"), text;
+
+		function click_handler(event) {
+			component.set({changeEmail: true});
+		}
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				text = createText(text_value);
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-save btn-default";
+				addLoc(button, file$1, 89, 12, 3572);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, text);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler);
+			}
+		};
+	}
+
+	// (82:12) {#if changeEmail}
+	function create_if_block_5(component, ctx) {
+		var button0, text0_value = __( "Back"), text0, text1, button1, i, i_class_value, text2, text3_value = __( "account / email"), text3;
+
+		function click_handler(event) {
+			component.set({changeEmail: false});
+		}
+
+		function click_handler_1(event) {
+			component.changeEmail();
+		}
+
+		return {
+			c: function create() {
+				button0 = createElement("button");
+				text0 = createText(text0_value);
+				text1 = createText("\n            ");
+				button1 = createElement("button");
+				i = createElement("i");
+				text2 = createText("  ");
+				text3 = createText(text3_value);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-default";
+				addLoc(button0, file$1, 82, 12, 3195);
+				i.className = i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
+				addLoc(i, file$1, 86, 16, 3414);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-save btn-primary";
+				addLoc(button1, file$1, 85, 12, 3331);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button0, anchor);
+				append(button0, text0);
+				insert(target, text1, anchor);
+				insert(target, button1, anchor);
+				append(button1, i);
+				append(button1, text2);
+				append(button1, text3);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.savingEmail) && i_class_value !== (i_class_value = "fa " + (ctx.savingEmail ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button0);
+				}
+
+				removeListener(button0, "click", click_handler);
+				if (detach) {
+					detachNode(text1);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (103:8) {:else}
+	function create_else_block_1(component, ctx) {
+		var h3, text0_value = __("account / password"), text0, text1, button0, text2_value = __("Back"), text2, text3, text4, input0, input0_updating = false, text5, input1, input1_updating = false, text6, input2, input2_updating = false, text7, button1, i, i_class_value, text8, text9_value = __("account / password"), text9, text10, hr;
+
+		function click_handler(event) {
+			component.set({changePassword: false});
+		}
+
+		var if_block = (ctx.changePassword && ctx.errors && ctx.errors.length) && create_if_block_4(component, ctx);
+
+		function input0_input_handler() {
+			input0_updating = true;
+			component.set({ currentPassword: input0.value });
+			input0_updating = false;
+		}
+
+		var formblock0_initial_data = {
+		 	label: __('Current Password'),
+		 	help: __('account / password / current-password-note')
+		 };
+		var formblock0 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock0_initial_data
+		});
+
+		function input1_input_handler() {
+			input1_updating = true;
+			component.set({ newPassword1: input1.value });
+			input1_updating = false;
+		}
+
+		var formblock1_initial_data = {
+		 	error: ctx.currentPassword ? checkPassword(ctx.currentPassword, ctx.newPassword1, ctx.newPassword2) : false,
+		 	label: __('New Password'),
+		 	help: "Your password must have at least 4 characters"
+		 };
+		var formblock1 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock1_initial_data
+		});
+
+		function input2_input_handler() {
+			input2_updating = true;
+			component.set({ newPassword2: input2.value });
+			input2_updating = false;
+		}
+
+		var formblock2_initial_data = {
+		 	error: ctx.currentPassword ? checkPassword(ctx.currentPassword, ctx.newPassword1, ctx.newPassword2) : false,
+		 	label: __('(repeat)'),
+		 	help: ""
+		 };
+		var formblock2 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock2_initial_data
+		});
+
+		function click_handler_1(event) {
+			component.changePassword();
+		}
+
+		return {
+			c: function create() {
+				h3 = createElement("h3");
+				text0 = createText(text0_value);
+				text1 = createText("\n            ");
+				button0 = createElement("button");
+				text2 = createText(text2_value);
+				text3 = createText("\n        ");
+				if (if_block) { if_block.c(); }
+				text4 = createText("\n        ");
+				input0 = createElement("input");
+				formblock0._fragment.c();
+				text5 = createText("\n        ");
+				input1 = createElement("input");
+				formblock1._fragment.c();
+				text6 = createText("\n        ");
+				input2 = createElement("input");
+				formblock2._fragment.c();
+				text7 = createText("\n\n        ");
+				button1 = createElement("button");
+				i = createElement("i");
+				text8 = createText("  ");
+				text9 = createText(text9_value);
+				text10 = createText("\n        ");
+				hr = createElement("hr");
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-save btn-default btn-back";
+				addLoc(button0, file$1, 105, 12, 4167);
+				addLoc(h3, file$1, 103, 8, 4109);
+				addListener(input0, "input", input0_input_handler);
+				setAttribute(input0, "type", "password");
+				input0.className = "input-xlarge";
+				addLoc(input0, file$1, 119, 12, 4735);
+				addListener(input1, "input", input1_input_handler);
+				setAttribute(input1, "type", "password");
+				input1.className = "input-xlarge";
+				addLoc(input1, file$1, 126, 12, 5088);
+				addListener(input2, "input", input2_input_handler);
+				setAttribute(input2, "type", "password");
+				input2.className = "input-xlarge";
+				addLoc(input2, file$1, 129, 12, 5344);
+				i.className = i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
+				addLoc(i, file$1, 133, 12, 5520);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-primary";
+				addLoc(button1, file$1, 132, 8, 5447);
+				addLoc(hr, file$1, 135, 8, 5655);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h3, anchor);
+				append(h3, text0);
+				append(h3, text1);
+				append(h3, button0);
+				append(button0, text2);
+				insert(target, text3, anchor);
+				if (if_block) { if_block.m(target, anchor); }
+				insert(target, text4, anchor);
+				append(formblock0._slotted.default, input0);
+
+				input0.value = ctx.currentPassword;
+
+				formblock0._mount(target, anchor);
+				insert(target, text5, anchor);
+				append(formblock1._slotted.default, input1);
+
+				input1.value = ctx.newPassword1;
+
+				formblock1._mount(target, anchor);
+				insert(target, text6, anchor);
+				append(formblock2._slotted.default, input2);
+
+				input2.value = ctx.newPassword2;
+
+				formblock2._mount(target, anchor);
+				insert(target, text7, anchor);
+				insert(target, button1, anchor);
+				append(button1, i);
+				append(button1, text8);
+				append(button1, text9);
+				insert(target, text10, anchor);
+				insert(target, hr, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.changePassword && ctx.errors && ctx.errors.length) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_4(component, ctx);
+						if_block.c();
+						if_block.m(text4.parentNode, text4);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (!input0_updating && changed.currentPassword) { input0.value = ctx.currentPassword; }
+				if (!input1_updating && changed.newPassword1) { input1.value = ctx.newPassword1; }
+
+				var formblock1_changes = {};
+				if (changed.currentPassword || changed.newPassword1 || changed.newPassword2) { formblock1_changes.error = ctx.currentPassword ? checkPassword(ctx.currentPassword, ctx.newPassword1, ctx.newPassword2) : false; }
+				formblock1._set(formblock1_changes);
+
+				if (!input2_updating && changed.newPassword2) { input2.value = ctx.newPassword2; }
+
+				var formblock2_changes = {};
+				if (changed.currentPassword || changed.newPassword1 || changed.newPassword2) { formblock2_changes.error = ctx.currentPassword ? checkPassword(ctx.currentPassword, ctx.newPassword1, ctx.newPassword2) : false; }
+				formblock2._set(formblock2_changes);
+
+				if ((changed.savingPassword) && i_class_value !== (i_class_value = "fa " + (ctx.savingPassword ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h3);
+				}
+
+				removeListener(button0, "click", click_handler);
+				if (detach) {
+					detachNode(text3);
+				}
+
+				if (if_block) { if_block.d(detach); }
+				if (detach) {
+					detachNode(text4);
+				}
+
+				removeListener(input0, "input", input0_input_handler);
+				formblock0.destroy(detach);
+				if (detach) {
+					detachNode(text5);
+				}
+
+				removeListener(input1, "input", input1_input_handler);
+				formblock1.destroy(detach);
+				if (detach) {
+					detachNode(text6);
+				}
+
+				removeListener(input2, "input", input2_input_handler);
+				formblock2.destroy(detach);
+				if (detach) {
+					detachNode(text7);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_1);
+				if (detach) {
+					detachNode(text10);
+					detachNode(hr);
+				}
+			}
+		};
+	}
+
+	// (96:8) {#if !changePassword}
+	function create_if_block_3(component, ctx) {
+		var input, text0, button, text1_value = __("account / password"), text1;
+
+		function click_handler(event) {
+			component.set({changePassword: true});
+		}
+
+		var formblock_initial_data = { label: __('Password'), help: "" };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		return {
+			c: function create() {
+				input = createElement("input");
+				text0 = createText("\n            ");
+				button = createElement("button");
+				text1 = createText(text1_value);
+				formblock._fragment.c();
+				input.disabled = true;
+				input.value = "abcdefgh";
+				setAttribute(input, "type", "password");
+				addLoc(input, file$1, 97, 12, 3852);
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-save btn-default";
+				addLoc(button, file$1, 98, 12, 3916);
+			},
+
+			m: function mount(target, anchor) {
+				append(formblock._slotted.default, input);
+				append(formblock._slotted.default, text0);
+				append(formblock._slotted.default, button);
+				append(button, text1);
+				formblock._mount(target, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				removeListener(button, "click", click_handler);
+				formblock.destroy(detach);
+			}
+		};
+	}
+
+	// (110:8) {#if changePassword && errors && errors.length }
+	function create_if_block_4(component, ctx) {
+		var div, ul;
+
+		var each_value_1 = ctx.errors;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block(component, get_each_context_1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setStyle(ul, "margin-bottom", "0");
+				addLoc(ul, file$1, 111, 12, 4422);
+				div.className = "alert";
+				addLoc(div, file$1, 110, 8, 4390);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.errors) {
+					each_value_1 = ctx.errors;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (113:16) {#each errors as message}
+	function create_each_block(component, ctx) {
+		var li, raw_value = ctx.message;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				addLoc(li, file$1, 113, 16, 4511);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				li.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.errors) && raw_value !== (raw_value = ctx.message)) {
+					li.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (188:8) {:else}
+	function create_else_block(component, ctx) {
+		var button, text_value = __("account / delete"), text;
+
+		function click_handler(event) {
+			component.set({deleteAccount: true});
+		}
+
+		var formblock_initial_data = { label: "Delete account", help: "" };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				text = createText(text_value);
+				formblock._fragment.c();
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-danger";
+				setAttribute(button, "href", "#");
+				addLoc(button, file$1, 189, 12, 8148);
+			},
+
+			m: function mount(target, anchor) {
+				append(formblock._slotted.default, button);
+				append(button, text);
+				formblock._mount(target, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				removeListener(button, "click", click_handler);
+				formblock.destroy(detach);
+			}
+		};
+	}
+
+	// (177:31) 
+	function create_if_block_2$1(component, ctx) {
+		var h3, i0, text0, text1_value = __("account / confirm-account-deletion"), text1, text2, button0, i1, text3, text4_value = __("account / confirm-account-deletion / no"), text4, text5, text6_value = __("account / or"), text6, text7, button1, i2, text8, text9_value = __("account / confirm-account-deletion / yes"), text9;
+
+		function click_handler(event) {
+			component.set({deleteAccount: false});
+		}
+
+		function click_handler_1(event) {
+			component.set({deleteAccount: false, deleteAccount2: true});
+		}
+
+		return {
+			c: function create() {
+				h3 = createElement("h3");
+				i0 = createElement("i");
+				text0 = createText(" ");
+				text1 = createText(text1_value);
+				text2 = createText("\n        ");
+				button0 = createElement("button");
+				i1 = createElement("i");
+				text3 = createText("   ");
+				text4 = createText(text4_value);
+				text5 = createText("\n\n        ");
+				text6 = createText(text6_value);
+				text7 = createText("\n\n        ");
+				button1 = createElement("button");
+				i2 = createElement("i");
+				text8 = createText("   ");
+				text9 = createText(text9_value);
+				i0.className = "fa fa-times svelte-19q3a7q";
+				addLoc(i0, file$1, 177, 12, 7529);
+				h3.className = "svelte-19q3a7q";
+				addLoc(h3, file$1, 177, 8, 7525);
+				i1.className = "fa fa-chevron-left";
+				addLoc(i1, file$1, 179, 12, 7708);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-back btn-primary";
+				addLoc(button0, file$1, 178, 8, 7615);
+				i2.className = "fa fa-times";
+				addLoc(i2, file$1, 185, 12, 7965);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-default";
+				addLoc(button1, file$1, 184, 8, 7859);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h3, anchor);
+				append(h3, i0);
+				append(h3, text0);
+				append(h3, text1);
+				insert(target, text2, anchor);
+				insert(target, button0, anchor);
+				append(button0, i1);
+				append(button0, text3);
+				append(button0, text4);
+				insert(target, text5, anchor);
+				insert(target, text6, anchor);
+				insert(target, text7, anchor);
+				insert(target, button1, anchor);
+				append(button1, i2);
+				append(button1, text8);
+				append(button1, text9);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h3);
+					detachNode(text2);
+					detachNode(button0);
+				}
+
+				removeListener(button0, "click", click_handler);
+				if (detach) {
+					detachNode(text5);
+					detachNode(text6);
+					detachNode(text7);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (144:32) 
+	function create_if_block_1$1(component, ctx) {
+		var h2, text0_value = __("account / delete / hed"), text0, text1, div1, p0, text2_value = __("account / delete / really"), text2, text3, ul, li0, text4_value = __("account / confirm-account-deletion / free"), text4, text5, li1, text6_value = __("You cannot login and logout anymore."), text6, text7, li2, text8_value = __("You cannot edit or remove your charts anymore."), text8, text9, p1, text10_value = __("account / delete / charts-stay-online"), text10, text11, input, input_updating = false, text12, p2, raw_value = __("account / delete / really-really"), text13, div0, button0, i0, text14, text15_value = __("No, I changed my mind.."), text15, text16, button1, i1, i1_class_value, text17, text18_value = __("Yes, delete it!"), text18;
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ confirmPassword: input.value });
+			input_updating = false;
+		}
+
+		var formblock_initial_data = {
+		 	label: __('Please enter your password to confirm the deletion request:'),
+		 	error: ctx.errors && ctx.errors.length ? ctx.errors.join('. ') : false
+		 };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		function click_handler(event) {
+			component.set({deleteAccount2: false});
+		}
+
+		function click_handler_1(event) {
+			component.deleteAccount();
+		}
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				div1 = createElement("div");
+				p0 = createElement("p");
+				text2 = createText(text2_value);
+				text3 = createText("\n            ");
+				ul = createElement("ul");
+				li0 = createElement("li");
+				text4 = createText(text4_value);
+				text5 = createText("\n                ");
+				li1 = createElement("li");
+				text6 = createText(text6_value);
+				text7 = createText("\n                ");
+				li2 = createElement("li");
+				text8 = createText(text8_value);
+				text9 = createText("\n            ");
+				p1 = createElement("p");
+				text10 = createText(text10_value);
+				text11 = createText("\n\n            ");
+				input = createElement("input");
+				formblock._fragment.c();
+				text12 = createText("\n            ");
+				p2 = createElement("p");
+				text13 = createText("\n            ");
+				div0 = createElement("div");
+				button0 = createElement("button");
+				i0 = createElement("i");
+				text14 = createText("  ");
+				text15 = createText(text15_value);
+				text16 = createText("\n                ");
+				button1 = createElement("button");
+				i1 = createElement("i");
+				text17 = createText("  ");
+				text18 = createText(text18_value);
+				setStyle(h2, "margin-bottom", "20px");
+				addLoc(h2, file$1, 144, 8, 5973);
+				addLoc(p0, file$1, 146, 12, 6091);
+				addLoc(li0, file$1, 150, 16, 6197);
+				addLoc(li1, file$1, 151, 16, 6274);
+				addLoc(li2, file$1, 152, 16, 6346);
+				addLoc(ul, file$1, 149, 12, 6176);
+				addLoc(p1, file$1, 154, 12, 6442);
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "password");
+				input.placeholder = __("Password");
+				addLoc(input, file$1, 162, 16, 6753);
+				p2.className = "lead";
+				addLoc(p2, file$1, 164, 12, 6878);
+				i0.className = "fa fa-chevron-left";
+				addLoc(i0, file$1, 169, 20, 7122);
+				addListener(button0, "click", click_handler);
+				button0.className = "btn btn-info";
+				addLoc(button0, file$1, 168, 16, 7032);
+				i1.className = i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q";
+				addLoc(i1, file$1, 172, 20, 7318);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-danger";
+				addLoc(button1, file$1, 171, 16, 7239);
+				div0.className = "control-group";
+				addLoc(div0, file$1, 167, 12, 6988);
+				div1.className = "delete-account";
+				addLoc(div1, file$1, 145, 8, 6050);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				append(h2, text0);
+				insert(target, text1, anchor);
+				insert(target, div1, anchor);
+				append(div1, p0);
+				append(p0, text2);
+				append(div1, text3);
+				append(div1, ul);
+				append(ul, li0);
+				append(li0, text4);
+				append(ul, text5);
+				append(ul, li1);
+				append(li1, text6);
+				append(ul, text7);
+				append(ul, li2);
+				append(li2, text8);
+				append(div1, text9);
+				append(div1, p1);
+				append(p1, text10);
+				append(div1, text11);
+				append(formblock._slotted.default, input);
+
+				input.value = ctx.confirmPassword;
+
+				formblock._mount(div1, null);
+				append(div1, text12);
+				append(div1, p2);
+				p2.innerHTML = raw_value;
+				append(div1, text13);
+				append(div1, div0);
+				append(div0, button0);
+				append(button0, i0);
+				append(button0, text14);
+				append(button0, text15);
+				append(div0, text16);
+				append(div0, button1);
+				append(button1, i1);
+				append(button1, text17);
+				append(button1, text18);
+			},
+
+			p: function update(changed, ctx) {
+				if (!input_updating && changed.confirmPassword) { input.value = ctx.confirmPassword; }
+
+				var formblock_changes = {};
+				if (changed.errors) { formblock_changes.error = ctx.errors && ctx.errors.length ? ctx.errors.join('. ') : false; }
+				formblock._set(formblock_changes);
+
+				if ((changed.deletingAccount) && i1_class_value !== (i1_class_value = "fa " + (ctx.deletingAccount ? 'fa-spin fa-spinner' : 'fa-check') + " svelte-19q3a7q")) {
+					i1.className = i1_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+					detachNode(text1);
+					detachNode(div1);
+				}
+
+				removeListener(input, "input", input_input_handler);
+				formblock.destroy();
+				removeListener(button0, "click", click_handler);
+				removeListener(button1, "click", click_handler_1);
+			}
+		};
+	}
+
+	// (137:14) {#if deleteAccount3}
+	function create_if_block$1(component, ctx) {
+		var h2, text0_value = __("account / delete / hed"), text0, text1, h3, text2_value = __("Your account has been deleted."), text2, text3, a, text4_value = __("Goodbye!"), text4;
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				h3 = createElement("h3");
+				text2 = createText(text2_value);
+				text3 = createText("\n        ");
+				a = createElement("a");
+				text4 = createText(text4_value);
+				setStyle(h2, "margin-bottom", "20px");
+				addLoc(h2, file$1, 137, 8, 5705);
+				addLoc(h3, file$1, 138, 8, 5782);
+				a.href = "/";
+				a.className = "btn btn-primary btn-large";
+				addLoc(a, file$1, 141, 8, 5862);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				append(h2, text0);
+				insert(target, text1, anchor);
+				insert(target, h3, anchor);
+				append(h3, text2);
+				insert(target, text3, anchor);
+				insert(target, a, anchor);
+				append(a, text4);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+					detachNode(text1);
+					detachNode(h3);
+					detachNode(text3);
+					detachNode(a);
+				}
+			}
+		};
+	}
+
+	function EditProfile(options) {
+		var this$1 = this;
+
+		this._debugName = '<EditProfile>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$1(), options.data);
+		if (!('changePassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'changePassword'"); }
+		if (!('deleteAccount' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount'"); }
+		if (!('deleteAccount2' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount2'"); }
+		if (!('deleteAccount3' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deleteAccount3'"); }
+		if (!('messages' in this._state)) { console.warn("<EditProfile> was created without expected data property 'messages'"); }
+		if (!('changeEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'changeEmail'"); }
+		if (!('originalEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'originalEmail'"); }
+		if (!('savingEmail' in this._state)) { console.warn("<EditProfile> was created without expected data property 'savingEmail'"); }
+		if (!('errors' in this._state)) { console.warn("<EditProfile> was created without expected data property 'errors'"); }
+		if (!('currentPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'currentPassword'"); }
+		if (!('newPassword1' in this._state)) { console.warn("<EditProfile> was created without expected data property 'newPassword1'"); }
+		if (!('newPassword2' in this._state)) { console.warn("<EditProfile> was created without expected data property 'newPassword2'"); }
+		if (!('savingPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'savingPassword'"); }
+		if (!('confirmPassword' in this._state)) { console.warn("<EditProfile> was created without expected data property 'confirmPassword'"); }
+		if (!('deletingAccount' in this._state)) { console.warn("<EditProfile> was created without expected data property 'deletingAccount'"); }
+		this._intro = true;
+
+		this._handlers.state = [onstate];
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$1(this, this._state);
+
+		this.root._oncreate.push(function () {
+			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(EditProfile.prototype, protoDev);
+	assign(EditProfile.prototype, methods);
+
+	EditProfile.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* node_modules/@datawrapper/controls/ControlGroup.html generated by Svelte v2.16.1 */
+
+	function data$2() {
+	    return {
+	        disabled: false,
+	        help: false,
+	        type: 'default',
+	        valign: 'baseline',
+	        inline: false
+	    };
+	}
+	var def = {
+	    width: '100px'
+	};
+
+	var file$2 = "node_modules/datawrapper/controls/ControlGroup.html";
+
+	function create_main_fragment$2(component, ctx) {
+		var div1, text0, div0, slot_content_default = component._slotted.default, slot_content_default_after, text1, div1_class_value;
+
+		var if_block0 = (ctx.label) && create_if_block_1$2(component, ctx);
+
+		var if_block1 = (ctx.help) && create_if_block$2(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				if (if_block0) { if_block0.c(); }
+				text0 = createText("\n    ");
+				div0 = createElement("div");
+				text1 = createText("\n        ");
+				if (if_block1) { if_block1.c(); }
+				div0.className = "controls svelte-xyokw0";
+				setStyle(div0, "width", "calc(100% - " + (ctx.width||def.width) + " - 40px)");
+				toggleClass(div0, "form-inline", ctx.inline);
+				addLoc(div0, file$2, 4, 4, 219);
+				div1.className = div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-xyokw0";
+				addLoc(div1, file$2, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				if (if_block0) { if_block0.m(div1, null); }
+				append(div1, text0);
+				append(div1, div0);
+
+				if (slot_content_default) {
+					append(div0, slot_content_default);
+					append(div0, slot_content_default_after || (slot_content_default_after = createComment()));
+				}
+
+				append(div0, text1);
+				if (if_block1) { if_block1.m(div0, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.label) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_1$2(component, ctx);
+						if_block0.c();
+						if_block0.m(div1, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.help) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$2(component, ctx);
+						if_block1.c();
+						if_block1.m(div0, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (changed.width) {
+					setStyle(div0, "width", "calc(100% - " + (ctx.width||def.width) + " - 40px)");
+				}
+
+				if (changed.inline) {
+					toggleClass(div0, "form-inline", ctx.inline);
+				}
+
+				if ((changed.type || changed.valign) && div1_class_value !== (div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-xyokw0")) {
+					div1.className = div1_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				if (if_block0) { if_block0.d(); }
+
+				if (slot_content_default) {
+					reinsertBefore(slot_content_default_after, slot_content_default);
+				}
+
+				if (if_block1) { if_block1.d(); }
+			}
+		};
+	}
+
+	// (2:4) {#if label}
+	function create_if_block_1$2(component, ctx) {
+		var label;
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				setStyle(label, "width", (ctx.width||def.width));
+				label.className = "control-label svelte-xyokw0";
+				toggleClass(label, "disabled", ctx.disabled);
+				addLoc(label, file$2, 2, 4, 104);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				label.innerHTML = ctx.label;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.label) {
+					label.innerHTML = ctx.label;
+				}
+
+				if (changed.width) {
+					setStyle(label, "width", (ctx.width||def.width));
+				}
+
+				if (changed.disabled) {
+					toggleClass(label, "disabled", ctx.disabled);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+			}
+		};
+	}
+
+	// (7:8) {#if help}
+	function create_if_block$2(component, ctx) {
+		var p, p_class_value;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				p.className = p_class_value = "mini-help " + ctx.type + " svelte-xyokw0";
+				addLoc(p, file$2, 7, 8, 368);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = ctx.help;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					p.innerHTML = ctx.help;
+				}
+
+				if ((changed.type) && p_class_value !== (p_class_value = "mini-help " + ctx.type + " svelte-xyokw0")) {
+					p.className = p_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	function ControlGroup(options) {
+		this._debugName = '<ControlGroup>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$2(), options.data);
+		if (!('type' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'type'"); }
+		if (!('valign' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'valign'"); }
+		if (!('label' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'label'"); }
+		if (!('width' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'width'"); }
+		if (!('inline' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'inline'"); }
+		if (!('help' in this._state)) { console.warn("<ControlGroup> was created without expected data property 'help'"); }
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$2(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(ControlGroup.prototype, protoDev);
+
+	ControlGroup.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* node_modules/@datawrapper/controls/BaseSelect.html generated by Svelte v2.16.1 */
+
+	function data$3() {
+	    return {
+	        disabled: false,
+	        width: 'auto',
+	        labelWidth: 'auto',
+	        options: [],
+	        optgroups: []
+	    };
+	}
+	var file$3 = "node_modules/datawrapper/controls/BaseSelect.html";
+
+	function get_each_context_2(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.opt = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context_1$1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.optgroup = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context$1(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.opt = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$3(component, ctx) {
+		var select, if_block0_anchor, select_updating = false;
+
+		var if_block0 = (ctx.options.length) && create_if_block_1$3(component, ctx);
+
+		var if_block1 = (ctx.optgroups.length) && create_if_block$3(component, ctx);
+
+		function select_change_handler() {
+			select_updating = true;
+			component.set({ value: selectValue(select) });
+			select_updating = false;
+		}
+
+		return {
+			c: function create() {
+				select = createElement("select");
+				if (if_block0) { if_block0.c(); }
+				if_block0_anchor = createComment();
+				if (if_block1) { if_block1.c(); }
+				addListener(select, "change", select_change_handler);
+				if (!('value' in ctx)) { component.root._beforecreate.push(select_change_handler); }
+				select.className = "select-css svelte-v0oq4b";
+				select.disabled = ctx.disabled;
+				setStyle(select, "width", ctx.width);
+				addLoc(select, file$3, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, select, anchor);
+				if (if_block0) { if_block0.m(select, null); }
+				append(select, if_block0_anchor);
+				if (if_block1) { if_block1.m(select, null); }
+
+				selectOption(select, ctx.value);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.options.length) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_1$3(component, ctx);
+						if_block0.c();
+						if_block0.m(select, if_block0_anchor);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.optgroups.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$3(component, ctx);
+						if_block1.c();
+						if_block1.m(select, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (!select_updating && changed.value) { selectOption(select, ctx.value); }
+				if (changed.disabled) {
+					select.disabled = ctx.disabled;
+				}
+
+				if (changed.width) {
+					setStyle(select, "width", ctx.width);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(select);
+				}
+
+				if (if_block0) { if_block0.d(); }
+				if (if_block1) { if_block1.d(); }
+				removeListener(select, "change", select_change_handler);
+			}
+		};
+	}
+
+	// (2:4) {#if options.length}
+	function create_if_block_1$3(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.options;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block_2(component, get_each_context$1(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.options) {
+					each_value = ctx.options;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$1(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(each_anchor);
+				}
+			}
+		};
+	}
+
+	// (2:25) {#each options as opt}
+	function create_each_block_2(component, ctx) {
+		var option, text_value = ctx.opt.label, text, option_value_value;
+
+		return {
+			c: function create() {
+				option = createElement("option");
+				text = createText(text_value);
+				option.__value = option_value_value = ctx.opt.value;
+				option.value = option.__value;
+				addLoc(option, file$3, 2, 4, 145);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, option, anchor);
+				append(option, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.options) && text_value !== (text_value = ctx.opt.label)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.options) && option_value_value !== (option_value_value = ctx.opt.value)) {
+					option.__value = option_value_value;
+				}
+
+				option.value = option.__value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(option);
+				}
+			}
+		};
+	}
+
+	// (4:18) {#if optgroups.length}
+	function create_if_block$3(component, ctx) {
+		var each_anchor;
+
+		var each_value_1 = ctx.optgroups;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block$1(component, get_each_context_1$1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.optgroups) {
+					each_value_1 = ctx.optgroups;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(each_anchor);
+				}
+			}
+		};
+	}
+
+	// (6:8) {#each optgroup.options as opt}
+	function create_each_block_1$1(component, ctx) {
+		var option, text_value = ctx.opt.label, text, option_value_value;
+
+		return {
+			c: function create() {
+				option = createElement("option");
+				text = createText(text_value);
+				option.__value = option_value_value = ctx.opt.value;
+				option.value = option.__value;
+				addLoc(option, file$3, 6, 8, 353);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, option, anchor);
+				append(option, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.optgroups) && text_value !== (text_value = ctx.opt.label)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.optgroups) && option_value_value !== (option_value_value = ctx.opt.value)) {
+					option.__value = option_value_value;
+				}
+
+				option.value = option.__value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(option);
+				}
+			}
+		};
+	}
+
+	// (4:41) {#each optgroups as optgroup}
+	function create_each_block$1(component, ctx) {
+		var optgroup, optgroup_label_value;
+
+		var each_value_2 = ctx.optgroup.options;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_2.length; i += 1) {
+			each_blocks[i] = create_each_block_1$1(component, get_each_context_2(ctx, each_value_2, i));
+		}
+
+		return {
+			c: function create() {
+				optgroup = createElement("optgroup");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setAttribute(optgroup, "label", optgroup_label_value = ctx.optgroup.label);
+				addLoc(optgroup, file$3, 4, 4, 269);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, optgroup, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(optgroup, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.optgroups) {
+					each_value_2 = ctx.optgroup.options;
+
+					for (var i = 0; i < each_value_2.length; i += 1) {
+						var child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1$1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(optgroup, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_2.length;
+				}
+
+				if ((changed.optgroups) && optgroup_label_value !== (optgroup_label_value = ctx.optgroup.label)) {
+					setAttribute(optgroup, "label", optgroup_label_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(optgroup);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	function BaseSelect(options) {
+		this._debugName = '<BaseSelect>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$3(), options.data);
+		if (!('disabled' in this._state)) { console.warn("<BaseSelect> was created without expected data property 'disabled'"); }
+		if (!('value' in this._state)) { console.warn("<BaseSelect> was created without expected data property 'value'"); }
+		if (!('width' in this._state)) { console.warn("<BaseSelect> was created without expected data property 'width'"); }
+		if (!('options' in this._state)) { console.warn("<BaseSelect> was created without expected data property 'options'"); }
+		if (!('optgroups' in this._state)) { console.warn("<BaseSelect> was created without expected data property 'optgroups'"); }
+		this._intro = true;
+
+		this._fragment = create_main_fragment$3(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(BaseSelect.prototype, protoDev);
+
+	BaseSelect.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* node_modules/@datawrapper/controls/Select.html generated by Svelte v2.16.1 */
+
+
+
+	function data$4() {
+	    return {
+	        disabled: false,
+	        width: 'auto',
+	        labelWidth: 'auto',
+	        options: [],
+	        optgroups: []
+	    };
+	}
+	function create_main_fragment$4(component, ctx) {
+		var baseselect_updating = {};
+
+		var baseselect_initial_data = {};
+		if (ctx.value  !== void 0) {
+			baseselect_initial_data.value = ctx.value ;
+			baseselect_updating.value = true;
+		}
+		if (ctx.disabled  !== void 0) {
+			baseselect_initial_data.disabled = ctx.disabled ;
+			baseselect_updating.disabled = true;
+		}
+		if (ctx.width  !== void 0) {
+			baseselect_initial_data.width = ctx.width ;
+			baseselect_updating.width = true;
+		}
+		if (ctx.options  !== void 0) {
+			baseselect_initial_data.options = ctx.options ;
+			baseselect_updating.options = true;
+		}
+		if (ctx.optgroups  !== void 0) {
+			baseselect_initial_data.optgroups = ctx.optgroups ;
+			baseselect_updating.optgroups = true;
+		}
+		var baseselect = new BaseSelect({
+			root: component.root,
+			store: component.store,
+			data: baseselect_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!baseselect_updating.value && changed.value) {
+					newState.value = childState.value;
+				}
+
+				if (!baseselect_updating.disabled && changed.disabled) {
+					newState.disabled = childState.disabled;
+				}
+
+				if (!baseselect_updating.width && changed.width) {
+					newState.width = childState.width;
+				}
+
+				if (!baseselect_updating.options && changed.options) {
+					newState.options = childState.options;
+				}
+
+				if (!baseselect_updating.optgroups && changed.optgroups) {
+					newState.optgroups = childState.optgroups;
+				}
+				component._set(newState);
+				baseselect_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			baseselect._bind({ value: 1, disabled: 1, width: 1, options: 1, optgroups: 1 }, baseselect.get());
+		});
+
+		var controlgroup_initial_data = {
+		 	type: "select",
+		 	width: ctx.labelWidth,
+		 	valign: "baseline",
+		 	inline: true,
+		 	label: ctx.label,
+		 	help: ctx.help,
+		 	disabled: ctx.disabled
+		 };
+		var controlgroup = new ControlGroup({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: controlgroup_initial_data
+		});
+
+		return {
+			c: function create() {
+				baseselect._fragment.c();
+				controlgroup._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				baseselect._mount(controlgroup._slotted.default, null);
+				controlgroup._mount(target, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var baseselect_changes = {};
+				if (!baseselect_updating.value && changed.value) {
+					baseselect_changes.value = ctx.value ;
+					baseselect_updating.value = ctx.value  !== void 0;
+				}
+				if (!baseselect_updating.disabled && changed.disabled) {
+					baseselect_changes.disabled = ctx.disabled ;
+					baseselect_updating.disabled = ctx.disabled  !== void 0;
+				}
+				if (!baseselect_updating.width && changed.width) {
+					baseselect_changes.width = ctx.width ;
+					baseselect_updating.width = ctx.width  !== void 0;
+				}
+				if (!baseselect_updating.options && changed.options) {
+					baseselect_changes.options = ctx.options ;
+					baseselect_updating.options = ctx.options  !== void 0;
+				}
+				if (!baseselect_updating.optgroups && changed.optgroups) {
+					baseselect_changes.optgroups = ctx.optgroups ;
+					baseselect_updating.optgroups = ctx.optgroups  !== void 0;
+				}
+				baseselect._set(baseselect_changes);
+				baseselect_updating = {};
+
+				var controlgroup_changes = {};
+				if (changed.labelWidth) { controlgroup_changes.width = ctx.labelWidth; }
+				if (changed.label) { controlgroup_changes.label = ctx.label; }
+				if (changed.help) { controlgroup_changes.help = ctx.help; }
+				if (changed.disabled) { controlgroup_changes.disabled = ctx.disabled; }
+				controlgroup._set(controlgroup_changes);
+			},
+
+			d: function destroy(detach) {
+				baseselect.destroy();
+				controlgroup.destroy(detach);
+			}
+		};
+	}
+
+	function Select(options) {
+		this._debugName = '<Select>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$4(), options.data);
+		if (!('labelWidth' in this._state)) { console.warn("<Select> was created without expected data property 'labelWidth'"); }
+		if (!('label' in this._state)) { console.warn("<Select> was created without expected data property 'label'"); }
+		if (!('help' in this._state)) { console.warn("<Select> was created without expected data property 'help'"); }
+		if (!('disabled' in this._state)) { console.warn("<Select> was created without expected data property 'disabled'"); }
+		if (!('value' in this._state)) { console.warn("<Select> was created without expected data property 'value'"); }
+		if (!('width' in this._state)) { console.warn("<Select> was created without expected data property 'width'"); }
+		if (!('options' in this._state)) { console.warn("<Select> was created without expected data property 'options'"); }
+		if (!('optgroups' in this._state)) { console.warn("<Select> was created without expected data property 'optgroups'"); }
+		this._intro = true;
+
+		this._fragment = create_main_fragment$4(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(Select.prototype, protoDev);
+
+	Select.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* account/MyTeams.html generated by Svelte v2.16.1 */
+
+
+
+	function teamOptions(ref) {
+	    var teams = ref.teams;
+
+	    return teams.map(function (ref) {
+	    	var Id = ref.Id;
+	    	var Name = ref.Name;
+
+	    	return ({
+	        value: Id,
+	        label: Name
+	    });
+	    })
+	}
+	function data$5() {
+	    return {
+	        teams: []
+	    };
+	}
+	var file$4 = "account/MyTeams.html";
+
+	function get_each_context$2(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.team = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$5(component, ctx) {
+		var h2, text1, text2, div3, div1, h3, text4, div0, p, text6, a, i, text7, text8, div2;
+
+		function select_block_type(ctx) {
+			if (ctx.teams.length) { return create_if_block_1$4; }
+			return create_else_block$1;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		var if_block1 = (ctx.teams.length > 1) && create_if_block$4(component, ctx);
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				h2.textContent = "My Teams";
+				text1 = createText("\n\n");
+				if_block0.c();
+				text2 = createText("\n\n");
+				div3 = createElement("div");
+				div1 = createElement("div");
+				h3 = createElement("h3");
+				h3.textContent = "Create a team";
+				text4 = createText("\n        ");
+				div0 = createElement("div");
+				p = createElement("p");
+				p.textContent = "Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to join them.";
+				text6 = createText("\n            ");
+				a = createElement("a");
+				i = createElement("i");
+				text7 = createText(" Create team");
+				text8 = createText("\n    ");
+				div2 = createElement("div");
+				if (if_block1) { if_block1.c(); }
+				addLoc(h2, file$4, 2, 0, 48);
+				h3.className = "svelte-c2pbd6";
+				addLoc(h3, file$4, 49, 8, 1345);
+				addLoc(p, file$4, 51, 12, 1406);
+				i.className = "fa fa-plus fa-fw";
+				addLoc(i, file$4, 52, 94, 1653);
+				a.href = "/team/new/setup";
+				a.className = "btn btn-large";
+				toggleClass(a, "btn-primary", !ctx.teams.length);
+				addLoc(a, file$4, 52, 12, 1571);
+				div0.className = "hed svelte-c2pbd6";
+				addLoc(div0, file$4, 50, 8, 1376);
+				div1.className = "span5";
+				addLoc(div1, file$4, 48, 4, 1317);
+				div2.className = "span5";
+				addLoc(div2, file$4, 55, 4, 1732);
+				div3.className = "row";
+				addLoc(div3, file$4, 47, 0, 1295);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				insert(target, text1, anchor);
+				if_block0.m(target, anchor);
+				insert(target, text2, anchor);
+				insert(target, div3, anchor);
+				append(div3, div1);
+				append(div1, h3);
+				append(div1, text4);
+				append(div1, div0);
+				append(div0, p);
+				append(div0, text6);
+				append(div0, a);
+				append(a, i);
+				append(a, text7);
+				append(div3, text8);
+				append(div3, div2);
+				if (if_block1) { if_block1.m(div2, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+					if_block0.p(changed, ctx);
+				} else {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(text2.parentNode, text2);
+				}
+
+				if (changed.teams) {
+					toggleClass(a, "btn-primary", !ctx.teams.length);
+				}
+
+				if (ctx.teams.length > 1) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$4(component, ctx);
+						if_block1.c();
+						if_block1.m(div2, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+					detachNode(text1);
+				}
+
+				if_block0.d(detach);
+				if (detach) {
+					detachNode(text2);
+					detachNode(div3);
+				}
+
+				if (if_block1) { if_block1.d(); }
+			}
+		};
+	}
+
+	// (44:0) {:else}
+	function create_else_block$1(component, ctx) {
+		var p;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				p.textContent = "You're not in any teams, yet.";
+				addLoc(p, file$4, 44, 0, 1251);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (5:0) {#if teams.length}
+	function create_if_block_1$4(component, ctx) {
+		var p0, text1, table, thead, tr, th0, text3, th1, text5, th2, text7, th3, text9, th4, text11, th5, text13, tbody, text14, p1;
+
+		var each_value = ctx.teams;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$2(component, get_each_context$2(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				p0 = createElement("p");
+				p0.textContent = "Here's a list of the teams you're in:";
+				text1 = createText("\n\n");
+				table = createElement("table");
+				thead = createElement("thead");
+				tr = createElement("tr");
+				th0 = createElement("th");
+				th0.textContent = "Name";
+				text3 = createText("\n            ");
+				th1 = createElement("th");
+				th1.textContent = "Slug*";
+				text5 = createText("\n            ");
+				th2 = createElement("th");
+				th2.textContent = "Your role";
+				text7 = createText("\n            ");
+				th3 = createElement("th");
+				th3.textContent = "Team charts";
+				text9 = createText("\n            ");
+				th4 = createElement("th");
+				th4.textContent = "Settings";
+				text11 = createText("\n            ");
+				th5 = createElement("th");
+				th5.textContent = "Leave team";
+				text13 = createText("\n    ");
+				tbody = createElement("tbody");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				text14 = createText("\n");
+				p1 = createElement("p");
+				p1.textContent = "* The slug is used in internal Datawrapper URLs and can't be changed after team creation.";
+				addLoc(p0, file$4, 5, 0, 86);
+				addLoc(th0, file$4, 10, 12, 191);
+				addLoc(th1, file$4, 11, 12, 217);
+				addLoc(th2, file$4, 12, 12, 244);
+				addLoc(th3, file$4, 13, 12, 275);
+				addLoc(th4, file$4, 14, 12, 308);
+				addLoc(th5, file$4, 15, 12, 338);
+				addLoc(tr, file$4, 9, 8, 174);
+				addLoc(thead, file$4, 8, 4, 158);
+				addLoc(tbody, file$4, 18, 4, 389);
+				table.className = "table";
+				addLoc(table, file$4, 7, 0, 132);
+				p1.className = "mini-help svelte-c2pbd6";
+				addLoc(p1, file$4, 42, 0, 1128);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p0, anchor);
+				insert(target, text1, anchor);
+				insert(target, table, anchor);
+				append(table, thead);
+				append(thead, tr);
+				append(tr, th0);
+				append(tr, text3);
+				append(tr, th1);
+				append(tr, text5);
+				append(tr, th2);
+				append(tr, text7);
+				append(tr, th3);
+				append(tr, text9);
+				append(tr, th4);
+				append(tr, text11);
+				append(tr, th5);
+				append(table, text13);
+				append(table, tbody);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(tbody, null);
+				}
+
+				insert(target, text14, anchor);
+				insert(target, p1, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.teams || changed.currentTeam) {
+					each_value = ctx.teams;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$2(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(tbody, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p0);
+					detachNode(text1);
+					detachNode(table);
+				}
+
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(text14);
+					detachNode(p1);
+				}
+			}
+		};
+	}
+
+	// (24:16) {#if team.Id === currentTeam}
+	function create_if_block_2$2(component, ctx) {
+		var i;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				i.className = "fa fa-check-circle";
+				addLoc(i, file$4, 24, 16, 587);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (20:8) {#each teams as team}
+	function create_each_block$2(component, ctx) {
+		var tr, td0, text0_value = ctx.team.Name, text0, text1, text2, td1, div, text3_value = ctx.team.Id, text3, text4, td2, text6, td3, a, text7, a_href_value, text8, td4, button0, text10, td5, button1, i, text11;
+
+		var if_block = (ctx.team.Id === ctx.currentTeam) && create_if_block_2$2();
+
+		return {
+			c: function create() {
+				tr = createElement("tr");
+				td0 = createElement("td");
+				text0 = createText(text0_value);
+				text1 = createText("\n                ");
+				if (if_block) { if_block.c(); }
+				text2 = createText("\n            ");
+				td1 = createElement("td");
+				div = createElement("div");
+				text3 = createText(text3_value);
+				text4 = createText("\n            ");
+				td2 = createElement("td");
+				td2.textContent = "Member";
+				text6 = createText("\n            ");
+				td3 = createElement("td");
+				a = createElement("a");
+				text7 = createText("12 charts");
+				text8 = createText("\n            ");
+				td4 = createElement("td");
+				button0 = createElement("button");
+				button0.textContent = "settings";
+				text10 = createText("\n            ");
+				td5 = createElement("td");
+				button1 = createElement("button");
+				i = createElement("i");
+				text11 = createText(" leave team");
+				addLoc(td0, file$4, 21, 12, 492);
+				div.className = "id svelte-c2pbd6";
+				addLoc(div, file$4, 28, 16, 695);
+				addLoc(td1, file$4, 27, 12, 674);
+				addLoc(td2, file$4, 30, 12, 757);
+				a.href = a_href_value = "/team/" + ctx.team.Id;
+				addLoc(a, file$4, 31, 16, 789);
+				addLoc(td3, file$4, 31, 12, 785);
+				button0.className = "btn btn-small";
+				addLoc(button0, file$4, 33, 16, 867);
+				addLoc(td4, file$4, 32, 12, 846);
+				i.className = "fa fa-sign-out";
+				addLoc(i, file$4, 36, 57, 1007);
+				button1.className = "btn btn-small btn-danger";
+				addLoc(button1, file$4, 36, 16, 966);
+				addLoc(td5, file$4, 35, 12, 945);
+				toggleClass(tr, "current", ctx.team.Id === ctx.currentTeam);
+				addLoc(tr, file$4, 20, 8, 435);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, tr, anchor);
+				append(tr, td0);
+				append(td0, text0);
+				append(td0, text1);
+				if (if_block) { if_block.m(td0, null); }
+				append(tr, text2);
+				append(tr, td1);
+				append(td1, div);
+				append(div, text3);
+				append(tr, text4);
+				append(tr, td2);
+				append(tr, text6);
+				append(tr, td3);
+				append(td3, a);
+				append(a, text7);
+				append(tr, text8);
+				append(tr, td4);
+				append(td4, button0);
+				append(tr, text10);
+				append(tr, td5);
+				append(td5, button1);
+				append(button1, i);
+				append(button1, text11);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.teams) && text0_value !== (text0_value = ctx.team.Name)) {
+					setData(text0, text0_value);
+				}
+
+				if (ctx.team.Id === ctx.currentTeam) {
+					if (!if_block) {
+						if_block = create_if_block_2$2();
+						if_block.c();
+						if_block.m(td0, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if ((changed.teams) && text3_value !== (text3_value = ctx.team.Id)) {
+					setData(text3, text3_value);
+				}
+
+				if ((changed.teams) && a_href_value !== (a_href_value = "/team/" + ctx.team.Id)) {
+					a.href = a_href_value;
+				}
+
+				if ((changed.teams || changed.currentTeam)) {
+					toggleClass(tr, "current", ctx.team.Id === ctx.currentTeam);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(tr);
+				}
+
+				if (if_block) { if_block.d(); }
+			}
+		};
+	}
+
+	// (57:8) {#if teams.length > 1}
+	function create_if_block$4(component, ctx) {
+		var h3, text1, p, text2, b, text4, i, text5, text6;
+
+		var select_initial_data = { options: ctx.teamOptions };
+		var select = new Select({
+			root: component.root,
+			store: component.store,
+			data: select_initial_data
+		});
+
+		var formblock_initial_data = {
+		 	width: "350px",
+		 	help: "You can change the default team at any time."
+		 };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		return {
+			c: function create() {
+				h3 = createElement("h3");
+				h3.textContent = "Select default team";
+				text1 = createText("\n        ");
+				p = createElement("p");
+				text2 = createText("Since you are a member of multiple teams, you have to pick which one you want to be used as ");
+				b = createElement("b");
+				b.textContent = "default team";
+				text4 = createText(" (indicated with ");
+				i = createElement("i");
+				text5 = createText("). Newly created charts will automatically be added to this team, and might also inherit some settings from the team.");
+				text6 = createText("\n        ");
+				select._fragment.c();
+				formblock._fragment.c();
+				h3.className = "svelte-c2pbd6";
+				addLoc(h3, file$4, 57, 8, 1791);
+				addLoc(b, file$4, 58, 103, 1923);
+				i.className = "fa fa-check-circle";
+				addLoc(i, file$4, 58, 139, 1959);
+				addLoc(p, file$4, 58, 8, 1828);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h3, anchor);
+				insert(target, text1, anchor);
+				insert(target, p, anchor);
+				append(p, text2);
+				append(p, b);
+				append(p, text4);
+				append(p, i);
+				append(p, text5);
+				insert(target, text6, anchor);
+				select._mount(formblock._slotted.default, null);
+				formblock._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				var select_changes = {};
+				if (changed.teamOptions) { select_changes.options = ctx.teamOptions; }
+				select._set(select_changes);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h3);
+					detachNode(text1);
+					detachNode(p);
+					detachNode(text6);
+				}
+
+				select.destroy();
+				formblock.destroy(detach);
+			}
+		};
+	}
+
+	function MyTeams(options) {
+		this._debugName = '<MyTeams>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$5(), options.data);
+
+		this._recompute({ teams: 1 }, this._state);
+		if (!('teams' in this._state)) { console.warn("<MyTeams> was created without expected data property 'teams'"); }
+		if (!('currentTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'currentTeam'"); }
+		this._intro = true;
+
+		this._fragment = create_main_fragment$5(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(MyTeams.prototype, protoDev);
+
+	MyTeams.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('teamOptions' in newState && !this._updatingReadonlyProperty) { throw new Error("<MyTeams>: Cannot set read-only property 'teamOptions'"); }
+	};
+
+	MyTeams.prototype._recompute = function _recompute(changed, state) {
+		if (changed.teams) {
+			if (this._differs(state.teamOptions, (state.teamOptions = teamOptions(state)))) { changed.teamOptions = true; }
+		}
+	};
+
+	/* account/App.html generated by Svelte v2.16.1 */
+
+
+
+	var EditProfileTab = {
+	    title: 'Profile',
+	    id: 'profile',
+	    icon: 'im im-user-male',
+	    ui: EditProfile
+	};
+
+	var MyTeamsTab = {
+	    title: 'My Teams',
+	    id: 'teams',
+	    icon: 'im im-users',
+	    ui: MyTeams
+	};
+
+	function data$6(ref) {
+	    var email = ref.email;
+	    var userId = ref.userId;
+	    var teams = ref.teams;
+	    var currentTeam = ref.currentTeam;
+
+	    return { email: email, userId: userId, teams: teams, currentTeam: currentTeam };
+	}
+	function data_1() {
+	    return {
+	        hash: 'profile',
+	        activeTab: null,
+	        groups: [
+	            {
+	                title: 'Personal settings',
+	                tabs: [EditProfileTab, MyTeamsTab]
+	            } ]
+	    };
+	}
+	var methods$1 = {
+	    activateTab: function activateTab(tab, event) {
+	        var this$1 = this;
+	        if ( event === void 0 ) event=null;
+
+	        if (tab.module) {
+	            if (event) { event.preventDefault(); }
+	            Promise.all([
+	                loadStylesheet(tab.css),
+	                loadScript(tab.js)
+	            ]).then(function () {
+	                require([tab.module], function (mod) {
+	                    tab.ui = mod.App;
+	                    tab.module = null;
+	                    var ref = this$1.get();
+	                    var groups = ref.groups;
+	                    this$1.set({
+	                        groups: groups,
+	                        activeTab: tab
+	                    });
+	                });
+	            });
+	            return;
+	        }
+	        if (tab.ui) {
+	            if (event) { event.preventDefault(); }
+	            this.set({activeTab: tab});
+	        }
+	    }
+	};
+
+	function oncreate() {
+	    var this$1 = this;
+
+	    var path = window.location.pathname.split('/').slice(1);
+	    var initialTab = path[1] || 'profile';
+
+	    dw.backend.__svelteApps.account = this;
+
+	    var ref = this.get();
+	    var groups = ref.groups;
+	    var adminTeams = ref.adminTeams;
+	    var pages = ref.pages;
+
+	    if (pages.length) {
+	        groups[0].tabs.push.apply(groups[0].tabs, pages);
+	        this.set({groups: groups});
+	    }
+
+	    if (adminTeams.length) {
+	        groups.push({
+	            title: 'Team settings',
+	            tabs: []
+	        });
+	        adminTeams.forEach(function (ref) {
+	            var Id = ref.Id;
+	            var Name = ref.Name;
+
+	            groups[1].tabs.push({
+	                title: Name,
+	                url: ("/team/" + Id + "/settings"),
+	                icon: 'im im-users'
+	            });
+	        });
+	        this.set({groups: groups});
+	    }
+
+	    var foundTab = false;
+	    groups.forEach(function (group) {
+	        group.tabs.forEach(function (tab) {
+	            if (tab.id === initialTab) {
+	                this$1.activateTab(tab);
+	                foundTab = true;
+	            }
+	        });
+	    });
+	    if (!foundTab) {
+	        this.set({
+	            activeTab: EditProfileTab,
+	            wasLookingFor: initialTab
+	        });
+	    }
+	}
+	function onstate$1(ref) {
+	    var changed = ref.changed;
+	    var current = ref.current;
+
+	    if (changed.activeTab && current.activeTab) {
+	        console.log(current.activeTab);
+	        window.history.pushState(
+	            {id: current.activeTab.id },
+	            '',
+	            ("/account/" + (current.activeTab.id))
+	        );
+	    }
+	}
+	var file$5 = "account/App.html";
+
+	function click_handler(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.activateTab(ctx.tab, event);
+	}
+
+	function get_each_context_1$2(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.tab = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context$3(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.group = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$6(component, ctx) {
+		var div2, h1, text1, div1, div0, text2;
+
+		var each_value = ctx.groups;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$3(component, get_each_context$3(ctx, each_value, i));
+		}
+
+		var if_block = (ctx.activeTab) && create_if_block$5(component, ctx);
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				h1 = createElement("h1");
+				h1.textContent = "Account Settings";
+				text1 = createText("\n\n    ");
+				div1 = createElement("div");
+				div0 = createElement("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				text2 = createText("\n        ");
+				if (if_block) { if_block.c(); }
+				h1.className = "title";
+				addLoc(h1, file$5, 1, 4, 24);
+				div0.className = "span2 svelte-1yvqupy";
+				addLoc(div0, file$5, 4, 8, 95);
+				div1.className = "row";
+				addLoc(div1, file$5, 3, 4, 69);
+				div2.className = "admin";
+				addLoc(div2, file$5, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, h1);
+				append(div2, text1);
+				append(div2, div1);
+				append(div1, div0);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div0, null);
+				}
+
+				append(div1, text2);
+				if (if_block) { if_block.m(div1, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.groups || changed.activeTab) {
+					each_value = ctx.groups;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$3(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$3(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				if (ctx.activeTab) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$5(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				destroyEach(each_blocks, detach);
+
+				if (if_block) { if_block.d(); }
+			}
+		};
+	}
+
+	// (10:16) {#each group.tabs as tab}
+	function create_each_block_1$2(component, ctx) {
+		var li, a, i, i_class_value, text0, text1_value = ctx.tab.title, text1, a_href_value;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				a = createElement("a");
+				i = createElement("i");
+				text0 = createText("   ");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "" + ctx.tab.icon + " svelte-1yvqupy";
+				addLoc(i, file$5, 11, 101, 452);
+
+				a._svelte = { component: component, ctx: ctx };
+
+				addListener(a, "click", click_handler);
+				a.href = a_href_value = ctx.tab.url || ("/account/" + (ctx.tab.id));
+				a.className = "svelte-1yvqupy";
+				addLoc(a, file$5, 11, 20, 371);
+				li.className = "svelte-1yvqupy";
+				toggleClass(li, "active", ctx.activeTab === ctx.tab);
+				addLoc(li, file$5, 10, 16, 313);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, a);
+				append(a, i);
+				append(a, text0);
+				append(a, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-1yvqupy")) {
+					i.className = i_class_value;
+				}
+
+				if ((changed.groups) && text1_value !== (text1_value = ctx.tab.title)) {
+					setData(text1, text1_value);
+				}
+
+				a._svelte.ctx = ctx;
+				if ((changed.groups) && a_href_value !== (a_href_value = ctx.tab.url || ("/account/" + (ctx.tab.id)))) {
+					a.href = a_href_value;
+				}
+
+				if ((changed.activeTab || changed.groups)) {
+					toggleClass(li, "active", ctx.activeTab === ctx.tab);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+
+				removeListener(a, "click", click_handler);
+			}
+		};
+	}
+
+	// (6:12) {#each groups as group}
+	function create_each_block$3(component, ctx) {
+		var div, text0_value = ctx.group.title, text0, text1, ul;
+
+		var each_value_1 = ctx.group.tabs;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1$2(component, get_each_context_1$2(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n            ");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				div.className = "group svelte-1yvqupy";
+				addLoc(div, file$5, 6, 12, 163);
+				ul.className = "nav nav-stacked nav-tabs";
+				addLoc(ul, file$5, 8, 12, 217);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				insert(target, text1, anchor);
+				insert(target, ul, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.groups) && text0_value !== (text0_value = ctx.group.title)) {
+					setData(text0, text0_value);
+				}
+
+				if (changed.activeTab || changed.groups) {
+					each_value_1 = ctx.group.tabs;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						var child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1$2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+					detachNode(text1);
+					detachNode(ul);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (18:8) {#if activeTab}
+	function create_if_block$5(component, ctx) {
+		var div, div_class_value;
+
+		var switch_instance_spread_levels = [
+			ctx.data
+		];
+
+		var switch_value = ctx.activeTab.ui;
+
+		function switch_props(ctx) {
+			var switch_instance_initial_data = {};
+			for (var i = 0; i < switch_instance_spread_levels.length; i += 1) {
+				switch_instance_initial_data = assign(switch_instance_initial_data, switch_instance_spread_levels[i]);
+			}
+			return {
+				root: component.root,
+				store: component.store,
+				data: switch_instance_initial_data
+			};
+		}
+
+		if (switch_value) {
+			var switch_instance = new switch_value(switch_props());
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				if (switch_instance) { switch_instance._fragment.c(); }
+				div.className = div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-1yvqupy";
+				addLoc(div, file$5, 18, 8, 638);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (switch_instance) {
+					switch_instance._mount(div, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				var switch_instance_changes = changed.data ? getSpreadUpdate(switch_instance_spread_levels, [
+					ctx.data
+				]) : {};
+
+				if (switch_value !== (switch_value = ctx.activeTab.ui)) {
+					if (switch_instance) {
+						switch_instance.destroy();
+					}
+
+					if (switch_value) {
+						switch_instance = new switch_value(switch_props());
+						switch_instance._fragment.c();
+						switch_instance._mount(div, null);
+					} else {
+						switch_instance = null;
+					}
+				}
+
+				else if (switch_value) {
+					switch_instance._set(switch_instance_changes);
+				}
+
+				if ((changed.activeTab) && div_class_value !== (div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-1yvqupy")) {
+					div.className = div_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (switch_instance) { switch_instance.destroy(); }
+			}
+		};
+	}
+
+	function App(options) {
+		var this$1 = this;
+
+		this._debugName = '<App>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data_1(), options.data);
+
+		this._recompute({ email: 1, userId: 1, teams: 1, currentTeam: 1 }, this._state);
+		if (!('email' in this._state)) { console.warn("<App> was created without expected data property 'email'"); }
+		if (!('userId' in this._state)) { console.warn("<App> was created without expected data property 'userId'"); }
+		if (!('teams' in this._state)) { console.warn("<App> was created without expected data property 'teams'"); }
+		if (!('currentTeam' in this._state)) { console.warn("<App> was created without expected data property 'currentTeam'"); }
+		if (!('groups' in this._state)) { console.warn("<App> was created without expected data property 'groups'"); }
+		if (!('activeTab' in this._state)) { console.warn("<App> was created without expected data property 'activeTab'"); }
+		this._intro = true;
+
+		this._handlers.state = [onstate$1];
+
+		onstate$1.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$6(this, this._state);
+
+		this.root._oncreate.push(function () {
+			oncreate.call(this$1);
+			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) { throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option"); }
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(App.prototype, protoDev);
+	assign(App.prototype, methods$1);
+
+	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('data' in newState && !this._updatingReadonlyProperty) { throw new Error("<App>: Cannot set read-only property 'data'"); }
+	};
+
+	App.prototype._recompute = function _recompute(changed, state) {
+		if (changed.email || changed.userId || changed.teams || changed.currentTeam) {
+			if (this._differs(state.data, (state.data = data$6(state)))) { changed.data = true; }
+		}
+	};
+
+	function Store(state, options) {
+		this._handlers = {};
+		this._dependents = [];
+
+		this._computed = blankObject();
+		this._sortedComputedProperties = [];
+
+		this._state = assign({}, state);
+		this._differs = options && options.immutable ? _differsImmutable : _differs;
+	}
+
+	assign(Store.prototype, {
+		_add: function _add(component, props) {
+			this._dependents.push({
+				component: component,
+				props: props
+			});
+		},
+
+		_init: function _init(props) {
+			var state = {};
+			for (var i = 0; i < props.length; i += 1) {
+				var prop = props[i];
+				state['$' + prop] = this._state[prop];
+			}
+			return state;
+		},
+
+		_remove: function _remove(component) {
+			var i = this._dependents.length;
+			while (i--) {
+				if (this._dependents[i].component === component) {
+					this._dependents.splice(i, 1);
+					return;
+				}
+			}
+		},
+
+		_set: function _set(newState, changed) {
+			var this$1 = this;
+
+			var previous = this._state;
+			this._state = assign(assign({}, previous), newState);
+
+			for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+				this._sortedComputedProperties[i].update(this._state, changed);
+			}
+
+			this.fire('state', {
+				changed: changed,
+				previous: previous,
+				current: this._state
+			});
+
+			this._dependents
+				.filter(function (dependent) {
+					var componentState = {};
+					var dirty = false;
+
+					for (var j = 0; j < dependent.props.length; j += 1) {
+						var prop = dependent.props[j];
+						if (prop in changed) {
+							componentState['$' + prop] = this$1._state[prop];
+							dirty = true;
+						}
+					}
+
+					if (dirty) {
+						dependent.component._stage(componentState);
+						return true;
+					}
+				})
+				.forEach(function (dependent) {
+					dependent.component.set({});
+				});
+
+			this.fire('update', {
+				changed: changed,
+				previous: previous,
+				current: this._state
+			});
+		},
+
+		_sortComputedProperties: function _sortComputedProperties() {
+			var computed = this._computed;
+			var sorted = this._sortedComputedProperties = [];
+			var visited = blankObject();
+			var currentKey;
+
+			function visit(key) {
+				var c = computed[key];
+
+				if (c) {
+					c.deps.forEach(function (dep) {
+						if (dep === currentKey) {
+							throw new Error(("Cyclical dependency detected between " + dep + " <-> " + key));
+						}
+
+						visit(dep);
+					});
+
+					if (!visited[key]) {
+						visited[key] = true;
+						sorted.push(c);
+					}
+				}
+			}
+
+			for (var key in this._computed) {
+				visit(currentKey = key);
+			}
+		},
+
+		compute: function compute(key, deps, fn) {
+			var this$1 = this;
+
+			var value;
+
+			var c = {
+				deps: deps,
+				update: function (state, changed, dirty) {
+					var values = deps.map(function (dep) {
+						if (dep in changed) { dirty = true; }
+						return state[dep];
+					});
+
+					if (dirty) {
+						var newValue = fn.apply(null, values);
+						if (this$1._differs(newValue, value)) {
+							value = newValue;
+							changed[key] = true;
+							state[key] = value;
+						}
+					}
+				}
+			};
+
+			this._computed[key] = c;
+			this._sortComputedProperties();
+
+			var state = assign({}, this._state);
+			var changed = {};
+			c.update(state, changed, true);
+			this._set(state, changed);
+		},
+
+		fire: fire,
+
+		get: get,
+
+		on: on,
+
+		set: function set(newState) {
+			var oldState = this._state;
+			var changed = this._changed = {};
+			var dirty = false;
+
+			for (var key in newState) {
+				if (this._computed[key]) { throw new Error(("'" + key + "' is a read-only computed property")); }
+				if (this._differs(newState[key], oldState[key])) { changed[key] = dirty = true; }
+			}
+			if (!dirty) { return; }
+
+			this._set(newState, changed);
+		}
+	});
+
+	var store = new Store({});
+
+	var data$7 = {
+	    chart: {
+	        id: ''
+	    },
+	    readonly: false,
+	    chartData: '',
+	    transpose: false,
+	    firstRowIsHeader: true,
+	    skipRows: 0
+	};
+
+	var main = { App: App, data: data$7, store: store };
+
+	return main;
+
+}));
+//# sourceMappingURL=account.js.map

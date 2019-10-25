@@ -783,7 +783,7 @@ body.cms-mode .row.create-nav {
 .select-css {
   font-size: 16px;
   font-family: sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   color: #444;
   line-height: 1.3;
   padding: 4px 24px 4px 6px;
@@ -2780,12 +2780,15 @@ body.dw-mycharts div.folders ul > li {
   position: relative;
   margin: 0 0 15px;
 }
-body.dw-mycharts div.folders ul > li > a > .im,
-body.dw-mycharts div.folders ul > li > a > .fa {
+body.dw-mycharts div.folders ul > li > a > .im {
   color: #999;
   position: absolute;
   left: 0px;
   top: 3px;
+}
+body.dw-mycharts div.folders ul > li > a > .fa-check-circle {
+  color: #222;
+  font-size: 15px;
 }
 body.dw-mycharts div.folders ul > li.active > a > .im-folder-open {
   display: inline-block;
