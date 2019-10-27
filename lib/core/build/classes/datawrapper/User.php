@@ -239,6 +239,7 @@ class User extends BaseUser {
      */
     public function getActiveOrganizations() {
         $crit = OrganizationQuery::create()
+            ->orderByName()
             ->filterByDisabled(0)
             ->useUserOrganizationQuery()
             ->filterByInviteToken('')
