@@ -30,7 +30,7 @@
             <td>Member</td>
             <td><a href="/team/{team.Id}">12 charts</a></td>
             <td>
-                <button class="btn btn-small">settings</button>
+                <a href="/team/{team.Id}/settings" class="btn btn-small">settings</a>
             </td>
             <td>
                 <button class="btn btn-small btn-danger"><i class="fa fa-sign-out"></i> leave team</button>
@@ -47,13 +47,31 @@
 <div class="row">
     <div class="span5">
         <h3>Create a team</h3>
+        {#if !createTeam}
         <div class="hed">
             <p>
                 Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to
                 join them.
             </p>
-            <a href="/team/new/setup" class="btn btn-large" class:btn-primary="!teams.length"><i class="fa fa-plus fa-fw"></i> Create team</a>
+            <button on:click="set({createTeam:true})" class="btn btn-large" class:btn-primary="!teams.length">
+                <i class="fa fa-plus fa-fw"></i> Create team
+            </button>
         </div>
+        {:else}
+        <p>
+            { @html __('team-create / p') }
+        </p>
+
+        <FormBlock label="{ __('team-create / name') }" help="{ __('team-create / help') }">
+            <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" />
+        </FormBlock>
+
+        <button on:click="createTeam(newTeamName)" class="btn btn-primary" disabled="{ !newTeamName.length }">
+            {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
+            >{:catch}{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
+        </button>
+        <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
+        {/if}
     </div>
     <div class="span5">
         {#if teams.length > 0}
@@ -79,20 +97,25 @@
 </div>
 
 <script>
+    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import Text from '@datawrapper/controls/Text.html';
     import FormBlock from '../shared/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
-    import { putJSON } from '@datawrapper/shared/fetch';
-
+    import { putJSON, postJSON } from '@datawrapper/shared/fetch';
     let initialCurrentTeam = null;
 
     export default {
-        components: { FormBlock, BaseSelect },
+        components: { FormBlock, BaseSelect, Text },
         data() {
             return {
                 teams: [],
                 awaitActiveTeam: null,
-                currentTeam: ''
+                awaitCreateTeam: null,
+                currentTeam: '',
+                createTeam: false,
+                newTeamName: '',
+                newTeamSlug: ''
             };
         },
         computed: {
@@ -109,6 +132,15 @@
             }
         },
         helpers: { __ },
+        methods: {
+            createTeam(name) {
+                this.set({
+                    awaitCreateTeam: postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams`, JSON.stringify({ name })).then(
+                        () => {}
+                    )
+                });
+            }
+        },
         onstate({ changed, current }) {
             if (changed.currentTeam && current.currentTeam !== undefined) {
                 if (!initialCurrentTeam) initialCurrentTeam = current.currentTeam;
