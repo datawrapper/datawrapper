@@ -631,7 +631,7 @@
   "settings / invite / wrong-user / message": "This invite was sent to %email%. To accept it, please log out, log in with that account and open the invitation link again.",
   "settings / invite / not-logged-in / heading": "Please log in to accept the invitation.",
   "settings / invite / not-logged-in / message": "This invite was sent to %email%. To accept it, please log in with that account and open the invitation link again.",
-  "editor / chart-breadcrumb / is-in-folder": "is in the folder",
+  "editor / chart-breadcrumb / is-in-folder": "is in",
   "editor / chart-breadcrumb / chart": "This chart",
   "editor / chart-breadcrumb / map": "This map",
   "editor / chart-breadcrumb / table": "This table"
