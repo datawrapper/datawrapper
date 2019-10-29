@@ -135,7 +135,10 @@
                 $customFields = $org->getSettings("customFields") ?? [];
             }
 
-            $page = array(
+            $page = ['locale'=>'en'];
+            add_editor_nav($page, 3, $chart);
+
+            $page = [
                 'title' => '',
                 'pageClass' => 'editor',
                 'step' => $step,
@@ -156,8 +159,10 @@
                 'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser()),
-                'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user)
-            );
+                'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user),
+                'folders' => $page['folders'],
+                'visNamespace' => $page['visNamespace']
+            ];
 
             if (Hooks::hookRegistered(Hooks::REPLACE_PUBLISH_LOGIC)) {
                 $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC, $user, $chart)[0];

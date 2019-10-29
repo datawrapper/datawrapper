@@ -18,7 +18,7 @@ function add_editor_nav(&$page, $step, $chart) {
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
     $page['createstep'] = $step;
-    $page['visNamespace'] = $vis['namespace'] ?? 'chart';
+    $page['visNamespace'] = $vis['caption'] ?? 'chart';
 
     $folder = $chart->getInFolder();
     $chartOrg = $chart->getOrganization();
