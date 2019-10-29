@@ -35,6 +35,7 @@
         "@tivac/eslint-plugin-svelte": "^1.2.1",
         "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
+        "babel-preset-stage-2": "^6.24.1",
         "browser-env": "^3.2.6",
         "cash-dom": "^3.0.0",
         "chalk": "^2.3.0",

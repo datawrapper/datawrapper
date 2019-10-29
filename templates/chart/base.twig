@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<div id="msg-changes-saved" class="alert alert-info" style="text-align:center;position:fixed;top:-45px;z-index:9999;left: 30%;right:30%;opacity:0">
-  {% trans "Your changes have been saved." %}
-</div>
+{% if user.isLoggedIn() %}
+{{ svelte('chart-breadcrumb', {folders:folders, type:visNamespace}) }}
+{% endif %}
 
 {{ hook('before_editor_nav', chart) }}
 

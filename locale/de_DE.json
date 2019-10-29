@@ -630,5 +630,9 @@
   "settings / invite / wrong-user / heading": "Diese Einladung ist für einen anderen Account bestimmt.",
   "settings / invite / wrong-user / message": "Diese Einladung wurde an den Account %email% geschickt. Um die Einladung anzunehmen, logge dich bitte unter der E-Mail-Adresse ein und öffne den Einladungslink erneut.",
   "settings / invite / not-logged-in / heading": "Bitte logge dich ein, um die Einladung anzunehmen.",
-  "settings / invite / not-logged-in / message": "Diese Einladung wurde an den Account %email% geschickt. Um die Einladung anzunehmen, logge dich bitte unter der E-Mail-Adresse ein und öffne den Einladungslink erneut."
+  "settings / invite / not-logged-in / message": "Diese Einladung wurde an den Account %email% geschickt. Um die Einladung anzunehmen, logge dich bitte unter der E-Mail-Adresse ein und öffne den Einladungslink erneut.",
+  "editor / chart-breadcrumb / is-in-folder": "befindet sich in",
+  "editor / chart-breadcrumb / chart": "Dieses Diagramm",
+  "editor / chart-breadcrumb / map": "Diese Karte",
+  "editor / chart-breadcrumb / table": "Diese Tabelle"
 }

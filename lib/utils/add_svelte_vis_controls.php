@@ -1,17 +1,18 @@
 <?php
 
-function add_svelte_vis_controls($id, $plugin, $defaults) {
+function add_svelte_vis_controls($id, $plugin, $defaults, $path = 'controls') {
 
     Hooks::register(
         Hooks::VIS_OPTION_CONTROLS,
-        function ($o, $k) use ($plugin, $id, $defaults) {
+        function ($o, $k) use ($plugin, $id, $defaults, $path) {
             if ($o['type'] == $id) {
                 global $app;
                 $app->render('chart/visualize/svelte-option.twig', [
                     'option' => $o,
                     'key' => $k,
                     'type' => $id,
-                    'path' => 'svelte/'.$plugin->getName().'/controls',
+                    'filePath' => $plugin->getName().'/'.$path,
+                    'amdPath' => 'svelte/'.$plugin->getName().'/'.$path,
                     'plugin' => $plugin->getName(),
                     'sha' => $plugin->getLastInstallTime(),
                     'defaults' => $defaults,

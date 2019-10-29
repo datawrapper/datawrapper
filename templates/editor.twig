@@ -8,6 +8,10 @@
 <script type="text/javascript" src="{{workflow.path_js}}"></script>
 <link rel="stylesheet" type="text/css" href="{{workflow.path_css}}">
 
+{% if user.isLoggedIn() %}
+{{ svelte('chart-breadcrumb', {folders:folders, type:visNamespace}) }}
+{% endif %}
+
 {{ hook('before_editor_nav', chart) }}
 
 <div class="svelte-editor-base" id="svelte-workflow-{{ workflow.id }}"></div>
