@@ -1,9 +1,11 @@
 <div class="chart-breadcrumb">
     {@html __('editor / chart-breadcrumb / '+type)} {@html __('editor / chart-breadcrumb / is-in-folder')}
     <div class="parts">
-        {#each folders as folder}
+        {#each truncatedFolders as folder} {#if folder.ellipsis}
+        <a>…</a>
+        {:else}
         <a href="{folder.url}"><i class="{folder.icon || 'im im-folder'}"></i> <span>{folder.name}</span></a>
-        {/each}
+        {/if} {/each}
     </div>
 </div>
 
@@ -17,6 +19,18 @@
                 folders: [],
                 team: null
             };
+        },
+        computed: {
+            truncatedFolders({ folders }) {
+                if (folders.length < 6) return folders;
+                return [
+                    ...folders.slice(0, 3),
+                    {
+                        ellipsis: true
+                    },
+                    ...folders.slice(-1)
+                ];
+            }
         },
         helpers: {
             __
