@@ -2,15 +2,16 @@
     {@html __('editor / chart-breadcrumb / '+type)} {@html __('editor / chart-breadcrumb / is-in-folder')}
     <div class="parts">
         {#each truncatedFolders as folder} {#if folder.ellipsis}
-        <a>…</a>
+        <span>…</span>
         {:else}
-        <a href="{folder.url}"><i class="{folder.icon || 'im im-folder'}"></i> <span>{folder.name}</span></a>
+        <a href="{folder.url}"><i class="{folder.icon || 'im im-folder'}"></i> <span>{truncate(folder.name)}</span></a>
         {/if} {/each}
     </div>
 </div>
 
 <script>
     import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
 
     export default {
         data() {
@@ -33,7 +34,8 @@
             }
         },
         helpers: {
-            __
+            __,
+            truncate
         }
     };
 </script>
@@ -52,7 +54,8 @@
     .parts {
         margin-left: 1em;
         display: inline-block;
-        a {
+        > a,
+        > span {
             color: #888;
             display: inline-block;
             &:before {
@@ -67,11 +70,11 @@
                     content: '';
                 }
             }
-            &:hover {
-                text-decoration: none;
-                > span {
-                    text-decoration: underline;
-                }
+        }
+        a:hover {
+            text-decoration: none;
+            > span {
+                text-decoration: underline;
             }
         }
     }
