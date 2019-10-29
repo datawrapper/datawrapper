@@ -2,7 +2,9 @@
 
 {% block content %}
 
+{% if user.isLoggedIn() %}
 {{ svelte('chart-breadcrumb', {folders:folders, type:visNamespace}) }}
+{% endif %}
 
 {{ hook('before_editor_nav', chart) }}
 
