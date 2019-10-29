@@ -150,12 +150,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                     "id" => "my-account",
                     'icon' => 'im im-user-settings',
                     "url" => "/account",
-                    "title" => __('Settings')
+                    "title" => __('account / settings')
                 ],[
                     "id" => "my-account",
                     'icon' => 'im im-users',
                     "url" => "/account/teams",
-                    "title" => __('My teams')
+                    "title" => __('account / my-teams')
                 ]
             ]
         ];

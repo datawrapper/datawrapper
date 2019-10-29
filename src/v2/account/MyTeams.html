@@ -1,61 +1,64 @@
-<!-- <h2>{ __("account / my-teams") }</h2>
- -->
-<h2>My Teams</h2>
+<h2>{@html __("account / my-teams") }</h2>
 
 {#if teams.length}
-<p>Here's a list of the teams you're in:</p>
+<p>{@html __('account / my-teams / your-teams')}</p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Slug*</th>
-            <th>Your role</th>
-            <th>Team charts</th>
-            <th>Settings</th>
-            <th>Leave team</th>
+            <th>{__('account / my-teams / name')}</th>
+            <th>{__('account / my-teams / your-role')}</th>
+            <th>{__('account / my-teams / num-charts')}</th>
+            <th>{__('account / my-teams / num-members')}</th>
+            <th>{__('account / settings')}</th>
+            <th>{__('account / my-teams / leave-team')}</th>
         </tr>
     </thead>
     <tbody>
         {#each teams as team}
-        <tr class:current="team.Id === currentTeam">
+        <tr class:current="team.id === currentTeam">
             <td>
-                {team.Name} {#if team.Id === currentTeam}
+                {team.name} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
             </td>
+            <td>{@html __('teams / role / '+team.role)}</td>
+            <td><a href="/team/{team.id}">{team.charts}</a></td>
             <td>
-                <div class="id">{team.Id}</div>
+                {#if team.role === 'member'} {team.members} {:else}
+                <a href="/team/{team.id}/settings#members">{team.members}</a>
+                {/if}
             </td>
-            <td>Member</td>
-            <td><a href="/team/{team.Id}">12 charts</a></td>
             <td>
-                <a href="/team/{team.Id}/settings" class="btn btn-small">settings</a>
+                {#if team.role !== 'member'}
+                <a href="/team/{team.id}/settings" class="btn btn-small">{__('account / settings')}</a>
+                {/if}
             </td>
             <td>
-                <button class="btn btn-small btn-danger"><i class="fa fa-sign-out"></i> leave team</button>
+                {#if team.role !== 'owner'}
+                <button class="btn btn-small btn-danger"><i class="fa fa-sign-out"></i> {__('account / my-teams / leave-team')}</button>
+                {/if}
             </td>
         </tr>
         {/each}
     </tbody>
 </table>
-<p class="mini-help">* The slug is used in internal Datawrapper URLs and can't be changed after team creation.</p>
+
 {:else}
-<p>You're not in any teams, yet.</p>
+<p>{@html __('account / my-teams / no-teams-yet')}</p>
 {/if}
 
 <div class="row">
     {#if user.isAdmin}
     <div class="span5">
-        <h3>Create a team</h3>
+        <h3>{@html __('account / my-teams / create')}</h3>
         {#if !createTeam}
         <div class="hed">
             <p>
-                Teams can be used to collectively work on charts with other users. You can create as many teams as you want and invite other people to
-                join them.
+                {@html __('account / my-teams / why-teams')}
             </p>
             <button on:click="set({createTeam:true})" class="btn btn-large" class:btn-primary="!teams.length">
-                <i class="fa fa-plus fa-fw"></i> Create team
+                <i class="fa fa-plus fa-fw"></i> {@html __('account / my-teams / create-btn')}
             </button>
         </div>
         {:else}
@@ -77,16 +80,9 @@
     {/if}
     <div class="span5">
         {#if teams.length > 0}
-        <h3>Select active team</h3>
-        <p>
-            Since you are a member of multiple teams, you have to pick which one you want to be used as <b>active team</b> (indicated with
-            <i class="fa fa-check-circle"></i>). Newly created charts will automatically be added to this team, and might also inherit some settings
-            from the team.
-        </p>
-        <FormBlock
-            width="350px"
-            help="Hint: you can also change the active team at any time using the &nbsp;<i class='fa fa-bars'></i>&nbsp; menu in the top navigation bar."
-        >
+        <h3>{@html __('account / my-teams / select-active')}</h3>
+        <p>{@html __('account / my-teams / what-is-active')}</p>
+        <FormBlock width="350px" help="{__('account / my-teams / active-hint')}">
             <div class="flex">
                 <!-- prettier-ignore -->
                 <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
@@ -123,9 +119,9 @@
         computed: {
             teamOptions({ teams }) {
                 return teams
-                    .map(({ Id, Name }) => ({
-                        value: Id,
-                        label: Name
+                    .map(({ id, name }) => ({
+                        value: id,
+                        label: name
                     }))
                     .concat({
                         value: null,

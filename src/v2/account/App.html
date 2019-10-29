@@ -1,5 +1,5 @@
 <div class="admin">
-    <h1 class="title">Account Settings</h1>
+    <h1 class="title">{__('account / settings')}</h1>
 
     <div class="row">
         <div class="span2">
@@ -27,19 +27,20 @@
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
     import EditProfile from './EditProfile.html';
     import MyTeams from './MyTeams.html';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     const EditProfileTab = {
-        title: 'Profile',
+        title: __('account / profile'),
         id: 'profile',
         icon: 'im im-user-settings',
         ui: EditProfile
     };
 
     const MyTeamsTab = {
-        title: 'My Teams',
+        title: __('account / my-teams'),
         id: 'teams',
         icon: 'im im-users',
         ui: MyTeams
@@ -53,7 +54,7 @@
                 activeData: {},
                 groups: [
                     {
-                        title: 'Personal settings',
+                        title: __('account / settings / personal'),
                         tabs: [EditProfileTab]
                     }
                 ]
@@ -117,12 +118,12 @@
 
             if (adminTeams.length) {
                 groups.push({
-                    title: 'Team settings',
+                    title: __('account / settings / team'),
                     tabs: []
                 });
                 adminTeams.forEach(({ Id, Name }) => {
                     groups[1].tabs.push({
-                        title: Name,
+                        title: truncate(Name, 10, 4),
                         url: `/team/${Id}/settings`,
                         icon: 'im im-users'
                     });

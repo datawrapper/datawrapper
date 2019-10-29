@@ -35,9 +35,16 @@ call_user_func(function() {
             }
             usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
 
-            $teams = $user->getActiveOrganizations();
+            $teams = [];
             $adminTeams = [];
-            foreach ($teams as $team) {
+            foreach ($user->getActiveOrganizations() as $team) {
+                $teams[] = [
+                    'id' => $team->getId(),
+                    'name' => $team->getName(),
+                    'role' => $team->getRole($user),
+                    'charts' => $team->getChartCount(),
+                    'members' => $team->getActiveUserCount(),
+                ];
                 if ($user->canAdministrateTeam($team)) {
                     $adminTeams[] = $team->toArray();
                 }
@@ -49,7 +56,7 @@ call_user_func(function() {
                     "email" => $user->getEmail(),
                     "userId" => $user->getId(),
                     'currentTeam' => $current ? $current->getId() : null,
-                    'teams' => $teams->toArray(),
+                    'teams' => $teams,
                     'adminTeams' => $adminTeams,
                     'pages' => $pages
                 ]

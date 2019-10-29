@@ -1,67 +1,6 @@
 <h2>{ __("Edit profile") }</h2>
 
-{#if changePassword }
-
-<!-- <div class="row">
-    <div class="span6 offset3">
-        <div class="form-horizontal edit-account-confirm">
-            <h2>{ __("account / password") }</h2>
-            <p>
-                { __("account / password / strong-password-note") }
-            </p>
-
-            {#if errors && errors.length }
-            <div class="alert">
-                <ul style="margin-bottom: 0;">
-                    {#each errors as message}
-                    <li>{@html message }</li>
-                    {/each}
-                </ul>
-            </div>
-            {/if}
-
-            <fieldset>
-                <div class="control-group">
-                    <label class="control-label">{ __("Current Password") }</label>
-                    <div class="controls">
-                        <input type="password" bind:value="currentPassword" class="input-xlarge" />
-                        <p class="help-block">
-                            { __("account / password / current-password-note") }
-                        </p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">{ __("New Password") }</label>
-                    <div class="controls">
-                        <input type="password" bind:value="newPassword1" class="input-xlarge" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">{ __("(repeat)") }</label>
-                    <div class="controls">
-                        <input type="password" bind:value="newPassword2" class="input-xlarge" />
-                    </div>
-                </div>
-
-                <div>
-                    <button on:click="set({changePassword: false})" class="btn btn-save btn-default btn-back">
-                        { __("Back") }
-                    </button>
-                    <button class="btn btn-primary" on:click="changePassword()" style="float:right">
-                        <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("account / password") }
-                    </button>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-</div> -->
-
-{:elseif deleteAccount } {:elseif deleteAccount2 } {:elseif deleteAccount3 }
-
-<div class="row delete-account">
-    <div class="span6 offset3" style=""></div>
-</div>
-{/if} {#if messages && messages.length }
+{#if messages && messages.length }
 <div class="row" style="margin-top: 20px;">
     <div class="span6 offset3">
         <div class="alert alert-success">
