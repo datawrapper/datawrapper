@@ -18,6 +18,32 @@ function add_editor_nav(&$page, $step, $chart) {
     $page['chartLocale'] = $page['locale'];
     $page['metricPrefix'] = get_metric_prefix($page['chartLocale']);
     $page['createstep'] = $step;
+    $page['visNamespace'] = $vis['caption'] ?? $vis['namespace'] ?? 'chart';
+
+    $folder = $chart->getInFolder();
+    $chartOrg = $chart->getOrganization();
+    $baseUrl = empty($chartOrg) ? '/mycharts' : '/team/'.$chartOrg->getId();
+    if (isset($folder)) {
+
+        $folder = FolderQuery::create()->findPk($folder);
+        while($folder) {
+            $folders[] = [
+                'url' => $baseUrl.'/'.$folder->getId(),
+                'name' => $folder->getFolderName()
+            ];
+            $folder = $folder->getParentId();
+            if ($folder) $folder = FolderQuery::create()->findPk($folder);
+        }
+    } else {
+        $folders = [];
+    }
+    $folders[] = [
+        'icon' => empty($chartOrg) ? 'im im-user-male' : 'im im-users',
+        'url' => $baseUrl,
+        'name' => empty($chartOrg) ? __('My Charts') : $chartOrg->getName()
+    ];
+    $folders = array_reverse($folders);
+    $page['folders'] = $folders;
 
     $user = Session::getUser();
     if (!$chart->isDataWritable($user)) {

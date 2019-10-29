@@ -12,7 +12,7 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 
 build('fields');
-build('folder');
+build('chart-breadcrumb');
 
 export default targets;
 
@@ -25,6 +25,7 @@ function build(appId, opts) {
         },
         opts
     );
+    if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
         output: {
@@ -72,9 +73,15 @@ function build(appId, opts) {
             json(),
 
             buble({
-                transforms: { dangerousForOf: true, asyncAwait: false }
+                transforms: { dangerousForOf: true, asyncAwait: false },
+                objectAssign: 'Object.assign'
             }),
             production && terser()
         ]
     });
+}
+
+function checkTarget(appId) {
+    if (!process.env.ROLLUP_TGT_APP) return true;
+    return process.env.ROLLUP_TGT_APP === appId;
 }
