@@ -1,0 +1,64 @@
+<div class="chart-breadcrumb">
+    {@html __('editor / chart-breadcrumb / '+type)} {@html __('editor / chart-breadcrumb / is-in-folder')}
+    <div class="parts">
+        {#each folders as folder}
+        <a href="{folder.url}"><i class="{folder.icon || 'im im-folder'}"></i> <span>{folder.name}</span></a>
+        {/each}
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        data() {
+            return {
+                type: 'chart',
+                folders: [],
+                team: null
+            };
+        },
+        helpers: {
+            __
+        }
+    };
+</script>
+
+<style type="text/css" lang="less">
+    .chart-breadcrumb {
+        color: #888;
+        font-weight: 400;
+        margin-bottom: 15px;
+    }
+    .parts .im {
+        font-size: 13px;
+        vertical-align: middle;
+        padding: 0 3px 0 0;
+    }
+    .parts {
+        margin-left: 1em;
+        display: inline-block;
+        a {
+            color: #888;
+            display: inline-block;
+            &:before {
+                display: inline-block;
+                padding: 0 1ex;
+                content: '/';
+            }
+            &:first-child {
+                font-weight: bold;
+                &:before {
+                    padding: 0;
+                    content: '';
+                }
+            }
+            &:hover {
+                text-decoration: none;
+                > span {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+</style>

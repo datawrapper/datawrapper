@@ -19,6 +19,9 @@ class Folder extends BaseFolder {
     public function getId() {
         return $this->getFolderId();
     }
+    public function getName() {
+        return $this->getFolderName();
+    }
 
     /*
      * check if a given user is allowed access to this folder
