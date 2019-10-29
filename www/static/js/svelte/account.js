@@ -4677,7 +4677,7 @@
 	        groups: [
 	            {
 	                title: 'Personal settings',
-	                tabs: [EditProfileTab, MyTeamsTab]
+	                tabs: [EditProfileTab]
 	            }
 	        ]
 	    };
@@ -4731,12 +4731,17 @@
 
 	    var ref = this.get();
 	    var groups = ref.groups;
+	    var teams = ref.teams;
 	    var adminTeams = ref.adminTeams;
 	    var pages = ref.pages;
 
 	    if (pages.length) {
 	        groups[0].tabs.push.apply(groups[0].tabs, pages);
 	        this.set({ groups: groups });
+	    }
+
+	    if (teams.length) {
+	        groups[0].tabs.splice(1, 0, MyTeamsTab);
 	    }
 
 	    if (adminTeams.length) {

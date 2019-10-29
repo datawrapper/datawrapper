@@ -54,7 +54,7 @@
                 groups: [
                     {
                         title: 'Personal settings',
-                        tabs: [EditProfileTab, MyTeamsTab]
+                        tabs: [EditProfileTab]
                     }
                 ]
             };
@@ -103,11 +103,15 @@
 
             dw.backend.__svelteApps.account = this;
 
-            const { groups, adminTeams, pages } = this.get();
+            const { groups, teams, adminTeams, pages } = this.get();
 
             if (pages.length) {
                 groups[0].tabs.push.apply(groups[0].tabs, pages);
                 this.set({ groups });
+            }
+
+            if (teams.length) {
+                groups[0].tabs.splice(1, 0, MyTeamsTab);
             }
 
             if (adminTeams.length) {
