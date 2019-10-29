@@ -3633,23 +3633,17 @@
 	}
 
 	function create_main_fragment$5(component, ctx) {
-		var h2, text1, text2, div2, div0, h3, text4, text5, div1;
+		var h2, text1, text2, div1, text3, div0;
 
 		function select_block_type(ctx) {
-			if (ctx.teams.length) { return create_if_block_4$1; }
+			if (ctx.teams.length) { return create_if_block_5$1; }
 			return create_else_block_2$1;
 		}
 
 		var current_block_type = select_block_type(ctx);
 		var if_block0 = current_block_type(component, ctx);
 
-		function select_block_type_1(ctx) {
-			if (!ctx.createTeam) { return create_if_block_2$3; }
-			return create_else_block$1;
-		}
-
-		var current_block_type_1 = select_block_type_1(ctx);
-		var if_block1 = current_block_type_1(component, ctx);
+		var if_block1 = (ctx.user.isAdmin) && create_if_block_2$3(component, ctx);
 
 		var if_block2 = (ctx.teams.length > 0) && create_if_block$5(component, ctx);
 
@@ -3660,24 +3654,16 @@
 				text1 = createText("\n\n");
 				if_block0.c();
 				text2 = createText("\n\n");
-				div2 = createElement("div");
-				div0 = createElement("div");
-				h3 = createElement("h3");
-				h3.textContent = "Create a team";
-				text4 = createText("\n        ");
-				if_block1.c();
-				text5 = createText("\n    ");
 				div1 = createElement("div");
+				if (if_block1) { if_block1.c(); }
+				text3 = createText("\n    ");
+				div0 = createElement("div");
 				if (if_block2) { if_block2.c(); }
 				addLoc(h2, file$5, 2, 0, 48);
-				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$5, 48, 8, 1351);
 				div0.className = "span5";
-				addLoc(div0, file$5, 47, 4, 1323);
-				div1.className = "span5";
-				addLoc(div1, file$5, 75, 4, 2653);
-				div2.className = "row";
-				addLoc(div2, file$5, 46, 0, 1301);
+				addLoc(div0, file$5, 77, 4, 2686);
+				div1.className = "row";
+				addLoc(div1, file$5, 46, 0, 1301);
 			},
 
 			m: function mount(target, anchor) {
@@ -3685,14 +3671,11 @@
 				insert(target, text1, anchor);
 				if_block0.m(target, anchor);
 				insert(target, text2, anchor);
-				insert(target, div2, anchor);
-				append(div2, div0);
-				append(div0, h3);
-				append(div0, text4);
-				if_block1.m(div0, null);
-				append(div2, text5);
-				append(div2, div1);
-				if (if_block2) { if_block2.m(div1, null); }
+				insert(target, div1, anchor);
+				if (if_block1) { if_block1.m(div1, null); }
+				append(div1, text3);
+				append(div1, div0);
+				if (if_block2) { if_block2.m(div0, null); }
 			},
 
 			p: function update(changed, ctx) {
@@ -3705,13 +3688,17 @@
 					if_block0.m(text2.parentNode, text2);
 				}
 
-				if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
-					if_block1.p(changed, ctx);
-				} else {
+				if (ctx.user.isAdmin) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_2$3(component, ctx);
+						if_block1.c();
+						if_block1.m(div1, text3);
+					}
+				} else if (if_block1) {
 					if_block1.d(1);
-					if_block1 = current_block_type_1(component, ctx);
-					if_block1.c();
-					if_block1.m(div0, null);
+					if_block1 = null;
 				}
 
 				if (ctx.teams.length > 0) {
@@ -3720,7 +3707,7 @@
 					} else {
 						if_block2 = create_if_block$5(component, ctx);
 						if_block2.c();
-						if_block2.m(div1, null);
+						if_block2.m(div0, null);
 					}
 				} else if (if_block2) {
 					if_block2.d(1);
@@ -3737,10 +3724,10 @@
 				if_block0.d(detach);
 				if (detach) {
 					detachNode(text2);
-					detachNode(div2);
+					detachNode(div1);
 				}
 
-				if_block1.d();
+				if (if_block1) { if_block1.d(); }
 				if (if_block2) { if_block2.d(); }
 			}
 		};
@@ -3772,7 +3759,7 @@
 	}
 
 	// (5:0) {#if teams.length}
-	function create_if_block_4$1(component, ctx) {
+	function create_if_block_5$1(component, ctx) {
 		var p0, text1, table, thead, tr, th0, text3, th1, text5, th2, text7, th3, text9, th4, text11, th5, text13, tbody, text14, p1;
 
 		var each_value = ctx.teams;
@@ -3903,7 +3890,7 @@
 	}
 
 	// (23:28) {#if team.Id === currentTeam}
-	function create_if_block_5$1(component, ctx) {
+	function create_if_block_6$1(component, ctx) {
 		var i;
 
 		return {
@@ -3929,7 +3916,7 @@
 	function create_each_block$2(component, ctx) {
 		var tr, td0, text0_value = ctx.team.Name, text0, text1, text2, td1, div, text3_value = ctx.team.Id, text3, text4, td2, text6, td3, a0, text7, a0_href_value, text8, td4, a1, text9, a1_href_value, text10, td5, button, i, text11;
 
-		var if_block = (ctx.team.Id === ctx.currentTeam) && create_if_block_5$1();
+		var if_block = (ctx.team.Id === ctx.currentTeam) && create_if_block_6$1();
 
 		return {
 			c: function create() {
@@ -4013,7 +4000,7 @@
 
 				if (ctx.team.Id === ctx.currentTeam) {
 					if (!if_block) {
-						if_block = create_if_block_5$1();
+						if_block = create_if_block_6$1();
 						if_block.c();
 						if_block.m(td0, null);
 					}
@@ -4049,7 +4036,60 @@
 		};
 	}
 
-	// (60:8) {:else}
+	// (48:4) {#if user.isAdmin}
+	function create_if_block_2$3(component, ctx) {
+		var div, h3, text_1;
+
+		function select_block_type_1(ctx) {
+			if (!ctx.createTeam) { return create_if_block_3$1; }
+			return create_else_block$1;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				h3 = createElement("h3");
+				h3.textContent = "Create a team";
+				text_1 = createText("\n        ");
+				if_block.c();
+				h3.className = "svelte-c2pbd6";
+				addLoc(h3, file$5, 49, 8, 1374);
+				div.className = "span5";
+				addLoc(div, file$5, 48, 4, 1346);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, h3);
+				append(div, text_1);
+				if_block.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if_block.d();
+			}
+		};
+	}
+
+	// (61:8) {:else}
 	function create_else_block$1(component, ctx) {
 		var p, raw_value = __('team-create / p'), text0, input, input_updating = false, text1, button0, text2, text3_value = __('team-create / button'), text3, button0_disabled_value, text4, button1, text5_value = __('Return'), text5;
 
@@ -4071,7 +4111,7 @@
 		});
 
 		function select_block_type_2(ctx) {
-			if (ctx.awaitCreateTeam) { return create_if_block_3$1; }
+			if (ctx.awaitCreateTeam) { return create_if_block_4$1; }
 			return create_else_block_1$1;
 		}
 
@@ -4100,18 +4140,18 @@
 				text4 = createText("\n        ");
 				button1 = createElement("button");
 				text5 = createText(text5_value);
-				addLoc(p, file$5, 60, 8, 1870);
+				addLoc(p, file$5, 61, 8, 1893);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = __('team-create / untitled');
-				addLoc(input, file$5, 65, 12, 2037);
+				addLoc(input, file$5, 66, 12, 2060);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-primary";
 				button0.disabled = button0_disabled_value = !ctx.newTeamName.length;
-				addLoc(button0, file$5, 68, 8, 2161);
+				addLoc(button0, file$5, 69, 8, 2184);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn";
-				addLoc(button1, file$5, 72, 8, 2545);
+				addLoc(button1, file$5, 73, 8, 2568);
 			},
 
 			m: function mount(target, anchor) {
@@ -4176,8 +4216,8 @@
 		};
 	}
 
-	// (50:8) {#if !createTeam}
-	function create_if_block_2$3(component, ctx) {
+	// (51:8) {#if !createTeam}
+	function create_if_block_3$1(component, ctx) {
 		var div, p, text1, button, i, text2;
 
 		function click_handler(event) {
@@ -4193,15 +4233,15 @@
 				button = createElement("button");
 				i = createElement("i");
 				text2 = createText(" Create team");
-				addLoc(p, file$5, 51, 12, 1438);
+				addLoc(p, file$5, 52, 12, 1461);
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 56, 16, 1764);
+				addLoc(i, file$5, 57, 16, 1787);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-large";
 				toggleClass(button, "btn-primary", !ctx.teams.length);
-				addLoc(button, file$5, 55, 12, 1649);
+				addLoc(button, file$5, 56, 12, 1672);
 				div.className = "hed svelte-c2pbd6";
-				addLoc(div, file$5, 50, 8, 1408);
+				addLoc(div, file$5, 51, 8, 1431);
 			},
 
 			m: function mount(target, anchor) {
@@ -4229,7 +4269,7 @@
 		};
 	}
 
-	// (71:29) {:else}
+	// (72:29) {:else}
 	function create_else_block_1$1(component, ctx) {
 		var i;
 
@@ -4237,7 +4277,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 70, 36, 2443);
+				addLoc(i, file$5, 71, 36, 2466);
 			},
 
 			m: function mount(target, anchor) {
@@ -4254,8 +4294,8 @@
 		};
 	}
 
-	// (70:12) {#if awaitCreateTeam}
-	function create_if_block_3$1(component, ctx) {
+	// (71:12) {#if awaitCreateTeam}
+	function create_if_block_4$1(component, ctx) {
 		var await_block_anchor, promise;
 
 		var info = {
@@ -4304,7 +4344,7 @@
 		};
 	}
 
-	// (71:13) {:catch}
+	// (72:13) {:catch}
 	function create_catch_block_1(component, ctx) {
 
 		return {
@@ -4316,7 +4356,7 @@
 		};
 	}
 
-	// (70:103) {:then}
+	// (71:103) {:then}
 	function create_then_block_1(component, ctx) {
 		var i;
 
@@ -4324,7 +4364,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check fa-fw";
-				addLoc(i, file$5, 69, 110, 2374);
+				addLoc(i, file$5, 70, 110, 2397);
 			},
 
 			m: function mount(target, anchor) {
@@ -4339,7 +4379,7 @@
 		};
 	}
 
-	// (70:58)  &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}
+	// (71:58)  &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}
 	function create_pending_block_1(component, ctx) {
 		var text, i;
 
@@ -4348,7 +4388,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 69, 65, 2329);
+				addLoc(i, file$5, 70, 65, 2352);
 			},
 
 			m: function mount(target, anchor) {
@@ -4365,7 +4405,7 @@
 		};
 	}
 
-	// (77:8) {#if teams.length > 0}
+	// (79:8) {#if teams.length > 0}
 	function create_if_block$5(component, ctx) {
 		var h3, text1, p, text2, b, text4, i, text5, text6, div, baseselect_updating = {}, text7;
 
@@ -4424,13 +4464,13 @@
 				if (if_block) { if_block.c(); }
 				formblock._fragment.c();
 				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$5, 77, 8, 2712);
-				addLoc(b, file$5, 79, 104, 2856);
+				addLoc(h3, file$5, 79, 8, 2745);
+				addLoc(b, file$5, 81, 104, 2889);
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$5, 80, 12, 2903);
-				addLoc(p, file$5, 78, 8, 2748);
+				addLoc(i, file$5, 82, 12, 2936);
+				addLoc(p, file$5, 80, 8, 2781);
 				div.className = "flex";
-				addLoc(div, file$5, 87, 12, 3301);
+				addLoc(div, file$5, 89, 12, 3334);
 			},
 
 			m: function mount(target, anchor) {
@@ -4490,7 +4530,7 @@
 		};
 	}
 
-	// (91:16) {#if awaitActiveTeam}
+	// (93:16) {#if awaitActiveTeam}
 	function create_if_block_1$5(component, ctx) {
 		var await_block_anchor, promise;
 
@@ -4540,7 +4580,7 @@
 		};
 	}
 
-	// (92:24) {:catch}
+	// (94:24) {:catch}
 	function create_catch_block(component, ctx) {
 
 		return {
@@ -4552,7 +4592,7 @@
 		};
 	}
 
-	// (92:16) {:then}
+	// (94:16) {:then}
 	function create_then_block(component, ctx) {
 
 		return {
@@ -4564,7 +4604,7 @@
 		};
 	}
 
-	// (91:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
+	// (93:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
 	function create_pending_block(component, ctx) {
 		var text, i;
 
@@ -4573,7 +4613,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 90, 69, 3524);
+				addLoc(i, file$5, 92, 69, 3557);
 			},
 
 			m: function mount(target, anchor) {
@@ -4604,6 +4644,7 @@
 		this._recompute({ teams: 1 }, this._state);
 		if (!('teams' in this._state)) { console.warn("<MyTeams> was created without expected data property 'teams'"); }
 		if (!('currentTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'currentTeam'"); }
+		if (!('user' in this._state)) { console.warn("<MyTeams> was created without expected data property 'user'"); }
 		if (!('createTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'createTeam'"); }
 		if (!('newTeamName' in this._state)) { console.warn("<MyTeams> was created without expected data property 'newTeamName'"); }
 		if (!('awaitCreateTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'awaitCreateTeam'"); }
@@ -4663,11 +4704,12 @@
 
 	function data$6(ref) {
 	    var email = ref.email;
+	    var user = ref.user;
 	    var userId = ref.userId;
 	    var teams = ref.teams;
 	    var currentTeam = ref.currentTeam;
 
-	    return { email: email, userId: userId, teams: teams, currentTeam: currentTeam };
+	    return { user: user, email: email, userId: userId, teams: teams, currentTeam: currentTeam };
 	}
 	function data_1() {
 	    return {
@@ -4709,7 +4751,8 @@
 	                var ref = this.get();
 	                var teams = ref.teams;
 	                var currentTeam = ref.currentTeam;
-	                tab.data = { teams: teams, currentTeam: currentTeam };
+	                var user = ref.user;
+	                tab.data = { teams: teams, currentTeam: currentTeam, user: user };
 	            } else if (tab.id === 'profile') {
 	                var ref$1 = this.get();
 	                var email = ref$1.email;
@@ -4742,6 +4785,7 @@
 
 	    if (teams.length) {
 	        groups[0].tabs.splice(1, 0, MyTeamsTab);
+	        this.set({ groups: groups });
 	    }
 
 	    if (adminTeams.length) {
@@ -5141,8 +5185,9 @@
 		init(this, options);
 		this._state = assign(data_1(), options.data);
 
-		this._recompute({ email: 1, userId: 1, teams: 1, currentTeam: 1 }, this._state);
+		this._recompute({ email: 1, user: 1, userId: 1, teams: 1, currentTeam: 1 }, this._state);
 		if (!('email' in this._state)) { console.warn("<App> was created without expected data property 'email'"); }
+		if (!('user' in this._state)) { console.warn("<App> was created without expected data property 'user'"); }
 		if (!('userId' in this._state)) { console.warn("<App> was created without expected data property 'userId'"); }
 		if (!('teams' in this._state)) { console.warn("<App> was created without expected data property 'teams'"); }
 		if (!('currentTeam' in this._state)) { console.warn("<App> was created without expected data property 'currentTeam'"); }
@@ -5178,7 +5223,7 @@
 	};
 
 	App.prototype._recompute = function _recompute(changed, state) {
-		if (changed.email || changed.userId || changed.teams || changed.currentTeam) {
+		if (changed.email || changed.user || changed.userId || changed.teams || changed.currentTeam) {
 			if (this._differs(state.data, (state.data = data$6(state)))) { changed.data = true; }
 		}
 	};

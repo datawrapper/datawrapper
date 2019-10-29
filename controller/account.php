@@ -45,7 +45,7 @@ call_user_func(function() {
             $current = $user->getCurrentOrganization();
             $context = [
                 'svelte_data' => [
-                    "user" => $user,
+                    "user" => $user->serialize(),
                     "email" => $user->getEmail(),
                     "userId" => $user->getId(),
                     'currentTeam' => $current ? $current->getId() : null,

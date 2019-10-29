@@ -45,6 +45,7 @@
 {/if}
 
 <div class="row">
+    {#if user.isAdmin}
     <div class="span5">
         <h3>Create a team</h3>
         {#if !createTeam}
@@ -73,6 +74,7 @@
         <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
         {/if}
     </div>
+    {/if}
     <div class="span5">
         {#if teams.length > 0}
         <h3>Select active team</h3>

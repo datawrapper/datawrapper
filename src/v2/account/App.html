@@ -60,8 +60,8 @@
             };
         },
         computed: {
-            data({ email, userId, teams, currentTeam }) {
-                return { email, userId, teams, currentTeam };
+            data({ email, user, userId, teams, currentTeam }) {
+                return { user, email, userId, teams, currentTeam };
             }
         },
         helpers: {
@@ -87,8 +87,8 @@
                 if (tab.ui) {
                     if (event) event.preventDefault();
                     if (tab.id === 'teams') {
-                        const { teams, currentTeam } = this.get();
-                        tab.data = { teams, currentTeam };
+                        const { teams, currentTeam, user } = this.get();
+                        tab.data = { teams, currentTeam, user };
                     } else if (tab.id === 'profile') {
                         const { email, userId } = this.get();
                         tab.data = { email, userId };
@@ -112,6 +112,7 @@
 
             if (teams.length) {
                 groups[0].tabs.splice(1, 0, MyTeamsTab);
+                this.set({ groups });
             }
 
             if (adminTeams.length) {
