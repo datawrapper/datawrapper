@@ -93,5 +93,5 @@ $app->get('/organization-invite/:invite_token', function ($invite_token) use ($a
     DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD,
       $invitee->getInviteOrganization(), $invitee);
 
-    $app->redirect('/team/' . $invitee->getInviteOrganization() . '/charts');
+    $app->redirect('/team/' . $invitee->getInviteOrganization());
 });
