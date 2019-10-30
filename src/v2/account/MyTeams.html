@@ -7,10 +7,12 @@
     <thead>
         <tr>
             <th>{__('account / my-teams / name')}</th>
+            {#if user.isAdmin}
+            <th>{__('account / my-teams / id')}</th>
+            {/if}
             <th>{__('account / my-teams / your-role')}</th>
             <th>{__('account / my-teams / num-charts')}</th>
             <th>{__('account / my-teams / num-members')}</th>
-            <th>{__('account / settings')}</th>
             <th>{__('account / my-teams / leave-team')}</th>
         </tr>
     </thead>
@@ -18,10 +20,13 @@
         {#each teams as team}
         <tr class:current="team.id === currentTeam">
             <td>
-                {team.name} {#if team.id === currentTeam}
+                {#if team.role === 'member'}{team.name}{:else}<a href="/team/{team.id}/settings">{team.name}</a>{/if} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
             </td>
+            {#if user.isAdmin}
+            <td class="slug">{team.id}</td>
+            {/if}
             <td>{@html __('teams / role / '+team.role)}</td>
             <td><a href="/team/{team.id}">{team.charts}</a></td>
             <td>
@@ -29,11 +34,7 @@
                 <a href="/team/{team.id}/settings#members">{team.members}</a>
                 {/if}
             </td>
-            <td>
-                {#if team.role !== 'member'}
-                <a href="/team/{team.id}/settings" class="btn btn-small">{__('account / settings')}</a>
-                {/if}
-            </td>
+
             <td>
                 {#if team.role !== 'owner'}
                 <button class="btn btn-small btn-danger"><i class="fa fa-sign-out"></i> {__('account / my-teams / leave-team')}</button>
@@ -69,17 +70,21 @@
         <FormBlock label="{ __('team-create / name') }" help="{ __('team-create / help') }">
             <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" />
         </FormBlock>
+        {#if user.isAdmin}
+        <FormBlock label="{ __('team-create / slug') }" help="{ __('team-create / slug-help') }">
+            <input type="text" placeholder="{autoslug}" bind:value="newTeamSlug" />
+        </FormBlock>
+        {/if}
 
-        <button on:click="createTeam(newTeamName)" class="btn btn-primary" disabled="{ !newTeamName.length }">
+        <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
             {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
             >{:catch}{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
         </button>
         <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
         {/if}
     </div>
-    {/if}
+    {/if} {#if teams.length > 0}
     <div class="span5">
-        {#if teams.length > 0}
         <h3>{@html __('account / my-teams / select-active')}</h3>
         <p>{@html __('account / my-teams / what-is-active')}</p>
         <FormBlock width="350px" help="{__('account / my-teams / active-hint')}">
@@ -90,8 +95,8 @@
                 {:then} {:catch}{/await} {/if}
             </div>
         </FormBlock>
-        {/if}
     </div>
+    {/if}
 </div>
 
 <script>
@@ -127,14 +132,26 @@
                         value: null,
                         label: __('nav / no-team')
                     });
+            },
+            autoslug({ newTeamName }) {
+                return newTeamName.toLowerCase().replace(/\W/g, '');
             }
         },
         helpers: { __ },
         methods: {
-            createTeam(name) {
+            createTeam(name, slug) {
+                const { user } = this.get();
+                const payload = { name };
+                if (user.isAdmin && slug) {
+                    payload.id = String(slug)
+                        .trim()
+                        .toLowerCase();
+                }
                 this.set({
-                    awaitCreateTeam: postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams`, JSON.stringify({ name })).then(
-                        () => {}
+                    awaitCreateTeam: postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams`, JSON.stringify(payload)).then(
+                        team => {
+                            window.location.href = `/team/${team.id}/settings`;
+                        }
                     )
                 });
             }
@@ -169,7 +186,7 @@
     .current .name {
         font-weight: bold;
     }
-    .id {
+    .slug {
         font-family: Roboto Mono;
         color: #888;
     }

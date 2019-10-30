@@ -3522,6 +3522,11 @@
 	            label: __('nav / no-team')
 	        });
 	}
+	function autoslug(ref) {
+	    var newTeamName = ref.newTeamName;
+
+	    return newTeamName.toLowerCase().replace(/\W/g, '');
+	}
 	function data$5() {
 	    return {
 	        teams: [],
@@ -3534,10 +3539,20 @@
 	    };
 	}
 	var methods$1 = {
-	    createTeam: function createTeam(name) {
+	    createTeam: function createTeam(name, slug) {
+	        var ref = this.get();
+	        var user = ref.user;
+	        var payload = { name: name };
+	        if (user.isAdmin && slug) {
+	            payload.id = String(slug)
+	                .trim()
+	                .toLowerCase();
+	        }
 	        this.set({
-	            awaitCreateTeam: postJSON(((window.location.protocol) + "//" + (dw.backend.__api_domain) + "/v3/teams"), JSON.stringify({ name: name })).then(
-	                function () {}
+	            awaitCreateTeam: postJSON(((window.location.protocol) + "//" + (dw.backend.__api_domain) + "/v3/teams"), JSON.stringify(payload)).then(
+	                function (team) {
+	                    window.location.href = "/team/" + (team.id) + "/settings";
+	                }
 	            )
 	        });
 	    }
@@ -3566,11 +3581,11 @@
 	}
 
 	function create_main_fragment$5(component, ctx) {
-		var h2, raw_value = __("account / my-teams"), text0, text1, div1, text2, div0;
+		var h2, raw_value = __("account / my-teams"), text0, text1, div, text2;
 
 		function select_block_type(ctx) {
-			if (ctx.teams.length) { return create_if_block_5$1; }
-			return create_else_block_3;
+			if (ctx.teams.length) { return create_if_block_6$1; }
+			return create_else_block_4;
 		}
 
 		var current_block_type = select_block_type(ctx);
@@ -3586,16 +3601,13 @@
 				text0 = createText("\n\n");
 				if_block0.c();
 				text1 = createText("\n\n");
-				div1 = createElement("div");
+				div = createElement("div");
 				if (if_block1) { if_block1.c(); }
-				text2 = createText("\n    ");
-				div0 = createElement("div");
+				text2 = createText(" ");
 				if (if_block2) { if_block2.c(); }
 				addLoc(h2, file$5, 0, 0, 0);
-				div0.className = "span5";
-				addLoc(div0, file$5, 80, 4, 3025);
-				div1.className = "row";
-				addLoc(div1, file$5, 50, 0, 1695);
+				div.className = "row";
+				addLoc(div, file$5, 51, 0, 1727);
 			},
 
 			m: function mount(target, anchor) {
@@ -3604,11 +3616,10 @@
 				insert(target, text0, anchor);
 				if_block0.m(target, anchor);
 				insert(target, text1, anchor);
-				insert(target, div1, anchor);
-				if (if_block1) { if_block1.m(div1, null); }
-				append(div1, text2);
-				append(div1, div0);
-				if (if_block2) { if_block2.m(div0, null); }
+				insert(target, div, anchor);
+				if (if_block1) { if_block1.m(div, null); }
+				append(div, text2);
+				if (if_block2) { if_block2.m(div, null); }
 			},
 
 			p: function update(changed, ctx) {
@@ -3627,7 +3638,7 @@
 					} else {
 						if_block1 = create_if_block_2$3(component, ctx);
 						if_block1.c();
-						if_block1.m(div1, text2);
+						if_block1.m(div, text2);
 					}
 				} else if (if_block1) {
 					if_block1.d(1);
@@ -3640,7 +3651,7 @@
 					} else {
 						if_block2 = create_if_block$5(component, ctx);
 						if_block2.c();
-						if_block2.m(div0, null);
+						if_block2.m(div, null);
 					}
 				} else if (if_block2) {
 					if_block2.d(1);
@@ -3657,7 +3668,7 @@
 				if_block0.d(detach);
 				if (detach) {
 					detachNode(text1);
-					detachNode(div1);
+					detachNode(div);
 				}
 
 				if (if_block1) { if_block1.d(); }
@@ -3666,14 +3677,14 @@
 		};
 	}
 
-	// (47:0) {:else}
-	function create_else_block_3(component, ctx) {
+	// (48:0) {:else}
+	function create_else_block_4(component, ctx) {
 		var p, raw_value = __('account / my-teams / no-teams-yet');
 
 		return {
 			c: function create() {
 				p = createElement("p");
-				addLoc(p, file$5, 47, 0, 1633);
+				addLoc(p, file$5, 48, 0, 1665);
 			},
 
 			m: function mount(target, anchor) {
@@ -3692,8 +3703,10 @@
 	}
 
 	// (3:0) {#if teams.length}
-	function create_if_block_5$1(component, ctx) {
-		var p, raw_value = __('account / my-teams / your-teams'), text0, table, thead, tr, th0, text1_value = __('account / my-teams / name'), text1, text2, th1, text3_value = __('account / my-teams / your-role'), text3, text4, th2, text5_value = __('account / my-teams / num-charts'), text5, text6, th3, text7_value = __('account / my-teams / num-members'), text7, text8, th4, text9_value = __('account / settings'), text9, text10, th5, text11_value = __('account / my-teams / leave-team'), text11, text12, tbody;
+	function create_if_block_6$1(component, ctx) {
+		var p, raw_value = __('account / my-teams / your-teams'), text0, table, thead, tr, th0, text1_value = __('account / my-teams / name'), text1, text2, text3, th1, text4_value = __('account / my-teams / your-role'), text4, text5, th2, text6_value = __('account / my-teams / num-charts'), text6, text7, th3, text8_value = __('account / my-teams / num-members'), text8, text9, th4, text10_value = __('account / my-teams / leave-team'), text10, text11, tbody;
+
+		var if_block = (ctx.user.isAdmin) && create_if_block_12();
 
 		var each_value = ctx.teams;
 
@@ -3713,21 +3726,20 @@
 				th0 = createElement("th");
 				text1 = createText(text1_value);
 				text2 = createText("\n            ");
+				if (if_block) { if_block.c(); }
+				text3 = createText("\n            ");
 				th1 = createElement("th");
-				text3 = createText(text3_value);
-				text4 = createText("\n            ");
+				text4 = createText(text4_value);
+				text5 = createText("\n            ");
 				th2 = createElement("th");
-				text5 = createText(text5_value);
-				text6 = createText("\n            ");
+				text6 = createText(text6_value);
+				text7 = createText("\n            ");
 				th3 = createElement("th");
-				text7 = createText(text7_value);
-				text8 = createText("\n            ");
+				text8 = createText(text8_value);
+				text9 = createText("\n            ");
 				th4 = createElement("th");
-				text9 = createText(text9_value);
-				text10 = createText("\n            ");
-				th5 = createElement("th");
-				text11 = createText(text11_value);
-				text12 = createText("\n    ");
+				text10 = createText(text10_value);
+				text11 = createText("\n    ");
 				tbody = createElement("tbody");
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -3735,14 +3747,13 @@
 				}
 				addLoc(p, file$5, 3, 0, 63);
 				addLoc(th0, file$5, 8, 12, 176);
-				addLoc(th1, file$5, 9, 12, 231);
-				addLoc(th2, file$5, 10, 12, 291);
-				addLoc(th3, file$5, 11, 12, 352);
-				addLoc(th4, file$5, 12, 12, 414);
-				addLoc(th5, file$5, 13, 12, 462);
+				addLoc(th1, file$5, 12, 12, 333);
+				addLoc(th2, file$5, 13, 12, 393);
+				addLoc(th3, file$5, 14, 12, 454);
+				addLoc(th4, file$5, 15, 12, 516);
 				addLoc(tr, file$5, 7, 8, 159);
 				addLoc(thead, file$5, 6, 4, 143);
-				addLoc(tbody, file$5, 16, 4, 542);
+				addLoc(tbody, file$5, 18, 4, 596);
 				table.className = "table";
 				addLoc(table, file$5, 5, 0, 117);
 			},
@@ -3757,21 +3768,20 @@
 				append(tr, th0);
 				append(th0, text1);
 				append(tr, text2);
+				if (if_block) { if_block.m(tr, null); }
+				append(tr, text3);
 				append(tr, th1);
-				append(th1, text3);
-				append(tr, text4);
+				append(th1, text4);
+				append(tr, text5);
 				append(tr, th2);
-				append(th2, text5);
-				append(tr, text6);
+				append(th2, text6);
+				append(tr, text7);
 				append(tr, th3);
-				append(th3, text7);
-				append(tr, text8);
+				append(th3, text8);
+				append(tr, text9);
 				append(tr, th4);
-				append(th4, text9);
-				append(tr, text10);
-				append(tr, th5);
-				append(th5, text11);
-				append(table, text12);
+				append(th4, text10);
+				append(table, text11);
 				append(table, tbody);
 
 				for (var i = 0; i < each_blocks.length; i += 1) {
@@ -3780,7 +3790,18 @@
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.teams || changed.currentTeam) {
+				if (ctx.user.isAdmin) {
+					if (!if_block) {
+						if_block = create_if_block_12();
+						if_block.c();
+						if_block.m(tr, text3);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (changed.teams || changed.currentTeam || changed.user) {
 					each_value = ctx.teams;
 
 					for (var i = 0; i < each_value.length; i += 1) {
@@ -3809,20 +3830,108 @@
 					detachNode(table);
 				}
 
+				if (if_block) { if_block.d(); }
+
 				destroyEach(each_blocks, detach);
 			}
 		};
 	}
 
-	// (21:28) {#if team.id === currentTeam}
-	function create_if_block_9(component, ctx) {
+	// (10:12) {#if user.isAdmin}
+	function create_if_block_12(component, ctx) {
+		var th, text_value = __('account / my-teams / id'), text;
+
+		return {
+			c: function create() {
+				th = createElement("th");
+				text = createText(text_value);
+				addLoc(th, file$5, 10, 12, 262);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, th, anchor);
+				append(th, text);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(th);
+				}
+			}
+		};
+	}
+
+	// (23:55) {:else}
+	function create_else_block_3(component, ctx) {
+		var a, text_value = ctx.team.name, text, a_href_value;
+
+		return {
+			c: function create() {
+				a = createElement("a");
+				text = createText(text_value);
+				a.href = a_href_value = "/team/" + ctx.team.id + "/settings";
+				addLoc(a, file$5, 22, 62, 766);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, a, anchor);
+				append(a, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.teams) && text_value !== (text_value = ctx.team.name)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.teams) && a_href_value !== (a_href_value = "/team/" + ctx.team.id + "/settings")) {
+					a.href = a_href_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(a);
+				}
+			}
+		};
+	}
+
+	// (23:16) {#if team.role === 'member'}
+	function create_if_block_11(component, ctx) {
+		var text_value = ctx.team.name, text;
+
+		return {
+			c: function create() {
+				text = createText(text_value);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.teams) && text_value !== (text_value = ctx.team.name)) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (23:118) {#if team.id === currentTeam}
+	function create_if_block_10(component, ctx) {
 		var i;
 
 		return {
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$5, 21, 16, 724);
+				addLoc(i, file$5, 23, 16, 868);
 			},
 
 			m: function mount(target, anchor) {
@@ -3837,7 +3946,38 @@
 		};
 	}
 
-	// (28:60) {:else}
+	// (27:12) {#if user.isAdmin}
+	function create_if_block_9(component, ctx) {
+		var td, text_value = ctx.team.id, text;
+
+		return {
+			c: function create() {
+				td = createElement("td");
+				text = createText(text_value);
+				td.className = "slug svelte-1fg8vfc";
+				addLoc(td, file$5, 27, 12, 986);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, td, anchor);
+				append(td, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.teams) && text_value !== (text_value = ctx.team.id)) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(td);
+				}
+			}
+		};
+	}
+
+	// (33:60) {:else}
 	function create_else_block_2$1(component, ctx) {
 		var a, text_value = ctx.team.members, text, a_href_value;
 
@@ -3846,7 +3986,7 @@
 				a = createElement("a");
 				text = createText(text_value);
 				a.href = a_href_value = "/team/" + ctx.team.id + "/settings#members";
-				addLoc(a, file$5, 28, 16, 1026);
+				addLoc(a, file$5, 33, 16, 1263);
 			},
 
 			m: function mount(target, anchor) {
@@ -3872,7 +4012,7 @@
 		};
 	}
 
-	// (28:16) {#if team.role === 'member'}
+	// (33:16) {#if team.role === 'member'}
 	function create_if_block_8(component, ctx) {
 		var text_value = ctx.team.members, text;
 
@@ -3899,40 +4039,8 @@
 		};
 	}
 
-	// (33:16) {#if team.role !== 'member'}
+	// (39:16) {#if team.role !== 'owner'}
 	function create_if_block_7(component, ctx) {
-		var a, text_value = __('account / settings'), text, a_href_value;
-
-		return {
-			c: function create() {
-				a = createElement("a");
-				text = createText(text_value);
-				a.href = a_href_value = "/team/" + ctx.team.id + "/settings";
-				a.className = "btn btn-small";
-				addLoc(a, file$5, 33, 16, 1206);
-			},
-
-			m: function mount(target, anchor) {
-				insert(target, a, anchor);
-				append(a, text);
-			},
-
-			p: function update(changed, ctx) {
-				if ((changed.teams) && a_href_value !== (a_href_value = "/team/" + ctx.team.id + "/settings")) {
-					a.href = a_href_value;
-				}
-			},
-
-			d: function destroy(detach) {
-				if (detach) {
-					detachNode(a);
-				}
-			}
-		};
-	}
-
-	// (38:16) {#if team.role !== 'owner'}
-	function create_if_block_6$1(component, ctx) {
 		var button, i, text0, text1_value = __('account / my-teams / leave-team'), text1;
 
 		return {
@@ -3942,9 +4050,9 @@
 				text0 = createText(" ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-sign-out";
-				addLoc(i, file$5, 38, 57, 1452);
+				addLoc(i, file$5, 39, 57, 1484);
 				button.className = "btn btn-small btn-danger";
-				addLoc(button, file$5, 38, 16, 1411);
+				addLoc(button, file$5, 39, 16, 1443);
 			},
 
 			m: function mount(target, anchor) {
@@ -3962,31 +4070,41 @@
 		};
 	}
 
-	// (18:8) {#each teams as team}
+	// (20:8) {#each teams as team}
 	function create_each_block$2(component, ctx) {
-		var tr, td0, text0_value = ctx.team.name, text0, text1, text2, td1, raw_value = __('teams / role / '+ctx.team.role), text3, td2, a, text4_value = ctx.team.charts, text4, a_href_value, text5, td3, text6, td4, text7, td5;
-
-		var if_block0 = (ctx.team.id === ctx.currentTeam) && create_if_block_9();
+		var tr, td0, text0, text1, text2, td1, raw_value = __('teams / role / '+ctx.team.role), text3, td2, a, text4_value = ctx.team.charts, text4, a_href_value, text5, td3, text6, td4;
 
 		function select_block_type_1(ctx) {
+			if (ctx.team.role === 'member') { return create_if_block_11; }
+			return create_else_block_3;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		var if_block1 = (ctx.team.id === ctx.currentTeam) && create_if_block_10();
+
+		var if_block2 = (ctx.user.isAdmin) && create_if_block_9(component, ctx);
+
+		function select_block_type_2(ctx) {
 			if (ctx.team.role === 'member') { return create_if_block_8; }
 			return create_else_block_2$1;
 		}
 
-		var current_block_type = select_block_type_1(ctx);
-		var if_block1 = current_block_type(component, ctx);
+		var current_block_type_1 = select_block_type_2(ctx);
+		var if_block3 = current_block_type_1(component, ctx);
 
-		var if_block2 = (ctx.team.role !== 'member') && create_if_block_7(component, ctx);
-
-		var if_block3 = (ctx.team.role !== 'owner') && create_if_block_6$1();
+		var if_block4 = (ctx.team.role !== 'owner') && create_if_block_7();
 
 		return {
 			c: function create() {
 				tr = createElement("tr");
 				td0 = createElement("td");
-				text0 = createText(text0_value);
-				text1 = createText(" ");
-				if (if_block0) { if_block0.c(); }
+				if_block0.c();
+				text0 = createText(" ");
+				if (if_block1) { if_block1.c(); }
+				text1 = createText("\n            ");
+				if (if_block2) { if_block2.c(); }
 				text2 = createText("\n            ");
 				td1 = createElement("td");
 				text3 = createText("\n            ");
@@ -3995,31 +4113,29 @@
 				text4 = createText(text4_value);
 				text5 = createText("\n            ");
 				td3 = createElement("td");
-				if_block1.c();
-				text6 = createText("\n            ");
+				if_block3.c();
+				text6 = createText("\n\n            ");
 				td4 = createElement("td");
-				if (if_block2) { if_block2.c(); }
-				text7 = createText("\n            ");
-				td5 = createElement("td");
-				if (if_block3) { if_block3.c(); }
-				addLoc(td0, file$5, 19, 12, 645);
-				addLoc(td1, file$5, 24, 12, 811);
+				if (if_block4) { if_block4.c(); }
+				addLoc(td0, file$5, 21, 12, 699);
+				addLoc(td1, file$5, 29, 12, 1048);
 				a.href = a_href_value = "/team/" + ctx.team.id;
-				addLoc(a, file$5, 25, 16, 876);
-				addLoc(td2, file$5, 25, 12, 872);
-				addLoc(td3, file$5, 26, 12, 937);
-				addLoc(td4, file$5, 31, 12, 1140);
-				addLoc(td5, file$5, 36, 12, 1346);
+				addLoc(a, file$5, 30, 16, 1113);
+				addLoc(td2, file$5, 30, 12, 1109);
+				addLoc(td3, file$5, 31, 12, 1174);
+				addLoc(td4, file$5, 37, 12, 1378);
 				toggleClass(tr, "current", ctx.team.id === ctx.currentTeam);
-				addLoc(tr, file$5, 18, 8, 588);
+				addLoc(tr, file$5, 20, 8, 642);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, tr, anchor);
 				append(tr, td0);
+				if_block0.m(td0, null);
 				append(td0, text0);
-				append(td0, text1);
-				if (if_block0) { if_block0.m(td0, null); }
+				if (if_block1) { if_block1.m(td0, null); }
+				append(tr, text1);
+				if (if_block2) { if_block2.m(tr, null); }
 				append(tr, text2);
 				append(tr, td1);
 				td1.innerHTML = raw_value;
@@ -4029,29 +4145,44 @@
 				append(a, text4);
 				append(tr, text5);
 				append(tr, td3);
-				if_block1.m(td3, null);
+				if_block3.m(td3, null);
 				append(tr, text6);
 				append(tr, td4);
-				if (if_block2) { if_block2.m(td4, null); }
-				append(tr, text7);
-				append(tr, td5);
-				if (if_block3) { if_block3.m(td5, null); }
+				if (if_block4) { if_block4.m(td4, null); }
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.teams) && text0_value !== (text0_value = ctx.team.name)) {
-					setData(text0, text0_value);
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block0) {
+					if_block0.p(changed, ctx);
+				} else {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(td0, text0);
 				}
 
 				if (ctx.team.id === ctx.currentTeam) {
-					if (!if_block0) {
-						if_block0 = create_if_block_9();
-						if_block0.c();
-						if_block0.m(td0, null);
+					if (!if_block1) {
+						if_block1 = create_if_block_10();
+						if_block1.c();
+						if_block1.m(td0, null);
 					}
-				} else if (if_block0) {
-					if_block0.d(1);
-					if_block0 = null;
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (ctx.user.isAdmin) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block_9(component, ctx);
+						if_block2.c();
+						if_block2.m(tr, text2);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
 				}
 
 				if ((changed.teams) && raw_value !== (raw_value = __('teams / role / '+ctx.team.role))) {
@@ -4066,37 +4197,24 @@
 					a.href = a_href_value;
 				}
 
-				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
-					if_block1.p(changed, ctx);
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_2(ctx)) && if_block3) {
+					if_block3.p(changed, ctx);
 				} else {
-					if_block1.d(1);
-					if_block1 = current_block_type(component, ctx);
-					if_block1.c();
-					if_block1.m(td3, null);
-				}
-
-				if (ctx.team.role !== 'member') {
-					if (if_block2) {
-						if_block2.p(changed, ctx);
-					} else {
-						if_block2 = create_if_block_7(component, ctx);
-						if_block2.c();
-						if_block2.m(td4, null);
-					}
-				} else if (if_block2) {
-					if_block2.d(1);
-					if_block2 = null;
+					if_block3.d(1);
+					if_block3 = current_block_type_1(component, ctx);
+					if_block3.c();
+					if_block3.m(td3, null);
 				}
 
 				if (ctx.team.role !== 'owner') {
-					if (!if_block3) {
-						if_block3 = create_if_block_6$1();
-						if_block3.c();
-						if_block3.m(td5, null);
+					if (!if_block4) {
+						if_block4 = create_if_block_7();
+						if_block4.c();
+						if_block4.m(td4, null);
 					}
-				} else if (if_block3) {
-					if_block3.d(1);
-					if_block3 = null;
+				} else if (if_block4) {
+					if_block4.d(1);
+					if_block4 = null;
 				}
 
 				if ((changed.teams || changed.currentTeam)) {
@@ -4109,24 +4227,25 @@
 					detachNode(tr);
 				}
 
-				if (if_block0) { if_block0.d(); }
-				if_block1.d();
+				if_block0.d();
+				if (if_block1) { if_block1.d(); }
 				if (if_block2) { if_block2.d(); }
-				if (if_block3) { if_block3.d(); }
+				if_block3.d();
+				if (if_block4) { if_block4.d(); }
 			}
 		};
 	}
 
-	// (52:4) {#if user.isAdmin}
+	// (53:4) {#if user.isAdmin}
 	function create_if_block_2$3(component, ctx) {
 		var div, h3, raw_value = __('account / my-teams / create'), text;
 
-		function select_block_type_2(ctx) {
+		function select_block_type_3(ctx) {
 			if (!ctx.createTeam) { return create_if_block_3$1; }
 			return create_else_block$1;
 		}
 
-		var current_block_type = select_block_type_2(ctx);
+		var current_block_type = select_block_type_3(ctx);
 		var if_block = current_block_type(component, ctx);
 
 		return {
@@ -4135,10 +4254,10 @@
 				h3 = createElement("h3");
 				text = createText("\n        ");
 				if_block.c();
-				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$5, 53, 8, 1768);
+				h3.className = "svelte-1fg8vfc";
+				addLoc(h3, file$5, 54, 8, 1800);
 				div.className = "span5";
-				addLoc(div, file$5, 52, 4, 1740);
+				addLoc(div, file$5, 53, 4, 1772);
 			},
 
 			m: function mount(target, anchor) {
@@ -4150,7 +4269,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if (current_block_type === (current_block_type = select_block_type_2(ctx)) && if_block) {
+				if (current_block_type === (current_block_type = select_block_type_3(ctx)) && if_block) {
 					if_block.p(changed, ctx);
 				} else {
 					if_block.d(1);
@@ -4170,9 +4289,9 @@
 		};
 	}
 
-	// (64:8) {:else}
+	// (65:8) {:else}
 	function create_else_block$1(component, ctx) {
-		var p, raw_value = __('team-create / p'), text0, input, input_updating = false, text1, button0, text2, text3_value = __('team-create / button'), text3, button0_disabled_value, text4, button1, text5_value = __('Return'), text5;
+		var p, raw_value = __('team-create / p'), text0, input, input_updating = false, text1, text2, button0, text3, text4_value = __('team-create / button'), text4, button0_disabled_value, text5, button1, text6_value = __('Return'), text6;
 
 		function input_input_handler() {
 			input_updating = true;
@@ -4191,16 +4310,18 @@
 			data: formblock_initial_data
 		});
 
-		function select_block_type_3(ctx) {
+		var if_block0 = (ctx.user.isAdmin) && create_if_block_5$1(component, ctx);
+
+		function select_block_type_4(ctx) {
 			if (ctx.awaitCreateTeam) { return create_if_block_4$1; }
 			return create_else_block_1$1;
 		}
 
-		var current_block_type = select_block_type_3(ctx);
-		var if_block = current_block_type(component, ctx);
+		var current_block_type = select_block_type_4(ctx);
+		var if_block1 = current_block_type(component, ctx);
 
 		function click_handler(event) {
-			component.createTeam(ctx.newTeamName);
+			component.createTeam(ctx.newTeamName, ctx.newTeamSlug);
 		}
 
 		function click_handler_1(event) {
@@ -4213,26 +4334,28 @@
 				text0 = createText("\n\n        ");
 				input = createElement("input");
 				formblock._fragment.c();
-				text1 = createText("\n\n        ");
+				text1 = createText("\n        ");
+				if (if_block0) { if_block0.c(); }
+				text2 = createText("\n\n        ");
 				button0 = createElement("button");
-				if_block.c();
-				text2 = createText("   ");
-				text3 = createText(text3_value);
-				text4 = createText("\n        ");
+				if_block1.c();
+				text3 = createText("   ");
+				text4 = createText(text4_value);
+				text5 = createText("\n        ");
 				button1 = createElement("button");
-				text5 = createText(text5_value);
-				addLoc(p, file$5, 64, 8, 2232);
+				text6 = createText(text6_value);
+				addLoc(p, file$5, 65, 8, 2264);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = __('team-create / untitled');
-				addLoc(input, file$5, 69, 12, 2399);
+				addLoc(input, file$5, 70, 12, 2431);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-primary";
 				button0.disabled = button0_disabled_value = !ctx.newTeamName.length;
-				addLoc(button0, file$5, 72, 8, 2523);
+				addLoc(button0, file$5, 78, 8, 2799);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn";
-				addLoc(button1, file$5, 76, 8, 2907);
+				addLoc(button1, file$5, 82, 8, 3196);
 			},
 
 			m: function mount(target, anchor) {
@@ -4245,26 +4368,41 @@
 
 				formblock._mount(target, anchor);
 				insert(target, text1, anchor);
+				if (if_block0) { if_block0.m(target, anchor); }
+				insert(target, text2, anchor);
 				insert(target, button0, anchor);
-				if_block.m(button0, null);
-				append(button0, text2);
+				if_block1.m(button0, null);
 				append(button0, text3);
-				insert(target, text4, anchor);
+				append(button0, text4);
+				insert(target, text5, anchor);
 				insert(target, button1, anchor);
-				append(button1, text5);
+				append(button1, text6);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
 				if (!input_updating && changed.newTeamName) { input.value = ctx.newTeamName; }
 
-				if (current_block_type === (current_block_type = select_block_type_3(ctx)) && if_block) {
-					if_block.p(changed, ctx);
+				if (ctx.user.isAdmin) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_5$1(component, ctx);
+						if_block0.c();
+						if_block0.m(text2.parentNode, text2);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (current_block_type === (current_block_type = select_block_type_4(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
 				} else {
-					if_block.d(1);
-					if_block = current_block_type(component, ctx);
-					if_block.c();
-					if_block.m(button0, text2);
+					if_block1.d(1);
+					if_block1 = current_block_type(component, ctx);
+					if_block1.c();
+					if_block1.m(button0, text3);
 				}
 
 				if ((changed.newTeamName) && button0_disabled_value !== (button0_disabled_value = !ctx.newTeamName.length)) {
@@ -4282,13 +4420,18 @@
 				formblock.destroy(detach);
 				if (detach) {
 					detachNode(text1);
+				}
+
+				if (if_block0) { if_block0.d(detach); }
+				if (detach) {
+					detachNode(text2);
 					detachNode(button0);
 				}
 
-				if_block.d();
+				if_block1.d();
 				removeListener(button0, "click", click_handler);
 				if (detach) {
-					detachNode(text4);
+					detachNode(text5);
 					detachNode(button1);
 				}
 
@@ -4297,7 +4440,7 @@
 		};
 	}
 
-	// (55:8) {#if !createTeam}
+	// (56:8) {#if !createTeam}
 	function create_if_block_3$1(component, ctx) {
 		var div, p, raw0_value = __('account / my-teams / why-teams'), text0, button, i, text1, raw1_value = __('account / my-teams / create-btn'), raw1_before;
 
@@ -4314,15 +4457,15 @@
 				i = createElement("i");
 				text1 = createText(" ");
 				raw1_before = createElement('noscript');
-				addLoc(p, file$5, 56, 12, 1883);
+				addLoc(p, file$5, 57, 12, 1915);
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 60, 16, 2092);
+				addLoc(i, file$5, 61, 16, 2124);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-large";
 				toggleClass(button, "btn-primary", !ctx.teams.length);
-				addLoc(button, file$5, 59, 12, 1977);
-				div.className = "hed svelte-c2pbd6";
-				addLoc(div, file$5, 55, 8, 1853);
+				addLoc(button, file$5, 60, 12, 2009);
+				div.className = "hed svelte-1fg8vfc";
+				addLoc(div, file$5, 56, 8, 1885);
 			},
 
 			m: function mount(target, anchor) {
@@ -4353,7 +4496,60 @@
 		};
 	}
 
-	// (75:29) {:else}
+	// (73:8) {#if user.isAdmin}
+	function create_if_block_5$1(component, ctx) {
+		var input, input_updating = false;
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ newTeamSlug: input.value });
+			input_updating = false;
+		}
+
+		var formblock_initial_data = {
+		 	label: __('team-create / slug'),
+		 	help: __('team-create / slug-help')
+		 };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		return {
+			c: function create() {
+				input = createElement("input");
+				formblock._fragment.c();
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				input.placeholder = ctx.autoslug;
+				addLoc(input, file$5, 74, 12, 2683);
+			},
+
+			m: function mount(target, anchor) {
+				append(formblock._slotted.default, input);
+
+				input.value = ctx.newTeamSlug;
+
+				formblock._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (!input_updating && changed.newTeamSlug) { input.value = ctx.newTeamSlug; }
+				if (changed.autoslug) {
+					input.placeholder = ctx.autoslug;
+				}
+			},
+
+			d: function destroy(detach) {
+				removeListener(input, "input", input_input_handler);
+				formblock.destroy(detach);
+			}
+		};
+	}
+
+	// (81:29) {:else}
 	function create_else_block_1$1(component, ctx) {
 		var i;
 
@@ -4361,7 +4557,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 74, 36, 2805);
+				addLoc(i, file$5, 80, 36, 3094);
 			},
 
 			m: function mount(target, anchor) {
@@ -4378,7 +4574,7 @@
 		};
 	}
 
-	// (74:12) {#if awaitCreateTeam}
+	// (80:12) {#if awaitCreateTeam}
 	function create_if_block_4$1(component, ctx) {
 		var await_block_anchor, promise;
 
@@ -4428,7 +4624,7 @@
 		};
 	}
 
-	// (75:13) {:catch}
+	// (81:13) {:catch}
 	function create_catch_block_1(component, ctx) {
 
 		return {
@@ -4440,7 +4636,7 @@
 		};
 	}
 
-	// (74:103) {:then}
+	// (80:103) {:then}
 	function create_then_block_1(component, ctx) {
 		var i;
 
@@ -4448,7 +4644,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check fa-fw";
-				addLoc(i, file$5, 73, 110, 2736);
+				addLoc(i, file$5, 79, 110, 3025);
 			},
 
 			m: function mount(target, anchor) {
@@ -4463,7 +4659,7 @@
 		};
 	}
 
-	// (74:58)  &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}
+	// (80:58)  &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}
 	function create_pending_block_1(component, ctx) {
 		var text, i;
 
@@ -4472,7 +4668,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 73, 65, 2691);
+				addLoc(i, file$5, 79, 65, 2980);
 			},
 
 			m: function mount(target, anchor) {
@@ -4489,9 +4685,9 @@
 		};
 	}
 
-	// (82:8) {#if teams.length > 0}
+	// (86:10) {#if teams.length > 0}
 	function create_if_block$5(component, ctx) {
-		var h3, raw0_value = __('account / my-teams / select-active'), text0, p, raw1_value = __('account / my-teams / what-is-active'), text1, div, baseselect_updating = {}, text2;
+		var div1, h3, raw0_value = __('account / my-teams / select-active'), text0, p, raw1_value = __('account / my-teams / what-is-active'), text1, div0, baseselect_updating = {}, text2;
 
 		var baseselect_initial_data = { width: "250px", options: ctx.teamOptions };
 		if (ctx.currentTeam !== void 0) {
@@ -4528,34 +4724,38 @@
 
 		return {
 			c: function create() {
+				div1 = createElement("div");
 				h3 = createElement("h3");
 				text0 = createText("\n        ");
 				p = createElement("p");
 				text1 = createText("\n        ");
-				div = createElement("div");
+				div0 = createElement("div");
 				baseselect._fragment.c();
 				text2 = createText("\n                ");
 				if (if_block) { if_block.c(); }
 				formblock._fragment.c();
-				h3.className = "svelte-c2pbd6";
-				addLoc(h3, file$5, 82, 8, 3084);
-				addLoc(p, file$5, 83, 8, 3150);
-				div.className = "flex";
-				addLoc(div, file$5, 85, 12, 3301);
+				h3.className = "svelte-1fg8vfc";
+				addLoc(h3, file$5, 87, 8, 3365);
+				addLoc(p, file$5, 88, 8, 3431);
+				div0.className = "flex";
+				addLoc(div0, file$5, 90, 12, 3582);
+				div1.className = "span5";
+				addLoc(div1, file$5, 86, 4, 3337);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, h3, anchor);
+				insert(target, div1, anchor);
+				append(div1, h3);
 				h3.innerHTML = raw0_value;
-				insert(target, text0, anchor);
-				insert(target, p, anchor);
+				append(div1, text0);
+				append(div1, p);
 				p.innerHTML = raw1_value;
-				insert(target, text1, anchor);
-				append(formblock._slotted.default, div);
-				baseselect._mount(div, null);
-				append(div, text2);
-				if (if_block) { if_block.m(div, null); }
-				formblock._mount(target, anchor);
+				append(div1, text1);
+				append(formblock._slotted.default, div0);
+				baseselect._mount(div0, null);
+				append(div0, text2);
+				if (if_block) { if_block.m(div0, null); }
+				formblock._mount(div1, null);
 			},
 
 			p: function update(changed, _ctx) {
@@ -4575,7 +4775,7 @@
 					} else {
 						if_block = create_if_block_1$5(component, ctx);
 						if_block.c();
-						if_block.m(div, null);
+						if_block.m(div0, null);
 					}
 				} else if (if_block) {
 					if_block.d(1);
@@ -4585,20 +4785,17 @@
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(h3);
-					detachNode(text0);
-					detachNode(p);
-					detachNode(text1);
+					detachNode(div1);
 				}
 
 				baseselect.destroy();
 				if (if_block) { if_block.d(); }
-				formblock.destroy(detach);
+				formblock.destroy();
 			}
 		};
 	}
 
-	// (89:16) {#if awaitActiveTeam}
+	// (94:16) {#if awaitActiveTeam}
 	function create_if_block_1$5(component, ctx) {
 		var await_block_anchor, promise;
 
@@ -4648,7 +4845,7 @@
 		};
 	}
 
-	// (90:24) {:catch}
+	// (95:24) {:catch}
 	function create_catch_block(component, ctx) {
 
 		return {
@@ -4660,7 +4857,7 @@
 		};
 	}
 
-	// (90:16) {:then}
+	// (95:16) {:then}
 	function create_then_block(component, ctx) {
 
 		return {
@@ -4672,7 +4869,7 @@
 		};
 	}
 
-	// (89:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
+	// (94:62)  &nbsp;<i class="fa fa-spinner fa-spin"></i>                 {:then}
 	function create_pending_block(component, ctx) {
 		var text, i;
 
@@ -4681,7 +4878,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 88, 69, 3524);
+				addLoc(i, file$5, 93, 69, 3805);
 			},
 
 			m: function mount(target, anchor) {
@@ -4709,12 +4906,14 @@
 		init(this, options);
 		this._state = assign(data$5(), options.data);
 
-		this._recompute({ teams: 1 }, this._state);
+		this._recompute({ teams: 1, newTeamName: 1 }, this._state);
 		if (!('teams' in this._state)) { console.warn("<MyTeams> was created without expected data property 'teams'"); }
-		if (!('currentTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'currentTeam'"); }
-		if (!('user' in this._state)) { console.warn("<MyTeams> was created without expected data property 'user'"); }
-		if (!('createTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'createTeam'"); }
 		if (!('newTeamName' in this._state)) { console.warn("<MyTeams> was created without expected data property 'newTeamName'"); }
+		if (!('user' in this._state)) { console.warn("<MyTeams> was created without expected data property 'user'"); }
+		if (!('currentTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'currentTeam'"); }
+		if (!('createTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'createTeam'"); }
+
+		if (!('newTeamSlug' in this._state)) { console.warn("<MyTeams> was created without expected data property 'newTeamSlug'"); }
 		if (!('awaitCreateTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'awaitCreateTeam'"); }
 
 		if (!('awaitActiveTeam' in this._state)) { console.warn("<MyTeams> was created without expected data property 'awaitActiveTeam'"); }
@@ -4744,11 +4943,16 @@
 
 	MyTeams.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('teamOptions' in newState && !this._updatingReadonlyProperty) { throw new Error("<MyTeams>: Cannot set read-only property 'teamOptions'"); }
+		if ('autoslug' in newState && !this._updatingReadonlyProperty) { throw new Error("<MyTeams>: Cannot set read-only property 'autoslug'"); }
 	};
 
 	MyTeams.prototype._recompute = function _recompute(changed, state) {
 		if (changed.teams) {
 			if (this._differs(state.teamOptions, (state.teamOptions = teamOptions(state)))) { changed.teamOptions = true; }
+		}
+
+		if (changed.newTeamName) {
+			if (this._differs(state.autoslug, (state.autoslug = autoslug(state)))) { changed.autoslug = true; }
 		}
 	};
 
