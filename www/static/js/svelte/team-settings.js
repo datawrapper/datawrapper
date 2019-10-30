@@ -23680,106 +23680,106 @@
 				addLoc(p, file$F, 0, 0, 0);
 				div0.className = "span4";
 				addLoc(div0, file$F, 5, 4, 116);
-				td0.className = "svelte-1cbvjfi";
+				td0.className = "svelte-is2tk2";
 				addLoc(td0, file$F, 11, 16, 350);
-				th0.className = "svelte-1cbvjfi";
+				th0.className = "svelte-is2tk2";
 				addLoc(th0, file$F, 12, 16, 373);
-				th1.className = "svelte-1cbvjfi";
+				th1.className = "svelte-is2tk2";
 				addLoc(th1, file$F, 13, 16, 434);
-				th2.className = "svelte-1cbvjfi";
+				th2.className = "svelte-is2tk2";
 				addLoc(th2, file$F, 14, 16, 494);
 				addLoc(tr0, file$F, 10, 12, 329);
-				td1.className = "svelte-1cbvjfi";
+				td1.className = "svelte-is2tk2";
 				addLoc(td1, file$F, 17, 16, 589);
-				i0.className = "im im-check-mark svelte-1cbvjfi";
+				i0.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i0, file$F, 18, 20, 663);
-				td2.className = "svelte-1cbvjfi";
+				td2.className = "svelte-is2tk2";
 				addLoc(td2, file$F, 18, 16, 659);
-				i1.className = "im im-check-mark svelte-1cbvjfi";
+				i1.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i1, file$F, 19, 20, 721);
-				td3.className = "svelte-1cbvjfi";
+				td3.className = "svelte-is2tk2";
 				addLoc(td3, file$F, 19, 16, 717);
-				i2.className = "im im-check-mark svelte-1cbvjfi";
+				i2.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i2, file$F, 20, 20, 779);
-				td4.className = "svelte-1cbvjfi";
+				td4.className = "svelte-is2tk2";
 				addLoc(td4, file$F, 20, 16, 775);
 				addLoc(tr1, file$F, 16, 12, 568);
-				td5.className = "svelte-1cbvjfi";
+				td5.className = "svelte-is2tk2";
 				addLoc(td5, file$F, 24, 16, 869);
-				i3.className = "im im-check-mark svelte-1cbvjfi";
+				i3.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i3, file$F, 25, 20, 944);
-				td6.className = "svelte-1cbvjfi";
+				td6.className = "svelte-is2tk2";
 				addLoc(td6, file$F, 25, 16, 940);
-				i4.className = "im im-check-mark svelte-1cbvjfi";
+				i4.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i4, file$F, 26, 20, 1002);
-				td7.className = "svelte-1cbvjfi";
+				td7.className = "svelte-is2tk2";
 				addLoc(td7, file$F, 26, 16, 998);
-				i5.className = "im im-check-mark svelte-1cbvjfi";
+				i5.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i5, file$F, 27, 20, 1060);
-				td8.className = "svelte-1cbvjfi";
+				td8.className = "svelte-is2tk2";
 				addLoc(td8, file$F, 27, 16, 1056);
 				addLoc(tr2, file$F, 23, 12, 848);
-				td9.className = "svelte-1cbvjfi";
+				td9.className = "svelte-is2tk2";
 				addLoc(td9, file$F, 31, 16, 1150);
-				i6.className = "im im-x-mark svelte-1cbvjfi";
+				i6.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i6, file$F, 32, 20, 1228);
-				td10.className = "svelte-1cbvjfi";
+				td10.className = "svelte-is2tk2";
 				addLoc(td10, file$F, 32, 16, 1224);
-				i7.className = "im im-check-mark svelte-1cbvjfi";
+				i7.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i7, file$F, 33, 20, 1282);
-				td11.className = "svelte-1cbvjfi";
+				td11.className = "svelte-is2tk2";
 				addLoc(td11, file$F, 33, 16, 1278);
-				i8.className = "im im-check-mark svelte-1cbvjfi";
+				i8.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i8, file$F, 34, 20, 1340);
-				td12.className = "svelte-1cbvjfi";
+				td12.className = "svelte-is2tk2";
 				addLoc(td12, file$F, 34, 16, 1336);
 				addLoc(tr3, file$F, 30, 12, 1129);
-				td13.className = "svelte-1cbvjfi";
+				td13.className = "svelte-is2tk2";
 				addLoc(td13, file$F, 38, 16, 1430);
-				i9.className = "im im-x-mark svelte-1cbvjfi";
+				i9.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i9, file$F, 39, 20, 1505);
-				td14.className = "svelte-1cbvjfi";
+				td14.className = "svelte-is2tk2";
 				addLoc(td14, file$F, 39, 16, 1501);
-				i10.className = "im im-check-mark svelte-1cbvjfi";
+				i10.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i10, file$F, 40, 20, 1559);
-				td15.className = "svelte-1cbvjfi";
+				td15.className = "svelte-is2tk2";
 				addLoc(td15, file$F, 40, 16, 1555);
-				i11.className = "im im-check-mark svelte-1cbvjfi";
+				i11.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i11, file$F, 41, 20, 1617);
-				td16.className = "svelte-1cbvjfi";
+				td16.className = "svelte-is2tk2";
 				addLoc(td16, file$F, 41, 16, 1613);
 				addLoc(tr4, file$F, 37, 12, 1409);
-				td17.className = "svelte-1cbvjfi";
+				td17.className = "svelte-is2tk2";
 				addLoc(td17, file$F, 45, 16, 1707);
-				i12.className = "im im-x-mark svelte-1cbvjfi";
+				i12.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i12, file$F, 46, 20, 1790);
-				td18.className = "svelte-1cbvjfi";
+				td18.className = "svelte-is2tk2";
 				addLoc(td18, file$F, 46, 16, 1786);
-				i13.className = "im im-x-mark svelte-1cbvjfi";
+				i13.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i13, file$F, 47, 20, 1844);
-				td19.className = "svelte-1cbvjfi";
+				td19.className = "svelte-is2tk2";
 				addLoc(td19, file$F, 47, 16, 1840);
-				i14.className = "im im-check-mark svelte-1cbvjfi";
+				i14.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i14, file$F, 48, 20, 1898);
-				td20.className = "svelte-1cbvjfi";
+				td20.className = "svelte-is2tk2";
 				addLoc(td20, file$F, 48, 16, 1894);
 				addLoc(tr5, file$F, 44, 12, 1686);
-				td21.className = "svelte-1cbvjfi";
+				td21.className = "svelte-is2tk2";
 				addLoc(td21, file$F, 52, 16, 1988);
-				i15.className = "im im-x-mark svelte-1cbvjfi";
+				i15.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i15, file$F, 53, 20, 2062);
-				td22.className = "svelte-1cbvjfi";
+				td22.className = "svelte-is2tk2";
 				addLoc(td22, file$F, 53, 16, 2058);
-				i16.className = "im im-x-mark svelte-1cbvjfi";
+				i16.className = "im im-x-mark svelte-is2tk2";
 				addLoc(i16, file$F, 54, 20, 2116);
-				td23.className = "svelte-1cbvjfi";
+				td23.className = "svelte-is2tk2";
 				addLoc(td23, file$F, 54, 16, 2112);
-				i17.className = "im im-check-mark svelte-1cbvjfi";
+				i17.className = "im im-check-mark svelte-is2tk2";
 				addLoc(i17, file$F, 55, 20, 2170);
-				td24.className = "svelte-1cbvjfi";
+				td24.className = "svelte-is2tk2";
 				addLoc(td24, file$F, 55, 16, 2166);
 				addLoc(tr6, file$F, 51, 12, 1967);
-				table.className = "role-descriptions svelte-1cbvjfi";
+				table.className = "role-descriptions svelte-is2tk2";
 				addLoc(table, file$F, 9, 8, 283);
 				div1.className = "span5 offset1";
 				addLoc(div1, file$F, 8, 4, 247);
@@ -27774,20 +27774,20 @@
 				addLoc(div0, file$M, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$M, 0, 0, 0);
-				addLoc(hr, file$M, 20, 12, 782);
+				addLoc(hr, file$M, 20, 12, 781);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$M, 21, 31, 820);
+				addLoc(i, file$M, 21, 31, 819);
 				a.href = "/account";
-				addLoc(a, file$M, 21, 12, 801);
+				addLoc(a, file$M, 21, 12, 800);
 				div2.className = "span2 svelte-wo040n";
-				addLoc(div2, file$M, 8, 8, 302);
+				addLoc(div2, file$M, 8, 8, 301);
 				div3.className = "span10";
-				addLoc(div3, file$M, 24, 8, 919);
+				addLoc(div3, file$M, 24, 8, 918);
 				div4.className = "visconfig";
-				addLoc(div4, file$M, 7, 4, 270);
+				addLoc(div4, file$M, 7, 4, 269);
 				div5.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div5, "margin-top", "-20px");
-				addLoc(div5, file$M, 6, 0, 171);
+				addLoc(div5, file$M, 6, 0, 170);
 			},
 
 			m: function mount(target, anchor) {
@@ -27884,17 +27884,17 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-wo040n";
-				addLoc(i, file$M, 15, 42, 631);
+				addLoc(i, file$M, 15, 42, 630);
 				a.href = a_href_value = "#" + ctx.tab.id;
 				a.className = "svelte-wo040n";
-				addLoc(a, file$M, 15, 20, 609);
+				addLoc(a, file$M, 15, 20, 608);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
 				li.className = "svelte-wo040n";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
-				addLoc(li, file$M, 14, 16, 520);
+				addLoc(li, file$M, 14, 16, 519);
 			},
 
 			m: function mount(target, anchor) {
@@ -27958,9 +27958,9 @@
 					each_blocks[i].c();
 				}
 				div.className = "group svelte-wo040n";
-				addLoc(div, file$M, 10, 12, 370);
+				addLoc(div, file$M, 10, 12, 369);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$M, 12, 12, 424);
+				addLoc(ul, file$M, 12, 12, 423);
 			},
 
 			m: function mount(target, anchor) {
@@ -28190,7 +28190,7 @@
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = "vis-options settings-section svelte-wo040n";
-				addLoc(div, file$M, 26, 12, 981);
+				addLoc(div, file$M, 26, 12, 980);
 			},
 
 			m: function mount(target, anchor) {
@@ -28376,7 +28376,7 @@
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				addLoc(h2, file$M, 28, 16, 1077);
+				addLoc(h2, file$M, 28, 16, 1076);
 			},
 
 			m: function mount(target, anchor) {
