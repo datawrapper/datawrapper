@@ -3587,7 +3587,7 @@
 	        var user = ref.user;
 	        var teams = ref.teams;
 	        if (window.confirm(__('account / my-teams / leave-team / confirm').replace('%team%', team.name))) {
-	            deleteJSON(((window.location.protocol) + "//" + (dw.backend.__api_domain) + "/v3/teams/" + (team.id) + "/memers/" + (user.id)))
+	            deleteJSON(((window.location.protocol) + "//" + (dw.backend.__api_domain) + "/v3/teams/" + (team.id) + "/members/" + (user.id)))
 	                .then(function (res) {
 	                    window.alert(__('account / my-teams / leave-team / done'));
 	                    teams.splice(teams.findIndex(function (t) { return t.id === team.id; }), 1);
