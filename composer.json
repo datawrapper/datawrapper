@@ -14,9 +14,9 @@
         "tubalmartin/cssmin": "2.4.8-p4",
         "tedivm/jshrink": "~1.0",
         "fightbulc/moment": "^1.26",
-        "aws/aws-sdk-php": "^3.18",
+        "aws/aws-sdk-php": "^3.112",
         "leafo/lessphp": "^0.5.0",
-        "chargebee/chargebee-php": "^2.2"
+        "chargebee/chargebee-php": "^2.7"
     },
     "autoload": {
         "classmap": [

@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "4551c8a3a51a63ea8cb55316a9cd9ded",
-    "content-hash": "b325890f87523fa7357751f660eac4d6",
+    "content-hash": "9efc55c9c25fc550ad4022f8baf3f7b6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -85,20 +84,20 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-06-07 22:44:10"
+            "time": "2017-06-07T22:44:10+00:00"
         },
         {
             "name": "chargebee/chargebee-php",
-            "version": "v2.2.8",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chargebee/chargebee-php.git",
-                "reference": "9b193a3357c74f0e6720c8d246cfbc8b099ca424"
+                "reference": "0dfe51ee0db93b53998d2442e5549c8fa8e5f0d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chargebee/chargebee-php/zipball/9b193a3357c74f0e6720c8d246cfbc8b099ca424",
-                "reference": "9b193a3357c74f0e6720c8d246cfbc8b099ca424",
+                "url": "https://api.github.com/repos/chargebee/chargebee-php/zipball/0dfe51ee0db93b53998d2442e5549c8fa8e5f0d7",
+                "reference": "0dfe51ee0db93b53998d2442e5549c8fa8e5f0d7",
                 "shasum": ""
             },
             "type": "library",
@@ -119,7 +118,7 @@
                 "recurring billing",
                 "subscription billing"
             ],
-            "time": "2017-07-06 06:30:11"
+            "time": "2019-10-25T12:25:27+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -166,7 +165,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-06-03 02:28:16"
+            "time": "2017-06-03T02:28:16+00:00"
         },
         {
             "name": "fightbulc/moment",
@@ -229,7 +228,7 @@
                 "translation",
                 "validate"
             ],
-            "time": "2017-05-15 09:09:18"
+            "time": "2017-05-15T09:09:18+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -291,7 +290,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28 22:50:30"
+            "time": "2017-02-28T22:50:30+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -342,7 +341,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-12-20 10:07:11"
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -407,7 +406,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20 17:10:46"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "leafo/lessphp",
@@ -448,7 +447,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2014-11-24 18:39:20"
+            "time": "2014-11-24T18:39:20+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -503,7 +502,7 @@
                 "json",
                 "jsonpath"
             ],
-            "time": "2016-12-03 22:08:25"
+            "time": "2016-12-03T22:08:25+00:00"
         },
         {
             "name": "mustangostang/spyc",
@@ -550,7 +549,7 @@
                 "yaml",
                 "yml"
             ],
-            "time": "2013-02-21 10:52:01"
+            "time": "2013-02-21T10:52:01+00:00"
         },
         {
             "name": "phing/phing",
@@ -643,7 +642,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2016-12-22 20:16:33"
+            "time": "2016-12-22T20:16:33+00:00"
         },
         {
             "name": "propel/propel1",
@@ -703,7 +702,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2013-03-31 17:25:18"
+            "time": "2013-03-31T17:25:18+00:00"
         },
         {
             "name": "psr/http-message",
@@ -753,7 +752,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "slim/slim",
@@ -796,7 +795,7 @@
                 "rest",
                 "router"
             ],
-            "time": "2012-08-28 23:09:45"
+            "time": "2012-08-28T23:09:45+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -851,7 +850,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-02 22:05:06"
+            "time": "2017-06-02T22:05:06+00:00"
         },
         {
             "name": "tedivm/jshrink",
@@ -897,7 +896,7 @@
                 "javascript",
                 "minifier"
             ],
-            "time": "2017-05-30 02:59:46"
+            "time": "2017-05-30T02:59:46+00:00"
         },
         {
             "name": "tubalmartin/cssmin",
@@ -941,7 +940,7 @@
                 "minify",
                 "yui"
             ],
-            "time": "2014-09-22 08:08:50"
+            "time": "2014-09-22T08:08:50+00:00"
         },
         {
             "name": "twig/extensions",
@@ -988,7 +987,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2013-10-18 19:37:15"
+            "time": "2013-10-18T19:37:15+00:00"
         },
         {
             "name": "twig/twig",
@@ -1037,7 +1036,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-08-03 15:35:31"
+            "time": "2013-08-03T15:35:31+00:00"
         }
     ],
     "packages-dev": [],
