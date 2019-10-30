@@ -195,7 +195,7 @@
                 return tabs
                     .filter(tab => {
                         if (tab.adminOnly && !isAdmin) return false;
-                        if (tab.ownerOnly && (!isAdmin && role !== 'owner')) return false;
+                        if (tab.ownerOnly && !(isAdmin || role === 'owner')) return false;
                         return true;
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
