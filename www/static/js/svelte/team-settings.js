@@ -27526,6 +27526,7 @@
 	}
 	function tabs(ref) {
 	    var allTabs = ref.allTabs;
+	    var team = ref.team;
 	    var pluginTabs = ref.pluginTabs;
 	    var isAdmin = ref.isAdmin;
 	    var role = ref.role;
@@ -27536,7 +27537,8 @@
 	        if (tab.adminOnly && !isAdmin) { return false; }
 	        if (tab.ownerOnly && (!isAdmin && role !== 'owner')) { return false; }
 	        return true;
-	    });
+	    }).map(function (tab) { return (Object.assign({}, tab, {h1: tab.h1.replace('%team%', team.name)})); });
+
 	}
 	function groups(ref) {
 	    var tabs = ref.tabs;
@@ -28455,16 +28457,16 @@
 		this.refs = {};
 		this._state = assign(data$I(), options.data);
 
-		this._recompute({ users: 1, userId: 1, allTabs: 1, pluginTabs: 1, isAdmin: 1, role: 1, activeTab: 1, tabs: 1 }, this._state);
+		this._recompute({ users: 1, userId: 1, allTabs: 1, team: 1, pluginTabs: 1, isAdmin: 1, role: 1, activeTab: 1, tabs: 1 }, this._state);
 		if (!('users' in this._state)) { console.warn("<App> was created without expected data property 'users'"); }
 		if (!('userId' in this._state)) { console.warn("<App> was created without expected data property 'userId'"); }
 		if (!('activeTab' in this._state)) { console.warn("<App> was created without expected data property 'activeTab'"); }
 
 		if (!('allTabs' in this._state)) { console.warn("<App> was created without expected data property 'allTabs'"); }
+		if (!('team' in this._state)) { console.warn("<App> was created without expected data property 'team'"); }
 		if (!('pluginTabs' in this._state)) { console.warn("<App> was created without expected data property 'pluginTabs'"); }
 		if (!('isAdmin' in this._state)) { console.warn("<App> was created without expected data property 'isAdmin'"); }
 
-		if (!('team' in this._state)) { console.warn("<App> was created without expected data property 'team'"); }
 
 
 		if (!('app' in this._state)) { console.warn("<App> was created without expected data property 'app'"); }
@@ -28513,7 +28515,7 @@
 			if (this._differs(state.role, (state.role = role$1(state)))) { changed.role = true; }
 		}
 
-		if (changed.allTabs || changed.pluginTabs || changed.isAdmin || changed.role) {
+		if (changed.allTabs || changed.team || changed.pluginTabs || changed.isAdmin || changed.role) {
 			if (this._differs(state.tabs, (state.tabs = tabs(state)))) { changed.tabs = true; }
 		}
 

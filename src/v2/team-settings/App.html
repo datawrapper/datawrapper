@@ -189,14 +189,16 @@
                 const t = tabs.filter(el => el.id === activeTab);
                 return t[0];
             },
-            tabs({ allTabs, pluginTabs, isAdmin, role }) {
+            tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
                 const tabs = [].concat(allTabs, pluginTabs);
 
-                return tabs.filter(tab => {
-                    if (tab.adminOnly && !isAdmin) return false;
-                    if (tab.ownerOnly && (!isAdmin && role !== 'owner')) return false;
-                    return true;
-                });
+                return tabs
+                    .filter(tab => {
+                        if (tab.adminOnly && !isAdmin) return false;
+                        if (tab.ownerOnly && (!isAdmin && role !== 'owner')) return false;
+                        return true;
+                    })
+                    .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
             groups({ tabs }) {
                 const groups = [];
