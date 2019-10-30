@@ -1,6 +1,6 @@
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">Teams » { team.name } » { __('Settings') }</h1>
+        <h1 class="title" style="margin-bottom:18px">{ __('Settings') } » { team.name }</h1>
     </div>
 </div>
 
@@ -18,6 +18,8 @@
                 {/each}
             </ul>
             {/each}
+            <hr />
+            <a href="/account"><i class="fa fa-arrow-left"></i> {__('account / settings / personal')}</a>
         </div>
 
         <div class="span10">

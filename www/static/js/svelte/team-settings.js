@@ -22994,9 +22994,9 @@
 				if (if_block1) { if_block1.c(); }
 				text2 = createText(" ");
 				if (if_block2) { if_block2.c(); }
-				div0.className = "form-controls svelte-1jqrjze";
+				div0.className = "form-controls svelte-183h2q3";
 				addLoc(div0, file$D, 4, 4, 144);
-				div1.className = "form-block svelte-1jqrjze";
+				div1.className = "form-block svelte-183h2q3";
 				setStyle(div1, "width", ctx.width);
 				toggleClass(div1, "error", ctx.error);
 				addLoc(div1, file$D, 0, 0, 0);
@@ -23091,7 +23091,7 @@
 		return {
 			c: function create() {
 				label = createElement("label");
-				label.className = "control-label svelte-1jqrjze";
+				label.className = "control-label svelte-183h2q3";
 				addLoc(label, file$D, 2, 4, 79);
 			},
 
@@ -23121,7 +23121,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help error svelte-1jqrjze";
+				div.className = "help error svelte-183h2q3";
 				addLoc(div, file$D, 8, 4, 220);
 			},
 
@@ -23151,7 +23151,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help svelte-1jqrjze";
+				div.className = "help svelte-183h2q3";
 				addLoc(div, file$D, 10, 4, 299);
 			},
 
@@ -27728,14 +27728,14 @@
 	}
 
 	function create_main_fragment$R(component, ctx) {
-		var div1, div0, h1, text0, text1_value = ctx.team.name, text1, text2, text3_value = __('Settings'), text3, text4, div5, div4, div2, text5, div3;
+		var div1, div0, h1, text0_value = __('Settings'), text0, text1, text2_value = ctx.team.name, text2, text3, div5, div4, div2, text4, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, text8, div3;
 
 		var each_value = ctx.groups;
 
 		var each_blocks = [];
 
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$k(component, get_each_context$i(ctx, each_value, i));
+		for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+			each_blocks[i_1] = create_each_block$k(component, get_each_context$i(ctx, each_value, i_1));
 		}
 
 		var if_block = (ctx.currentTab) && create_if_block$C(component, ctx);
@@ -27745,20 +27745,26 @@
 				div1 = createElement("div");
 				div0 = createElement("div");
 				h1 = createElement("h1");
-				text0 = createText("Teams » ");
-				text1 = createText(text1_value);
-				text2 = createText(" » ");
-				text3 = createText(text3_value);
-				text4 = createText("\n\n");
+				text0 = createText(text0_value);
+				text1 = createText(" » ");
+				text2 = createText(text2_value);
+				text3 = createText("\n\n");
 				div5 = createElement("div");
 				div4 = createElement("div");
 				div2 = createElement("div");
 
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
+				for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+					each_blocks[i_1].c();
 				}
 
-				text5 = createText("\n\n        ");
+				text4 = createText("\n            ");
+				hr = createElement("hr");
+				text5 = createText("\n            ");
+				a = createElement("a");
+				i = createElement("i");
+				text6 = createText(" ");
+				text7 = createText(text7_value);
+				text8 = createText("\n\n        ");
 				div3 = createElement("div");
 				if (if_block) { if_block.c(); }
 				h1.className = "title";
@@ -27768,15 +27774,20 @@
 				addLoc(div0, file$M, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$M, 0, 0, 0);
+				addLoc(hr, file$M, 20, 12, 782);
+				i.className = "fa fa-arrow-left";
+				addLoc(i, file$M, 21, 31, 820);
+				a.href = "/account";
+				addLoc(a, file$M, 21, 12, 801);
 				div2.className = "span2 svelte-wo040n";
-				addLoc(div2, file$M, 8, 8, 309);
+				addLoc(div2, file$M, 8, 8, 302);
 				div3.className = "span10";
-				addLoc(div3, file$M, 22, 8, 801);
+				addLoc(div3, file$M, 24, 8, 919);
 				div4.className = "visconfig";
-				addLoc(div4, file$M, 7, 4, 277);
+				addLoc(div4, file$M, 7, 4, 270);
 				div5.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div5, "margin-top", "-20px");
-				addLoc(div5, file$M, 6, 0, 178);
+				addLoc(div5, file$M, 6, 0, 171);
 			},
 
 			m: function mount(target, anchor) {
@@ -27786,43 +27797,49 @@
 				append(h1, text0);
 				append(h1, text1);
 				append(h1, text2);
-				append(h1, text3);
-				insert(target, text4, anchor);
+				insert(target, text3, anchor);
 				insert(target, div5, anchor);
 				append(div5, div4);
 				append(div4, div2);
 
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(div2, null);
+				for (var i_1 = 0; i_1 < each_blocks.length; i_1 += 1) {
+					each_blocks[i_1].m(div2, null);
 				}
 
-				append(div4, text5);
+				append(div2, text4);
+				append(div2, hr);
+				append(div2, text5);
+				append(div2, a);
+				append(a, i);
+				append(a, text6);
+				append(a, text7);
+				append(div4, text8);
 				append(div4, div3);
 				if (if_block) { if_block.m(div3, null); }
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.team) && text1_value !== (text1_value = ctx.team.name)) {
-					setData(text1, text1_value);
+				if ((changed.team) && text2_value !== (text2_value = ctx.team.name)) {
+					setData(text2, text2_value);
 				}
 
 				if (changed.groups || changed.activeTab) {
 					each_value = ctx.groups;
 
-					for (var i = 0; i < each_value.length; i += 1) {
-						var child_ctx = get_each_context$i(ctx, each_value, i);
+					for (var i_1 = 0; i_1 < each_value.length; i_1 += 1) {
+						var child_ctx = get_each_context$i(ctx, each_value, i_1);
 
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, child_ctx);
+						if (each_blocks[i_1]) {
+							each_blocks[i_1].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$k(component, child_ctx);
-							each_blocks[i].c();
-							each_blocks[i].m(div2, null);
+							each_blocks[i_1] = create_each_block$k(component, child_ctx);
+							each_blocks[i_1].c();
+							each_blocks[i_1].m(div2, text4);
 						}
 					}
 
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].d(1);
+					for (; i_1 < each_blocks.length; i_1 += 1) {
+						each_blocks[i_1].d(1);
 					}
 					each_blocks.length = each_value.length;
 				}
@@ -27844,7 +27861,7 @@
 			d: function destroy(detach) {
 				if (detach) {
 					detachNode(div1);
-					detachNode(text4);
+					detachNode(text3);
 					detachNode(div5);
 				}
 
@@ -27867,17 +27884,17 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-wo040n";
-				addLoc(i, file$M, 15, 42, 638);
+				addLoc(i, file$M, 15, 42, 631);
 				a.href = a_href_value = "#" + ctx.tab.id;
 				a.className = "svelte-wo040n";
-				addLoc(a, file$M, 15, 20, 616);
+				addLoc(a, file$M, 15, 20, 609);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
 				li.className = "svelte-wo040n";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
-				addLoc(li, file$M, 14, 16, 527);
+				addLoc(li, file$M, 14, 16, 520);
 			},
 
 			m: function mount(target, anchor) {
@@ -27941,9 +27958,9 @@
 					each_blocks[i].c();
 				}
 				div.className = "group svelte-wo040n";
-				addLoc(div, file$M, 10, 12, 377);
+				addLoc(div, file$M, 10, 12, 370);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$M, 12, 12, 431);
+				addLoc(ul, file$M, 12, 12, 424);
 			},
 
 			m: function mount(target, anchor) {
@@ -27996,7 +28013,7 @@
 		};
 	}
 
-	// (24:12) {#if currentTab}
+	// (26:12) {#if currentTab}
 	function create_if_block$C(component, ctx) {
 		var div, text, switch_instance_updating = {};
 
@@ -28173,7 +28190,7 @@
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = "vis-options settings-section svelte-wo040n";
-				addLoc(div, file$M, 24, 12, 863);
+				addLoc(div, file$M, 26, 12, 981);
 			},
 
 			m: function mount(target, anchor) {
@@ -28352,14 +28369,14 @@
 		};
 	}
 
-	// (26:16) {#if currentTab.h1 }
+	// (28:16) {#if currentTab.h1 }
 	function create_if_block_1$n(component, ctx) {
 		var h2, raw_value = ctx.currentTab.h1;
 
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				addLoc(h2, file$M, 26, 16, 959);
+				addLoc(h2, file$M, 28, 16, 1077);
 			},
 
 			m: function mount(target, anchor) {
