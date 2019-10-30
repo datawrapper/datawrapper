@@ -68,7 +68,7 @@ function nbChartsByStatus($id, $is_org, $folder_id) {
 
 function mycharts_list_organizations($user) {
     $user_id = $user->getId();
-    $organizations = $user->getOrganizations();
+    $organizations = $user->getActiveOrganizations();
     $current_org = $user->getCurrentOrganization();
     if (!empty($current_org)) $current_org = $current_org->getId();
     $orgs = array();
