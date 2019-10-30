@@ -13,7 +13,6 @@ const targets = [];
 
 build('fields');
 build('team-settings');
-build('team-create');
 build('account');
 build('chart-breadcrumb');
 
