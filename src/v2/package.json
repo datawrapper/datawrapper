@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@datawrapper/shared": "^0.19.0",
     "@datawrapper/controls": "^2.13.1",
+    "@datawrapper/shared": "^0.19.1",
     "less": "^3.10.3",
     "rollup": "^1.25.0",
     "rollup-plugin-buble": "^0.19.8",
