@@ -1,6 +1,11 @@
 <div class="admin">
     <h1 class="title">{__('account / settings')}</h1>
-
+    {#each invitations as team}
+    <div class="alert alert-info">
+        You have been invited to join the team <b>{truncate(team.name, 20, 10)}</b>. Click here to
+        <a href="/organization-invite/{team.token}" class="btn btn-primary">accept the invitation</a>
+    </div>
+    {/each}
     <div class="row">
         <div class="span2">
             {#each groups as group}
@@ -66,7 +71,8 @@
             }
         },
         helpers: {
-            __
+            __,
+            truncate
         },
         methods: {
             activateTab(tab, event = null) {

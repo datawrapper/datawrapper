@@ -654,37 +654,184 @@
 	    return translation;
 	}
 
-	/* @DEPRECATED: plase use @datawrapper/shared instead */
-
 	/**
-	 * injects a <script> element to the page to load a new JS script
+	 * Shorten a string by removing characters from the middle
 	 *
-	 * @param {string} src
-	 * @param {function} callback
+	 * @exports truncate
+	 * @kind function
+	 *
+	 * @example
+	 * import truncate from '@datawrapper/shared/truncate';
+	 * // returns 'This is a…tring'
+	 * truncate('This is a very very long string')
+	 *
+	 * @param {string} str
+	 * @param {number} start - characters to keep at start of string
+	 * @param {number} end - characters to keep at end off string
+	 * @returns {string}
 	 */
-	function loadScript(src, callback) {
-	    var script = document.createElement('script');
-	    script.src = src;
-	    script.onload = function () {
-	        if (callback) { callback(); }
-	    };
-	    document.body.appendChild(script);
+	function truncate(str, start, end) {
+	    if ( start === void 0 ) start = 11;
+	    if ( end === void 0 ) end = 7;
+
+	    if (typeof str !== 'string') { return str; }
+	    if (str.length < start + end + 3) { return str; }
+	    return str.substr(0, start).trim() + '…' + str.substr(str.length - end).trim();
 	}
 
 	/**
-	 * injects a <link> element to the page to load a new stylesheet
+	 * Download and parse a remote JSON document
+	 *
+	 * @param {string} url
+	 * @param {string} method - HTTP method, either GET, POST or PUT
+	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { fetchJSON } from '@datawrapper/shared/fetch';
+	 * fetchJSON('http://api.example.org', 'GET', 'include');
+	 */
+	function fetchJSON(url, method, credentials, body, callback) {
+	    var opts = {
+	        method: method,
+	        body: body,
+	        mode: 'cors',
+	        credentials: credentials
+	    };
+
+	    return window
+	        .fetch(url, opts)
+	        .then(function (res) {
+	            if (!res.ok) { throw new Error(res.statusText); }
+	            return res.text();
+	        })
+	        .then(function (text) {
+	            try {
+	                return JSON.parse(text);
+	            } catch (Error) {
+	                // could not parse json, so just return text
+	                console.warn('malformed json input', text);
+	                return text;
+	            }
+	        })
+	        .then(function (res) {
+	            if (callback) { callback(res); }
+	            return res;
+	        })
+	        .catch(function (err) {
+	            console.error(err);
+	        });
+	}
+
+	/**
+	 * Download and parse a JSON document via GET
+	 *
+	 * @param {string} url
+	 * @param {string|undefined} credentials - optional, set to undefined to disable credentials
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { getJSON } from '@datawrapper/shared/fetch';
+	 * // use it callback style
+	 * getJSON('http://api.example.org', 'include', function(data) {
+	 *     console.log(data);
+	 * });
+	 * // or promise-style
+	 * getJSON('http://api.example.org')
+	 *   .then(data => {
+	 *      console.log(data);
+	 *   });
+	 */
+	function getJSON(url, credentials, callback) {
+	    if (arguments.length === 2) {
+	        callback = credentials;
+	        credentials = 'include';
+	    }
+
+	    return fetchJSON(url, 'GET', credentials, null, callback);
+	}
+
+	/**
+	 * Download and parse a remote JSON endpoint via POST. credentials
+	 * are included automatically
+	 *
+	 * @param {string} url
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 * @example
+	 * import { postJSON } from '@datawrapper/shared/fetch';
+	 *
+	 * postJSON('http://api.example.org', JSON.stringify({
+	 *    query: 'foo',
+	 *    page: 12
+	 * }));
+	 */
+	function postJSON(url, body, callback) {
+	    return fetchJSON(url, 'POST', 'include', body, callback);
+	}
+
+	/**
+	 * injects a `<script>` element to the page to load a new JS script
 	 *
 	 * @param {string} src
 	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadScript } from '@datawrapper/shared/fetch';
+	 *
+	 * loadScript('/static/js/library.js', () => {
+	 *     console.log('library is loaded');
+	 * })
+	 */
+	function loadScript(src, callback) {
+	    if ( callback === void 0 ) callback = null;
+
+	    return new Promise(function (resolve, reject) {
+	        var script = document.createElement('script');
+	        script.src = src;
+	        script.onload = function () {
+	            if (callback) { callback(); }
+	            resolve();
+	        };
+	        script.onerror = reject;
+	        document.body.appendChild(script);
+	    });
+	}
+
+	/**
+	 * injects a `<link>` element to the page to load a new stylesheet
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadStylesheet } from '@datawrapper/shared/fetch';
+	 *
+	 * loadStylesheet('/static/css/library.css', () => {
+	 *     console.log('library styles are loaded');
+	 * })
 	 */
 	function loadStylesheet(src, callback) {
-	    var link = document.createElement('link');
-	    link.rel = 'stylesheet';
-	    link.href = src;
-	    link.onload = function () {
-	        if (callback) { callback(); }
-	    };
-	    document.head.appendChild(link);
+	    if ( callback === void 0 ) callback = null;
+
+	    return new Promise(function (resolve, reject) {
+	        var link = document.createElement('link');
+	        link.rel = 'stylesheet';
+	        link.href = src;
+	        link.onload = function () {
+	            if (callback) { callback(); }
+	            resolve();
+	        };
+	        link.onerror = reject;
+	        document.head.appendChild(link);
+	    });
 	}
 
 	/* node_modules/@datawrapper/controls/Alert.html generated by Svelte v2.16.1 */
@@ -26379,104 +26526,6 @@
 	DeleteTeam.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/**
-	 * Download and parse a remote JSON document
-	 *
-	 * @param {string} url
-	 * @param {string} method - HTTP method, either GET, POST or PUT
-	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
-	 * @param {string} body
-	 * @param {function} callback
-	 *
-	 * @returns {Promise}
-	 *
-	 * @example
-	 * import { fetchJSON } from '@datawrapper/shared/fetch';
-	 * fetchJSON('http://api.example.org', 'GET', 'include');
-	 */
-	function fetchJSON(url, method, credentials, body, callback) {
-	    var opts = {
-	        method: method,
-	        body: body,
-	        mode: 'cors',
-	        credentials: credentials
-	    };
-
-	    return window
-	        .fetch(url, opts)
-	        .then(function (res) {
-	            if (!res.ok) { throw new Error(res.statusText); }
-	            return res.text();
-	        })
-	        .then(function (text) {
-	            try {
-	                return JSON.parse(text);
-	            } catch (Error) {
-	                // could not parse json, so just return text
-	                console.warn('malformed json input', text);
-	                return text;
-	            }
-	        })
-	        .then(function (res) {
-	            if (callback) { callback(res); }
-	            return res;
-	        })
-	        .catch(function (err) {
-	            console.error(err);
-	        });
-	}
-
-	/**
-	 * Download and parse a JSON document via GET
-	 *
-	 * @param {string} url
-	 * @param {string|undefined} credentials - optional, set to undefined to disable credentials
-	 * @param {function} callback
-	 *
-	 * @returns {Promise}
-	 *
-	 * @example
-	 * import { getJSON } from '@datawrapper/shared/fetch';
-	 * // use it callback style
-	 * getJSON('http://api.example.org', 'include', function(data) {
-	 *     console.log(data);
-	 * });
-	 * // or promise-style
-	 * getJSON('http://api.example.org')
-	 *   .then(data => {
-	 *      console.log(data);
-	 *   });
-	 */
-	function getJSON(url, credentials, callback) {
-	    if (arguments.length === 2) {
-	        callback = credentials;
-	        credentials = 'include';
-	    }
-
-	    return fetchJSON(url, 'GET', credentials, null, callback);
-	}
-
-	/**
-	 * Download and parse a remote JSON endpoint via POST. credentials
-	 * are included automatically
-	 *
-	 * @param {string} url
-	 * @param {string} body
-	 * @param {function} callback
-	 *
-	 * @returns {Promise}
-	 * @example
-	 * import { postJSON } from '@datawrapper/shared/fetch';
-	 *
-	 * postJSON('http://api.example.org', JSON.stringify({
-	 *    query: 'foo',
-	 *    page: 12
-	 * }));
-	 */
-	function postJSON(url, body, callback) {
-	    return fetchJSON(url, 'POST', 'include', body, callback);
-	}
-
 	/* team-settings/tabs/ProductTable.html generated by Svelte v2.16.1 */
 
 
@@ -27635,16 +27684,12 @@
 	                    app: Loading
 	                });
 
-	                if (tab.css) { loadStylesheet(tab.css); }
-
-	                loadScript(tab.src, function () {
-	                    setTimeout(function () {
-	                        require([tab.id], function (mod) {
-	                            Object.assign(tab, mod);
-	                            this$1.set({ app: tab.App });
-	                            if (tab.data) { this$1.refs.app.set(tab.data); }
-	                        });
-	                    }, 200);
+	                Promise.all([loadStylesheet(tab.css), loadScript(tab.src)]).then(function () {
+	                    require([tab.id], function (mod) {
+	                        Object.assign(tab, mod);
+	                        this$1.set({ app: tab.App });
+	                        if (tab.data) { this$1.refs.app.set(tab.data); }
+	                    });
 	                });
 	            }
 	        } else {
@@ -27728,7 +27773,7 @@
 	}
 
 	function create_main_fragment$R(component, ctx) {
-		var div1, div0, h1, text0_value = __('Settings'), text0, text1, text2_value = ctx.team.name, text2, text3, div5, div4, div2, text4, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, text8, div3;
+		var div1, div0, h1, text0_value = __('nav / team / settings'), text0, text1, text2_value = truncate(ctx.team.name, 17,8), text2, text3, div5, div4, div2, text4, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, text8, div3;
 
 		var each_value = ctx.groups;
 
@@ -27774,20 +27819,20 @@
 				addLoc(div0, file$M, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$M, 0, 0, 0);
-				addLoc(hr, file$M, 20, 12, 781);
+				addLoc(hr, file$M, 20, 12, 810);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$M, 21, 31, 819);
+				addLoc(i, file$M, 21, 31, 848);
 				a.href = "/account";
-				addLoc(a, file$M, 21, 12, 800);
+				addLoc(a, file$M, 21, 12, 829);
 				div2.className = "span2 svelte-wo040n";
-				addLoc(div2, file$M, 8, 8, 301);
+				addLoc(div2, file$M, 8, 8, 330);
 				div3.className = "span10";
-				addLoc(div3, file$M, 24, 8, 918);
+				addLoc(div3, file$M, 24, 8, 947);
 				div4.className = "visconfig";
-				addLoc(div4, file$M, 7, 4, 269);
+				addLoc(div4, file$M, 7, 4, 298);
 				div5.className = "row dw-create-visualize chart-editor chart-editor-web";
 				setStyle(div5, "margin-top", "-20px");
-				addLoc(div5, file$M, 6, 0, 170);
+				addLoc(div5, file$M, 6, 0, 199);
 			},
 
 			m: function mount(target, anchor) {
@@ -27819,7 +27864,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.team) && text2_value !== (text2_value = ctx.team.name)) {
+				if ((changed.team) && text2_value !== (text2_value = truncate(ctx.team.name, 17,8))) {
 					setData(text2, text2_value);
 				}
 
@@ -27884,17 +27929,17 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-wo040n";
-				addLoc(i, file$M, 15, 42, 630);
+				addLoc(i, file$M, 15, 42, 659);
 				a.href = a_href_value = "#" + ctx.tab.id;
 				a.className = "svelte-wo040n";
-				addLoc(a, file$M, 15, 20, 608);
+				addLoc(a, file$M, 15, 20, 637);
 
 				li._svelte = { component: component, ctx: ctx };
 
 				addListener(li, "click", click_handler$c);
 				li.className = "svelte-wo040n";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab.id);
-				addLoc(li, file$M, 14, 16, 519);
+				addLoc(li, file$M, 14, 16, 548);
 			},
 
 			m: function mount(target, anchor) {
@@ -27958,9 +28003,9 @@
 					each_blocks[i].c();
 				}
 				div.className = "group svelte-wo040n";
-				addLoc(div, file$M, 10, 12, 369);
+				addLoc(div, file$M, 10, 12, 398);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$M, 12, 12, 423);
+				addLoc(ul, file$M, 12, 12, 452);
 			},
 
 			m: function mount(target, anchor) {
@@ -28190,7 +28235,7 @@
 				text = createText("\n\n                ");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = "vis-options settings-section svelte-wo040n";
-				addLoc(div, file$M, 26, 12, 980);
+				addLoc(div, file$M, 26, 12, 1009);
 			},
 
 			m: function mount(target, anchor) {
@@ -28376,7 +28421,7 @@
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				addLoc(h2, file$M, 28, 16, 1076);
+				addLoc(h2, file$M, 28, 16, 1105);
 			},
 
 			m: function mount(target, anchor) {

@@ -3607,7 +3607,7 @@
 				if (if_block2) { if_block2.c(); }
 				addLoc(h2, file$5, 0, 0, 0);
 				div.className = "row";
-				addLoc(div, file$5, 51, 0, 1727);
+				addLoc(div, file$5, 51, 0, 1833);
 			},
 
 			m: function mount(target, anchor) {
@@ -3684,7 +3684,7 @@
 		return {
 			c: function create() {
 				p = createElement("p");
-				addLoc(p, file$5, 48, 0, 1665);
+				addLoc(p, file$5, 48, 0, 1771);
 			},
 
 			m: function mount(target, anchor) {
@@ -3706,7 +3706,7 @@
 	function create_if_block_6$1(component, ctx) {
 		var p, raw_value = __('account / my-teams / your-teams'), text0, table, thead, tr, th0, text1_value = __('account / my-teams / name'), text1, text2, text3, th1, text4_value = __('account / my-teams / your-role'), text4, text5, th2, text6_value = __('account / my-teams / num-charts'), text6, text7, th3, text8_value = __('account / my-teams / num-members'), text8, text9, th4, text10_value = __('account / my-teams / leave-team'), text10, text11, tbody;
 
-		var if_block = (ctx.user.isAdmin) && create_if_block_12();
+		var if_block = (ctx.user.isAdmin) && create_if_block_13();
 
 		var each_value = ctx.teams;
 
@@ -3792,7 +3792,7 @@
 			p: function update(changed, ctx) {
 				if (ctx.user.isAdmin) {
 					if (!if_block) {
-						if_block = create_if_block_12();
+						if_block = create_if_block_13();
 						if_block.c();
 						if_block.m(tr, text3);
 					}
@@ -3838,7 +3838,7 @@
 	}
 
 	// (10:12) {#if user.isAdmin}
-	function create_if_block_12(component, ctx) {
+	function create_if_block_13(component, ctx) {
 		var th, text_value = __('account / my-teams / id'), text;
 
 		return {
@@ -3861,16 +3861,16 @@
 		};
 	}
 
-	// (23:55) {:else}
+	// (23:73) {:else}
 	function create_else_block_3(component, ctx) {
-		var a, text_value = ctx.team.name, text, a_href_value;
+		var a, text_value = truncate(ctx.team.name, 20, 10), text, a_href_value;
 
 		return {
 			c: function create() {
 				a = createElement("a");
 				text = createText(text_value);
 				a.href = a_href_value = "/team/" + ctx.team.id + "/settings";
-				addLoc(a, file$5, 22, 62, 766);
+				addLoc(a, file$5, 22, 80, 784);
 			},
 
 			m: function mount(target, anchor) {
@@ -3879,7 +3879,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.teams) && text_value !== (text_value = ctx.team.name)) {
+				if ((changed.teams) && text_value !== (text_value = truncate(ctx.team.name, 20, 10))) {
 					setData(text, text_value);
 				}
 
@@ -3897,8 +3897,8 @@
 	}
 
 	// (23:16) {#if team.role === 'member'}
-	function create_if_block_11(component, ctx) {
-		var text_value = ctx.team.name, text;
+	function create_if_block_12(component, ctx) {
+		var text_value = truncate(ctx.team.name, 20, 10), text;
 
 		return {
 			c: function create() {
@@ -3910,7 +3910,7 @@
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.teams) && text_value !== (text_value = ctx.team.name)) {
+				if ((changed.teams) && text_value !== (text_value = truncate(ctx.team.name, 20, 10))) {
 					setData(text, text_value);
 				}
 			},
@@ -3923,15 +3923,15 @@
 		};
 	}
 
-	// (23:118) {#if team.id === currentTeam}
-	function create_if_block_10(component, ctx) {
+	// (23:154) {#if team.id === currentTeam}
+	function create_if_block_11(component, ctx) {
 		var i;
 
 		return {
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check-circle";
-				addLoc(i, file$5, 23, 16, 868);
+				addLoc(i, file$5, 23, 16, 904);
 			},
 
 			m: function mount(target, anchor) {
@@ -3947,15 +3947,15 @@
 	}
 
 	// (27:12) {#if user.isAdmin}
-	function create_if_block_9(component, ctx) {
+	function create_if_block_10(component, ctx) {
 		var td, text_value = ctx.team.id, text;
 
 		return {
 			c: function create() {
 				td = createElement("td");
 				text = createText(text_value);
-				td.className = "slug svelte-1fg8vfc";
-				addLoc(td, file$5, 27, 12, 986);
+				td.className = "slug svelte-t3x94h";
+				addLoc(td, file$5, 27, 12, 1022);
 			},
 
 			m: function mount(target, anchor) {
@@ -3979,34 +3979,61 @@
 
 	// (33:60) {:else}
 	function create_else_block_2$1(component, ctx) {
-		var a, text_value = ctx.team.members, text, a_href_value;
+		var a, text0_value = ctx.team.members, text0, a_href_value, text1, if_block_anchor;
+
+		var if_block = (ctx.team.invites) && create_if_block_9(component, ctx);
 
 		return {
 			c: function create() {
 				a = createElement("a");
-				text = createText(text_value);
+				text0 = createText(text0_value);
+				text1 = createText(" ");
+				if (if_block) { if_block.c(); }
+				if_block_anchor = createComment();
 				a.href = a_href_value = "/team/" + ctx.team.id + "/settings#members";
-				addLoc(a, file$5, 33, 16, 1263);
+				addLoc(a, file$5, 33, 16, 1299);
 			},
 
 			m: function mount(target, anchor) {
 				insert(target, a, anchor);
-				append(a, text);
+				append(a, text0);
+				insert(target, text1, anchor);
+				if (if_block) { if_block.m(target, anchor); }
+				insert(target, if_block_anchor, anchor);
 			},
 
 			p: function update(changed, ctx) {
-				if ((changed.teams) && text_value !== (text_value = ctx.team.members)) {
-					setData(text, text_value);
+				if ((changed.teams) && text0_value !== (text0_value = ctx.team.members)) {
+					setData(text0, text0_value);
 				}
 
 				if ((changed.teams) && a_href_value !== (a_href_value = "/team/" + ctx.team.id + "/settings#members")) {
 					a.href = a_href_value;
+				}
+
+				if (ctx.team.invites) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_9(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
 				}
 			},
 
 			d: function destroy(detach) {
 				if (detach) {
 					detachNode(a);
+					detachNode(text1);
+				}
+
+				if (if_block) { if_block.d(detach); }
+				if (detach) {
+					detachNode(if_block_anchor);
 				}
 			}
 		};
@@ -4039,6 +4066,41 @@
 		};
 	}
 
+	// (34:78) {#if team.invites}
+	function create_if_block_9(component, ctx) {
+		var span, text0, text1_value = ctx.team.invites, text1, text2;
+
+		return {
+			c: function create() {
+				span = createElement("span");
+				text0 = createText("(+");
+				text1 = createText(text1_value);
+				text2 = createText(")");
+				span.className = "invites svelte-t3x94h";
+				addLoc(span, file$5, 33, 96, 1379);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span, anchor);
+				append(span, text0);
+				append(span, text1);
+				append(span, text2);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.teams) && text1_value !== (text1_value = ctx.team.invites)) {
+					setData(text1, text1_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span);
+				}
+			}
+		};
+	}
+
 	// (39:16) {#if team.role !== 'owner'}
 	function create_if_block_7(component, ctx) {
 		var button, i, text0, text1_value = __('account / my-teams / leave-team'), text1;
@@ -4050,9 +4112,9 @@
 				text0 = createText(" ");
 				text1 = createText(text1_value);
 				i.className = "fa fa-sign-out";
-				addLoc(i, file$5, 39, 57, 1484);
+				addLoc(i, file$5, 39, 57, 1590);
 				button.className = "btn btn-small btn-danger";
-				addLoc(button, file$5, 39, 16, 1443);
+				addLoc(button, file$5, 39, 16, 1549);
 			},
 
 			m: function mount(target, anchor) {
@@ -4075,16 +4137,16 @@
 		var tr, td0, text0, text1, text2, td1, raw_value = __('teams / role / '+ctx.team.role), text3, td2, a, text4_value = ctx.team.charts, text4, a_href_value, text5, td3, text6, td4;
 
 		function select_block_type_1(ctx) {
-			if (ctx.team.role === 'member') { return create_if_block_11; }
+			if (ctx.team.role === 'member') { return create_if_block_12; }
 			return create_else_block_3;
 		}
 
 		var current_block_type = select_block_type_1(ctx);
 		var if_block0 = current_block_type(component, ctx);
 
-		var if_block1 = (ctx.team.id === ctx.currentTeam) && create_if_block_10();
+		var if_block1 = (ctx.team.id === ctx.currentTeam) && create_if_block_11();
 
-		var if_block2 = (ctx.user.isAdmin) && create_if_block_9(component, ctx);
+		var if_block2 = (ctx.user.isAdmin) && create_if_block_10(component, ctx);
 
 		function select_block_type_2(ctx) {
 			if (ctx.team.role === 'member') { return create_if_block_8; }
@@ -4118,12 +4180,12 @@
 				td4 = createElement("td");
 				if (if_block4) { if_block4.c(); }
 				addLoc(td0, file$5, 21, 12, 699);
-				addLoc(td1, file$5, 29, 12, 1048);
+				addLoc(td1, file$5, 29, 12, 1084);
 				a.href = a_href_value = "/team/" + ctx.team.id;
-				addLoc(a, file$5, 30, 16, 1113);
-				addLoc(td2, file$5, 30, 12, 1109);
-				addLoc(td3, file$5, 31, 12, 1174);
-				addLoc(td4, file$5, 37, 12, 1378);
+				addLoc(a, file$5, 30, 16, 1149);
+				addLoc(td2, file$5, 30, 12, 1145);
+				addLoc(td3, file$5, 31, 12, 1210);
+				addLoc(td4, file$5, 37, 12, 1484);
 				toggleClass(tr, "current", ctx.team.id === ctx.currentTeam);
 				addLoc(tr, file$5, 20, 8, 642);
 			},
@@ -4163,7 +4225,7 @@
 
 				if (ctx.team.id === ctx.currentTeam) {
 					if (!if_block1) {
-						if_block1 = create_if_block_10();
+						if_block1 = create_if_block_11();
 						if_block1.c();
 						if_block1.m(td0, null);
 					}
@@ -4176,7 +4238,7 @@
 					if (if_block2) {
 						if_block2.p(changed, ctx);
 					} else {
-						if_block2 = create_if_block_9(component, ctx);
+						if_block2 = create_if_block_10(component, ctx);
 						if_block2.c();
 						if_block2.m(tr, text2);
 					}
@@ -4254,10 +4316,10 @@
 				h3 = createElement("h3");
 				text = createText("\n        ");
 				if_block.c();
-				h3.className = "svelte-1fg8vfc";
-				addLoc(h3, file$5, 54, 8, 1800);
+				h3.className = "svelte-t3x94h";
+				addLoc(h3, file$5, 54, 8, 1906);
 				div.className = "span5";
-				addLoc(div, file$5, 53, 4, 1772);
+				addLoc(div, file$5, 53, 4, 1878);
 			},
 
 			m: function mount(target, anchor) {
@@ -4344,18 +4406,18 @@
 				text5 = createText("\n        ");
 				button1 = createElement("button");
 				text6 = createText(text6_value);
-				addLoc(p, file$5, 65, 8, 2264);
+				addLoc(p, file$5, 65, 8, 2370);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = __('team-create / untitled');
-				addLoc(input, file$5, 70, 12, 2431);
+				addLoc(input, file$5, 70, 12, 2537);
 				addListener(button0, "click", click_handler);
 				button0.className = "btn btn-primary";
 				button0.disabled = button0_disabled_value = !ctx.newTeamName.length;
-				addLoc(button0, file$5, 78, 8, 2799);
+				addLoc(button0, file$5, 78, 8, 2905);
 				addListener(button1, "click", click_handler_1);
 				button1.className = "btn";
-				addLoc(button1, file$5, 82, 8, 3196);
+				addLoc(button1, file$5, 82, 8, 3302);
 			},
 
 			m: function mount(target, anchor) {
@@ -4457,15 +4519,15 @@
 				i = createElement("i");
 				text1 = createText(" ");
 				raw1_before = createElement('noscript');
-				addLoc(p, file$5, 57, 12, 1915);
+				addLoc(p, file$5, 57, 12, 2021);
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 61, 16, 2124);
+				addLoc(i, file$5, 61, 16, 2230);
 				addListener(button, "click", click_handler);
 				button.className = "btn btn-large";
 				toggleClass(button, "btn-primary", !ctx.teams.length);
-				addLoc(button, file$5, 60, 12, 2009);
-				div.className = "hed svelte-1fg8vfc";
-				addLoc(div, file$5, 56, 8, 1885);
+				addLoc(button, file$5, 60, 12, 2115);
+				div.className = "hed svelte-t3x94h";
+				addLoc(div, file$5, 56, 8, 1991);
 			},
 
 			m: function mount(target, anchor) {
@@ -4524,7 +4586,7 @@
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = ctx.autoslug;
-				addLoc(input, file$5, 74, 12, 2683);
+				addLoc(input, file$5, 74, 12, 2789);
 			},
 
 			m: function mount(target, anchor) {
@@ -4557,7 +4619,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 80, 36, 3094);
+				addLoc(i, file$5, 80, 36, 3200);
 			},
 
 			m: function mount(target, anchor) {
@@ -4644,7 +4706,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check fa-fw";
-				addLoc(i, file$5, 79, 110, 3025);
+				addLoc(i, file$5, 79, 110, 3131);
 			},
 
 			m: function mount(target, anchor) {
@@ -4668,7 +4730,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 79, 65, 2980);
+				addLoc(i, file$5, 79, 65, 3086);
 			},
 
 			m: function mount(target, anchor) {
@@ -4734,13 +4796,13 @@
 				text2 = createText("\n                ");
 				if (if_block) { if_block.c(); }
 				formblock._fragment.c();
-				h3.className = "svelte-1fg8vfc";
-				addLoc(h3, file$5, 87, 8, 3365);
-				addLoc(p, file$5, 88, 8, 3431);
+				h3.className = "svelte-t3x94h";
+				addLoc(h3, file$5, 87, 8, 3471);
+				addLoc(p, file$5, 88, 8, 3537);
 				div0.className = "flex";
-				addLoc(div0, file$5, 90, 12, 3582);
+				addLoc(div0, file$5, 90, 12, 3688);
 				div1.className = "span5";
-				addLoc(div1, file$5, 86, 4, 3337);
+				addLoc(div1, file$5, 86, 4, 3443);
 			},
 
 			m: function mount(target, anchor) {
@@ -4878,7 +4940,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 93, 69, 3805);
+				addLoc(i, file$5, 93, 69, 3911);
 			},
 
 			m: function mount(target, anchor) {
@@ -5112,27 +5174,41 @@
 		component.activateTab(ctx.tab, event);
 	}
 
-	function get_each_context_1$2(ctx, list, i) {
+	function get_each_context$3(ctx, list, i) {
 		var child_ctx = Object.create(ctx);
 		child_ctx.tab = list[i];
 		return child_ctx;
 	}
 
-	function get_each_context$3(ctx, list, i) {
+	function get_each1_context(ctx, list, i) {
 		var child_ctx = Object.create(ctx);
 		child_ctx.group = list[i];
 		return child_ctx;
 	}
 
+	function get_each0_context(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.team = list[i];
+		return child_ctx;
+	}
+
 	function create_main_fragment$6(component, ctx) {
-		var div2, h1, text0_value = __('account / settings'), text0, text1, div1, div0, text2;
+		var div2, h1, text0_value = __('account / settings'), text0, text1, text2, div1, div0, text3;
 
-		var each_value = ctx.groups;
+		var each0_value = ctx.invitations;
 
-		var each_blocks = [];
+		var each0_blocks = [];
 
-		for (var i = 0; i < each_value.length; i += 1) {
-			each_blocks[i] = create_each_block$3(component, get_each_context$3(ctx, each_value, i));
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_2$1(component, get_each0_context(ctx, each0_value, i));
+		}
+
+		var each1_value = ctx.groups;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block$3(component, get_each1_context(ctx, each1_value, i));
 		}
 
 		var if_block = (ctx.activeTab) && create_if_block$6(component, ctx);
@@ -5142,22 +5218,28 @@
 				div2 = createElement("div");
 				h1 = createElement("h1");
 				text0 = createText(text0_value);
-				text1 = createText("\n\n    ");
+				text1 = createText("\n    ");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
+				}
+
+				text2 = createText("\n    ");
 				div1 = createElement("div");
 				div0 = createElement("div");
 
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].c();
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
 				}
 
-				text2 = createText("\n        ");
+				text3 = createText("\n        ");
 				if (if_block) { if_block.c(); }
 				h1.className = "title";
 				addLoc(h1, file$6, 1, 4, 24);
 				div0.className = "span2 svelte-1yvqupy";
-				addLoc(div0, file$6, 4, 8, 105);
+				addLoc(div0, file$6, 8, 8, 387);
 				div1.className = "row";
-				addLoc(div1, file$6, 3, 4, 79);
+				addLoc(div1, file$6, 7, 4, 361);
 				div2.className = "admin";
 				addLoc(div2, file$6, 0, 0, 0);
 			},
@@ -5167,37 +5249,64 @@
 				append(div2, h1);
 				append(h1, text0);
 				append(div2, text1);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(div2, null);
+				}
+
+				append(div2, text2);
 				append(div2, div1);
 				append(div1, div0);
 
-				for (var i = 0; i < each_blocks.length; i += 1) {
-					each_blocks[i].m(div0, null);
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(div0, null);
 				}
 
-				append(div1, text2);
+				append(div1, text3);
 				if (if_block) { if_block.m(div1, null); }
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.groups || changed.activeTab) {
-					each_value = ctx.groups;
+				if (changed.invitations) {
+					each0_value = ctx.invitations;
 
-					for (var i = 0; i < each_value.length; i += 1) {
-						var child_ctx = get_each_context$3(ctx, each_value, i);
+					for (var i = 0; i < each0_value.length; i += 1) {
+						var child_ctx = get_each0_context(ctx, each0_value, i);
 
-						if (each_blocks[i]) {
-							each_blocks[i].p(changed, child_ctx);
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
 						} else {
-							each_blocks[i] = create_each_block$3(component, child_ctx);
-							each_blocks[i].c();
-							each_blocks[i].m(div0, null);
+							each0_blocks[i] = create_each_block_2$1(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(div2, text2);
 						}
 					}
 
-					for (; i < each_blocks.length; i += 1) {
-						each_blocks[i].d(1);
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
 					}
-					each_blocks.length = each_value.length;
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (changed.groups || changed.activeTab) {
+					each1_value = ctx.groups;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						var child_ctx$1 = get_each1_context(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx$1);
+						} else {
+							each1_blocks[i] = create_each_block$3(component, child_ctx$1);
+							each1_blocks[i].c();
+							each1_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
 				}
 
 				if (ctx.activeTab) {
@@ -5219,14 +5328,65 @@
 					detachNode(div2);
 				}
 
-				destroyEach(each_blocks, detach);
+				destroyEach(each0_blocks, detach);
+
+				destroyEach(each1_blocks, detach);
 
 				if (if_block) { if_block.d(); }
 			}
 		};
 	}
 
-	// (10:16) {#each group.tabs as tab}
+	// (3:4) {#each invitations as team}
+	function create_each_block_2$1(component, ctx) {
+		var div, text0, b, text1_value = truncate(ctx.team.name, 20, 10), text1, text2, a, text3, a_href_value;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText("You have been invited to join the team ");
+				b = createElement("b");
+				text1 = createText(text1_value);
+				text2 = createText(". Click here to ");
+				a = createElement("a");
+				text3 = createText("accept the invitation");
+				addLoc(b, file$6, 4, 47, 188);
+				a.href = a_href_value = "/organization-invite/" + ctx.team.token;
+				a.className = "btn btn-primary";
+				addLoc(a, file$6, 4, 99, 240);
+				div.className = "alert alert-info";
+				addLoc(div, file$6, 3, 4, 110);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				append(div, b);
+				append(b, text1);
+				append(div, text2);
+				append(div, a);
+				append(a, text3);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.invitations) && text1_value !== (text1_value = truncate(ctx.team.name, 20, 10))) {
+					setData(text1, text1_value);
+				}
+
+				if ((changed.invitations) && a_href_value !== (a_href_value = "/organization-invite/" + ctx.team.token)) {
+					a.href = a_href_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (14:16) {#each group.tabs as tab}
 	function create_each_block_1$2(component, ctx) {
 		var li, a, i, i_class_value, text0, text1_value = ctx.tab.title, text1, a_href_value;
 
@@ -5238,17 +5398,17 @@
 				text0 = createText("   ");
 				text1 = createText(text1_value);
 				i.className = i_class_value = "" + ctx.tab.icon + " svelte-1yvqupy";
-				addLoc(i, file$6, 12, 25, 487);
+				addLoc(i, file$6, 16, 25, 769);
 
 				a._svelte = { component: component, ctx: ctx };
 
 				addListener(a, "click", click_handler);
 				a.href = a_href_value = ctx.tab.url || ("/account/" + (ctx.tab.id));
 				a.className = "svelte-1yvqupy";
-				addLoc(a, file$6, 11, 20, 381);
+				addLoc(a, file$6, 15, 20, 663);
 				li.className = "svelte-1yvqupy";
 				toggleClass(li, "active", ctx.activeTab === ctx.tab);
-				addLoc(li, file$6, 10, 16, 323);
+				addLoc(li, file$6, 14, 16, 605);
 			},
 
 			m: function mount(target, anchor) {
@@ -5289,16 +5449,16 @@
 		};
 	}
 
-	// (6:12) {#each groups as group}
+	// (10:12) {#each groups as group}
 	function create_each_block$3(component, ctx) {
 		var div, text0_value = ctx.group.title, text0, text1, ul;
 
-		var each_value_1 = ctx.group.tabs;
+		var each_value = ctx.group.tabs;
 
 		var each_blocks = [];
 
-		for (var i = 0; i < each_value_1.length; i += 1) {
-			each_blocks[i] = create_each_block_1$2(component, get_each_context_1$2(ctx, each_value_1, i));
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block_1$2(component, get_each_context$3(ctx, each_value, i));
 		}
 
 		return {
@@ -5312,9 +5472,9 @@
 					each_blocks[i].c();
 				}
 				div.className = "group svelte-1yvqupy";
-				addLoc(div, file$6, 6, 12, 173);
+				addLoc(div, file$6, 10, 12, 455);
 				ul.className = "nav nav-stacked nav-tabs";
-				addLoc(ul, file$6, 8, 12, 227);
+				addLoc(ul, file$6, 12, 12, 509);
 			},
 
 			m: function mount(target, anchor) {
@@ -5334,10 +5494,10 @@
 				}
 
 				if (changed.activeTab || changed.groups) {
-					each_value_1 = ctx.group.tabs;
+					each_value = ctx.group.tabs;
 
-					for (var i = 0; i < each_value_1.length; i += 1) {
-						var child_ctx = get_each_context_1$2(ctx, each_value_1, i);
+					for (var i = 0; i < each_value.length; i += 1) {
+						var child_ctx = get_each_context$3(ctx, each_value, i);
 
 						if (each_blocks[i]) {
 							each_blocks[i].p(changed, child_ctx);
@@ -5351,7 +5511,7 @@
 					for (; i < each_blocks.length; i += 1) {
 						each_blocks[i].d(1);
 					}
-					each_blocks.length = each_value_1.length;
+					each_blocks.length = each_value.length;
 				}
 			},
 
@@ -5367,7 +5527,7 @@
 		};
 	}
 
-	// (20:8) {#if activeTab}
+	// (24:8) {#if activeTab}
 	function create_if_block$6(component, ctx) {
 		var div, div_class_value;
 
@@ -5398,7 +5558,7 @@
 				div = createElement("div");
 				if (switch_instance) { switch_instance._fragment.c(); }
 				div.className = div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-1yvqupy";
-				addLoc(div, file$6, 20, 8, 693);
+				addLoc(div, file$6, 24, 8, 975);
 			},
 
 			m: function mount(target, anchor) {
@@ -5464,6 +5624,7 @@
 		if (!('userId' in this._state)) { console.warn("<App> was created without expected data property 'userId'"); }
 		if (!('teams' in this._state)) { console.warn("<App> was created without expected data property 'teams'"); }
 		if (!('currentTeam' in this._state)) { console.warn("<App> was created without expected data property 'currentTeam'"); }
+		if (!('invitations' in this._state)) { console.warn("<App> was created without expected data property 'invitations'"); }
 		if (!('groups' in this._state)) { console.warn("<App> was created without expected data property 'groups'"); }
 		if (!('activeTab' in this._state)) { console.warn("<App> was created without expected data property 'activeTab'"); }
 		this._intro = true;

@@ -20,7 +20,8 @@
         {#each teams as team}
         <tr class:current="team.id === currentTeam">
             <td>
-                {#if team.role === 'member'}{team.name}{:else}<a href="/team/{team.id}/settings">{team.name}</a>{/if} {#if team.id === currentTeam}
+                {#if team.role === 'member'}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings">{truncate(team.name, 20, 10)}</a
+                >{/if} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
             </td>
@@ -102,6 +103,7 @@
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
     import Text from '@datawrapper/controls/Text.html';
     import FormBlock from '../shared/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
@@ -137,7 +139,7 @@
                 return newTeamName.toLowerCase().replace(/\W/g, '');
             }
         },
-        helpers: { __ },
+        helpers: { __, truncate },
         methods: {
             createTeam(name, slug) {
                 const { user } = this.get();
@@ -188,6 +190,9 @@
     }
     .slug {
         font-family: Roboto Mono;
+        color: #888;
+    }
+    .invites {
         color: #888;
     }
 </style>

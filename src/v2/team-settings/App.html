@@ -1,6 +1,6 @@
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{ __('Settings') } » { team.name }</h1>
+        <h1 class="title" style="margin-bottom:18px">{ __('nav / team / settings') } » { truncate(team.name, 17,8) }</h1>
     </div>
 </div>
 
@@ -57,7 +57,8 @@
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
-    import { loadScript, loadStylesheet } from '../../shared/utils';
+    import truncate from '@datawrapper/shared/truncate';
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
@@ -223,9 +224,7 @@
                 return groups;
             }
         },
-        helpers: {
-            __
-        },
+        helpers: { __, truncate },
         methods: {
             activate(id) {
                 const { tabs } = this.get();
@@ -243,16 +242,12 @@
                             app: Loading
                         });
 
-                        if (tab.css) loadStylesheet(tab.css);
-
-                        loadScript(tab.src, () => {
-                            setTimeout(() => {
-                                require([tab.id], mod => {
-                                    Object.assign(tab, mod);
-                                    this.set({ app: tab.App });
-                                    if (tab.data) this.refs.app.set(tab.data);
-                                });
-                            }, 200);
+                        Promise.all([loadStylesheet(tab.css), loadScript(tab.src)]).then(() => {
+                            require([tab.id], mod => {
+                                Object.assign(tab, mod);
+                                this.set({ app: tab.App });
+                                if (tab.data) this.refs.app.set(tab.data);
+                            });
                         });
                     }
                 } else {
