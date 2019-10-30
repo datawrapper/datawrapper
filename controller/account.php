@@ -44,12 +44,19 @@ call_user_func(function() {
                     'role' => $team->getRole($user),
                     'charts' => $team->getChartCount(),
                     'members' => $team->getActiveUserCount(),
+                    'invites' => $team->getPendingUserCount()
                 ];
                 if ($user->canAdministrateTeam($team)) {
                     $adminTeams[] = $team->toArray();
                 }
             }
             $current = $user->getCurrentOrganization();
+            $invitations = [];
+            foreach ($user->getPendingOrganizations() as $team) {
+                $invite = $team->serialize();
+                $invite['token'] = UserOrganizationQuery::create()->filterByUser($user)->filterByOrganization($team)->findOne()->getInviteToken();
+                $invitations[] = $invite;
+            }
             $context = [
                 'svelte_data' => [
                     "user" => $user->serialize(),
@@ -58,7 +65,8 @@ call_user_func(function() {
                     'currentTeam' => $current ? $current->getId() : null,
                     'teams' => $teams,
                     'adminTeams' => $adminTeams,
-                    'pages' => $pages
+                    'pages' => $pages,
+                    'invitations' => $invitations
                 ]
             ];
 

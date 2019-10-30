@@ -87,6 +87,14 @@ class Organization extends BaseOrganization
         return $this->getUsers($crit);
     }
 
+    public function getPendingUserCount() {
+        return $this->countUsers(UserQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('', Criteria::NOT_EQUAL)
+            ->endUse());
+    }
+
+
     public function getType() {
         $type = $this->getSettings('type');
         if (empty($type)) return 'dev';

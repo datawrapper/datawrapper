@@ -31,7 +31,7 @@
             <td><a href="/team/{team.id}">{team.charts}</a></td>
             <td>
                 {#if team.role === 'member'} {team.members} {:else}
-                <a href="/team/{team.id}/settings#members">{team.members}</a>
+                <a href="/team/{team.id}/settings#members">{team.members}</a> {#if team.invites}<span class="invites">(+{team.invites})</span>{/if}
                 {/if}
             </td>
 
