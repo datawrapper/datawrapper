@@ -835,6 +835,27 @@
 	}
 
 	/**
+	 * Download and parse a remote JSON endpoint via PATCH. credentials
+	 * are included automatically
+	 *
+	 * @param {string} url
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 * @example
+	 * import { patchJSON } from '@datawrapper/shared/fetch';
+	 *
+	 * patchJSON('http://api.example.org', JSON.stringify({
+	 *    query: 'foo',
+	 *    page: 12
+	 * }));
+	 */
+	function patchJSON(url, body, callback) {
+	    return fetchJSON(url, 'PATCH', 'include', body, callback);
+	}
+
+	/**
 	 * Download and parse a remote JSON endpoint via DELETE. credentials
 	 * are included automatically
 	 *
@@ -3610,7 +3631,12 @@
 	        else if (current.currentTeam !== initialCurrentTeam) {
 	            initialCurrentTeam = current.currentTeam;
 	            this.set({
-	                awaitActiveTeam: putJSON(("/team/" + (current.currentTeam || '@none') + "/activate"), {})
+	                awaitActiveTeam: patchJSON(
+	                    ((window.location.protocol) + "//" + (dw.backend.__api_domain) + "/v3/me/settings"),
+	                    JSON.stringify({
+	                        activeTeam: current.currentTeam || null
+	                    })
+	                )
 	            });
 	        }
 	    }
@@ -4457,7 +4483,7 @@
 
 	// (72:8) {:else}
 	function create_else_block$1(component, ctx) {
-		var p, raw_value = __('team-create / p'), text0, input, input_updating = false, text1, text2, button0, text3, text4_value = __('team-create / button'), text4, button0_disabled_value, text5, button1, text6_value = __('Return'), text6;
+		var p, raw_value = __('team-create / p'), text0, input, input_updating = false, input_maxlength_value, text1, text2, button0, text3, text4_value = __('team-create / button'), text4, button0_disabled_value, text5, button1, text6_value = __('Return'), text6;
 
 		function input_input_handler() {
 			input_updating = true;
@@ -4514,14 +4540,15 @@
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = __('team-create / untitled');
+				input.maxLength = input_maxlength_value = ctx.user.isAdmin ? 80 : 50;
 				addLoc(input, file$5, 77, 12, 2838);
 				addListener(button0, "click", click_handler_1);
 				button0.className = "btn btn-primary";
 				button0.disabled = button0_disabled_value = !ctx.newTeamName.length;
-				addLoc(button0, file$5, 85, 8, 3206);
+				addLoc(button0, file$5, 85, 8, 3243);
 				addListener(button1, "click", click_handler_2);
 				button1.className = "btn";
-				addLoc(button1, file$5, 89, 8, 3603);
+				addLoc(button1, file$5, 89, 8, 3640);
 			},
 
 			m: function mount(target, anchor) {
@@ -4548,6 +4575,9 @@
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
 				if (!input_updating && changed.newTeamName) { input.value = ctx.newTeamName; }
+				if ((changed.user) && input_maxlength_value !== (input_maxlength_value = ctx.user.isAdmin ? 80 : 50)) {
+					input.maxLength = input_maxlength_value;
+				}
 
 				if (ctx.user.isAdmin) {
 					if (if_block0) {
@@ -4690,7 +4720,7 @@
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = ctx.autoslug;
-				addLoc(input, file$5, 81, 12, 3090);
+				addLoc(input, file$5, 81, 12, 3127);
 			},
 
 			m: function mount(target, anchor) {
@@ -4723,7 +4753,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-plus fa-fw";
-				addLoc(i, file$5, 87, 36, 3501);
+				addLoc(i, file$5, 87, 36, 3538);
 			},
 
 			m: function mount(target, anchor) {
@@ -4810,7 +4840,7 @@
 			c: function create() {
 				i = createElement("i");
 				i.className = "fa fa-check fa-fw";
-				addLoc(i, file$5, 86, 110, 3432);
+				addLoc(i, file$5, 86, 110, 3469);
 			},
 
 			m: function mount(target, anchor) {
@@ -4834,7 +4864,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 86, 65, 3387);
+				addLoc(i, file$5, 86, 65, 3424);
 			},
 
 			m: function mount(target, anchor) {
@@ -4901,12 +4931,12 @@
 				if (if_block) { if_block.c(); }
 				formblock._fragment.c();
 				h3.className = "svelte-t3x94h";
-				addLoc(h3, file$5, 94, 8, 3772);
-				addLoc(p, file$5, 95, 8, 3838);
+				addLoc(h3, file$5, 94, 8, 3809);
+				addLoc(p, file$5, 95, 8, 3875);
 				div0.className = "flex";
-				addLoc(div0, file$5, 97, 12, 3989);
+				addLoc(div0, file$5, 97, 12, 4026);
 				div1.className = "span5";
-				addLoc(div1, file$5, 93, 4, 3744);
+				addLoc(div1, file$5, 93, 4, 3781);
 			},
 
 			m: function mount(target, anchor) {
@@ -5044,7 +5074,7 @@
 				text = createText(" ");
 				i = createElement("i");
 				i.className = "fa fa-spinner fa-spin";
-				addLoc(i, file$5, 100, 69, 4212);
+				addLoc(i, file$5, 100, 69, 4249);
 			},
 
 			m: function mount(target, anchor) {

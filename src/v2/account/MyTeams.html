@@ -113,7 +113,7 @@
     import Text from '@datawrapper/controls/Text.html';
     import FormBlock from '../shared/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
-    import { putJSON, postJSON, deleteJSON } from '@datawrapper/shared/fetch';
+    import { patchJSON, postJSON, deleteJSON } from '@datawrapper/shared/fetch';
     let initialCurrentTeam = null;
 
     export default {
@@ -185,9 +185,11 @@
                 else if (current.currentTeam !== initialCurrentTeam) {
                     initialCurrentTeam = current.currentTeam;
                     this.set({
-                        awaitActiveTeam: putJSON(
-                            `${window.location.protocol}//${dw.backend.__api_domain}/v3/teams/${current.currentTeam || '@none'}/activate`,
-                            {}
+                        awaitActiveTeam: patchJSON(
+                            `${window.location.protocol}//${dw.backend.__api_domain}/v3/me/settings`,
+                            JSON.stringify({
+                                activeTeam: current.currentTeam || null
+                            })
                         )
                     });
                 }
