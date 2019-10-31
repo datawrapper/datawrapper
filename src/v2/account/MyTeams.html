@@ -75,7 +75,7 @@
         </p>
 
         <FormBlock label="{ __('team-create / name') }" help="{ __('team-create / help') }">
-            <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" />
+            <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" maxlength="{user.isAdmin ? 80 : 50}" />
         </FormBlock>
         {#if user.isAdmin}
         <FormBlock label="{ __('team-create / slug') }" help="{ __('team-create / slug-help') }">
