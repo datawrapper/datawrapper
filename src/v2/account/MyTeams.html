@@ -185,7 +185,10 @@
                 else if (current.currentTeam !== initialCurrentTeam) {
                     initialCurrentTeam = current.currentTeam;
                     this.set({
-                        awaitActiveTeam: putJSON(`/team/${current.currentTeam || '@none'}/activate`, {})
+                        awaitActiveTeam: putJSON(
+                            `${window.location.protocol}//${dw.backend.__api_domain}/v3/teams/${current.currentTeam || '@none'}/activate`,
+                            {}
+                        )
                     });
                 }
             }
