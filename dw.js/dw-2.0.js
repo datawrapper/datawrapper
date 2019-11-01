@@ -1459,11 +1459,6 @@ dw.utils = {
     getNonChartHeight: function() {
         var h = 0;
 
-        // IE Fix
-        if (!$.support.leadingWhitespace) {
-            h += 15;
-        }
-
         $('body > *').each(function(i, el) {
             var t = el.tagName.toLowerCase(),
                 cls = $(el).attr('class') || "";
