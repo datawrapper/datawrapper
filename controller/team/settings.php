@@ -98,7 +98,7 @@
 	    $app->redirect('/team/' . $org_id . '/settings');
 	});
 
-	$app->get('/team/:org_id/settings(/:tab)?', function ($org_id, $tab = null)
+	$app->get('/team/:org_id/:tab', function ($org_id, $tab)
 	    use ($app, $getLocales, $getThemes, $getFolders, $getSystemDefaultTheme, $getVisArchive, $getVisualizations) {
 
 	    disable_cache($app);
@@ -108,7 +108,6 @@
 	    if (!$user->canAdministrateTeam($org)) return $app->notFound();
 
 	    $tabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
-
 	    $teamSettings = $org->getSettings();
 
 	    $page = [
@@ -136,5 +135,5 @@
 	    // setup global page vars for header and render template
 	    add_header_vars($page, 'organization');
 	    $app->render('team/settings.twig', $page);
-	});
+	})->conditions(array('tab' => '[a-z\-]+'));;
 })();

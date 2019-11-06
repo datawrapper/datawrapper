@@ -27963,6 +27963,26 @@
 
 
 
+	var SettingsTab = {
+	    id: 'settings',
+	    title: __('teams / tab / settings'),
+	    icon: 'fa fa-gears',
+	    group: __('teams / group / users'),
+	    order: 10,
+	    h1: __('teams / defaults / h1'),
+	    ui: Settings
+	};
+
+	var MembersTab = {
+	    id: 'members',
+	    title: __('teams / tab / members'),
+	    icon: 'fa fa-users',
+	    group: __('teams / group / users'),
+	    order: 20,
+	    h1: __('teams / h1'),
+	    ui: Members
+	};
+
 	function currentTab(ref) {
 	    var activeTab = ref.activeTab;
 	    var tabs = ref.tabs;
@@ -28029,26 +28049,10 @@
 	function data$K() {
 	    return {
 	        allTabs: [
+	            SettingsTab,
+	            MembersTab,
 	            {
-	                id: 'settings',
-	                title: __('teams / tab / settings'),
-	                icon: 'fa fa-gears',
-	                group: __('teams / group / users'),
-	                order: 10,
-	                h1: __('teams / defaults / h1'),
-	                ui: Settings
-	            },
-	            {
-	                id: 'members',
-	                title: __('teams / tab / members'),
-	                icon: 'fa fa-users',
-	                group: __('teams / group / users'),
-	                order: 20,
-	                h1: __('teams / h1'),
-	                ui: Members
-	            },
-	            {
-	                id: 'customFields',
+	                id: 'custom-fields',
 	                title: __('teams / tab / customFields'),
 	                icon: 'fa fa-list',
 	                group: __('teams / group / advanced'),
@@ -28057,7 +28061,7 @@
 	                ui: CustomFields
 	            },
 	            {
-	                id: 'visTypes',
+	                id: 'visualizations',
 	                title: __('teams / tab / visTypes'),
 	                icon: 'fa fa-ban',
 	                group: __('teams / group / advanced'),
@@ -28066,7 +28070,7 @@
 	                ui: Visualizations
 	            },
 	            {
-	                id: 'deleteTeam',
+	                id: 'delete',
 	                title: __('teams / tab / deleteTeam'),
 	                icon: 'fa fa-times',
 	                group: __('teams / group / advanced'),
@@ -28076,7 +28080,7 @@
 	                ownerOnly: true
 	            },
 	            {
-	                id: 'adminProducts',
+	                id: 'products',
 	                title: __('teams / tab / adminProducts'),
 	                icon: 'fa fa-list-alt',
 	                group: __('teams / group / internal'),
@@ -28087,7 +28091,7 @@
 	            }
 	        ],
 	        pluginTabs: [],
-	        activeTab: 'settings',
+	        activeTab: null,
 	        ui: Settings,
 	        team: {
 	            name: ''
@@ -28099,41 +28103,6 @@
 	    };
 	}
 	var methods$t = {
-	    activate: function activate(id) {
-	        var this$1 = this;
-
-	        var ref = this.get();
-	        var tabs = ref.tabs;
-	        var tab = tabs.filter(function (el) { return el.id === id; })[0];
-
-	        if (tab.src) {
-	            if (tab.App) {
-	                this.set({
-	                    activeTab: tab.id,
-	                    app: tab.App
-	                });
-	            } else {
-	                this.set({
-	                    activeTab: tab.id,
-	                    app: Loading
-	                });
-
-	                Promise.all([loadStylesheet(tab.css), loadScript(tab.src)]).then(function () {
-	                    require([tab.id], function (mod) {
-	                        Object.assign(tab, mod);
-	                        this$1.set({ app: tab.App });
-	                        if (tab.data) { this$1.refs.app.set(tab.data); }
-	                    });
-	                });
-	            }
-	        } else {
-	            this.set({
-	                activeTab: tab.id,
-	                app: tab.app
-	            });
-	        }
-	    },
-
 	    debounceUpdateTeam: async function debounceUpdateTeam() {
 	        var this$1 = this;
 
@@ -28164,6 +28133,28 @@
 	    }
 	};
 
+	function oncreate$b() {
+	    var this$1 = this;
+
+	    var path = window.location.pathname.split('/').slice(-1);
+	    var initialTab = path[0] || 'settings';
+	    var ref = this.get();
+	    var groups = ref.groups;
+	    var foundTab = false;
+	    groups.forEach(function (group) {
+	        group.tabs.forEach(function (tab) {
+	            if (tab.id === initialTab) {
+	                this$1.refs.navTabs.activateTab(tab);
+	                foundTab = true;
+	            }
+	        });
+	    });
+	    if (!foundTab) {
+	        this.set({
+	            activeTab: SettingsTab
+	        });
+	    }
+	}
 	function onstate$6(ref) {
 	    var changed = ref.changed;
 	    var current = ref.current;
@@ -28174,13 +28165,16 @@
 	            this.debounceUpdateTeam();
 	        }
 	    }
+	    if (changed.activeTab && current.activeTab) {
+	        window.history.pushState({ id: current.activeTab.id }, '', ("/team/" + (current.team.id) + "/" + (current.activeTab.id)));
+	    }
 	}
 	var file$N = "team-settings/App.html";
 
 	function create_main_fragment$S(component, ctx) {
 		var div1, div0, h1, text0_value = __('nav / team / settings'), text0, text1, text2_value = truncate(ctx.team.name, 17,8), text2, text3, div5, div4, div2, text4, div3, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, navtabs_updating = {};
 
-		var if_block = (ctx.activeTab.h1) && create_if_block$D(component, ctx);
+		var if_block = (ctx.activeTab && ctx.activeTab.h1) && create_if_block$D(component, ctx);
 
 		var navtabs_initial_data = { groups: ctx.groups };
 		if (ctx.activeTab !== void 0) {
@@ -28239,13 +28233,13 @@
 				addLoc(div1, file$N, 0, 0, 0);
 				setAttribute(div2, "slot", "aboveContent");
 				addLoc(div2, file$N, 9, 12, 366);
-				addLoc(hr, file$N, 15, 16, 568);
+				addLoc(hr, file$N, 15, 16, 581);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$N, 16, 35, 610);
+				addLoc(i, file$N, 16, 35, 623);
 				a.href = "/account";
-				addLoc(a, file$N, 16, 16, 591);
+				addLoc(a, file$N, 16, 16, 604);
 				setAttribute(div3, "slot", "belowMenu");
-				addLoc(div3, file$N, 14, 12, 529);
+				addLoc(div3, file$N, 14, 12, 542);
 				div4.className = "visconfig";
 				addLoc(div4, file$N, 7, 4, 267);
 				div5.className = "dw-create-visualize chart-editor chart-editor-web";
@@ -28281,7 +28275,7 @@
 					setData(text2, text2_value);
 				}
 
-				if (ctx.activeTab.h1) {
+				if (ctx.activeTab && ctx.activeTab.h1) {
 					if (if_block) {
 						if_block.p(changed, ctx);
 					} else {
@@ -28318,14 +28312,14 @@
 		};
 	}
 
-	// (11:16) {#if activeTab.h1 }
+	// (11:16) {#if activeTab && activeTab.h1 }
 	function create_if_block$D(component, ctx) {
 		var h2, raw_value = ctx.activeTab.h1;
 
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				addLoc(h2, file$N, 11, 16, 444);
+				addLoc(h2, file$N, 11, 16, 457);
 			},
 
 			m: function mount(target, anchor) {
@@ -28379,6 +28373,7 @@
 		this._fragment = create_main_fragment$S(this, this._state);
 
 		this.root._oncreate.push(function () {
+			oncreate$b.call(this$1);
 			this$1.fire("update", { changed: assignTrue({}, this$1._state), current: this$1._state });
 		});
 
