@@ -28190,7 +28190,7 @@
 		var navtabs = new NavTabs({
 			root: component.root,
 			store: component.store,
-			slots: { default: createFragment(), belowNav: createFragment(), aboveContent: createFragment() },
+			slots: { default: createFragment(), belowMenu: createFragment(), aboveContent: createFragment() },
 			data: navtabs_initial_data,
 			_bind: function _bind(changed, childState) {
 				var newState = {};
@@ -28239,12 +28239,12 @@
 				addLoc(div1, file$N, 0, 0, 0);
 				setAttribute(div2, "slot", "aboveContent");
 				addLoc(div2, file$N, 9, 12, 366);
-				addLoc(hr, file$N, 15, 16, 567);
+				addLoc(hr, file$N, 15, 16, 568);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$N, 16, 35, 609);
+				addLoc(i, file$N, 16, 35, 610);
 				a.href = "/account";
-				addLoc(a, file$N, 16, 16, 590);
-				setAttribute(div3, "slot", "belowNav");
+				addLoc(a, file$N, 16, 16, 591);
+				setAttribute(div3, "slot", "belowMenu");
 				addLoc(div3, file$N, 14, 12, 529);
 				div4.className = "visconfig";
 				addLoc(div4, file$N, 7, 4, 267);
@@ -28265,7 +28265,7 @@
 				append(navtabs._slotted.aboveContent, div2);
 				if (if_block) { if_block.m(div2, null); }
 				append(navtabs._slotted.default, text4);
-				append(navtabs._slotted.belowNav, div3);
+				append(navtabs._slotted.belowMenu, div3);
 				append(div3, hr);
 				append(div3, text5);
 				append(div3, a);
