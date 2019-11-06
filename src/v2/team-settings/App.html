@@ -20,57 +20,6 @@
     </div>
 </div>
 
-<!--
-<div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
-    <div class="visconfig">
-        <div class="span2">
-            {#each groups as group}
-            <div class="group">{ group.title }</div>
-
-            <ul class="nav nav-stacked nav-tabs">
-                {#each group.tabs as tab}
-                <li class:active="activeTab === tab.id" on:click="activate(tab.id)">
-                    <a href="#{ tab.id }"><i class="{ tab.icon }"></i> &nbsp; { tab.title } </a>
-                </li>
-                {/each}
-            </ul>
-            {/each}
-            <hr />
-            <a href="/account"><i class="fa fa-arrow-left"></i> {__('account / settings / personal')}</a>
-        </div>
-
-        <div class="span10">
-            {#if currentTab}
-            <div class="vis-options settings-section">
-                {#if currentTab.h1 }
-                <h2>{ @html currentTab.h1 }</h2>
-                {/if}
-
-                <svelte:component
-                    ref:app
-                    this="{ app }"
-                    bind:team
-                    bind:defaultTheme
-                    bind:settings
-                    bind:loadingUsers
-                    bind:users
-                    userId="{userId}"
-                    bind:visualizations
-                    bind:visualizationArchive
-                    bind:folders
-                    bind:locales
-                    bind:themes
-                    bind:isAdmin
-                    bind:updatingUsers
-                    on:updateUsers="updateUsers()"
-                    on:change="debounceUpdateTeam()"
-                />
-            </div>
-            {/if}
-        </div>
-    </div>
-</div>
- -->
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
@@ -91,7 +40,11 @@
         group: __('teams / group / users'),
         order: 10,
         h1: __('teams / defaults / h1'),
-        ui: Settings
+        ui: Settings,
+        data: {},
+        onchange({ team }) {
+            app.set({ team });
+        }
     };
 
     const MembersTab = {
@@ -103,6 +56,8 @@
         h1: __('teams / h1'),
         ui: Members
     };
+
+    let app;
 
     export default {
         components: {
@@ -166,11 +121,6 @@
             };
         },
         computed: {
-            currentTab({ activeTab, tabs }) {
-                if (!tabs || !activeTab) return null;
-                const t = tabs.filter(el => el.id === activeTab);
-                return t[0];
-            },
             tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
                 const tabs = [].concat(allTabs, pluginTabs);
 
@@ -182,7 +132,7 @@
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
-            groups({ tabs, isAdmin, team, users, userId, settings }) {
+            groups({ tabs, isAdmin, team, users, userId, settings, defaultTheme, themes, folders, locales, visualizations, visualizationsArchive }) {
                 const groups = [];
 
                 function get(groups, groupId) {
@@ -204,6 +154,12 @@
                         users,
                         userId,
                         settings,
+                        defaultTheme,
+                        themes,
+                        folders,
+                        locales,
+                        visualizations,
+                        visualizationsArchive,
                         ...tab.data
                     };
                     get(groups, tab.group).tabs.push(tab);
@@ -243,6 +199,7 @@
             }
         },
         oncreate() {
+            app = this;
             const path = window.location.pathname.split('/').slice(-1);
             const initialTab = path[0] || 'settings';
             const { groups } = this.get();
@@ -255,6 +212,7 @@
                     }
                 });
             });
+
             if (!foundTab) {
                 this.set({
                     activeTab: SettingsTab

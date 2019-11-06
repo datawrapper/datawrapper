@@ -85,6 +85,7 @@
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
     import Switch from '@datawrapper/controls/Switch.html';
     import { __ } from '@datawrapper/shared/l10n';
+    import storeTeamSettings from '../storeTeamSettings';
 
     export default {
         components: { TextArea, BaseSelect, Switch, FormBlock },
@@ -98,7 +99,9 @@
                 themes: [],
                 folders: [],
                 locales: [],
-                defaultTheme: ''
+                defaultTheme: '',
+                settings: {},
+                team: {}
             };
         },
         computed: {
@@ -112,6 +115,16 @@
                 ];
             }
         },
-        helpers: { __ }
+        helpers: { __ },
+        onstate({ changed, current }) {
+            if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
+                storeTeamSettings(current.team, current.settings, current.defaultTheme).then(() => {
+                    this.fire('change', {
+                        team: current.team,
+                        settings: current.settings
+                    });
+                });
+            }
+        }
     };
 </script>

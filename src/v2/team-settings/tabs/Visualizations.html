@@ -46,6 +46,7 @@
 <script>
     import { Switch, Checkbox } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
+    import storeTeamSettings from '../storeTeamSettings';
 
     export default {
         components: { Switch, Checkbox },
@@ -70,6 +71,29 @@
                 return visualizations.filter(el => el.title && visualizationArchive.indexOf(el.id) > -1);
             }
         },
-        helpers: { __ }
+        helpers: { __ },
+        oncreate() {
+            const { charts, maps, archived, settings } = this.get();
+            if (Array.isArray(settings.disableVisualizations.visualizations)) {
+                // initialize visualizations
+                settings.disableVisualizations.visualizations = {};
+            }
+            [...charts, ...maps, ...archived].forEach(({ id }) => {
+                if (settings.disableVisualizations.visualizations[id] === undefined) {
+                    settings.disableVisualizations.visualizations[id] = false;
+                }
+            });
+            this.set({ settings });
+        },
+        onstate({ changed, current }) {
+            if (current.settings && changed.settings) {
+                storeTeamSettings(current.team, current.settings, current.defaultTheme).then(() => {
+                    this.fire('change', {
+                        team: current.team,
+                        settings: current.settings
+                    });
+                });
+            }
+        }
     };
 </script>
