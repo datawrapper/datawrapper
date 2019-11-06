@@ -5,12 +5,12 @@
 <div class="row">
     <div class="span5">
         <FormBlock label="{__('teams / name' )}" help="{__('teams / name / help' )}">
-            <Text bind:value="team.name" placeholder="" />
+            <input type="text" bind:value="team.name" placeholder="" />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / theme' ) }" help="{ __('teams / defaults / theme / p' ) }">
             <!-- prettier-ignore -->
-            <Select
+            <BaseSelect
                 bind:value="defaultTheme"
                 labelWidth="100px"
                 options="{themes}"
@@ -19,7 +19,7 @@
 
         <FormBlock label="{ __('teams / defaults / folder' ) }" help="{ __('teams / defaults / folder / p' ) }">
             <!-- prettier-ignore -->
-            <Select
+            <BaseSelect
                 bind:value="settings.default.folder"
                 labelWidth="100px"
                 options="{folders}"
@@ -28,7 +28,7 @@
 
         <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
             <!-- prettier-ignore -->
-            <Select
+            <BaseSelect
                 bind:value="settings.folders"
                 options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
             />
@@ -36,7 +36,7 @@
 
         <FormBlock label="{ __('teams / defaults / locale' ) }" help="{ __('teams / defaults / locale / p' ) }">
             <!-- prettier-ignore -->
-            <Select
+            <BaseSelect
                 bind:value="settings.default.locale"
                 options="{localeOptions}"
             />
@@ -44,7 +44,7 @@
 
         <FormBlock label="{ __('teams / defaults / embedcode' ) }" help="{ __('teams / defaults / embedcode / p' ) }">
             <!-- prettier-ignore -->
-            <Select
+            <BaseSelect
                 bind:value="settings.embed.preferred_embed"
                 options="{embedCodes}"
             />
@@ -52,7 +52,12 @@
 
         {#if settings.embed.preferred_embed == "custom"}
         <div>
-            <Text label="{ __('teams / custom / title' ) }" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
+            <input
+                type="text"
+                label="{ __('teams / custom / title' ) }"
+                bind:value="settings.embed.custom_embed.title"
+                placeholder="e.g. Custom CMS Embed"
+            />
 
             <!-- prettier-ignore -->
             <TextArea
@@ -76,11 +81,13 @@
 </div>
 <script>
     import FormBlock from '../../shared/FormBlock.html';
-    import { Text, TextArea, Select, Switch } from '@datawrapper/controls';
+    import TextArea from '@datawrapper/controls/TextArea.html';
+    import BaseSelect from '@datawrapper/controls/BaseSelect.html';
+    import Switch from '@datawrapper/controls/Switch.html';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { Text, TextArea, Select, Switch, FormBlock },
+        components: { TextArea, BaseSelect, Switch, FormBlock },
         data() {
             return {
                 embedCodes: [

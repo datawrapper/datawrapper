@@ -2,18 +2,10 @@
 
 {% block content %}
 
-<style type="text/css">
-	.base-dropdown-content {
-	    top: 30px !important;
-	}
-</style>
+{{ svelte("team-settings", svelte_data) }}
 
-<div id="team-settings"></div>
 
-<script type="text/javascript" src="/static/js/svelte/team-settings.js"></script>
-<link rel="stylesheet" type="text/css" href="/static/css/svelte/team-settings.css"></script>
-
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	require(['svelte/team-settings'], function(mod) {
 		var data = {{data|json|raw}};
 
@@ -76,6 +68,6 @@
 
 		window.teamSettings = mod;
 	});
-</script>
+</script>-->
 
 {% endblock %}

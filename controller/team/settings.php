@@ -98,7 +98,7 @@
 	    $app->redirect('/team/' . $org_id . '/settings');
 	});
 
-	$app->get('/team/:org_id/settings', function ($org_id)
+	$app->get('/team/:org_id/settings(/:tab)?', function ($org_id, $tab = null)
 	    use ($app, $getLocales, $getThemes, $getFolders, $getSystemDefaultTheme, $getVisArchive, $getVisualizations) {
 
 	    disable_cache($app);
@@ -109,13 +109,16 @@
 
 	    $tabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
 
+	    $teamSettings = $org->getSettings();
+
 	    $page = [
-	        'data' => [
+	        'svelte_data' => [
 	            'team' => [
 	                'id' => $org->getId(),
 	                'name' => $org->getName()
 	            ],
 	            'userId' => $user->getId(),
+	            'user' => $user->serialize(),
 	            'isAdmin' => $user->isAdmin(),
 	            'locales' => $getLocales(),
 	            'settings' => $org->getSettings(),
@@ -124,7 +127,9 @@
 	            'visualizations' => $getVisualizations(),
 	            'visualizationArchive' => $getVisArchive(),
 	            'defaultTheme' => $org->getDefaultTheme() ? $org->getDefaultTheme() : $getSystemDefaultTheme(),
-	            'pluginTabs' => $tabs ? $tabs : []
+	            'pluginTabs' => $tabs ? $tabs : [],
+	            'settings' => $teamSettings,
+	            'role' => $org->getRole($user)
 	        ]
 	    ];
 

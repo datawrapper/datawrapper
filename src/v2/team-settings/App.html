@@ -4,6 +4,23 @@
     </div>
 </div>
 
+<div class="dw-create-visualize chart-editor chart-editor-web">
+    <div class="visconfig">
+        <NavTabs ref:navTabs groups="{groups}" bind:activeTab>
+            <div slot="aboveContent">
+                {#if activeTab.h1 }
+                <h2>{ @html activeTab.h1 }</h2>
+                {/if}
+            </div>
+            <div slot="belowNav">
+                <hr />
+                <a href="/account"><i class="fa fa-arrow-left"></i> {__('account / settings / personal')}</a>
+            </div>
+        </NavTabs>
+    </div>
+</div>
+
+<!--
 <div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
     <div class="visconfig">
         <div class="span2">
@@ -37,7 +54,7 @@
                     bind:settings
                     bind:loadingUsers
                     bind:users
-                    bind:userId
+                    userId="{userId}"
                     bind:visualizations
                     bind:visualizationArchive
                     bind:folders
@@ -53,13 +70,13 @@
         </div>
     </div>
 </div>
-
+ -->
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
-
+    import NavTabs from '../shared/NavTabs.html';
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
     import CustomFields from './tabs/CustomFields.html';
@@ -70,13 +87,8 @@
 
     export default {
         components: {
-            Members,
-            Settings,
-            CustomFields,
-            Visualizations,
-            DeleteTeam,
-            ProductTable,
-            Loading
+            Loading,
+            NavTabs
         },
         data() {
             return {
@@ -88,7 +100,7 @@
                         group: __('teams / group / users'),
                         order: 10,
                         h1: __('teams / defaults / h1'),
-                        app: Settings
+                        ui: Settings
                     },
                     {
                         id: 'members',
@@ -97,7 +109,7 @@
                         group: __('teams / group / users'),
                         order: 20,
                         h1: __('teams / h1'),
-                        app: Members
+                        ui: Members
                     },
                     {
                         id: 'customFields',
@@ -106,7 +118,7 @@
                         group: __('teams / group / advanced'),
                         order: 20,
                         h1: __('teams / cf / h1'),
-                        app: CustomFields
+                        ui: CustomFields
                     },
                     {
                         id: 'visTypes',
@@ -115,7 +127,7 @@
                         group: __('teams / group / advanced'),
                         order: 70,
                         h1: __('teams / disable / h1'),
-                        app: Visualizations
+                        ui: Visualizations
                     },
                     {
                         id: 'deleteTeam',
@@ -124,7 +136,7 @@
                         group: __('teams / group / advanced'),
                         order: 80,
                         h1: __('teams / delete / h1'),
-                        app: DeleteTeam,
+                        ui: DeleteTeam,
                         ownerOnly: true
                     },
                     {
@@ -134,56 +146,23 @@
                         group: __('teams / group / internal'),
                         order: 90,
                         h1: __('teams / products / h1'),
-                        app: ProductTable,
+                        ui: ProductTable,
                         adminOnly: true
                     }
                 ],
                 pluginTabs: [],
                 activeTab: 'settings',
-                app: Settings,
+                ui: Settings,
                 team: {
                     name: ''
                 },
-                settings: {
-                    folders: 'expanded',
-                    embed: {
-                        preferred_embed: 'responsive',
-                        custom_embed: {
-                            title: '',
-                            text: '',
-                            template: ''
-                        }
-                    },
-                    default: {
-                        locale: ''
-                    },
-                    ftp: {
-                        enabled: false,
-                        server: '',
-                        user: '',
-                        password: '',
-                        directory: '',
-                        filename: ''
-                    },
-                    disableVisualizations: {
-                        enabled: false,
-                        allowAdmins: false,
-                        visualizations: {}
-                    }
-                },
+                settings: {},
                 users: [],
                 userId: null,
-                visualizations: [],
-                loadingUsers: true
+                visualizations: []
             };
         },
         computed: {
-            role({ users, userId }) {
-                if (!users || !users.length || !userId) return false;
-                const user = users.find(el => el.id === userId);
-                if (user) return user.role;
-                else return 'admin';
-            },
             currentTab({ activeTab, tabs }) {
                 if (!tabs || !activeTab) return null;
                 const t = tabs.filter(el => el.id === activeTab);
@@ -200,7 +179,7 @@
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
-            groups({ tabs }) {
+            groups({ tabs, isAdmin, team, users, userId, settings }) {
                 const groups = [];
 
                 function get(groups, groupId) {
@@ -216,6 +195,14 @@
                 }
 
                 tabs.forEach(tab => {
+                    tab.data = {
+                        isAdmin,
+                        team,
+                        users,
+                        userId,
+                        settings,
+                        ...tab.data
+                    };
                     get(groups, tab.group).tabs.push(tab);
                 });
 
@@ -259,16 +246,7 @@
                     });
                 }
             },
-            async updateUsers() {
-                const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
 
-                const json = await res.json();
-
-                this.set({ loadingUsers: false, updatingUsers: false, inviteeEmail: '', users: json.list });
-            },
             async debounceUpdateTeam() {
                 window.clearTimeout(window.updateTeam);
 
@@ -341,5 +319,8 @@
             color: #777;
             line-height: 1.5;
         }
+    }
+    :global(.control-group) {
+        position: relative;
     }
 </style>

@@ -75,10 +75,31 @@
             InviteUser,
             UserTable
         },
+        data() {
+            return {
+                loadingUsers: true,
+                updatingUsers: false
+            };
+        },
+        computed: {
+            role({ users, userId }) {
+                if (!users || !users.length || !userId) return false;
+                const user = users.find(el => el.id === userId);
+                if (user) return user.role;
+                else return 'admin';
+            }
+        },
         helpers: { __ },
         methods: {
-            updateUsers() {
-                this.fire('updateUsers');
+            async updateUsers() {
+                const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                const json = await res.json();
+
+                this.set({ loadingUsers: false, updatingUsers: false, inviteeEmail: '', users: json.list });
             }
         }
     };
