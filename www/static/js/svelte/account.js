@@ -1200,12 +1200,19 @@
 	        changePassword: false,
 	        changeEmail: false,
 	        deleteAccount: false,
+	        deleteAccount2: false,
+	        deleteAccount3: false,
+	        deletingAccount: false,
 	        showPasswordInPlaintext: false,
 	        messages: [],
 	        currentPassword: '',
 	        newPassword1: '',
 	        newPassword2: '',
 	        confirmPassword: '',
+	        originalEmail: '',
+	        savingEmail: false,
+	        savingPassword: false,
+	        errors: [],
 	        groups: [
 	            {
 	                title: 'Account settings',
@@ -2731,7 +2738,13 @@
 				}
 			},
 
-
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
 
 	function ControlGroup(options) {
 		this._debugName = '<ControlGroup>';
@@ -5171,7 +5184,340 @@
 	    var teams = ref.teams;
 	    var currentTeam = ref.currentTeam;
 
+	    return { user: user, email: email, userId: userId, teams: teams, currentTeam: currentTeam };
+	}
+	function data_1() {
+	    return {
+	        hash: 'profile',
+	        activeTab: null,
+	        activeData: {},
+	        groups: [
+	            {
+	                title: __('account / settings / personal'),
+	                tabs: [EditProfileTab]
+	            }
+	        ]
+	    };
+	}
+	var methods$2 = {
+	    activateTab: function activateTab(tab, event) {
+	        var this$1 = this;
+	        if ( event === void 0 ) event = null;
 
+	        if (tab.module) {
+	            if (event) { event.preventDefault(); }
+	            Promise.all([loadStylesheet(tab.css), loadScript(tab.js)]).then(function () {
+	                require([tab.module], function (mod) {
+	                    tab.ui = mod.App;
+	                    tab.module = null;
+	                    var ref = this$1.get();
+	                    var groups = ref.groups;
+	                    this$1.set({
+	                        groups: groups,
+	                        activeTab: tab
+	                    });
+	                });
+	            });
+	            return;
+	        }
+	        if (tab.ui) {
+	            if (event) { event.preventDefault(); }
+	            if (tab.id === 'teams') {
+	                var ref = this.get();
+	                var teams = ref.teams;
+	                var currentTeam = ref.currentTeam;
+	                var user = ref.user;
+	                tab.data = { teams: teams, currentTeam: currentTeam, user: user };
+	            } else if (tab.id === 'profile') {
+	                var ref$1 = this.get();
+	                var email = ref$1.email;
+	                var userId = ref$1.userId;
+	                tab.data = { email: email, userId: userId };
+	            }
+	            this.set({ activeTab: tab });
+	        }
+	    }
+	};
+
+	function oncreate() {
+	    var this$1 = this;
+
+	    var path = window.location.pathname.split('/').slice(1);
+	    var initialTab = path[1] || 'profile';
+
+	    dw.backend.__svelteApps.account = this;
+
+	    var ref = this.get();
+	    var groups = ref.groups;
+	    var teams = ref.teams;
+	    var adminTeams = ref.adminTeams;
+	    var pages = ref.pages;
+
+	    if (pages.length) {
+	        groups[0].tabs.push.apply(groups[0].tabs, pages);
+	        this.set({ groups: groups });
+	    }
+
+	    if (teams.length) {
+	        groups[0].tabs.splice(1, 0, MyTeamsTab);
+	        this.set({ groups: groups });
+	    }
+
+	    if (adminTeams.length) {
+	        groups.push({
+	            title: __('account / settings / team'),
+	            tabs: []
+	        });
+	        adminTeams.forEach(function (ref) {
+	            var Id = ref.Id;
+	            var Name = ref.Name;
+
+	            groups[1].tabs.push({
+	                title: truncate(Name, 10, 4),
+	                url: ("/team/" + Id + "/settings"),
+	                icon: 'im im-users'
+	            });
+	        });
+	        this.set({ groups: groups });
+	    }
+
+	    var foundTab = false;
+	    groups.forEach(function (group) {
+	        group.tabs.forEach(function (tab) {
+	            if (tab.id === initialTab) {
+	                this$1.activateTab(tab);
+	                foundTab = true;
+	            }
+	        });
+	    });
+	    if (!foundTab) {
+	        this.set({
+	            activeTab: EditProfileTab,
+	            wasLookingFor: initialTab
+	        });
+	    }
+	}
+	function onstate$2(ref) {
+	    var changed = ref.changed;
+	    var current = ref.current;
+
+	    if (changed.activeTab && current.activeTab) {
+	        window.history.pushState({ id: current.activeTab.id }, '', ("/account/" + (current.activeTab.id)));
+	    }
+	}
+	var file$6 = "account/App.html";
+
+	function click_handler$1(event) {
+		var ref = this._svelte;
+		var component = ref.component;
+		var ctx = ref.ctx;
+
+		component.activateTab(ctx.tab, event);
+	}
+
+	function get_each_context$3(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.tab = list[i];
+		return child_ctx;
+	}
+
+	function get_each1_context(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.group = list[i];
+		return child_ctx;
+	}
+
+	function get_each0_context(ctx, list, i) {
+		var child_ctx = Object.create(ctx);
+		child_ctx.team = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$6(component, ctx) {
+		var div2, h1, text0_value = __('account / settings'), text0, text1, text2, div1, div0, text3;
+
+		var each0_value = ctx.invitations;
+
+		var each0_blocks = [];
+
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_2$1(component, get_each0_context(ctx, each0_value, i));
+		}
+
+		var each1_value = ctx.groups;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block$3(component, get_each1_context(ctx, each1_value, i));
+		}
+
+		var if_block = (ctx.activeTab) && create_if_block$6(component, ctx);
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				h1 = createElement("h1");
+				text0 = createText(text0_value);
+				text1 = createText("\n    ");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
+				}
+
+				text2 = createText("\n    ");
+				div1 = createElement("div");
+				div0 = createElement("div");
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
+				}
+
+				text3 = createText("\n        ");
+				if (if_block) { if_block.c(); }
+				h1.className = "title";
+				addLoc(h1, file$6, 1, 4, 24);
+				div0.className = "span2 svelte-1yvqupy";
+				addLoc(div0, file$6, 9, 8, 395);
+				div1.className = "row";
+				addLoc(div1, file$6, 8, 4, 369);
+				div2.className = "admin";
+				addLoc(div2, file$6, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, h1);
+				append(h1, text0);
+				append(div2, text1);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(div2, null);
+				}
+
+				append(div2, text2);
+				append(div2, div1);
+				append(div1, div0);
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(div0, null);
+				}
+
+				append(div1, text3);
+				if (if_block) { if_block.m(div1, null); }
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.invitations) {
+					each0_value = ctx.invitations;
+
+					for (var i = 0; i < each0_value.length; i += 1) {
+						var child_ctx = get_each0_context(ctx, each0_value, i);
+
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
+						} else {
+							each0_blocks[i] = create_each_block_2$1(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(div2, text2);
+						}
+					}
+
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
+					}
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (changed.groups || changed.activeTab) {
+					each1_value = ctx.groups;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						var child_ctx$1 = get_each1_context(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx$1);
+						} else {
+							each1_blocks[i] = create_each_block$3(component, child_ctx$1);
+							each1_blocks[i].c();
+							each1_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
+				}
+
+				if (ctx.activeTab) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$6(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+
+				destroyEach(each0_blocks, detach);
+
+				destroyEach(each1_blocks, detach);
+
+				if (if_block) { if_block.d(); }
+			}
+		};
+	}
+
+	// (3:4) {#each invitations as team}
+	function create_each_block_2$1(component, ctx) {
+		var div, text0, b, text1_value = truncate(ctx.team.name, 20, 10), text1, text2, a, text3, a_href_value;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText("You have been invited to join the team ");
+				b = createElement("b");
+				text1 = createText(text1_value);
+				text2 = createText(". Click here to\n        ");
+				a = createElement("a");
+				text3 = createText("accept the invitation");
+				addLoc(b, file$6, 4, 47, 188);
+				a.href = a_href_value = "/organization-invite/" + ctx.team.token;
+				a.className = "btn btn-primary";
+				addLoc(a, file$6, 5, 8, 248);
+				div.className = "alert alert-info";
+				addLoc(div, file$6, 3, 4, 110);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				append(div, b);
+				append(b, text1);
+				append(div, text2);
+				append(div, a);
+				append(a, text3);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.invitations) && text1_value !== (text1_value = truncate(ctx.team.name, 20, 10))) {
+					setData(text1, text1_value);
+				}
+
+				if ((changed.invitations) && a_href_value !== (a_href_value = "/organization-invite/" + ctx.team.token)) {
+					a.href = a_href_value;
+				}
+			},
 
 			d: function destroy(detach) {
 				if (detach) {
