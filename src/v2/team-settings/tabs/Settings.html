@@ -12,68 +12,49 @@
             <!-- prettier-ignore -->
             <BaseSelect
                 bind:value="defaultTheme"
-                labelWidth="100px"
                 options="{themes}"
             />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / folder' ) }" help="{ __('teams / defaults / folder / p' ) }">
-            <!-- prettier-ignore -->
-            <BaseSelect
-                bind:value="settings.default.folder"
-                labelWidth="100px"
-                options="{folders}"
-            />
+            <BaseSelect bind:value="settings.default.folder" options="{folders}" />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
-            <!-- prettier-ignore -->
-            <BaseSelect
+            <Radio
                 bind:value="settings.folders"
                 options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
             />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / locale' ) }" help="{ __('teams / defaults / locale / p' ) }">
-            <!-- prettier-ignore -->
-            <BaseSelect
-                bind:value="settings.default.locale"
-                options="{localeOptions}"
-            />
+            <BaseSelect bind:value="settings.default.locale" options="{localeOptions}" />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / embedcode' ) }" help="{ __('teams / defaults / embedcode / p' ) }">
-            <!-- prettier-ignore -->
-            <BaseSelect
-                bind:value="settings.embed.preferred_embed"
-                options="{embedCodes}"
-            />
+            <Radio bind:value="settings.embed.preferred_embed" options="{embedCodes}" />
         </FormBlock>
 
         {#if settings.embed.preferred_embed == "custom"}
-        <div>
-            <input
-                type="text"
-                label="{ __('teams / custom / title' ) }"
-                bind:value="settings.embed.custom_embed.title"
-                placeholder="e.g. Custom CMS Embed"
-            />
+        <h3>Custom Embed Code</h3>
 
-            <!-- prettier-ignore -->
-            <TextArea
-                label="{ __('teams / custom / help' ) }"
-                bind:value="settings.embed.custom_embed.text"
-                placeholder="e.g. This is a custom embed code for our CMS"
-            />
+        <FormBlock label="{ __('teams / custom / title' ) }" help="">
+            <input type="text" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
+        </FormBlock>
 
-            <!-- prettier-ignore -->
-            <TextArea
-                label="{ __('teams / custom / embedcode' ) }"
+        <FormBlock label="{ __('teams / custom / help' ) }" help="">
+            <textarea bind:value="settings.embed.custom_embed.text" placeholder="e.g. This is a custom embed code for our CMS" />
+        </FormBlock>
+
+        <FormBlock label="{ __('teams / custom / embedcode' ) }" help="{ __('teams / custom / embedcode / help' ) }">
+            <textarea
+                class="embedcode"
                 bind:value="settings.embed.custom_embed.template"
-                placeholder=""
-                help="{ __('teams / custom / embedcode / help' ) }"
+                placeholder='<iframe src="%chart_url%" width="%chart_width%" widthheight="%chart_height%"></iframe>'
             />
-        </div>
+        </FormBlock>
+        <hr />
+
         {/if}
 
         <Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
@@ -81,14 +62,14 @@
 </div>
 <script>
     import FormBlock from '../../shared/FormBlock.html';
-    import TextArea from '@datawrapper/controls/TextArea.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
     import Switch from '@datawrapper/controls/Switch.html';
+    import Radio from '@datawrapper/controls/Radio.html';
     import { __ } from '@datawrapper/shared/l10n';
     import storeTeamSettings from '../storeTeamSettings';
 
     export default {
-        components: { TextArea, BaseSelect, Switch, FormBlock },
+        components: { BaseSelect, Switch, FormBlock, Radio },
         data() {
             return {
                 embedCodes: [
@@ -128,3 +109,12 @@
         }
     };
 </script>
+
+<style>
+    textarea.embedcode {
+        font-family: 'Roboto Mono', monospace !important;
+        width: 400px;
+        line-height: 20px;
+        height: 150px;
+    }
+</style>

@@ -4,7 +4,7 @@
     </div>
 </div>
 
-<div class="dw-create-visualize chart-editor chart-editor-web">
+<div class="settings-section dw-create-visualize chart-editor chart-editor-web">
     <div class="visconfig">
         <NavTabs ref:navTabs groups="{groups}" bind:activeTab>
             <div slot="aboveContent">
@@ -258,13 +258,13 @@
         width: 15px;
     }
 
-    .settings-section {
-        :global(h2) {
-            border-bottom: 1px solid #eee;
-            margin-bottom: 1em;
-            padding-bottom: 1ex;
-        }
+    h2 {
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1em;
+        padding-bottom: 1ex;
+    }
 
+    .settings-section {
         :global(p.help) {
             font-size: 14px;
             color: #777;

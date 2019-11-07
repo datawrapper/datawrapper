@@ -24897,7 +24897,7 @@
 	var file$H = "team-settings/tabs/Settings.html";
 
 	function create_main_fragment$M(component, ctx) {
-		var p, raw_value = __('teams / defaults / p'), text0, div1, div0, input, input_updating = false, text1, baseselect0_updating = {}, text2, baseselect1_updating = {}, text3, baseselect2_updating = {}, text4, baseselect3_updating = {}, text5, baseselect4_updating = {}, text6, text7, switch_1_updating = {};
+		var p, raw_value = __('teams / defaults / p'), text0, div1, div0, input, input_updating = false, text1, baseselect0_updating = {}, text2, baseselect1_updating = {}, text3, radio0_updating = {}, text4, baseselect2_updating = {}, text5, radio1_updating = {}, text6, text7, switch_1_updating = {};
 
 		function input_input_handler() {
 			input_updating = true;
@@ -24914,10 +24914,7 @@
 			data: formblock0_initial_data
 		});
 
-		var baseselect0_initial_data = {
-		 	labelWidth: "100px",
-		 	options: ctx.themes
-		 };
+		var baseselect0_initial_data = { options: ctx.themes };
 		if (ctx.defaultTheme !== void 0) {
 			baseselect0_initial_data.value = ctx.defaultTheme;
 			baseselect0_updating.value = true;
@@ -24948,10 +24945,7 @@
 			data: formblock1_initial_data
 		});
 
-		var baseselect1_initial_data = {
-		 	labelWidth: "100px",
-		 	options: ctx.folders
-		 };
+		var baseselect1_initial_data = { options: ctx.folders };
 		if (ctx.settings.default.folder !== void 0) {
 			baseselect1_initial_data.value = ctx.settings.default.folder;
 			baseselect1_updating.value = true;
@@ -24983,28 +24977,28 @@
 			data: formblock2_initial_data
 		});
 
-		var baseselect2_initial_data = { options: [ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] };
+		var radio0_initial_data = { options: [ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] };
 		if (ctx.settings.folders !== void 0) {
-			baseselect2_initial_data.value = ctx.settings.folders;
-			baseselect2_updating.value = true;
+			radio0_initial_data.value = ctx.settings.folders;
+			radio0_updating.value = true;
 		}
-		var baseselect2 = new BaseSelect({
+		var radio0 = new Radio({
 			root: component.root,
 			store: component.store,
-			data: baseselect2_initial_data,
+			data: radio0_initial_data,
 			_bind: function _bind(changed, childState) {
 				var newState = {};
-				if (!baseselect2_updating.value && changed.value) {
+				if (!radio0_updating.value && changed.value) {
 					ctx.settings.folders = childState.value;
 					newState.settings = ctx.settings;
 				}
 				component._set(newState);
-				baseselect2_updating = {};
+				radio0_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(function () {
-			baseselect2._bind({ value: 1 }, baseselect2.get());
+			radio0._bind({ value: 1 }, radio0.get());
 		});
 
 		var formblock3_initial_data = { label: __('teams / defaults / folder-status' ), help: __('teams / defaults / folder-status / p' ) };
@@ -25015,28 +25009,28 @@
 			data: formblock3_initial_data
 		});
 
-		var baseselect3_initial_data = { options: ctx.localeOptions };
+		var baseselect2_initial_data = { options: ctx.localeOptions };
 		if (ctx.settings.default.locale !== void 0) {
-			baseselect3_initial_data.value = ctx.settings.default.locale;
-			baseselect3_updating.value = true;
+			baseselect2_initial_data.value = ctx.settings.default.locale;
+			baseselect2_updating.value = true;
 		}
-		var baseselect3 = new BaseSelect({
+		var baseselect2 = new BaseSelect({
 			root: component.root,
 			store: component.store,
-			data: baseselect3_initial_data,
+			data: baseselect2_initial_data,
 			_bind: function _bind(changed, childState) {
 				var newState = {};
-				if (!baseselect3_updating.value && changed.value) {
+				if (!baseselect2_updating.value && changed.value) {
 					ctx.settings.default.locale = childState.value;
 					newState.settings = ctx.settings;
 				}
 				component._set(newState);
-				baseselect3_updating = {};
+				baseselect2_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(function () {
-			baseselect3._bind({ value: 1 }, baseselect3.get());
+			baseselect2._bind({ value: 1 }, baseselect2.get());
 		});
 
 		var formblock4_initial_data = {
@@ -25050,28 +25044,28 @@
 			data: formblock4_initial_data
 		});
 
-		var baseselect4_initial_data = { options: ctx.embedCodes };
+		var radio1_initial_data = { options: ctx.embedCodes };
 		if (ctx.settings.embed.preferred_embed !== void 0) {
-			baseselect4_initial_data.value = ctx.settings.embed.preferred_embed;
-			baseselect4_updating.value = true;
+			radio1_initial_data.value = ctx.settings.embed.preferred_embed;
+			radio1_updating.value = true;
 		}
-		var baseselect4 = new BaseSelect({
+		var radio1 = new Radio({
 			root: component.root,
 			store: component.store,
-			data: baseselect4_initial_data,
+			data: radio1_initial_data,
 			_bind: function _bind(changed, childState) {
 				var newState = {};
-				if (!baseselect4_updating.value && changed.value) {
+				if (!radio1_updating.value && changed.value) {
 					ctx.settings.embed.preferred_embed = childState.value;
 					newState.settings = ctx.settings;
 				}
 				component._set(newState);
-				baseselect4_updating = {};
+				radio1_updating = {};
 			}
 		});
 
 		component.root._beforecreate.push(function () {
-			baseselect4._bind({ value: 1 }, baseselect4.get());
+			radio1._bind({ value: 1 }, radio1.get());
 		});
 
 		var formblock5_initial_data = {
@@ -25126,13 +25120,13 @@
 				baseselect1._fragment.c();
 				formblock2._fragment.c();
 				text3 = createText("\n\n        ");
-				baseselect2._fragment.c();
+				radio0._fragment.c();
 				formblock3._fragment.c();
 				text4 = createText("\n\n        ");
-				baseselect3._fragment.c();
+				baseselect2._fragment.c();
 				formblock4._fragment.c();
 				text5 = createText("\n\n        ");
-				baseselect4._fragment.c();
+				radio1._fragment.c();
 				formblock5._fragment.c();
 				text6 = createText("\n\n        ");
 				if (if_block) { if_block.c(); }
@@ -25168,13 +25162,13 @@
 				baseselect1._mount(formblock2._slotted.default, null);
 				formblock2._mount(div0, null);
 				append(div0, text3);
-				baseselect2._mount(formblock3._slotted.default, null);
+				radio0._mount(formblock3._slotted.default, null);
 				formblock3._mount(div0, null);
 				append(div0, text4);
-				baseselect3._mount(formblock4._slotted.default, null);
+				baseselect2._mount(formblock4._slotted.default, null);
 				formblock4._mount(div0, null);
 				append(div0, text5);
-				baseselect4._mount(formblock5._slotted.default, null);
+				radio1._mount(formblock5._slotted.default, null);
 				formblock5._mount(div0, null);
 				append(div0, text6);
 				if (if_block) { if_block.m(div0, null); }
@@ -25204,31 +25198,31 @@
 				baseselect1._set(baseselect1_changes);
 				baseselect1_updating = {};
 
+				var radio0_changes = {};
+				if (!radio0_updating.value && changed.settings) {
+					radio0_changes.value = ctx.settings.folders;
+					radio0_updating.value = ctx.settings.folders !== void 0;
+				}
+				radio0._set(radio0_changes);
+				radio0_updating = {};
+
 				var baseselect2_changes = {};
+				if (changed.localeOptions) { baseselect2_changes.options = ctx.localeOptions; }
 				if (!baseselect2_updating.value && changed.settings) {
-					baseselect2_changes.value = ctx.settings.folders;
-					baseselect2_updating.value = ctx.settings.folders !== void 0;
+					baseselect2_changes.value = ctx.settings.default.locale;
+					baseselect2_updating.value = ctx.settings.default.locale !== void 0;
 				}
 				baseselect2._set(baseselect2_changes);
 				baseselect2_updating = {};
 
-				var baseselect3_changes = {};
-				if (changed.localeOptions) { baseselect3_changes.options = ctx.localeOptions; }
-				if (!baseselect3_updating.value && changed.settings) {
-					baseselect3_changes.value = ctx.settings.default.locale;
-					baseselect3_updating.value = ctx.settings.default.locale !== void 0;
+				var radio1_changes = {};
+				if (changed.embedCodes) { radio1_changes.options = ctx.embedCodes; }
+				if (!radio1_updating.value && changed.settings) {
+					radio1_changes.value = ctx.settings.embed.preferred_embed;
+					radio1_updating.value = ctx.settings.embed.preferred_embed !== void 0;
 				}
-				baseselect3._set(baseselect3_changes);
-				baseselect3_updating = {};
-
-				var baseselect4_changes = {};
-				if (changed.embedCodes) { baseselect4_changes.options = ctx.embedCodes; }
-				if (!baseselect4_updating.value && changed.settings) {
-					baseselect4_changes.value = ctx.settings.embed.preferred_embed;
-					baseselect4_updating.value = ctx.settings.embed.preferred_embed !== void 0;
-				}
-				baseselect4._set(baseselect4_changes);
-				baseselect4_updating = {};
+				radio1._set(radio1_changes);
+				radio1_updating = {};
 
 				if (ctx.settings.embed.preferred_embed == "custom") {
 					if (if_block) {
@@ -25265,11 +25259,11 @@
 				formblock1.destroy();
 				baseselect1.destroy();
 				formblock2.destroy();
-				baseselect2.destroy();
+				radio0.destroy();
 				formblock3.destroy();
-				baseselect3.destroy();
+				baseselect2.destroy();
 				formblock4.destroy();
-				baseselect4.destroy();
+				radio1.destroy();
 				formblock5.destroy();
 				if (if_block) { if_block.d(); }
 				switch_1.destroy();
@@ -25277,9 +25271,9 @@
 		};
 	}
 
-	// (53:8) {#if settings.embed.preferred_embed == "custom"}
+	// (38:8) {#if settings.embed.preferred_embed == "custom"}
 	function create_if_block$z(component, ctx) {
-		var div, input, input_updating = false, text0, textarea0_updating = {}, text1, textarea1_updating = {};
+		var h3, text1, input, input_updating = false, text2, textarea0, textarea0_updating = false, text3, textarea1, textarea1_updating = false, text4, hr;
 
 		function input_input_handler() {
 			input_updating = true;
@@ -25288,118 +25282,132 @@
 			input_updating = false;
 		}
 
-		var textarea0_initial_data = {
-		 	label: __('teams / custom / help' ),
-		 	placeholder: "e.g. This is a custom embed code for our CMS"
-		 };
-		if (ctx.settings.embed.custom_embed.text !== void 0) {
-			textarea0_initial_data.value = ctx.settings.embed.custom_embed.text;
-			textarea0_updating.value = true;
-		}
-		var textarea0 = new TextArea({
+		var formblock0_initial_data = { label: __('teams / custom / title' ), help: "" };
+		var formblock0 = new FormBlock({
 			root: component.root,
 			store: component.store,
-			data: textarea0_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!textarea0_updating.value && changed.value) {
-					ctx.settings.embed.custom_embed.text = childState.value;
-					newState.settings = ctx.settings;
-				}
-				component._set(newState);
-				textarea0_updating = {};
-			}
+			slots: { default: createFragment() },
+			data: formblock0_initial_data
 		});
 
-		component.root._beforecreate.push(function () {
-			textarea0._bind({ value: 1 }, textarea0.get());
+		function textarea0_input_handler() {
+			textarea0_updating = true;
+			ctx.settings.embed.custom_embed.text = textarea0.value;
+			component.set({ settings: ctx.settings });
+			textarea0_updating = false;
+		}
+
+		var formblock1_initial_data = { label: __('teams / custom / help' ), help: "" };
+		var formblock1 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock1_initial_data
 		});
 
-		var textarea1_initial_data = {
+		function textarea1_input_handler() {
+			textarea1_updating = true;
+			ctx.settings.embed.custom_embed.template = textarea1.value;
+			component.set({ settings: ctx.settings });
+			textarea1_updating = false;
+		}
+
+		var formblock2_initial_data = {
 		 	label: __('teams / custom / embedcode' ),
-		 	placeholder: "",
 		 	help: __('teams / custom / embedcode / help' )
 		 };
-		if (ctx.settings.embed.custom_embed.template !== void 0) {
-			textarea1_initial_data.value = ctx.settings.embed.custom_embed.template;
-			textarea1_updating.value = true;
-		}
-		var textarea1 = new TextArea({
+		var formblock2 = new FormBlock({
 			root: component.root,
 			store: component.store,
-			data: textarea1_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!textarea1_updating.value && changed.value) {
-					ctx.settings.embed.custom_embed.template = childState.value;
-					newState.settings = ctx.settings;
-				}
-				component._set(newState);
-				textarea1_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(function () {
-			textarea1._bind({ value: 1 }, textarea1.get());
+			slots: { default: createFragment() },
+			data: formblock2_initial_data
 		});
 
 		return {
 			c: function create() {
-				div = createElement("div");
+				h3 = createElement("h3");
+				h3.textContent = "Custom Embed Code";
+				text1 = createText("\n\n        ");
 				input = createElement("input");
-				text0 = createText("\n\n            \n            ");
-				textarea0._fragment.c();
-				text1 = createText("\n\n            \n            ");
-				textarea1._fragment.c();
+				formblock0._fragment.c();
+				text2 = createText("\n\n        ");
+				textarea0 = createElement("textarea");
+				formblock1._fragment.c();
+				text3 = createText("\n\n        ");
+				textarea1 = createElement("textarea");
+				formblock2._fragment.c();
+				text4 = createText("\n        ");
+				hr = createElement("hr");
+				addLoc(h3, file$H, 38, 8, 1715);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
-				setAttribute(input, "label", __('teams / custom / title' ));
 				input.placeholder = "e.g. Custom CMS Embed";
-				addLoc(input, file$H, 54, 12, 2093);
-				addLoc(div, file$H, 53, 8, 2075);
+				addLoc(input, file$H, 41, 12, 1825);
+				addListener(textarea0, "input", textarea0_input_handler);
+				textarea0.placeholder = "e.g. This is a custom embed code for our CMS";
+				addLoc(textarea0, file$H, 45, 12, 2033);
+				addListener(textarea1, "input", textarea1_input_handler);
+				textarea1.className = "embedcode svelte-rgtu7e";
+				textarea1.placeholder = "<iframe src=\"%chart_url%\" width=\"%chart_width%\" widthheight=\"%chart_height%\"></iframe>";
+				addLoc(textarea1, file$H, 49, 12, 2303);
+				addLoc(hr, file$H, 55, 8, 2574);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, div, anchor);
-				append(div, input);
+				insert(target, h3, anchor);
+				insert(target, text1, anchor);
+				append(formblock0._slotted.default, input);
 
 				input.value = ctx.settings.embed.custom_embed.title;
 
-				append(div, text0);
-				textarea0._mount(div, null);
-				append(div, text1);
-				textarea1._mount(div, null);
+				formblock0._mount(target, anchor);
+				insert(target, text2, anchor);
+				append(formblock1._slotted.default, textarea0);
+
+				textarea0.value = ctx.settings.embed.custom_embed.text;
+
+				formblock1._mount(target, anchor);
+				insert(target, text3, anchor);
+				append(formblock2._slotted.default, textarea1);
+
+				textarea1.value = ctx.settings.embed.custom_embed.template;
+
+				formblock2._mount(target, anchor);
+				insert(target, text4, anchor);
+				insert(target, hr, anchor);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
 				if (!input_updating && changed.settings) { input.value = ctx.settings.embed.custom_embed.title; }
-
-				var textarea0_changes = {};
-				if (!textarea0_updating.value && changed.settings) {
-					textarea0_changes.value = ctx.settings.embed.custom_embed.text;
-					textarea0_updating.value = ctx.settings.embed.custom_embed.text !== void 0;
-				}
-				textarea0._set(textarea0_changes);
-				textarea0_updating = {};
-
-				var textarea1_changes = {};
-				if (!textarea1_updating.value && changed.settings) {
-					textarea1_changes.value = ctx.settings.embed.custom_embed.template;
-					textarea1_updating.value = ctx.settings.embed.custom_embed.template !== void 0;
-				}
-				textarea1._set(textarea1_changes);
-				textarea1_updating = {};
+				if (!textarea0_updating && changed.settings) { textarea0.value = ctx.settings.embed.custom_embed.text; }
+				if (!textarea1_updating && changed.settings) { textarea1.value = ctx.settings.embed.custom_embed.template; }
 			},
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(div);
+					detachNode(h3);
+					detachNode(text1);
 				}
 
 				removeListener(input, "input", input_input_handler);
-				textarea0.destroy();
-				textarea1.destroy();
+				formblock0.destroy(detach);
+				if (detach) {
+					detachNode(text2);
+				}
+
+				removeListener(textarea0, "input", textarea0_input_handler);
+				formblock1.destroy(detach);
+				if (detach) {
+					detachNode(text3);
+				}
+
+				removeListener(textarea1, "input", textarea1_input_handler);
+				formblock2.destroy(detach);
+				if (detach) {
+					detachNode(text4);
+					detachNode(hr);
+				}
 			}
 		};
 	}
@@ -28422,17 +28430,17 @@
 				div1.className = "row";
 				addLoc(div1, file$N, 0, 0, 0);
 				setAttribute(div2, "slot", "aboveContent");
-				addLoc(div2, file$N, 9, 12, 366);
-				addLoc(hr, file$N, 15, 16, 581);
+				addLoc(div2, file$N, 9, 12, 383);
+				addLoc(hr, file$N, 15, 16, 598);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$N, 16, 35, 623);
+				addLoc(i, file$N, 16, 35, 640);
 				a.href = "/account";
-				addLoc(a, file$N, 16, 16, 604);
+				addLoc(a, file$N, 16, 16, 621);
 				setAttribute(div3, "slot", "belowMenu");
-				addLoc(div3, file$N, 14, 12, 542);
+				addLoc(div3, file$N, 14, 12, 559);
 				div4.className = "visconfig";
-				addLoc(div4, file$N, 7, 4, 267);
-				div5.className = "dw-create-visualize chart-editor chart-editor-web";
+				addLoc(div4, file$N, 7, 4, 284);
+				div5.className = "settings-section dw-create-visualize chart-editor chart-editor-web svelte-9yakal";
 				addLoc(div5, file$N, 6, 0, 199);
 			},
 
@@ -28509,7 +28517,8 @@
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				addLoc(h2, file$N, 11, 16, 457);
+				h2.className = "svelte-9yakal";
+				addLoc(h2, file$N, 11, 16, 474);
 			},
 
 			m: function mount(target, anchor) {
