@@ -985,9 +985,9 @@
 				if (if_block1) { if_block1.c(); }
 				text2 = createText(" ");
 				if (if_block2) { if_block2.c(); }
-				div0.className = "form-controls svelte-183h2q3";
+				div0.className = "form-controls svelte-16g3r92";
 				addLoc(div0, file, 4, 4, 144);
-				div1.className = "form-block svelte-183h2q3";
+				div1.className = "form-block svelte-16g3r92";
 				setStyle(div1, "width", ctx.width);
 				toggleClass(div1, "error", ctx.error);
 				addLoc(div1, file, 0, 0, 0);
@@ -1082,7 +1082,7 @@
 		return {
 			c: function create() {
 				label = createElement("label");
-				label.className = "control-label svelte-183h2q3";
+				label.className = "control-label svelte-16g3r92";
 				addLoc(label, file, 2, 4, 79);
 			},
 
@@ -1112,7 +1112,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help error svelte-183h2q3";
+				div.className = "help error svelte-16g3r92";
 				addLoc(div, file, 8, 4, 220);
 			},
 
@@ -1142,7 +1142,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help svelte-183h2q3";
+				div.className = "help svelte-16g3r92";
 				addLoc(div, file, 10, 4, 299);
 			},
 
@@ -5788,7 +5788,7 @@
 				navtabs._fragment.c();
 				h1.className = "title";
 				addLoc(h1, file$7, 1, 4, 24);
-				div.className = "admin";
+				div.className = "admin svelte-r5gcuw";
 				addLoc(div, file$7, 0, 0, 0);
 			},
 

@@ -1,10 +1,10 @@
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{ __('nav / team / settings') } » { truncate(team.name, 17,8) }</h1>
+        <h1 class="title" style="margin-bottom:18px">{ truncate(team.name, 17,8) } » { __('nav / team / settings') }</h1>
     </div>
 </div>
 
-<div class="settings-section dw-create-visualize chart-editor chart-editor-web">
+<div class="settings-section dw-create-visualize chart-editor chart-editor-web admin">
     <div class="visconfig">
         <NavTabs ref:navTabs groups="{groups}" bind:activeTab>
             <div slot="aboveContent">
@@ -28,7 +28,7 @@
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
     import CustomFields from './tabs/CustomFields.html';
-    import Visualizations from './tabs/Visualizations.html';
+    import Restrictions from './tabs/Restrictions.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
     import Loading from './tabs/Loading.html';
@@ -79,13 +79,13 @@
                         ui: CustomFields
                     },
                     {
-                        id: 'visualizations',
+                        id: 'restrictions',
                         title: __('teams / tab / visTypes'),
                         icon: 'fa fa-ban',
                         group: __('teams / group / advanced'),
                         order: 70,
                         h1: __('teams / disable / h1'),
-                        ui: Visualizations
+                        ui: Restrictions
                     },
                     {
                         id: 'delete',
@@ -258,18 +258,23 @@
         width: 15px;
     }
 
-    h2 {
-        border-bottom: 1px solid #eee;
-        margin-bottom: 1em;
-        padding-bottom: 1ex;
-    }
-
     .settings-section {
         :global(p.help) {
             font-size: 14px;
             color: #777;
             line-height: 1.5;
         }
+    }
+
+    .admin h2 {
+        font-size: 26px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1em;
+        padding-bottom: 1ex;
+    }
+
+    .admin :global(h3) {
+        font-size: 22px;
     }
     :global(.control-group) {
         position: relative;

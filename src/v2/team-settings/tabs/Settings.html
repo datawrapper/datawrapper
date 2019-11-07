@@ -1,12 +1,21 @@
-<p style="margin-bottom: 10px">
-    {@html __('teams / defaults / p') }
-</p>
-
 <div class="row">
-    <div class="span5">
+    <div class="span6">
+        <p style="margin-bottom: 10px">
+            {@html __('teams / defaults / p') }
+        </p>
+
         <FormBlock label="{__('teams / name' )}" help="{__('teams / name / help' )}">
             <input type="text" bind:value="team.name" placeholder="" />
         </FormBlock>
+
+        <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
+            <Radio
+                bind:value="settings.folders"
+                options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
+            />
+        </FormBlock>
+
+        <h3>Default settings for new visualizations</h3>
 
         <FormBlock label="{ __('teams / defaults / theme' ) }" help="{ __('teams / defaults / theme / p' ) }">
             <!-- prettier-ignore -->
@@ -18,13 +27,6 @@
 
         <FormBlock label="{ __('teams / defaults / folder' ) }" help="{ __('teams / defaults / folder / p' ) }">
             <BaseSelect bind:value="settings.default.folder" options="{folders}" />
-        </FormBlock>
-
-        <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
-            <Radio
-                bind:value="settings.folders"
-                options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
-            />
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / locale' ) }" help="{ __('teams / defaults / locale / p' ) }">
@@ -56,8 +58,6 @@
         <hr />
 
         {/if}
-
-        <Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
     </div>
 </div>
 <script>

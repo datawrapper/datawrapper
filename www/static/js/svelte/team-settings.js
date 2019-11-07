@@ -23620,9 +23620,9 @@
 				if (if_block1) { if_block1.c(); }
 				text2 = createText(" ");
 				if (if_block2) { if_block2.c(); }
-				div0.className = "form-controls svelte-183h2q3";
+				div0.className = "form-controls svelte-16g3r92";
 				addLoc(div0, file$E, 4, 4, 144);
-				div1.className = "form-block svelte-183h2q3";
+				div1.className = "form-block svelte-16g3r92";
 				setStyle(div1, "width", ctx.width);
 				toggleClass(div1, "error", ctx.error);
 				addLoc(div1, file$E, 0, 0, 0);
@@ -23717,7 +23717,7 @@
 		return {
 			c: function create() {
 				label = createElement("label");
-				label.className = "control-label svelte-183h2q3";
+				label.className = "control-label svelte-16g3r92";
 				addLoc(label, file$E, 2, 4, 79);
 			},
 
@@ -23747,7 +23747,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help error svelte-183h2q3";
+				div.className = "help error svelte-16g3r92";
 				addLoc(div, file$E, 8, 4, 220);
 			},
 
@@ -23777,7 +23777,7 @@
 		return {
 			c: function create() {
 				div = createElement("div");
-				div.className = "help svelte-183h2q3";
+				div.className = "help svelte-16g3r92";
 				addLoc(div, file$E, 10, 4, 299);
 			},
 
@@ -24897,7 +24897,7 @@
 	var file$H = "team-settings/tabs/Settings.html";
 
 	function create_main_fragment$M(component, ctx) {
-		var p, raw_value = __('teams / defaults / p'), text0, div1, div0, input, input_updating = false, text1, baseselect0_updating = {}, text2, baseselect1_updating = {}, text3, radio0_updating = {}, text4, baseselect2_updating = {}, text5, radio1_updating = {}, text6, text7, switch_1_updating = {};
+		var div1, div0, p, raw_value = __('teams / defaults / p'), text0, input, input_updating = false, text1, radio0_updating = {}, text2, h3, text4, baseselect0_updating = {}, text5, baseselect1_updating = {}, text6, baseselect2_updating = {}, text7, radio1_updating = {}, text8;
 
 		function input_input_handler() {
 			input_updating = true;
@@ -24912,69 +24912,6 @@
 			store: component.store,
 			slots: { default: createFragment() },
 			data: formblock0_initial_data
-		});
-
-		var baseselect0_initial_data = { options: ctx.themes };
-		if (ctx.defaultTheme !== void 0) {
-			baseselect0_initial_data.value = ctx.defaultTheme;
-			baseselect0_updating.value = true;
-		}
-		var baseselect0 = new BaseSelect({
-			root: component.root,
-			store: component.store,
-			data: baseselect0_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!baseselect0_updating.value && changed.value) {
-					newState.defaultTheme = childState.value;
-				}
-				component._set(newState);
-				baseselect0_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(function () {
-			baseselect0._bind({ value: 1 }, baseselect0.get());
-		});
-
-		var formblock1_initial_data = { label: __('teams / defaults / theme' ), help: __('teams / defaults / theme / p' ) };
-		var formblock1 = new FormBlock({
-			root: component.root,
-			store: component.store,
-			slots: { default: createFragment() },
-			data: formblock1_initial_data
-		});
-
-		var baseselect1_initial_data = { options: ctx.folders };
-		if (ctx.settings.default.folder !== void 0) {
-			baseselect1_initial_data.value = ctx.settings.default.folder;
-			baseselect1_updating.value = true;
-		}
-		var baseselect1 = new BaseSelect({
-			root: component.root,
-			store: component.store,
-			data: baseselect1_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!baseselect1_updating.value && changed.value) {
-					ctx.settings.default.folder = childState.value;
-					newState.settings = ctx.settings;
-				}
-				component._set(newState);
-				baseselect1_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(function () {
-			baseselect1._bind({ value: 1 }, baseselect1.get());
-		});
-
-		var formblock2_initial_data = { label: __('teams / defaults / folder' ), help: __('teams / defaults / folder / p' ) };
-		var formblock2 = new FormBlock({
-			root: component.root,
-			store: component.store,
-			slots: { default: createFragment() },
-			data: formblock2_initial_data
 		});
 
 		var radio0_initial_data = { options: [ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] };
@@ -25001,7 +24938,73 @@
 			radio0._bind({ value: 1 }, radio0.get());
 		});
 
-		var formblock3_initial_data = { label: __('teams / defaults / folder-status' ), help: __('teams / defaults / folder-status / p' ) };
+		var formblock1_initial_data = { label: __('teams / defaults / folder-status' ), help: __('teams / defaults / folder-status / p' ) };
+		var formblock1 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock1_initial_data
+		});
+
+		var baseselect0_initial_data = { options: ctx.themes };
+		if (ctx.defaultTheme !== void 0) {
+			baseselect0_initial_data.value = ctx.defaultTheme;
+			baseselect0_updating.value = true;
+		}
+		var baseselect0 = new BaseSelect({
+			root: component.root,
+			store: component.store,
+			data: baseselect0_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!baseselect0_updating.value && changed.value) {
+					newState.defaultTheme = childState.value;
+				}
+				component._set(newState);
+				baseselect0_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			baseselect0._bind({ value: 1 }, baseselect0.get());
+		});
+
+		var formblock2_initial_data = { label: __('teams / defaults / theme' ), help: __('teams / defaults / theme / p' ) };
+		var formblock2 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock2_initial_data
+		});
+
+		var baseselect1_initial_data = { options: ctx.folders };
+		if (ctx.settings.default.folder !== void 0) {
+			baseselect1_initial_data.value = ctx.settings.default.folder;
+			baseselect1_updating.value = true;
+		}
+		var baseselect1 = new BaseSelect({
+			root: component.root,
+			store: component.store,
+			data: baseselect1_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!baseselect1_updating.value && changed.value) {
+					ctx.settings.default.folder = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				baseselect1_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			baseselect1._bind({ value: 1 }, baseselect1.get());
+		});
+
+		var formblock3_initial_data = {
+		 	label: __('teams / defaults / folder' ),
+		 	help: __('teams / defaults / folder / p' )
+		 };
 		var formblock3 = new FormBlock({
 			root: component.root,
 			store: component.store,
@@ -25081,104 +25084,90 @@
 
 		var if_block = (ctx.settings.embed.preferred_embed == "custom") && create_if_block$z(component, ctx);
 
-		var switch_1_initial_data = { label: __('teams / restrict-themes' ) };
-		if (ctx.settings.restrictDefaultThemes !== void 0) {
-			switch_1_initial_data.value = ctx.settings.restrictDefaultThemes;
-			switch_1_updating.value = true;
-		}
-		var switch_1 = new Switch({
-			root: component.root,
-			store: component.store,
-			data: switch_1_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!switch_1_updating.value && changed.value) {
-					ctx.settings.restrictDefaultThemes = childState.value;
-					newState.settings = ctx.settings;
-				}
-				component._set(newState);
-				switch_1_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(function () {
-			switch_1._bind({ value: 1 }, switch_1.get());
-		});
-
 		return {
 			c: function create() {
-				p = createElement("p");
-				text0 = createText("\n\n");
 				div1 = createElement("div");
 				div0 = createElement("div");
+				p = createElement("p");
+				text0 = createText("\n\n        ");
 				input = createElement("input");
 				formblock0._fragment.c();
 				text1 = createText("\n\n        ");
-				baseselect0._fragment.c();
+				radio0._fragment.c();
 				formblock1._fragment.c();
 				text2 = createText("\n\n        ");
-				baseselect1._fragment.c();
-				formblock2._fragment.c();
-				text3 = createText("\n\n        ");
-				radio0._fragment.c();
-				formblock3._fragment.c();
+				h3 = createElement("h3");
+				h3.textContent = "Default settings for new visualizations";
 				text4 = createText("\n\n        ");
+				baseselect0._fragment.c();
+				formblock2._fragment.c();
+				text5 = createText("\n\n        ");
+				baseselect1._fragment.c();
+				formblock3._fragment.c();
+				text6 = createText("\n\n        ");
 				baseselect2._fragment.c();
 				formblock4._fragment.c();
-				text5 = createText("\n\n        ");
+				text7 = createText("\n\n        ");
 				radio1._fragment.c();
 				formblock5._fragment.c();
-				text6 = createText("\n\n        ");
+				text8 = createText("\n\n        ");
 				if (if_block) { if_block.c(); }
-				text7 = createText("\n\n        ");
-				switch_1._fragment.c();
 				setStyle(p, "margin-bottom", "10px");
-				addLoc(p, file$H, 0, 0, 0);
+				addLoc(p, file$H, 2, 8, 50);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = "";
-				addLoc(input, file$H, 7, 12, 218);
-				div0.className = "span5";
-				addLoc(div0, file$H, 5, 4, 100);
+				addLoc(input, file$H, 7, 12, 242);
+				addLoc(h3, file$H, 17, 8, 722);
+				div0.className = "span6";
+				addLoc(div0, file$H, 1, 4, 22);
 				div1.className = "row";
-				addLoc(div1, file$H, 4, 0, 78);
+				addLoc(div1, file$H, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, p, anchor);
-				p.innerHTML = raw_value;
-				insert(target, text0, anchor);
 				insert(target, div1, anchor);
 				append(div1, div0);
+				append(div0, p);
+				p.innerHTML = raw_value;
+				append(div0, text0);
 				append(formblock0._slotted.default, input);
 
 				input.value = ctx.team.name;
 
 				formblock0._mount(div0, null);
 				append(div0, text1);
-				baseselect0._mount(formblock1._slotted.default, null);
+				radio0._mount(formblock1._slotted.default, null);
 				formblock1._mount(div0, null);
 				append(div0, text2);
-				baseselect1._mount(formblock2._slotted.default, null);
-				formblock2._mount(div0, null);
-				append(div0, text3);
-				radio0._mount(formblock3._slotted.default, null);
-				formblock3._mount(div0, null);
+				append(div0, h3);
 				append(div0, text4);
+				baseselect0._mount(formblock2._slotted.default, null);
+				formblock2._mount(div0, null);
+				append(div0, text5);
+				baseselect1._mount(formblock3._slotted.default, null);
+				formblock3._mount(div0, null);
+				append(div0, text6);
 				baseselect2._mount(formblock4._slotted.default, null);
 				formblock4._mount(div0, null);
-				append(div0, text5);
+				append(div0, text7);
 				radio1._mount(formblock5._slotted.default, null);
 				formblock5._mount(div0, null);
-				append(div0, text6);
+				append(div0, text8);
 				if (if_block) { if_block.m(div0, null); }
-				append(div0, text7);
-				switch_1._mount(div0, null);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
 				if (!input_updating && changed.team) { input.value = ctx.team.name; }
+
+				var radio0_changes = {};
+				if (!radio0_updating.value && changed.settings) {
+					radio0_changes.value = ctx.settings.folders;
+					radio0_updating.value = ctx.settings.folders !== void 0;
+				}
+				radio0._set(radio0_changes);
+				radio0_updating = {};
 
 				var baseselect0_changes = {};
 				if (changed.themes) { baseselect0_changes.options = ctx.themes; }
@@ -25197,14 +25186,6 @@
 				}
 				baseselect1._set(baseselect1_changes);
 				baseselect1_updating = {};
-
-				var radio0_changes = {};
-				if (!radio0_updating.value && changed.settings) {
-					radio0_changes.value = ctx.settings.folders;
-					radio0_updating.value = ctx.settings.folders !== void 0;
-				}
-				radio0._set(radio0_changes);
-				radio0_updating = {};
 
 				var baseselect2_changes = {};
 				if (changed.localeOptions) { baseselect2_changes.options = ctx.localeOptions; }
@@ -25230,48 +25211,37 @@
 					} else {
 						if_block = create_if_block$z(component, ctx);
 						if_block.c();
-						if_block.m(div0, text7);
+						if_block.m(div0, null);
 					}
 				} else if (if_block) {
 					if_block.d(1);
 					if_block = null;
 				}
-
-				var switch_1_changes = {};
-				if (!switch_1_updating.value && changed.settings) {
-					switch_1_changes.value = ctx.settings.restrictDefaultThemes;
-					switch_1_updating.value = ctx.settings.restrictDefaultThemes !== void 0;
-				}
-				switch_1._set(switch_1_changes);
-				switch_1_updating = {};
 			},
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(p);
-					detachNode(text0);
 					detachNode(div1);
 				}
 
 				removeListener(input, "input", input_input_handler);
 				formblock0.destroy();
-				baseselect0.destroy();
-				formblock1.destroy();
-				baseselect1.destroy();
-				formblock2.destroy();
 				radio0.destroy();
+				formblock1.destroy();
+				baseselect0.destroy();
+				formblock2.destroy();
+				baseselect1.destroy();
 				formblock3.destroy();
 				baseselect2.destroy();
 				formblock4.destroy();
 				radio1.destroy();
 				formblock5.destroy();
 				if (if_block) { if_block.d(); }
-				switch_1.destroy();
 			}
 		};
 	}
 
-	// (38:8) {#if settings.embed.preferred_embed == "custom"}
+	// (40:8) {#if settings.embed.preferred_embed == "custom"}
 	function create_if_block$z(component, ctx) {
 		var h3, text1, input, input_updating = false, text2, textarea0, textarea0_updating = false, text3, textarea1, textarea1_updating = false, text4, hr;
 
@@ -25338,19 +25308,19 @@
 				formblock2._fragment.c();
 				text4 = createText("\n        ");
 				hr = createElement("hr");
-				addLoc(h3, file$H, 38, 8, 1715);
+				addLoc(h3, file$H, 40, 8, 1797);
 				addListener(input, "input", input_input_handler);
 				setAttribute(input, "type", "text");
 				input.placeholder = "e.g. Custom CMS Embed";
-				addLoc(input, file$H, 41, 12, 1825);
+				addLoc(input, file$H, 43, 12, 1907);
 				addListener(textarea0, "input", textarea0_input_handler);
 				textarea0.placeholder = "e.g. This is a custom embed code for our CMS";
-				addLoc(textarea0, file$H, 45, 12, 2033);
+				addLoc(textarea0, file$H, 47, 12, 2115);
 				addListener(textarea1, "input", textarea1_input_handler);
 				textarea1.className = "embedcode svelte-rgtu7e";
 				textarea1.placeholder = "<iframe src=\"%chart_url%\" width=\"%chart_width%\" widthheight=\"%chart_height%\"></iframe>";
-				addLoc(textarea1, file$H, 49, 12, 2303);
-				addLoc(hr, file$H, 55, 8, 2574);
+				addLoc(textarea1, file$H, 51, 12, 2385);
+				addLoc(hr, file$H, 57, 8, 2656);
 			},
 
 			m: function mount(target, anchor) {
@@ -25426,9 +25396,9 @@
 		this._recompute({ locales: 1 }, this._state);
 		if (!('locales' in this._state)) { console.warn("<Settings> was created without expected data property 'locales'"); }
 		if (!('team' in this._state)) { console.warn("<Settings> was created without expected data property 'team'"); }
+		if (!('settings' in this._state)) { console.warn("<Settings> was created without expected data property 'settings'"); }
 		if (!('defaultTheme' in this._state)) { console.warn("<Settings> was created without expected data property 'defaultTheme'"); }
 		if (!('themes' in this._state)) { console.warn("<Settings> was created without expected data property 'themes'"); }
-		if (!('settings' in this._state)) { console.warn("<Settings> was created without expected data property 'settings'"); }
 		if (!('folders' in this._state)) { console.warn("<Settings> was created without expected data property 'folders'"); }
 
 		if (!('embedCodes' in this._state)) { console.warn("<Settings> was created without expected data property 'embedCodes'"); }
@@ -26308,7 +26278,7 @@
 		}
 	};
 
-	/* team-settings/tabs/Visualizations.html generated by Svelte v2.16.1 */
+	/* team-settings/tabs/Restrictions.html generated by Svelte v2.16.1 */
 
 
 
@@ -26373,7 +26343,7 @@
 	        });
 	    }
 	}
-	var file$J = "team-settings/tabs/Visualizations.html";
+	var file$J = "team-settings/tabs/Restrictions.html";
 
 	function get_each2_context$1(ctx, list, i) {
 		var child_ctx = Object.create(ctx);
@@ -26394,7 +26364,31 @@
 	}
 
 	function create_main_fragment$O(component, ctx) {
-		var p0, raw0_value = __('teams / disable / p'), text0, p1, raw1_value = __('teams / disable / p2' ), text1, div0, raw2_value = __('teams / disable / charts' ), text2, div1, text3, div2, raw3_value = __('teams / disable / maps' ), text4, div3, text5, div4, raw4_value = __('teams / disable / archived' ), text6, div5, text7, div6, switch0_updating = {}, switch1_updating = {};
+		var div8, div7, h30, text0_value = __('teams / disable / h2 / themes'), text0, text1, p0, raw0_value = __('teams / disable / themes / p'), text2, switch0_updating = {}, text3, br, text4, h31, text5_value = __('teams / disable / h2 / vis'), text5, text6, p1, raw1_value = __('teams / disable / p'), text7, p2, raw2_value = __('teams / disable / p2' ), text8, div0, raw3_value = __('teams / disable / charts' ), text9, div1, text10, div2, raw4_value = __('teams / disable / maps' ), text11, div3, text12, div4, raw5_value = __('teams / disable / archived' ), text13, div5, text14, div6, switch1_updating = {}, switch2_updating = {};
+
+		var switch0_initial_data = { label: __('teams / restrict-themes' ) };
+		if (ctx.settings.restrictDefaultThemes !== void 0) {
+			switch0_initial_data.value = ctx.settings.restrictDefaultThemes;
+			switch0_updating.value = true;
+		}
+		var switch0 = new Switch({
+			root: component.root,
+			store: component.store,
+			data: switch0_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!switch0_updating.value && changed.value) {
+					ctx.settings.restrictDefaultThemes = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				switch0_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			switch0._bind({ value: 1 }, switch0.get());
+		});
 
 		var each0_value = ctx.charts;
 
@@ -26420,44 +26414,19 @@
 			each2_blocks[i] = create_each_block$j(component, get_each2_context$1(ctx, each2_value, i));
 		}
 
-		var switch0_initial_data = { label: __('teams / disable / enable-admins' ) };
+		var switch1_initial_data = { label: __('teams / disable / enable-admins' ) };
 		if (ctx.settings.disableVisualizations.allowAdmins !== void 0) {
-			switch0_initial_data.value = ctx.settings.disableVisualizations.allowAdmins;
-			switch0_updating.value = true;
-		}
-		var switch0 = new Switch({
-			root: component.root,
-			store: component.store,
-			data: switch0_initial_data,
-			_bind: function _bind(changed, childState) {
-				var newState = {};
-				if (!switch0_updating.value && changed.value) {
-					ctx.settings.disableVisualizations.allowAdmins = childState.value;
-					newState.settings = ctx.settings;
-				}
-				component._set(newState);
-				switch0_updating = {};
-			}
-		});
-
-		component.root._beforecreate.push(function () {
-			switch0._bind({ value: 1 }, switch0.get());
-		});
-
-		var switch1_initial_data = { label: __('teams / disable / h1' ) };
-		if (ctx.settings.disableVisualizations.enabled !== void 0) {
-			switch1_initial_data.value = ctx.settings.disableVisualizations.enabled;
+			switch1_initial_data.value = ctx.settings.disableVisualizations.allowAdmins;
 			switch1_updating.value = true;
 		}
 		var switch1 = new Switch({
 			root: component.root,
 			store: component.store,
-			slots: { default: createFragment() },
 			data: switch1_initial_data,
 			_bind: function _bind(changed, childState) {
 				var newState = {};
 				if (!switch1_updating.value && changed.value) {
-					ctx.settings.disableVisualizations.enabled = childState.value;
+					ctx.settings.disableVisualizations.allowAdmins = childState.value;
 					newState.settings = ctx.settings;
 				}
 				component._set(newState);
@@ -26469,106 +26438,177 @@
 			switch1._bind({ value: 1 }, switch1.get());
 		});
 
+		var switch2_initial_data = { label: __('teams / disable / h2 / vis') };
+		if (ctx.settings.disableVisualizations.enabled !== void 0) {
+			switch2_initial_data.value = ctx.settings.disableVisualizations.enabled;
+			switch2_updating.value = true;
+		}
+		var switch2 = new Switch({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: switch2_initial_data,
+			_bind: function _bind(changed, childState) {
+				var newState = {};
+				if (!switch2_updating.value && changed.value) {
+					ctx.settings.disableVisualizations.enabled = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				switch2_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(function () {
+			switch2._bind({ value: 1 }, switch2.get());
+		});
+
 		return {
 			c: function create() {
+				div8 = createElement("div");
+				div7 = createElement("div");
+				h30 = createElement("h3");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n        ");
 				p0 = createElement("p");
-				text0 = createText("\n\n");
+				text2 = createText("\n\n        ");
+				switch0._fragment.c();
+				text3 = createText("\n        ");
+				br = createElement("br");
+				text4 = createText("\n        ");
+				h31 = createElement("h3");
+				text5 = createText(text5_value);
+				text6 = createText("\n\n        ");
 				p1 = createElement("p");
-				text1 = createText("\n\n    ");
+				text7 = createText("\n\n        ");
+				p2 = createElement("p");
+				text8 = createText("\n\n            ");
 				div0 = createElement("div");
-				text2 = createText("\n\n    ");
+				text9 = createText("\n\n            ");
 				div1 = createElement("div");
 
 				for (var i = 0; i < each0_blocks.length; i += 1) {
 					each0_blocks[i].c();
 				}
 
-				text3 = createText("\n\n    ");
+				text10 = createText("\n\n            ");
 				div2 = createElement("div");
-				text4 = createText("\n\n    ");
+				text11 = createText("\n\n            ");
 				div3 = createElement("div");
 
 				for (var i = 0; i < each1_blocks.length; i += 1) {
 					each1_blocks[i].c();
 				}
 
-				text5 = createText("\n\n    ");
+				text12 = createText("\n\n            ");
 				div4 = createElement("div");
-				text6 = createText("\n\n    ");
+				text13 = createText("\n\n            ");
 				div5 = createElement("div");
 
 				for (var i = 0; i < each2_blocks.length; i += 1) {
 					each2_blocks[i].c();
 				}
 
-				text7 = createText("\n\n    ");
+				text14 = createText("\n\n            ");
 				div6 = createElement("div");
-				switch0._fragment.c();
 				switch1._fragment.c();
+				switch2._fragment.c();
+				addLoc(h30, file$J, 2, 8, 50);
 				setStyle(p0, "margin-bottom", "10px");
-				addLoc(p0, file$J, 0, 0, 0);
-				setStyle(p1, "margin-top", "10px");
-				addLoc(p1, file$J, 5, 4, 182);
+				addLoc(p0, file$J, 4, 8, 106);
+				addLoc(br, file$J, 9, 8, 322);
+				addLoc(h31, file$J, 10, 8, 337);
+				setStyle(p1, "margin-bottom", "10px");
+				addLoc(p1, file$J, 12, 8, 390);
+				setStyle(p2, "margin-top", "10px");
+				addLoc(p2, file$J, 17, 12, 607);
 				div0.className = "namespace svelte-7quwjs";
-				addLoc(div0, file$J, 9, 4, 271);
-				setStyle(div1, "columns", "auto 4");
-				addLoc(div1, file$J, 11, 4, 347);
+				addLoc(div0, file$J, 21, 12, 720);
+				setStyle(div1, "columns", "auto 3");
+				addLoc(div1, file$J, 23, 12, 804);
 				div2.className = "namespace svelte-7quwjs";
-				addLoc(div2, file$J, 17, 4, 548);
-				setStyle(div3, "columns", "auto 4");
-				addLoc(div3, file$J, 19, 4, 622);
+				addLoc(div2, file$J, 29, 12, 1045);
+				setStyle(div3, "columns", "auto 3");
+				addLoc(div3, file$J, 31, 12, 1127);
 				div4.className = "namespace svelte-7quwjs";
-				addLoc(div4, file$J, 25, 4, 821);
-				setStyle(div5, "columns", "auto 4");
-				addLoc(div5, file$J, 27, 4, 899);
+				addLoc(div4, file$J, 37, 12, 1366);
+				setStyle(div5, "columns", "auto 3");
+				addLoc(div5, file$J, 39, 12, 1452);
 				setStyle(div6, "margin-top", "10px");
-				addLoc(div6, file$J, 33, 4, 1102);
+				addLoc(div6, file$J, 45, 12, 1695);
+				div7.className = "span7";
+				addLoc(div7, file$J, 1, 4, 22);
+				div8.className = "row";
+				addLoc(div8, file$J, 0, 0, 0);
 			},
 
 			m: function mount(target, anchor) {
-				insert(target, p0, anchor);
+				insert(target, div8, anchor);
+				append(div8, div7);
+				append(div7, h30);
+				append(h30, text0);
+				append(div7, text1);
+				append(div7, p0);
 				p0.innerHTML = raw0_value;
-				insert(target, text0, anchor);
-				append(switch1._slotted.default, p1);
+				append(div7, text2);
+				switch0._mount(div7, null);
+				append(div7, text3);
+				append(div7, br);
+				append(div7, text4);
+				append(div7, h31);
+				append(h31, text5);
+				append(div7, text6);
+				append(div7, p1);
 				p1.innerHTML = raw1_value;
-				append(switch1._slotted.default, text1);
-				append(switch1._slotted.default, div0);
-				div0.innerHTML = raw2_value;
-				append(switch1._slotted.default, text2);
-				append(switch1._slotted.default, div1);
+				append(div7, text7);
+				append(switch2._slotted.default, p2);
+				p2.innerHTML = raw2_value;
+				append(switch2._slotted.default, text8);
+				append(switch2._slotted.default, div0);
+				div0.innerHTML = raw3_value;
+				append(switch2._slotted.default, text9);
+				append(switch2._slotted.default, div1);
 
 				for (var i = 0; i < each0_blocks.length; i += 1) {
 					each0_blocks[i].m(div1, null);
 				}
 
-				append(switch1._slotted.default, text3);
-				append(switch1._slotted.default, div2);
-				div2.innerHTML = raw3_value;
-				append(switch1._slotted.default, text4);
-				append(switch1._slotted.default, div3);
+				append(switch2._slotted.default, text10);
+				append(switch2._slotted.default, div2);
+				div2.innerHTML = raw4_value;
+				append(switch2._slotted.default, text11);
+				append(switch2._slotted.default, div3);
 
 				for (var i = 0; i < each1_blocks.length; i += 1) {
 					each1_blocks[i].m(div3, null);
 				}
 
-				append(switch1._slotted.default, text5);
-				append(switch1._slotted.default, div4);
-				div4.innerHTML = raw4_value;
-				append(switch1._slotted.default, text6);
-				append(switch1._slotted.default, div5);
+				append(switch2._slotted.default, text12);
+				append(switch2._slotted.default, div4);
+				div4.innerHTML = raw5_value;
+				append(switch2._slotted.default, text13);
+				append(switch2._slotted.default, div5);
 
 				for (var i = 0; i < each2_blocks.length; i += 1) {
 					each2_blocks[i].m(div5, null);
 				}
 
-				append(switch1._slotted.default, text7);
-				append(switch1._slotted.default, div6);
-				switch0._mount(div6, null);
-				switch1._mount(target, anchor);
+				append(switch2._slotted.default, text14);
+				append(switch2._slotted.default, div6);
+				switch1._mount(div6, null);
+				switch2._mount(div7, null);
 			},
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
+				var switch0_changes = {};
+				if (!switch0_updating.value && changed.settings) {
+					switch0_changes.value = ctx.settings.restrictDefaultThemes;
+					switch0_updating.value = ctx.settings.restrictDefaultThemes !== void 0;
+				}
+				switch0._set(switch0_changes);
+				switch0_updating = {};
+
 				if (changed.charts || changed.settings) {
 					each0_value = ctx.charts;
 
@@ -26632,28 +26672,29 @@
 					each2_blocks.length = each2_value.length;
 				}
 
-				var switch0_changes = {};
-				if (!switch0_updating.value && changed.settings) {
-					switch0_changes.value = ctx.settings.disableVisualizations.allowAdmins;
-					switch0_updating.value = ctx.settings.disableVisualizations.allowAdmins !== void 0;
-				}
-				switch0._set(switch0_changes);
-				switch0_updating = {};
-
 				var switch1_changes = {};
 				if (!switch1_updating.value && changed.settings) {
-					switch1_changes.value = ctx.settings.disableVisualizations.enabled;
-					switch1_updating.value = ctx.settings.disableVisualizations.enabled !== void 0;
+					switch1_changes.value = ctx.settings.disableVisualizations.allowAdmins;
+					switch1_updating.value = ctx.settings.disableVisualizations.allowAdmins !== void 0;
 				}
 				switch1._set(switch1_changes);
 				switch1_updating = {};
+
+				var switch2_changes = {};
+				if (!switch2_updating.value && changed.settings) {
+					switch2_changes.value = ctx.settings.disableVisualizations.enabled;
+					switch2_updating.value = ctx.settings.disableVisualizations.enabled !== void 0;
+				}
+				switch2._set(switch2_changes);
+				switch2_updating = {};
 			},
 
 			d: function destroy(detach) {
 				if (detach) {
-					detachNode(p0);
-					detachNode(text0);
+					detachNode(div8);
 				}
+
+				switch0.destroy();
 
 				destroyEach(each0_blocks, detach);
 
@@ -26661,13 +26702,13 @@
 
 				destroyEach(each2_blocks, detach);
 
-				switch0.destroy();
-				switch1.destroy(detach);
+				switch1.destroy();
+				switch2.destroy();
 			}
 		};
 	}
 
-	// (13:8) {#each charts as vis}
+	// (25:16) {#each charts as vis}
 	function create_each_block_2$3(component, ctx) {
 		var checkbox_updating = {};
 
@@ -26722,7 +26763,7 @@
 		};
 	}
 
-	// (21:8) {#each maps as vis}
+	// (33:16) {#each maps as vis}
 	function create_each_block_1$5(component, ctx) {
 		var checkbox_updating = {};
 
@@ -26777,7 +26818,7 @@
 		};
 	}
 
-	// (29:8) {#each archived as vis}
+	// (41:16) {#each archived as vis}
 	function create_each_block$j(component, ctx) {
 		var checkbox_updating = {};
 
@@ -26832,10 +26873,10 @@
 		};
 	}
 
-	function Visualizations(options) {
+	function Restrictions(options) {
 		var this$1 = this;
 
-		this._debugName = '<Visualizations>';
+		this._debugName = '<Restrictions>';
 		if (!options || (!options.target && !options.root)) {
 			throw new Error("'target' is a required option");
 		}
@@ -26844,9 +26885,9 @@
 		this._state = assign(data$H(), options.data);
 
 		this._recompute({ visualizations: 1, visualizationArchive: 1 }, this._state);
-		if (!('visualizations' in this._state)) { console.warn("<Visualizations> was created without expected data property 'visualizations'"); }
-		if (!('visualizationArchive' in this._state)) { console.warn("<Visualizations> was created without expected data property 'visualizationArchive'"); }
-		if (!('settings' in this._state)) { console.warn("<Visualizations> was created without expected data property 'settings'"); }
+		if (!('visualizations' in this._state)) { console.warn("<Restrictions> was created without expected data property 'visualizations'"); }
+		if (!('visualizationArchive' in this._state)) { console.warn("<Restrictions> was created without expected data property 'visualizationArchive'"); }
+		if (!('settings' in this._state)) { console.warn("<Restrictions> was created without expected data property 'settings'"); }
 		this._intro = true;
 
 		this._handlers.state = [onstate$7];
@@ -26869,15 +26910,15 @@
 		}
 	}
 
-	assign(Visualizations.prototype, protoDev);
+	assign(Restrictions.prototype, protoDev);
 
-	Visualizations.prototype._checkReadOnly = function _checkReadOnly(newState) {
-		if ('charts' in newState && !this._updatingReadonlyProperty) { throw new Error("<Visualizations>: Cannot set read-only property 'charts'"); }
-		if ('maps' in newState && !this._updatingReadonlyProperty) { throw new Error("<Visualizations>: Cannot set read-only property 'maps'"); }
-		if ('archived' in newState && !this._updatingReadonlyProperty) { throw new Error("<Visualizations>: Cannot set read-only property 'archived'"); }
+	Restrictions.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('charts' in newState && !this._updatingReadonlyProperty) { throw new Error("<Restrictions>: Cannot set read-only property 'charts'"); }
+		if ('maps' in newState && !this._updatingReadonlyProperty) { throw new Error("<Restrictions>: Cannot set read-only property 'maps'"); }
+		if ('archived' in newState && !this._updatingReadonlyProperty) { throw new Error("<Restrictions>: Cannot set read-only property 'archived'"); }
 	};
 
-	Visualizations.prototype._recompute = function _recompute(changed, state) {
+	Restrictions.prototype._recompute = function _recompute(changed, state) {
 		if (changed.visualizations || changed.visualizationArchive) {
 			if (this._differs(state.charts, (state.charts = charts(state)))) { changed.charts = true; }
 			if (this._differs(state.maps, (state.maps = maps(state)))) { changed.maps = true; }
@@ -28257,13 +28298,13 @@
 	                ui: CustomFields
 	            },
 	            {
-	                id: 'visualizations',
+	                id: 'restrictions',
 	                title: __('teams / tab / visTypes'),
 	                icon: 'fa fa-ban',
 	                group: __('teams / group / advanced'),
 	                order: 70,
 	                h1: __('teams / disable / h1'),
-	                ui: Visualizations
+	                ui: Restrictions
 	            },
 	            {
 	                id: 'delete',
@@ -28370,7 +28411,7 @@
 	var file$N = "team-settings/App.html";
 
 	function create_main_fragment$S(component, ctx) {
-		var div1, div0, h1, text0_value = __('nav / team / settings'), text0, text1, text2_value = truncate(ctx.team.name, 17,8), text2, text3, div5, div4, div2, text4, div3, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, navtabs_updating = {};
+		var div1, div0, h1, text0_value = truncate(ctx.team.name, 17,8), text0, text1, text2_value = __('nav / team / settings'), text2, text3, div5, div4, div2, text4, div3, hr, text5, a, i, text6, text7_value = __('account / settings / personal'), text7, navtabs_updating = {};
 
 		var if_block = (ctx.activeTab && ctx.activeTab.h1) && create_if_block$D(component, ctx);
 
@@ -28425,22 +28466,22 @@
 				h1.className = "title";
 				setStyle(h1, "margin-bottom", "18px");
 				addLoc(h1, file$N, 2, 8, 66);
-				div0.className = "span12 admin";
+				div0.className = "span12 admin svelte-19lbies";
 				addLoc(div0, file$N, 1, 4, 31);
 				div1.className = "row";
 				addLoc(div1, file$N, 0, 0, 0);
 				setAttribute(div2, "slot", "aboveContent");
-				addLoc(div2, file$N, 9, 12, 383);
-				addLoc(hr, file$N, 15, 16, 598);
+				addLoc(div2, file$N, 9, 12, 389);
+				addLoc(hr, file$N, 15, 16, 604);
 				i.className = "fa fa-arrow-left";
-				addLoc(i, file$N, 16, 35, 640);
+				addLoc(i, file$N, 16, 35, 646);
 				a.href = "/account";
-				addLoc(a, file$N, 16, 16, 621);
+				addLoc(a, file$N, 16, 16, 627);
 				setAttribute(div3, "slot", "belowMenu");
-				addLoc(div3, file$N, 14, 12, 559);
+				addLoc(div3, file$N, 14, 12, 565);
 				div4.className = "visconfig";
-				addLoc(div4, file$N, 7, 4, 284);
-				div5.className = "settings-section dw-create-visualize chart-editor chart-editor-web svelte-9yakal";
+				addLoc(div4, file$N, 7, 4, 290);
+				div5.className = "settings-section dw-create-visualize chart-editor chart-editor-web admin svelte-19lbies";
 				addLoc(div5, file$N, 6, 0, 199);
 			},
 
@@ -28469,8 +28510,8 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				if ((changed.team) && text2_value !== (text2_value = truncate(ctx.team.name, 17,8))) {
-					setData(text2, text2_value);
+				if ((changed.team) && text0_value !== (text0_value = truncate(ctx.team.name, 17,8))) {
+					setData(text0, text0_value);
 				}
 
 				if (ctx.activeTab && ctx.activeTab.h1) {
@@ -28517,8 +28558,8 @@
 		return {
 			c: function create() {
 				h2 = createElement("h2");
-				h2.className = "svelte-9yakal";
-				addLoc(h2, file$N, 11, 16, 474);
+				h2.className = "svelte-19lbies";
+				addLoc(h2, file$N, 11, 16, 480);
 			},
 
 			m: function mount(target, anchor) {

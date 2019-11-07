@@ -1,41 +1,54 @@
-<p style="margin-bottom: 10px">
-    {@html __('teams / disable / p') }
-</p>
+<div class="row">
+    <div class="span7">
+        <h3>{__('teams / disable / h2 / themes')}</h3>
 
-<Switch label="{ __('teams / disable / h1' ) }" bind:value="settings.disableVisualizations.enabled">
-    <p style="margin-top: 10px">
-        { @html __('teams / disable / p2' ) }
-    </p>
+        <p style="margin-bottom: 10px">
+            {@html __('teams / disable / themes / p') }
+        </p>
 
-    <div class="namespace">{ @html __('teams / disable / charts' ) }</div>
+        <Switch label="{ __('teams / restrict-themes' ) }" bind:value="settings.restrictDefaultThemes" />
+        <br />
+        <h3>{__('teams / disable / h2 / vis')}</h3>
 
-    <div style="columns: auto 4;">
-        {#each charts as vis}
-        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
-        {/each}
+        <p style="margin-bottom: 10px">
+            {@html __('teams / disable / p') }
+        </p>
+
+        <Switch label="{__('teams / disable / h2 / vis')}" bind:value="settings.disableVisualizations.enabled">
+            <p style="margin-top: 10px">
+                { @html __('teams / disable / p2' ) }
+            </p>
+
+            <div class="namespace">{ @html __('teams / disable / charts' ) }</div>
+
+            <div style="columns: auto 3;">
+                {#each charts as vis}
+                <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+                {/each}
+            </div>
+
+            <div class="namespace">{ @html __('teams / disable / maps' ) }</div>
+
+            <div style="columns: auto 3;">
+                {#each maps as vis}
+                <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+                {/each}
+            </div>
+
+            <div class="namespace">{ @html __('teams / disable / archived' ) }</div>
+
+            <div style="columns: auto 3;">
+                {#each archived as vis}
+                <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
+                {/each}
+            </div>
+
+            <div style="margin-top: 10px;">
+                <Switch label="{ __('teams / disable / enable-admins' ) }" bind:value="settings.disableVisualizations.allowAdmins" />
+            </div>
+        </Switch>
     </div>
-
-    <div class="namespace">{ @html __('teams / disable / maps' ) }</div>
-
-    <div style="columns: auto 4;">
-        {#each maps as vis}
-        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
-        {/each}
-    </div>
-
-    <div class="namespace">{ @html __('teams / disable / archived' ) }</div>
-
-    <div style="columns: auto 4;">
-        {#each archived as vis}
-        <Checkbox label="{vis.title}" bind:value="settings.disableVisualizations.visualizations[vis.id]" />
-        {/each}
-    </div>
-
-    <div style="margin-top: 10px;">
-        <Switch label="{ __('teams / disable / enable-admins' ) }" bind:value="settings.disableVisualizations.allowAdmins" />
-    </div>
-</Switch>
-
+</div>
 <style>
     .namespace {
         font-weight: bold;
