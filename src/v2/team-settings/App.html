@@ -14,7 +14,14 @@
             </div>
             <div slot="belowMenu">
                 <hr />
-                <a href="/account"><i class="fa fa-arrow-left"></i> {__('account / settings / personal')}</a>
+                <ul class="unstyled">
+                    <li>
+                        <a href="/account"><i class="fa fa-fw fa-arrow-left"></i> {__('account / settings / personal')}</a>
+                    </li>
+                    <li>
+                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> Team charts</a>
+                    </li>
+                </ul>
             </div>
         </NavTabs>
     </div>
@@ -279,5 +286,8 @@
     }
     :global(.control-group) {
         position: relative;
+    }
+    ul.unstyled li {
+        margin-bottom: 8px;
     }
 </style>
