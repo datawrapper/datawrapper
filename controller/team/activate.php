@@ -1,5 +1,6 @@
 <?php
 
+// DEPRECATED
 $app->put('/team/:org_id/activate', function($org_id) use ($app) {
     disable_cache($app);
     $user = DatawrapperSession::getUser();

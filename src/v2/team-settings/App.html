@@ -1,56 +1,29 @@
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{ __('nav / team / settings') } » { truncate(team.name, 17,8) }</h1>
+        <h1 class="title" style="margin-bottom:18px">{ truncate(team.name, 17,8) } » { __('nav / team / settings') }</h1>
     </div>
 </div>
 
-<div class="row dw-create-visualize chart-editor chart-editor-web" style="margin-top: -20px;">
+<div class="settings-section dw-create-visualize chart-editor chart-editor-web admin">
     <div class="visconfig">
-        <div class="span2">
-            {#each groups as group}
-            <div class="group">{ group.title }</div>
-
-            <ul class="nav nav-stacked nav-tabs">
-                {#each group.tabs as tab}
-                <li class:active="activeTab === tab.id" on:click="activate(tab.id)">
-                    <a href="#{ tab.id }"><i class="{ tab.icon }"></i> &nbsp; { tab.title } </a>
-                </li>
-                {/each}
-            </ul>
-            {/each}
-            <hr />
-            <a href="/account"><i class="fa fa-arrow-left"></i> {__('account / settings / personal')}</a>
-        </div>
-
-        <div class="span10">
-            {#if currentTab}
-            <div class="vis-options settings-section">
-                {#if currentTab.h1 }
-                <h2>{ @html currentTab.h1 }</h2>
+        <NavTabs ref:navTabs groups="{groups}" bind:activeTab>
+            <div slot="aboveContent">
+                {#if activeTab && activeTab.h1 }
+                <h2>{ @html activeTab.h1 }</h2>
                 {/if}
-
-                <svelte:component
-                    ref:app
-                    this="{ app }"
-                    bind:team
-                    bind:defaultTheme
-                    bind:settings
-                    bind:loadingUsers
-                    bind:users
-                    bind:userId
-                    bind:visualizations
-                    bind:visualizationArchive
-                    bind:folders
-                    bind:locales
-                    bind:themes
-                    bind:isAdmin
-                    bind:updatingUsers
-                    on:updateUsers="updateUsers()"
-                    on:change="debounceUpdateTeam()"
-                />
             </div>
-            {/if}
-        </div>
+            <div slot="belowMenu">
+                <hr />
+                <ul class="unstyled">
+                    <li>
+                        <a href="/account"><i class="fa fa-fw fa-arrow-left"></i> {__('account / settings / personal')}</a>
+                    </li>
+                    <li>
+                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> Team charts</a>
+                    </li>
+                </ul>
+            </div>
+        </NavTabs>
     </div>
 </div>
 
@@ -58,137 +31,104 @@
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
-    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
-
+    import NavTabs from '../shared/NavTabs.html';
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
     import CustomFields from './tabs/CustomFields.html';
-    import Visualizations from './tabs/Visualizations.html';
+    import Restrictions from './tabs/Restrictions.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
     import Loading from './tabs/Loading.html';
 
+    const SettingsTab = {
+        id: 'settings',
+        title: __('teams / tab / settings'),
+        icon: 'fa fa-gears',
+        group: __('teams / group / users'),
+        order: 10,
+        h1: __('teams / defaults / h1'),
+        ui: Settings,
+        data: {},
+        onchange({ team }) {
+            app.set({ team });
+        }
+    };
+
+    const MembersTab = {
+        id: 'members',
+        title: __('teams / tab / members'),
+        icon: 'im im-users',
+        group: __('teams / group / users'),
+        order: 20,
+        h1: __('teams / h1'),
+        ui: Members
+    };
+
+    let app;
+
     export default {
         components: {
-            Members,
-            Settings,
-            CustomFields,
-            Visualizations,
-            DeleteTeam,
-            ProductTable,
-            Loading
+            Loading,
+            NavTabs
         },
         data() {
             return {
                 allTabs: [
+                    SettingsTab,
+                    MembersTab,
                     {
-                        id: 'settings',
-                        title: __('teams / tab / settings'),
-                        icon: 'fa fa-gears',
-                        group: __('teams / group / users'),
-                        order: 10,
-                        h1: __('teams / defaults / h1'),
-                        app: Settings
-                    },
-                    {
-                        id: 'members',
-                        title: __('teams / tab / members'),
-                        icon: 'fa fa-users',
-                        group: __('teams / group / users'),
-                        order: 20,
-                        h1: __('teams / h1'),
-                        app: Members
-                    },
-                    {
-                        id: 'customFields',
+                        id: 'custom-fields',
                         title: __('teams / tab / customFields'),
                         icon: 'fa fa-list',
                         group: __('teams / group / advanced'),
                         order: 20,
                         h1: __('teams / cf / h1'),
-                        app: CustomFields
+                        ui: CustomFields
                     },
                     {
-                        id: 'visTypes',
+                        id: 'restrictions',
                         title: __('teams / tab / visTypes'),
                         icon: 'fa fa-ban',
                         group: __('teams / group / advanced'),
                         order: 70,
                         h1: __('teams / disable / h1'),
-                        app: Visualizations
+                        ui: Restrictions
                     },
                     {
-                        id: 'deleteTeam',
+                        id: 'delete',
                         title: __('teams / tab / deleteTeam'),
                         icon: 'fa fa-times',
                         group: __('teams / group / advanced'),
                         order: 80,
                         h1: __('teams / delete / h1'),
-                        app: DeleteTeam,
+                        ui: DeleteTeam,
                         ownerOnly: true
                     },
                     {
-                        id: 'adminProducts',
+                        id: 'products',
                         title: __('teams / tab / adminProducts'),
                         icon: 'fa fa-list-alt',
                         group: __('teams / group / internal'),
                         order: 90,
                         h1: __('teams / products / h1'),
-                        app: ProductTable,
+                        ui: ProductTable,
                         adminOnly: true
                     }
                 ],
                 pluginTabs: [],
-                activeTab: 'settings',
-                app: Settings,
+                activeTab: null,
+                ui: Settings,
                 team: {
                     name: ''
                 },
-                settings: {
-                    folders: 'expanded',
-                    embed: {
-                        preferred_embed: 'responsive',
-                        custom_embed: {
-                            title: '',
-                            text: '',
-                            template: ''
-                        }
-                    },
-                    default: {
-                        locale: ''
-                    },
-                    ftp: {
-                        enabled: false,
-                        server: '',
-                        user: '',
-                        password: '',
-                        directory: '',
-                        filename: ''
-                    },
-                    disableVisualizations: {
-                        enabled: false,
-                        allowAdmins: false,
-                        visualizations: {}
-                    }
-                },
+                settings: {},
                 users: [],
                 userId: null,
                 visualizations: [],
-                loadingUsers: true
+                visualizationsArchive: []
             };
         },
         computed: {
-            role({ users, userId }) {
-                if (!users || !users.length || !userId) return false;
-                const user = users.find(el => el.id === userId);
-                if (user) return user.role;
-                else return 'admin';
-            },
-            currentTab({ activeTab, tabs }) {
-                if (!tabs || !activeTab) return null;
-                const t = tabs.filter(el => el.id === activeTab);
-                return t[0];
-            },
             tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
                 const tabs = [].concat(allTabs, pluginTabs);
 
@@ -200,7 +140,7 @@
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
-            groups({ tabs }) {
+            groups({ tabs, isAdmin, team, users, userId, settings, defaultTheme, themes, folders, locales, visualizations, visualizationsArchive }) {
                 const groups = [];
 
                 function get(groups, groupId) {
@@ -216,6 +156,20 @@
                 }
 
                 tabs.forEach(tab => {
+                    tab.data = {
+                        isAdmin,
+                        team,
+                        users,
+                        userId,
+                        settings,
+                        defaultTheme,
+                        themes,
+                        folders,
+                        locales,
+                        visualizations,
+                        visualizationsArchive,
+                        ...tab.data
+                    };
                     get(groups, tab.group).tabs.push(tab);
                 });
 
@@ -228,47 +182,6 @@
         },
         helpers: { __, truncate },
         methods: {
-            activate(id) {
-                const { tabs } = this.get();
-                const tab = tabs.filter(el => el.id === id)[0];
-
-                if (tab.src) {
-                    if (tab.App) {
-                        this.set({
-                            activeTab: tab.id,
-                            app: tab.App
-                        });
-                    } else {
-                        this.set({
-                            activeTab: tab.id,
-                            app: Loading
-                        });
-
-                        Promise.all([loadStylesheet(tab.css), loadScript(tab.src)]).then(() => {
-                            require([tab.id], mod => {
-                                Object.assign(tab, mod);
-                                this.set({ app: tab.App });
-                                if (tab.data) this.refs.app.set(tab.data);
-                            });
-                        });
-                    }
-                } else {
-                    this.set({
-                        activeTab: tab.id,
-                        app: tab.app
-                    });
-                }
-            },
-            async updateUsers() {
-                const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-
-                const json = await res.json();
-
-                this.set({ loadingUsers: false, updatingUsers: false, inviteeEmail: '', users: json.list });
-            },
             async debounceUpdateTeam() {
                 window.clearTimeout(window.updateTeam);
 
@@ -293,11 +206,35 @@
                 return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
             }
         },
+        oncreate() {
+            app = this;
+            const path = window.location.pathname.split('/').slice(-1);
+            const initialTab = path[0] || 'settings';
+            const { groups } = this.get();
+            let foundTab = false;
+            groups.forEach(group => {
+                group.tabs.forEach(tab => {
+                    if (tab.id === initialTab) {
+                        this.refs.navTabs.activateTab(tab);
+                        foundTab = true;
+                    }
+                });
+            });
+
+            if (!foundTab) {
+                this.set({
+                    activeTab: SettingsTab
+                });
+            }
+        },
         onstate({ changed, current, previous }) {
             if (previous && previous.team && previous.team.name) {
                 if (changed.team || changed.defaultTheme || changed.settings) {
                     this.debounceUpdateTeam();
                 }
+            }
+            if (changed.activeTab && current.activeTab) {
+                window.history.pushState({ id: current.activeTab.id }, '', `/team/${current.team.id}/${current.activeTab.id}`);
             }
         }
     };
@@ -330,16 +267,27 @@
     }
 
     .settings-section {
-        :global(h2) {
-            border-bottom: 1px solid #eee;
-            margin-bottom: 1em;
-            padding-bottom: 1ex;
-        }
-
         :global(p.help) {
             font-size: 14px;
             color: #777;
             line-height: 1.5;
         }
+    }
+
+    .admin h2 {
+        font-size: 26px;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1em;
+        padding-bottom: 1ex;
+    }
+
+    .admin :global(h3) {
+        font-size: 22px;
+    }
+    :global(.control-group) {
+        position: relative;
+    }
+    ul.unstyled li {
+        margin-bottom: 8px;
     }
 </style>

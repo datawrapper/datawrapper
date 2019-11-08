@@ -6,52 +6,34 @@
         <a href="/organization-invite/{team.token}" class="btn btn-primary">accept the invitation</a>
     </div>
     {/each}
-    <div class="row">
-        <div class="span2">
-            {#each groups as group}
-            <div class="group">{ group.title }</div>
-
-            <ul class="nav nav-stacked nav-tabs">
-                {#each group.tabs as tab}
-                <li class:active="activeTab === tab">
-                    <a href="{ tab.url || `/account/${tab.id}` }" on:click="activateTab(tab, event)"
-                        ><i class="{ tab.icon }"></i> &nbsp; { tab.title }
-                    </a>
-                </li>
-                {/each}
-            </ul>
-            {/each}
-        </div>
-        {#if activeTab}
-        <div class="span10 account-page-content tab-{activeTab.id}">
-            <svelte:component this="{activeTab.ui}" {...activeTab.data} />
-        </div>
-        {/if}
-    </div>
+    <NavTabs ref:navTabs groups="{groups}" bind:activeTab />
 </div>
 <script>
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
     import EditProfile from './EditProfile.html';
+    import NavTabs from '../shared/NavTabs.html';
     import MyTeams from './MyTeams.html';
-    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     const EditProfileTab = {
         title: __('account / profile'),
         id: 'profile',
         icon: 'im im-user-settings',
-        ui: EditProfile
+        ui: EditProfile,
+        data: {}
     };
 
     const MyTeamsTab = {
         title: __('account / my-teams'),
         id: 'teams',
         icon: 'im im-users',
-        ui: MyTeams
+        ui: MyTeams,
+        data: {}
     };
 
     export default {
+        components: { NavTabs },
         data() {
             return {
                 hash: 'profile',
@@ -74,43 +56,14 @@
             __,
             truncate
         },
-        methods: {
-            activateTab(tab, event = null) {
-                if (tab.module) {
-                    if (event) event.preventDefault();
-                    Promise.all([loadStylesheet(tab.css), loadScript(tab.js)]).then(() => {
-                        require([tab.module], mod => {
-                            tab.ui = mod.App;
-                            tab.module = null;
-                            const { groups } = this.get();
-                            this.set({
-                                groups,
-                                activeTab: tab
-                            });
-                        });
-                    });
-                    return;
-                }
-                if (tab.ui) {
-                    if (event) event.preventDefault();
-                    if (tab.id === 'teams') {
-                        const { teams, currentTeam, user } = this.get();
-                        tab.data = { teams, currentTeam, user };
-                    } else if (tab.id === 'profile') {
-                        const { email, userId } = this.get();
-                        tab.data = { email, userId };
-                    }
-                    this.set({ activeTab: tab });
-                }
-            }
-        },
+        methods: {},
         oncreate() {
             const path = window.location.pathname.split('/').slice(1);
             const initialTab = path[1] || 'profile';
 
             dw.backend.__svelteApps.account = this;
 
-            const { groups, teams, adminTeams, pages } = this.get();
+            const { email, user, userId, groups, teams, adminTeams, pages, currentTeam } = this.get();
 
             if (pages.length) {
                 groups[0].tabs.push.apply(groups[0].tabs, pages);
@@ -137,19 +90,21 @@
                 this.set({ groups });
             }
 
+            EditProfileTab.data = { email, userId, user };
+            MyTeamsTab.data = { teams, currentTeam, user };
+
             let foundTab = false;
             groups.forEach(group => {
                 group.tabs.forEach(tab => {
                     if (tab.id === initialTab) {
-                        this.activateTab(tab);
+                        this.refs.navTabs.activateTab(tab);
                         foundTab = true;
                     }
                 });
             });
             if (!foundTab) {
                 this.set({
-                    activeTab: EditProfileTab,
-                    wasLookingFor: initialTab
+                    activeTab: EditProfileTab
                 });
             }
         },
@@ -171,35 +126,16 @@
         }
     }
 
-    .group {
-        text-transform: uppercase;
-        padding: 8px;
-        font-weight: bold;
-        font-size: 12px;
-    }
-
-    li.active a {
-        background: #18a1cd;
-        border-color: #18a1cd;
-        color: #fff;
-        font-weight: bold;
-    }
-
-    li i.im {
-        font-size: 14px;
-        position: relative;
-        top: 1px;
-    }
-
-    .span2 .nav a i {
-        width: 15px;
-    }
-
-    .account-page-content {
+    .admin {
         :global(h2) {
+            font-size: 26px;
             border-bottom: 1px solid #eee;
             margin-bottom: 1em;
             padding-bottom: 1ex;
+        }
+
+        :global(h3) {
+            font-size: 22px;
         }
 
         :global(p.help) {

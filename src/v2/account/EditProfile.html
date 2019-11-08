@@ -140,7 +140,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import { getJSON, putJSON, fetchJSON } from '@datawrapper/shared/fetch';
     import checkPassword from '@datawrapper/shared/checkPassword';
-    import FormBlock from '../shared/FormBlock.html';
+    import FormBlock from '@datawrapper/controls/FormBlock.html';
 
     export default {
         components: { FormBlock },
@@ -149,12 +149,19 @@
                 changePassword: false,
                 changeEmail: false,
                 deleteAccount: false,
+                deleteAccount2: false,
+                deleteAccount3: false,
+                deletingAccount: false,
                 showPasswordInPlaintext: false,
                 messages: [],
                 currentPassword: '',
                 newPassword1: '',
                 newPassword2: '',
                 confirmPassword: '',
+                originalEmail: '',
+                savingEmail: false,
+                savingPassword: false,
+                errors: [],
                 groups: [
                     {
                         title: 'Account settings',

@@ -1,8 +1,5 @@
 import App from './App.html';
+import { Store } from 'svelte/store.js';
+const store = new Store({});
 
-const app = new App({
-    target: document.querySelector('#team-settings'),
-    data: {}
-});
-
-export default app;
+export default { App, store };
