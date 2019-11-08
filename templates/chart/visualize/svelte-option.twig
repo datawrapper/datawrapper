@@ -75,11 +75,24 @@ require(['{{ amdPath }}'], function(mod) {
 
             document.querySelector('#{{ type }}-{{ key }}').innerHTML = '';
 
-
             app = mod.app = new App({
                 store: chart,
                 target: document.querySelector('#{{ type }}-{{ key }}'),
                 // data: data
+            });
+
+            // observe changes to old chart object
+            dw.backend.currentChart.onChange(function(ds, changed) {
+                passiveMode = true;
+                var attr = dw.backend.currentChart.attributes();
+                chart.set(attr);
+                // if (changed == 'metadata.data.changes') {
+                //     const dataset = chart.dataset(true);
+                //     chart.set({ dataset });
+                // }
+                setTimeout(function() {
+                    passiveMode = false;
+                }, 100)
             });
         });
     });
@@ -181,7 +194,6 @@ require(['{{ amdPath }}'], function(mod) {
         }
     }
 
-
     window.addEventListener('keypress', function(evt) {
         if (evt.key == 'z' && evt.ctrlKey) {
             var old_pos = historyPos;
@@ -194,21 +206,6 @@ require(['{{ amdPath }}'], function(mod) {
                 historyPos = old_pos;
             }
         }
-    });
-
-
-    // observe changes to old chart object
-    dw.backend.currentChart.onChange(function(ds, changed) {
-        passiveMode = true;
-        var attr = dw.backend.currentChart.attributes();
-        chart.set(attr);
-        // if (changed == 'metadata.data.changes') {
-        //     const dataset = chart.dataset(true);
-        //     chart.set({ dataset });
-        // }
-        setTimeout(function() {
-            passiveMode = false;
-        }, 100)
     });
 })
 </script>
