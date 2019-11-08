@@ -67,7 +67,6 @@
     import Switch from '@datawrapper/controls/Switch.html';
     import Radio from '@datawrapper/controls/Radio.html';
     import { __ } from '@datawrapper/shared/l10n';
-    import storeTeamSettings from '../storeTeamSettings';
 
     export default {
         components: { BaseSelect, Switch, FormBlock, Radio },
@@ -100,11 +99,10 @@
         helpers: { __ },
         onstate({ changed, current, previous }) {
             if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
-                storeTeamSettings(current.team, current.settings, current.defaultTheme).then(() => {
-                    this.fire('change', {
-                        team: current.team,
-                        settings: current.settings
-                    });
+                this.fire('change', {
+                    team: current.team,
+                    settings: current.settings,
+                    defaultTheme: current.defaultTheme
                 });
             }
         }

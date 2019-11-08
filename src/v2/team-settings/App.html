@@ -38,6 +38,7 @@
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
     import Loading from './tabs/Loading.html';
+    import storeTeamSettings from './storeTeamSettings';
 
     const SettingsTab = {
         id: 'settings',
@@ -47,10 +48,7 @@
         order: 10,
         h1: __('teams / defaults / h1'),
         ui: Settings,
-        data: {},
-        onchange({ team }) {
-            app.set({ team });
-        }
+        data: {}
     };
 
     const MembersTab = {
@@ -169,6 +167,9 @@
                         visualizationsArchive,
                         ...tab.data
                     };
+                    tab.onchange = data => {
+                        app.onTabChange(data);
+                    };
                     get(groups, tab.group).tabs.push(tab);
                 });
 
@@ -180,7 +181,17 @@
             }
         },
         helpers: { __, truncate },
-        methods: {},
+        methods: {
+            onTabChange({ team, settings, defaultTheme }) {
+                storeTeamSettings(team, settings, defaultTheme).then(() => {
+                    this.set({
+                        team,
+                        settings,
+                        defaultTheme
+                    });
+                });
+            }
+        },
         oncreate() {
             app = this;
             const path = window.location.pathname.split('/').slice(-1);

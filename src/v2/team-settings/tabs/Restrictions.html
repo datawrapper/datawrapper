@@ -59,7 +59,6 @@
 <script>
     import { Switch, Checkbox } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
-    import storeTeamSettings from '../storeTeamSettings';
 
     export default {
         components: { Switch, Checkbox },
@@ -98,13 +97,12 @@
             });
             this.set({ settings });
         },
-        onstate({ changed, current }) {
-            if (current.settings && changed.settings) {
-                storeTeamSettings(current.team, current.settings, current.defaultTheme).then(() => {
-                    this.fire('change', {
-                        team: current.team,
-                        settings: current.settings
-                    });
+        onstate({ changed, current, previous }) {
+            if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
+                this.fire('change', {
+                    team: current.team,
+                    settings: current.settings,
+                    defaultTheme: current.defaultTheme
                 });
             }
         }

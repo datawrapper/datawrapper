@@ -145,7 +145,8 @@
                 this.set({ settings });
             },
             save() {
-                this.fire('change');
+                const { team, settings, defaultTheme } = this.get();
+                this.fire('change', { team, settings, defaultTheme });
             }
         }
     };
