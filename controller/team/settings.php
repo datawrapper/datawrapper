@@ -128,7 +128,7 @@
 	            'defaultTheme' => $org->getDefaultTheme() ? $org->getDefaultTheme() : $getSystemDefaultTheme(),
 	            'pluginTabs' => $tabs ? $tabs : [],
 	            'settings' => $teamSettings,
-	            'role' => $org->getRole($user)
+	            'role' => $org->hasUser($user) ? $org->getRole($user) : ""
 	        ]
 	    ];
 
