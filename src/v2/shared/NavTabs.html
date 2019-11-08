@@ -5,7 +5,7 @@
 
         <ul class="nav nav-stacked nav-tabs">
             {#each group.tabs as tab}
-            <li class:active="activeTab === tab">
+            <li class:active="activeTab && activeTab.id === tab.id">
                 <a href="{ tab.url || `/account/${tab.id}` }" on:click="activateTab(tab, event)"
                     ><i class="{ tab.icon }"></i> &nbsp; { tab.title }
                 </a>
