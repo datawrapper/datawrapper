@@ -35,7 +35,7 @@
         </FormBlock>
 
         <FormBlock label="{ __('teams / defaults / embedcode' ) }" help="{ __('teams / defaults / embedcode / p' ) }">
-            <Radio bind:value="settings.embed.preferred_embed" options="{embedCodes}" />
+            <Radio label="" bind:value="settings.embed.preferred_embed" options="{embedCodes}" />
         </FormBlock>
 
         {#if settings.embed.preferred_embed == "custom"}
@@ -98,7 +98,7 @@
             }
         },
         helpers: { __ },
-        onstate({ changed, current }) {
+        onstate({ changed, current, previous }) {
             if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
                 storeTeamSettings(current.team, current.settings, current.defaultTheme).then(() => {
                     this.fire('change', {
