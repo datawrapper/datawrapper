@@ -10,6 +10,7 @@
 
         <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
             <Radio
+                label=""
                 bind:value="settings.folders"
                 options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
             />
@@ -61,7 +62,7 @@
     </div>
 </div>
 <script>
-    import FormBlock from '../../shared/FormBlock.html';
+    import FormBlock from '@datawrapper/controls/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
     import Switch from '@datawrapper/controls/Switch.html';
     import Radio from '@datawrapper/controls/Radio.html';

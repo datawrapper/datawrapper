@@ -59,16 +59,17 @@
     </div>
 </div>
 
-{#if loadingUsers}
+{#if awaitLoadingUsers} {#await awaitLoadingUsers}
 <p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
-{:else}
+{:then}
 <UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
-{/if}
+{:catch} error! {/await} {/if}
 
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import UserTable from './members/UserTable.html';
     import InviteUser from './members/InviteUser.html';
+    import fetchAPI from '../fetchAPI';
 
     export default {
         components: {
@@ -77,8 +78,10 @@
         },
         data() {
             return {
-                loadingUsers: true,
-                updatingUsers: false
+                editIndex: 0,
+                updating: false,
+                updatingUsers: false,
+                awaitLoadingUsers: false
             };
         },
         computed: {
@@ -91,16 +94,17 @@
         },
         helpers: { __ },
         methods: {
-            async updateUsers() {
-                const res = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
-                    method: 'GET',
-                    credentials: 'include'
+            updateUsers() {
+                const { team } = this.get();
+                this.set({
+                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members`).then(res => {
+                        this.set({ users: res.list });
+                    })
                 });
-
-                const json = await res.json();
-
-                this.set({ loadingUsers: false, updatingUsers: false, inviteeEmail: '', users: json.list });
             }
+        },
+        oncreate() {
+            this.updateUsers();
         }
     };
 </script>
