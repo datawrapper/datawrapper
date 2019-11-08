@@ -73,7 +73,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             $theme = ThemeQuery::create()->findPk("default");
         }
 
-        $org = $user->getCurrentOrganization();
+        $org = $chart->getOrganization();
         $customFields = [];
         if ($org) $customFields = $org->getSettings("customFields") ?? [];
 

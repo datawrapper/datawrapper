@@ -84,8 +84,8 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'needs_republish' => $chart->getLastEditStep() > 4 &&
                 strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
             'chart' => $chart->toStruct(),
-            'embed_templates' => publish_get_embed_templates(),
-            'embed_type' => publish_get_preferred_embed_type(),
+            'embed_templates' => publish_get_embed_templates($chart->getOrganization()),
+            'embed_type' => publish_get_preferred_embed_type($chart->getOrganization()),
             'shareurl_type' => publish_get_preferred_shareurl_type(),
             'plugin_shareurls' => publish_get_plugin_shareurls(),
             'auto_publish' => !empty($app->request()->params('doit'))

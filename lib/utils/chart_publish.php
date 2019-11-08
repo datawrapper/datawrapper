@@ -285,7 +285,7 @@ function chart_publish_directory() {
     return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 }
 
-function publish_get_embed_templates() {
+function publish_get_embed_templates(O$org) {
     $templates = [];
 
     // responsive iframe
@@ -306,10 +306,6 @@ function publish_get_embed_templates() {
         "template" => '<iframe title="%chart_title%" aria-label="%chart_type%" src="%chart_url%" scrolling="no" frameborder="0" style="border: none;" width="%chart_width%" height="%chart_height%"></iframe>',
     ];
 
-    // add team embed codes
-    $user = Session::getUser();
-    $org = $user->getCurrentOrganization();
-
     if (!empty($org)) {
         $embed = $org->getSettings('embed');
 
@@ -325,9 +321,8 @@ function publish_get_embed_templates() {
  * returns the id of the embed type that is
  * pre-selected on load of the publish step
  */
-function publish_get_preferred_embed_type() {
+function publish_get_preferred_embed_type($org) {
     $user = Session::getUser();
-    $org = $user->getCurrentOrganization();
     if (!empty($org)) {
         $embed = $org->getSettings('embed');
         if (isset($embed["preferred_embed"])) {
