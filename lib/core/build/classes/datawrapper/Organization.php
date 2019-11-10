@@ -101,17 +101,48 @@ class Organization extends BaseOrganization
         return $type;
     }
 
+    /**
+     * the default settings will be extended from to make sure
+     * the settings object is complete
+     */
+    protected function getDefaultSettings() {
+        return [
+            'folders' => 'expanded',
+            'default' => [
+                'folder' => null,
+                'locale' => null
+            ],
+            'embed' => [
+                'preferred_embed' => 'responsive',
+                'custom_embed' => [
+                    'title' => '',
+                    'text' => '',
+                    'template' => ''
+                ]
+            ],
+            'customFields' => [],
+            'disableVisualizations' => [
+                'enabled' => false,
+                'visualizations' => new stdClass(),
+                'allowAdmins' => false
+            ],
+            'restrictDefaultThemes' => false
+        ];
+    }
+
     public function getSettings($key = null) {
+        $default = $this->getDefaultSettings();
         if ($this->settings == null) {
-            return array();
+            return $default;
         }
 
-        $meta = json_decode($this->settings, true);
-        if (!is_array($meta)) $meta = array();
+        $settings = json_decode($this->settings, true);
+        if (!is_array($settings)) $settings = array();
+        $settings = array_replace_recursive($default, $settings);
 
-        if (empty($key)) return $meta;
+        if (empty($key)) return $settings;
         $keys = explode('.', $key);
-        $p = $meta;
+        $p = $settings;
         foreach ($keys as $key) {
             if (isset($p[$key])) $p = $p[$key];
             else return null;

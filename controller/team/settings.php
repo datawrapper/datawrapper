@@ -120,7 +120,6 @@
 	            'user' => $user->serialize(),
 	            'isAdmin' => $user->isAdmin(),
 	            'locales' => $getLocales(),
-	            'settings' => $org->getSettings(),
 	            'themes' => $getThemes($org),
 	            'folders' => $getFolders($org),
 	            'visualizations' => $getVisualizations(),
