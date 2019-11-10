@@ -6,7 +6,7 @@
 
 <div class="settings-section dw-create-visualize chart-editor chart-editor-web admin">
     <div class="visconfig">
-        <NavTabs ref:navTabs groups="{groups}" bind:activeTab>
+        <NavTabs basePath="team/{team.id}" ref:navTabs groups="{groups}" bind:activeTab>
             <div slot="aboveContent">
                 {#if activeTab && activeTab.h1 }
                 <h2>{ @html activeTab.h1 }</h2>

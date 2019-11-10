@@ -6,7 +6,7 @@
         <a href="/organization-invite/{team.token}" class="btn btn-primary">accept the invitation</a>
     </div>
     {/each}
-    <NavTabs ref:navTabs groups="{groups}" bind:activeTab />
+    <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
 </div>
 <script>
     /* globals dw */
