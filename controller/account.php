@@ -25,14 +25,18 @@ call_user_func(function() {
             $user = Session::getUser();
 
             $pages = [];
-            foreach (Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user) as &$page) {
-                if ($page === null) continue;
-                if (!isset($page['order'])) $page['order'] = 999;
-                if (isset($page['data']) && is_callable($page['data'])) {
-                    $page['data'] = $page['data']();
+            $pluginPages = Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user);
+            if (is_array($pluginPages)) {
+                foreach ($pluginPages as &$page) {
+                    if ($page === null) continue;
+                    if (!isset($page['order'])) $page['order'] = 999;
+                    if (isset($page['data']) && is_callable($page['data'])) {
+                        $page['data'] = $page['data']();
+                    }
+                    $pages[] = $page;
                 }
-                $pages[] = $page;
             }
+
             usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
 
             $teams = [];
