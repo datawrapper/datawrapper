@@ -1,6 +1,6 @@
 {
     "name": "datawrapper",
-    "version": "1.24.0",
+    "version": "1.25.0",
     "scripts": {
         "format": "prettier 'src/**/*.{js,html}' --write",
         "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
