@@ -72,6 +72,13 @@ class Organization extends BaseOrganization
         return $this->getUsers($crit);
     }
 
+    public function getActiveUserCount() {
+        return $this->countUsers(UserQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('')
+            ->endUse());
+    }
+
     public function getPendingUsers() {
         $crit = UserQuery::create()
             ->useUserOrganizationQuery()
@@ -79,6 +86,14 @@ class Organization extends BaseOrganization
             ->endUse();
         return $this->getUsers($crit);
     }
+
+    public function getPendingUserCount() {
+        return $this->countUsers(UserQuery::create()
+            ->useUserOrganizationQuery()
+            ->filterByInviteToken('', Criteria::NOT_EQUAL)
+            ->endUse());
+    }
+
 
     public function getType() {
         $type = $this->getSettings('type');
@@ -129,5 +144,11 @@ class Organization extends BaseOrganization
         );
     }
 
+    public function getChartCount() {
+        return ChartQuery::create()
+            ->filterByDeleted(false)
+            ->filterByOrganization($this)
+            ->count();
+    }
 
 }

@@ -12,6 +12,8 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 
 build('fields');
+build('team-settings');
+build('account');
 build('chart-breadcrumb');
 
 export default targets;

@@ -1,0 +1,172 @@
+<p style="margin-bottom: 10px">
+    {@html __('teams / products / p') }
+</p>
+
+{#if isAdmin} {#if loadingTeamProducts || loadingAllProducts}
+<p><i class="fa fa-spin fa-circle-o-notch"></i> &nbsp; {@html __('teams / products / loading') }</p>
+{:else} {#if products.length > 0}
+<ProductTable columnHeaders="{productHeaders}">
+    {#each products as product, i}
+    <tr>
+        <td>
+            { product.id }
+        </td>
+        <td>
+            { product.name }
+        </td>
+        <td>
+            {#if editId === product.id }
+            <input type="text" bind:value="product.expires" />
+            {:else} { product.expires || __('teams / products / never') } {/if}
+        </td>
+        <td>
+            {#if editId === product.id }
+            <button on:click="edit(product.id)" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }</button>
+            {:elseif updating[product.id]}
+            <button disabled class="btn btn-primary"><i class="fa fa-spin fa-circle-o-notch"></i>&nbsp; { __('teams / save' ) }</button>
+            {:else}
+            <button on:click="edit(product.id)" class="btn"><i class="fa fa-edit"></i>&nbsp; { __('teams / edit' ) }</button>
+
+            <button on:click="remove(product)" class="btn"><i class="fa fa-times"></i>&nbsp; { __('teams / remove' ) }</button>
+            {/if}
+        </td>
+    </tr>
+    {/each}
+</ProductTable>
+
+{/if} {#if addableProducts.length }
+<div style="display:flex">
+    <div style="display: block;">
+        <!-- prettier-ignore -->
+        <Select
+                    label="{ __('teams / products / add-product') }"
+                    bind:value="addProduct"
+                    options={addableProducts} />
+    </div>
+
+    {#if addProduct}
+    <div style="display: block;">
+        <button on:click="addProduct()" class="btn btn-primary" style="margin-left: 10px">
+            <i class="fa { addingProduct ? 'fa fa-spin fa-circle-o-notch' : 'fa-plus' }"></i>
+            {@html __('teams / products / add') }
+        </button>
+    </div>
+    {/if}
+</div>
+{/if} {/if} {/if}
+
+<script>
+    /* globals dw */
+    import { Table, Select } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+    import { getJSON, postJSON } from '@datawrapper/shared/fetch';
+
+    export default {
+        components: { ProductTable: Table, Select },
+        data() {
+            return {
+                productHeaders: [
+                    { title: __('teams / products / id'), width: '10%' },
+                    { title: __('teams / products / name'), width: '30%' },
+                    { title: __('teams / products / expires'), width: '30%' },
+                    { title: __('teams / products / actions'), width: '30%' }
+                ],
+                editId: false,
+                updating: {},
+                loadingTeamProducts: true,
+                loadingAllProducts: true
+            };
+        },
+        computed: {
+            addableProducts({ products, allProducts }) {
+                if (!allProducts || !products) return [];
+
+                return allProducts
+                    .filter(el => {
+                        return !products.filter(pr => pr.id === el.id).length;
+                    })
+                    .map(el => {
+                        return {
+                            value: el.id,
+                            label: el.name
+                        };
+                    });
+            }
+        },
+        helpers: {
+            __
+        },
+        methods: {
+            edit(productId) {
+                if (this.get().editId === productId) {
+                    this.set({ editId: false });
+                    this.update(productId);
+                } else {
+                    this.set({
+                        editId: productId
+                    });
+                }
+            },
+            async addProduct() {
+                const { team, addProduct } = this.get();
+
+                this.set({ addingProduct: true });
+
+                await postJSON(
+                    `//${dw.backend.__api_domain}/v3/teams/${team.id}/products`,
+                    JSON.stringify({
+                        productId: addProduct
+                    })
+                );
+
+                await getJSON(`//${dw.backend.__api_domain}/v3/teams/${team.id}/products`, 'include', products => {
+                    this.set({ products: products.list, addingProduct: false });
+                });
+            },
+            async remove(product) {
+                if (!window.confirm('Are you sure you want to remove this product?')) return;
+
+                await this.fetchAPI(`teams/${this.get().team.id}/products/${product.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                var { products } = this.get();
+                products = products.filter(el => el.id !== product.id);
+                this.set({ products });
+            },
+            async update(productId) {
+                var { updating, products } = this.get();
+                const product = products.filter(u => u.id === productId)[0];
+                updating[product.id] = true;
+                this.set({ updating });
+
+                await this.fetchAPI(`teams/${this.get().team.id}/products/${product.id}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        expires: product.expires
+                    })
+                });
+
+                updating = this.get().updating;
+                updating[product.id] = false;
+                this.set({ updating });
+            },
+            fetchAPI(url, opts) {
+                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
+            }
+        },
+        oncreate() {
+            const current = this.get();
+
+            getJSON(`//${dw.backend.__api_domain}/v3/teams/${current.team.id}/products`, 'include', products =>
+                this.set({ loadingTeamProducts: false, products: products.list })
+            );
+
+            getJSON(`//${dw.backend.__api_domain}/v3/products`, 'include', allProducts =>
+                this.set({ loadingAllProducts: false, allProducts: allProducts.list })
+            );
+        }
+    };
+</script>

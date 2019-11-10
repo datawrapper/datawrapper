@@ -375,10 +375,21 @@ html .navbar .navbar-inner .nav > li.icon > a {
   padding: 10px 9px 10px;
   line-height: 26px;
 }
-html .navbar .navbar-inner .nav > li .fa {
+html .navbar .navbar-inner .nav > li .fa,
+html .navbar .navbar-inner .nav > li .im {
   color: #222;
   font-size: 15px;
   margin-right: 2px;
+}
+html .navbar .navbar-inner .nav > li .im {
+  position: relative;
+  top: 2px;
+  font-size: 14px;
+  line-height: 18px;
+}
+html .navbar .navbar-inner .nav > li .no-icon {
+  display: inline;
+  margin-right: 19px;
 }
 html .navbar .navbar-inner .nav > li > a {
   padding-top: 11px;
@@ -414,6 +425,7 @@ html .navbar .navbar-inner .nav .dropdown a.group {
   font-weight: bold;
   text-transform: uppercase;
   pointer-events: none;
+  margin-left: -2px;
 }
 html .navbar .navbar-inner .brand {
   font-weight: 400;
@@ -779,7 +791,7 @@ body.cms-mode .row.create-nav {
 .select-css {
   font-size: 16px;
   font-family: sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   color: #444;
   line-height: 1.3;
   padding: 4px 24px 4px 6px;
@@ -2777,12 +2789,15 @@ body.dw-mycharts div.folders ul > li {
   position: relative;
   margin: 0 0 15px;
 }
-body.dw-mycharts div.folders ul > li > a > .im,
-body.dw-mycharts div.folders ul > li > a > .fa {
+body.dw-mycharts div.folders ul > li > a > .im {
   color: #999;
   position: absolute;
   left: 0px;
   top: 3px;
+}
+body.dw-mycharts div.folders ul > li > a > .fa-check-circle {
+  color: #222;
+  font-size: 15px;
 }
 body.dw-mycharts div.folders ul > li.active > a > .im-folder-open {
   display: inline-block;

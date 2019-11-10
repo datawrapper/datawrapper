@@ -571,7 +571,7 @@ class Chart extends BaseChart {
             $__l10n->loadMessages(DatawrapperSession::getLanguage());
         }
 
-        foreach (publish_get_embed_templates() as $template) {
+        foreach (publish_get_embed_templates($this->getOrganization()) as $template) {
             $code = str_replace($search, $replace, $template['template']);
             $embedcodes['embed-method-'.$template['id']] = $code;
         }

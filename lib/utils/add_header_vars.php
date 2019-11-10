@@ -1,4 +1,5 @@
 <?php
+@require_once ROOT_PATH.'lib/utils/truncate.php';
 
 function add_header_vars(&$page, $active = null, $page_css = null) {
 
@@ -120,7 +121,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $langDropdown = array(
             'url' => '',
             'id' => 'lang',
-            'icon' => 'fa fa-globe',
+            'icon' => 'im im-globe',
             'dropdown' => array(),
             'title' => __('Language'), //strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
             'tooltip' => "&nbsp;" . __('Switch language')
@@ -141,46 +142,66 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     if ($user->isLoggedIn()) {
         $headlinks[] = 'divider';
 
-        $acc = array(
+        $acc = [
             "id" => "account",
             "icon" => "fa fa-bars",
             "dropdown" => [
                 [
                     "id" => "my-account",
-                    'icon' => 'fa fa-lock',
+                    'icon' => 'im im-user-settings',
                     "url" => "/account",
-                    "title" => "&nbsp;" . __('My account')
+                    "title" => __('account / settings')
+                ],[
+                    "id" => "my-account",
+                    'icon' => 'im im-users',
+                    "url" => "/account/teams",
+                    "title" => __('account / my-teams')
                 ]
             ]
-        );
+        ];
+    }
 
+    if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
+
+    if ($user->isLoggedIn()) {
         header_nav_hook($headlinks, 'user');
         header_nav_hook($acc["dropdown"], 'hamburger');
 
         $userOrgs = $user->getActiveOrganizations();
 
-        if (count($userOrgs) > 1) {
-            $acc['dropdown'][] = array(
-                'title' => __('switch-team'),
-                'icon' => "fa fa-users",
-                'dropdown' => []
-            );
+        if (count($userOrgs) > 0) {
+            $acc['dropdown'][] = 'divider';
+            $acc['dropdown'][] = ['group' => true, 'title' => __('nav / select-active-team')];
 
-            // populate the dropdown with one entry per each team
+            $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
+                $team = [
+                    'url' => '#team-activate',
+                    'title' => truncate($org->getName()),
+                    'icon' => ($isActive ? 'fa fa-check-circle' : 'no-icon'),
+                    'data' => [
+                        'id' => $org->getId()
+                    ]
+                ];
+                $dropdown[] = $team;
+            };
+
+            $i = 0;
+            $maxTeamsInDropdown = 10;
             foreach ($userOrgs as $org) {
-                if ($org != $user->getCurrentOrganization()) {
-                    $acc['dropdown'][sizeof($acc['dropdown']) - 1]['dropdown'][] = array(
-                        'url' => '#organization-activate',
-                        'title' => $org->getName(),
-                        'data' => array(
-                            'id' => $org->getId()
-                        )
-                    );
-                }
+                if (++$i > $maxTeamsInDropdown) break;
+                $addToDropdown($acc['dropdown'], $org, $org == $user->getCurrentOrganization());
             }
-        }
+            $acc['dropdown'][] = [
+                'url' => '#team-activate',
+                'title' => __('nav / no-team'),
+                'icon' => (empty($user->getCurrentOrganization()) ? 'fa fa-check-circle' : 'no-icon'),
+                'data' => [
+                    'id' => '@none'
+                ]
+            ];
 
-        if (count($langDropdown['dropdown']) > 1) $acc["dropdown"][] = $langDropdown;
+            $acc['dropdown'][] = 'divider';
+        }
 
         header_nav_hook($headlinks, 'languages');
 
@@ -189,7 +210,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
                 'url' => '#logout',
                 'id' => 'signout',
                 'title' => 'Logout',
-                'icon' => 'fa fa-sign-out',
+                'icon' => 'im im-sign-out',
                 'justicon' => true,
                 'tooltip' => __('Sign out')
             );

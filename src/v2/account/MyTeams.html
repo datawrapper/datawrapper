@@ -1,0 +1,224 @@
+<h2>{@html __("account / my-teams") }</h2>
+
+{#if teams.length}
+<p>{@html __('account / my-teams / your-teams')}</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{__('account / my-teams / name')}</th>
+            {#if user.isAdmin}
+            <th>{__('account / my-teams / id')}</th>
+            {/if}
+            <th>{__('account / my-teams / your-role')}</th>
+            <th>{__('account / my-teams / num-charts')}</th>
+            <th>{__('account / my-teams / num-members')}</th>
+            <th>{__('account / my-teams / leave-team')}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {#each teams as team}
+        <tr class:current="team.id === currentTeam">
+            <td>
+                {#if team.role === 'member'}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings">{truncate(team.name, 20, 10)}</a
+                >{/if} {#if team.id === currentTeam}
+                <i class="fa fa-check-circle"></i>
+                {/if}
+            </td>
+            {#if user.isAdmin}
+            <td class="slug">{team.id}</td>
+            {/if}
+            <td>{@html __('teams / role / '+team.role)}</td>
+            <td><a href="/team/{team.id}">{team.charts}</a></td>
+            <td>
+                {#if team.role === 'member'} {team.members} {:else}
+                <a href="/team/{team.id}/settings#members">{team.members}</a> {#if team.invites}<span class="invites">(+{team.invites})</span>{/if}
+                {/if}
+            </td>
+
+            <td>
+                {#if team.role !== 'owner'}
+                <button on:click="leaveTeam(team)" class="btn btn-small">
+                    <i class="fa fa-sign-out"></i> {__('account / my-teams / leave-team')}
+                </button>
+                {:else}
+                <a href="/team/{team.id}/settings#deleteTeam" class="btn btn-small btn-danger"
+                    ><i class="fa fa-trash"></i> {__('account / my-teams / delete-team')}</a
+                >
+                {/if}
+            </td>
+        </tr>
+        {/each}
+    </tbody>
+</table>
+
+{:else}
+<p>{@html __('account / my-teams / no-teams-yet')}</p>
+{/if}
+
+<div class="row">
+    {#if user.isAdmin}
+    <div class="span5">
+        <h3>{@html __('account / my-teams / create')}</h3>
+        {#if !createTeam}
+        <div class="hed">
+            <p>
+                {@html __('account / my-teams / why-teams')}
+            </p>
+            <button on:click="set({createTeam:true})" class="btn btn-large" class:btn-primary="!teams.length">
+                <i class="fa fa-plus fa-fw"></i> {@html __('account / my-teams / create-btn')}
+            </button>
+        </div>
+        {:else}
+        <p>
+            { @html __('team-create / p') }
+        </p>
+
+        <FormBlock label="{ __('team-create / name') }" help="{ __('team-create / help') }">
+            <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" maxlength="{user.isAdmin ? 80 : 50}" />
+        </FormBlock>
+        {#if user.isAdmin}
+        <FormBlock label="{ __('team-create / slug') }" help="{ __('team-create / slug-help') }">
+            <input type="text" placeholder="{autoslug}" bind:value="newTeamSlug" />
+        </FormBlock>
+        {/if}
+
+        <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
+            {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
+            >{:catch}{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
+        </button>
+        <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
+        {/if}
+    </div>
+    {/if} {#if teams.length > 0}
+    <div class="span5">
+        <h3>{@html __('account / my-teams / select-active')}</h3>
+        <p>{@html __('account / my-teams / what-is-active')}</p>
+        <FormBlock width="350px" help="{__('account / my-teams / active-hint')}">
+            <div class="flex">
+                <!-- prettier-ignore -->
+                <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
+                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
+                {:then} {:catch}{/await} {/if}
+            </div>
+        </FormBlock>
+    </div>
+    {/if}
+</div>
+
+<script>
+    /* globals dw */
+    import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
+    import Text from '@datawrapper/controls/Text.html';
+    import FormBlock from '@datawrapper/controls/FormBlock.html';
+    import BaseSelect from '@datawrapper/controls/BaseSelect.html';
+    import { patchJSON, postJSON, deleteJSON } from '@datawrapper/shared/fetch';
+    let initialCurrentTeam = null;
+
+    export default {
+        components: { FormBlock, BaseSelect, Text },
+        data() {
+            return {
+                teams: [],
+                awaitActiveTeam: null,
+                awaitCreateTeam: null,
+                currentTeam: '',
+                createTeam: false,
+                newTeamName: '',
+                newTeamSlug: ''
+            };
+        },
+        computed: {
+            teamOptions({ teams }) {
+                return teams
+                    .map(({ id, name }) => ({
+                        value: id,
+                        label: name
+                    }))
+                    .concat({
+                        value: null,
+                        label: __('nav / no-team')
+                    });
+            },
+            autoslug({ newTeamName }) {
+                return newTeamName.toLowerCase().replace(/\W/g, '');
+            }
+        },
+        helpers: { __, truncate },
+        methods: {
+            createTeam(name, slug) {
+                const { user } = this.get();
+                const payload = { name };
+                if (user.isAdmin && slug) {
+                    payload.id = String(slug)
+                        .trim()
+                        .toLowerCase();
+                }
+                this.set({
+                    awaitCreateTeam: postJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams`, JSON.stringify(payload)).then(
+                        team => {
+                            window.location.href = `/team/${team.id}/settings`;
+                        }
+                    )
+                });
+            },
+            leaveTeam(team) {
+                const { user, teams } = this.get();
+                if (window.confirm(__('account / my-teams / leave-team / confirm').replace('%team%', team.name))) {
+                    deleteJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams/${team.id}/members/${user.id}`)
+                        .then(res => {
+                            window.alert(__('account / my-teams / leave-team / done'));
+                            teams.splice(teams.findIndex(t => t.id === team.id), 1);
+                            this.set({ teams });
+                        })
+                        .catch(error => {
+                            window.alert('There was a problem with your request. Please contact support@datawrapper.de');
+                            console.error(error);
+                        });
+                }
+            }
+        },
+        onstate({ changed, current }) {
+            if (changed.currentTeam && current.currentTeam !== undefined) {
+                if (!initialCurrentTeam) initialCurrentTeam = current.currentTeam;
+                else if (current.currentTeam !== initialCurrentTeam) {
+                    initialCurrentTeam = current.currentTeam;
+                    this.set({
+                        awaitActiveTeam: patchJSON(
+                            `${window.location.protocol}//${dw.backend.__api_domain}/v3/me/settings`,
+                            JSON.stringify({
+                                activeTeam: current.currentTeam || null
+                            })
+                        )
+                    });
+                }
+            }
+        }
+    };
+</script>
+
+<style type="text/css">
+    .hed {
+        margin-bottom: 20px;
+    }
+    p.mini-help {
+        font-size: 12px;
+        color: #a8a8a8;
+        font-style: italic;
+        line-height: 1.2;
+    }
+    h3 {
+        margin-top: 2em;
+    }
+    .current .name {
+        font-weight: bold;
+    }
+    .slug {
+        font-family: Roboto Mono;
+        color: #888;
+    }
+    .invites {
+        color: #888;
+    }
+</style>

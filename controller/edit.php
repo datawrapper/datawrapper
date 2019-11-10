@@ -123,13 +123,13 @@
             }
 
             $publishData = (object) [
-                'embedTemplates' => publish_get_embed_templates(),
-                'embedType' => publish_get_preferred_embed_type(),
+                'embedTemplates' => publish_get_embed_templates($chart->getOrganization()),
+                'embedType' => publish_get_preferred_embed_type($chart->getOrganization()),
                 'pluginShareurls' => publish_get_plugin_shareurls(),
                 'shareurlType' => publish_get_preferred_shareurl_type()
             ];
 
-            $org = $user->getCurrentOrganization();
+            $org = $chart->getOrganization();
             $customFields = [];
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];

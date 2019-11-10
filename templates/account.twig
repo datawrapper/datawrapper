@@ -2,12 +2,6 @@
 
 {% block content %}
 
-<style type="text/css">
-hr {
-  margin: 30px 0px;
-}
-</style>
-
-{{ hook('render_account_pages') }}
+{{ svelte("account", svelte_data) }}
 
 {% endblock %}

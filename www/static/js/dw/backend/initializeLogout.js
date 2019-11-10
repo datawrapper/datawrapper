@@ -15,10 +15,33 @@ define(function() {
             return false;
         });
 
-        $('a[href=#organization-activate]').click(function(e) {
+        $('a[href=#team-activate]').click(function(e) {
             e.preventDefault();
             $.ajax({
                 url: '/team/' + $(e.target).data('id') + '/activate',
+                method: 'PUT',
+                dataType: 'json'
+            }).done(function(res) {
+                if (res.status == 'ok') {
+                    location.reload();
+                }
+            });
+        });
+
+        $('a[href=#team-leave]').click(function(e) {
+            if (
+                !window.confirm(
+                    'Are you sure you want to leave the team ' +
+                        $(e.target).data('title') +
+                        '? Leaving a team is permanent and cannot be undone by you. You will lose ' +
+                        "access to the team's charts and products."
+                )
+            )
+                return;
+
+            e.preventDefault();
+            $.ajax({
+                url: '/team/' + $(e.target).data('id') + '/leave',
                 method: 'PUT',
                 dataType: 'json'
             }).done(function(res) {

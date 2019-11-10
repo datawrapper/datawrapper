@@ -111,10 +111,13 @@ class User extends BaseUser {
      */
     public function getCurrentOrganization() {
         $organizations = $this->getActiveOrganizations();
+        $userData = $this->getUserData();
         if (count($organizations) < 1) return null;
-        if (!empty($_SESSION['dw-user-organization'])) {
+        $value = $userData['active_team'] ?? $_SESSION['dw-user-organization'] ?? false;
+        if (!empty($value)) {
+            if ($value === '%none%') return null;
             foreach ($organizations as $org) {
-                if ($org->getId() == $_SESSION['dw-user-organization']) {
+                if ($org->getId() == $value) {
                     return $org;
                 }
             }
@@ -238,6 +241,7 @@ class User extends BaseUser {
      */
     public function getActiveOrganizations() {
         $crit = OrganizationQuery::create()
+            ->orderByName()
             ->filterByDisabled(0)
             ->useUserOrganizationQuery()
             ->filterByInviteToken('')
@@ -282,7 +286,7 @@ class User extends BaseUser {
             $values[] = '('.implode(',', [$this->getId(), $pdo->quote($key), $pdo->quote($value)]).')';
         }
         $sql = 'INSERT INTO user_data (user_id, `key`, `value`) VALUES '.implode(', ', $values).
-            ' ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)';
+            ' ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), stored_at =  CURRENT_TIMESTAMP';
         $pdo->query($sql);
         $this->userData = $data;
     }

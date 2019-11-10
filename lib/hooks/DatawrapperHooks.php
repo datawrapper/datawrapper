@@ -274,6 +274,8 @@ class DatawrapperHooks {
     const CORE_SET_CHART = 'core_set_chart';
 
     const PLUGIN_ACTION = 'plugin_action';
+
+    const TEAM_SETTINGS_PAGE = 'team_settings_page';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');

@@ -4,87 +4,76 @@ require_once ROOT_PATH . 'controller/account/activate.php';
 require_once ROOT_PATH . 'controller/account/set-password.php';
 require_once ROOT_PATH . 'controller/account/reset-password.php';
 
+require_once ROOT_PATH . 'controller/team/activate.php';
+require_once ROOT_PATH . 'controller/team/create.php';
+require_once ROOT_PATH . 'controller/team/invites.php';
+require_once ROOT_PATH . 'controller/team/leave.php';
+require_once ROOT_PATH . 'controller/team/settings.php';
+
 call_user_func(function() {
     global $app;
-
-    Hooks::register(
-        Hooks::GET_ACCOUNT_PAGES, function() {
-        return array(
-            'order' => 100,
-            'controller' => function ($app, $user) {
-              return function() use ($app, $user) {
-                $app->render('account/edit-profile.twig', array(
-                    "svelte_data" => [
-                        "email" => $user->getEmail(),
-                        "userId" => $user->getId()
-                    ]
-                ));
-              };
-            }
-        );
-    });
-
-    Hooks::register(
-        'render_account_pages',
-        function () use ($app) {
-            $user = Session::getUser();
-
-            $context = array(
-                "user" => $user
-            );
-
-            $pages = Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user);
-
-            foreach ($pages as $page) {
-                if (!isset($page['order'])) $page['order'] = 999;
-            }
-
-
-            usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
-
-
-            foreach($pages as $page) {
-                call_user_func_array($page['controller']($app, $user), func_get_args());
-            }
-        }
-    );
 
     // redirect to settings
     $app->get('/settings/?', function() use ($app) {
         $app->redirect('/account');
     });
 
-    $app->get('/account', function() use ($app) {
+    $app->get('/account(/:tab)?', function($tab = null) use ($app) {
         disable_cache($app);
 
         if (Session::isLoggedIn()) {
             $user = Session::getUser();
 
-            $context = array(
-                "user" => $user
-            );
-
-            add_header_vars($page, 'account');
-
-            $app->render('account.twig', $page);
-        }
-    });
-
-    $app->put('/team/:org_id/activate', function($org_id) use ($app) {
-        disable_cache($app);
-        $user = DatawrapperSession::getUser();
-        $orgs = $user->getActiveOrganizations();
-        foreach ($orgs as $org) {
-            if ($org->getId() == $org_id) {
-                $_SESSION['dw-user-organization'] = $org_id;
-                print json_encode(array('status' => 'ok'));
-                return;
+            $pages = [];
+            foreach (Hooks::execute(Hooks::GET_ACCOUNT_PAGES, $user) as &$page) {
+                if ($page === null) continue;
+                if (!isset($page['order'])) $page['order'] = 999;
+                if (isset($page['data']) && is_callable($page['data'])) {
+                    $page['data'] = $page['data']();
+                }
+                $pages[] = $page;
             }
+            usort($pages, function($a, $b) { return $a['order'] - $b['order']; });
+
+            $teams = [];
+            $adminTeams = [];
+            foreach ($user->getActiveOrganizations() as $team) {
+                $teams[] = [
+                    'id' => $team->getId(),
+                    'name' => $team->getName(),
+                    'role' => $team->getRole($user),
+                    'charts' => $team->getChartCount(),
+                    'members' => $team->getActiveUserCount(),
+                    'invites' => $team->getPendingUserCount()
+                ];
+                if ($user->canAdministrateTeam($team)) {
+                    $adminTeams[] = $team->toArray();
+                }
+            }
+            $current = $user->getCurrentOrganization();
+            $invitations = [];
+            foreach ($user->getPendingOrganizations() as $team) {
+                $invite = $team->serialize();
+                $invite['token'] = UserOrganizationQuery::create()->filterByUser($user)->filterByOrganization($team)->findOne()->getInviteToken();
+                $invitations[] = $invite;
+            }
+            $context = [
+                'svelte_data' => [
+                    "user" => $user->serialize(),
+                    "email" => $user->getEmail(),
+                    "userId" => $user->getId(),
+                    'currentTeam' => $current ? $current->getId() : null,
+                    'teams' => $teams,
+                    'adminTeams' => $adminTeams,
+                    'pages' => $pages,
+                    'invitations' => $invitations
+                ]
+            ];
+
+            add_header_vars($context, 'account');
+            $app->render('account.twig', $context);
         }
-        print json_encode(array(
-            'status' => 'error',
-            'message'=> __('Organization not found')
-        ));
     });
 
 });
+

@@ -66,7 +66,7 @@ function nbChartsByStatus($id, $is_org, $folder_id) {
     );
 }
 
-function mycharts_list_organizations($user) {
+function mycharts_list_organizations($user, $org_id = false) {
     $user_id = $user->getId();
     $organizations = $user->getActiveOrganizations();
     $current_org = $user->getCurrentOrganization();
@@ -83,12 +83,18 @@ function mycharts_list_organizations($user) {
         }
     }
 
-    uasort($orgs, function($a, $b) use ($current_org) {
-        if ($a->id == $current_org) return -1;
-        if ($b->id == $current_org) return 1;
+    uasort($orgs, function($a, $b) use ($org_id) {
+        if ($a->id == $org_id) return -1;
+        if ($b->id == $org_id) return 1;
         if ($a->name == $b->name) return 0;
         return ($a->name < $b->name) ? -1 : 1;
     });
+
+    $mycharts = new stdClass();
+    $mycharts->id = 'my charts';
+
+    if ($org_id) $orgs[] = $mycharts;
+    else array_unshift($orgs, $mycharts);
 
     return $orgs;
 }
@@ -425,21 +431,24 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
                 break;
             }
         }
+        $title = $org_id ? OrganizationQuery::create()->findPk($org_id)->getName().' | '.__('Team Charts') : __('My Charts');
         $page = [
-            'title' => __('My Charts'),
+            'title' => $title,
             'pageClass' => 'dw-mycharts',
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
-            'organizations' => mycharts_list_organizations($user),
+            'organizations' => mycharts_list_organizations($user, $org_id),
             'preload' => $folders,
             'hasFolders' => $hasFolders
         ];
     }
 
-    $orgs = mycharts_list_organizations($user);
+    $orgs = mycharts_list_organizations($user, $org_id);
     $page['organization_settings'] = [];
     foreach ($orgs as $org) {
-        $page['organization_settings'][$org->id] = $org->settings;
+        if ($org->id != 'my charts') {
+            $page['organization_settings'][$org->id] = $org->settings;
+        }
     }
 
     $con = Propel::getConnection();
