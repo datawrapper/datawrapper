@@ -285,7 +285,7 @@ function chart_publish_directory() {
     return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 }
 
-function publish_get_embed_templates(O$org) {
+function publish_get_embed_templates($org) {
     $templates = [];
 
     // responsive iframe
