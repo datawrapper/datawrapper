@@ -420,6 +420,8 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
     $is_xhr = !empty($app->request()->params('xhr'));
     $q = $app->request()->params('q');
 
+    $orgs = mycharts_list_organizations($user, $org_id);
+
     if ($is_xhr) {
         $page = [];
     } else {
@@ -437,13 +439,13 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'pageClass' => 'dw-mycharts',
             'search_query' => empty($q) ? '' : $q,
             'mycharts_base' => '/mycharts',
-            'organizations' => mycharts_list_organizations($user, $org_id),
+            'organizations' => $orgs,
             'preload' => $folders,
-            'hasFolders' => $hasFolders
+            'hasFolders' => $hasFolders,
+            'hasTeams' => !empty($orgs)
         ];
     }
 
-    $orgs = mycharts_list_organizations($user, $org_id);
     $page['organization_settings'] = [];
     foreach ($orgs as $org) {
         if ($org->id != 'my charts') {
