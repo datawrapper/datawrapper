@@ -70,10 +70,8 @@
                 this.set({ groups });
             }
 
-            if (teams.length) {
-                groups[0].tabs.splice(1, 0, MyTeamsTab);
-                this.set({ groups });
-            }
+            groups[0].tabs.splice(1, 0, MyTeamsTab);
+            this.set({ groups });
 
             if (adminTeams.length) {
                 groups.push({

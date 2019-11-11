@@ -7,9 +7,7 @@
     <thead>
         <tr>
             <th>{__('account / my-teams / name')}</th>
-            {#if user.isAdmin}
             <th>{__('account / my-teams / id')}</th>
-            {/if}
             <th>{__('account / my-teams / your-role')}</th>
             <th>{__('account / my-teams / num-charts')}</th>
             <th>{__('account / my-teams / num-members')}</th>
@@ -42,7 +40,7 @@
                     <i class="fa fa-sign-out"></i> {__('account / my-teams / leave-team')}
                 </button>
                 {:else}
-                <a href="/team/{team.id}/settings#deleteTeam" class="btn btn-small btn-danger"
+                <a href="/team/{team.id}/delete" class="btn btn-small btn-danger"
                     ><i class="fa fa-trash"></i> {__('account / my-teams / delete-team')}</a
                 >
                 {/if}
@@ -57,7 +55,6 @@
 {/if}
 
 <div class="row">
-    {#if user.isAdmin}
     <div class="span5">
         <h3>{@html __('account / my-teams / create')}</h3>
         {#if !createTeam}
@@ -85,12 +82,13 @@
 
         <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
             {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
-            >{:catch}{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
+            >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create /
+            button') }
         </button>
         <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
         {/if}
     </div>
-    {/if} {#if teams.length > 0}
+    {#if teams.length > 0}
     <div class="span5">
         <h3>{@html __('account / my-teams / select-active')}</h3>
         <p>{@html __('account / my-teams / what-is-active')}</p>
@@ -98,8 +96,8 @@
             <div class="flex">
                 <!-- prettier-ignore -->
                 <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
-                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
-                {:then} {:catch}{/await} {/if}
+                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
+                >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await} {/if}
             </div>
         </FormBlock>
     </div>
@@ -110,14 +108,13 @@
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
-    import Text from '@datawrapper/controls/Text.html';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
     import { patchJSON, postJSON, deleteJSON } from '@datawrapper/shared/fetch';
     let initialCurrentTeam = null;
 
     export default {
-        components: { FormBlock, BaseSelect, Text },
+        components: { FormBlock, BaseSelect },
         data() {
             return {
                 teams: [],
