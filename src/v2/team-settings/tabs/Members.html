@@ -97,7 +97,7 @@
             updateUsers() {
                 const { team } = this.get();
                 this.set({
-                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members`).then(res => {
+                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members?limit=1000`).then(res => {
                         this.set({ users: res.list });
                     })
                 });
