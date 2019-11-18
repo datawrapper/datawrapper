@@ -133,11 +133,11 @@ class Organization extends BaseOrganization
     public function getSettings($key = null) {
         $default = $this->getDefaultSettings();
         if ($this->settings == null) {
-            return $default;
+            $settings = [];
+        } else {
+            $settings = json_decode($this->settings, true);
+            if (!is_array($settings)) $settings = array();
         }
-
-        $settings = json_decode($this->settings, true);
-        if (!is_array($settings)) $settings = array();
         $settings = array_replace_recursive($default, $settings);
 
         if (empty($key)) return $settings;
