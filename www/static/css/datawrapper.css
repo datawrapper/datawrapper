@@ -1287,7 +1287,7 @@ body.cms-mode .row.create-nav {
   height: 23px;
   margin: 0 2px 2px 0;
   border-radius: 1px;
-  box-sizing:border-box;
+  box-sizing: border-box;
 }
 .color-selector .color {
   cursor: pointer;
@@ -2382,12 +2382,6 @@ input[type="color"],
   border-radius: 4px;
   box-shadow: 3px 2px 2px rgba(0, 0, 0, 0.1);
   z-index: 10000;
-}
-.dw-create-publish .publish-step .block .help .content:after {
-  content: '?';
-  position: absolute;
-  top: 8px;
-  right: 8px;
 }
 .dw-create-publish .publish-step .block .help:hover .content {
   display: block;
