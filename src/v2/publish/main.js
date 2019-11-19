@@ -1,5 +1,5 @@
 /* eslint camelcase: "off" */
-import App from '../publish/App.html';
+import App from './App.html';
 
 import { Store } from 'svelte/store.js';
 const store = new Store({});
