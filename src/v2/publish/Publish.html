@@ -241,13 +241,14 @@
 
 <script>
     /* eslint camelcase: "off" */
+    import Help from '@datawrapper/controls/Help.html';
 
-    import Help from '../editor/Help.html';
+    import { __ } from '@datawrapper/shared/l10n';
+    import { trackEvent } from '@datawrapper/shared/analytics';
+    import { getJSON, postJSON, loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+
     import Action from './Action.html';
 
-    import { __ } from '../shared/l10n';
-    import { trackEvent } from '../shared/analytics';
-    import { getJSON, postJSON, loadScript, loadStylesheet } from '../shared/utils';
     import computeEmbedHeights from './compute-embed-heights';
 
     let fakeProgress = 0;
