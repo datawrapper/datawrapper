@@ -35,29 +35,28 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     $user = DatawrapperSession::getUser();
     $headlinks = array();
-    if ($user->isLoggedIn()) {
-        $visualizations = DatawrapperVisualization::all();
-        $canCreateCharts = false;
 
-        foreach ($visualizations as $vis) {
-            if ((!isset($vis['namespace']) || $vis['namespace'] == 'chart')
-                && ($user->canCreateVisualization($vis['id']))) {
+    $visualizations = DatawrapperVisualization::all();
+    $canCreateCharts = false;
 
-                if ((!isset($config['vis_archive']) || !in_array($vis['id'], $config['vis_archive'])) && !empty($vis['title'])) {
-                    $canCreateCharts = true;
-                    break;
-                }
+    foreach ($visualizations as $vis) {
+        if ((!isset($vis['namespace']) || $vis['namespace'] == 'chart')
+            && ($user->canCreateVisualization($vis['id']))) {
+
+            if ((!isset($config['vis_archive']) || !in_array($vis['id'], $config['vis_archive'])) && !empty($vis['title'])) {
+                $canCreateCharts = true;
+                break;
             }
         }
+    }
 
-        if ($canCreateCharts) {
-            $headlinks[] = array(
-                'url' => '/chart/create',
-                'id' => 'chart',
-                'title' => __('New Chart'),
-                'icon' => 'fa fa-plus'
-            );
-        }
+    if ($canCreateCharts) {
+        $headlinks[] = array(
+            'url' => '/chart/create',
+            'id' => 'chart',
+            'title' => __('New Chart'),
+            'icon' => 'fa fa-plus'
+        );
     }
 
     header_nav_hook($headlinks, 'create');
