@@ -224,8 +224,12 @@ class User extends BaseUser {
                 UserOrganizationPeer::ORGANIZATION_ROLE_OWNER));
     }
 
-    public function canCreateVisualization($visId) {
-        $org = $this->getCurrentOrganization();
+    public function canCreateVisualization($visId, $chart = null) {
+        if (is_null($chart)) {
+            $org = $this->getCurrentOrganization();
+        } else {
+            $org = $chart->getOrganization();
+        }
 
         if (!$org) return true;
         if ($org->getSettings("disableVisualizations.enabled") !== true) return true;
