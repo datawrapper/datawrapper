@@ -208,7 +208,7 @@
                         {% endif %}
 
                         {% if theme.getThemeData('options.footer.logo.position') == "left" and theme.getThemeData('options.footer.logo.enabled') and theme.getThemeData('options.footer.logo.text') %}
-                            <div class="logo-text"> <span class="logo-text">{{ theme.getThemeData('options.footer.logo.text')}} </span></div>
+                            <div class="logo-text"> <span class="export-text logo-text">{{ theme.getThemeData('options.footer.logo.text')}} </span></div>
                         {% endif %}
                     {% endblock %}
                 {% endif %}
@@ -223,7 +223,7 @@
                         <img height="{{ theme.getThemeData('options.footer.logo.height') }}" src="{{ theme.getThemeData('options.footer.logo.url') }}">
                     {% endif %}
                     {% if theme.getThemeData('options.footer.logo.text') %}
-                        <span class="logo-text"> {{ theme.getThemeData('options.footer.logo.text')}} </span>
+                        <span class="export-text logo-text"> {{ theme.getThemeData('options.footer.logo.text')}} </span>
                     {% endif %}
                 {% endif %}
             </div>
