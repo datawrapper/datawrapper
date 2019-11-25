@@ -1,3 +1,4 @@
+/* globals dw */
 import { Store } from 'svelte/store.js';
 
 import _ from 'underscore';
@@ -9,12 +10,12 @@ import applyChanges from './dataset/applyChanges.js';
 import addComputedColumns from './dataset/addComputedColumns.js';
 import loadGlobalizeLocale from './locale/loadGlobalizeLocale.js';
 
-import { putJSON } from '../shared/utils.js';
+import { patchJSON, putJSON } from '../shared/utils.js';
 import { observeDeep } from 'svelte-extras';
 
 const storeChanges = _.debounce((chart, callback) => {
     const state = chart.serialize();
-    putJSON(`/api/2/charts/${state.id}`, JSON.stringify(state), () => {
+    patchJSON(`//${dw.backend.__api_domain}/v3/charts/${state.id}`, JSON.stringify(state), () => {
         if (callback) callback();
     });
 }, 1000);
