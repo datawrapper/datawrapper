@@ -327,6 +327,16 @@ dw.column.types.date = (function() {
             parse: reg(rx.W.parse, s1, rx.YYYY.parse),
             precision: 'week'
         },
+        'MM/DD/YY': {
+            test: reg(rx.MM.test, '([\\-\\/])', rx.DD.test, '\\2', rx.YY.test),
+            parse: reg(rx.MM.parse, '([\\-\\/])', rx.DD.parse, '\\2', rx.YY.parse),
+            precision: 'day'
+        },
+        'DD/MM/YY': {
+            test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.YY.test),
+            parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.YY.parse),
+            precision: 'day'
+        },
         'MM/DD/YYYY': {
             test: reg(rx.MM.test, '([\\-\\/])', rx.DD.test, '\\2', rx.YYYY.test),
             parse: reg(rx.MM.parse, '([\\-\\/])', rx.DD.parse, '\\2', rx.YYYY.parse),
@@ -524,6 +534,10 @@ dw.column.types.date = (function() {
                         return new Date(guessTwoDigitYear(m[4]), MMM_key[m[3]], m[1]);
                     case 'MM/DD/YYYY':
                         return new Date(m[4], m[1] - 1, m[3]);
+                    case 'MM/DD/YY':
+                        return new Date(guessTwoDigitYear(m[4]), m[1] - 1, m[3]);
+                    case 'DD/MM/YY':
+                        return new Date(guessTwoDigitYear(m[4]), m[3] - 1, m[1]);
                     case 'MMM-DD-YYYY':
                         return new Date(m[3], MMM_key[m[1]], m[2]);
 
