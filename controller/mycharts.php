@@ -442,7 +442,7 @@ function any_charts($app, $user, $folder_id = false, $org_id = false) {
             'organizations' => $orgs,
             'preload' => $folders,
             'hasFolders' => $hasFolders,
-            'hasTeams' => !empty($orgs)
+            'hasTeams' => count($orgs) > 1
         ];
     }
 
