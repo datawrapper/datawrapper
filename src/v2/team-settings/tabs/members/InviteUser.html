@@ -1,4 +1,4 @@
-<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}">
+<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}" success="{successMessage}">
     <div class="flex">
         <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
         <DropdownMenu
@@ -19,10 +19,23 @@
         data() {
             return {
                 inviteeEmail: '',
-                updatingUsers: false
+                updatingUsers: false,
+                currentAction: {
+                    isComplete: false,
+                    type: '',
+                    role: ''
+                }
             };
         },
         computed: {
+            successMessage({ inviteeEmail, currentAction }) {
+                const { isComplete, type, role } = currentAction;
+                if (!isComplete) return;
+
+                const message = __(`teams / invite-user / ${type} / success`);
+                return message.replace('$1', inviteeEmail)
+                                .replace('$2', __(`teams / role / ${role}`));
+            },
             isValidEmail({ inviteeEmail }) {
                 return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                     inviteeEmail
@@ -105,6 +118,13 @@
                     })
                 });
 
+                const currentAction = {
+                    isComplete: true,
+                    type: 'add',
+                    role
+                }
+
+                this.set({ updatingUsers: false, currentAction });
                 this.fire('updateUsers');
             },
             async inviteUser(role) {
@@ -121,6 +141,13 @@
                     })
                 });
 
+                const currentAction = {
+                    isComplete: true,
+                    type: 'invite',
+                    role
+                }
+
+                this.set({ updatingUsers: false, currentAction });
                 this.fire('updateUsers');
             },
             async debounceCheckUser() {
