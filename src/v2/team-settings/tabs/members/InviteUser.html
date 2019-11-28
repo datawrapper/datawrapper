@@ -107,7 +107,7 @@
                 const { inviteeExists, inviteeUserId } = this.get();
                 if (!inviteeExists) return;
 
-                this.set({ updatingUsers: true });
+                this.set({ updatingUsers: true, currentAction: { isComplete: false } });
 
                 await this.fetchAPI(`teams/${this.get().team.id}/members`, {
                     method: 'POST',
@@ -130,7 +130,7 @@
             async inviteUser(role) {
                 const { inviteeEmail } = this.get();
 
-                this.set({ updatingUsers: true });
+                this.set({ updatingUsers: true, currentAction: { isComplete: false } });
 
                 await this.fetchAPI(`teams/${this.get().team.id}/invites`, {
                     method: 'POST',
