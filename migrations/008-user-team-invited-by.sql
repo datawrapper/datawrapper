@@ -2,7 +2,7 @@
 
 -- Up
 ALTER TABLE user_organization ADD `invited_by` INTEGER NULL;
-ALTER TABLE user_organization ADD `invited_at` DATETIME NOT NULL;
+ALTER TABLE user_organization ADD `invited_at` DATETIME NULL;
 
 ALTER TABLE user_organization ADD CONSTRAINT user_organization_FK_3
     FOREIGN KEY (invited_by) REFERENCES `user`(id) ON DELETE SET NULL ON UPDATE CASCADE;
