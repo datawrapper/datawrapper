@@ -267,6 +267,8 @@
   "teams / invite-user / help": "An invitation e-mail will be sent to this address.",
   "teams / invite-user / invite / success": "You just invited $1 as a $2. They will find an email in their inbox.",
   "teams / invite-user / add / success": "You just added $1 as a $2.",
+  "teams / invite-user / invite / error": "$1 could not be invited.",
+  "teams / invite-user / add / error": "$1 could not be added.",
   "teams / invite-user / eg": "e.g. john.doe@company.com",
   "teams / invite": "Invite as…",
   "teams / role / member": "Team member",
