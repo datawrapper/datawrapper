@@ -34,8 +34,7 @@
                 if (!isComplete || isError) return;
 
                 const message = __(`teams / invite-user / ${type} / success`);
-                return message.replace('$1', inviteeEmail)
-                                .replace('$2', __(`teams / role / ${role}`));
+                return message.replace('$1', inviteeEmail).replace('$2', __(`teams / role / ${role}`));
             },
             errorMessage({ inviteeEmail, currentAction }) {
                 const { isComplete, isError, type } = currentAction;
@@ -131,7 +130,7 @@
                     isError: !response.ok,
                     type: 'add',
                     role
-                }
+                };
 
                 this.set({ updatingUsers: false, currentAction });
                 this.fire('updateUsers');
@@ -155,7 +154,7 @@
                     isError: !response.ok,
                     type: 'invite',
                     role
-                }
+                };
 
                 this.set({ updatingUsers: false, currentAction });
                 this.fire('updateUsers');
