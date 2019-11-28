@@ -124,7 +124,7 @@ define(function() {
                 }
 
                 __dw.vis.chart().attributes(attrs);
-                __dw.old_attrs = $.extend(true, {}, attrs);
+                __dw.old_attrs = JSON.parse(JSON.stringify(attrs));
                 // update dataset to reflect changes
                 __dw.vis.chart().load(__dw.params.data);
 
