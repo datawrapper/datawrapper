@@ -21,6 +21,9 @@ UPDATE user_organization a
     SET a.invited_at = GREATEST(b.created_at, c.created_at)
     WHERE a.invited_at IS NULL;
 
+ALTER TABLE user_organization MODIFY COLUMN `invited_at` datetime NOT NULL;
+
+
 -- Down
 ALTER TABLE user_organization DROP FOREIGN KEY user_organization_FK_3;
 ALTER TABLE user_organization DROP COLUMN `invited_at`;
