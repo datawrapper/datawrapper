@@ -9,13 +9,11 @@
 
     <div class="option-group-content vis-option-type-chart-description">
         <div ref:customFields>
-            {#each customFields as field}
-            <label>{field.title}</label>
-            {#if field.type == "text"}
-            <Text labelWidth="0" width="" help="{field.description}" bind:value="custom[field.key]" />
+            {#each customFields as field} {#if field.type == "text"}
+            <Text labelWidth="auto" width="120px" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
             {:elseif field.type == "textArea"}
             <!-- prettier-ignore -->
-            <TextArea labelWidth="auto" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
+            <TextArea labelWidth="auto" width="120px" label="{field.title}" help="{field.description}" bind:value="custom[field.key]" />
             {/if} {/each}
         </div>
     </div>
@@ -62,18 +60,8 @@
 </script>
 
 <style>
-    label {
-        margin-bottom: 2px;
-    }
     ref:customfields :global(textarea),
     ref:customfields :global(input) {
-        margin-bottom: 11px;
-        width: 100% !important;
-    }
-    ref:customfields :global(div.control-group) {
-        margin-bottom: 0px !important;
-    }
-    ref:customfields :global(div.controls) {
-        width: 100% !important;
+        margin-bottom: 12px;
     }
 </style>

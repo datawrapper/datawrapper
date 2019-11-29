@@ -37,17 +37,18 @@
             </p>
         </td>
         <td colspan="4" style="pointer-events: none">
-            <label>{field.title}</label>
-            {#if field.type == "text"}
-            <Text labelWidth="auto" label="" help="{field.description}" value="" />
-            {:elseif field.type == "textArea"}
-            <!-- prettier-ignore -->
-            <TextArea
-									labelWidth="auto"
-									label={field.title}
-									help={field.description}
-									value="" />
-            {/if}
+            <div class="custom-field-example">
+                <label style="display:inline-block;">{field.title}</label>
+                {#if field.type == "text"}
+                <Text label="" help="{field.description}" value="" />
+                {:elseif field.type == "textArea"}
+                <!-- prettier-ignore -->
+                <TextArea
+    									label=""
+    									help={field.description}
+    									value="" />
+                {/if}
+            </div>
         </td>
     </tr>
     {/if} {:else}
