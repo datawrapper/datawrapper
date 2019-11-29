@@ -41,6 +41,9 @@
                 const { isComplete, isError, errorCode, type } = currentAction;
                 if (!isComplete || !isError) return;
 
+                // we only want to show specific error messages
+                // if an error code is known to us,
+                // otherwise we show a generic 'server error' message
                 const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
 
                 const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
