@@ -82,8 +82,7 @@
 
         <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
             {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
-            >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create /
-            button') }
+            >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
         </button>
         <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
         {/if}

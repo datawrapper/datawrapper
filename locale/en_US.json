@@ -664,8 +664,6 @@
   "mycharts / welcome-folders": "Now you can organize your charts in folders. Click on \"create subfolder\" to get started. Then you can drag your charts into folders.",
   "Team Charts": "Team Charts",
   "mycharts / intro / folders": "Folders",
-  "mycharts / intro / folders / p": "You can use this page to organize your charts into <b>folders</b>. Just create a new folder and drag a chart into it.",
-  "mycharts / intro / teams / p": "To work on your charts with other users, you can <a href=\"/account/teams\">create a team</a> invite other Datawrapper users to it, and move the charts and maps into them. <a href=\"https://academy.datawrapper.de/...\">Learn more about teams</a>",
   "mycharts / intro / folders / p": "You can use this page to organize your charts into <b>folders</b>. Click on \"Add subfolder\" and drag a chart into it.",
   "mycharts / intro / teams / p": "To work on your charts with other users, you can <a href=\"/account/teams\">create a team</a>, move charts and maps into it and invite other Datawrapper users. <a href=\"https://academy.datawrapper.de/...\">Learn more about teams</a>.",
   "Create Admin Account": "Create Admin Account",
