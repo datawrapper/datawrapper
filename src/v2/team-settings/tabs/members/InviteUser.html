@@ -23,6 +23,7 @@
                     updatingUsers: false,
                     isComplete: false,
                     isError: false,
+                    errorCode: null,
                     type: '',
                     role: ''
                 }
@@ -37,10 +38,12 @@
                 return message.replace('$1', inviteeEmail).replace('$2', __(`teams / role / ${role}`));
             },
             errorMessage({ inviteeEmail, currentAction }) {
-                const { isComplete, isError, type } = currentAction;
+                const { isComplete, isError, errorCode, type } = currentAction;
                 if (!isComplete || !isError) return;
 
-                const message = __(`teams / invite-user / ${type} / error`);
+                const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
+
+                const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
                 return message.replace('$1', inviteeEmail);
             },
             isValidEmail({ inviteeEmail }) {
@@ -129,6 +132,7 @@
                     updatingUsers: false,
                     isComplete: true,
                     isError: !response.ok,
+                    errorCode: !response.ok ? response.status : null,
                     type: 'add',
                     role
                 };
@@ -154,6 +158,7 @@
                     updatingUsers: false,
                     isComplete: true,
                     isError: !response.ok,
+                    errorCode: !response.ok ? response.status : null,
                     type: 'invite',
                     role
                 };
