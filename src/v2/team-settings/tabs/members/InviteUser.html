@@ -3,7 +3,7 @@
         <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
         <DropdownMenu
             disabled="{!isValidEmail}"
-            label="<i class='fa { updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
+            label="<i class='fa { currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
             items="{inviteOptions}"
         />
     </div>
@@ -19,8 +19,8 @@
         data() {
             return {
                 inviteeEmail: '',
-                updatingUsers: false,
                 currentAction: {
+                    updatingUsers: false,
                     isComplete: false,
                     isError: false,
                     type: '',
@@ -114,7 +114,7 @@
                 const { inviteeExists, inviteeUserId } = this.get();
                 if (!inviteeExists) return;
 
-                this.set({ updatingUsers: true, currentAction: { isComplete: false } });
+                this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
                 const response = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
                     method: 'POST',
@@ -126,19 +126,20 @@
                 });
 
                 const currentAction = {
+                    updatingUsers: false,
                     isComplete: true,
                     isError: !response.ok,
                     type: 'add',
                     role
                 };
 
-                this.set({ updatingUsers: false, currentAction });
+                this.set({ currentAction });
                 this.fire('updateUsers');
             },
             async inviteUser(role) {
                 const { inviteeEmail } = this.get();
 
-                this.set({ updatingUsers: true, currentAction: { isComplete: false } });
+                this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
                 const response = await this.fetchAPI(`teams/${this.get().team.id}/invites`, {
                     method: 'POST',
@@ -150,13 +151,14 @@
                 });
 
                 const currentAction = {
+                    updatingUsers: false,
                     isComplete: true,
                     isError: !response.ok,
                     type: 'invite',
                     role
                 };
 
-                this.set({ updatingUsers: false, currentAction });
+                this.set({ currentAction });
                 this.fire('updateUsers');
             },
             async debounceCheckUser() {
