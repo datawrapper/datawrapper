@@ -46,10 +46,10 @@
                 // if an error code is known to us,
                 // otherwise we show a generic 'server error' message
                 const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
-                const maxInvites = errorCode === 406 && responseData && responseData.maxInvites ? responseData.maxInvites : null;
+                const maxTeamInvites = errorCode === 406 && responseData && responseData.maxTeamInvites ? responseData.maxTeamInvites : null;
 
                 const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
-                return message.replace('$1', inviteeEmail).replace('$2', maxInvites);
+                return message.replace('$1', inviteeEmail).replace('$2', maxTeamInvites);
             },
             isValidEmail({ inviteeEmail }) {
                 return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
