@@ -20,7 +20,8 @@
         {#each teams as team}
         <tr class:current="team.id === currentTeam">
             <td>
-                {#if team.role === 'member'}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings">{truncate(team.name, 20, 10)}</a
+                {#if team.role === 'member' && !user.isAdmin}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings"
+                    >{truncate(team.name, 20, 10)}</a
                 >{/if} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
