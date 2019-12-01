@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>{pageTitle} | {__('account / settings')} | Datawrapper</title>
+</svelte:head>
+
 <div class="admin">
     <h1 class="title">{__('account / settings')}</h1>
     {#each invitations as team}
@@ -32,6 +36,8 @@
         data: {}
     };
 
+    let popstate = false;
+
     export default {
         components: { NavTabs },
         data() {
@@ -50,13 +56,34 @@
         computed: {
             data({ email, user, userId, teams, currentTeam }) {
                 return { user, email, userId, teams, currentTeam };
+            },
+            pageTitle({ activeTab }) {
+                return activeTab ? activeTab.title : '';
             }
         },
         helpers: {
             __,
             truncate
         },
-        methods: {},
+        methods: {
+            setTab(id) {
+                const { groups } = this.get();
+                let foundTab = false;
+                groups.forEach(group => {
+                    group.tabs.forEach(tab => {
+                        if (tab.id === id) {
+                            this.refs.navTabs.activateTab(tab);
+                            foundTab = true;
+                        }
+                    });
+                });
+                if (!foundTab) {
+                    this.set({
+                        activeTab: EditProfileTab
+                    });
+                }
+            }
+        },
         oncreate() {
             const path = window.location.pathname.split('/').slice(1);
             const initialTab = path[1] || 'profile';
@@ -91,23 +118,16 @@
             EditProfileTab.data = { email, userId, user };
             MyTeamsTab.data = { teams, currentTeam, user };
 
-            let foundTab = false;
-            groups.forEach(group => {
-                group.tabs.forEach(tab => {
-                    if (tab.id === initialTab) {
-                        this.refs.navTabs.activateTab(tab);
-                        foundTab = true;
-                    }
-                });
+            this.setTab(initialTab);
+
+            window.addEventListener('popstate', ({ state }) => {
+                popstate = true;
+                setTimeout(() => (popstate = false), 100);
+                this.setTab(state.id);
             });
-            if (!foundTab) {
-                this.set({
-                    activeTab: EditProfileTab
-                });
-            }
         },
-        onstate({ changed, current }) {
-            if (changed.activeTab && current.activeTab) {
+        onstate({ changed, current, previous }) {
+            if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
             }
         }
