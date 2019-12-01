@@ -1,6 +1,10 @@
+<svelte:head>
+    <title>{pageTitle} | Datawrapper</title>
+</svelte:head>
+
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{ truncate(team.name, 17,8) } » { __('nav / team / settings') }</h1>
+        <h1 class="title" style="margin-bottom:18px">{title}</h1>
     </div>
 </div>
 
@@ -16,10 +20,10 @@
                 <hr />
                 <ul class="unstyled">
                     <li>
-                        <a href="/account"><i class="fa fa-fw fa-arrow-left"></i> {__('account / settings / personal')}</a>
+                        <a href="/account/teams"><i class="fa fa-fw fa-arrow-left"></i> {__('account / my-teams')}</a>
                     </li>
                     <li>
-                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> Team charts</a>
+                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> {__('nav / team / charts')}</a>
                     </li>
                 </ul>
             </div>
@@ -62,6 +66,7 @@
     };
 
     let app;
+    let popstate = false;
 
     export default {
         components: {
@@ -126,6 +131,12 @@
             };
         },
         computed: {
+            pageTitle({ team, activeTab }) {
+                return `${activeTab ? activeTab.h1 : ''} | ${truncate(team.name, 17, 8)}`;
+            },
+            title({ team }) {
+                return `${truncate(team.name, 17, 8)} » ${__('nav / team / settings')}`;
+            },
             tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
                 const tabs = [].concat(allTabs, pluginTabs);
 
@@ -190,31 +201,40 @@
                         defaultTheme
                     });
                 });
+            },
+            setTab(id) {
+                const { groups } = this.get();
+                let foundTab = false;
+                groups.forEach(group => {
+                    group.tabs.forEach(tab => {
+                        if (tab.id === id) {
+                            this.refs.navTabs.activateTab(tab);
+                            foundTab = true;
+                        }
+                    });
+                });
+
+                if (!foundTab) {
+                    this.set({
+                        activeTab: SettingsTab
+                    });
+                }
             }
         },
         oncreate() {
             app = this;
             const path = window.location.pathname.split('/').slice(-1);
             const initialTab = path[0] || 'settings';
-            const { groups } = this.get();
-            let foundTab = false;
-            groups.forEach(group => {
-                group.tabs.forEach(tab => {
-                    if (tab.id === initialTab) {
-                        this.refs.navTabs.activateTab(tab);
-                        foundTab = true;
-                    }
-                });
-            });
+            this.setTab(initialTab);
 
-            if (!foundTab) {
-                this.set({
-                    activeTab: SettingsTab
-                });
-            }
+            window.addEventListener('popstate', ({ state }) => {
+                popstate = true;
+                setTimeout(() => (popstate = false), 100);
+                this.setTab(state.id);
+            });
         },
         onstate({ changed, current, previous }) {
-            if (changed.activeTab && current.activeTab) {
+            if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/team/${current.team.id}/${current.activeTab.id}`);
             }
         }
