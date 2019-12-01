@@ -7,7 +7,9 @@
     <thead>
         <tr>
             <th>{__('account / my-teams / name')}</th>
+            {#if user.isAdmin}
             <th>{__('account / my-teams / id')}</th>
+            {/if}
             <th>{__('account / my-teams / your-role')}</th>
             <th>{__('account / my-teams / num-charts')}</th>
             <th>{__('account / my-teams / num-members')}</th>
