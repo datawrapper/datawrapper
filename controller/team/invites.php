@@ -43,14 +43,13 @@ $app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) u
             return;
         }
 
-        Propel::getConnection()->query('UPDATE user_organization SET invite_token = "" '.
-            ' WHERE user_id = '.$invite->getUserId().
-            ' AND organization_id = "'.$invite->getOrganizationId().'"');
+        [$status, $body] = call_v3_api('POST', '/teams/'.$teamId.'/invites/'.$token);
 
-        DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD,
-            $invite->getOrganization(), $invite->getUser());
-
-        $app->redirect('/team/' . $invite->getOrganizationId());
+        if ($status === 201) {
+            $app->redirect('/team/' . $invite->getOrganizationId());
+        } else {
+            error_page(1, "Expired Link", "This link is invalid or has expired.");
+        }
     }
 });
 
