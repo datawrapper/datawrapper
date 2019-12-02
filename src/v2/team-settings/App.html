@@ -37,7 +37,6 @@
     import NavTabs from '../shared/NavTabs.html';
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
-    import Restrictions from './tabs/Restrictions.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
     import Loading from './tabs/Loading.html';
@@ -77,15 +76,6 @@
                 allTabs: [
                     SettingsTab,
                     MembersTab,
-                    {
-                        id: 'restrictions',
-                        title: __('teams / tab / visTypes'),
-                        icon: 'fa fa-ban',
-                        group: __('teams / group / advanced'),
-                        order: 70,
-                        h1: __('teams / disable / h1'),
-                        ui: Restrictions
-                    },
                     {
                         id: 'delete',
                         title: __('teams / tab / deleteTeam'),

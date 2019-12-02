@@ -4,57 +4,61 @@
 
 <div class="row" style="margin-bottom: 2em">
     <div class="span4">
-        <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
+        <InviteUser bind:team isTeamOwner="{isTeamOwner}" isAdmin="{isAdmin}" bind:updatingUsers on:updateUsers="updateUsers()" />
     </div>
-    <div class="span5 offset1">
-        <table class="role-descriptions">
-            <tr>
-                <td />
-                <th>{@html __('teams / role / member')}</th>
-                <th>{@html __('teams / role / admin')}</th>
-                <th>{@html __('teams / role / owner')}</th>
-            </tr>
-            <tr>
-                <td>{ @html __('teams / roles / edit-charts' ) }</td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+    <div class="span6">
+        <table class="role-descriptions" style="margin-left:3em">
+            <thead>
+                <tr>
+                    <td />
+                    <th>{@html __('teams / role / member')}</th>
+                    <th>{@html __('teams / role / admin')}</th>
+                    <th>{@html __('teams / role / owner')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{ @html __('teams / roles / edit-charts' ) }</td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
 
-            <tr>
-                <td>{ @html __('teams / roles / edit-folders' ) }</td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+                <tr>
+                    <td>{ @html __('teams / roles / edit-folders' ) }</td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
 
-            <tr>
-                <td>{ @html __('teams / roles / access-settings' ) }</td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+                <tr>
+                    <td>{ @html __('teams / roles / access-settings' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
 
-            <tr>
-                <td>{ @html __('teams / roles / invite-users' ) }</td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+                <tr>
+                    <td>{ @html __('teams / roles / invite-users' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
 
-            <tr>
-                <td>{ @html __('teams / roles / subscription-options' ) }</td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+                <tr>
+                    <td>{ @html __('teams / roles / subscription-options' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
 
-            <tr>
-                <td>{ @html __('teams / roles / remove-team' ) }</td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-x-mark"></i></td>
-                <td><i class="im im-check-mark"></i></td>
-            </tr>
+                <tr>
+                    <td>{ @html __('teams / roles / remove-team' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>
@@ -122,7 +126,9 @@
     }
     .im-x-mark,
     .im-check-mark {
-        font-size: 14px;
+        font-size: 13px;
+        position: relative;
+        top: 1px;
     }
     .im-check-mark {
         color: #09bb9f;
@@ -136,5 +142,13 @@
     }
     .role-descriptions td + td {
         text-align: center;
+    }
+    .role-descriptions td {
+        font-weight: 300;
+        padding: 3px;
+        font-style: italic;
+    }
+    tbody tr:not(:first-child) td {
+        border-top: 1px solid #eee;
     }
 </style>
