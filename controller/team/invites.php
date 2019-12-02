@@ -43,7 +43,7 @@ $app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) u
             return;
         }
 
-        [$status, $body] = call_v3_api('POST', '/teams/'.$teamId.'/invites/'.$token);
+        [$status, $body] = call_v3_api('POST', '/teams/'.$invite->getOrganizationId().'/invites/'.$token);
 
         if ($status === 201) {
             $app->redirect('/team/' . $invite->getOrganizationId());
