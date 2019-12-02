@@ -7,7 +7,7 @@ require_once ROOT_PATH . 'lib/utils/json_encode_safe.php';
  */
 function call_v3_api($method, $route, $payload = null) {
     $apiDomain = $GLOBALS['dw_config']['api_domain'] ?? 'api.datawrapper.de';
-    $protocol = $GLOBALS['dw_config']['protocol'] ?? 'http';
+    $protocol = get_current_protocol();
     $ch = curl_init();
     curl_setopt_array($ch, [
         CURLOPT_URL => "$protocol://$apiDomain/v3$route",
