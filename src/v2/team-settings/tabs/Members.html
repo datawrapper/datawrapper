@@ -62,7 +62,7 @@
 {#if awaitLoadingUsers} {#await awaitLoadingUsers}
 <p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
 {:then}
-<UserTable bind:isAdmin bind:team bind:users bind:editIndex bind:updating />
+<UserTable isAdmin="{isAdmin}" isTeamOwner="{isTeamOwner}" team="{team}" bind:users bind:editIndex bind:updating />
 {:catch} error! {/await} {/if}
 
 <script>

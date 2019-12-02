@@ -148,7 +148,21 @@
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
-            groups({ tabs, isAdmin, team, users, userId, settings, defaultTheme, themes, folders, locales, visualizations, visualizationsArchive }) {
+            groups({
+                tabs,
+                isAdmin,
+                role,
+                team,
+                users,
+                userId,
+                settings,
+                defaultTheme,
+                themes,
+                folders,
+                locales,
+                visualizations,
+                visualizationsArchive
+            }) {
                 const groups = [];
 
                 function get(groups, groupId) {
@@ -166,6 +180,7 @@
                 tabs.forEach(tab => {
                     tab.data = {
                         isAdmin,
+                        isTeamOwner: role === 'owner',
                         team,
                         users,
                         userId,
