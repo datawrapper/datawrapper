@@ -255,6 +255,7 @@
   "team-create / h1": "Create a new team",
   "team-create / p": "Teams allow you to collaborate with multiple people on your charts, maps and tables. All team members will have access to the shared team archive. You can move charts between the team archive and your personal space using the <b>Team Charts</b> page. After creating your team, you can invite new and existing Datawrapper users to join it on the <b>Team Settings</b> page.",
   "team-create / button": "Create team",
+  "team-create / return": "Return",
   "team-create / untitled": "Untitled team",
   "team-create / name": "Team name:",
   "team-create / slug": "Team ID:",

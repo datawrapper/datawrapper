@@ -255,6 +255,7 @@
   "team-create / h1": "Erstelle ein neues Team",
   "team-create / p": "Mit einem Team kannst du mit mehreren Leuten an deinen Visualisierungen zusammenarbeiten. Alle Teammitglieder haben Zugriff auf ein geteiltes Archiv. Mit der <b>Team-Diagramme</b>-Seite kannst du Diagramme zwischen deinem persönlichen Bereich und dem Team-Archiv verschieben. Nachdem du dein Team angelegt hast, kannst du über die <b>Team-Einstellungen</b> andere Mitglieder dazu einladen.",
   "team-create / button": "Team erstellen",
+  "team-create / return": "Zurück",
   "team-create / untitled": "Unbenanntes Team",
   "team-create / name": "Team-Name:",
   "team-create / slug": "Team-ID:",
