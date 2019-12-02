@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($app) {
     disable_cache($app);
 
@@ -120,7 +122,7 @@ $app->get('/team/:id/invite/:invite_token/reject', function($teamId, $token) use
     [$status, $body] = call_v3_api('DELETE', '/teams/'.$teamId.'/invites/'.$token);
     if ($status === 204) {
         if (DatawrapperSession::isLoggedIn()) {
-            $app->redirect('/?teamRejectSuccess');
+            $app->redirect('/?t=s&m=<b>'.urlencode(str_replace('%s', $teamId, __('teams / reject-invitation / success'))).'</b>');
         } else {
             $app->redirect('https://www.datawrapper.de/?teamRejectSuccess');
         }
