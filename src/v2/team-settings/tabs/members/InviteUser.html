@@ -56,7 +56,7 @@
                     inviteeEmail
                 );
             },
-            inviteOptions({ isAdmin, inviteeEmail, isValidEmail, inviteeExistsLoading, inviteeExists }) {
+            inviteOptions({ isAdmin, isTeamOwner, inviteeEmail, isValidEmail, inviteeExistsLoading, inviteeExists }) {
                 const options = [
                     {
                         label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / member')}`,
@@ -74,15 +74,18 @@
                     }
                 ];
 
+                if (isAdmin || isTeamOwner) {
+                    options.push({
+                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / owner')}`,
+                        disabled: !isValidEmail,
+                        action() {
+                            teamSettingsInvite.inviteUser('owner');
+                        }
+                    });
+                }
+
                 if (isAdmin) {
                     options.push(
-                        {
-                            label: `<span class="red"><i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / owner')}</span>`,
-                            disabled: !isValidEmail,
-                            action() {
-                                teamSettingsInvite.inviteUser('owner');
-                            }
-                        },
                         {
                             label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
                                 'teams / add-as'

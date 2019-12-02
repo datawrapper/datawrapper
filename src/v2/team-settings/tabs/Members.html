@@ -4,7 +4,7 @@
 
 <div class="row" style="margin-bottom: 2em">
     <div class="span4">
-        <InviteUser bind:team bind:isAdmin bind:updatingUsers on:updateUsers="updateUsers()" />
+        <InviteUser bind:team isTeamOwner="{isTeamOwner}" isAdmin="{isAdmin}" bind:updatingUsers on:updateUsers="updateUsers()" />
     </div>
     <div class="span5 offset1">
         <table class="role-descriptions">
