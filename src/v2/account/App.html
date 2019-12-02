@@ -8,14 +8,10 @@
     <div class="alert alert-info">
         {@html __('account / team-invite').replace('%s', truncate(team.name, 20, 10))}
         <!-- prettier-ignore -->
-        <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }
+        <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }</a>
         <!-- prettier-ignore -->
-        </a
-        >&nbsp; { __('account / or') }
-        <a href="/team/{team.id}/invite/{team.token}/reject">
-            <!-- prettier-ignore -->
-            { __('account / team-invite / reject') }</a
-        >.
+        &nbsp; { __('account / or') }
+        <a href="/team/{team.id}/invite/{team.token}/reject">{ __('account / team-invite / reject') }</a>.
     </div>
     {/each}
     <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
