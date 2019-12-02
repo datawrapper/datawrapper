@@ -76,8 +76,7 @@ $app->get('/organization-invite/:invite_token', function ($invite_token) use ($a
  * accept team invitation
  */
 $app->get('/team/:id/invite/:invite_token/accept', function($teamId, $token) use ($app) {
-
-    disable_cache();
+    disable_cache($app);
 
     $user = DatawrapperSession::getUser();
 
@@ -119,6 +118,7 @@ $app->get('/team/:id/invite/:invite_token/accept', function($teamId, $token) use
  * reject team invitation
  */
 $app->get('/team/:id/invite/:invite_token/reject', function($teamId, $token) use ($app) {
+    disable_cache($app);
     [$status, $body] = call_v3_api('DELETE', '/teams/'.$teamId.'/invites/'.$token);
     if ($status === 204) {
         if (DatawrapperSession::isLoggedIn()) {

@@ -6,8 +6,9 @@
     <h1 class="title">{__('account / settings')}</h1>
     {#each invitations as team}
     <div class="alert alert-info">
-        You have been invited to join the team <b>{truncate(team.name, 20, 10)}</b>. Click here to
-        <a href="/organization-invite/{team.token}" class="btn btn-primary">accept the invitation</a>
+        {@html __('account / team-invite').replace('%s', truncate(team.name, 20, 10))}
+        <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }</a>&nbsp; { __('account
+        / or') } <a href="/team/{team.id}/invite/{team.token}/reject">{ __('account / team-invite / reject') }</a>.
     </div>
     {/each}
     <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
@@ -161,5 +162,9 @@
             color: #888;
             line-height: 1.5;
         }
+    }
+
+    .alert a:not(.btn) {
+        text-decoration: underline;
     }
 </style>
