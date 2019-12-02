@@ -30,12 +30,12 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
     $app->render('team/invite.twig', $page);
 });
 
-$app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) use ($app) {
+$app->get('/datawrapper-invite/:invite_token/finish', function ($token) use ($app) {
     disable_cache($app);
 
     if (DatawrapperSession::isLoggedIn()) {
         $invite = UserOrganizationQuery::create()
-            ->filterByInviteToken($invite_token)
+            ->filterByInviteToken($token)
             ->findOne();
 
         if (empty($invite)) {
@@ -57,7 +57,7 @@ $app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) u
  * @deprecated
  * Use `/team/:id/invite/:token/accept instead
  */
-$app->get('/organization-invite/:invite_token', function ($invite_token) use ($app) {
+$app->get('/organization-invite/:invite_token', function ($token) use ($app) {
     disable_cache($app);
 
     $row = UserOrganizationQuery::create()
