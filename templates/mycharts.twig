@@ -84,12 +84,23 @@
                 <span>{% trans "My Charts" %}</span></a>
             </li>
             <ul id="dynamic-tree" style="margin-bottom:40px"></ul>
-            {% if not hasFolders and not userData.mycharts_folder_intro %}
-            <div data-notification-key="mycharts_folder_intro" class="welcome-to-folders did-you-know" style="margin-top:84px">
-                <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a><i class="im im-gift"></i> {% trans 'mycharts / new-feature' %}</h3>
-                <p>{% trans 'mycharts / welcome-folders' %}</p>
+            {% if (not hasFolders or not hasTeams) and not userData.mycharts_teams_intro %}
+            <div data-notification-key="mycharts_teams_intro" class="welcome-to-folders did-you-know" style="margin-top:84px;margin-left:-18px">
+                <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a>
+                    {%if not hasFolders %}<i class="im im-folder"></i> {% trans "mycharts / intro / folders" %}{% endif %}
+                    {%if not hasTeams and not hasFolders %}  &amp; {% endif %}
+                    {%if not hasTeams %}<i class="im im-users"></i> Teams{% endif %}
+                </h3>
+                {%if not hasFolders %}
+                <p><p>{{ "mycharts / intro / folders / p" | trans | raw }}<p><p>
+                {% endif %}
+                {%if not hasTeams %}<p>
+                    <p>{{ "mycharts / intro / teams / p" | trans | raw }}<p>
+                    </p>
+                {% endif %}
             </div>
             {% endif %}
+
             {% endif %}
             {% endfor %}
         </ul>

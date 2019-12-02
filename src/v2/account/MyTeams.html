@@ -20,7 +20,8 @@
         {#each teams as team}
         <tr class:current="team.id === currentTeam">
             <td>
-                {#if team.role === 'member'}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings">{truncate(team.name, 20, 10)}</a
+                {#if team.role === 'member' && !user.isAdmin}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings"
+                    >{truncate(team.name, 20, 10)}</a
                 >{/if} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
                 {/if}
@@ -32,8 +33,7 @@
             <td><a href="/team/{team.id}">{team.charts}</a></td>
             <td>
                 {#if team.role === 'member'} {team.members} {:else}
-                <a href="/team/{team.id}/settings#members">{team.members}</a> {#if team.invites}<span class="invites">(+{team.invites})</span>{/if}
-                {/if}
+                <a href="/team/{team.id}/members">{team.members}</a> {#if team.invites}<span class="invites">(+{team.invites})</span>{/if} {/if}
             </td>
 
             <td>
@@ -42,7 +42,7 @@
                     <i class="fa fa-sign-out"></i> {__('account / my-teams / leave-team')}
                 </button>
                 {:else}
-                <a href="/team/{team.id}/settings#deleteTeam" class="btn btn-small btn-danger"
+                <a href="/team/{team.id}/delete" class="btn btn-small btn-danger"
                     ><i class="fa fa-trash"></i> {__('account / my-teams / delete-team')}</a
                 >
                 {/if}
@@ -57,7 +57,6 @@
 {/if}
 
 <div class="row">
-    {#if user.isAdmin}
     <div class="span5">
         <h3>{@html __('account / my-teams / create')}</h3>
         {#if !createTeam}
@@ -84,13 +83,17 @@
         {/if}
 
         <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
-            {#if awaitCreateTeam} {#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
-            >{:catch}{/await}{:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
+            <!-- prettier-ignore -->
+            {#if awaitCreateTeam}{#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
+            <!-- prettier-ignore -->
+            {:then}<i class="fa fa-check fa-fw"></i>{:catch}<i class="fa fa-exclamation-triangle"></i>{/await}
+            <!-- prettier-ignore -->
+            {:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
         </button>
-        <button class="btn" on:click="set({createTeam:false})">{__('Return')}</button>
+        <button class="btn" on:click="set({createTeam:false})">{__('team-create / return')}</button>
         {/if}
     </div>
-    {/if} {#if teams.length > 0}
+    {#if teams.length > 0}
     <div class="span5">
         <h3>{@html __('account / my-teams / select-active')}</h3>
         <p>{@html __('account / my-teams / what-is-active')}</p>
@@ -98,8 +101,8 @@
             <div class="flex">
                 <!-- prettier-ignore -->
                 <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
-                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
-                {:then} {:catch}{/await} {/if}
+                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
+                >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await} {/if}
             </div>
         </FormBlock>
     </div>
@@ -110,14 +113,13 @@
     /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
-    import Text from '@datawrapper/controls/Text.html';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import BaseSelect from '@datawrapper/controls/BaseSelect.html';
     import { patchJSON, postJSON, deleteJSON } from '@datawrapper/shared/fetch';
     let initialCurrentTeam = null;
 
     export default {
-        components: { FormBlock, BaseSelect, Text },
+        components: { FormBlock, BaseSelect },
         data() {
             return {
                 teams: [],

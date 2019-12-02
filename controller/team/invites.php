@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($app) {
     disable_cache($app);
 
@@ -28,12 +30,12 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
     $app->render('team/invite.twig', $page);
 });
 
-$app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) use ($app) {
+$app->get('/datawrapper-invite/:invite_token/finish', function ($token) use ($app) {
     disable_cache($app);
 
     if (DatawrapperSession::isLoggedIn()) {
         $invite = UserOrganizationQuery::create()
-            ->filterByInviteToken($invite_token)
+            ->filterByInviteToken($token)
             ->findOne();
 
         if (empty($invite)) {
@@ -41,32 +43,51 @@ $app->get('/datawrapper-invite/:invite_token/finish', function ($invite_token) u
             return;
         }
 
-        Propel::getConnection()->query('UPDATE user_organization SET invite_token = "" '.
-            ' WHERE user_id = '.$invite->getUserId().
-            ' AND organization_id = "'.$invite->getOrganizationId().'"');
+        [$status, $body] = call_v3_api('POST', '/teams/'.$invite->getOrganizationId().'/invites/'.$token);
 
-        DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD,
-            $invite->getOrganization(), $invite->getUser());
-
-        $app->redirect('/team/' . $invite->getOrganizationId());
+        if ($status === 201) {
+            $app->redirect('/team/' . $invite->getOrganizationId());
+        } else {
+            error_page(1, "Expired Link", "This link is invalid or has expired.");
+        }
     }
 });
 
-$app->get('/organization-invite/:invite_token', function ($invite_token) use ($app) {
+/**
+ * @deprecated
+ * Use `/team/:id/invite/:token/accept instead
+ */
+$app->get('/organization-invite/:invite_token', function ($token) use ($app) {
+    disable_cache($app);
+
+    $row = UserOrganizationQuery::create()
+        ->filterByInviteToken($token)
+        ->findOne();
+
+    if (empty($row)) {
+        return error_page(1, "Expired Link", "This link is invalid or has expired.");
+    }
+
+    $app->redirect('/team/' . $row->getOrganizationId() . '/invite/' . $token . '/accept');
+});
+
+/**
+ * accept team invitation
+ */
+$app->get('/team/:id/invite/:invite_token/accept', function($teamId, $token) use ($app) {
     disable_cache($app);
 
     $user = DatawrapperSession::getUser();
 
     $invitee = UserQuery::create()
         ->leftJoin('UserOrganization')
-        ->where('UserOrganization.InviteToken = ?', $invite_token)
+        ->where('UserOrganization.InviteToken = ?', $token)
         ->withColumn('UserOrganization.InviteToken', 'InviteToken')
         ->withColumn('UserOrganization.OrganizationId', 'InviteOrganization')
         ->findOne();
 
     if (empty($invitee)) {
-          error_page(1, "Expired Link", "This link is invalid or has expired.");
-          return;
+        return error_page(1, "Expired Link", "This link is invalid or has expired.");
     }
 
     if ($invitee->getId() != $user->getId()) {
@@ -81,17 +102,30 @@ $app->get('/organization-invite/:invite_token', function ($invite_token) use ($a
 
         $errorMsg = str_replace("%email%", $invitee->getEmail(), $errorMsg);
 
-        error_page(1, $errorHeading, $errorMsg);
-
-        return;
+        return error_page(1, $errorHeading, $errorMsg);
     }
 
-    Propel::getConnection()->query('UPDATE user_organization SET invite_token = "" '.
-            ' WHERE user_id = '.$invitee->getId().
-            ' AND organization_id = "'.$invitee->getInviteOrganization().'"');
+    [$status, $body] = call_v3_api('POST', '/teams/'.$teamId.'/invites/'.$token);
+    if ($status === 201) {
+        $app->redirect('/team/' . $teamId);
+    } else {
+        error_page(1, "Expired Link", "This link is invalid or has expired.");
+    }
+});
 
-    DatawrapperHooks::execute(DatawrapperHooks::USER_ORGANIZATION_ADD,
-      $invitee->getInviteOrganization(), $invitee);
-
-    $app->redirect('/team/' . $invitee->getInviteOrganization());
+/**
+ * reject team invitation
+ */
+$app->get('/team/:id/invite/:invite_token/reject', function($teamId, $token) use ($app) {
+    disable_cache($app);
+    [$status, $body] = call_v3_api('DELETE', '/teams/'.$teamId.'/invites/'.$token);
+    if ($status === 204) {
+        if (DatawrapperSession::isLoggedIn()) {
+            $app->redirect('/?t=s&m=<b>'.urlencode(str_replace('%s', $teamId, __('teams / reject-invitation / success'))).'</b>');
+        } else {
+            $app->redirect('https://www.datawrapper.de/?teamRejectSuccess');
+        }
+    } else {
+        error_page(1, "Expired Link", "This link is invalid or has expired.");
+    }
 });
