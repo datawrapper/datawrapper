@@ -1,9 +1,9 @@
-<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}">
+<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}" success="{successMessage}" error="{errorMessage}">
     <div class="flex">
         <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
         <DropdownMenu
             disabled="{!isValidEmail}"
-            label="<i class='fa { updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
+            label="<i class='fa { currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
             items="{inviteOptions}"
         />
     </div>
@@ -11,24 +11,52 @@
 
 <script>
     /* globals dw, teamSettingsInvite */
-    import { Text, DropdownMenu, FormBlock } from '@datawrapper/controls';
+    import { DropdownMenu, FormBlock } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { Text, DropdownMenu, FormBlock },
+        components: { DropdownMenu, FormBlock },
         data() {
             return {
                 inviteeEmail: '',
-                updatingUsers: false
+                currentAction: {
+                    updatingUsers: false,
+                    isComplete: false,
+                    isError: false,
+                    errorCode: null,
+                    responseData: null,
+                    type: '',
+                    role: ''
+                }
             };
         },
         computed: {
+            successMessage({ inviteeEmail, currentAction }) {
+                const { isComplete, isError, type, role } = currentAction;
+                if (!isComplete || isError) return;
+
+                const message = __(`teams / invite-user / ${type} / success`);
+                return message.replace('$1', inviteeEmail).replace('$2', __(`teams / role / ${role}`));
+            },
+            errorMessage({ inviteeEmail, currentAction }) {
+                const { isComplete, isError, errorCode, responseData, type } = currentAction;
+                if (!isComplete || !isError) return;
+
+                // we only want to show specific error messages
+                // if an error code is known to us,
+                // otherwise we show a generic 'server error' message
+                const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
+                const maxTeamInvites = errorCode === 406 && responseData && responseData.maxTeamInvites ? responseData.maxTeamInvites : null;
+
+                const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
+                return message.replace('$1', inviteeEmail).replace('$2', maxTeamInvites);
+            },
             isValidEmail({ inviteeEmail }) {
                 return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
                     inviteeEmail
                 );
             },
-            inviteOptions({ isAdmin, inviteeEmail, isValidEmail, inviteeExistsLoading, inviteeExists }) {
+            inviteOptions({ isAdmin, isTeamOwner, inviteeEmail, isValidEmail, inviteeExistsLoading, inviteeExists }) {
                 const options = [
                     {
                         label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / member')}`,
@@ -46,15 +74,18 @@
                     }
                 ];
 
+                if (isAdmin || isTeamOwner) {
+                    options.push({
+                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / owner')}`,
+                        disabled: !isValidEmail,
+                        action() {
+                            teamSettingsInvite.inviteUser('owner');
+                        }
+                    });
+                }
+
                 if (isAdmin) {
                     options.push(
-                        {
-                            label: `<span class="red"><i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / owner')}</span>`,
-                            disabled: !isValidEmail,
-                            action() {
-                                teamSettingsInvite.inviteUser('owner');
-                            }
-                        },
                         {
                             label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
                                 'teams / add-as'
@@ -94,9 +125,9 @@
                 const { inviteeExists, inviteeUserId } = this.get();
                 if (!inviteeExists) return;
 
-                this.set({ updatingUsers: true });
+                this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
-                await this.fetchAPI(`teams/${this.get().team.id}/members`, {
+                const response = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
                     method: 'POST',
                     credentials: 'include',
                     body: JSON.stringify({
@@ -105,14 +136,27 @@
                     })
                 });
 
+                const responseJSON = !response.ok ? await response.json() : null;
+
+                const currentAction = {
+                    updatingUsers: false,
+                    isComplete: true,
+                    isError: !response.ok,
+                    errorCode: !response.ok ? response.status : null,
+                    responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
+                    type: 'add',
+                    role
+                };
+
+                this.set({ currentAction });
                 this.fire('updateUsers');
             },
             async inviteUser(role) {
                 const { inviteeEmail } = this.get();
 
-                this.set({ updatingUsers: true });
+                this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
-                await this.fetchAPI(`teams/${this.get().team.id}/invites`, {
+                const response = await this.fetchAPI(`teams/${this.get().team.id}/invites`, {
                     method: 'POST',
                     credentials: 'include',
                     body: JSON.stringify({
@@ -121,6 +165,19 @@
                     })
                 });
 
+                const responseJSON = !response.ok ? await response.json() : null;
+
+                const currentAction = {
+                    updatingUsers: false,
+                    isComplete: true,
+                    isError: !response.ok,
+                    errorCode: !response.ok ? response.status : null,
+                    responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
+                    type: 'invite',
+                    role
+                };
+
+                this.set({ currentAction });
                 this.fire('updateUsers');
             },
             async debounceCheckUser() {

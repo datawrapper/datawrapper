@@ -1,38 +1,37 @@
-
+/* globals define, _, $, dw */
 define(function() {
-
     /*
      * initializes the
      */
     function init(iframe) {
-        var chart_window = iframe.get(0).contentWindow,
-            chart_body = iframe.get(0).contentDocument,
-            __dw = chart_window.__dw,
-            needReload = false;
+        var chartWindow = iframe.get(0).contentWindow;
+        var chartBody = iframe.get(0).contentDocument;
+        var __dw = chartWindow.__dw;
+        var needReload = false;
 
         function $$(sel) {
-            return $(sel, chart_body);
+            return $(sel, chartBody);
         }
 
         _.extend(__dw, {
             attributes: function(attrs) {
-                var render = false,
-                    requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'],
-                    options = dw.backend.currentVis.meta.options;
+                var render = false;
+                var requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'];
+                var options = dw.backend.currentVis.meta.options;
 
                 for (var name in options) {
                     var o = options[name];
 
-                    if (o["requires-reload"]) {
-                        requiresReload.push('metadata.visualize.'+name);
+                    if (o['requires-reload']) {
+                        requiresReload.push('metadata.visualize.' + name);
                     }
 
-                    if (o.type == "group") {
+                    if (o.type === 'group') {
                         for (name in o.options) {
                             var o2 = options[name];
 
-                            if (o2["requires-reload"]) {
-                                requiresReload.push('metadata.visualize.'+name);
+                            if (o2['requires-reload']) {
+                                requiresReload.push('metadata.visualize.' + name);
                             }
                         }
                     }
@@ -41,13 +40,15 @@ define(function() {
                 requiresReload.forEach(function(key) {
                     if (changed(key)) {
                         needReload = true;
-                        return;
                     }
                 });
 
-                if (changed('metadata.data.column-format')
-                    || changed('metadata.data.changes')   || changed('metadata.data.column-order')
-                    || changed('metadata.describe.computed-columns')) {
+                if (
+                    changed('metadata.data.column-format') ||
+                    changed('metadata.data.changes') ||
+                    changed('metadata.data.column-order') ||
+                    changed('metadata.describe.computed-columns')
+                ) {
                     needReload = true;
                     return;
                 }
@@ -58,10 +59,11 @@ define(function() {
                     render = true;
                 }
                 if (changed('title') || changed('metadata.describe.hide-title')) {
-                    var $title = $$('.chart-title'),
-                        $h1 = $title.parent();
+                    var $title = $$('.chart-title');
+                    var $h1 = $title.parent();
                     if (attrs.title && !attrs.metadata.describe['hide-title']) {
-                        if (!$title.length) needReload = true; // no title found, reload chart
+                        if (!$title.length) needReload = true;
+                        // no title found, reload chart
                         else if ($h1.hasClass('hidden')) {
                             $h1.removeClass('hidden');
                             render = true;
@@ -77,7 +79,8 @@ define(function() {
                 if (changed('metadata.describe.intro')) {
                     var $desc = $$('.chart-intro');
                     if (attrs.metadata.describe.intro) {
-                        if (!$desc.length) needReload = true; // no title found, reload chart
+                        if (!$desc.length) needReload = true;
+                        // no title found, reload chart
                         else if ($desc.hasClass('hidden')) {
                             $desc.removeClass('hidden');
                             render = true;
@@ -116,9 +119,7 @@ define(function() {
                     $$('.source-block')[attrs.metadata.describe['source-name'] ? 'removeClass' : 'addClass']('hidden');
                 }
                 if (changed('metadata.describe.byline')) {
-                    $$('.byline-block .chart-byline').text(
-                        attrs.metadata.describe.byline
-                    );
+                    $$('.byline-block .chart-byline').text(attrs.metadata.describe.byline);
                     $$('.byline-block')[attrs.metadata.describe.byline ? 'removeClass' : 'addClass']('hidden');
                 }
 
@@ -130,29 +131,28 @@ define(function() {
                 if (render) __dw.render();
 
                 function changed(key) {
-                    var p0 = __dw.old_attrs,
-                        p1 = attrs;
+                    var p0 = __dw.old_attrs;
+                    var p1 = attrs;
                     key = key.split('.');
                     _.each(key, function(k) {
                         p0 = p0[k] || {};
                         p1 = p1[k] || {};
                     });
-                    return JSON.stringify(p0) != JSON.stringify(p1);
+                    return JSON.stringify(p0) !== JSON.stringify(p1);
                 }
                 function heightChanged(el, html) {
-                    var old_h = el.height();
+                    var oldHeight = el.height();
                     el.html(dw.utils.purifyHtml(html));
-                    return el.height() != old_h;
+                    return el.height() !== oldHeight;
                 }
             },
             saved: function() {
                 if (needReload) {
-                    iframe.attr('src', iframe.attr('src').replace(/&random=\d+/, '&random='+_.random(100000)));
+                    iframe.attr('src', iframe.attr('src').replace(/&random=\d+/, '&random=' + _.random(100000)));
                 }
             }
         });
     }
-
 
     /*
      * updates the chart attributes of a rendered visualization
