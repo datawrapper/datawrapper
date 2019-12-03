@@ -110,6 +110,12 @@
 	    $tabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
 	    $teamSettings = $org->getSettings();
 
+        foreach($tabs as $i => $page) {
+            if (isset($page['data']) && is_callable($page['data'])) {
+                $tabs[$i]['data'] = $page['data']();
+            }
+        }
+
 	    $page = [
 	        'svelte_data' => [
 	            'team' => [
