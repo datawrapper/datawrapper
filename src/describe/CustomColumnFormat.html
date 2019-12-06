@@ -18,6 +18,7 @@
             bind:value="columnFormat['number-format']"
             width="180px"
         />
+
         <!-- prettier-ignore -->
         <Select
             label="{__('Divide numbers by')}"
@@ -72,7 +73,7 @@
                 columnFormat: {
                     type: 'auto',
                     ignore: false,
-                    'number-divisor': '-',
+                    'number-divisor': 0,
                     'number-format': 'auto',
                     'number-prepend': '',
                     'number-append': ''
@@ -178,6 +179,7 @@
                     columnFormat = {
                         type: 'auto',
                         ignore: false,
+                        'number-divisor': 0,
                         'number-prepend': '',
                         'number-append': '',
                         'number-format': 'auto'
