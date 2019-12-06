@@ -127,6 +127,7 @@ class Organization extends BaseOrganization
                 'allowAdmins' => false
             ],
             'restrictDefaultThemes' => false,
+            'css' => '',
             'flags' => []
         ];
 
