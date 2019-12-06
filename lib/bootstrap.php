@@ -160,5 +160,11 @@ if (!defined('NO_PLUGINS')) {
 
     // notify the core that all plugins are loaded
     DatawrapperHooks::execute(DatawrapperHooks::ALL_PLUGINS_LOADED);
+
 }
 
+DatawrapperHooks::register(DatawrapperHooks::TEAM_FLAGS, function() {
+    return [
+        "byline" => true
+    ];
+});
