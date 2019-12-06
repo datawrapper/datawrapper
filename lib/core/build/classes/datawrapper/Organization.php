@@ -132,9 +132,11 @@ class Organization extends BaseOrganization
 
         $flagGroups = Hooks::execute(Hooks::TEAM_FLAGS) ?? [];
 
-        foreach ($flagGroups as $flagGroup) {
-            foreach ($flagGroup as $flag) {
-                $default['flags'][$flag['id']] = $flag['default'];
+        if (is_array($flagGroups)) {
+            foreach ($flagGroups as $flagGroup) {
+                foreach ($flagGroup as $flag) {
+                    $default['flags'][$flag['id']] = $flag['default'];
+                }
             }
         }
 
