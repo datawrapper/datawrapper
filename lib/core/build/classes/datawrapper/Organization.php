@@ -130,11 +130,11 @@ class Organization extends BaseOrganization
             'flags' => []
         ];
 
-        $flags = Hooks::execute(Hooks::TEAM_FLAGS);
+        $flagGroups = Hooks::execute(Hooks::TEAM_FLAGS) ?? [];
 
-        if ($flags) {
-            foreach ($flags as $flag) {
-                $default['flags'] = array_merge_recursive($default['flags'], $flag);
+        foreach ($flagGroups as $flagGroup) {
+            foreach ($flagGroup as $flag) {
+                $default['flags'][$flag['id']] = $flag['default'];
             }
         }
 
