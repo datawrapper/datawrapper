@@ -276,6 +276,7 @@ class User extends BaseUser {
             ->filterByDisabled(0)
             ->leftJoin('UserOrganization')
             ->where('UserOrganization.InviteToken <> ""')
+            ->withColumn('UserOrganization.OrganizationId', 'OrganizationId')
             ->withColumn('UserOrganization.InviteToken', 'InviteToken')
             ->where('UserOrganization.UserId = ?', $this->getId())
             ->find();

@@ -1,6 +1,10 @@
+<svelte:head>
+    <title>{pageTitle} | Datawrapper</title>
+</svelte:head>
+
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{ truncate(team.name, 17,8) } » { __('nav / team / settings') }</h1>
+        <h1 class="title" style="margin-bottom:18px">{title}</h1>
     </div>
 </div>
 
@@ -16,10 +20,10 @@
                 <hr />
                 <ul class="unstyled">
                     <li>
-                        <a href="/account"><i class="fa fa-fw fa-arrow-left"></i> {__('account / settings / personal')}</a>
+                        <a href="/account/teams"><i class="fa fa-fw fa-arrow-left"></i> {__('account / my-teams')}</a>
                     </li>
                     <li>
-                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> Team charts</a>
+                        <a href="/team/{team.id}"><i class="fa fa-fw fa-arrow-left"></i> {__('nav / team / charts')}</a>
                     </li>
                 </ul>
             </div>
@@ -33,8 +37,6 @@
     import NavTabs from '../shared/NavTabs.html';
     import Members from './tabs/Members.html';
     import Settings from './tabs/Settings.html';
-    import CustomFields from './tabs/CustomFields.html';
-    import Restrictions from './tabs/Restrictions.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
     import Loading from './tabs/Loading.html';
@@ -62,6 +64,7 @@
     };
 
     let app;
+    let popstate = false;
 
     export default {
         components: {
@@ -73,24 +76,6 @@
                 allTabs: [
                     SettingsTab,
                     MembersTab,
-                    {
-                        id: 'custom-fields',
-                        title: __('teams / tab / customFields'),
-                        icon: 'fa fa-list',
-                        group: __('teams / group / advanced'),
-                        order: 20,
-                        h1: __('teams / cf / h1'),
-                        ui: CustomFields
-                    },
-                    {
-                        id: 'restrictions',
-                        title: __('teams / tab / visTypes'),
-                        icon: 'fa fa-ban',
-                        group: __('teams / group / advanced'),
-                        order: 70,
-                        h1: __('teams / disable / h1'),
-                        ui: Restrictions
-                    },
                     {
                         id: 'delete',
                         title: __('teams / tab / deleteTeam'),
@@ -126,6 +111,12 @@
             };
         },
         computed: {
+            pageTitle({ team, activeTab }) {
+                return `${activeTab ? activeTab.h1 : ''} | ${truncate(team.name, 17, 8)}`;
+            },
+            title({ team }) {
+                return `${truncate(team.name, 17, 8)} » ${__('nav / team / settings')}`;
+            },
             tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
                 const tabs = [].concat(allTabs, pluginTabs);
 
@@ -137,7 +128,21 @@
                     })
                     .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
-            groups({ tabs, isAdmin, team, users, userId, settings, defaultTheme, themes, folders, locales, visualizations, visualizationsArchive }) {
+            groups({
+                tabs,
+                isAdmin,
+                role,
+                team,
+                users,
+                userId,
+                settings,
+                defaultTheme,
+                themes,
+                folders,
+                locales,
+                visualizations,
+                visualizationsArchive
+            }) {
                 const groups = [];
 
                 function get(groups, groupId) {
@@ -155,6 +160,7 @@
                 tabs.forEach(tab => {
                     tab.data = {
                         isAdmin,
+                        isTeamOwner: role === 'owner',
                         team,
                         users,
                         userId,
@@ -190,31 +196,40 @@
                         defaultTheme
                     });
                 });
+            },
+            setTab(id) {
+                const { groups } = this.get();
+                let foundTab = false;
+                groups.forEach(group => {
+                    group.tabs.forEach(tab => {
+                        if (tab.id === id) {
+                            this.refs.navTabs.activateTab(tab);
+                            foundTab = true;
+                        }
+                    });
+                });
+
+                if (!foundTab) {
+                    this.set({
+                        activeTab: SettingsTab
+                    });
+                }
             }
         },
         oncreate() {
             app = this;
             const path = window.location.pathname.split('/').slice(-1);
             const initialTab = path[0] || 'settings';
-            const { groups } = this.get();
-            let foundTab = false;
-            groups.forEach(group => {
-                group.tabs.forEach(tab => {
-                    if (tab.id === initialTab) {
-                        this.refs.navTabs.activateTab(tab);
-                        foundTab = true;
-                    }
-                });
-            });
+            this.setTab(initialTab);
 
-            if (!foundTab) {
-                this.set({
-                    activeTab: SettingsTab
-                });
-            }
+            window.addEventListener('popstate', ({ state }) => {
+                popstate = true;
+                setTimeout(() => (popstate = false), 100);
+                this.setTab(state.id);
+            });
         },
         onstate({ changed, current, previous }) {
-            if (changed.activeTab && current.activeTab) {
+            if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/team/${current.team.id}/${current.activeTab.id}`);
             }
         }
