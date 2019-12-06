@@ -4,8 +4,8 @@
 
 export default {
     delimiters: {
-        thousands: ' ',
-        decimal: ','
+        thousands: '’',
+        decimal: '.'
     },
     abbreviations: {
         thousand: 'k',
