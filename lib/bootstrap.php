@@ -166,10 +166,10 @@ if (!defined('NO_PLUGINS')) {
 DatawrapperHooks::register(DatawrapperHooks::TEAM_FLAGS, function() {
     return [
         [
-        "id" => "byline",
-        "default" => true,
-        "type" => "switch",
-        "title" => "Byline"
+            "id" => "byline",
+            "default" => true,
+            "type" => "switch",
+            "title" => __("visualize / annotate / byline")
         ]
     ];
 });
