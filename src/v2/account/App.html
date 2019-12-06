@@ -1,9 +1,17 @@
+<svelte:head>
+    <title>{pageTitle} | {__('account / settings')} | Datawrapper</title>
+</svelte:head>
+
 <div class="admin">
     <h1 class="title">{__('account / settings')}</h1>
     {#each invitations as team}
     <div class="alert alert-info">
-        You have been invited to join the team <b>{truncate(team.name, 20, 10)}</b>. Click here to
-        <a href="/organization-invite/{team.token}" class="btn btn-primary">accept the invitation</a>
+        {@html __('account / team-invite').replace('%s', truncate(team.name, 20, 10))}
+        <!-- prettier-ignore -->
+        <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }</a>
+        <!-- prettier-ignore -->
+        &nbsp; { __('account / or') }
+        <a href="/team/{team.id}/invite/{team.token}/reject">{ __('account / team-invite / reject') }</a>.
     </div>
     {/each}
     <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
@@ -32,6 +40,8 @@
         data: {}
     };
 
+    let popstate = false;
+
     export default {
         components: { NavTabs },
         data() {
@@ -50,13 +60,34 @@
         computed: {
             data({ email, user, userId, teams, currentTeam }) {
                 return { user, email, userId, teams, currentTeam };
+            },
+            pageTitle({ activeTab }) {
+                return activeTab ? activeTab.title : '';
             }
         },
         helpers: {
             __,
             truncate
         },
-        methods: {},
+        methods: {
+            setTab(id) {
+                const { groups } = this.get();
+                let foundTab = false;
+                groups.forEach(group => {
+                    group.tabs.forEach(tab => {
+                        if (tab.id === id) {
+                            this.refs.navTabs.activateTab(tab);
+                            foundTab = true;
+                        }
+                    });
+                });
+                if (!foundTab) {
+                    this.set({
+                        activeTab: EditProfileTab
+                    });
+                }
+            }
+        },
         oncreate() {
             const path = window.location.pathname.split('/').slice(1);
             const initialTab = path[1] || 'profile';
@@ -70,10 +101,8 @@
                 this.set({ groups });
             }
 
-            if (teams.length) {
-                groups[0].tabs.splice(1, 0, MyTeamsTab);
-                this.set({ groups });
-            }
+            groups[0].tabs.splice(1, 0, MyTeamsTab);
+            this.set({ groups });
 
             if (adminTeams.length) {
                 groups.push({
@@ -93,23 +122,16 @@
             EditProfileTab.data = { email, userId, user };
             MyTeamsTab.data = { teams, currentTeam, user };
 
-            let foundTab = false;
-            groups.forEach(group => {
-                group.tabs.forEach(tab => {
-                    if (tab.id === initialTab) {
-                        this.refs.navTabs.activateTab(tab);
-                        foundTab = true;
-                    }
-                });
+            this.setTab(initialTab);
+
+            window.addEventListener('popstate', ({ state }) => {
+                popstate = true;
+                setTimeout(() => (popstate = false), 100);
+                this.setTab(state.id);
             });
-            if (!foundTab) {
-                this.set({
-                    activeTab: EditProfileTab
-                });
-            }
         },
-        onstate({ changed, current }) {
-            if (changed.activeTab && current.activeTab) {
+        onstate({ changed, current, previous }) {
+            if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
             }
         }
@@ -143,5 +165,9 @@
             color: #888;
             line-height: 1.5;
         }
+    }
+
+    .alert a:not(.btn) {
+        text-decoration: underline;
     }
 </style>
