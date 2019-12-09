@@ -47,10 +47,12 @@
                  </div>
              </div>
 
-             <div class="chart-byline">
+            {% if not chart.organization or chart.organization.settings('flags.byline') != false %}
+            <div class="chart-byline">
                 <label class="control-label">{% trans "visualize / annotate / byline" %}</label>
                 <input id="describe-byline" type="text" class="input-xlarge span4" placeholder="{% trans "visualize / annotate / byline / placeholder" %}">
             </div>
+            {% endif %}
          </div>
      </div>
 

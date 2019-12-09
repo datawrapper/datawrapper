@@ -222,7 +222,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
     }
 
     $forked_from = $chart->getForkedFrom();
-    $chart_byline = strip_tags($chart->getMetadata('describe.byline'));
+    $chart_byline = $chart->getMetadata('describe.byline');
     $chart_based_on = false;
 
     if (!empty($forked_from) && $chart->getIsFork()) {

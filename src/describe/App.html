@@ -47,8 +47,7 @@
 
                 <p>{@html __(`describe / data-looks-right`) }</p>
 
-                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" />
-
+                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if showLocale }
                 <h4>{__(`describe / locale-select / hed`)}</h4>
 
                 <p>{@html __(`describe / locale-select / body`)}</p>
@@ -58,8 +57,7 @@
                     <option value="{locale.value}">{locale.label} ({locale.value})</option>
                     {/each}
                 </select>
-
-                {/if}
+                {/if} {/if}
 
                 <hr />
 
