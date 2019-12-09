@@ -106,7 +106,7 @@ class Organization extends BaseOrganization
      * the settings object is complete
      */
     protected function getDefaultSettings() {
-        return [
+        $default = [
             'folders' => 'expanded',
             'default' => [
                 'folder' => null,
@@ -126,8 +126,22 @@ class Organization extends BaseOrganization
                 'visualizations' => new stdClass(),
                 'allowAdmins' => false
             ],
-            'restrictDefaultThemes' => false
+            'restrictDefaultThemes' => false,
+            'css' => '',
+            'flags' => []
         ];
+
+        $flagGroups = Hooks::execute(Hooks::TEAM_FLAGS) ?? [];
+
+        if (is_array($flagGroups)) {
+            foreach ($flagGroups as $flagGroup) {
+                foreach ($flagGroup as $flag) {
+                    $default['flags'][$flag['id']] = $flag['default'];
+                }
+            }
+        }
+
+        return $default;
     }
 
     public function getSettings($key = null) {

@@ -194,12 +194,11 @@ dw.chart = function(attributes) {
             // pull output config from metadata
             // return column.formatter(config);
             var colFormat = chart.get('metadata.data.column-format', {});
-            colFormat = colFormat[column.name()] || { type: 'auto', 'number-format': 'auto'};
+            colFormat = _.clone(colFormat[column.name()] || { type: 'auto', 'number-format': 'auto'});
 
             if (column.type() == 'number' && (colFormat == 'auto' || colFormat['number-format'] === undefined || colFormat['number-format'] == 'auto')) {
                 var values = column.values();
                 var dim = dw.utils.significantDimension(values);
-                colFormat['number-divisor'] = 0;
                 colFormat['number-format'] = 'n'+Math.max(0, dim);
             }
             return column.type(true).formatter(colFormat);

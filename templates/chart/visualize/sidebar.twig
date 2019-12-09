@@ -78,7 +78,7 @@
 
             <div class="section design">
 
-                {{ hook('visualize_before_theme_selector') }}
+                {{ hook('visualize_before_theme_selector', chart) }}
 
                 <div style="">
                     <label class="pull-left" style="padding-right:1ex;line-height:28px" for="select-theme">{% trans "Select layout:" %}</label>
@@ -89,7 +89,7 @@
                     </select>
                 </div>
 
-                {{ hook('visualize_after_theme_selector') }}
+                {{ hook('visualize_after_theme_selector', chart) }}
 
             </div>
 

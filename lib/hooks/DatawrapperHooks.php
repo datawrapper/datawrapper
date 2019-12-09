@@ -276,6 +276,7 @@ class DatawrapperHooks {
     const PLUGIN_ACTION = 'plugin_action';
 
     const TEAM_SETTINGS_PAGE = 'team_settings_page';
+    const TEAM_FLAGS = 'team_flags';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');

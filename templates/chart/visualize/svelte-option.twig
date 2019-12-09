@@ -44,6 +44,7 @@ require(['{{ amdPath }}'], function(mod) {
         user: {{userArray|json|raw}},
         locales: {{chartLocales|json|raw}},
         themes: {{userThemes|json|raw}},
+        teamSettings: {{chart.organization ? chart.organization.settings|json|raw : "{}"}},
         visualization: visCache['{{vis.id}}']
     });
 

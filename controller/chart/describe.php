@@ -67,6 +67,7 @@ $app->get('/(chart|table)/:id/describe', function ($id) use ($app) {
                 'numbers' => $page['numberformats'],
                 'sigdig' => $page['significantdigits']
             ],
+            'showLocale' => empty($chart->getOrganization()) || $chart->getOrganization()->getSettings('flags.output_locale'),
             'locales' => array_map(function($s) {
                 $s = explode('|', $s);
                 return ['value'=>$s[0], 'label'=>$s[1]];
