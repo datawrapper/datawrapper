@@ -66,9 +66,15 @@ define(['chroma'], function(chroma) {
 
             addcol(opts.color, bottom);
             // initialize palette colors
-            $.each(opts.palette, function(i, color) {
-                addcol(color, palette, true);
-            });
+            if (opts.config.groups) {
+                $.each(opts.config.groups, function(i, group) {
+                    addGroup(group, palette);
+                });
+            } else {
+                $.each(opts.palette, function(i, color) {
+                    addcol(color, palette, true);
+                });
+            }
 
             setColor(opts.color);
 
@@ -150,6 +156,21 @@ define(['chroma'], function(chroma) {
                     if (num2-- > 0) r.push(center + a);
                 }
                 return r;
+            }
+            function addGroup(group, cont) {
+                var $group = $('<div class="color-group" />');
+                $group.appendTo(cont);
+                if (group.name) {
+                    var $title = $('<div class="name">' + group.name + '</div>');
+                    $title.appendTo($group);
+                }
+                $.each(group.colors, function(i, subgroup) {
+                    var $subgroup = $('<div/>');
+                    $subgroup.appendTo($group);
+                    subgroup.forEach(function(color) {
+                        addcol(color, $subgroup, true);
+                    });
+                });
             }
 
             function addcol(color, cont, resizeSwatch) {
