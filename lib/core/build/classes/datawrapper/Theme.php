@@ -36,6 +36,11 @@ class Theme extends BaseTheme
                 $lessData['colors_background'];
 
         $less = new lessc;
+
+        array_walk_recursive($lessData, function (&$value, $key) {
+            if (is_bool($value)) $value = $value ? 1 : 0;
+        });
+
         $less->setVariables($lessData);
 
         while (!empty($theme->getExtend())) {
@@ -283,7 +288,7 @@ class Theme extends BaseTheme
             if ($arr1IsObject && $arr2IsObject) {
                 $arr[$key] = $this->extendArray($arr[$key], $val);
             } else {
-                if ($val != array()) $arr[$key] = $val;
+                if ($val !== array()) $arr[$key] = $val;
             }
         }
 
