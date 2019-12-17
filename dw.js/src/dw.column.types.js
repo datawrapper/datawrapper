@@ -213,7 +213,7 @@ dw.column.types.date = (function() {
         s1 = /[ \-\/\.]/.source, // mandatory separator
         s2 = /[ \-\/\.,]/.source, // mandatory separator
         s3 = /[ \-\|T]/.source, // mandatory separator
-        sM = /[ \-\/\.m]/.source, // manadatory separator, can be "M"
+        sM = /[ \-\/\m]/.source, // manadatory separator, can be "M"
         rx = {
             YY: { parse: /['’‘]?(\d{2})/ },
             YYYY: { test: /([12]\d{3})/, parse: /(\d{4})/ },
