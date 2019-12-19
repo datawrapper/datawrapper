@@ -175,7 +175,15 @@ require(['{{ amdPath }}'], function(mod) {
                 if (iframe && iframe.contentWindow) {
                     var win = iframe.contentWindow;
                     if (win.__dw && win.__dw.attributes) {
-                        win.__dw.attributes(current);
+                        win.__dw.attributes({
+                            id: current.id,
+                            title: current.title,
+                            theme: current.theme,
+                            type: current.type,
+                            externalData: current.externalData,
+                            language: current.language,
+                            metadata: current.metadata
+                        });
                     }
                 }
 
