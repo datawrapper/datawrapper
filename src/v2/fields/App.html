@@ -21,7 +21,7 @@
 <script>
     import TextArea from '@datawrapper/controls/TextArea.html';
     import Text from '@datawrapper/controls/Text.html';
-    import { __ } from '@datawrapper/shared/l10n';
+    import clone from '@datawrapper/shared/clone';
 
     export default {
         components: { Text, TextArea },
@@ -32,12 +32,11 @@
                 initialized: false
             };
         },
-        helpers: { __ },
         onstate({ changed, current }) {
             const { dw_chart } = this.store.get();
 
             if (changed.customFields && current.customFields) {
-                const custom = dw_chart.get('metadata.custom', {});
+                const custom = clone(dw_chart.get('metadata.custom', {}));
 
                 current.customFields.forEach(field => {
                     if (!custom[field.key]) custom[field.key] = '';
@@ -50,7 +49,7 @@
             }
 
             if (changed.custom && current.initialized) {
-                dw_chart.set(`metadata.custom`, current.custom);
+                dw_chart.set(`metadata.custom`, clone(current.custom));
                 if (dw_chart.saveSoon) dw_chart.saveSoon();
             }
         }
