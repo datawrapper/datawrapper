@@ -171,10 +171,10 @@
         });
     });
 
-    window.organizationSettings = {
+    window.organizationFolderDefault = {
         {% for org in organizations %}
             {{ loop.index0 > 0 ? "," : "" }}
-            "{{ org.id }}": {{ org.settings | json | raw }}
+            "{{ org.id }}": {{ org.settings.folders | json | raw }}
         {% endfor %}
     };
 </script>
