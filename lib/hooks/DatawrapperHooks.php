@@ -75,10 +75,10 @@ class DatawrapperHooks {
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
 
-    // publishes a set of files to some CDN (args: files)
+    // publishes a set of files to some CDN (args: chart, files)
     const PUBLISH_FILES = 'publish_files';
 
-    // unpublishes (removes) a set of files from some CDN (args: files)
+    // unpublishes (removes) a set of files from some CDN (args: chart, files)
     const UNPUBLISH_FILES = 'unpublish_files';
 
     // returns the URL of a published chart (args: chart)
