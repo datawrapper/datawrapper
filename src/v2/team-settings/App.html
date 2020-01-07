@@ -173,8 +173,8 @@
                         visualizationsArchive,
                         ...tab.data
                     };
-                    tab.onchange = data => {
-                        app.onTabChange(data);
+                    tab.onchange = (data, tabApp) => {
+                        app.onTabChange(data, tabApp);
                     };
                     get(groups, tab.group).tabs.push(tab);
                 });
@@ -188,13 +188,16 @@
         },
         helpers: { __, truncate },
         methods: {
-            onTabChange({ team, settings, defaultTheme }) {
+            onTabChange({ team, settings, defaultTheme }, tab) {
                 storeTeamSettings(team, settings, defaultTheme).then(() => {
                     this.set({
                         team,
                         settings,
                         defaultTheme
                     });
+                    if (tab && tab.saved) {
+                        tab.saved();
+                    }
                 });
             },
             setTab(id) {

@@ -18,7 +18,7 @@
     {#if activeTab}
     <div class="span10 account-page-content tab-{activeTab.id}">
         <slot name="aboveContent" />
-        <svelte:component on:change="onTabChange(activeTab, event)" this="{activeTab.ui}" {...activeTab.data} />
+        <svelte:component ref:currentTabUi on:change="onTabChange(activeTab, event)" this="{activeTab.ui}" {...activeTab.data} />
         <slot name="belowContent" />
     </div>
     {/if}
@@ -59,7 +59,7 @@
             },
             onTabChange(tab, event) {
                 if (tab.onchange) {
-                    tab.onchange(event);
+                    tab.onchange(event, this.refs.currentTabUi);
                 }
             }
         }
