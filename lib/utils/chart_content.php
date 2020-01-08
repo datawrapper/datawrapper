@@ -55,16 +55,19 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $visDependencyLocales .= '}';
 
-    if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
+    // check if a plugin registered a different asset_domain for this chart
+    $assetDomain = get_chart_asset_domain($chart);
+
+    if ($published && !empty($assetDomain)) {
         $base_js = [
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'
+           '//' . $assetDomain . '/assets/underscore/1.8.3/underscore-min.js'
         ];
         if ($dependencies['globalize']) {
-            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js';
-            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js';
+            $base_js[] = '//' . $assetDomain . '/assets/globalize.min.js';
+            $base_js[] = '//' . $assetDomain . '/assets/cultures/globalize.culture.' . $culture . '.js';
         }
         if ($dependencies['jquery']) {
-            $base_js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js';
+            $base_js[] = '//' . $assetDomain . '/assets/underscore/1.8.3/underscore-min.js';
         }
     } else {
         // use "local" assets
@@ -355,4 +358,14 @@ function jsminify($code) {
     }
 
     return $min;
+}
+
+function get_chart_asset_domain($chart) {
+    $res = Hooks::execute(Hooks::GET_ASSET_DOMAIN, $chart);
+    if (!empty($res) && !empty($res[0])) {
+        // use domain set by plugin
+        return $res[0];
+    }
+    // use global asset domain
+    return $GLOBALS['dw_config']['asset_domain'];
 }
