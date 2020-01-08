@@ -116,7 +116,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                         // don't use assets from cdn url
                         unset($script['cdn']);
                     } else {
-                        $script['src'] = $script['cdn'];
+                        $script['src'] = str_replace('%asset_domain%', $assetDomain ?? 'datawrapper.dwcdn.net', $script['cdn']);
                         $vis_libs_cdn[] = $script;
                     }
                 }
