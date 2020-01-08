@@ -84,6 +84,9 @@ class DatawrapperHooks {
     // returns the URL of a published chart (args: chart)
     const GET_PUBLISHED_URL = 'get_pulished_url';
 
+    // returns the host for chart assets (args: chart)
+    const GET_ASSET_DOMAIN = 'get_asset_domain';
+
     // returns a key specifically for the storage (eg the s3 bucket)
     const GET_PUBLISH_STORAGE_KEY = 'get_publish_storage_key';
 
