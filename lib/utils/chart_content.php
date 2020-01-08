@@ -67,7 +67,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
             $base_js[] = '//' . $assetDomain . '/assets/cultures/globalize.culture.' . $culture . '.js';
         }
         if ($dependencies['jquery']) {
-            $base_js[] = '//' . $assetDomain . '/assets/underscore/1.8.3/underscore-min.js';
+            $base_js[] = '//' . $assetDomain . '/assets/jquery/1.11.1/jquery.min.js';
         }
     } else {
         // use "local" assets
