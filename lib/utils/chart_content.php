@@ -172,7 +172,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
-    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local), $chart);
     $the_chart_js = get_chart_js();
 
     if ($published) {
@@ -303,7 +303,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
  *   [0] filename of the vis js class, eg, vis/column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
  *   [1] minified source code
  */
-function get_vis_js($vis, $visJS) {
+function get_vis_js($vis, $visJS, $chart) {
     global $dw_config;
     $rewritePaths = isset($dw_config['copy_plugin_assets']) && $dw_config['copy_plugin_assets'] === false;
 
@@ -311,7 +311,7 @@ function get_vis_js($vis, $visJS) {
     $all = '';
     $org = DatawrapperSession::getUser()->getCurrentOrganization();
     if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
-    $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY);
+    $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY, $chart);
     if (is_array($keys)) $org .= '/' . join($keys, '/');
     foreach ($visJS as $js) {
         if (is_array($js)) $js = $js['src'];
