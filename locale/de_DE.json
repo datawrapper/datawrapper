@@ -86,6 +86,7 @@
   "controls / tooltip-editor / err / unexpected-token": "Invalide Eingabe",
   "controls / tooltip-editor / add-column": "(Spalte hinzufügen)",
   "controls / tooltip-editor / select-format": "(Format)",
+  "controls / legend / title": "Legende anpassen",
   "You must enter a password.": "Sie müssen ein Kennwort eingeben.",
   "Both passwords must be the same.": "Beide Passwörter müssen übereinstimmen.",
   "The password is incorrect.": "Das Passwort ist falsch.",

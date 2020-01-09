@@ -211,7 +211,7 @@ define(function(require) {
             return false;
         }
 
-        if (window.organizationSettings[orgId] && window.organizationSettings[orgId].folders == 'collapsed') {
+        if (window.organizationFolderDefault[orgId] === 'collapsed') {
             return true;
         }
 
