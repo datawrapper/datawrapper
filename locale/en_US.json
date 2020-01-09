@@ -86,6 +86,7 @@
   "controls / tooltip-editor / err / unexpected-token": "Invalid input",
   "controls / tooltip-editor / add-column": "(add column)",
   "controls / tooltip-editor / select-format": "(format)",
+  "controls / legend / title": "Customize legend\n",
   "You must enter a password.": "You must enter a password.",
   "Both passwords must be the same.": "Both passwords must be the same.",
   "The password is incorrect.": "The password is incorrect.",
