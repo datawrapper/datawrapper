@@ -529,7 +529,7 @@ class Chart extends BaseChart {
                 ];
             }
         }
-        Hooks::execute(Hooks::PUBLISH_FILES, $files);
+        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
     }
 
     public function generateEmbedCodes() {

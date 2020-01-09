@@ -107,13 +107,21 @@
 	    $user = DatawrapperSession::getUser();
 	    if (!$user->canAdministrateTeam($org)) return $app->notFound();
 
-	    $tabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
+	    $allTabs = Hooks::execute(Hooks::TEAM_SETTINGS_PAGE, $org, $user);
 	    $teamSettings = $org->getSettings();
 
-        foreach($tabs as $i => $page) {
-            if (isset($page['data']) && is_callable($page['data'])) {
-                $tabs[$i]['data'] = $page['data']();
+        $tabs = [];
+
+        foreach($allTabs as $i => $page) {
+            if (isset($page['checkVisibility']) && is_callable($page['checkVisibility'])) {
+                if (!$page['checkVisibility']($user, $org)) {
+                    continue;
+                }
             }
+            if (isset($page['data']) && is_callable($page['data'])) {
+                $page['data'] = $page['data']();
+            }
+            $tabs[] = $page;
         }
 
 	    $page = [
