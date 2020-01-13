@@ -35,7 +35,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             return;
         }
 
-        $allThemes = ThemeQuery::create()->allThemesForUser();
+        $allThemes = ThemeQuery::create()->allThemesForUser($chart);
         $themeMeta = [];
 
         foreach ($allThemes as $theme) {

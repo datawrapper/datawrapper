@@ -158,7 +158,7 @@
                 'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
                 'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
-                }, ThemeQuery::create()->allThemesForUser()),
+                }, ThemeQuery::create()->allThemesForUser($chart)),
                 'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user),
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace']

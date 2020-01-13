@@ -64,7 +64,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'chartUrlLocal' => $chartUrlLocal,
             'embedWidth' => $chartW,
             'embedHeight' => $chartH,
-            'themes' => ThemeQuery::create()->allThemesForUser(),
+            'themes' => ThemeQuery::create()->allThemesForUser($chart),
             'exportStaticImage' => !empty($cfg['phantomjs']),
             'estExportTime' => ceil(JobQuery::create()->estimatedTime('export') / 60),
             'chartActions' => $chartActions
