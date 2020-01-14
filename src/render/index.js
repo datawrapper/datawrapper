@@ -79,10 +79,7 @@ export default function({
 
         observeFonts(fontsJSON, typographyJSON)
             .then(() => __dw.render())
-            // eslint-disable-next-line
-            .catch(err => {
-                /* too bad, an error */
-            });
+            .catch(() => {});
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {
