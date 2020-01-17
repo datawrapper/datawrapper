@@ -1,0 +1,111 @@
+<div class="modal-body" data-piwik-mask>
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <div class="row login-signup">
+        <div class="span{noSignup ? 4 : 3} row-login">
+            <h3>{@html __("login / login / headline")}</h3>
+
+            <p>{@html __("login / login / intro")}</p>
+
+            <form action="/" method="POST" class="login-form form-vertical">
+                <div>
+                    <div class="control-group">
+                        <input class="login-email input-xxlarge span3" autocomplete="username" type="email" value="" placeholder="{__('email')}" />
+                    </div>
+                    <div class="control-group">
+                        <input
+                            class="login-pwd input-xxlarge span3"
+                            autocomplete="current-password"
+                            type="password"
+                            value=""
+                            placeholder="{__('password')}"
+                        />
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-login btn-primary" value="Login" />
+                    <label class="checkbox" for="keep-login" style="margin-top: 10px;">
+                        <input id="keep-login" class="keep-login" type="checkbox" checked="checked" /> {@html __("Remember login?")}
+                    </label>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="span2" style="padding-bottom:10px">
+                    <a style="display:none" class="btn btn-send-pw btn-info">
+                        {@html __("Send new password")}
+                    </a>
+                </div>
+                <div class="span2">
+                    <a id="forgot-password" href="#">{@html __("Can't recall your password?")}</a>
+                    <a id="send-pw-cancel" style="display:none" href="#">{@html __("Return to login...")}</a>
+                </div>
+            </div>
+        </div>
+        {#if !noSignup}
+        <div class="span3 row-signup">
+            <h3>{@html __("login / signup / headline")}</h3>
+            <p>{@html __("login / signup / intro")}</p>
+            <div class="signup-form form-vertcal">
+                <form>
+                    <div class="control-group">
+                        <input type="email" autocomplete="username" class="input-xlarge span2 register-email" placeholder="{__('email')}" />
+                    </div>
+                    <div class="control-group">
+                        <input autocomplete="new-password" type="password" class="input-xlarge span2 register-pwd" placeholder="{__('password')}" />
+                    </div>
+                    <div class="control-group">
+                        <input
+                            autocomplete="new-password"
+                            type="password"
+                            class="input-xlarge span2 register-pwd-2"
+                            placeholder="{__('repeat password')}"
+                        />
+                    </div>
+                </form>
+                <a class="btn-register btn btn-default"><i class="fa fa-fw fa-pencil"></i> {@html __('Sign Up')}</a>
+            </div>
+        </div>
+        {:else}
+        <style>
+            #dwLoginForm {
+                width: 420px;
+                margin-left: -210px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+                border: 0;
+                position: relative;
+            }
+        </style>
+        {/if}
+    </div>
+    {#if alternativeSignIn.length}
+    <div class="alternative-signins">
+        {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
+        <a href="{ signin.url }">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a>
+        {/each}
+    </div>
+    {/if}
+
+    <div class="signup-confirm hidden">
+        <div class="jumbo-text">
+            {@html __("login / signup / confirmation-email")}
+
+            <div class="sub">{@html __("login / signup / confirmation-email-hint")}</div>
+
+            <button class="button btn btn-got-it">{@html __("login / signup / confirm")}</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        data: () => ({
+            noSignup: false,
+            alternativeSignIn: []
+        }),
+        helpers: {
+            __
+        }
+    };
+</script>
