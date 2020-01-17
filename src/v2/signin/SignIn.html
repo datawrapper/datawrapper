@@ -51,9 +51,9 @@
                 {/if}
                 <div>
                     {#if forgotPassword}
-                    <a on:click="set({forgotPassword:false})" href="#">{@html __("Return to login...")}</a>
+                    <a on:click|preventDefault="set({forgotPassword:false})" href="#/return">{@html __("Return to login...")}</a>
                     {:else}
-                    <a on:click="set({forgotPassword:true})" href="#">{@html __("Can't recall your password?")}</a>
+                    <a on:click|preventDefault="set({forgotPassword:true})" href="#/forgot-password">{@html __("Can't recall your password?")}</a>
                     {/if}
                 </div>
             </div>
@@ -88,8 +88,9 @@
                         <input autocomplete="new-password" type="password" bind:value="signupPassword2" class="span3 input-xlarge register-pwd-2" />
                     </div>
                     <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
-                        {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if} {@html __('Sign
-                        Up')}
+                        {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
+                        <!-- prettier-ignore -->
+                        {@html __('Sign Up')}
                     </button>
                 </form>
             </div>
