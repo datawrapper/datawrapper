@@ -46,24 +46,30 @@ $app->post('/users', function() use ($app) {
     $currUser = Session::getUser();
     $invitation = empty($data->invitation)? false : (bool) $data->invitation;
     $chartId = empty($data->chartId)? false : $data->chartId;
+
     // check values
-    $checks = array(
-        'email-missing' => function($d) { return trim($d->email) != ''; },
-        'email-invalid' => function($d) { return check_email($d->email); },
-        'email-already-exists' => function($d) { return !email_exists($d->email); },
-    );
-    // if invitation is false: classic way, we check passwords
-    if (!$invitation) {
-        $checks = array_merge($checks, array(
-            'password-mismatch' => function($d) { return $d->pwd === $d->pwd2; },
-            'password-missing' => function($d) { return trim($d->pwd) != ''; },
-        ));
+    if (trim($data->email) === '') {
+        $app->response()->status(400);
+        return error('email-missing', 'The email address must not be empty');
+    }
+    if (!check_email($data->email)) {
+        $app->response()->status(400);
+        return error('email-invalid', 'The email address is invalid');
+    }
+    if (email_exists($data->email)) {
+        $app->response()->status(403);
+        return error('email-already-exists', 'The email address is already registered.');
     }
 
-    foreach ($checks as $code => $check) {
-        if (call_user_func($check, $data) == false) {
-            error($code, $code);
-            return;
+    // if invitation is false: classic way, we check passwords
+    if (!$invitation) {
+        if ($data->pwd !== $data->pwd2) {
+            $app->response()->status(400);
+            return error('password-mismatch', 'The passwords must be identical');
+        }
+        if (trim($data->pwd) === '') {
+            $app->response()->status(400);
+            return error('password-missing', 'The password must not be empty');
         }
     }
 
