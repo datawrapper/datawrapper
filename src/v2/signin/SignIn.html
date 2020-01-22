@@ -44,7 +44,7 @@
             <div>
                 {#if forgotPassword}
                 <div style="padding-bottom:10px">
-                    <button disabled="{invalidLoginEmail}" class="btn btn-send-pw btn-info" on:click|preventDefault="requestNewPassword()">
+                    <button disabled="{invalidLoginEmail}" class="btn btn-send-pw btn-primary" on:click|preventDefault="requestNewPassword()">
                         {#if requestingPassword}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} {@html __("Send new password")}
                     </button>
                 </div>
