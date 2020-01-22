@@ -1,0 +1,298 @@
+<div on:keyup|stopPropagation class="modal-body" data-piwik-mask>
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <div class="row login-signup">
+        <div class="span{noSignup ? 4 : 3} row-login">
+            <h3>{@html __("login / login / headline")}</h3>
+
+            <p>{@html __("login / login / intro")}</p>
+
+            {#if loginSuccess}
+            <div class="alert alert-success">
+                {@html loginSuccess}
+            </div>
+            {/if} {#if loginError}
+            <div class="alert alert-error">
+                {@html loginError}
+            </div>
+            {/if}
+
+            <form class="login-form form-vertical">
+                <div>
+                    <div class="control-group" class:error="invalidLoginEmail">
+                        <label>{__('email')}</label>
+                        <input class="login-email input-xxlarge span3" autocomplete="username" type="email" bind:value="loginEmail" />
+                    </div>
+                    {#if !forgotPassword}
+                    <div class="control-group">
+                        <label>{__('password')}</label>
+                        <input class="login-pwd input-xxlarge span3" autocomplete="current-password" type="password" bind:value="loginPassword" />
+                    </div>
+                    {/if}
+                </div>
+                {#if !forgotPassword}
+                <div>
+                    <label class="checkbox" for="keep-login" style="margin-top: 10px;">
+                        <input bind:checked="rememberLogin" class="keep-login" type="checkbox" /> {@html __("Remember login?")}
+                    </label>
+                    <button disabled="{invalidLoginForm}" on:click|preventDefault="doLogIn()" class="btn btn-login btn-primary">
+                        {#if loggingIn}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} Login
+                    </button>
+                </div>
+                {/if}
+            </form>
+
+            <div>
+                {#if forgotPassword}
+                <div style="padding-bottom:10px">
+                    <button disabled="{invalidLoginEmail}" class="btn btn-send-pw btn-primary" on:click|preventDefault="requestNewPassword()">
+                        {#if requestingPassword}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} {@html __("Send new password")}
+                    </button>
+                </div>
+                {/if}
+                <div>
+                    {#if forgotPassword}
+                    <a on:click|preventDefault="set({forgotPassword:false})" href="#/return">{@html __("Return to login...")}</a>
+                    {:else}
+                    <a on:click|preventDefault="set({forgotPassword:true})" href="#/forgot-password">{@html __("Can't recall your password?")}</a>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        {#if !noSignup}
+        <div class="span3 row-signup">
+            <h3>{@html __("login / signup / headline")}</h3>
+            <p>{@html __("login / signup / intro")}</p>
+
+            {#if signupSuccess}
+            <div class="alert alert-success">
+                {@html signupSuccess}
+            </div>
+            {/if} {#if signupError}
+            <div class="alert alert-error">
+                {@html signupError}
+            </div>
+            {/if}
+
+            <div class="signup-form form-vertcal">
+                <form>
+                    <div class="control-group" class:error="invalidSignupEmail">
+                        <label>{__('email')}</label>
+                        <input type="email" bind:value="signupEmail" autocomplete="username" class="span3 input-xlarge register-email" />
+                    </div>
+                    <div class="control-group">
+                        <label>{__('password')}</label>
+                        <input autocomplete="new-password" bind:value="signupPassword" type="password" class="span3 input-xlarge register-pwd" />
+                    </div>
+                    <div class="control-group" class:error="invalidSignupPassword">
+                        <label>{__('repeat password')}</label>
+                        <input autocomplete="new-password" type="password" bind:value="signupPassword2" class="span3 input-xlarge register-pwd-2" />
+                    </div>
+                    <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
+                        {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
+                        <!-- prettier-ignore -->
+                        {@html __('Sign Up')}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {:else}
+        <style>
+            #dwLoginForm {
+                width: 420px;
+                margin-left: -210px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+                border: 0;
+                position: relative;
+            }
+        </style>
+        {/if}
+    </div>
+    {#if alternativeSignIn.length}
+    <div class="alternative-signin">
+        {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
+        <a href="{ signin.url }">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a>
+        {/each}
+    </div>
+    {/if}
+
+    <div class="signup-confirm hidden">
+        <div class="jumbo-text">
+            {@html __("login / signup / confirmation-email")}
+
+            <div class="sub">{@html __("login / signup / confirmation-email-hint")}</div>
+
+            <button class="button btn btn-got-it">{@html __("login / signup / confirm")}</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* globals dw, CryptoJS */
+    import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
+
+    // eslint-disable-next-line
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    function isValidEmail(s) {
+        return emailRegex.test(s);
+    }
+
+    export default {
+        data: () => ({
+            noSignup: false,
+            alternativeSignIn: [],
+            // login
+            forgotPassword: false,
+            loginEmail: '',
+            loginPassword: '',
+            rememberLogin: true,
+            loginEmailError: false,
+            loginError: '',
+            loginSuccess: '',
+            // signup
+            signupEmail: '',
+            signupPassword: '',
+            signupPassword2: '',
+            // progressIndicators
+            requestingPassword: false,
+            loggingIn: false,
+            signingUp: false
+        }),
+        computed: {
+            invalidLoginEmail({ loginEmail, forgotPassword }) {
+                return !isValidEmail(loginEmail) && !(loginEmail === '' && !forgotPassword);
+            },
+            invalidLoginForm({ loginEmail, loginPassword }) {
+                return !isValidEmail(loginEmail) || loginPassword === '';
+            },
+            invalidSignupForm({ signupEmail, signupPassword, signupPassword2 }) {
+                if (!isValidEmail(signupEmail)) return true;
+                if (signupPassword !== signupPassword2) return true;
+                if (signupPassword.length < 4) return true;
+            },
+            invalidSignupEmail({ signupEmail, forgotPassword }) {
+                return !isValidEmail(signupEmail) && signupEmail !== '';
+            },
+            invalidSignupPassword({ signupPassword, signupPassword2 }) {
+                return signupPassword !== '' && signupPassword !== signupPassword2;
+            }
+        },
+        helpers: {
+            __
+        },
+        methods: {
+            async doLogIn() {
+                const { loginEmail, loginPassword, rememberLogin } = this.get();
+                this.set({
+                    loggingIn: true,
+                    loginError: '',
+                    loginSuccess: ''
+                });
+                try {
+                    const res = await httpReq.post('/auth/login', {
+                        payload: {
+                            email: loginEmail,
+                            pwhash: CryptoJS.HmacSHA256(loginPassword, dw.backend.__auth_salt).toString(),
+                            keeplogin: rememberLogin
+                        }
+                    });
+                    if (res.status === 'ok') {
+                        this.set({ loginSuccess: 'Login successful, reloading page' });
+                        setTimeout(() => {
+                            window.window.location.href = '/';
+                        }, 2000);
+                    } else {
+                        this.set({ loginError: res.message });
+                    }
+                } catch (error) {
+                    if (error.name === 'HttpReqError') {
+                        const body = await error.response.json();
+                        this.set({ loginError: body ? body.message : error.message });
+                    } else {
+                        this.set({ loginError: error });
+                    }
+                }
+                this.set({ loggingIn: false });
+            },
+            async doSignUp() {
+                const { signupEmail, signupPassword, signupPassword2 } = this.get();
+                this.set({
+                    signingUp: true,
+                    signupError: '',
+                    signupSuccess: ''
+                });
+                try {
+                    await httpReq.post('/users', {
+                        payload: {
+                            email: signupEmail,
+                            pwd: CryptoJS.HmacSHA256(signupPassword, dw.backend.__auth_salt).toString(),
+                            pwd2: CryptoJS.HmacSHA256(signupPassword2, dw.backend.__auth_salt).toString()
+                        }
+                    });
+                    this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } catch (error) {
+                    if (error.name === 'HttpReqError') {
+                        const body = await error.response.json();
+                        this.set({ signupError: body ? body.message : error.message });
+                    } else {
+                        this.set({ signupError: error });
+                    }
+                }
+                this.set({ signingUp: false });
+            },
+            async requestNewPassword() {
+                const { loginEmail } = this.get();
+                this.set({
+                    requestingPassword: true,
+                    loginError: '',
+                    loginSuccess: ''
+                });
+                try {
+                    const res = await httpReq.post('/account/reset-password', {
+                        payload: {
+                            email: loginEmail
+                        }
+                    });
+                    if (res.status === 'ok') {
+                        this.set({ loginSuccess: res.data });
+                    } else {
+                        this.set({ loginError: res.message });
+                    }
+                } catch (error) {
+                    if (error.name === 'HttpReqError') {
+                        this.set({ loginError: error.body ? error.body.message : error.message });
+                    } else {
+                        this.set({ loginError: error });
+                    }
+                }
+                this.set({ requestingPassword: false });
+            }
+        }
+    };
+</script>
+
+<style>
+    .alternative-signin {
+        padding: 10px 0 0;
+        border-top: 1px solid #eee;
+        text-align: left;
+    }
+    .control-group label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #555;
+        letter-spacing: 1px;
+    }
+    .control-group input {
+        margin-bottom: 0;
+    }
+    .btn-login {
+        margin-top: 5px;
+    }
+    .modal-body {
+        max-height: 550px !important;
+    }
+</style>
