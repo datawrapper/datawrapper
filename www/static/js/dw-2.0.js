@@ -2634,7 +2634,7 @@ _.extend(dw.visualization.base, {
             var text = theme.options.watermark.text || 'CONFIDENTIAL';
 
             $('.watermark', '#chart').remove();
-            $('.dw-chart-body').append('<div class="export-text marker-text watermark noscript"><span>' + text + '</span></div>');
+            $('.dw-chart-body').append('<div class="export-text watermark noscript"><span>' + text + '</span></div>');
             $('.watermark', '#chart').css('font-size', '6px');
 
             var $watermark = $('.watermark', '#chart');
