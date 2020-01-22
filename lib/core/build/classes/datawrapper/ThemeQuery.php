@@ -16,11 +16,17 @@
 class ThemeQuery extends BaseThemeQuery
 {
 
-    public function allThemesForUser() {
+    public function allThemesForUser($chart = null) {
         global $dw_config;
 
         $user = DatawrapperSession::getUser();
-        $organization = $user->getCurrentOrganization();
+
+        if (!empty($chart) && $chart->getOrganization() !== null) {
+            $organization = $chart->getOrganization();
+        } else {
+            $organization = $user->getCurrentOrganization();
+        }
+
         $includeDefaultThemes = true;
 
         $themes = array();

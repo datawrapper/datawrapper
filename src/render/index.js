@@ -20,7 +20,8 @@ export default function({
     templateJS,
     fontsJSON,
     typographyJSON,
-    locales
+    locales,
+    assetDomain
 }) {
     window.visJSON = visJSON;
 
@@ -49,10 +50,10 @@ export default function({
             return run();
         }
         // use cached polyfill.io polyfills
-        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/' + environment.browser + '-' + environment.version + '.js';
+        script.src = 'https://' + assetDomain + '/assets/polyfills/' + environment.browser + '-' + environment.version + '.js';
     } else {
         // unknown browser, fall back to generic polyfill
-        script.src = 'https://datawrapper.dwcdn.net/lib/polyfills/all.js';
+        script.src = 'https://' + assetDomain + '/assets/polyfills/all.js';
     }
 
     document.getElementsByTagName('head')[0].appendChild(script);
@@ -76,7 +77,9 @@ export default function({
             )
         );
 
-        observeFonts(fontsJSON, typographyJSON).then(() => __dw.render());
+        observeFonts(fontsJSON, typographyJSON)
+            .then(() => __dw.render())
+            .catch(() => {});
 
         // iPhone/iPad fix
         if (/iP(hone|od|ad)/.test(navigator.platform)) {

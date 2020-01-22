@@ -258,6 +258,7 @@
             visJSON: {{ visualization | json | raw }},
             chartJSON: {{ chart.toStruct(true) | json | raw }},
             chartData: {{ chartData | json | raw }},
+            assetDomain: '{{ assetDomain }}',
             isPreview: {{ preview ? 'true' : 'false' }},
             chartLocale: '{{ chartLocale }}',
             locales: {{ locales | raw }},

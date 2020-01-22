@@ -135,6 +135,7 @@ class Chart extends BaseChart {
         $json['Deleted'] = $this->getDeleted();
         $json['DeletedAt'] = $this->getDeletedAt();
         $json['InFolder'] = $this->getInFolder();
+        $json['OrganizationId'] = $this->getOrganizationId();
         // and update the chart
         $this->fromArray($json);
         $this->save();
@@ -528,7 +529,7 @@ class Chart extends BaseChart {
                 ];
             }
         }
-        Hooks::execute(Hooks::PUBLISH_FILES, $files);
+        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
     }
 
     public function generateEmbedCodes() {

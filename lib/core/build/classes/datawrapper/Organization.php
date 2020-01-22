@@ -126,6 +126,25 @@ class Organization extends BaseOrganization
                 'visualizations' => new stdClass(),
                 'allowAdmins' => false
             ],
+            'pdfUpload' => [
+                'ftp' => [
+                    'enabled' => false,
+                    'server' => "",
+                    'user' => "",
+                    'password' => "",
+                    'directory' => "",
+                    'filename' => ""
+                ],
+                's3' => [
+                    'enabled' => false,
+                    'bucket' => "",
+                    'region' => "",
+                    'accessKeyId' => "",
+                    'secret' => "",
+                    'prefix' => "",
+                    'filename' => ""
+                ]
+            ],
             'restrictDefaultThemes' => false,
             'css' => '',
             'flags' => []

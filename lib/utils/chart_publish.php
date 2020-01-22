@@ -218,7 +218,7 @@ function publish_data($user, $chart) {
 
 
 function publish_push_to_cdn($cdn_files, $chart) {
-    DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $cdn_files);
+    DatawrapperHooks::execute(DatawrapperHooks::PUBLISH_FILES, $chart, $cdn_files);
 }
 
 

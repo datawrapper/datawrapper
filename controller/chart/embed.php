@@ -36,6 +36,7 @@ $app->get('/chart/:id/', function ($id) use ($app) {
         $page['plain'] = $app->request()->get('plain') == 1;
         $page['nopointer'] = $app->request()->get('nopointer') == 1;
         $page['fullscreen'] = $app->request()->get('fs') == 1;
+        $page['assetDomain'] = get_chart_asset_domain($chart);
 
         check_iframe_origin($app);
 

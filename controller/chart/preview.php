@@ -28,6 +28,7 @@ $app->get('/(chart|map|table)/:id/preview', function ($id) use ($app) {
         $page['innersvg'] = $app->request()->get('innersvg') == 1;
         $page['config'] = $GLOBALS['dw_config'];
         $page['preview'] = $app->request()->get('minify') != 1;
+        $page['assetDomain'] = get_chart_asset_domain($chart);
 
         check_iframe_origin($app);
 

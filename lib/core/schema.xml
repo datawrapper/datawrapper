@@ -287,9 +287,9 @@
     <column name="created_at" type="timestamp" required="true" />
     <column name="extend" type="varchar" size="128" />
     <column name="title" type="varchar" size="128" />
-    <column name="data" type="clob" />
+    <column name="data" type="json" />
     <column name="less" type="clob" />
-    <column name="assets" type="clob" />
+    <column name="assets" type="json" />
   </table>
 
   <!-- organization <-> theme map -->

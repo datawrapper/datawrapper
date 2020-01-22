@@ -55,16 +55,19 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $visDependencyLocales .= '}';
 
-    if ($published && !empty($GLOBALS['dw_config']['asset_domain'])) {
+    // check if a plugin registered a different asset_domain for this chart
+    $assetDomain = get_chart_asset_domain($chart);
+
+    if ($published && !empty($assetDomain)) {
         $base_js = [
-            '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'
+           '//' . $assetDomain . '/assets/underscore/1.8.3/underscore-min.js'
         ];
         if ($dependencies['globalize']) {
-            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/globalize.min.js';
-            $base_js[] = '//' . $GLOBALS['dw_config']['asset_domain'] . '/cultures/globalize.culture.' . $culture . '.js';
+            $base_js[] = '//' . $assetDomain . '/assets/globalize.min.js';
+            $base_js[] = '//' . $assetDomain . '/assets/cultures/globalize.culture.' . $culture . '.js';
         }
         if ($dependencies['jquery']) {
-            $base_js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js';
+            $base_js[] = '//' . $assetDomain . '/assets/jquery/1.11.1/jquery.min.js';
         }
     } else {
         // use "local" assets
@@ -113,7 +116,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
                         // don't use assets from cdn url
                         unset($script['cdn']);
                     } else {
-                        $script['src'] = $script['cdn'];
+                        $script['src'] = str_replace('%asset_domain%', $assetDomain ?? 'datawrapper.dwcdn.net', $script['cdn']);
                         $vis_libs_cdn[] = $script;
                     }
                 }
@@ -172,7 +175,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
 
     $the_vis = DatawrapperVisualization::get($chart->getType());
     $the_vis['locale'] = $vis_locale;
-    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local));
+    $the_vis_js = get_vis_js($the_vis, array_merge(array_reverse($vis_js), $vis_libs_local), $chart);
     $the_chart_js = get_chart_js();
 
     if ($published) {
@@ -303,7 +306,7 @@ function get_chart_content($chart, $user, $theme, $published = false, $debug = f
  *   [0] filename of the vis js class, eg, vis/column-chart-7266c4ee39b3d19f007f01be8853ac87.min.js
  *   [1] minified source code
  */
-function get_vis_js($vis, $visJS) {
+function get_vis_js($vis, $visJS, $chart) {
     global $dw_config;
     $rewritePaths = isset($dw_config['copy_plugin_assets']) && $dw_config['copy_plugin_assets'] === false;
 
@@ -311,7 +314,7 @@ function get_vis_js($vis, $visJS) {
     $all = '';
     $org = DatawrapperSession::getUser()->getCurrentOrganization();
     if (!empty($org)) $org = '/'.$org->getID(); else $org = '';
-    $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY);
+    $keys = DatawrapperHooks::execute(DatawrapperHooks::GET_PUBLISH_STORAGE_KEY, $chart);
     if (is_array($keys)) $org .= '/' . join($keys, '/');
     foreach ($visJS as $js) {
         if (is_array($js)) $js = $js['src'];
@@ -355,4 +358,14 @@ function jsminify($code) {
     }
 
     return $min;
+}
+
+function get_chart_asset_domain($chart) {
+    $res = Hooks::execute(Hooks::GET_ASSET_DOMAIN, $chart);
+    if (!empty($res) && !empty($res[0])) {
+        // use domain set by plugin
+        return $res[0];
+    }
+    // use global asset domain
+    return $GLOBALS['dw_config']['asset_domain'];
 }
