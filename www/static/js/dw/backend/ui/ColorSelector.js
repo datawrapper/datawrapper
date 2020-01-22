@@ -66,8 +66,8 @@ define(['chroma'], function(chroma) {
 
             addcol(opts.color, bottom);
             // initialize palette colors
-            if (opts.config.groups) {
-                $.each(opts.config.groups, function(i, group) {
+            if (opts.groups) {
+                $.each(opts.groups, function(i, group) {
                     addGroup(group, palette);
                 });
             } else {
