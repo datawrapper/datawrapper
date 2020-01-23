@@ -22,27 +22,6 @@ $app->put('/account/lang', function() use ($app) {
     ok();
 });
 
-
-/* login user */
-$app->post('/auth/login', function() use($app) {
-    $payload = json_decode($app->request()->getBody());
-    //  v-- don't expire login anymore
-    $user = UserQuery::create()->findOneByEmail($payload->email);
-    if (!empty($user) && $user->getDeleted() == false) {
-        if ($user->getPwd() === secure_password($payload->pwhash)) {
-            Session::login($user, $payload->keeplogin == true);
-            ok($user->serialize());
-        } else {
-            Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
-            $app->response()->status(401);
-            error('login-invalid', __('The password is incorrect.'));
-        }
-    } else {
-        $app->response()->status(404);
-        error('login-email-unknown', __('The email is not registered yet.'));
-    }
-});
-
 /* return the server salt for secure auth */
 $app->get('/auth/salt', function() use ($app) {
     ok(array('salt' => DW_AUTH_SALT));
