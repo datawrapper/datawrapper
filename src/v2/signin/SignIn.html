@@ -128,7 +128,6 @@
 </div>
 
 <script>
-    /* globals dw, CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
 
@@ -190,21 +189,17 @@
                     loginSuccess: ''
                 });
                 try {
-                    const res = await httpReq.post('/auth/login', {
+                    await httpReq.post('/v3/auth/login', {
                         payload: {
                             email: loginEmail,
-                            pwhash: CryptoJS.HmacSHA256(loginPassword, dw.backend.__auth_salt).toString(),
-                            keeplogin: rememberLogin
+                            password: loginPassword,
+                            keepSession: rememberLogin
                         }
                     });
-                    if (res.status === 'ok') {
-                        this.set({ loginSuccess: 'Login successful, reloading page' });
-                        setTimeout(() => {
-                            window.window.location.href = '/';
-                        }, 2000);
-                    } else {
-                        this.set({ loginError: res.message });
-                    }
+                    this.set({ loginSuccess: 'Login successful, reloading page' });
+                    setTimeout(() => {
+                        window.window.location.href = '/';
+                    }, 2000);
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
                         const body = await error.response.json();
@@ -217,17 +212,19 @@
             },
             async doSignUp() {
                 const { signupEmail, signupPassword, signupPassword2 } = this.get();
+                if (signupPassword !== signupPassword2) {
+                    return this.set({ signupError: 'Passwords must match' });
+                }
                 this.set({
                     signingUp: true,
                     signupError: '',
                     signupSuccess: ''
                 });
                 try {
-                    await httpReq.post('/users', {
+                    await httpReq.post('/v3/users', {
                         payload: {
                             email: signupEmail,
-                            pwd: CryptoJS.HmacSHA256(signupPassword, dw.backend.__auth_salt).toString(),
-                            pwd2: CryptoJS.HmacSHA256(signupPassword2, dw.backend.__auth_salt).toString()
+                            password: signupPassword
                         }
                     });
                     this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
