@@ -28,20 +28,6 @@ $app->get('/auth/salt', function() use ($app) {
 });
 
 /*
- *logs out the current user
- */
-$app->post('/auth/logout', function() {
-    $user = Session::getUser();
-    if ($user->isLoggedIn()) {
-        Session::logout();
-        ok();
-    } else {
-        error('not-loggin-in', 'you cannot logout if you\'re not logged in');
-    }
-});
-
-
-/*
  * endpoint for sending a new password to a user
  *
  * expects payload { "email": "validemail@domain.tld" }
