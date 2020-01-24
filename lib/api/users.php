@@ -143,52 +143,6 @@ $app->put('/users/:id', function($user_id) use ($app) {
     }
 });
 
-
-/*
- * delete a user
- * @needs admin or existing user
- */
-$app->delete('/users/:id', function($user_id) use ($app) {
-    $curUser = Session::getUser();
-    $payload = json_decode($app->request()->getBody());
-    if (!isset($payload->pwd)) {
-        $pwd = $app->request()->get('pwd');
-        if (empty($pwd)) {
-            error('no-password', 'no password was provided with the delete request');
-            return;
-        }
-    } else {
-        $pwd = $payload->pwd;
-    }
-    if ($curUser->isLoggedIn()) {
-        if ($user_id == 'current' || $curUser->getId() == $user_id) {
-            $user = $curUser;
-        } else if ($curUser->isAdmin()) {
-            $user = UserQuery::create()->findPK($user_id);
-            $pwd = $user->getPwd();
-        }
-        if (!empty($user)) {
-            if ($user->getPwd() === secure_password($pwd)) {
-
-                // Delete user
-                if (!$curUser->isAdmin()) {
-                    Session::logout();
-                }
-                $user->erase();
-
-                ok();
-            } else {
-                Action::logAction($user, 'delete-request-wrong-password', json_encode(get_user_ips()));
-                error('wrong-password', __('The password you entered is not correct.'));
-            }
-        } else {
-            error('user-not-found', 'no user found with that id');
-        }
-    } else {
-        error('need-login', 'you must be logged in to do that');
-    }
-});
-
 $app->put('/account/reset-password', function() use ($app) {
     $payload = json_decode($app->request()->getBody());
     if (!empty($payload->token)) {
