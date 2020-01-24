@@ -221,7 +221,7 @@
                     signupSuccess: ''
                 });
                 try {
-                    await httpReq.post('/v3/users', {
+                    await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
                             password: signupPassword
