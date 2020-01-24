@@ -2,20 +2,19 @@
 {#if $user.mayPublish}
 <Publish embed_templates="{embedTemplates}" embed_type="{embedType}" plugin_shareurls="{pluginShareurls}" shareurl_type="{shareurlType}" />
 {:elseif !$user.isLoggedIn}
-<div class="alert alert-info" style="margin-top: 30px">
-    To publish a chart, you need to be signed in to Datawrapper
-</div>
-<SignInForm loginForm="1" />
+
+<h2>Hello guest</h2>
+<p>To publish a chart, you need to <a href="#login">sign in or create an account</a>.</p>
+
 {:else}
 <!-- THERE IS A DIFFERENT REASON WHY YOU CANNOT PUBLISH -->
 {/if}
 
 <script>
     import Publish from './Publish.html';
-    import SignInForm from '../../signin/SignInForm.html';
 
     export default {
-        components: { Publish, SignInForm },
+        components: { Publish },
         data() {
             return {
                 embedTemplates: [],
