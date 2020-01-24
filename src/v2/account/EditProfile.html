@@ -17,7 +17,7 @@
 <div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
     <div class="span6">
         <FormBlock label="{ __('E-Mail') }" help="{changeEmail ? __('account / confirm-email-change') : ''}">
-            <input disabled="{ !changeEmail }" value="{ originalEmail }" type="text" />
+            <input disabled="{ !changeEmail }" bind:value="email" type="email" />
             {#if changeEmail}
             <button on:click="set({changeEmail: false})" class="btn btn-default">
                 { __( "Back") }
@@ -99,7 +99,8 @@
                 label="{ __('Please enter your password to confirm the deletion request:') }"
                 error="{errors && errors.length ? errors.join('. ') : false}"
             >
-                <input type="password" bind:value="confirmPassword" placeholder="{ __("Password") }" />
+                <input type="email" bind:value="confirmEmail" placeholder="{ __('Email') }" />
+                <input type="password" bind:value="confirmPassword" placeholder="{ __('Password') }" />
             </FormBlock>
             <p class="lead">
                 {@html __("account / delete / really-really") }
@@ -136,9 +137,8 @@
 </div>
 
 <script>
-    /* globals CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
-    import { getJSON, putJSON, fetchJSON } from '@datawrapper/shared/fetch';
+    import httpReq from '@datawrapper/shared/httpReq';
     import checkPassword from '@datawrapper/shared/checkPassword';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
 
@@ -157,8 +157,9 @@
                 currentPassword: '',
                 newPassword1: '',
                 newPassword2: '',
+                confirmEmail: '',
                 confirmPassword: '',
-                originalEmail: '',
+                email: '',
                 savingEmail: false,
                 savingPassword: false,
                 errors: [],
@@ -184,159 +185,115 @@
             checkPassword
         },
         methods: {
-            changeEmail() {
-                var { email, userId } = this.get();
+            async changeEmail() {
+                var { email } = this.get();
 
                 this.set({ savingEmail: true });
 
-                putJSON('/api/users/' + userId, JSON.stringify({ email }), res => {
-                    this.set({ savingEmail: false });
+                const messages = [];
+                const errors = [];
 
-                    const messages = [];
-                    const errors = [];
-
-                    if (res.status === 'error') {
-                        errors.push(res.message);
-                    }
-
-                    if (res.data && res.data.messages) {
-                        res.data.messages.forEach(msg => {
-                            messages.push(msg);
-                        });
-                    }
-
-                    if (res.data && res.data.errors) {
-                        res.data.errors.forEach(msg => {
-                            errors.push(msg);
-                        });
-                    }
-
-                    if (errors.length === 0) {
-                        this.set({
-                            originalEmail: email,
-                            changeEmail: false,
-                            messages,
-                            errors: []
-                        });
+                try {
+                    const res = await httpReq.patch('/v3/me', {
+                        payload: { email }
+                    });
+                    messages.push('Your email has been changed successfully. You will receive an email with a confirmation link.');
+                    // for now, let's set it back to the previous email
+                    this.set({ email: res.email });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        errors.push(res.message || e.message);
                     } else {
-                        this.set({ errors });
+                        errors.push('Unknown error: ' + e);
                     }
-                });
+                }
+
+                this.set({ savingEmail: false });
+
+                if (!errors.length) {
+                    this.set({
+                        changeEmail: false,
+                        messages,
+                        errors: []
+                    });
+                } else {
+                    this.set({ errors });
+                }
             },
-            changePassword() {
-                const { currentPassword, newPassword1, newPassword2, userId } = this.get();
+            async changePassword() {
+                const { currentPassword, newPassword1, newPassword2 } = this.get();
                 const check = checkPassword(currentPassword, newPassword1, newPassword2);
 
                 if (check === false) {
                     this.set({ savingPassword: true });
 
-                    getJSON('/api/auth/salt', res => {
-                        if (res.status !== 'ok') {
-                            this.set({
-                                errors: ['Could not load salt.'],
-                                savingPassword: false
-                            });
+                    const payload = {
+                        password: newPassword1,
+                        oldPassword: currentPassword
+                    };
 
-                            return;
+                    const messages = [];
+                    const errors = [];
+
+                    try {
+                        await httpReq.patch('/v3/me', { payload });
+                        messages.push('Your password has been changed!');
+                    } catch (e) {
+                        if (e.name === 'HttpReqError') {
+                            const res = await e.response.json();
+                            errors.push(res.message || e.message);
+                        } else {
+                            errors.push('Unknown error: ' + e);
                         }
+                    }
 
-                        const salt = res.data.salt;
-                        const payload = {
-                            oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
-                            pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
-                        };
-
-                        putJSON('/api/users/' + userId, JSON.stringify(payload), res => {
-                            this.set({
-                                savingPassword: false,
-                                currentPassword: '',
-                                newPassword1: '',
-                                newPassword2: ''
-                            });
-
-                            const messages = [];
-                            const errors = [];
-
-                            if (res.status === 'error') {
-                                errors.push(res.message);
-                            }
-
-                            if (res.data && res.data.messages) {
-                                res.data.messages.forEach(msg => {
-                                    messages.push(msg);
-                                });
-                            }
-
-                            if (res.data && res.data.errors) {
-                                res.data.errors.forEach(msg => {
-                                    errors.push(msg);
-                                });
-                            }
-
-                            if (errors.length === 0) {
-                                messages.push('Your password was changed sucessfully');
-                                this.set({ changePassword: false, messages, errors: [] });
-                            } else {
-                                this.set({ errors });
-                            }
-                        });
+                    if (errors.length === 0) {
+                        this.set({ changePassword: false, messages, errors: [] });
+                    } else {
+                        this.set({ errors });
+                    }
+                    this.set({
+                        savingPassword: false,
+                        currentPassword: '',
+                        newPassword1: '',
+                        newPassword2: ''
                     });
                 } else {
                     var errors = [check];
                     this.set({ errors });
                 }
             },
-            deleteAccount() {
-                var { confirmPassword } = this.get();
+            async deleteAccount() {
+                const { confirmPassword, confirmEmail } = this.get();
 
                 this.set({ deletingAccount: true });
 
-                getJSON('/api/auth/salt', res => {
-                    if (res.status !== 'ok') {
-                        this.set({
-                            errors: ['Could not load salt.'],
-                            deletingAccount: false
-                        });
+                const errors = [];
 
-                        return;
-                    }
-
-                    var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
-
-                    fetchJSON('/api/users/current?pwd=' + passwordHash, 'DELETE', 'include', JSON.stringify({ pwd: passwordHash }), res => {
-                        this.set({ deletingAccount: false });
-
-                        const messages = [];
-                        const errors = [];
-
-                        if (res.status === 'error') {
-                            errors.push(res.message);
-                        }
-
-                        if (res.data && res.data.messages) {
-                            res.data.messages.forEach(msg => {
-                                messages.push(msg);
-                            });
-                        }
-
-                        if (res.data && res.data.errors) {
-                            res.data.errors.forEach(msg => {
-                                errors.push(msg);
-                            });
-                        }
-
-                        if (errors.length === 0) {
-                            this.set({ deleteAccount2: false, deleteAccount3: true });
-                        } else {
-                            this.set({ errors });
+                try {
+                    await httpReq.delete('/v3/me', {
+                        payload: {
+                            password: confirmPassword,
+                            email: confirmEmail
                         }
                     });
-                });
-            }
-        },
-        onstate({ changed, current, previous }) {
-            if (changed.email && !previous) {
-                this.set({ originalEmail: current.email });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        errors.push(res.message || e.message);
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                this.set({ deletingAccount: false });
+
+                if (!errors.length) {
+                    this.set({ deleteAccount2: false, deleteAccount3: true });
+                } else {
+                    this.set({ errors });
+                }
             }
         }
     };
