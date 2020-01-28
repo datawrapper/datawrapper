@@ -637,6 +637,7 @@
   "mycharts / Status": "Status",
   "mycharts / Author": "Autor",
   "mycharts / add-subfolder": "Ordner anlegen",
+  "mycharts / create-chart-here": "Neues Diagramm in diesem Ordner erstellen",
   "mycharts / empty-folder": "Dieser Ordner ist noch leer. Möchtest du ein <a href=\"/chart/create?folder=%folder%\">Diagramm erstellen</a>?",
   "mycharts / new-feature": "Neu in Datawrapper: Ordner",
   "mycharts / welcome-folders": "Du kannst deine Diagramme jetzt in Ordnern organisieren. Klicke auf \"Ordner anlegen\" um einen neuen Ordner zu erstellen. Danach kannst du Diagramme einfach in die Ordner hineinziehen.",
