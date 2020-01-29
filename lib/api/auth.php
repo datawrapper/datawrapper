@@ -34,9 +34,11 @@ $app->post('/auth/login', function() use($app) {
             ok($user->serialize());
         } else {
             Action::logAction($user, 'wrong-password', json_encode(get_user_ips()));
+            $app->response()->status(401);
             error('login-invalid', __('The password is incorrect.'));
         }
     } else {
+        $app->response()->status(404);
         error('login-email-unknown', __('The email is not registered yet.'));
     }
 });

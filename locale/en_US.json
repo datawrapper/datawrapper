@@ -637,6 +637,7 @@
   "mycharts / Status": "Status",
   "mycharts / Author": "Author",
   "mycharts / add-subfolder": "Add subfolder",
+  "mycharts / create-chart-here": "Create new chart in this folder",
   "mycharts / empty-folder": "No charts here, yet. Do you want to <a href=\"/chart/create?folder=%folder%\">create one now</a>?",
   "mycharts / new-feature": "New Feature: Chart Folders!",
   "mycharts / welcome-folders": "Now you can organize your charts in folders. Click on \"create subfolder\" to get started. Then you can drag your charts into folders.",
