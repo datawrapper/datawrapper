@@ -249,19 +249,16 @@
                     loginSuccess: ''
                 });
                 try {
-                    const res = await httpReq.post('/account/reset-password', {
+                    await httpReq.post('/v3/auth/reset-password', {
                         payload: {
                             email: loginEmail
                         }
                     });
-                    if (res.status === 'ok') {
-                        this.set({ loginSuccess: res.data });
-                    } else {
-                        this.set({ loginError: res.message });
-                    }
+                    this.set({ loginSuccess: __('signin / password-reset / success') });
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
-                        this.set({ loginError: error.body ? error.body.message : error.message });
+                        const body = await error.response.json();
+                        this.set({ loginError: body.message ? __(`signin / password-reset / error / ${body.message}`) : error.message });
                     } else {
                         this.set({ loginError: error });
                     }
