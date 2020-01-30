@@ -143,26 +143,6 @@ $app->put('/users/:id', function($user_id) use ($app) {
     }
 });
 
-$app->put('/account/reset-password', function() use ($app) {
-    $payload = json_decode($app->request()->getBody());
-    if (!empty($payload->token)) {
-        $user = UserQuery::create()->getUserByPwdResetToken($payload->token);
-        if (!empty($user)) {
-            if (!empty($payload->pwd)) {
-                // update password
-                $user->setPwd($payload->pwd);
-                $user->setResetPasswordToken('');
-                $user->setActivateToken('');
-                $user->save();
-                ok();
-            } else {
-                error('empty-password', __('The password must not be empty.'));
-            }
-        } else {
-            error('invalid-token', __('The supplied token for password resetting is invalid.'));
-        }
-    }
-});
 
 $app->post('/user/:id/products', function($id) use ($app) {
 	if_is_admin(function() use ($app, $id) {
