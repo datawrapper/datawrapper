@@ -393,6 +393,8 @@
                     embedCode:
                         embedCodes && embedCodes[embedType]
                             ? embedCodes[embedType]
+                            : embedType === 'custom'
+                            ? ''
                             : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
                 });
             },

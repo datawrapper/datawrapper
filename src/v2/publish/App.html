@@ -254,9 +254,9 @@
 
                 if (chart.metadata.publish['embed-codes']['embed-method-' + embed_type]) {
                     return chart.metadata.publish['embed-codes']['embed-method-' + embed_type];
+                } else {
+                    return '';
                 }
-
-                return chart.metadata.publish['embed-codes']['embed-method-responsive'];
             }
         },
         helpers: { __ },
