@@ -13,24 +13,27 @@ $(function() {
 
         $('.modal').css('margin-top', modalTopMargin);
     };
-    
+
     resizeModal();
     $(window).on('resize', resizeModal);
 
     // set password and login
     $('button.login').click(function() {
+        const token = window.location.pathname.split('/').pop();
         $.ajax({
-            url: location.href,
+            url: '//' + dw.backend.__api_domain + '/v3/auth/activate/'+token,
             type: 'POST',
             data: JSON.stringify({
-                pwd: CryptoJS.HmacSHA256($('.login-pwd').val(), "{{ auth_salt }}").toString()
+                password: $('.login-pwd').val()
             }),
             dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             success: function(res) {
                 $('.login-pwd').val('');
-                if (res.result == "ok") {
-                    location.href = "{{ redirect }}";
-                }
+                window.location.href = "{{ redirect }}";
             }
         });
     });
@@ -128,7 +131,7 @@ body.login .modal h3 {
     margin-bottom: 20px;
 }
 
-.login-help { 
+.login-help {
     color: #999;
     padding-bottom: 10px;
 }
