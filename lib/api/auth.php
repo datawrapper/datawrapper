@@ -22,11 +22,6 @@ $app->put('/account/lang', function() use ($app) {
     ok();
 });
 
-/* return the server salt for secure auth */
-$app->get('/auth/salt', function() use ($app) {
-    ok(array('salt' => DW_AUTH_SALT));
-});
-
 /*
  * endpoint for sending a new password to a user
  *
