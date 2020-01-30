@@ -16,13 +16,9 @@
 
 <div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
     <div class="span6">
-        {#if changeEmail && errors && errors.length }
-        <div class="alert">
-            <ul style="margin-bottom: 0;">
-                {#each errors as message}
-                <li>{@html message }</li>
-                {/each}
-            </ul>
+        {#if changeEmail && errors.length}
+        <div class="alert alert-warning">
+            {@html errors.join('')}
         </div>
         {/if}
         <FormBlock label="{ __('E-Mail') }" help="{changeEmail ? __('account / confirm-email-change') : ''}">
@@ -212,7 +208,11 @@
                 } catch (e) {
                     if (e.name === 'HttpReqError') {
                         const res = await e.response.json();
-                        errors.push(res.message || e.message);
+                        if (res.message === 'Invalid request payload input') {
+                            errors.push(__('account / change-email / error / invalid-email'));
+                        } else {
+                            errors.push(res.message ? __(`account / change-email / error / ${res.message}`) : e.message);
+                        }
                     } else {
                         errors.push('Unknown error: ' + e);
                     }
