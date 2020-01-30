@@ -16,6 +16,15 @@
 
 <div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
     <div class="span6">
+        {#if changeEmail && errors && errors.length }
+        <div class="alert">
+            <ul style="margin-bottom: 0;">
+                {#each errors as message}
+                <li>{@html message }</li>
+                {/each}
+            </ul>
+        </div>
+        {/if}
         <FormBlock label="{ __('E-Mail') }" help="{changeEmail ? __('account / confirm-email-change') : ''}">
             <input disabled="{ !changeEmail }" bind:value="email" type="email" />
             {#if changeEmail}
