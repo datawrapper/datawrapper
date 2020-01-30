@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="inpt">
-                <input ref:embedInput type="text" class="input embed-code" readonly value="{embedCode}" />
+                <textarea ref:embedInput type="text" class="input embed-code" readonly value="{embedCode}"></textarea>
                 <button class="btn btn-copy" on:click="copy(embedCode)" title="copy"><i class="fa fa-copy"></i> { __('publish / copy') }</button>
                 <div class="copy-success {copy_success ? 'show':''}">
                     { __('publish / copy-success') }
@@ -194,6 +194,9 @@
     }
     .embed-options {
         display: inline-block;
+    }
+    .embed-code {
+        height: 20px;
     }
 </style>
 
