@@ -52,7 +52,6 @@
 </div>
 
 <div class="widget" data-widget="datawrapper.InvitationForm">
-    
 
     <div class="inviation-form form-vertical">
         <form action="#" name="set-password">
@@ -88,36 +87,38 @@
 <script type="text/javascript">
 $(window).load(function() {
 
-    var salt  = null;
-    var token = document.location.pathname.split('/')[document.location.pathname.split('/').length - 1];
-
-    $.ajax('/api/auth/salt', {
-        success: function(data){salt = data.data.salt ;}
-    });
+    var token = document.location.pathname.split('/').pop();
 
     $('input[type=submit]').click(function(){
-        var pwd1 = $("input[name='password1']");
-        var pwd2 = $("input[name='password2']");
+        var pwd1 = $("input[name='password1']").val();
+        var pwd2 = $("input[name='password2']").val();
 
         $('.error').addClass('hidden');
-        pwd1 = pwd1.val() !== '' ? CryptoJS.HmacSHA256(pwd1.val(), salt).toString() : '';
-        pwd2 = pwd2.val() !== '' ? CryptoJS.HmacSHA256(pwd2.val(), salt).toString() : '';
 
-        $.ajax('/api/account/invitation/' + token, {
-            dataType: 'json',
+        if (pwd1 !== pwd2) {
+            return $('.error').removeClass('hidden').find('div').text('The passwords must be identical');
+        }
+
+        $.ajax({
+            url: '//' + dw.backend.__api_domain '/v3/auth/activate/' + token,
             type: 'POST',
             data: JSON.stringify({
-                pwd1: pwd1,
-                pwd2: pwd2
+                password: pwd1
             }),
+            dataType: 'json',
+            contentType: 'application/json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             success: function(data) {
-                if (data.status === 'ok') {
-                    return window.location = '/datawrapper-invite/' + token + '/finish';
-                } else {
-                  return $('.error').removeClass('hidden').find('div').text(data.message);
-                }
+                window.location = '/datawrapper-invite/' + token + '/finish';
+            },
+            error: function(res) {
+                $('.error').removeClass('hidden').find('div').text(res.message);
             }
         });
+
         return false;
     });
 });
