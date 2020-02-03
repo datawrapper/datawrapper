@@ -515,7 +515,7 @@
   "publish / export-duplicate": "Export or duplicate chart",
   "publish / export-duplicate / intro": "You can <b>duplicate</b> it to start editing a copy of the chart. Or export it into other formats.",
   "publish / unactivated / h1": "You've got mail!",
-  "publish / unactivated / p": "We've send you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
+  "publish / unactivated / p": "We've sent you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
   "upload / try-beta": "<b>Curious to try new features?</b> We are working on a new version of this page. <a href='?beta=1'>Click here</a> to activate it!",
   "upload / headline": "It all starts with your data...",
   "upload / quick help": "Select your data (including header row/column) in Excel or LibreOffice and paste it in the text field on the right. You can also upload a CSV or Excel file from your computer.",
