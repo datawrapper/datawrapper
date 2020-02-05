@@ -813,7 +813,7 @@ dw.column.types.date = (function() {
             precision: 'day-minutes'
         },
         ISO8601: {
-            test: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
+            test: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d:[0-5]\d|Z)/,
             parse: function(str) {
                 return str;
             },
