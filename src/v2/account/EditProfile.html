@@ -66,7 +66,7 @@
         <FormBlock
             error="{currentPassword ? checkPassword(currentPassword, newPassword1, newPassword2) : false}"
             label="{ __('New Password') }"
-            help="Your password must have at least 4 characters"
+            help="{ __('account / pwd-too-short').replace('%num',8)}"
         >
             <input type="password" bind:value="newPassword1" class="input-xlarge" />
         </FormBlock>
@@ -144,8 +144,18 @@
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
-    import checkPassword from '@datawrapper/shared/checkPassword';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
+
+    function checkPassword(curPwd, pwd, pwd2) {
+        if (curPwd === '') {
+            return __('account / password / current-password-note');
+        } else if (pwd.length < 8) {
+            return __('account / pwd-too-short').replace('%num', 8);
+        } else if (pwd !== pwd2) {
+            return __('account / password / mismatch');
+        }
+        return false;
+    }
 
     export default {
         components: { FormBlock },

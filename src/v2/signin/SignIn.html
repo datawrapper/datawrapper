@@ -168,7 +168,7 @@
             invalidSignupForm({ signupEmail, signupPassword, signupPassword2 }) {
                 if (!isValidEmail(signupEmail)) return true;
                 if (signupPassword !== signupPassword2) return true;
-                if (signupPassword.length < 4) return true;
+                if (signupPassword.length < 8) return true;
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
