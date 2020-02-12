@@ -21,10 +21,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-svelte": "^5.1.0",
     "rollup-plugin-terser": "^5.2.0",
-    "svelte": "^2.16.1"
-  },
-  "dependencies": {
     "svelte-transitions": "^1.2.0",
-    "zxcvbn": "^4.4.2"
+    "svelte": "^2.16.1"
   }
 }
