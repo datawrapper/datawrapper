@@ -180,7 +180,7 @@ class Chart extends BaseChart {
     }
 
     public function getStaticPath() {
-        $path = chart_publish_directory() . 'static/' . $this->getID();
+        $path = chart_publish_directory() . 'static/' . $this->getPublicId();
         return $path;
     }
 
@@ -190,7 +190,7 @@ class Chart extends BaseChart {
     }
 
     public function getRelativeStaticPath() {
-        $path = 'static/' . $this->getID();
+        $path = 'static/' . $this->getPublicId();
         return $path;
     }
 
@@ -482,6 +482,10 @@ class Chart extends BaseChart {
         );
     }
 
+    public function getPublicID() {
+        return md5($this->getID() . "--" . strtotime($this->getCreatedAt()));
+    }
+
     /*
      * increment the public version of a chart, which is used
      * in chart public urls to deal with cdn caches
@@ -518,7 +522,7 @@ class Chart extends BaseChart {
     public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
         $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
-        $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
+        $redirect_file = chart_publish_directory() . 'static/' . $this->getPublicID() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {
@@ -710,12 +714,12 @@ class Chart extends BaseChart {
      * return URL of this chart on Datawrapper
      */
     public function getLocalUrl() {
-        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/index.html';
+        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
     public function getCDNPath($version = null) {
         if ($version === null) $version = $this->getPublicVersion();
-        return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
+        return $this->getPublicId() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
     public function getNamespace() {
