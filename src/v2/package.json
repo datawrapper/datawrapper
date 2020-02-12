@@ -24,6 +24,7 @@
     "svelte": "^2.16.1"
   },
   "dependencies": {
-    "svelte-transitions": "^1.2.0"
+    "svelte-transitions": "^1.2.0",
+    "zxcvbn": "^4.4.2"
   }
 }

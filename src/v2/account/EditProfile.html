@@ -2,13 +2,11 @@
 
 {#if messages && messages.length }
 <div class="row" style="margin-top: 20px;">
-    <div class="span6 offset3">
+    <div class="span6">
         <div class="alert alert-success">
-            <ul style="margin-bottom: 0;">
-                {#each messages as message}
-                <li>{@html message }</li>
-                {/each}
-            </ul>
+            {#each messages as message}
+            <p>{@html message }</p>
+            {/each}
         </div>
     </div>
 </div>
@@ -53,28 +51,34 @@
         </h3>
         {#if changePassword && errors && errors.length }
         <div class="alert">
-            <ul style="margin-bottom: 0;">
-                {#each errors as message}
-                <li>{@html message }</li>
-                {/each}
-            </ul>
+            {#each errors as message}
+            <p>{@html message }</p>
+            {/each}
         </div>
         {/if}
         <FormBlock label="{ __('Current Password') }" help="{ __('account / password / current-password-note') }">
             <input type="password" bind:value="currentPassword" class="input-xlarge" />
         </FormBlock>
-        <FormBlock
-            error="{currentPassword ? checkPassword(currentPassword, newPassword1, newPassword2) : false}"
-            label="{ __('New Password') }"
-            help="{ __('account / pwd-too-short').replace('%num',8)}"
-        >
+
+        <FormBlock error="{passwordError}" label="{ __('New Password') }" success="{passwordSuccess}" help="{passwordHelp}">
             <input type="password" bind:value="newPassword1" class="input-xlarge" />
+            <div style="width: 287px">
+                <CheckPassword
+                    bind:password="newPassword1"
+                    bind:passwordRepeat="newPassword2"
+                    bind:passwordHelp
+                    bind:passwordSuccess
+                    bind:passwordError
+                    bind:passwordRepeatError
+                    bind:passwordOk="newPasswordOk"
+                />
+            </div>
         </FormBlock>
-        <FormBlock error="{currentPassword ? checkPassword(currentPassword, newPassword1, newPassword2) : false}" label="{ __('(repeat)') }" help="">
+        <FormBlock error="{passwordRepeatError}" label="{ __('(repeat)') }" help="">
             <input type="password" bind:value="newPassword2" class="input-xlarge" />
         </FormBlock>
 
-        <button class="btn btn-primary" on:click="changePassword()">
+        <button disabled="{ !(newPasswordOk && currentPassword) }" class="btn btn-primary" on:click="changePassword()">
             <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("account / password") }
         </button>
         <hr />
@@ -145,20 +149,10 @@
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
-
-    function checkPassword(curPwd, pwd, pwd2) {
-        if (curPwd === '') {
-            return __('account / password / current-password-note');
-        } else if (pwd.length < 8) {
-            return __('account / pwd-too-short').replace('%num', 8);
-        } else if (pwd !== pwd2) {
-            return __('account / password / mismatch');
-        }
-        return false;
-    }
+    import CheckPassword from '../shared/CheckPassword.html';
 
     export default {
-        components: { FormBlock },
+        components: { FormBlock, CheckPassword },
         data() {
             return {
                 changePassword: false,
@@ -172,6 +166,11 @@
                 currentPassword: '',
                 newPassword1: '',
                 newPassword2: '',
+                newPasswordOk: false,
+                passwordError: false,
+                passwordRepeatError: false,
+                passwordHelp: false,
+                passwordSuccess: false,
                 confirmEmail: '',
                 confirmPassword: '',
                 email: '',
@@ -196,8 +195,7 @@
             };
         },
         helpers: {
-            __,
-            checkPassword
+            __
         },
         methods: {
             async changeEmail() {
@@ -241,47 +239,41 @@
                 }
             },
             async changePassword() {
-                const { currentPassword, newPassword1, newPassword2 } = this.get();
-                const check = checkPassword(currentPassword, newPassword1, newPassword2);
+                const { currentPassword, newPassword1 } = this.get();
 
-                if (check === false) {
-                    this.set({ savingPassword: true });
+                this.set({ savingPassword: true });
 
-                    const payload = {
-                        password: newPassword1,
-                        oldPassword: currentPassword
-                    };
+                const payload = {
+                    password: newPassword1,
+                    oldPassword: currentPassword
+                };
 
-                    const messages = [];
-                    const errors = [];
+                const messages = [];
+                const errors = [];
 
-                    try {
-                        await httpReq.patch('/v3/me', { payload });
-                        messages.push('Your password has been changed!');
-                    } catch (e) {
-                        if (e.name === 'HttpReqError') {
-                            const res = await e.response.json();
-                            errors.push(res.message || e.message);
-                        } else {
-                            errors.push('Unknown error: ' + e);
-                        }
-                    }
-
-                    if (errors.length === 0) {
-                        this.set({ changePassword: false, messages, errors: [] });
+                try {
+                    await httpReq.patch('/v3/me', { payload });
+                    messages.push('Your password has been changed!');
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        errors.push(res.message || e.message);
                     } else {
-                        this.set({ errors });
+                        errors.push('Unknown error: ' + e);
                     }
-                    this.set({
-                        savingPassword: false,
-                        currentPassword: '',
-                        newPassword1: '',
-                        newPassword2: ''
-                    });
+                }
+
+                if (errors.length === 0) {
+                    this.set({ changePassword: false, messages, errors: [] });
                 } else {
-                    var errors = [check];
                     this.set({ errors });
                 }
+                this.set({
+                    savingPassword: false,
+                    currentPassword: '',
+                    newPassword1: '',
+                    newPassword2: ''
+                });
             },
             async deleteAccount() {
                 const { confirmPassword, confirmEmail } = this.get();
@@ -328,7 +320,12 @@
     h3 .fa-times {
         color: #c71e1d;
     }
-
+    .progress-success .bar {
+        background: #09bb9f !important;
+    }
+    .progress-danger .bar {
+        background: #c71e1d !important;
+    }
     .link {
         color: #1d81a2;
         font-weight: bold;
@@ -342,5 +339,8 @@
         .base-dropdown-content {
             top: 30px !important;
         }
+    }
+    .alert p {
+        margin-bottom: 0;
     }
 </style>

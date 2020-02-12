@@ -79,13 +79,34 @@
                         <label>{__('email')}</label>
                         <input type="email" bind:value="signupEmail" autocomplete="username" class="span3 input-xlarge register-email" />
                     </div>
-                    <div class="control-group">
+                    <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
                         <label>{__('password')}</label>
                         <input autocomplete="new-password" bind:value="signupPassword" type="password" class="span3 input-xlarge register-pwd" />
+                        <div style="width: 270px">
+                            <CheckPassword
+                                bind:password="signupPassword"
+                                bind:passwordRepeat="signupPassword2"
+                                bind:passwordHelp
+                                bind:passwordSuccess
+                                bind:passwordError
+                                bind:passwordRepeatError
+                                bind:passwordOk="signupPasswordOk"
+                            />
+                            {#if passwordError}
+                            <p class="help text-warning">{@html passwordError}</p>
+                            {:elseif passwordSuccess}
+                            <p class="help text-success">{@html passwordSuccess}</p>
+                            {:elseif passwordHelp}
+                            <p class="help muted">{@html passwordHelp}</p>
+                            {/if}
+                        </div>
                     </div>
-                    <div class="control-group" class:error="invalidSignupPassword">
+                    <div class="control-group" class:error="passwordRepeatError">
                         <label>{__('repeat password')}</label>
                         <input autocomplete="new-password" type="password" bind:value="signupPassword2" class="span3 input-xlarge register-pwd-2" />
+                        {#if passwordRepeatError}
+                        <p class="help text-error">{@html passwordRepeatError}</p>
+                        {/if}
                     </div>
                     <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
                         {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
@@ -130,6 +151,7 @@
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
+    import CheckPassword from '../shared/CheckPassword.html';
 
     // eslint-disable-next-line
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -138,6 +160,7 @@
     }
 
     export default {
+        components: { CheckPassword },
         data: () => ({
             noSignup: false,
             alternativeSignIn: [],
@@ -153,6 +176,11 @@
             signupEmail: '',
             signupPassword: '',
             signupPassword2: '',
+            signupPasswordOk: false,
+            passwordHelp: false,
+            passwordSuccess: false,
+            passwordError: false,
+            passwordRepeatError: false,
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
@@ -295,5 +323,10 @@
     }
     .modal-body {
         max-height: 550px !important;
+    }
+    p.help {
+        font-size: 12px;
+        line-height: 15px;
+        margin-top: 4px;
     }
 </style>
