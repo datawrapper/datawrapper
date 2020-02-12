@@ -16,6 +16,7 @@ build('team-settings');
 build('account');
 build('chart-breadcrumb');
 build('signin');
+build('invite');
 build('publish', { append: '_old' });
 build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });

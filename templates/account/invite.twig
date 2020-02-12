@@ -3,143 +3,27 @@
 {% set noFooter = true %}
 {% block content %}
 
-<script type="text/javascript">
-
-$(function() {
-    var resizeModal = function() {
-        var modalHeight = $('.modal').height(),
-            windowHeight = $(window).height(),
-            modalTopMargin = windowHeight / 2 - modalHeight / 2;
-
-        $('.modal').css('margin-top', modalTopMargin);
-    };
-
-    resizeModal();
-    $(window).on('resize', resizeModal);
-
-    // set password and login
-    $('button.login').click(function() {
-        const token = window.location.pathname.split('/').pop();
-        $.ajax({
-            url: '//' + dw.backend.__api_domain + '/v3/auth/activate/'+token,
-            type: 'POST',
-            data: JSON.stringify({
-                password: $('.login-pwd').val()
-            }),
-            dataType: 'json',
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(res) {
-                $('.login-pwd').val('');
-                window.location.href = "{{ redirect }}";
-            }
-        });
-    });
-    // show password in clear text
-    $('.pwd-clear').change(function() {
-        $('.login-pwd').get(0).type = $('.pwd-clear').is(':checked') ? 'text': 'password';
-    });
-});
-</script>
- <div class="brand">
-    {% if config.custom_logo %}<img src="/static/custom/{{ config.custom_logo }}" style="height:50px;" />{% endif %}
-</div>
-<div class="modal">
-    <div class="modal-body">
-        <h3>{{ message_h1 }}</h3>
-        <p>{{ message_p }}</p>
-        <div class="login-form form-vertical">
-            <div class="control-group">
-                <div class="controls">
-                    <input class="login-pwd input-xlarge span3" type="password" value="" placeholder="{% trans "password" %}" />
-
-                    <label class="checkbox">
-                        <input type="checkbox" class="pwd-clear" /> {% trans "Show password in clear text" %}
-                    </label>
-                </div>
-            </div>
-            <div class="control-group login-help">
-                {{ "By the way, your login is %s." | trans | replace({ '%s': '<span class="email">' ~ email ~ '</span>'}) | raw }}
-            </div>
-        </div>
-
-        <button class="btn btn-primary btn-large login">
-            {% trans "Set password &amp; get chart" %}
-            &nbsp;
-            <i class="fa fa-chevron-right"></i>
-        </button>
+{{
+    svelte('invite', {
+        redirect: redirect,
+        customLogo: config.custom_logo,
+        headline: message_h1,
+        intro: message_p,
+        email: email
+    })
+}}
 
 
-    </div>
-</div>
+<style type="text/css">
 
-    <style type="text/css">
-
-.foot {
-    position:absolute;
-    left:130px;
-    right:130px;
-    top:430px;
-    text-align:center;
-    padding-top: 10px;
-    font-size: 12px;
-    opacity: 0.5;
+    body {
+        background: #0f4656;
+        background: -moz-linear-gradient(90deg, #0f4656 0%, #085e55 100%);
+        background: -webkit-linear-gradient(90deg, #0f4656 0%,#085e55 100%);
+        background: linear-gradient(90deg, #0f4656 0%, #085e55 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0f4656', endColorstr='#085e55',GradientType=1 );
 }
 
-.brand {
-    text-align: center;
-    position: relative;
-    top: -30px;
-}
-body {
-    background: #eee url(/static/img/bg/wavegrid.png);
-}
-
-.modal h3 {
-    margin-top: 0;
-    font-size: 26px;
-    font-weight: 300;
-    margin-bottom: 20px;
-}
-.modal h3 img {
-    vertical-align: bottom;
-}
-body .modal {
-    width: 420px;
-    margin-left: -210px;
-    box-shadow: 0 0 20px rgba(0,0,0, 0.3);
-    border: 0;
-    position: relative;
-}
-.modal-body {
-    padding: 30px;
-}
-body.login .row-login {
-    width: 370px;
-}
-
-body.login .modal .close {
-    display: none;
-}
-
-body.login .modal h3 {
-    margin-top: 0;
-    font-size: 26px;
-    font-weight: 300;
-    margin-bottom: 20px;
-}
-
-.login-help {
-    color: #999;
-    padding-bottom: 10px;
-}
-
-span.email {
-    color: #222;
-}
-    </style>
-
+</style>
 
 {% endblock %}
