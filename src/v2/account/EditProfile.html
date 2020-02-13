@@ -75,12 +75,12 @@
                     bind:passwordOk="newPasswordOk"
                 />
             </div>
-            <div class="control-group">
-                <label class="checkbox" style="margin-top: 10px;">
-                    <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
-                </label>
-            </div>
         </FormBlock>
+        <div class="control-group" style="margin-top: -10px; margin-bottom: 20px;">
+            <label class="checkbox">
+                <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+            </label>
+        </div>
 
         <button disabled="{ !(newPasswordOk && currentPassword) }" class="btn btn-primary" on:click="changePassword()">
             <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("account / password") }
@@ -267,14 +267,20 @@
                 }
 
                 if (errors.length === 0) {
-                    this.set({ changePassword: false, messages, errors: [] });
+                    this.set({
+                        changePassword: false,
+                        currentPassword: '',
+                        newPassword: '',
+                        messages,
+                        errors: []
+                    });
                 } else {
-                    this.set({ errors });
+                    this.set({
+                        errors
+                    });
                 }
                 this.set({
-                    savingPassword: false,
-                    currentPassword: '',
-                    newPassword: ''
+                    savingPassword: false
                 });
             },
             async deleteAccount() {
