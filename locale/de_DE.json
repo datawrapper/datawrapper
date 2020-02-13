@@ -600,7 +600,7 @@
   "Can't recall your password?": "Passwort vergessen?",
   "Return to login...": "Zurück zum Login",
   "login / signup / headline": "Benutzerkonto anlegen",
-  "login / signup / intro": "Datawrapper hilft dabei Diagramme und Karten in kürzester Zeit zu publizieren. Probier es aus und du hast deine erste Visualisierung in weniger als eine Minute.",
+  "login / signup / intro": "Datawrapper hilft dabei Diagramme und Karten in kürzester Zeit zu publizieren. <b><a href=\"/chart/create\">Probier es aus</a></b> ohne Login, oder erstelle dir ein Benutzerkonto in weniger als einer Minute.",
   "repeat password": "Passwort wiederholen",
   "Sign Up": "Anmelden",
   "login / alternative signin": "Oder melde dich an über:",
