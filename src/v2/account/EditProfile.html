@@ -62,9 +62,9 @@
 
         <FormBlock error="{passwordError}" label="{ __('New Password') }" success="{passwordSuccess}" help="{passwordHelp}">
             {#if showPasswordAsClearText}
-            <input type="text" bind:value="newPassword" class="input-xlarge" />
+            <input data-lpignore="true" type="text" bind:value="newPassword" class="input-xlarge" />
             {:else}
-            <input type="password" bind:value="newPassword" class="input-xlarge" />
+            <input data-lpignore="true" type="password" bind:value="newPassword" class="input-xlarge" />
             {/if}
             <div style="width: 287px">
                 <CheckPassword

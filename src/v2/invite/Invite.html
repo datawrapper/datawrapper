@@ -16,9 +16,9 @@
                 <div class="controls">
                     <label>{__('password')}</label>
                     {#if clearText}
-                    <input bind:value="password" class="login-pwd input-xlarge span3" type="text" />
+                    <input data-lpignore="true" bind:value="password" class="login-pwd input-xlarge span3" type="text" />
                     {:else}
-                    <input bind:value="password" class="login-pwd input-xlarge span3" type="password" />
+                    <input data-lpignore="true" bind:value="password" class="login-pwd input-xlarge span3" type="password" />
                     {/if}
                     <CheckPassword
                         bind:password

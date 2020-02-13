@@ -82,9 +82,21 @@
                     <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
                         <label>{__('password')}</label>
                         {#if showPasswordAsClearText}
-                        <input autocomplete="new-password" bind:value="signupPassword" type="text" class="span3 input-xlarge register-pwd" />
+                        <input
+                            data-lpignore="true"
+                            autocomplete="off"
+                            bind:value="signupPassword"
+                            type="text"
+                            class="span3 input-xlarge register-pwd"
+                        />
                         {:else}
-                        <input autocomplete="new-password" bind:value="signupPassword" type="password" class="span3 input-xlarge register-pwd" />
+                        <input
+                            data-lpignore="true"
+                            autocomplete="off"
+                            bind:value="signupPassword"
+                            type="password"
+                            class="span3 input-xlarge register-pwd"
+                        />
                         {/if}
                         <div style="width: 270px">
                             <CheckPassword
@@ -330,5 +342,10 @@
         font-size: 12px;
         line-height: 15px;
         margin-top: 4px;
+    }
+    .span3.row-signup {
+        border-left: 1px solid #eee;
+        padding-left: 22px !important;
+        margin-left: 23px;
     }
 </style>
