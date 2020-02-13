@@ -204,16 +204,12 @@
             invalidLoginForm({ loginEmail, loginPassword }) {
                 return !isValidEmail(loginEmail) || loginPassword === '';
             },
-            invalidSignupForm({ signupEmail, signupPassword, signupPassword2 }) {
+            invalidSignupForm({ signupEmail, signupPassword, signupPasswordOk }) {
                 if (!isValidEmail(signupEmail)) return true;
-                if (signupPassword !== signupPassword2) return true;
-                if (signupPassword.length < 8) return true;
+                if (!signupPasswordOk) return true;
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
-            },
-            invalidSignupPassword({ signupPassword, signupPassword2 }) {
-                return signupPassword !== '' && signupPassword !== signupPassword2;
             }
         },
         helpers: {
@@ -250,10 +246,7 @@
                 this.set({ loggingIn: false });
             },
             async doSignUp() {
-                const { signupEmail, signupPassword, signupPassword2 } = this.get();
-                if (signupPassword !== signupPassword2) {
-                    return this.set({ signupError: 'Passwords must match' });
-                }
+                const { signupEmail, signupPassword } = this.get();
                 this.set({
                     signingUp: true,
                     signupError: '',
