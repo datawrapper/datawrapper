@@ -58,10 +58,7 @@
         </div>
 
         <button on:click="doSignUp()" disabled="{! passwordOk }" class="btn btn-primary btn-large login">
-            { __('account / invite / set-password') } &nbsp; {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i
-                class="fa fa-fw fa-chevron-right"
-            ></i
-            >{/if}
+            { @html button } &nbsp; {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-chevron-right"></i>{/if}
         </button>
     </div>
 </div>
@@ -87,7 +84,11 @@
             activateError: false,
             windowHeight: 1000,
             modalHeight: 300,
-            clearText: false
+            clearText: false,
+            // texts
+            headline: '',
+            intro: '',
+            button: 'Set password'
         }),
         computed: {
             marginTop({ windowHeight, modalHeight }) {
@@ -173,7 +174,7 @@
         font-weight: 300;
         margin-bottom: 20px;
     }
-    span.email {
+    .login-help :global(span.email) {
         color: #222;
     }
     .control-group label:not(.checkbox) {
