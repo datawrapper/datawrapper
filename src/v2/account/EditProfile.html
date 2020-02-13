@@ -61,21 +61,25 @@
         </FormBlock>
 
         <FormBlock error="{passwordError}" label="{ __('New Password') }" success="{passwordSuccess}" help="{passwordHelp}">
-            <input type="password" bind:value="newPassword1" class="input-xlarge" />
+            {#if showPasswordAsClearText}
+            <input type="text" bind:value="newPassword" class="input-xlarge" />
+            {:else}
+            <input type="password" bind:value="newPassword" class="input-xlarge" />
+            {/if}
             <div style="width: 287px">
                 <CheckPassword
-                    bind:password="newPassword1"
-                    bind:passwordRepeat="newPassword2"
+                    bind:password="newPassword"
                     bind:passwordHelp
                     bind:passwordSuccess
                     bind:passwordError
-                    bind:passwordRepeatError
                     bind:passwordOk="newPasswordOk"
                 />
             </div>
-        </FormBlock>
-        <FormBlock error="{passwordRepeatError}" label="{ __('(repeat)') }" help="">
-            <input type="password" bind:value="newPassword2" class="input-xlarge" />
+            <div class="control-group">
+                <label class="checkbox" style="margin-top: 10px;">
+                    <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+                </label>
+            </div>
         </FormBlock>
 
         <button disabled="{ !(newPasswordOk && currentPassword) }" class="btn btn-primary" on:click="changePassword()">
@@ -164,11 +168,9 @@
                 showPasswordInPlaintext: false,
                 messages: [],
                 currentPassword: '',
-                newPassword1: '',
-                newPassword2: '',
+                newPassword: '',
                 newPasswordOk: false,
                 passwordError: false,
-                passwordRepeatError: false,
                 passwordHelp: false,
                 passwordSuccess: false,
                 confirmEmail: '',
@@ -176,6 +178,7 @@
                 email: '',
                 savingEmail: false,
                 savingPassword: false,
+                showPasswordAsClearText: false,
                 errors: [],
                 groups: [
                     {
@@ -239,12 +242,12 @@
                 }
             },
             async changePassword() {
-                const { currentPassword, newPassword1 } = this.get();
+                const { currentPassword, newPassword } = this.get();
 
                 this.set({ savingPassword: true });
 
                 const payload = {
-                    password: newPassword1,
+                    password: newPassword,
                     oldPassword: currentPassword
                 };
 
@@ -271,8 +274,7 @@
                 this.set({
                     savingPassword: false,
                     currentPassword: '',
-                    newPassword1: '',
-                    newPassword2: ''
+                    newPassword: ''
                 });
             },
             async deleteAccount() {

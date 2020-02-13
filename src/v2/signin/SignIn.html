@@ -81,15 +81,17 @@
                     </div>
                     <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
                         <label>{__('password')}</label>
+                        {#if showPasswordAsClearText}
+                        <input autocomplete="new-password" bind:value="signupPassword" type="text" class="span3 input-xlarge register-pwd" />
+                        {:else}
                         <input autocomplete="new-password" bind:value="signupPassword" type="password" class="span3 input-xlarge register-pwd" />
+                        {/if}
                         <div style="width: 270px">
                             <CheckPassword
                                 bind:password="signupPassword"
-                                bind:passwordRepeat="signupPassword2"
                                 bind:passwordHelp
                                 bind:passwordSuccess
                                 bind:passwordError
-                                bind:passwordRepeatError
                                 bind:passwordOk="signupPasswordOk"
                             />
                             {#if passwordError}
@@ -101,12 +103,10 @@
                             {/if}
                         </div>
                     </div>
-                    <div class="control-group" class:error="passwordRepeatError">
-                        <label>{__('repeat password')}</label>
-                        <input autocomplete="new-password" type="password" bind:value="signupPassword2" class="span3 input-xlarge register-pwd-2" />
-                        {#if passwordRepeatError}
-                        <p class="help text-error">{@html passwordRepeatError}</p>
-                        {/if}
+                    <div class="control-group">
+                        <label class="checkbox" for="keep-login" style="margin-top: 10px;">
+                            <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+                        </label>
                     </div>
                     <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
                         {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
@@ -175,12 +175,11 @@
             // signup
             signupEmail: '',
             signupPassword: '',
-            signupPassword2: '',
             signupPasswordOk: false,
             passwordHelp: false,
             passwordSuccess: false,
             passwordError: false,
-            passwordRepeatError: false,
+            showPasswordAsClearText: false,
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
@@ -298,6 +297,9 @@
 </script>
 
 <style>
+    h3 {
+        font-weight: 400;
+    }
     .alternative-signin {
         padding: 10px 0 0;
         border-top: 1px solid #eee;
@@ -309,7 +311,7 @@
     .alternative-signin-link:last-child {
         margin-right: 0;
     }
-    .control-group label {
+    .control-group label:not(.checkbox) {
         font-size: 11px;
         text-transform: uppercase;
         color: #555;
