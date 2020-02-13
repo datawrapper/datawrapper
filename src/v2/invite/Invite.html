@@ -51,10 +51,11 @@
             <div class="alert alert-success">
                 {@html activateSuccess}
             </div>
-            {/if}
+            {/if} {#if email}
             <div class="control-group login-help">
                 {@html __('account / invite / your-login-is').replace('%s', `<span class="email">${email}</span>`)}
             </div>
+            {/if}
         </div>
 
         <button on:click="doSignUp()" disabled="{! passwordOk }" class="btn btn-primary btn-large login">
@@ -88,7 +89,9 @@
             // texts
             headline: '',
             intro: '',
-            button: 'Set password'
+            email: '',
+            button: 'Set password',
+            isPasswordReset: false
         }),
         computed: {
             marginTop({ windowHeight, modalHeight }) {
@@ -101,16 +104,26 @@
         methods: {
             async doSignUp() {
                 const token = window.location.pathname.split('/').pop();
-                const { password, redirect } = this.get();
+                const { password, redirect, isPasswordReset } = this.get();
                 this.set({
                     loggingIn: true
                 });
                 try {
-                    await httpReq.post(`/v3/auth/activate/${token}`, {
-                        payload: {
-                            password
-                        }
-                    });
+                    if (isPasswordReset) {
+                        await httpReq.post(`/v3/auth/change-password`, {
+                            payload: {
+                                token,
+                                password
+                            }
+                        });
+                    } else {
+                        await httpReq.post(`/v3/auth/activate/${token}`, {
+                            payload: {
+                                password
+                            }
+                        });
+                    }
+
                     this.set({ activateSuccess: 'Password was set up successfully!' });
                     setTimeout(() => {
                         window.location.href = redirect;
