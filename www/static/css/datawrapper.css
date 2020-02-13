@@ -535,8 +535,7 @@ html .navbar.navbar-inverse .navbar-inner .brand {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 300;
 }
-.modal .modal-body h4,
-.modal .modal-body b {
+.modal .modal-body h4 {
   font-weight: 500;
 }
 .modal .btn {

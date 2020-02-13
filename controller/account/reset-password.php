@@ -24,8 +24,13 @@ $app->get('/account/reset-password/:token', function ($token) use ($app) {
             // $user->setResetPasswordToken('');
             // $user->save();
             $page['token'] = $token;
+            $page['redirect'] = '/';
+            $page['message_h1'] = __('account / password-reset / headline');
+            $page['message_button'] = __('account / password-reset / button');
+            $page['message_p'] = __('account / password-reset / intro');
+            $page['password_reset'] = true;
 
-            $app->render('account/reset-password.twig', $page);
+            $app->render('account/invite.twig', $page);
         }
     }
 });
