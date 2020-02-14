@@ -205,6 +205,7 @@
     import Help from '@datawrapper/controls/Help.html';
 
     import { __ } from '@datawrapper/shared/l10n';
+    import request from '@datawrapper/shared/httpReq';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import { getJSON, postJSON } from '@datawrapper/shared/fetch';
     import get from '@datawrapper/shared/get';
@@ -304,15 +305,17 @@
                     .save()
                     .then(d => {
                         // publish chart
-                        postJSON(`/api/charts/${chart.id}/publish`, null, res => {
-                            if (res.status === 'ok') {
-                                trackEvent('Chart Editor', 'publish-success');
-                                me.publishFinished(res.data);
-                            } else {
-                                trackEvent('Chart Editor', 'publish-error', res.message);
-                                me.set({ publish_error: res.message });
-                            }
-                        });
+                        request
+                            .post(`/v3/charts/${chart.id}/publish`)
+                            .then(res => {
+                                request.get(`/v3/charts/${chart.id}`).then(res => {
+                                    trackEvent('Chart Editor', 'publish-success');
+                                    me.publishFinished(res);
+                                });
+                            })
+                            .catch(error => {
+                                trackEvent('Chart Editor', 'publish-error', error.message);
+                            });
                         fakeProgress = 0;
                         me.updateStatus();
                     });
