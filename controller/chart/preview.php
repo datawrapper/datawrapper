@@ -6,9 +6,10 @@ require_once ROOT_PATH . 'lib/utils/check_iframe_origin.php';
  * Shows a preview of a chart for display in an iFrame
  */
 $app->get('/(chart|map|table)/:id/preview', function ($id) use ($app) {
+    $app->redirect("/preview/$id");
     disable_cache($app);
 
-    check_chart_writable($id, function($user, $chart) use ($app) {
+    /* check_chart_writable($id, function($user, $chart) use ($app) {
         if ($chart->getLanguage() != '') {
             global $__l10n;
             $__l10n->loadMessages($chart->getLanguage());
@@ -31,7 +32,7 @@ $app->get('/(chart|map|table)/:id/preview', function ($id) use ($app) {
         check_iframe_origin($app);
 
         $app->render('chart.twig', $page);
-    });
+    }); */
 });
 
 $app->get('/chart/:id/nojs.png', function ($id) use ($app) {
@@ -40,7 +41,7 @@ $app->get('/chart/:id/nojs.png', function ($id) use ($app) {
 
 // always redirect to url without trailing slash
 $app->get('/chart/:id/preview/', function ($id) use ($app) {
-    $app->redirect("/chart/$id/preview");
+    $app->redirect("/preview/$id");
 });
 
 // static route to emulate published vis files

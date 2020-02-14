@@ -1,21 +1,24 @@
 define(function() {
-
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());
 
     return function showChartModal(chart) {
         // open modal
+        var chartUrl = '/preview/' + chart.id;
         var meta = chart.metadata,
             bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
             chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
             date_fmt = function(d) {
-                d = new Date(d.split(" ")[0]);
-                return Globalize.format(d, 'ddd')+', '+Globalize.format(d, 'd');
+                d = new Date(d.split(' ')[0]);
+                return Globalize.format(d, 'ddd') + ', ' + Globalize.format(d, 'd');
             },
             data = {
                 chartID: chart.id,
-                namespace: ((chart.type == "d3-maps-choropleth" || chart.type == "d3-maps-symbols") && chart.metadata.visualize["map-type-set"]) ? "map" : "chart",
-                chartUrl: location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview',
+                namespace:
+                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') && chart.metadata.visualize['map-type-set']
+                        ? 'map'
+                        : 'chart',
+                chartUrl: location.protocol + '//' + dw.backend.__domain + chartUrl,
                 publicUrl: chart.publicUrl,
                 src: 'src',
                 iframeW: chart_w,
@@ -44,7 +47,7 @@ define(function() {
 
         // update form action for duplicate button
         $('.action-duplicate form', wrapper)
-            .attr('action', '/api/charts/'+chart.id+'/copy')
+            .attr('action', '/api/charts/' + chart.id + '/copy')
             .on('submit', function() {
                 require(['dw/mycharts/no_reload_folder_change'], function(api) {
                     api.reloadLink(location.pathname);
@@ -71,5 +74,4 @@ define(function() {
         }
         overlay.open();
     };
-
 });
