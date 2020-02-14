@@ -330,14 +330,8 @@ define([
     function loadVis() {
         if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            iframe.attr(
-                'src',
-                '/chart/' +
-                    chart.get('id') +
-                    '/preview?innersvg=1&random=' +
-                    Math.floor(Math.random() * 100000) +
-                    (getParameterByName('mode') === 'print' ? '&mode=print&fitchart=1' : '')
-            );
+            var src = '/preview/' + chart.get('id') + '/?innersvg=1' + (getParameterByName('mode') === 'print' ? '&mode=print&fitchart=1' : '');
+            iframe.attr('src', src);
         }
         if (dw.visualization.has(chart.get('type'))) {
             loadVisDone(dw.visualization(chart.get('type')));
