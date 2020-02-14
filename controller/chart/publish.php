@@ -52,7 +52,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
         });
 
-        $chartUrlLocal = '/chart/' . $chart->getID() . '/preview';
+        $chartUrlLocal = '/preview/' . $chart->getID();
 
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Publish'),
