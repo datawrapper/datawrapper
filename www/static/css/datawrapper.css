@@ -2483,6 +2483,9 @@ input[type="color"],
 .dw .create-nav > .unseen {
   color: #999;
 }
+.dw .create-nav > a.unseen {
+  color: #15607a;
+}
 .dw .create-nav > a:hover {
   text-decoration: none;
 }
