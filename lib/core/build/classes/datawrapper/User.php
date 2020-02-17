@@ -73,7 +73,7 @@ class User extends BaseUser {
      */
     public function erase() {
         $u = $this;
-        $u->setEmail('DELETED');
+        $u->setEmail(null);
         $u->setName('');
         $u->setWebsite('');
         $u->setSmProfile('');
