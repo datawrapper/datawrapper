@@ -201,10 +201,12 @@
             invalidLoginEmail({ loginEmail, forgotPassword }) {
                 return !isValidEmail(loginEmail) && !(loginEmail === '' && !forgotPassword);
             },
-            invalidLoginForm({ loginEmail, loginPassword }) {
+            invalidLoginForm({ loggingIn, loginEmail, loginPassword }) {
+                if (loggingIn) return true;
                 return !isValidEmail(loginEmail) || loginPassword === '';
             },
-            invalidSignupForm({ signupEmail, signupPassword, signupPasswordOk }) {
+            invalidSignupForm({ signingUp, signupEmail, signupPassword, signupPasswordOk }) {
+                if (signingUp) return true;
                 if (!isValidEmail(signupEmail)) return true;
                 if (!signupPasswordOk) return true;
             },
@@ -246,7 +248,8 @@
                 this.set({ loggingIn: false });
             },
             async doSignUp() {
-                const { signupEmail, signupPassword } = this.get();
+                const { signupEmail, signupPassword, signingUp } = this.get();
+                if (signingUp) return;
                 this.set({
                     signingUp: true,
                     signupError: '',
