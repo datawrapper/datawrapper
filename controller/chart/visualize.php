@@ -69,12 +69,9 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $vis = DatawrapperVisualization::get($chart->getType());
         parse_vis_options($vis);
 
-        [$status, $body] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
-        if ($status === 200) {
-            $theme = $body;
-        } else {
-            [$status, $body] = call_v3_api('GET', '/themes/default');
-            $theme = $body;
+        [$status, $theme] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
+        if ($status != 200) {
+            [$status, $theme] = call_v3_api('GET', '/themes/default');
         }
 
         $org = $chart->getOrganization();
