@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 /*
  * VISUALIZE STEP
  */
@@ -67,10 +69,12 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $vis = DatawrapperVisualization::get($chart->getType());
         parse_vis_options($vis);
 
-        $theme = ThemeQuery::create()->findPk($chart->getTheme());
-
-        if (empty($theme)) {
-            $theme = ThemeQuery::create()->findPk("default");
+        [$status, $body] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
+        if ($status === 200) {
+            $theme = $body;
+        } else {
+            [$status, $body] = call_v3_api('GET', '/themes/default');
+            $theme = $body;
         }
 
         $org = $chart->getOrganization();
