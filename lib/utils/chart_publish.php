@@ -93,11 +93,6 @@ function get_static_path($chart) {
     return $static_path;
 }
 
-function get_relative_static_path($chart) {
-    $static_path = $chart->getRelativeStaticPath();
-    return $static_path;
-}
-
 function publish_html($user, $chart) {
     $cdn_files = array();
 
