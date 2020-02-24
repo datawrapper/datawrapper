@@ -522,7 +522,7 @@ class Chart extends BaseChart {
     public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
         $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
-        $redirect_file = chart_publish_directory() . 'static/' . $this->getPublicID() . '/redirect.html';
+        $redirect_file = $this->getStaticPath() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {
