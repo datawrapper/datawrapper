@@ -28,10 +28,6 @@
 
         {{ hook('chart_html_head', chart) }}
 
-{% for src in stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ src }}?v={{ vis_version }}"></link>
-{% endfor %}
-
     <script type="text/javascript" charset="utf-8">
     window.__locale = '{{ chartLocale }}';
     </script>
