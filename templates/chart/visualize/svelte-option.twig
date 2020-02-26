@@ -68,6 +68,14 @@ require(['{{ amdPath }}'], function(mod) {
     var app;
 
     chart.load(dw.backend.__currentData).then(function(ds) {
+        // remove ignored columns
+        var columnFormat = chart.getMetadata('data.column-format', {});
+        var ignore = {};
+        _.each(columnFormat, function(format, key) {
+            ignore[key] = !!format.ignore;
+        });
+        if (ds.filterColumns) ds.filterColumns(ignore);
+
         chart.set({dataset: ds});
 
         getContext(function(win, doc) {

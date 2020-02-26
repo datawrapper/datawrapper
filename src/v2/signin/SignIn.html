@@ -79,13 +79,46 @@
                         <label>{__('email')}</label>
                         <input type="email" bind:value="signupEmail" autocomplete="username" class="span3 input-xlarge register-email" />
                     </div>
-                    <div class="control-group">
+                    <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
                         <label>{__('password')}</label>
-                        <input autocomplete="new-password" bind:value="signupPassword" type="password" class="span3 input-xlarge register-pwd" />
+                        {#if showPasswordAsClearText}
+                        <input
+                            data-lpignore="true"
+                            autocomplete="off"
+                            bind:value="signupPassword"
+                            type="text"
+                            class="span3 input-xlarge register-pwd"
+                        />
+                        {:else}
+                        <input
+                            data-lpignore="true"
+                            autocomplete="off"
+                            bind:value="signupPassword"
+                            type="password"
+                            class="span3 input-xlarge register-pwd"
+                        />
+                        {/if}
+                        <div style="width: 270px">
+                            <CheckPassword
+                                bind:password="signupPassword"
+                                bind:passwordHelp
+                                bind:passwordSuccess
+                                bind:passwordError
+                                bind:passwordOk="signupPasswordOk"
+                            />
+                            {#if passwordError}
+                            <p class="help text-warning">{@html passwordError}</p>
+                            {:elseif passwordSuccess}
+                            <p class="help text-success">{@html passwordSuccess}</p>
+                            {:elseif passwordHelp}
+                            <p class="help muted">{@html passwordHelp}</p>
+                            {/if}
+                        </div>
                     </div>
-                    <div class="control-group" class:error="invalidSignupPassword">
-                        <label>{__('repeat password')}</label>
-                        <input autocomplete="new-password" type="password" bind:value="signupPassword2" class="span3 input-xlarge register-pwd-2" />
+                    <div class="control-group">
+                        <label class="checkbox" for="keep-login" style="margin-top: 10px;">
+                            <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+                        </label>
                     </div>
                     <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
                         {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
@@ -128,9 +161,9 @@
 </div>
 
 <script>
-    /* globals dw, CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
+    import CheckPassword from '../shared/CheckPassword.html';
 
     // eslint-disable-next-line
     const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -139,6 +172,7 @@
     }
 
     export default {
+        components: { CheckPassword },
         data: () => ({
             noSignup: false,
             alternativeSignIn: [],
@@ -153,7 +187,11 @@
             // signup
             signupEmail: '',
             signupPassword: '',
-            signupPassword2: '',
+            signupPasswordOk: false,
+            passwordHelp: false,
+            passwordSuccess: false,
+            passwordError: false,
+            showPasswordAsClearText: false,
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
@@ -163,19 +201,17 @@
             invalidLoginEmail({ loginEmail, forgotPassword }) {
                 return !isValidEmail(loginEmail) && !(loginEmail === '' && !forgotPassword);
             },
-            invalidLoginForm({ loginEmail, loginPassword }) {
+            invalidLoginForm({ loggingIn, loginEmail, loginPassword }) {
+                if (loggingIn) return true;
                 return !isValidEmail(loginEmail) || loginPassword === '';
             },
-            invalidSignupForm({ signupEmail, signupPassword, signupPassword2 }) {
+            invalidSignupForm({ signingUp, signupEmail, signupPassword, signupPasswordOk }) {
+                if (signingUp) return true;
                 if (!isValidEmail(signupEmail)) return true;
-                if (signupPassword !== signupPassword2) return true;
-                if (signupPassword.length < 4) return true;
+                if (!signupPasswordOk) return true;
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
-            },
-            invalidSignupPassword({ signupPassword, signupPassword2 }) {
-                return signupPassword !== '' && signupPassword !== signupPassword2;
             }
         },
         helpers: {
@@ -190,21 +226,17 @@
                     loginSuccess: ''
                 });
                 try {
-                    const res = await httpReq.post('/auth/login', {
+                    await httpReq.post('/v3/auth/login', {
                         payload: {
                             email: loginEmail,
-                            pwhash: CryptoJS.HmacSHA256(loginPassword, dw.backend.__auth_salt).toString(),
-                            keeplogin: rememberLogin
+                            password: loginPassword,
+                            keepSession: rememberLogin
                         }
                     });
-                    if (res.status === 'ok') {
-                        this.set({ loginSuccess: 'Login successful, reloading page' });
-                        setTimeout(() => {
-                            window.window.location.href = '/';
-                        }, 2000);
-                    } else {
-                        this.set({ loginError: res.message });
-                    }
+                    this.set({ loginSuccess: 'Login successful, reloading page' });
+                    setTimeout(() => {
+                        window.window.location.href = '/';
+                    }, 2000);
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
                         const body = await error.response.json();
@@ -216,18 +248,18 @@
                 this.set({ loggingIn: false });
             },
             async doSignUp() {
-                const { signupEmail, signupPassword, signupPassword2 } = this.get();
+                const { signupEmail, signupPassword, signingUp } = this.get();
+                if (signingUp) return;
                 this.set({
                     signingUp: true,
                     signupError: '',
                     signupSuccess: ''
                 });
                 try {
-                    await httpReq.post('/users', {
+                    await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
-                            pwd: CryptoJS.HmacSHA256(signupPassword, dw.backend.__auth_salt).toString(),
-                            pwd2: CryptoJS.HmacSHA256(signupPassword2, dw.backend.__auth_salt).toString()
+                            password: signupPassword
                         }
                     });
                     this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
@@ -252,19 +284,16 @@
                     loginSuccess: ''
                 });
                 try {
-                    const res = await httpReq.post('/account/reset-password', {
+                    await httpReq.post('/v3/auth/reset-password', {
                         payload: {
                             email: loginEmail
                         }
                     });
-                    if (res.status === 'ok') {
-                        this.set({ loginSuccess: res.data });
-                    } else {
-                        this.set({ loginError: res.message });
-                    }
+                    this.set({ loginSuccess: __('signin / password-reset / success') });
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
-                        this.set({ loginError: error.body ? error.body.message : error.message });
+                        const body = await error.response.json();
+                        this.set({ loginError: body.message ? __(`signin / password-reset / error / ${body.message}`) : error.message });
                     } else {
                         this.set({ loginError: error });
                     }
@@ -276,6 +305,9 @@
 </script>
 
 <style>
+    h3 {
+        font-weight: 400;
+    }
     .alternative-signin {
         padding: 10px 0 0;
         border-top: 1px solid #eee;
@@ -287,7 +319,7 @@
     .alternative-signin-link:last-child {
         margin-right: 0;
     }
-    .control-group label {
+    .control-group label:not(.checkbox) {
         font-size: 11px;
         text-transform: uppercase;
         color: #555;
@@ -301,5 +333,15 @@
     }
     .modal-body {
         max-height: 550px !important;
+    }
+    p.help {
+        font-size: 13px;
+        line-height: 16px;
+        margin-top: 4px;
+    }
+    .span3.row-signup {
+        border-left: 1px solid #eee;
+        padding-left: 22px !important;
+        margin-left: 23px;
     }
 </style>

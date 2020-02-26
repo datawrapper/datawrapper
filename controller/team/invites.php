@@ -22,12 +22,21 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
          return;
     }
 
+    $userOrg = UserOrganizationQuery::create()
+        ->filterByInviteToken($invite_token)
+        ->findOne();
+
     $page = array();
     add_header_vars($page, 'about');
+    $page['message_h1'] = str_replace('%s', $userOrg->getOrganization()->getName(), __('team / invite / headline'));
+    $page['message_p'] = __('team / invite / intro');
+    $page['message_button'] = 'Set password &amp; join team';
+    $page['email'] = $invitee->getEmail();
+    $page['redirect'] = '/datawrapper-invite/'.$invite_token.'/finish';
     $page['salt'] = DW_AUTH_SALT;
     $page['alert'] = array("message" => __("settings / invite / set-password-alert"));
 
-    $app->render('team/invite.twig', $page);
+    $app->render('account/invite.twig', $page);
 });
 
 $app->get('/datawrapper-invite/:invite_token/finish', function ($token) use ($app) {
