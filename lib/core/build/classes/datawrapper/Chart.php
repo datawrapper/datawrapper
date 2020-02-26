@@ -477,8 +477,12 @@ class Chart extends BaseChart {
         );
     }
 
-    public function getPublicID() {
-        return md5($this->getID() . "--" . strtotime($this->getCreatedAt()));
+    public function getPublicId() {
+        if (isset($GLOBALS['dw_config']['hash_publishing']) && $GLOBALS['dw_config']['hash_publishing']) {
+            return md5($this->getID() . "--" . strtotime($this->getCreatedAt()));
+        } else {
+            return $this->getID();
+        }
     }
 
     /*
