@@ -43,7 +43,7 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 $('#vis-options-'+key)[val == 'open' ? 'addClass' : 'removeClass']('group-open');
             });
 
-            $('.vis-option-type-group > label.group-title').click(function() {
+            $('.vis-option-type-group:not(.notoggle) > label.group-title').click(function() {
                 var $g = $(this).parents('.vis-option-type-group').toggleClass('group-open');
                 $(window).resize();
                 try {
