@@ -207,6 +207,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import { getJSON, postJSON } from '@datawrapper/shared/fetch';
+    import get from '@datawrapper/shared/get';
 
     import computeEmbedHeights from './compute-embed-heights';
 
@@ -240,7 +241,19 @@
                 if (shareurl_type === 'default') return chart.publicUrl;
                 let url = '';
                 plugin_shareurls.forEach(t => {
-                    if (t.id === shareurl_type) url = t.url.replace(/%chart_id%/g, chart.id);
+                    if (t.id === shareurl_type) {
+                        url = t.url.replace(/%chart_id%/g, chart.id);
+
+                        url = url.replace(/%(.*?)%/g, (match, path) => {
+                            return get(
+                                {
+                                    id: chart.id,
+                                    metadata: chart.metadata
+                                },
+                                path
+                            );
+                        });
+                    }
                 });
                 return url;
             },
