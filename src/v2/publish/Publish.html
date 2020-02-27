@@ -389,6 +389,16 @@
                 this.store.set({
                     lastEditStep: 5
                 });
+
+                window.parent.postMessage(
+                    {
+                        source: 'datawrapper',
+                        type: 'chart-publish',
+                        chartId: chartInfo.id
+                    },
+                    '*'
+                );
+
                 setTimeout(() => this.set({ publishing: false }), 500);
                 this.store.set(chartInfo);
             },

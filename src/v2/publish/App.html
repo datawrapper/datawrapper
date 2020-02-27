@@ -350,16 +350,14 @@
                 setTimeout(() => this.set({ publishing: false }), 500);
                 this.set({ chart: chartInfo });
 
-                if (window.parent) {
-                    window.parent.postMessage(
-                        {
-                            source: 'datawrapper',
-                            type: 'chart-publish',
-                            chartId: chartInfo.id
-                        },
-                        '*'
-                    );
-                }
+                window.parent.postMessage(
+                    {
+                        source: 'datawrapper',
+                        type: 'chart-publish',
+                        chartId: chartInfo.id
+                    },
+                    '*'
+                );
 
                 window.chart.attributes(chartInfo);
             },
