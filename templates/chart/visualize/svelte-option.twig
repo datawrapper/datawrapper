@@ -35,7 +35,7 @@ require(['{{ amdPath }}'], function(mod) {
 
     var themeCache = {};
     var visCache = {};
-    themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
+    themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
     visCache['{{vis.id}}'] = {{vis|json|raw}};
 
     chart.set({
@@ -125,13 +125,9 @@ require(['{{ amdPath }}'], function(mod) {
                 chart.set({themeData: themeCache[current.theme]});
             } else {
                 // load new theme data
-                getJSON(('/api/themes/' + (current.theme)), function (res) {
-                    if (res.status == 'ok') {
-                        themeCache[current.theme] = res.data.data;
-                        chart.set({themeData: res.data.data});
-                    } else {
-                        console.warn('theme not loaded', res);
-                    }
+                getJSON('//'+dw.backend.__api_domain+'/v3/themes/' + (current.theme)+'?extend=true', function (res) {
+                    themeCache[current.theme] = res.data;
+                    chart.set({themeData: res.data});
                 });
             }
         }
