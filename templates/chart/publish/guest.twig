@@ -1,15 +1,97 @@
 {# this is what guests see on publish step #}
 
-{% if has_hook('publish_custom_page_guest') %}
+<div class="form-horizontal publish-form">
+    <h2>{% trans "publish / fresh / h1" %}</h2>
 
-	{{ hook('publish_custom_page_guest') }}
+    <p>{% trans "publish / fresh / p" %}</p>
 
-{% else %}
+    <img src="/static/plugins/subscriptions/embed.png">
 
-	<h1>Hello Guest</h1>
+    <ul class="bullet-list">
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li1" %}</li>
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li2" %}</li>
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li3" %}</li>
+    </ul>
 
-	<p>Congratulations for creating this chart</p>
+    <fieldset>
+        <div class="control-group" style="margin-top:20px">
+            <label class="control-label" style="width: 160px"  for="email">{% trans "publish / fresh / e-mail" %}</label>
+            <div class="controls" style="margin-left: 180px">
+                <input type="text" class="input-xlarge" placeholder="{% trans "publish / fresh / example-email" %}" id="email">
+            </div>
+        </div>
+       <div style="margin-top:30px">
+            <button class="btn btn-save btn-default btn-back"><i class="fa fa-chevron-left"></i> &nbsp;{% trans "publish / fresh / back" %}</button>
+            <button class="btn btn-save btn-primary" type="submit" id="create-account" style="float:right"><i class="fa fa-envelope"></i> &nbsp;{% trans "publish / fresh / cta" %}</button>
+        </div>
+    </fieldset>
+</div>
 
-	<p>If you want to publish this chart, you <a href="#login">need to sign in or create an account</a>.</p>
+<script type="text/javascript">
+    $('#create-account').click(function() {
+        $('#create-account').prop('disabled', true);
+        $('#create-account .fa').removeClass('fa-envelope');
+        $('#create-account .fa').addClass('fa-circle-o-notch fa-spin');
+        if (window._paq) {
+            // store custom event
+            window._paq.push(['trackEvent', 'Chart Editor', 'send-embed-code']);
+        }
+        $.ajax({
+            url: '//' + dw.backend.__api_domain + '/v3/auth/signup',
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                email: $('#email').val(),
+                invitation: true,
+                chartId: dw.backend.currentChart.get('id')
+            }),
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            context: this,
+            success: function (data) {
+                window.location.reload();
+            },
+            error: function(err) {
+                $('#create-account').prop('disabled', false);
+                if (err && err.responseJSON && err.responseJSON.message) {
+                    window.alert(err.responseJSON.message);
+                }
+            }
+        });
+    });
+</script>
 
-{% endif %}
+<style type="text/css">
+	.publish-form button {
+	  border: none; background-image: none;
+	  text-transform: uppercase;
+	  text-shadow: none !important;
+	  box-shadow: none;
+	  padding: 10px 18px;
+	  letter-spacing: 0.05em;
+	  font-weight: 300;
+	  border-radius: 0px !important;
+	}
+	.publish-form label {
+	  font-size: 20px;
+	  margin-top: 5px;
+	}
+	.publish-form input {
+	}
+	.bullet-list {
+	    list-style: none;
+	    margin-left: 0px;
+	}
+	.bullet-list li {
+	    font-size: 18px;
+	    line-height: 34px;
+	}
+	.bullet-list li .fa {
+	    color: #5bb75b;
+	}
+</style>

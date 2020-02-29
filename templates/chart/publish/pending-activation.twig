@@ -1,14 +1,50 @@
 {# this is what users see who are not activated yet #}
 
+<div class="publish-form" id="step-2">
+    <table style="width:100%">
+        <tr>
+            <td style="vertical-align:middle; width: 80px;">
+                <i class="fa fa-envelope big"></i>
+            </td>
+            <td style="padding-left:25px">
+                <h2>{% trans "publish / unactivated / h1" %}</h2>
 
-{% if has_hook('publish_custom_page_pending_activation') %}
+                <p>{% trans "publish / unactivated / p" %}</p>
 
-	{{ hook('publish_custom_page_pending_activation') }}
+                <div class="resend-activation">
+                    <button class="resend-activation-button btn btn-primary"><i class="fa fa-envelope"></i> &nbsp; {% trans "Re-send activation link" %}</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 
-{% else %}
+<script type="text/javascript">
+    $('.resend-activation-button').click(function() {
+    	$.get('/v3/me', function(data) {
+    		var email = data.email;
 
-	<h2>{% trans "publish / unactivated / h1" %}</h2>
+    		$.post('/v3/auth/resend-activation', {
+    			email: email,
+    		}, function(data) {
+	            if (data.status == "ok") {
+	                $('.resend-activation').html(data.data);
+	            } else {
+	                $('.resend-activation').html(data.message);
+	            }
+	        }, 'json');
+    	}, 'json');
+    });
+</script>
 
-	<p style="font-size: 16px;line-height: 23px;">{% trans "publish / unactivated / p" %}</p>
+<style type="text/css">
+	#step-2 .fa.big {
+	    font-size: 80px;
+	    color: #5bb75b;
+	    float: left;
+	}
 
-{% endif %}
+	#step-2 {
+	    padding-top: 20px;
+	}
+</style>
