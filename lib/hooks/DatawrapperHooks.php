@@ -235,6 +235,7 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
     const VISUALIZE_BEFORE_SIDEBAR = 'visualize_before_sidebar';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
+    const PUBLISH_AFTER_EMBED = 'publish_after_embed';
 
     // hooks for plugin installation/update
     const PLUGIN_INSTALLED = 'plugin_installed';
@@ -272,6 +273,8 @@ class DatawrapperHooks {
 
     const TEAM_SETTINGS_PAGE = 'team_settings_page';
     const TEAM_FLAGS = 'team_flags';
+
+    const SVELTE_PUBLISH_AFTER_EMBED = 'svelte_publish_after_embed';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');

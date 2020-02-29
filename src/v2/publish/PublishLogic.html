@@ -7,7 +7,7 @@
     <PendingActivation />
     {:else}
     <Publish
-        beforeExport="{AddToRiver}"
+        beforeExport="{beforeExport}"
         embed_templates="{embedTemplates}"
         embed_type="{embedType}"
         plugin_shareurls="{pluginShareurls}"
@@ -17,12 +17,10 @@
 </div>
 
 <script>
-    import { __ } from '@datawrapper/shared/l10n';
-
     import { Publish } from '/static/js/svelte/publish.js';
     import Guest from './guest/Guest.html';
     import PendingActivation from './pending-activation/PendingActivation.html';
-    import AddToRiver from './AddToRiver.html';
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
         components: {
@@ -32,13 +30,25 @@
         },
         data() {
             return {
-                AddToRiver,
                 embedTemplates: [],
                 embedType: 'responsive',
                 pluginShareurls: [],
-                shareurlType: 'default'
+                shareurlType: 'default',
+                beforeExport: null
             };
         },
-        helpers: { __ }
+        onstate({ current, changed }) {
+            if (changed.afterEmbed) {
+                const p = current.afterEmbed[0];
+
+                Promise.all([loadStylesheet(p.css), loadScript(p.js)]).then(() => {
+                    require([p.module], mod => {
+                        this.set({
+                            beforeExport: mod.App
+                        });
+                    });
+                });
+            }
+        }
     };
 </script>
