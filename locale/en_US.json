@@ -678,5 +678,5 @@
   "publish / guest / li1": "Embed your chart for free",
   "publish / guest / li2": "Download chart as PNG",
   "publish / guest / li3": "Works with every CMS",
-  "publish / guest / p": "You can embed your chart in your website for free with Datawrapper. Simply enter your e-mail address and we'll send you the embed-code immediately. Already have an account? <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">Log in to embed your chart.</a>"
+  "publish / guest / p": "You can embed your chart in your website for free with Datawrapper. Simply enter your e-mail address and we'll send you an email with a link to embed your chart. Already have an account? <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">Log in to embed your chart.</a>"
 }

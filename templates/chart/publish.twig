@@ -28,9 +28,9 @@ dw.backend.ready(function() {
     <div class="row">
         <div class="span5 publish-step {% if chart.lastEditStep > 4 %}is-published{% endif %}">
         {% if user.isGuest %}
-            {% include "chart/publish/guest.twig" %}
+            {{ svelte('publish/guest', svelte_data) }}
         {% elseif not user.isActivated %}
-            {% include "chart/publish/pending-activation.twig" %}
+            {{ svelte('publish/pending-activation', svelte_data) }}
         {% else %}
             {% include "chart/publish/activated.twig" %}
         {% endif %}

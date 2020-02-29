@@ -1,0 +1,84 @@
+<div class="form-horizontal publish-form">
+    <h2>{@html __('publish / guest / h1')}</h2>
+
+    <p>{@html __('publish / guest / p')}</p>
+
+    <ul class="bullet-list" style="list-style: none; margin-left: 0px; font-weight:lighter; margin-top:20px">
+        <li><i class="fa fa-check"></i> &nbsp;{@html __('publish / guest / li1')}</li>
+        <li><i class="fa fa-check"></i> &nbsp;{@html __('publish / guest / li2')}</li>
+        <li><i class="fa fa-check"></i> &nbsp;{@html __('publish / guest / li3')}</li>
+    </ul>
+
+    <fieldset>
+        <div class="control-group" style="margin-top:10px">
+            <label class="control-label" style="width: 160px" for="email">
+                {@html __('publish / guest / e-mail')}
+            </label>
+
+            <div class="controls" style="margin-left: 180px">
+                <input type="text" class="input-xlarge" placeholder="{__('publish / guest / example-email')}" bind:value="email" />
+            </div>
+        </div>
+        <div style="margin-top:30px">
+            <button class="btn btn-save btn-default btn-back"><i class="fa fa-chevron-left"></i> &nbsp; {@html __('publish / guest / back')}</button>
+
+            <button on:click="createAccount(email)" class="btn btn-save btn-primary" style="float:right">
+                <i class="fa {signedUp ? 'fa-circle-o-notch fa-spin': 'fa-envelope'}"></i> &nbsp; {@html __('publish / guest / cta')}
+            </button>
+
+            {#if error}
+            <div class="alert alert-warning">
+                {error}
+            </div>
+            {/if}
+        </div>
+    </fieldset>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import { post } from '@datawrapper/shared/httpReq';
+    import { trackEvent } from '@datawrapper/shared/analytics';
+
+    export default {
+        data() {
+            return {
+                error: '',
+                email: '',
+                signedUp: false
+            };
+        },
+        helpers: { __ },
+        methods: {
+            async createAccount(email) {
+                this.set({ signedUp: true });
+                trackEvent('Chart Editor', 'send-embed-code');
+                try {
+                    const res = await post('/v3/auth/signup', {
+                        payload: {
+                            email,
+                            invitation: true,
+                            chartId: this.store.get().id
+                        }
+                    });
+
+                    if (this.get().fromSvelte) {
+                        // when in new chart editor, set user object
+                        this.set({ signedUp: false, error: '' });
+                        this.store.set({ user: res });
+                    } else {
+                        // otherwise, reload
+                        window.location.reload();
+                    }
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        this.set({ error: res.message || e });
+                    } else {
+                        this.set({ error: `Unknown error: ${e}` });
+                    }
+                }
+            }
+        }
+    };
+</script>

@@ -1,27 +1,44 @@
 <!-- default publish logic: logged in users may publish, guests see sign-in prompt -->
-{#if $user.mayPublish}
-<Publish embed_templates="{embedTemplates}" embed_type="{embedType}" plugin_shareurls="{pluginShareurls}" shareurl_type="{shareurlType}" />
-{:elseif !$user.isLoggedIn}
 
-<h2>Hello guest</h2>
-<p>To publish a chart, you need to <a href="#login">sign in or create an account</a>.</p>
-
-{:else}
-<!-- THERE IS A DIFFERENT REASON WHY YOU CANNOT PUBLISH -->
-{/if}
+<div>
+    {#if $user.isGuest}
+    <Guest fromSvelte="true" />
+    {:elseif !$user.isActivated}
+    <PendingActivation />
+    {:else}
+    <Publish
+        beforeExport="{AddToRiver}"
+        embed_templates="{embedTemplates}"
+        embed_type="{embedType}"
+        plugin_shareurls="{pluginShareurls}"
+        shareurl_type="{shareurlType}"
+    />
+    {/if}
+</div>
 
 <script>
-    import Publish from './Publish.html';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    import { Publish } from '/static/js/svelte/publish.js';
+    import Guest from './guest/Guest.html';
+    import PendingActivation from './pending-activation/PendingActivation.html';
+    import AddToRiver from './AddToRiver.html';
 
     export default {
-        components: { Publish },
+        components: {
+            Publish,
+            Guest,
+            PendingActivation
+        },
         data() {
             return {
+                AddToRiver,
                 embedTemplates: [],
                 embedType: 'responsive',
                 pluginShareurls: [],
                 shareurlType: 'default'
             };
-        }
+        },
+        helpers: { __ }
     };
 </script>

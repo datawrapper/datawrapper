@@ -1,0 +1,30 @@
+{#if $lastEditStep > 4}
+<div class="river-publish-step">
+    <h2>Allow reuse of this chart</h2>
+    <div class="block">
+        <i class="icon fa fa-river" style="height:30px"></i>
+        <div class="ctrls">
+            <p>
+                You can increase reach by allowing other users to adapt and reuse your chart. Click here to
+                <b><a href="//{ river_domain }/add/{$id}">add your chart to our new River</a></b
+                >.
+            </p>
+        </div>
+    </div>
+</div>
+{/if}
+
+<style type="text/css"></style>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        data() {
+            return {
+                river_domain: 'river.datawrapper.de'
+            };
+        },
+        helpers: { __ }
+    };
+</script>

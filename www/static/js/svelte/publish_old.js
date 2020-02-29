@@ -1,1 +1,2265 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define("svelte/publish_old",t):(e=e||self).publish=t()}(this,(function(){"use strict";function e(t){return(e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(t)}function t(){}function n(e,t){for(var n in t)e[n]=t[n];return e}function s(e,t){for(var n in t)e[n]=1;return e}function i(e,t){e.appendChild(t)}function r(e,t,n){e.insertBefore(t,n)}function a(e){e.parentNode.removeChild(e)}function o(e){for(;e.nextSibling;)e.parentNode.removeChild(e.nextSibling)}function u(e,t){for(var n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function l(){return document.createDocumentFragment()}function c(e){return document.createElement(e)}function h(e){return document.createTextNode(e)}function d(e,t,n,s){e.addEventListener(t,n,s)}function p(e,t,n,s){e.removeEventListener(t,n,s)}function f(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n)}function m(e,t){e.data=""+t}function _(e,t,n){e.style.setProperty(t,n)}function b(){return Object.create(null)}function v(t,n){return t!=t?n==n:t!==n||t&&"object"===e(t)||"function"==typeof t}function g(e,t){return e!=e?t==t:e!==t}function y(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var s=0;s<n.length;s+=1){var i=n[s];if(!i.__calling)try{i.__calling=!0,i.call(this,t)}finally{i.__calling=!1}}}function w(e){e._lock=!0,q(e._beforecreate),q(e._oncreate),q(e._aftercreate),e._lock=!1}function N(){return this._state}function k(e,t){e._handlers=b(),e._slots=b(),e._bind=t._bind,e._staged={},e.options=t,e.root=t.root||e,e.store=t.store||e.root.store,t.root||(e._beforecreate=[],e._oncreate=[],e._aftercreate=[])}function T(e,t){var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}}function q(e){for(;e&&e.length;)e.shift()()}var x={destroy:function(e){this.destroy=t,this.fire("destroy"),this.set=t,this._fragment.d(!1!==e),this._fragment=null,this._state={}},get:N,fire:y,on:T,set:function(e){this._set(n({},e)),this.root._lock||w(this.root)},_recompute:t,_set:function(e){var t=this._state,s={},i=!1;for(var r in e=n(this._staged,e),this._staged={},e)this._differs(e[r],t[r])&&(s[r]=i=!0);i&&(this._state=n(n({},t),e),this._recompute(s,this._state),this._bind&&this._bind(s,this._state),this._fragment&&(this.fire("state",{changed:s,current:this._state,previous:t}),this._fragment.p(s,this._state),this.fire("update",{changed:s,current:this._state,previous:t})))},_stage:function(e){n(this._staged,e)},_mount:function(e,t){this._fragment[this._fragment.i?"i":"m"](e,t||null)},_differs:v};var z={show:function(){var e=this,t=setTimeout((function(){e.set({visible:!0})}),400);this.set({t:t})},hide:function(){var e=this.get().t;clearTimeout(e),this.set({visible:!1})}};function C(e,t){var n,s,o,u,l=e._slotted.default;return{c:function(){n=c("div"),s=c("i"),o=h("\n        "),s.className="hat-icon im im-graduation-hat svelte-19xfki7",n.className="content svelte-19xfki7"},m:function(e,t){r(e,n,t),i(n,s),i(n,o),l&&(i(n,u||(u=document.createComment(""))),i(n,l))},d:function(e){e&&a(n),l&&function(e,t){for(;e.nextSibling;)t.appendChild(e.nextSibling)}(u,l)}}}function L(e){k(this,e),this._state=n({visible:!1},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){var n,s,o,u=t.visible&&C(e);function l(t){e.show()}function f(t){e.hide()}return{c:function(){n=c("div"),(s=c("span")).textContent="?",o=h("\n    "),u&&u.c(),s.className="help-icon svelte-19xfki7",d(n,"mouseenter",l),d(n,"mouseleave",f),n.className="help svelte-19xfki7"},m:function(e,t){r(e,n,t),i(n,s),i(n,o),u&&u.m(n,null)},p:function(t,s){s.visible?u||((u=C(e)).c(),u.m(n,null)):u&&(u.d(1),u=null)},d:function(e){e&&a(n),u&&u.d(),p(n,"mouseenter",l),p(n,"mouseleave",f)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor))}n(L.prototype,x),n(L.prototype,z);var M={};function H(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"core";"chart"===e?window.__dw&&window.__dw.vis&&window.__dw.vis.meta&&(M[e]=window.__dw.vis.meta.locale||{}):M[e]="core"===e?dw.backend.__messages.core:Object.assign({},dw.backend.__messages.core,dw.backend.__messages[e])}function S(e){var t=arguments,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"core";if(e=e.trim(),M[n]||H(n),!M[n][e])return"MISSING:"+e;var s=M[n][e];return"string"==typeof s&&arguments.length>2&&(s=s.replace(/\$(\d)/g,(function(e,n){return n=2+Number(n),void 0===t[n]?e:t[n]}))),s}function j(e,t,n,s){window._paq&&window._paq.push(["trackEvent",e,t,n,s])}function E(e,t,n,s,i){var r={method:t,body:s,mode:"cors",credentials:n};return window.fetch(e,r).then((function(e){if(!e.ok)throw new Error(e.statusText);return e.text()})).then((function(e){try{return JSON.parse(e)}catch(t){return console.warn("malformed json input",e),e}})).then((function(e){return i&&i(e),e})).catch((function(e){if(!i)throw e;console.error(e)}))}var U=[100,200,300,400,500,700,800,900,1e3];var G=0,O=!0;var A={publish:function(){var e=this;if(window.chart.save){var t,n,s,i,r,a=e.get().chart;e.set({publishing:!0,progress:0,publish_error:!1}),a.metadata.publish["embed-heights"]=(e.get().embed_templates,t={},n=window.$,s=n(n("#iframe-vis")[0].contentDocument),i=n("h1",s).height()+n(".chart-intro",s).height()+n(".dw-chart-notes",s).height(),r=n("#iframe-vis").height(),U.forEach((function(e){s.find("h1,.chart-intro,.dw-chart-notes").css("width",e+"px");var a=n("h1",s).height()+n(".chart-intro",s).height()+n(".dw-chart-notes",s).height();t[e]=r+(a-i)})),s.find("h1,.chart-intro,.dw-chart-notes").css("width","auto"),t),e.set({chart:a}),j("Chart Editor","publish"),window.chart.attributes(a).save().then((function(t){E("/api/charts/".concat(a.id,"/publish"),"POST","include",null,(function(t){"ok"===t.status?(j("Chart Editor","publish-success"),e.publishFinished(t.data)):(j("Chart Editor","publish-error",t.message),e.set({publish_error:t.message}))})),G=0,e.updateStatus()}))}else setTimeout((function(){e.publish()}),100)},updateProgressBar:function(e){this.refs.bar&&(this.refs.bar.style.width=(100*e).toFixed()+"%")},updateStatus:function(){var e=this,t=e.get().chart;G+=.05,function(e,t,n){2===arguments.length&&"function"==typeof t?(n=t,t="include"):1===arguments.length&&(t="include"),E(e,"GET",t,null,n)}("/api/charts/".concat(t.id,"/publish/status"),(function(t){t&&(t=+t/100+G,e.set({progress:Math.min(1,t)})),e.get().publishing&&setTimeout((function(){e.updateStatus()}),400)}))},publishFinished:function(e){var t=this;this.set({progress:1,published:!0,needs_republish:!1}),setTimeout((function(){return t.set({publishing:!1})}),500),this.set({chart:e}),window.parent.postMessage({source:"datawrapper",type:"chart-publish",chartId:e.id},"*"),window.chart.attributes(e)},copy:function(e){var t=this;t.refs.embedInput.select();try{document.execCommand("copy")&&(j("Chart Editor","embedcode-copy"),t.set({copy_success:!0}),setTimeout((function(){return t.set({copy_success:!1})}),300))}catch(e){}}};function P(e){var t=e.changed,n=e.current,s=window.dw&&window.dw.backend&&window.dw.backend.setUserData;if(t.publishing&&n.publishing&&this.updateProgressBar(n.progress),t.progress&&this.updateProgressBar(n.progress),t.embed_type&&s){var i=window.dw.backend.__userData;if(!n.embed_type||!i)return;i.embed_type=n.embed_type,window.dw.backend.setUserData(i)}if(t.shareurl_type&&s){var r=window.dw.backend.__userData;if(!n.shareurl_type||!r)return;r.shareurl_type=n.shareurl_type,window.dw.backend.setUserData(r)}t.published&&window.document.querySelector(".dw-create-publish .publish-step").classList[n.published?"add":"remove"]("is-published"),t.auto_publish&&n.auto_publish&&O&&(this.publish(),O=!1,window.history.replaceState("","",window.location.pathname))}function D(e,t,n){var s=Object.create(e);return s.tpl=t[n],s}function I(e,t,n){var s=Object.create(e);return s.tpl=t[n],s}function B(e,t,n){var s=Object.create(e);return s.tpl=t[n],s}function F(e,t){var n,s=S("publish / publish-intro");return{c:function(){_(n=c("p"),"margin-bottom","20px")},m:function(e,t){r(e,n,t),n.innerHTML=s},d:function(e){e&&a(n)}}}function $(e,t){var n,s=S("publish / republish-intro");return{c:function(){n=c("p")},m:function(e,t){r(e,n,t),n.innerHTML=s},d:function(e){e&&a(n)}}}function J(e,t){var n,s,o,u,l,d,p=S("publish / publish-btn");return{c:function(){n=c("span"),s=c("i"),u=h("\n        "),l=c("span"),d=h(p),s.className=o="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-q1cklz",l.className="title svelte-q1cklz",n.className="publish"},m:function(e,t){r(e,n,t),i(n,s),i(n,u),i(n,l),i(l,d)},p:function(e,t){e.publishing&&o!==(o="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-q1cklz")&&(s.className=o)},d:function(e){e&&a(n)}}}function K(e,t){var n,s,o,u,l,d,p=S("publish / republish-btn");return{c:function(){n=c("span"),s=c("i"),u=h(" "),l=c("span"),d=h(p),s.className=o="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":"")+" svelte-q1cklz",l.className="title svelte-q1cklz",n.className="re-publish"},m:function(e,t){r(e,n,t),i(n,s),i(n,u),i(n,l),i(l,d)},p:function(e,t){e.publishing&&o!==(o="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":"")+" svelte-q1cklz")&&(s.className=o)},d:function(e){e&&a(n)}}}function Q(e,t){var n,s,o,u,l=S("publish / publish-btn-intro");return{c:function(){n=c("div"),(s=c("div")).innerHTML='<i class="fa fa-chevron-left"></i>',o=h("\n    "),u=c("div"),s.className="arrow svelte-q1cklz",u.className="text svelte-q1cklz",n.className="publish-intro svelte-q1cklz"},m:function(e,t){r(e,n,t),i(n,s),i(n,o),i(n,u),u.innerHTML=l},d:function(e){e&&a(n)}}}function R(e,t){var n,s=S("publish / republish-alert");return{c:function(){(n=c("div")).className="btn-aside alert svelte-q1cklz"},m:function(e,t){r(e,n,t),n.innerHTML=s},d:function(e){e&&a(n)}}}function V(e,t){var n,s=S("publish / publish-success");return{c:function(){(n=c("div")).className="alert alert-success"},m:function(e,t){r(e,n,t),n.innerHTML=s},d:function(e){e&&a(n)}}}function W(e,t){var n;return{c:function(){(n=c("div")).className="alert alert-error"},m:function(e,s){r(e,n,s),n.innerHTML=t.publish_error},p:function(e,t){e.publish_error&&(n.innerHTML=t.publish_error)},d:function(e){e&&a(n)}}}function X(e,t){var n,s,o,u,l,d,p,f=S("publish / progress / please-wait");return{c:function(){n=c("div"),s=h(f),o=h("\n    "),u=c("div"),(l=c("div")).className=d="bar "+(t.progress<1?"":"bar-success")+" svelte-q1cklz",u.className="progress progress-striped active svelte-q1cklz",n.className=p="alert "+(t.progress<1?"alert-info":"alert-success")+" publishing svelte-q1cklz"},m:function(t,a){r(t,n,a),i(n,s),i(n,o),i(n,u),i(u,l),e.refs.bar=l},p:function(e,t){e.progress&&d!==(d="bar "+(t.progress<1?"":"bar-success")+" svelte-q1cklz")&&(l.className=d),e.progress&&p!==(p="alert "+(t.progress<1?"alert-info":"alert-success")+" publishing svelte-q1cklz")&&(n.className=p)},d:function(t){t&&a(n),e.refs.bar===l&&(e.refs.bar=null)}}}function Y(e,t){var n,s,u,l,m,_=t.tpl.name;function b(){e.set({shareurl_type:s.__value})}return{c:function(){n=c("label"),s=c("input"),l=h(" "),m=c("noscript"),e._bindingGroups[0].push(s),d(s,"change",b),s.__value=u=t.tpl.id,s.value=s.__value,f(s,"type","radio"),s.name="url-type",s.className="svelte-q1cklz",n.className="radio"},m:function(e,a){r(e,n,a),i(n,s),s.checked=s.__value===t.shareurl_type,i(n,l),i(n,m),m.insertAdjacentHTML("afterend",_)},p:function(e,t){e.shareurl_type&&(s.checked=s.__value===t.shareurl_type),e.plugin_shareurls&&u!==(u=t.tpl.id)&&(s.__value=u),s.value=s.__value,e.plugin_shareurls&&_!==(_=t.tpl.name)&&(o(m),m.insertAdjacentHTML("afterend",_))},d:function(t){t&&a(n),e._bindingGroups[0].splice(e._bindingGroups[0].indexOf(s),1),p(s,"change",b)}}}function Z(e,t){var n,s,u,l,m,_=t.tpl.title;function b(){e.set({embed_type:s.__value})}return{c:function(){n=c("label"),s=c("input"),l=h(" "),m=c("noscript"),e._bindingGroups[1].push(s),d(s,"change",b),f(s,"type","radio"),s.__value=u=t.tpl.id,s.value=s.__value,s.className="svelte-q1cklz",n.className="radio"},m:function(e,a){r(e,n,a),i(n,s),s.checked=s.__value===t.embed_type,i(n,l),i(n,m),m.insertAdjacentHTML("afterend",_)},p:function(e,t){e.embed_type&&(s.checked=s.__value===t.embed_type),e.embed_templates&&u!==(u=t.tpl.id)&&(s.__value=u),s.value=s.__value,e.embed_templates&&_!==(_=t.tpl.title)&&(o(m),m.insertAdjacentHTML("afterend",_))},d:function(t){t&&a(n),e._bindingGroups[1].splice(e._bindingGroups[1].indexOf(s),1),p(s,"change",b)}}}function ee(e,t){var n,s,u,l,d,p,f=t.tpl.title,_=t.tpl.text;return{c:function(){n=c("div"),s=c("b"),u=h(f),l=h(":"),d=h(" "),p=c("noscript")},m:function(e,t){r(e,n,t),i(n,s),i(s,u),i(s,l),i(n,d),i(n,p),p.insertAdjacentHTML("afterend",_)},p:function(e,t){e.embed_templates&&f!==(f=t.tpl.title)&&m(u,f),e.embed_templates&&_!==(_=t.tpl.text)&&(o(p),p.insertAdjacentHTML("afterend",_))},d:function(e){e&&a(n)}}}function te(e){var t=this;k(this,e),this.refs={},this._state=n({chart:{id:""},embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:0,shareurl_type:"default",embed_type:"responsive",copy_success:!1},e.data),this._recompute({shareurl_type:1,chart:1,plugin_shareurls:1,published:1,embed_type:1},this._state),this._bindingGroups=[[],[]],this._intro=!0,this._handlers.state=[P],P.call(this,{changed:s({},this._state),current:this._state}),this._fragment=function(e,t){var n,s,o,b,v,g,y,w,N,k,T,q,x,z,C,M,H,j,E,U,G,O,A,P,te,ne,se,ie,re,ae,oe,ue,le,ce,he,de,pe,fe,me,_e,be,ve,ge,ye,we,Ne,ke,Te,qe,xe,ze,Ce,Le,Me,He,Se,je,Ee=S("publish / share-embed"),Ue=S("publish / share-url"),Ge=S("publish / share-url / fullscreen"),Oe=S("publish / help / share-url"),Ae=S("publish / embed"),Pe=S("publish / copy"),De=S("publish / copy-success"),Ie=S("publish / embed / help");function Be(e){return e.published?$:F}var Fe=Be(t),$e=Fe(e,t);function Je(e){return e.published?K:J}var Ke=Je(t),Qe=Ke(e,t);function Re(t){e.publish()}var Ve=!t.published&&Q(),We=t.needs_republish&&!t.publishing&&R(),Xe=t.published&&!t.needs_republish&&1===t.progress&&!t.publishing&&V(),Ye=t.publish_error&&W(e,t),Ze=t.publishing&&X(e,t);function et(){e.set({shareurl_type:O.__value})}for(var tt=t.plugin_shareurls,nt=[],st=0;st<tt.length;st+=1)nt[st]=Y(e,B(t,tt,st));var it=new L({root:e.root,store:e.store,slots:{default:l()}}),rt=t.embed_templates,at=[];for(st=0;st<rt.length;st+=1)at[st]=Z(e,I(t,rt,st));function ot(n){e.copy(t.embedCode)}var ut=t.embed_templates.slice(2),lt=[];for(st=0;st<ut.length;st+=1)lt[st]=ee(e,D(t,ut,st));var ct=new L({root:e.root,store:e.store,slots:{default:l()}});return{c:function(){$e.c(),n=h("\n\n"),s=c("button"),Qe.c(),b=h("\n\n"),Ve&&Ve.c(),v=h(" "),We&&We.c(),g=h(" "),Xe&&Xe.c(),y=h(" "),Ye&&Ye.c(),w=h(" "),Ze&&Ze.c(),N=h("\n\n"),k=c("div"),T=c("h2"),q=h("\n    "),x=c("div"),z=c("i"),C=h("\n        "),M=c("div"),H=c("div"),j=c("b"),E=h("\n                "),U=c("div"),G=c("label"),O=c("input"),A=h("\n                        "),P=c("noscript"),te=h("\n                    ");for(var i=0;i<nt.length;i+=1)nt[i].c();ne=h("\n            "),se=c("div"),ie=c("a"),re=h(t.shareUrl),ae=h("\n        "),oe=c("div"),it._fragment.c(),ue=h("\n\n    "),le=c("div"),ce=c("i"),he=h("\n        "),de=c("div"),pe=c("div"),fe=c("b"),me=h("\n                "),_e=c("div");for(i=0;i<at.length;i+=1)at[i].c();be=h("\n            "),ve=c("div"),ge=c("textarea"),ye=h("\n                "),we=c("button"),Ne=c("i"),ke=h(" "),Te=h(Pe),qe=h("\n                "),xe=c("div"),ze=h(De),Le=h("\n        "),Me=c("div"),He=c("noscript"),Se=h(" ");for(i=0;i<lt.length;i+=1)lt[i].c();ct._fragment.c(),d(s,"click",Re),s.disabled=t.publishing,s.className=o="btn-publish btn btn-primary btn-large "+(t.published?"":"btn-first-publish")+" svelte-q1cklz",z.className="icon fa fa-link fa-fw",e._bindingGroups[0].push(O),d(O,"change",et),O.__value="default",O.value=O.__value,f(O,"type","radio"),O.name="url-type",O.className="svelte-q1cklz",G.className="radio",U.className="embed-options svelte-q1cklz",H.className="h",ie.target="_blank",ie.className="share-url svelte-q1cklz",ie.href=t.shareUrl,se.className="inpt",M.className="ctrls",x.className="block",ce.className="icon fa fa-code fa-fw",_e.className="embed-options svelte-q1cklz",pe.className="h",f(ge,"type","text"),ge.className="input embed-code svelte-q1cklz",ge.readOnly=!0,ge.value=t.embedCode,Ne.className="fa fa-copy",d(we,"click",ot),we.className="btn btn-copy",we.title="copy",xe.className=Ce="copy-success "+(t.copy_success?"show":"")+" svelte-q1cklz",ve.className="inpt",de.className="ctrls",le.className="block",_(k,"margin-top","20px"),k.className=je=t.published?"":"inactive"},m:function(a,o){$e.m(a,o),r(a,n,o),r(a,s,o),Qe.m(s,null),r(a,b,o),Ve&&Ve.m(a,o),r(a,v,o),We&&We.m(a,o),r(a,g,o),Xe&&Xe.m(a,o),r(a,y,o),Ye&&Ye.m(a,o),r(a,w,o),Ze&&Ze.m(a,o),r(a,N,o),r(a,k,o),i(k,T),T.innerHTML=Ee,i(k,q),i(k,x),i(x,z),i(x,C),i(x,M),i(M,H),i(H,j),j.innerHTML=Ue,i(H,E),i(H,U),i(U,G),i(G,O),O.checked=O.__value===t.shareurl_type,i(G,A),i(G,P),P.insertAdjacentHTML("afterend",Ge),i(U,te);for(var u=0;u<nt.length;u+=1)nt[u].m(U,null);i(M,ne),i(M,se),i(se,ie),i(ie,re),i(x,ae),i(it._slotted.default,oe),oe.innerHTML=Oe,it._mount(x,null),i(k,ue),i(k,le),i(le,ce),i(le,he),i(le,de),i(de,pe),i(pe,fe),fe.innerHTML=Ae,i(pe,me),i(pe,_e);for(u=0;u<at.length;u+=1)at[u].m(_e,null);i(de,be),i(de,ve),i(ve,ge),e.refs.embedInput=ge,i(ve,ye),i(ve,we),i(we,Ne),i(we,ke),i(we,Te),i(ve,qe),i(ve,xe),i(xe,ze),i(le,Le),i(ct._slotted.default,Me),i(Me,He),He.insertAdjacentHTML("beforebegin",Ie),i(Me,Se);for(u=0;u<lt.length;u+=1)lt[u].m(Me,null);ct._mount(le,null)},p:function(i,r){if(Fe!==(Fe=Be(t=r))&&($e.d(1),($e=Fe(e,t)).c(),$e.m(n.parentNode,n)),Ke===(Ke=Je(t))&&Qe?Qe.p(i,t):(Qe.d(1),(Qe=Ke(e,t)).c(),Qe.m(s,null)),i.publishing&&(s.disabled=t.publishing),i.published&&o!==(o="btn-publish btn btn-primary btn-large "+(t.published?"":"btn-first-publish")+" svelte-q1cklz")&&(s.className=o),t.published?Ve&&(Ve.d(1),Ve=null):Ve||((Ve=Q()).c(),Ve.m(v.parentNode,v)),t.needs_republish&&!t.publishing?We||((We=R()).c(),We.m(g.parentNode,g)):We&&(We.d(1),We=null),!t.published||t.needs_republish||1!==t.progress||t.publishing?Xe&&(Xe.d(1),Xe=null):Xe||((Xe=V()).c(),Xe.m(y.parentNode,y)),t.publish_error?Ye?Ye.p(i,t):((Ye=W(e,t)).c(),Ye.m(w.parentNode,w)):Ye&&(Ye.d(1),Ye=null),t.publishing?Ze?Ze.p(i,t):((Ze=X(e,t)).c(),Ze.m(N.parentNode,N)):Ze&&(Ze.d(1),Ze=null),i.shareurl_type&&(O.checked=O.__value===t.shareurl_type),i.plugin_shareurls||i.shareurl_type){tt=t.plugin_shareurls;for(var a=0;a<tt.length;a+=1){var u=B(t,tt,a);nt[a]?nt[a].p(i,u):(nt[a]=Y(e,u),nt[a].c(),nt[a].m(U,null))}for(;a<nt.length;a+=1)nt[a].d(1);nt.length=tt.length}if(i.shareUrl&&(m(re,t.shareUrl),ie.href=t.shareUrl),i.embed_templates||i.embed_type){rt=t.embed_templates;for(a=0;a<rt.length;a+=1){var l=I(t,rt,a);at[a]?at[a].p(i,l):(at[a]=Z(e,l),at[a].c(),at[a].m(_e,null))}for(;a<at.length;a+=1)at[a].d(1);at.length=rt.length}if(i.embedCode&&(ge.value=t.embedCode),i.copy_success&&Ce!==(Ce="copy-success "+(t.copy_success?"show":"")+" svelte-q1cklz")&&(xe.className=Ce),i.embed_templates){ut=t.embed_templates.slice(2);for(a=0;a<ut.length;a+=1){var c=D(t,ut,a);lt[a]?lt[a].p(i,c):(lt[a]=ee(e,c),lt[a].c(),lt[a].m(Me,null))}for(;a<lt.length;a+=1)lt[a].d(1);lt.length=ut.length}i.published&&je!==(je=t.published?"":"inactive")&&(k.className=je)},d:function(t){$e.d(t),t&&(a(n),a(s)),Qe.d(),p(s,"click",Re),t&&a(b),Ve&&Ve.d(t),t&&a(v),We&&We.d(t),t&&a(g),Xe&&Xe.d(t),t&&a(y),Ye&&Ye.d(t),t&&a(w),Ze&&Ze.d(t),t&&(a(N),a(k)),e._bindingGroups[0].splice(e._bindingGroups[0].indexOf(O),1),p(O,"change",et),u(nt,t),it.destroy(),u(at,t),e.refs.embedInput===ge&&(e.refs.embedInput=null),p(we,"click",ot),u(lt,t),ct.destroy()}}}(this,this._state),this.root._oncreate.push((function(){t.fire("update",{changed:s({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),w(this))}function ne(e,t){this._handlers={},this._dependents=[],this._computed=b(),this._sortedComputedProperties=[],this._state=n({},e),this._differs=t&&t.immutable?g:v}n(te.prototype,x),n(te.prototype,A),te.prototype._recompute=function(e,t){var n,s,i;(e.shareurl_type||e.chart||e.plugin_shareurls||e.published)&&this._differs(t.shareUrl,t.shareUrl=function(e){var t=e.shareurl_type,n=e.chart,s=e.plugin_shareurls;if(!e.published)return"https://www.datawrapper.de/...";if("default"===t)return n.publicUrl;var i="";return s.forEach((function(e){e.id===t&&(i=(i=e.url.replace(/%chart_id%/g,n.id)).replace(/%(.*?)%/g,(function(e,t){return function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(!t)return e;for(var s=t.split("."),i=e,r=0;r<s.length&&null!=i;r++)i=i[s[r]];return null==i?n:i}({id:n.id,metadata:n.metadata},t)})))})),i}(t))&&(e.shareUrl=!0),(e.embed_type||e.chart)&&this._differs(t.embedCode,t.embedCode=(s=(n=t).embed_type,(i=n.chart).metadata?i.metadata.publish&&!i.metadata.publish["embed-codes"]?'<iframe src="'.concat(i.publicUrl,'" width="100%" height="').concat(i.metadata.publish["embed-height"],'" scrolling="no" frameborder="0" allowtransparency="true"></iframe>'):i.metadata.publish["embed-codes"]["embed-method-"+s]?i.metadata.publish["embed-codes"]["embed-method-"+s]:"":""))&&(e.embedCode=!0)},n(ne.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var s=e[n];t["$"+s]=this._state[s]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_set:function(e,t){var s=this,i=this._state;this._state=n(n({},i),e);for(var r=0;r<this._sortedComputedProperties.length;r+=1)this._sortedComputedProperties[r].update(this._state,t);this.fire("state",{changed:t,previous:i,current:this._state}),this._dependents.filter((function(e){for(var n={},i=!1,r=0;r<e.props.length;r+=1){var a=e.props[r];a in t&&(n["$"+a]=s._state[a],i=!0)}if(i)return e.component._stage(n),!0})).forEach((function(e){e.component.set({})})),this.fire("update",{changed:t,previous:i,current:this._state})},_sortComputedProperties:function(){var e,t=this._computed,n=this._sortedComputedProperties=[],s=b();function i(r){var a=t[r];a&&(a.deps.forEach((function(t){if(t===e)throw new Error("Cyclical dependency detected between ".concat(t," <-> ").concat(r));i(t)})),s[r]||(s[r]=!0,n.push(a)))}for(var r in this._computed)i(e=r)},compute:function(e,t,s){var i,r=this,a={deps:t,update:function(n,a,o){var u=t.map((function(e){return e in a&&(o=!0),n[e]}));if(o){var l=s.apply(null,u);r._differs(l,i)&&(i=l,a[e]=!0,n[e]=i)}}};this._computed[e]=a,this._sortComputedProperties();var o=n({},this._state),u={};a.update(o,u,!0),this._set(o,u)},fire:y,get:N,on:T,set:function(e){var t=this._state,n=this._changed={},s=!1;for(var i in e){if(this._computed[i])throw new Error("'".concat(i,"' is a read-only computed property"));this._differs(e[i],t[i])&&(n[i]=s=!0)}s&&this._set(e,n)}});return{App:te,data:{chart:{id:""},embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:0,shareurl_type:"default",embed_type:"responsive",copy_success:!1},store:new ne({})}}));
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define('svelte/publish_old', factory) :
+  (global = global || self, global.publish = factory());
+}(this, function () { 'use strict';
+
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  function noop() {}
+
+  function assign(tar, src) {
+    for (var k in src) {
+      tar[k] = src[k];
+    }
+
+    return tar;
+  }
+
+  function assignTrue(tar, src) {
+    for (var k in src) {
+      tar[k] = 1;
+    }
+
+    return tar;
+  }
+
+  function addLoc(element, file, line, column, char) {
+    element.__svelte_meta = {
+      loc: {
+        file: file,
+        line: line,
+        column: column,
+        char: char
+      }
+    };
+  }
+
+  function append(target, node) {
+    target.appendChild(node);
+  }
+
+  function insert(target, node, anchor) {
+    target.insertBefore(node, anchor);
+  }
+
+  function detachNode(node) {
+    node.parentNode.removeChild(node);
+  }
+
+  function detachAfter(before) {
+    while (before.nextSibling) {
+      before.parentNode.removeChild(before.nextSibling);
+    }
+  }
+
+  function reinsertAfter(before, target) {
+    while (before.nextSibling) {
+      target.appendChild(before.nextSibling);
+    }
+  }
+
+  function destroyEach(iterations, detach) {
+    for (var i = 0; i < iterations.length; i += 1) {
+      if (iterations[i]) iterations[i].d(detach);
+    }
+  }
+
+  function createFragment() {
+    return document.createDocumentFragment();
+  }
+
+  function createElement(name) {
+    return document.createElement(name);
+  }
+
+  function createText(data) {
+    return document.createTextNode(data);
+  }
+
+  function createComment() {
+    return document.createComment('');
+  }
+
+  function addListener(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+  }
+
+  function removeListener(node, event, handler, options) {
+    node.removeEventListener(event, handler, options);
+  }
+
+  function setAttribute(node, attribute, value) {
+    if (value == null) node.removeAttribute(attribute);else node.setAttribute(attribute, value);
+  }
+
+  function setData(text, data) {
+    text.data = '' + data;
+  }
+
+  function setStyle(node, key, value) {
+    node.style.setProperty(key, value);
+  }
+
+  function blankObject() {
+    return Object.create(null);
+  }
+
+  function destroy(detach) {
+    this.destroy = noop;
+    this.fire('destroy');
+    this.set = noop;
+
+    this._fragment.d(detach !== false);
+
+    this._fragment = null;
+    this._state = {};
+  }
+
+  function destroyDev(detach) {
+    destroy.call(this, detach);
+
+    this.destroy = function () {
+      console.warn('Component was already destroyed');
+    };
+  }
+
+  function _differs(a, b) {
+    return a != a ? b == b : a !== b || a && _typeof(a) === 'object' || typeof a === 'function';
+  }
+
+  function _differsImmutable(a, b) {
+    return a != a ? b == b : a !== b;
+  }
+
+  function fire(eventName, data) {
+    var handlers = eventName in this._handlers && this._handlers[eventName].slice();
+
+    if (!handlers) return;
+
+    for (var i = 0; i < handlers.length; i += 1) {
+      var handler = handlers[i];
+
+      if (!handler.__calling) {
+        try {
+          handler.__calling = true;
+          handler.call(this, data);
+        } finally {
+          handler.__calling = false;
+        }
+      }
+    }
+  }
+
+  function flush(component) {
+    component._lock = true;
+    callAll(component._beforecreate);
+    callAll(component._oncreate);
+    callAll(component._aftercreate);
+    component._lock = false;
+  }
+
+  function get() {
+    return this._state;
+  }
+
+  function init(component, options) {
+    component._handlers = blankObject();
+    component._slots = blankObject();
+    component._bind = options._bind;
+    component._staged = {};
+    component.options = options;
+    component.root = options.root || component;
+    component.store = options.store || component.root.store;
+
+    if (!options.root) {
+      component._beforecreate = [];
+      component._oncreate = [];
+      component._aftercreate = [];
+    }
+  }
+
+  function on(eventName, handler) {
+    var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+    handlers.push(handler);
+    return {
+      cancel: function cancel() {
+        var index = handlers.indexOf(handler);
+        if (~index) handlers.splice(index, 1);
+      }
+    };
+  }
+
+  function set(newState) {
+    this._set(assign({}, newState));
+
+    if (this.root._lock) return;
+    flush(this.root);
+  }
+
+  function _set(newState) {
+    var oldState = this._state,
+        changed = {},
+        dirty = false;
+    newState = assign(this._staged, newState);
+    this._staged = {};
+
+    for (var key in newState) {
+      if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+    }
+
+    if (!dirty) return;
+    this._state = assign(assign({}, oldState), newState);
+
+    this._recompute(changed, this._state);
+
+    if (this._bind) this._bind(changed, this._state);
+
+    if (this._fragment) {
+      this.fire("state", {
+        changed: changed,
+        current: this._state,
+        previous: oldState
+      });
+
+      this._fragment.p(changed, this._state);
+
+      this.fire("update", {
+        changed: changed,
+        current: this._state,
+        previous: oldState
+      });
+    }
+  }
+
+  function _stage(newState) {
+    assign(this._staged, newState);
+  }
+
+  function setDev(newState) {
+    if (_typeof(newState) !== 'object') {
+      throw new Error(this._debugName + '.set was called without an object of data key-values to update.');
+    }
+
+    this._checkReadOnly(newState);
+
+    set.call(this, newState);
+  }
+
+  function callAll(fns) {
+    while (fns && fns.length) {
+      fns.shift()();
+    }
+  }
+
+  function _mount(target, anchor) {
+    this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+  }
+  var protoDev = {
+    destroy: destroyDev,
+    get: get,
+    fire: fire,
+    on: on,
+    set: setDev,
+    _recompute: noop,
+    _set: _set,
+    _stage: _stage,
+    _mount: _mount,
+    _differs: _differs
+  };
+
+  /* node_modules/@datawrapper/controls/Help.html generated by Svelte v2.16.1 */
+
+  function data() {
+    return {
+      visible: false
+    };
+  }
+  var methods = {
+    show: function show() {
+      var _this = this;
+
+      var t = setTimeout(function () {
+        _this.set({
+          visible: true
+        });
+      }, 400);
+      this.set({
+        t: t
+      });
+    },
+    hide: function hide() {
+      var _this$get = this.get(),
+          t = _this$get.t;
+
+      clearTimeout(t);
+      this.set({
+        visible: false
+      });
+    }
+  };
+  var file = "node_modules/datawrapper/controls/Help.html";
+
+  function create_main_fragment(component, ctx) {
+    var div, span, text_1;
+    var if_block = ctx.visible && create_if_block(component);
+
+    function mouseenter_handler(event) {
+      component.show();
+    }
+
+    function mouseleave_handler(event) {
+      component.hide();
+    }
+
+    return {
+      c: function create() {
+        div = createElement("div");
+        span = createElement("span");
+        span.textContent = "?";
+        text_1 = createText("\n    ");
+        if (if_block) if_block.c();
+        span.className = "help-icon svelte-19xfki7";
+        addLoc(span, file, 1, 4, 69);
+        addListener(div, "mouseenter", mouseenter_handler);
+        addListener(div, "mouseleave", mouseleave_handler);
+        div.className = "help svelte-19xfki7";
+        addLoc(div, file, 0, 0, 0);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        append(div, span);
+        append(div, text_1);
+        if (if_block) if_block.m(div, null);
+      },
+      p: function update(changed, ctx) {
+        if (ctx.visible) {
+          if (!if_block) {
+            if_block = create_if_block(component);
+            if_block.c();
+            if_block.m(div, null);
+          }
+        } else if (if_block) {
+          if_block.d(1);
+          if_block = null;
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+
+        if (if_block) if_block.d();
+        removeListener(div, "mouseenter", mouseenter_handler);
+        removeListener(div, "mouseleave", mouseleave_handler);
+      }
+    };
+  } // (3:4) {#if visible}
+
+
+  function create_if_block(component, ctx) {
+    var div,
+        i,
+        text,
+        slot_content_default = component._slotted.default,
+        slot_content_default_before;
+    return {
+      c: function create() {
+        div = createElement("div");
+        i = createElement("i");
+        text = createText("\n        ");
+        i.className = "hat-icon im im-graduation-hat svelte-19xfki7";
+        addLoc(i, file, 4, 8, 154);
+        div.className = "content svelte-19xfki7";
+        addLoc(div, file, 3, 4, 124);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        append(div, i);
+        append(div, text);
+
+        if (slot_content_default) {
+          append(div, slot_content_default_before || (slot_content_default_before = createComment()));
+          append(div, slot_content_default);
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+
+        if (slot_content_default) {
+          reinsertAfter(slot_content_default_before, slot_content_default);
+        }
+      }
+    };
+  }
+
+  function Help(options) {
+    this._debugName = '<Help>';
+
+    if (!options || !options.target && !options.root) {
+      throw new Error("'target' is a required option");
+    }
+
+    init(this, options);
+    this._state = assign(data(), options.data);
+    if (!('visible' in this._state)) console.warn("<Help> was created without expected data property 'visible'");
+    this._intro = true;
+    this._slotted = options.slots || {};
+    this._fragment = create_main_fragment(this, this._state);
+
+    if (options.target) {
+      if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+      this._fragment.c();
+
+      this._mount(options.target, options.anchor);
+    }
+  }
+
+  assign(Help.prototype, protoDev);
+  assign(Help.prototype, methods);
+
+  Help.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+  /* globals dw */
+  var __messages = {};
+
+  function initMessages() {
+    var scope = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'core';
+
+    // let's check if we're in a chart
+    if (scope === 'chart') {
+      if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+        // use in-chart translations
+        __messages[scope] = window.__dw.vis.meta.locale || {};
+      }
+    } else {
+      // use backend translations
+      __messages[scope] = scope === 'core' ? dw.backend.__messages.core : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+    }
+  }
+  /**
+   * translates a message key. translations are originally stored in a
+   * Google spreadsheet that we're pulling into Datawrapper using the
+   * `scripts/update-translations` script, which stores them as `:locale.json`
+   * files in the /locale folders (both in core as well as inside plugin folders)
+   *
+   * for the client-side translation to work we are also storing the translations
+   * in the global `window.dw.backend.__messages` object. plugins that need
+   * client-side translations must set `"svelte": true` in their plugin.json
+   *
+   * @param {string} key -- the key to be translated, e.g. "signup / hed"
+   * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+   * @returns {string} -- the translated text
+   */
+
+
+  function __(key) {
+    var _arguments = arguments;
+    var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'core';
+    key = key.trim();
+    if (!__messages[scope]) initMessages(scope);
+    if (!__messages[scope][key]) return 'MISSING:' + key;
+    var translation = __messages[scope][key];
+
+    if (typeof translation === 'string' && arguments.length > 2) {
+      // replace $0, $1 etc with remaining arguments
+      translation = translation.replace(/\$(\d)/g, function (m, i) {
+        i = 2 + Number(i);
+        if (_arguments[i] === undefined) return m;
+        return _arguments[i];
+      });
+    }
+
+    return translation;
+  }
+
+  /**
+   * tracks a custom event in Matomo
+   *
+   *
+   * @param {string} category - the event category
+   * @param {string} category - the event action
+   * @param {string} category - the event name
+   * @param {string|number} category - the event value, optional
+   */
+  function trackEvent(category, action, name, value) {
+    if (window._paq) {
+      window._paq.push(['trackEvent', category, action, name, value]);
+    }
+  }
+
+  /**
+   * Download and parse a remote JSON document. Use {@link httpReq} instead
+   *
+   * @deprecated
+   *
+   * @param {string} url
+   * @param {string} method - HTTP method, either GET, POST or PUT
+   * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+   * @param {string} body
+   * @param {function} callback
+   *
+   * @returns {Promise}
+   *
+   * @example
+   * import { fetchJSON } from '@datawrapper/shared/fetch';
+   * fetchJSON('http://api.example.org', 'GET', 'include');
+   */
+  function fetchJSON(url, method, credentials, body, callback) {
+    var opts = {
+      method: method,
+      body: body,
+      mode: 'cors',
+      credentials: credentials
+    };
+    return window.fetch(url, opts).then(function (res) {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.text();
+    }).then(function (text) {
+      try {
+        return JSON.parse(text);
+      } catch (Error) {
+        // could not parse json, so just return text
+        console.warn('malformed json input', text);
+        return text;
+      }
+    }).then(function (res) {
+      if (callback) callback(res);
+      return res;
+    }).catch(function (err) {
+      if (callback) {
+        console.error(err);
+      } else {
+        throw err;
+      }
+    });
+  }
+  /**
+   * Download and parse a JSON document via GET.
+   * Use {@link httpReq} or {@link httpReq.get} instead.
+   *
+   * @deprecated
+   *
+   * @param {string} url
+   * @param {string|undefined} credentials - optional, set to undefined to disable credentials
+   * @param {function} callback
+   *
+   * @returns {Promise}
+   *
+   * @example
+   * import { getJSON } from '@datawrapper/shared/fetch';
+   * // use it callback style
+   * getJSON('http://api.example.org', 'include', function(data) {
+   *     console.log(data);
+   * });
+   * // or promise-style
+   * getJSON('http://api.example.org')
+   *   .then(data => {
+   *      console.log(data);
+   *   });
+   */
+
+  function getJSON(url, credentials, callback) {
+    if (arguments.length === 2 && typeof credentials === 'function') {
+      // swap callback and assume default credentials
+      callback = credentials;
+      credentials = 'include';
+    } else if (arguments.length === 1) {
+      credentials = 'include';
+    }
+
+    return fetchJSON(url, 'GET', credentials, null, callback);
+  }
+  /**
+   * Download and parse a remote JSON endpoint via POST. credentials
+   * are included automatically.
+   * Use {@link httpReq} or {@link httpReq.post} instead.
+   *
+   * @deprecated
+   *
+   * @param {string} url
+   * @param {string} body
+   * @param {function} callback
+   *
+   * @returns {Promise}
+   * @example
+   * import { postJSON } from '@datawrapper/shared/fetch';
+   *
+   * postJSON('http://api.example.org', JSON.stringify({
+   *    query: 'foo',
+   *    page: 12
+   * }));
+   */
+
+  function postJSON(url, body, callback) {
+    return fetchJSON(url, 'POST', 'include', body, callback);
+  }
+
+  /**
+   * Safely access object properties without throwing nasty
+   * `cannot access X of undefined` errors if a property along the
+   * way doesn't exist.
+   *
+   * @exports get
+   * @kind function
+   *
+   *
+   * @param object - the object which properties you want to acccess
+   * @param {String} key - dot-separated keys aka "path" to the property
+   * @param {*} _default - the fallback value to be returned if key doesn't exist
+   *
+   * @returns the value
+   *
+   * @example
+   * import get from '@datawrapper/shared/get';
+   * const someObject = { key: { list: ['a', 'b', 'c']}};
+   * get(someObject, 'key.list[2]') // returns 'c'
+   * get(someObject, 'missing.key') // returns undefined
+   * get(someObject, 'missing.key', false) // returns false
+   */
+  function get$1(object) {
+    var key = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+    var _default = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+    if (!key) return object; // expand keys
+
+    var keys = key.split('.');
+    var pt = object;
+
+    for (var i = 0; i < keys.length; i++) {
+      if (pt === null || pt === undefined) break; // break out of the loop
+      // move one more level in
+
+      pt = pt[keys[i]];
+    }
+
+    return pt === undefined || pt === null ? _default : pt;
+  }
+
+  var widths = [100, 200, 300, 400, 500, 700, 800, 900, 1000];
+  function computeEmbedHeights () {
+    var embedHeights = {}; // compute embed deltas
+
+    var $ = window.$;
+    var previewChart = $($('#iframe-vis')[0].contentDocument); // find out default heights
+
+    var defaultHeight = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+    var totalHeight = $('#iframe-vis').height();
+    widths.forEach(function (width) {
+      // now we resize headline, intro and footer
+      previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', width + 'px');
+      var height = $('h1', previewChart).height() + $('.chart-intro', previewChart).height() + $('.dw-chart-notes', previewChart).height();
+      embedHeights[width] = totalHeight + (height - defaultHeight);
+    });
+    previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', 'auto');
+    return embedHeights;
+  }
+
+  /* publish/App.html generated by Svelte v2.16.1 */
+  var fakeProgress = 0;
+  var initial_auto_publish = true;
+
+  function shareUrl(_ref) {
+    var shareurl_type = _ref.shareurl_type,
+        chart = _ref.chart,
+        plugin_shareurls = _ref.plugin_shareurls,
+        published = _ref.published;
+    if (!published) return 'https://www.datawrapper.de/...';
+    if (shareurl_type === 'default') return chart.publicUrl;
+    var url = '';
+    plugin_shareurls.forEach(function (t) {
+      if (t.id === shareurl_type) {
+        url = t.url.replace(/%chart_id%/g, chart.id);
+        url = url.replace(/%(.*?)%/g, function (match, path) {
+          return get$1({
+            id: chart.id,
+            metadata: chart.metadata
+          }, path);
+        });
+      }
+    });
+    return url;
+  }
+
+  function embedCode(_ref2) {
+    var embed_type = _ref2.embed_type,
+        chart = _ref2.chart;
+    if (!chart.metadata) return '';
+    if (chart.metadata.publish && !chart.metadata.publish['embed-codes']) return "<iframe src=\"".concat(chart.publicUrl, "\" width=\"100%\" height=\"").concat(chart.metadata.publish['embed-height'], "\" scrolling=\"no\" frameborder=\"0\" allowtransparency=\"true\"></iframe>");
+
+    if (chart.metadata.publish['embed-codes']['embed-method-' + embed_type]) {
+      return chart.metadata.publish['embed-codes']['embed-method-' + embed_type];
+    } else {
+      return '';
+    }
+  }
+
+  function data$1() {
+    return {
+      chart: {
+        id: ''
+      },
+      embed_templates: [],
+      plugin_shareurls: [],
+      published: false,
+      publishing: false,
+      needs_republish: false,
+      publish_error: false,
+      auto_publish: false,
+      progress: 0,
+      shareurl_type: 'default',
+      embed_type: 'responsive',
+      copy_success: false
+    };
+  }
+  var methods$1 = {
+    publish: function publish() {
+      var me = this; // wait another 100ms until the page is ready
+
+      if (!window.chart.save) {
+        setTimeout(function () {
+          me.publish();
+        }, 100);
+        return;
+      }
+
+      var _me$get = me.get(),
+          chart = _me$get.chart;
+
+      me.set({
+        publishing: true,
+        progress: 0,
+        publish_error: false
+      }); // generate embed codes
+
+      chart.metadata.publish['embed-heights'] = computeEmbedHeights(chart, me.get().embed_templates); // update charts
+
+      me.set({
+        chart: chart
+      }); // save embed heights and wait until it's done before
+      // we start to publish the chart
+
+      trackEvent('Chart Editor', 'publish');
+      window.chart.attributes(chart).save().then(function (d) {
+        // publish chart
+        postJSON("/api/charts/".concat(chart.id, "/publish"), null, function (res) {
+          if (res.status === 'ok') {
+            trackEvent('Chart Editor', 'publish-success');
+            me.publishFinished(res.data);
+          } else {
+            trackEvent('Chart Editor', 'publish-error', res.message);
+            me.set({
+              publish_error: res.message
+            });
+          }
+        });
+        fakeProgress = 0;
+        me.updateStatus();
+      });
+    },
+    updateProgressBar: function updateProgressBar(p) {
+      if (this.refs.bar) {
+        this.refs.bar.style.width = (p * 100).toFixed() + '%';
+      }
+    },
+    updateStatus: function updateStatus() {
+      var me = this;
+
+      var _me$get2 = me.get(),
+          chart = _me$get2.chart;
+
+      fakeProgress += 0.05;
+      getJSON("/api/charts/".concat(chart.id, "/publish/status"), function (res) {
+        if (res) {
+          res = +res / 100 + fakeProgress;
+          me.set({
+            progress: Math.min(1, res)
+          });
+        }
+
+        if (me.get().publishing) {
+          setTimeout(function () {
+            me.updateStatus();
+          }, 400);
+        }
+      });
+    },
+    publishFinished: function publishFinished(chartInfo) {
+      var _this = this;
+
+      this.set({
+        progress: 1,
+        published: true,
+        needs_republish: false
+      });
+      setTimeout(function () {
+        return _this.set({
+          publishing: false
+        });
+      }, 500);
+      this.set({
+        chart: chartInfo
+      });
+      window.parent.postMessage({
+        source: 'datawrapper',
+        type: 'chart-publish',
+        chartId: chartInfo.id
+      }, '*');
+      window.chart.attributes(chartInfo);
+    },
+    copy: function copy(embedCode) {
+      var me = this;
+      me.refs.embedInput.select();
+
+      try {
+        var successful = document.execCommand('copy');
+
+        if (successful) {
+          trackEvent('Chart Editor', 'embedcode-copy');
+          me.set({
+            copy_success: true
+          });
+          setTimeout(function () {
+            return me.set({
+              copy_success: false
+            });
+          }, 300);
+        }
+      } catch (err) {// console.log('Oops, unable to copy');
+      }
+    }
+  };
+
+  function onstate(_ref3) {
+    var changed = _ref3.changed,
+        current = _ref3.current;
+    var userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
+
+    if (changed.publishing) {
+      if (current.publishing) this.updateProgressBar(current.progress);
+    }
+
+    if (changed.progress) {
+      this.updateProgressBar(current.progress);
+    }
+
+    if (changed.embed_type && userDataReady) {
+      var _data = window.dw.backend.__userData;
+      if (!current.embed_type || !_data) return;
+      _data.embed_type = current.embed_type;
+      window.dw.backend.setUserData(_data);
+    }
+
+    if (changed.shareurl_type && userDataReady) {
+      var _data2 = window.dw.backend.__userData;
+      if (!current.shareurl_type || !_data2) return;
+      _data2.shareurl_type = current.shareurl_type;
+      window.dw.backend.setUserData(_data2);
+    }
+
+    if (changed.published) {
+      window.document.querySelector('.dw-create-publish .publish-step').classList[current.published ? 'add' : 'remove']('is-published');
+    }
+
+    if (changed.auto_publish) {
+      if (current.auto_publish && initial_auto_publish) {
+        this.publish();
+        initial_auto_publish = false;
+        window.history.replaceState('', '', window.location.pathname);
+      }
+    }
+  }
+  var file$1 = "publish/App.html";
+
+  function get_each2_context(ctx, list, i) {
+    var child_ctx = Object.create(ctx);
+    child_ctx.tpl = list[i];
+    return child_ctx;
+  }
+
+  function get_each1_context(ctx, list, i) {
+    var child_ctx = Object.create(ctx);
+    child_ctx.tpl = list[i];
+    return child_ctx;
+  }
+
+  function get_each0_context(ctx, list, i) {
+    var child_ctx = Object.create(ctx);
+    child_ctx.tpl = list[i];
+    return child_ctx;
+  }
+
+  function create_main_fragment$1(component, ctx) {
+    var text0,
+        button0,
+        button0_class_value,
+        text1,
+        text2,
+        text3,
+        text4,
+        text5,
+        text6,
+        div13,
+        h2,
+        raw0_value = __('publish / share-embed'),
+        text7,
+        div5,
+        i0,
+        text8,
+        div3,
+        div1,
+        b0,
+        raw1_value = __('publish / share-url'),
+        text9,
+        div0,
+        label,
+        input,
+        text10,
+        raw2_value = __('publish / share-url / fullscreen'),
+        raw2_before,
+        text11,
+        text12,
+        div2,
+        a,
+        text13,
+        text14,
+        div4,
+        raw3_value = __('publish / help / share-url'),
+        text15,
+        div12,
+        i1,
+        text16,
+        div10,
+        div7,
+        b1,
+        raw4_value = __('publish / embed'),
+        text17,
+        div6,
+        text18,
+        div9,
+        textarea,
+        text19,
+        button1,
+        i2,
+        text20,
+        text21_value = __('publish / copy'),
+        text21,
+        text22,
+        div8,
+        text23_value = __('publish / copy-success'),
+        text23,
+        div8_class_value,
+        text24,
+        div11,
+        raw5_value = __('publish / embed / help'),
+        raw5_after,
+        text25,
+        div13_class_value;
+
+    function select_block_type(ctx) {
+      if (ctx.published) return create_if_block_6;
+      return create_else_block_1;
+    }
+
+    var current_block_type = select_block_type(ctx);
+    var if_block0 = current_block_type(component, ctx);
+
+    function select_block_type_1(ctx) {
+      if (ctx.published) return create_if_block_5;
+      return create_else_block;
+    }
+
+    var current_block_type_1 = select_block_type_1(ctx);
+    var if_block1 = current_block_type_1(component, ctx);
+
+    function click_handler(event) {
+      component.publish();
+    }
+
+    var if_block2 = !ctx.published && create_if_block_4();
+    var if_block3 = ctx.needs_republish && !ctx.publishing && create_if_block_3();
+    var if_block4 = ctx.published && !ctx.needs_republish && ctx.progress === 1 && !ctx.publishing && create_if_block_2();
+    var if_block5 = ctx.publish_error && create_if_block_1(component, ctx);
+    var if_block6 = ctx.publishing && create_if_block$1(component, ctx);
+
+    function input_change_handler() {
+      component.set({
+        shareurl_type: input.__value
+      });
+    }
+
+    var each0_value = ctx.plugin_shareurls;
+    var each0_blocks = [];
+
+    for (var i = 0; i < each0_value.length; i += 1) {
+      each0_blocks[i] = create_each_block_2(component, get_each0_context(ctx, each0_value, i));
+    }
+
+    var help0 = new Help({
+      root: component.root,
+      store: component.store,
+      slots: {
+        default: createFragment()
+      }
+    });
+    var each1_value = ctx.embed_templates;
+    var each1_blocks = [];
+
+    for (var i = 0; i < each1_value.length; i += 1) {
+      each1_blocks[i] = create_each_block_1(component, get_each1_context(ctx, each1_value, i));
+    }
+
+    function click_handler_1(event) {
+      component.copy(ctx.embedCode);
+    }
+
+    var each2_value = ctx.embed_templates.slice(2);
+    var each2_blocks = [];
+
+    for (var i = 0; i < each2_value.length; i += 1) {
+      each2_blocks[i] = create_each_block(component, get_each2_context(ctx, each2_value, i));
+    }
+
+    var help1 = new Help({
+      root: component.root,
+      store: component.store,
+      slots: {
+        default: createFragment()
+      }
+    });
+    return {
+      c: function create() {
+        if_block0.c();
+        text0 = createText("\n\n");
+        button0 = createElement("button");
+        if_block1.c();
+        text1 = createText("\n\n");
+        if (if_block2) if_block2.c();
+        text2 = createText(" ");
+        if (if_block3) if_block3.c();
+        text3 = createText(" ");
+        if (if_block4) if_block4.c();
+        text4 = createText(" ");
+        if (if_block5) if_block5.c();
+        text5 = createText(" ");
+        if (if_block6) if_block6.c();
+        text6 = createText("\n\n");
+        div13 = createElement("div");
+        h2 = createElement("h2");
+        text7 = createText("\n    ");
+        div5 = createElement("div");
+        i0 = createElement("i");
+        text8 = createText("\n        ");
+        div3 = createElement("div");
+        div1 = createElement("div");
+        b0 = createElement("b");
+        text9 = createText("\n                ");
+        div0 = createElement("div");
+        label = createElement("label");
+        input = createElement("input");
+        text10 = createText("\n                        ");
+        raw2_before = createElement('noscript');
+        text11 = createText("\n                    ");
+
+        for (var i = 0; i < each0_blocks.length; i += 1) {
+          each0_blocks[i].c();
+        }
+
+        text12 = createText("\n            ");
+        div2 = createElement("div");
+        a = createElement("a");
+        text13 = createText(ctx.shareUrl);
+        text14 = createText("\n        ");
+        div4 = createElement("div");
+
+        help0._fragment.c();
+
+        text15 = createText("\n\n    ");
+        div12 = createElement("div");
+        i1 = createElement("i");
+        text16 = createText("\n        ");
+        div10 = createElement("div");
+        div7 = createElement("div");
+        b1 = createElement("b");
+        text17 = createText("\n                ");
+        div6 = createElement("div");
+
+        for (var i = 0; i < each1_blocks.length; i += 1) {
+          each1_blocks[i].c();
+        }
+
+        text18 = createText("\n            ");
+        div9 = createElement("div");
+        textarea = createElement("textarea");
+        text19 = createText("\n                ");
+        button1 = createElement("button");
+        i2 = createElement("i");
+        text20 = createText(" ");
+        text21 = createText(text21_value);
+        text22 = createText("\n                ");
+        div8 = createElement("div");
+        text23 = createText(text23_value);
+        text24 = createText("\n        ");
+        div11 = createElement("div");
+        raw5_after = createElement('noscript');
+        text25 = createText(" ");
+
+        for (var i = 0; i < each2_blocks.length; i += 1) {
+          each2_blocks[i].c();
+        }
+
+        help1._fragment.c();
+
+        addListener(button0, "click", click_handler);
+        button0.disabled = ctx.publishing;
+        button0.className = button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published ? '' : 'btn-first-publish') + " svelte-q1cklz";
+        addLoc(button0, file$1, 6, 0, 153);
+        addLoc(h2, file$1, 50, 4, 1673);
+        i0.className = "icon fa fa-link fa-fw";
+        addLoc(i0, file$1, 52, 8, 1751);
+        addLoc(b0, file$1, 55, 16, 1861);
+
+        component._bindingGroups[0].push(input);
+
+        addListener(input, "change", input_change_handler);
+        input.__value = "default";
+        input.value = input.__value;
+        setAttribute(input, "type", "radio");
+        input.name = "url-type";
+        input.className = "svelte-q1cklz";
+        addLoc(input, file$1, 58, 24, 2013);
+        label.className = "radio";
+        addLoc(label, file$1, 57, 20, 1967);
+        div0.className = "embed-options svelte-q1cklz";
+        addLoc(div0, file$1, 56, 16, 1919);
+        div1.className = "h";
+        addLoc(div1, file$1, 54, 12, 1829);
+        a.target = "_blank";
+        a.className = "share-url svelte-q1cklz";
+        a.href = ctx.shareUrl;
+        addLoc(a, file$1, 67, 16, 2516);
+        div2.className = "inpt";
+        addLoc(div2, file$1, 66, 12, 2481);
+        div3.className = "ctrls";
+        addLoc(div3, file$1, 53, 8, 1797);
+        addLoc(div4, file$1, 71, 12, 2647);
+        div5.className = "block";
+        addLoc(div5, file$1, 51, 4, 1723);
+        i1.className = "icon fa fa-code fa-fw";
+        addLoc(i1, file$1, 76, 8, 2760);
+        addLoc(b1, file$1, 79, 16, 2870);
+        div6.className = "embed-options svelte-q1cklz";
+        addLoc(div6, file$1, 80, 16, 2924);
+        div7.className = "h";
+        addLoc(div7, file$1, 78, 12, 2838);
+        setAttribute(textarea, "type", "text");
+        textarea.className = "input embed-code svelte-q1cklz";
+        textarea.readOnly = true;
+        textarea.value = ctx.embedCode;
+        addLoc(textarea, file$1, 87, 16, 3252);
+        i2.className = "fa fa-copy";
+        addLoc(i2, file$1, 88, 85, 3440);
+        addListener(button1, "click", click_handler_1);
+        button1.className = "btn btn-copy";
+        button1.title = "copy";
+        addLoc(button1, file$1, 88, 16, 3371);
+        div8.className = div8_class_value = "copy-success " + (ctx.copy_success ? 'show' : '') + " svelte-q1cklz";
+        addLoc(div8, file$1, 89, 16, 3517);
+        div9.className = "inpt";
+        addLoc(div9, file$1, 86, 12, 3217);
+        div10.className = "ctrls";
+        addLoc(div10, file$1, 77, 8, 2806);
+        addLoc(div11, file$1, 95, 12, 3708);
+        div12.className = "block";
+        addLoc(div12, file$1, 75, 4, 2732);
+        setStyle(div13, "margin-top", "20px");
+        div13.className = div13_class_value = ctx.published ? '' : 'inactive';
+        addLoc(div13, file$1, 49, 0, 1605);
+      },
+      m: function mount(target, anchor) {
+        if_block0.m(target, anchor);
+        insert(target, text0, anchor);
+        insert(target, button0, anchor);
+        if_block1.m(button0, null);
+        insert(target, text1, anchor);
+        if (if_block2) if_block2.m(target, anchor);
+        insert(target, text2, anchor);
+        if (if_block3) if_block3.m(target, anchor);
+        insert(target, text3, anchor);
+        if (if_block4) if_block4.m(target, anchor);
+        insert(target, text4, anchor);
+        if (if_block5) if_block5.m(target, anchor);
+        insert(target, text5, anchor);
+        if (if_block6) if_block6.m(target, anchor);
+        insert(target, text6, anchor);
+        insert(target, div13, anchor);
+        append(div13, h2);
+        h2.innerHTML = raw0_value;
+        append(div13, text7);
+        append(div13, div5);
+        append(div5, i0);
+        append(div5, text8);
+        append(div5, div3);
+        append(div3, div1);
+        append(div1, b0);
+        b0.innerHTML = raw1_value;
+        append(div1, text9);
+        append(div1, div0);
+        append(div0, label);
+        append(label, input);
+        input.checked = input.__value === ctx.shareurl_type;
+        append(label, text10);
+        append(label, raw2_before);
+        raw2_before.insertAdjacentHTML("afterend", raw2_value);
+        append(div0, text11);
+
+        for (var i = 0; i < each0_blocks.length; i += 1) {
+          each0_blocks[i].m(div0, null);
+        }
+
+        append(div3, text12);
+        append(div3, div2);
+        append(div2, a);
+        append(a, text13);
+        append(div5, text14);
+        append(help0._slotted.default, div4);
+        div4.innerHTML = raw3_value;
+
+        help0._mount(div5, null);
+
+        append(div13, text15);
+        append(div13, div12);
+        append(div12, i1);
+        append(div12, text16);
+        append(div12, div10);
+        append(div10, div7);
+        append(div7, b1);
+        b1.innerHTML = raw4_value;
+        append(div7, text17);
+        append(div7, div6);
+
+        for (var i = 0; i < each1_blocks.length; i += 1) {
+          each1_blocks[i].m(div6, null);
+        }
+
+        append(div10, text18);
+        append(div10, div9);
+        append(div9, textarea);
+        component.refs.embedInput = textarea;
+        append(div9, text19);
+        append(div9, button1);
+        append(button1, i2);
+        append(button1, text20);
+        append(button1, text21);
+        append(div9, text22);
+        append(div9, div8);
+        append(div8, text23);
+        append(div12, text24);
+        append(help1._slotted.default, div11);
+        append(div11, raw5_after);
+        raw5_after.insertAdjacentHTML("beforebegin", raw5_value);
+        append(div11, text25);
+
+        for (var i = 0; i < each2_blocks.length; i += 1) {
+          each2_blocks[i].m(div11, null);
+        }
+
+        help1._mount(div12, null);
+      },
+      p: function update(changed, _ctx) {
+        ctx = _ctx;
+
+        if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+          if_block0.d(1);
+          if_block0 = current_block_type(component, ctx);
+          if_block0.c();
+          if_block0.m(text0.parentNode, text0);
+        }
+
+        if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
+          if_block1.p(changed, ctx);
+        } else {
+          if_block1.d(1);
+          if_block1 = current_block_type_1(component, ctx);
+          if_block1.c();
+          if_block1.m(button0, null);
+        }
+
+        if (changed.publishing) {
+          button0.disabled = ctx.publishing;
+        }
+
+        if (changed.published && button0_class_value !== (button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published ? '' : 'btn-first-publish') + " svelte-q1cklz")) {
+          button0.className = button0_class_value;
+        }
+
+        if (!ctx.published) {
+          if (!if_block2) {
+            if_block2 = create_if_block_4();
+            if_block2.c();
+            if_block2.m(text2.parentNode, text2);
+          }
+        } else if (if_block2) {
+          if_block2.d(1);
+          if_block2 = null;
+        }
+
+        if (ctx.needs_republish && !ctx.publishing) {
+          if (!if_block3) {
+            if_block3 = create_if_block_3();
+            if_block3.c();
+            if_block3.m(text3.parentNode, text3);
+          }
+        } else if (if_block3) {
+          if_block3.d(1);
+          if_block3 = null;
+        }
+
+        if (ctx.published && !ctx.needs_republish && ctx.progress === 1 && !ctx.publishing) {
+          if (!if_block4) {
+            if_block4 = create_if_block_2();
+            if_block4.c();
+            if_block4.m(text4.parentNode, text4);
+          }
+        } else if (if_block4) {
+          if_block4.d(1);
+          if_block4 = null;
+        }
+
+        if (ctx.publish_error) {
+          if (if_block5) {
+            if_block5.p(changed, ctx);
+          } else {
+            if_block5 = create_if_block_1(component, ctx);
+            if_block5.c();
+            if_block5.m(text5.parentNode, text5);
+          }
+        } else if (if_block5) {
+          if_block5.d(1);
+          if_block5 = null;
+        }
+
+        if (ctx.publishing) {
+          if (if_block6) {
+            if_block6.p(changed, ctx);
+          } else {
+            if_block6 = create_if_block$1(component, ctx);
+            if_block6.c();
+            if_block6.m(text6.parentNode, text6);
+          }
+        } else if (if_block6) {
+          if_block6.d(1);
+          if_block6 = null;
+        }
+
+        if (changed.shareurl_type) input.checked = input.__value === ctx.shareurl_type;
+
+        if (changed.plugin_shareurls || changed.shareurl_type) {
+          each0_value = ctx.plugin_shareurls;
+
+          for (var i = 0; i < each0_value.length; i += 1) {
+            var child_ctx = get_each0_context(ctx, each0_value, i);
+
+            if (each0_blocks[i]) {
+              each0_blocks[i].p(changed, child_ctx);
+            } else {
+              each0_blocks[i] = create_each_block_2(component, child_ctx);
+              each0_blocks[i].c();
+              each0_blocks[i].m(div0, null);
+            }
+          }
+
+          for (; i < each0_blocks.length; i += 1) {
+            each0_blocks[i].d(1);
+          }
+
+          each0_blocks.length = each0_value.length;
+        }
+
+        if (changed.shareUrl) {
+          setData(text13, ctx.shareUrl);
+          a.href = ctx.shareUrl;
+        }
+
+        if (changed.embed_templates || changed.embed_type) {
+          each1_value = ctx.embed_templates;
+
+          for (var i = 0; i < each1_value.length; i += 1) {
+            var _child_ctx = get_each1_context(ctx, each1_value, i);
+
+            if (each1_blocks[i]) {
+              each1_blocks[i].p(changed, _child_ctx);
+            } else {
+              each1_blocks[i] = create_each_block_1(component, _child_ctx);
+              each1_blocks[i].c();
+              each1_blocks[i].m(div6, null);
+            }
+          }
+
+          for (; i < each1_blocks.length; i += 1) {
+            each1_blocks[i].d(1);
+          }
+
+          each1_blocks.length = each1_value.length;
+        }
+
+        if (changed.embedCode) {
+          textarea.value = ctx.embedCode;
+        }
+
+        if (changed.copy_success && div8_class_value !== (div8_class_value = "copy-success " + (ctx.copy_success ? 'show' : '') + " svelte-q1cklz")) {
+          div8.className = div8_class_value;
+        }
+
+        if (changed.embed_templates) {
+          each2_value = ctx.embed_templates.slice(2);
+
+          for (var i = 0; i < each2_value.length; i += 1) {
+            var _child_ctx2 = get_each2_context(ctx, each2_value, i);
+
+            if (each2_blocks[i]) {
+              each2_blocks[i].p(changed, _child_ctx2);
+            } else {
+              each2_blocks[i] = create_each_block(component, _child_ctx2);
+              each2_blocks[i].c();
+              each2_blocks[i].m(div11, null);
+            }
+          }
+
+          for (; i < each2_blocks.length; i += 1) {
+            each2_blocks[i].d(1);
+          }
+
+          each2_blocks.length = each2_value.length;
+        }
+
+        if (changed.published && div13_class_value !== (div13_class_value = ctx.published ? '' : 'inactive')) {
+          div13.className = div13_class_value;
+        }
+      },
+      d: function destroy(detach) {
+        if_block0.d(detach);
+
+        if (detach) {
+          detachNode(text0);
+          detachNode(button0);
+        }
+
+        if_block1.d();
+        removeListener(button0, "click", click_handler);
+
+        if (detach) {
+          detachNode(text1);
+        }
+
+        if (if_block2) if_block2.d(detach);
+
+        if (detach) {
+          detachNode(text2);
+        }
+
+        if (if_block3) if_block3.d(detach);
+
+        if (detach) {
+          detachNode(text3);
+        }
+
+        if (if_block4) if_block4.d(detach);
+
+        if (detach) {
+          detachNode(text4);
+        }
+
+        if (if_block5) if_block5.d(detach);
+
+        if (detach) {
+          detachNode(text5);
+        }
+
+        if (if_block6) if_block6.d(detach);
+
+        if (detach) {
+          detachNode(text6);
+          detachNode(div13);
+        }
+
+        component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+
+        removeListener(input, "change", input_change_handler);
+        destroyEach(each0_blocks, detach);
+        help0.destroy();
+        destroyEach(each1_blocks, detach);
+        if (component.refs.embedInput === textarea) component.refs.embedInput = null;
+        removeListener(button1, "click", click_handler_1);
+        destroyEach(each2_blocks, detach);
+        help1.destroy();
+      }
+    };
+  } // (3:0) {:else}
+
+
+  function create_else_block_1(component, ctx) {
+    var p,
+        raw_value = __('publish / publish-intro');
+
+    return {
+      c: function create() {
+        p = createElement("p");
+        setStyle(p, "margin-bottom", "20px");
+        addLoc(p, file$1, 3, 0, 72);
+      },
+      m: function mount(target, anchor) {
+        insert(target, p, anchor);
+        p.innerHTML = raw_value;
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(p);
+        }
+      }
+    };
+  } // (1:0) {#if published}
+
+
+  function create_if_block_6(component, ctx) {
+    var p,
+        raw_value = __('publish / republish-intro');
+
+    return {
+      c: function create() {
+        p = createElement("p");
+        addLoc(p, file$1, 1, 0, 16);
+      },
+      m: function mount(target, anchor) {
+        insert(target, p, anchor);
+        p.innerHTML = raw_value;
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(p);
+        }
+      }
+    };
+  } // (12:4) {:else}
+
+
+  function create_else_block(component, ctx) {
+    var span1,
+        i,
+        i_class_value,
+        text0,
+        span0,
+        text1_value = __('publish / publish-btn'),
+        text1;
+
+    return {
+      c: function create() {
+        span1 = createElement("span");
+        i = createElement("i");
+        text0 = createText("\n        ");
+        span0 = createElement("span");
+        text1 = createText(text1_value);
+        i.className = i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-q1cklz";
+        addLoc(i, file$1, 13, 9, 534);
+        span0.className = "title svelte-q1cklz";
+        addLoc(span0, file$1, 14, 8, 623);
+        span1.className = "publish";
+        addLoc(span1, file$1, 12, 4, 503);
+      },
+      m: function mount(target, anchor) {
+        insert(target, span1, anchor);
+        append(span1, i);
+        append(span1, text0);
+        append(span1, span0);
+        append(span0, text1);
+      },
+      p: function update(changed, ctx) {
+        if (changed.publishing && i_class_value !== (i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-q1cklz")) {
+          i.className = i_class_value;
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(span1);
+        }
+      }
+    };
+  } // (8:4) {#if published}
+
+
+  function create_if_block_5(component, ctx) {
+    var span1,
+        i,
+        i_class_value,
+        text0,
+        span0,
+        text1_value = __('publish / republish-btn'),
+        text1;
+
+    return {
+      c: function create() {
+        span1 = createElement("span");
+        i = createElement("i");
+        text0 = createText(" ");
+        span0 = createElement("span");
+        text1 = createText(text1_value);
+        i.className = i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-q1cklz";
+        addLoc(i, file$1, 9, 9, 348);
+        span0.className = "title svelte-q1cklz";
+        addLoc(span0, file$1, 9, 75, 414);
+        span1.className = "re-publish";
+        addLoc(span1, file$1, 8, 4, 314);
+      },
+      m: function mount(target, anchor) {
+        insert(target, span1, anchor);
+        append(span1, i);
+        append(span1, text0);
+        append(span1, span0);
+        append(span0, text1);
+      },
+      p: function update(changed, ctx) {
+        if (changed.publishing && i_class_value !== (i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-q1cklz")) {
+          i.className = i_class_value;
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(span1);
+        }
+      }
+    };
+  } // (20:0) {#if !published}
+
+
+  function create_if_block_4(component, ctx) {
+    var div2,
+        div0,
+        i,
+        text,
+        div1,
+        raw_value = __('publish / publish-btn-intro');
+
+    return {
+      c: function create() {
+        div2 = createElement("div");
+        div0 = createElement("div");
+        i = createElement("i");
+        text = createText("\n    ");
+        div1 = createElement("div");
+        i.className = "fa fa-chevron-left";
+        addLoc(i, file$1, 22, 8, 792);
+        div0.className = "arrow svelte-q1cklz";
+        addLoc(div0, file$1, 21, 4, 764);
+        div1.className = "text svelte-q1cklz";
+        addLoc(div1, file$1, 24, 4, 842);
+        div2.className = "publish-intro svelte-q1cklz";
+        addLoc(div2, file$1, 20, 0, 732);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, div0);
+        append(div0, i);
+        append(div2, text);
+        append(div2, div1);
+        div1.innerHTML = raw_value;
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div2);
+        }
+      }
+    };
+  } // (29:6) {#if needs_republish && !publishing}
+
+
+  function create_if_block_3(component, ctx) {
+    var div,
+        raw_value = __('publish / republish-alert');
+
+    return {
+      c: function create() {
+        div = createElement("div");
+        div.className = "btn-aside alert svelte-q1cklz";
+        addLoc(div, file$1, 29, 0, 973);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        div.innerHTML = raw_value;
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+      }
+    };
+  } // (33:6) {#if published && !needs_republish && progress === 1 && !publishing}
+
+
+  function create_if_block_2(component, ctx) {
+    var div,
+        raw_value = __('publish / publish-success');
+
+    return {
+      c: function create() {
+        div = createElement("div");
+        div.className = "alert alert-success";
+        addLoc(div, file$1, 33, 0, 1130);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        div.innerHTML = raw_value;
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+      }
+    };
+  } // (37:6) {#if publish_error}
+
+
+  function create_if_block_1(component, ctx) {
+    var div;
+    return {
+      c: function create() {
+        div = createElement("div");
+        div.className = "alert alert-error";
+        addLoc(div, file$1, 37, 0, 1242);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        div.innerHTML = ctx.publish_error;
+      },
+      p: function update(changed, ctx) {
+        if (changed.publish_error) {
+          div.innerHTML = ctx.publish_error;
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+      }
+    };
+  } // (41:6) {#if publishing}
+
+
+  function create_if_block$1(component, ctx) {
+    var div2,
+        text0_value = __("publish / progress / please-wait"),
+        text0,
+        text1,
+        div1,
+        div0,
+        div0_class_value,
+        div2_class_value;
+
+    return {
+      c: function create() {
+        div2 = createElement("div");
+        text0 = createText(text0_value);
+        text1 = createText("\n    ");
+        div1 = createElement("div");
+        div0 = createElement("div");
+        div0.className = div0_class_value = "bar " + (ctx.progress < 1 ? '' : 'bar-success') + " svelte-q1cklz";
+        addLoc(div0, file$1, 44, 8, 1516);
+        div1.className = "progress progress-striped active svelte-q1cklz";
+        addLoc(div1, file$1, 43, 4, 1461);
+        div2.className = div2_class_value = "alert " + (ctx.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-q1cklz";
+        addLoc(div2, file$1, 41, 0, 1331);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div2, anchor);
+        append(div2, text0);
+        append(div2, text1);
+        append(div2, div1);
+        append(div1, div0);
+        component.refs.bar = div0;
+      },
+      p: function update(changed, ctx) {
+        if (changed.progress && div0_class_value !== (div0_class_value = "bar " + (ctx.progress < 1 ? '' : 'bar-success') + " svelte-q1cklz")) {
+          div0.className = div0_class_value;
+        }
+
+        if (changed.progress && div2_class_value !== (div2_class_value = "alert " + (ctx.progress < 1 ? 'alert-info' : 'alert-success') + " publishing" + " svelte-q1cklz")) {
+          div2.className = div2_class_value;
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div2);
+        }
+
+        if (component.refs.bar === div0) component.refs.bar = null;
+      }
+    };
+  } // (62:20) {#each plugin_shareurls as tpl}
+
+
+  function create_each_block_2(component, ctx) {
+    var label,
+        input,
+        input_value_value,
+        text,
+        raw_value = ctx.tpl.name,
+        raw_before;
+
+    function input_change_handler() {
+      component.set({
+        shareurl_type: input.__value
+      });
+    }
+
+    return {
+      c: function create() {
+        label = createElement("label");
+        input = createElement("input");
+        text = createText(" ");
+        raw_before = createElement('noscript');
+
+        component._bindingGroups[0].push(input);
+
+        addListener(input, "change", input_change_handler);
+        input.__value = input_value_value = ctx.tpl.id;
+        input.value = input.__value;
+        setAttribute(input, "type", "radio");
+        input.name = "url-type";
+        input.className = "svelte-q1cklz";
+        addLoc(input, file$1, 62, 42, 2290);
+        label.className = "radio";
+        addLoc(label, file$1, 62, 20, 2268);
+      },
+      m: function mount(target, anchor) {
+        insert(target, label, anchor);
+        append(label, input);
+        input.checked = input.__value === ctx.shareurl_type;
+        append(label, text);
+        append(label, raw_before);
+        raw_before.insertAdjacentHTML("afterend", raw_value);
+      },
+      p: function update(changed, ctx) {
+        if (changed.shareurl_type) input.checked = input.__value === ctx.shareurl_type;
+
+        if (changed.plugin_shareurls && input_value_value !== (input_value_value = ctx.tpl.id)) {
+          input.__value = input_value_value;
+        }
+
+        input.value = input.__value;
+
+        if (changed.plugin_shareurls && raw_value !== (raw_value = ctx.tpl.name)) {
+          detachAfter(raw_before);
+          raw_before.insertAdjacentHTML("afterend", raw_value);
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(label);
+        }
+
+        component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+
+        removeListener(input, "change", input_change_handler);
+      }
+    };
+  } // (82:20) {#each embed_templates as tpl}
+
+
+  function create_each_block_1(component, ctx) {
+    var label,
+        input,
+        input_value_value,
+        text,
+        raw_value = ctx.tpl.title,
+        raw_before;
+
+    function input_change_handler() {
+      component.set({
+        embed_type: input.__value
+      });
+    }
+
+    return {
+      c: function create() {
+        label = createElement("label");
+        input = createElement("input");
+        text = createText(" ");
+        raw_before = createElement('noscript');
+
+        component._bindingGroups[1].push(input);
+
+        addListener(input, "change", input_change_handler);
+        setAttribute(input, "type", "radio");
+        input.__value = input_value_value = ctx.tpl.id;
+        input.value = input.__value;
+        input.className = "svelte-q1cklz";
+        addLoc(input, file$1, 82, 41, 3044);
+        label.className = "radio";
+        addLoc(label, file$1, 82, 20, 3023);
+      },
+      m: function mount(target, anchor) {
+        insert(target, label, anchor);
+        append(label, input);
+        input.checked = input.__value === ctx.embed_type;
+        append(label, text);
+        append(label, raw_before);
+        raw_before.insertAdjacentHTML("afterend", raw_value);
+      },
+      p: function update(changed, ctx) {
+        if (changed.embed_type) input.checked = input.__value === ctx.embed_type;
+
+        if (changed.embed_templates && input_value_value !== (input_value_value = ctx.tpl.id)) {
+          input.__value = input_value_value;
+        }
+
+        input.value = input.__value;
+
+        if (changed.embed_templates && raw_value !== (raw_value = ctx.tpl.title)) {
+          detachAfter(raw_before);
+          raw_before.insertAdjacentHTML("afterend", raw_value);
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(label);
+        }
+
+        component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input), 1);
+
+        removeListener(input, "change", input_change_handler);
+      }
+    };
+  } // (97:54) {#each embed_templates.slice(2) as tpl}
+
+
+  function create_each_block(component, ctx) {
+    var div,
+        b,
+        text0_value = ctx.tpl.title,
+        text0,
+        text1,
+        text2,
+        raw_value = ctx.tpl.text,
+        raw_before;
+    return {
+      c: function create() {
+        div = createElement("div");
+        b = createElement("b");
+        text0 = createText(text0_value);
+        text1 = createText(":");
+        text2 = createText(" ");
+        raw_before = createElement('noscript');
+        addLoc(b, file$1, 97, 21, 3829);
+        addLoc(div, file$1, 97, 16, 3824);
+      },
+      m: function mount(target, anchor) {
+        insert(target, div, anchor);
+        append(div, b);
+        append(b, text0);
+        append(b, text1);
+        append(div, text2);
+        append(div, raw_before);
+        raw_before.insertAdjacentHTML("afterend", raw_value);
+      },
+      p: function update(changed, ctx) {
+        if (changed.embed_templates && text0_value !== (text0_value = ctx.tpl.title)) {
+          setData(text0, text0_value);
+        }
+
+        if (changed.embed_templates && raw_value !== (raw_value = ctx.tpl.text)) {
+          detachAfter(raw_before);
+          raw_before.insertAdjacentHTML("afterend", raw_value);
+        }
+      },
+      d: function destroy(detach) {
+        if (detach) {
+          detachNode(div);
+        }
+      }
+    };
+  }
+
+  function App(options) {
+    var _this2 = this;
+
+    this._debugName = '<App>';
+
+    if (!options || !options.target && !options.root) {
+      throw new Error("'target' is a required option");
+    }
+
+    init(this, options);
+    this.refs = {};
+    this._state = assign(data$1(), options.data);
+
+    this._recompute({
+      shareurl_type: 1,
+      chart: 1,
+      plugin_shareurls: 1,
+      published: 1,
+      embed_type: 1
+    }, this._state);
+
+    if (!('shareurl_type' in this._state)) console.warn("<App> was created without expected data property 'shareurl_type'");
+    if (!('chart' in this._state)) console.warn("<App> was created without expected data property 'chart'");
+    if (!('plugin_shareurls' in this._state)) console.warn("<App> was created without expected data property 'plugin_shareurls'");
+    if (!('published' in this._state)) console.warn("<App> was created without expected data property 'published'");
+    if (!('embed_type' in this._state)) console.warn("<App> was created without expected data property 'embed_type'");
+    if (!('publishing' in this._state)) console.warn("<App> was created without expected data property 'publishing'");
+    if (!('needs_republish' in this._state)) console.warn("<App> was created without expected data property 'needs_republish'");
+    if (!('progress' in this._state)) console.warn("<App> was created without expected data property 'progress'");
+    if (!('publish_error' in this._state)) console.warn("<App> was created without expected data property 'publish_error'");
+    if (!('embed_templates' in this._state)) console.warn("<App> was created without expected data property 'embed_templates'");
+    if (!('copy_success' in this._state)) console.warn("<App> was created without expected data property 'copy_success'");
+    this._bindingGroups = [[], []];
+    this._intro = true;
+    this._handlers.state = [onstate];
+    onstate.call(this, {
+      changed: assignTrue({}, this._state),
+      current: this._state
+    });
+    this._fragment = create_main_fragment$1(this, this._state);
+
+    this.root._oncreate.push(function () {
+      _this2.fire("update", {
+        changed: assignTrue({}, _this2._state),
+        current: _this2._state
+      });
+    });
+
+    if (options.target) {
+      if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+      this._fragment.c();
+
+      this._mount(options.target, options.anchor);
+
+      flush(this);
+    }
+  }
+
+  assign(App.prototype, protoDev);
+  assign(App.prototype, methods$1);
+
+  App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+    if ('shareUrl' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'shareUrl'");
+    if ('embedCode' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'embedCode'");
+  };
+
+  App.prototype._recompute = function _recompute(changed, state) {
+    if (changed.shareurl_type || changed.chart || changed.plugin_shareurls || changed.published) {
+      if (this._differs(state.shareUrl, state.shareUrl = shareUrl(state))) changed.shareUrl = true;
+    }
+
+    if (changed.embed_type || changed.chart) {
+      if (this._differs(state.embedCode, state.embedCode = embedCode(state))) changed.embedCode = true;
+    }
+  };
+
+  function Store(state, options) {
+    this._handlers = {};
+    this._dependents = [];
+    this._computed = blankObject();
+    this._sortedComputedProperties = [];
+    this._state = assign({}, state);
+    this._differs = options && options.immutable ? _differsImmutable : _differs;
+  }
+
+  assign(Store.prototype, {
+    _add: function _add(component, props) {
+      this._dependents.push({
+        component: component,
+        props: props
+      });
+    },
+    _init: function _init(props) {
+      var state = {};
+
+      for (var i = 0; i < props.length; i += 1) {
+        var prop = props[i];
+        state['$' + prop] = this._state[prop];
+      }
+
+      return state;
+    },
+    _remove: function _remove(component) {
+      var i = this._dependents.length;
+
+      while (i--) {
+        if (this._dependents[i].component === component) {
+          this._dependents.splice(i, 1);
+
+          return;
+        }
+      }
+    },
+    _set: function _set(newState, changed) {
+      var _this = this;
+
+      var previous = this._state;
+      this._state = assign(assign({}, previous), newState);
+
+      for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+        this._sortedComputedProperties[i].update(this._state, changed);
+      }
+
+      this.fire('state', {
+        changed: changed,
+        previous: previous,
+        current: this._state
+      });
+
+      this._dependents.filter(function (dependent) {
+        var componentState = {};
+        var dirty = false;
+
+        for (var j = 0; j < dependent.props.length; j += 1) {
+          var prop = dependent.props[j];
+
+          if (prop in changed) {
+            componentState['$' + prop] = _this._state[prop];
+            dirty = true;
+          }
+        }
+
+        if (dirty) {
+          dependent.component._stage(componentState);
+
+          return true;
+        }
+      }).forEach(function (dependent) {
+        dependent.component.set({});
+      });
+
+      this.fire('update', {
+        changed: changed,
+        previous: previous,
+        current: this._state
+      });
+    },
+    _sortComputedProperties: function _sortComputedProperties() {
+      var computed = this._computed;
+      var sorted = this._sortedComputedProperties = [];
+      var visited = blankObject();
+      var currentKey;
+
+      function visit(key) {
+        var c = computed[key];
+
+        if (c) {
+          c.deps.forEach(function (dep) {
+            if (dep === currentKey) {
+              throw new Error("Cyclical dependency detected between ".concat(dep, " <-> ").concat(key));
+            }
+
+            visit(dep);
+          });
+
+          if (!visited[key]) {
+            visited[key] = true;
+            sorted.push(c);
+          }
+        }
+      }
+
+      for (var key in this._computed) {
+        visit(currentKey = key);
+      }
+    },
+    compute: function compute(key, deps, fn) {
+      var _this2 = this;
+
+      var value;
+      var c = {
+        deps: deps,
+        update: function update(state, changed, dirty) {
+          var values = deps.map(function (dep) {
+            if (dep in changed) dirty = true;
+            return state[dep];
+          });
+
+          if (dirty) {
+            var newValue = fn.apply(null, values);
+
+            if (_this2._differs(newValue, value)) {
+              value = newValue;
+              changed[key] = true;
+              state[key] = value;
+            }
+          }
+        }
+      };
+      this._computed[key] = c;
+
+      this._sortComputedProperties();
+
+      var state = assign({}, this._state);
+      var changed = {};
+      c.update(state, changed, true);
+
+      this._set(state, changed);
+    },
+    fire: fire,
+    get: get,
+    on: on,
+    set: function set(newState) {
+      var oldState = this._state;
+      var changed = this._changed = {};
+      var dirty = false;
+
+      for (var key in newState) {
+        if (this._computed[key]) throw new Error("'".concat(key, "' is a read-only computed property"));
+        if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+      }
+
+      if (!dirty) return;
+
+      this._set(newState, changed);
+    }
+  });
+
+  /* eslint camelcase: "off" */
+  var store = new Store({});
+  var data$2 = {
+    chart: {
+      id: ''
+    },
+    embed_templates: [],
+    plugin_shareurls: [],
+    published: false,
+    publishing: false,
+    needs_republish: false,
+    publish_error: false,
+    auto_publish: false,
+    progress: 0,
+    shareurl_type: 'default',
+    embed_type: 'responsive',
+    copy_success: false
+  };
+  var main = {
+    App: App,
+    data: data$2,
+    store: store
+  };
+
+  return main;
+
+}));
+//# sourceMappingURL=publish_old.js.map

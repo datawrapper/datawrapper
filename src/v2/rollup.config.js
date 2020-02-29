@@ -20,6 +20,8 @@ build('invite');
 build('publish', { append: '_old' });
 build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
+build('publish/guest');
+build('publish/pending-activation');
 
 export default targets;
 
