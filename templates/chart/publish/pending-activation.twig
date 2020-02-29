@@ -1,50 +1,52 @@
 {# this is what users see who are not activated yet #}
 
 <div class="publish-form" id="step-2">
-    <table style="width:100%">
-        <tr>
-            <td style="vertical-align:middle; width: 80px;">
-                <i class="fa fa-envelope big"></i>
-            </td>
-            <td style="padding-left:25px">
-                <h2>{% trans "publish / unactivated / h1" %}</h2>
+    <h2>{% trans "publish / pending-activation / h1" %}</h2>
 
-                <p>{% trans "publish / unactivated / p" %}</p>
+    <p>{% trans "publish / pending-activation / p" %}</p>
 
-                <div class="resend-activation">
-                    <button class="resend-activation-button btn btn-primary"><i class="fa fa-envelope"></i> &nbsp; {% trans "Re-send activation link" %}</button>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div style="margin-top: 20px;">
+        <div class="resend-activation">
+            <button class="resend-activation-button btn btn-primary"><i class="fa fa-envelope"></i> &nbsp; {% trans "publish / pending-activation / resend" %}</button>
+        </div>
+
+        <p class="resend-activation-success hidden">
+            {% trans "publish / pending-activation / resend-success" %}
+        </p>
+
+        <p class="resend-activation-error hidden">
+            {% trans "publish / pending-activation / resend-error" %}
+        </p>
+    </div>
 </div>
 
 <script type="text/javascript">
     $('.resend-activation-button').click(function() {
-    	$.get('/v3/me', function(data) {
-    		var email = data.email;
+        $('.resend-activation-button fa').removeClass("fa-envelope").addClass("fa-spinner fa-spin");
 
-    		$.post('/v3/auth/resend-activation', {
-    			email: email,
-    		}, function(data) {
-	            if (data.status == "ok") {
-	                $('.resend-activation').html(data.data);
-	            } else {
-	                $('.resend-activation').html(data.message);
-	            }
-	        }, 'json');
-    	}, 'json');
+        $.ajax({
+            url: '//' + dw.backend.__api_domain + '/v3/auth/resend-activation',
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify({
+                email: "{{ user.email }}"
+            }),
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            context: this,
+            success: function (data) {
+                $('.resend-activation').addClass("hidden");
+                $('.resend-activation-success').removeClass("hidden");
+            },
+            error: function(err) {
+                $('.resend-activation').addClass("hidden");
+                $('.resend-activation-error').removeClass("hidden");
+            }
+        });
     });
 </script>
-
-<style type="text/css">
-	#step-2 .fa.big {
-	    font-size: 80px;
-	    color: #5bb75b;
-	    float: left;
-	}
-
-	#step-2 {
-	    padding-top: 20px;
-	}
-</style>
