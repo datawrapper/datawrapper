@@ -24,6 +24,14 @@
 
 
 <div class="export-and-duplicate">
+    {% if has_hook('publish_custom_export_actions_header') %}
+
+        {{ hook('publish_custom_export_actions_header') }}	
+
+    {% else %}	
+        <h2 class="pad-top">{% trans "publish / export-duplicate" %}</h2>	
+        <p>{% trans "publish / export-duplicate / intro" %}</p>	
+    {% endif %}	
 
     <h2 class="pad-top">{% trans "publish / export-duplicate" %}</h2>
     <p>{% trans "publish / export-duplicate / intro" %}</p>
