@@ -1,28 +1,26 @@
 {# this is what guests see on publish step #}
 
 <div class="form-horizontal publish-form">
-    <h2>{% trans "publish / fresh / h1" %}</h2>
+    <h2>{% trans "publish / guest / h1" %}</h2>
 
-    <p>{% trans "publish / fresh / p" %}</p>
-
-    <img src="/static/plugins/subscriptions/embed.png">
+    <p>{% trans "publish / guest / p" %}</p>
 
     <ul class="bullet-list">
-        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li1" %}</li>
-        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li2" %}</li>
-        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / fresh / li3" %}</li>
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / guest / li1" %}</li>
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / guest / li2" %}</li>
+        <li><i class="fa fa-check"></i> &nbsp; {% trans "publish / guest / li3" %}</li>
     </ul>
 
     <fieldset>
         <div class="control-group" style="margin-top:20px">
-            <label class="control-label" style="width: 160px"  for="email">{% trans "publish / fresh / e-mail" %}</label>
+            <label class="control-label" style="width: 160px"  for="email">{% trans "publish / guest / e-mail" %}</label>
             <div class="controls" style="margin-left: 180px">
-                <input type="text" class="input-xlarge" placeholder="{% trans "publish / fresh / example-email" %}" id="email">
+                <input type="text" class="input-xlarge" placeholder="{% trans "publish / guest / example-email" %}" id="email">
             </div>
         </div>
        <div style="margin-top:30px">
-            <button class="btn btn-save btn-default btn-back"><i class="fa fa-chevron-left"></i> &nbsp;{% trans "publish / fresh / back" %}</button>
-            <button class="btn btn-save btn-primary" type="submit" id="create-account" style="float:right"><i class="fa fa-envelope"></i> &nbsp;{% trans "publish / fresh / cta" %}</button>
+            <button class="btn btn-save btn-default btn-back"><i class="fa fa-chevron-left"></i> &nbsp;{% trans "publish / guest / back" %}</button>
+            <button class="btn btn-save btn-primary" type="submit" id="create-account" style="float:right"><i class="fa fa-envelope"></i> &nbsp;{% trans "publish / guest / cta" %}</button>
         </div>
     </fieldset>
 </div>
