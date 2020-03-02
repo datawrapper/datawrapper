@@ -664,5 +664,19 @@
   "Try it now!": "Sofort ausprobieren",
   "Create a Chart": "Diagramm erstellen",
   "switch-team": "Team wechseln",
-  "teams / remove / alert": "Bist du sicher das du dem Nutzer den Zugriff auf dein Team entziehen willst? Wenn du ein Teammitglied einfernst werden dessen Diagramme weiterhin für das restliche Team verfügbar sein, der entfernte Nutzer hat jedoch keinen Zugriff mehr."
+  "teams / remove / alert": "Bist du sicher das du dem Nutzer den Zugriff auf dein Team entziehen willst? Wenn du ein Teammitglied einfernst werden dessen Diagramme weiterhin für das restliche Team verfügbar sein, der entfernte Nutzer hat jedoch keinen Zugriff mehr.",
+  "publish / pending-activation / h1": "Du hast Post!",
+  "publish / pending-activation / p": "Wir haben dir ein Link zu deinem Diagramm per E-Mail zugesandt. Schau in deinem Postfach und klicke auf den Link um dein Diagramm zu bekommen. Wenn du innerhalb von 15 Minuten keine E-Mail bekommen hast, melde dich bei uns via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
+  "publish / pending-activation / resend": "E-mail neu versenden",
+  "publish / pending-activation / resend-success": "Deine Aktivierungsemail wurde erneut versandt.",
+  "publish / pending-activation / resend-error": "Your activation e-mail has already been re-sent multiple times. Please <a href=\"mailto:support@datawrapper.de\">contact suppport</a> to activate your account.",
+  "publish / guest / back": "Zurück",
+  "publish / guest / cta": "Diagramm zusenden",
+  "publish / guest / e-mail": "Deine E-Mail:",
+  "publish / guest / example-email": "max.mustermann@web.de",
+  "publish / guest / h1": "Bette dein Diagramm in deine Seite ein.",
+  "publish / guest / li1": "Bette dein Diagramm kostenlos ein",
+  "publish / guest / li2": "Lade dein Diagramm als PNG herunter",
+  "publish / guest / li3": "Funktioniert mit jedem CMS",
+  "publish / guest / p": "Du kannst dein Diagram mit Datawrapper kostenlos einbetten. Gib einfach deine E-Mail-Adreses ein und wir senden dir einen Link zu, mit dem du dein Diagramm einbetten kannst. Falls du schon einen Account hast, <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">logge dich einfach hier ein.</a>"
 }
