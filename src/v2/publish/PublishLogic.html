@@ -1,27 +1,55 @@
 <!-- default publish logic: logged in users may publish, guests see sign-in prompt -->
-{#if $user.mayPublish}
-<Publish embed_templates="{embedTemplates}" embed_type="{embedType}" plugin_shareurls="{pluginShareurls}" shareurl_type="{shareurlType}" />
-{:elseif !$user.isLoggedIn}
 
-<h2>Hello guest</h2>
-<p>To publish a chart, you need to <a href="#login">sign in or create an account</a>.</p>
-
-{:else}
-<!-- THERE IS A DIFFERENT REASON WHY YOU CANNOT PUBLISH -->
-{/if}
+<div>
+    {#if $user.isGuest}
+    <Guest fromSvelte="true" custom_text="{custom_text}" />
+    {:elseif !$user.isActivated}
+    <PendingActivation />
+    {:else}
+    <Publish
+        beforeExport="{beforeExport}"
+        embed_templates="{embedTemplates}"
+        embed_type="{embedType}"
+        plugin_shareurls="{pluginShareurls}"
+        shareurl_type="{shareurlType}"
+    />
+    {/if}
+</div>
 
 <script>
-    import Publish from './Publish.html';
+    import { Publish } from '/static/js/svelte/publish.js';
+    import Guest from './guest/Guest.html';
+    import PendingActivation from './pending-activation/PendingActivation.html';
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
-        components: { Publish },
+        components: {
+            Publish,
+            Guest,
+            PendingActivation
+        },
         data() {
             return {
                 embedTemplates: [],
                 embedType: 'responsive',
                 pluginShareurls: [],
-                shareurlType: 'default'
+                shareurlType: 'default',
+                beforeExport: null,
+                custom_text: ''
             };
+        },
+        onstate({ current, changed }) {
+            if (changed.afterEmbed && current.afterEmbed) {
+                const p = current.afterEmbed[0];
+
+                Promise.all([loadStylesheet(p.css), loadScript(p.js)]).then(() => {
+                    require([p.module], mod => {
+                        this.set({
+                            beforeExport: mod.App
+                        });
+                    });
+                });
+            }
         }
     };
 </script>

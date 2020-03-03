@@ -674,10 +674,7 @@
   "publish / guest / back": "Back",
   "publish / guest / cta": "Send my embed code",
   "publish / guest / e-mail": "Enter your e-mail:",
-  "publish / guest / example-email": "your.email@gmail.com",
-  "publish / guest / h1": "Embed your chart in your story.",
-  "publish / guest / li1": "Embed your chart for free",
-  "publish / guest / li2": "Download chart as PNG",
-  "publish / guest / li3": "Works with every CMS",
-  "publish / guest / p": "You can embed your chart in your website for free with Datawrapper. Simply enter your e-mail address and we'll send you an email with a link to embed your chart. Already have an account? <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">Log in to embed your chart.</a>"
+  "publish / guest / example-email": "e.g. your.email@gmail.com",
+  "publish / guest / h1": "Create an account to publish your chart",
+  "publish / guest / p": "Enter your e-mail address to create an account and publish your charrt."
 }

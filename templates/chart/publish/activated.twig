@@ -2,37 +2,14 @@
 
 {{ hook('publish_before_embed', chart, user) }}
 
-{% if user.mayPublish(chart) %}
-
-    {{ svelte('publish_old', svelte_data) }}
-
-{% else %}
-
-    {% if has_hook('publish_custom_page_not_allowed') %}
-
-        {{ hook('publish_custom_page_not_allowed', user, chart) }}
-
-    {% else %}
-        {# core message for being unable to publish #}
-        <h2>Unfortunately, you are not allowed to publish.</h2>
-
-    {% endif %}
-
-{% endif %}
+{{ svelte('publish_old', svelte_data) }}
 
 {{ hook('publish_after_embed', chart, user) }}
 
 
 <div class="export-and-duplicate">
-
-    {% if has_hook('publish_custom_export_actions_header') %}
-
-        {{ hook('publish_custom_export_actions_header') }}
-
-    {% else %}
-        <h2 class="pad-top">{% trans "publish / export-duplicate" %}</h2>
-        <p>{% trans "publish / export-duplicate / intro" %}</p>
-    {% endif %}
+    <h2 class="pad-top">{% trans "publish / export-duplicate" %}</h2>
+    <p>{% trans "publish / export-duplicate / intro" %}</p>
 
     <ul class="chart-actions">
     {% for action in chartActions %}
@@ -54,4 +31,5 @@
     {{ hook('publish_after_chart_actions', chart, user) }}
 
 </div>
+
 

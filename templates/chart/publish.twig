@@ -28,9 +28,9 @@ dw.backend.ready(function() {
     <div class="row">
         <div class="span5 publish-step {% if chart.lastEditStep > 4 %}is-published{% endif %}">
         {% if user.isGuest %}
-            {% include "chart/publish/guest.twig" %}
+            {{ svelte('publish/guest', svelte_data) }}
         {% elseif not user.isActivated %}
-            {% include "chart/publish/pending-activation.twig" %}
+            {{ svelte('publish/pending-activation', svelte_data) }}
         {% else %}
             {% include "chart/publish/activated.twig" %}
         {% endif %}
@@ -38,18 +38,8 @@ dw.backend.ready(function() {
         </div>
 
         <div class="span7">
-            {% if user.mayPublish(chart) %}
-
             <div class="messages"></div>
-
-                <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="position:sticky;top:20px;width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-
-            {% else %}
-
-                <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-
-
-            {% endif %}
+            <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="position:sticky;top:20px;width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
         </div>
     </div>
 

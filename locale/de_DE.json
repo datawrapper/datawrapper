@@ -674,10 +674,7 @@
   "publish / guest / back": "Zurück",
   "publish / guest / cta": "Diagramm zusenden",
   "publish / guest / e-mail": "Deine E-Mail:",
-  "publish / guest / example-email": "max.mustermann@web.de",
-  "publish / guest / h1": "Bette dein Diagramm in deine Seite ein.",
-  "publish / guest / li1": "Bette dein Diagramm kostenlos ein",
-  "publish / guest / li2": "Lade dein Diagramm als PNG herunter",
-  "publish / guest / li3": "Funktioniert mit jedem CMS",
-  "publish / guest / p": "Du kannst dein Diagram mit Datawrapper kostenlos einbetten. Gib einfach deine E-Mail-Adreses ein und wir senden dir einen Link zu, mit dem du dein Diagramm einbetten kannst. Falls du schon einen Account hast, <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">logge dich einfach hier ein.</a>"
+  "publish / guest / example-email": "z.B. max.mustermann@web.de",
+  "publish / guest / h1": "Erstelle einen Account, um dein Diagramm zu veröffentlichen",
+  "publish / guest / p": "Gib deine E-Mail-Adresse ein, um einen Account anzulegen, mit dem du dein Diagramm veröffentlichen kannst."
 }
