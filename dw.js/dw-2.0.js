@@ -2535,18 +2535,6 @@ _.extend(dw.visualization.base, {
             }
         });
 
-        var usedColumnCount = 0;
-
-        for (var columnName in usedColumns) {
-            if (usedColumns[columnName]) usedColumnCount++;
-        }
-
-        if (usedColumnCount < dataset.numColumns()) {
-            var msg =
-                'Your dataset contains more columns than the chosen chart type can display. You can switch' +
-                ' the column to show in the <b>Refine</b> tab, or choose a different chart type.';
-            errors.push(msg);
-        }
 
         if (errors.length) {
             me.notify(errors.join('<br />'));
