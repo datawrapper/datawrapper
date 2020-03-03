@@ -215,16 +215,7 @@ class DatawrapperHooks {
     // hooks for sending transactional e-mails
     const SEND_ACTIVATION_EMAIL = 'send_activation_email';
     const SEND_INVITE_EMAIL_TO_NEW_USER = 'send_invite_to_new_user';
-    const SEND_TEAM_INVITE_EMAIL = 'send_team_invite_email';
     const SEND_RESET_PASSWORD_EMAIL = 'send_reset_password_email';
-    const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
-    const SEND_FIRST_INVOICE_EMAIL = 'send_first_invoice_email';
-    const SEND_MANUAL_INVOICE_EMAIL = 'send_manual_invoice_email';
-    const SEND_INVOICE_EMAIL = 'send_invoice_email';
-    const SEND_CARD_EXPIRY_EMAIL = 'send_card_expiry_email';
-    const SEND_FAILED_PAYMENT_EMAIL = 'send_failed_payment_email';
-    const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
-    const SEND_TEAM_SETUP_EMAIL = 'send_team_setup_email';
 
     // hooks to add markup in chart editor steps below nav
     const BEFORE_EDITOR_NAV = 'before_editor_nav';
