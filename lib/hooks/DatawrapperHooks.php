@@ -213,17 +213,6 @@ class DatawrapperHooks {
     // add more markup in sidebar in describe step
     const DESCRIBE_BEFORE_SOURCE = 'describe_before_source';
 
-    // hooks for sending transactional e-mails
-    const SEND_TEAM_INVITE_EMAIL = 'send_team_invite_email';
-    const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
-    const SEND_FIRST_INVOICE_EMAIL = 'send_first_invoice_email';
-    const SEND_MANUAL_INVOICE_EMAIL = 'send_manual_invoice_email';
-    const SEND_INVOICE_EMAIL = 'send_invoice_email';
-    const SEND_CARD_EXPIRY_EMAIL = 'send_card_expiry_email';
-    const SEND_FAILED_PAYMENT_EMAIL = 'send_failed_payment_email';
-    const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
-    const SEND_TEAM_SETUP_EMAIL = 'send_team_setup_email';
-
     // hooks to add markup in chart editor steps below nav
     const BEFORE_EDITOR_NAV = 'before_editor_nav';
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';
