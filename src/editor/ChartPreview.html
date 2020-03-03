@@ -6,7 +6,7 @@ TODO for later:
     <div
         id="iframe-wrapper"
         class="{loading?'loading':''} {resizable?'resizable' :''} {resizing?'resizing' :''}"
-        style="width:{width}px;height:{height}px; overflow:visible;"
+        style="width:{width}px;height:{height}px; overflow:visible; padding:{border}px"
     >
         <iframe
             title="chart-preview"
@@ -94,6 +94,7 @@ TODO for later:
                 // resize logic
                 width: 500,
                 height: 500,
+                border: 20,
                 resizable: true,
                 resizing: false,
                 // inline editing
