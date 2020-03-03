@@ -2,7 +2,7 @@
 
 <div>
     {#if $user.isGuest}
-    <Guest fromSvelte="true" custom_text="{custom_text}" />
+    <Guest fromSvelte="true" guest_text_above="{guest_text_above}" guest_text_below="{guest_text_below}" />
     {:elseif !$user.isActivated}
     <PendingActivation />
     {:else}
@@ -35,7 +35,8 @@
                 pluginShareurls: [],
                 shareurlType: 'default',
                 beforeExport: null,
-                custom_text: ''
+                guest_text_above: '',
+                guest_text_below: ''
             };
         },
         onstate({ current, changed }) {

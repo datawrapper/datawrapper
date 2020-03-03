@@ -225,7 +225,8 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_SIDEBAR = 'visualize_before_sidebar';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
     const PUBLISH_AFTER_EMBED = 'publish_after_embed';
-    const PUBLISH_TEXT_GUEST = 'publish_text_guest';
+    const PUBLISH_TEXT_GUEST_ABOVE = 'publish_text_guest_above';
+    const PUBLISH_TEXT_GUEST_BELOW = 'publish_text_guest_below';
 
     // hooks for plugin installation/update
     const PLUGIN_INSTALLED = 'plugin_installed';

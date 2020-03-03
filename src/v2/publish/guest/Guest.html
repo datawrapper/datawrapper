@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row publish-signup">
     <div class="span5">
         <div style="margin-bottom:20px">
-            {#if custom_text} {#each custom_text as text} {@html text} {/each} {:else}
+            {#if guest_text_above} {#each guest_text_above as text} {@html text} {/each} {:else}
             <h2>{@html __('publish / guest / h1')}</h2>
 
             <p>{@html __('publish / guest / p')}</p>
@@ -9,15 +9,19 @@
         </div>
 
         <FormBlock label="{ __('publish / guest / e-mail') }" help="{ __('publish / guest / example-email') }">
-            <input type="email" class="input-xlarge" bind:value="email" />
+            <div style="display:flex">
+                <input type="email" class="input-xlarge" bind:value="email" />
+
+                <button on:click="createAccount(email)" class="btn btn-save btn-primary" style="white-space: nowrap; margin-left: 10px">
+                    <i class="fa {signedUp ? 'fa-circle-o-notch fa-spin': 'fa-envelope'}"></i> &nbsp; {@html __('publish / guest / cta')}
+                </button>
+            </div>
         </FormBlock>
+
+        {#if guest_text_below} {#each guest_text_below as text} {@html text} {/each} {/if}
 
         <div style="margin-top:30px">
             <button class="btn btn-save btn-default btn-back"><i class="fa fa-chevron-left"></i> &nbsp; {@html __('publish / guest / back')}</button>
-
-            <button on:click="createAccount(email)" class="btn btn-save btn-primary" style="float:right">
-                <i class="fa {signedUp ? 'fa-circle-o-notch fa-spin': 'fa-envelope'}"></i> &nbsp; {@html __('publish / guest / cta')}
-            </button>
 
             {#if error}
             <div class="alert alert-warning">
@@ -27,6 +31,15 @@
         </div>
     </div>
 </div>
+
+<style>
+    :global(.publish-signup h2) {
+        font-size: 18px !important;
+        font-weight: 400 !important;
+        font-family: 'Roboto', Helvetica, sans-serif !important;
+        line-height: 1.5 !important;
+    }
+</style>
 
 <script>
     import { __ } from '@datawrapper/shared/l10n';
@@ -40,7 +53,8 @@
             return {
                 error: '',
                 email: '',
-                custom_text: [],
+                guest_text_above: [],
+                guest_text_below: [],
                 signedUp: false
             };
         },
