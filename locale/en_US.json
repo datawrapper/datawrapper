@@ -172,6 +172,7 @@
   "account / password / ok": "Your password is ok, but you could make it more secure by adding more words.",
   "account / password / good": "Good choice, your password is pretty hard to guess.",
   "account / password / excellent": "Excellent choice, your password is very secure!",
+  "account / delete / team-conflict": "You currently have ownership of one or more teams. Please <a href=\"/account/teams\">delete them or transfer team ownership</a> to delete your account.",
   "account / invite / set-password": "Set password & get chart",
   "describe / column-format / multiply-by": "multiply by",
   "describe / column-format / automatic": "(auto-detect)",
@@ -664,5 +665,19 @@
   "Try it now!": "Try it now!",
   "Create a Chart": "Create a Chart",
   "switch-team": "Switch team",
-  "teams / remove / alert": "Are you sure you want to remove this user's access to your team? If you remove a user, their charts will remain available for the team, though the removed user will no longer have access."
+  "teams / remove / alert": "Are you sure you want to remove this user's access to your team? If you remove a user, their charts will remain available for the team, though the removed user will no longer have access.",
+  "publish / pending-activation / h1": "You've got mail!",
+  "publish / pending-activation / p": "We've send you a link to your chart via e-mail. Please check your inbox and click the confirmation link to get your chart. If you don't receive a mail within 15 minutes, please get in touch via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
+  "publish / pending-activation / resend": "Re-send e-mail",
+  "publish / pending-activation / resend-success": "Your activation e-mail has been re-sent.",
+  "publish / pending-activation / resend-error": "Your activation e-mail has already been re-sent multiple times. Please <a href=\"mailto:support@datawrapper.de\">contact suppport</a> to activate your account.",
+  "publish / guest / back": "Back",
+  "publish / guest / cta": "Send my embed code",
+  "publish / guest / e-mail": "Enter your e-mail:",
+  "publish / guest / example-email": "your.email@gmail.com",
+  "publish / guest / h1": "Embed your chart in your story.",
+  "publish / guest / li1": "Embed your chart for free",
+  "publish / guest / li2": "Download chart as PNG",
+  "publish / guest / li3": "Works with every CMS",
+  "publish / guest / p": "You can embed your chart in your website for free with Datawrapper. Simply enter your e-mail address and we'll send you an email with a link to embed your chart. Already have an account? <a href=\"#\" onclick=\"$('#dw-header-link-login').click()\">Log in to embed your chart.</a>"
 }
