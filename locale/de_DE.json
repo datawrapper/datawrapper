@@ -172,6 +172,7 @@
   "account / password / ok": "Dein Passwort ist ok, aber du könntest es noch sicherer machen, in dem zu mehr Wörter oder Sonderzeichen hinzufügst.",
   "account / password / good": "Gute Wahl, dein Passwort ist ziemlich schwer zu erraten.",
   "account / password / excellent": "Super! Dein Passwort ist sehr sicher.\n",
+  "account / delete / team-conflict": "Dein Account ist derzeit Besitzer von einem oder mehreren Teams. Bitte <a href=\"/account/teams\">lösche die Teams oder wähle einen neuen Team-Besitzer</a> um deinen Account zu löschen.",
   "account / invite / set-password": "",
   "describe / column-format / multiply-by": "Multiplizieren mit",
   "describe / column-format / automatic": "(automatisch erkennen)",

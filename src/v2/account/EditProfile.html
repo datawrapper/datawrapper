@@ -300,7 +300,12 @@
                 } catch (e) {
                     if (e.name === 'HttpReqError') {
                         const res = await e.response.json();
-                        errors.push(res.message || e.message);
+
+                        if (res.message === 'delete-or-transfer-teams-first') {
+                            errors.push(__('account / delete / team-conflict'));
+                        } else {
+                            errors.push(res.message || e.message);
+                        }
                     } else {
                         errors.push('Unknown error: ' + e);
                     }

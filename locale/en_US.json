@@ -172,6 +172,7 @@
   "account / password / ok": "Your password is ok, but you could make it more secure by adding more words.",
   "account / password / good": "Good choice, your password is pretty hard to guess.",
   "account / password / excellent": "Excellent choice, your password is very secure!",
+  "account / delete / team-conflict": "You currently have ownership of one or more teams. Please <a href=\"/account/teams\">delete them or transfer team ownership</a> to delete your account.",
   "account / invite / set-password": "Set password & get chart",
   "describe / column-format / multiply-by": "multiply by",
   "describe / column-format / automatic": "(auto-detect)",
