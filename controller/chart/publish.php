@@ -88,7 +88,8 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'embed_type' => publish_get_preferred_embed_type($chart->getOrganization()),
             'shareurl_type' => publish_get_preferred_shareurl_type(),
             'plugin_shareurls' => publish_get_plugin_shareurls(),
-            'auto_publish' => !empty($app->request()->params('doit'))
+            'auto_publish' => !empty($app->request()->params('doit')),
+            'custom_text' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST)
         ];
         $app->render('chart/publish.twig', $page);
     });

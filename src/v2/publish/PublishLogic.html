@@ -2,7 +2,7 @@
 
 <div>
     {#if $user.isGuest}
-    <Guest fromSvelte="true" />
+    <Guest fromSvelte="true" custom_text="{custom_text}" />
     {:elseif !$user.isActivated}
     <PendingActivation />
     {:else}
@@ -34,11 +34,12 @@
                 embedType: 'responsive',
                 pluginShareurls: [],
                 shareurlType: 'default',
-                beforeExport: null
+                beforeExport: null,
+                custom_text: ''
             };
         },
         onstate({ current, changed }) {
-            if (changed.afterEmbed) {
+            if (changed.afterEmbed && current.afterEmbed) {
                 const p = current.afterEmbed[0];
 
                 Promise.all([loadStylesheet(p.css), loadScript(p.js)]).then(() => {

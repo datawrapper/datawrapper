@@ -127,7 +127,8 @@
                 'embedType' => publish_get_preferred_embed_type($chart->getOrganization()),
                 'pluginShareurls' => publish_get_plugin_shareurls(),
                 'shareurlType' => publish_get_preferred_shareurl_type(),
-                'afterEmbed' => Hooks::execute(Hooks::SVELTE_PUBLISH_AFTER_EMBED)
+                'afterEmbed' => Hooks::execute(Hooks::SVELTE_PUBLISH_AFTER_EMBED),
+                'custom_text' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST)
             ];
 
             $org = $chart->getOrganization();
