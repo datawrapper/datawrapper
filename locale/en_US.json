@@ -49,6 +49,8 @@
   "controls / color-scale / breaks / log": "Logarithmic",
   "controls / color-scale / breaks / custom": "Custom",
   "controls / custom-format / info": "Learn more about custom number formats in this <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy article</a>.",
+  "controls / custom-format / custom / number": "For help on custom formats, check the <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">numeral.js documentation</a>.",
+  "controls / custom-format / custom / date": "For help on custom formats, check the <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js documentation</a>.",
   "controls / gradient-editor / how-this-works": "How this works:",
   "controls / gradient-editor / got-it": "Got it",
   "controls / gradient-editor / help": "Click anywhere in the gradient to add new color stops. Click color stops to change color. Drag them up or down to delete.",
