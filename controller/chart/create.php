@@ -65,6 +65,7 @@ $app->map('/(chart|table)/create', function() use ($app) {
                     if ($public_tpl) {
                         // copy data
                         $chart->writeData($public_tpl->loadData());
+                        $chart->setExternalData($public_tpl->getExternalData());
                         // copy raw metadata from public chart
                         $chart->setRawMetadata($public_tpl->getMetadata());
                         // copy title, type
