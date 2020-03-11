@@ -162,6 +162,9 @@ define(function() {
         var win = iframe.get(0).contentWindow;
         if (win.__dw && win.__dw.attributes) {
             win.__dw.attributes(attributes);
+            if (win.__dwUpdate) {
+                win.__dwUpdate({ chart: attributes });
+            }
         } else {
             setTimeout(function() {
                 updateChartInIframe(iframe, attributes);
