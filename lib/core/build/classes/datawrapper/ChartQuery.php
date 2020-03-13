@@ -109,6 +109,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setForkedFrom($src->getId());
         $chart->setOrganization($src->getOrganization());
         $chart->setInFolder($src->getInFolder());
+        $chart->setExternalData($src->getExternalData());
 
         if ($user->isAdmin() && $user->getId() != $chart->getUser()->getId()) {
             // an admin duplicates a chart from someone else

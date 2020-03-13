@@ -2417,7 +2417,7 @@ _.extend(dw.visualization.base, {
                     // mark columns as used
                     if (!_.isArray(columns)) columns = [columns];
                     _.each(columns, function(column) {
-                        usedColumns[column] = true;
+                        // usedColumns[column] = true;
                     });
                 }
             }
@@ -2534,7 +2534,6 @@ _.extend(dw.visualization.base, {
                 axes[key] = false;
             }
         });
-
 
         if (errors.length) {
             me.notify(errors.join('<br />'));
