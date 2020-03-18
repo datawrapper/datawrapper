@@ -2417,7 +2417,7 @@ _.extend(dw.visualization.base, {
                     // mark columns as used
                     if (!_.isArray(columns)) columns = [columns];
                     _.each(columns, function(column) {
-                        // usedColumns[column] = true;
+                        usedColumns[column] = true;
                     });
                 }
             }
@@ -2494,17 +2494,26 @@ _.extend(dw.visualization.base, {
                     } else {
                         // try to auto-populate missing text column
                         if (_.indexOf(axisDef.accepts, 'text') >= 0) {
-                            var col = dw.column(
-                                key,
-                                _.map(_.range(dataset.numRows()), function(i) {
-                                    return (i > 25 ? String.fromCharCode(64 + i / 26) : '') + String.fromCharCode(65 + (i % 26));
-                                }),
-                                'text'
-                            );
-                            dataset.add(col);
-                            me.chart().dataset(dataset);
-                            usedColumns[col.name()] = true;
-                            axes[key] = col.name();
+                            // try using the first text column in the dataset instead
+                            const acceptedAllowUsed = _.filter(dataset.columns(), function(col) {
+                                return _.indexOf(axisDef.accepts, col.type()) >= 0;
+                            });
+                            if (acceptedAllowUsed.length) {
+                                axes[key] = acceptedAllowUsed[0].name();
+                            } else {
+                                // no other text column in dataset, so genetate one with A,B,C,D...
+                                var col = dw.column(
+                                    key,
+                                    _.map(_.range(dataset.numRows()), function(i) {
+                                        return (i > 25 ? String.fromCharCode(64 + i / 26) : '') + String.fromCharCode(65 + (i % 26));
+                                    }),
+                                    'text'
+                                );
+                                dataset.add(col);
+                                me.chart().dataset(dataset);
+                                usedColumns[col.name()] = true;
+                                axes[key] = col.name();
+                            }
                         } else {
                             errMissingColumn();
                         }
