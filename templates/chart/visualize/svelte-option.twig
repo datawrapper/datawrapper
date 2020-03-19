@@ -21,6 +21,10 @@ require(['{{ amdPath }}'], function(mod) {
 
     var chartData = {{chart.toStruct()|json|raw}};
 
+    if (typeof mod.migrate == "function") {
+        mod.migrate(chartData.type, chartData.metadata);
+    }
+
     // set defaults
     chartData.metadata.visualize = _.extend(
         {{defaults|json|raw}},
