@@ -113,15 +113,14 @@ _.extend(dw.visualization.base, {
         var dataset = me.dataset;
         var usedColumns = {};
         var axes = {};
-        var axesDef;
         var axesAsColumns = {};
         var errors = [];
 
         // get user preference
-        axesDef = me.chart().get('metadata.axes', {});
+        var userAxes = me.chart().get('metadata.axes', {});
         _.each(me.meta.axes, function(o, key) {
-            if (axesDef[key]) {
-                var columns = axesDef[key];
+            if (userAxes[key]) {
+                var columns = userAxes[key];
                 if (columnExists(columns)) {
                     axes[key] = columns;
                     // mark columns as used
@@ -184,6 +183,13 @@ _.extend(dw.visualization.base, {
             }
             checked.push(key);
             if (axes[key]) return; // user has defined this axis already
+            if (axisDef.optional) {
+                // chart settings may override this
+                if (axisDef.overrideOptionalKey && me.chart().get('metadata.' + axisDef.overrideOptionalKey, false)) {
+                    // now the axis is mandatory
+                    axisDef.optional = false;
+                }
+            }
             if (!axisDef.optional) {
                 // we only populate mandatory axes
                 if (!axisDef.multiple) {
