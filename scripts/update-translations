@@ -64,20 +64,19 @@ if (config.translation) {
             delete chartSrc['d3-maps'];
 
 
-            _.each(chartSrc, (rows, key) => {
-                if (key) {
+            _.each(chartSrc, (rows, plugin) => {
+                if (plugin) {
                     const locale = {};
                     rows.forEach(row => {
-                        const key = row.key;
-                        delete row.key;
-                        delete row.plugin;
-                        locale[key] = row;
-                    })
-                    fs.writeFileSync(`${pluginDirectory}/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
+                        const { key, plugin, ...translations } = row;
+                        Object.keys(translations).forEach(lang => {
+                            if (!locale[lang]) locale[lang] = {};
+                            locale[lang][key] = translations[lang];
+                        });
+                    });
+                    fs.writeFileSync(`${pluginDirectory}/${plugin}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
                 }
             })
-
-            // console.log(chartTranslations);
 
             // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
             // fs.unlinkSync(sheets[0].dest);
