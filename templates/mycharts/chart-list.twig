@@ -39,8 +39,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="edit" target="_blank" href="/chart/{{ chart.id }}/visualize#refine-the-chart"><i class="im im-edit"></i> {% trans "Edit" %}</a></li>
                             <li><a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a></li>
-                            {% if not current.organization or current.organization_role < 2 or chart.authorId == user.id %}<li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
-                            {% endif %}
+                            <li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
                         <!-- dropdown menu links -->
                         </ul>
                     </div>
