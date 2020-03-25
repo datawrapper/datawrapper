@@ -401,8 +401,6 @@
         },
         onstate({ changed, current }) {
             const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
-            if (changed.publishing) {
-            }
             if (changed.embed_type && userDataReady) {
                 const data = window.dw.backend.__userData;
                 if (!current.embed_type || !data) return;
