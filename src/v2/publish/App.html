@@ -42,9 +42,11 @@
 <div class="alert alert-info publishing">
     { __("publish / progress / please-wait") } {#if publishWait > 3000}
     <!-- show progress information after 3s -->
-    <ul>
-        {#each progress as step}
-        <li>{@html __('publish / status / '+step)}</li>
+    <ul class="publish-progress unstyled">
+        {#each progress as step,i}
+        <li class:done="i < progress.length-1">
+            <i class="fa fa-fw {i < progress.length-1 ? 'fa-check' : 'fa-spinner fa-pulse'}"></i> {@html __('publish / status / '+step)}
+        </li>
         {/each}
     </ul>
     {/if}
@@ -202,6 +204,12 @@
     .embed-code {
         height: 20px;
     }
+    .publish-progress {
+        margin-top: 5px;
+    }
+    .publish-progress li.done {
+        opacity: 0.6;
+    }
 </style>
 
 <script>
@@ -329,7 +337,10 @@
                             .catch(error => {
                                 trackEvent('Chart Editor', 'publish-error', error.message);
                             });
-                        me.updateStatus();
+                        setTimeout(() => {
+                            const { publishing } = me.get();
+                            if (publishing) me.updateStatus();
+                        }, 1000);
                     });
             },
 
