@@ -1,10 +1,10 @@
 -- Create indices that are present in production.
 
 -- Up
-CREATE INDEX action_key_IDX USING BTREE ON action (`key`, user_id);
+CREATE INDEX action_key_IDX ON action (`key`, user_id);
 CREATE INDEX action_action_time_IDX USING BTREE ON action (action_time);
 
-CREATE INDEX chart_idx_is_fork USING BTREE ON chart (is_fork);
+CREATE INDEX chart_idx_is_fork ON chart (is_fork);
 CREATE INDEX chart_author USING BTREE ON chart (author_id);
 CREATE INDEX chart_in_folder_IDX USING BTREE ON chart (in_folder);
 CREATE INDEX chart_organization_id_IDX USING BTREE ON chart (organization_id);
