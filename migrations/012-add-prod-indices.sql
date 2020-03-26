@@ -25,6 +25,10 @@ CREATE INDEX last_updated ON session (last_updated);
 CREATE INDEX session_user_id_IDX USING BTREE ON session (user_id);
 CREATE INDEX session_persistent_IDX USING BTREE ON session (persistent);
 
+CREATE INDEX created_at ON user (created_at);
+CREATE INDEX user_email_IDX USING BTREE ON user (email);
+CREATE INDEX user_oauth_signin_IDX USING BTREE ON user (oauth_signin);
+
 -- Down
 DROP INDEX action_key_IDX ON action;
 DROP INDEX action_action_time_IDX ON action;
@@ -49,3 +53,7 @@ DROP INDEX export_job_priority_IDX ON export_job;
 DROP INDEX last_updated ON session;
 DROP INDEX session_user_id_IDX ON session;
 DROP INDEX session_persistent_IDX ON session;
+
+DROP INDEX created_at ON user;
+DROP INDEX user_email_IDX ON user;
+DROP INDEX user_oauth_signin_IDX ON user;
