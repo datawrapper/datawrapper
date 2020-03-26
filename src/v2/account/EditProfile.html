@@ -2,13 +2,11 @@
 
 {#if messages && messages.length }
 <div class="row" style="margin-top: 20px;">
-    <div class="span6 offset3">
+    <div class="span6">
         <div class="alert alert-success">
-            <ul style="margin-bottom: 0;">
-                {#each messages as message}
-                <li>{@html message }</li>
-                {/each}
-            </ul>
+            {#each messages as message}
+            <p>{@html message }</p>
+            {/each}
         </div>
     </div>
 </div>
@@ -16,8 +14,13 @@
 
 <div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
     <div class="span6">
+        {#if changeEmail && errors.length}
+        <div class="alert alert-warning">
+            {@html errors.join('')}
+        </div>
+        {/if}
         <FormBlock label="{ __('E-Mail') }" help="{changeEmail ? __('account / confirm-email-change') : ''}">
-            <input disabled="{ !changeEmail }" value="{ originalEmail }" type="text" />
+            <input disabled="{ !changeEmail }" bind:value="email" type="email" />
             {#if changeEmail}
             <button on:click="set({changeEmail: false})" class="btn btn-default">
                 { __( "Back") }
@@ -48,28 +51,38 @@
         </h3>
         {#if changePassword && errors && errors.length }
         <div class="alert">
-            <ul style="margin-bottom: 0;">
-                {#each errors as message}
-                <li>{@html message }</li>
-                {/each}
-            </ul>
+            {#each errors as message}
+            <p>{@html message }</p>
+            {/each}
         </div>
         {/if}
         <FormBlock label="{ __('Current Password') }" help="{ __('account / password / current-password-note') }">
             <input type="password" bind:value="currentPassword" class="input-xlarge" />
         </FormBlock>
-        <FormBlock
-            error="{currentPassword ? checkPassword(currentPassword, newPassword1, newPassword2) : false}"
-            label="{ __('New Password') }"
-            help="Your password must have at least 4 characters"
-        >
-            <input type="password" bind:value="newPassword1" class="input-xlarge" />
-        </FormBlock>
-        <FormBlock error="{currentPassword ? checkPassword(currentPassword, newPassword1, newPassword2) : false}" label="{ __('(repeat)') }" help="">
-            <input type="password" bind:value="newPassword2" class="input-xlarge" />
-        </FormBlock>
 
-        <button class="btn btn-primary" on:click="changePassword()">
+        <FormBlock error="{passwordError}" label="{ __('New Password') }" success="{passwordSuccess}" help="{passwordHelp}">
+            {#if showPasswordAsClearText}
+            <input data-lpignore="true" type="text" bind:value="newPassword" class="input-xlarge" />
+            {:else}
+            <input data-lpignore="true" type="password" bind:value="newPassword" class="input-xlarge" />
+            {/if}
+            <div style="width: 287px">
+                <CheckPassword
+                    bind:password="newPassword"
+                    bind:passwordHelp
+                    bind:passwordSuccess
+                    bind:passwordError
+                    bind:passwordOk="newPasswordOk"
+                />
+            </div>
+        </FormBlock>
+        <div class="control-group" style="margin-top: -10px; margin-bottom: 20px;">
+            <label class="checkbox">
+                <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+            </label>
+        </div>
+
+        <button disabled="{ !(newPasswordOk && currentPassword) }" class="btn btn-primary" on:click="changePassword()">
             <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("account / password") }
         </button>
         <hr />
@@ -99,7 +112,8 @@
                 label="{ __('Please enter your password to confirm the deletion request:') }"
                 error="{errors && errors.length ? errors.join('. ') : false}"
             >
-                <input type="password" bind:value="confirmPassword" placeholder="{ __("Password") }" />
+                <input type="email" bind:value="confirmEmail" placeholder="{ __('E-Mail') }" />
+                <input type="password" bind:value="confirmPassword" placeholder="{ __('Password') }" />
             </FormBlock>
             <p class="lead">
                 {@html __("account / delete / really-really") }
@@ -136,14 +150,13 @@
 </div>
 
 <script>
-    /* globals CryptoJS */
     import { __ } from '@datawrapper/shared/l10n';
-    import { getJSON, putJSON, fetchJSON } from '@datawrapper/shared/fetch';
-    import checkPassword from '@datawrapper/shared/checkPassword';
+    import httpReq from '@datawrapper/shared/httpReq';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
+    import CheckPassword from '../shared/CheckPassword.html';
 
     export default {
-        components: { FormBlock },
+        components: { FormBlock, CheckPassword },
         data() {
             return {
                 changePassword: false,
@@ -155,12 +168,17 @@
                 showPasswordInPlaintext: false,
                 messages: [],
                 currentPassword: '',
-                newPassword1: '',
-                newPassword2: '',
+                newPassword: '',
+                newPasswordOk: false,
+                passwordError: false,
+                passwordHelp: false,
+                passwordSuccess: false,
+                confirmEmail: '',
                 confirmPassword: '',
-                originalEmail: '',
+                email: '',
                 savingEmail: false,
                 savingPassword: false,
+                showPasswordAsClearText: false,
                 errors: [],
                 groups: [
                     {
@@ -180,163 +198,126 @@
             };
         },
         helpers: {
-            __,
-            checkPassword
+            __
         },
         methods: {
-            changeEmail() {
-                var { email, userId } = this.get();
+            async changeEmail() {
+                var { email } = this.get();
 
                 this.set({ savingEmail: true });
 
-                putJSON('/api/users/' + userId, JSON.stringify({ email }), res => {
-                    this.set({ savingEmail: false });
+                const messages = [];
+                const errors = [];
 
-                    const messages = [];
-                    const errors = [];
-
-                    if (res.status === 'error') {
-                        errors.push(res.message);
-                    }
-
-                    if (res.data && res.data.messages) {
-                        res.data.messages.forEach(msg => {
-                            messages.push(msg);
-                        });
-                    }
-
-                    if (res.data && res.data.errors) {
-                        res.data.errors.forEach(msg => {
-                            errors.push(msg);
-                        });
-                    }
-
-                    if (errors.length === 0) {
-                        this.set({
-                            originalEmail: email,
-                            changeEmail: false,
-                            messages,
-                            errors: []
-                        });
-                    } else {
-                        this.set({ errors });
-                    }
-                });
-            },
-            changePassword() {
-                const { currentPassword, newPassword1, newPassword2, userId } = this.get();
-                const check = checkPassword(currentPassword, newPassword1, newPassword2);
-
-                if (check === false) {
-                    this.set({ savingPassword: true });
-
-                    getJSON('/api/auth/salt', res => {
-                        if (res.status !== 'ok') {
-                            this.set({
-                                errors: ['Could not load salt.'],
-                                savingPassword: false
-                            });
-
-                            return;
+                try {
+                    const res = await httpReq.patch('/v3/me', {
+                        payload: { email }
+                    });
+                    messages.push('Your email has been changed successfully. You will receive an email with a confirmation link.');
+                    // for now, let's set it back to the previous email
+                    this.set({ email: res.email });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        if (res.message === 'Invalid request payload input') {
+                            errors.push(__('account / change-email / error / invalid-email'));
+                        } else {
+                            errors.push(res.message ? __(`account / change-email / error / ${res.message}`) : e.message);
                         }
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
 
-                        const salt = res.data.salt;
-                        const payload = {
-                            oldpwhash: CryptoJS.HmacSHA256(currentPassword, salt).toString(),
-                            pwd: CryptoJS.HmacSHA256(newPassword1, salt).toString()
-                        };
+                this.set({ savingEmail: false });
 
-                        putJSON('/api/users/' + userId, JSON.stringify(payload), res => {
-                            this.set({
-                                savingPassword: false,
-                                currentPassword: '',
-                                newPassword1: '',
-                                newPassword2: ''
-                            });
-
-                            const messages = [];
-                            const errors = [];
-
-                            if (res.status === 'error') {
-                                errors.push(res.message);
-                            }
-
-                            if (res.data && res.data.messages) {
-                                res.data.messages.forEach(msg => {
-                                    messages.push(msg);
-                                });
-                            }
-
-                            if (res.data && res.data.errors) {
-                                res.data.errors.forEach(msg => {
-                                    errors.push(msg);
-                                });
-                            }
-
-                            if (errors.length === 0) {
-                                messages.push('Your password was changed sucessfully');
-                                this.set({ changePassword: false, messages, errors: [] });
-                            } else {
-                                this.set({ errors });
-                            }
-                        });
+                if (!errors.length) {
+                    this.set({
+                        changeEmail: false,
+                        messages,
+                        errors: []
                     });
                 } else {
-                    var errors = [check];
                     this.set({ errors });
                 }
             },
-            deleteAccount() {
-                var { confirmPassword } = this.get();
+            async changePassword() {
+                const { currentPassword, newPassword } = this.get();
+
+                this.set({ savingPassword: true });
+
+                const payload = {
+                    password: newPassword,
+                    oldPassword: currentPassword
+                };
+
+                const messages = [];
+                const errors = [];
+
+                try {
+                    await httpReq.patch('/v3/me', { payload });
+                    messages.push('Your password has been changed!');
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        errors.push(res.message || e.message);
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                if (errors.length === 0) {
+                    this.set({
+                        changePassword: false,
+                        currentPassword: '',
+                        newPassword: '',
+                        messages,
+                        errors: []
+                    });
+                } else {
+                    this.set({
+                        errors
+                    });
+                }
+                this.set({
+                    savingPassword: false
+                });
+            },
+            async deleteAccount() {
+                const { confirmPassword, confirmEmail } = this.get();
 
                 this.set({ deletingAccount: true });
 
-                getJSON('/api/auth/salt', res => {
-                    if (res.status !== 'ok') {
-                        this.set({
-                            errors: ['Could not load salt.'],
-                            deletingAccount: false
-                        });
+                const errors = [];
 
-                        return;
-                    }
-
-                    var passwordHash = CryptoJS.HmacSHA256(confirmPassword, res.data.salt).toString();
-
-                    fetchJSON('/api/users/current?pwd=' + passwordHash, 'DELETE', 'include', JSON.stringify({ pwd: passwordHash }), res => {
-                        this.set({ deletingAccount: false });
-
-                        const messages = [];
-                        const errors = [];
-
-                        if (res.status === 'error') {
-                            errors.push(res.message);
-                        }
-
-                        if (res.data && res.data.messages) {
-                            res.data.messages.forEach(msg => {
-                                messages.push(msg);
-                            });
-                        }
-
-                        if (res.data && res.data.errors) {
-                            res.data.errors.forEach(msg => {
-                                errors.push(msg);
-                            });
-                        }
-
-                        if (errors.length === 0) {
-                            this.set({ deleteAccount2: false, deleteAccount3: true });
-                        } else {
-                            this.set({ errors });
+                try {
+                    await httpReq.delete('/v3/me', {
+                        payload: {
+                            password: confirmPassword,
+                            email: confirmEmail
                         }
                     });
-                });
-            }
-        },
-        onstate({ changed, current, previous }) {
-            if (changed.email && !previous) {
-                this.set({ originalEmail: current.email });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+
+                        if (res.message === 'delete-or-transfer-teams-first') {
+                            errors.push(__('account / delete / team-conflict'));
+                        } else {
+                            errors.push(res.message || e.message);
+                        }
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                this.set({ deletingAccount: false });
+
+                if (!errors.length) {
+                    this.set({ deleteAccount2: false, deleteAccount3: true });
+                } else {
+                    this.set({ errors });
+                }
             }
         }
     };
@@ -352,7 +333,12 @@
     h3 .fa-times {
         color: #c71e1d;
     }
-
+    .progress-success .bar {
+        background: #09bb9f !important;
+    }
+    .progress-danger .bar {
+        background: #c71e1d !important;
+    }
     .link {
         color: #1d81a2;
         font-weight: bold;
@@ -366,5 +352,8 @@
         .base-dropdown-content {
             top: 30px !important;
         }
+    }
+    .alert p {
+        margin-bottom: 0;
     }
 </style>

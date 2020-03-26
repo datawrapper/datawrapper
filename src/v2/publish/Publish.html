@@ -249,6 +249,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import { getJSON, postJSON, loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+    import get from '@datawrapper/shared/get';
 
     import Action from './Action.html';
 
@@ -292,12 +293,25 @@
             };
         },
         computed: {
-            shareUrl({ shareurl_type, $id, $publicUrl, plugin_shareurls, published }) {
+            shareUrl({ shareurl_type, $id, $publicUrl, $metadata, plugin_shareurls, published }) {
                 if (!published) return 'https://www.datawrapper.de/...';
                 if (shareurl_type === 'default') return $publicUrl;
                 let url = '';
+
                 plugin_shareurls.forEach(t => {
-                    if (t.id === shareurl_type) url = t.url.replace(/%chart_id%/g, $id);
+                    if (t.id === shareurl_type) {
+                        url = t.url.replace(/%chart_id%/g, $id);
+
+                        url = url.replace(/%(.*?)%/g, (match, path) => {
+                            return get(
+                                {
+                                    id: $id,
+                                    metadata: $metadata
+                                },
+                                path
+                            );
+                        });
+                    }
                 });
                 return url;
             },
@@ -375,6 +389,16 @@
                 this.store.set({
                     lastEditStep: 5
                 });
+
+                window.parent.postMessage(
+                    {
+                        source: 'datawrapper',
+                        type: 'chart-publish',
+                        chartId: chartInfo.id
+                    },
+                    '*'
+                );
+
                 setTimeout(() => this.set({ publishing: false }), 500);
                 this.store.set(chartInfo);
             },

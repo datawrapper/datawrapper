@@ -535,8 +535,7 @@ html .navbar.navbar-inverse .navbar-inner .brand {
   font-family: 'Roboto', Helvetica, sans-serif;
   font-weight: 300;
 }
-.modal .modal-body h4,
-.modal .modal-body b {
+.modal .modal-body h4 {
   font-weight: 500;
 }
 .modal .btn {
@@ -2483,6 +2482,9 @@ input[type="color"],
 }
 .dw .create-nav > .unseen {
   color: #999;
+}
+.dw .create-nav > a.unseen {
+  color: #15607a;
 }
 .dw .create-nav > a:hover {
   text-decoration: none;

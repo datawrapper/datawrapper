@@ -20,12 +20,6 @@ define(function() {
         $('.chart-actions .action-duplicate a').click(triggerDuplicate);
         resizeIFrame();
 
-        // send ajax request for re-sending activation email
-        $('a[href=#resend]').click(function(e) {
-            e.preventDefault();
-            dw.backend.resendActivationMail($(e.target).parent().parent().parent());
-        });
-
         // automatically select embed code
         $("textarea").click(function() { $(this).focus().select(); } );
 

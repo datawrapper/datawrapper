@@ -13,7 +13,6 @@ define([
     './backend/ui/ColorSelector',
     './backend/ui/NumberStepper',
     './backend/popupChart',
-    './backend/resendActivationMail',
     './backend/notification',
     './backend/setUserData',
     './backend/cmsMode',
@@ -21,7 +20,7 @@ define([
 
 function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
     snapshot, checkPassword, ColorSelector, NumberStepper, popupChart,
-    resendActivationMail, notification, setUserData, cmsMode) {
+    notification, setUserData, cmsMode) {
 
     var backend = {};
 
@@ -49,7 +48,6 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
         popupChart: popupChart,
         snapshot: snapshot,
         checkPassword: checkPassword,
-        resendActivationMail: resendActivationMail,
         setUserData: setUserData,
         cmsMode: cmsMode
 

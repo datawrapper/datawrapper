@@ -408,26 +408,6 @@ $app->get('/charts/:id/publish/status', function($chart_id) use ($app) {
     });
 });
 
-
-/*
- * stores client-side generated chart thumbnail
- */
-$app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app, $thumb) {
-        try {
-            $imgurl = $app->request()->getBody();
-            $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
-            $thumb_filename = $chart->getThumbFilename($thumb);
-            file_put_contents($thumb_filename, $imgdata);
-            ok();
-        } catch (Exception $e) {
-            print $e;
-            error('io-error', $e);
-        }
-    });
-});
-
 /*
  * stores static snapshot of a chart (data, configuration, etc) as JSON
  * to /test/test-charts. This aims to simplify the generation of test

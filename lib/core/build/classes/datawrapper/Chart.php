@@ -180,17 +180,12 @@ class Chart extends BaseChart {
     }
 
     public function getStaticPath() {
-        $path = chart_publish_directory() . 'static/' . $this->getID();
+        $path = chart_publish_directory() . 'static/' . $this->getPublicId();
         return $path;
     }
 
     public function getRelativeDataPath() {
         $path = 'data/' . $this->getCreatedAt('Ym');
-        return $path;
-    }
-
-    public function getRelativeStaticPath() {
-        $path = 'static/' . $this->getID();
         return $path;
     }
 
@@ -482,6 +477,20 @@ class Chart extends BaseChart {
         );
     }
 
+    public function getPublicId() {
+        if (!empty($GLOBALS['dw_config']['chart_id_salt'])) {
+            return md5(
+                $this->getID() .
+                "--" .
+                strtotime($this->getCreatedAt()) .
+                "--" .
+                $GLOBALS['dw_config']['chart_id_salt']
+            );
+        } else {
+            return $this->getID();
+        }
+    }
+
     /*
      * increment the public version of a chart, which is used
      * in chart public urls to deal with cdn caches
@@ -517,8 +526,8 @@ class Chart extends BaseChart {
      */
     public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
-        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
-        $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
+        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
+        $redirect_file = $this->getStaticPath() . '/redirect.html';
         file_put_contents($redirect_file, $redirect_html);
         $files = array();
         for ($v=0; $v < $this->getPublicVersion(); $v++) {
@@ -622,26 +631,6 @@ class Chart extends BaseChart {
             ->delete();
     }
 
-    public function hasPreview() {
-        $cfg = $GLOBALS['dw_config'];
-
-        if (isset($cfg['charts-s3'])
-          && isset($cfg['charts-s3']['read'])
-          && $cfg['charts-s3']['read'] == true) {
-
-            $path = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
-                $this->getRelativeStaticPath() . '/m.png';
-        } else {
-            $path = $this->getStaticPath() . '/m.png';
-        }
-
-        try {
-            return file_exists($path);
-        } catch (Exception $ex) {
-            return false;
-        }
-    }
-
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
@@ -649,19 +638,6 @@ class Chart extends BaseChart {
 
         return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
             . $this->getID() . "/" . $path . "/plain.png";
-    }
-
-    public function getThumbFilename($thumb) {
-        $cfg = $GLOBALS['dw_config'];
-        if (isset($cfg['charts-s3']) && isset($cfg['charts-s3']['write'])
-            && $cfg['charts-s3']['write'] == true) {
-            // use S3 file url
-            return 's3://' . $cfg['charts-s3']['bucket'] . '/'
-                . get_relative_static_path($this) . '/' . $thumb . '.png';
-        } else {
-            // use local file url
-            return get_static_path($this) . "/" . $thumb . '.png';
-        }
     }
 
     public function plainUrl() {
@@ -710,12 +686,12 @@ class Chart extends BaseChart {
      * return URL of this chart on Datawrapper
      */
     public function getLocalUrl() {
-        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/index.html';
+        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
     public function getCDNPath($version = null) {
         if ($version === null) $version = $this->getPublicVersion();
-        return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
+        return $this->getPublicId() . '/' . ($version > 0 ? $version . '/' : '');
     }
 
     public function getNamespace() {

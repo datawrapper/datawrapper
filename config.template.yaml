@@ -20,6 +20,9 @@ cookie_domain: .datawrapper.local
 # auth_salt: "MY_AUTH_SALT"
 # secure_auth_key: "MY_SECRET_AUTH_KEY"
 
+## the following key can be used to hash the directory names of published charts
+## chart_id_salt: "MY_CHART_SALT"
+
 ## the UI languages Datawrapper is offering
 languages:
   - id: de-DE

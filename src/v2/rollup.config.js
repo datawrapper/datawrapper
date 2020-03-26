@@ -4,7 +4,7 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
-import buble from 'rollup-plugin-buble';
+import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -16,9 +16,12 @@ build('team-settings');
 build('account');
 build('chart-breadcrumb');
 build('signin');
+build('invite');
 build('publish', { append: '_old' });
 build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
+build('publish/guest');
+build('publish/pending-activation');
 
 export default targets;
 
@@ -78,9 +81,21 @@ function build(appId, opts) {
             commonjs(),
             json(),
 
-            buble({
-                transforms: { dangerousForOf: true, asyncAwait: false },
-                objectAssign: 'Object.assign'
+            babel({
+                exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
+                extensions: ['.js', '.mjs', '.html'],
+                runtimeHelpers: true,
+                presets: [
+                    [
+                        '@babel/env',
+                        {
+                            targets: 'last 2 versions, not IE 10, not dead',
+                            corejs: 3,
+                            useBuiltIns: 'entry'
+                        }
+                    ]
+                ],
+                plugins: ['babel-plugin-transform-async-to-promises']
             }),
             production && terser()
         ]

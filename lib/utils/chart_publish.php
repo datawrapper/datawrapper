@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Publishes a chart (js and css minification, copying files to static storage)
+ * Publishes a chart (js minification, copying files to static storage)
  *
  * @param $user       the user who published the chart
  * @param $chart      the chart to be published
@@ -20,15 +20,13 @@ function publish_chart($user, $chart, $fromCli = false, $justLocal = false) {
     else print "Publishing chart ".$chart->getID().".\n";
 
     $files = array_merge($files, publish_html($user, $chart));
-    if (!$fromCli) _setPublishStatus($chart, 0.05);
-    $files = array_merge($files, publish_css($user, $chart));
     if (!$fromCli) _setPublishStatus($chart, 0.1);
     $files = array_merge($files, publish_data($user, $chart));
     if (!$fromCli) _setPublishStatus($chart, 0.2);
     $files = array_merge($files, publish_js($user, $chart));
 
     if (!$fromCli) _setPublishStatus($chart, 0.3);
-    else print "Files stored to static folder (html, css, data, js)\n";
+    else print "Files stored to static folder (html, data, js)\n";
 
     $totalSize = 0;  // total file size
     foreach ($files as $i => $file) {
@@ -90,11 +88,6 @@ function get_static_path($chart) {
     if (!is_dir($static_path)) {
         mkdir($static_path);
     }
-    return $static_path;
-}
-
-function get_relative_static_path($chart) {
-    $static_path = $chart->getRelativeStaticPath();
     return $static_path;
 }
 
@@ -160,52 +153,6 @@ function publish_js($user, $chart) {
 
     return $cdn_files;
 }
-
-
-function publish_css($user, $chart) {
-    $cdn_files = array();
-    $static_path = get_static_path($chart);
-    $data = get_chart_content($chart, $user, ThemeQuery::create()->findPk($chart->getTheme()), false, '../');
-
-    $all = '';
-
-    foreach ($data['stylesheets'] as $css) {
-        $all .= file_get_contents(ROOT_PATH . 'www' . $css)."\n\n";
-    }
-
-    // move @imports to top of file
-    $imports = array();
-    $body = "";
-    $lines = explode("\n", $all);
-    foreach($lines as $line) {
-        if (substr($line, 0, 7) == '@import') $imports[] = $line;
-        else $body .= $line."\n";
-    }
-    $all = implode("\n", $imports) . "\n\n" . $body;
-
-    $cssmin = new CSSmin();
-    $minified = $all; //$cssmin->run($all); disabled minification
-    file_put_contents($static_path . "/" . $chart->getID() . '.all.css', $minified);
-
-    $cdn_files[] = array(
-        $static_path."/".$chart->getID().'.all.css',
-        $chart->getCDNPath() . $chart->getID().'.all.css', 'text/css'
-    );
-
-    // copy visualization assets
-    $vis = $data['visualization'];
-    $assets = DatawrapperVisualization::assets($vis['id'], $chart);
-    foreach ($assets as $asset) {
-        $asset_src = ROOT_PATH . 'www/static/' . $asset;
-        $asset_tgt = $static_path . '/assets/' . $asset;
-        create_missing_directories($asset_tgt);
-        copy($asset_src, $asset_tgt);
-        $cdn_files[] = array($asset_src, $chart->getCDNPath() . 'assets/' . $asset);
-    }
-
-    return $cdn_files;
-}
-
 
 function publish_data($user, $chart) {
     $cdn_files = array();
