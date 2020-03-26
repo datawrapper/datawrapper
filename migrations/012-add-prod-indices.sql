@@ -16,6 +16,11 @@ CREATE INDEX chart_external_data_IDX USING BTREE ON chart (external_data);
 CREATE INDEX chart_last_edit_step_IDX USING BTREE ON chart (last_edit_step);
 CREATE INDEX chart_guest_session_IDX USING BTREE ON chart (guest_session);
 
+CREATE INDEX export_job_created_at_IDX USING BTREE ON export_job (created_at);
+CREATE INDEX export_job_status_IDX USING BTREE ON export_job (status);
+CREATE INDEX export_job_key_IDX USING BTREE ON export_job (key);
+CREATE INDEX export_job_priority_IDX USING BTREE ON export_job (priority);
+
 -- Down
 DROP INDEX action_key_IDX ON action;
 DROP INDEX action_action_time_IDX ON action;
@@ -31,3 +36,8 @@ DROP INDEX chart_forkable_IDX ON chart;
 DROP INDEX chart_external_data_IDX ON chart;
 DROP INDEX chart_last_edit_step_IDX ON chart;
 DROP INDEX chart_guest_session_IDX ON chart;
+
+DROP INDEX export_job_created_at_IDX ON export_job;
+DROP INDEX export_job_status_IDX ON export_job;
+DROP INDEX export_job_key_IDX ON export_job;
+DROP INDEX export_job_priority_IDX ON export_job;
