@@ -21,6 +21,10 @@ CREATE INDEX export_job_status_IDX USING BTREE ON export_job (status);
 CREATE INDEX export_job_key_IDX USING BTREE ON export_job (key);
 CREATE INDEX export_job_priority_IDX USING BTREE ON export_job (priority);
 
+CREATE INDEX last_updated ON session (last_updated);
+CREATE INDEX session_user_id_IDX USING BTREE ON session (user_id);
+CREATE INDEX session_persistent_IDX USING BTREE ON session (persistent);
+
 -- Down
 DROP INDEX action_key_IDX ON action;
 DROP INDEX action_action_time_IDX ON action;
@@ -41,3 +45,7 @@ DROP INDEX export_job_created_at_IDX ON export_job;
 DROP INDEX export_job_status_IDX ON export_job;
 DROP INDEX export_job_key_IDX ON export_job;
 DROP INDEX export_job_priority_IDX ON export_job;
+
+DROP INDEX last_updated ON session;
+DROP INDEX session_user_id_IDX ON session;
+DROP INDEX session_persistent_IDX ON session;
