@@ -18,7 +18,7 @@ CREATE INDEX chart_guest_session_IDX USING BTREE ON chart (guest_session);
 
 CREATE INDEX export_job_created_at_IDX USING BTREE ON export_job (created_at);
 CREATE INDEX export_job_status_IDX USING BTREE ON export_job (status);
-CREATE INDEX export_job_key_IDX USING BTREE ON export_job (key);
+CREATE INDEX export_job_key_IDX USING BTREE ON export_job (`key`);
 CREATE INDEX export_job_priority_IDX USING BTREE ON export_job (priority);
 
 CREATE INDEX last_updated ON session (last_updated);
