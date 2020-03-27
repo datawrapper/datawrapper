@@ -5,7 +5,7 @@ define(function() {
      * activate the language links in main navbar
      */
     return function() {
-        $('a[href|=#lang]').click(function(evt) {
+        $('a[href|="#lang"]').click(function(evt) {
             evt.preventDefault();
             $.ajax({
                 url: '/api/account/lang',

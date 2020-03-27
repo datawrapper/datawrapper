@@ -10,17 +10,17 @@ define(function() {
             labels = dw.backend.currentVis.keys();
 
         if (_.isEmpty(labels)) {
-            $('a[href=#customColors]').hide();
+            $('a[href="#customColors"]').hide();
             return;
         }
-        $('a[href=#customColors]').show();
+        $('a[href="#customColors"]').show();
 
         // populate custom color selector
         $.each(labels, addLabelToList);
 
         $('#customColors .dataseries li').click(dataseriesClick);
         $('#reset-color-choice').click(resetColorChoice);
-        $('a[href=#customColors]').click(customColorsClick);
+        $('a[href="#customColors"]').click(customColorsClick);
         $('#reset-all-colors').click(resetAllColors);
         var usercolor = $('#user-color').keyup(userColorKeyUp);
 
