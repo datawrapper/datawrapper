@@ -437,36 +437,6 @@ class Chart extends BaseChart {
     }
 
     /*
-     * increment the public version of a chart, which is used
-     * in chart public urls to deal with cdn caches
-     */
-    public function publish() {
-        // increment public version
-        $this->setPublicVersion($this->getPublicVersion() + 1);
-        // generate public url
-        $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
-        if (!empty($published_urls)) {
-            // store public url from first publish module
-            $this->setPublicUrl($published_urls[0]);
-        } else {
-            // fallback to local url
-            $this->setPublicUrl($this->getLocalUrl());
-        }
-        $this->generateEmbedCodes();
-        $this->save();
-        // copy data to public
-        if (empty($this->getPublicChart())) {
-            // create new public chart
-            $publicChart = new PublicChart();
-            $publicChart->setFirstPublishedAt(time());
-            $this->setPublicChart($publicChart);
-        }
-        $this->getPublicChart()->update();
-        // log chart publish action
-        Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
-    }
-
-    /*
      * redirect previous chart versions to the most current one
      */
     public function redirectPreviousVersions($justLast20=true) {

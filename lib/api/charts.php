@@ -384,53 +384,6 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
     });
 });
 
-
-$app->post('/charts/:id/publish', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        if ($user->mayPublish($chart)) {
-            $justLocal = $app->request()->get('local') == 1;
-            $chart->publish();
-            publish_chart($user, $chart, false, $justLocal);
-            ok($chart->serialize());
-        } else {
-            error('need-to-upgrade', 'You need to activate/upgrade your account to publish.');
-        }
-    });
-});
-
-$app->get('/charts/:id/publish/status', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        echo json_encode(_getPublishStatus($chart));
-    });
-});
-
-/*
- * stores static snapshot of a chart (data, configuration, etc) as JSON
- * to /test/test-charts. This aims to simplify the generation of test
- * cases using the Datawrapper editor. Only for debugging.
- */
-$app->post('/charts/:id/store_snapshot', function($chart_id) use ($app) {
-    if (!empty($GLOBALS['dw_config']['debug_export_test_cases'])) {
-        if_chart_exists($chart_id, function($chart) use ($app) {
-            $json = $chart->serialize();
-            $payload = json_decode($app->request()->getBody(), true);
-            $name = $payload['id'];
-            $json['_data'] = $chart->loadData();
-            $json['_sig'] = $payload['signature'];
-            if (empty($name)) {
-                error('', 'no name specified');
-            } else {
-                $name = str_replace(" ", "-", $name);
-                $json['_id'] = $name;
-                file_put_contents("../../test/test-charts/" . $name . ".json", json_encode($json));
-                ok();
-            }
-        });
-    }
-});
-
 $app->get('/charts/:id/vis-data', function ($chart_id) {
     if_chart_is_readable($chart_id, function($user, $chart) {
         try {
@@ -451,18 +404,3 @@ $app->get('/charts/:id/vis-data', function ($chart_id) {
     });
 });
 
-// endpoint to fix unicode problems in a chart
-$app->get('/charts/:id/fix', function($id) use ($app) {
-    $user = Session::getUser();
-    $pdo = Propel::getConnection();
-    $pdo->exec("SET character_set_results = 'utf8'");
-    $res = $pdo->query("SELECT metadata FROM chart WHERE NOT JSON_CONTAINS_PATH(metadata, 'one', '$.data.\"charset-fixed\"') AND id = ".$pdo->quote($id));
-    $metadata = $res->fetchColumn(0);
-    if (!empty($metadata)) {
-        print "fixing chart\n";
-        $pdo->exec("UPDATE chart SET metadata = ".$pdo->quote($metadata)." WHERE id = ".$pdo->quote($id));
-        $pdo->exec("UPDATE chart SET metadata = JSON_SET(metadata, '$.data.\"charset-fixed\"', true) WHERE id = ".$pdo->quote($id));
-    } else {
-            print "this chart has been fixed already\n";
-    }
-});
