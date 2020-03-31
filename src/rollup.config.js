@@ -18,32 +18,6 @@ build('controls/hot', { noAMD: true });
 build('highlight');
 build('editor');
 
-if (checkTarget('render'))
-    targets.push({
-        input: 'render/index.js',
-        output: {
-            name: 'render',
-            file: '../templates/chart/render.js.twig',
-            format: 'iife',
-            banner: `/*! {#
-     # This file is auto-generated. Do NOT attempt to edit directly.
-     # Instead, edit \`src/render/index.js\` and run make build
-     #} */`
-        },
-        plugins: [
-            resolve(),
-            commonjs(),
-            buble({
-                transforms: { dangerousForOf: true }
-            }),
-            production &&
-                uglify({
-                    mangle: true,
-                    output: { comments: /^!/ }
-                })
-        ]
-    });
-
 if (checkTarget('embed'))
     targets.push({
         input: 'embed/index.js',
