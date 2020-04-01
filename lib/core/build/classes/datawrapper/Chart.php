@@ -269,7 +269,9 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to change the data in a chart
      */
     public function isDataWritable($user) {
-        return $this->isWritable($user) && !$this->getIsFork();
+        return $this->isWritable($user)
+            && !$this->getIsFork()
+            && $this->getMetadata('custom.webToPrint.mode') != 'print';
     }
 
     /*
