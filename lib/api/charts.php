@@ -153,8 +153,6 @@ $app->put('/charts/:id', function($id) use ($app) {
         }
         $json = json_decode($app->request()->getBody(), true);
 
-        if ($app->request()->get('mode') == "print") $chart->usePrint();
-
         if ($chart->unserialize($json))
             ok($chart->serialize());
         else

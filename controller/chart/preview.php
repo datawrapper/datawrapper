@@ -14,8 +14,6 @@ $app->get('/(chart|map|table)/:id/preview', function ($id) use ($app) {
             $__l10n->loadMessages($chart->getLanguage());
         }
 
-        if ($app->request()->get('mode') == "print") $chart->usePrint();
-
         $theme = (empty($app->request()->get('theme')) ? $chart->getTheme() : $app->request()->get('theme'));
         $theme = ThemeQuery::create()->findPk($theme);
         if (empty($theme)) $theme = ThemeQuery::create()->findPk("default");

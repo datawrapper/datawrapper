@@ -330,14 +330,7 @@ define([
     function loadVis() {
         if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            iframe.attr(
-                'src',
-                '/chart/' +
-                    chart.get('id') +
-                    '/preview?innersvg=1&random=' +
-                    Math.floor(Math.random() * 100000) +
-                    (getParameterByName('mode') === 'print' ? '&mode=print&fitchart=1' : '')
-            );
+            iframe.attr('src', '/chart/' + chart.get('id') + '/preview?innersvg=1&random=' + Math.floor(Math.random() * 100000));
         }
         if (dw.visualization.has(chart.get('type'))) {
             loadVisDone(dw.visualization(chart.get('type')));
@@ -360,14 +353,6 @@ define([
                 visOptions.sync();
             }
             loadVisDfd.resolve();
-        }
-
-        function getParameterByName(e, n) {
-            // n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
-            if (!n) n = window.location.href;
-            e = e.replace(/[[\]]/g, '\\$&');
-            var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
-            return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
         }
 
         function loadVisJS(type, callback) {
