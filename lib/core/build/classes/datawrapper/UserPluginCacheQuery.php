@@ -16,13 +16,13 @@ class UserPluginCacheQuery extends BaseUserPluginCacheQuery
     public static function initInvalidateHooks() {
         // just clear the entire cache
         $invalidateAll = function() {
-            UserPluginCacheQuery::create()
-            ->find()
-            ->delete();
+            //UserPluginCacheQuery::create()
+            //->find()
+            //->delete();
         };
-        DatawrapperHooks::register(DatawrapperHooks::PLUGIN_INSTALLED, $invalidateAll);
-        DatawrapperHooks::register(DatawrapperHooks::PLUGIN_UNINSTALLED, $invalidateAll);
-        DatawrapperHooks::register(DatawrapperHooks::PLUGIN_SET_PRIVATE, $invalidateAll);
+        // DatawrapperHooks::register(DatawrapperHooks::PLUGIN_INSTALLED, $invalidateAll);
+        // DatawrapperHooks::register(DatawrapperHooks::PLUGIN_UNINSTALLED, $invalidateAll);
+        // DatawrapperHooks::register(DatawrapperHooks::PLUGIN_SET_PRIVATE, $invalidateAll);
 
         // clear cache for single user
         $invalidateUser = function($orgOrProduct, User $user) {
