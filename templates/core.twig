@@ -29,8 +29,6 @@
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
-    {% include "sentry.twig" %}
-
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/requirejs/require.js"></script>
     <script type="text/javascript" charset="utf-8">
         require.config({
