@@ -2975,10 +2975,10 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
   font-weight: bold;
   margin-bottom: 0;
 }
-.mycharts-modal .sidebar ul {
+.mycharts-modal .sidebar > ul {
   margin-top: 20px;
 }
-.mycharts-modal .sidebar ul li {
+.mycharts-modal .sidebar > ul li {
   margin-bottom: 10px;
 }
 .mycharts-modal .sidebar .public-url {

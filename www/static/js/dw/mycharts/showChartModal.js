@@ -1,21 +1,24 @@
 define(function() {
-
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());
 
     return function showChartModal(chart) {
         // open modal
+        var chartUrl = '/preview/' + chart.id;
         var meta = chart.metadata,
             bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
             chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
             date_fmt = function(d) {
-                d = new Date(d.split(" ")[0]);
-                return Globalize.format(d, 'ddd')+', '+Globalize.format(d, 'd');
+                d = new Date(d.split(' ')[0]);
+                return Globalize.format(d, 'ddd') + ', ' + Globalize.format(d, 'd');
             },
             data = {
                 chartID: chart.id,
-                namespace: ((chart.type == "d3-maps-choropleth" || chart.type == "d3-maps-symbols") && chart.metadata.visualize["map-type-set"]) ? "map" : "chart",
-                chartUrl: location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview',
+                namespace:
+                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') && chart.metadata.visualize['map-type-set']
+                        ? 'map'
+                        : 'chart',
+                chartUrl: location.protocol + '//' + dw.backend.__domain + chartUrl,
                 publicUrl: chart.publicUrl,
                 src: 'src',
                 iframeW: chart_w,
@@ -44,7 +47,7 @@ define(function() {
 
         // update form action for duplicate button
         $('.action-duplicate form', wrapper)
-            .attr('action', '/api/charts/'+chart.id+'/copy')
+            .attr('action', '/api/charts/' + chart.id + '/copy')
             .on('submit', function() {
                 require(['dw/mycharts/no_reload_folder_change'], function(api) {
                     api.reloadLink(location.pathname);
@@ -52,13 +55,31 @@ define(function() {
                 });
             });
 
-        $('.embed', wrapper).click(function(e) {
-            e.preventDefault();
-            $('.embed-code', wrapper).toggleClass('hidden');
-            $('.embed', wrapper).toggleClass('embed-shown');
-        });
         $('.btn-edit', wrapper).removeClass('hidden');
         if (!chart.publishedAt) $('.published', wrapper).remove();
+        else {
+            const embedCodes = chart.metadata.publish['embed-codes'] || {};
+            Object.keys(embedCodes).forEach(key => {
+                console.log(key.replace('embed-method-', 'publish / embed / '));
+                const n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key;
+                $('ul.embed-codes', wrapper).append('<li><a href="" data-embed-method="' + key + '">' + n + '</a></li>');
+            });
+            $('ul.embed-codes li a', wrapper).click(function(evt) {
+                var key = $(this).data('embed-method');
+                console.log(this, key, chart.metadata.publish['embed-codes'][key]);
+                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key]);
+                textarea.get(0).select();
+                var ok = document.execCommand('copy');
+                if (ok) {
+                    $('.copy-success', wrapper).removeClass('hidden');
+                    setTimeout(function() {
+                        $('.copy-success', wrapper).addClass('hidden');
+                    }, 3000);
+                }
+                event.preventDefault();
+            });
+            console.log(chart.metadata.publish['embed-codes']);
+        }
         if (!chart.forkedFrom) $('.forked', wrapper).remove();
         else {
             $('.forked a', wrapper).click(function(e) {
@@ -71,5 +92,4 @@ define(function() {
         }
         overlay.open();
     };
-
 });

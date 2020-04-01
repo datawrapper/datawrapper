@@ -252,7 +252,7 @@ function prepare_short_arrays($charts) {
 
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
-        unset($flat['metadata']['publish']['embed-codes']);
+        // unset($flat['metadata']['publish']['embed-codes']);
         $flat['hash'] = $dw_config["screenshot_path"] ?? $chart->getHash();
         $shorty[$flat['id']] = $flat;
     }
