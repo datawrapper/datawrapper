@@ -131,34 +131,28 @@ class DatawrapperPluginManager {
             if ($cached) {
                 $plugin_ids = explode(',', $cached->getPlugins());
             } else {
-                $tmp = PluginQuery::create()
-                    ->distinct()
-                    ->useProductPluginQuery(null, Criteria::LEFT_JOIN)
-                        ->useProductQuery(null, Criteria::LEFT_JOIN)
-                            ->useOrganizationProductQuery(null, Criteria::LEFT_JOIN)
-                                ->useOrganizationQuery(null, Criteria::LEFT_JOIN)
-                                    ->useUserOrganizationQuery(null, Criteria::LEFT_JOIN)
-                                    ->endUse()
-                                ->endUse()
-                            ->endUse()
-                            ->useUserProductQuery(null, Criteria::LEFT_JOIN)
-                            ->endUse()
-                            ->where(
-                                '(
-                                    product.deleted = false AND
-                                        ((user_product.user_id = ? AND (user_product.expires >= NOW() OR user_product.expires IS NULL))
-                                            OR
-                                        (user_organization.user_id= ? AND user_organization.invite_token = "" AND (organization_product.expires >= NOW() OR organization_product.expires IS NULL))))',
-                                array($user_id, $user_id)
-                            )
-                        ->endUse()
-                    ->endUse()
-                    ->find();
-                foreach ($tmp as $p) {
-                    $plugin_ids[] = $p->getId();
+                $pdo = Propel::getConnection();
+                $sql = "SELECT DISTINCT plugin_id FROM (
+                        SELECT product_id FROM (
+                            -- user products
+                            SELECT product_id FROM user_product WHERE user_id = $user_id
+                            UNION DISTINCT
+                            -- team products
+                            SELECT product_id FROM
+                                (SELECT organization_id FROM user_organization WHERE user_id = $user_id AND invite_token = '') C
+                                LEFT JOIN organization_product op ON (C.organization_id = op.organization_id)
+                                WHERE product_id IS NOT NULL
+                        ) B
+                        LEFT JOIN product p ON (B.product_id = p.id)
+                        WHERE p.deleted = 0
+                    ) A
+                    LEFT JOIN product_plugin pp ON (A.product_id = pp.product_id)
+                    WHERE plugin_id IS NOT NULL;";
+                $res = $pdo->query($sql);
+                foreach ($res as $row) {
+                    if (!empty($row)) $plugin_ids[] = $row[0];
                 }
                 // save user plugins to cache
-                $pdo = Propel::getConnection();
                 $pluginList = $pdo->quote(implode(',', $plugin_ids));
                 $pdo->query('INSERT INTO user_plugin_cache (user_id, plugins) VALUES ('.intval($user_id).', '.$pluginList.') ON DUPLICATE KEY UPDATE plugins = '.$pluginList);
             }
