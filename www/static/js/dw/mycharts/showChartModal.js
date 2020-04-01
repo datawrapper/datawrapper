@@ -13,7 +13,10 @@ define(function() {
             },
             data = {
                 chartID: chart.id,
-                namespace: ((chart.type == "d3-maps-choropleth" || chart.type == "d3-maps-symbols") && chart.metadata.visualize["map-type-set"]) ? "map" : "chart",
+                namespace:
+                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') && chart.metadata.visualize['map-type-set']
+                        ? 'map'
+                        : 'chart',
                 chartUrl: location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview',
                 publicUrl: chart.publicUrl,
                 src: 'src',
@@ -55,8 +58,7 @@ define(function() {
         if (!chart.publishedAt) $('.published', wrapper).remove();
         else {
             var embedCodes = chart.metadata.publish['embed-codes'] || {};
-            Object.keys(embedCodes).forEach(key => {
-                console.log(key.replace('embed-method-', 'publish / embed / '));
+            Object.keys(embedCodes).forEach(function(key) {
                 var n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key;
                 $('ul.embed-codes', wrapper).append('<li><a href="" data-embed-method="' + key + '">' + n + '</a></li>');
             });
