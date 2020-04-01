@@ -4,7 +4,6 @@ define(function() {
 
     return function showChartModal(chart) {
         // open modal
-        var chartUrl = '/preview/' + chart.id;
         var meta = chart.metadata,
             bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
             chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
@@ -14,11 +13,8 @@ define(function() {
             },
             data = {
                 chartID: chart.id,
-                namespace:
-                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') && chart.metadata.visualize['map-type-set']
-                        ? 'map'
-                        : 'chart',
-                chartUrl: location.protocol + '//' + dw.backend.__domain + chartUrl,
+                namespace: ((chart.type == "d3-maps-choropleth" || chart.type == "d3-maps-symbols") && chart.metadata.visualize["map-type-set"]) ? "map" : "chart",
+                chartUrl: location.protocol + '//' + dw.backend.__domain + '/chart/' + chart.id + '/preview',
                 publicUrl: chart.publicUrl,
                 src: 'src',
                 iframeW: chart_w,
@@ -58,15 +54,14 @@ define(function() {
         $('.btn-edit', wrapper).removeClass('hidden');
         if (!chart.publishedAt) $('.published', wrapper).remove();
         else {
-            const embedCodes = chart.metadata.publish['embed-codes'] || {};
+            var embedCodes = chart.metadata.publish['embed-codes'] || {};
             Object.keys(embedCodes).forEach(key => {
                 console.log(key.replace('embed-method-', 'publish / embed / '));
-                const n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key;
+                var n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key;
                 $('ul.embed-codes', wrapper).append('<li><a href="" data-embed-method="' + key + '">' + n + '</a></li>');
             });
             $('ul.embed-codes li a', wrapper).click(function(evt) {
                 var key = $(this).data('embed-method');
-                console.log(this, key, chart.metadata.publish['embed-codes'][key]);
                 var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key]);
                 textarea.get(0).select();
                 var ok = document.execCommand('copy');
@@ -78,7 +73,6 @@ define(function() {
                 }
                 event.preventDefault();
             });
-            console.log(chart.metadata.publish['embed-codes']);
         }
         if (!chart.forkedFrom) $('.forked', wrapper).remove();
         else {
