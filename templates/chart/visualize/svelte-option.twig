@@ -194,7 +194,8 @@ require(['{{ amdPath }}'], function(mod) {
                     }
                 }
 
-                dw.backend.currentChart.set('metadata', JSON.parse(JSON.stringify(current.metadata)));
+                // set metadata directly without saving again
+                dw.backend.currentChart.attributes().metadata = JSON.parse(JSON.stringify(current.metadata));
             }
         }
     });
