@@ -224,6 +224,7 @@ class Chart extends BaseChart {
             curl_setopt_array($ch, [
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
             ]);
             $new_data = curl_exec($ch);
