@@ -13,8 +13,6 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $chart->refreshExternalData();
 
-        if ($app->request()->get('mode') == "print") $chart->usePrint();
-
         if (!DatawrapperHooks::hookRegistered(DatawrapperHooks::RENDER_RESIZE_CONTROL)) {
             DatawrapperHooks::register(DatawrapperHooks::RENDER_RESIZE_CONTROL, function() {
                 global $app;
@@ -105,8 +103,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'theme' => $theme,
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
-            'vis_data' => $visData,
-            'mode' => $app->request()->get('mode') == "print" ? "print": "web"
+            'vis_data' => $visData
         );
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);
