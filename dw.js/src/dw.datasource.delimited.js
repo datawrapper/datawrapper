@@ -109,7 +109,7 @@ _.extend(DelimitedParser.prototype, {
         var closure = opts.delimiter != '|' ? '|' : '#',
             arrData;
 
-        data = closure + '\n' + data.replace(/\s+$/g, '') + closure;
+        data = closure + '\n' + data.replace(/[ \r\n\f]+$/g, '') + closure;
 
         function parseCSV(delimiterPattern, strData, strDelimiter) {
             // implementation and regex borrowed from:
@@ -158,7 +158,7 @@ _.extend(DelimitedParser.prototype, {
 
                 // Now that we have our value string, let's add
                 // it to the data array.
-                arrData[arrData.length - 1].push(strMatchedValue);
+                arrData[arrData.length - 1].push(strMatchedValue === undefined ? '' : strMatchedValue);
             }
 
             // remove closure
@@ -166,14 +166,11 @@ _.extend(DelimitedParser.prototype, {
                 arrData[0][0] = arrData[0][0].substr(1);
             }
 
-            var p = arrData.length - 1,
-                q = arrData[p].length - 1;
-
-            if (typeof arrData[p][q] === 'string') {
-                var r = arrData[p][q].length - 1;
-                if (arrData[p][q].substr(r) == closure) {
-                    arrData[p][q] = arrData[p][q].substr(0, r);
-                }
+            var p = arrData.length - 1;
+            var q = arrData[p].length - 1;
+            var r = arrData[p][q].length - 1;
+            if (arrData[p][q].substr(r) === closure) {
+                arrData[p][q] = arrData[p][q].substr(0, r);
             }
 
             // Return the parsed data.
