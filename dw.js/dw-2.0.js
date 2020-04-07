@@ -509,14 +509,7 @@ dw.column.types.number = function(sample) {
     // public interface
     var type = {
         parse: function(raw) {
-            if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) {
-                // if (typeof raw === 'string') {
-                //     if (raw.trim() === '' || raw.trim() === '""') {
-                //         return null;
-                //     }
-                // }
-                return raw;
-            }
+            if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
             // replace percent sign, n-dash & m-dash, remove weird spaces
             var number = raw
                 .replace('%', '')
@@ -1187,7 +1180,6 @@ _.extend(DelimitedParser.prototype, {
             arrData;
 
         data = closure + '\n' + data.replace(/[ \r\n\f]+$/g, '') + closure;
-        console.log(data);
 
         function parseCSV(delimiterPattern, strData, strDelimiter) {
             // implementation and regex borrowed from:
