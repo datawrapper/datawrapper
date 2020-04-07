@@ -122,14 +122,9 @@ vows
                     assert.equal 'number', dataset.column(2).type()
                     assert.equal 'number', dataset.column(3).type()
 
-                'empty quotes are null': (dataset, f) ->
-                    assert.strictEqual dataset.column(2).val(5), null
-                    assert.strictEqual dataset.column(3).val(1), null
-
                 'empty values are null': (dataset, f) ->
-                    assert.strictEqual dataset.column(2).val(6), null
-                    assert.strictEqual dataset.column(2).val(7), null
-                    assert.strictEqual dataset.column(2).val(8), null
+                    assert.deepStrictEqual dataset.column(2).values(), [15,13,18,18,20,null,null,null,null]
+                    assert.deepStrictEqual dataset.column(3).values(), [null,null,null,10,10,10,null,null,null]
 
 
     .export module
