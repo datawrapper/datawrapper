@@ -107,5 +107,29 @@ vows
                 'the first column name is correct': (dataset, f) ->
                     assert.equal 'Bezirk', dataset.column(0).name()
 
+        'A tsv full of undefined & empty values':
+            topic: dw.datasource.delimited
+                csv: 'Year\tValue\tColumn2\tColumn3\n2011\t10\t15\t\n2012\t16\t13\t""\n2013\t15\t18\t\n2014\t15\t18\t10\n2015\t1000\t20\t10\n2016\t16\t""\t10\n2017\t12\t\t\n2018\t20\t\t\n2019\t10\t\t'
+
+            'when loaded as dataset':
+                topic: (src) ->
+                    src.dataset().done @callback
+                    return
+
+                'the column types are correct': (dataset, f) ->
+                    assert.equal 'date', dataset.column(0).type()
+                    assert.equal 'number', dataset.column(1).type()
+                    assert.equal 'number', dataset.column(2).type()
+                    assert.equal 'number', dataset.column(3).type()
+
+                'empty quotes are null': (dataset, f) ->
+                    assert.strictEqual dataset.column(2).val(5), null
+                    assert.strictEqual dataset.column(3).val(1), null
+
+                'empty values are null': (dataset, f) ->
+                    assert.strictEqual dataset.column(2).val(6), null
+                    assert.strictEqual dataset.column(2).val(7), null
+                    assert.strictEqual dataset.column(2).val(8), null
+
 
     .export module
