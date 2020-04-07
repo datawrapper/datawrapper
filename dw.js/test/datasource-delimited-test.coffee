@@ -101,7 +101,6 @@ vows
 
             'when loaded as dataset':
                 topic: (src) ->
-                    console.log(src)
                     src.dataset().done @callback
                     return
 

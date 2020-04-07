@@ -32,7 +32,7 @@ formats =
     'no years':
         values: [3000..3010].map String
         parsed: [3000..3010]
-    
+
     # half years
     'YYYY H':
         values: ['1990 H2', '1991 H1', '1991 H2', '1992 H1', '1992 H2', '1993 H1', '1993 H2']
@@ -55,7 +55,7 @@ formats =
     'H/YYYY':
         values: ['H2/1990', 'H1/1991', 'H2/1991', 'H1/1992', 'H2/1992', 'H1/1993', 'H2/1993']
         parsed: half_years
-    
+
     # quarter years
     'YYYYQ':
         values: ['1990Q2', '1990Q3', '1990Q4', '1991Q1', '1991Q2', '1991Q3', '1991Q4', '1992Q1', '1992Q2', '1992Q3', '1992Q4']
@@ -78,7 +78,7 @@ formats =
     'Q-YYYY':
         parsed: quarter_years
         values: ['Q2-1990', 'Q3-1990', 'Q4-1990', 'Q1-1991', 'Q2-1991', 'Q3-1991', 'Q4-1991', 'Q1-1992', 'Q2-1992', 'Q3-1992', 'Q4-1992']
-    
+
     # months (numeric)
     'YYYY-MM':
         parsed: months
@@ -98,7 +98,7 @@ formats =
     'M-YYYY':
         parsed: months
         values: ['7-1999', '8-1999', '9-1999', '10-1999', '11-1999', '12-1999', '1-2000', '2-2000', '3-2000', '4-2000', '5-2000', '6-2000'],
-    
+
     # months abbreviated
     'YYYY-MMM':
         parsed: months
@@ -234,8 +234,12 @@ for k of formats
         batch[k]['type is date'] = (topic) ->
             assert.equal dw.column('', topic.values).type(), 'date'
     batch[k]['parsed correctly'] = (topic) ->
-        assert.deepEqual dw.column('', topic.values).values(), topic.parsed
-
+        parsed = dw.column('', topic.values).values()
+        for i of parsed
+            if parsed[i].getTime
+                assert.equal(topic.parsed[i].getTime(), parsed[i].getTime())
+            else
+                assert.equal(topic.parsed[i], parsed[i])
 vows
     .describe('Some tests for different number formats')
     .addBatch(batch)
