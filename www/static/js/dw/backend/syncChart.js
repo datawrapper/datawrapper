@@ -8,7 +8,7 @@ define(function() {
         function save() {
             return $.ajax({
                 url: '//' + dw.backend.__api_domain + '/v3/charts/' + chart.get('id'),
-                type: 'PATCH',
+                type: 'PUT',
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(chart.attributes()),

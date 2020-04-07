@@ -33,38 +33,6 @@ class Chart extends BaseChart {
         return $this->lowercaseKeys($arr);
     }
 
-    public function usePrint() {
-        $this->usePrintVersion = true;
-
-        $meta = $this->getMetadata();
-
-        if (!isset($meta['print'])) {
-            // copy web chart for print
-            $meta['print'] = $meta;
-            $meta['print']['describe']['title'] = parent::getTitle();
-            $meta['print']['visualize']['type'] = parent::getType();
-
-            $themeId = parent::getTheme();
-            $theme = ThemeQuery::create()->findPk($themeId);
-
-            if (!empty($theme->getThemeData("printTheme"))) {
-                $meta['print']['visualize']['theme'] = $theme->getThemeData("printTheme");
-            } else {
-                $meta['print']['visualize']['theme'] = $theme->getId();
-            }
-
-            $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
-            $this->save();
-        }
-    }
-
-    public function deletePrintVersion() {
-        $meta = $this->getMetadata();
-        if (isset($meta['print'])) unset($meta['print']);
-        $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
-        $this->save();
-    }
-
     /**
      * this function converts the chart
      */
@@ -76,10 +44,6 @@ class Chart extends BaseChart {
         $json = $this->lowercaseKeys($json);
 
         $json['metadata'] = $this->getMetadata();
-
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            $json['metadata'] = $json['metadata']['print'];
-        }
 
         if ($this->getUser()) $json['author'] = $this->getUser()->serialize();
         return $json;
@@ -102,29 +66,11 @@ class Chart extends BaseChart {
         // bad payload?
         if (!is_array($json)) return false;
 
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            if (isset($json['metadata'])) {
-                $json['metadata']['describe']['title'] = $json['title'];
-                $json['metadata']['visualize']['theme'] = $json['theme'];
-                $json['metadata']['visualize']['type'] = $json['type'];
-            }
-
-            $json['title'] = parent::getTitle();
-            $json['theme'] = parent::getTheme();
-            $json['type'] = parent::getType();
-        }
 
         if (array_key_exists('metadata', $json)) {
-            if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-                $m = $this->getMetadata();
-                $m['print'] = $json['metadata'];
-                $json['metadata'] = json_encode($m, JSON_UNESCAPED_UNICODE);
-            } else {
-                // encode metadata as json string … if there IS metadata
-                $m = $this->getMetadata();
-                if (isset($m['print'])) { $json['metadata']['print'] = $m['print']; }
-                $json['metadata'] = json_encode($json['metadata'], JSON_UNESCAPED_UNICODE);
-            }
+            // encode metadata as json string … if there IS metadata
+            $m = $this->getMetadata();
+            $json['metadata'] = json_encode($json['metadata'], JSON_UNESCAPED_UNICODE);
         }
 
         // then we upperkeys the keys
@@ -278,6 +224,7 @@ class Chart extends BaseChart {
             curl_setopt_array($ch, [
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
             ]);
             $new_data = curl_exec($ch);
@@ -323,7 +270,9 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to change the data in a chart
      */
     public function isDataWritable($user) {
-        return $this->isWritable($user) && !$this->getIsFork();
+        return $this->isWritable($user)
+            && !$this->getIsFork()
+            && $this->getMetadata('custom.webToPrint.mode') != 'print';
     }
 
     /*
@@ -375,10 +324,6 @@ class Chart extends BaseChart {
      * returns the chart meta data
      */
     public function getMetadata($key = null) {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion && $key) {
-            $key = "print." . $key;
-        }
-
         $default = Chart::defaultMetaData();
 
         $raw_meta = parent::getMetadata();
@@ -649,27 +594,15 @@ class Chart extends BaseChart {
     }
 
     public function getTitle() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            return $this->getMetadata('describe.title');
-        } else {
-            return parent::getTitle();
-        }
+        return parent::getTitle();
     }
 
     public function getTheme() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            return $this->getMetadata('visualize.theme');
-        } else {
-            return parent::getTheme();
-        }
+        return parent::getTheme();
     }
 
     public function getType() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            $type = $this->getMetadata('visualize.type');
-        } else {
-            $type = parent::getType();
-        }
+        $type = parent::getType();
 
         if (!DatawrapperVisualization::has($type)) {
             // fall back to default chart type
