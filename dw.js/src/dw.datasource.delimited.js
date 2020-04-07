@@ -165,11 +165,15 @@ _.extend(DelimitedParser.prototype, {
             if (arrData[0][0].substr(0, 1) == closure) {
                 arrData[0][0] = arrData[0][0].substr(1);
             }
+
             var p = arrData.length - 1,
-                q = arrData[p].length - 1,
-                r = arrData[p][q].length - 1;
-            if (arrData[p][q].substr(r) == closure) {
-                arrData[p][q] = arrData[p][q].substr(0, r);
+                q = arrData[p].length - 1;
+
+            if (arrData[p][q]) {
+                var r = arrData[p][q].length - 1;
+                if (arrData[p][q].substr(r) == closure) {
+                    arrData[p][q] = arrData[p][q].substr(0, r);
+                }
             }
 
             // Return the parsed data.
