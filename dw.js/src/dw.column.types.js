@@ -40,14 +40,9 @@ dw.column.types.number = function(sample) {
             '-,': /^ *[-–—−]?[0-9]*(,[0-9]+)?%? *$/,
             ',.': /^ *[-–—−]?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)?%? *$/,
             '.,': /^ *[-–—−]?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)?%? *$/,
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
-            // thin spaces
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
+            ' .': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(\.[0-9]+)?%? *$/,
+            ' ,': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(,[0-9]+)?%? *$/,
             // excel sometimes produces a strange white-space:
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
             "'.": /^ *[-–—−]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/
         },
         formatLabels = {
@@ -94,10 +89,11 @@ dw.column.types.number = function(sample) {
     var type = {
         parse: function(raw) {
             if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
-            // replace percent sign, n-dash & m-dash
+            // replace percent sign, n-dash & m-dash, remove weird spaces
             var number = raw
                 .replace('%', '')
                 .replace('−', '-')
+                .replace(/[   ]/g, '')
                 .replace('–', '-')
                 .replace('—', '-');
             // normalize number
