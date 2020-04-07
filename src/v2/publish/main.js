@@ -15,7 +15,7 @@ const data = {
     needs_republish: false,
     publish_error: false,
     auto_publish: false,
-    progress: 0,
+    progress: [],
     shareurl_type: 'default',
     embed_type: 'responsive',
     copy_success: false
