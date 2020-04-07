@@ -1242,7 +1242,7 @@ _.extend(DelimitedParser.prototype, {
             var p = arrData.length - 1,
                 q = arrData[p].length - 1;
 
-            if (arrData[p][q]) {
+            if (typeof arrData[p][q] === 'string') {
                 var r = arrData[p][q].length - 1;
                 if (arrData[p][q].substr(r) == closure) {
                     arrData[p][q] = arrData[p][q].substr(0, r);
