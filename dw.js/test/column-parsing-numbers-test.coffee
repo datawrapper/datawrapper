@@ -28,7 +28,7 @@ for k of formats
 
     batch[k] =
         'topic': dw.column 'name', formats[k]
-        'type number': (topic) -> assert.equal topic.type(), 'number'
+        'type number': (topic) -> assert.equal 'number', topic.type()
 
 vows
     .describe('Some tests for different number formats')
