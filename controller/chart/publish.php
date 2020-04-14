@@ -93,8 +93,9 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'chart' => $chart->toStruct(),
             'embed_templates' => $embed_codes,
             'embed_type' => (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responxsive']]))[0]['id'],
-            // 'shareurl_type' => publish_get_preferred_shareurl_type(),
-            // 'plugin_shareurls' => publish_get_plugin_shareurls(),
+            'shareurl_type' => $user->getUserData()['shareurl_type'] ?? 'default',
+            'plugin_shareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
+                Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
             'auto_publish' => !empty($app->request()->params('doit')),
             'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
             'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
