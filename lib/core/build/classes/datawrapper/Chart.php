@@ -456,53 +456,6 @@ class Chart extends BaseChart {
         Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
     }
 
-    public function generateEmbedCodes() {
-        // generate embed codes
-        $embedcodes = [];
-        $theme = ThemeQuery::create()->findPk($this->getTheme());
-
-        // hack: temporarily set UI language to chart language
-        // so we get the correct translation of "Chart:" and "Map:"
-        if ($this->getLanguage() != '') {
-            global $__l10n;
-            $__l10n->loadMessages($this->getLanguage());
-        }
-
-        $search = [
-            '%chart_id%',
-            '%chart_url%',
-            '%chart_title%',
-            '%chart_type%',
-            '%chart_intro%',
-            '%chart_width%',
-            '%chart_height%',
-            '%embed_heights%',
-            '%embed_heights_escaped%',
-        ];
-        $replace = [
-            $this->getID(),
-            $this->getPublicUrl(),
-            htmlentities(strip_tags($this->getTitle())),
-            $this->getAriaLabel($theme),
-            htmlentities(strip_tags($this->getMetadata('describe.intro'))),
-            $this->getMetadata('publish.embed-width'),
-            $this->getMetadata('publish.embed-height'),
-            json_encode($this->getMetadata('publish.embed-heights')),
-            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights')))
-        ];
-
-        // hack: revert the UI language
-        if ($this->getLanguage() != '') {
-            $__l10n->loadMessages(DatawrapperSession::getLanguage());
-        }
-
-        foreach (publish_get_embed_templates($this->getOrganization()) as $template) {
-            $code = str_replace($search, $replace, $template['template']);
-            $embedcodes['embed-method-'.$template['id']] = $code;
-        }
-        $this->updateMetadata('publish.embed-codes', $embedcodes);
-    }
-
     public function unpublish() {
         $path = $this->getStaticPath();
         if (file_exists($path)) {
@@ -654,3 +607,19 @@ class Chart extends BaseChart {
     }
 
 } // Chart
+
+function chart_publish_directory() {
+    $dir = ROOT_PATH.'charts';
+
+    if (isset($GLOBALS['dw_config']['publish_directory'])) {
+        $dir = $GLOBALS['dw_config']['publish_directory'];
+    }
+
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0755, true)) {
+            throw new RuntimeException('Could not create chart publish directory "'.$dir.'". Please create it manually and make sure PHP can write to it.');
+        }
+    }
+
+    return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+}
