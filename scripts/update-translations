@@ -30,6 +30,11 @@ if (config.translation) {
             if (err) return console.error(err);
             // write core locales/*.json
             writeLocales(core, './locale', config.languages);
+            try {
+                writeLocales(core, '../api/locale', config.languages);
+            } catch (e) {
+                console.warn('could not store core translations in api/locale');
+            }
 
             var chartTranslations = _.indexBy(chart, 'plugin');
             var chartSrc = _.groupBy(chart, 'plugin');
