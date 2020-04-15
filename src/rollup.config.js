@@ -18,28 +18,6 @@ build('controls/hot', { noAMD: true });
 build('highlight');
 build('editor');
 
-if (checkTarget('embed'))
-    targets.push({
-        input: 'embed/index.js',
-        output: {
-            name: 'embed',
-            file: '../templates/chart/embed.js',
-            format: 'iife'
-        },
-        plugins: [
-            resolve(),
-            commonjs(),
-            buble({
-                transforms: { dangerousForOf: true }
-            }),
-            production &&
-                uglify({
-                    mangle: true,
-                    output: { comments: /^!/ }
-                })
-        ]
-    });
-
 export default targets;
 
 function build(appId, opts) {
