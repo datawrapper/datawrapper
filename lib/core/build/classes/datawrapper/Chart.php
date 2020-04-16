@@ -436,69 +436,6 @@ class Chart extends BaseChart {
         }
     }
 
-    /*
-     * redirect previous chart versions to the most current one
-     */
-    public function redirectPreviousVersions($justLast20=true) {
-        $current_target = $this->getCDNPath();
-        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
-        $redirect_file = $this->getStaticPath() . '/redirect.html';
-        file_put_contents($redirect_file, $redirect_html);
-        $files = array();
-        for ($v=0; $v < $this->getPublicVersion(); $v++) {
-            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
-                $files[] = [
-                    $redirect_file,
-                    $this->getCDNPath($v) . 'index.html', 'text/html'
-                ];
-            }
-        }
-        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
-    }
-
-    public function unpublish() {
-        $path = $this->getStaticPath();
-        if (file_exists($path)) {
-            $dirIterator = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
-            $itIterator  = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST);
-
-            foreach ($itIterator as $entry) {
-                $file = realpath((string) $entry);
-
-                if (is_dir($file)) {
-                    rmdir($file);
-                }
-                else {
-                    unlink($file);
-                }
-            }
-
-            rmdir($path);
-        }
-
-        // Load CDN publishing class
-        $config = $GLOBALS['dw_config'];
-        if (!empty($config['publish'])) {
-
-            // remove files from CDN
-            $pub = get_module('publish', dirname(__FILE__) . '/../../../../');
-
-            $id = $this->getID();
-
-            $chart_files = array();
-            $chart_files[] = "$id/index.html";
-            $chart_files[] = "$id/data";
-            $chart_files[] = "$id/$id.min.js";
-
-            $pub->unpublish($chart_files);
-        }
-
-        // remove all jobs related to this chart
-        JobQuery::create()
-            ->filterByChart($this)
-            ->delete();
-    }
-
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
@@ -506,14 +443,6 @@ class Chart extends BaseChart {
 
         return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
             . $this->getID() . "/" . $path . "/plain.png";
-    }
-
-    public function plainUrl() {
-        return $this->assetUrl('plain.html');
-    }
-
-    public function assetUrl($file) {
-        return dirname($this->getPublicUrl() . '_') . '/' . $file;
     }
 
     public function getTitle() {
@@ -545,47 +474,10 @@ class Chart extends BaseChart {
         return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
-    public function getCDNPath($version = null) {
-        if ($version === null) $version = $this->getPublicVersion();
-        return $this->getPublicId() . '/' . ($version > 0 ? $version . '/' : '');
-    }
-
     public function getNamespace() {
         if (!DatawrapperVisualization::has($this->getType())) return 'chart';
         $vis = DatawrapperVisualization::get($this->getType());
         return $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * the caption decides what goes in front of the byline in the
-     * chart footer. can be either "chart:", "map:", or "table:"
-     */
-    public function getCaption() {
-        if (!DatawrapperVisualization::has($this->getType())) return 'chart';
-        $vis = DatawrapperVisualization::get($this->getType());
-        return $vis['caption'] ?? $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * returns the text to be used in `aria-label` meta attribute
-     * in iframe embed codes. visualizations may define a custom
-     * aria label, otherwise we fall back to just "chart" or "map"
-     */
-    public function getAriaLabel($theme) {
-        $vis = DatawrapperVisualization::get($this->getType());
-        if ($vis !== false && !empty($vis['aria-label'])) {
-            return $vis['aria-label'];
-        }
-        // fall back to chart type title
-        if ($vis !== false && !empty($vis['title'])) {
-            return $vis['title'];
-        }
-        // fall back to namespace caption
-        return str_replace(':', '', $this->getNamespace() == 'map' ?
-            $theme->getThemeData('options.footer.mapCaption') :
-            $this->getNamespace() == 'table' ?
-            $theme->getThemeData('options.footer.tableCaption') :
-            $theme->getThemeData('options.footer.chartCaption'));
     }
 
     public function getDefaultStep() {
