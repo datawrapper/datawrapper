@@ -54,33 +54,6 @@ $app->post('/charts', function() {
     }
 });
 
-
-/*
- * returns the metadata for all charts that are allowed
- * to show in the gallery
- */
-$app->get('/gallery', function() use ($app) {
-    $result = array();
-    $q = ChartQuery::create()
-        ->filterByShowInGallery(true)
-        ->filterByLastEditStep(array('min' => 4))
-        ->orderByCreatedAt('desc');
-    if ($app->request()->get('type')) {
-        $q->filterByType($app->request()->get('type'));
-    }
-    if ($app->request()->get('theme')) {
-        $q->filterByTheme($app->request()->get('theme'));
-    }
-    if ($app->request()->get('month')) {
-        $q->filterByTheme($app->request()->get('theme'));
-    }
-    $charts = $q->limit(20)->find();
-    foreach ($charts as $chart) {
-        $result[] = $chart->toArray();
-    }
-    ok($result);
-});
-
 /**
  * load chart meta data
  *
@@ -383,24 +356,3 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
         }
     });
 });
-
-$app->get('/charts/:id/vis-data', function ($chart_id) {
-    if_chart_is_readable($chart_id, function($user, $chart) {
-        try {
-            $allVis = array();
-
-            foreach (DatawrapperVisualization::all() as $vis) {
-                $allVis[$vis['id']] = $vis;
-            }
-
-            ok(array(
-                'visualizations' => $allVis,
-                'vis' => DatawrapperVisualization::get($chart->getType()),
-                'themes' => ThemeQuery::findAll(),
-            ));
-        } catch (Exception $e) {
-            error('io-error', $e->getMessage());
-        }
-    });
-});
-
