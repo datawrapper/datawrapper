@@ -30,7 +30,8 @@ dw.dataset = function(columns, opts) {
 
     // make column names unique
     var columnsByName = {},
-        origColumns = columns.slice(0);
+        origColumns = columns.slice(0),
+        initialColumns = columns.slice(0);
     _.each(columns, function(col) {
         uniqueName(col);
         columnsByName[col.name()] = col;
@@ -166,7 +167,7 @@ dw.dataset = function(columns, opts) {
         },
 
         reset: function() {
-            columns = origColumns.slice(0);
+            columns = initialColumns.slice(0);
             columnsByName = {};
             _.each(columns, function(col) {
                 columnsByName[col.name()] = col;
@@ -460,14 +461,9 @@ dw.column.types.number = function(sample) {
             '-,': /^ *[-–—−]?[0-9]*(,[0-9]+)?%? *$/,
             ',.': /^ *[-–—−]?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)?%? *$/,
             '.,': /^ *[-–—−]?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)?%? *$/,
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
-            // thin spaces
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
+            ' .': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(\.[0-9]+)?%? *$/,
+            ' ,': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(,[0-9]+)?%? *$/,
             // excel sometimes produces a strange white-space:
-            ' .': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(\.[0-9]+)?%? *$/,
-            ' ,': /^ *[-–—−]?[0-9]{1,3}( [0-9]{3})*(,[0-9]+)?%? *$/,
             "'.": /^ *[-–—−]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/
         },
         formatLabels = {
@@ -514,10 +510,11 @@ dw.column.types.number = function(sample) {
     var type = {
         parse: function(raw) {
             if (_.isNumber(raw) || _.isUndefined(raw) || _.isNull(raw)) return raw;
-            // replace percent sign, n-dash & m-dash
+            // replace percent sign, n-dash & m-dash, remove weird spaces
             var number = raw
                 .replace('%', '')
                 .replace('−', '-')
+                .replace(/[   ]/g, '')
                 .replace('–', '-')
                 .replace('—', '-');
             // normalize number
@@ -1182,7 +1179,7 @@ _.extend(DelimitedParser.prototype, {
         var closure = opts.delimiter != '|' ? '|' : '#',
             arrData;
 
-        data = closure + '\n' + data.replace(/\s+$/g, '') + closure;
+        data = closure + '\n' + data.replace(/[ \r\n\f]+$/g, '') + closure;
 
         function parseCSV(delimiterPattern, strData, strDelimiter) {
             // implementation and regex borrowed from:
@@ -1231,17 +1228,18 @@ _.extend(DelimitedParser.prototype, {
 
                 // Now that we have our value string, let's add
                 // it to the data array.
-                arrData[arrData.length - 1].push(strMatchedValue);
+                arrData[arrData.length - 1].push(strMatchedValue === undefined ? '' : strMatchedValue);
             }
 
             // remove closure
             if (arrData[0][0].substr(0, 1) == closure) {
                 arrData[0][0] = arrData[0][0].substr(1);
             }
-            var p = arrData.length - 1,
-                q = arrData[p].length - 1,
-                r = arrData[p][q].length - 1;
-            if (arrData[p][q].substr(r) == closure) {
+
+            var p = arrData.length - 1;
+            var q = arrData[p].length - 1;
+            var r = arrData[p][q].length - 1;
+            if (arrData[p][q].substr(r) === closure) {
                 arrData[p][q] = arrData[p][q].substr(0, r);
             }
 
@@ -2475,7 +2473,7 @@ _.extend(dw.visualization.base, {
             if (axes[key]) return; // user has defined this axis already
             if (axisDef.optional) {
                 // chart settings may override this
-                if (axisDef.overrideOptionalKey && me.chart().get('metadata.'+axisDef.overrideOptionalKey, false)) {
+                if (axisDef.overrideOptionalKey && me.chart().get('metadata.' + axisDef.overrideOptionalKey, false)) {
                     // now the axis is mandatory
                     axisDef.optional = false;
                 }

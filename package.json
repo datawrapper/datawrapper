@@ -8,7 +8,7 @@
         "watch": "watch 'make assets' assets/",
         "pretest-legacy": "cd test_legacy/build && rollup -c",
         "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
-        "test": "ava",
+        "test": "ava && cd dw.js && npm install && npm test",
         "test:watch": "ava --watch --verbose"
     },
     "repository": {

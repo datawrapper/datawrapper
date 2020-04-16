@@ -101,12 +101,30 @@ vows
 
             'when loaded as dataset':
                 topic: (src) ->
-                    console.log(src)
                     src.dataset().done @callback
                     return
 
                 'the first column name is correct': (dataset, f) ->
                     assert.equal 'Bezirk', dataset.column(0).name()
+
+        'A tsv full of undefined & empty values':
+            topic: dw.datasource.delimited
+                csv: 'Year\tValue\tColumn2\tColumn3\n2011\t10\t15\t\n2012\t16\t13\t""\n2013\t15\t18\t\n2014\t15\t18\t10\n2015\t1000\t20\t10\n2016\t16\t""\t10\n2017\t12\t\t\n2018\t20\t\t\n2019\t10\t\t'
+
+            'when loaded as dataset':
+                topic: (src) ->
+                    src.dataset().done @callback
+                    return
+
+                'the column types are correct': (dataset, f) ->
+                    assert.equal 'date', dataset.column(0).type()
+                    assert.equal 'number', dataset.column(1).type()
+                    assert.equal 'number', dataset.column(2).type()
+                    assert.equal 'number', dataset.column(3).type()
+
+                'empty values are null': (dataset, f) ->
+                    assert.deepStrictEqual dataset.column(2).values(), [15,13,18,18,20,null,null,null,null]
+                    assert.deepStrictEqual dataset.column(3).values(), [null,null,null,10,10,10,null,null,null]
 
 
     .export module
