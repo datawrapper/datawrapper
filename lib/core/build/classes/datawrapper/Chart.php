@@ -436,26 +436,6 @@ class Chart extends BaseChart {
         }
     }
 
-    /*
-     * redirect previous chart versions to the most current one
-     */
-    public function redirectPreviousVersions($justLast20=true) {
-        $current_target = $this->getCDNPath();
-        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
-        $redirect_file = $this->getStaticPath() . '/redirect.html';
-        file_put_contents($redirect_file, $redirect_html);
-        $files = array();
-        for ($v=0; $v < $this->getPublicVersion(); $v++) {
-            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
-                $files[] = [
-                    $redirect_file,
-                    $this->getCDNPath($v) . 'index.html', 'text/html'
-                ];
-            }
-        }
-        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
-    }
-
     public function unpublish() {
         $path = $this->getStaticPath();
         if (file_exists($path)) {
