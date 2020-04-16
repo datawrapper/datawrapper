@@ -471,18 +471,37 @@ class Chart extends BaseChart {
      */
     public function redirectPreviousVersions($justLast20=true) {
         $current_target = $this->getCDNPath();
-        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
-        $redirect_file = $this->getStaticPath() . '/redirect.html';
-        file_put_contents($redirect_file, $redirect_html);
-        $files = array();
-        for ($v=0; $v < $this->getPublicVersion(); $v++) {
+
+        // for /:chartId/index.html
+        $redirect_root_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../'.$current_target.'"></head></html>';
+
+        // for /:chartId/:publicVersion/index.html
+        $redirect_version_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
+
+        $redirect_root_file = $this->getStaticPath() . '/redirect_root.html';
+        $redirect_version_file = $this->getStaticPath() . '/redirect_version.html';
+
+        file_put_contents($redirect_root_file, $redirect_root_html);
+        file_put_contents($redirect_version_file, $redirect_version_html);
+
+        $files = [];
+
+        // redirect version 0
+        $files[] = [
+            $redirect_root_file,
+            $this->getCDNPath(0) . 'index.html', 'text/html'
+        ];
+
+        // redirect versions from 1 onwards
+        for ($v=1; $v < $this->getPublicVersion(); $v++) {
             if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
                 $files[] = [
-                    $redirect_file,
+                    $redirect_version_file,
                     $this->getCDNPath($v) . 'index.html', 'text/html'
                 ];
             }
         }
+
         Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
     }
 
