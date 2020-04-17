@@ -124,10 +124,7 @@ if (!defined('NO_SLIM')) {
             'session.handler' => null
         ));
     }
-} else {
-    // called from command line, e.g. via scripts/hook.php
-    require_once ROOT_PATH . 'lib/maintenance.php';
-}
+} 
 
 if (isset($dw_config['memcache'])) {
     $memcfg = $dw_config['memcache'];
