@@ -82,7 +82,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
 
         [$status, $embed_codes] = call_v3_api('GET', '/charts/'.$chart->getID().'/embed-codes');
         if ($status != 200) {
-            $embed_codes = [];
+            return $app->error('Something is wrong, the API might be down...');
         }
 
         // new publish step
