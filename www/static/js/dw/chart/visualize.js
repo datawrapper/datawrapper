@@ -46,7 +46,7 @@ define([
 
         syncUI();
 
-        chart.load(dw.backend.__currentData).done(onDatasetLoaded);
+        chart.load(dw.backend.__currentData).then(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
         if (iframe[0].contentDocument.readyState === 'complete') {
