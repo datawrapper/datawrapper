@@ -24,13 +24,13 @@ class DatawrapperPlugin {
     * Check if there is a static folder,
     * Copy the content to www/static/plugins/<plugin_name>/
     */
-    public function install() {
+    public function install($enable=true) {
         $plugin = PluginQuery::create()->findPK($this->getName());
         if (empty($plugin)) {
             $plugin = new Plugin();
             $plugin->setId($this->getName());
         }
-        $plugin->setEnabled(true);
+        $plugin->setEnabled($enable);
         $plugin->setInstalledAt(time());
         $plugin->save();
 
