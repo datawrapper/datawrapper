@@ -226,6 +226,7 @@ class Chart extends BaseChart {
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_CONNECTTIMEOUT => 5,
+                CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS |  CURLPROTO_FTP
             ]);
             $new_data = curl_exec($ch);
             // check status code to ignore error responses

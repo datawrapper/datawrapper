@@ -16,7 +16,8 @@ function call_v3_api($method, $route, $payload = null) {
         CURLOPT_HTTPHEADER => [
             'Content-Type: application/json',
             'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION']
-        ]
+        ],
+        CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS
     ]);
     if (!empty($payload)) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode_safe($payload));
