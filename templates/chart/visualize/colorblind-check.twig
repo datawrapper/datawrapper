@@ -137,7 +137,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
     });
 
     window.addEventListener('message', function(evt) {
-        if (evt.data == 'datawrapper:vis:reload') {
+        if (evt.data == 'datawrapper:vis:init') {
             initIframe();
         }
         if (evt.data == 'datawrapper:vis:rendered') {
