@@ -238,7 +238,6 @@ $app->delete('/charts/:id', function($id) use ($app) {
         $chart->setDeletedAt(time());
         $chart->setLastEditStep(3);
         $chart->save();
-        $chart->unpublish();
         ok('');
     });
 });
