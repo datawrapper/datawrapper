@@ -243,7 +243,8 @@
                 progress: [],
                 shareurl_type: 'default',
                 embed_type: 'responsive',
-                copy_success: false
+                copy_success: false,
+                statusUrl: false
             };
         },
 
@@ -321,6 +322,9 @@
                     .attributes(chart)
                     .save()
                     .then(d => {
+                        this.set({
+                            statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`
+                        });
                         // publish chart
                         request
                             .post(`/v3/charts/${chart.id}/publish`)
@@ -346,8 +350,9 @@
 
             updateStatus() {
                 const me = this;
-                const { chart } = me.get();
-                request.get(`/v3/charts/${chart.id}/publish/status`).then(res => {
+                const { statusUrl } = me.get();
+                if (!statusUrl) return;
+                request.get(statusUrl).then(res => {
                     this.set({
                         progress: res.progress || [],
                         now: new Date().getTime()

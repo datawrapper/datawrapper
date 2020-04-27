@@ -302,7 +302,8 @@
                 beforeExport: null,
                 exportHed: __('publish / export-duplicate'),
                 exportIntro: __('publish / export-duplicate / intro'),
-                embedCode: ''
+                embedCode: '',
+                statusUrl: false
             };
         },
         computed: {
@@ -362,6 +363,9 @@
                 const chartId = chart.get().id;
 
                 chart.store(() => {
+                    this.set({
+                        statusUrl: `/v3/charts/${chartId}/publish/status/${chart.get().publicVersion}`
+                    });
                     // publish chart
                     request
                         .post(`/v3/charts/${chartId}/publish`)
@@ -390,8 +394,9 @@
             },
 
             updateStatus() {
-                const chart = this.store;
-                request.get(`/v3/charts/${chart.get().id}/publish/status`).then(res => {
+                const { statusUrl } = this.get();
+                if (!statusUrl) return;
+                request.get(statusUrl).then(res => {
                     this.set({
                         progress: res.progress || [],
                         now: new Date().getTime()
