@@ -23,7 +23,7 @@
 
         {#if mode === "web"} {#each breakpoints as preset, i}
         <div class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}" on:click="setWidth(preset.width)">
-            <i style="font-size:{preset.size}px" class="fa {preset.icon}"></i>
+            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
         </div>
         {/each} {:elseif mode === "print"}
         <div class="button" on:click="togglePrintOptions()" style="min-width:12px; border-right: none;">
