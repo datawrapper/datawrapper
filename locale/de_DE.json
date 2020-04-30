@@ -228,6 +228,7 @@
   "publish / status / preparing": "Visualisierung wird vorbereitet",
   "publish / status / rendering": "Visualisierung wird gerendert",
   "publish / status / uploading": "Visualisierung wird hochgeladen",
+  "publish / status / done": "Fertig :)",
   "upload / drag-csv-here": "Ziehe deine CSV-Datei hier her zum Hochladen...",
   "upload / title": "Wie möchtest du deine Daten hochladen?",
   "upload / copy-paste": "Daten kopieren",
@@ -682,5 +683,6 @@
   "publish / guest / e-mail": "Deine E-Mail:",
   "publish / guest / example-email": "z.B. max.mustermann@web.de",
   "publish / guest / h1": "Erstelle einen Account, um dein Diagramm zu veröffentlichen",
-  "publish / guest / p": "Gib deine E-Mail-Adresse ein, um einen Account anzulegen, mit dem du dein Diagramm veröffentlichen kannst."
+  "publish / guest / p": "Gib deine E-Mail-Adresse ein, um einen Account anzulegen, mit dem du dein Diagramm veröffentlichen kannst.",
+  "visualization": "Visualisierung"
 }

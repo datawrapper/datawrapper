@@ -228,6 +228,7 @@
   "publish / status / preparing": "Preparing your visualization",
   "publish / status / rendering": "Rendering your visualization",
   "publish / status / uploading": "Uploading the visualization",
+  "publish / status / done": "Done :)",
   "upload / drag-csv-here": "Drag your CSV file here to upload...",
   "upload / title": "How do you want to upload your data?",
   "upload / copy-paste": "Copy & paste data table",
@@ -682,5 +683,6 @@
   "publish / guest / e-mail": "Enter your e-mail:",
   "publish / guest / example-email": "e.g. your.email@gmail.com",
   "publish / guest / h1": "Create an account to publish your chart",
-  "publish / guest / p": "Enter your e-mail address to create an account and publish your charrt."
+  "publish / guest / p": "Enter your e-mail address to create an account and publish your charrt.",
+  "visualization": "Visualization"
 }
