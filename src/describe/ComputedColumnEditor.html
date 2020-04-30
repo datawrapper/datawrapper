@@ -93,9 +93,9 @@
     import 'cm/addon/display/placeholder';
 
     import _debounce from 'underscore-es/debounce';
-    import clone from '../shared/clone.js';
-    import { __ } from '../shared/l10n';
-    import columnNameToVariable from '../shared/columnNameToVariable';
+    import clone from '@datawrapper/shared/clone';
+    import { __ } from '@datawrapper/shared/l10n';
+    import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
 
     export default {
         data() {
@@ -323,7 +323,10 @@
                         { regex: /<</, token: 'meta', mode: { spec: 'xml', end: />>/ } }
                     ],
                     // The multi-line comment state.
-                    comment: [{ regex: /.*?\*\//, token: 'comment', next: 'start' }, { regex: /.*/, token: 'comment' }],
+                    comment: [
+                        { regex: /.*?\*\//, token: 'comment', next: 'start' },
+                        { regex: /.*/, token: 'comment' }
+                    ],
                     // The meta property contains global information about the mode. It
                     // can contain properties like lineComment, which are supported by
                     // all modes, and also directives like dontIndentStates, which are
