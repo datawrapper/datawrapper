@@ -5,7 +5,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import json from 'rollup-plugin-json';
 import buble from 'rollup-plugin-buble';
-import uglify from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -93,10 +93,11 @@ function build(appId, opts) {
             // If we're building for production (npm run build
             // instead of npm run dev), transpile and minify
             buble({
-                transforms: { dangerousForOf: true }
+                transforms: { dangerousForOf: true },
+                objectAssign: 'Object.assign'
             }),
             production &&
-                uglify({
+                terser({
                     mangle: true
                 })
         ]
