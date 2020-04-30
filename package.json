@@ -6,7 +6,9 @@
         "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
         "watch": "watch 'make assets' assets/",
         "pretest-legacy": "cd test_legacy/build && rollup -c",
-        "test-legacy": "./node_modules/mocha/bin/mocha --require reify"
+        "test-legacy": "./node_modules/mocha/bin/mocha --require reify",
+        "test": "ava",
+        "test:watch": "ava --watch --verbose"
     },
     "repository": {
         "type": "git",

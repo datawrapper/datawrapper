@@ -53,6 +53,16 @@ jobs:
 
             - run: npm run lint
 
+    test:
+        <<: *defaults
+        steps:
+            - *restore_source
+            - checkout
+            - restore_cache:
+                  <<: *cache
+
+            - run: npm test
+
 workflows:
     version: 2
     install, test and lint:
@@ -61,6 +71,13 @@ workflows:
                   filters:
                       tags:
                           only: /^v.*/
+
+            - test:
+                  filters:
+                      tags:
+                          only: /^v.*/
+                  requires:
+                      - install
 
             - lint:
                   filters:
