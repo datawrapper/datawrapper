@@ -129,9 +129,13 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 $embed_codes = [];
             }
 
+            $embed_types = (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responsive']]));
+            $embed_type = isset($embed_types[0]) ? $embed_types[0]['id'] : 'responsive';
+
+
             $publishData = (object) [
                 'embedTemplates' => $embed_codes,
-                'embedType' => (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responxsive']]))[0]['id'],
+                'embedType' => $embed_type,
                 'shareurlType' => $user->getUserData()['shareurl_type'] ?? 'default',
                 'pluginShareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
                     Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
