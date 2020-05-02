@@ -437,165 +437,6 @@ class Chart extends BaseChart {
         }
     }
 
-    /*
-     * increment the public version of a chart, which is used
-     * in chart public urls to deal with cdn caches
-     */
-    public function publish() {
-        // increment public version
-        $this->setPublicVersion($this->getPublicVersion() + 1);
-        // generate public url
-        $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
-        if (!empty($published_urls)) {
-            // store public url from first publish module
-            $this->setPublicUrl($published_urls[0]);
-        } else {
-            // fallback to local url
-            $this->setPublicUrl($this->getLocalUrl());
-        }
-        $this->generateEmbedCodes();
-        $this->save();
-        // copy data to public
-        if (empty($this->getPublicChart())) {
-            // create new public chart
-            $publicChart = new PublicChart();
-            $publicChart->setFirstPublishedAt(time());
-            $this->setPublicChart($publicChart);
-        }
-        $this->getPublicChart()->update();
-        // log chart publish action
-        Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
-    }
-
-    /*
-     * redirect previous chart versions to the most current one
-     */
-    public function redirectPreviousVersions($justLast20=true) {
-        $current_target = $this->getCDNPath();
-
-        // for /:chartId/index.html
-        $redirect_root_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../'.$current_target.'"></head></html>';
-
-        // for /:chartId/:publicVersion/index.html
-        $redirect_version_html = '<html><head><meta http-equiv="REFRESH" content="0; url=../../'.$current_target.'"></head></html>';
-
-        $redirect_root_file = $this->getStaticPath() . '/redirect_root.html';
-        $redirect_version_file = $this->getStaticPath() . '/redirect_version.html';
-
-        file_put_contents($redirect_root_file, $redirect_root_html);
-        file_put_contents($redirect_version_file, $redirect_version_html);
-
-        $files = [];
-
-        // redirect version 0
-        $files[] = [
-            $redirect_root_file,
-            $this->getCDNPath(0) . 'index.html', 'text/html'
-        ];
-
-        // redirect versions from 1 onwards
-        for ($v=1; $v < $this->getPublicVersion(); $v++) {
-            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
-                $files[] = [
-                    $redirect_version_file,
-                    $this->getCDNPath($v) . 'index.html', 'text/html'
-                ];
-            }
-        }
-
-        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
-    }
-
-    public function generateEmbedCodes() {
-        // generate embed codes
-        $embedcodes = [];
-        $theme = ThemeQuery::create()->findPk($this->getTheme());
-
-        // hack: temporarily set UI language to chart language
-        // so we get the correct translation of "Chart:" and "Map:"
-        if ($this->getLanguage() != '') {
-            global $__l10n;
-            $__l10n->loadMessages($this->getLanguage());
-        }
-
-        $search = [
-            '%chart_id%',
-            '%chart_url%',
-            '%chart_title%',
-            '%chart_type%',
-            '%chart_intro%',
-            '%chart_width%',
-            '%chart_height%',
-            '%embed_heights%',
-            '%embed_heights_escaped%',
-        ];
-        $replace = [
-            $this->getID(),
-            $this->getPublicUrl(),
-            htmlentities(strip_tags($this->getTitle())),
-            $this->getAriaLabel($theme),
-            htmlentities(strip_tags($this->getMetadata('describe.intro'))),
-            $this->getMetadata('publish.embed-width'),
-            $this->getMetadata('publish.embed-height'),
-            json_encode($this->getMetadata('publish.embed-heights')),
-            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights')))
-        ];
-
-        // hack: revert the UI language
-        if ($this->getLanguage() != '') {
-            $__l10n->loadMessages(DatawrapperSession::getLanguage());
-        }
-
-        foreach (publish_get_embed_templates($this->getOrganization()) as $template) {
-            $code = str_replace($search, $replace, $template['template']);
-            $embedcodes['embed-method-'.$template['id']] = $code;
-        }
-        $this->updateMetadata('publish.embed-codes', $embedcodes);
-    }
-
-    public function unpublish() {
-        $path = $this->getStaticPath();
-        if (file_exists($path)) {
-            $dirIterator = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
-            $itIterator  = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST);
-
-            foreach ($itIterator as $entry) {
-                $file = realpath((string) $entry);
-
-                if (is_dir($file)) {
-                    rmdir($file);
-                }
-                else {
-                    unlink($file);
-                }
-            }
-
-            rmdir($path);
-        }
-
-        // Load CDN publishing class
-        $config = $GLOBALS['dw_config'];
-        if (!empty($config['publish'])) {
-
-            // remove files from CDN
-            $pub = get_module('publish', dirname(__FILE__) . '/../../../../');
-
-            $id = $this->getID();
-
-            $chart_files = array();
-            $chart_files[] = "$id/index.html";
-            $chart_files[] = "$id/data";
-            $chart_files[] = "$id/$id.min.js";
-
-            $pub->unpublish($chart_files);
-        }
-
-        // remove all jobs related to this chart
-        JobQuery::create()
-            ->filterByChart($this)
-            ->delete();
-    }
-
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
@@ -603,14 +444,6 @@ class Chart extends BaseChart {
 
         return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
             . $this->getID() . "/" . $path . "/plain.png";
-    }
-
-    public function plainUrl() {
-        return $this->assetUrl('plain.html');
-    }
-
-    public function assetUrl($file) {
-        return dirname($this->getPublicUrl() . '_') . '/' . $file;
     }
 
     public function getTitle() {
@@ -642,47 +475,10 @@ class Chart extends BaseChart {
         return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
-    public function getCDNPath($version = null) {
-        if ($version === null) $version = $this->getPublicVersion();
-        return $this->getPublicId() . '/' . ($version > 0 ? $version . '/' : '');
-    }
-
     public function getNamespace() {
         if (!DatawrapperVisualization::has($this->getType())) return 'chart';
         $vis = DatawrapperVisualization::get($this->getType());
         return $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * the caption decides what goes in front of the byline in the
-     * chart footer. can be either "chart:", "map:", or "table:"
-     */
-    public function getCaption() {
-        if (!DatawrapperVisualization::has($this->getType())) return 'chart';
-        $vis = DatawrapperVisualization::get($this->getType());
-        return $vis['caption'] ?? $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * returns the text to be used in `aria-label` meta attribute
-     * in iframe embed codes. visualizations may define a custom
-     * aria label, otherwise we fall back to just "chart" or "map"
-     */
-    public function getAriaLabel($theme) {
-        $vis = DatawrapperVisualization::get($this->getType());
-        if ($vis !== false && !empty($vis['aria-label'])) {
-            return $vis['aria-label'];
-        }
-        // fall back to chart type title
-        if ($vis !== false && !empty($vis['title'])) {
-            return $vis['title'];
-        }
-        // fall back to namespace caption
-        return str_replace(':', '', $this->getNamespace() == 'map' ?
-            $theme->getThemeData('options.footer.mapCaption') :
-            $this->getNamespace() == 'table' ?
-            $theme->getThemeData('options.footer.tableCaption') :
-            $theme->getThemeData('options.footer.chartCaption'));
     }
 
     public function getDefaultStep() {
@@ -704,3 +500,19 @@ class Chart extends BaseChart {
     }
 
 } // Chart
+
+function chart_publish_directory() {
+    $dir = ROOT_PATH.'charts';
+
+    if (isset($GLOBALS['dw_config']['publish_directory'])) {
+        $dir = $GLOBALS['dw_config']['publish_directory'];
+    }
+
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0755, true)) {
+            throw new RuntimeException('Could not create chart publish directory "'.$dir.'". Please create it manually and make sure PHP can write to it.');
+        }
+    }
+
+    return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+}

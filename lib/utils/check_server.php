@@ -5,17 +5,7 @@
 function check_path_permissions() {
     $paths       = array();
     $rel         = '..';
-    $publishRoot = chart_publish_directory();
 
-    $paths[] = $publishRoot.'data';
-    $paths[] = $publishRoot.'data/tmp';
-    $paths[] = $publishRoot.'exports';
-    $paths[] = $publishRoot.'images';
-    $paths[] = $publishRoot.'static';
-    $paths[] = $publishRoot.'static/lib';
-    $paths[] = $publishRoot.'static/lib/theme';
-    $paths[] = $publishRoot.'static/lib/vis';
-    $paths[] = $publishRoot.'tmp';
     $paths[] = ROOT_PATH.'tmp';
 
     $err = array();

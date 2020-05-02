@@ -23,7 +23,15 @@ function call_v3_api($method, $route, $payload = null) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode_safe($payload));
     }
     $response = curl_exec($ch);
-    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    $attempt = 1;
+    // bad gateway, let's retry this request a few times
+    while ($status == 502 && $attempt < 11) {
+        sleep(1);
+        $attempt++;
+        $response = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    }
     $data = null;
     if (!empty($response)) {
         try {

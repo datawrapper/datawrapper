@@ -42,15 +42,6 @@ jobs:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
                   paths:
                       - ~/.npm
-    test:
-        <<: *defaults
-        steps:
-            - *restore_source
-            - checkout
-            - restore_cache:
-                  <<: *cache
-
-            - run: npm test
 
     lint:
         <<: *defaults
@@ -62,18 +53,15 @@ jobs:
 
             - run: npm run lint
 
-    # publish:
-    #   <<: *defaults
-    #   steps:
-    #     - checkout
-    #     - restore_cache:
-    #         <<: *cache
-    #     - run:
-    #         name: Authenticate with registry
-    #         command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-    #     - run:
-    #         name: Publish Package
-    #         command: npm publish
+    test:
+        <<: *defaults
+        steps:
+            - *restore_source
+            - checkout
+            - restore_cache:
+                  <<: *cache
+
+            - run: npm test
 
 workflows:
     version: 2
@@ -97,13 +85,3 @@ workflows:
                           only: /^v.*/
                   requires:
                       - install
-            # - publish:
-            #     context: Deployment Keys
-            #     requires:
-            #       - test
-            #       - lint
-            #     filters:
-            #       tags:
-            #         only: /^v.*/
-            #       branches:
-            #         ignore: /.*/

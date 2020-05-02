@@ -103,7 +103,7 @@ TODO for later:
         computed: {
             url({ $id, src }) {
                 // eslint-disable-next-line
-                return src ? src : $id ? `/chart/${$id}/preview` : '';
+                return src ? src : $id ? `/preview/${$id}` : '';
             }
         },
         methods: {

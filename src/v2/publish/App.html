@@ -30,7 +30,7 @@
 <div class="btn-aside alert">
     {@html __('publish / republish-alert') }
 </div>
-{/if} {#if published && !needs_republish && progress === 1 && !publishing}
+{/if} {#if published && !needs_republish && progress && progress.includes('done') && !publishing}
 <div class="alert alert-success">
     {@html __('publish / publish-success') }
 </div>
@@ -39,11 +39,17 @@
     {@html publish_error }
 </div>
 {/if} {#if publishing}
-<div class="alert {progress < 1 ? 'alert-info' : 'alert-success'} publishing">
-    { __("publish / progress / please-wait") }
-    <div class="progress progress-striped active">
-        <div class="bar {progress < 1 ? '' : 'bar-success'}" ref:bar />
-    </div>
+<div class="alert alert-info publishing">
+    { __("publish / progress / please-wait") } {#if publishWait > 3000}
+    <!-- show progress information after 3s -->
+    <ul class="publish-progress unstyled">
+        {#each progress as step,i}
+        <li class:done="i < progress.length-1">
+            <i class="fa fa-fw {i < progress.length-1 ? 'fa-check' : 'fa-spinner fa-pulse'}"></i> {@html __('publish / status / '+step)}
+        </li>
+        {/each}
+    </ul>
+    {/if}
 </div>
 {/if}
 
@@ -198,6 +204,12 @@
     .embed-code {
         height: 20px;
     }
+    .publish-progress {
+        margin-top: 5px;
+    }
+    .publish-progress li.done {
+        opacity: 0.6;
+    }
 </style>
 
 <script>
@@ -205,13 +217,12 @@
     import Help from '@datawrapper/controls/Help.html';
 
     import { __ } from '@datawrapper/shared/l10n';
+    import request from '@datawrapper/shared/httpReq';
     import { trackEvent } from '@datawrapper/shared/analytics';
-    import { getJSON, postJSON } from '@datawrapper/shared/fetch';
     import get from '@datawrapper/shared/get';
 
     import computeEmbedHeights from './compute-embed-heights';
 
-    let fakeProgress = 0;
     let initial_auto_publish = true;
 
     export default {
@@ -225,13 +236,15 @@
                 plugin_shareurls: [],
                 published: false,
                 publishing: false,
+                publishStarted: 0,
                 needs_republish: false,
                 publish_error: false,
                 auto_publish: false,
-                progress: 0,
+                progress: [],
                 shareurl_type: 'default',
                 embed_type: 'responsive',
-                copy_success: false
+                copy_success: false,
+                statusUrl: false
             };
         },
 
@@ -270,6 +283,10 @@
                 } else {
                     return '';
                 }
+            },
+
+            publishWait({ publishStarted, now }) {
+                return publishStarted > 0 ? now - publishStarted : 0;
             }
         },
         helpers: { __ },
@@ -287,7 +304,9 @@
 
                 me.set({
                     publishing: true,
-                    progress: 0,
+                    publishStarted: new Date().getTime(),
+                    now: new Date().getTime(),
+                    progress: [],
                     publish_error: false
                 });
                 // generate embed codes
@@ -303,51 +322,59 @@
                     .attributes(chart)
                     .save()
                     .then(d => {
-                        // publish chart
-                        postJSON(`/api/charts/${chart.id}/publish`, null, res => {
-                            if (res.status === 'ok') {
-                                trackEvent('Chart Editor', 'publish-success');
-                                me.publishFinished(res.data);
-                            } else {
-                                trackEvent('Chart Editor', 'publish-error', res.message);
-                                me.set({ publish_error: res.message });
-                            }
+                        this.set({
+                            statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`
                         });
-                        fakeProgress = 0;
-                        me.updateStatus();
+                        // publish chart
+                        request
+                            .post(`/v3/charts/${chart.id}/publish`)
+                            .then(res => {
+                                this.set({
+                                    published: true,
+                                    progress: ['done']
+                                });
+                                request.get(`/v3/charts/${chart.id}`).then(res => {
+                                    trackEvent('Chart Editor', 'publish-success');
+                                    me.publishFinished(res);
+                                });
+                            })
+                            .catch(error => {
+                                trackEvent('Chart Editor', 'publish-error', error.message);
+                            });
+                        setTimeout(() => {
+                            const { publishing } = me.get();
+                            if (publishing) me.updateStatus();
+                        }, 1000);
                     });
-            },
-
-            updateProgressBar(p) {
-                if (this.refs.bar) {
-                    this.refs.bar.style.width = (p * 100).toFixed() + '%';
-                }
             },
 
             updateStatus() {
                 const me = this;
-                const { chart } = me.get();
-                fakeProgress += 0.05;
-                getJSON(`/api/charts/${chart.id}/publish/status`, res => {
-                    if (res) {
-                        res = +res / 100 + fakeProgress;
-                        me.set({ progress: Math.min(1, res) });
-                    }
-                    if (me.get().publishing) {
+                const { statusUrl } = me.get();
+                if (!statusUrl) return;
+                request.get(statusUrl).then(res => {
+                    this.set({
+                        progress: res.progress || [],
+                        now: new Date().getTime()
+                    });
+                    const { publishing } = this.get();
+                    if (publishing) {
                         setTimeout(() => {
-                            me.updateStatus();
-                        }, 400);
+                            this.updateStatus();
+                        }, 500);
                     }
                 });
             },
 
             publishFinished(chartInfo) {
                 this.set({
-                    progress: 1,
+                    progress: ['done'],
                     published: true,
+                    publishStarted: 0,
                     needs_republish: false
                 });
-                setTimeout(() => this.set({ publishing: false }), 500);
+                // give user 1s to read the success message
+                setTimeout(() => this.set({ publishing: false }), 1000);
                 this.set({ chart: chartInfo });
 
                 window.parent.postMessage(
@@ -379,12 +406,6 @@
         },
         onstate({ changed, current }) {
             const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
-            if (changed.publishing) {
-                if (current.publishing) this.updateProgressBar(current.progress);
-            }
-            if (changed.progress) {
-                this.updateProgressBar(current.progress);
-            }
             if (changed.embed_type && userDataReady) {
                 const data = window.dw.backend.__userData;
                 if (!current.embed_type || !data) return;

@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 /*
  * PUBLISH STEP - shows progress of publishing action and thumbnail generation
  */
@@ -52,7 +54,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             return (isset($a['order']) ? $a['order'] : 999) - (isset($b['order']) ? $b['order'] : 999);
         });
 
-        $chartUrlLocal = '/chart/' . $chart->getID() . '/preview';
+        $chartUrlLocal = '/preview/' . $chart->getID();
 
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Publish'),
@@ -78,16 +80,22 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             $page['steps'][1]['readonly'] = true;
         }
 
+        [$status, $embed_codes] = call_v3_api('GET', '/charts/'.$chart->getID().'/embed-codes');
+        if ($status != 200) {
+            return $app->error('Something is wrong, the API might be down...');
+        }
+
         // new publish step
         $page['svelte_data'] = [
             'published' => $chart->getLastEditStep() > 4,
             'needs_republish' => $chart->getLastEditStep() > 4 &&
                 strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
             'chart' => $chart->toStruct(),
-            'embed_templates' => publish_get_embed_templates($chart->getOrganization()),
-            'embed_type' => publish_get_preferred_embed_type($chart->getOrganization()),
-            'shareurl_type' => publish_get_preferred_shareurl_type(),
-            'plugin_shareurls' => publish_get_plugin_shareurls(),
+            'embed_templates' => $embed_codes,
+            'embed_type' => (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responxsive']]))[0]['id'],
+            'shareurl_type' => $user->getUserData()['shareurl_type'] ?? 'default',
+            'plugin_shareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
+                Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
             'auto_publish' => !empty($app->request()->params('doit')),
             'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
             'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
