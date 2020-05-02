@@ -228,6 +228,7 @@
   "publish / status / preparing": "Preparing your visualization",
   "publish / status / rendering": "Rendering your visualization",
   "publish / status / uploading": "Uploading the visualization",
+  "publish / status / redirecting": "Redirecting previous embed-codes to the recent version",
   "publish / status / done": "Done :)",
   "upload / drag-csv-here": "Drag your CSV file here to upload...",
   "upload / title": "How do you want to upload your data?",

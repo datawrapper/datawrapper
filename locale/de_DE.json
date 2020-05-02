@@ -228,6 +228,7 @@
   "publish / status / preparing": "Visualisierung wird vorbereitet",
   "publish / status / rendering": "Visualisierung wird gerendert",
   "publish / status / uploading": "Visualisierung wird hochgeladen",
+  "publish / status / redirecting": "Alte Einbett-Codes werden auf die neueste Version umgeleitet",
   "publish / status / done": "Fertig :)",
   "upload / drag-csv-here": "Ziehe deine CSV-Datei hier her zum Hochladen...",
   "upload / title": "Wie möchtest du deine Daten hochladen?",
