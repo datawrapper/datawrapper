@@ -85,6 +85,9 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             return $app->error('Something is wrong, the API might be down...');
         }
 
+        $embed_types = (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responsive']]));
+        $embed_type = isset($embed_types[0]) ? $embed_types[0]['id'] : 'responsive';
+
         // new publish step
         $page['svelte_data'] = [
             'published' => $chart->getLastEditStep() > 4,
@@ -92,7 +95,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
                 strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
             'chart' => $chart->toStruct(),
             'embed_templates' => $embed_codes,
-            'embed_type' => (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responsive']]))[0]['id'],
+            'embed_type' => $embed_type,
             'shareurl_type' => $user->getUserData()['shareurl_type'] ?? 'default',
             'plugin_shareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
                 Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
