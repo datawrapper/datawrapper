@@ -1,0 +1,24 @@
+{% block messages %}
+{# THIS TEMPLATE IS DEPRECATED #}
+<script type="text/javascript">
+
+    dw.backend.messages = {
+
+        needMoreSpace: "{{ 'Watch out: Your chart needs more space. To get rid of the scrollbars just [resize iFrame to chart]' | trans | escape('js') }}",
+
+        provideCurPwd: "{{ 'For security reasons, please provide your current password.'|trans|escape('js') }}",
+
+        pwdTooShort: "{{ 'account / pwd-too-short' |trans|escape('js') }}",
+
+        pwdMismatch: "{{ 'The password and the repeated password must not differ.'|trans|escape('js') }}",
+
+        noData: "{{ 'Awesome charts need awesome data. If you just want to try out things you can select one of our sample datasets.'|trans|escape('js') }}",
+
+        insufficientData: "{{ '<h4>Insufficient data</h4>The visualization needs at least one column of the type <b>%type</b> to populate axis <i>%key</i>. Please make sure that your data is recognized correctly in the previous step.'|trans|escape('js')}}",
+
+        liveEditSuccess: "{{ 'Your changes have been saved. In the [Check & Describe] step you can restore the original dataset using the <b>revert</b> button.' | trans | escape('js') }}"
+
+    };
+
+</script>
+{% endblock %}
