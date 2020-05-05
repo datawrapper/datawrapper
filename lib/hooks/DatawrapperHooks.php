@@ -66,9 +66,6 @@ class DatawrapperHooks {
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
 
-    // Send an email (args: to, subject, body, headers)
-    const SEND_EMAIL = 'send_email';
-
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
 
@@ -155,13 +152,7 @@ class DatawrapperHooks {
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
     const CUSTOM_ANNOTATION_CONTROLS = 'custom_annotation_controls';
 
-    // extend the settings form
-    const USER_SETTINGS = 'user_settings';
-
-    // extend the settings navigation
-    const USER_SETTINGS_NAV = 'user_settings_nav';
-
-    // GET_ACCOUNT_PAGES kept for backward-compatibility
+    // add user account settings pages
     const GET_ACCOUNT_PAGES = 'get_account_pages';
 
     // certain core events will execute the NOTIFY_USER hook in hope that some
