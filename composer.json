@@ -37,8 +37,7 @@
             "lib/utils/pagination.php",
             "lib/utils/parse_config.php",
             "lib/utils/parse_vis_options.php",
-            "lib/utils/twig-init.php",
-            "lib/utils/vksprintf.php"
+            "lib/utils/twig-init.php"
         ],
         "psr-0": {
             "Slim": "vendor/slim/slim"
