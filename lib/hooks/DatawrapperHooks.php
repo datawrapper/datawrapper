@@ -155,11 +155,6 @@ class DatawrapperHooks {
     // add user account settings pages
     const GET_ACCOUNT_PAGES = 'get_account_pages';
 
-    // certain core events will execute the NOTIFY_USER hook in hope that some
-    // plugin will deliver these messages to the user somehow.
-    // args: $user, $message
-    const NOTIFY_USER = 'notify_user';
-
     // add more markup below sidebar in describe step
     const DESCRIBE_AFTER_SIDEBAR = 'describe_after_sidebar';
 
