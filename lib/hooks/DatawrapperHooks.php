@@ -196,10 +196,6 @@ class DatawrapperHooks {
 
     const RENDER_RESIZE_CONTROL = 'render_resize_control';
 
-    // admin user page
-    const ADMIN_USER_DETAIL_TOP = 'admin_user_detail_top';
-    const ADMIN_USER_DETAIL_BOTTOM = 'admin_user_detail_bottom';
-
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
 
