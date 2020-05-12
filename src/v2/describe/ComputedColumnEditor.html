@@ -144,7 +144,6 @@
             keywords({ metaColumns }) {
                 const keywords = [];
                 metaColumns.forEach(function(col) {
-                    keywords.push(col.key);
                     if (col.type === 'number') {
                         keywords.push(col.key + '__sum');
                         keywords.push(col.key + '__min');
@@ -152,6 +151,7 @@
                         keywords.push(col.key + '__mean');
                         keywords.push(col.key + '__median');
                     }
+                    keywords.push(col.key);
                 });
                 return keywords;
             },
@@ -371,14 +371,14 @@
                             token: 'number'
                         },
                         // { regex: /\/\/.*/, token: 'comment' },
+                        { regex: columnsRegex, token: 'variable-2' },
                         { regex: /\/(?:[^\\]|\\.)*?\//, token: 'variable-3' },
                         // A next property will cause the mode to move to a different state
                         // { regex: /\/\*/, token: 'comment', next: 'comment' },
-                        { regex: /[-+/*=<>!^]+/, token: 'operator' },
+                        { regex: /[-+/*=<>!^%]+/, token: 'operator' },
                         // indent and dedent properties guide autoindentation
                         { regex: /[[(]/, indent: true },
                         { regex: /[\])]/, dedent: true },
-                        { regex: columnsRegex, token: 'variable-2' },
                         { regex: /[a-z$][\w$]*/, token: 'variable-x' },
                         { regex: /[A-Z_][\w$]*/, token: 'keyword-x' }
                     ],
