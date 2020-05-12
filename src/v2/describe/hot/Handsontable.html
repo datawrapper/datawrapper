@@ -36,7 +36,7 @@
                     if (searchIndex > l) searchIndex %= l;
                 }
                 return searchResults[searchIndex];
-            },
+            }
         },
         methods: {
             render() {
@@ -211,7 +211,7 @@
             },
 
             getColumnFormat(name) {
-                const {dw_chart} = this.store.get();
+                const { dw_chart } = this.store.get();
                 const colFormats = dw_chart.get('metadata.data.column-format', {});
                 return colFormats[name] || { type: 'auto', ignore: false };
             }
@@ -244,7 +244,6 @@
             });
 
             const { dw_chart } = this.store.get();
-            console.log(this.refs.hot);
             const hot = new HOT(this.refs.hot, {
                 data: [],
                 rowHeaders: i => {
@@ -270,14 +269,10 @@
                 sortIndicator: true,
                 columnSorting: true,
                 sortFunction: function(sortOrder, columnMeta) {
-                    console.log('compareFunctionFactory', {sortOrder, columnMeta})
                     if (columnMeta.col > -1) {
                         const column = dw_chart.dataset().column(columnMeta.col);
                         const colType = column.type();
-                        const plugin = hot.getPlugin('columnSorting');
-                        let first = false;
                         return (a, b) => {
-                            var sortFunction;
                             if (a[0] === 0) return -1;
                             // replace with values
                             a[1] = column.val(a[0] - 1);
@@ -315,10 +310,8 @@
                 search: 'search'
             });
 
-
             window.HT = hot;
             this.set({ hot });
-            console.log('done', hot.getPlugin('ColumnSorting'))
 
             HOT.hooks.add('afterSetDataAtCell', a => this.dataChanged(a));
             HOT.hooks.add('afterColumnMove', (a, b) => this.columnMoved(a, b));
@@ -363,14 +356,7 @@
                 hot.updateSettings({ fixedColumnsLeft: current.fixedColumnsLeft });
             }
             if (changed.sorting) {
-                console.log('changed sorting!', {
-                    column: chart.dataset().indexOf(current.sorting.sortBy),
-                    sortOrder: current.sorting.sortDir
-                });
-                hot.getPlugin('columnSorting').sort(
-                    chart.dataset().indexOf(current.sorting.sortBy),
-                    current.sorting.sortDir ? 'asc' : 'desc'
-                );
+                hot.getPlugin('columnSorting').sort(chart.dataset().indexOf(current.sorting.sortBy), current.sorting.sortDir ? 'asc' : 'desc');
             }
         }
     };
@@ -390,7 +376,7 @@
         }
         // find column index
         const colIndex = +app.refs.hot.querySelector(`.htCore tbody tr:first-child td:nth-child(${thIndex + 1})`).dataset.column;
-        const {dw_chart} = app.store.get();
+        const { dw_chart } = app.store.get();
         const { activeColumn, hot } = app.get();
         if (dw_chart.dataset().hasColumn(colIndex)) {
             const newActive = dw_chart.dataset().column(+colIndex);

@@ -9,9 +9,7 @@
     <textarea ref:code class="code"></textarea>
     {#if parserErrors.length}
     <p class="mini-help errors">
-        {#each parserErrors as err}
-        <div>{@html err}</div>
-        {/each}
+        {#each parserErrors as err} {err} {/each}
     </p>
     {/if}
 
@@ -109,7 +107,9 @@
     import { __ } from '@datawrapper/shared/l10n';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
 
-    const functions = 'NOT|and|or|in|ABS|ACOS|ACOSH|ASIN|ASINH|ATAN|ATANH|CBRT|CEIL|COS|COSH|EXP|EXPM1|FLOOR|LENGTH|LN|LOG|LOG10|LOG2|LOG1P|NOT|ROUND|SIGN|SIN|SINH|SQRT|TAN|TANH|TRUNC|RANDOM|MIN|MAX|POW|ATAN2|ROUNDTO|IF|CONCAT|TRIM|SUBSTR|YEAR|MONTH|DAY|HOURS|MINUTES|SECONDS|SPLIT|JOIN|INDEXOF|ISNULL|REPLACE'.split('|');
+    const functions = 'NOT|and|or|in|ABS|ACOS|ACOSH|ASIN|ASINH|ATAN|ATANH|CBRT|CEIL|COS|COSH|EXP|EXPM1|FLOOR|LENGTH|LN|LOG|LOG10|LOG2|LOG1P|NOT|ROUND|SIGN|SIN|SINH|SQRT|TAN|TANH|TRUNC|RANDOM|MIN|MAX|POW|ATAN2|ROUNDTO|IF|CONCAT|TRIM|SUBSTR|YEAR|MONTH|DAY|HOURS|MINUTES|SECONDS|SPLIT|JOIN|INDEXOF|ISNULL|REPLACE'.split(
+        '|'
+    );
 
     export default {
         data() {
@@ -211,7 +211,6 @@
                     });
                 }
 
-
                 return {
                     list: match,
                     from: CodeMirror.Pos(cur.line, token.start),
@@ -222,9 +221,6 @@
             // CodeMirror.registerHelper("hint", "javascript", function(editor, options) {
             //     return scriptHint(editor, options);
             // });
-
-            console.log(customCols[column.name()] || '');
-            console.log( this.get().formula);
 
             const cm = CodeMirror.fromTextArea(this.refs.code, {
                 value: this.get().formula || '',
@@ -255,11 +251,9 @@
             this.on('state', ({ changed, current }) => {
                 // update if column changes
                 if (changed.column) {
-                    console.log('change col', current.column);
                     const col = current.column;
                     if (col) {
                         const customCols = dw_chart.get('metadata.describe.computed-columns', {});
-                        console.log('change col 2', customCols[col.name()]);
                         this.set({
                             formula: customCols[col.name()] || '',
                             name: col.title()
@@ -268,7 +262,6 @@
                 }
 
                 if (changed.formula) {
-                    console.log('change formula', current.formula);
                     setFormula(current.formula);
                 }
 
@@ -303,12 +296,9 @@
                 }
 
                 if (changed.metaColumns) {
-                    console.log('changed metaColumns');
                     cmInit(current.keywords);
                 }
             });
-
-
 
             function setFormula(formula) {
                 // update codemirror
@@ -320,17 +310,16 @@
                 const customCols = clone(dw_chart.get('metadata.describe.computed-columns', {}));
                 if (customCols[column.name()] !== formula) {
                     customCols[column.name()] = formula;
-                    dw_chart.set('metadata.describe.computed-columns', {...customCols});
+                    dw_chart.set('metadata.describe.computed-columns', { ...customCols });
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     updateTable();
                     setTimeout(() => {
-                        app.set({ parserErrors: _unique(dw_chart.__parserErrors) || []});
-                    })
+                        app.set({ parserErrors: _unique(dw_chart.__parserErrors) || [] });
+                    });
                 }
             }
 
             function cmInit(keywords) {
-                console.log('cmInit');
                 const columnsRegex = new RegExp(`(?:${keywords.join('|')})`);
                 const functionRegex = new RegExp(`(?:${functions.join('|')})`);
                 CodeMirror.defineSimpleMode('simplemode', {
@@ -363,14 +352,13 @@
                         { regex: /[\])]/, dedent: true },
                         { regex: columnsRegex, token: 'variable-2' },
                         { regex: /[a-z$][\w$]*/, token: 'variable' },
-                        { regex: /[A-Z_][\w$]*/, token: 'keyword-x' },
+                        { regex: /[A-Z_][\w$]*/, token: 'keyword-x' }
                     ],
                     // The meta property contains global information about the mode. It
                     // can contain properties like lineComment, which are supported by
                     // all modes, and also directives like dontIndentStates, which are
                     // specific to simple modes.
-                    meta: {
-                    }
+                    meta: {}
                 });
 
                 cm.setOption('mode', 'simplemode');
