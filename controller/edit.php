@@ -179,10 +179,6 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'visNamespace' => $page['visNamespace']
             ];
 
-            if (Hooks::hookRegistered(Hooks::REPLACE_PUBLISH_LOGIC)) {
-                $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC, $user, $chart)[0];
-            }
-
             // legacy stuff, need to move into ChartEditor some day
             // demo datasets
             $datasets = DatawrapperHooks::execute(DatawrapperHooks::GET_DEMO_DATASETS);

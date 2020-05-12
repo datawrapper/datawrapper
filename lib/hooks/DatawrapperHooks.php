@@ -63,36 +63,8 @@ class DatawrapperHooks {
         return isset($me->hooks[$hookName]);
     }
 
-    // print something above / below a charts HTML body
-    const CHART_BEFORE_BODY = 'chart_before_body';
-    const CHART_AFTER_BODY = 'chart_after_body';
-
-    // print something in <head> section of a chart
-    const CHART_HTML_HEAD = 'chart_html_head';
-
-    // for adding more sources to a chart, e.g. map data attribution
-    const CHART_FOOTER_AFTER_SOURCE = 'chart_footer_after_source';
-
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
-
-    // publishes a set of files to some CDN (args: chart, files)
-    const PUBLISH_FILES = 'publish_files';
-
-    // unpublishes (removes) a set of files from some CDN (args: chart, files)
-    const UNPUBLISH_FILES = 'unpublish_files';
-
-    // returns the URL of a published chart (args: chart)
-    const GET_PUBLISHED_URL = 'get_pulished_url';
-
-    // returns the host for chart assets (args: chart)
-    const GET_ASSET_DOMAIN = 'get_asset_domain';
-
-    // returns a key specifically for the storage (eg the s3 bucket)
-    const GET_PUBLISH_STORAGE_KEY = 'get_publish_storage_key';
-
-    // Send an email (args: to, subject, body, headers)
-    const SEND_EMAIL = 'send_email';
 
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
@@ -111,12 +83,6 @@ class DatawrapperHooks {
 
     // Runs every minute via cronjob
     const CRON_MINUTELY = 'cron_minutely';
-
-    // Executed before a chart has been published (args: chart, user)
-    const PRE_CHART_PUBLISH = 'pre_chart_publish';
-
-    // Executed after a chart has been published (args: chart, user)
-    const POST_CHART_PUBLISH = 'post_chart_publish';
 
     // returns a list of actions to be displayed in publish step
     const GET_CHART_ACTIONS = 'get_chart_actions';
@@ -186,19 +152,8 @@ class DatawrapperHooks {
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
     const CUSTOM_ANNOTATION_CONTROLS = 'custom_annotation_controls';
 
-    // extend the settings form
-    const USER_SETTINGS = 'user_settings';
-
-    // extend the settings navigation
-    const USER_SETTINGS_NAV = 'user_settings_nav';
-
-    // GET_ACCOUNT_PAGES kept for backward-compatibility
+    // add user account settings pages
     const GET_ACCOUNT_PAGES = 'get_account_pages';
-
-    // certain core events will execute the NOTIFY_USER hook in hope that some
-    // plugin will deliver these messages to the user somehow.
-    // args: $user, $message
-    const NOTIFY_USER = 'notify_user';
 
     // add more markup below sidebar in describe step
     const DESCRIBE_AFTER_SIDEBAR = 'describe_after_sidebar';
@@ -236,10 +191,6 @@ class DatawrapperHooks {
 
     const RENDER_RESIZE_CONTROL = 'render_resize_control';
 
-    // admin user page
-    const ADMIN_USER_DETAIL_TOP = 'admin_user_detail_top';
-    const ADMIN_USER_DETAIL_BOTTOM = 'admin_user_detail_bottom';
-
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
 
@@ -250,13 +201,10 @@ class DatawrapperHooks {
 
     // custom share urls
     const CHART_ADD_SHARE_URL = 'chart_add_share_url';
-    const CHART_CREATED_WITH_DATAWRAPPER_URL = 'chart_created_with_datawrapper_url';
 
     const CUSTOM_EXTERNAL_DATA = 'CUSTOM_EXTERNAL_DATA';
 
     const ADD_WORKFLOW = 'ADD_WORKFLOW';
-
-    const REPLACE_PUBLISH_LOGIC = 'replace_publish_logic';
 
     const CORE_SET_CHART = 'core_set_chart';
 
