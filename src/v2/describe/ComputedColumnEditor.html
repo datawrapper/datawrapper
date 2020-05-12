@@ -6,7 +6,7 @@
     <input type="text" bind:value="name" />
 
     <label>{__('computed columns / modal / formula')}</label>
-    <textarea ref:code class="code"></textarea>
+    <textarea ref:code class="code" class:error="parserErrors.length"></textarea>
     {#if parserErrors.length}
     <p class="mini-help errors">
         {#each parserErrors as err} {err} {/each}
@@ -30,7 +30,8 @@
     }
     .errors {
         color: #bd362f;
-        margin-top: 5px;
+        margin-top: 8px;
+        font-size: 14px;
     }
     .col-select {
         padding: 0;
@@ -91,6 +92,15 @@
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
         }
     }
+    textarea.error + :global(.CodeMirror) {
+        border-color: #bd362f !important;
+    }
+    textarea.error + :global(.CodeMirror.CodeMirror-focused) {
+        border-color: #bd362f !important;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(189, 54, 47, 0.6);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(189, 54, 47, 0.6);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(189, 54, 47, 0.6);
+    }
 </style>
 
 <script>
@@ -105,11 +115,8 @@
     import _unique from 'underscore-es/unique';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
+    import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
-
-    const functions = 'NOT|and|or|in|ABS|ACOS|ACOSH|ASIN|ASINH|ATAN|ATANH|CBRT|CEIL|COS|COSH|EXP|EXPM1|FLOOR|LENGTH|LN|LOG|LOG10|LOG2|LOG1P|NOT|ROUND|SIGN|SIN|SINH|SQRT|TAN|TANH|TRUNC|RANDOM|MIN|MAX|POW|ATAN2|ROUNDTO|IF|CONCAT|TRIM|SUBSTR|YEAR|MONTH|DAY|HOURS|MINUTES|SECONDS|SPLIT|JOIN|INDEXOF|ISNULL|REPLACE'.split(
-        '|'
-    );
 
     export default {
         data() {
@@ -135,7 +142,7 @@
                 });
             },
             keywords({ metaColumns }) {
-                const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
+                const keywords = [];
                 metaColumns.forEach(function(col) {
                     keywords.push(col.key);
                     if (col.type === 'number') {
@@ -147,6 +154,19 @@
                     }
                 });
                 return keywords;
+            },
+            context({ metaColumns }) {
+                const res = {};
+                const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
+                metaColumns.forEach(function(col) {
+                    res[col.key] = col.type === 'number' ? 42 : col.type === 'text' ? 'answer' : new Date();
+                    if (col.type === 'number') {
+                        keywords.forEach(kw => {
+                            res[`${col.key}__${kw}`] = 42;
+                        });
+                    }
+                });
+                return res;
             }
         },
         helpers: { __ },
@@ -198,15 +218,13 @@
                 const token = editor.getTokenAt(cur);
                 let match = [];
 
-                const keywords = app.get('keywords');
-
-                if (token.type === 'variable') {
+                const { keywords } = app.get();
+                if (token.type === 'variable-x') {
                     match = keywords.filter(function(chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
-                }
-                if (token.type === 'keyword-x') {
-                    match = functions.filter(function(chk) {
+                } else if (token.type === 'keyword-x') {
+                    match = Parser.keywords.filter(function(chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 }
@@ -301,6 +319,19 @@
             });
 
             function setFormula(formula) {
+                // try out formula first
+                const parser = new Parser();
+                const { context } = app.get();
+                try {
+                    if (formula.trim() !== '') {
+                        parser.evaluate(formula, context);
+                    }
+                    app.set({ parserErrors: [] });
+                } catch (e) {
+                    app.set({
+                        parserErrors: [e.message]
+                    });
+                }
                 // update codemirror
                 if (formula !== cm.getValue()) {
                     cm.setValue(formula);
@@ -313,15 +344,12 @@
                     dw_chart.set('metadata.describe.computed-columns', { ...customCols });
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     updateTable();
-                    setTimeout(() => {
-                        app.set({ parserErrors: _unique(dw_chart.__parserErrors) || [] });
-                    });
                 }
             }
 
             function cmInit(keywords) {
                 const columnsRegex = new RegExp(`(?:${keywords.join('|')})`);
-                const functionRegex = new RegExp(`(?:${functions.join('|')})`);
+                const functionRegex = new RegExp(`(?:${Parser.keywords.join('|')})`);
                 CodeMirror.defineSimpleMode('simplemode', {
                     // The start state contains the rules that are intially used
                     start: [
@@ -351,7 +379,7 @@
                         { regex: /[[(]/, indent: true },
                         { regex: /[\])]/, dedent: true },
                         { regex: columnsRegex, token: 'variable-2' },
-                        { regex: /[a-z$][\w$]*/, token: 'variable' },
+                        { regex: /[a-z$][\w$]*/, token: 'variable-x' },
                         { regex: /[A-Z_][\w$]*/, token: 'keyword-x' }
                     ],
                     // The meta property contains global information about the mode. It

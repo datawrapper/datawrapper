@@ -59,6 +59,9 @@ export default function(app, chart, dataset, Handsontable) {
         if (row > 0 && !column.type(true).isValid(column.val(row - 1))) {
             td.classList.add('parsingError');
         }
+        if (column.isComputed && column.errors.length) {
+            td.classList.add('parsingError');
+        }
         if (cellProperties.readOnly) td.classList.add('readOnly');
 
         if (chart.dataCellChanged(col, row)) {
