@@ -59,12 +59,12 @@
 
 <script>
     /* global dw */
-    import Checkbox from '../controls/Checkbox.html';
-    import Select from '../controls/Select.html';
+    import Checkbox from '@datawrapper/controls/Checkbox.html';
+    import Select from '@datawrapper/controls/Select.html';
     import _throttle from 'underscore-es/throttle';
-    import { arrayToObject } from '../shared/utils.js';
-    import clone from '../shared/clone.js';
-    import { __ } from '../shared/l10n';
+    import arrayToObject from '@datawrapper/shared/arrayToObject';
+    import clone from '@datawrapper/shared/clone';
+    import { __ } from '@datawrapper/shared/l10n';
 
     export default {
         components: { Checkbox, Select },
@@ -86,7 +86,11 @@
                 divisors: [
                     {
                         label: __('describe / column-format / divide-by'),
-                        options: [{ value: 3, label: '1000' }, { value: 6, label: '1 million' }, { value: 9, label: '1 billion' }]
+                        options: [
+                            { value: 3, label: '1000' },
+                            { value: 6, label: '1 million' },
+                            { value: 9, label: '1 billion' }
+                        ]
                     },
                     {
                         label: __('describe / column-format / multiply-by'),

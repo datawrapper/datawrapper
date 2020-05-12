@@ -1,4 +1,4 @@
-import purifyHtml from '../../shared/purifyHtml';
+import purifyHtml from '@datawrapper/shared/purifyHtml';
 
 /**
  * getCellRenderer defines what classes are set on each HOT cell
