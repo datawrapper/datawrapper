@@ -22,6 +22,8 @@ build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
 build('publish/guest');
 build('publish/pending-activation');
+build('describe');
+build('describe/hot', { noAMD: true });
 
 export default targets;
 
