@@ -60,6 +60,8 @@
 
 {{ hook('custom_annotation_controls', chart) }}
 
+{{ hook('after_custom_annotation_controls', vis) }}
+
  {% if vis.annotate_options %}
 
      {% for key, option in vis.annotate_options %}
