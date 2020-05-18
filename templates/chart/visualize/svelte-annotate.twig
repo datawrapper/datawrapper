@@ -1,0 +1,17 @@
+<script type="text/javascript" src="/static/plugins/{{ plugin }}/annotations.js?v={{ sha }}"></script>
+<link rel="stylesheet" type="text/css" href="/static/plugins/{{ plugin }}/annotations.css?v={{ sha }}">
+
+<div id="svelte-annotations"></div>
+
+<script type="text/javascript">
+
+require(['svelte/{{ plugin }}/annotations'], function(mod) {
+    var App = mod.App;
+
+    new App({
+        store: mod.store,
+        target: document.querySelector('#svelte-annotations')
+    });
+});
+
+</script>
