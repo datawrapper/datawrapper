@@ -8,8 +8,11 @@
 require(['svelte/{{ plugin }}/annotations'], function(mod) {
     var App = mod.App;
 
+    var chartData = {{ chart.toStruct() | json | raw }};
+    var chart = new mod.Chart(chartData);
+
     new App({
-        store: mod.store,
+        store: chart,
         target: document.querySelector('#svelte-annotations')
     });
 });
