@@ -1,6 +1,7 @@
 <div on:keyup|stopPropagation class="modal-body" data-piwik-mask>
     <button type="button" class="close" data-dismiss="modal">×</button>
     <div class="row login-signup">
+        {#if !noSignin}
         <div class="span{noSignup ? 4 : 3} row-login">
             <h3>{@html __("login / login / headline")}</h3>
 
@@ -58,8 +59,10 @@
                 </div>
             </div>
         </div>
+        {/if}
+
         {#if !noSignup}
-        <div class="span3 row-signup">
+        <div class="span{noSignin ? 4 : 3} row-signup">
             <h3>{@html __("login / signup / headline")}</h3>
             <p>{@html __("login / signup / intro")}</p>
 
@@ -79,6 +82,7 @@
                         <label>{__('email')}</label>
                         <input type="email" bind:value="signupEmail" autocomplete="username" class="span3 input-xlarge register-email" />
                     </div>
+                    {#if !signupWithoutPassword}
                     <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
                         <label>{__('password')}</label>
                         {#if showPasswordAsClearText}
@@ -120,6 +124,7 @@
                             <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
                         </label>
                     </div>
+                    {/if}
                     <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
                         {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
                         <!-- prettier-ignore -->
@@ -175,6 +180,8 @@
         components: { CheckPassword },
         data: () => ({
             noSignup: false,
+            noSignin: true,
+            signupWithoutPassword: true,
             alternativeSignIn: [],
             // login
             forgotPassword: false,
@@ -205,10 +212,10 @@
                 if (loggingIn) return true;
                 return !isValidEmail(loginEmail) || loginPassword === '';
             },
-            invalidSignupForm({ signingUp, signupEmail, signupPassword, signupPasswordOk }) {
+            invalidSignupForm({ signupWithoutPassword, signingUp, signupEmail, signupPassword, signupPasswordOk }) {
                 if (signingUp) return true;
                 if (!isValidEmail(signupEmail)) return true;
-                if (!signupPasswordOk) return true;
+                if (!signupWithoutPassword && !signupPasswordOk) return true;
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
@@ -248,7 +255,7 @@
                 this.set({ loggingIn: false });
             },
             async doSignUp() {
-                const { signupEmail, signupPassword, signingUp } = this.get();
+                const { signupWithoutPassword, signupEmail, signupPassword, signingUp } = this.get();
                 if (signingUp) return;
                 this.set({
                     signingUp: true,
@@ -259,13 +266,22 @@
                     await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
-                            password: signupPassword
+                            invitation: signupWithoutPassword ? true : false,
+                            password: !signupWithoutPassword ? signupPassword : undefined
                         }
                     });
-                    this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
-                    setTimeout(() => {
-                        window.location.href = '/';
-                    }, 2000);
+
+                    if (!signupWithoutPassword) {
+                        this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2000);
+                    } else {
+                        this.set({
+                            signupSuccess: 'Sign up successful! Please check your e-mail inbox.',
+                            signingUp: false
+                        });
+                    }
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
                         const body = await error.response.json();
@@ -273,8 +289,9 @@
                     } else {
                         this.set({ signupError: error });
                     }
+
+                    this.set({ signingUp: false });
                 }
-                this.set({ signingUp: false });
             },
             async requestNewPassword() {
                 const { loginEmail } = this.get();
