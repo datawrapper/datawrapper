@@ -139,36 +139,52 @@
                 var s = __('describe / edit-column');
                 return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`);
             },
-            metaColumns({ columns }) {
+            metaColumns({ columns, column, computedColumns }) {
                 if (!columns) return [];
-                return columns.map(col => {
+                const res = columns.map(col => {
                     return {
                         key: columnNameToVariable(col.name()),
                         title: col.title(),
                         type: col.type()
                     };
                 });
+                // allow using computed columns in computed columns
+                const keys = Object.keys(computedColumns);
+                const thisI = keys.indexOf(column.name());
+                keys.forEach((ccKey, i) => {
+                    if (thisI > i) {
+                        res.push({
+                            key: columnNameToVariable(ccKey),
+                            title: ccKey,
+                            type: 'computed'
+                        });
+                    }
+                });
+                return res;
             },
             keywords({ metaColumns }) {
                 const keywords = [];
                 metaColumns.forEach(function(col) {
-                    if (col.type === 'number') {
+                    if (col.type === 'number' || col.type === 'computed') {
                         keywords.push(col.key + '__sum');
                         keywords.push(col.key + '__min');
                         keywords.push(col.key + '__max');
                         keywords.push(col.key + '__mean');
                         keywords.push(col.key + '__median');
+                    } else if (col.type === 'date') {
+                        keywords.push(col.key + '__min');
+                        keywords.push(col.key + '__max');
                     }
                     keywords.push(col.key);
                 });
                 return keywords;
             },
             context({ metaColumns }) {
-                const res = {};
+                const res = { ROWNUMBER: 1 };
                 const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
                 metaColumns.forEach(function(col) {
                     res[col.key] = col.type === 'number' ? 42 : col.type === 'text' ? 'answer' : new Date();
-                    if (col.type === 'number') {
+                    if (col.type === 'number' || col.type === 'computed') {
                         keywords.forEach(kw => {
                             res[`${col.key}__${kw}`] = 42;
                         });
@@ -321,11 +337,11 @@
                 if (changed.column) {
                     const col = current.column;
                     if (col) {
-                        const customCols = dw_chart.get('metadata.describe.computed-columns', {});
                         this.set({
-                            formula: customCols[col.name()] || '',
-                            name: col.title()
+                            formula: current.computedColumns[col.name()] || '',
+                            name: col.name()
                         });
+                        cm.setValue(current.computedColumns[col.name()] || '');
                     }
                 }
 
