@@ -185,6 +185,9 @@
                     }
                 }
                 return false;
+            },
+            computedColumns({ $dw_chart }) {
+                return $dw_chart.get('metadata.describe.computed-columns', {});
             }
         },
         helpers: { __ },
@@ -237,7 +240,7 @@
 
             this.set({
                 formula: customCols[column.name()] || '',
-                name: column.title(),
+                name: column.name(),
                 parserErrors: _unique(dw_chart.__parserErrors)
             });
 
@@ -292,10 +295,28 @@
 
             const updateTable = _debounce(() => this.fire('updateTable'), 1500);
 
+            let changeNameTimer;
+            const changeName = name => {
+                clearTimeout(changeNameTimer);
+                changeNameTimer = setTimeout(() => {
+                    const { column } = this.get();
+                    const customCols = dw_chart.get('metadata.describe.computed-columns', {});
+                    const newCustomCols = {};
+                    Object.keys(customCols).forEach(key => {
+                        if (key === column.name()) newCustomCols[name] = customCols[column.name()];
+                        else newCustomCols[key] = customCols[key];
+                    });
+                    column.name(name);
+                    dw_chart.set('metadata.describe.computed-columns', newCustomCols);
+                    if (dw_chart.saveSoon) dw_chart.saveSoon();
+                    updateTable();
+                }, 1500);
+            };
+
             cmInit(this.get().keywords);
             setFormula(this.get().formula);
 
-            this.on('state', ({ changed, current }) => {
+            this.on('state', ({ changed, current, previous }) => {
                 // update if column changes
                 if (changed.column) {
                     const col = current.column;
@@ -312,34 +333,8 @@
                     setFormula(current.formula);
                 }
 
-                if (changed.name) {
-                    const name = current.name;
-                    const { column } = this.get();
-                    const changes = clone(dw_chart.get('metadata.data.changes', []));
-                    const ds = dw_chart.dataset();
-                    const col = ds.columnOrder()[ds.indexOf(column.name())];
-                    let lastColNameChangeIndex = -1;
-                    changes.forEach((change, i) => {
-                        if (change.column === col && change.row === 0) {
-                            lastColNameChangeIndex = i;
-                        }
-                    });
-                    if (lastColNameChangeIndex > -1) {
-                        // update last change of that cell
-                        changes[lastColNameChangeIndex].value = name;
-                        changes[lastColNameChangeIndex].time = new Date().getTime();
-                    } else {
-                        // add new change
-                        changes.push({
-                            column: col,
-                            row: 0,
-                            value: name,
-                            time: new Date().getTime()
-                        });
-                    }
-                    dw_chart.set('metadata.data.changes', changes);
-                    if (dw_chart.saveSoon) dw_chart.saveSoon();
-                    updateTable();
+                if (changed.name && previous.name) {
+                    changeName(current.name);
                 }
 
                 if (changed.metaColumns) {
