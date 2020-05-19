@@ -7,10 +7,16 @@
 
     <label>{__('computed columns / modal / formula')}</label>
     <textarea ref:code class="code" class:error="parserErrors.length"></textarea>
+
     {#if parserErrors.length}
     <p class="mini-help errors">
         {#each parserErrors as err} {err} {/each}
     </p>
+    {/if} {#if looksLikeColumnData}
+    <div class="alert alert-info">
+        It looks like you were trying to paste data rows into the formula. Click here if you want to
+        <a style="font-weight:bold" on:click|preventDefault="copyFormulaToData()" href="/#apply">fix the formula</a>
+    </div>
     {/if}
 
     <p style="margin-top: 1em">{__('computed columns / modal / available columns')}:</p>
@@ -118,6 +124,8 @@
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
 
+    /* globals dw */
+
     export default {
         data() {
             return {
@@ -167,6 +175,16 @@
                     }
                 });
                 return res;
+            },
+            looksLikeColumnData({ formula }) {
+                const lines = formula.split('\n');
+                if (lines.length > 4 && !formula.includes('(')) {
+                    const col = dw.column('', lines);
+                    if (col.type() === 'number' || col.type() === 'date') {
+                        return true;
+                    }
+                }
+                return false;
             }
         },
         helpers: { __ },
@@ -196,6 +214,17 @@
                 dw_chart.saveSoon();
                 this.fire('updateTable');
                 this.fire('unselect');
+            },
+            copyFormulaToData() {
+                const { formula } = this.get();
+                // remove existing data changes for this column
+                const newFormula = `[${dw
+                    .column('', formula.split('\n'))
+                    .values()
+                    .map(d => (d instanceof Date && !isNaN(d) ? `DATE("${d.toISOString()}")` : d))
+                    .join(',\n')}][ROWNUMBER]`;
+                // apply new changes
+                this.set({ formula: newFormula });
             }
         },
 
