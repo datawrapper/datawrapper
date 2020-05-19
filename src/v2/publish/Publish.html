@@ -515,7 +515,7 @@
             duplicate() {
                 const { id } = this.store.get();
                 trackEvent('Chart Editor', 'duplicate');
-                request.post(`/charts/${id}/copy`, { baseUrl: `${window.location.protocol}//${window.location.hostname}` }).then(res => {
+                request.post(`/api/charts/${id}/copy`, { baseUrl: `${window.location.protocol}//${window.location.hostname}` }).then(res => {
                     if (res.status === 'ok') {
                         // redirect to copied chart
                         window.location.href = `/edit/${res.data.id}/visualize`;
