@@ -59,7 +59,7 @@ export default function(app, chart, dataset, Handsontable) {
         if (row > 0 && !column.type(true).isValid(column.val(row - 1))) {
             td.classList.add('parsingError');
         }
-        if (column.isComputed && column.errors.length) {
+        if (column.isComputed && column.errors.length && column.errors.find(err => err.row === 'all' || err.row === row - 1)) {
             td.classList.add('parsingError');
         }
         if (cellProperties.readOnly) td.classList.add('readOnly');

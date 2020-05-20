@@ -118,11 +118,11 @@
     import 'cm/addon/display/placeholder';
 
     import _debounce from 'underscore-es/debounce';
-    import _unique from 'underscore-es/unique';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
+    import { getComputedColumns } from './shared';
 
     /* globals dw */
 
@@ -149,10 +149,10 @@
                     };
                 });
                 // allow using computed columns in computed columns
-                const keys = Object.keys(computedColumns);
+                const keys = computedColumns.map(d => d.name);
                 const thisI = keys.indexOf(column.name());
                 keys.forEach((ccKey, i) => {
-                    if (thisI > i) {
+                    if (thisI !== i) {
                         res.push({
                             key: columnNameToVariable(ccKey),
                             title: ccKey,
@@ -177,7 +177,7 @@
                     }
                     keywords.push(col.key);
                 });
-                return keywords;
+                return keywords.sort((a, b) => b.length - a.length);
             },
             context({ metaColumns }) {
                 const res = { ROWNUMBER: 1 };
@@ -203,7 +203,7 @@
                 return false;
             },
             computedColumns({ $dw_chart }) {
-                return $dw_chart.get('metadata.describe.computed-columns', {});
+                return getComputedColumns($dw_chart);
             }
         },
         helpers: { __ },
@@ -217,14 +217,15 @@
                 const { column } = this.get();
                 const { dw_chart } = this.store.get();
                 const ds = dw_chart.dataset();
-                const customCols = clone(dw_chart.get('metadata.describe.computed-columns', {}));
-                delete customCols[column.name()];
+                const customCols = clone(getComputedColumns(dw_chart)).filter(col => col.name !== column.name());
+                // get old column index
                 const colIndex = ds.columnOrder()[ds.indexOf(column.name())];
                 // delete all changes that have been made to this column
                 const changes = dw_chart.get('metadata.data.changes', []);
                 const newChanges = [];
                 changes.forEach(c => {
                     if (c.column === colIndex) return; // skip
+                    // move changes for succeeding columns
                     if (c.column > colIndex) c.column--;
                     newChanges.push(c);
                 });
@@ -249,15 +250,15 @@
 
         oncreate() {
             const app = this;
-            const { column } = this.get();
+            const { column, computedColumns } = this.get();
 
             const { dw_chart } = this.store.get();
-            const customCols = dw_chart.get('metadata.describe.computed-columns', {});
+
+            const thisCol = computedColumns.find(d => d.name === column.name());
 
             this.set({
-                formula: customCols[column.name()] || '',
-                name: column.name(),
-                parserErrors: _unique(dw_chart.__parserErrors)
+                formula: thisCol.formula || '',
+                name: column.name()
             });
 
             function scriptHint(editor) {
@@ -316,37 +317,34 @@
                 clearTimeout(changeNameTimer);
                 changeNameTimer = setTimeout(() => {
                     const { column } = this.get();
-                    const customCols = dw_chart.get('metadata.describe.computed-columns', {});
-                    const newCustomCols = {};
-                    Object.keys(customCols).forEach(key => {
-                        if (key === column.name()) newCustomCols[name] = customCols[column.name()];
-                        else newCustomCols[key] = customCols[key];
-                    });
+                    let { computedColumns } = this.get();
+                    computedColumns = clone(computedColumns);
+                    computedColumns.find(d => d.name === column.name()).name = name;
                     column.name(name);
-                    dw_chart.set('metadata.describe.computed-columns', newCustomCols);
+                    dw_chart.set('metadata.describe.computed-columns', computedColumns);
+                    this.store.set({ dw_chart });
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     updateTable();
                 }, 1500);
             };
 
-            cmInit(this.get().keywords);
-            setFormula(this.get().formula);
+            const { name, formula, keywords } = this.get();
+
+            cmInit(keywords);
+            setFormula(formula, name);
 
             this.on('state', ({ changed, current, previous }) => {
                 // update if column changes
                 if (changed.column) {
                     const col = current.column;
-                    if (col) {
-                        this.set({
-                            formula: current.computedColumns[col.name()] || '',
-                            name: col.name()
-                        });
-                        cm.setValue(current.computedColumns[col.name()] || '');
-                    }
-                }
 
-                if (changed.formula) {
-                    setFormula(current.formula);
+                    if (col) {
+                        const formula = current.computedColumns.find(d => d.name === col.name()).formula || '';
+                        const name = col.name();
+                        this.set({ formula, name });
+                        setFormula(formula, name);
+                        cm.setValue(formula);
+                    }
                 }
 
                 if (changed.name && previous.name) {
@@ -358,33 +356,41 @@
                 }
             });
 
-            function setFormula(formula) {
+            function setFormula(formula, name) {
+                if (formula === undefined) return;
                 // try out formula first
                 const parser = new Parser();
                 const { context } = app.get();
+                const parserErrors = [];
                 try {
                     if (formula.trim() !== '') {
                         parser.evaluate(formula, context);
                     }
-                    app.set({ parserErrors: [] });
                 } catch (e) {
-                    app.set({
-                        parserErrors: [e.message]
-                    });
+                    parserErrors.push(e.message);
                 }
                 // update codemirror
                 if (formula !== cm.getValue()) {
                     cm.setValue(formula);
                 }
                 // update dw.chart
-                const { column } = app.get();
-                const customCols = clone(dw_chart.get('metadata.describe.computed-columns', {}));
-                if (customCols[column.name()] !== formula) {
-                    customCols[column.name()] = formula;
-                    dw_chart.set('metadata.describe.computed-columns', { ...customCols });
+                const customCols = clone(getComputedColumns(dw_chart));
+                const thisCol = customCols.find(d => d.name === name);
+                if (thisCol.formula !== formula) {
+                    thisCol.formula = formula;
+                    dw_chart.set('metadata.describe.computed-columns', customCols);
+                    (dw_chart.dataset(true).column(name).errors || []).forEach(err => {
+                        if (err.row === 'all') parserErrors.push(err.message);
+                    });
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     updateTable();
+                } else {
+                    (dw_chart.dataset().column(name).errors || []).forEach(err => {
+                        if (err.row === 'all') parserErrors.push(err.message);
+                    });
                 }
+
+                app.set({ parserErrors });
             }
 
             function cmInit(keywords) {
@@ -433,7 +439,11 @@
             }
 
             cm.on('change', cm => {
+                const { name } = app.get();
+                // update internal state
                 app.set({ formula: cm.getValue() });
+                // update chart + table
+                setFormula(cm.getValue(), name);
             });
         }
     };

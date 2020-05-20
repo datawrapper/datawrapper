@@ -174,8 +174,8 @@
     import Checkbox from '@datawrapper/controls/Checkbox.html';
 
     import { __ } from '@datawrapper/shared/l10n';
-    import arrayToObject from '@datawrapper/shared/arrayToObject';
     import clone from '@datawrapper/shared/clone';
+    import { getComputedColumns } from './shared';
 
     export default {
         components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat, Histogram },
@@ -271,19 +271,23 @@
             addComputedColumn() {
                 const chart = this.store.get().dw_chart;
                 const ds = chart.dataset();
-                const computed = arrayToObject(chart.get('metadata.describe.computed-columns', {}));
+                const computed = getComputedColumns(chart);
                 // find new id
                 let i = 1;
                 while (ds.hasColumn(`Column ${i}`)) {
                     i++;
                 }
                 const id = `Column ${i}`;
-                computed[id] = '';
+                computed.push({
+                    name: id,
+                    formula: ''
+                });
                 chart.set('metadata.describe.computed-columns', computed);
                 chart.saveSoon();
                 const ds2 = chart.dataset(true);
                 this.refs.hot.update();
                 this.set({ activeColumn: ds2.column(id) });
+                this.store.set({ dw_chart: chart });
             },
             sort(event, col, ascending) {
                 event.preventDefault();
