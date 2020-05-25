@@ -11,22 +11,6 @@ require(['svelte/{{ plugin }}/annotations'], function(mod) {
     var chartData = {{ chart.toStruct() | json | raw }};
     var chart = new mod.Chart(chartData);
 
-    // migrate metadata
-    var annotationMetadata =
-        chartData &&
-        chartData.metadata &&
-        chartData.metadata.visualize &&
-        chartData.metadata.visualize['text-annotations'];
-
-    if (annotationMetadata && annotationMetadata.length) {
-        annotationMetadata.forEach(function(a) {
-            if (a.size && !a.fontSize) {
-                a.fontSize = a.size;
-                delete a.size;
-            }
-        });
-    }
-
     new App({
         store: chart,
         target: document.querySelector('#svelte-annotations')
