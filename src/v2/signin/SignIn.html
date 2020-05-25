@@ -59,14 +59,21 @@
                 </div>
             </div>
         </div>
-        {/if}
-
-        {#if !noSignup}
+        {/if} {#if !noSignup}
         <div class="span{noSignin ? 4 : 3} row-signup">
             <h3>{@html __("login / signup / headline")}</h3>
-            <p>{@html __("login / signup / intro")}</p>
 
-            {#if signupSuccess}
+            {#if signupWithoutPassword}
+            <p>
+                Datawrapper lets you create and publish responsive charts, maps & tables for free.
+            </p>
+            <p>
+                While charts and maps created with Datawrapper are responsive, the editor is currently not intended to be used on mobile devices.
+                Enter your e-mail address to receive a link to proceed on your desktop computer:
+            </p>
+            {:else}
+            <p>{@html __("login / signup / intro")}</p>
+            {/if} {#if signupSuccess}
             <div class="alert alert-success">
                 {@html signupSuccess}
             </div>
@@ -74,8 +81,7 @@
             <div class="alert alert-error">
                 {@html signupError}
             </div>
-            {/if}
-
+            {/if} {#if !signupSuccess || !signupWithoutPassword}
             <div class="signup-form form-vertcal">
                 <form>
                     <div class="control-group" class:error="invalidSignupEmail">
@@ -132,6 +138,7 @@
                     </button>
                 </form>
             </div>
+            {/if}
         </div>
         {:else}
         <style>
@@ -146,7 +153,7 @@
         {/if}
     </div>
 
-    {#if alternativeSignIn.length}
+    {#if !noSignin && alternativeSignIn.length}
     <div class="alternative-signin">
         {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
         <a href="{ signin.url }" class="alternative-signin-link">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a>
@@ -180,8 +187,8 @@
         components: { CheckPassword },
         data: () => ({
             noSignup: false,
-            noSignin: true,
-            signupWithoutPassword: true,
+            noSignin: false,
+            signupWithoutPassword: false,
             alternativeSignIn: [],
             // login
             forgotPassword: false,
@@ -266,7 +273,7 @@
                     await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
-                            invitation: signupWithoutPassword ? true : false,
+                            invitation: signupWithoutPassword,
                             password: !signupWithoutPassword ? signupPassword : undefined
                         }
                     });
@@ -278,7 +285,7 @@
                         }, 2000);
                     } else {
                         this.set({
-                            signupSuccess: 'Sign up successful! Please check your e-mail inbox.',
+                            signupSuccess: 'Please check your e-mail inbox to proceed on your desktop computer.',
                             signingUp: false
                         });
                     }
@@ -316,6 +323,24 @@
                     }
                 }
                 this.set({ requestingPassword: false });
+            }
+        },
+        oncreate() {
+            function getParameterByName(name) {
+                var url = window.location.href;
+                name = name.replace(/[[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+                var results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+
+            if (getParameterByName('mobileSignUp')) {
+                this.set({
+                    noSignin: true,
+                    signupWithoutPassword: true
+                });
             }
         }
     };
