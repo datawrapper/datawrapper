@@ -96,7 +96,8 @@ class ChartQuery extends BaseChartQuery {
         $user = Session::getUser();
 
         // new id
-        $chart->setId($this->getUnusedRandomId());
+        $id = $this->getUnusedRandomId();
+        $chart->setId($id);
         // but the rest remains the same
         $chart->setUser($src->getUser());
         $chart->setTitle($src->getTitle(). ($changeTitle ? ' ('.__('Copy').')' : ''));
@@ -109,7 +110,7 @@ class ChartQuery extends BaseChartQuery {
         $chart->setForkedFrom($src->getId());
         $chart->setOrganization($src->getOrganization());
         $chart->setInFolder($src->getInFolder());
-        $chart->setExternalData($src->getExternalData());
+        $chart->setExternalData(preg_replace('/\w{5}.csv/',$id.'.csv',$src->getExternalData()));
 
         if ($user->isAdmin() && $user->getId() != $chart->getUser()->getId()) {
             // an admin duplicates a chart from someone else
