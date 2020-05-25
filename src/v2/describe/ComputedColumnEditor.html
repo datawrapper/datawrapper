@@ -5,17 +5,19 @@
     <label>{__('computed columns / modal / name')}</label>
     <input type="text" bind:value="name" />
 
-    <label>{__('computed columns / modal / formula')}</label>
-    <textarea ref:code class="code" class:error="parserErrors.length"></textarea>
+    <label>{__('computed columns / modal / formula')} {#if checking && !error}<i style="color: #ccc" class="fa fa-cog fa-spin"></i>{/if}</label>
+    <textarea ref:code class="code" class:error="errDisplay"></textarea>
 
-    {#if parserErrors.length}
+    {#if errDisplay}
     <p class="mini-help errors">
-        {#each parserErrors as err} {err} {/each}
+        {@html errNiceDisplay}
     </p>
+    {/if} {#if formulaHint}
+    <p class="mini-help formula-hint"><i class="hat-icon im im-graduation-hat"></i> {@html formulaHint}</p>
     {/if} {#if looksLikeColumnData}
-    <div class="alert alert-info">
-        It looks like you were trying to paste data rows into the formula. Click here if you want to
-        <a style="font-weight:bold" on:click|preventDefault="copyFormulaToData()" href="/#apply">fix the formula</a>
+    <div class="mini-help formula-hint">
+        <i class="hat-icon im im-graduation-hat"></i> It looks like you were trying to paste data rows into the formula. Click here if you want to
+        <a style="color:white; font-weight:bold" on:click|preventDefault="copyFormulaToData()" href="/#apply">fix the formula</a>
     </div>
     {/if}
 
@@ -75,6 +77,11 @@
             background: #fcc;
         }
 
+        .parser-error {
+            color: #bd362f;
+            background: #fcc;
+        }
+
         .CodeMirror-matchingbracket {
             color: inherit;
             background: #cfc;
@@ -93,13 +100,26 @@
             border-color: rgba(82, 168, 236, 0.8);
             outline: 0;
             outline: thin dotted \9;
-            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
         }
     }
     textarea.error + :global(.CodeMirror) {
         border-color: #bd362f !important;
+    }
+    .formula-hint {
+        font-size: 14px;
+        line-height: 17px;
+        color: white;
+        background: #18a1cd;
+        border-radius: 2px;
+        padding: 8px;
+        i.im {
+            font-size: 15px;
+            vertical-align: bottom;
+            padding-right: 4px;
+        }
+        :global(tt) {
+            font-weight: bold;
+        }
     }
     textarea.error + :global(.CodeMirror.CodeMirror-focused) {
         border-color: #bd362f !important;
@@ -118,20 +138,37 @@
     import 'cm/addon/display/placeholder';
 
     import _debounce from 'underscore-es/debounce';
+    import _groupBy from 'underscore-es/groupBy';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
     import { getComputedColumns } from './shared';
 
+    let updateTable = () => {};
     /* globals dw */
+
+    function formatRows(rows) {
+        let curSpanStart = 0;
+        const parts = [];
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i] - rows[curSpanStart] > i - curSpanStart) {
+                // we skipped a row, finish current span
+                parts.push(i > curSpanStart + 1 ? `${rows[curSpanStart]}-${rows[i - 1]}` : rows[curSpanStart]);
+                curSpanStart = i;
+            }
+        }
+        parts.push(rows.length > curSpanStart + 1 ? `${rows[curSpanStart]}-${rows[rows.length - 1]}` : rows[curSpanStart]);
+        return parts.join(', ');
+    }
 
     export default {
         data() {
             return {
                 name: '',
                 formula: '',
-                parserErrors: []
+                parserErrors: [],
+                checking: false
             };
         },
         computed: {
@@ -192,11 +229,10 @@
                 });
                 return res;
             },
-            looksLikeColumnData({ formula }) {
+            looksLikeColumnData({ formula, error }) {
                 const lines = formula.split('\n');
                 if (lines.length > 4 && !formula.includes('(')) {
-                    const col = dw.column('', lines);
-                    if (col.type() === 'number' || col.type() === 'date') {
+                    if (error) {
                         return true;
                     }
                 }
@@ -204,6 +240,54 @@
             },
             computedColumns({ $dw_chart }) {
                 return getComputedColumns($dw_chart);
+            },
+            error({ formula, context }) {
+                try {
+                    if (formula.trim() !== '') {
+                        Parser.evaluate(formula, context);
+                    }
+                    return null;
+                } catch (e) {
+                    return e.message;
+                }
+            },
+            errDisplay({ error, parserErrors }) {
+                if (parserErrors.length) {
+                    return Object.entries(_groupBy(parserErrors, d => d.message))
+                        .map(([message, err]) => {
+                            return message + (err[0].row !== 'all' ? ` (rows ${formatRows(err.map(d => d.row + 2))})` : '');
+                        })
+                        .join('<br />');
+                }
+                return error || false;
+            },
+            errNiceDisplay({ errDisplay }) {
+                if (!errDisplay) return errDisplay;
+                return errDisplay
+                    .replace('unexpected TOP', 'Unexpected operator')
+                    .replace('unexpected TCOMMA', 'Unexpected comma')
+                    .replace('undefined variable', 'Undefined variable or function')
+                    .replace('parser error', 'Formula parsing error');
+            },
+            formulaHint({ errDisplay }) {
+                if (!errDisplay || typeof errDisplay !== 'string') return '';
+                const errors = errDisplay.split('<br />');
+                for (let i = 0; i < errors.length; i++) {
+                    if (errors[i].startsWith('undefined variable:')) {
+                        // let's see if we know this variable
+                        const name = errors[i]
+                            .split(': ')[1]
+                            .split('(row')[0]
+                            .trim();
+                        if (Parser.keywords.includes(name.toUpperCase()) && !Parser.keywords.includes(name)) {
+                            return `Did you mean to use <tt>${name.toUpperCase()}</tt>?`;
+                        }
+                        if (name === 'row') {
+                            return `Did you mean to use <tt>ROWNUMBER</tt>?`;
+                        }
+                    }
+                }
+                return '';
             }
         },
         helpers: { __ },
@@ -212,6 +296,9 @@
                 const { cm } = this.get();
                 cm.replaceSelection(column.key);
                 cm.focus();
+            },
+            unmarkErrors() {
+                window.document.querySelectorAll('span.parser-error').forEach(node => node.classList.remove('parser-error'));
             },
             removeColumn() {
                 const { column } = this.get();
@@ -236,15 +323,65 @@
                 this.fire('unselect');
             },
             copyFormulaToData() {
-                const { formula } = this.get();
+                const { formula, name } = this.get();
+                const col = dw.column('', formula.split('\n'));
                 // remove existing data changes for this column
-                const newFormula = `[${dw
-                    .column('', formula.split('\n'))
+                const newFormula = `[${col
                     .values()
-                    .map(d => (d instanceof Date && !isNaN(d) ? `DATE("${d.toISOString()}")` : d))
+                    .map((d, i) => ((d instanceof Date && !isNaN(d)) || typeof d === 'string' ? JSON.stringify(col.raw(i)) : d))
                     .join(',\n')}][ROWNUMBER]`;
                 // apply new changes
-                this.set({ formula: newFormula });
+                this.set({ formula: newFormula, parserErrors: [] });
+                this.setFormula(newFormula, name);
+            },
+            setFormula(formula, name) {
+                if (formula === undefined) return;
+                const { dw_chart } = this.store.get();
+                // try out formula first
+                const { cm } = this.get();
+                this.set({ formula });
+                const parserErrors = [];
+                // update codemirror
+                if (formula !== cm.getValue()) {
+                    cm.setValue(formula);
+                }
+                // remove custom error marks
+                setTimeout(() => this.unmarkErrors());
+                // update dw.chart
+                const customCols = clone(getComputedColumns(dw_chart));
+                const thisCol = customCols.find(d => d.name === name);
+                if (!thisCol) {
+                    // try again later
+                    return setTimeout(() => {
+                        this.setFormula(formula, name);
+                    }, 100);
+                }
+                if (thisCol.formula !== formula) {
+                    thisCol.formula = formula;
+                    dw_chart.set('metadata.describe.computed-columns', customCols);
+                    // check for errors later
+                    this.set({ checking: true });
+                    setTimeout(() => {
+                        const { checking } = this.get();
+                        if (!checking) return;
+                        const parserErrors = [];
+                        (dw_chart.dataset(true).column(name).errors || []).forEach(err => {
+                            parserErrors.push(err);
+                        });
+                        this.set({ parserErrors, checking: false });
+                    }, 3000);
+                    if (dw_chart.saveSoon) dw_chart.saveSoon();
+                    this.store.set({
+                        dw_chart
+                    });
+                    updateTable();
+                } else {
+                    (dw_chart.dataset().column(name).errors || []).forEach(err => {
+                        parserErrors.push(err);
+                    });
+                }
+
+                this.set({ parserErrors });
             }
         },
 
@@ -259,6 +396,20 @@
             this.set({
                 formula: thisCol.formula || '',
                 name: column.name()
+            });
+
+            const errReg = /(?:parse error) \[(\d+):(\d+)\]:/;
+
+            this.on('hotRendered', () => {
+                const { checking, name } = this.get();
+                if (!checking) return;
+
+                const parserErrors = [];
+                (dw_chart.dataset().column(name).errors || []).forEach(err => {
+                    parserErrors.push(err);
+                });
+                this.unmarkErrors();
+                this.set({ parserErrors, checking: false });
             });
 
             function scriptHint(editor) {
@@ -310,7 +461,7 @@
 
             this.set({ cm });
 
-            const updateTable = _debounce(() => this.fire('updateTable'), 1500);
+            updateTable = _debounce(() => app.fire('updateTable'), 1500);
 
             let changeNameTimer;
             const changeName = name => {
@@ -331,18 +482,19 @@
             const { name, formula, keywords } = this.get();
 
             cmInit(keywords);
-            setFormula(formula, name);
+            this.setFormula(formula, name);
 
             this.on('state', ({ changed, current, previous }) => {
                 // update if column changes
                 if (changed.column) {
                     const col = current.column;
 
-                    if (col) {
-                        const formula = current.computedColumns.find(d => d.name === col.name()).formula || '';
+                    if (col && current.computedColumns) {
+                        const theCol = current.computedColumns.find(d => d.name === col.name());
+                        const formula = theCol ? theCol.formula : '';
                         const name = col.name();
                         this.set({ formula, name });
-                        setFormula(formula, name);
+                        this.setFormula(formula, name);
                         cm.setValue(formula);
                     }
                 }
@@ -354,44 +506,23 @@
                 if (changed.metaColumns) {
                     cmInit(current.keywords);
                 }
-            });
 
-            function setFormula(formula, name) {
-                if (formula === undefined) return;
-                // try out formula first
-                const parser = new Parser();
-                const { context } = app.get();
-                const parserErrors = [];
-                try {
-                    if (formula.trim() !== '') {
-                        parser.evaluate(formula, context);
+                if (changed.errDisplay) {
+                    // check for new error
+                    if (current.errDisplay && errReg.test(current.errDisplay)) {
+                        const m = current.errDisplay.match(errReg);
+                        const line = Number(m[1]) - 1;
+                        const ch = Number(m[2]) - 1;
+                        cm.markText(
+                            { line, ch },
+                            { line, ch: ch + 1 },
+                            {
+                                className: 'parser-error'
+                            }
+                        );
                     }
-                } catch (e) {
-                    parserErrors.push(e.message);
                 }
-                // update codemirror
-                if (formula !== cm.getValue()) {
-                    cm.setValue(formula);
-                }
-                // update dw.chart
-                const customCols = clone(getComputedColumns(dw_chart));
-                const thisCol = customCols.find(d => d.name === name);
-                if (thisCol.formula !== formula) {
-                    thisCol.formula = formula;
-                    dw_chart.set('metadata.describe.computed-columns', customCols);
-                    (dw_chart.dataset(true).column(name).errors || []).forEach(err => {
-                        if (err.row === 'all') parserErrors.push(err.message);
-                    });
-                    if (dw_chart.saveSoon) dw_chart.saveSoon();
-                    updateTable();
-                } else {
-                    (dw_chart.dataset().column(name).errors || []).forEach(err => {
-                        if (err.row === 'all') parserErrors.push(err.message);
-                    });
-                }
-
-                app.set({ parserErrors });
-            }
+            });
 
             function cmInit(keywords) {
                 const columnsRegex = new RegExp(`(?:${keywords.join('|')})`);
@@ -441,9 +572,9 @@
             cm.on('change', cm => {
                 const { name } = app.get();
                 // update internal state
-                app.set({ formula: cm.getValue() });
+                // app.set({ formula: cm.getValue() });
                 // update chart + table
-                setFormula(cm.getValue(), name);
+                this.setFormula(cm.getValue(), name);
             });
         }
     };

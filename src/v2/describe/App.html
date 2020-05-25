@@ -5,6 +5,7 @@
                 {#if activeColumn} {#if customColumn}
 
                 <ComputedColumnEditor
+                    ref:ccEd
                     on:updateTable="refs.hot.update()"
                     on:renderTable="refs.hot.render()"
                     on:unselect="set({activeColumn:false})"
@@ -146,6 +147,7 @@
                 bind:searchIndex
                 bind:multiSelection
                 on:resetSort="set({sortBy:'-'})"
+                on:afterRender="afterRender()"
             />
 
             <div class="buttons below-table pull-right">
@@ -315,6 +317,12 @@
                     this.refs.hot.get().hot.render();
                 }, 10);
                 this.set({ multiSelection: false });
+            },
+            afterRender() {
+                // called once the hot is done rendering
+                if (this.refs.ccEd) {
+                    this.refs.ccEd.fire('hotRendered');
+                }
             }
         },
         oncreate() {

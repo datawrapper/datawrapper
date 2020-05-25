@@ -110,6 +110,7 @@
                 this.set({ has_changes: clone(chart.get('metadata.data.changes', [])).length > 0 });
 
                 HOT.hooks.once('afterRender', () => this.initCustomEvents());
+                HOT.hooks.once('afterRender', () => this.fire('afterRender'));
                 hot.render();
             },
             dataChanged(cells) {
