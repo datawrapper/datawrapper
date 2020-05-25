@@ -107,8 +107,8 @@
     }
     .formula-hint {
         font-size: 14px;
-        line-height: 17px;
-        color: white;
+        line-height: 19px;
+        color: #d8edf3;
         background: #18a1cd;
         border-radius: 2px;
         padding: 8px;
@@ -116,9 +116,13 @@
             font-size: 15px;
             vertical-align: bottom;
             padding-right: 4px;
+            color: white;
         }
         :global(tt) {
             font-weight: bold;
+            padding: 0 3px;
+            font-size: 13px;
+            color: white;
         }
     }
     textarea.error + :global(.CodeMirror.CodeMirror-focused) {
@@ -269,7 +273,7 @@
                     .replace('undefined variable', 'Undefined variable or function')
                     .replace('parser error', 'Formula parsing error');
             },
-            formulaHint({ errDisplay }) {
+            formulaHint({ errDisplay, formula }) {
                 if (!errDisplay || typeof errDisplay !== 'string') return '';
                 const errors = errDisplay.split('<br />');
                 for (let i = 0; i < errors.length; i++) {
@@ -286,6 +290,41 @@
                             return `Did you mean to use <tt>ROWNUMBER</tt>?`;
                         }
                     }
+                }
+                // check for Math.X
+                const m = (formula || '').match(/Math\.([a-zA-Z0-9]+)/);
+                if (m && Parser.keywords.includes(m[1].toUpperCase())) {
+                    return `You should use <tt>${m[1].toUpperCase()}</tt> instead of <tt>${m[0]}</tt>`;
+                }
+                // check for some other functions string
+                const hints = [
+                    { s: 'substr', h: 'SUBSTR(x, start, length)' },
+                    { s: 'substring', h: 'SUBSTR(x, start, length)' },
+                    { s: 'replace', h: 'REPLACE(x, old, new)' },
+                    { s: 'indexOf', h: 'INDEXOF(x, search)' },
+                    { s: 'toFixed', h: 'ROUND(x, decimals)' },
+                    { s: 'length', h: 'LENGTH(x)' },
+                    { s: 'trim', h: 'TRIM(x)' },
+                    { s: 'split', h: 'SPLIT(x, sep)' },
+                    { s: 'join', h: 'JOIN(x, sep)' },
+                    { s: 'getFullYear', h: 'YEAR(x)' },
+                    { s: 'getMonth', h: 'MONTH(x)' },
+                    { s: 'getDate', h: 'DAY(x)' },
+                    { s: 'includes', h: 'y in x' }
+                ];
+                for (let i = 0; i < hints.length; i++) {
+                    const { s, h } = hints[i];
+                    const reg = new RegExp('([a-z0-9_]+)\\.' + s + '\\(');
+                    const m = formula.match(reg);
+                    if (m) {
+                        return `You should use <tt>${h.replace('%x', m[1])}</tt> instead of <tt>x.${s}()</tt>`;
+                    }
+                }
+                if (errDisplay.includes('"&"') && formula.includes('&&')) {
+                    return `You should use <tt>x and y</tt> instead of <tt>x && y</tt>`;
+                }
+                if (errDisplay.includes('is not a function') && formula.includes('||')) {
+                    return `You should use <tt>x or y</tt> instead of <tt>x || y</tt>`;
                 }
                 return '';
             }
@@ -361,15 +400,6 @@
                     dw_chart.set('metadata.describe.computed-columns', customCols);
                     // check for errors later
                     this.set({ checking: true });
-                    setTimeout(() => {
-                        const { checking } = this.get();
-                        if (!checking) return;
-                        const parserErrors = [];
-                        (dw_chart.dataset(true).column(name).errors || []).forEach(err => {
-                            parserErrors.push(err);
-                        });
-                        this.set({ parserErrors, checking: false });
-                    }, 3000);
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     this.store.set({
                         dw_chart
@@ -401,13 +431,16 @@
             const errReg = /(?:parse error) \[(\d+):(\d+)\]:/;
 
             this.on('hotRendered', () => {
-                const { checking, name } = this.get();
+                const { checking, name, formula } = this.get();
                 if (!checking) return;
 
                 const parserErrors = [];
-                (dw_chart.dataset().column(name).errors || []).forEach(err => {
-                    parserErrors.push(err);
-                });
+                const col = dw_chart.dataset().column(name);
+                if (col.formula === formula) {
+                    (col.errors || []).forEach(err => {
+                        parserErrors.push(err);
+                    });
+                }
                 this.unmarkErrors();
                 this.set({ parserErrors, checking: false });
             });
