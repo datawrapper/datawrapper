@@ -686,5 +686,16 @@
   "publish / guest / example-email": "z.B. max.mustermann@web.de",
   "publish / guest / h1": "Erstelle einen Account, um dein Diagramm zu veröffentlichen",
   "publish / guest / p": "Gib deine E-Mail-Adresse ein, um einen Account anzulegen, mit dem du dein Diagramm veröffentlichen kannst.",
-  "visualization": "Visualisierung"
+  "visualization": "Visualisierung",
+  "cc / formula / hint / use": "Tipp: Benutze",
+  "cc / formula / hint / instead-of": "anstelle von",
+  "cc / formula / error / unexpected top": "Unerwarteter Operator",
+  "cc / formula / error / unexpected tcomma": "Unerwartetes Komma",
+  "cc / formula / error / undefined variable": "Undefinierte Variable oder Funktion",
+  "cc / formula / error / parser error": "Die Formel konnte nicht geparst werden",
+  "cc / formula / error / unexpected": "Unerwartet:",
+  "cc / formula / error / member-access": "Zugriff auf Objektmethoden ist nicht erlaubt",
+  "cc / formula / error / unknown-character": "Unbekanntes Zeichen",
+  "cc / formula / hint / insert-data": "Es sieht aus als ob du Daten in die Formel hineinkopiert hast. Möchtest du",
+  "cc / formula / hint / insert-data / action": "die Formel reparieren?"
 }

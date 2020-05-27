@@ -686,5 +686,16 @@
   "publish / guest / example-email": "e.g. your.email@gmail.com",
   "publish / guest / h1": "Create an account to publish your chart",
   "publish / guest / p": "Enter your e-mail address to create an account and publish your charrt.",
-  "visualization": "Visualization"
+  "visualization": "Visualization",
+  "cc / formula / hint / use": "Hint: Use",
+  "cc / formula / hint / instead-of": "instead of",
+  "cc / formula / error / unexpected top": "Unexpected operator",
+  "cc / formula / error / unexpected tcomma": "Unexpected comma",
+  "cc / formula / error / undefined variable": "Undefined variable or function",
+  "cc / formula / error / parser error": "Formula could not be parsed",
+  "cc / formula / error / unexpected": "Unexpected",
+  "cc / formula / error / member-access": "Access to object methods is not permitted",
+  "cc / formula / error / unknown-character": "Unknown character",
+  "cc / formula / hint / insert-data": "It looks like you were trying to paste data rows into the formula. Do you want to",
+  "cc / formula / hint / insert-data / action": "fix the formula?"
 }
