@@ -1,17 +1,19 @@
 <div style="margin-bottom: 15px">
+    {#if didYouKnow}
     <div class="did-you-know" style="margin-top: 10px;margin-bottom: 1em;">
-        <div class="close"><i class="im im-check-mark-circle"></i></div>
+        <div on:click="closeDidYouKnow()" class="close"><i class="im im-check-mark-circle"></i></div>
         <h3>{__('cc / formula / did-you-know / title')}</h3>
 
         <p>{__('cc / formula / did-you-know / text')}</p>
 
         <p>
             {__('cc / formula / did-you-know / link')} <i class="im im-graduation-hat"></i>
-            <a href="https://academy.datawrapper.de/article/161-how-to-create-a-locator-map" target="_blank">
+            <a href="https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips" target="_blank">
                 {__('cc / formula / did-you-know / link2')}</a
             >
         </p>
     </div>
+    {/if}
 
     <h3 class="first">{title}</h3>
     <p>{__('computed columns / modal / intro')}</p>
@@ -179,6 +181,7 @@
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
     import { getComputedColumns } from './shared';
     import Help from '@datawrapper/controls/Help.html';
+    import { patch } from '@datawrapper/shared/httpReq';
 
     let updateTable = () => {};
     /* globals dw */
@@ -204,7 +207,8 @@
                 name: '',
                 formula: '',
                 parserErrors: [],
-                checking: false
+                checking: false,
+                didYouKnow: true
             };
         },
         computed: {
@@ -457,6 +461,14 @@
                 }
 
                 this.set({ parserErrors });
+            },
+            async closeDidYouKnow() {
+                await patch('/v3/me/data', {
+                    payload: {
+                        'new-computed-columns-syntax': 1
+                    }
+                });
+                this.set({ didYouKnow: false });
             }
         },
 
@@ -467,6 +479,12 @@
             const { dw_chart } = this.store.get();
 
             const thisCol = computedColumns.find(d => d.name === column.name());
+
+            if (window.dw.backend.__userData['locator-maps-introduction']) {
+                this.set({
+                    didYouKnow: !JSON.parse(window.dw.backend.__userData['new-computed-columns-syntax'] || 'false')
+                });
+            }
 
             this.set({
                 formula: thisCol.formula || '',
