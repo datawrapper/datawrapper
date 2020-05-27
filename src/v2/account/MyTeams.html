@@ -171,7 +171,10 @@
                     deleteJSON(`${window.location.protocol}//${dw.backend.__api_domain}/v3/teams/${team.id}/members/${user.id}`)
                         .then(res => {
                             window.alert(__('account / my-teams / leave-team / done'));
-                            teams.splice(teams.findIndex(t => t.id === team.id), 1);
+                            teams.splice(
+                                teams.findIndex(t => t.id === team.id),
+                                1
+                            );
                             this.set({ teams });
                         })
                         .catch(error => {
