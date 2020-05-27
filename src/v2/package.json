@@ -1,31 +1,32 @@
 {
-  "name": "datawrapper-svelte-v2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "rollup -cw",
-    "build": "rollup -c"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "@datawrapper/chart-core": "^8.12.1",
-    "@datawrapper/controls": "^2.15.3",
-    "@datawrapper/shared": "^0.25.6",
-    "babel-plugin-transform-async-to-promises": "^0.8.15",
-    "debounce-promise": "^3.1.2",
-    "less": "^3.10.3",
-    "rollup": "^1.25.0",
-    "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-svelte": "^5.1.0",
-    "rollup-plugin-terser": "^5.2.0",
-    "svelte": "^2.16.1",
-    "svelte-transitions": "^1.2.0"
-  }
+    "name": "datawrapper-svelte-v2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "rollup -cw",
+        "build": "rollup -c"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/core": "^7.8.4",
+        "@babel/preset-env": "^7.8.4",
+        "@datawrapper/chart-core": "^8.12.1",
+        "@datawrapper/controls": "^2.15.3",
+        "@datawrapper/shared": "^0.25.6",
+        "babel-plugin-transform-async-to-promises": "^0.8.15",
+        "debounce-promise": "^3.1.2",
+        "less": "^3.10.3",
+        "lodash": "^4.17.15",
+        "rollup": "^1.25.0",
+        "rollup-plugin-babel": "^4.3.3",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-json": "^4.0.0",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-svelte": "^5.1.0",
+        "rollup-plugin-terser": "^5.2.0",
+        "svelte": "^2.16.1",
+        "svelte-transitions": "^1.2.0"
+    }
 }

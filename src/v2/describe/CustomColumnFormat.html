@@ -61,7 +61,7 @@
     /* global dw */
     import Checkbox from '@datawrapper/controls/Checkbox.html';
     import Select from '@datawrapper/controls/Select.html';
-    import _throttle from 'underscore-es/throttle';
+    import throttle from 'lodash/throttle';
     import arrayToObject from '@datawrapper/shared/arrayToObject';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
@@ -194,14 +194,14 @@
         },
 
         oncreate() {
-            const updateTable = _throttle(
+            const updateTable = throttle(
                 () => {
                     this.fire('updateTable');
                 },
                 100,
                 { leading: false }
             );
-            const renderTable = _throttle(
+            const renderTable = throttle(
                 () => {
                     this.fire('updateTable');
                 },

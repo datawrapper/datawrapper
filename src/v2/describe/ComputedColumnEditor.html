@@ -173,8 +173,8 @@
     import 'cm/addon/edit/matchbrackets';
     import 'cm/addon/display/placeholder';
 
-    import _debounce from 'underscore-es/debounce';
-    import _groupBy from 'underscore-es/groupBy';
+    import debounce from 'lodash/debounce';
+    import groupBy from 'lodash/groupBy';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
@@ -293,7 +293,7 @@
             },
             errDisplay({ error, parserErrors }) {
                 if (parserErrors.length) {
-                    return Object.entries(_groupBy(parserErrors, d => d.message))
+                    return Object.entries(groupBy(parserErrors, d => d.message))
                         .map(([message, err]) => {
                             return message + (err[0].row !== 'all' ? ` (rows ${formatRows(err.map(d => d.row + 2))})` : '');
                         })
@@ -530,7 +530,7 @@
                 }
 
                 return {
-                    list: match,
+                    list: match.sort(),
                     from: CodeMirror.Pos(cur.line, token.start),
                     to: CodeMirror.Pos(cur.line, token.end)
                 };
@@ -561,7 +561,7 @@
 
             this.set({ cm });
 
-            updateTable = _debounce(() => app.fire('updateTable'), 1500);
+            updateTable = debounce(() => app.fire('updateTable'), 1500);
 
             let changeNameTimer;
             const changeName = name => {

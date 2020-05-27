@@ -48,13 +48,15 @@
 <p class="learn-more">{@html __("describe / histogram / learn-more")}</p>
 
 <script>
-    import _range from 'underscore-es/range';
-    import _countBy from 'underscore-es/countBy';
-    import _keys from 'underscore-es/keys';
+    import _ from 'underscore';
     import toFixed from '@datawrapper/shared/toFixed';
     import { __ } from '@datawrapper/shared/l10n';
     import { scaleLinear, scaleBand } from 'd3-scale';
     import { histogram, max, min, extent, mean, median, thresholdSturges } from 'd3-array';
+
+    const _range = _.range;
+    const _countBy = _.countBy;
+    const _keys = _.keys;
 
     var xScale_ = scaleLinear();
     var xScaleBand_ = scaleBand();
@@ -183,9 +185,6 @@
                     .replace('$4', toFixed(bin.x1));
             },
             pct,
-            formatMobile(tick) {
-                return "'" + (tick % 100);
-            },
             __
         },
 
