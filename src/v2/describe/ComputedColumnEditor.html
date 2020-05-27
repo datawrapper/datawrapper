@@ -1,4 +1,16 @@
 <div style="margin-bottom: 15px">
+    <div class="did-you-know" style="margin-top: 10px;margin-bottom: 1em;">
+        <div class="close"><i class="im im-check-mark-circle"></i></div>
+        <h3>{__('cc / formula / did-you-know / title')}</h3>
+
+        <p>{__('cc / formula / did-you-know / text')}</p>
+
+        <p>
+            You can find more information and examples in our <i class="im im-graduation-hat"></i>
+            <a href="https://academy.datawrapper.de/article/161-how-to-create-a-locator-map" target="_blank"> Academy tutorial</a>
+        </p>
+    </div>
+
     <h3 class="first">{title}</h3>
     <p>{__('computed columns / modal / intro')}</p>
 
@@ -111,6 +123,13 @@
             border-color: rgba(82, 168, 236, 0.8);
             outline: 0;
             outline: thin dotted \9;
+        }
+    }
+    .did-you-know {
+        .im-graduation-hat {
+            vertical-align: middle;
+            font-size: 18px;
+            margin-right: 5px;
         }
     }
     textarea.error + :global(.CodeMirror) {
@@ -291,6 +310,9 @@
                     .replace('member access is not permitted', __('cc / formula / error / member-access'));
             },
             formulaHint({ errDisplay, formula }) {
+                if (formula.trim().charAt(0) === '=') {
+                    return __('cc / formula / hint / equal-sign');
+                }
                 if (!errDisplay || typeof errDisplay !== 'string') return '';
                 const errors = errDisplay.split('<br />');
                 for (let i = 0; i < errors.length; i++) {

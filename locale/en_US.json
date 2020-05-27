@@ -511,7 +511,7 @@
   "Date": "Date",
   "computed columns / add-btn": "Add column",
   "computed columns / modal / title": "Add/edit columns",
-  "computed columns / modal / intro": "The values for columns can be calculated using a formula, similar to Excel.",
+  "computed columns / modal / intro": "The values for columns can be calculated using a formula, similar to Excel or LibreOffice.",
   "computed columns / modal / learn more": "Learn more.",
   "computed columns / modal / select/add column": "Select/add column",
   "Untitled": "Untitled",
@@ -698,5 +698,8 @@
   "cc / formula / error / unknown-character": "Unknown character",
   "cc / formula / hint / insert-data": "It looks like you were trying to paste data rows into the formula. Do you want to",
   "cc / formula / hint / insert-data / action": "fix the formula?",
-  "cc / formula / help": "Here you can perform calculations on the data you uploaded, e.g. for computing sums or changing texts. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Find out how the formulas work</a>"
+  "cc / formula / help": "Here you can perform calculations on the data you uploaded, e.g. for computing sums or changing texts. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Find out how the formulas work</a>",
+  "cc / formula / hint / equal-sign": "Hint: Your formula doesn't need to start with <tt>=</tt>.",
+  "cc / formula / did-you-know / title": "New syntax for column formulas",
+  "cc / formula / did-you-know / text": "Heads up: Added columns now use a simpler, spreadsheet-like formula syntax (instead of JavaScript)."
 }

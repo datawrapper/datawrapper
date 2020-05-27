@@ -511,7 +511,7 @@
   "Date": "Datum",
   "computed columns / add-btn": "Spalte hinzufügen",
   "computed columns / modal / title": "Spalten bearbeiten",
-  "computed columns / modal / intro": "Die Werte in den Spalten können nach einer Formel berechnet werden, wie in Excel.",
+  "computed columns / modal / intro": "Die Werte in den Spalten können nach einer Formel berechnet werden, ähnlich wie in Excel oder LibreOffice.",
   "computed columns / modal / learn more": "Erfahre mehr.",
   "computed columns / modal / select/add column": "Spalte auswählen",
   "Untitled": "Unbenannt",
@@ -698,5 +698,8 @@
   "cc / formula / error / unknown-character": "Unbekanntes Zeichen",
   "cc / formula / hint / insert-data": "Es sieht aus als ob du Daten in die Formel hineinkopiert hast. Möchtest du",
   "cc / formula / hint / insert-data / action": "die Formel reparieren?",
-  "cc / formula / help": "Hier kannst du neue Spalten auf Basis deiner Daten berechnen, z.b. um Summen zu berechnen oder Texte zu verändern. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Erfahre mehr darüber, wie die Formeln funktionieren.</a>"
+  "cc / formula / help": "Hier kannst du neue Spalten auf Basis deiner Daten berechnen, z.b. um Summen zu berechnen oder Texte zu verändern. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Erfahre mehr darüber, wie die Formeln funktionieren.</a>",
+  "cc / formula / hint / equal-sign": "Tipp: Deine Formel muss nicht mit <tt>=</tt> beginnen.",
+  "cc / formula / did-you-know / title": "Neue Syntax für Spaltenformeln",
+  "cc / formula / did-you-know / text": "Aufgepasst: die Formeln "
 }
