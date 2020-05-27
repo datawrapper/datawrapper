@@ -701,5 +701,5 @@
   "cc / formula / help": "Hier kannst du neue Spalten auf Basis deiner Daten berechnen, z.b. um Summen zu berechnen oder Texte zu verändern. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Erfahre mehr darüber, wie die Formeln funktionieren.</a>",
   "cc / formula / hint / equal-sign": "Tipp: Deine Formel muss nicht mit <tt>=</tt> beginnen.",
   "cc / formula / did-you-know / title": "Neue Syntax für Spaltenformeln",
-  "cc / formula / did-you-know / text": "Aufgepasst: die Formeln "
+  "cc / formula / did-you-know / text": "Aufgepasst: unsere Spaltenformeln benutzen jetzt eine einfachere Syntax, die an die aus Tabellenkalkulationen angelehnt ist."
 }
