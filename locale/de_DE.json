@@ -697,5 +697,6 @@
   "cc / formula / error / member-access": "Zugriff auf Objektmethoden ist nicht erlaubt",
   "cc / formula / error / unknown-character": "Unbekanntes Zeichen",
   "cc / formula / hint / insert-data": "Es sieht aus als ob du Daten in die Formel hineinkopiert hast. Möchtest du",
-  "cc / formula / hint / insert-data / action": "die Formel reparieren?"
+  "cc / formula / hint / insert-data / action": "die Formel reparieren?",
+  "cc / formula / help": "Hier kannst du neue Spalten auf Basis deiner Daten berechnen, z.b. um Summen zu berechnen oder Texte zu verändern. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Erfahre mehr darüber, wie die Formeln funktionieren.</a>"
 }

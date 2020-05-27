@@ -697,5 +697,6 @@
   "cc / formula / error / member-access": "Access to object methods is not permitted",
   "cc / formula / error / unknown-character": "Unknown character",
   "cc / formula / hint / insert-data": "It looks like you were trying to paste data rows into the formula. Do you want to",
-  "cc / formula / hint / insert-data / action": "fix the formula?"
+  "cc / formula / hint / insert-data / action": "fix the formula?",
+  "cc / formula / help": "Here you can perform calculations on the data you uploaded, e.g. for computing sums or changing texts. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Find out how the formulas work</a>"
 }

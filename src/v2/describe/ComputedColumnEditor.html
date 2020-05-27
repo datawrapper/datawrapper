@@ -5,7 +5,11 @@
     <label>{__('computed columns / modal / name')}</label>
     <input type="text" bind:value="name" />
 
-    <label>{__('computed columns / modal / formula')} {#if checking && !error}<i style="color: #ccc" class="fa fa-cog fa-spin"></i>{/if}</label>
+    <label
+        >{__('computed columns / modal / formula')} {#if checking && !error}<i style="color: #ccc" class="fa fa-cog fa-spin"></i>{/if}<Help
+            ><span>{@html __('cc / formula / help')}</span></Help
+        ></label
+    >
     <textarea ref:code class="code" class:error="errDisplay"></textarea>
 
     {#if errDisplay}
@@ -37,6 +41,11 @@
 <style lang="less">
     label {
         font-weight: bold;
+    }
+    label :global(.help) {
+        font-weight: normal;
+        top: 0px;
+        left: -1ex;
     }
     .errors {
         color: #bd362f;
@@ -150,6 +159,7 @@
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
     import { getComputedColumns } from './shared';
+    import Help from '@datawrapper/controls/Help.html';
 
     let updateTable = () => {};
     /* globals dw */
@@ -169,6 +179,7 @@
     }
 
     export default {
+        components: { Help },
         data() {
             return {
                 name: '',
@@ -178,9 +189,9 @@
             };
         },
         computed: {
-            title({ column }) {
+            title({ column, name }) {
                 var s = __('describe / edit-column');
-                return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`);
+                return s.replace('%s', `"${name}"`);
             },
             metaColumns({ columns, column, computedColumns }) {
                 if (!columns) return [];
