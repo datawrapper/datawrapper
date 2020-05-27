@@ -306,7 +306,11 @@
                 return errDisplay
                     .replace('unexpected TOP', __('cc / formula / error / unexpected top'))
                     .replace(': Expected EOF', '')
+                    .replace('unexpected TPAREN', __('cc / formula / error / unexpected tparen'))
+                    .replace('unexpected TBRACKET', __('cc / formula / error / unexpected tparen'))
+                    .replace('unexpected TEOF: EOF', __('cc / formula / error / unexpected teof'))
                     .replace('unexpected TCOMMA', __('cc / formula / error / unexpected tcomma'))
+                    .replace('unexpected TSEMICOLON', __('cc / formula / error / unexpected tsemicolon'))
                     .replace('undefined variable', __('cc / formula / error / undefined variable'))
                     .replace('parse error', __('cc / formula / error / parser error'))
                     .replace('Unknown character', __('cc / formula / error / unknown-character'))

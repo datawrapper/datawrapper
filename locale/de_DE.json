@@ -689,8 +689,6 @@
   "visualization": "Visualisierung",
   "cc / formula / hint / use": "Tipp: Benutze",
   "cc / formula / hint / instead-of": "anstelle von",
-  "cc / formula / error / unexpected top": "Unerwarteter Operator",
-  "cc / formula / error / unexpected tcomma": "Unerwartetes Komma",
   "cc / formula / error / undefined variable": "Undefinierte Variable oder Funktion",
   "cc / formula / error / parser error": "Die Formel konnte nicht geparst werden",
   "cc / formula / error / unexpected": "Unerwartet:",
@@ -703,5 +701,10 @@
   "cc / formula / did-you-know / title": "Neue Syntax für Spaltenformeln",
   "cc / formula / did-you-know / text": "Aufgepasst: unsere Spaltenformeln benutzen jetzt eine einfachere Syntax, die an die aus Tabellenkalkulationen angelehnt ist.",
   "cc / formula / did-you-know / link": "Du findest mehr Informationen und Beispiele in unserem",
-  "cc / formula / did-you-know / link2": "Academy-Tutorial"
+  "cc / formula / did-you-know / link2": "Academy-Tutorial",
+  "cc / formula / error / unexpected top": "Unerwarteter Operator",
+  "cc / formula / error / unexpected tcomma": "Unerwartetes Komma",
+  "cc / formula / error / unexpected tparen": "Unerwartete Klammer",
+  "cc / formula / error / unexpected tsemicolon": "Unerwartetes Semikolon",
+  "cc / formula / error / unexpected teof": "Unerwartetes Formelende"
 }

@@ -689,8 +689,6 @@
   "visualization": "Visualization",
   "cc / formula / hint / use": "Hint: Use",
   "cc / formula / hint / instead-of": "instead of",
-  "cc / formula / error / unexpected top": "Unexpected operator",
-  "cc / formula / error / unexpected tcomma": "Unexpected comma",
   "cc / formula / error / undefined variable": "Undefined variable or function",
   "cc / formula / error / parser error": "Formula could not be parsed",
   "cc / formula / error / unexpected": "Unexpected",
@@ -703,5 +701,10 @@
   "cc / formula / did-you-know / title": "New syntax for column formulas",
   "cc / formula / did-you-know / text": "Heads up: Added columns now use a simpler, spreadsheet-like formula syntax (instead of JavaScript).",
   "cc / formula / did-you-know / link": "You can find more information and examples in our",
-  "cc / formula / did-you-know / link2": "Academy tutorial"
+  "cc / formula / did-you-know / link2": "Academy tutorial",
+  "cc / formula / error / unexpected top": "Unexpected operator",
+  "cc / formula / error / unexpected tcomma": "Unexpected comma",
+  "cc / formula / error / unexpected tparen": "Unexpected bracket",
+  "cc / formula / error / unexpected tsemicolon": "Unexpected semicolon",
+  "cc / formula / error / unexpected teof": "Unexpected end of formula"
 }
