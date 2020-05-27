@@ -48,15 +48,13 @@
 <p class="learn-more">{@html __("describe / histogram / learn-more")}</p>
 
 <script>
-    import _ from 'underscore';
+    import range from 'lodash/range';
+    import countBy from 'lodash/countBy';
     import toFixed from '@datawrapper/shared/toFixed';
     import { __ } from '@datawrapper/shared/l10n';
     import { scaleLinear, scaleBand } from 'd3-scale';
     import { histogram, max, min, extent, mean, median, thresholdSturges } from 'd3-array';
 
-    const _range = _.range;
-    const _countBy = _.countBy;
-    const _keys = _.keys;
 
     var xScale_ = scaleLinear();
     var xScaleBand_ = scaleBand();
@@ -116,14 +114,14 @@
                 const bins = histogram()
                     .domain(dom)
                     .thresholds(thresholdSturges)(validValues);
-                const binWidths = _countBy(bins.map(b => b.x1 - b.x0));
-                if (bins.length > 2 && _keys(binWidths).length > 1) {
+                const binWidths = countBy(bins.map(b => b.x1 - b.x0));
+                if (bins.length > 2 && Object.keys(binWidths).length > 1) {
                     // check first and last bin
                     const binw = bins[1].x1 - bins[1].x0;
                     const lst = dom[0] + Math.ceil((dom[1] - dom[0]) / binw) * binw;
                     return histogram()
                         .domain([dom[0], lst])
-                        .thresholds(_range(dom[0], lst + binw * 0.4, binw))(validValues);
+                        .thresholds(range(dom[0], lst + binw * 0.4, binw))(validValues);
                 }
                 return bins;
             },
