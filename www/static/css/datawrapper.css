@@ -3577,11 +3577,12 @@ input[type='color'],
   font-size: 22px;
 }
 .did-you-know .close:hover {
-  color: #1d81a2;
+  color: #15607a;
 }
 .did-you-know h3 {
   font-weight: bold;
   margin-top: 0;
+  color: #444;
   font-size: 17px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 0.5em;
@@ -3599,6 +3600,10 @@ input[type='color'],
 }
 .did-you-know p:last-child {
   margin-bottom: 0;
+}
+.did-you-know p .im-graduation-hat {
+  font-size: 18px;
+  vertical-align: middle;
 }
 button.btn > i.im {
   font-size: 0.8rem !important;

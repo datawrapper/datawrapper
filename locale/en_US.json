@@ -701,5 +701,7 @@
   "cc / formula / help": "Here you can perform calculations on the data you uploaded, e.g. for computing sums or changing texts. <a href=\"https://academy.datawrapper.de/article/249-calculations-in-added-columns-and-tooltips\" target=\"_blank\">Find out how the formulas work</a>",
   "cc / formula / hint / equal-sign": "Hint: Your formula doesn't need to start with <tt>=</tt>.",
   "cc / formula / did-you-know / title": "New syntax for column formulas",
-  "cc / formula / did-you-know / text": "Heads up: Added columns now use a simpler, spreadsheet-like formula syntax (instead of JavaScript)."
+  "cc / formula / did-you-know / text": "Heads up: Added columns now use a simpler, spreadsheet-like formula syntax (instead of JavaScript).",
+  "cc / formula / did-you-know / link": "You can find more information and examples in our",
+  "cc / formula / did-you-know / link2": "Academy tutorial"
 }
