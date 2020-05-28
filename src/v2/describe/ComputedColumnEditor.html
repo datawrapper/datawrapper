@@ -472,6 +472,7 @@
                         'new-computed-columns-syntax': 1
                     }
                 });
+                window.dw.backend.__userData['new-computed-columns-syntax'] = 1;
                 this.set({ didYouKnow: false });
             }
         },
@@ -484,7 +485,7 @@
 
             const thisCol = computedColumns.find(d => d.name === column.name());
 
-            if (window.dw.backend.__userData['locator-maps-introduction']) {
+            if (window.dw.backend.__userData['new-computed-columns-syntax']) {
                 this.set({
                     didYouKnow: !JSON.parse(window.dw.backend.__userData['new-computed-columns-syntax'] || 'false')
                 });
