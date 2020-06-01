@@ -65,11 +65,10 @@
 
             {#if signupWithoutPassword}
             <p>
-                Datawrapper lets you create and publish responsive charts, maps & tables for free.
+                { __('signup / mobile / p1') }
             </p>
             <p>
-                While charts and maps created with Datawrapper are responsive, the editor is currently not intended to be used on mobile devices.
-                Enter your e-mail address to receive a link to proceed on your desktop computer:
+                { __('signup / mobile / p2') }
             </p>
             {:else}
             <p>{@html __("login / signup / intro")}</p>
@@ -138,6 +137,8 @@
                     </button>
                 </form>
             </div>
+            {/if} {#if signupWithoutPassword && !signupSuccess}
+            <a href="#" on:click="set({signupWithoutPassword: false, noSignin: false})">{ __('signup / mobile / back') }</a>
             {/if}
         </div>
         {:else}
@@ -326,17 +327,7 @@
             }
         },
         oncreate() {
-            function getParameterByName(name) {
-                var url = window.location.href;
-                name = name.replace(/[[\]]/g, '\\$&');
-                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-                var results = regex.exec(url);
-                if (!results) return null;
-                if (!results[2]) return '';
-                return decodeURIComponent(results[2].replace(/\+/g, ' '));
-            }
-
-            if (getParameterByName('mobileSignUp')) {
+            if (window.innerWidth < 600) {
                 this.set({
                     noSignin: true,
                     signupWithoutPassword: true
