@@ -1,10 +1,10 @@
 /* eslint-env node, es6 */
 import less from 'less';
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -22,6 +22,9 @@ build('publish', { noAMD: true, entry: 'index.js' });
 build('publish/sidebar', { noAMD: true });
 build('publish/guest');
 build('publish/pending-activation');
+build('describe');
+build('describe/hot', { noAMD: true });
+build('visualize');
 
 export default targets;
 
@@ -82,9 +85,10 @@ function build(appId, opts) {
             json(),
 
             babel({
-                exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
+                // don't exclude anything!
+                // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
                 extensions: ['.js', '.mjs', '.html'],
-                runtimeHelpers: true,
+                babelHelpers: 'runtime',
                 presets: [
                     [
                         '@babel/env',
@@ -95,7 +99,7 @@ function build(appId, opts) {
                         }
                     ]
                 ],
-                plugins: ['babel-plugin-transform-async-to-promises']
+                plugins: ['babel-plugin-transform-async-to-promises', '@babel/plugin-transform-runtime']
             }),
             production && terser()
         ]

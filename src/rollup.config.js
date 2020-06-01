@@ -14,7 +14,6 @@ const targets = [];
 build('upload');
 build('describe');
 build('controls', { noAMD: true });
-build('controls/hot', { noAMD: true });
 build('highlight');
 build('editor');
 
