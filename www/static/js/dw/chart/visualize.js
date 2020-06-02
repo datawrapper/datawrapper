@@ -344,7 +344,6 @@ define([
         function loadVisDone(vis) {
             dw.backend.currentVis = vis;
             dw.backend.currentVis.chart(chart);
-            dw.backend.currentVis.dataset = chart.dataset().reset();
             dw.backend.currentVis.meta = visMetas[chart.get('type')];
             dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
 
