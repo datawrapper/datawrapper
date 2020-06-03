@@ -231,7 +231,7 @@
   "publish / status / uploading": "Visualisierung wird hochgeladen",
   "publish / status / redirecting": "Alte Einbett-Codes werden auf die neueste Version umgeleitet",
   "publish / status / done": "Fertig :)",
-  "publish / status / call-webhook": "Webhook ausführen",
+  "publish / status / call-webhook": "Team-Webhook ausführen",
   "publish / status / call-slack-webhook": "Slack benachrichtigen",
   "upload / drag-csv-here": "Ziehe deine CSV-Datei hier her zum Hochladen...",
   "upload / title": "Wie möchtest du deine Daten hochladen?",
