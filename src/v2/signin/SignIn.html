@@ -156,9 +156,14 @@
 
     {#if !noSignin && alternativeSignIn.length}
     <div class="alternative-signin">
-        {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
-        <a href="{ signin.url }" class="alternative-signin-link">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a>
-        {/each}
+        <div>
+            {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
+            <a href="{ signin.url }" class="alternative-signin-link">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a
+            >{/each}.
+        </div>
+        <div>
+            {@html __("login / agree-terms")}
+        </div>
     </div>
     {/if}
 
@@ -345,6 +350,9 @@
         padding: 10px 0 0;
         border-top: 1px solid #eee;
         text-align: left;
+    }
+    .alternative-signin div {
+        display: inline;
     }
     .alternative-signin-link {
         margin-right: 10px;
