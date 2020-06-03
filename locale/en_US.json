@@ -231,6 +231,8 @@
   "publish / status / uploading": "Uploading the visualization",
   "publish / status / redirecting": "Redirecting previous embed-codes to the recent version",
   "publish / status / done": "Done :)",
+  "publish / status / call-webhook": "Call team webhook",
+  "publish / status / call-slack-webhook": "Notify Slack",
   "upload / drag-csv-here": "Drag your CSV file here to upload...",
   "upload / title": "How do you want to upload your data?",
   "upload / copy-paste": "Copy & paste data table",
