@@ -36,8 +36,7 @@
 
 {% if user != chart.user and user.isAdmin() %}
 <div class="alert alert-warning" style="text-align:center;margin-top:10px;">
- {{ "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!" | trans
-    | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
+ {{ "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing! <a id='duplicate-chart' href=''>Copy Chart</a> <i id='copying-chart' class='fa'></i>" | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
 </div>
 {% endif %}
 {{ hook('chart_editor_alert', chart, user) }}
@@ -80,6 +79,43 @@ dw.backend.ready(function() {
         }
     });
 
+    $('a#duplicate-chart').on('click', function(e){
+        e.preventDefault();
+        $('i#copying-chart').addClass('fa-spinner fa-spin');
+        $.ajax({
+            type: "POST",
+            url: '/api/charts/'+chart.get('id')+'/copy',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: moveChart,
+            dataType: 'json'
+        });
+    })
+
+    function moveChart(res) {
+        var id = res.data.id;
+        var api = window.location.protocol+'//'+window.location.host.replace('app','api');
+        var body = {
+            organizationId:null,
+            inFolder:null
+        };
+        $.ajax({
+            type: "PATCH",
+            url: api+'/v3/charts/'+res.data.id,
+            success: goToChart,
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json',
+            data:JSON.stringify(body)
+        });
+
+        function goToChart() {
+            $('i#copying-chart').removeClass('fa-spinner fa-spin');
+            window.open(window.location.href.replace(chart.get('id'),id));
+        }
+    }
 });
 
 
