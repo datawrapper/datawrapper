@@ -67,7 +67,6 @@ dw.backend.ready(function() {
     _.templateSettings = {
         interpolate : /\{\{(.+?)\}\}/g
     };
-
     $('.chart-editor').on('click', '.submit', function(e) {
         var a = $(e.target);
         if (e.target.nodeName.toLowerCase() != 'a') a = a.parents('a');
@@ -79,6 +78,7 @@ dw.backend.ready(function() {
         }
     });
 
+    {% if user != chart.user and user.isAdmin() %}
     $('a#duplicate-chart').on('click', function(e){
         e.preventDefault();
         $('i#copying-chart').addClass('fa-spinner fa-spin');
@@ -94,10 +94,10 @@ dw.backend.ready(function() {
     })
 
     function openChart(res) {
-        var id = res.data.id;
         $('i#copying-chart').removeClass('fa-spinner fa-spin');
-        window.open(window.location.href.replace(chart.get('id'),id));
+        window.open(window.location.href.replace(chart.get('id'), res.data.id));
     }
+    {% endif %}
 });
 
 
