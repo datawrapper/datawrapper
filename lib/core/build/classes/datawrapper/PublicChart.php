@@ -41,60 +41,46 @@ class PublicChart extends BasePublicChart {
     }
 
     /**
-     * writes any asset to the asset store using v3 api
-     */
-    public function writeAsset($filename, $data) {
-        if (!$this->assets) $this->assets = [];
-
-        [$status, $body] = call_v3_api('PUT',
-            '/charts/' . $this->getId() . '/assets/' . $filename, $data, "text/csv");
-
-        if (!in_array($status, [200, 201, 204])) {
-            throw new RuntimeException('Could not write chart asset using v3 API.');
-        }
-
-        $this->assets[$filename] = $data;
-        $this->setLastModifiedAt(time());
-    }
-
-    /**
-     * writes raw csv data to the asset store using v3 api
+     * writes raw csv data to the file system store
      *
      * @param csvdata  raw csv data string
      */
     public function writeData($csvdata) {
-        $this->writeAsset($this->getDataFilename(), $csvdata);
-    }
+        $cfg = $GLOBALS['dw_config'];
 
-    /**
-     * load any asset from the asset store using v3 api
-     */
-    public function loadAsset($filename) {
-        if (!$this->assets) $this->assets = [];
-
-        if (empty($this->assets[$filename])) {
-            [$status, $body] = call_v3_api('GET',
-            '/charts/' . $this->getId() . '/assets/' . $filename);
-
-            if (!in_array($status, [200, 201, 204, 404])) {
-                throw new RuntimeException('Could not read chart asset using v3 API.');
-            }
-
-            if ($status == "404") {
-                $this->assets[$filename] = "";
-            } else {
-                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode_safe($body, 1);
-            }
+        if (isset($cfg['charts-s3']) && isset($cfg['charts-s3']['write'])
+            && $cfg['charts-s3']['write'] == true) {
+            // s3 filename
+            $filename = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
+                $this->getChart()->getRelativeDataPath() . '/' . $this->getDataFilename();
+        } else {
+            // local filename
+            $path = $this->getChart()->getDataPath();
+            if (!file_exists($path)) mkdir($path, 0775);
+            $filename = $path . '/' . $this->getDataFilename();
         }
 
-        return $this->assets[$filename];
+        file_put_contents($filename, $csvdata);
+        return $filename;
     }
 
     /**
-     * load data from the asset store using v3 api
+     * load data from file sytem
      */
     public function loadData() {
-        return $this->loadAsset($this->`());
+        $config = $GLOBALS['dw_config'];
+
+        if (isset($config['charts-s3']) && $config['charts-s3']['read']) {
+            $filename = 's3://' . $config['charts-s3']['bucket'] . '/' .
+              $this->getChart()->getRelativeDataPath() . '/' .$this->getDataFilename();
+        } else {
+            $filename = $this->getChart()->getDataPath() . '/' . $this->getDataFilename();
+        }
+        try {
+            return file_get_contents($filename);
+        } catch (Exception $ex) {
+            return '';
+        }
     }
 
     public function updateMetadata($key, $value) {
