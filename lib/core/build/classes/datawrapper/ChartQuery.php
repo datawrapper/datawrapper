@@ -142,18 +142,24 @@ class ChartQuery extends BaseChartQuery {
         // use original title
         $chart->setTitle($src->getTitle());
         $public = $src->getPublicChart();
+
         if ($public) {
             $chart->setType($public->getType());
+            $chart->setTitle($public->getTitle());
+            $chart->setRawMetadata($public->getMetadata());
+        }
+
+        $chart->save();
+
+        if ($public) {
             if (!empty($public->getExternalData())) {
                 $chart->setExternalData($public->getExternalData());
                 $chart->refreshExternalData();
             } else {
                 $chart->writeData($public->loadData());
             }
-            $chart->setTitle($public->getTitle());
-            $chart->setRawMetadata($public->getMetadata());
         }
-        $chart->save();
+
         return $chart;
     }
 
