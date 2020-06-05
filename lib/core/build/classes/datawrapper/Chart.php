@@ -172,7 +172,7 @@ class Chart extends BaseChart {
     }
 
     /**
-     * load any asset from file system
+     * load any asset from the asset store using v3 api
      */
     public function loadAsset($filename) {
         if (!$this->assets) $this->assets = [];
@@ -196,7 +196,7 @@ class Chart extends BaseChart {
     }
 
     /**
-     * load data from file system
+     * load data from the asset store using v3 api
      */
     public function loadData() {
         return $this->loadAsset($this->getDataFilename());
