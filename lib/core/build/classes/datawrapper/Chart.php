@@ -154,8 +154,11 @@ class Chart extends BaseChart {
         [$status, $body] = call_v3_api('PUT',
             '/charts/' . $this->getId() . '/assets/' . $filename, $data, "text/csv");
 
-        $this->assets[$filename] = $data;
+        if (!in_array($status, [200, 204])) {
+            throw new RuntimeException('Could not write chart asset using v3 API.');
+        }
 
+        $this->assets[$filename] = $data;
         $this->setLastModifiedAt(time());
     }
 
@@ -178,10 +181,14 @@ class Chart extends BaseChart {
             [$status, $body] = call_v3_api('GET',
             '/charts/' . $this->getId() . '/assets/' . $filename);
 
+            if (!in_array($status, [200, 204, 404])) {
+                throw new RuntimeException('Could not read chart asset using v3 API.');
+            }
+
             if ($status == "404") {
                 $this->assets[$filename] = "";
             } else {
-                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode($body, 1);
+                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode_safe($body, 1);
             }
         }
 
