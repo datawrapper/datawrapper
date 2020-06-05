@@ -154,7 +154,7 @@ class Chart extends BaseChart {
         [$status, $body] = call_v3_api('PUT',
             '/charts/' . $this->getId() . '/assets/' . $filename, $data, "text/csv");
 
-        if (!in_array($status, [200, 204])) {
+        if (!in_array($status, [200, 201, 204])) {
             throw new RuntimeException('Could not write chart asset using v3 API.');
         }
 
@@ -181,7 +181,7 @@ class Chart extends BaseChart {
             [$status, $body] = call_v3_api('GET',
             '/charts/' . $this->getId() . '/assets/' . $filename);
 
-            if (!in_array($status, [200, 204, 404])) {
+            if (!in_array($status, [200, 201, 204, 404])) {
                 throw new RuntimeException('Could not read chart asset using v3 API.');
             }
 
