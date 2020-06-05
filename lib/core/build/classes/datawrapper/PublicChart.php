@@ -14,6 +14,7 @@
  * @package    propel.generator.datawrapper
  */
 class PublicChart extends BasePublicChart {
+    private $assets;
 
     /*
      * copy the current chart data to this public chart
