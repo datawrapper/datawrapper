@@ -26,9 +26,13 @@ jobs:
             - save_cache:
                   key: source-v1-{{ .Branch }}-{{ .Revision }}
                   paths:
-                      - ".git"
+                      - '.git'
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
+
+            - run:
+                  name: Authenticate with registry
+                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
             - run: npm ci
 
@@ -53,16 +57,6 @@ jobs:
 
             - run: npm run lint
 
-    test:
-        <<: *defaults
-        steps:
-            - *restore_source
-            - checkout
-            - restore_cache:
-                  <<: *cache
-
-            - run: npm test
-
 workflows:
     version: 2
     install, test and lint:
@@ -71,13 +65,6 @@ workflows:
                   filters:
                       tags:
                           only: /^v.*/
-
-            - test:
-                  filters:
-                      tags:
-                          only: /^v.*/
-                  requires:
-                      - install
 
             - lint:
                   filters:
