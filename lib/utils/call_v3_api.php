@@ -14,11 +14,11 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
         'Content-Type: ' . $contentType
     ];
 
-    if (Session::getMethod() == 'session') {
-        $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
-    } else if (Session::getMethod() == 'token') {
+    if (Session::getMethod() == 'token') {
         $h = getallheaders();
         $headers[] = 'Authorization: ' . $h['Authorization'];
+    } else {
+        $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
     }
 
     curl_setopt_array($ch, [
