@@ -9,14 +9,23 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
     $apiDomain = $GLOBALS['dw_config']['api_domain'] ?? 'api.datawrapper.de';
     $protocol = get_current_protocol();
     $ch = curl_init();
+
+    $headers = [
+        'Content-Type: ' . $contentType
+    ];
+
+    if (Session::getMethod() == 'session') {
+        $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
+    } else if (Session::getMethod() == 'token') {
+        $h = getallheaders();
+        $headers[] = 'Authorization: ' . $h['Authorization'];
+    }
+
     curl_setopt_array($ch, [
         CURLOPT_URL => "$protocol://$apiDomain/v3$route",
         CURLOPT_CUSTOMREQUEST => $method,
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_HTTPHEADER => [
-            'Content-Type: ' . $contentType,
-            'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION']
-        ],
+        CURLOPT_HTTPHEADER => $headers,
         CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS
     ]);
     if (!empty($payload)) {
