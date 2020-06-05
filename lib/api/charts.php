@@ -162,9 +162,9 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         }
         $data = $app->request()->getBody();
         try {
-            $filename = $chart->writeData($data);
+            $chart->writeData($data);
             $chart->save();
-            ok($filename);
+            ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }

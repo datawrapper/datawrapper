@@ -53,33 +53,11 @@ propel:
 	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen sql
 	composer dump-autoload
 
-
-www/static/js/svelte/account.js: src/account/*
-	cd src && ROLLUP_TGT_APP=account ../node_modules/.bin/rollup -c
-
 www/static/js/svelte/controls.js: src/controls/* src/editor/*
 	cd src && ROLLUP_TGT_APP=controls ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/controls/hot.js: src/controls/hot/*
-	cd src && ROLLUP_TGT_APP=controls/hot ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/describe.js: src/describe/*
-	cd src && ROLLUP_TGT_APP=describe ../node_modules/.bin/rollup -c
 
 www/static/js/svelte/editor.js: src/editor/*
 	cd src && ROLLUP_TGT_APP=editor ../node_modules/.bin/rollup -c
 
-www/static/js/svelte/publish.js: src/publish/*
-	cd src && ROLLUP_TGT_APP=publish ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/publish_old.js: src/publish/*
-	cd src && ROLLUP_TGT_APP=publish_old ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/publish/sidebar.js: src/publish/sidebar/*
-	cd src && ROLLUP_TGT_APP=publish/sidebar ../node_modules/.bin/rollup -c
-
 www/static/js/svelte/upload.js: src/upload/*
 	cd src && ROLLUP_TGT_APP=upload ../node_modules/.bin/rollup -c
-
-templates/chart/embed.twig: src/embed/*
-	cd src && ROLLUP_TGT_APP=embed ../node_modules/.bin/rollup -c
