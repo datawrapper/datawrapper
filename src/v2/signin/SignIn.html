@@ -181,6 +181,7 @@
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
+    import { trackEvent } from '@datawrapper/shared/analytics';
     import CheckPassword from '../shared/CheckPassword.html';
 
     // eslint-disable-next-line
@@ -285,6 +286,8 @@
                     });
 
                     if (!signupWithoutPassword) {
+                        trackEvent('App', 'sign-up');
+
                         this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
                         setTimeout(() => {
                             window.location.href = '/';
