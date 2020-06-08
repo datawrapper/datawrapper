@@ -285,9 +285,9 @@
                         }
                     });
 
-                    if (!signupWithoutPassword) {
-                        trackEvent('App', 'sign-up');
+                    trackEvent('App', 'sign-up');
 
+                    if (!signupWithoutPassword) {
                         this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
                         setTimeout(() => {
                             window.location.href = '/';
