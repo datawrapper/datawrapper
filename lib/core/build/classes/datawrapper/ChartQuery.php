@@ -91,7 +91,7 @@ class ChartQuery extends BaseChartQuery {
     /*
      * copy an existing chart and store it as new
      */
-    public function copyChart($src, $changeTitle = true) {
+    public function copyChart($src, $changeTitle = true, $copyData = true) {
         $chart = new Chart();
         $user = Session::getUser();
 
@@ -124,36 +124,55 @@ class ChartQuery extends BaseChartQuery {
         // make sure the cached data is fresh
         $src->refreshExternalData();
 
-        // we need to copy the data, too
-        $chart->writeData($src->loadData());
+        $chart->save();
+
+        if ($copyData) {
+            // we need to copy the data, too
+            $chart->writeData($src->loadData());
+        }
 
         Hooks::execute(Hooks::CHART_COPY, $src, $chart);
-
-        $chart->save();
 
         return $chart;
     }
 
-    public function copyPublicChart($src) {
+    public function copyPublicChart($src, $user) {
         if ($src->getLastEditStep() < 5) {
             return null;
         }
-        $chart = $this->copyChart($src);
+        $chart = $this->copyChart($src, true, false);
         // use original title
         $chart->setTitle($src->getTitle());
         $public = $src->getPublicChart();
+
         if ($public) {
             $chart->setType($public->getType());
+            $chart->setTitle($public->getTitle());
+            $chart->setRawMetadata($public->getMetadata());
+        }
+
+        if ($user->isLoggedIn()) {
+            $chart->setUser($user);
+            $chart->setOrganization($user->getCurrentOrganization());
+        } else {
+            // remember session id to be able to assign this chart
+            // to a newly registered user
+            $chart->setOrganization(null);
+            $chart->setAuthorId(null);
+            $chart->setGuestSession(session_id());
+        }
+
+        $chart->save();
+
+        if ($public) {
             if (!empty($public->getExternalData())) {
                 $chart->setExternalData($public->getExternalData());
                 $chart->refreshExternalData();
             } else {
                 $chart->writeData($public->loadData());
             }
-            $chart->setTitle($public->getTitle());
-            $chart->setRawMetadata($public->getMetadata());
         }
-        $chart->save();
+
         return $chart;
     }
 

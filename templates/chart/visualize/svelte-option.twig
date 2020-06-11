@@ -9,12 +9,13 @@
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
 
 <script type="text/javascript" src="/static/plugins/{{ filePath }}.js?v={{ sha }}"></script>
+<script type="text/javascript" src="/static/js/svelte/visualize.js?v={{ sha }}"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ filePath }}.css">
 
 
 <script type="text/javascript">
 
-require(['{{ amdPath }}'], function(mod) {
+require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
 
     var App = mod.App,
         data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
@@ -33,7 +34,7 @@ require(['{{ amdPath }}'], function(mod) {
 
     chartData.mode = getQueryVariable("mode") || "web";
 
-    var chart = new mod.Chart(chartData);
+    var chart = new visualize.Chart(chartData);
     window.chart2 = chart;
     var getJSON = mod.utils.getJSON;
 

@@ -162,9 +162,9 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         }
         $data = $app->request()->getBody();
         try {
-            $filename = $chart->writeData($data);
+            $chart->writeData($data);
             $chart->save();
-            ok($filename);
+            ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
@@ -329,18 +329,8 @@ function if_chart_is_forkable($chart_id, $callback) {
 $app->post('/charts/:id/fork', function($chart_id) use ($app) {
     if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
         try {
-            $fork = ChartQuery::create()->copyPublicChart($chart);
+            $fork = ChartQuery::create()->copyPublicChart($chart, $user);
             if ($fork) {
-                if ($user->isLoggedIn()) {
-                    $fork->setUser($user);
-                    $fork->setOrganization($user->getCurrentOrganization());
-                } else {
-                    // remember session id to be able to assign this chart
-                    // to a newly registered user
-                    $fork->setOrganization(null);
-                    $fork->setAuthorId(null);
-                    $fork->setGuestSession(session_id());
-                }
                 $fork->setInFolder(null);
                 $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
                 $fork->updateMetadata('describe.byline', '');

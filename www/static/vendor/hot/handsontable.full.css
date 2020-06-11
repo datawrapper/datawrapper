@@ -23,8 +23,8 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * 
- * Version: 0.37.0
- * Release date: 01/03/2018 (built at 28/02/2018 15:54:52)
+ * Version: 5.0.2
+ * Release date: 12/09/2018 (built at 11/09/2018 09:55:19)
  */
 /**
  * Fix for bootstrap styles
@@ -98,6 +98,7 @@
 .handsontable .hide{
   display: none;
 }
+
 .handsontable .relative {
   position: relative;
 }
@@ -153,6 +154,7 @@
   table-layout: fixed;
   width: 0;
   outline-width: 0;
+  cursor: default;
   /* reset bootstrap table style. for more info see: https://github.com/handsontable/handsontable/issues/224 */
   max-width: none;
   max-height: none;
@@ -238,7 +240,7 @@
 }
 
 .handsontable th {
-  background-color: #f3f3f3;
+  background-color: #f0f0f0;
   color: #222;
   text-align: center;
   font-weight: normal;
@@ -256,19 +258,8 @@
   padding: 2px 4px;
 }
 
-/* selection */
-.handsontable tbody th.ht__highlight,
-.handsontable thead th.ht__highlight {
-  background-color: #dcdcdc;
-}
-.handsontable.ht__selection--columns thead th.ht__highlight,
-.handsontable.ht__selection--rows tbody th.ht__highlight {
-  background-color: #8eb0e7;
-  color: #000;
-}
-
 #hot-display-license-info {
-  font-size: 9px;
+  font-size: 10px;
   color: #323232 ;
   padding: 5px 0 3px 0;
   font-family: Helvetica, Arial, sans-serif;
@@ -300,14 +291,14 @@
 .handsontable .manualColumnResizer.active,
 .handsontable .manualRowResizer:hover,
 .handsontable .manualRowResizer.active {
-  background-color: #AAB;
+  background-color: #34a9db;
 }
 
 .handsontable .manualColumnResizerGuide {
   position: fixed;
   right: 0;
   top: 0;
-  background-color: #AAB;
+  background-color: #34a9db;
   display: none;
   width: 0;
   border-right: 1px dashed #777;
@@ -318,7 +309,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  background-color: #AAB;
+  background-color: #34a9db;
   display: none;
   height: 0;
   border-bottom: 1px dashed #777;
@@ -354,14 +345,24 @@
   right: -15px;
 }
 
-/* border line */
-
+/* Selection */
 .handsontable .wtBorder {
   position: absolute;
   font-size: 0;
 }
 .handsontable .wtBorder.hidden{
   display:none !important;
+}
+
+/* A layer order of the selection types */
+.handsontable .wtBorder.current {
+  z-index: 10;
+}
+.handsontable .wtBorder.area {
+  z-index: 8;
+}
+.handsontable .wtBorder.fill {
+  z-index: 6;
 }
 
 .handsontable td.area,
@@ -432,6 +433,17 @@
   opacity: 0.58;
 }
 
+.handsontable tbody th.ht__highlight,
+.handsontable thead th.ht__highlight {
+  background-color: #dcdcdc;
+}
+
+.handsontable tbody th.ht__active_highlight,
+.handsontable thead th.ht__active_highlight {
+  background-color: #8eb0e7;
+  color: #000;
+}
+
 /* fill handle */
 
 .handsontable .wtBorder.corner {
@@ -446,9 +458,9 @@
 }
 
 .handsontableInput {
-  border:none;
+  border: none;
   outline-width: 0;
-  margin: 0 ;
+  margin: 0;
   padding: 1px 5px 0 5px;
   font-family: inherit;
   line-height: 21px;
@@ -467,7 +479,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 104;
 }
 
 .htSelectEditor {
@@ -493,6 +505,7 @@ TextRenderer readOnly cell
   color: #777;
   position: absolute;
   right: 5px;
+  font-size: 9px;
 }
 
 
@@ -567,47 +580,6 @@ CheckboxRenderer
   cursor: pointer;
   display: inline-block;
   width: 100%;
-}
-
-@-webkit-keyframes opacity-hide {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    /*display: none;*/
-  }
-}
-@keyframes opacity-hide {
-  from {
-    /*display: block;*/
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    /*display: none;*/
-  }
-}
-
-@-webkit-keyframes opacity-show {
-  from {
-    opacity: 0;
-    /*display: none;*/
-  }
-  to {
-    opacity: 1;
-    /*display: block;*/
-  }
-}
-@keyframes opacity-show {
-  from {
-    opacity: 0;
-    /*display: none;*/
-  }
-  to {
-    opacity: 1;
-    /*display: block;*/
-  }
 }
 
 /**
@@ -841,64 +813,16 @@ thead .htCollapseButton:after {
   overflow: auto;
 }
 
-.ht_clone_left .wtHolder {
-  overflow-x: hidden;
-  overflow-y: auto;
+.handsontable .ht_master thead,
+.handsontable .ht_master tr th,
+.handsontable .ht_clone_left thead {
+  visibility: hidden;
 }
 
 .ht_clone_top .wtHolder,
+.ht_clone_left .wtHolder,
 .ht_clone_bottom .wtHolder {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-
-/*WalkontableDebugOverlay*/
-
-.wtDebugHidden {
-  display: none;
-}
-
-.wtDebugVisible {
-  display: block;
-  -webkit-animation-duration: 0.5s;
-  -webkit-animation-name: wtFadeInFromNone;
-  animation-duration: 0.5s;
-  animation-name: wtFadeInFromNone;
-}
-
-@keyframes wtFadeInFromNone {
-  0% {
-    display: none;
-    opacity: 0;
-  }
-
-  1% {
-    display: block;
-    opacity: 0;
-  }
-
-  100% {
-    display: block;
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes wtFadeInFromNone {
-  0% {
-    display: none;
-    opacity: 0;
-  }
-
-  1% {
-    display: block;
-    opacity: 0;
-  }
-
-  100% {
-    display: block;
-    opacity: 1;
-  }
+  overflow: hidden;
 }
 /*
 
@@ -1380,7 +1304,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
  * Handsontable ContextMenu
  */
 
-.htContextMenu {
+.htContextMenu:not(.htGhostTable) {
   display: none;
   position: absolute;
   z-index: 1060; /* needs to be higher than 1050 - z-index for Twitter Bootstrap modal (#1569) */
@@ -1428,7 +1352,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
 }
 
 .htContextMenu table tbody tr td.htSeparator {
-  border-top: 1px solid #bbb;
+  border-top: 1px solid #e6e6e6;
   height: 0;
   padding: 0;
   cursor: default;
@@ -1561,7 +1485,42 @@ textarea#HandsontableCopyPaste {
 .handsontable.on-moving--rows .ht__manualRowMove--backlight {
   display: block;
 }
-.handsontable.ht__selection--rows tbody td[rowspan][class*="area"][class*="highlight"]:before,
-.handsontable.ht__selection--columns tbody td[colspan][class*="area"][class*="highlight"]:before {
-    background: inherit;
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"]:not([class*="fullySelectedMergedCell"]):before {
+    opacity: 0;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-multiple"]:before {
+    opacity: 0.1;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-0"]:before {
+    opacity: 0.1;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-1"]:before {
+    opacity: 0.2;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-2"]:before {
+    opacity: 0.27;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-3"]:before {
+    opacity: 0.35;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-4"]:before {
+    opacity: 0.41;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-5"]:before {
+    opacity: 0.47;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-6"]:before {
+    opacity: 0.54;
+}
+
+.handsontable tbody td[rowspan][class*="area"][class*="highlight"][class*="fullySelectedMergedCell-7"]:before {
+    opacity: 0.58;
 }

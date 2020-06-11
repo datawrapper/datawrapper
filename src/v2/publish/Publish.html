@@ -141,7 +141,7 @@
             {/if} {/each}
         </ul>
 
-        <svelte:component ref:action this="{Action}" visible="{true}" show="{true}" />
+        <svelte:component ref:action this="{Action}" visible="{true}" show="{false}" />
     </div>
 </div>
 
@@ -483,7 +483,9 @@
                 this.set({ active_action: action.id });
                 if (action.mod) {
                     if (action.mod.App) {
+                        this.refs.action.set({ show: false });
                         this.set({ Action: action.mod.App });
+                        this.refs.action.set({ show: true });
                     } else {
                         // todo: show loading indicator
                         this.set({ Action });
@@ -497,6 +499,7 @@
                                     // todo: HIDE loading indicator
                                     Object.assign(action.mod, mod);
                                     this.set({ Action: action.mod.App });
+                                    this.refs.action.set({ show: true });
                                     if (mod.init) mod.init(this.refs.action);
                                     if (action.mod.data) this.refs.action.set(action.mod.data);
                                 });
@@ -515,7 +518,7 @@
             duplicate() {
                 const { id } = this.store.get();
                 trackEvent('Chart Editor', 'duplicate');
-                request.post(`/api/charts/${id}/copy`).then(res => {
+                request.post(`/api/charts/${id}/copy`, { baseUrl: `${window.location.protocol}//${window.location.hostname}` }).then(res => {
                     if (res.status === 'ok') {
                         // redirect to copied chart
                         window.location.href = `/edit/${res.data.id}/visualize`;

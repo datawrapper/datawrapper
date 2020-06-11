@@ -126,25 +126,6 @@ if (!defined('NO_SLIM')) {
     }
 }
 
-if (isset($dw_config['charts-s3'])) {
-    if (isset($dw_config['charts-s3']['region'])) {
-        $region = $dw_config['charts-s3']['region'];
-    } else {
-        $region = 'eu-central-1';
-    }
-
-    $charts_s3 = new Aws\S3\S3Client([
-        'region' => $region,
-        'version' => 'latest',
-        'credentials' => [
-            'key' => $dw_config['charts-s3']['aws-access-key-id'],
-            'secret' => $dw_config['charts-s3']['aws-secret-access-key']
-        ]
-    ]);
-
-    $charts_s3->registerStreamWrapper();
-}
-
 if (!defined('NO_PLUGINS')) {
     UserPluginCacheQuery::initInvalidateHooks();
     DatawrapperPluginManager::load();
