@@ -5,6 +5,14 @@
 
 {{ hook('publish_before_content', chart, user) }}
 
+<script type="text/javascript">
+dw.backend.ready(function() {
+    require(['dw/chart/publish'], function(publish) {
+        publish.init('{{ chartUrl }}');
+    });
+});
+</script>
+
 <style type="text/css">
 .dw-create-publish .row {
     display: flex;
