@@ -17,7 +17,7 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
     if (Session::getMethod() == 'token') {
         $h = getallheaders();
         $headers[] = 'Authorization: ' . $h['Authorization'];
-    } else {
+    } else if (!empty($_COOKIE['DW-SESSION'])) {
         $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
     }
 
