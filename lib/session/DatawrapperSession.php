@@ -56,13 +56,18 @@ class DatawrapperSession {
         $h = getallheaders();
         if (!empty($h['Authorization'])) {
             $authHeader = explode(' ', $h['Authorization']);
-            if ($authHeader[0] == 'Bearer') {
-                $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
-                if ($auth) {
-                    $this->user = $auth->getUser();
-                    $this->method = 'token';
-                    $auth->use();
-                    return;
+            if ($authHeader[0] == 'Bearer' && !empty($authHeader[1])) {
+                $pdo = Propel::getConnection();
+                $res = $pdo->query('SELECT user_id FROM access_token WHERE `type` = "api-token" AND token = '.$pdo->quote($authHeader[1]));
+                $user_id = $res->fetchColumn(0);
+                if ($user_id !== false) {
+                    $user = UserQuery::create()->findPK($user_id);
+                    if ($user) {
+                        $this->user = $user;
+                        $this->method = 'token';
+                        $pdo->query('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = '.intval($user->getId()).' AND token = '.$pdo->quote($authHeader[1]));
+                        return;
+                    }
                 }
             }
         }
