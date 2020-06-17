@@ -1,9 +1,8 @@
-import { patchJSON } from '@datawrapper/shared/fetch';
+import { patch } from '@datawrapper/shared/httpReq';
 import debounce from 'debounce-promise';
 
 const cache = {};
 
-/* globals dw */
 export default debounce(function(team, settings, defaultTheme) {
     const hash = JSON.stringify({ team, settings, defaultTheme });
     if (cache[team.id] === hash) {
@@ -14,12 +13,11 @@ export default debounce(function(team, settings, defaultTheme) {
         });
     }
     cache[team.id] = hash;
-    return patchJSON(
-        `${window.location.protocol}//${dw.backend.__api_domain}/v3/teams/${team.id}`,
-        JSON.stringify({
+    return patch(`/v3/teams/${team.id}`, {
+        payload: {
             name: team.name,
             defaultTheme,
             settings: settings
-        })
-    );
+        }
+    });
 }, 500);
