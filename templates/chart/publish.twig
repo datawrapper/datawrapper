@@ -8,7 +8,7 @@
 <script type="text/javascript">
 dw.backend.ready(function() {
     require(['dw/chart/publish'], function(publish) {
-        publish.init('{{ chartUrl }}'{% if publish %}, true{% if republish %}, true{% endif %}{% endif %});
+        publish.init('{{ chartUrl }}');
     });
 });
 </script>
