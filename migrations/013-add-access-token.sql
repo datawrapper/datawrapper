@@ -14,7 +14,7 @@ CREATE TABLE `access_token` (
     KEY `access_token_user_id_IDX` (`user_id`) USING BTREE,
     KEY `access_token_type_IDX` (`type`) USING BTREE,
     CONSTRAINT `access_token_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO access_token
     (user_id, token, type, created_at, last_used_at, data)
