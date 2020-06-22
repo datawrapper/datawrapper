@@ -121,8 +121,10 @@ class ChartQuery extends BaseChartQuery {
 
         $chart->setLastEditStep(3);
 
-        // make sure the cached data is fresh
-        $src->refreshExternalData();
+        if ($copyData) {
+            // make sure the cached data is fresh
+            $src->refreshExternalData();
+        }
 
         $chart->save();
 

@@ -10,8 +10,9 @@
 </FormBlock>
 
 <script>
-    /* globals dw, teamSettingsInvite */
+    /* globals teamSettingsInvite */
     import { DropdownMenu, FormBlock } from '@datawrapper/controls';
+    import { post, get } from '@datawrapper/shared/httpReq';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
@@ -127,13 +128,12 @@
 
                 this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
-                const response = await this.fetchAPI(`teams/${this.get().team.id}/members`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: JSON.stringify({
+                const response = await post(`/v3/teams/${this.get().team.id}/members`, {
+                    raw: true,
+                    payload: {
                         userId: inviteeUserId,
                         role
-                    })
+                    }
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -156,13 +156,12 @@
 
                 this.set({ currentAction: { updatingUsers: true, isComplete: false } });
 
-                const response = await this.fetchAPI(`teams/${this.get().team.id}/invites`, {
-                    method: 'POST',
-                    credentials: 'include',
-                    body: JSON.stringify({
+                const response = await post(`/v3/teams/${this.get().team.id}/invites`, {
+                    raw: true,
+                    payload: {
                         email: inviteeEmail,
                         role
-                    })
+                    }
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -196,12 +195,8 @@
                     return;
                 }
 
-                const res = await this.fetchAPI(`users?search=` + encodeURIComponent(inviteeEmail), {
-                    method: 'GET',
-                    credentials: 'include'
-                });
+                const json = await get(`/v3/users?search=${encodeURIComponent(inviteeEmail)}`);
 
-                const json = await res.json();
                 this.set({ inviteeExistsLoading: false, inviteeExists: false });
 
                 if (json.list.length > 0) {
@@ -215,9 +210,6 @@
                         }
                     });
                 }
-            },
-            fetchAPI(url, opts) {
-                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
             }
         },
         oncreate() {

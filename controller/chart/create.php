@@ -9,8 +9,13 @@ $app->map('/(chart|table)/create', function() use ($app) {
     if (!$user->isLoggedIn() && isset($cfg['prevent_guest_charts']) && $cfg['prevent_guest_charts']) {
         error_access_denied();
     } else {
-        $chart = ChartQuery::create()->createEmptyChart($user);
         $req = $app->request();
+        if ($req->params('type') != null) {
+            if (!DatawrapperVisualization::has($req->params('type'))) {
+                return $app->redirect('/');
+            }
+        }
+        $chart = ChartQuery::create()->createEmptyChart($user);
         $step = 'upload';
         if ($req->post('data') != null) {
             $chart->writeData($req->post('data'));

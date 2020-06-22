@@ -86,7 +86,7 @@
             <ul id="dynamic-tree" style="margin-bottom:40px"></ul>
             {% if (not hasFolders or not hasTeams) and not userData.mycharts_teams_intro %}
             <div data-notification-key="mycharts_teams_intro" class="welcome-to-folders did-you-know" style="margin-top:84px;margin-left:-18px">
-                <h3><a href="#" class="close pull-right"><i class="im im-check-mark"></i></a>
+                <h3><a href="#" class="close pull-right"><i class="im im-check-mark-circle"></i></a>
                     {%if not hasFolders %}<i class="im im-folder"></i> {% trans "mycharts / intro / folders" %}{% endif %}
                     {%if not hasTeams and not hasFolders %}  &amp; {% endif %}
                     {%if not hasTeams %}<i class="im im-users"></i> Teams{% endif %}
