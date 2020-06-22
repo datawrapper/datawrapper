@@ -12,9 +12,7 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 
 build('upload');
-build('controls', { noAMD: true });
 build('highlight');
-build('editor');
 
 export default targets;
 

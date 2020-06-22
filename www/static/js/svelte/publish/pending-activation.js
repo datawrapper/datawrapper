@@ -1,1 +1,1110 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define("svelte/publish/pending-activation",e):(t=t||self)["publish/pending-activation"]=e()}(this,(function(){"use strict";function t(t,e,n){return t(n={path:e,exports:{},require:function(t,e){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==e&&n.path)}},n.exports),n.exports}var e=t((function(t){function e(n){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?t.exports=e=function(t){return typeof t}:t.exports=e=function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},e(n)}t.exports=e}));var n=function(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t};function r(){}function o(t,e){for(var n in e)t[n]=e[n];return t}function i(t,e){t.appendChild(e)}function s(t,e,n){t.insertBefore(e,n)}function c(t){t.parentNode.removeChild(t)}function a(t){return document.createElement(t)}function u(t){return document.createTextNode(t)}function f(){return Object.create(null)}function p(t,n){return t!=t?n==n:t!==n||t&&"object"===e(t)||"function"==typeof t}function d(t,e){return t!=t?e==e:t!==e}function l(t,e){var n=t in this._handlers&&this._handlers[t].slice();if(n)for(var r=0;r<n.length;r+=1){var o=n[r];if(!o.__calling)try{o.__calling=!0,o.call(this,e)}finally{o.__calling=!1}}}function h(){return this._state}function _(t,e){var n=this._handlers[t]||(this._handlers[t]=[]);return n.push(e),{cancel:function(){var t=n.indexOf(e);~t&&n.splice(t,1)}}}function v(t){for(;t&&t.length;)t.shift()()}var m={destroy:function(t){this.destroy=r,this.fire("destroy"),this.set=r,this._fragment.d(!1!==t),this._fragment=null,this._state={}},get:h,fire:l,on:_,set:function(t){var e;this._set(o({},t)),this.root._lock||((e=this.root)._lock=!0,v(e._beforecreate),v(e._oncreate),v(e._aftercreate),e._lock=!1)},_recompute:r,_set:function(t){var e=this._state,n={},r=!1;for(var i in t=o(this._staged,t),this._staged={},t)this._differs(t[i],e[i])&&(n[i]=r=!0);r&&(this._state=o(o({},e),t),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:e}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:e})))},_stage:function(t){o(this._staged,t)},_mount:function(t,e){this._fragment[this._fragment.i?"i":"m"](t,e||null)},_differs:p},y={};function b(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"core";"chart"===t?window.__dw&&window.__dw.vis&&window.__dw.vis.meta&&(y[t]=window.__dw.vis.meta.locale||{}):y[t]="core"===t?dw.backend.__messages.core:Object.assign({},dw.backend.__messages.core,dw.backend.__messages[t])}function g(t){var e=arguments,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"core";if(t=t.trim(),y[n]||b(n),!y[n][t])return"MISSING:"+t;var r=y[n][t];return"string"==typeof r&&arguments.length>2&&(r=r.replace(/\$(\d)/g,(function(t,n){return n=2+Number(n),void 0===e[n]?t:e[n]}))),r}var w=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")};var O=function(t){if(void 0===t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t};var j=function(t,n){return!n||"object"!==e(n)&&"function"!=typeof n?O(t):n},x=t((function(t){function e(n){return t.exports=e=Object.setPrototypeOf?Object.getPrototypeOf:function(t){return t.__proto__||Object.getPrototypeOf(t)},e(n)}t.exports=e})),P=t((function(t){function e(n,r){return t.exports=e=Object.setPrototypeOf||function(t,e){return t.__proto__=e,t},e(n,r)}t.exports=e}));var E=function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function");t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,writable:!0,configurable:!0}}),e&&P(t,e)};var T=function(t){return-1!==Function.toString.call(t).indexOf("[native code]")};var S=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(t){return!1}},C=t((function(t){function e(n,r,o){return S()?t.exports=e=Reflect.construct:t.exports=e=function(t,e,n){var r=[null];r.push.apply(r,e);var o=new(Function.bind.apply(t,r));return n&&P(o,n.prototype),o},e.apply(null,arguments)}t.exports=e})),k=t((function(t){function e(n){var r="function"==typeof Map?new Map:void 0;return t.exports=e=function(t){if(null===t||!T(t))return t;if("function"!=typeof t)throw new TypeError("Super expression must either be null or a function");if(void 0!==r){if(r.has(t))return r.get(t);r.set(t,e)}function e(){return C(t,arguments,x(this).constructor)}return e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),P(e,t)},e(n)}t.exports=e}));var D=function(t,e){if(null==t)return{};var n,r,o={},i=Object.keys(t);for(r=0;r<i.length;r++)n=i[r],e.indexOf(n)>=0||(o[n]=t[n]);return o};var L=function(t,e){if(null==t)return{};var n,r,o=D(t,e);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(t);for(r=0;r<i.length;r++)n=i[r],e.indexOf(n)>=0||Object.prototype.propertyIsEnumerable.call(t,n)&&(o[n]=t[n])}return o};function H(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(t);e&&(r=r.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),n.push.apply(n,r)}return n}function M(t){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{};e%2?H(Object(r),!0).forEach((function(e){n(t,e,r[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(r)):H(Object(r)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(r,e))}))}return t}function N(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=M({payload:null,raw:!1,method:"GET",baseUrl:"//".concat(dw.backend.__api_domain),mode:"cors",credentials:"include"},e,{headers:M({"Content-Type":"application/json"},e.headers)}),r=n.payload,o=n.baseUrl,i=n.raw,s=L(n,["payload","baseUrl","raw"]),c="".concat(o.replace(/\/$/,""),"/").concat(t.replace(/^\//,""));return r&&(s.body=JSON.stringify(r)),window.fetch(c,s).then((function(t){if(i)return t;if(!t.ok)throw new q(t);if(204===t.status||!t.headers.get("content-type"))return t;var e=t.headers.get("content-type").split(";")[0];return"application/json"===e?t.json():"image/png"===e||"application/pdf"===e?t.blob():t.text()}))}N.get=A("GET"),N.patch=A("PATCH"),N.put=A("PUT");var R=N.post=A("POST");N.head=A("HEAD");function A(t){return function(e,n){if(n&&n.method)throw new Error("Setting option.method is not allowed in httpReq.".concat(t.toLowerCase(),"()"));return N(e,M({},n,{method:t}))}}N.delete=A("DELETE");var q=function(t){function e(t){var n;return w(this,e),(n=j(this,x(e).call(this))).name="HttpReqError",n.status=t.status,n.statusText=t.statusText,n.message="[".concat(t.status,"] ").concat(t.statusText),n.response=t,n}return E(e,t),e}(k(Error));function U(){}var $={resendActivation:function(){try{var t=this;return t.set({status:"sending"}),function(t){if(t&&t.then)return t.then(U)}(function(t,e){try{var n=t()}catch(t){return e(t)}return n&&n.then?n.then(void 0,e):n}((function(){return e=R("/v3/auth/resend-activation"),n=function(){t.set({status:"success"})},r?n?n(e):e:(e&&e.then||(e=Promise.resolve(e)),n?e.then(n):e);var e,n,r}),(function(){t.set({status:"error"})})))}catch(t){return Promise.reject(t)}}};function G(t,e){var n,r,o,f,p,d=g("publish / pending-activation / resend");function l(e){t.resendActivation()}return{c:function(){var t,i,s;n=a("button"),r=a("i"),f=u("  \n            "),p=a("noscript"),r.className=o="fa "+("sending"==e.status?"fa-spin fa-circle-o-notch":"fa-envelope"),t="click",i=l,n.addEventListener(t,i,s),n.className="btn btn-primary"},m:function(t,e){s(t,n,e),i(n,r),i(n,f),i(n,p),p.insertAdjacentHTML("afterend",d)},p:function(t,e){t.status&&o!==(o="fa "+("sending"==e.status?"fa-spin fa-circle-o-notch":"fa-envelope"))&&(r.className=o)},d:function(t){var e,r,o;t&&c(n),e="click",r=l,n.removeEventListener(e,r,o)}}}function I(t,e){var n,o=g("publish / pending-activation / resend-error");return{c:function(){n=a("p")},m:function(t,e){s(t,n,e),n.innerHTML=o},p:r,d:function(t){t&&c(n)}}}function F(t,e){var n,o=g("publish / pending-activation / resend-success");return{c:function(){n=a("p")},m:function(t,e){s(t,n,e),n.innerHTML=o},p:r,d:function(t){t&&c(n)}}}function B(t){!function(t,e){t._handlers=f(),t._slots=f(),t._bind=e._bind,t._staged={},t.options=e,t.root=e.root||t,t.store=e.store||t.root.store,e.root||(t._beforecreate=[],t._oncreate=[],t._aftercreate=[])}(this,t),this._state=o({status:""},t.data),this._intro=!0,this._fragment=function(t,e){var n,r,o,f,p,d,l=g("publish / pending-activation / h1"),h=g("publish / pending-activation / p");function _(t){return"success"==t.status?F:"error"==t.status?I:G}var v=_(e),m=v(t,e);return{c:function(){var t,e;n=a("div"),r=a("h2"),o=u("\n\n    "),f=a("p"),p=u("\n\n    "),d=a("div"),m.c(),t="margin-top",e="20px",d.style.setProperty(t,e)},m:function(t,e){s(t,n,e),i(n,r),r.innerHTML=l,i(n,o),i(n,f),f.innerHTML=h,i(n,p),i(n,d),m.m(d,null)},p:function(e,n){v===(v=_(n))&&m?m.p(e,n):(m.d(1),(m=v(t,n)).c(),m.m(d,null))},d:function(t){t&&c(n),m.d()}}}(this,this._state),t.target&&(this._fragment.c(),this._mount(t.target,t.anchor))}function J(t,e){this._handlers={},this._dependents=[],this._computed=f(),this._sortedComputedProperties=[],this._state=o({},t),this._differs=e&&e.immutable?d:p}return o(B.prototype,m),o(B.prototype,$),o(J.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},n=0;n<t.length;n+=1){var r=t[n];e["$"+r]=this._state[r]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_set:function(t,e){var n=this,r=this._state;this._state=o(o({},r),t);for(var i=0;i<this._sortedComputedProperties.length;i+=1)this._sortedComputedProperties[i].update(this._state,e);this.fire("state",{changed:e,previous:r,current:this._state}),this._dependents.filter((function(t){for(var r={},o=!1,i=0;i<t.props.length;i+=1){var s=t.props[i];s in e&&(r["$"+s]=n._state[s],o=!0)}if(o)return t.component._stage(r),!0})).forEach((function(t){t.component.set({})})),this.fire("update",{changed:e,previous:r,current:this._state})},_sortComputedProperties:function(){var t,e=this._computed,n=this._sortedComputedProperties=[],r=f();function o(i){var s=e[i];s&&(s.deps.forEach((function(e){if(e===t)throw new Error("Cyclical dependency detected between ".concat(e," <-> ").concat(i));o(e)})),r[i]||(r[i]=!0,n.push(s)))}for(var i in this._computed)o(t=i)},compute:function(t,e,n){var r,i=this,s={deps:e,update:function(o,s,c){var a=e.map((function(t){return t in s&&(c=!0),o[t]}));if(c){var u=n.apply(null,a);i._differs(u,r)&&(r=u,s[t]=!0,o[t]=r)}}};this._computed[t]=s,this._sortComputedProperties();var c=o({},this._state),a={};s.update(c,a,!0),this._set(c,a)},fire:l,get:h,on:_,set:function(t){var e=this._state,n=this._changed={},r=!1;for(var o in t){if(this._computed[o])throw new Error("'".concat(o,"' is a read-only computed property"));this._differs(t[o],e[o])&&(n[o]=r=!0)}r&&this._set(t,n)}}),{App:B,store:new J({})}}));
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/publish/pending-activation', factory) :
+	(global = global || self, global['publish/pending-activation'] = factory());
+}(this, function () { 'use strict';
+
+	function createCommonjsModule(fn, basedir, module) {
+		return module = {
+		  path: basedir,
+		  exports: {},
+		  require: function (path, base) {
+	      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+	    }
+		}, fn(module, module.exports), module.exports;
+	}
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+	}
+
+	var _typeof_1 = createCommonjsModule(function (module) {
+	  function _typeof(obj) {
+	    "@babel/helpers - typeof";
+
+	    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+	      module.exports = _typeof = function _typeof(obj) {
+	        return typeof obj;
+	      };
+	    } else {
+	      module.exports = _typeof = function _typeof(obj) {
+	        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	      };
+	    }
+
+	    return _typeof(obj);
+	  }
+
+	  module.exports = _typeof;
+	});
+
+	function _defineProperty(obj, key, value) {
+	  if (key in obj) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	}
+
+	var defineProperty = _defineProperty;
+
+	function noop() {}
+
+	function assign(tar, src) {
+	  for (var k in src) {
+	    tar[k] = src[k];
+	  }
+
+	  return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+	  element.__svelte_meta = {
+	    loc: {
+	      file: file,
+	      line: line,
+	      column: column,
+	      char: char
+	    }
+	  };
+	}
+
+	function append(target, node) {
+	  target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+	  target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+	  node.parentNode.removeChild(node);
+	}
+
+	function createElement(name) {
+	  return document.createElement(name);
+	}
+
+	function createText(data) {
+	  return document.createTextNode(data);
+	}
+
+	function addListener(node, event, handler, options) {
+	  node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+	  node.removeEventListener(event, handler, options);
+	}
+
+	function setStyle(node, key, value) {
+	  node.style.setProperty(key, value);
+	}
+
+	function blankObject() {
+	  return Object.create(null);
+	}
+
+	function destroy(detach) {
+	  this.destroy = noop;
+	  this.fire('destroy');
+	  this.set = noop;
+
+	  this._fragment.d(detach !== false);
+
+	  this._fragment = null;
+	  this._state = {};
+	}
+
+	function destroyDev(detach) {
+	  destroy.call(this, detach);
+
+	  this.destroy = function () {
+	    console.warn('Component was already destroyed');
+	  };
+	}
+
+	function _differs(a, b) {
+	  return a != a ? b == b : a !== b || a && _typeof_1(a) === 'object' || typeof a === 'function';
+	}
+
+	function _differsImmutable(a, b) {
+	  return a != a ? b == b : a !== b;
+	}
+
+	function fire(eventName, data) {
+	  var handlers = eventName in this._handlers && this._handlers[eventName].slice();
+
+	  if (!handlers) return;
+
+	  for (var i = 0; i < handlers.length; i += 1) {
+	    var handler = handlers[i];
+
+	    if (!handler.__calling) {
+	      try {
+	        handler.__calling = true;
+	        handler.call(this, data);
+	      } finally {
+	        handler.__calling = false;
+	      }
+	    }
+	  }
+	}
+
+	function flush(component) {
+	  component._lock = true;
+	  callAll(component._beforecreate);
+	  callAll(component._oncreate);
+	  callAll(component._aftercreate);
+	  component._lock = false;
+	}
+
+	function get() {
+	  return this._state;
+	}
+
+	function init(component, options) {
+	  component._handlers = blankObject();
+	  component._slots = blankObject();
+	  component._bind = options._bind;
+	  component._staged = {};
+	  component.options = options;
+	  component.root = options.root || component;
+	  component.store = options.store || component.root.store;
+
+	  if (!options.root) {
+	    component._beforecreate = [];
+	    component._oncreate = [];
+	    component._aftercreate = [];
+	  }
+	}
+
+	function on(eventName, handler) {
+	  var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	  handlers.push(handler);
+	  return {
+	    cancel: function cancel() {
+	      var index = handlers.indexOf(handler);
+	      if (~index) handlers.splice(index, 1);
+	    }
+	  };
+	}
+
+	function set(newState) {
+	  this._set(assign({}, newState));
+
+	  if (this.root._lock) return;
+	  flush(this.root);
+	}
+
+	function _set(newState) {
+	  var oldState = this._state,
+	      changed = {},
+	      dirty = false;
+	  newState = assign(this._staged, newState);
+	  this._staged = {};
+
+	  for (var key in newState) {
+	    if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	  }
+
+	  if (!dirty) return;
+	  this._state = assign(assign({}, oldState), newState);
+
+	  this._recompute(changed, this._state);
+
+	  if (this._bind) this._bind(changed, this._state);
+
+	  if (this._fragment) {
+	    this.fire("state", {
+	      changed: changed,
+	      current: this._state,
+	      previous: oldState
+	    });
+
+	    this._fragment.p(changed, this._state);
+
+	    this.fire("update", {
+	      changed: changed,
+	      current: this._state,
+	      previous: oldState
+	    });
+	  }
+	}
+
+	function _stage(newState) {
+	  assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+	  if (_typeof_1(newState) !== 'object') {
+	    throw new Error(this._debugName + '.set was called without an object of data key-values to update.');
+	  }
+
+	  this._checkReadOnly(newState);
+
+	  set.call(this, newState);
+	}
+
+	function callAll(fns) {
+	  while (fns && fns.length) {
+	    fns.shift()();
+	  }
+	}
+
+	function _mount(target, anchor) {
+	  this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+	var protoDev = {
+	  destroy: destroyDev,
+	  get: get,
+	  fire: fire,
+	  on: on,
+	  set: setDev,
+	  _recompute: noop,
+	  _set: _set,
+	  _stage: _stage,
+	  _mount: _mount,
+	  _differs: _differs
+	};
+
+	/* globals dw */
+	var __messages = {};
+
+	function initMessages() {
+	  var scope = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'core';
+
+	  // let's check if we're in a chart
+	  if (scope === 'chart') {
+	    if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	      // use in-chart translations
+	      __messages[scope] = window.__dw.vis.meta.locale || {};
+	    }
+	  } else {
+	    // use backend translations
+	    __messages[scope] = scope === 'core' ? dw.backend.__messages.core : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	  }
+	}
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+
+
+	function __(key) {
+	  var _arguments = arguments;
+	  var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'core';
+	  key = key.trim();
+	  if (!__messages[scope]) initMessages(scope);
+	  if (!__messages[scope][key]) return 'MISSING:' + key;
+	  var translation = __messages[scope][key];
+
+	  if (typeof translation === 'string' && arguments.length > 2) {
+	    // replace $0, $1 etc with remaining arguments
+	    translation = translation.replace(/\$(\d)/g, function (m, i) {
+	      i = 2 + Number(i);
+	      if (_arguments[i] === undefined) return m;
+	      return _arguments[i];
+	    });
+	  }
+
+	  return translation;
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	  if (!(instance instanceof Constructor)) {
+	    throw new TypeError("Cannot call a class as a function");
+	  }
+	}
+
+	var classCallCheck = _classCallCheck;
+
+	function _assertThisInitialized(self) {
+	  if (self === void 0) {
+	    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	  }
+
+	  return self;
+	}
+
+	var assertThisInitialized = _assertThisInitialized;
+
+	function _possibleConstructorReturn(self, call) {
+	  if (call && (_typeof_1(call) === "object" || typeof call === "function")) {
+	    return call;
+	  }
+
+	  return assertThisInitialized(self);
+	}
+
+	var possibleConstructorReturn = _possibleConstructorReturn;
+
+	var getPrototypeOf = createCommonjsModule(function (module) {
+	  function _getPrototypeOf(o) {
+	    module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+	      return o.__proto__ || Object.getPrototypeOf(o);
+	    };
+	    return _getPrototypeOf(o);
+	  }
+
+	  module.exports = _getPrototypeOf;
+	});
+
+	var setPrototypeOf = createCommonjsModule(function (module) {
+	  function _setPrototypeOf(o, p) {
+	    module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+	      o.__proto__ = p;
+	      return o;
+	    };
+
+	    return _setPrototypeOf(o, p);
+	  }
+
+	  module.exports = _setPrototypeOf;
+	});
+
+	function _inherits(subClass, superClass) {
+	  if (typeof superClass !== "function" && superClass !== null) {
+	    throw new TypeError("Super expression must either be null or a function");
+	  }
+
+	  subClass.prototype = Object.create(superClass && superClass.prototype, {
+	    constructor: {
+	      value: subClass,
+	      writable: true,
+	      configurable: true
+	    }
+	  });
+	  if (superClass) setPrototypeOf(subClass, superClass);
+	}
+
+	var inherits = _inherits;
+
+	function _isNativeFunction(fn) {
+	  return Function.toString.call(fn).indexOf("[native code]") !== -1;
+	}
+
+	var isNativeFunction = _isNativeFunction;
+
+	function _isNativeReflectConstruct() {
+	  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+	  if (Reflect.construct.sham) return false;
+	  if (typeof Proxy === "function") return true;
+
+	  try {
+	    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+	    return true;
+	  } catch (e) {
+	    return false;
+	  }
+	}
+
+	var isNativeReflectConstruct = _isNativeReflectConstruct;
+
+	var construct = createCommonjsModule(function (module) {
+	  function _construct(Parent, args, Class) {
+	    if (isNativeReflectConstruct()) {
+	      module.exports = _construct = Reflect.construct;
+	    } else {
+	      module.exports = _construct = function _construct(Parent, args, Class) {
+	        var a = [null];
+	        a.push.apply(a, args);
+	        var Constructor = Function.bind.apply(Parent, a);
+	        var instance = new Constructor();
+	        if (Class) setPrototypeOf(instance, Class.prototype);
+	        return instance;
+	      };
+	    }
+
+	    return _construct.apply(null, arguments);
+	  }
+
+	  module.exports = _construct;
+	});
+
+	var wrapNativeSuper = createCommonjsModule(function (module) {
+	  function _wrapNativeSuper(Class) {
+	    var _cache = typeof Map === "function" ? new Map() : undefined;
+
+	    module.exports = _wrapNativeSuper = function _wrapNativeSuper(Class) {
+	      if (Class === null || !isNativeFunction(Class)) return Class;
+
+	      if (typeof Class !== "function") {
+	        throw new TypeError("Super expression must either be null or a function");
+	      }
+
+	      if (typeof _cache !== "undefined") {
+	        if (_cache.has(Class)) return _cache.get(Class);
+
+	        _cache.set(Class, Wrapper);
+	      }
+
+	      function Wrapper() {
+	        return construct(Class, arguments, getPrototypeOf(this).constructor);
+	      }
+
+	      Wrapper.prototype = Object.create(Class.prototype, {
+	        constructor: {
+	          value: Wrapper,
+	          enumerable: false,
+	          writable: true,
+	          configurable: true
+	        }
+	      });
+	      return setPrototypeOf(Wrapper, Class);
+	    };
+
+	    return _wrapNativeSuper(Class);
+	  }
+
+	  module.exports = _wrapNativeSuper;
+	});
+
+	function _objectWithoutPropertiesLoose(source, excluded) {
+	  if (source == null) return {};
+	  var target = {};
+	  var sourceKeys = Object.keys(source);
+	  var key, i;
+
+	  for (i = 0; i < sourceKeys.length; i++) {
+	    key = sourceKeys[i];
+	    if (excluded.indexOf(key) >= 0) continue;
+	    target[key] = source[key];
+	  }
+
+	  return target;
+	}
+
+	var objectWithoutPropertiesLoose = _objectWithoutPropertiesLoose;
+
+	function _objectWithoutProperties(source, excluded) {
+	  if (source == null) return {};
+	  var target = objectWithoutPropertiesLoose(source, excluded);
+	  var key, i;
+
+	  if (Object.getOwnPropertySymbols) {
+	    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+	    for (i = 0; i < sourceSymbolKeys.length; i++) {
+	      key = sourceSymbolKeys[i];
+	      if (excluded.indexOf(key) >= 0) continue;
+	      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+	      target[key] = source[key];
+	    }
+	  }
+
+	  return target;
+	}
+
+	var objectWithoutProperties = _objectWithoutProperties;
+
+	function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+	function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+	/**
+	 * The response body is automatically parsed according
+	 * to the response content type.
+	 *
+	 * @exports httpReq
+	 * @kind function
+	 *
+	 * @param {string} path               - the url path that gets appended to baseUrl
+	 * @param {object} options.payload    - payload to be send with req
+	 * @param {boolean} options.raw       - disable parsing of response body, returns raw response
+	 * @param {string} options.baseUrl    - base for url, defaults to dw api domain
+	 * @param {*} options                 - see documentation for window.fetch for additional options
+	 *
+	 * @returns {Promise} promise of parsed response body or raw response
+	 *
+	 * @example
+	 *  import httpReq from '@datawrapper/shared/httpReq';
+	 *  let res = await httpReq('/v3/charts', {
+	 *      method: 'post',
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 *  import { post } from '@datawrapper/shared/httpReq';
+	 *  res = await post('/v3/charts', {
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 */
+	function httpReq(path) {
+	  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	  /* globals dw */
+	  var _payload$raw$method$b = _objectSpread({
+	    payload: null,
+	    raw: false,
+	    method: 'GET',
+	    baseUrl: "//".concat(dw.backend.__api_domain),
+	    mode: 'cors',
+	    credentials: 'include'
+	  }, options, {
+	    headers: _objectSpread({
+	      'Content-Type': 'application/json'
+	    }, options.headers)
+	  }),
+	      payload = _payload$raw$method$b.payload,
+	      baseUrl = _payload$raw$method$b.baseUrl,
+	      raw = _payload$raw$method$b.raw,
+	      opts = objectWithoutProperties(_payload$raw$method$b, ["payload", "baseUrl", "raw"]);
+
+	  var url = "".concat(baseUrl.replace(/\/$/, ''), "/").concat(path.replace(/^\//, ''));
+
+	  if (payload) {
+	    // overwrite body
+	    opts.body = JSON.stringify(payload);
+	  }
+
+	  return window.fetch(url, opts).then(function (res) {
+	    if (raw) return res;
+	    if (!res.ok) throw new HttpReqError(res);
+	    if (res.status === 204 || !res.headers.get('content-type')) return res; // no content
+	    // trim away the ;charset=utf-8 from content-type
+
+	    var contentType = res.headers.get('content-type').split(';')[0];
+
+	    if (contentType === 'application/json') {
+	      return res.json();
+	    }
+
+	    if (contentType === 'image/png' || contentType === 'application/pdf') {
+	      return res.blob();
+	    } // default to text for all other content types
+
+
+	    return res.text();
+	  });
+	}
+	/**
+	 * Like `httpReq` but with fixed http method GET
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.get
+	 * @kind function
+	 */
+
+	var get$1 = httpReq.get = httpReqVerb('GET');
+	/**
+	 * Like `httpReq` but with fixed http method PATCH
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.patch
+	 * @kind function
+	 */
+
+	var patch = httpReq.patch = httpReqVerb('PATCH');
+	/**
+	 * Like `httpReq` but with fixed http method PUT
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.put
+	 * @kind function
+	 */
+
+	var put = httpReq.put = httpReqVerb('PUT');
+	/**
+	 * Like `httpReq` but with fixed http method POST
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.post
+	 * @kind function
+	 */
+
+	var post = httpReq.post = httpReqVerb('POST');
+	/**
+	 * Like `httpReq` but with fixed http method HEAD
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.head
+	 * @kind function
+	 */
+
+	var head = httpReq.head = httpReqVerb('HEAD');
+	/**
+	 * Like `httpReq` but with fixed http method DELETE
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.delete
+	 * @kind function
+	 */
+
+	httpReq.delete = httpReqVerb('DELETE');
+
+	function httpReqVerb(method) {
+	  return function (path, options) {
+	    if (options && options.method) {
+	      throw new Error("Setting option.method is not allowed in httpReq.".concat(method.toLowerCase(), "()"));
+	    }
+
+	    return httpReq(path, _objectSpread({}, options, {
+	      method: method
+	    }));
+	  };
+	}
+
+	var HttpReqError = /*#__PURE__*/function (_Error) {
+	  inherits(HttpReqError, _Error);
+
+	  function HttpReqError(res) {
+	    var _this;
+
+	    classCallCheck(this, HttpReqError);
+
+	    _this = possibleConstructorReturn(this, getPrototypeOf(HttpReqError).call(this));
+	    _this.name = 'HttpReqError';
+	    _this.status = res.status;
+	    _this.statusText = res.statusText;
+	    _this.message = "[".concat(res.status, "] ").concat(res.statusText);
+	    _this.response = res;
+	    return _this;
+	  }
+
+	  return HttpReqError;
+	}(wrapNativeSuper(Error));
+
+	/* publish/pending-activation/PendingActivation.html generated by Svelte v2.16.1 */
+
+	function _await(value, then, direct) {
+	  if (direct) {
+	    return then ? then(value) : value;
+	  }
+
+	  if (!value || !value.then) {
+	    value = Promise.resolve(value);
+	  }
+
+	  return then ? value.then(then) : value;
+	}
+
+	function _catch(body, recover) {
+	  try {
+	    var result = body();
+	  } catch (e) {
+	    return recover(e);
+	  }
+
+	  if (result && result.then) {
+	    return result.then(void 0, recover);
+	  }
+
+	  return result;
+	}
+
+	function _empty() {}
+
+	function _continueIgnored(value) {
+	  if (value && value.then) {
+	    return value.then(_empty);
+	  }
+	}
+
+	function data() {
+	  return {
+	    status: ''
+	  };
+	}
+	var methods = {
+	  resendActivation: function resendActivation() {
+	    try {
+	      var _this2 = this;
+
+	      _this2.set({
+	        status: 'sending'
+	      });
+
+	      return _continueIgnored(_catch(function () {
+	        return _await(post('/v3/auth/resend-activation'), function () {
+	          _this2.set({
+	            status: 'success'
+	          });
+	        });
+	      }, function () {
+	        _this2.set({
+	          status: 'error'
+	        });
+	      }));
+	    } catch (e) {
+	      return Promise.reject(e);
+	    }
+	  }
+	};
+	var file = "publish/pending-activation/PendingActivation.html";
+
+	function create_main_fragment(component, ctx) {
+	  var div1,
+	      h2,
+	      raw0_value = __("publish / pending-activation / h1"),
+	      text0,
+	      p,
+	      raw1_value = __("publish / pending-activation / p"),
+	      text1,
+	      div0;
+
+	  function select_block_type(ctx) {
+	    if (ctx.status == 'success') return create_if_block;
+	    if (ctx.status == 'error') return create_if_block_1;
+	    return create_else_block;
+	  }
+
+	  var current_block_type = select_block_type(ctx);
+	  var if_block = current_block_type(component, ctx);
+	  return {
+	    c: function create() {
+	      div1 = createElement("div");
+	      h2 = createElement("h2");
+	      text0 = createText("\n\n    ");
+	      p = createElement("p");
+	      text1 = createText("\n\n    ");
+	      div0 = createElement("div");
+	      if_block.c();
+	      addLoc(h2, file, 3, 4, 69);
+	      addLoc(p, file, 5, 4, 131);
+	      setStyle(div0, "margin-top", "20px");
+	      addLoc(div0, file, 7, 4, 190);
+	      addLoc(div1, file, 2, 0, 59);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div1, anchor);
+	      append(div1, h2);
+	      h2.innerHTML = raw0_value;
+	      append(div1, text0);
+	      append(div1, p);
+	      p.innerHTML = raw1_value;
+	      append(div1, text1);
+	      append(div1, div0);
+	      if_block.m(div0, null);
+	    },
+	    p: function update(changed, ctx) {
+	      if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+	        if_block.p(changed, ctx);
+	      } else {
+	        if_block.d(1);
+	        if_block = current_block_type(component, ctx);
+	        if_block.c();
+	        if_block.m(div0, null);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div1);
+	      }
+
+	      if_block.d();
+	    }
+	  };
+	} // (17:8) {:else}
+
+
+	function create_else_block(component, ctx) {
+	  var button,
+	      i,
+	      i_class_value,
+	      text,
+	      raw_value = __("publish / pending-activation / resend"),
+	      raw_before;
+
+	  function click_handler(event) {
+	    component.resendActivation();
+	  }
+
+	  return {
+	    c: function create() {
+	      button = createElement("button");
+	      i = createElement("i");
+	      text = createText("  \n            ");
+	      raw_before = createElement('noscript');
+	      i.className = i_class_value = "fa " + (ctx.status == 'sending' ? 'fa-spin fa-circle-o-notch' : 'fa-envelope');
+	      addLoc(i, file, 18, 12, 583);
+	      addListener(button, "click", click_handler);
+	      button.className = "btn btn-primary";
+	      addLoc(button, file, 17, 8, 508);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, button, anchor);
+	      append(button, i);
+	      append(button, text);
+	      append(button, raw_before);
+	      raw_before.insertAdjacentHTML("afterend", raw_value);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.status && i_class_value !== (i_class_value = "fa " + (ctx.status == 'sending' ? 'fa-spin fa-circle-o-notch' : 'fa-envelope'))) {
+	        i.className = i_class_value;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(button);
+	      }
+
+	      removeListener(button, "click", click_handler);
+	    }
+	  };
+	} // (13:35) 
+
+
+	function create_if_block_1(component, ctx) {
+	  var p,
+	      raw_value = __("publish / pending-activation / resend-error");
+
+	  return {
+	    c: function create() {
+	      p = createElement("p");
+	      addLoc(p, file, 13, 8, 397);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, p, anchor);
+	      p.innerHTML = raw_value;
+	    },
+	    p: noop,
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(p);
+	      }
+	    }
+	  };
+	} // (9:8) {#if status == 'success'}
+
+
+	function create_if_block(component, ctx) {
+	  var p,
+	      raw_value = __("publish / pending-activation / resend-success");
+
+	  return {
+	    c: function create() {
+	      p = createElement("p");
+	      addLoc(p, file, 9, 8, 264);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, p, anchor);
+	      p.innerHTML = raw_value;
+	    },
+	    p: noop,
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(p);
+	      }
+	    }
+	  };
+	}
+
+	function PendingActivation(options) {
+	  this._debugName = '<PendingActivation>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data(), options.data);
+	  if (!('status' in this._state)) console.warn("<PendingActivation> was created without expected data property 'status'");
+	  this._intro = true;
+	  this._fragment = create_main_fragment(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+	  }
+	}
+
+	assign(PendingActivation.prototype, protoDev);
+	assign(PendingActivation.prototype, methods);
+
+	PendingActivation.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	function Store(state, options) {
+	  this._handlers = {};
+	  this._dependents = [];
+	  this._computed = blankObject();
+	  this._sortedComputedProperties = [];
+	  this._state = assign({}, state);
+	  this._differs = options && options.immutable ? _differsImmutable : _differs;
+	}
+
+	assign(Store.prototype, {
+	  _add: function _add(component, props) {
+	    this._dependents.push({
+	      component: component,
+	      props: props
+	    });
+	  },
+	  _init: function _init(props) {
+	    var state = {};
+
+	    for (var i = 0; i < props.length; i += 1) {
+	      var prop = props[i];
+	      state['$' + prop] = this._state[prop];
+	    }
+
+	    return state;
+	  },
+	  _remove: function _remove(component) {
+	    var i = this._dependents.length;
+
+	    while (i--) {
+	      if (this._dependents[i].component === component) {
+	        this._dependents.splice(i, 1);
+
+	        return;
+	      }
+	    }
+	  },
+	  _set: function _set(newState, changed) {
+	    var _this = this;
+
+	    var previous = this._state;
+	    this._state = assign(assign({}, previous), newState);
+
+	    for (var i = 0; i < this._sortedComputedProperties.length; i += 1) {
+	      this._sortedComputedProperties[i].update(this._state, changed);
+	    }
+
+	    this.fire('state', {
+	      changed: changed,
+	      previous: previous,
+	      current: this._state
+	    });
+
+	    this._dependents.filter(function (dependent) {
+	      var componentState = {};
+	      var dirty = false;
+
+	      for (var j = 0; j < dependent.props.length; j += 1) {
+	        var prop = dependent.props[j];
+
+	        if (prop in changed) {
+	          componentState['$' + prop] = _this._state[prop];
+	          dirty = true;
+	        }
+	      }
+
+	      if (dirty) {
+	        dependent.component._stage(componentState);
+
+	        return true;
+	      }
+	    }).forEach(function (dependent) {
+	      dependent.component.set({});
+	    });
+
+	    this.fire('update', {
+	      changed: changed,
+	      previous: previous,
+	      current: this._state
+	    });
+	  },
+	  _sortComputedProperties: function _sortComputedProperties() {
+	    var computed = this._computed;
+	    var sorted = this._sortedComputedProperties = [];
+	    var visited = blankObject();
+	    var currentKey;
+
+	    function visit(key) {
+	      var c = computed[key];
+
+	      if (c) {
+	        c.deps.forEach(function (dep) {
+	          if (dep === currentKey) {
+	            throw new Error("Cyclical dependency detected between ".concat(dep, " <-> ").concat(key));
+	          }
+
+	          visit(dep);
+	        });
+
+	        if (!visited[key]) {
+	          visited[key] = true;
+	          sorted.push(c);
+	        }
+	      }
+	    }
+
+	    for (var key in this._computed) {
+	      visit(currentKey = key);
+	    }
+	  },
+	  compute: function compute(key, deps, fn) {
+	    var _this2 = this;
+
+	    var value;
+	    var c = {
+	      deps: deps,
+	      update: function update(state, changed, dirty) {
+	        var values = deps.map(function (dep) {
+	          if (dep in changed) dirty = true;
+	          return state[dep];
+	        });
+
+	        if (dirty) {
+	          var newValue = fn.apply(null, values);
+
+	          if (_this2._differs(newValue, value)) {
+	            value = newValue;
+	            changed[key] = true;
+	            state[key] = value;
+	          }
+	        }
+	      }
+	    };
+	    this._computed[key] = c;
+
+	    this._sortComputedProperties();
+
+	    var state = assign({}, this._state);
+	    var changed = {};
+	    c.update(state, changed, true);
+
+	    this._set(state, changed);
+	  },
+	  fire: fire,
+	  get: get,
+	  on: on,
+	  set: function set(newState) {
+	    var oldState = this._state;
+	    var changed = this._changed = {};
+	    var dirty = false;
+
+	    for (var key in newState) {
+	      if (this._computed[key]) throw new Error("'".concat(key, "' is a read-only computed property"));
+	      if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	    }
+
+	    if (!dirty) return;
+
+	    this._set(newState, changed);
+	  }
+	});
+
+	var store = new Store({});
+	var main = {
+	  App: PendingActivation,
+	  store: store
+	};
+
+	return main;
+
+}));
+//# sourceMappingURL=pending-activation.js.map

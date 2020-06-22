@@ -56,40 +56,46 @@
         helpers: { __ },
         methods: {
             add(element) {
-                const { highlighted } = this.get();
-                if (highlighted.indexOf(element) < 0) highlighted.push(element);
-                this.set({ highlighted });
-                setTimeout(() => this.set({ selected: '---' }), 30);
+                let { highlighted } = this.get();
+
+                if (highlighted.indexOf(element) < 0) {
+                    highlighted = clone(highlighted);
+                    highlighted.push(element);
+                    this.set({ highlighted });
+                    this.update();
+                    setTimeout(() => this.set({ selected: '---' }), 30);
+                }
             },
             remove(element) {
                 const { highlighted } = this.get();
                 highlighted.splice(highlighted.indexOf(element), 1);
                 this.set({ highlighted });
+                this.update();
+            },
+            update() {
+                const { $vis, highlighted } = this.get();
+                if (!$vis) return;
+                const old = JSON.stringify($vis.get('highlighted-series'));
+                if (old !== JSON.stringify(highlighted)) {
+                    $vis.chart().set('metadata.visualize.highlighted-series', clone(highlighted));
+                }
             }
         },
-        oncreate() {
-            this.store.observe('vis', vis => {
-                if (!vis) return;
-                this.set({ highlighted: clone(vis.get('highlighted-series')) });
-                vis.chart().onChange((chart, key) => {
+        onstate({ changed, current, previous }) {
+            if (changed.$vis && current.$vis) {
+                this.set({ highlighted: clone(current.$vis.get('highlighted-series')) });
+                current.$vis.chart().onChange((chart, key) => {
                     if (key === 'metadata.visualize.highlighted-series') {
-                        this.set({ highlighted: clone(vis.get('highlighted-series')) });
+                        this.set({ highlighted: clone(current.$vis.get('highlighted-series')) });
                     }
                 });
-            });
-            this.observe('highlighted', hl => {
-                const { vis } = this.store.get();
-                if (!vis) return;
-                const old = JSON.stringify(vis.get('highlighted-series'));
-                if (old !== JSON.stringify(hl) && vis) {
-                    vis.chart().set('metadata.visualize.highlighted-series', clone(hl));
+            }
+
+            if (changed.selected) {
+                if (current.selected && current.selected !== '---') {
+                    this.add(current.selected);
                 }
-            });
-            this.observe('selected', sel => {
-                if (sel && sel !== '---') {
-                    this.add(sel);
-                }
-            });
+            }
         }
     };
 </script>
