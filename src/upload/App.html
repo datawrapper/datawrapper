@@ -11,7 +11,9 @@
         {@html __('upload / drag-csv-here')}
     </div>
     {/if}
-    <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
+
+    <!-- prettier-ignore -->
+    <div class="row" style="{ dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none': '' }">
         <div class="span5">
             <div class="sidebar">
                 <h3>{@html __('upload / title')}</h3>
@@ -44,7 +46,13 @@
 
                 <h4>{active.longTitle || active.title}</h4>
 
-                <svelte:component this="{Sidebar}" bind:chartData bind:readonly bind:sheets bind:datasets />
+                <svelte:component
+                    this="{Sidebar}"
+                    bind:chartData
+                    bind:readonly
+                    bind:sheets
+                    bind:datasets
+                />
             </div>
         </div>
         <div class="span7">
@@ -64,8 +72,8 @@
     import TextAreaUpload from './TextAreaUpload.html';
     import UploadHelp from './UploadHelp.html';
     import SelectSheet from './SelectSheet.html';
-    import readFile from '../shared/readFile';
-    import readSpreadsheet from '../shared/readSpreadsheet';
+    import readFile from './readFile';
+    import readSpreadsheet from './readSpreadsheet';
     import { putJSON } from '@datawrapper/shared/fetch';
     import { __ } from '@datawrapper/shared/l10n';
 
@@ -91,13 +99,20 @@
             isFileUpload: true,
             onFileUpload(event) {
                 const file = event.target.files[0];
-                if (file.type.substr(0, 5) === 'text/' || file.name.substr(file.name.length - 4) === '.csv') {
+                if (
+                    file.type.substr(0, 5) === 'text/' ||
+                    file.name.substr(file.name.length - 4) === '.csv'
+                ) {
                     app.set({ Sidebar: UploadHelp });
                     readFile(file, (err, result) => {
                         if (err) return console.error('could not read file', err);
-                        putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                            window.location.href = 'describe';
-                        });
+                        putJSON(
+                            `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                            result,
+                            () => {
+                                window.location.href = 'describe';
+                            }
+                        );
                     });
                 } else if (file.type.substr(0, 12) === 'application/') {
                     app.set({ Sidebar: SelectSheet, sheets: [] }); // reset
@@ -210,9 +225,13 @@
                     if (files[i].type.substr(0, 5) === 'text/') {
                         return readFile(files[i], (err, result) => {
                             if (err) return console.error('could not read file', err);
-                            putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                                window.location.href = 'describe';
-                            });
+                            putJSON(
+                                `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                                result,
+                                () => {
+                                    window.location.href = 'describe';
+                                }
+                            );
                         });
                     }
                 }

@@ -1,20 +1,33 @@
 /* eslint-env node, es6 */
 import less from 'less';
 import svelte from 'rollup-plugin-svelte';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import json from 'rollup-plugin-json';
-import buble from 'rollup-plugin-buble';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
+import babel from '@rollup/plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
 const targets = [];
 
+build('fields');
+build('team-settings');
+build('account');
+build('chart-breadcrumb');
+build('signin');
+build('invite');
+build('publish', { append: '_old' });
+build('publish', { noAMD: true, entry: 'index.js' });
+build('publish/sidebar', { noAMD: true });
+build('publish/guest');
+build('publish/pending-activation');
+build('describe');
+build('describe/hot', { noAMD: true });
+build('visualize');
 build('upload');
-build('controls', { noAMD: true });
 build('highlight');
-build('editor');
+build('resizer');
 
 export default targets;
 
@@ -30,28 +43,19 @@ function build(appId, opts) {
     if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
-        external: ['chroma', 'Handsontable', 'cm', 'vendor', '/static/vendor/jschardet/jschardet.min.js', '/static/vendor/xlsx/xlsx.full.min.js'],
         output: {
             sourcemap: !production,
             name: appId,
             file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
-            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
-            globals: {
-                '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
-                '/static/vendor/xlsx/xlsx.full.min.js': 'xlsx'
-            }
+            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` }
         },
         plugins: [
             svelte({
                 dev: !production,
-                parser: 'v2',
-                // we'll extract any component CSS out into
-                // a separate file — better for performance
                 css: css => {
                     css.write(`../www/static/css/svelte/${appId}${append}.css`);
                 },
-                // this results in smaller CSS files
                 cascade: false,
                 store: true,
                 preprocess: {
@@ -79,25 +83,31 @@ function build(appId, opts) {
                 }
             }),
 
-            // If you have external dependencies installed from
-            // npm, you'll most likely need these plugins. In
-            // some cases you'll need additional configuration —
-            // consult the documentation for details:
-            // https://github.com/rollup/rollup-plugin-commonjs
             resolve(),
             commonjs(),
             json(),
 
-            // If we're building for production (npm run build
-            // instead of npm run dev), transpile and minify
-            buble({
-                transforms: { dangerousForOf: true },
-                objectAssign: 'Object.assign'
+            babel({
+                // don't exclude anything!
+                // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
+                extensions: ['.js', '.mjs', '.html'],
+                babelHelpers: 'runtime',
+                presets: [
+                    [
+                        '@babel/env',
+                        {
+                            targets: 'last 2 versions, not IE 10, not dead',
+                            corejs: 3,
+                            useBuiltIns: 'entry'
+                        }
+                    ]
+                ],
+                plugins: [
+                    'babel-plugin-transform-async-to-promises',
+                    '@babel/plugin-transform-runtime'
+                ]
             }),
-            production &&
-                terser({
-                    mangle: true
-                })
+            production && terser()
         ]
     });
 }

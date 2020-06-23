@@ -39,9 +39,13 @@
                     this.set({ selected: current.sheets[0] });
                 }, 300);
             } else if (changed.sheets && current.sheets.length === 1) {
-                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, current.sheets[0].csv, () => {
-                    window.location.href = 'describe';
-                });
+                putJSON(
+                    `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                    current.sheets[0].csv,
+                    () => {
+                        window.location.href = 'describe';
+                    }
+                );
             }
             if (changed.selected) {
                 this.set({ chartData: current.selected.csv });

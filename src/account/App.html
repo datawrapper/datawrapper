@@ -1,0 +1,188 @@
+<svelte:head>
+    <title>{pageTitle} | {__('account / settings')} | Datawrapper</title>
+</svelte:head>
+
+<div class="admin">
+    <h1 class="title">{__('account / settings')}</h1>
+    {#each invitations as team}
+    <div class="alert alert-info">
+        {@html __('account / team-invite').replace('%s', truncate(team.name, 20, 10))}
+        <!-- prettier-ignore -->
+        <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }</a>
+        <!-- prettier-ignore -->
+        &nbsp; { __('account / or') }
+        <a href="/team/{team.id}/invite/{team.token}/reject"
+            >{ __('account / team-invite / reject') }</a
+        >.
+    </div>
+    {/each}
+    <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
+</div>
+<script>
+    /* globals dw */
+    import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
+    import EditProfile from './EditProfile.html';
+    import NavTabs from '../shared/NavTabs.html';
+    import MyTeams from './MyTeams.html';
+
+    const EditProfileTab = {
+        title: __('account / profile'),
+        id: 'profile',
+        icon: 'im im-user-settings',
+        ui: EditProfile,
+        data: {}
+    };
+
+    const MyTeamsTab = {
+        title: __('account / my-teams'),
+        id: 'teams',
+        icon: 'im im-users',
+        ui: MyTeams,
+        data: {}
+    };
+
+    let popstate = false;
+
+    export default {
+        components: { NavTabs },
+        data() {
+            return {
+                hash: 'profile',
+                activeTab: null,
+                activeData: {},
+                groups: [
+                    {
+                        title: __('account / settings / personal'),
+                        tabs: [EditProfileTab]
+                    }
+                ]
+            };
+        },
+        computed: {
+            data({ email, user, userId, teams, currentTeam }) {
+                return { user, email, userId, teams, currentTeam };
+            },
+            pageTitle({ activeTab }) {
+                return activeTab ? activeTab.title : '';
+            }
+        },
+        helpers: {
+            __,
+            truncate
+        },
+        methods: {
+            setTab(id) {
+                const { groups } = this.get();
+                let foundTab = false;
+                groups.forEach(group => {
+                    group.tabs.forEach(tab => {
+                        if (tab.id === id) {
+                            this.refs.navTabs.activateTab(tab);
+                            foundTab = true;
+                        }
+                    });
+                });
+                if (!foundTab) {
+                    this.set({
+                        activeTab: EditProfileTab
+                    });
+                }
+            }
+        },
+        oncreate() {
+            const path = window.location.pathname.split('/').slice(1);
+            const initialTab = path[1] || 'profile';
+
+            dw.backend.__svelteApps.account = this;
+
+            const {
+                email,
+                user,
+                userId,
+                groups,
+                teams,
+                adminTeams,
+                pages,
+                currentTeam
+            } = this.get();
+
+            if (pages.length) {
+                groups[0].tabs.push.apply(groups[0].tabs, pages);
+                this.set({ groups });
+            }
+
+            groups[0].tabs.splice(1, 0, MyTeamsTab);
+            this.set({ groups });
+
+            if (adminTeams.length) {
+                groups.push({
+                    title: __('account / settings / team'),
+                    tabs: []
+                });
+                adminTeams.forEach(({ Id, Name }) => {
+                    groups[1].tabs.push({
+                        title: truncate(Name, 10, 4),
+                        url: `/team/${Id}/settings`,
+                        icon: 'im im-users'
+                    });
+                });
+                this.set({ groups });
+            }
+
+            EditProfileTab.data = { email, userId, user };
+            MyTeamsTab.data = { teams, currentTeam, user };
+
+            this.setTab(initialTab);
+
+            window.addEventListener('popstate', ({ state }) => {
+                popstate = true;
+                setTimeout(() => (popstate = false), 100);
+                this.setTab(state.id);
+            });
+        },
+        onstate({ changed, current, previous }) {
+            if (changed.activeTab && current.activeTab && !popstate) {
+                window.history.pushState(
+                    { id: current.activeTab.id },
+                    '',
+                    `/account/${current.activeTab.id}`
+                );
+            }
+        }
+    };
+</script>
+
+<style type="text/css" lang="less">
+    .settings-section {
+        padding-top: 10px;
+        margin-top: 10px;
+
+        .base-dropdown-content {
+            top: 30px !important;
+        }
+    }
+
+    .admin {
+        :global(h2) {
+            font-size: 26px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 1em;
+            padding-bottom: 1ex;
+        }
+
+        :global(h3) {
+            font-size: 22px;
+        }
+
+        :global(p.help) {
+            font-size: 16px;
+            color: #888;
+            line-height: 1.5;
+        }
+    }
+
+    .alert a:not(.btn) {
+        text-decoration: underline;
+    }
+</style>

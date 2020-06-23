@@ -1,0 +1,4 @@
+# Ignore built files
+**/vendor/**/.js
+www/static/js/svelte/**/*.js
+*.min.js

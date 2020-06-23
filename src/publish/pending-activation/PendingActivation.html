@@ -1,0 +1,53 @@
+<!-- this is what users see who are not activated yet -->
+
+<div>
+    <h2>{@html __("publish / pending-activation / h1")}</h2>
+
+    <p>{@html __("publish / pending-activation / p")}</p>
+
+    <div style="margin-top: 20px;">
+        {#if status == 'success'}
+        <p>
+            {@html __("publish / pending-activation / resend-success")}
+        </p>
+        {:elseif status == 'error'}
+        <p>
+            {@html __("publish / pending-activation / resend-error")}
+        </p>
+        {:else}
+        <button on:click="resendActivation()" class="btn btn-primary">
+            <i class="fa { status == 'sending' ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }"></i>
+            &nbsp;<!-- -->
+            { @html __("publish / pending-activation / resend")}
+        </button>
+        {/if}
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import { post } from '@datawrapper/shared/httpReq';
+
+    export default {
+        data() {
+            return {
+                status: ''
+            };
+        },
+        helpers: { __ },
+        methods: {
+            async resendActivation() {
+                this.set({
+                    status: 'sending'
+                });
+
+                try {
+                    await post('/v3/auth/resend-activation');
+                    this.set({ status: 'success' });
+                } catch (err) {
+                    this.set({ status: 'error' });
+                }
+            }
+        }
+    };
+</script>

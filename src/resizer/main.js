@@ -13,13 +13,13 @@ const data = {
 
 function init(app) {
     window.dw.backend
-        .on('dataset-loaded', function() {
+        .on('dataset-loaded', function () {
             app.store.set({ dataset: chart.dataset() });
         })
-        .on('theme-changed-and-loaded', function() {
+        .on('theme-changed-and-loaded', function () {
             app.store.set({ theme: window.dw.theme(chart.get('theme')) });
         })
-        .on('backend-vis-loaded', function(vis) {
+        .on('backend-vis-loaded', function (vis) {
             app.store.set({ vis: vis });
         });
 }

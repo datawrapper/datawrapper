@@ -1,0 +1,221 @@
+{#if customLogo}
+<div class="brand">
+    <img src="/static/custom/{{ customLogo }}}" style="height: 50px;" alt="logo" />
+</div>
+{/if}
+
+<svelte:window bind:innerHeight="windowHeight" />
+
+<div class="modal" bind:clientHeight="modalHeight" style="margin-top: {marginTop}px">
+    <div class="modal-body">
+        <h3>{@html headline }</h3>
+        <p>{@html intro }</p>
+
+        <div class="login-form form-vertical">
+            <div
+                class="control-group"
+                class:warning="passwordError"
+                class:success="passwordSuccess"
+            >
+                <div class="controls">
+                    <label>{__('password')}</label>
+                    {#if clearText}
+                    <input
+                        data-lpignore="true"
+                        bind:value="password"
+                        class="login-pwd input-xlarge span3"
+                        type="text"
+                    />
+                    {:else}
+                    <input
+                        data-lpignore="true"
+                        bind:value="password"
+                        class="login-pwd input-xlarge span3"
+                        type="password"
+                    />
+                    {/if}
+                    <CheckPassword
+                        bind:password
+                        bind:passwordRepeat="password"
+                        bind:passwordHelp
+                        bind:passwordSuccess
+                        bind:passwordError
+                        bind:passwordRepeatError
+                        bind:passwordOk
+                    />
+                    {#if passwordError}
+                    <p class="help text-warning">{@html passwordError}</p>
+                    {:elseif passwordSuccess}
+                    <p class="help text-success">{@html passwordSuccess}</p>
+                    {:elseif passwordHelp}
+                    <p class="help muted">{@html passwordHelp}</p>
+                    {/if}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="checkbox">
+                    <input bind:checked="clearText" type="checkbox" class="pwd-clear" /> {
+                    __('account / invite / password-clear-text') }
+                </label>
+            </div>
+            {#if activateError}
+            <div class="alert alert-warning">
+                {@html activateError}
+            </div>
+            {/if} {#if activateSuccess}
+            <div class="alert alert-success">
+                {@html activateSuccess}
+            </div>
+            {/if} {#if email}
+            <div class="control-group login-help">
+                {@html __('account / invite / your-login-is').replace('%s', `<span class="email"
+                    >${email}</span
+                >`)}
+            </div>
+            {/if}
+        </div>
+
+        <button
+            on:click="doSignUp()"
+            disabled="{! passwordOk }"
+            class="btn btn-primary btn-large login"
+        >
+            { @html button } &nbsp; {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i
+            >{:else}<i class="fa fa-fw fa-chevron-right"></i>{/if}
+        </button>
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
+    import CheckPassword from '../shared/CheckPassword.html';
+
+    export default {
+        components: { CheckPassword },
+        data: () => ({
+            redirect: '/',
+            password: '',
+            passwordOk: false,
+            passwordHelp: false,
+            passwordSuccess: false,
+            passwordError: false,
+            passwordRepeatError: false,
+            // progressIndicators
+            loggingIn: false,
+            activateSuccess: false,
+            activateError: false,
+            windowHeight: 1000,
+            modalHeight: 300,
+            clearText: false,
+            // texts
+            headline: '',
+            intro: '',
+            email: '',
+            button: 'Set password',
+            isPasswordReset: false
+        }),
+        computed: {
+            marginTop({ windowHeight, modalHeight }) {
+                return (windowHeight - modalHeight) * 0.5;
+            }
+        },
+        helpers: {
+            __
+        },
+        methods: {
+            async doSignUp() {
+                const token = window.location.pathname.split('/').pop();
+                const { password, redirect, isPasswordReset } = this.get();
+                this.set({
+                    loggingIn: true
+                });
+                try {
+                    if (isPasswordReset) {
+                        await httpReq.post(`/v3/auth/change-password`, {
+                            payload: {
+                                token,
+                                password
+                            }
+                        });
+                    } else {
+                        await httpReq.post(`/v3/auth/activate/${token}`, {
+                            payload: {
+                                password
+                            }
+                        });
+                    }
+
+                    this.set({ activateSuccess: 'Password was set up successfully!' });
+                    setTimeout(() => {
+                        window.location.href = redirect;
+                    }, 1000);
+                } catch (error) {
+                    if (error.name === 'HttpReqError') {
+                        const body = await error.response.json();
+                        this.set({ activateError: body ? body.message : error.message });
+                    } else {
+                        this.set({ activateError: error });
+                    }
+                }
+                this.set({ loggingIn: false });
+            }
+        }
+    };
+</script>
+
+<style>
+    p.help {
+        font-size: 12px;
+        line-height: 15px;
+        margin-top: 4px;
+    }
+    .login-help {
+        color: #999;
+        padding-bottom: 10px;
+    }
+    input.login-pwd {
+        margin-bottom: 0;
+    }
+    .modal {
+        width: 420px;
+        margin-left: -210px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        border: 0;
+        position: relative;
+    }
+    .modal h3 {
+        margin-top: 0;
+        font-size: 26px;
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+    .modal h3 img {
+        vertical-align: bottom;
+    }
+
+    .modal .close {
+        display: none;
+    }
+    .modal-body {
+        padding: 30px;
+    }
+    label.checkbox {
+        margin-top: 10px;
+    }
+    .modal h3 {
+        margin-top: 0;
+        font-size: 26px;
+        font-weight: 300;
+        margin-bottom: 20px;
+    }
+    .login-help :global(span.email) {
+        color: #222;
+    }
+    .control-group label:not(.checkbox) {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #555;
+        letter-spacing: 1px;
+    }
+</style>

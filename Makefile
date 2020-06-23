@@ -22,28 +22,11 @@ www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawr
 
 build: svelte-all
 
-svelte: \
-	www/static/js/svelte/account.js \
-	www/static/js/svelte/controls.js \
-	www/static/js/svelte/controls/hot.js \
-	www/static/js/svelte/describe.js \
-	www/static/js/svelte/editor.js \
-	www/static/js/svelte/publish.js \
-	www/static/js/svelte/publish/sidebar.js \
-	www/static/js/svelte/publish_old.js \
-	www/static/js/svelte/upload.js
-
 svelte-all:
-	cd src && ../node_modules/.bin/rollup -c
+	cd src && npm run build
 
 svelte-dev:
-	cd src && ../node_modules/.bin/rollup -cw
-
-svelte-all-v2:
-	cd src/v2 && npm run build
-
-svelte-dev-v2:
-	cd src/v2 && npm run dev
+	cd src && npm run dev
 
 plugins:
 	scripts/install-plugins
@@ -52,12 +35,3 @@ propel:
 	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen om
 	cd lib/core && ../../vendor/propel/propel1/generator/bin/propel-gen sql
 	composer dump-autoload
-
-www/static/js/svelte/controls.js: src/controls/* src/editor/*
-	cd src && ROLLUP_TGT_APP=controls ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/editor.js: src/editor/*
-	cd src && ROLLUP_TGT_APP=editor ../node_modules/.bin/rollup -c
-
-www/static/js/svelte/upload.js: src/upload/*
-	cd src && ROLLUP_TGT_APP=upload ../node_modules/.bin/rollup -c

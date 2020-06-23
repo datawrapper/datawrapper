@@ -1,0 +1,188 @@
+<p>
+    {#if numUsers === 1} { __('teams / total / 1') } {:elseif numUsers > 1} { __('teams /
+    total').replace('%i%', numUsers) } {/if} { @html numChartsCaption }
+</p>
+
+{#if sortedUsers.length}
+<MemberTable columnHeaders="{userHeaders}">
+    {#each sortedUsers as user, i}
+    <tr>
+        <td>
+            { user.email }
+        </td>
+        {#if isAdmin}
+        <td>
+            <a href="/admin/users/{user.id}">{ user.id }</a>
+        </td>
+        {/if}
+        <td>
+            { user.charts }
+        </td>
+        <td>
+            {#if editId === user.id }
+            <!-- prettier-ignore -->
+            <Select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            {:else} {@html role(user.role) } {#if user.token}
+            <i>{ __('teams / invite-pending' ) } </i>
+            {/if} {/if}
+        </td>
+        <td>
+            {#if isAdmin || user.role != 'owner'} {#if editId === user.id }
+            <button on:click="toggleEdit(user.id)" class="btn btn-primary">
+                <i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }
+            </button>
+            {:elseif updating[user.id]}
+            <button disabled class="btn btn-primary">
+                <i class="fa fa-spin fa-circle-o-notch"></i>&nbsp; { __('teams / save' ) }
+            </button>
+            {:else}
+            <button on:click="toggleEdit(user.id)" class="btn">
+                <i class="fa fa-edit"></i>&nbsp; { __('teams / edit' ) }
+            </button>
+
+            <button on:click="removeUser(user)" class="btn">
+                <i class="fa fa-times"></i>&nbsp; { __('teams / remove' ) }
+            </button>
+            {/if} {/if}
+        </td>
+    </tr>
+    {/each}
+</MemberTable>
+
+{/if}
+
+<script>
+    /* globals dw */
+    import { Table, Select } from '@datawrapper/controls';
+    import { __ } from '@datawrapper/shared/l10n';
+
+    const teamRoleOptions = [
+        { value: 'owner', label: __('teams / role / owner').replace('&shy;', '') },
+        { value: 'admin', label: __('teams / role / admin').replace('&shy;', '') },
+        { value: 'member', label: __('teams / role / member').replace('&shy;', '') }
+    ];
+
+    export default {
+        components: { MemberTable: Table, Select },
+        data() {
+            return {
+                editId: false,
+                updating: {},
+                users: []
+            };
+        },
+        computed: {
+            roles({ isAdmin, isTeamOwner }) {
+                return isAdmin || isTeamOwner ? teamRoleOptions : teamRoleOptions.slice(1);
+            },
+            sortedUsers({ users, isAdmin }) {
+                return users
+                    .sort((a, b) => {
+                        const roles = ['owner', 'admin', 'member'];
+
+                        if (roles.indexOf(a.role) > roles.indexOf(b.role)) {
+                            return 1;
+                        } else if (roles.indexOf(a.role) < roles.indexOf(b.role)) {
+                            return -1;
+                        } else {
+                            return a.email > b.email ? 1 : a.email < b.email ? -1 : 0;
+                        }
+                    })
+                    .filter(user => isAdmin || !user.isAdmin);
+            },
+            userHeaders({ isAdmin }) {
+                const userHeaders = [
+                    { title: __('teams / user'), width: '25%' },
+                    { title: 'ID', width: '10%' },
+                    { title: 'Charts', width: '15%' },
+                    { title: __('teams / status'), width: '15%' },
+                    { title: __('teams / actions'), width: '30%' }
+                ];
+
+                if (!isAdmin) userHeaders.splice(1, 1);
+
+                return userHeaders;
+            },
+            numUsers({ users }) {
+                return users.length;
+            },
+            numCharts({ users }) {
+                let total = 0;
+                users.forEach(user => {
+                    total += user.charts;
+                });
+                return total;
+            },
+            numChartsCaption({ numCharts, isAdmin, team }) {
+                if (numCharts === 1) {
+                    return __('teams / charts-total / 1');
+                } else if (numCharts > 1) {
+                    if (isAdmin) {
+                        return __('teams / charts-total-admin')
+                            .replace('%i%', numCharts)
+                            .replace('%link%', `/admin/chart/by/${team.id}`);
+                    } else {
+                        return __('teams / charts-total').replace('%i%', numCharts);
+                    }
+                } else {
+                    return '';
+                }
+            }
+        },
+        helpers: {
+            role(role) {
+                return {
+                    member: __('teams / role / member'),
+                    admin: __('teams / role / admin'),
+                    owner: __('teams / role / owner')
+                }[role];
+            },
+            __
+        },
+        methods: {
+            toggleEdit(userId) {
+                if (this.get().editId === userId) {
+                    this.set({ editId: false });
+                    this.updateRole(userId);
+                } else {
+                    this.set({
+                        editId: userId
+                    });
+                }
+            },
+            async removeUser(user) {
+                if (!window.confirm(__('teams / remove / alert'))) return;
+
+                await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                var { users } = this.get();
+                users = users.filter(el => el.id !== user.id);
+                this.set({ users });
+            },
+            async updateRole(userId) {
+                var { updating, users } = this.get();
+                const user = users.filter(u => u.id === userId)[0];
+                updating[user.id] = true;
+                this.set({ updating });
+
+                await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}/status`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        status: user.role
+                    })
+                });
+
+                updating = this.get().updating;
+                updating[user.id] = false;
+                this.set({ updating });
+            },
+            fetchAPI(url, opts) {
+                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
+            }
+        }
+    };
+</script>
