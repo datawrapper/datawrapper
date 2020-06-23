@@ -65,7 +65,10 @@ class DatawrapperSession {
                     if ($user) {
                         $this->user = $user;
                         $this->method = 'token';
-                        $pdo->query('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = '.intval($user->getId()).' AND token = '.$pdo->quote($authHeader[1]));
+                        $stmt = $pdo->prepare('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = :userId AND token = :token');
+                        $stmt->bindParam(':userId', $user_id);
+                        $stmt->bindParam(':token', $authHeader[1]);
+                        $stmt->execute();
                         return;
                     }
                 }
