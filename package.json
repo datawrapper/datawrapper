@@ -67,26 +67,6 @@
             "@tivac/svelte"
         ]
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged && git rev-parse HEAD > sha && git add sha"
-        }
-    },
-    "lint-staged": {
-        "linters": {
-            "*.{js,html}": [
-                "prettier --write",
-                "healthier",
-                "git add"
-            ]
-        },
-        "ignore": [
-            "*.min.js",
-            "**/dw-2.0.js",
-            "**/vendor/**/.js",
-            "www/static/js/svelte/**/*.js"
-        ]
-    },
     "ava": {
         "require": [
             "esm",
