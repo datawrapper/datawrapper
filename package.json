@@ -82,13 +82,12 @@
     "lint-staged": {
         "*.{js,html}": [
             "prettier --write",
-            "healthier",
-            "git add"
+            "healthier"
         ]
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && git rev-parse HEAD > sha"
+            "pre-commit": "lint-staged && git rev-parse HEAD > sha && git add sha"
         }
     }
 }
