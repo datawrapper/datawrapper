@@ -13,7 +13,6 @@
     "dependencies": {
         "babel-eslint": "^10.1.0",
         "eslint-plugin-html": "^6.0.2",
-        "healthier": "^3.3.0",
         "husky": "^4.2.5",
         "lint-staged": "^10.2.11",
         "prettier": "^2.0.5",
@@ -27,6 +26,7 @@
         "d3-dsv": "^1.2.0",
         "d3-queue": "^3.0.7",
         "glob": "^7.1.6",
+        "healthier": "^3.3.0",
         "js-yaml": "^3.14.0",
         "less": "^3.11.3",
         "request": "^2.88.2",

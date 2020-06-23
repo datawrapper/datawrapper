@@ -4,7 +4,7 @@
 
 <div class="row" style="">
     <div class="span12 admin">
-        <h1 class="title" style="margin-bottom:18px">{title}</h1>
+        <h1 class="title" style="margin-bottom: 18px;">{title}</h1>
     </div>
 </div>
 
@@ -50,7 +50,7 @@
         order: 10,
         h1: __('teams / defaults / h1'),
         ui: Settings,
-        data: {}
+        data: {},
     };
 
     const MembersTab = {
@@ -60,7 +60,7 @@
         group: __('teams / group / users'),
         order: 20,
         h1: __('teams / h1'),
-        ui: Members
+        ui: Members,
     };
 
     let app;
@@ -69,7 +69,7 @@
     export default {
         components: {
             Loading,
-            NavTabs
+            NavTabs,
         },
         data() {
             return {
@@ -84,7 +84,7 @@
                         order: 80,
                         h1: __('teams / delete / h1'),
                         ui: DeleteTeam,
-                        ownerOnly: true
+                        ownerOnly: true,
                     },
                     {
                         id: 'products',
@@ -94,20 +94,20 @@
                         order: 90,
                         h1: __('teams / products / h1'),
                         ui: ProductTable,
-                        adminOnly: true
-                    }
+                        adminOnly: true,
+                    },
                 ],
                 pluginTabs: [],
                 activeTab: null,
                 ui: Settings,
                 team: {
-                    name: ''
+                    name: '',
                 },
                 settings: {},
                 users: [],
                 userId: null,
                 visualizations: [],
-                visualizationsArchive: []
+                visualizationsArchive: [],
             };
         },
         computed: {
@@ -121,12 +121,12 @@
                 const tabs = [].concat(allTabs, pluginTabs);
 
                 return tabs
-                    .filter(tab => {
+                    .filter((tab) => {
                         if (tab.adminOnly && !isAdmin) return false;
                         if (tab.ownerOnly && !(isAdmin || role === 'owner')) return false;
                         return true;
                     })
-                    .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
+                    .map((tab) => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
             },
             groups({
                 tabs,
@@ -141,23 +141,23 @@
                 folders,
                 locales,
                 visualizations,
-                visualizationsArchive
+                visualizationsArchive,
             }) {
                 const groups = [];
 
                 function get(groups, groupId) {
-                    let g = groups.filter(el => el.title === groupId);
+                    const g = groups.filter((el) => el.title === groupId);
                     if (g.length) return g[0];
 
                     groups.push({
                         title: groupId,
-                        tabs: []
+                        tabs: [],
                     });
 
                     return groups[groups.length - 1];
                 }
 
-                tabs.forEach(tab => {
+                tabs.forEach((tab) => {
                     tab.data = {
                         isAdmin,
                         isTeamOwner: role === 'owner',
@@ -171,7 +171,7 @@
                         locales,
                         visualizations,
                         visualizationsArchive,
-                        ...tab.data
+                        ...tab.data,
                     };
                     tab.onchange = (data, tabApp) => {
                         app.onTabChange(data, tabApp);
@@ -179,12 +179,12 @@
                     get(groups, tab.group).tabs.push(tab);
                 });
 
-                groups.forEach(group => {
+                groups.forEach((group) => {
                     group.tabs.sort((a, b) => a.order - b.order);
                 });
 
                 return groups;
-            }
+            },
         },
         helpers: { __, truncate },
         methods: {
@@ -193,7 +193,7 @@
                     this.set({
                         team,
                         settings,
-                        defaultTheme
+                        defaultTheme,
                     });
                     if (tab && tab.saved) {
                         tab.saved();
@@ -203,8 +203,8 @@
             setTab(id) {
                 const { groups } = this.get();
                 let foundTab = false;
-                groups.forEach(group => {
-                    group.tabs.forEach(tab => {
+                groups.forEach((group) => {
+                    group.tabs.forEach((tab) => {
                         if (tab.id === id) {
                             this.refs.navTabs.activateTab(tab);
                             foundTab = true;
@@ -214,10 +214,10 @@
 
                 if (!foundTab) {
                     this.set({
-                        activeTab: SettingsTab
+                        activeTab: SettingsTab,
                     });
                 }
-            }
+            },
         },
         oncreate() {
             app = this;
@@ -235,7 +235,7 @@
             if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/team/${current.team.id}/${current.activeTab.id}`);
             }
-        }
+        },
     };
 </script>
 

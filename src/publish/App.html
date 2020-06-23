@@ -1,7 +1,7 @@
 {#if published}
 <p>{@html __('publish / republish-intro') }</p>
 {:else}
-<p style="margin-bottom: 20px">{@html __('publish / publish-intro') }</p>
+<p style="margin-bottom: 20px;">{@html __('publish / publish-intro') }</p>
 {/if}
 
 <button disabled="{ publishing }" on:click="publish()" class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}">
@@ -53,7 +53,7 @@
 </div>
 {/if}
 
-<div style="margin-top:20px" class="{published?'':'inactive'}">
+<div style="margin-top: 20px;" class="{published?'':'inactive'}">
     <h2>{@html __('publish / share-embed') }</h2>
     <div class="block">
         <i class="icon fa fa-link fa-fw"></i>
@@ -230,7 +230,7 @@
         data() {
             return {
                 chart: {
-                    id: ''
+                    id: '',
                 },
                 embed_templates: [],
                 plugin_shareurls: [],
@@ -244,7 +244,7 @@
                 shareurl_type: 'default',
                 embed_type: 'responsive',
                 copy_success: false,
-                statusUrl: false
+                statusUrl: false,
             };
         },
 
@@ -253,7 +253,7 @@
                 if (!published) return 'https://www.datawrapper.de/...';
                 if (shareurl_type === 'default') return chart.publicUrl;
                 let url = '';
-                plugin_shareurls.forEach(t => {
+                plugin_shareurls.forEach((t) => {
                     if (t.id === shareurl_type) {
                         url = t.url.replace(/%chart_id%/g, chart.id);
 
@@ -261,7 +261,7 @@
                             return get(
                                 {
                                     id: chart.id,
-                                    metadata: chart.metadata
+                                    metadata: chart.metadata,
                                 },
                                 path
                             );
@@ -285,7 +285,7 @@
 
             publishWait({ publishStarted, now }) {
                 return publishStarted > 0 ? now - publishStarted : 0;
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -305,7 +305,7 @@
                     publishStarted: new Date().getTime(),
                     now: new Date().getTime(),
                     progress: [],
-                    publish_error: false
+                    publish_error: false,
                 });
                 // generate embed codes
                 chart.metadata.publish['embed-heights'] = computeEmbedHeights(chart, me.get().embed_templates);
@@ -319,24 +319,24 @@
                 window.chart
                     .attributes(chart)
                     .save()
-                    .then(d => {
+                    .then((d) => {
                         this.set({
-                            statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`
+                            statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`,
                         });
                         // publish chart
                         request
                             .post(`/v3/charts/${chart.id}/publish`)
-                            .then(res => {
+                            .then((res) => {
                                 this.set({
                                     published: true,
-                                    progress: ['done']
+                                    progress: ['done'],
                                 });
-                                request.get(`/v3/charts/${chart.id}`).then(res => {
+                                request.get(`/v3/charts/${chart.id}`).then((res) => {
                                     trackEvent('Chart Editor', 'publish-success');
                                     me.publishFinished(res);
                                 });
                             })
-                            .catch(error => {
+                            .catch((error) => {
                                 trackEvent('Chart Editor', 'publish-error', error.message);
                             });
                         setTimeout(() => {
@@ -350,10 +350,10 @@
                 const me = this;
                 const { statusUrl } = me.get();
                 if (!statusUrl) return;
-                request.get(statusUrl).then(res => {
+                request.get(statusUrl).then((res) => {
                     this.set({
                         progress: res.progress || [],
-                        now: new Date().getTime()
+                        now: new Date().getTime(),
                     });
                     const { publishing } = this.get();
                     if (publishing) {
@@ -369,7 +369,7 @@
                     progress: ['done'],
                     published: true,
                     publishStarted: 0,
-                    needs_republish: false
+                    needs_republish: false,
                 });
                 // give user 1s to read the success message
                 setTimeout(() => this.set({ publishing: false }), 1000);
@@ -379,7 +379,7 @@
                     {
                         source: 'datawrapper',
                         type: 'chart-publish',
-                        chartId: chartInfo.id
+                        chartId: chartInfo.id,
                     },
                     '*'
                 );
@@ -400,7 +400,7 @@
                 } catch (err) {
                     // console.log('Oops, unable to copy');
                 }
-            }
+            },
         },
         onstate({ changed, current }) {
             const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
@@ -426,6 +426,6 @@
                     window.history.replaceState('', '', window.location.pathname);
                 }
             }
-        }
+        },
     };
 </script>

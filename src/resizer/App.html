@@ -11,11 +11,11 @@
 </div>
 {/if}
 
-<div class="toolbar-container" style="display:block;">
-    <div style="display:flex">
+<div class="toolbar-container" style="display: block;">
+    <div style="display: flex;">
         <div class="toolbar-caption">Chart size</div>
 
-        <div style="padding-top: 4px">
+        <div style="padding-top: 4px;">
             <input id="resize-w" class="input-resize input-large" type="text" on:change="changed()" bind:value="width_txt" />
             ×
             <input id="resize-h" class="input-resize input-large" type="text" on:change="changed()" bind:value="height_txt" />
@@ -26,22 +26,22 @@
             <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
         </div>
         {/each} {:elseif mode === "print"}
-        <div class="button" on:click="togglePrintOptions()" style="min-width:12px; border-right: none;">
+        <div class="button" on:click="togglePrintOptions()" style="min-width: 12px; border-right: none;">
             <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
         </div>
         {/if}
     </div>
 
     {#if printExpanded}
-    <div class="toolbar-container options" style="display:block; height:auto; z-index: 1;">
-        <div style="padding: 12px 8px 0px 8px">
+    <div class="toolbar-container options" style="display: block; height: auto; z-index: 1;">
+        <div style="padding: 12px 8px 0px 8px;">
             <!-- prettier-ignore -->
             <Radio options="{units}" label="" bind:value="unit" />
 
             {#if hasPresets}
             <div class="control-group" style="margin-bottom: 6px;">
-                <div class="controls ">
-                    <select bind:value="preset" on:change="usePreset()" style="max-width:170px; margin-bottom:0">
+                <div class="controls">
+                    <select bind:value="preset" on:change="usePreset()" style="max-width: 170px; margin-bottom: 0;">
                         {#each presetOptions as option }
                         <option value="{option.value}">{ option.label }</option>
                         {/each}
@@ -91,7 +91,7 @@
                 units: [
                     { value: 'mm', label: 'mm', step: 1, decimals: 0 },
                     { value: 'in', label: 'in', step: 0.01, decimals: 2 },
-                    { value: 'px', label: 'px', step: 1, decimals: 0 }
+                    { value: 'px', label: 'px', step: 1, decimals: 0 },
                 ],
                 breakpoints: [
                     {
@@ -99,25 +99,25 @@
                         iconSize: 14,
                         minWidth: 0,
                         maxWidth: 320,
-                        width: 320
+                        width: 320,
                     },
                     {
                         icon: 'fa-mobile',
                         iconSize: 17,
                         minWidth: 321,
                         maxWidth: 400,
-                        width: 400
+                        width: 400,
                     },
                     {
                         icon: 'fa-desktop',
                         iconSize: 14,
                         minWidth: 401,
                         maxWidth: Infinity,
-                        width: 600
-                    }
+                        width: 600,
+                    },
                 ],
                 hasPresets: false,
-                printExpanded: false
+                printExpanded: false,
             };
         },
         computed: {
@@ -145,17 +145,17 @@
                 var presets = theme.export.presets.pdf.map((el, i) => {
                     return {
                         value: i,
-                        label: el.title
+                        label: el.title,
                     };
                 });
 
                 presets.unshift({
                     value: '---',
-                    label: 'Apply preset…'
+                    label: 'Apply preset…',
                 });
 
                 return presets;
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -170,10 +170,10 @@
                 const app = this;
 
                 clearTimeout(this.debounceUpdateSize);
-                this.debounceUpdateSize = setTimeout(function() {
+                this.debounceUpdateSize = setTimeout(function () {
                     app.set({
                         width: app.get().width_txt,
-                        height: app.get().height_txt
+                        height: app.get().height_txt,
                     });
                 }, 100);
             },
@@ -201,10 +201,10 @@
                         $.ajax({
                             url: '/api/plugin/webtoprint/' + dw.backend.currentChart.get('id'),
                             method: 'POST',
-                            success: function(response) {
+                            success: function (response) {
                                 window.location =
                                     window.location.protocol + '//' + window.location.host + '/chart/' + response.data.chartId + '/visualize';
-                            }
+                            },
                         });
                     }
                 }
@@ -224,21 +224,17 @@
                 $.ajax({
                     url: '/api/plugin/webtoprint/' + chart.get('id'),
                     method: 'DELETE',
-                    success: function() {
+                    success: function () {
                         window.location.reload();
-                    }
+                    },
                 });
             },
             updateSize() {
-                let { width, height, unit } = this.get();
-                let w = this.get().width_px;
-                let h = this.get().height_px;
+                const { width, height, unit } = this.get();
+                const w = this.get().width_px;
+                const h = this.get().height_px;
 
-                const maxW =
-                    $('#iframe-wrapper')
-                        .parent()
-                        .parent()
-                        .width() - 22;
+                const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
 
                 chart.set('metadata.publish.embed-width', w);
                 chart.set('metadata.publish.embed-height', h);
@@ -247,20 +243,20 @@
                     {
                         width: w,
                         height: h,
-                        'margin-left': (maxW - w) * 0.5
+                        'margin-left': (maxW - w) * 0.5,
                     },
                     {
                         duration: 200,
-                        step: function() {
+                        step: function () {
                             $(this).css('overflow', 'visible');
-                        }
+                        },
                     }
                 );
 
                 $('.visconfig')
                     .css('min-height', +h + 250)
                     .animate({
-                        left: Math.min(0, maxW - w) / 2
+                        left: Math.min(0, maxW - w) / 2,
                     });
 
                 dw.backend.fire('chart-resize');
@@ -283,7 +279,7 @@
 
                 clearTimeout(window.measureChartHeightTimeout);
 
-                window.measureChartHeightTimeout = setTimeout(function() {
+                window.measureChartHeightTimeout = setTimeout(function () {
                     const iframe = $('#iframe-vis').get(0).contentWindow;
 
                     if (iframe) {
@@ -338,7 +334,7 @@
 
                     app.set({
                         width: $('#iframe-vis').width(),
-                        height: $('#iframe-vis').height()
+                        height: $('#iframe-vis').height(),
                     });
 
                     iframe.css('pointer-events', 'initial');
@@ -348,7 +344,7 @@
             registerTypeListener() {
                 const app = this;
 
-                dw.backend.on('type-changed', function(metas) {
+                dw.backend.on('type-changed', function (metas) {
                     // switch from fixed to fit
                     if (metas[0].height !== 'fixed' && metas[1].height === 'fixed') {
                         app.setHeight(Math.min(app.get().height_px, 500));
@@ -358,7 +354,7 @@
             registerChartHeightListener() {
                 const app = this;
 
-                window.addEventListener('message', function(e) {
+                window.addEventListener('message', function (e) {
                     var message = e.data;
 
                     if (typeof message['datawrapper-height'] !== 'undefined') {
@@ -373,11 +369,11 @@
                         }
                     }
                 });
-            }
+            },
         },
         oncreate() {
             this.set({
-                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web')
+                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web'),
             });
         },
         onstate({ changed, current, previous }) {
@@ -394,7 +390,7 @@
                     width: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
                     height: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
                     width_txt: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
-                    height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals)
+                    height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
                 });
             }
 
@@ -404,7 +400,7 @@
                         width: dw.backend.currentChart.get('metadata.publish.embed-width'),
                         height: dw.backend.currentChart.get('metadata.publish.embed-height'),
                         width_txt: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height')
+                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height'),
                     });
 
                     this.registerDragAndDropListener();
@@ -418,7 +414,7 @@
                         height: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
                         width_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.width', 120),
                         height_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
-                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm')
+                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm'),
                     });
 
                     app.updateSize();
@@ -428,6 +424,6 @@
             if ((changed.width_px || changed.height_px) && current.width_px && current.height_px) {
                 app.updateSize();
             }
-        }
+        },
     };
 </script>
