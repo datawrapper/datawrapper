@@ -8,7 +8,10 @@
             <input type="text" bind:value="team.name" placeholder="" />
         </FormBlock>
 
-        <FormBlock label="{ __('teams / defaults / folder-status' ) }" help="{ __('teams / defaults / folder-status / p' ) }">
+        <FormBlock
+            label="{ __('teams / defaults / folder-status' ) }"
+            help="{ __('teams / defaults / folder-status / p' ) }"
+        >
             <Radio
                 label=""
                 bind:value="settings.folders"
@@ -18,7 +21,10 @@
 
         <h3>Default settings for new visualizations</h3>
 
-        <FormBlock label="{ __('teams / defaults / theme' ) }" help="{ __('teams / defaults / theme / p' ) }">
+        <FormBlock
+            label="{ __('teams / defaults / theme' ) }"
+            help="{ __('teams / defaults / theme / p' ) }"
+        >
             <!-- prettier-ignore -->
             <BaseSelect
                 bind:value="defaultTheme"
@@ -26,15 +32,24 @@
             />
         </FormBlock>
 
-        <FormBlock label="{ __('teams / defaults / folder' ) }" help="{ __('teams / defaults / folder / p' ) }">
+        <FormBlock
+            label="{ __('teams / defaults / folder' ) }"
+            help="{ __('teams / defaults / folder / p' ) }"
+        >
             <BaseSelect bind:value="settings.default.folder" options="{folders}" />
         </FormBlock>
 
-        <FormBlock label="{ __('teams / defaults / locale' ) }" help="{ __('teams / defaults / locale / p' ) }">
+        <FormBlock
+            label="{ __('teams / defaults / locale' ) }"
+            help="{ __('teams / defaults / locale / p' ) }"
+        >
             <BaseSelect bind:value="settings.default.locale" options="{localeOptions}" />
         </FormBlock>
 
-        <FormBlock label="{ __('teams / defaults / embedcode' ) }" help="{ __('teams / defaults / embedcode / p' ) }">
+        <FormBlock
+            label="{ __('teams / defaults / embedcode' ) }"
+            help="{ __('teams / defaults / embedcode / p' ) }"
+        >
             <Radio label="" bind:value="settings.embed.preferred_embed" options="{embedCodes}" />
         </FormBlock>
 
@@ -42,14 +57,24 @@
         <h3>Custom Embed Code</h3>
 
         <FormBlock label="{ __('teams / custom / title' ) }" help="">
-            <input type="text" bind:value="settings.embed.custom_embed.title" placeholder="e.g. Custom CMS Embed" />
+            <input
+                type="text"
+                bind:value="settings.embed.custom_embed.title"
+                placeholder="e.g. Custom CMS Embed"
+            />
         </FormBlock>
 
         <FormBlock label="{ __('teams / custom / help' ) }" help="">
-            <textarea bind:value="settings.embed.custom_embed.text" placeholder="e.g. This is a custom embed code for our CMS" />
+            <textarea
+                bind:value="settings.embed.custom_embed.text"
+                placeholder="e.g. This is a custom embed code for our CMS"
+            />
         </FormBlock>
 
-        <FormBlock label="{ __('teams / custom / embedcode' ) }" help="{ __('teams / custom / embedcode / help' ) }">
+        <FormBlock
+            label="{ __('teams / custom / embedcode' ) }"
+            help="{ __('teams / custom / embedcode / help' ) }"
+        >
             <textarea
                 class="embedcode"
                 bind:value="settings.embed.custom_embed.template"
@@ -75,14 +100,14 @@
                 embedCodes: [
                     { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
                     { value: 'iframe', label: __('teams / defaults / iframe') },
-                    { value: 'custom', label: __('teams / defaults / custom') },
+                    { value: 'custom', label: __('teams / defaults / custom') }
                 ],
                 themes: [],
                 folders: [],
                 locales: [],
                 defaultTheme: '',
                 settings: {},
-                team: {},
+                team: {}
             };
         },
         computed: {
@@ -90,11 +115,11 @@
                 return [
                     {
                         value: null,
-                        label: __('teams / defaults / none', 'organizations'),
+                        label: __('teams / defaults / none', 'organizations')
                     },
-                    ...locales,
+                    ...locales
                 ];
-            },
+            }
         },
         helpers: { __ },
         onstate({ changed, current, previous }) {
@@ -102,10 +127,10 @@
                 this.fire('change', {
                     team: current.team,
                     settings: current.settings,
-                    defaultTheme: current.defaultTheme,
+                    defaultTheme: current.defaultTheme
                 });
             }
-        },
+        }
     };
 </script>
 

@@ -16,7 +16,8 @@
         </p>
         {:else}
         <button on:click="resendActivation()" class="btn btn-primary">
-            <i class="fa { status == 'sending' ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }"></i> &nbsp;<!-- -->
+            <i class="fa { status == 'sending' ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }"></i>
+            &nbsp;<!-- -->
             { @html __("publish / pending-activation / resend")}
         </button>
         {/if}
@@ -30,14 +31,14 @@
     export default {
         data() {
             return {
-                status: '',
+                status: ''
             };
         },
         helpers: { __ },
         methods: {
             async resendActivation() {
                 this.set({
-                    status: 'sending',
+                    status: 'sending'
                 });
 
                 try {
@@ -46,7 +47,7 @@
                 } catch (err) {
                     this.set({ status: 'error' });
                 }
-            },
-        },
+            }
+        }
     };
 </script>

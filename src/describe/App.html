@@ -19,10 +19,17 @@
 
                 {:elseif columnFormat}
 
-                <CustomColumnFormat on:updateTable="refs.hot.update()" on:renderTable="refs.hot.render()" bind:column="columnFormat" bind:columns />
+                <CustomColumnFormat
+                    on:updateTable="refs.hot.update()"
+                    on:renderTable="refs.hot.render()"
+                    bind:column="columnFormat"
+                    bind:columns
+                />
 
                 {#if columnFormat.isComputed}
-                <button class="btn" on:click="force(event, false)"><i class="fa fa-chevron-left"></i> {__('describe / edit-formula')}</button>
+                <button class="btn" on:click="force(event, false)">
+                    <i class="fa fa-chevron-left"></i> {__('describe / edit-formula')}
+                </button>
                 {/if} {/if} {#if activeColumn.type() == 'number'}
                 <Histogram bind:values="activeValues" bind:format="activeFormat" />
                 {/if} {:elseif multiSelection}
@@ -48,7 +55,8 @@
 
                 <p>{@html __(`describe / data-looks-right`) }</p>
 
-                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if showLocale }
+                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if
+                showLocale }
                 <h4>{__(`describe / locale-select / hed`)}</h4>
 
                 <p>{@html __(`describe / locale-select / body`)}</p>
@@ -63,7 +71,9 @@
                 <hr />
 
                 <div class="btn-group">
-                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {__('Back')}</a>
+                    <a class="btn submit" href="upload"
+                        ><i class="icon-chevron-left"></i> {__('Back')}</a
+                    >
                     <a href="visualize" class="submit btn btn-primary" id="describe-proceed">
                         {__('Proceed')} <i class="icon-chevron-right icon-white"></i
                     ></a>
@@ -71,7 +81,10 @@
             </div>
         </div>
         <div class="span8">
-            <div class="help">{@html __('describe / info-table-header')} <img alt="arrow" src="/static/img/arrow.svg" /></div>
+            <div class="help">
+                {@html __('describe / info-table-header')}
+                <img alt="arrow" src="/static/img/arrow.svg" />
+            </div>
             <div class="pull-right" style="margin-bottom: 10px;">
                 <div class="sort-box">
                     <div class="btn-group" ref:sortDropdownGroup>
@@ -80,7 +93,9 @@
                         </button>
                         <ul class="dropdown-menu sort-menu">
                             <li class="{'-'==sortBy?'active':''}">
-                                <a on:click="sort(event, '-')" href="#s">{@html __('describe / no-sorting')}</a>
+                                <a on:click="sort(event, '-')" href="#s"
+                                    >{@html __('describe / no-sorting')}</a
+                                >
                             </li>
                             {#each columns as col}
                             <li class="{col.name()==sortBy?'active':''}">
@@ -152,14 +167,19 @@
 
             <div class="buttons below-table pull-right">
                 <button class="btn transpose" on:click="toggleTranspose()">
-                    <img alt="transpose" src="/static/css/chart-editor/transpose.png" /> {__(`describe / transpose-long`)}
+                    <img alt="transpose" src="/static/css/chart-editor/transpose.png" />
+                    {__(`describe / transpose-long`)}
                 </button>
 
                 <button on:click="addComputedColumn()" class="btn computed-columns">
                     <i class="fa fa-calculator"></i> {__(`computed columns / add-btn`)}…
                 </button>
 
-                <button on:click="revertChanges()" class="btn {has_changes?'':'disabled'}" id="reset-data-changes">
+                <button
+                    on:click="revertChanges()"
+                    class="btn {has_changes?'':'disabled'}"
+                    id="reset-data-changes"
+                >
                     <i class="fa fa-undo"></i> {__(`Revert changes`)}…
                 </button>
             </div>
@@ -198,7 +218,7 @@
                 forceColumnFormat: false,
                 searchResults: [],
                 sortBy: '-',
-                sortDir: true,
+                sortDir: true
             };
         },
         computed: {
@@ -208,22 +228,26 @@
                 return searchIndex;
             },
             customColumn({ activeColumn, forceColumnFormat }) {
-                return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
+                return activeColumn && !forceColumnFormat && activeColumn.isComputed
+                    ? activeColumn
+                    : false;
             },
             columnFormat({ activeColumn, forceColumnFormat }) {
-                return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
+                return activeColumn && (!activeColumn.isComputed || forceColumnFormat)
+                    ? activeColumn
+                    : false;
             },
             activeValues({ activeColumn }) {
                 return activeColumn ? activeColumn.values() : [];
             },
             activeFormat({ activeColumn, $dw_chart }) {
-                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : (d) => d;
+                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
             },
             columns({ activeColumn }) {
                 const ds = chart.dataset();
                 if (!activeColumn) return ds ? ds.columns() : [];
                 try {
-                    return ds.columns().filter((col) => !col.isComputed);
+                    return ds.columns().filter(col => !col.isComputed);
                 } catch (e) {
                     return [];
                 }
@@ -233,11 +257,13 @@
             },
             resultsDisplay({ searchResults, searchIndexSafe }) {
                 if (searchResults.length > 0) {
-                    return `${searchIndexSafe + 1} ${__('describe / search / of')} ${searchResults.length} ${__('describe / search / results')}`;
+                    return `${searchIndexSafe + 1} ${__('describe / search / of')} ${
+                        searchResults.length
+                    } ${__('describe / search / results')}`;
                 } else {
                     return __('describe / search / no-matches');
                 }
-            },
+            }
         },
         helpers: { __ },
         methods: {
@@ -282,7 +308,7 @@
                 const id = `Column ${i}`;
                 computed.push({
                     name: id,
-                    formula: '',
+                    formula: ''
                 });
                 chart.set('metadata.describe.computed-columns', computed);
                 chart.saveSoon();
@@ -305,7 +331,7 @@
             hideMultiple(columns, hide) {
                 const chart = this.store.get().dw_chart;
                 const colFmt = clone(chart.get('metadata.data.column-format', {}));
-                columns.forEach((col) => {
+                columns.forEach(col => {
                     if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
                     else {
                         colFmt[col.name()] = { type: 'auto', ignore: hide };
@@ -323,10 +349,10 @@
                 if (this.refs.ccEd) {
                     this.refs.ccEd.fire('hotRendered');
                 }
-            },
+            }
         },
         oncreate() {
-            window.addEventListener('keypress', (event) => {
+            window.addEventListener('keypress', event => {
                 if (event.ctrlKey && event.key === 'f') {
                     event.preventDefault();
                     if (this.refs.search !== window.document.activeElement) {
@@ -345,9 +371,9 @@
             const sync = {
                 transpose: 'metadata.data.transpose',
                 firstRowIsHeader: 'metadata.data.horizontal-header',
-                locale: 'language',
+                locale: 'language'
             };
-            Object.keys(sync).forEach((svelteKey) => {
+            Object.keys(sync).forEach(svelteKey => {
                 if (changed[svelteKey]) {
                     const svelteValue = current[svelteKey];
                     const metadataKey = sync[svelteKey];
@@ -360,7 +386,7 @@
                     }
                 }
             });
-        },
+        }
     };
 </script>
 

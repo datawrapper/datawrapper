@@ -51,7 +51,13 @@
 
                 <h4>{active.longTitle || active.title}</h4>
 
-                <svelte:component this="{Sidebar}" bind:chartData bind:readonly bind:sheets bind:datasets />
+                <svelte:component
+                    this="{Sidebar}"
+                    bind:chartData
+                    bind:readonly
+                    bind:sheets
+                    bind:datasets
+                />
             </div>
         </div>
         <div class="span7">
@@ -86,7 +92,7 @@
             icon: 'fa fa-clipboard',
             mainPanel: TextAreaUpload,
             sidebar: UploadHelp,
-            action() {},
+            action() {}
         },
         {
             id: 'upload',
@@ -98,13 +104,20 @@
             isFileUpload: true,
             onFileUpload(event) {
                 const file = event.target.files[0];
-                if (file.type.substr(0, 5) === 'text/' || file.name.substr(file.name.length - 4) === '.csv') {
+                if (
+                    file.type.substr(0, 5) === 'text/' ||
+                    file.name.substr(file.name.length - 4) === '.csv'
+                ) {
                     app.set({ Sidebar: UploadHelp });
                     readFile(file, (err, result) => {
                         if (err) return console.error('could not read file', err);
-                        putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                            window.location.href = 'describe';
-                        });
+                        putJSON(
+                            `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                            result,
+                            () => {
+                                window.location.href = 'describe';
+                            }
+                        );
                     });
                 } else if (file.type.substr(0, 12) === 'application/') {
                     app.set({ Sidebar: SelectSheet, sheets: [] }); // reset
@@ -118,8 +131,8 @@
                     app.set({ error: __('upload / csv-required') });
                 }
             },
-            action() {},
-        },
+            action() {}
+        }
     ];
 
     export default {
@@ -132,13 +145,13 @@
                 buttons: coreUploads,
                 sheets: [],
                 chart: {
-                    id: '',
+                    id: ''
                 },
                 readonly: false,
                 chartData: '',
                 transpose: false,
                 firstRowIsHeader: true,
-                skipRows: 0,
+                skipRows: 0
             };
         },
         helpers: { __ },
@@ -217,25 +230,29 @@
                     if (files[i].type.substr(0, 5) === 'text/') {
                         return readFile(files[i], (err, result) => {
                             if (err) return console.error('could not read file', err);
-                            putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, result, () => {
-                                window.location.href = 'describe';
-                            });
+                            putJSON(
+                                `/api/charts/${dw.backend.currentChart.get('id')}/data`,
+                                result,
+                                () => {
+                                    window.location.href = 'describe';
+                                }
+                            );
                         });
                     }
                 }
-            },
+            }
         },
         oncreate() {
             app = this;
             const { dw_chart } = this.store.get();
             const method = dw_chart.get('metadata.data.upload-method', 'copy');
             this.set({ defaultMethod: method });
-            coreUploads.forEach((u) => {
+            coreUploads.forEach(u => {
                 if (u.id === method) {
                     this.set({ active: u });
                 }
             });
-        },
+        }
     };
 </script>
 

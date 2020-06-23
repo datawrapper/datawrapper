@@ -5,13 +5,13 @@ const store = new Store({});
 
 const data = {
     chart: {
-        id: '',
+        id: ''
     },
     readonly: false,
     chartData: '',
     transpose: false,
     firstRowIsHeader: true,
-    skipRows: 0,
+    skipRows: 0
 };
 
 export default { App, data, store };

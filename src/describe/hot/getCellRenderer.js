@@ -5,7 +5,7 @@ import purifyHtml from '@datawrapper/shared/purifyHtml';
  */
 export default function (app, chart, dataset, Handsontable) {
     const colTypeIcons = {
-        date: 'fa fa-clock-o',
+        date: 'fa fa-clock-o'
     };
     function HtmlCellRender(instance, TD, row, col, prop, value, cellProperties) {
         var escaped = purifyHtml(Handsontable.helper.stringify(value));
@@ -48,7 +48,7 @@ export default function (app, chart, dataset, Handsontable) {
         }
         const rowPosition = Handsontable.hooks.run(instance, 'modifyRow', row);
         // const rowPosition = row; // instance.getPlugin('columnSorting').untranslateRow(row);
-        searchResults.forEach((res) => {
+        searchResults.forEach(res => {
             if (res.row === rowPosition && res.col === col) {
                 td.classList.add('htSearchResult');
             }
@@ -59,7 +59,11 @@ export default function (app, chart, dataset, Handsontable) {
         if (row > 0 && !column.type(true).isValid(column.val(row - 1))) {
             td.classList.add('parsingError');
         }
-        if (column.isComputed && column.errors.length && column.errors.find((err) => err.row === 'all' || err.row === row - 1)) {
+        if (
+            column.isComputed &&
+            column.errors.length &&
+            column.errors.find(err => err.row === 'all' || err.row === row - 1)
+        ) {
             td.classList.add('parsingError');
         }
         if (cellProperties.readOnly) td.classList.add('readOnly');

@@ -33,10 +33,12 @@
         "underscore": "^1.10.2"
     },
     "prettier": {
-        "tabWidth": 4,
+        "arrowParens": "avoid",
+        "printWidth": 100,
         "semi": true,
-        "printWidth": 150,
-        "singleQuote": true
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "none"
     },
     "eslintConfig": {
         "parser": "babel-eslint",

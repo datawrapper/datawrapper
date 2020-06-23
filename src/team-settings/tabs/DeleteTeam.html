@@ -12,7 +12,8 @@
 
     {#if deleteTeam2}
     <button on:click="deleteTeam()" class="btn btn-danger">
-        <i class="fa { deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times' }"></i>&nbsp; { @html __('teams / delete / action') }
+        <i class="fa { deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times' }"></i>&nbsp; { @html
+        __('teams / delete / action') }
     </button>
     {/if} {/if}
 </Switch>
@@ -25,13 +26,13 @@
     export default {
         components: {
             Switch,
-            Checkbox,
+            Checkbox
         },
         data() {
             return {
                 deleteTeam: false,
                 deleteTeam2: false,
-                deleting: false,
+                deleting: false
             };
         },
         helpers: { __ },
@@ -44,11 +45,11 @@
 
                 await this.fetchAPI(`teams/${this.get().team.id}`, {
                     method: 'DELETE',
-                    credentials: 'include',
+                    credentials: 'include'
                 });
 
                 window.location = '/';
-            },
-        },
+            }
+        }
     };
 </script>

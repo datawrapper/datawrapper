@@ -5,7 +5,7 @@ export function getComputedColumns(chart) {
         virtualColumns = Object.keys(virtualColumns).reduce((acc, cur) => {
             acc.push({
                 name: cur,
-                formula: virtualColumns[cur],
+                formula: virtualColumns[cur]
             });
             return acc;
         }, []);

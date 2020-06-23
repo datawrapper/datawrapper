@@ -18,7 +18,12 @@
     {#if activeTab}
     <div class="span10 account-page-content tab-{activeTab.id}">
         <slot name="aboveContent" />
-        <svelte:component ref:currentTabUi on:change="onTabChange(activeTab, event)" this="{activeTab.ui}" {...activeTab.data} />
+        <svelte:component
+            ref:currentTabUi
+            on:change="onTabChange(activeTab, event)"
+            this="{activeTab.ui}"
+            {...activeTab.data}
+        />
         <slot name="belowContent" />
     </div>
     {/if}
@@ -32,24 +37,26 @@
             return {
                 groups: [],
                 basePath: '',
-                activeTab: null,
+                activeTab: null
             };
         },
         methods: {
             activateTab(tab, event = null) {
                 if (tab.module) {
                     if (event) event.preventDefault();
-                    Promise.all([loadStylesheet(tab.css), loadScript(tab.js || tab.src)]).then(() => {
-                        require([tab.module], (mod) => {
-                            tab.ui = mod.App;
-                            tab.module = null;
-                            const { groups } = this.get();
-                            this.set({
-                                groups,
-                                activeTab: tab,
+                    Promise.all([loadStylesheet(tab.css), loadScript(tab.js || tab.src)]).then(
+                        () => {
+                            require([tab.module], mod => {
+                                tab.ui = mod.App;
+                                tab.module = null;
+                                const { groups } = this.get();
+                                this.set({
+                                    groups,
+                                    activeTab: tab
+                                });
                             });
-                        });
-                    });
+                        }
+                    );
                     return;
                 }
                 if (tab.ui) {
@@ -61,8 +68,8 @@
                 if (tab.onchange) {
                     tab.onchange(event, this.refs.currentTabUi);
                 }
-            },
-        },
+            }
+        }
     };
 </script>
 
