@@ -58,9 +58,13 @@ class DatawrapperSession {
             $authHeader = explode(' ', $h['Authorization']);
             if ($authHeader[0] == 'Bearer' && !empty($authHeader[1])) {
                 $pdo = Propel::getConnection();
-                $res = $pdo->query('SELECT user_id FROM access_token WHERE `type` = "api-token" AND token = '.$pdo->quote($authHeader[1]));
-                $user_id = $res->fetchColumn(0);
-                if ($user_id !== false) {
+                $stmt = $pdo->prepare('SELECT user_id FROM access_token WHERE `type` = "api-token" AND token = :token');
+                $stmt->bindParam(':token', $authHeader[1]);
+                $stmt->execute();
+                $res = $stmt->fetch();
+
+                if ($res && !empty($res['user_id'])) {
+                    $user_id = $res['user_id'];
                     $user = UserQuery::create()->findPK($user_id);
                     if ($user) {
                         $this->user = $user;
