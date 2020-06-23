@@ -66,7 +66,7 @@ class DatawrapperSession {
                 if ($res && !empty($res['user_id'])) {
                     $user_id = $res['user_id'];
                     $user = UserQuery::create()->findPK($user_id);
-                    if ($user) {
+                    if ($user && $user->isActivated()) {
                         $this->user = $user;
                         $this->method = 'token';
                         $stmt = $pdo->prepare('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = :userId AND token = :token');
