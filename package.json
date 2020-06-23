@@ -79,17 +79,15 @@
         ]
     },
     "lint-staged": {
-        "linters": {
-            "*.{js,html}": [
-                "prettier --write",
-                "healthier",
-                "git add"
-            ]
-        }
+        "*.{js,html}": [
+            "prettier --write",
+            "healthier",
+            "git add"
+        ]
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && git rev-parse HEAD > sha && git add sha"
+            "pre-commit": "lint-staged && git rev-parse HEAD > sha"
         }
     }
 }
