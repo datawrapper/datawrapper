@@ -7,7 +7,7 @@
     {:else} {#if published}
     <p>{@html __('publish / republish-intro') }</p>
     {:else}
-    <p style="margin-bottom: 20px">{@html __('publish / publish-intro') }</p>
+    <p style="margin-bottom: 20px;">{@html __('publish / publish-intro') }</p>
     {/if} {/if}
 
     <button disabled="{ publishing }" on:click="publish()" class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}">
@@ -59,7 +59,7 @@
     </div>
     {/if}
 
-    <div style="margin-top:30px" class="{published?'':'inactive'}">
+    <div style="margin-top: 30px;" class="{published?'':'inactive'}">
         <h2>{@html __('publish / share-embed') }</h2>
         <div class="block">
             <i class="icon fa fa-link fa-fw"></i>
@@ -294,8 +294,8 @@
                         icon: 'code-fork',
                         title: __('Duplicate'),
                         order: 500,
-                        action: 'duplicate'
-                    }
+                        action: 'duplicate',
+                    },
                 ],
                 publishHed: '',
                 publishIntro: '',
@@ -303,7 +303,7 @@
                 exportHed: __('publish / export-duplicate'),
                 exportIntro: __('publish / export-duplicate / intro'),
                 embedCode: '',
-                statusUrl: false
+                statusUrl: false,
             };
         },
         computed: {
@@ -312,7 +312,7 @@
                 if (shareurl_type === 'default') return $publicUrl;
                 let url = '';
 
-                plugin_shareurls.forEach(t => {
+                plugin_shareurls.forEach((t) => {
                     if (t.id === shareurl_type) {
                         url = t.url.replace(/%chart_id%/g, $id);
 
@@ -320,7 +320,7 @@
                             return get(
                                 {
                                     id: $id,
-                                    metadata: $metadata
+                                    metadata: $metadata,
                                 },
                                 path
                             );
@@ -333,13 +333,13 @@
             sortedChartActions({ chartActions, $actions }) {
                 return chartActions
                     .concat($actions)
-                    .filter(a => a.id !== 'publish-s3')
+                    .filter((a) => a.id !== 'publish-s3')
                     .sort((a, b) => a.order - b.order);
             },
 
             publishWait({ publishStarted, now }) {
                 return publishStarted > 0 ? now - publishStarted : 0;
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -349,7 +349,7 @@
                     publishStarted: new Date().getTime(),
                     now: new Date().getTime(),
                     progress: [],
-                    publish_error: false
+                    publish_error: false,
                 });
 
                 const chart = this.store;
@@ -364,24 +364,24 @@
 
                 chart.store(() => {
                     this.set({
-                        statusUrl: `/v3/charts/${chartId}/publish/status/${chart.get().publicVersion}`
+                        statusUrl: `/v3/charts/${chartId}/publish/status/${chart.get().publicVersion}`,
                     });
                     // publish chart
                     request
                         .post(`/v3/charts/${chartId}/publish`)
-                        .then(res => {
+                        .then((res) => {
                             this.set({
                                 published: true,
-                                progress: ['done']
+                                progress: ['done'],
                             });
-                            request.get(`/v3/charts/${chartId}`).then(res => {
+                            request.get(`/v3/charts/${chartId}`).then((res) => {
                                 trackEvent('Chart Editor', 'publish-success');
                                 this.publishFinished(res);
                             });
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             this.set({
-                                publish_error: error.message
+                                publish_error: error.message,
                             });
                             trackEvent('Chart Editor', 'publish-error', error.message);
                         });
@@ -396,10 +396,10 @@
             updateStatus() {
                 const { statusUrl } = this.get();
                 if (!statusUrl) return;
-                request.get(statusUrl).then(res => {
+                request.get(statusUrl).then((res) => {
                     this.set({
                         progress: res.progress || [],
-                        now: new Date().getTime()
+                        now: new Date().getTime(),
                     });
                     const { publishing } = this.get();
                     if (publishing) {
@@ -415,17 +415,17 @@
                     progress: ['done'],
                     published: true,
                     publishStarted: 0,
-                    needs_republish: false
+                    needs_republish: false,
                 });
                 this.store.set({
-                    lastEditStep: 5
+                    lastEditStep: 5,
                 });
 
                 window.parent.postMessage(
                     {
                         source: 'datawrapper',
                         type: 'chart-publish',
-                        chartId: chartInfo.id
+                        chartId: chartInfo.id,
                     },
                     '*'
                 );
@@ -451,7 +451,7 @@
                             ? embedCodes[embedType]
                             : embedType === 'custom'
                             ? ''
-                            : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
+                            : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`,
                 });
             },
 
@@ -495,7 +495,7 @@
                         }
                         loadScript(action.mod.src, () => {
                             setTimeout(() => {
-                                require([action.mod.id], mod => {
+                                require([action.mod.id], (mod) => {
                                     // todo: HIDE loading indicator
                                     Object.assign(action.mod, mod);
                                     this.set({ Action: action.mod.App });
@@ -518,7 +518,7 @@
             duplicate() {
                 const { id } = this.store.get();
                 trackEvent('Chart Editor', 'duplicate');
-                request.post(`/api/charts/${id}/copy`, { baseUrl: `${window.location.protocol}//${window.location.hostname}` }).then(res => {
+                request.post(`/api/charts/${id}/copy`, { baseUrl: `${window.location.protocol}//${window.location.hostname}` }).then((res) => {
                     if (res.status === 'ok') {
                         // redirect to copied chart
                         window.location.href = `/edit/${res.data.id}/visualize`;
@@ -526,7 +526,7 @@
                         console.warn(res);
                     }
                 });
-            }
+            },
         },
 
         oncreate() {
@@ -572,6 +572,6 @@
                     window.history.replaceState('', '', window.location.pathname);
                 }
             }
-        }
+        },
     };
 </script>

@@ -22,7 +22,7 @@
                 <CustomColumnFormat on:updateTable="refs.hot.update()" on:renderTable="refs.hot.render()" bind:column="columnFormat" bind:columns />
 
                 {#if columnFormat.isComputed}
-                <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {__('describe / edit-formula')}</button>
+                <button class="btn" on:click="force(event, false)"><i class="fa fa-chevron-left"></i> {__('describe / edit-formula')}</button>
                 {/if} {/if} {#if activeColumn.type() == 'number'}
                 <Histogram bind:values="activeValues" bind:format="activeFormat" />
                 {/if} {:elseif multiSelection}
@@ -30,7 +30,7 @@
                 <h3 class="first">{__('describe / show-hide-multi')}</h3>
 
                 <ul class="unstyled">
-                    <li style="margin-bottom: 5px">
+                    <li style="margin-bottom: 5px;">
                         <button class="btn" on:click="hideMultiple(multiSelection, false)">
                             <i class="fa fa-eye"></i> {__('describe / show-selected')}
                         </button>
@@ -72,7 +72,7 @@
         </div>
         <div class="span8">
             <div class="help">{@html __('describe / info-table-header')} <img alt="arrow" src="/static/img/arrow.svg" /></div>
-            <div class="pull-right" style="margin-bottom: 10px">
+            <div class="pull-right" style="margin-bottom: 10px;">
                 <div class="sort-box">
                     <div class="btn-group" ref:sortDropdownGroup>
                         <button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -198,7 +198,7 @@
                 forceColumnFormat: false,
                 searchResults: [],
                 sortBy: '-',
-                sortDir: true
+                sortDir: true,
             };
         },
         computed: {
@@ -217,13 +217,13 @@
                 return activeColumn ? activeColumn.values() : [];
             },
             activeFormat({ activeColumn, $dw_chart }) {
-                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
+                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : (d) => d;
             },
             columns({ activeColumn }) {
                 const ds = chart.dataset();
                 if (!activeColumn) return ds ? ds.columns() : [];
                 try {
-                    return ds.columns().filter(col => !col.isComputed);
+                    return ds.columns().filter((col) => !col.isComputed);
                 } catch (e) {
                     return [];
                 }
@@ -237,7 +237,7 @@
                 } else {
                     return __('describe / search / no-matches');
                 }
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -282,7 +282,7 @@
                 const id = `Column ${i}`;
                 computed.push({
                     name: id,
-                    formula: ''
+                    formula: '',
                 });
                 chart.set('metadata.describe.computed-columns', computed);
                 chart.saveSoon();
@@ -305,7 +305,7 @@
             hideMultiple(columns, hide) {
                 const chart = this.store.get().dw_chart;
                 const colFmt = clone(chart.get('metadata.data.column-format', {}));
-                columns.forEach(col => {
+                columns.forEach((col) => {
                     if (colFmt[col.name()]) colFmt[col.name()].ignore = hide;
                     else {
                         colFmt[col.name()] = { type: 'auto', ignore: hide };
@@ -323,10 +323,10 @@
                 if (this.refs.ccEd) {
                     this.refs.ccEd.fire('hotRendered');
                 }
-            }
+            },
         },
         oncreate() {
-            window.addEventListener('keypress', event => {
+            window.addEventListener('keypress', (event) => {
                 if (event.ctrlKey && event.key === 'f') {
                     event.preventDefault();
                     if (this.refs.search !== window.document.activeElement) {
@@ -345,9 +345,9 @@
             const sync = {
                 transpose: 'metadata.data.transpose',
                 firstRowIsHeader: 'metadata.data.horizontal-header',
-                locale: 'language'
+                locale: 'language',
             };
-            Object.keys(sync).forEach(svelteKey => {
+            Object.keys(sync).forEach((svelteKey) => {
                 if (changed[svelteKey]) {
                     const svelteValue = current[svelteKey];
                     const metadataKey = sync[svelteKey];
@@ -360,7 +360,7 @@
                     }
                 }
             });
-        }
+        },
     };
 </script>
 

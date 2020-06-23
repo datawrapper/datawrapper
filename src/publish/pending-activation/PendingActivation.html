@@ -30,14 +30,14 @@
     export default {
         data() {
             return {
-                status: ''
+                status: '',
             };
         },
         helpers: { __ },
         methods: {
             async resendActivation() {
                 this.set({
-                    status: 'sending'
+                    status: 'sending',
                 });
 
                 try {
@@ -46,7 +46,7 @@
                 } catch (err) {
                     this.set({ status: 'error' });
                 }
-            }
-        }
+            },
+        },
     };
 </script>

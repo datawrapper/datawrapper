@@ -11,7 +11,14 @@
         {@html __('upload / drag-csv-here')}
     </div>
     {/if}
-    <div class="row" style="{dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none':''}">
+    <div
+        class="row"
+        style="
+             {
+                dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none': '';
+            }
+        "
+    >
         <div class="span5">
             <div class="sidebar">
                 <h3>{@html __('upload / title')}</h3>
@@ -79,7 +86,7 @@
             icon: 'fa fa-clipboard',
             mainPanel: TextAreaUpload,
             sidebar: UploadHelp,
-            action() {}
+            action() {},
         },
         {
             id: 'upload',
@@ -111,8 +118,8 @@
                     app.set({ error: __('upload / csv-required') });
                 }
             },
-            action() {}
-        }
+            action() {},
+        },
     ];
 
     export default {
@@ -125,13 +132,13 @@
                 buttons: coreUploads,
                 sheets: [],
                 chart: {
-                    id: ''
+                    id: '',
                 },
                 readonly: false,
                 chartData: '',
                 transpose: false,
                 firstRowIsHeader: true,
-                skipRows: 0
+                skipRows: 0,
             };
         },
         helpers: { __ },
@@ -216,19 +223,19 @@
                         });
                     }
                 }
-            }
+            },
         },
         oncreate() {
             app = this;
             const { dw_chart } = this.store.get();
             const method = dw_chart.get('metadata.data.upload-method', 'copy');
             this.set({ defaultMethod: method });
-            coreUploads.forEach(u => {
+            coreUploads.forEach((u) => {
                 if (u.id === method) {
                     this.set({ active: u });
                 }
             });
-        }
+        },
     };
 </script>
 

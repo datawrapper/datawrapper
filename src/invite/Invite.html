@@ -1,6 +1,6 @@
 {#if customLogo}
 <div class="brand">
-    <img src="/static/custom/{{ customLogo }}}" style="height:50px;" alt="logo" />
+    <img src="/static/custom/{{ customLogo }}}" style="height: 50px;" alt="logo" />
 </div>
 {/if}
 
@@ -91,36 +91,36 @@
             intro: '',
             email: '',
             button: 'Set password',
-            isPasswordReset: false
+            isPasswordReset: false,
         }),
         computed: {
             marginTop({ windowHeight, modalHeight }) {
                 return (windowHeight - modalHeight) * 0.5;
-            }
+            },
         },
         helpers: {
-            __
+            __,
         },
         methods: {
             async doSignUp() {
                 const token = window.location.pathname.split('/').pop();
                 const { password, redirect, isPasswordReset } = this.get();
                 this.set({
-                    loggingIn: true
+                    loggingIn: true,
                 });
                 try {
                     if (isPasswordReset) {
                         await httpReq.post(`/v3/auth/change-password`, {
                             payload: {
                                 token,
-                                password
-                            }
+                                password,
+                            },
                         });
                     } else {
                         await httpReq.post(`/v3/auth/activate/${token}`, {
                             payload: {
-                                password
-                            }
+                                password,
+                            },
                         });
                     }
 
@@ -137,8 +137,8 @@
                     }
                 }
                 this.set({ loggingIn: false });
-            }
-        }
+            },
+        },
     };
 </script>
 

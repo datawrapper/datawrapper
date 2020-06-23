@@ -29,7 +29,7 @@
         id: 'profile',
         icon: 'im im-user-settings',
         ui: EditProfile,
-        data: {}
+        data: {},
     };
 
     const MyTeamsTab = {
@@ -37,7 +37,7 @@
         id: 'teams',
         icon: 'im im-users',
         ui: MyTeams,
-        data: {}
+        data: {},
     };
 
     let popstate = false;
@@ -52,9 +52,9 @@
                 groups: [
                     {
                         title: __('account / settings / personal'),
-                        tabs: [EditProfileTab]
-                    }
-                ]
+                        tabs: [EditProfileTab],
+                    },
+                ],
             };
         },
         computed: {
@@ -63,18 +63,18 @@
             },
             pageTitle({ activeTab }) {
                 return activeTab ? activeTab.title : '';
-            }
+            },
         },
         helpers: {
             __,
-            truncate
+            truncate,
         },
         methods: {
             setTab(id) {
                 const { groups } = this.get();
                 let foundTab = false;
-                groups.forEach(group => {
-                    group.tabs.forEach(tab => {
+                groups.forEach((group) => {
+                    group.tabs.forEach((tab) => {
                         if (tab.id === id) {
                             this.refs.navTabs.activateTab(tab);
                             foundTab = true;
@@ -83,10 +83,10 @@
                 });
                 if (!foundTab) {
                     this.set({
-                        activeTab: EditProfileTab
+                        activeTab: EditProfileTab,
                     });
                 }
-            }
+            },
         },
         oncreate() {
             const path = window.location.pathname.split('/').slice(1);
@@ -107,13 +107,13 @@
             if (adminTeams.length) {
                 groups.push({
                     title: __('account / settings / team'),
-                    tabs: []
+                    tabs: [],
                 });
                 adminTeams.forEach(({ Id, Name }) => {
                     groups[1].tabs.push({
                         title: truncate(Name, 10, 4),
                         url: `/team/${Id}/settings`,
-                        icon: 'im im-users'
+                        icon: 'im im-users',
                     });
                 });
                 this.set({ groups });
@@ -134,7 +134,7 @@
             if (changed.activeTab && current.activeTab && !popstate) {
                 window.history.pushState({ id: current.activeTab.id }, '', `/account/${current.activeTab.id}`);
             }
-        }
+        },
     };
 </script>
 

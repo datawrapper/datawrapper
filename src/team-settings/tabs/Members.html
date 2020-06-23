@@ -1,13 +1,13 @@
-<p style="margin-bottom: 10px">
+<p style="margin-bottom: 10px;">
     {@html __('teams / p') }
 </p>
 
-<div class="row" style="margin-bottom: 2em">
+<div class="row" style="margin-bottom: 2em;">
     <div class="span4">
         <InviteUser bind:team isTeamOwner="{isTeamOwner}" isAdmin="{isAdmin}" bind:updatingUsers on:updateUsers="updateUsers()" />
     </div>
     <div class="span6">
-        <table class="role-descriptions" style="margin-left:3em">
+        <table class="role-descriptions" style="margin-left: 3em;">
             <thead>
                 <tr>
                     <td />
@@ -78,38 +78,38 @@
     export default {
         components: {
             InviteUser,
-            UserTable
+            UserTable,
         },
         data() {
             return {
                 editIndex: 0,
                 updating: {},
                 updatingUsers: false,
-                awaitLoadingUsers: false
+                awaitLoadingUsers: false,
             };
         },
         computed: {
             role({ users, userId }) {
                 if (!users || !users.length || !userId) return false;
-                const user = users.find(el => el.id === userId);
+                const user = users.find((el) => el.id === userId);
                 if (user) return user.role;
                 else return 'admin';
-            }
+            },
         },
         helpers: { __ },
         methods: {
             updateUsers() {
                 const { team } = this.get();
                 this.set({
-                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members?limit=1000`).then(res => {
+                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members?limit=1000`).then((res) => {
                         this.set({ users: res.list });
-                    })
+                    }),
                 });
-            }
+            },
         },
         oncreate() {
             this.updateUsers();
-        }
+        },
     };
 </script>
 

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span6">
-        <p style="margin-bottom: 10px">
+        <p style="margin-bottom: 10px;">
             {@html __('teams / defaults / p') }
         </p>
 
@@ -75,14 +75,14 @@
                 embedCodes: [
                     { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
                     { value: 'iframe', label: __('teams / defaults / iframe') },
-                    { value: 'custom', label: __('teams / defaults / custom') }
+                    { value: 'custom', label: __('teams / defaults / custom') },
                 ],
                 themes: [],
                 folders: [],
                 locales: [],
                 defaultTheme: '',
                 settings: {},
-                team: {}
+                team: {},
             };
         },
         computed: {
@@ -90,11 +90,11 @@
                 return [
                     {
                         value: null,
-                        label: __('teams / defaults / none', 'organizations')
+                        label: __('teams / defaults / none', 'organizations'),
                     },
-                    ...locales
+                    ...locales,
                 ];
-            }
+            },
         },
         helpers: { __ },
         onstate({ changed, current, previous }) {
@@ -102,10 +102,10 @@
                 this.fire('change', {
                     team: current.team,
                     settings: current.settings,
-                    defaultTheme: current.defaultTheme
+                    defaultTheme: current.defaultTheme,
                 });
             }
-        }
+        },
     };
 </script>
 

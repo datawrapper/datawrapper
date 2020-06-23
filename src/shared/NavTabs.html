@@ -32,7 +32,7 @@
             return {
                 groups: [],
                 basePath: '',
-                activeTab: null
+                activeTab: null,
             };
         },
         methods: {
@@ -40,13 +40,13 @@
                 if (tab.module) {
                     if (event) event.preventDefault();
                     Promise.all([loadStylesheet(tab.css), loadScript(tab.js || tab.src)]).then(() => {
-                        require([tab.module], mod => {
+                        require([tab.module], (mod) => {
                             tab.ui = mod.App;
                             tab.module = null;
                             const { groups } = this.get();
                             this.set({
                                 groups,
-                                activeTab: tab
+                                activeTab: tab,
                             });
                         });
                     });
@@ -61,8 +61,8 @@
                 if (tab.onchange) {
                     tab.onchange(event, this.refs.currentTabUi);
                 }
-            }
-        }
+            },
+        },
     };
 </script>
 

@@ -51,7 +51,7 @@
     const teamRoleOptions = [
         { value: 'owner', label: __('teams / role / owner').replace('&shy;', '') },
         { value: 'admin', label: __('teams / role / admin').replace('&shy;', '') },
-        { value: 'member', label: __('teams / role / member').replace('&shy;', '') }
+        { value: 'member', label: __('teams / role / member').replace('&shy;', '') },
     ];
 
     export default {
@@ -60,7 +60,7 @@
             return {
                 editId: false,
                 updating: {},
-                users: []
+                users: [],
             };
         },
         computed: {
@@ -80,7 +80,7 @@
                             return a.email > b.email ? 1 : a.email < b.email ? -1 : 0;
                         }
                     })
-                    .filter(user => isAdmin || !user.isAdmin);
+                    .filter((user) => isAdmin || !user.isAdmin);
             },
             userHeaders({ isAdmin }) {
                 const userHeaders = [
@@ -88,7 +88,7 @@
                     { title: 'ID', width: '10%' },
                     { title: 'Charts', width: '15%' },
                     { title: __('teams / status'), width: '15%' },
-                    { title: __('teams / actions'), width: '30%' }
+                    { title: __('teams / actions'), width: '30%' },
                 ];
 
                 if (!isAdmin) userHeaders.splice(1, 1);
@@ -100,7 +100,7 @@
             },
             numCharts({ users }) {
                 let total = 0;
-                users.forEach(user => {
+                users.forEach((user) => {
                     total += user.charts;
                 });
                 return total;
@@ -110,26 +110,24 @@
                     return __('teams / charts-total / 1');
                 } else if (numCharts > 1) {
                     if (isAdmin) {
-                        return __('teams / charts-total-admin')
-                            .replace('%i%', numCharts)
-                            .replace('%link%', `/admin/chart/by/${team.id}`);
+                        return __('teams / charts-total-admin').replace('%i%', numCharts).replace('%link%', `/admin/chart/by/${team.id}`);
                     } else {
                         return __('teams / charts-total').replace('%i%', numCharts);
                     }
                 } else {
                     return '';
                 }
-            }
+            },
         },
         helpers: {
             role(role) {
                 return {
                     member: __('teams / role / member'),
                     admin: __('teams / role / admin'),
-                    owner: __('teams / role / owner')
+                    owner: __('teams / role / owner'),
                 }[role];
             },
-            __
+            __,
         },
         methods: {
             toggleEdit(userId) {
@@ -138,7 +136,7 @@
                     this.updateRole(userId);
                 } else {
                     this.set({
-                        editId: userId
+                        editId: userId,
                     });
                 }
             },
@@ -147,16 +145,16 @@
 
                 await this.fetchAPI(`teams/${this.get().team.id}/members/${user.id}`, {
                     method: 'DELETE',
-                    credentials: 'include'
+                    credentials: 'include',
                 });
 
                 var { users } = this.get();
-                users = users.filter(el => el.id !== user.id);
+                users = users.filter((el) => el.id !== user.id);
                 this.set({ users });
             },
             async updateRole(userId) {
                 var { updating, users } = this.get();
-                const user = users.filter(u => u.id === userId)[0];
+                const user = users.filter((u) => u.id === userId)[0];
                 updating[user.id] = true;
                 this.set({ updating });
 
@@ -164,8 +162,8 @@
                     method: 'PUT',
                     credentials: 'include',
                     body: JSON.stringify({
-                        status: user.role
-                    })
+                        status: user.role,
+                    }),
                 });
 
                 updating = this.get().updating;
@@ -174,7 +172,7 @@
             },
             fetchAPI(url, opts) {
                 return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
-            }
-        }
+            },
+        },
     };
 </script>

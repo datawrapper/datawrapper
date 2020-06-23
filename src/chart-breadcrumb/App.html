@@ -18,7 +18,7 @@
             return {
                 type: 'chart',
                 folders: [],
-                team: null
+                team: null,
             };
         },
         computed: {
@@ -27,16 +27,16 @@
                 return [
                     ...folders.slice(0, 3),
                     {
-                        ellipsis: true
+                        ellipsis: true,
                     },
-                    ...folders.slice(-1)
+                    ...folders.slice(-1),
                 ];
-            }
+            },
         },
         helpers: {
             __,
-            truncate
-        }
+            truncate,
+        },
     };
 </script>
 

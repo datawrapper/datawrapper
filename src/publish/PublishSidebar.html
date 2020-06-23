@@ -12,16 +12,16 @@
     export default {
         data() {
             return {
-                PublishLogic
+                PublishLogic,
             };
         },
         oncreate() {
             this.store.observe = observe;
-            this.store.observe('publishLogic', cfg => {
+            this.store.observe('publishLogic', (cfg) => {
                 if (cfg && cfg.mod) {
                     loadStylesheet(cfg.css);
                     loadScript(cfg.src, () => {
-                        require([cfg.mod], mod => {
+                        require([cfg.mod], (mod) => {
                             this.set({ PublishLogic: mod.App });
                             this.refs.publish.set(cfg.data);
                         });
@@ -31,6 +31,6 @@
                     this.refs.publish.set(cfg.data);
                 }
             });
-        }
+        },
     };
 </script>

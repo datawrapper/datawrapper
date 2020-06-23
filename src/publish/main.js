@@ -6,7 +6,7 @@ const store = new Store({});
 
 const data = {
     chart: {
-        id: ''
+        id: '',
     },
     embed_templates: [],
     plugin_shareurls: [],
@@ -18,7 +18,7 @@ const data = {
     progress: [],
     shareurl_type: 'default',
     embed_type: 'responsive',
-    copy_success: false
+    copy_success: false,
 };
 
 export default { App, data, store };

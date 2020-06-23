@@ -24,7 +24,7 @@
                 transpose: false,
                 activeColumn: null,
                 search: '',
-                searchResults: []
+                searchResults: [],
             };
         },
         computed: {
@@ -36,7 +36,7 @@
                     if (searchIndex > l) searchIndex %= l;
                 }
                 return searchResults[searchIndex];
-            }
+            },
         },
         methods: {
             render() {
@@ -72,7 +72,7 @@
                                 csv: data,
                                 transpose,
                                 firstRowIsHeader,
-                                skipRows
+                                skipRows,
                             })
                             .parse()
                     )
@@ -82,11 +82,11 @@
 
                 // construct HoT data array
                 const hotData = [[]];
-                ds.eachColumn(c => hotData[0].push(c.title()));
+                ds.eachColumn((c) => hotData[0].push(c.title()));
 
-                ds.eachRow(r => {
+                ds.eachRow((r) => {
                     const row = [];
-                    ds.eachColumn(col => row.push(col.raw(r)));
+                    ds.eachColumn((col) => row.push(col.raw(r)));
                     hotData.push(row);
                 });
 
@@ -100,10 +100,10 @@
                         const { readonly } = this.get();
                         return {
                             readOnly: readonly || (ds.hasColumn(col) && ds.column(col).isComputed && row === 0),
-                            renderer: cellRenderer
+                            renderer: cellRenderer,
                         };
                     },
-                    manualColumnMove: []
+                    manualColumnMove: [],
                 });
 
                 this.set({ ds });
@@ -135,7 +135,7 @@
                             row,
                             value: newValue,
                             previous: oldValue,
-                            time: new Date().getTime()
+                            time: new Date().getTime(),
                         });
                         chart.set('metadata.data.changes', changes);
                         changed = true;
@@ -190,7 +190,7 @@
                     for (let i = Math.min(c, c2); i <= Math.max(c, c2); i++) {
                         sel.push(+document.querySelector(`#data-preview .htCore tbody tr:first-child td:nth-child(${i + 2})`).dataset.column);
                     }
-                    this.set({ multiSelection: sel.map(i => ds.column(i)), activeColumn: null });
+                    this.set({ multiSelection: sel.map((i) => ds.column(i)), activeColumn: null });
                     return;
                 }
                 this.set({ activeColumn: null, multiSelection: false });
@@ -199,12 +199,12 @@
                 // wait a bit to make sure HoT is rendered
                 setTimeout(() => {
                     // catch click events on A,B,C,D... header row
-                    this.refs.hot.querySelectorAll('.htCore thead th:first-child').forEach(th => {
+                    this.refs.hot.querySelectorAll('.htCore thead th:first-child').forEach((th) => {
                         th.removeEventListener('click', topLeftCornerClick);
                         th.addEventListener('click', topLeftCornerClick);
                     });
                     // const cellHeaderClickHandler = cellHeaderClick(app);
-                    this.refs.hot.querySelectorAll('.htCore thead th+th').forEach(th => {
+                    this.refs.hot.querySelectorAll('.htCore thead th+th').forEach((th) => {
                         th.removeEventListener('click', cellHeaderClick);
                         th.addEventListener('click', cellHeaderClick);
                     });
@@ -215,14 +215,14 @@
                 const { dw_chart } = this.store.get();
                 const colFormats = dw_chart.get('metadata.data.column-format', {});
                 return colFormats[name] || { type: 'auto', ignore: false };
-            }
+            },
         },
 
         oncreate() {
             app = this;
             HOT.hooks.once('afterRender', () => this.initCustomEvents());
 
-            window.addEventListener('keyup', evt => {
+            window.addEventListener('keyup', (evt) => {
                 const { activeColumn, ds } = this.get();
                 if (!activeColumn) return;
 
@@ -238,7 +238,7 @@
                     } else {
                         // select prev column
                         this.set({
-                            activeColumn: ds.column((currentIndex - 1 + ds.numColumns()) % ds.numColumns())
+                            activeColumn: ds.column((currentIndex - 1 + ds.numColumns()) % ds.numColumns()),
                         });
                     }
                 }
@@ -247,7 +247,7 @@
             const { dw_chart } = this.store.get();
             const hot = new HOT(this.refs.hot, {
                 data: [],
-                rowHeaders: i => {
+                rowHeaders: (i) => {
                     const ti = HOT.hooks.run(hot, 'modifyRow', i);
                     // const ti = hot.getPlugin('ColumnSorting').translateRow(i);
                     return ti + 1;
@@ -269,7 +269,7 @@
                 // // sorting
                 sortIndicator: true,
                 columnSorting: true,
-                sortFunction: function(sortOrder, columnMeta) {
+                sortFunction: function (sortOrder, columnMeta) {
                     if (columnMeta.col > -1) {
                         const column = dw_chart.dataset().column(columnMeta.col);
                         const colType = column.type();
@@ -308,13 +308,13 @@
                     }
                 },
                 // // search
-                search: 'search'
+                search: 'search',
             });
 
             window.HT = hot;
             this.set({ hot });
 
-            HOT.hooks.add('afterSetDataAtCell', a => this.dataChanged(a));
+            HOT.hooks.add('afterSetDataAtCell', (a) => this.dataChanged(a));
             HOT.hooks.add('afterColumnMove', (a, b) => this.columnMoved(a, b));
             HOT.hooks.add('afterRender', () => this.updateHeight());
             HOT.hooks.add('afterSelection', (r, c, r2, c2) => this.checkRange(r, c, r2, c2));
@@ -359,7 +359,7 @@
             if (changed.sorting) {
                 hot.getPlugin('columnSorting').sort(chart.dataset().indexOf(current.sorting.sortBy), current.sorting.sortDir ? 'asc' : 'desc');
             }
-        }
+        },
     };
 
     function cellHeaderClick(evt) {

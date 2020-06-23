@@ -1,6 +1,6 @@
 const widths = [100, 200, 300, 400, 500, 700, 800, 900, 1000];
 
-export default function() {
+export default function () {
     const embedHeights = {};
 
     // compute embed deltas
@@ -11,7 +11,7 @@ export default function() {
 
     const totalHeight = $('#iframe-vis').height();
 
-    widths.forEach(width => {
+    widths.forEach((width) => {
         // now we resize headline, intro and footer
         previewChart.find('h1,.chart-intro,.dw-chart-notes').css('width', width + 'px');
 

@@ -41,7 +41,7 @@
     {/each} {#if NAs>0}
     <li>
         {__('describe / histogram / invalid')}:
-        <tt style="color:#c71e1d">{NAs}</tt> ({pct(NAs/values.length)})
+        <tt style="color: #c71e1d;">{NAs}</tt> ({pct(NAs/values.length)})
     </li>
     {/if}
 </ul>
@@ -59,7 +59,7 @@
     var xScaleBand_ = scaleBand();
     var yScale_ = scaleLinear();
 
-    const pct = val => {
+    const pct = (val) => {
         if (!val) return '0%';
         if (val < 0.01) return '<1%';
         return (val * 100).toFixed(0) + '%';
@@ -68,19 +68,19 @@
     export default {
         data() {
             return {
-                format: d => d,
+                format: (d) => d,
                 t: 0,
                 padding: { top: 10, right: 65, bottom: 20, left: 5 },
                 height: 200,
                 width: 500,
                 values: [],
-                highlight: false
+                highlight: false,
             };
         },
 
         computed: {
             NAs({ values }) {
-                return values.filter(d => typeof d === 'string' || Number.isNaN(d)).length;
+                return values.filter((d) => typeof d === 'string' || Number.isNaN(d)).length;
             },
 
             stats({ validValues, format }) {
@@ -92,16 +92,16 @@
                     { x: xmin, label: format(xmin), name: 'Min' },
                     { x: xmax, label: format(xmax), name: 'Max' },
                     { x: xmean, label: format(xmean), name: __('describe / histogram / mean') },
-                    { x: xmed, label: format(xmed), name: __('describe / histogram / median') }
+                    { x: xmed, label: format(xmed), name: __('describe / histogram / median') },
                 ];
             },
 
             validValues({ values }) {
-                return values.filter(d => typeof d === 'number' && !Number.isNaN(d));
+                return values.filter((d) => typeof d === 'number' && !Number.isNaN(d));
             },
 
             ticks({ xScale, format }) {
-                return xScale.ticks(4).map(x => {
+                return xScale.ticks(4).map((x) => {
                     return { x, label: format(x) };
                 });
             },
@@ -110,10 +110,8 @@
                 // const tickCnt = Math.min(_uniq(validValues).length, 14);
                 const dom = niceDomain;
                 // const classw = (s[1]-s[0]);
-                const bins = histogram()
-                    .domain(dom)
-                    .thresholds(thresholdSturges)(validValues);
-                const binWidths = countBy(bins.map(b => b.x1 - b.x0));
+                const bins = histogram().domain(dom).thresholds(thresholdSturges)(validValues);
+                const binWidths = countBy(bins.map((b) => b.x1 - b.x0));
                 if (bins.length > 2 && Object.keys(binWidths).length > 1) {
                     // check first and last bin
                     const binw = bins[1].x1 - bins[1].x0;
@@ -126,15 +124,12 @@
             },
 
             niceDomain({ validValues }) {
-                return scaleLinear()
-                    .domain(extent(validValues))
-                    .nice()
-                    .domain();
+                return scaleLinear().domain(extent(validValues)).nice().domain();
             },
 
             xScaleBand({ bins, innerWidth }) {
                 return xScaleBand_
-                    .domain(bins.map(d => d.x0))
+                    .domain(bins.map((d) => d.x0))
                     .paddingInner(0.1)
                     .rangeRound([0, innerWidth])
                     .align(0);
@@ -148,9 +143,9 @@
                 return yScale_
                     .domain([
                         0,
-                        max(bins, function(d) {
+                        max(bins, function (d) {
                             return d.length;
-                        })
+                        }),
                     ])
                     .range([innerHeight, 0]);
             },
@@ -164,7 +159,7 @@
             },
             innerHeight({ height, padding }) {
                 return height - padding.bottom - padding.top;
-            }
+            },
         },
 
         helpers: {
@@ -182,26 +177,26 @@
                     .replace('$4', toFixed(bin.x1));
             },
             pct,
-            __
+            __,
         },
 
         methods: {
             show(value) {
                 this.set({ highlight: value });
             },
-            resize: function() {
+            resize: function () {
                 var bcr = this.refs.svg.getBoundingClientRect();
 
                 this.set({
                     width: bcr.right - bcr.left,
-                    height: bcr.bottom - bcr.top
+                    height: bcr.bottom - bcr.top,
                 });
-            }
+            },
         },
 
         oncreate() {
             this.resize();
-        }
+        },
     };
 </script>
 

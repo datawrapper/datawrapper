@@ -1,6 +1,6 @@
-<div style="margin-bottom: 15px">
+<div style="margin-bottom: 15px;">
     {#if didYouKnow}
-    <div class="did-you-know" style="margin-top: 10px;margin-bottom: 1em;">
+    <div class="did-you-know" style="margin-top: 10px; margin-bottom: 1em;">
         <div on:click="closeDidYouKnow()" class="close"><i class="im im-check-mark-circle"></i></div>
         <h3>{__('cc / formula / did-you-know / title')}</h3>
 
@@ -22,7 +22,7 @@
     <input type="text" bind:value="name" />
 
     <label
-        >{__('computed columns / modal / formula')} {#if checking && !error}<i style="color: #ccc" class="fa fa-cog fa-spin"></i>{/if}<Help
+        >{__('computed columns / modal / formula')} {#if checking && !error}<i style="color: #ccc;" class="fa fa-cog fa-spin"></i>{/if}<Help
             ><span>{@html __('cc / formula / help')}</span></Help
         ></label
     >
@@ -37,13 +37,13 @@
     {/if} {#if looksLikeColumnData}
     <div class="mini-help formula-hint">
         <i class="hat-icon im im-graduation-hat"></i> {__('cc / formula / hint / insert-data')}
-        <a style="color:white; font-weight:bold" on:click|preventDefault="copyFormulaToData()" href="/#apply"
+        <a style="color: white; font-weight: bold;" on:click|preventDefault="copyFormulaToData()" href="/#apply"
             >{__('cc / formula / hint / insert-data / action')}</a
         >
     </div>
     {/if}
 
-    <p style="margin-top: 1em">{__('computed columns / modal / available columns')}:</p>
+    <p style="margin-top: 1em;">{__('computed columns / modal / available columns')}:</p>
 
     <ul class="col-select">
         {#each metaColumns as col}
@@ -208,7 +208,7 @@
                 formula: '',
                 parserErrors: [],
                 checking: false,
-                didYouKnow: true
+                didYouKnow: true,
             };
         },
         computed: {
@@ -218,22 +218,22 @@
             },
             metaColumns({ columns, column, computedColumns }) {
                 if (!columns) return [];
-                const res = columns.map(col => {
+                const res = columns.map((col) => {
                     return {
                         key: columnNameToVariable(col.name()),
                         title: col.title(),
-                        type: col.type()
+                        type: col.type(),
                     };
                 });
                 // allow using computed columns in computed columns
-                const keys = computedColumns.map(d => d.name);
+                const keys = computedColumns.map((d) => d.name);
                 const thisI = keys.indexOf(column.name());
                 keys.forEach((ccKey, i) => {
                     if (thisI !== i) {
                         res.push({
                             key: columnNameToVariable(ccKey),
                             title: ccKey,
-                            type: 'computed'
+                            type: 'computed',
                         });
                     }
                 });
@@ -241,7 +241,7 @@
             },
             keywords({ metaColumns }) {
                 const keywords = [];
-                metaColumns.forEach(function(col) {
+                metaColumns.forEach(function (col) {
                     if (col.type === 'number' || col.type === 'computed') {
                         keywords.push(col.key + '__sum');
                         keywords.push(col.key + '__min');
@@ -259,10 +259,10 @@
             context({ metaColumns }) {
                 const res = { ROWNUMBER: 1 };
                 const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
-                metaColumns.forEach(function(col) {
+                metaColumns.forEach(function (col) {
                     res[col.key] = col.type === 'number' ? 42 : col.type === 'text' ? 'answer' : new Date();
                     if (col.type === 'number' || col.type === 'computed') {
-                        keywords.forEach(kw => {
+                        keywords.forEach((kw) => {
                             res[`${col.key}__${kw}`] = 42;
                         });
                     }
@@ -293,9 +293,9 @@
             },
             errDisplay({ error, parserErrors }) {
                 if (parserErrors.length) {
-                    return Object.entries(groupBy(parserErrors, d => d.message))
+                    return Object.entries(groupBy(parserErrors, (d) => d.message))
                         .map(([message, err]) => {
-                            return message + (err[0].row !== 'all' ? ` (rows ${formatRows(err.map(d => d.row + 2))})` : '');
+                            return message + (err[0].row !== 'all' ? ` (rows ${formatRows(err.map((d) => d.row + 2))})` : '');
                         })
                         .join('<br />');
                 }
@@ -326,10 +326,7 @@
                 for (let i = 0; i < errors.length; i++) {
                     if (errors[i].startsWith('undefined variable:')) {
                         // let's see if we know this variable
-                        const name = errors[i]
-                            .split(': ')[1]
-                            .split('(row')[0]
-                            .trim();
+                        const name = errors[i].split(': ')[1].split('(row')[0].trim();
                         if (Parser.keywords.includes(name.toUpperCase()) && !Parser.keywords.includes(name)) {
                             return `${__('cc / formula / hint / use')} <tt>${name.toUpperCase()}</tt> ${__(
                                 'cc / formula / hint / instead-of'
@@ -361,7 +358,7 @@
                     { s: 'getFullYear', h: 'YEAR(x)' },
                     { s: 'getMonth', h: 'MONTH(x)' },
                     { s: 'getDate', h: 'DAY(x)' },
-                    { s: 'includes', h: 'y in x' }
+                    { s: 'includes', h: 'y in x' },
                 ];
                 for (let i = 0; i < hints.length; i++) {
                     const { s, h } = hints[i];
@@ -380,7 +377,7 @@
                     return `${__('cc / formula / hint / use')} <tt>x or y</tt> ${__('cc / formula / hint / instead-of')} <tt>x || y</tt>`;
                 }
                 return '';
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -390,19 +387,19 @@
                 cm.focus();
             },
             unmarkErrors() {
-                window.document.querySelectorAll('span.parser-error').forEach(node => node.classList.remove('parser-error'));
+                window.document.querySelectorAll('span.parser-error').forEach((node) => node.classList.remove('parser-error'));
             },
             removeColumn() {
                 const { column } = this.get();
                 const { dw_chart } = this.store.get();
                 const ds = dw_chart.dataset();
-                const customCols = clone(getComputedColumns(dw_chart)).filter(col => col.name !== column.name());
+                const customCols = clone(getComputedColumns(dw_chart)).filter((col) => col.name !== column.name());
                 // get old column index
                 const colIndex = ds.columnOrder()[ds.indexOf(column.name())];
                 // delete all changes that have been made to this column
                 const changes = dw_chart.get('metadata.data.changes', []);
                 const newChanges = [];
-                changes.forEach(c => {
+                changes.forEach((c) => {
                     if (c.column === colIndex) return; // skip
                     // move changes for succeeding columns
                     if (c.column > colIndex) c.column--;
@@ -441,7 +438,7 @@
                 setTimeout(() => this.unmarkErrors());
                 // update dw.chart
                 const customCols = clone(getComputedColumns(dw_chart));
-                const thisCol = customCols.find(d => d.name === name);
+                const thisCol = customCols.find((d) => d.name === name);
                 if (!thisCol) {
                     // try again later
                     return setTimeout(() => {
@@ -455,11 +452,11 @@
                     this.set({ checking: true });
                     if (dw_chart.saveSoon) dw_chart.saveSoon();
                     this.store.set({
-                        dw_chart
+                        dw_chart,
                     });
                     updateTable();
                 } else {
-                    (dw_chart.dataset().column(name).errors || []).forEach(err => {
+                    (dw_chart.dataset().column(name).errors || []).forEach((err) => {
                         parserErrors.push(err);
                     });
                 }
@@ -469,12 +466,12 @@
             async closeDidYouKnow() {
                 await patch('/v3/me/data', {
                     payload: {
-                        'new-computed-columns-syntax': 1
-                    }
+                        'new-computed-columns-syntax': 1,
+                    },
                 });
                 window.dw.backend.__userData['new-computed-columns-syntax'] = 1;
                 this.set({ didYouKnow: false });
-            }
+            },
         },
 
         oncreate() {
@@ -483,17 +480,17 @@
 
             const { dw_chart } = this.store.get();
 
-            const thisCol = computedColumns.find(d => d.name === column.name());
+            const thisCol = computedColumns.find((d) => d.name === column.name());
 
             if (window.dw.backend.__userData['new-computed-columns-syntax']) {
                 this.set({
-                    didYouKnow: !JSON.parse(window.dw.backend.__userData['new-computed-columns-syntax'] || 'false')
+                    didYouKnow: !JSON.parse(window.dw.backend.__userData['new-computed-columns-syntax'] || 'false'),
                 });
             }
 
             this.set({
                 formula: thisCol.formula || '',
-                name: column.name()
+                name: column.name(),
             });
 
             const errReg = /(?:parse error) \[(\d+):(\d+)\]:/;
@@ -505,7 +502,7 @@
                 const parserErrors = [];
                 const col = dw_chart.dataset().column(name);
                 if (col.formula === formula) {
-                    (col.errors || []).forEach(err => {
+                    (col.errors || []).forEach((err) => {
                         parserErrors.push(err);
                     });
                 }
@@ -521,11 +518,11 @@
 
                 const { keywords } = app.get();
                 if (token.type === 'variable-x') {
-                    match = keywords.filter(function(chk) {
+                    match = keywords.filter(function (chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 } else if (token.type === 'keyword-x') {
-                    match = Parser.keywords.filter(function(chk) {
+                    match = Parser.keywords.filter(function (chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 }
@@ -533,7 +530,7 @@
                 return {
                     list: match.sort(),
                     from: CodeMirror.Pos(cur.line, token.start),
-                    to: CodeMirror.Pos(cur.line, token.end)
+                    to: CodeMirror.Pos(cur.line, token.end),
                 };
             }
 
@@ -551,11 +548,11 @@
                 placeholder: '',
                 continueComments: 'Enter',
                 extraKeys: {
-                    Tab: 'autocomplete'
+                    Tab: 'autocomplete',
                 },
                 hintOptions: {
-                    hint: scriptHint
-                }
+                    hint: scriptHint,
+                },
             });
 
             window.CodeMirror = CodeMirror;
@@ -565,13 +562,13 @@
             updateTable = debounce(() => app.fire('updateTable'), 1500);
 
             let changeNameTimer;
-            const changeName = name => {
+            const changeName = (name) => {
                 clearTimeout(changeNameTimer);
                 changeNameTimer = setTimeout(() => {
                     const { column } = this.get();
                     let { computedColumns } = this.get();
                     computedColumns = clone(computedColumns);
-                    computedColumns.find(d => d.name === column.name()).name = name;
+                    computedColumns.find((d) => d.name === column.name()).name = name;
                     column.name(name);
                     dw_chart.set('metadata.describe.computed-columns', computedColumns);
                     this.store.set({ dw_chart });
@@ -591,7 +588,7 @@
                     const col = current.column;
 
                     if (col && current.computedColumns) {
-                        const theCol = current.computedColumns.find(d => d.name === col.name());
+                        const theCol = current.computedColumns.find((d) => d.name === col.name());
                         const formula = theCol ? theCol.formula : '';
                         const name = col.name();
                         this.set({ formula, name });
@@ -618,7 +615,7 @@
                             { line, ch },
                             { line, ch: ch + 1 },
                             {
-                                className: 'parser-error'
+                                className: 'parser-error',
                             }
                         );
                     }
@@ -646,7 +643,7 @@
                         { regex: /true|false|PI|E/, token: 'atom' },
                         {
                             regex: /0x[a-f\d]+|[-+]?(?:\.\d+|\d+\.?\d*)(?:e[-+]?\d+)?/i,
-                            token: 'number'
+                            token: 'number',
                         },
                         // { regex: /\/\/.*/, token: 'comment' },
                         { regex: columnsRegex, token: 'variable-2' },
@@ -658,25 +655,25 @@
                         { regex: /[[(]/, indent: true },
                         { regex: /[\])]/, dedent: true },
                         { regex: /[a-z$][\w$]*/, token: 'variable-x' },
-                        { regex: /[A-Z_][\w$]*/, token: 'keyword-x' }
+                        { regex: /[A-Z_][\w$]*/, token: 'keyword-x' },
                     ],
                     // The meta property contains global information about the mode. It
                     // can contain properties like lineComment, which are supported by
                     // all modes, and also directives like dontIndentStates, which are
                     // specific to simple modes.
-                    meta: {}
+                    meta: {},
                 });
 
                 cm.setOption('mode', 'simplemode');
             }
 
-            cm.on('change', cm => {
+            cm.on('change', (cm) => {
                 const { name } = app.get();
                 // update internal state
                 // app.set({ formula: cm.getValue() });
                 // update chart + table
                 this.setFormula(cm.getValue(), name);
             });
-        }
+        },
     };
 </script>

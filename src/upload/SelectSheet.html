@@ -28,7 +28,7 @@
         data() {
             return {
                 selected: false,
-                sheets: []
+                sheets: [],
             };
         },
         helpers: { __ },
@@ -46,6 +46,6 @@
             if (changed.selected) {
                 this.set({ chartData: current.selected.csv });
             }
-        }
+        },
     };
 </script>

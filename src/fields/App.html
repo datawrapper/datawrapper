@@ -29,7 +29,7 @@
             return {
                 customFields: [],
                 custom: {},
-                initialized: false
+                initialized: false,
             };
         },
         onstate({ changed, current }) {
@@ -38,13 +38,13 @@
             if (changed.customFields && current.customFields) {
                 const custom = clone(dw_chart.get('metadata.custom', {}));
 
-                current.customFields.forEach(field => {
+                current.customFields.forEach((field) => {
                     if (!custom[field.key]) custom[field.key] = '';
                 });
 
                 this.set({
                     custom: custom,
-                    initialized: true
+                    initialized: true,
                 });
             }
 
@@ -52,7 +52,7 @@
                 dw_chart.set(`metadata.custom`, clone(current.custom));
                 if (dw_chart.saveSoon) dw_chart.saveSoon();
             }
-        }
+        },
     };
 </script>
 

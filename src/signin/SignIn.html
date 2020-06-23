@@ -44,7 +44,7 @@
 
             <div>
                 {#if forgotPassword}
-                <div style="padding-bottom:10px">
+                <div style="padding-bottom: 10px;">
                     <button disabled="{invalidLoginEmail}" class="btn btn-send-pw btn-primary" on:click|preventDefault="requestNewPassword()">
                         {#if requestingPassword}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} {@html __("Send new password")}
                     </button>
@@ -107,7 +107,7 @@
                             class="span3 input-xlarge register-pwd"
                         />
                         {/if}
-                        <div style="width: 270px">
+                        <div style="width: 270px;">
                             <CheckPassword
                                 bind:password="signupPassword"
                                 bind:passwordHelp
@@ -216,7 +216,7 @@
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
-            signingUp: false
+            signingUp: false,
         }),
         computed: {
             invalidLoginEmail({ loginEmail, forgotPassword }) {
@@ -233,10 +233,10 @@
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
-            }
+            },
         },
         helpers: {
-            __
+            __,
         },
         methods: {
             async doLogIn() {
@@ -244,15 +244,15 @@
                 this.set({
                     loggingIn: true,
                     loginError: '',
-                    loginSuccess: ''
+                    loginSuccess: '',
                 });
                 try {
                     await httpReq.post('/v3/auth/login', {
                         payload: {
                             email: loginEmail,
                             password: loginPassword,
-                            keepSession: rememberLogin
-                        }
+                            keepSession: rememberLogin,
+                        },
                     });
                     this.set({ loginSuccess: 'Login successful, reloading page' });
                     setTimeout(() => {
@@ -274,15 +274,15 @@
                 this.set({
                     signingUp: true,
                     signupError: '',
-                    signupSuccess: ''
+                    signupSuccess: '',
                 });
                 try {
                     await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
                             invitation: signupWithoutPassword,
-                            password: !signupWithoutPassword ? signupPassword : undefined
-                        }
+                            password: !signupWithoutPassword ? signupPassword : undefined,
+                        },
                     });
 
                     trackEvent('App', 'sign-up');
@@ -295,7 +295,7 @@
                     } else {
                         this.set({
                             signupSuccess: 'Please check your e-mail inbox to proceed on your desktop computer.',
-                            signingUp: false
+                            signingUp: false,
                         });
                     }
                 } catch (error) {
@@ -314,13 +314,13 @@
                 this.set({
                     requestingPassword: true,
                     loginError: '',
-                    loginSuccess: ''
+                    loginSuccess: '',
                 });
                 try {
                     await httpReq.post('/v3/auth/reset-password', {
                         payload: {
-                            email: loginEmail
-                        }
+                            email: loginEmail,
+                        },
                     });
                     this.set({ loginSuccess: __('signin / password-reset / success') });
                 } catch (error) {
@@ -332,16 +332,16 @@
                     }
                 }
                 this.set({ requestingPassword: false });
-            }
+            },
         },
         oncreate() {
             if (window.innerWidth < 740) {
                 this.set({
                     noSignin: true,
-                    signupWithoutPassword: true
+                    signupWithoutPassword: true,
                 });
             }
-        }
+        },
     };
 </script>
 

@@ -27,8 +27,8 @@
                     errorCode: null,
                     responseData: null,
                     type: '',
-                    role: ''
-                }
+                    role: '',
+                },
             };
         },
         computed: {
@@ -64,15 +64,15 @@
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('member');
-                        }
+                        },
                     },
                     {
                         label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / admin')}`,
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('admin');
-                        }
-                    }
+                        },
+                    },
                 ];
 
                 if (isAdmin || isTeamOwner) {
@@ -81,7 +81,7 @@
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('owner');
-                        }
+                        },
                     });
                 }
 
@@ -94,7 +94,7 @@
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('member');
-                            }
+                            },
                         },
                         {
                             label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
@@ -103,7 +103,7 @@
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('admin');
-                            }
+                            },
                         },
                         {
                             label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
@@ -112,13 +112,13 @@
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('owner');
-                            }
+                            },
                         }
                     );
                 }
 
                 return options;
-            }
+            },
         },
         helpers: { __ },
         methods: {
@@ -132,8 +132,8 @@
                     raw: true,
                     payload: {
                         userId: inviteeUserId,
-                        role
-                    }
+                        role,
+                    },
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -145,7 +145,7 @@
                     errorCode: !response.ok ? response.status : null,
                     responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
                     type: 'add',
-                    role
+                    role,
                 };
 
                 this.set({ currentAction });
@@ -160,8 +160,8 @@
                     raw: true,
                     payload: {
                         email: inviteeEmail,
-                        role
-                    }
+                        role,
+                    },
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -173,7 +173,7 @@
                     errorCode: !response.ok ? response.status : null,
                     responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
                     type: 'invite',
-                    role
+                    role,
                 };
 
                 this.set({ currentAction });
@@ -201,16 +201,16 @@
 
                 if (json.list.length > 0) {
                     inviteeEmail = this.get().inviteeEmail;
-                    json.list.forEach(el => {
+                    json.list.forEach((el) => {
                         if (el.email.toLowerCase() === inviteeEmail.toLowerCase()) {
                             this.set({
                                 inviteeExists: true,
-                                inviteeUserId: el.id
+                                inviteeUserId: el.id,
                             });
                         }
                     });
                 }
-            }
+            },
         },
         oncreate() {
             window.teamSettingsInvite = this;
@@ -220,7 +220,7 @@
                 this.set({ inviteeExists: false });
                 this.debounceCheckUser();
             }
-        }
+        },
     };
 </script>
 
