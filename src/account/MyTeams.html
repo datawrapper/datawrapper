@@ -110,7 +110,6 @@
 </div>
 
 <script>
-    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
@@ -128,7 +127,7 @@
                 currentTeam: '',
                 createTeam: false,
                 newTeamName: '',
-                newTeamSlug: ''
+                newTeamSlug: '',
             };
         },
         computed: {
@@ -136,16 +135,16 @@
                 return teams
                     .map(({ id, name }) => ({
                         value: id,
-                        label: name
+                        label: name,
                     }))
                     .concat({
                         value: null,
-                        label: __('nav / no-team')
+                        label: __('nav / no-team'),
                     });
             },
             autoslug({ newTeamName }) {
                 return newTeamName.toLowerCase().replace(/\W/g, '');
-            }
+            },
         },
         helpers: { __, truncate },
         methods: {
@@ -153,39 +152,35 @@
                 const { user } = this.get();
                 const payload = { name };
                 if (user.isAdmin && slug) {
-                    payload.id = String(slug)
-                        .trim()
-                        .toLowerCase();
+                    payload.id = String(slug).trim().toLowerCase();
                 }
                 this.set({
                     awaitCreateTeam: httpReq(`/v3/teams`, {
-                            method: 'post',
-                            payload
-                        }).then(
-                        team => {
-                            window.location.href = `/team/${team.id}/settings`;
-                        }
-                    )
+                        method: 'post',
+                        payload,
+                    }).then((team) => {
+                        window.location.href = `/team/${team.id}/settings`;
+                    }),
                 });
             },
             leaveTeam(team) {
                 const { user, teams } = this.get();
                 if (window.confirm(__('account / my-teams / leave-team / confirm').replace('%team%', team.name))) {
                     httpReq(`/v3/teams/${team.id}/members/${user.id}`, { method: 'delete' })
-                        .then(res => {
+                        .then((res) => {
                             window.alert(__('account / my-teams / leave-team / done'));
                             teams.splice(
-                                teams.findIndex(t => t.id === team.id),
+                                teams.findIndex((t) => t.id === team.id),
                                 1
                             );
                             this.set({ teams });
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             window.alert('There was a problem with your request. Please contact support@datawrapper.de');
                             console.error(error);
                         });
                 }
-            }
+            },
         },
         onstate({ changed, current }) {
             if (changed.currentTeam && current.currentTeam !== undefined) {
@@ -193,18 +188,16 @@
                 else if (current.currentTeam !== initialCurrentTeam) {
                     initialCurrentTeam = current.currentTeam;
                     this.set({
-                        awaitActiveTeam: httpReq(
-                            `/v3/me/settings`, {
-                                method: 'patch',
-                                payload: {
-                                    activeTeam: current.currentTeam || null
-                                }
-                            }
-                        )
+                        awaitActiveTeam: httpReq(`/v3/me/settings`, {
+                            method: 'patch',
+                            payload: {
+                                activeTeam: current.currentTeam || null,
+                            },
+                        }),
                     });
                 }
             }
-        }
+        },
     };
 </script>
 

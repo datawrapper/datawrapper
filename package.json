@@ -21,6 +21,7 @@
         "watch": "^1.0.2"
     },
     "devDependencies": {
+        "@tivac/eslint-plugin-svelte": "^1.3.0",
         "buble": "^0.20.0",
         "chalk": "^4.1.0",
         "d3-dsv": "^1.2.0",
