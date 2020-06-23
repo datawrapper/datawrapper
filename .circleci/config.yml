@@ -1,20 +1,20 @@
 defaults: &defaults
     working_directory: ~/repo
     docker:
-        - image: sto3psl/dw-ci:1.1.0
+        - image: sto3psl/dw-ci:1.4.0
 
 cache: &cache
     key: v3-dependency-cache-{{ checksum "package-lock.json" }}
 
 aliases:
-    - &restore_source
-      restore_cache:
-          keys:
-              - source-v1-{{ .Branch }}-{{ .Revision }}
-              - source-v1-{{ .Branch }}-
-              - source-v1-
+      - &restore_source
+        restore_cache:
+            keys:
+                - source-v1-{{ .Branch }}-{{ .Revision }}
+                - source-v1-{{ .Branch }}-
+                - source-v1-
 
-version: 2
+  version: 2
 
 jobs:
     install:
