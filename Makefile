@@ -20,13 +20,13 @@ translations:
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
-build: svelte-all-v2
+build: svelte-all
 
-svelte-all-v2:
-	cd src/v2 && npm run build
+svelte-all:
+	cd src && npm run build
 
-svelte-dev-v2:
-	cd src/v2 && npm run dev
+svelte-dev:
+	cd src && npm run dev
 
 plugins:
 	scripts/install-plugins

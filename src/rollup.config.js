@@ -46,7 +46,7 @@ function build(appId, opts) {
         output: {
             sourcemap: !production,
             name: appId,
-            file: `../../www/static/js/svelte/${appId}${append}.js`,
+            file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
             amd: noAMD ? undefined : { id: `svelte/${appId}${append}` }
         },
@@ -54,7 +54,7 @@ function build(appId, opts) {
             svelte({
                 dev: !production,
                 css: css => {
-                    css.write(`../../www/static/css/svelte/${appId}${append}.css`);
+                    css.write(`../www/static/css/svelte/${appId}${append}.css`);
                 },
                 cascade: false,
                 store: true,

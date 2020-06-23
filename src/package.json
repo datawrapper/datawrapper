@@ -30,7 +30,8 @@
         "rollup-plugin-svelte": "^5.1.0",
         "rollup-plugin-terser": "^5.2.0",
         "svelte": "^2.16.1",
-        "svelte-transitions": "^1.2.0"
+        "svelte-transitions": "^1.2.0",
+        "underscore-es": "^1.9.8"
     },
     "dependencies": {
         "@babel/runtime": "^7.10.0"
