@@ -77,5 +77,14 @@
         "sources": [
             "./src/**/*.{js,html}"
         ]
+    },
+    "lint-staged": {
+        "linters": {
+            "*.{js,html}": [
+                "prettier --write",
+                "healthier",
+                "git add"
+            ]
+        }
     }
 }

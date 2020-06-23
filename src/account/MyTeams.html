@@ -160,7 +160,7 @@
                 this.set({
                     awaitCreateTeam: httpReq(`/v3/teams`, {
                             method: 'post',
-                            payload: payload
+                            payload
                         }).then(
                         team => {
                             window.location.href = `/team/${team.id}/settings`;
