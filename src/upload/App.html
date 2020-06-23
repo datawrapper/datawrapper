@@ -11,14 +11,9 @@
         {@html __('upload / drag-csv-here')}
     </div>
     {/if}
-    <div
-        class="row"
-        style="
-             {
-                dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none': '';
-            }
-        "
-    >
+
+    <!-- prettier-ignore -->
+    <div class="row" style="{ dragover?'opacity: 0.5;filter:blur(6px);background:white;pointer-events:none': '' }">
         <div class="span5">
             <div class="sidebar">
                 <h3>{@html __('upload / title')}</h3>
