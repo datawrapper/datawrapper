@@ -26,16 +26,16 @@
         data() {
             return {
                 selected: '---',
-                highlighted: [],
+                highlighted: []
             };
         },
         computed: {
             highlightedElements({ highlighted, elements }) {
                 const els = keyBy(elements, 'key');
-                return highlighted.map((k) => {
+                return highlighted.map(k => {
                     return {
                         key: k,
-                        valid: els[k],
+                        valid: els[k]
                     };
                 });
             },
@@ -44,14 +44,14 @@
                 return $vis
                     .keys()
                     .sort()
-                    .map((key) => {
+                    .map(key => {
                         const keyLbl = $vis.keyLabel(key);
                         return {
                             key,
-                            label: key + (key !== keyLbl ? ` (${keyLbl})` : ''),
+                            label: key + (key !== keyLbl ? ` (${keyLbl})` : '')
                         };
                     });
-            },
+            }
         },
         helpers: { __ },
         methods: {
@@ -79,7 +79,7 @@
                 if (old !== JSON.stringify(highlighted)) {
                     $vis.chart().set('metadata.visualize.highlighted-series', clone(highlighted));
                 }
-            },
+            }
         },
         onstate({ changed, current, previous }) {
             if (changed.$vis && current.$vis) {
@@ -96,6 +96,6 @@
                     this.add(current.selected);
                 }
             }
-        },
+        }
     };
 </script>

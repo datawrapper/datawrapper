@@ -20,7 +20,8 @@
         {#each teams as team}
         <tr class:current="team.id === currentTeam">
             <td>
-                {#if team.role === 'member' && !user.isAdmin}{truncate(team.name, 20, 10)}{:else}<a href="/team/{team.id}/settings"
+                {#if team.role === 'member' && !user.isAdmin}{truncate(team.name, 20, 10)}{:else}<a
+                    href="/team/{team.id}/settings"
                     >{truncate(team.name, 20, 10)}</a
                 >{/if} {#if team.id === currentTeam}
                 <i class="fa fa-check-circle"></i>
@@ -33,7 +34,10 @@
             <td><a href="/team/{team.id}">{team.charts}</a></td>
             <td>
                 {#if team.role === 'member'} {team.members} {:else}
-                <a href="/team/{team.id}/members">{team.members}</a> {#if team.invites}<span class="invites">(+{team.invites})</span>{/if} {/if}
+                <a href="/team/{team.id}/members">{team.members}</a> {#if team.invites}<span
+                    class="invites"
+                    >(+{team.invites})</span
+                >{/if} {/if}
             </td>
 
             <td>
@@ -64,7 +68,11 @@
             <p>
                 {@html __('account / my-teams / why-teams')}
             </p>
-            <button on:click="set({createTeam:true})" class="btn btn-large" class:btn-primary="!teams.length">
+            <button
+                on:click="set({createTeam:true})"
+                class="btn btn-large"
+                class:btn-primary="!teams.length"
+            >
                 <i class="fa fa-plus fa-fw"></i> {@html __('account / my-teams / create-btn')}
             </button>
         </div>
@@ -74,7 +82,12 @@
         </p>
 
         <FormBlock label="{ __('team-create / name') }" help="{ __('team-create / help') }">
-            <input type="text" placeholder="{ __('team-create / untitled') }" bind:value="newTeamName" maxlength="{user.isAdmin ? 80 : 50}" />
+            <input
+                type="text"
+                placeholder="{ __('team-create / untitled') }"
+                bind:value="newTeamName"
+                maxlength="{user.isAdmin ? 80 : 50}"
+            />
         </FormBlock>
         {#if user.isAdmin}
         <FormBlock label="{ __('team-create / slug') }" help="{ __('team-create / slug-help') }">
@@ -82,11 +95,20 @@
         </FormBlock>
         {/if}
 
-        <button on:click="createTeam(newTeamName, newTeamSlug)" class="btn btn-primary" disabled="{ !newTeamName.length }">
+        <button
+            on:click="createTeam(newTeamName, newTeamSlug)"
+            class="btn btn-primary"
+            disabled="{ !newTeamName.length }"
+        >
             <!-- prettier-ignore -->
-            {#if awaitCreateTeam}{#await awaitCreateTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i>
+            {#if awaitCreateTeam}{#await awaitCreateTeam} &nbsp;<i
+                class="fa fa-spinner fa-spin"
+            ></i>
             <!-- prettier-ignore -->
-            {:then}<i class="fa fa-check fa-fw"></i>{:catch}<i class="fa fa-exclamation-triangle"></i>{/await}
+            {:then}<i class="fa fa-check fa-fw"></i>{:catch}<i
+                class="fa fa-exclamation-triangle"
+            ></i
+            >{/await}
             <!-- prettier-ignore -->
             {:else}<i class="fa fa-plus fa-fw"></i>{/if} &nbsp; { __('team-create / button') }
         </button>
@@ -101,8 +123,13 @@
             <div class="flex">
                 <!-- prettier-ignore -->
                 <BaseSelect width="250px" bind:value="currentTeam" options="{teamOptions}" />
-                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i class="fa fa-spinner fa-spin"></i> {:then}<i class="fa fa-check fa-fw"></i
-                >{:catch}<i class="fa fa-exclamation-triangle"></i>{/await} {/if}
+                {#if awaitActiveTeam} {#await awaitActiveTeam} &nbsp;<i
+                    class="fa fa-spinner fa-spin"
+                ></i>
+                {:then}<i class="fa fa-check fa-fw"></i>{:catch}<i
+                    class="fa fa-exclamation-triangle"
+                ></i
+                >{/await} {/if}
             </div>
         </FormBlock>
     </div>
@@ -127,7 +154,7 @@
                 currentTeam: '',
                 createTeam: false,
                 newTeamName: '',
-                newTeamSlug: '',
+                newTeamSlug: ''
             };
         },
         computed: {
@@ -135,16 +162,16 @@
                 return teams
                     .map(({ id, name }) => ({
                         value: id,
-                        label: name,
+                        label: name
                     }))
                     .concat({
                         value: null,
-                        label: __('nav / no-team'),
+                        label: __('nav / no-team')
                     });
             },
             autoslug({ newTeamName }) {
                 return newTeamName.toLowerCase().replace(/\W/g, '');
-            },
+            }
         },
         helpers: { __, truncate },
         methods: {
@@ -157,30 +184,36 @@
                 this.set({
                     awaitCreateTeam: httpReq(`/v3/teams`, {
                         method: 'post',
-                        payload,
-                    }).then((team) => {
+                        payload
+                    }).then(team => {
                         window.location.href = `/team/${team.id}/settings`;
-                    }),
+                    })
                 });
             },
             leaveTeam(team) {
                 const { user, teams } = this.get();
-                if (window.confirm(__('account / my-teams / leave-team / confirm').replace('%team%', team.name))) {
+                if (
+                    window.confirm(
+                        __('account / my-teams / leave-team / confirm').replace('%team%', team.name)
+                    )
+                ) {
                     httpReq(`/v3/teams/${team.id}/members/${user.id}`, { method: 'delete' })
-                        .then((res) => {
+                        .then(res => {
                             window.alert(__('account / my-teams / leave-team / done'));
                             teams.splice(
-                                teams.findIndex((t) => t.id === team.id),
+                                teams.findIndex(t => t.id === team.id),
                                 1
                             );
                             this.set({ teams });
                         })
-                        .catch((error) => {
-                            window.alert('There was a problem with your request. Please contact support@datawrapper.de');
+                        .catch(error => {
+                            window.alert(
+                                'There was a problem with your request. Please contact support@datawrapper.de'
+                            );
                             console.error(error);
                         });
                 }
-            },
+            }
         },
         onstate({ changed, current }) {
             if (changed.currentTeam && current.currentTeam !== undefined) {
@@ -191,13 +224,13 @@
                         awaitActiveTeam: httpReq(`/v3/me/settings`, {
                             method: 'patch',
                             payload: {
-                                activeTeam: current.currentTeam || null,
-                            },
-                        }),
+                                activeTeam: current.currentTeam || null
+                            }
+                        })
                     });
                 }
             }
-        },
+        }
     };
 </script>
 

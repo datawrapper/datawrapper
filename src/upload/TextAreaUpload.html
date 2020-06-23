@@ -1,6 +1,12 @@
 <form class="upload-form">
     <div class="control-group">
-        <textarea bind:value="chartData" readonly="{readonly}" id="upload-data-text" style="resize: none;" placeholder="{placeholder}"></textarea>
+        <textarea
+            bind:value="chartData"
+            readonly="{readonly}"
+            id="upload-data-text"
+            style="resize: none;"
+            placeholder="{placeholder}"
+        ></textarea>
     </div>
 </form>
 
@@ -21,7 +27,7 @@
     export default {
         data() {
             return {
-                placeholder: __('upload / paste here'),
+                placeholder: __('upload / paste here')
             };
         },
         helpers: { __ },
@@ -30,10 +36,15 @@
         },
         // eslint-disable-next-line
         onupdate({ changed, current, previous }) {
-            if (changed.chartData && current.chartData && previous && previous.chartData !== current.chartData) {
+            if (
+                changed.chartData &&
+                current.chartData &&
+                previous &&
+                previous.chartData !== current.chartData
+            ) {
                 updateData();
             }
-        },
+        }
     };
 </script>
 

@@ -19,14 +19,18 @@
             {@html errors.join('')}
         </div>
         {/if}
-        <FormBlock label="{ __('E-Mail') }" help="{changeEmail ? __('account / confirm-email-change') : ''}">
+        <FormBlock
+            label="{ __('E-Mail') }"
+            help="{changeEmail ? __('account / confirm-email-change') : ''}"
+        >
             <input disabled="{ !changeEmail }" bind:value="email" type="email" />
             {#if changeEmail}
             <button on:click="set({changeEmail: false})" class="btn btn-default">
                 { __( "Back") }
             </button>
             <button on:click="changeEmail()" class="btn btn-save btn-primary">
-                <i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __( "account / email") }
+                <i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __(
+                "account / email") }
             </button>
             {:else}
             <button on:click="set({changeEmail: true})" class="btn btn-save btn-default">
@@ -45,7 +49,10 @@
         {:else}
         <h3>
             { __("account / password") }
-            <button on:click="set({changePassword: false})" class="btn btn-save btn-default btn-back">
+            <button
+                on:click="set({changePassword: false})"
+                class="btn btn-save btn-default btn-back"
+            >
                 { __("Back") }
             </button>
         </h3>
@@ -56,15 +63,28 @@
             {/each}
         </div>
         {/if}
-        <FormBlock label="{ __('Current Password') }" help="{ __('account / password / current-password-note') }">
+        <FormBlock
+            label="{ __('Current Password') }"
+            help="{ __('account / password / current-password-note') }"
+        >
             <input type="password" bind:value="currentPassword" class="input-xlarge" />
         </FormBlock>
 
-        <FormBlock error="{passwordError}" label="{ __('New Password') }" success="{passwordSuccess}" help="{passwordHelp}">
+        <FormBlock
+            error="{passwordError}"
+            label="{ __('New Password') }"
+            success="{passwordSuccess}"
+            help="{passwordHelp}"
+        >
             {#if showPasswordAsClearText}
             <input data-lpignore="true" type="text" bind:value="newPassword" class="input-xlarge" />
             {:else}
-            <input data-lpignore="true" type="password" bind:value="newPassword" class="input-xlarge" />
+            <input
+                data-lpignore="true"
+                type="password"
+                bind:value="newPassword"
+                class="input-xlarge"
+            />
             {/if}
             <div style="width: 287px;">
                 <CheckPassword
@@ -78,12 +98,18 @@
         </FormBlock>
         <div class="control-group" style="margin-top: -10px; margin-bottom: 20px;">
             <label class="checkbox">
-                <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+                <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account
+                / invite / password-clear-text")}
             </label>
         </div>
 
-        <button disabled="{ !(newPasswordOk && currentPassword) }" class="btn btn-primary" on:click="changePassword()">
-            <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("account / password") }
+        <button
+            disabled="{ !(newPasswordOk && currentPassword) }"
+            class="btn btn-primary"
+            on:click="changePassword()"
+        >
+            <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; {
+            __("account / password") }
         </button>
         <hr />
         {/if} {#if deleteAccount3}
@@ -113,7 +139,11 @@
                 error="{errors && errors.length ? errors.join('. ') : false}"
             >
                 <input type="email" bind:value="confirmEmail" placeholder="{ __('E-Mail') }" />
-                <input type="password" bind:value="confirmPassword" placeholder="{ __('Password') }" />
+                <input
+                    type="password"
+                    bind:value="confirmPassword"
+                    placeholder="{ __('Password') }"
+                />
             </FormBlock>
             <p class="lead">
                 {@html __("account / delete / really-really") }
@@ -123,24 +153,31 @@
                     <i class="fa fa-chevron-left"></i>&nbsp; { __("No, I changed my mind..") }
                 </button>
                 <button on:click="deleteAccount()" class="btn btn-danger">
-                    <i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __("Yes, delete it!") }
+                    <i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
+                    { __("Yes, delete it!") }
                 </button>
             </div>
         </div>
         {:elseif deleteAccount}
         <h3><i class="fa fa-times"></i> { __("account / confirm-account-deletion") }</h3>
         <button on:click="set({deleteAccount: false})" class="btn btn-back btn-primary">
-            <i class="fa fa-chevron-left"></i> &nbsp; { __("account / confirm-account-deletion / no") }
+            <i class="fa fa-chevron-left"></i> &nbsp; { __("account / confirm-account-deletion /
+            no") }
         </button>
 
         { __("account / or") }
 
-        <button on:click="set({deleteAccount: false, deleteAccount2: true})" class="btn btn-default">
+        <button
+            on:click="set({deleteAccount: false, deleteAccount2: true})"
+            class="btn btn-default"
+        >
             <i class="fa fa-times"></i> &nbsp; { __("account / confirm-account-deletion / yes") }
         </button>
         {:else}
         <FormBlock label="Delete account" help="">
-            <button class="btn btn-danger" on:click="set({deleteAccount: true})" href="#">{ __("account / delete") }</button>
+            <button class="btn btn-danger" on:click="set({deleteAccount: true})" href="#">
+                { __("account / delete") }
+            </button>
         </FormBlock>
         {/if}
     </div>
@@ -186,19 +223,19 @@
                         tabs: [
                             {
                                 title: 'Profile',
-                                icon: 'fa fa-fw fa-user',
-                            },
-                        ],
+                                icon: 'fa fa-fw fa-user'
+                            }
+                        ]
                     },
                     {
                         title: 'Team settings',
-                        tabs: [],
-                    },
-                ],
+                        tabs: []
+                    }
+                ]
             };
         },
         helpers: {
-            __,
+            __
         },
         methods: {
             async changeEmail() {
@@ -211,9 +248,11 @@
 
                 try {
                     const res = await httpReq.patch('/v3/me', {
-                        payload: { email },
+                        payload: { email }
                     });
-                    messages.push('Your email has been changed successfully. You will receive an email with a confirmation link.');
+                    messages.push(
+                        'Your email has been changed successfully. You will receive an email with a confirmation link.'
+                    );
                     // for now, let's set it back to the previous email
                     this.set({ email: res.email });
                 } catch (e) {
@@ -222,7 +261,11 @@
                         if (res.message === 'Invalid request payload input') {
                             errors.push(__('account / change-email / error / invalid-email'));
                         } else {
-                            errors.push(res.message ? __(`account / change-email / error / ${res.message}`) : e.message);
+                            errors.push(
+                                res.message
+                                    ? __(`account / change-email / error / ${res.message}`)
+                                    : e.message
+                            );
                         }
                     } else {
                         errors.push('Unknown error: ' + e);
@@ -235,7 +278,7 @@
                     this.set({
                         changeEmail: false,
                         messages,
-                        errors: [],
+                        errors: []
                     });
                 } else {
                     this.set({ errors });
@@ -248,7 +291,7 @@
 
                 const payload = {
                     password: newPassword,
-                    oldPassword: currentPassword,
+                    oldPassword: currentPassword
                 };
 
                 const messages = [];
@@ -272,15 +315,15 @@
                         currentPassword: '',
                         newPassword: '',
                         messages,
-                        errors: [],
+                        errors: []
                     });
                 } else {
                     this.set({
-                        errors,
+                        errors
                     });
                 }
                 this.set({
-                    savingPassword: false,
+                    savingPassword: false
                 });
             },
             async deleteAccount() {
@@ -294,8 +337,8 @@
                     await httpReq.delete('/v3/me', {
                         payload: {
                             password: confirmPassword,
-                            email: confirmEmail,
-                        },
+                            email: confirmEmail
+                        }
                     });
                 } catch (e) {
                     if (e.name === 'HttpReqError') {
@@ -318,8 +361,8 @@
                 } else {
                     this.set({ errors });
                 }
-            },
-        },
+            }
+        }
     };
 </script>
 

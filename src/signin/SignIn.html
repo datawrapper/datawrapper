@@ -21,21 +21,36 @@
                 <div>
                     <div class="control-group" class:error="invalidLoginEmail">
                         <label>{__('email')}</label>
-                        <input class="login-email input-xxlarge span3" autocomplete="username" type="email" bind:value="loginEmail" />
+                        <input
+                            class="login-email input-xxlarge span3"
+                            autocomplete="username"
+                            type="email"
+                            bind:value="loginEmail"
+                        />
                     </div>
                     {#if !forgotPassword}
                     <div class="control-group">
                         <label>{__('password')}</label>
-                        <input class="login-pwd input-xxlarge span3" autocomplete="current-password" type="password" bind:value="loginPassword" />
+                        <input
+                            class="login-pwd input-xxlarge span3"
+                            autocomplete="current-password"
+                            type="password"
+                            bind:value="loginPassword"
+                        />
                     </div>
                     {/if}
                 </div>
                 {#if !forgotPassword}
                 <div>
                     <label class="checkbox" for="keep-login" style="margin-top: 10px;">
-                        <input bind:checked="rememberLogin" class="keep-login" type="checkbox" /> {@html __("Remember login?")}
+                        <input bind:checked="rememberLogin" class="keep-login" type="checkbox" />
+                        {@html __("Remember login?")}
                     </label>
-                    <button disabled="{invalidLoginForm}" on:click|preventDefault="doLogIn()" class="btn btn-login btn-primary">
+                    <button
+                        disabled="{invalidLoginForm}"
+                        on:click|preventDefault="doLogIn()"
+                        class="btn btn-login btn-primary"
+                    >
                         {#if loggingIn}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} Login
                     </button>
                 </div>
@@ -45,16 +60,25 @@
             <div>
                 {#if forgotPassword}
                 <div style="padding-bottom: 10px;">
-                    <button disabled="{invalidLoginEmail}" class="btn btn-send-pw btn-primary" on:click|preventDefault="requestNewPassword()">
-                        {#if requestingPassword}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if} {@html __("Send new password")}
+                    <button
+                        disabled="{invalidLoginEmail}"
+                        class="btn btn-send-pw btn-primary"
+                        on:click|preventDefault="requestNewPassword()"
+                    >
+                        {#if requestingPassword}<i class="fa fa-fw fa-spinner fa-pulse"></i>{/if}
+                        {@html __("Send new password")}
                     </button>
                 </div>
                 {/if}
                 <div>
                     {#if forgotPassword}
-                    <a on:click|preventDefault="set({forgotPassword:false})" href="#/return">{@html __("Return to login...")}</a>
+                    <a on:click|preventDefault="set({forgotPassword:false})" href="#/return"
+                        >{@html __("Return to login...")}</a
+                    >
                     {:else}
-                    <a on:click|preventDefault="set({forgotPassword:true})" href="#/forgot-password">{@html __("Can't recall your password?")}</a>
+                    <a on:click|preventDefault="set({forgotPassword:true})" href="#/forgot-password"
+                        >{@html __("Can't recall your password?")}</a
+                    >
                     {/if}
                 </div>
             </div>
@@ -85,10 +109,19 @@
                 <form>
                     <div class="control-group" class:error="invalidSignupEmail">
                         <label>{__('email')}</label>
-                        <input type="email" bind:value="signupEmail" autocomplete="username" class="span3 input-xlarge register-email" />
+                        <input
+                            type="email"
+                            bind:value="signupEmail"
+                            autocomplete="username"
+                            class="span3 input-xlarge register-email"
+                        />
                     </div>
                     {#if !signupWithoutPassword}
-                    <div class="control-group" class:warning="passwordError" class:success="passwordSuccess">
+                    <div
+                        class="control-group"
+                        class:warning="passwordError"
+                        class:success="passwordSuccess"
+                    >
                         <label>{__('password')}</label>
                         {#if showPasswordAsClearText}
                         <input
@@ -126,19 +159,29 @@
                     </div>
                     <div class="control-group">
                         <label class="checkbox" for="keep-login" style="margin-top: 10px;">
-                            <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html __("account / invite / password-clear-text")}
+                            <input bind:checked="showPasswordAsClearText" type="checkbox" /> {@html
+                            __("account / invite / password-clear-text")}
                         </label>
                     </div>
                     {/if}
-                    <button disabled="{invalidSignupForm}" on:click|preventDefault="doSignUp()" class="btn btn-default">
-                        {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i class="fa fa-fw fa-pencil"></i>{/if}
+                    <button
+                        disabled="{invalidSignupForm}"
+                        on:click|preventDefault="doSignUp()"
+                        class="btn btn-default"
+                    >
+                        {#if signingUp}<i class="fa fa-fw fa-spinner fa-pulse"></i>{:else}<i
+                            class="fa fa-fw fa-pencil"
+                        ></i
+                        >{/if}
                         <!-- prettier-ignore -->
                         {@html __('Sign Up')}
                     </button>
                 </form>
             </div>
             {/if} {#if signupWithoutPassword && !signupSuccess}
-            <a href="#" on:click="set({signupWithoutPassword: false, noSignin: false})">{ __('signup / mobile / back') }</a>
+            <a href="#" on:click="set({signupWithoutPassword: false, noSignin: false})"
+                >{ __('signup / mobile / back') }</a
+            >
             {/if}
         </div>
         {:else}
@@ -158,7 +201,8 @@
     <div class="alternative-signin">
         <div>
             {@html __("login / alternative signin")} {#each alternativeSignIn as signin}
-            <a href="{ signin.url }" class="alternative-signin-link">{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a
+            <a href="{ signin.url }" class="alternative-signin-link"
+                >{#if signin.icon}<i class="{ signin.icon }"></i>{/if} {@html signin.label}</a
             >{/each}.
         </div>
         <div>
@@ -216,7 +260,7 @@
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
-            signingUp: false,
+            signingUp: false
         }),
         computed: {
             invalidLoginEmail({ loginEmail, forgotPassword }) {
@@ -226,17 +270,23 @@
                 if (loggingIn) return true;
                 return !isValidEmail(loginEmail) || loginPassword === '';
             },
-            invalidSignupForm({ signupWithoutPassword, signingUp, signupEmail, signupPassword, signupPasswordOk }) {
+            invalidSignupForm({
+                signupWithoutPassword,
+                signingUp,
+                signupEmail,
+                signupPassword,
+                signupPasswordOk
+            }) {
                 if (signingUp) return true;
                 if (!isValidEmail(signupEmail)) return true;
                 if (!signupWithoutPassword && !signupPasswordOk) return true;
             },
             invalidSignupEmail({ signupEmail, forgotPassword }) {
                 return !isValidEmail(signupEmail) && signupEmail !== '';
-            },
+            }
         },
         helpers: {
-            __,
+            __
         },
         methods: {
             async doLogIn() {
@@ -244,15 +294,15 @@
                 this.set({
                     loggingIn: true,
                     loginError: '',
-                    loginSuccess: '',
+                    loginSuccess: ''
                 });
                 try {
                     await httpReq.post('/v3/auth/login', {
                         payload: {
                             email: loginEmail,
                             password: loginPassword,
-                            keepSession: rememberLogin,
-                        },
+                            keepSession: rememberLogin
+                        }
                     });
                     this.set({ loginSuccess: 'Login successful, reloading page' });
                     setTimeout(() => {
@@ -269,33 +319,41 @@
                 this.set({ loggingIn: false });
             },
             async doSignUp() {
-                const { signupWithoutPassword, signupEmail, signupPassword, signingUp } = this.get();
+                const {
+                    signupWithoutPassword,
+                    signupEmail,
+                    signupPassword,
+                    signingUp
+                } = this.get();
                 if (signingUp) return;
                 this.set({
                     signingUp: true,
                     signupError: '',
-                    signupSuccess: '',
+                    signupSuccess: ''
                 });
                 try {
                     await httpReq.post('/v3/auth/signup', {
                         payload: {
                             email: signupEmail,
                             invitation: signupWithoutPassword,
-                            password: !signupWithoutPassword ? signupPassword : undefined,
-                        },
+                            password: !signupWithoutPassword ? signupPassword : undefined
+                        }
                     });
 
                     trackEvent('App', 'sign-up');
 
                     if (!signupWithoutPassword) {
-                        this.set({ signupSuccess: 'Sign up successful. Redirecting to user dashboard.' });
+                        this.set({
+                            signupSuccess: 'Sign up successful. Redirecting to user dashboard.'
+                        });
                         setTimeout(() => {
                             window.location.href = '/';
                         }, 2000);
                     } else {
                         this.set({
-                            signupSuccess: 'Please check your e-mail inbox to proceed on your desktop computer.',
-                            signingUp: false,
+                            signupSuccess:
+                                'Please check your e-mail inbox to proceed on your desktop computer.',
+                            signingUp: false
                         });
                     }
                 } catch (error) {
@@ -314,34 +372,38 @@
                 this.set({
                     requestingPassword: true,
                     loginError: '',
-                    loginSuccess: '',
+                    loginSuccess: ''
                 });
                 try {
                     await httpReq.post('/v3/auth/reset-password', {
                         payload: {
-                            email: loginEmail,
-                        },
+                            email: loginEmail
+                        }
                     });
                     this.set({ loginSuccess: __('signin / password-reset / success') });
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
                         const body = await error.response.json();
-                        this.set({ loginError: body.message ? __(`signin / password-reset / error / ${body.message}`) : error.message });
+                        this.set({
+                            loginError: body.message
+                                ? __(`signin / password-reset / error / ${body.message}`)
+                                : error.message
+                        });
                     } else {
                         this.set({ loginError: error });
                     }
                 }
                 this.set({ requestingPassword: false });
-            },
+            }
         },
         oncreate() {
             if (window.innerWidth < 740) {
                 this.set({
                     noSignin: true,
-                    signupWithoutPassword: true,
+                    signupWithoutPassword: true
                 });
             }
-        },
+        }
     };
 </script>
 

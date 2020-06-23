@@ -2,7 +2,11 @@
 
 <div>
     {#if $user.isGuest}
-    <Guest fromSvelte="true" guest_text_above="{guest_text_above}" guest_text_below="{guest_text_below}" />
+    <Guest
+        fromSvelte="true"
+        guest_text_above="{guest_text_above}"
+        guest_text_below="{guest_text_below}"
+    />
     {:elseif !$user.isActivated}
     <PendingActivation />
     {:else}
@@ -27,7 +31,7 @@
         components: {
             Publish,
             Guest,
-            PendingActivation,
+            PendingActivation
         },
         data() {
             return {
@@ -37,7 +41,7 @@
                 shareurlType: 'default',
                 beforeExport: null,
                 guest_text_above: '',
-                guest_text_below: '',
+                guest_text_below: ''
             };
         },
         onstate({ current, changed }) {
@@ -45,13 +49,13 @@
                 const p = current.afterEmbed[0];
 
                 Promise.all([loadStylesheet(p.css), loadScript(p.js)]).then(() => {
-                    require([p.module], (mod) => {
+                    require([p.module], mod => {
                         this.set({
-                            beforeExport: mod.App,
+                            beforeExport: mod.App
                         });
                     });
                 });
             }
-        },
+        }
     };
 </script>

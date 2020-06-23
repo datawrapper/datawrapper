@@ -17,7 +17,7 @@ export default debounce(function (team, settings, defaultTheme) {
         payload: {
             name: team.name,
             defaultTheme,
-            settings: settings,
-        },
+            settings: settings
+        }
     });
 }, 500);

@@ -36,7 +36,7 @@ function build(appId, opts) {
         {
             noAMD: false,
             entry: 'main.js',
-            append: '',
+            append: ''
         },
         opts
     );
@@ -48,12 +48,12 @@ function build(appId, opts) {
             name: appId,
             file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
-            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
+            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` }
         },
         plugins: [
             svelte({
                 dev: !production,
-                css: (css) => {
+                css: css => {
                     css.write(`../www/static/css/svelte/${appId}${append}.css`);
                 },
                 cascade: false,
@@ -67,20 +67,20 @@ function build(appId, opts) {
                                 {
                                     data: content,
                                     includePaths: ['src'],
-                                    sourceMap: true,
+                                    sourceMap: true
                                 },
                                 (err, result) => {
                                     if (err) return reject(err);
 
                                     resolve({
                                         code: result.css.toString(),
-                                        map: result.map.toString(),
+                                        map: result.map.toString()
                                     });
                                 }
                             );
                         });
-                    },
-                },
+                    }
+                }
             }),
 
             resolve(),
@@ -98,14 +98,17 @@ function build(appId, opts) {
                         {
                             targets: 'last 2 versions, not IE 10, not dead',
                             corejs: 3,
-                            useBuiltIns: 'entry',
-                        },
-                    ],
+                            useBuiltIns: 'entry'
+                        }
+                    ]
                 ],
-                plugins: ['babel-plugin-transform-async-to-promises', '@babel/plugin-transform-runtime'],
+                plugins: [
+                    'babel-plugin-transform-async-to-promises',
+                    '@babel/plugin-transform-runtime'
+                ]
             }),
-            production && terser(),
-        ],
+            production && terser()
+        ]
     });
 }
 

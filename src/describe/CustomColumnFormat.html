@@ -5,7 +5,10 @@
         <!-- prettier-ignore -->
         <Select label="{__('Column type')}" options="{colTypes}" bind:value="columnFormat.type" width="180px" />
 
-        <Checkbox label="{ __('Hide column from visualization') }" bind:value="columnFormat.ignore" />
+        <Checkbox
+            label="{ __('Hide column from visualization') }"
+            bind:value="columnFormat.ignore"
+        />
 
         <hr />
 
@@ -76,12 +79,12 @@
                     'number-divisor': 0,
                     'number-format': 'auto',
                     'number-prepend': '',
-                    'number-append': '',
+                    'number-append': ''
                 },
                 colTypes: [],
                 divisors_opts: [
                     { value: 0, label: __('describe / column-format / no-change') },
-                    { value: 'auto', label: __('describe / column-format / automatic') },
+                    { value: 'auto', label: __('describe / column-format / automatic') }
                 ],
                 divisors: [
                     {
@@ -89,8 +92,8 @@
                         options: [
                             { value: 3, label: '1000' },
                             { value: 6, label: '1 million' },
-                            { value: 9, label: '1 billion' },
-                        ],
+                            { value: 9, label: '1 billion' }
+                        ]
                     },
                     {
                         label: __('describe / column-format / multiply-by'),
@@ -99,9 +102,9 @@
                             { value: -3, label: '1000' },
                             { value: -6, label: '1 million' },
                             { value: -9, label: '1 billion' },
-                            { value: -12, label: '1 trillion' },
-                        ],
-                    },
+                            { value: -12, label: '1 trillion' }
+                        ]
+                    }
                 ],
                 numberFormats: [
                     {
@@ -110,8 +113,8 @@
                             { value: 'n3', label: '3 (1,234.568)' },
                             { value: 'n2', label: '2 (1,234.57)' },
                             { value: 'n1', label: '1 (1,234.6)' },
-                            { value: 'n0', label: '0 (1,235)' },
-                        ],
+                            { value: 'n0', label: '0 (1,235)' }
+                        ]
                     },
                     {
                         label: __('Significant digits'),
@@ -121,21 +124,21 @@
                             { value: 's4', label: '4 (12.34)' },
                             { value: 's3', label: '3 (1.23)' },
                             { value: 's2', label: '2 (0.12)' },
-                            { value: 's1', label: '1 (0.01)' },
-                        ],
-                    },
+                            { value: 's1', label: '1 (0.01)' }
+                        ]
+                    }
                 ],
                 roundOptions: [
                     { value: '-', label: __('describe / column-format / individual') },
-                    { value: 'auto', label: __('describe / column-format / auto-detect') },
-                ],
+                    { value: 'auto', label: __('describe / column-format / auto-detect') }
+                ]
             };
         },
         computed: {
             title({ column }) {
                 var s = __('describe / edit-column');
                 return s.replace('%s', `"${column ? column.title() || column.name() : '--'}"`);
-            },
+            }
         },
         helpers: { __ },
 
@@ -170,13 +173,15 @@
                         'number-divisor': div,
                         'number-format': 'n' + Math.max(0, ndim),
                         'number-prepend': '',
-                        'number-append': div ? mtrSuf[div] || ' × 10<sup>' + div + '</sup>' : '',
-                    },
+                        'number-append': div ? mtrSuf[div] || ' × 10<sup>' + div + '</sup>' : ''
+                    }
                 });
             },
             getColumnFormat(column) {
                 const { dw_chart } = this.store.get();
-                const columnFormats = arrayToObject(dw_chart.get('metadata.data.column-format', {}));
+                const columnFormats = arrayToObject(
+                    dw_chart.get('metadata.data.column-format', {})
+                );
                 let columnFormat = clone(columnFormats[column.name()]);
                 if (!columnFormat || columnFormat === 'auto' || columnFormat.length !== undefined) {
                     // no valid column format
@@ -186,11 +191,11 @@
                         'number-divisor': 0,
                         'number-prepend': '',
                         'number-append': '',
-                        'number-format': 'auto',
+                        'number-format': 'auto'
                     };
                 }
                 return columnFormat;
-            },
+            }
         },
 
         oncreate() {
@@ -216,8 +221,8 @@
                     { value: 'auto', label: 'auto (' + column.type() + ')' },
                     { value: 'text', label: 'Text' },
                     { value: 'number', label: 'Number' },
-                    { value: 'date', label: 'Date' },
-                ],
+                    { value: 'date', label: 'Date' }
+                ]
             });
 
             this.set({ columnFormat: this.getColumnFormat(column) });
@@ -234,7 +239,9 @@
                     const colFormat = current.columnFormat;
                     const { dw_chart } = this.store.get();
                     const column = current.column;
-                    const columnFormats = arrayToObject(clone(dw_chart.get('metadata.data.column-format', {})));
+                    const columnFormats = arrayToObject(
+                        clone(dw_chart.get('metadata.data.column-format', {}))
+                    );
                     const oldFormat = columnFormats[column.name()];
                     if (!oldFormat || JSON.stringify(oldFormat) !== JSON.stringify(colFormat)) {
                         if (colFormat['number-divisor'] === 'auto') {
@@ -250,7 +257,7 @@
                     }
                 }
             });
-        },
+        }
     };
 </script>
 

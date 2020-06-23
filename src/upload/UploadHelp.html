@@ -27,13 +27,13 @@
     export default {
         data() {
             return {
-                selectedDataset: '--',
+                selectedDataset: '--'
             };
         },
         computed: {
             datasetsArray({ datasets }) {
-                return Object.keys(datasets).map((k) => datasets[k]);
-            },
+                return Object.keys(datasets).map(k => datasets[k]);
+            }
         },
         helpers: { __ },
         // eslint-disable-next-line
@@ -42,11 +42,11 @@
                 const sel = current.selectedDataset;
                 this.set({ chartData: sel.data });
                 if (sel.presets) {
-                    Object.keys(sel.presets).forEach((k) => {
+                    Object.keys(sel.presets).forEach(k => {
                         dw.backend.currentChart.set(k, sel.presets[k]);
                     });
                 }
             }
-        },
+        }
     };
 </script>

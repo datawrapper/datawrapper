@@ -16,17 +16,36 @@
         <div class="toolbar-caption">Chart size</div>
 
         <div style="padding-top: 4px;">
-            <input id="resize-w" class="input-resize input-large" type="text" on:change="changed()" bind:value="width_txt" />
+            <input
+                id="resize-w"
+                class="input-resize input-large"
+                type="text"
+                on:change="changed()"
+                bind:value="width_txt"
+            />
             ×
-            <input id="resize-h" class="input-resize input-large" type="text" on:change="changed()" bind:value="height_txt" />
+            <input
+                id="resize-h"
+                class="input-resize input-large"
+                type="text"
+                on:change="changed()"
+                bind:value="height_txt"
+            />
         </div>
 
         {#if mode === "web"} {#each breakpoints as preset, i}
-        <div class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}" on:click="setWidth(preset.width)">
+        <div
+            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
+            on:click="setWidth(preset.width)"
+        >
             <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
         </div>
         {/each} {:elseif mode === "print"}
-        <div class="button" on:click="togglePrintOptions()" style="min-width: 12px; border-right: none;">
+        <div
+            class="button"
+            on:click="togglePrintOptions()"
+            style="min-width: 12px; border-right: none;"
+        >
             <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
         </div>
         {/if}
@@ -41,7 +60,11 @@
             {#if hasPresets}
             <div class="control-group" style="margin-bottom: 6px;">
                 <div class="controls">
-                    <select bind:value="preset" on:change="usePreset()" style="max-width: 170px; margin-bottom: 0;">
+                    <select
+                        bind:value="preset"
+                        on:change="usePreset()"
+                        style="max-width: 170px; margin-bottom: 0;"
+                    >
                         {#each presetOptions as option }
                         <option value="{option.value}">{ option.label }</option>
                         {/each}
@@ -51,7 +74,9 @@
             {/if}
         </div>
 
-        <div class="button" on:click="reset()"><i class="fa fa-undo"></i> &nbsp;Undo print changes</div>
+        <div class="button" on:click="reset()">
+            <i class="fa fa-undo"></i> &nbsp;Undo print changes
+        </div>
     </div>
     {/if}
 </div>
@@ -91,7 +116,7 @@
                 units: [
                     { value: 'mm', label: 'mm', step: 1, decimals: 0 },
                     { value: 'in', label: 'in', step: 0.01, decimals: 2 },
-                    { value: 'px', label: 'px', step: 1, decimals: 0 },
+                    { value: 'px', label: 'px', step: 1, decimals: 0 }
                 ],
                 breakpoints: [
                     {
@@ -99,25 +124,25 @@
                         iconSize: 14,
                         minWidth: 0,
                         maxWidth: 320,
-                        width: 320,
+                        width: 320
                     },
                     {
                         icon: 'fa-mobile',
                         iconSize: 17,
                         minWidth: 321,
                         maxWidth: 400,
-                        width: 400,
+                        width: 400
                     },
                     {
                         icon: 'fa-desktop',
                         iconSize: 14,
                         minWidth: 401,
                         maxWidth: Infinity,
-                        width: 600,
-                    },
+                        width: 600
+                    }
                 ],
                 hasPresets: false,
-                printExpanded: false,
+                printExpanded: false
             };
         },
         computed: {
@@ -133,7 +158,14 @@
                 }
             },
             hasPresets({ theme }) {
-                return theme && theme && theme.export && theme.export.presets && theme.export.presets.pdf && theme.export.presets.pdf.length;
+                return (
+                    theme &&
+                    theme &&
+                    theme.export &&
+                    theme.export.presets &&
+                    theme.export.presets.pdf &&
+                    theme.export.presets.pdf.length
+                );
             },
             presets({ hasPresets, theme }) {
                 if (!hasPresets) return [];
@@ -145,17 +177,17 @@
                 var presets = theme.export.presets.pdf.map((el, i) => {
                     return {
                         value: i,
-                        label: el.title,
+                        label: el.title
                     };
                 });
 
                 presets.unshift({
                     value: '---',
-                    label: 'Apply preset…',
+                    label: 'Apply preset…'
                 });
 
                 return presets;
-            },
+            }
         },
         helpers: { __ },
         methods: {
@@ -173,7 +205,7 @@
                 this.debounceUpdateSize = setTimeout(function () {
                     app.set({
                         width: app.get().width_txt,
-                        height: app.get().height_txt,
+                        height: app.get().height_txt
                     });
                 }, 100);
             },
@@ -203,8 +235,13 @@
                             method: 'POST',
                             success: function (response) {
                                 window.location =
-                                    window.location.protocol + '//' + window.location.host + '/chart/' + response.data.chartId + '/visualize';
-                            },
+                                    window.location.protocol +
+                                    '//' +
+                                    window.location.host +
+                                    '/chart/' +
+                                    response.data.chartId +
+                                    '/visualize';
+                            }
                         });
                     }
                 }
@@ -226,7 +263,7 @@
                     method: 'DELETE',
                     success: function () {
                         window.location.reload();
-                    },
+                    }
                 });
             },
             updateSize() {
@@ -243,20 +280,20 @@
                     {
                         width: w,
                         height: h,
-                        'margin-left': (maxW - w) * 0.5,
+                        'margin-left': (maxW - w) * 0.5
                     },
                     {
                         duration: 200,
                         step: function () {
                             $(this).css('overflow', 'visible');
-                        },
+                        }
                     }
                 );
 
                 $('.visconfig')
                     .css('min-height', +h + 250)
                     .animate({
-                        left: Math.min(0, maxW - w) / 2,
+                        left: Math.min(0, maxW - w) / 2
                     });
 
                 dw.backend.fire('chart-resize');
@@ -334,7 +371,7 @@
 
                     app.set({
                         width: $('#iframe-vis').width(),
-                        height: $('#iframe-vis').height(),
+                        height: $('#iframe-vis').height()
                     });
 
                     iframe.css('pointer-events', 'initial');
@@ -364,16 +401,19 @@
                             h = message['datawrapper-height'][chartId];
                         }
 
-                        if (!$('#iframe-vis').hasClass('resizing') && $('#iframe-vis').is(':visible')) {
+                        if (
+                            !$('#iframe-vis').hasClass('resizing') &&
+                            $('#iframe-vis').is(':visible')
+                        ) {
                             app.setHeight(h);
                         }
                     }
                 });
-            },
+            }
         },
         oncreate() {
             this.set({
-                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web'),
+                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web')
             });
         },
         onstate({ changed, current, previous }) {
@@ -384,13 +424,14 @@
             if (changed.unit && !changed.width && !changed.height) {
                 // changed unit, let's recompute
 
-                const factor = current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1 / DPI;
+                const factor =
+                    current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1 / DPI;
 
                 this.set({
                     width: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
                     height: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
                     width_txt: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
-                    height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
+                    height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals)
                 });
             }
 
@@ -400,7 +441,7 @@
                         width: dw.backend.currentChart.get('metadata.publish.embed-width'),
                         height: dw.backend.currentChart.get('metadata.publish.embed-height'),
                         width_txt: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height'),
+                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height')
                     });
 
                     this.registerDragAndDropListener();
@@ -410,11 +451,23 @@
                     app.updateSize();
                 } else {
                     this.set({
-                        width: dw.backend.currentChart.get('metadata.publish.export-pdf.width', 120),
-                        height: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
-                        width_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.width', 120),
-                        height_txt: dw.backend.currentChart.get('metadata.publish.export-pdf.height', 80),
-                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm'),
+                        width: dw.backend.currentChart.get(
+                            'metadata.publish.export-pdf.width',
+                            120
+                        ),
+                        height: dw.backend.currentChart.get(
+                            'metadata.publish.export-pdf.height',
+                            80
+                        ),
+                        width_txt: dw.backend.currentChart.get(
+                            'metadata.publish.export-pdf.width',
+                            120
+                        ),
+                        height_txt: dw.backend.currentChart.get(
+                            'metadata.publish.export-pdf.height',
+                            80
+                        ),
+                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm')
                     });
 
                     app.updateSize();
@@ -424,6 +477,6 @@
             if ((changed.width_px || changed.height_px) && current.width_px && current.height_px) {
                 app.updateSize();
             }
-        },
+        }
     };
 </script>

@@ -7,8 +7,8 @@ const store = new Store({});
 
 const data = {
     chart: {
-        id: '',
-    },
+        id: ''
+    }
 };
 
 function init(app) {

@@ -1,6 +1,16 @@
-<FormBlock label="{__('teams / invite-user' )}" help="{__('teams / invite-user / help' )}" success="{successMessage}" error="{errorMessage}">
+<FormBlock
+    label="{__('teams / invite-user' )}"
+    help="{__('teams / invite-user / help' )}"
+    success="{successMessage}"
+    error="{errorMessage}"
+>
     <div class="flex">
-        <input type="text" bind:value="inviteeEmail" width="1px" placeholder="{__('teams / invite-user / eg' )}" />&nbsp;
+        <input
+            type="text"
+            bind:value="inviteeEmail"
+            width="1px"
+            placeholder="{__('teams / invite-user / eg' )}"
+        />&nbsp;
         <DropdownMenu
             disabled="{!isValidEmail}"
             label="<i class='fa { currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
@@ -27,8 +37,8 @@
                     errorCode: null,
                     responseData: null,
                     type: '',
-                    role: '',
-                },
+                    role: ''
+                }
             };
         },
         computed: {
@@ -37,7 +47,9 @@
                 if (!isComplete || isError) return;
 
                 const message = __(`teams / invite-user / ${type} / success`);
-                return message.replace('$1', inviteeEmail).replace('$2', __(`teams / role / ${role}`));
+                return message
+                    .replace('$1', inviteeEmail)
+                    .replace('$2', __(`teams / role / ${role}`));
             },
             errorMessage({ inviteeEmail, currentAction }) {
                 const { isComplete, isError, errorCode, responseData, type } = currentAction;
@@ -47,7 +59,10 @@
                 // if an error code is known to us,
                 // otherwise we show a generic 'server error' message
                 const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
-                const maxTeamInvites = errorCode === 406 && responseData && responseData.maxTeamInvites ? responseData.maxTeamInvites : null;
+                const maxTeamInvites =
+                    errorCode === 406 && responseData && responseData.maxTeamInvites
+                        ? responseData.maxTeamInvites
+                        : null;
 
                 const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
                 return message.replace('$1', inviteeEmail).replace('$2', maxTeamInvites);
@@ -57,68 +72,90 @@
                     inviteeEmail
                 );
             },
-            inviteOptions({ isAdmin, isTeamOwner, inviteeEmail, isValidEmail, inviteeExistsLoading, inviteeExists }) {
+            inviteOptions({
+                isAdmin,
+                isTeamOwner,
+                inviteeEmail,
+                isValidEmail,
+                inviteeExistsLoading,
+                inviteeExists
+            }) {
                 const options = [
                     {
-                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / member')}`,
+                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                            'teams / role / member'
+                        )}`,
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('member');
-                        },
+                        }
                     },
                     {
-                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / admin')}`,
+                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                            'teams / role / admin'
+                        )}`,
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('admin');
-                        },
-                    },
+                        }
+                    }
                 ];
 
                 if (isAdmin || isTeamOwner) {
                     options.push({
-                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__('teams / role / owner')}`,
+                        label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                            'teams / role / owner'
+                        )}`,
                         disabled: !isValidEmail,
                         action() {
                             teamSettingsInvite.inviteUser('owner');
-                        },
+                        }
                     });
                 }
 
                 if (isAdmin) {
                     options.push(
                         {
-                            label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
-                                'teams / add-as'
-                            ).replace('%s', __('teams / role / member'))}</span>`,
+                            label: `<span class="red"><i class="fa ${
+                                inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                            }"></i> &nbsp;${__('teams / add-as').replace(
+                                '%s',
+                                __('teams / role / member')
+                            )}</span>`,
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('member');
-                            },
+                            }
                         },
                         {
-                            label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
-                                'teams / add-as'
-                            ).replace('%s', __('teams / role / admin'))}</span>`,
+                            label: `<span class="red"><i class="fa ${
+                                inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                            }"></i> &nbsp;${__('teams / add-as').replace(
+                                '%s',
+                                __('teams / role / admin')
+                            )}</span>`,
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('admin');
-                            },
+                            }
                         },
                         {
-                            label: `<span class="red"><i class="fa ${inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'}"></i> &nbsp;${__(
-                                'teams / add-as'
-                            ).replace('%s', __('teams / role / owner'))}</span>`,
+                            label: `<span class="red"><i class="fa ${
+                                inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                            }"></i> &nbsp;${__('teams / add-as').replace(
+                                '%s',
+                                __('teams / role / owner')
+                            )}</span>`,
                             disabled: !inviteeExists,
                             action() {
                                 teamSettingsInvite.addUser('owner');
-                            },
+                            }
                         }
                     );
                 }
 
                 return options;
-            },
+            }
         },
         helpers: { __ },
         methods: {
@@ -132,8 +169,8 @@
                     raw: true,
                     payload: {
                         userId: inviteeUserId,
-                        role,
-                    },
+                        role
+                    }
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -145,7 +182,7 @@
                     errorCode: !response.ok ? response.status : null,
                     responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
                     type: 'add',
-                    role,
+                    role
                 };
 
                 this.set({ currentAction });
@@ -160,8 +197,8 @@
                     raw: true,
                     payload: {
                         email: inviteeEmail,
-                        role,
-                    },
+                        role
+                    }
                 });
 
                 const responseJSON = !response.ok ? await response.json() : null;
@@ -173,7 +210,7 @@
                     errorCode: !response.ok ? response.status : null,
                     responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
                     type: 'invite',
-                    role,
+                    role
                 };
 
                 this.set({ currentAction });
@@ -201,16 +238,16 @@
 
                 if (json.list.length > 0) {
                     inviteeEmail = this.get().inviteeEmail;
-                    json.list.forEach((el) => {
+                    json.list.forEach(el => {
                         if (el.email.toLowerCase() === inviteeEmail.toLowerCase()) {
                             this.set({
                                 inviteeExists: true,
-                                inviteeUserId: el.id,
+                                inviteeUserId: el.id
                             });
                         }
                     });
                 }
-            },
+            }
         },
         oncreate() {
             window.teamSettingsInvite = this;
@@ -220,7 +257,7 @@
                 this.set({ inviteeExists: false });
                 this.debounceCheckUser();
             }
-        },
+        }
     };
 </script>
 
