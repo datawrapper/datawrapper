@@ -56,13 +56,25 @@ class DatawrapperSession {
         $h = getallheaders();
         if (!empty($h['Authorization'])) {
             $authHeader = explode(' ', $h['Authorization']);
-            if ($authHeader[0] == 'Bearer') {
-                $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
-                if ($auth) {
-                    $this->user = $auth->getUser();
-                    $this->method = 'token';
-                    $auth->use();
-                    return;
+            if ($authHeader[0] == 'Bearer' && !empty($authHeader[1])) {
+                $pdo = Propel::getConnection();
+                $stmt = $pdo->prepare('SELECT user_id FROM access_token WHERE `type` = "api-token" AND token = :token');
+                $stmt->bindParam(':token', $authHeader[1]);
+                $stmt->execute();
+                $res = $stmt->fetch();
+
+                if ($res && !empty($res['user_id'])) {
+                    $user_id = $res['user_id'];
+                    $user = UserQuery::create()->findPK($user_id);
+                    if ($user && $user->isActivated()) {
+                        $this->user = $user;
+                        $this->method = 'token';
+                        $stmt = $pdo->prepare('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = :userId AND token = :token');
+                        $stmt->bindParam(':userId', $user_id);
+                        $stmt->bindParam(':token', $authHeader[1]);
+                        $stmt->execute();
+                        return;
+                    }
                 }
             }
         }
