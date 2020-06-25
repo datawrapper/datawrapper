@@ -19,8 +19,8 @@
 </Switch>
 
 <script>
-    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
     import { Switch, Checkbox } from '@datawrapper/controls';
 
     export default {
@@ -37,17 +37,9 @@
         },
         helpers: { __ },
         methods: {
-            fetchAPI(url, opts) {
-                return window.fetch(`//${dw.backend.__api_domain}/v3/${url}`, opts);
-            },
             async deleteTeam() {
                 this.set({ deleting: true });
-
-                await this.fetchAPI(`teams/${this.get().team.id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
+                await httpReq.delete(`/v3/teams/${this.get().team.id}`);
                 window.location = '/';
             }
         }

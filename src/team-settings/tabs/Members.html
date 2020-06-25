@@ -86,7 +86,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import UserTable from './members/UserTable.html';
     import InviteUser from './members/InviteUser.html';
-    import fetchAPI from '../fetchAPI';
+    import httpReq from '@datawrapper/shared/httpReq';
 
     export default {
         components: {
@@ -114,11 +114,11 @@
             updateUsers() {
                 const { team } = this.get();
                 this.set({
-                    awaitLoadingUsers: fetchAPI(`/v3/teams/${team.id}/members?limit=1000`).then(
-                        res => {
+                    awaitLoadingUsers: httpReq
+                        .get(`/v3/teams/${team.id}/members?limit=1000`)
+                        .then(res => {
                             this.set({ users: res.list });
-                        }
-                    )
+                        })
                 });
             }
         },
