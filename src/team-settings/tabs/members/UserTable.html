@@ -1,6 +1,7 @@
 <p>
-    {#if numUsers === 1} { __('teams / total / 1') } {:elseif numUsers > 1} // prettier-ignore {
-    __('teams / total').replace('%i%', numUsers) } {/if} { @html numChartsCaption }
+    {#if numUsers === 1} { __('teams / total / 1') } {:elseif numUsers > 1}
+    <!-- prettier-ignroe -->
+    { __('teams / total').replace('%i%', numUsers) } {/if} { @html numChartsCaption }
 </p>
 
 {#if sortedUsers.length}
