@@ -205,7 +205,7 @@ class Chart extends BaseChart {
     public function refreshExternalData() {
         $url = $this->getExternalData();
 
-        if (!empty($url) || $this->getMetadata('metadata.data.upload-method') === 'google-spreadsheet') {
+        if (!empty($url) || $this->getMetadata('data.upload-method') === 'google-spreadsheet') {
             [$status, $body] = call_v3_api('POST', '/external-data/refresh/' . $this->getId());
         }
     }
