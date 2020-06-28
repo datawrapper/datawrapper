@@ -172,7 +172,6 @@ class DatawrapperHooks {
     // hooks to add markup in chart editor steps below nav
     const BEFORE_EDITOR_NAV = 'before_editor_nav';
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';
-    const UPLOAD_AFTER_DEMO_DATASETS = 'upload_after_demo_datasets';
     const UPLOAD_AFTER_CONTENT = 'upload_after_content';
     const DESCRIBE_BEFORE_CONTENT = 'describe_before_content';
     const DESCRIBE_BEFORE_SIDEBAR = 'describe_before_sidebar';
