@@ -251,8 +251,6 @@
     import { trackEvent } from '@datawrapper/shared/analytics';
     import get from '@datawrapper/shared/get';
 
-    import computeEmbedHeights from './compute-embed-heights';
-
     let initial_auto_publish = true;
 
     export default {
@@ -337,16 +335,10 @@
                     progress: [],
                     publish_error: false
                 });
-                // generate embed codes
-                chart.metadata.publish['embed-heights'] = computeEmbedHeights(
-                    chart,
-                    me.get().embed_templates
-                );
 
                 // update charts
                 me.set({ chart });
-                // save embed heights and wait until it's done before
-                // we start to publish the chart
+
                 trackEvent('Chart Editor', 'publish');
 
                 window.chart
