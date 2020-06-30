@@ -12,7 +12,7 @@
 
 <script>
     /* globals dw */
-    import { putJSON } from '@datawrapper/shared/fetch';
+    import httpReq from '@datawrapper/shared/httpReq';
     import _throttle from 'underscore-es/throttle';
     import { __ } from '@datawrapper/shared/l10n';
 
@@ -21,7 +21,12 @@
 
     const updateData = _throttle(() => {
         const { chartData } = app.get();
-        putJSON(`/api/charts/${chart.get('id')}/data`, chartData);
+        httpReq.put(`/v3/charts/${chart.get('id')}/data`, {
+            body: chartData,
+            headers: {
+                'Content-Type': 'text/csv'
+            }
+        });
     }, 1000);
 
     export default {
