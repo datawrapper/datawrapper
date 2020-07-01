@@ -28,7 +28,8 @@
             {/if} {/if}
         </td>
         <td>
-            {#if isAdmin || isTeamOwner || (!isTeamOwner && user.role != 'owner')} {#if editId === user.id }
+            {#if isAdmin || isTeamOwner || (!isTeamOwner && user.role != 'owner')}
+            {#if editId === user.id }
             <button on:click="toggleEdit(user.id)" class="btn btn-primary">
                 <i class="fa fa-check"></i>&nbsp; { __('teams / save' ) }
             </button>
