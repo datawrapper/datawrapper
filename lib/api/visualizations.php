@@ -11,6 +11,7 @@
 
 
 $app->get('/visualizations', function() {
+    if (!check_scopes(['visualization:read'])) return;
     if (false && isset($_SESSION['dw-visualizations'])) {
         // read from session cache
         // ToDo: use user-independend cache here (e.g. memcache)
@@ -25,6 +26,7 @@ $app->get('/visualizations', function() {
 });
 
 $app->get('/visualizations/:visid', function($visid) {
+    if (!check_scopes(['visualization:read'])) return;
     $res = DatawrapperVisualization::get($visid);
     ok($res);
 });

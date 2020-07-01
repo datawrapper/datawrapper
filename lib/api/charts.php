@@ -4,6 +4,7 @@
  * API: get list of all charts by the current user
  */
 $app->get('/charts', function() use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     $user = Session::getUser();
     if ($user->isLoggedIn()) {
         $filter = array();
@@ -44,6 +45,7 @@ $app->get('/charts', function() use ($app) {
  * API: create a new empty chart
  */
 $app->post('/charts', function() {
+    if (!check_scopes(['chart:write'])) return;
     $user = Session::getUser();
     try {
         $chart = ChartQuery::create()->createEmptyChart($user);
@@ -60,6 +62,7 @@ $app->post('/charts', function() {
  * @param id chart id
  */
 $app->get('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     $chart = ChartQuery::create()->findPK($id);
     $user = Session::getUser();
     if (!empty($chart) && $chart->isReadable($user)) {
@@ -120,6 +123,7 @@ function if_chart_exists($id, $callback) {
 
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         if (!empty($GLOBALS['dw_config']['lock-utf8-charts']) && $chart->getUtf8() == 1) {
             return error('chart-locked', 'the chart is temporarily locked due to a database migration');
@@ -141,6 +145,7 @@ $app->put('/charts/:id', function($id) use ($app) {
  * @param chart_id chart id
  */
 $app->get('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $data = $chart->loadData();
         $app->response()->header('Content-Type', 'text/csv;charset=utf-8');
@@ -155,6 +160,7 @@ $app->get('/charts/:id/data', function($chart_id) use ($app) {
  * @param chart_id chart id
  */
 $app->put('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         if (!$chart->isDataWritable($user)) {
             error('read-only', 'the data is read-only');
@@ -177,6 +183,7 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         if (!$chart->isDataWritable($user)) {
@@ -233,6 +240,7 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
 
 /* delete chart */
 $app->delete('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         $chart->setDeleted(true);
         $chart->setDeletedAt(time());
@@ -274,6 +282,7 @@ function if_chart_is_readable($chart_id, $callback) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if (!Session::isLoggedIn()) {
         return error('error', 'you need to be logged in to duplicate a chart');
     }
@@ -327,6 +336,7 @@ function if_chart_is_forkable($chart_id, $callback) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/fork', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
         try {
             $fork = ChartQuery::create()->copyPublicChart($chart, $user);
