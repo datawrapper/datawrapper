@@ -5,6 +5,7 @@
  * @needs admin
  */
 $app->get('/users', function() use ($app) {
+    if (!check_scopes(['user:read'])) return;
     $user = Session::getUser();
     if ($user->isAdmin()) {
         $userQuery = UserQuery::create()->filterByDeleted(false);
@@ -23,6 +24,7 @@ $app->get('/users', function() use ($app) {
 });
 
 $app->get('/users/:id', function($id) use ($app) {
+    if (!check_scopes(['user:read'])) return;
     $user = Session::getUser();
     if ($user->isAdmin()) {
         ok(UserQuery::create()->findPK($id)->toArray());
@@ -39,6 +41,7 @@ function email_exists($email) {
 }
 
 $app->post('/user/:id/products', function($id) use ($app) {
+    if (!check_scopes(['user:write'])) return;
 	if_is_admin(function() use ($app, $id) {
 		$user = UserQuery::create()->findPk($id);
 		if ($user) {
@@ -65,6 +68,7 @@ $app->post('/user/:id/products', function($id) use ($app) {
 });
 
 $app->get('/user/data/:key', function($key) use ($app) {
+    if (!check_scopes(['user:read'])) return;
     $user = Session::getUser();
     if ($user->isLoggedIn()) {
         $userData = $user->getUserData();
@@ -75,6 +79,7 @@ $app->get('/user/data/:key', function($key) use ($app) {
 });
 
 $app->post('/user/data', function() use ($app) {
+    if (!check_scopes(['user:write'])) return;
     $user = Session::getUser();
     if ($user->isLoggedIn()) {
         $data = json_decode($app->request()->getBody(), true);

@@ -11,6 +11,7 @@
 
 
 $app->get('/themes', function() {
+    if (!check_scopes(['theme:read'])) return;
     $res = ThemeQuery::create()->allThemesForUser();
     $data = [];
     forEach($res as $theme) {
@@ -24,9 +25,10 @@ $app->get('/themes', function() {
 });
 
 $app->get('/themes/:themeid', function($themeid) {
+    if (!check_scopes(['theme:read'])) return;
     global $app;
     $user = DatawrapperSession::getUser();
     $theme = ThemeQuery::create()->findUserTheme($user, $themeid);
-    if (!$theme) return error(404, 'there is no theme with that id');    
+    if (!$theme) return error(404, 'there is no theme with that id');
     ok($theme->serialize($app->request()->get('includeAll')));
 });

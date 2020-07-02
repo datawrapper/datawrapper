@@ -4,6 +4,7 @@
  * list all organizations in which the current user is a member
  */
 $apiTeamsGetUserTeams = function() use ($app) {
+    if (!check_scopes(['team:read'])) return;
     $user = DatawrapperSession::getUser();
 
     if (!$user->isLoggedIn()) {
@@ -28,6 +29,7 @@ $app->get('/(organizations|teams)/user', $apiTeamsGetUserTeams);
  * toggle plugin permissions of organization
  */
 $app->put('/(organizations|teams)/:id/plugins/:op/:plugin_id', function($org_id, $op, $plugin_id) use ($app) {
+    if (!check_scopes(['team:write'])) return;
     if_is_admin(function() use ($app, $org_id, $op, $plugin_id) {
         $org = OrganizationQuery::create()->findPk($org_id);
         $plugin = PluginQuery::create()->findPk($plugin_id);
@@ -75,6 +77,7 @@ $app->put('/(organizations|teams)/:id/plugins/:op/:plugin_id', function($org_id,
  * get charts of an organization
  */
 $app->get('/(organizations|teams)/:id/charts', function($org_id) use ($app) {
+    if (!check_scopes(['team:read', 'chart:read'])) return;
     disable_cache($app);
     $user = DatawrapperSession::getUser();
     $org = OrganizationQuery::create()->findPk($org_id);

@@ -7,6 +7,7 @@
 
 // change plugin status
 $app->put('/plugins/:id/:action', function($plugin_id, $action) use ($app) {
+    if (!check_scopes(['plugin:write'])) return;
     if_is_admin(function() use ($plugin_id, $action) {
         $plugin = PluginQuery::create()->findPk($plugin_id);
         if ($plugin) {
