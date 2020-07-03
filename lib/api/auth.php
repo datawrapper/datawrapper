@@ -2,6 +2,8 @@
 
 /* get session info */
 $app->get('/account', function() {
+    if (!check_scopes(['user:read'])) return;
+
     try {
         $r = Session::toArray();
         ok($r);
@@ -12,11 +14,13 @@ $app->get('/account', function() {
 
 /* get current language */
 $app->get('/account/lang', function() use ($app) {
+    if (!check_scopes(['user:read'])) return;
     ok(Session::getLanguage());
 });
 
 /* set a new language */
 $app->put('/account/lang', function() use ($app) {
+    if (!check_scopes(['user:write'])) return;
     $data = json_decode($app->request()->getBody());
     Session::setLanguage( $data->lang );
     ok();

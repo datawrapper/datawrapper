@@ -58,7 +58,7 @@ class DatawrapperSession {
             $authHeader = explode(' ', $h['Authorization']);
             if ($authHeader[0] == 'Bearer' && !empty($authHeader[1])) {
                 $pdo = Propel::getConnection();
-                $stmt = $pdo->prepare('SELECT user_id FROM access_token WHERE `type` = "api-token" AND token = :token');
+                $stmt = $pdo->prepare('SELECT user_id, data FROM access_token WHERE `type` = "api-token" AND token = :token');
                 $stmt->bindParam(':token', $authHeader[1]);
                 $stmt->execute();
                 $res = $stmt->fetch();
@@ -69,6 +69,15 @@ class DatawrapperSession {
                     if ($user && $user->isActivated()) {
                         $this->user = $user;
                         $this->method = 'token';
+                        if (!empty($res['data'])) {
+                            $data = json_decode($res['data'], true);
+                            if (!empty($data['scopes'])) {
+                                $this->scopes = $data['scopes'];
+                            }
+                        }
+                        if (empty($this->scopes)) {
+                            $this->scopes = ['all'];
+                        }
                         $stmt = $pdo->prepare('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = :userId AND token = :token');
                         $stmt->bindParam(':userId', $user_id);
                         $stmt->bindParam(':token', $authHeader[1]);
@@ -87,6 +96,7 @@ class DatawrapperSession {
                 (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
                 $this->method = 'session';
+                $this->scopes = ['all'];
                 $_SESSION['last_action_time'] = time();
             }
         }
@@ -97,6 +107,7 @@ class DatawrapperSession {
             $user->setRole('guest');
             $user->setLanguage(self::getBrowserLocale());
             $this->user = $user;
+            $this->scopes = ['all'];
         }
     }
 
@@ -291,6 +302,15 @@ class DatawrapperSession {
 
     public static function setChartMetaData($chart_id, $chart_info) {
 
+    }
+
+    public function _hasScope($scope) {
+        return in_array($scope, $this->scopes) ||
+            in_array('all', $this->scopes);
+    }
+
+    public static function hasScope($scope) {
+        return self::getInstance()->_hasScope($scope);
     }
 }
 

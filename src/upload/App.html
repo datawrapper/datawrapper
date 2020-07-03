@@ -74,7 +74,7 @@
     import SelectSheet from './SelectSheet.html';
     import readFile from './readFile';
     import readSpreadsheet from './readSpreadsheet';
-    import { putJSON } from '@datawrapper/shared/fetch';
+    import httpReq from '@datawrapper/shared/httpReq';
     import { __ } from '@datawrapper/shared/l10n';
 
     let app;
@@ -97,22 +97,22 @@
             mainPanel: TextAreaUpload,
             sidebar: UploadHelp,
             isFileUpload: true,
-            onFileUpload(event) {
+            async onFileUpload(event) {
                 const file = event.target.files[0];
                 if (
                     file.type.substr(0, 5) === 'text/' ||
                     file.name.substr(file.name.length - 4) === '.csv'
                 ) {
                     app.set({ Sidebar: UploadHelp });
-                    readFile(file, (err, result) => {
+                    readFile(file, async (err, result) => {
                         if (err) return console.error('could not read file', err);
-                        putJSON(
-                            `/api/charts/${dw.backend.currentChart.get('id')}/data`,
-                            result,
-                            () => {
-                                window.location.href = 'describe';
+                        await httpReq.put(`/v3/charts/${dw.backend.currentChart.get('id')}/data`, {
+                            body: result,
+                            headers: {
+                                'Content-Type': 'text/csv'
                             }
-                        );
+                        });
+                        window.location.href = 'describe';
                     });
                 } else if (file.type.substr(0, 12) === 'application/') {
                     app.set({ Sidebar: SelectSheet, sheets: [] }); // reset
@@ -223,15 +223,20 @@
                 }
                 for (let i = 0; i < files.length; i++) {
                     if (files[i].type.substr(0, 5) === 'text/') {
-                        return readFile(files[i], (err, result) => {
+                        return readFile(files[i], async (err, result) => {
                             if (err) return console.error('could not read file', err);
-                            putJSON(
-                                `/api/charts/${dw.backend.currentChart.get('id')}/data`,
-                                result,
-                                () => {
-                                    window.location.href = 'describe';
+
+                            await httpReq.put(
+                                `/v3/charts/${dw.backend.currentChart.get('id')}/data`,
+                                {
+                                    body: result,
+                                    headers: {
+                                        'Content-Type': 'text/csv'
+                                    }
                                 }
                             );
+
+                            window.location.href = 'describe';
                         });
                     }
                 }

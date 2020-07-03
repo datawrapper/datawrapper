@@ -8,7 +8,6 @@ define([
     './backend/initializeSignUp',
     './backend/initLanguageLinks',
     './backend/initializeLogout',
-    './backend/snapshot',
     './backend/checkPassword',
     './backend/ui/ColorSelector',
     './backend/ui/NumberStepper',
@@ -19,7 +18,7 @@ define([
     ],
 
 function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
-    snapshot, checkPassword, ColorSelector, NumberStepper, popupChart,
+    checkPassword, ColorSelector, NumberStepper, popupChart,
     notification, setUserData, cmsMode) {
 
     var backend = {};
@@ -46,7 +45,6 @@ function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
 
         syncChart: syncChart,
         popupChart: popupChart,
-        snapshot: snapshot,
         checkPassword: checkPassword,
         setUserData: setUserData,
         cmsMode: cmsMode

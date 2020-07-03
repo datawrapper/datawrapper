@@ -304,8 +304,6 @@
 
     import Action from './Action.html';
 
-    import computeEmbedHeights from './compute-embed-heights';
-
     let initial_auto_publish = true;
 
     export default {
@@ -391,14 +389,7 @@
                 });
 
                 const chart = this.store;
-                // generate embed codes
-                chart.setMetadata(
-                    'publish.embed-heights',
-                    computeEmbedHeights(chart, this.get().embed_templates)
-                );
 
-                // save embed heights and wait until it's done before
-                // we start to publish the chart
                 trackEvent('Chart Editor', 'publish');
 
                 const chartId = chart.get().id;
