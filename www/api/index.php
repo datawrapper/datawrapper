@@ -58,6 +58,18 @@ function get_user_ips() {
     return $ips;
 }
 
+function check_scopes($scopes) {
+    foreach ($scopes as $scope) {
+        if (!Session::hasScope($scope)) {
+            global $app;
+            $app->response()->status(403);
+            error('access-denied', 'Insufficient scope');
+            return false;
+        }
+    }
+    return true;
+}
+
 function if_is_admin($callback, $elseCallback=null) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {

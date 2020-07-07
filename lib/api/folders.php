@@ -120,6 +120,7 @@
      * get list of folders for current user
      */
     $app->get('/folders', function() {
+        if (!check_scopes(['folder:read'])) return;
         $user = DatawrapperSession::getUser();
         ok(FolderQuery::create()->getParsableFolders($user));
     });
@@ -129,6 +130,7 @@
      * get single folder
      */
     $app->get('/folders/:folder_id', function($folder_id) {
+        if (!check_scopes(['folder:read'])) return;
         $user = DatawrapperSession::getUser();
         $folder = FolderQuery::create()->findPk($folder_id);
 
@@ -145,6 +147,7 @@
      * create a new folder
      */
     $app->post('/folders', function() use ($app, $upsertFolder) {
+        if (!check_scopes(['folder:write'])) return;
         $user = DatawrapperSession::getUser();
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to create a folder');
@@ -165,6 +168,7 @@
      * update a folder name or change parent folder
      */
     $app->put('/folders/:folder_id', function($folder_id) use ($app, $upsertFolder) {
+        if (!check_scopes(['folder:write'])) return;
         $user = DatawrapperSession::getUser();
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to update a folder');
@@ -189,6 +193,7 @@
      * remove a folder, but move charts to parent folder first
      */
     $app->delete('/folders/:folder_id', function($folder_id) {
+        if (!check_scopes(['folder:write'])) return;
         $user = DatawrapperSession::getUser();
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to delete a folder');
@@ -217,6 +222,7 @@
      * move charts into root folder
      */
     $app->put('/folders/root(/:org_id)?', function($org_id = false) use ($app){
+        if (!check_scopes(['folder:write'])) return;
         $user = DatawrapperSession::getUser();
         if (!$user->isLoggedIn())
             return error('access-denied', 'you must be logged in to create a folder');

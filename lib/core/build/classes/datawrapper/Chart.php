@@ -204,25 +204,10 @@ class Chart extends BaseChart {
 
     public function refreshExternalData() {
         $url = $this->getExternalData();
-        if (!empty($url)) {
-            $ch = curl_init($url);
-            curl_setopt_array($ch, [
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_CONNECTTIMEOUT => 5,
-                CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS |  CURLPROTO_FTP
-            ]);
-            $new_data = curl_exec($ch);
-            // check status code to ignore error responses
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if ($statusCode < 400) {
-                // check encoding of data
-                $new_data = str_to_unicode($new_data);
-                if (!empty($new_data)) $this->writeData($new_data);
-            }
+
+        if (!empty($url) || $this->getMetadata('data.upload-method') === 'google-spreadsheet') {
+            call_v3_api('POST', '/charts/' . $this->getId() . '/data/refresh');
         }
-        Hooks::execute(Hooks::CUSTOM_EXTERNAL_DATA, $this);
     }
 
     /*
