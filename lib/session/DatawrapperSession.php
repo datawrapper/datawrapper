@@ -59,7 +59,7 @@ class DatawrapperSession {
             unset($cookieOpts['lifetime']);
             $cookieOpts['expires'] = time() + $lifetime;
             $cookieOpts['samesite'] = (isset($_SESSION['type']) && $_SESSION['type']
-                == 'login-token') ? 'None' : 'Strict';
+                == 'token') ? 'None' : 'Strict';
             setcookie($ses, $_COOKIE[$ses], $cookieOpts);
         }
     }
