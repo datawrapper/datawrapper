@@ -6,7 +6,7 @@ define(function() {
         .attr('contenteditable', true)
         .off('focus').on('focus', function(evt) {
             var tgt = $(evt.target);
-            if (tgt.is('.chart-title')) {
+            if (tgt.is('.headline-block .block-inner')) {
                 var txt = tgt.text();
                 if (txt.substr(0,2) == '[ ' && txt.substr(txt.length-2) == ' ]') {
                     evt.target.ownerDocument.execCommand('selectAll',false,null);
@@ -56,26 +56,26 @@ define(function() {
                 }
             });
 
-        $('.chart-title', doc)
+        $('.headline-block .block-inner', doc)
             .initInlineEditing()
             .off('blur').on('blur', function() {
-                var new_val = $('.chart-title', doc).html();
+                var new_val = $('.headline-block .block-inner', doc).html();
                 chart.set('title', new_val);
                 $('#text-title').val(new_val);
             });
 
-        $('.chart-intro', doc)
+        $('.description-block .block-inner', doc)
             .initInlineEditing()
             .off('blur').on('blur', function() {
-                chart.set('metadata.describe.intro', $('.chart-intro', doc).html());
-                $('#text-intro').val($('.chart-intro', doc).html());
+                chart.set('metadata.describe.intro', $('.description-block .block-inner', doc).html());
+                $('#text-intro').val($('.description-block .block-inner', doc).html());
             });
 
-        $('.dw-chart-notes', doc)
+        $('.notes-block .block-inner', doc)
             .initInlineEditing()
             .off('blur').on('blur', function() {
-                chart.set('metadata.annotate.notes', $('.dw-chart-notes', doc).html());
-                $('#text-notes').val($('.dw-chart-notes', doc).html());
+                chart.set('metadata.annotate.notes', $('.notes-block .block-inner', doc).html());
+                $('#text-notes').val($('.notes-block .block-inner', doc).html());
             });
 
         $('.label[data-key] span', doc)
