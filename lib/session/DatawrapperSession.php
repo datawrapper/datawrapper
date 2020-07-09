@@ -41,7 +41,7 @@ class DatawrapperSession {
             'domain' => $domain,
             'secure' => get_current_protocol() === 'https',
             'httponly' => true,
-            'SameSite' => 'Strict'
+            'SameSite' => 'Lax'
         ];
 
         session_set_cookie_params($cookieOpts);
@@ -59,7 +59,7 @@ class DatawrapperSession {
             unset($cookieOpts['lifetime']);
             $cookieOpts['expires'] = time() + $lifetime;
             $cookieOpts['samesite'] = (isset($_SESSION['type']) && $_SESSION['type']
-                == 'token') ? 'None' : 'Strict';
+                == 'token') ? 'None' : 'Lax';
             setcookie($ses, $_COOKIE[$ses], $cookieOpts);
         }
     }
