@@ -82,13 +82,9 @@ require(['{{workflow.module}}'], function(mod) {
                 chart.set({themeData: themeCache[current.theme]});
             } else {
                 // load new theme data
-                getJSON(`/api/themes/${current.theme}`, (res) => {
-                    if (res.status == 'ok') {
-                        themeCache[current.theme] = res.data.data;
-                        chart.set({themeData: res.data.data});
-                    } else {
-                        console.warn('theme not loaded', res);
-                    }
+                getJSON(`//${dw.backend.__api_domain}/v3/themes/${current.theme}?extend=true`, (res) => {
+                    themeCache[current.theme] = res.data;
+                    chart.set({themeData: res.data});
                 });
             }
         }
