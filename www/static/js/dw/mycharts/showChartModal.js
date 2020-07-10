@@ -78,7 +78,7 @@ define(function() {
                 if (ok) {
                     $('.copy-success', wrapper).removeClass('hidden');
                     var message = dw.backend.__messages.core["copy-success"];
-                    $('.copy-success', wrapper).html(message.replace('%embed-code-type%','<b>'+$(evt.currentTarget).text()+'</b>'));
+                    $('.copy-success', wrapper).html(dw.utils.purifyHtml(message,'').replace('%embed-code-type%','<b>'+$(evt.currentTarget).text()+'</b>'));
                     timeout = setTimeout(function() {
                         $('.copy-success', wrapper).addClass('hidden');
                     }, 3000);

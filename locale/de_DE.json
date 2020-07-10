@@ -652,7 +652,7 @@
   "Layout": "Layout",
   "No charts here, yet": "Hier sind noch keine Diagramme…",
   "Why not <a href='/chart/create'>create a new chart now</a>?": "Wieso erstellst du nicht ein <a href='/chart/create'>neues Diagramm</a>?",
-  "copy-success": "der <b>%embed-code-type%</b> Code wurde kopiert!",
+  "copy-success": "der %embed-code-type% Code wurde kopiert!",
   "Switch User": "Nutzer wechseln",
   "mycharts / confirm-chart-delete": "Willst du das Diagramm wirklich löschen? Nach der Löschung kann es nicht mehr in andere Webseiten eingebettet werden.",
   "mycharts / move-prohibited-alert": "Ein Ordner kann nicht in den Ordner in dem er sich bereits befindet, sich selbst, oder einen seiner eigenen Unterordner verschoben werden.",

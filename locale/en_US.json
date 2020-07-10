@@ -652,7 +652,7 @@
   "Layout": "Layout",
   "No charts here, yet": "No charts here, yet",
   "Why not <a href='/chart/create'>create a new chart now</a>?": "Why not <a href='/chart/create'>create a new chart now</a>?",
-  "copy-success": "copied <b>%embed-code-type%</b> embed code to clipboard!",
+  "copy-success": "copied %embed-code-type% embed code to clipboard!",
   "Switch User": "Switch User",
   "mycharts / confirm-chart-delete": "Do you really want to delete the chart? Note that after deleting this chart won't be embeddable any more.",
   "mycharts / move-prohibited-alert": "A folder can not be moved into its current parent folder, itself, or one of its own subfolders.",
