@@ -62,6 +62,30 @@ define(function() {
         });
         $('.btn-edit', wrapper).removeClass('hidden');
         if (!chart.publishedAt) $('.published', wrapper).remove();
+        else {
+            var embedCodes = chart.metadata.publish['embed-codes'] || {};
+            Object.keys(embedCodes).forEach(function(key) {
+                var n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key.replace('embed-method-','');
+                $('ul.embed-codes', wrapper).append('<li><a href="" data-embed-method="' + key + '">' + n + '</a></li>');
+            });
+            var timeout;
+            $('ul.embed-codes li a', wrapper).click(function(evt) {
+                clearTimeout(timeout);
+                var key = $(this).data('embed-method');
+                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key]);
+                textarea.get(0).select();
+                var ok = document.execCommand('copy');
+                if (ok) {
+                    $('.copy-success', wrapper).removeClass('hidden');
+                    var message = dw.backend.__messages.core["copy-success"];
+                    $('.copy-success', wrapper).html(message.replace('%embed-code-type%','<b>'+$(evt.currentTarget).text()+'</b>'));
+                    timeout = setTimeout(function() {
+                        $('.copy-success', wrapper).addClass('hidden');
+                    }, 3000);
+                }
+                event.preventDefault();
+            });
+        }
         if (!chart.forkedFrom) $('.forked', wrapper).remove();
         else {
             $('.forked a', wrapper).click(function(e) {

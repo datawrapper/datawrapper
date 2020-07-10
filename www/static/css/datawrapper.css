@@ -2988,6 +2988,15 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.mycharts-modal .sidebar .action-duplicate form {
+  margin-bottom: 0px;
+}
+.mycharts-modal .sidebar .embed-codes {
+  margin-top: 0px;
+}
+.mycharts-modal .sidebar .embed-codes li {
+  margin-bottom: 0px;
+}
 .mycharts-modal .embed-code {
   position: absolute;
   top: 25px;

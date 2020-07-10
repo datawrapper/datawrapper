@@ -194,7 +194,8 @@ function prepare_short_arrays($charts) {
             'publish' => [
                 'embed-height' => $flat['metadata']['publish']['embed-height'] ?? false,
                 'embed-width' => $flat['metadata']['publish']['embed-width'] ?? false,
-                'background' => $flat['metadata']['publish']['background'] ?? false
+                'background' => $flat['metadata']['publish']['background'] ?? false,
+                'embed-codes' => $flat['metadata']['publish']['embed-codes'] ?? false
             ]
         ];
 
