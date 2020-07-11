@@ -274,40 +274,6 @@ function if_chart_is_readable($chart_id, $callback) {
     }
 }
 
-
-
-/**
- * API: copy/duplicate a chart
- *
- * @param chart_id chart id
- */
-$app->post('/charts/:id/copy', function($chart_id) use ($app) {
-    if (!check_scopes(['chart:write'])) return;
-    if (!Session::isLoggedIn()) {
-        return error('error', 'you need to be logged in to duplicate a chart');
-    }
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        if ($chart->getIsFork() == true) {
-            // no duplicating allowed
-            return error('not-allowed', __('You can not duplicate a forked chart.'));
-        }
-        try {
-            $copy = ChartQuery::create()->copyChart($chart);
-            $copy->setUser(Session::getUser());
-            // $copy->setOrganization($user->getCurrentOrganization());
-            $copy->save();
-            if ($app->request()->post('redirect') == '1') {
-                print '<script>window.location.href = "/chart/'.$copy->getId().'/visualize";</script>';
-            } else {
-                ok(array('id' => $copy->getId()));
-            }
-        } catch (Exception $e) {
-            error('io-error', $e->getMessage());
-        }
-    });
-});
-
-
 /**
  * checks if a chart is forkable by the current user (or guest)
  *
