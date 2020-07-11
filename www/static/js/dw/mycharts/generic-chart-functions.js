@@ -38,23 +38,18 @@ define(function(require){
         $('.chart a.duplicate').click(function(e) {
             e.preventDefault();
             var id = $(e.target).parents('.chart').data('id');
+
             $.ajax({
-                url: '/api/charts/'+id+'/copy',
-                type: 'POST',
+                type: "POST",
+                url: window.location.protocol + '//' + window.dw.backend.__api_domain + '/v3/charts/'+id+'/copy',
+                xhrFields: {
+                    withCredentials: true
+                },
                 success: function(data) {
-                    try {
-                        if (data.status == "ok") {
-                            // redirect to copied chart
-                            window.location.href = '/chart/'+data.data.id+'/visualize';
-                            // or stay on mycharts?
-                            // location.reload();
-                        } else {
-                            console.warn(data);
-                        }
-                    } catch (e) {
-                        console.warn(data);
-                    }
-                }
+                    // redirect to copied chart
+                    window.location.href = '/chart/'+data.id+'/visualize';
+                },
+                dataType: 'json'
             });
         });
 
