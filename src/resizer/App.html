@@ -96,10 +96,10 @@
 </style>
 
 <script>
-    /*  global dw,chart,$ */
-
+    /*  global dw, chart, $ */
     import { Radio } from '@datawrapper/controls';
     import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
 
     const DPI = 96;
     const IN2MM = 25.4;
@@ -230,19 +230,11 @@
                             dw.backend.currentChart.get('metadata.custom.webToPrint.printChartId') +
                             '/visualize';
                     } else {
-                        $.ajax({
-                            url: '/api/plugin/webtoprint/' + dw.backend.currentChart.get('id'),
-                            method: 'POST',
-                            success: function (response) {
-                                window.location =
-                                    window.location.protocol +
-                                    '//' +
-                                    window.location.host +
-                                    '/chart/' +
-                                    response.data.chartId +
-                                    '/visualize';
-                            }
-                        });
+                        httpReq
+                            .post(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                            .then(data => {
+                                window.location = `${window.location.protocol}//${window.location.host}/chart/${data.id}/visualize`;
+                            });
                     }
                 }
             },
@@ -258,13 +250,11 @@
             reset() {
                 if (!window.confirm('Are you sure you want to reset to the web version?')) return;
 
-                $.ajax({
-                    url: '/api/plugin/webtoprint/' + chart.get('id'),
-                    method: 'DELETE',
-                    success: function () {
+                httpReq
+                    .delete(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                    .then(data => {
                         window.location.reload();
-                    }
-                });
+                    });
             },
             updateSize() {
                 const { width, height, unit } = this.get();
