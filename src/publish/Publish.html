@@ -552,12 +552,10 @@
             duplicate() {
                 const { id } = this.store.get();
                 trackEvent('Chart Editor', 'duplicate');
-                request
-                    .post(`/v3/charts/${id}/copy`)
-                    .then(res => {
-                        // redirect to copied chart
-                        window.location.href = `/edit/${res.id}/visualize`;
-                    });
+                request.post(`/v3/charts/${id}/copy`).then(res => {
+                    // redirect to copied chart
+                    window.location.href = `/edit/${res.id}/visualize`;
+                });
             }
         },
 
