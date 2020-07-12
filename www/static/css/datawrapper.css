@@ -1302,6 +1302,7 @@ body.cms-mode .row.create-nav {
     font-size: 11px;
     text-transform: uppercase;
     color: #6c6c6c;
+    margin-bottom: 2px;
 }
 
 .color-selector .color {
