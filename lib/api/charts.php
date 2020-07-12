@@ -273,3 +273,85 @@ function if_chart_is_readable($chart_id, $callback) {
         error_chart_not_found($id);
     }
 }
+
+
+
+/**
+ * API: copy/duplicate a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/copy', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
+    if (!Session::isLoggedIn()) {
+        return error('error', 'you need to be logged in to duplicate a chart');
+    }
+    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
+        if ($chart->getIsFork() == true) {
+            // no duplicating allowed
+            return error('not-allowed', __('You can not duplicate a forked chart.'));
+        }
+        try {
+            $copy = ChartQuery::create()->copyChart($chart);
+            $copy->setUser(Session::getUser());
+            // $copy->setOrganization($user->getCurrentOrganization());
+            $copy->save();
+            if ($app->request()->post('redirect') == '1') {
+                print '<script>window.location.href = "/chart/'.$copy->getId().'/visualize";</script>';
+            } else {
+                ok(array('id' => $copy->getId()));
+            }
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
+
+
+/**
+ * checks if a chart is forkable by the current user (or guest)
+ *
+ * @param chart_id
+ * @param callback the function to be executed if chart is writable
+ */
+function if_chart_is_forkable($chart_id, $callback) {
+    $chart = ChartQuery::create()->findPK($chart_id);
+    if ($chart) {
+        $user = Session::getUser();
+        if ($chart->isForkable()) {
+            call_user_func($callback, $user, $chart);
+        } else {
+            error('not-allowed', __('You can not re-fork a forked chart.'));
+        }
+    } else {
+        // no such chart
+        error_chart_not_found($id);
+    }
+}
+
+
+/**
+ * API: fork a chart
+ *
+ * @param chart_id chart id
+ */
+$app->post('/charts/:id/fork', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
+    if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
+        try {
+            $fork = ChartQuery::create()->copyPublicChart($chart, $user);
+            if ($fork) {
+                $fork->setInFolder(null);
+                $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
+                $fork->updateMetadata('describe.byline', '');
+                $fork->setIsFork(true);
+                $fork->save();
+                ok(array('id' => $fork->getId()));
+            } else {
+                error('not-found');
+            }
+        } catch (Exception $e) {
+            error('io-error', $e->getMessage());
+        }
+    });
+});
