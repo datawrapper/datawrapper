@@ -64,9 +64,15 @@ define(function() {
         if (!chart.publishedAt) $('.published', wrapper).remove();
         else {
             var embedCodes = chart.metadata.publish['embed-codes'] || {};
-            Object.keys(embedCodes).forEach(function(key) {
-                var n = dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')] || key.replace('embed-method-','');
-                $('ul.embed-codes', wrapper).append('<li><a href="" data-embed-method="' + key + '">' + n + '</a></li>');
+            var embedSettings = organizationEmbedSettings[chart.organizationId];
+            var preferredEmbed = embedSettings.preferred_embed;
+            // preferred embed to top of list
+            var embedCodesTypes = Object.keys(embedCodes).sort(function(a,b){
+                return a.replace('embed-method-','') === preferredEmbed ? -1 : b.replace('embed-method-','') === preferredEmbed ? 1 : 0;
+            });
+            embedCodesTypes.forEach(function(key,i) {
+                var n = key === 'embed-method-custom' ? embedSettings.custom_embed.title : dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')];
+                $('ul.embed-codes', wrapper).append('<li><a name="'+n+'"href="" data-embed-method="' + key + '">' + n + (i === 0 ? ' (default)' : '') +'</a></li>');
             });
             var timeout;
             $('ul.embed-codes li a', wrapper).click(function(evt) {
@@ -78,7 +84,7 @@ define(function() {
                 if (ok) {
                     $('.copy-success', wrapper).removeClass('hidden');
                     var message = dw.backend.__messages.core["copy-success"];
-                    $('.copy-success', wrapper).html(dw.utils.purifyHtml(message,'').replace('%embed-code-type%','<b>'+$(evt.currentTarget).text()+'</b>'));
+                    $('.copy-success', wrapper).html(dw.utils.purifyHtml(message,'').replace('%embed-code-type%','<b>'+evt.currentTarget.name+'</b>'));
                     timeout = setTimeout(function() {
                         $('.copy-success', wrapper).addClass('hidden');
                     }, 3000);

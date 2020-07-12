@@ -177,6 +177,12 @@
             "{{ org.id }}": {{ org.settings.folders | json | raw }}
         {% endfor %}
     };
+    window.organizationEmbedSettings = {
+        {% for org in organizations %}
+            {{ loop.index0 > 0 ? "," : "" }}
+            "{{ org.id }}": {{ org.settings.embed | json | raw }}
+        {% endfor %}
+    };
 </script>
 
 <div id="mycharts-modal" class="hidden">
