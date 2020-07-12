@@ -1,0 +1,169 @@
+<p style="margin-bottom: 10px;">
+    {@html __('teams / p') }
+</p>
+
+<div class="row" style="margin-bottom: 2em;">
+    <div class="span4">
+        <InviteUser
+            bind:team
+            isTeamOwner="{isTeamOwner}"
+            isAdmin="{isAdmin}"
+            bind:updatingUsers
+            on:updateUsers="updateUsers()"
+        />
+    </div>
+    <div class="span6">
+        <table class="role-descriptions" style="margin-left: 3em;">
+            <thead>
+                <tr>
+                    <td />
+                    <th>{@html __('teams / role / member')}</th>
+                    <th>{@html __('teams / role / admin')}</th>
+                    <th>{@html __('teams / role / owner')}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{ @html __('teams / roles / edit-charts' ) }</td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+
+                <tr>
+                    <td>{ @html __('teams / roles / edit-folders' ) }</td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+
+                <tr>
+                    <td>{ @html __('teams / roles / access-settings' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+
+                <tr>
+                    <td>{ @html __('teams / roles / invite-users' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+
+                <tr>
+                    <td>{ @html __('teams / roles / subscription-options' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+
+                <tr>
+                    <td>{ @html __('teams / roles / remove-team' ) }</td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-x-mark"></i></td>
+                    <td><i class="im im-check-mark"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#if awaitLoadingUsers} {#await awaitLoadingUsers}
+<p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }</p>
+{:then}
+<UserTable
+    isAdmin="{isAdmin}"
+    isTeamOwner="{isTeamOwner}"
+    team="{team}"
+    bind:users
+    bind:editIndex
+    bind:updating
+/>
+{:catch} error! {/await} {/if}
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import UserTable from './members/UserTable.html';
+    import InviteUser from './members/InviteUser.html';
+    import httpReq from '@datawrapper/shared/httpReq';
+
+    export default {
+        components: {
+            InviteUser,
+            UserTable
+        },
+        data() {
+            return {
+                editIndex: 0,
+                updating: {},
+                updatingUsers: false,
+                awaitLoadingUsers: false
+            };
+        },
+        computed: {
+            role({ users, userId }) {
+                if (!users || !users.length || !userId) return false;
+                const user = users.find(el => el.id === userId);
+                if (user) return user.role;
+                else return 'admin';
+            }
+        },
+        helpers: { __ },
+        methods: {
+            updateUsers() {
+                const { team } = this.get();
+                this.set({
+                    awaitLoadingUsers: httpReq
+                        .get(`/v3/teams/${team.id}/members?limit=1000`)
+                        .then(res => {
+                            this.set({ users: res.list });
+                        })
+                });
+            }
+        },
+        oncreate() {
+            this.updateUsers();
+        }
+    };
+</script>
+
+<style>
+    ul {
+        font-weight: 300;
+        list-style: none;
+    }
+    li {
+        margin-top: 1em;
+    }
+    li :global(b) {
+        font-weight: 700;
+    }
+    .im-x-mark,
+    .im-check-mark {
+        font-size: 13px;
+        position: relative;
+        top: 1px;
+    }
+    .im-check-mark {
+        color: #09bb9f;
+    }
+    .im-x-mark {
+        color: #c71e1d;
+    }
+    .role-descriptions th {
+        text-align: center;
+        padding: 0 1ex 1ex;
+    }
+    .role-descriptions td + td {
+        text-align: center;
+    }
+    .role-descriptions td {
+        font-weight: 300;
+        padding: 3px;
+        font-style: italic;
+    }
+    tbody tr:not(:first-child) td {
+        border-top: 1px solid #eee;
+    }
+</style>

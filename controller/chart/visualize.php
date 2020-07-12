@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 /*
  * VISUALIZE STEP
  */
@@ -10,8 +12,6 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $visData = "";
 
         $chart->refreshExternalData();
-
-        if ($app->request()->get('mode') == "print") $chart->usePrint();
 
         if (!DatawrapperHooks::hookRegistered(DatawrapperHooks::RENDER_RESIZE_CONTROL)) {
             DatawrapperHooks::register(DatawrapperHooks::RENDER_RESIZE_CONTROL, function() {
@@ -67,10 +67,9 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $vis = DatawrapperVisualization::get($chart->getType());
         parse_vis_options($vis);
 
-        $theme = ThemeQuery::create()->findPk($chart->getTheme());
-
-        if (empty($theme)) {
-            $theme = ThemeQuery::create()->findPk("default");
+        [$status, $theme] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
+        if ($status != 200) {
+            [$status, $theme] = call_v3_api('GET', '/themes/default');
         }
 
         $org = $chart->getOrganization();
@@ -104,8 +103,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'theme' => $theme,
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
-            'vis_data' => $visData,
-            'mode' => $app->request()->get('mode') == "print" ? "print": "web"
+            'vis_data' => $visData
         );
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);

@@ -29,15 +29,13 @@
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
 
-    {% include "sentry.twig" %}
-
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/requirejs/require.js"></script>
     <script type="text/javascript" charset="utf-8">
         require.config({
             baseUrl: '/static',
             paths: {
                 dw: 'js/dw',
-                handsontable: 'vendor/handsontable/handsontable.full',
+                handsontable: 'vendor/hot/handsontable.full.min',
                 jquery:       'vendor/jquery/jquery.min',
                 queue:        'vendor/queue-async/queue',
                 masonry:      'vendor/masonry/masonry.pkgd.min',
@@ -45,7 +43,8 @@
                 chroma:       'vendor/chroma-js/chroma.min',
                 cm:           'vendor/codemirror',
                 dayjs:        'vendor/dayjs/dayjs.min',
-                d3:           'vendor/d3/d3v4+jetpack.min'
+                d3:           'vendor/d3/d3v4+jetpack.min',
+                zxcvbn:       'vendor/zxcvbn/zxcvbn'
             },
             waitSeconds: 0,
             urlArgs: 'v={{ COMMIT_SHA }}'
@@ -73,7 +72,7 @@
     </script>
     {% endif %}
     {# javascript core 2.0 #}
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-2.0.js?v={{ COMMIT_SHA }}"></script>
+    <script type="text/javascript" charset="utf-8" src="//{{ DW_DOMAIN }}/lib/chart-core/dw-2.0.min.js?v={{ COMMIT_SHA }}"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/js/dw-backend.js"></script>
 
     <script type="text/javascript">

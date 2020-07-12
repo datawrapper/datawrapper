@@ -5,6 +5,7 @@
                 {#if activeColumn} {#if customColumn}
 
                 <ComputedColumnEditor
+                    ref:ccEd
                     on:updateTable="refs.hot.update()"
                     on:renderTable="refs.hot.render()"
                     on:unselect="set({activeColumn:false})"
@@ -18,10 +19,17 @@
 
                 {:elseif columnFormat}
 
-                <CustomColumnFormat on:updateTable="refs.hot.update()" on:renderTable="refs.hot.render()" bind:column="columnFormat" bind:columns />
+                <CustomColumnFormat
+                    on:updateTable="refs.hot.update()"
+                    on:renderTable="refs.hot.render()"
+                    bind:column="columnFormat"
+                    bind:columns
+                />
 
                 {#if columnFormat.isComputed}
-                <button class="btn" on:click="force(event, false)"><i class="fa  fa-chevron-left"></i> {__('describe / edit-formula')}</button>
+                <button class="btn" on:click="force(event, false)">
+                    <i class="fa fa-chevron-left"></i> {__('describe / edit-formula')}
+                </button>
                 {/if} {/if} {#if activeColumn.type() == 'number'}
                 <Histogram bind:values="activeValues" bind:format="activeFormat" />
                 {/if} {:elseif multiSelection}
@@ -29,7 +37,7 @@
                 <h3 class="first">{__('describe / show-hide-multi')}</h3>
 
                 <ul class="unstyled">
-                    <li style="margin-bottom: 5px">
+                    <li style="margin-bottom: 5px;">
                         <button class="btn" on:click="hideMultiple(multiSelection, false)">
                             <i class="fa fa-eye"></i> {__('describe / show-selected')}
                         </button>
@@ -47,7 +55,8 @@
 
                 <p>{@html __(`describe / data-looks-right`) }</p>
 
-                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if showLocale }
+                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if
+                showLocale }
                 <h4>{__(`describe / locale-select / hed`)}</h4>
 
                 <p>{@html __(`describe / locale-select / body`)}</p>
@@ -62,7 +71,9 @@
                 <hr />
 
                 <div class="btn-group">
-                    <a class="btn submit" href="upload"><i class="icon-chevron-left"></i> {__('Back')}</a>
+                    <a class="btn submit" href="upload"
+                        ><i class="icon-chevron-left"></i> {__('Back')}</a
+                    >
                     <a href="visualize" class="submit btn btn-primary" id="describe-proceed">
                         {__('Proceed')} <i class="icon-chevron-right icon-white"></i
                     ></a>
@@ -70,8 +81,11 @@
             </div>
         </div>
         <div class="span8">
-            <div class="help">{@html __('describe / info-table-header')} <img src="/static/img/arrow.svg" /></div>
-            <div class="pull-right" style="margin-bottom: 10px">
+            <div class="help">
+                {@html __('describe / info-table-header')}
+                <img alt="arrow" src="/static/img/arrow.svg" />
+            </div>
+            <div class="pull-right" style="margin-bottom: 10px;">
                 <div class="sort-box">
                     <div class="btn-group" ref:sortDropdownGroup>
                         <button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -79,7 +93,9 @@
                         </button>
                         <ul class="dropdown-menu sort-menu">
                             <li class="{'-'==sortBy?'active':''}">
-                                <a on:click="sort(event, '-')" href="#s">{@html __('describe / no-sorting')}</a>
+                                <a on:click="sort(event, '-')" href="#s"
+                                    >{@html __('describe / no-sorting')}</a
+                                >
                             </li>
                             {#each columns as col}
                             <li class="{col.name()==sortBy?'active':''}">
@@ -107,7 +123,7 @@
                             autocomplete="screw-you-google-chrome"
                             type="search"
                             on:keypress="keyPress(event)"
-                            placeholder="{__('Search data table')}"
+                            placeholder="{__('describe / search / placeholder')}"
                             bind:value="search"
                             ref:search
                             class="{searchResults.length > 0?'with-results':''} search-query"
@@ -126,8 +142,7 @@
 
                     {#if search}
                     <div class="results">
-                        {#if searchResults.length > 0} {searchIndexSafe+1} {__(`describe / search / of`) } {searchResults.length} {__(`describe /
-                        search / results`) } {:elseif search} { __(`describe / search / no-matches`) } {/if}
+                        {resultsDisplay}
                     </div>
                     {/if}
                 </div>
@@ -147,18 +162,24 @@
                 bind:searchIndex
                 bind:multiSelection
                 on:resetSort="set({sortBy:'-'})"
+                on:afterRender="afterRender()"
             />
 
             <div class="buttons below-table pull-right">
                 <button class="btn transpose" on:click="toggleTranspose()">
-                    <img src="/static/css/chart-editor/transpose.png" /> {__(`describe / transpose-long`)}
+                    <img alt="transpose" src="/static/css/chart-editor/transpose.png" />
+                    {__(`describe / transpose-long`)}
                 </button>
 
                 <button on:click="addComputedColumn()" class="btn computed-columns">
                     <i class="fa fa-calculator"></i> {__(`computed columns / add-btn`)}…
                 </button>
 
-                <button on:click="revertChanges()" class="btn {has_changes?'':'disabled'}" id="reset-data-changes">
+                <button
+                    on:click="revertChanges()"
+                    class="btn {has_changes?'':'disabled'}"
+                    id="reset-data-changes"
+                >
                     <i class="fa fa-undo"></i> {__(`Revert changes`)}…
                 </button>
             </div>
@@ -171,12 +192,12 @@
     import ComputedColumnEditor from './ComputedColumnEditor.html';
     import CustomColumnFormat from './CustomColumnFormat.html';
     import Histogram from './Histogram.html';
-    import Handsontable from '../controls/hot/Handsontable.html';
-    import Checkbox from '../controls/Checkbox.html';
+    import Handsontable from './hot/Handsontable.html';
+    import Checkbox from '@datawrapper/controls/Checkbox.html';
 
-    import { __ } from '../shared/l10n';
-    import { arrayToObject } from '../shared/utils.js';
-    import clone from '../shared/clone.js';
+    import { __ } from '@datawrapper/shared/l10n';
+    import clone from '@datawrapper/shared/clone';
+    import { getComputedColumns } from './shared';
 
     export default {
         components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat, Histogram },
@@ -207,10 +228,14 @@
                 return searchIndex;
             },
             customColumn({ activeColumn, forceColumnFormat }) {
-                return activeColumn && !forceColumnFormat && activeColumn.isComputed ? activeColumn : false;
+                return activeColumn && !forceColumnFormat && activeColumn.isComputed
+                    ? activeColumn
+                    : false;
             },
             columnFormat({ activeColumn, forceColumnFormat }) {
-                return activeColumn && (!activeColumn.isComputed || forceColumnFormat) ? activeColumn : false;
+                return activeColumn && (!activeColumn.isComputed || forceColumnFormat)
+                    ? activeColumn
+                    : false;
             },
             activeValues({ activeColumn }) {
                 return activeColumn ? activeColumn.values() : [];
@@ -229,6 +254,15 @@
             },
             sorting({ sortBy, sortDir }) {
                 return { sortBy, sortDir };
+            },
+            resultsDisplay({ searchResults, searchIndexSafe }) {
+                if (searchResults.length > 0) {
+                    return `${searchIndexSafe + 1} ${__('describe / search / of')} ${
+                        searchResults.length
+                    } ${__('describe / search / results')}`;
+                } else {
+                    return __('describe / search / no-matches');
+                }
             }
         },
         helpers: { __ },
@@ -265,19 +299,23 @@
             addComputedColumn() {
                 const chart = this.store.get().dw_chart;
                 const ds = chart.dataset();
-                const computed = arrayToObject(chart.get('metadata.describe.computed-columns', {}));
+                const computed = getComputedColumns(chart);
                 // find new id
                 let i = 1;
                 while (ds.hasColumn(`Column ${i}`)) {
                     i++;
                 }
                 const id = `Column ${i}`;
-                computed[id] = '';
+                computed.push({
+                    name: id,
+                    formula: ''
+                });
                 chart.set('metadata.describe.computed-columns', computed);
                 chart.saveSoon();
                 const ds2 = chart.dataset(true);
                 this.refs.hot.update();
                 this.set({ activeColumn: ds2.column(id) });
+                this.store.set({ dw_chart: chart });
             },
             sort(event, col, ascending) {
                 event.preventDefault();
@@ -305,6 +343,12 @@
                     this.refs.hot.get().hot.render();
                 }, 10);
                 this.set({ multiSelection: false });
+            },
+            afterRender() {
+                // called once the hot is done rendering
+                if (this.refs.ccEd) {
+                    this.refs.ccEd.fire('hotRendered');
+                }
             }
         },
         oncreate() {

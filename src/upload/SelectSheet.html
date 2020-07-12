@@ -20,8 +20,8 @@
 </style>
 
 <script>
-    import { __ } from '../shared/l10n';
-    import { putJSON } from '../shared/utils';
+    import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
 
     /* globals dw */
     export default {
@@ -33,15 +33,19 @@
         },
         helpers: { __ },
         // eslint-disable-next-line
-        onupdate({ changed, current }) {
+        async onupdate({ changed, current }) {
             if (changed.sheets && current.sheets.length > 1) {
                 setTimeout(() => {
                     this.set({ selected: current.sheets[0] });
                 }, 300);
             } else if (changed.sheets && current.sheets.length === 1) {
-                putJSON(`/api/charts/${dw.backend.currentChart.get('id')}/data`, current.sheets[0].csv, () => {
-                    window.location.href = 'describe';
+                await httpReq.put(`/v3/charts/${dw.backend.currentChart.get('id')}/data`, {
+                    body: current.sheets[0].csv,
+                    headers: {
+                        'Content-Type': 'text/csv'
+                    }
                 });
+                window.location.href = 'describe';
             }
             if (changed.selected) {
                 this.set({ chartData: current.selected.csv });

@@ -1,0 +1,47 @@
+<p>
+    { @html __('teams / delete / p') }
+</p>
+
+<Switch label="{ __('teams / delete / yes') }" bind:value="deleteTeam">
+    {#if deleteTeam}
+    <p>
+        { @html __('teams / delete / really') }
+    </p>
+
+    <Checkbox label="{ __('teams / delete / really-yes') }" bind:value="deleteTeam2" />
+
+    {#if deleteTeam2}
+    <button on:click="deleteTeam()" class="btn btn-danger">
+        <i class="fa { deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times' }"></i>&nbsp; { @html
+        __('teams / delete / action') }
+    </button>
+    {/if} {/if}
+</Switch>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
+    import { Switch, Checkbox } from '@datawrapper/controls';
+
+    export default {
+        components: {
+            Switch,
+            Checkbox
+        },
+        data() {
+            return {
+                deleteTeam: false,
+                deleteTeam2: false,
+                deleting: false
+            };
+        },
+        helpers: { __ },
+        methods: {
+            async deleteTeam() {
+                this.set({ deleting: true });
+                await httpReq.delete(`/v3/teams/${this.get().team.id}`);
+                window.location = '/';
+            }
+        }
+    };
+</script>

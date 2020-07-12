@@ -43,7 +43,9 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 $('#vis-options-'+key)[val == 'open' ? 'addClass' : 'removeClass']('group-open');
             });
 
-            $('.vis-option-type-group > label.group-title').click(function() {
+            // don't react to a group that contains `svelte-group` class,
+            // since it will handle the toggle functionality on its own
+            $('.vis-option-type-group:not(.notoggle,.svelte-group) > label.group-title').click(function() {
                 var $g = $(this).parents('.vis-option-type-group').toggleClass('group-open');
                 $(window).resize();
                 try {

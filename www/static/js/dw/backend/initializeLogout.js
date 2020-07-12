@@ -1,3 +1,4 @@
+/* globals define, dw, $ */
 define(function() {
     /*
      * initialize logout links
@@ -5,11 +6,16 @@ define(function() {
     return function() {
         $('a[href=#logout]').click(function() {
             $.ajax({
-                url: '/api/auth/logout',
+                url: '//' + dw.backend.__api_domain + '/v3/auth/logout',
                 type: 'POST',
+                // dataType: "json",
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
                 success: function(data) {
                     // sometimes it's a good idea to redirect
-                    location.href = '/';
+                    window.location.href = '/';
                 }
             });
             return false;
@@ -20,33 +26,14 @@ define(function() {
             $.ajax({
                 url: '/team/' + $(e.target).data('id') + '/activate',
                 method: 'PUT',
-                dataType: 'json'
-            }).done(function(res) {
-                if (res.status == 'ok') {
-                    location.reload();
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
                 }
-            });
-        });
-
-        $('a[href=#team-leave]').click(function(e) {
-            if (
-                !window.confirm(
-                    'Are you sure you want to leave the team ' +
-                        $(e.target).data('title') +
-                        '? Leaving a team is permanent and cannot be undone by you. You will lose ' +
-                        "access to the team's charts and products."
-                )
-            )
-                return;
-
-            e.preventDefault();
-            $.ajax({
-                url: '/team/' + $(e.target).data('id') + '/leave',
-                method: 'PUT',
-                dataType: 'json'
             }).done(function(res) {
-                if (res.status == 'ok') {
-                    location.reload();
+                if (res.status === 'ok') {
+                    window.location.reload();
                 }
             });
         });

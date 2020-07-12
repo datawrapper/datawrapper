@@ -1,71 +1,5 @@
 <?php
 
-function nbChartsByMonth($id, $is_org, $folder_id) {
-    $id_clause = ($is_org) ? "organization_id = '".$id."'" : "organization_id is NULL AND author_id = '".$id."'";
-    $folder_id = (!is_null($folder_id)) ? "= '".$folder_id."'" : 'is NULL';
-    $con = Propel::getConnection();
-    $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m') ym, COUNT(*) c FROM chart WHERE ".$id_clause." AND in_folder ".$folder_id." AND deleted = 0 AND last_edit_step >= 2 GROUP BY ym ORDER BY ym DESC ;";
-    $rs = $con->query($sql);
-    $res = array();
-    foreach ($rs as $r) {
-        $res[] = array('count' => $r['c'], 'id' => $r['ym'], 'name' => strftime('%B %Y', strtotime($r['ym'].'-01')));
-    }
-    return $res;
-}
-
-function nbChartsByType($id, $is_org, $folder_id) {
-    $id_clause = ($is_org) ? "organization_id = '".$id."'" : "organization_id is NULL AND author_id = '".$id."'";
-    $folder_id = (!is_null($folder_id)) ? "= '".$folder_id."'" : 'is NULL';
-    $con = Propel::getConnection();
-    $sql = "SELECT type, COUNT(*) c FROM chart WHERE ".$id_clause." AND in_folder ".$folder_id." AND deleted = 0 AND last_edit_step >= 2 GROUP BY type ORDER BY c DESC ;";
-    $rs = $con->query($sql);
-    $res = array();
-
-    foreach ($rs as $r) {
-        $vis = DatawrapperVisualization::get($r['type']);
-        $lang = substr(DatawrapperSession::getLanguage(), 0, 2);
-        if (!isset($vis['title'])) continue;
-        if (empty($vis['title'][$lang])) $lang = 'en';
-        $res[] = array('count' => $r['c'], 'id' => $r['type'], 'name' => $vis['title']);
-    }
-    return $res;
-}
-
-/*function nbChartsByLayout($user) {
-    $con = Propel::getConnection();
-    $sql = "SELECT theme, COUNT(*) c FROM chart WHERE author_id = ". $user->getId() ." AND deleted = 0 AND last_edit_step >= 2 GROUP BY theme ORDER BY c DESC ;";
-    $rs = $con->query($sql);
-    $res = array();
-    foreach ($rs as $r) {
-        $theme = ThemeQuery::create()->findPk($r['theme']);
-        if (!$theme) continue; // ignoring charts whose themes have been removed
-        $res[] = array('count' => $r['c'], 'id' => $r['theme'], 'name' => $theme->getTitle());
-    }
-    return $res;
-}*/
-
-function nbChartsByStatus($id, $is_org, $folder_id) {
-    if ($is_org) {
-        $published = ChartQuery::create()->filterByOrganizationId($id);
-        $draft = ChartQuery::create()->filterByOrganizationId($id);
-    } else {
-        $published = ChartQuery::create()->filterByOrganizationId(null)->filterByAuthorId($id);
-        $draft = ChartQuery::create()->filterByOrganizationId(null)->filterByAuthorId($id);
-    }
-    $published = $published->filterByDeleted(false)
-        ->filterByLastEditStep(array('min'=>4))
-        ->filterByInFolder($folder_id)
-        ->count();
-    $draft = $draft->filterByDeleted(false)
-        ->filterByLastEditStep(3)
-        ->filterByInFolder($folder_id)
-        ->count();
-    return array(
-        array('id'=>'published', 'name' => __('Published'), 'count' => $published),
-        array('id'=>'draft', 'name' => __('Draft'), 'count' => $draft)
-    );
-}
-
 function mycharts_list_organizations($user, $org_id = false) {
     $user_id = $user->getId();
     $organizations = $user->getActiveOrganizations();
@@ -252,7 +186,18 @@ function prepare_short_arrays($charts) {
 
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
-        unset($flat['metadata']['publish']['embed-codes']);
+
+        $flat['metadata'] = [
+            'visualize' => [
+                'map-type-set' => $flat['metadata']['visualize']['map-type-set'] ?? false
+            ],
+            'publish' => [
+                'embed-height' => $flat['metadata']['publish']['embed-height'] ?? false,
+                'embed-width' => $flat['metadata']['publish']['embed-width'] ?? false,
+                'background' => $flat['metadata']['publish']['background'] ?? false
+            ]
+        ];
+
         $flat['hash'] = $dw_config["screenshot_path"] ?? $chart->getHash();
         $shorty[$flat['id']] = $flat;
     }

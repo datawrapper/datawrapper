@@ -33,7 +33,19 @@ class DatawrapperSession {
         } else {
             $domain = $GLOBALS['dw_config']['domain'];
         }
-        session_set_cookie_params($lifetime, '/', $domain);
+
+
+        $cookieOpts = [
+            'lifetime' => $lifetime,
+            'path' => "/",
+            'domain' => $domain,
+            'secure' => get_current_protocol() === 'https',
+            'httponly' => true,
+            'SameSite' => 'Lax'
+        ];
+
+        session_set_cookie_params($cookieOpts);
+
         session_name($ses);
         session_cache_limiter('private_no_expire');
         session_cache_expire(1440 * 90);  // 90 days
@@ -44,7 +56,11 @@ class DatawrapperSession {
 
         // Reset the expiration time upon page load
         if (isset($_COOKIE[$ses])) {
-            setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/", $domain);
+            unset($cookieOpts['lifetime']);
+            $cookieOpts['expires'] = time() + $lifetime;
+            $cookieOpts['samesite'] = (isset($_SESSION['type']) && $_SESSION['type']
+                == 'token') ? 'None' : 'Lax';
+            setcookie($ses, $_COOKIE[$ses], $cookieOpts);
         }
     }
 
@@ -56,13 +72,34 @@ class DatawrapperSession {
         $h = getallheaders();
         if (!empty($h['Authorization'])) {
             $authHeader = explode(' ', $h['Authorization']);
-            if ($authHeader[0] == 'Bearer') {
-                $auth = AuthTokenQuery::create()->findOneByToken($authHeader[1]);
-                if ($auth) {
-                    $this->user = $auth->getUser();
-                    $this->method = 'token';
-                    $auth->use();
-                    return;
+            if ($authHeader[0] == 'Bearer' && !empty($authHeader[1])) {
+                $pdo = Propel::getConnection();
+                $stmt = $pdo->prepare('SELECT user_id, data FROM access_token WHERE `type` = "api-token" AND token = :token');
+                $stmt->bindParam(':token', $authHeader[1]);
+                $stmt->execute();
+                $res = $stmt->fetch();
+
+                if ($res && !empty($res['user_id'])) {
+                    $user_id = $res['user_id'];
+                    $user = UserQuery::create()->findPK($user_id);
+                    if ($user && $user->isActivated()) {
+                        $this->user = $user;
+                        $this->method = 'token';
+                        if (!empty($res['data'])) {
+                            $data = json_decode($res['data'], true);
+                            if (!empty($data['scopes'])) {
+                                $this->scopes = $data['scopes'];
+                            }
+                        }
+                        if (empty($this->scopes)) {
+                            $this->scopes = ['all'];
+                        }
+                        $stmt = $pdo->prepare('UPDATE access_token SET last_used_at = NOW() WHERE type = "api-token" AND user_id = :userId AND token = :token');
+                        $stmt->bindParam(':userId', $user_id);
+                        $stmt->bindParam(':token', $authHeader[1]);
+                        $stmt->execute();
+                        return;
+                    }
                 }
             }
         }
@@ -75,6 +112,7 @@ class DatawrapperSession {
                 (isset($_SESSION['last_action_time']) && time() - $_SESSION['last_action_time'] < 1800)) {
                 $this->user = UserQuery::create()->limit(1)->findPK($_SESSION['dw-user-id']);
                 $this->method = 'session';
+                $this->scopes = ['all'];
                 $_SESSION['last_action_time'] = time();
             }
         }
@@ -85,6 +123,7 @@ class DatawrapperSession {
             $user->setRole('guest');
             $user->setLanguage(self::getBrowserLocale());
             $this->user = $user;
+            $this->scopes = ['all'];
         }
     }
 
@@ -279,6 +318,15 @@ class DatawrapperSession {
 
     public static function setChartMetaData($chart_id, $chart_info) {
 
+    }
+
+    public function _hasScope($scope) {
+        return in_array($scope, $this->scopes) ||
+            in_array('all', $this->scopes);
+    }
+
+    public static function hasScope($scope) {
+        return self::getInstance()->_hasScope($scope);
     }
 }
 

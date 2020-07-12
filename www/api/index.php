@@ -58,6 +58,18 @@ function get_user_ips() {
     return $ips;
 }
 
+function check_scopes($scopes) {
+    foreach ($scopes as $scope) {
+        if (!Session::hasScope($scope)) {
+            global $app;
+            $app->response()->status(403);
+            error('access-denied', 'Insufficient scope');
+            return false;
+        }
+    }
+    return true;
+}
+
 function if_is_admin($callback, $elseCallback=null) {
     $user = DatawrapperSession::getUser();
     if ($user->isAdmin()) {
@@ -136,7 +148,6 @@ $app->get('/status', function() use ($app) {
 require_once ROOT_PATH . 'lib/api/users.php';
 require_once ROOT_PATH . 'lib/api/auth.php';
 require_once ROOT_PATH . 'lib/api/charts.php';
-require_once ROOT_PATH . 'lib/api/jobs.php';
 require_once ROOT_PATH . 'lib/api/visualizations.php';
 require_once ROOT_PATH . 'lib/api/plugins.php';
 require_once ROOT_PATH . 'lib/api/teams.php';

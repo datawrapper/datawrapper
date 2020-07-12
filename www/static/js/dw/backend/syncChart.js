@@ -1,6 +1,4 @@
-
 define(function() {
-
     return function(chart) {
         var saveTimeout,
             unsavedChanges = false,
@@ -9,26 +7,25 @@ define(function() {
 
         function save() {
             return $.ajax({
-                url: '/api/2/charts/'+chart.get('id') + window.location.search,
+                url: '//' + dw.backend.__api_domain + '/v3/charts/' + chart.get('id'),
                 type: 'PUT',
                 dataType: 'json',
+                contentType: 'application/json',
                 data: JSON.stringify(chart.attributes()),
                 processData: false,
+                xhrFields: {
+                    withCredentials: true
+                },
                 success: function(data) {
                     //console.debug('save completed');
-                    if (data.status == "ok") {
-                        // run callbacks
-                        unsavedChanges = false;
-                        _.each(saveCallbacks, function(cb) {
-                            cb(chart);
-                        });
-                        nextSaveDeferred.resolve(data);
-                        // create new deferred
-                        nextSaveDeferred = $.Deferred();
-                    } else {
-                        console.warn('could not save the chart', data);
-                        dw.backend.logError('The chart changes could not be saved because of a server error.', '.chart-editor');
-                    }
+                    // run callbacks
+                    unsavedChanges = false;
+                    _.each(saveCallbacks, function(cb) {
+                        cb(chart);
+                    });
+                    nextSaveDeferred.resolve({ data: data });
+                    // create new deferred
+                    nextSaveDeferred = $.Deferred();
                 },
                 error: function(err, res) {
                     console.log(err.responseText);

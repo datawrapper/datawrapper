@@ -29,7 +29,10 @@
             {#each bins as bin, i}
             <g class="bar" transform="translate({xScaleBand(bin.x0)},{yScale(bin.length)})">
                 <title>{tooltip(bin,i,bins,validValues.length)}</title>
-                <rect width="{ bin.x1 != bin.x0 ? xScaleBand.bandwidth() : 20 }" height="{ innerHeight - yScale(bin.length) }"></rect>
+                <rect
+                    width="{ bin.x1 != bin.x0 ? xScaleBand.bandwidth() : 20 }"
+                    height="{ innerHeight - yScale(bin.length) }"
+                ></rect>
             </g>
             {/each}
         </g>
@@ -41,18 +44,17 @@
     {/each} {#if NAs>0}
     <li>
         {__('describe / histogram / invalid')}:
-        <tt style="color:#c71e1d">{NAs}</tt> ({pct(NAs/values.length)})
+        <tt style="color: #c71e1d;">{NAs}</tt> ({pct(NAs/values.length)})
     </li>
     {/if}
 </ul>
 <p class="learn-more">{@html __("describe / histogram / learn-more")}</p>
 
 <script>
-    import _range from 'underscore-es/range';
-    import _countBy from 'underscore-es/countBy';
-    import _keys from 'underscore-es/keys';
-    import { toFixed } from '../shared/utils.js';
-    import { __ } from '../shared/l10n';
+    import range from 'lodash/range';
+    import countBy from 'lodash/countBy';
+    import toFixed from '@datawrapper/shared/toFixed';
+    import { __ } from '@datawrapper/shared/l10n';
     import { scaleLinear, scaleBand } from 'd3-scale';
     import { histogram, max, min, extent, mean, median, thresholdSturges } from 'd3-array';
 
@@ -111,26 +113,21 @@
                 // const tickCnt = Math.min(_uniq(validValues).length, 14);
                 const dom = niceDomain;
                 // const classw = (s[1]-s[0]);
-                const bins = histogram()
-                    .domain(dom)
-                    .thresholds(thresholdSturges)(validValues);
-                const binWidths = _countBy(bins.map(b => b.x1 - b.x0));
-                if (bins.length > 2 && _keys(binWidths).length > 1) {
+                const bins = histogram().domain(dom).thresholds(thresholdSturges)(validValues);
+                const binWidths = countBy(bins.map(b => b.x1 - b.x0));
+                if (bins.length > 2 && Object.keys(binWidths).length > 1) {
                     // check first and last bin
                     const binw = bins[1].x1 - bins[1].x0;
                     const lst = dom[0] + Math.ceil((dom[1] - dom[0]) / binw) * binw;
                     return histogram()
                         .domain([dom[0], lst])
-                        .thresholds(_range(dom[0], lst + binw * 0.4, binw))(validValues);
+                        .thresholds(range(dom[0], lst + binw * 0.4, binw))(validValues);
                 }
                 return bins;
             },
 
             niceDomain({ validValues }) {
-                return scaleLinear()
-                    .domain(extent(validValues))
-                    .nice()
-                    .domain();
+                return scaleLinear().domain(extent(validValues)).nice().domain();
             },
 
             xScaleBand({ bins, innerWidth }) {
@@ -149,7 +146,7 @@
                 return yScale_
                     .domain([
                         0,
-                        max(bins, function(d) {
+                        max(bins, function (d) {
                             return d.length;
                         })
                     ])
@@ -183,9 +180,6 @@
                     .replace('$4', toFixed(bin.x1));
             },
             pct,
-            formatMobile(tick) {
-                return "'" + (tick % 100);
-            },
             __
         },
 
@@ -193,7 +187,7 @@
             show(value) {
                 this.set({ highlight: value });
             },
-            resize: function() {
+            resize: function () {
                 var bcr = this.refs.svg.getBoundingClientRect();
 
                 this.set({

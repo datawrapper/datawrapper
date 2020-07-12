@@ -316,7 +316,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['DW_DOMAIN'] = $config['domain'];
     $page['DW_VERSION'] = DATAWRAPPER_VERSION;
     $page['COMMIT_SHA'] = DATAWRAPPER_VERSION;
-    $page['SENTRY_RELEASE'] = 'core@'.DATAWRAPPER_VERSION;
     $page['ASSET_DOMAIN'] = $config['asset_domain'];
     $page['APP_DOMAIN'] = defined('APP_DOMAIN') ? APP_DOMAIN : "app";
     $page['API_DOMAIN'] = $config['api_domain'];
@@ -369,7 +368,6 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     if (file_exists(ROOT_PATH . 'sha')) {
         $commit = file_get_contents(ROOT_PATH . 'sha');
         $page['COMMIT_SHA'] = substr($commit, 0, 8);
-        $page['SENTRY_RELEASE'] = 'core@'.$page['COMMIT_SHA'];
 
         if ($config['debug']) {
             try {

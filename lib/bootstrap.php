@@ -124,34 +124,6 @@ if (!defined('NO_SLIM')) {
             'session.handler' => null
         ));
     }
-} else {
-    // called from command line, e.g. via scripts/hook.php
-    require_once ROOT_PATH . 'lib/maintenance.php';
-}
-
-if (isset($dw_config['memcache'])) {
-    $memcfg = $dw_config['memcache'];
-    $memcache = new Memcache();
-    $memcache->connect($memcfg['host'], $memcfg['port']) or die ("Could not connect");
-}
-
-if (isset($dw_config['charts-s3'])) {
-    if (isset($dw_config['charts-s3']['region'])) {
-        $region = $dw_config['charts-s3']['region'];
-    } else {
-        $region = 'eu-central-1';
-    }
-
-    $charts_s3 = new Aws\S3\S3Client([
-        'region' => $region,
-        'version' => 'latest',
-        'credentials' => [
-            'key' => $dw_config['charts-s3']['aws-access-key-id'],
-            'secret' => $dw_config['charts-s3']['aws-secret-access-key']
-        ]
-    ]);
-
-    $charts_s3->registerStreamWrapper();
 }
 
 if (!defined('NO_PLUGINS')) {

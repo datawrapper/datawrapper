@@ -1,0 +1,402 @@
+<h2>{ __("Edit profile") }</h2>
+
+{#if messages && messages.length }
+<div class="row" style="margin-top: 20px;">
+    <div class="span6">
+        <div class="alert alert-success">
+            {#each messages as message}
+            <p>{@html message }</p>
+            {/each}
+        </div>
+    </div>
+</div>
+{/if}
+
+<div class="row edit-account" style="margin-top: { messages && messages.length ? 0 : 20 }px;">
+    <div class="span6">
+        {#if changeEmail && errors.length}
+        <div class="alert alert-warning">
+            {@html errors.join('')}
+        </div>
+        {/if}
+        <FormBlock
+            label="{ __('E-Mail') }"
+            help="{changeEmail ? __('account / confirm-email-change') : ''}"
+        >
+            <input disabled="{ !changeEmail }" bind:value="email" type="email" />
+            {#if changeEmail}
+            <button on:click="set({changeEmail: false})" class="btn btn-default">
+                { __( "Back") }
+            </button>
+            <button on:click="changeEmail()" class="btn btn-save btn-primary">
+                <i class="fa { savingEmail ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; { __(
+                "account / email") }
+            </button>
+            {:else}
+            <button on:click="set({changeEmail: true})" class="btn btn-save btn-default">
+                { __( "account / email") }
+            </button>
+            {/if}
+        </FormBlock>
+
+        {#if !changePassword}
+        <FormBlock label="{ __('Password') }" help="">
+            <input disabled value="abcdefgh" type="password" />
+            <button on:click="set({changePassword: true})" class="btn btn-save btn-default">
+                { __("account / password") }
+            </button>
+        </FormBlock>
+        {:else}
+        <h3>
+            { __("account / password") }
+            <button
+                on:click="set({changePassword: false})"
+                class="btn btn-save btn-default btn-back"
+            >
+                { __("Back") }
+            </button>
+        </h3>
+        {#if changePassword && errors && errors.length }
+        <div class="alert">
+            {#each errors as message}
+            <p>{@html message }</p>
+            {/each}
+        </div>
+        {/if}
+        <FormBlock
+            label="{ __('Current Password') }"
+            help="{ __('account / password / current-password-note') }"
+        >
+            <input type="password" bind:value="currentPassword" class="input-xlarge" />
+        </FormBlock>
+
+        <FormBlock
+            error="{passwordError}"
+            label="{ __('New Password') }"
+            success="{passwordSuccess}"
+            help="{passwordHelp}"
+        >
+            {#if showPasswordAsClearText}
+            <input data-lpignore="true" type="text" bind:value="newPassword" class="input-xlarge" />
+            {:else}
+            <input
+                data-lpignore="true"
+                type="password"
+                bind:value="newPassword"
+                class="input-xlarge"
+            />
+            {/if}
+            <div style="width: 287px;">
+                <CheckPassword
+                    bind:password="newPassword"
+                    bind:passwordHelp
+                    bind:passwordSuccess
+                    bind:passwordError
+                    bind:passwordOk="newPasswordOk"
+                />
+            </div>
+        </FormBlock>
+        <div class="control-group" style="margin-top: -10px; margin-bottom: 20px;">
+            <label class="checkbox">
+                <input bind:checked="showPasswordAsClearText" type="checkbox" />
+                {@html __("account / invite / password-clear-text")}
+            </label>
+        </div>
+
+        <button
+            disabled="{ !(newPasswordOk && currentPassword) }"
+            class="btn btn-primary"
+            on:click="changePassword()"
+        >
+            <i class="fa { savingPassword ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp; {
+            __("account / password") }
+        </button>
+        <hr />
+        {/if} {#if deleteAccount3}
+        <h2 style="margin-bottom: 20px;">{ __("account / delete / hed") }</h2>
+        <h3>
+            { __("Your account has been deleted.") }
+        </h3>
+        <a href="/" class="btn btn-primary btn-large">{ __("Goodbye!") }</a>
+
+        {:elseif deleteAccount2}
+        <h2 style="margin-bottom: 20px;">{ __("account / delete / hed") }</h2>
+        <div class="delete-account">
+            <p>
+                { __("account / delete / really") }
+            </p>
+            <ul>
+                <li>{ __("account / confirm-account-deletion / free") }</li>
+                <li>{ __("You cannot login and logout anymore.") }</li>
+                <li>{ __("You cannot edit or remove your charts anymore.") }</li>
+            </ul>
+            <p>
+                { __("account / delete / charts-stay-online") }
+            </p>
+
+            <FormBlock
+                label="{ __('Please enter your password to confirm the deletion request:') }"
+                error="{errors && errors.length ? errors.join('. ') : false}"
+            >
+                <input type="email" bind:value="confirmEmail" placeholder="{ __('E-Mail') }" />
+                <input
+                    type="password"
+                    bind:value="confirmPassword"
+                    placeholder="{ __('Password') }"
+                />
+            </FormBlock>
+            <p class="lead">
+                {@html __("account / delete / really-really") }
+            </p>
+            <div class="control-group">
+                <button on:click="set({deleteAccount2: false})" class="btn btn-info">
+                    <i class="fa fa-chevron-left"></i>&nbsp; { __("No, I changed my mind..") }
+                </button>
+                <button on:click="deleteAccount()" class="btn btn-danger">
+                    <i class="fa { deletingAccount ? 'fa-spin fa-spinner' : 'fa-check' }"></i>&nbsp;
+                    { __("Yes, delete it!") }
+                </button>
+            </div>
+        </div>
+        {:elseif deleteAccount}
+        <h3><i class="fa fa-times"></i> { __("account / confirm-account-deletion") }</h3>
+        <button on:click="set({deleteAccount: false})" class="btn btn-back btn-primary">
+            <i class="fa fa-chevron-left"></i>
+            &nbsp; { __("account / confirm-account-deletion / no") }
+        </button>
+
+        { __("account / or") }
+
+        <button
+            on:click="set({deleteAccount: false, deleteAccount2: true})"
+            class="btn btn-default"
+        >
+            <i class="fa fa-times"></i> &nbsp; { __("account / confirm-account-deletion / yes") }
+        </button>
+        {:else}
+        <FormBlock label="Delete account" help="">
+            <button class="btn btn-danger" on:click="set({deleteAccount: true})" href="#">
+                { __("account / delete") }
+            </button>
+        </FormBlock>
+        {/if}
+    </div>
+    <div class="span4">
+        <p class="help">{ __("account / change-login") }</p>
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import httpReq from '@datawrapper/shared/httpReq';
+    import FormBlock from '@datawrapper/controls/FormBlock.html';
+    import CheckPassword from '../shared/CheckPassword.html';
+
+    export default {
+        components: { FormBlock, CheckPassword },
+        data() {
+            return {
+                changePassword: false,
+                changeEmail: false,
+                deleteAccount: false,
+                deleteAccount2: false,
+                deleteAccount3: false,
+                deletingAccount: false,
+                showPasswordInPlaintext: false,
+                messages: [],
+                currentPassword: '',
+                newPassword: '',
+                newPasswordOk: false,
+                passwordError: false,
+                passwordHelp: false,
+                passwordSuccess: false,
+                confirmEmail: '',
+                confirmPassword: '',
+                email: '',
+                savingEmail: false,
+                savingPassword: false,
+                showPasswordAsClearText: false,
+                errors: [],
+                groups: [
+                    {
+                        title: 'Account settings',
+                        tabs: [
+                            {
+                                title: 'Profile',
+                                icon: 'fa fa-fw fa-user'
+                            }
+                        ]
+                    },
+                    {
+                        title: 'Team settings',
+                        tabs: []
+                    }
+                ]
+            };
+        },
+        helpers: {
+            __
+        },
+        methods: {
+            async changeEmail() {
+                var { email } = this.get();
+
+                this.set({ savingEmail: true });
+
+                const messages = [];
+                const errors = [];
+
+                try {
+                    const res = await httpReq.patch('/v3/me', {
+                        payload: { email }
+                    });
+                    messages.push(
+                        'Your email has been changed successfully. You will receive an email with a confirmation link.'
+                    );
+                    // for now, let's set it back to the previous email
+                    this.set({ email: res.email });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        if (res.message === 'Invalid request payload input') {
+                            errors.push(__('account / change-email / error / invalid-email'));
+                        } else {
+                            errors.push(
+                                res.message
+                                    ? __(`account / change-email / error / ${res.message}`)
+                                    : e.message
+                            );
+                        }
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                this.set({ savingEmail: false });
+
+                if (!errors.length) {
+                    this.set({
+                        changeEmail: false,
+                        messages,
+                        errors: []
+                    });
+                } else {
+                    this.set({ errors });
+                }
+            },
+            async changePassword() {
+                const { currentPassword, newPassword } = this.get();
+
+                this.set({ savingPassword: true });
+
+                const payload = {
+                    password: newPassword,
+                    oldPassword: currentPassword
+                };
+
+                const messages = [];
+                const errors = [];
+
+                try {
+                    await httpReq.patch('/v3/me', { payload });
+                    messages.push('Your password has been changed!');
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+                        errors.push(res.message || e.message);
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                if (errors.length === 0) {
+                    this.set({
+                        changePassword: false,
+                        currentPassword: '',
+                        newPassword: '',
+                        messages,
+                        errors: []
+                    });
+                } else {
+                    this.set({
+                        errors
+                    });
+                }
+                this.set({
+                    savingPassword: false
+                });
+            },
+            async deleteAccount() {
+                const { confirmPassword, confirmEmail } = this.get();
+
+                this.set({ deletingAccount: true });
+
+                const errors = [];
+
+                try {
+                    await httpReq.delete('/v3/me', {
+                        payload: {
+                            password: confirmPassword,
+                            email: confirmEmail
+                        }
+                    });
+                } catch (e) {
+                    if (e.name === 'HttpReqError') {
+                        const res = await e.response.json();
+
+                        if (res.message === 'delete-or-transfer-teams-first') {
+                            errors.push(__('account / delete / team-conflict'));
+                        } else {
+                            errors.push(res.message || e.message);
+                        }
+                    } else {
+                        errors.push('Unknown error: ' + e);
+                    }
+                }
+
+                this.set({ deletingAccount: false });
+
+                if (!errors.length) {
+                    this.set({ deleteAccount2: false, deleteAccount3: true });
+                } else {
+                    this.set({ errors });
+                }
+            }
+        }
+    };
+</script>
+
+<style type="text/css" lang="less">
+    .edit-account {
+        #input-email,
+        #input-password {
+            margin-bottom: 0px;
+        }
+    }
+    h3 .fa-times {
+        color: #c71e1d;
+    }
+    .progress-success .bar {
+        background: #09bb9f !important;
+    }
+    .progress-danger .bar {
+        background: #c71e1d !important;
+    }
+    .link {
+        color: #1d81a2;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .settings-section {
+        padding-top: 10px;
+        margin-top: 10px;
+
+        .base-dropdown-content {
+            top: 30px !important;
+        }
+    }
+    .alert p {
+        margin-bottom: 0;
+    }
+</style>

@@ -1,0 +1,84 @@
+<div class="chart-breadcrumb">
+    <!-- prettier-ignore -->
+    {@html __('editor / chart-breadcrumb / '+type)} {@html __('editor / chart-breadcrumb / is-in-folder')}
+    <div class="parts">
+        {#each truncatedFolders as folder} {#if folder.ellipsis}
+        <span>…</span>
+        {:else}
+        <a href="{folder.url}"
+            ><i class="{folder.icon || 'im im-folder'}"></i> <span>{truncate(folder.name)}</span></a
+        >
+        {/if} {/each}
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import truncate from '@datawrapper/shared/truncate';
+
+    export default {
+        data() {
+            return {
+                type: 'chart',
+                folders: [],
+                team: null
+            };
+        },
+        computed: {
+            truncatedFolders({ folders }) {
+                if (folders.length < 6) return folders;
+                return [
+                    ...folders.slice(0, 3),
+                    {
+                        ellipsis: true
+                    },
+                    ...folders.slice(-1)
+                ];
+            }
+        },
+        helpers: {
+            __,
+            truncate
+        }
+    };
+</script>
+
+<style type="text/css" lang="less">
+    .chart-breadcrumb {
+        color: #aaaaaa;
+        font-weight: 400;
+        margin-bottom: 15px;
+    }
+    .parts .im {
+        font-size: 14px;
+        vertical-align: middle;
+        padding: 0 3px 0 0;
+    }
+    .parts {
+        margin-left: 0.4em;
+        display: inline-block;
+        > a,
+        > span {
+            color: #aaaaaa;
+            display: inline-block;
+            &:before {
+                display: inline-block;
+                padding: 0 1ex;
+                content: '/';
+            }
+            &:first-child {
+                font-weight: bold;
+                &:before {
+                    padding: 0;
+                    content: '';
+                }
+            }
+        }
+        a:hover {
+            text-decoration: none;
+            > span {
+                text-decoration: underline;
+            }
+        }
+    }
+</style>

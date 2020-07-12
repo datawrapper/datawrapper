@@ -2,6 +2,7 @@
 
 require_once ROOT_PATH . 'lib/utils/str_to_unicode.php';
 require_once ROOT_PATH . 'lib/utils/json_encode_safe.php';
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
 
 /**
  * Skeleton subclass for representing a row from the 'chart' table.
@@ -15,6 +16,7 @@ require_once ROOT_PATH . 'lib/utils/json_encode_safe.php';
  * @package    propel.generator.datawrapper
  */
 class Chart extends BaseChart {
+    private $assets;
 
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false) {
         $arr = parent::toArray($keyType, $includeLazyLoadColumns, $alreadyDumpedObjects, $includeForeignObjects);
@@ -33,38 +35,6 @@ class Chart extends BaseChart {
         return $this->lowercaseKeys($arr);
     }
 
-    public function usePrint() {
-        $this->usePrintVersion = true;
-
-        $meta = $this->getMetadata();
-
-        if (!isset($meta['print'])) {
-            // copy web chart for print
-            $meta['print'] = $meta;
-            $meta['print']['describe']['title'] = parent::getTitle();
-            $meta['print']['visualize']['type'] = parent::getType();
-
-            $themeId = parent::getTheme();
-            $theme = ThemeQuery::create()->findPk($themeId);
-
-            if (!empty($theme->getThemeData("printTheme"))) {
-                $meta['print']['visualize']['theme'] = $theme->getThemeData("printTheme");
-            } else {
-                $meta['print']['visualize']['theme'] = $theme->getId();
-            }
-
-            $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
-            $this->save();
-        }
-    }
-
-    public function deletePrintVersion() {
-        $meta = $this->getMetadata();
-        if (isset($meta['print'])) unset($meta['print']);
-        $this->setMetadata(json_encode($meta, JSON_UNESCAPED_UNICODE));
-        $this->save();
-    }
-
     /**
      * this function converts the chart
      */
@@ -76,10 +46,6 @@ class Chart extends BaseChart {
         $json = $this->lowercaseKeys($json);
 
         $json['metadata'] = $this->getMetadata();
-
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            $json['metadata'] = $json['metadata']['print'];
-        }
 
         if ($this->getUser()) $json['author'] = $this->getUser()->serialize();
         return $json;
@@ -102,29 +68,11 @@ class Chart extends BaseChart {
         // bad payload?
         if (!is_array($json)) return false;
 
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            if (isset($json['metadata'])) {
-                $json['metadata']['describe']['title'] = $json['title'];
-                $json['metadata']['visualize']['theme'] = $json['theme'];
-                $json['metadata']['visualize']['type'] = $json['type'];
-            }
-
-            $json['title'] = parent::getTitle();
-            $json['theme'] = parent::getTheme();
-            $json['type'] = parent::getType();
-        }
 
         if (array_key_exists('metadata', $json)) {
-            if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-                $m = $this->getMetadata();
-                $m['print'] = $json['metadata'];
-                $json['metadata'] = json_encode($m, JSON_UNESCAPED_UNICODE);
-            } else {
-                // encode metadata as json string … if there IS metadata
-                $m = $this->getMetadata();
-                if (isset($m['print'])) { $json['metadata']['print'] = $m['print']; }
-                $json['metadata'] = json_encode($json['metadata'], JSON_UNESCAPED_UNICODE);
-            }
+            // encode metadata as json string … if there IS metadata
+            $m = $this->getMetadata();
+            $json['metadata'] = json_encode($json['metadata'], JSON_UNESCAPED_UNICODE);
         }
 
         // then we upperkeys the keys
@@ -180,17 +128,12 @@ class Chart extends BaseChart {
     }
 
     public function getStaticPath() {
-        $path = chart_publish_directory() . 'static/' . $this->getID();
+        $path = chart_publish_directory() . 'static/' . $this->getPublicId();
         return $path;
     }
 
     public function getRelativeDataPath() {
         $path = 'data/' . $this->getCreatedAt('Ym');
-        return $path;
-    }
-
-    public function getRelativeStaticPath() {
-        $path = 'static/' . $this->getID();
         return $path;
     }
 
@@ -203,74 +146,57 @@ class Chart extends BaseChart {
     }
 
     /**
-     * writes any asset to the file system store
+     * writes any asset to the asset store using v3 api
      */
     public function writeAsset($filename, $data) {
-        $cfg = $GLOBALS['dw_config'];
+        if (!$this->assets) $this->assets = [];
 
-        if (isset($cfg['charts-s3'])
-          && isset($cfg['charts-s3']['write'])
-          && $cfg['charts-s3']['write'] == true) {
+        [$status, $body] = call_v3_api('PUT',
+            '/charts/' . $this->getId() . '/assets/' . $filename, $data, "text/csv");
 
-            $config = $cfg['charts-s3'];
-
-            $filenamePath = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
-                $this->getRelativeDataPath() . '/' . $filename;
-
-            file_put_contents($filenamePath, $data);
-        } else {
-            $path = $this->getDataPath();
-
-            if (!file_exists($path)) {
-                mkdir($path, 0775);
-            }
-
-            $filenamePath = $path . '/' . $filename;
-
-            file_put_contents($filenamePath, $data);
+        if (!in_array($status, [200, 201, 204])) {
+            throw new RuntimeException('Could not write chart asset using v3 API.');
         }
+
+        $this->assets[$filename] = $data;
         $this->setLastModifiedAt(time());
-        return $filenamePath;
     }
 
     /**
-     * writes raw csv data to the file system store
+     * writes raw csv data to the asset store using v3 api
      *
      * @param csvdata  raw csv data string
      */
     public function writeData($csvdata) {
-        return $this->writeAsset($this->getDataFilename(), $csvdata);
+        $this->writeAsset($this->getDataFilename(), $csvdata);
     }
 
     /**
-     * load any asset from file system
+     * load any asset from the asset store using v3 api
      */
     public function loadAsset($filename) {
-        $config = $GLOBALS['dw_config'];
+        if (!$this->assets) $this->assets = [];
 
-        if (isset($config['charts-s3']) &&
-            $config['charts-s3']['read']) {
+        if (empty($this->assets[$filename])) {
+            [$status, $body] = call_v3_api('GET',
+            '/charts/' . $this->getId() . '/assets/' . $filename);
 
-            $s3url = 's3://' . $config['charts-s3']['bucket'] . '/' .
-              $this->getRelativeDataPath() . '/' . $filename;
-
-            try {
-                return file_get_contents($s3url);
-            } catch (Exception $ex) {
-                return '';
+            if (!in_array($status, [200, 201, 204, 404])) {
+                throw new RuntimeException('Could not read chart asset using v3 API.');
             }
-        } else {
-            $filenamePath = $this->getDataPath() . '/' . $filename;
-            if (!file_exists($filenamePath)) {
-                return '';
+
+            if ($status == "404") {
+                $this->assets[$filename] = "";
             } else {
-                return file_get_contents($filenamePath);
+                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode_safe($body, 1);
             }
         }
+
+        return $this->assets[$filename];
     }
 
     /**
-     * load data from file system
+     * load data from the asset store using v3 api
      */
     public function loadData() {
         return $this->loadAsset($this->getDataFilename());
@@ -278,23 +204,13 @@ class Chart extends BaseChart {
 
     public function refreshExternalData() {
         $url = $this->getExternalData();
-        if (!empty($url)) {
-            $ch = curl_init($url);
-            curl_setopt_array($ch, [
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CONNECTTIMEOUT => 5,
-            ]);
-            $new_data = curl_exec($ch);
-            // check status code to ignore error responses
-            $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if ($statusCode < 400) {
-                // check encoding of data
-                $new_data = str_to_unicode($new_data);
-                if (!empty($new_data)) $this->writeData($new_data);
-            }
+
+        if (!empty($url)
+            || $this->getMetadata('data.upload-method') === 'google-spreadsheet'
+            || $this->getMetadata('custom.webToPrint.mode') === 'print') {
+
+            [$status, $response] = call_v3_api('POST', '/charts/' . $this->getId() . '/data/refresh');
         }
-        Hooks::execute(Hooks::CUSTOM_EXTERNAL_DATA, $this);
     }
 
     /*
@@ -328,7 +244,9 @@ class Chart extends BaseChart {
      * checks if a user has the privilege to change the data in a chart
      */
     public function isDataWritable($user) {
-        return $this->isWritable($user) && !$this->getIsFork();
+        return $this->isWritable($user)
+            && !$this->getIsFork()
+            && $this->getMetadata('custom.webToPrint.mode') != 'print';
     }
 
     /*
@@ -380,10 +298,6 @@ class Chart extends BaseChart {
      * returns the chart meta data
      */
     public function getMetadata($key = null) {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion && $key) {
-            $key = "print." . $key;
-        }
-
         $default = Chart::defaultMetaData();
 
         $raw_meta = parent::getMetadata();
@@ -436,7 +350,7 @@ class Chart extends BaseChart {
 
     public function isPublic() {
         // 1 = upload, 2 = describe, 3 = visualize, 4 = publish, 5 = published
-        return !$this->getDeleted() && $this->getLastEditStep() >= 4;
+        return !$this->getDeleted() && $this->getLastEditStep() > 4;
     }
 
     public function _isDeleted() {
@@ -482,163 +396,17 @@ class Chart extends BaseChart {
         );
     }
 
-    /*
-     * increment the public version of a chart, which is used
-     * in chart public urls to deal with cdn caches
-     */
-    public function publish() {
-        // increment public version
-        $this->setPublicVersion($this->getPublicVersion() + 1);
-        // generate public url
-        $published_urls = Hooks::execute(Hooks::GET_PUBLISHED_URL, $this);
-        if (!empty($published_urls)) {
-            // store public url from first publish module
-            $this->setPublicUrl($published_urls[0]);
+    public function getPublicId() {
+        if (!empty($GLOBALS['dw_config']['chart_id_salt'])) {
+            return md5(
+                $this->getID() .
+                "--" .
+                strtotime($this->getCreatedAt()) .
+                "--" .
+                $GLOBALS['dw_config']['chart_id_salt']
+            );
         } else {
-            // fallback to local url
-            $this->setPublicUrl($this->getLocalUrl());
-        }
-        $this->generateEmbedCodes();
-        $this->save();
-        // copy data to public
-        if (empty($this->getPublicChart())) {
-            // create new public chart
-            $publicChart = new PublicChart();
-            $publicChart->setFirstPublishedAt(time());
-            $this->setPublicChart($publicChart);
-        }
-        $this->getPublicChart()->update();
-        // log chart publish action
-        Action::logAction(Session::getUser(), 'chart/publish', $this->getId());
-    }
-
-    /*
-     * redirect previous chart versions to the most current one
-     */
-    public function redirectPreviousVersions($justLast20=true) {
-        $current_target = $this->getCDNPath();
-        $redirect_html = '<html><head><meta http-equiv="REFRESH" content="0; url=/'.$current_target.'"></head></html>';
-        $redirect_file = chart_publish_directory() . 'static/' . $this->getID() . '/redirect.html';
-        file_put_contents($redirect_file, $redirect_html);
-        $files = array();
-        for ($v=0; $v < $this->getPublicVersion(); $v++) {
-            if (!$justLast20 || $this->getPublicVersion() - $v < 20) {
-                $files[] = [
-                    $redirect_file,
-                    $this->getCDNPath($v) . 'index.html', 'text/html'
-                ];
-            }
-        }
-        Hooks::execute(Hooks::PUBLISH_FILES, $this, $files);
-    }
-
-    public function generateEmbedCodes() {
-        // generate embed codes
-        $embedcodes = [];
-        $theme = ThemeQuery::create()->findPk($this->getTheme());
-
-        // hack: temporarily set UI language to chart language
-        // so we get the correct translation of "Chart:" and "Map:"
-        if ($this->getLanguage() != '') {
-            global $__l10n;
-            $__l10n->loadMessages($this->getLanguage());
-        }
-
-        $search = [
-            '%chart_id%',
-            '%chart_url%',
-            '%chart_title%',
-            '%chart_type%',
-            '%chart_intro%',
-            '%chart_width%',
-            '%chart_height%',
-            '%embed_heights%',
-            '%embed_heights_escaped%',
-        ];
-        $replace = [
-            $this->getID(),
-            $this->getPublicUrl(),
-            htmlentities(strip_tags($this->getTitle())),
-            $this->getAriaLabel($theme),
-            htmlentities(strip_tags($this->getMetadata('describe.intro'))),
-            $this->getMetadata('publish.embed-width'),
-            $this->getMetadata('publish.embed-height'),
-            json_encode($this->getMetadata('publish.embed-heights')),
-            str_replace('"', '&quot;', json_encode($this->getMetadata('publish.embed-heights')))
-        ];
-
-        // hack: revert the UI language
-        if ($this->getLanguage() != '') {
-            $__l10n->loadMessages(DatawrapperSession::getLanguage());
-        }
-
-        foreach (publish_get_embed_templates($this->getOrganization()) as $template) {
-            $code = str_replace($search, $replace, $template['template']);
-            $embedcodes['embed-method-'.$template['id']] = $code;
-        }
-        $this->updateMetadata('publish.embed-codes', $embedcodes);
-    }
-
-    public function unpublish() {
-        $path = $this->getStaticPath();
-        if (file_exists($path)) {
-            $dirIterator = new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS);
-            $itIterator  = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST);
-
-            foreach ($itIterator as $entry) {
-                $file = realpath((string) $entry);
-
-                if (is_dir($file)) {
-                    rmdir($file);
-                }
-                else {
-                    unlink($file);
-                }
-            }
-
-            rmdir($path);
-        }
-
-        // Load CDN publishing class
-        $config = $GLOBALS['dw_config'];
-        if (!empty($config['publish'])) {
-
-            // remove files from CDN
-            $pub = get_module('publish', dirname(__FILE__) . '/../../../../');
-
-            $id = $this->getID();
-
-            $chart_files = array();
-            $chart_files[] = "$id/index.html";
-            $chart_files[] = "$id/data";
-            $chart_files[] = "$id/$id.min.js";
-
-            $pub->unpublish($chart_files);
-        }
-
-        // remove all jobs related to this chart
-        JobQuery::create()
-            ->filterByChart($this)
-            ->delete();
-    }
-
-    public function hasPreview() {
-        $cfg = $GLOBALS['dw_config'];
-
-        if (isset($cfg['charts-s3'])
-          && isset($cfg['charts-s3']['read'])
-          && $cfg['charts-s3']['read'] == true) {
-
-            $path = 's3://' . $cfg['charts-s3']['bucket'] . '/' .
-                $this->getRelativeStaticPath() . '/m.png';
-        } else {
-            $path = $this->getStaticPath() . '/m.png';
-        }
-
-        try {
-            return file_exists($path);
-        } catch (Exception $ex) {
-            return false;
+            return $this->getID();
         }
     }
 
@@ -651,49 +419,16 @@ class Chart extends BaseChart {
             . $this->getID() . "/" . $path . "/plain.png";
     }
 
-    public function getThumbFilename($thumb) {
-        $cfg = $GLOBALS['dw_config'];
-        if (isset($cfg['charts-s3']) && isset($cfg['charts-s3']['write'])
-            && $cfg['charts-s3']['write'] == true) {
-            // use S3 file url
-            return 's3://' . $cfg['charts-s3']['bucket'] . '/'
-                . get_relative_static_path($this) . '/' . $thumb . '.png';
-        } else {
-            // use local file url
-            return get_static_path($this) . "/" . $thumb . '.png';
-        }
-    }
-
-    public function plainUrl() {
-        return $this->assetUrl('plain.html');
-    }
-
-    public function assetUrl($file) {
-        return dirname($this->getPublicUrl() . '_') . '/' . $file;
-    }
-
     public function getTitle() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            return $this->getMetadata('describe.title');
-        } else {
-            return parent::getTitle();
-        }
+        return parent::getTitle();
     }
 
     public function getTheme() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            return $this->getMetadata('visualize.theme');
-        } else {
-            return parent::getTheme();
-        }
+        return parent::getTheme();
     }
 
     public function getType() {
-        if (isset($this->usePrintVersion) && $this->usePrintVersion) {
-            $type = $this->getMetadata('visualize.type');
-        } else {
-            $type = parent::getType();
-        }
+        $type = parent::getType();
 
         if (!DatawrapperVisualization::has($type)) {
             // fall back to default chart type
@@ -710,50 +445,13 @@ class Chart extends BaseChart {
      * return URL of this chart on Datawrapper
      */
     public function getLocalUrl() {
-        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getID() . '/index.html';
-    }
-
-    public function getCDNPath($version = null) {
-        if ($version === null) $version = $this->getPublicVersion();
-        return $this->getID() . '/' . ($version > 0 ? $version . '/' : '');
+        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
     public function getNamespace() {
         if (!DatawrapperVisualization::has($this->getType())) return 'chart';
         $vis = DatawrapperVisualization::get($this->getType());
         return $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * the caption decides what goes in front of the byline in the
-     * chart footer. can be either "chart:", "map:", or "table:"
-     */
-    public function getCaption() {
-        if (!DatawrapperVisualization::has($this->getType())) return 'chart';
-        $vis = DatawrapperVisualization::get($this->getType());
-        return $vis['caption'] ?? $vis['namespace'] ?? 'chart';
-    }
-
-    /**
-     * returns the text to be used in `aria-label` meta attribute
-     * in iframe embed codes. visualizations may define a custom
-     * aria label, otherwise we fall back to just "chart" or "map"
-     */
-    public function getAriaLabel($theme) {
-        $vis = DatawrapperVisualization::get($this->getType());
-        if ($vis !== false && !empty($vis['aria-label'])) {
-            return $vis['aria-label'];
-        }
-        // fall back to chart type title
-        if ($vis !== false && !empty($vis['title'])) {
-            return $vis['title'];
-        }
-        // fall back to namespace caption
-        return str_replace(':', '', $this->getNamespace() == 'map' ?
-            $theme->getThemeData('options.footer.mapCaption') :
-            $this->getNamespace() == 'table' ?
-            $theme->getThemeData('options.footer.tableCaption') :
-            $theme->getThemeData('options.footer.chartCaption'));
     }
 
     public function getDefaultStep() {

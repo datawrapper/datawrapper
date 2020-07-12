@@ -46,7 +46,7 @@ define([
 
         syncUI();
 
-        chart.load(dw.backend.__currentData).done(onDatasetLoaded);
+        chart.load(dw.backend.__currentData).then(onDatasetLoaded);
         iframe.load(iframeLoaded);
 
         if (iframe[0].contentDocument.readyState === 'complete') {
@@ -330,14 +330,8 @@ define([
     function loadVis() {
         if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            iframe.attr(
-                'src',
-                '/chart/' +
-                    chart.get('id') +
-                    '/preview?innersvg=1&random=' +
-                    Math.floor(Math.random() * 100000) +
-                    (getParameterByName('mode') === 'print' ? '&mode=print&fitchart=1' : '')
-            );
+            var src = '/preview/' + chart.get('id') + '?innersvg=1&random=' + Math.floor(Math.random() * 100000);
+            iframe.attr('src', src);
         }
         if (dw.visualization.has(chart.get('type'))) {
             loadVisDone(dw.visualization(chart.get('type')));
@@ -350,7 +344,6 @@ define([
         function loadVisDone(vis) {
             dw.backend.currentVis = vis;
             dw.backend.currentVis.chart(chart);
-            dw.backend.currentVis.dataset = chart.dataset().reset();
             dw.backend.currentVis.meta = visMetas[chart.get('type')];
             dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
 
@@ -360,14 +353,6 @@ define([
                 visOptions.sync();
             }
             loadVisDfd.resolve();
-        }
-
-        function getParameterByName(e, n) {
-            // n || (n = window.location.href), (e = e.replace(/[\[\]]/g, '\\$&'));
-            if (!n) n = window.location.href;
-            e = e.replace(/[[\]]/g, '\\$&');
-            var r = new RegExp('[?&]' + e + '(=([^&#]*)|&|#|$)').exec(n);
-            return r ? (r[2] ? decodeURIComponent(r[2].replace(/\+/g, ' ')) : '') : null;
         }
 
         function loadVisJS(type, callback) {

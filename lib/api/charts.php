@@ -4,6 +4,7 @@
  * API: get list of all charts by the current user
  */
 $app->get('/charts', function() use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     $user = Session::getUser();
     if ($user->isLoggedIn()) {
         $filter = array();
@@ -44,6 +45,7 @@ $app->get('/charts', function() use ($app) {
  * API: create a new empty chart
  */
 $app->post('/charts', function() {
+    if (!check_scopes(['chart:write'])) return;
     $user = Session::getUser();
     try {
         $chart = ChartQuery::create()->createEmptyChart($user);
@@ -54,39 +56,13 @@ $app->post('/charts', function() {
     }
 });
 
-
-/*
- * returns the metadata for all charts that are allowed
- * to show in the gallery
- */
-$app->get('/gallery', function() use ($app) {
-    $result = array();
-    $q = ChartQuery::create()
-        ->filterByShowInGallery(true)
-        ->filterByLastEditStep(array('min' => 4))
-        ->orderByCreatedAt('desc');
-    if ($app->request()->get('type')) {
-        $q->filterByType($app->request()->get('type'));
-    }
-    if ($app->request()->get('theme')) {
-        $q->filterByTheme($app->request()->get('theme'));
-    }
-    if ($app->request()->get('month')) {
-        $q->filterByTheme($app->request()->get('theme'));
-    }
-    $charts = $q->limit(20)->find();
-    foreach ($charts as $chart) {
-        $result[] = $chart->toArray();
-    }
-    ok($result);
-});
-
 /**
  * load chart meta data
  *
  * @param id chart id
  */
 $app->get('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     $chart = ChartQuery::create()->findPK($id);
     $user = Session::getUser();
     if (!empty($chart) && $chart->isReadable($user)) {
@@ -147,13 +123,12 @@ function if_chart_exists($id, $callback) {
 
 /* check user and update chart meta data */
 $app->put('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         if (!empty($GLOBALS['dw_config']['lock-utf8-charts']) && $chart->getUtf8() == 1) {
             return error('chart-locked', 'the chart is temporarily locked due to a database migration');
         }
         $json = json_decode($app->request()->getBody(), true);
-
-        if ($app->request()->get('mode') == "print") $chart->usePrint();
 
         if ($chart->unserialize($json))
             ok($chart->serialize());
@@ -170,6 +145,7 @@ $app->put('/charts/:id', function($id) use ($app) {
  * @param chart_id chart id
  */
 $app->get('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:read'])) return;
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         $data = $chart->loadData();
         $app->response()->header('Content-Type', 'text/csv;charset=utf-8');
@@ -184,6 +160,7 @@ $app->get('/charts/:id/data', function($chart_id) use ($app) {
  * @param chart_id chart id
  */
 $app->put('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         if (!$chart->isDataWritable($user)) {
             error('read-only', 'the data is read-only');
@@ -191,9 +168,9 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
         }
         $data = $app->request()->getBody();
         try {
-            $filename = $chart->writeData($data);
+            $chart->writeData($data);
             $chart->save();
-            ok($filename);
+            ok();
         } catch (Exception $e) {
             error('io-error', $e->getMessage());
         }
@@ -206,6 +183,7 @@ $app->put('/charts/:id/data', function($chart_id) use ($app) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/data', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     disable_cache($app);
     if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
         if (!$chart->isDataWritable($user)) {
@@ -262,12 +240,12 @@ $app->post('/charts/:id/data', function($chart_id) use ($app) {
 
 /* delete chart */
 $app->delete('/charts/:id', function($id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_writable($id, function($user, $chart) use ($app) {
         $chart->setDeleted(true);
         $chart->setDeletedAt(time());
         $chart->setLastEditStep(3);
         $chart->save();
-        $chart->unpublish();
         ok('');
     });
 });
@@ -304,6 +282,7 @@ function if_chart_is_readable($chart_id, $callback) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/copy', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if (!Session::isLoggedIn()) {
         return error('error', 'you need to be logged in to duplicate a chart');
     }
@@ -357,20 +336,11 @@ function if_chart_is_forkable($chart_id, $callback) {
  * @param chart_id chart id
  */
 $app->post('/charts/:id/fork', function($chart_id) use ($app) {
+    if (!check_scopes(['chart:write'])) return;
     if_chart_is_forkable($chart_id, function($user, $chart) use ($app) {
         try {
-            $fork = ChartQuery::create()->copyPublicChart($chart);
+            $fork = ChartQuery::create()->copyPublicChart($chart, $user);
             if ($fork) {
-                if ($user->isLoggedIn()) {
-                    $fork->setUser($user);
-                    $fork->setOrganization($user->getCurrentOrganization());
-                } else {
-                    // remember session id to be able to assign this chart
-                    // to a newly registered user
-                    $fork->setOrganization(null);
-                    $fork->setAuthorId(null);
-                    $fork->setGuestSession(session_id());
-                }
                 $fork->setInFolder(null);
                 $fork->setTheme($GLOBALS['dw_config']['defaults']['theme']);
                 $fork->updateMetadata('describe.byline', '');
@@ -384,107 +354,4 @@ $app->post('/charts/:id/fork', function($chart_id) use ($app) {
             error('io-error', $e->getMessage());
         }
     });
-});
-
-
-$app->post('/charts/:id/publish', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        if ($user->mayPublish($chart)) {
-            $justLocal = $app->request()->get('local') == 1;
-            $chart->publish();
-            publish_chart($user, $chart, false, $justLocal);
-            ok($chart->serialize());
-        } else {
-            error('need-to-upgrade', 'You need to activate/upgrade your account to publish.');
-        }
-    });
-});
-
-$app->get('/charts/:id/publish/status', function($chart_id) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app) {
-        echo json_encode(_getPublishStatus($chart));
-    });
-});
-
-
-/*
- * stores client-side generated chart thumbnail
- */
-$app->put('/charts/:id/thumbnail/:thumb', function($chart_id, $thumb) use ($app) {
-    disable_cache($app);
-    if_chart_is_writable($chart_id, function($user, $chart) use ($app, $thumb) {
-        try {
-            $imgurl = $app->request()->getBody();
-            $imgdata = base64_decode(substr($imgurl, strpos($imgurl, ",") + 1));
-            $thumb_filename = $chart->getThumbFilename($thumb);
-            file_put_contents($thumb_filename, $imgdata);
-            ok();
-        } catch (Exception $e) {
-            print $e;
-            error('io-error', $e);
-        }
-    });
-});
-
-/*
- * stores static snapshot of a chart (data, configuration, etc) as JSON
- * to /test/test-charts. This aims to simplify the generation of test
- * cases using the Datawrapper editor. Only for debugging.
- */
-$app->post('/charts/:id/store_snapshot', function($chart_id) use ($app) {
-    if (!empty($GLOBALS['dw_config']['debug_export_test_cases'])) {
-        if_chart_exists($chart_id, function($chart) use ($app) {
-            $json = $chart->serialize();
-            $payload = json_decode($app->request()->getBody(), true);
-            $name = $payload['id'];
-            $json['_data'] = $chart->loadData();
-            $json['_sig'] = $payload['signature'];
-            if (empty($name)) {
-                error('', 'no name specified');
-            } else {
-                $name = str_replace(" ", "-", $name);
-                $json['_id'] = $name;
-                file_put_contents("../../test/test-charts/" . $name . ".json", json_encode($json));
-                ok();
-            }
-        });
-    }
-});
-
-$app->get('/charts/:id/vis-data', function ($chart_id) {
-    if_chart_is_readable($chart_id, function($user, $chart) {
-        try {
-            $allVis = array();
-
-            foreach (DatawrapperVisualization::all() as $vis) {
-                $allVis[$vis['id']] = $vis;
-            }
-
-            ok(array(
-                'visualizations' => $allVis,
-                'vis' => DatawrapperVisualization::get($chart->getType()),
-                'themes' => ThemeQuery::findAll(),
-            ));
-        } catch (Exception $e) {
-            error('io-error', $e->getMessage());
-        }
-    });
-});
-
-// endpoint to fix unicode problems in a chart
-$app->get('/charts/:id/fix', function($id) use ($app) {
-    $user = Session::getUser();
-    $pdo = Propel::getConnection();
-    $pdo->exec("SET character_set_results = 'utf8'");
-    $res = $pdo->query("SELECT metadata FROM chart WHERE NOT JSON_CONTAINS_PATH(metadata, 'one', '$.data.\"charset-fixed\"') AND id = ".$pdo->quote($id));
-    $metadata = $res->fetchColumn(0);
-    if (!empty($metadata)) {
-        print "fixing chart\n";
-        $pdo->exec("UPDATE chart SET metadata = ".$pdo->quote($metadata)." WHERE id = ".$pdo->quote($id));
-        $pdo->exec("UPDATE chart SET metadata = JSON_SET(metadata, '$.data.\"charset-fixed\"', true) WHERE id = ".$pdo->quote($id));
-    } else {
-            print "this chart has been fixed already\n";
-    }
 });

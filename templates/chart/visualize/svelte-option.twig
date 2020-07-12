@@ -9,17 +9,22 @@
 <link rel="stylesheet" type="text/css" href="/static/css/svelte/controls.css">
 
 <script type="text/javascript" src="/static/plugins/{{ filePath }}.js?v={{ sha }}"></script>
+<script type="text/javascript" src="/static/js/svelte/visualize.js?v={{ sha }}"></script>
 <link rel="stylesheet" type="text/css" href="/static/plugins/{{ filePath }}.css">
 
 
 <script type="text/javascript">
 
-require(['{{ amdPath }}'], function(mod) {
+require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
 
     var App = mod.App,
         data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
     var chartData = {{chart.toStruct()|json|raw}};
+
+    if (typeof mod.migrate === "function") {
+        mod.migrate(chartData.type, chartData.metadata);
+    }
 
     // set defaults
     chartData.metadata.visualize = _.extend(
@@ -29,13 +34,13 @@ require(['{{ amdPath }}'], function(mod) {
 
     chartData.mode = getQueryVariable("mode") || "web";
 
-    var chart = new mod.Chart(chartData);
+    var chart = new visualize.Chart(chartData);
     window.chart2 = chart;
     var getJSON = mod.utils.getJSON;
 
     var themeCache = {};
     var visCache = {};
-    themeCache['{{theme.id}}'] = {{theme.themeData|json|raw}};
+    themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
     visCache['{{vis.id}}'] = {{vis|json|raw}};
 
     chart.set({
@@ -68,6 +73,14 @@ require(['{{ amdPath }}'], function(mod) {
     var app;
 
     chart.load(dw.backend.__currentData).then(function(ds) {
+        // remove ignored columns
+        var columnFormat = chart.getMetadata('data.column-format', {});
+        var ignore = {};
+        _.each(columnFormat, function(format, key) {
+            ignore[key] = !!format.ignore;
+        });
+        if (ds.filterColumns) ds.filterColumns(ignore);
+
         chart.set({dataset: ds});
 
         getContext(function(win, doc) {
@@ -117,13 +130,9 @@ require(['{{ amdPath }}'], function(mod) {
                 chart.set({themeData: themeCache[current.theme]});
             } else {
                 // load new theme data
-                getJSON(('/api/themes/' + (current.theme)), function (res) {
-                    if (res.status == 'ok') {
-                        themeCache[current.theme] = res.data.data;
-                        chart.set({themeData: res.data.data});
-                    } else {
-                        console.warn('theme not loaded', res);
-                    }
+                getJSON('//'+dw.backend.__api_domain+'/v3/themes/' + (current.theme)+'?extend=true', function (res) {
+                    themeCache[current.theme] = res.data;
+                    chart.set({themeData: res.data});
                 });
             }
         }
@@ -186,7 +195,8 @@ require(['{{ amdPath }}'], function(mod) {
                     }
                 }
 
-                dw.backend.currentChart.set('metadata', JSON.parse(JSON.stringify(current.metadata)));
+                // set metadata directly without saving again
+                dw.backend.currentChart.attributes().metadata = JSON.parse(JSON.stringify(current.metadata));
             }
         }
     });

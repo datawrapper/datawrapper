@@ -2,7 +2,15 @@
 
     {% if num_charts == 0 %}
         <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
+    {% else %}
+        <div style="margin-bottom:10px; padding:10px;font-weight:300">
+            <i style="color:#999" class="im im-plus-circle im-fw"></i>
+            <span style="margin-left: 3px;">
+                {{ "mycharts / create-chart-here" | trans | replace({'%folder%':current.folder}) | raw }}
+            </span>
+        </div>
     {% endif %}
+
     {% for group in chart_groups %}
         {% if group.title %}
             <h3 id="group-{{ group.id }}">{% if group.link %}<a href="{{ group.link }}">{% endif %}{{ group.title }}{% if group.link %}</a>{% endif %}</h3>
@@ -36,14 +44,14 @@
                         <ul class="dropdown-menu">
                             <li><a class="edit" target="_blank" href="/chart/{{ chart.id }}/visualize#refine-the-chart"><i class="im im-edit"></i> {% trans "Edit" %}</a></li>
                             <li><a class="duplicate" href="#"><i class="im im-copy"></i> {% trans "Duplicate" %}</a></li>
-                            {% if not current.organization or current.organization_role < 2 or chart.authorId == user.id %}<li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
-                            {% endif %}
+                            <li><a class="delete" href="#"><i class="im im-trash-can"></i> {% trans "Delete" %}</a></li>
                         <!-- dropdown menu links -->
                         </ul>
                     </div>
                  </div>
             </li>
             {% endfor %}
+
         </ul>
 
     {% endfor %}

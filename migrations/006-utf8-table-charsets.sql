@@ -11,9 +11,7 @@ ALTER TABLE `user` MODIFY COLUMN created_at datetime DEFAULT CURRENT_TIMESTAMP N
 ALTER TABLE `action` DEFAULT CHARSET=utf8mb4;
 ALTER TABLE `action` DEFAULT CHARSET=utf8mb4;
 ALTER TABLE auth_token DEFAULT CHARSET=utf8mb4;
-ALTER TABLE chargebee_invoices DEFAULT CHARSET=utf8mb4;
 ALTER TABLE chart DEFAULT CHARSET=utf8mb4;
-ALTER TABLE chart_access_token DEFAULT CHARSET=utf8mb4;
 ALTER TABLE chart_public DEFAULT CHARSET=utf8mb4;
 ALTER TABLE export_job DEFAULT CHARSET=utf8mb4;
 ALTER TABLE folder DEFAULT CHARSET=utf8mb4;
@@ -44,7 +42,6 @@ ALTER TABLE folder MODIFY COLUMN folder_name varchar(128) CHARACTER SET utf8mb4 
 ALTER TABLE organization MODIFY COLUMN name varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 ALTER TABLE theme MODIFY COLUMN title varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
 ALTER TABLE organization MODIFY COLUMN name varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
-ALTER TABLE river_chart_tag MODIFY COLUMN tag varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 ALTER TABLE `user` MODIFY COLUMN name varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
 ALTER TABLE `user` MODIFY COLUMN website varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
 

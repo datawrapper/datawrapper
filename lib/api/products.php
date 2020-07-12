@@ -4,6 +4,7 @@
  * get list of all products
  */
 $app->get('/products', function() use ($app) {
+    if (!check_scopes(['product:read'])) return;
     disable_cache($app);
     if_is_admin(function() use ($app) {
         try {
@@ -23,6 +24,7 @@ $app->get('/products', function() use ($app) {
  * create new product
  */
 $app->post('/products', function() use ($app) {
+    if (!check_scopes(['product:write'])) return;
     disable_cache($app);
     // only admins can create products
     if_is_admin(function() use ($app) {
@@ -48,11 +50,12 @@ $app->post('/products', function() use ($app) {
  * change product
  */
 $app->put('/products/:id', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
             $params = json_decode($app->request()->getBody(), true);
-            $product->setName($params['name']);            
+            $product->setName($params['name']);
             $product->setData(json_encode($params['data']));
 
             if (isset($params['priority'])) {
@@ -73,6 +76,7 @@ $app->put('/products/:id', function($id) use ($app) {
  * delete product
  */
 $app->delete('/products/:id', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
 
@@ -94,6 +98,7 @@ $app->delete('/products/:id', function($id) use ($app) {
  * add plugin to product
  */
 $app->post('/products/:id/plugins', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
 
@@ -121,6 +126,7 @@ $app->post('/products/:id/plugins', function($id) use ($app) {
  * remove plugin from product
  */
 $app->delete('/products/:id/plugins', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
 
@@ -148,6 +154,7 @@ $app->delete('/products/:id/plugins', function($id) use ($app) {
  * add user(s) to product
  */
 $app->post('/products/:id/users', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
@@ -178,6 +185,7 @@ $app->post('/products/:id/users', function($id) use ($app) {
 });
 
 $app->put('/products/:id/users', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
@@ -207,6 +215,7 @@ $app->put('/products/:id/users', function($id) use ($app) {
  * remove users from product
  */
 $app->delete('/products/:id/users', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
@@ -230,6 +239,7 @@ $app->delete('/products/:id/users', function($id) use ($app) {
 });
 
 $app->post('/products/:id/organizations', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
@@ -262,6 +272,7 @@ $app->post('/products/:id/organizations', function($id) use ($app) {
 });
 
 $app->put('/products/:id/organizations', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {
@@ -288,6 +299,7 @@ $app->put('/products/:id/organizations', function($id) use ($app) {
 });
 
 $app->delete('/products/:id/organizations', function($id) use ($app) {
+    if (!check_scopes(['product:write'])) return;
     if_is_admin(function() use ($app, $id) {
         $product = ProductQuery::create()->findPk($id);
         if ($product) {

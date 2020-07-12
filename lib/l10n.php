@@ -9,14 +9,8 @@ class Datawrapper_L10N {
      * load messages
      */
     public function loadMessages($locale) {
-        global $memcache;
         $locale = str_replace('-', '_', $locale);
         $mkey = 'l10n-messages-' . $locale;
-        if (isset($_GLOBALS['dw-config']['memcache'])) {
-            // pull translation from memcache
-            $msg = $memcache->get($mkey);
-            if (!empty($msg)) return $msg;
-        }
 
         $messages = $this->loadMessageJSON($locale);
         if ($locale != 'en_US') {
@@ -26,11 +20,6 @@ class Datawrapper_L10N {
             }
         }
 
-        if (isset($_GLOBALS['dw-config']['memcache'])) {
-            // store translation in memcache for one minute to prevent
-            // us from loading the JSON for every request
-            $memcache->set($mkey, $messages, 60);
-        }
         $this->__messages = $messages;
     }
 

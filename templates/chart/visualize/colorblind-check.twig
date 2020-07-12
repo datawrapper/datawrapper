@@ -100,7 +100,6 @@ require(['chroma', 'd3'], function(chroma, d3) {
         __dw.colorMapInjected = true;
 
         chart.onChange(function() {
-            // console.log('-- onChange --');
             progress.removeClass('hide');
             warning.addClass('hide');
             setTimeout(function() {
@@ -111,7 +110,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
     }
 
     function colorMap(color) {
-        // console.log('cm',lastColors.size());
+
         if (state.sim == 'normal' || !color || color == 'none' ||
             color == 'transparent' || color == 'auto' || !color) return color;
         var k = String(color);
@@ -121,7 +120,6 @@ require(['chroma', 'd3'], function(chroma, d3) {
             color = chroma(k).hex();
             return (color_lt[k] = blinder[state.sim](color));
         } catch (e) {
-            // console.log('unknown color', color);
             return color;
         }
     }
@@ -137,7 +135,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
     });
 
     window.addEventListener('message', function(evt) {
-        if (evt.data == 'datawrapper:vis:reload') {
+        if (evt.data == 'datawrapper:vis:init') {
             initIframe();
         }
         if (evt.data == 'datawrapper:vis:rendered') {
@@ -168,19 +166,12 @@ require(['chroma', 'd3'], function(chroma, d3) {
             // use all colors
             sample = colors;
         }
-        // var sample = _.sample(colors, 50);
 
         if (!sample.length) {
             // wait a second
             setTimeout(runTests,1000);
             return;
         }
-
-        // $('#color-preview').html('');
-        // sample.forEach(function(col) {
-        //     $('<div class="color" style="background:'+col+'"></>')
-        //         .appendTo('#color-preview');
-        // });
 
         // auto-test 3 simulations
         warning.addClass('hide');
@@ -230,7 +221,7 @@ require(['chroma', 'd3'], function(chroma, d3) {
         var smallest_percievable_distance = 9.2;
         var k = sample.length;
         if (!k) {
-            // console.log('no sample', type);
+
             return true;
         }
         // compute distances between colors
@@ -250,13 +241,13 @@ require(['chroma', 'd3'], function(chroma, d3) {
                 var dst_sim = difference(a_sim, b_sim);
                 var is_not_ok = dst_norm/dst_sim > ratio_thres && dst_sim < smallest_percievable_distance;
                 if (is_not_ok) {
-                    // console.log(type, sample[a],sample[b],a_sim+'',b_sim+'', dst_norm, dst_sim, dst_norm/dst_sim);
+
                 }
                 // count combinations that are problematic
                 if (is_not_ok) notok++; else ok++;
             }
         }
-        // console.log(type, notok/(ok+notok));
+
         // compute share of problematic samples
         return notok/(ok+notok) < 0.03;
     }

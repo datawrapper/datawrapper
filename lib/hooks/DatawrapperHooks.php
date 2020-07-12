@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -62,36 +63,8 @@ class DatawrapperHooks {
         return isset($me->hooks[$hookName]);
     }
 
-    // print something above / below a charts HTML body
-    const CHART_BEFORE_BODY = 'chart_before_body';
-    const CHART_AFTER_BODY = 'chart_after_body';
-
-    // print something in <head> section of a chart
-    const CHART_HTML_HEAD = 'chart_html_head';
-
-    // for adding more sources to a chart, e.g. map data attribution
-    const CHART_FOOTER_AFTER_SOURCE = 'chart_footer_after_source';
-
     // print something below the Datawrapper HTML body
     const CORE_AFTER_BODY = 'core_after_body';
-
-    // publishes a set of files to some CDN (args: chart, files)
-    const PUBLISH_FILES = 'publish_files';
-
-    // unpublishes (removes) a set of files from some CDN (args: chart, files)
-    const UNPUBLISH_FILES = 'unpublish_files';
-
-    // returns the URL of a published chart (args: chart)
-    const GET_PUBLISHED_URL = 'get_pulished_url';
-
-    // returns the host for chart assets (args: chart)
-    const GET_ASSET_DOMAIN = 'get_asset_domain';
-
-    // returns a key specifically for the storage (eg the s3 bucket)
-    const GET_PUBLISH_STORAGE_KEY = 'get_publish_storage_key';
-
-    // Send an email (args: to, subject, body, headers)
-    const SEND_EMAIL = 'send_email';
 
     // Runs once a day via cronjob
     const CRON_DAILY = 'cron_daily';
@@ -110,12 +83,6 @@ class DatawrapperHooks {
 
     // Runs every minute via cronjob
     const CRON_MINUTELY = 'cron_minutely';
-
-    // Executed before a chart has been published (args: chart, user)
-    const PRE_CHART_PUBLISH = 'pre_chart_publish';
-
-    // Executed after a chart has been published (args: chart, user)
-    const POST_CHART_PUBLISH = 'post_chart_publish';
 
     // returns a list of actions to be displayed in publish step
     const GET_CHART_ACTIONS = 'get_chart_actions';
@@ -184,20 +151,10 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_THEME_SELECTOR = 'visualize_before_theme_selector';
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
     const CUSTOM_ANNOTATION_CONTROLS = 'custom_annotation_controls';
+    const AFTER_CUSTOM_ANNOTATION_CONTROLS = 'after_custom_annotation_controls';
 
-    // extend the settings form
-    const USER_SETTINGS = 'user_settings';
-
-    // extend the settings navigation
-    const USER_SETTINGS_NAV = 'user_settings_nav';
-
-    // GET_ACCOUNT_PAGES kept for backward-compatibility
+    // add user account settings pages
     const GET_ACCOUNT_PAGES = 'get_account_pages';
-
-    // certain core events will execute the NOTIFY_USER hook in hope that some
-    // plugin will deliver these messages to the user somehow.
-    // args: $user, $message
-    const NOTIFY_USER = 'notify_user';
 
     // add more markup below sidebar in describe step
     const DESCRIBE_AFTER_SIDEBAR = 'describe_after_sidebar';
@@ -212,24 +169,9 @@ class DatawrapperHooks {
     // add more markup in sidebar in describe step
     const DESCRIBE_BEFORE_SOURCE = 'describe_before_source';
 
-    // hooks for sending transactional e-mails
-    const SEND_ACTIVATION_EMAIL = 'send_activation_email';
-    const SEND_INVITE_EMAIL_TO_NEW_USER = 'send_invite_to_new_user';
-    const SEND_TEAM_INVITE_EMAIL = 'send_team_invite_email';
-    const SEND_RESET_PASSWORD_EMAIL = 'send_reset_password_email';
-    const SEND_CHANGE_EMAIL_EMAIL = 'send_change_email_email';
-    const SEND_FIRST_INVOICE_EMAIL = 'send_first_invoice_email';
-    const SEND_MANUAL_INVOICE_EMAIL = 'send_manual_invoice_email';
-    const SEND_INVOICE_EMAIL = 'send_invoice_email';
-    const SEND_CARD_EXPIRY_EMAIL = 'send_card_expiry_email';
-    const SEND_FAILED_PAYMENT_EMAIL = 'send_failed_payment_email';
-    const SEND_DOWNGRADE_EMAIL = 'send_downgrade_email';
-    const SEND_TEAM_SETUP_EMAIL = 'send_team_setup_email';
-
     // hooks to add markup in chart editor steps below nav
     const BEFORE_EDITOR_NAV = 'before_editor_nav';
     const UPLOAD_BEFORE_CONTENT = 'upload_before_content';
-    const UPLOAD_AFTER_DEMO_DATASETS = 'upload_after_demo_datasets';
     const UPLOAD_AFTER_CONTENT = 'upload_after_content';
     const DESCRIBE_BEFORE_CONTENT = 'describe_before_content';
     const DESCRIBE_BEFORE_SIDEBAR = 'describe_before_sidebar';
@@ -237,12 +179,9 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_CONTENT = 'visualize_before_content';
     const VISUALIZE_BEFORE_SIDEBAR = 'visualize_before_sidebar';
     const PUBLISH_BEFORE_CONTENT = 'publish_before_content';
-
-    // new hooks for publish page for different user scenarios
-    const PUBLISH_CUSTOM_PAGE_GUEST = 'publish_custom_page_guest';
-    const PUBLISH_CUSTOM_PAGE_PENDING_ACTIVATION = 'publish_custom_page_pending_activation';
-    const PUBLISH_CUSTOM_PAGE_NOT_ALLOWED = 'publish_custom_page_not_allowed';
-    const PUBLISH_CUSTOM_EXPORT_ACTIONS_HEADER = 'publish_custom_export_actions_header';
+    const PUBLISH_AFTER_EMBED = 'publish_after_embed';
+    const PUBLISH_TEXT_GUEST_ABOVE = 'publish_text_guest_above';
+    const PUBLISH_TEXT_GUEST_BELOW = 'publish_text_guest_below';
 
     // hooks for plugin installation/update
     const PLUGIN_INSTALLED = 'plugin_installed';
@@ -251,10 +190,6 @@ class DatawrapperHooks {
     const PLUGIN_SET_PRIVATE = 'plugin_set_private';
 
     const RENDER_RESIZE_CONTROL = 'render_resize_control';
-
-    // admin user page
-    const ADMIN_USER_DETAIL_TOP = 'admin_user_detail_top';
-    const ADMIN_USER_DETAIL_BOTTOM = 'admin_user_detail_bottom';
 
     const CHART_EDITOR_ALERT = 'chart_editor_alert';
     const PAGE_INLINE_CSS = 'page_inline_css';
@@ -266,13 +201,10 @@ class DatawrapperHooks {
 
     // custom share urls
     const CHART_ADD_SHARE_URL = 'chart_add_share_url';
-    const CHART_CREATED_WITH_DATAWRAPPER_URL = 'chart_created_with_datawrapper_url';
 
     const CUSTOM_EXTERNAL_DATA = 'CUSTOM_EXTERNAL_DATA';
 
     const ADD_WORKFLOW = 'ADD_WORKFLOW';
-
-    const REPLACE_PUBLISH_LOGIC = 'replace_publish_logic';
 
     const CORE_SET_CHART = 'core_set_chart';
 
@@ -280,6 +212,8 @@ class DatawrapperHooks {
 
     const TEAM_SETTINGS_PAGE = 'team_settings_page';
     const TEAM_FLAGS = 'team_flags';
+
+    const SVELTE_PUBLISH_AFTER_EMBED = 'svelte_publish_after_embed';
 }
 
 class_alias('DatawrapperHooks', 'Hooks');

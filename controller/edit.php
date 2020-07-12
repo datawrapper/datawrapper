@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
+
 (function() use ($app) {
 
     // helper function to get a list of all registered workflows
@@ -122,11 +124,24 @@
                 $chart->writeData($data);
             }
 
+            [$status, $embed_codes] = call_v3_api('GET', '/charts/'.$chart->getID().'/embed-codes');
+            if ($status != 200) {
+                $embed_codes = [];
+            }
+
+            $embed_types = (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responsive']]));
+            $embed_type = isset($embed_types[0]) ? $embed_types[0]['id'] : 'responsive';
+
+
             $publishData = (object) [
-                'embedTemplates' => publish_get_embed_templates($chart->getOrganization()),
-                'embedType' => publish_get_preferred_embed_type($chart->getOrganization()),
-                'pluginShareurls' => publish_get_plugin_shareurls(),
-                'shareurlType' => publish_get_preferred_shareurl_type()
+                'embedTemplates' => $embed_codes,
+                'embedType' => $embed_type,
+                'shareurlType' => $user->getUserData()['shareurl_type'] ?? 'default',
+                'pluginShareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
+                    Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
+                'afterEmbed' => Hooks::execute(Hooks::SVELTE_PUBLISH_AFTER_EMBED),
+                'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
+                'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
             ];
 
             $org = $chart->getOrganization();
@@ -163,10 +178,6 @@
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace']
             ];
-
-            if (Hooks::hookRegistered(Hooks::REPLACE_PUBLISH_LOGIC)) {
-                $page['publishLogic'] = Hooks::execute(Hooks::REPLACE_PUBLISH_LOGIC, $user, $chart)[0];
-            }
 
             // legacy stuff, need to move into ChartEditor some day
             // demo datasets

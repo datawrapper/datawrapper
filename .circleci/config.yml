@@ -1,7 +1,7 @@
 defaults: &defaults
     working_directory: ~/repo
     docker:
-        - image: sto3psl/dw-ci:1.1.0
+        - image: sto3psl/dw-ci:1.4.0
 
 cache: &cache
     key: v3-dependency-cache-{{ checksum "package-lock.json" }}
@@ -26,9 +26,13 @@ jobs:
             - save_cache:
                   key: source-v1-{{ .Branch }}-{{ .Revision }}
                   paths:
-                      - ".git"
+                      - '.git'
             - restore_cache:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
+
+            - run:
+                  name: Authenticate with registry
+                  command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
 
             - run: npm ci
 
@@ -42,15 +46,6 @@ jobs:
                   key: v1-install-cache-{{ checksum "package-lock.json" }}
                   paths:
                       - ~/.npm
-    test:
-        <<: *defaults
-        steps:
-            - *restore_source
-            - checkout
-            - restore_cache:
-                  <<: *cache
-
-            - run: npm test
 
     lint:
         <<: *defaults
@@ -62,19 +57,6 @@ jobs:
 
             - run: npm run lint
 
-    # publish:
-    #   <<: *defaults
-    #   steps:
-    #     - checkout
-    #     - restore_cache:
-    #         <<: *cache
-    #     - run:
-    #         name: Authenticate with registry
-    #         command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
-    #     - run:
-    #         name: Publish Package
-    #         command: npm publish
-
 workflows:
     version: 2
     install, test and lint:
@@ -84,26 +66,9 @@ workflows:
                       tags:
                           only: /^v.*/
 
-            - test:
-                  filters:
-                      tags:
-                          only: /^v.*/
-                  requires:
-                      - install
-
             - lint:
                   filters:
                       tags:
                           only: /^v.*/
                   requires:
                       - install
-            # - publish:
-            #     context: Deployment Keys
-            #     requires:
-            #       - test
-            #       - lint
-            #     filters:
-            #       tags:
-            #         only: /^v.*/
-            #       branches:
-            #         ignore: /.*/

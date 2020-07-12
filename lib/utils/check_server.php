@@ -1,6 +1,21 @@
 <?php
 
 /* health check */
+function chart_publish_directory() {
+    $dir = ROOT_PATH.'charts';
+
+    if (isset($GLOBALS['dw_config']['publish_directory'])) {
+        $dir = $GLOBALS['dw_config']['publish_directory'];
+    }
+
+    if (!is_dir($dir)) {
+        if (!@mkdir($dir, 0755, true)) {
+            throw new RuntimeException('Could not create chart publish directory "'.$dir.'". Please create it manually and make sure PHP can write to it.');
+        }
+    }
+
+    return rtrim(realpath($dir), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+}
 
 function check_path_permissions() {
     $paths       = array();
@@ -16,6 +31,7 @@ function check_path_permissions() {
     $paths[] = $publishRoot.'static/lib/theme';
     $paths[] = $publishRoot.'static/lib/vis';
     $paths[] = $publishRoot.'tmp';
+
     $paths[] = ROOT_PATH.'tmp';
 
     $err = array();

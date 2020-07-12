@@ -26,12 +26,8 @@
         "files": [
             "lib/utils/add_editor_nav.php",
             "lib/utils/add_header_vars.php",
-            "lib/utils/alphaID.php",
             "lib/utils/array_merge_recursive_simple.php",
-            "lib/utils/chart_content.php",
-            "lib/utils/chart_publish.php",
             "lib/utils/check_chart.php",
-            "lib/utils/check_email.php",
             "lib/utils/check_server.php",
             "lib/utils/copy_recursively.php",
             "lib/utils/disable_cache.php",
@@ -41,8 +37,7 @@
             "lib/utils/pagination.php",
             "lib/utils/parse_config.php",
             "lib/utils/parse_vis_options.php",
-            "lib/utils/twig-init.php",
-            "lib/utils/vksprintf.php"
+            "lib/utils/twig-init.php"
         ],
         "psr-0": {
             "Slim": "vendor/slim/slim"

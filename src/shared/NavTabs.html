@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="span2">
+        {#each groups as group}
+        <div class="group">{ group.title }</div>
+
+        <ul class="nav nav-stacked nav-tabs">
+            {#each group.tabs as tab}
+            <li class:active="activeTab && activeTab.id === tab.id">
+                <a href="{ tab.url || `/${basePath}/${tab.id}` }" on:click="activateTab(tab, event)"
+                    ><i class="{ tab.icon }"></i> &nbsp; { tab.title }
+                </a>
+            </li>
+            {/each}
+        </ul>
+        {/each}
+        <slot name="belowMenu" />
+    </div>
+    {#if activeTab}
+    <div class="span10 account-page-content tab-{activeTab.id}">
+        <slot name="aboveContent" />
+        <svelte:component
+            ref:currentTabUi
+            on:change="onTabChange(activeTab, event)"
+            this="{activeTab.ui}"
+            {...activeTab.data}
+        />
+        <slot name="belowContent" />
+    </div>
+    {/if}
+</div>
+
+<script>
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+
+    export default {
+        data() {
+            return {
+                groups: [],
+                basePath: '',
+                activeTab: null
+            };
+        },
+        methods: {
+            activateTab(tab, event = null) {
+                if (tab.module) {
+                    if (event) event.preventDefault();
+                    Promise.all([loadStylesheet(tab.css), loadScript(tab.js || tab.src)]).then(
+                        () => {
+                            require([tab.module], mod => {
+                                tab.ui = mod.App;
+                                tab.module = null;
+                                const { groups } = this.get();
+                                this.set({
+                                    groups,
+                                    activeTab: tab
+                                });
+                            });
+                        }
+                    );
+                    return;
+                }
+                if (tab.ui) {
+                    if (event) event.preventDefault();
+                    this.set({ activeTab: tab });
+                }
+            },
+            onTabChange(tab, event) {
+                if (tab.onchange) {
+                    tab.onchange(event, this.refs.currentTabUi);
+                }
+            }
+        }
+    };
+</script>
+
+<style>
+    .group {
+        text-transform: uppercase;
+        padding: 8px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    li.active a {
+        background: #18a1cd;
+        border-color: #18a1cd;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    li i.im {
+        font-size: 14px;
+        position: relative;
+        top: 1px;
+    }
+
+    .span2 .nav a i {
+        width: 15px;
+    }
+</style>

@@ -30,6 +30,11 @@ if (config.translation) {
             if (err) return console.error(err);
             // write core locales/*.json
             writeLocales(core, './locale', config.languages);
+            try {
+                writeLocales(core, '../api/locale', config.languages);
+            } catch (e) {
+                console.warn('could not store core translations in api/locale');
+            }
 
             var chartTranslations = _.indexBy(chart, 'plugin');
             var chartSrc = _.groupBy(chart, 'plugin');
@@ -64,20 +69,19 @@ if (config.translation) {
             delete chartSrc['d3-maps'];
 
 
-            _.each(chartSrc, (rows, key) => {
-                if (key) {
+            _.each(chartSrc, (rows, plugin) => {
+                if (plugin) {
                     const locale = {};
                     rows.forEach(row => {
-                        const key = row.key;
-                        delete row.key;
-                        delete row.plugin;
-                        locale[key] = row;
-                    })
-                    fs.writeFileSync(`${pluginDirectory}/${key}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
+                        const { key, plugin, ...translations } = row;
+                        Object.keys(translations).forEach(lang => {
+                            if (!locale[lang]) locale[lang] = {};
+                            locale[lang][key] = translations[lang];
+                        });
+                    });
+                    fs.writeFileSync(`${pluginDirectory}/${plugin}/locale/chart-translations.json`, JSON.stringify(locale, null, 4));
                 }
             })
-
-            // console.log(chartTranslations);
 
             // fs.writeFileSync(sheets[0].dest.replace('.csv', '.json'), JSON.stringify(d, null, 3));
             // fs.unlinkSync(sheets[0].dest);
