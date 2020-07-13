@@ -3013,6 +3013,13 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
   border-radius: 2px;
   box-shadow: 0 0 25px #444;
 }
+
+.mycharts-modal .copy-success {
+  font-size:12px;
+  line-height:16px;
+  margin-top:6px;
+  color:#09bb9f;
+}
 .mycharts-modal .btn.embed .embed-hide {
   display: none;
 }

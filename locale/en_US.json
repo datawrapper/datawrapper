@@ -649,6 +649,7 @@
   "Rename folder": "Rename folder",
   "Add": "Add",
   "Add subfolder": "Add subfolder",
+  "default": "Default",
   "Layout": "Layout",
   "No charts here, yet": "No charts here, yet",
   "Why not <a href='/chart/create'>create a new chart now</a>?": "Why not <a href='/chart/create'>create a new chart now</a>?",

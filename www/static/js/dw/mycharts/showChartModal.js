@@ -72,7 +72,8 @@ define(function() {
             });
             embedCodesTypes.forEach(function(key,i) {
                 var n = key === 'embed-method-custom' ? embedSettings.custom_embed.title : dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')];
-                $('ul.embed-codes', wrapper).append('<li><a name="'+n+'"href="" data-embed-method="' + key + '">' + n + (i === 0 ? ' (default)' : '') +'</a></li>');
+                var label = n + (i === 0 ? ' <span style="font-size:85%; color:#adadad"> ('+dw.backend.__messages.core["default"]+') </span>' : '');
+                $('ul.embed-codes', wrapper).append('<li><a name="'+n+'"href="" data-embed-method="' + key + '">' + label +'</a></li>');
             });
             var timeout;
             $('ul.embed-codes li a', wrapper).click(function(evt) {
