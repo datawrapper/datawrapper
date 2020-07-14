@@ -22,7 +22,7 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
 
     var chartData = {{chart.toStruct()|json|raw}};
 
-    if (typeof mod.migrate === "function") {
+    if (typeof mod.migrate === "function" && !mod.migrateAfterData) {
         mod.migrate(chartData.type, chartData.metadata);
     }
 
@@ -82,6 +82,12 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
         if (ds.filterColumns) ds.filterColumns(ignore);
 
         chart.set({dataset: ds});
+
+        if (typeof mod.migrate === "function" && mod.migrateAfterData) {
+            var chartData  = chart.getMetadata();
+            mod.migrate(chart.get().type, chartData, chart.dataset());
+            chart.set('metadata', chartData);
+        }
 
         getContext(function(win, doc) {
             chart.set({vis: win.__dw.vis});
