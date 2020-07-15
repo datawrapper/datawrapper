@@ -84,7 +84,7 @@ dw.backend.ready(function() {
         $('i#copying-chart').addClass('fa-spinner fa-spin');
         $.ajax({
             type: "POST",
-            url: '/api/charts/'+chart.get('id')+'/copy',
+            url: window.location.protocol + '//' + dw.backend.__api_domain + '/v3/charts/'+chart.get('id')+'/copy',
             xhrFields: {
                 withCredentials: true
             },
@@ -95,7 +95,7 @@ dw.backend.ready(function() {
 
     function openChart(res) {
         $('i#copying-chart').removeClass('fa-spinner fa-spin');
-        window.open(window.location.href.replace(chart.get('id'), res.data.id));
+        window.open(window.location.href.replace(chart.get('id'), res.id));
     }
     {% endif %}
 });
