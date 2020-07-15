@@ -79,7 +79,7 @@ define(function() {
             $('ul.embed-codes li a', wrapper).click(function(evt) {
                 clearTimeout(timeout);
                 var key = $(this).data('embed-method');
-                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key]);
+                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key].replace(/&#60;/gm,'<').replace(/&#62;/gm,'>'));
                 textarea.get(0).select();
                 var ok = document.execCommand('copy');
                 if (ok) {
