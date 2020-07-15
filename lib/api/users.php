@@ -66,28 +66,3 @@ $app->post('/user/:id/products', function($id) use ($app) {
 		}
 	});
 });
-
-$app->get('/user/data/:key', function($key) use ($app) {
-    if (!check_scopes(['user:read'])) return;
-    $user = Session::getUser();
-    if ($user->isLoggedIn()) {
-        $userData = $user->getUserData();
-        ok($userData[$key] ?? null);
-        return;
-    }
-    error('not-logged-in', 'you need to be logged in to access user data');
-});
-
-$app->post('/user/data', function() use ($app) {
-    if (!check_scopes(['user:write'])) return;
-    $user = Session::getUser();
-    if ($user->isLoggedIn()) {
-        $data = json_decode($app->request()->getBody(), true);
-        $userData = $user->getUserData();
-        foreach ($data as $key => $value) {
-            $userData[$key] = $value;
-        }
-        $user->setUserData($userData);
-    }
-    ok();
-});

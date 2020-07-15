@@ -205,8 +205,11 @@ class Chart extends BaseChart {
     public function refreshExternalData() {
         $url = $this->getExternalData();
 
-        if (!empty($url) || $this->getMetadata('data.upload-method') === 'google-spreadsheet') {
-            call_v3_api('POST', '/charts/' . $this->getId() . '/data/refresh');
+        if (!empty($url)
+            || $this->getMetadata('data.upload-method') === 'google-spreadsheet'
+            || $this->getMetadata('custom.webToPrint.mode') === 'print') {
+
+            [$status, $response] = call_v3_api('POST', '/charts/' . $this->getId() . '/data/refresh');
         }
     }
 
