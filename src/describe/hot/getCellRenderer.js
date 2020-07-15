@@ -19,7 +19,7 @@ export default function (app, chart, dataset, Handsontable) {
         row = instance.toPhysicalRow(row);
         if (row > 0) {
             var formatter = chart.columnFormatter(column);
-            value = formatter(column.val(row - 1), true);
+            value = column.val(row - 1) === null ? '' : formatter(column.val(row - 1), true);
         }
         if (parseInt(value) < 0) {
             // if row contains negative number
@@ -56,7 +56,12 @@ export default function (app, chart, dataset, Handsontable) {
         if (currentResult && currentResult.row === rowPosition && currentResult.col === col) {
             td.classList.add('htCurrentSearchResult');
         }
-        if (row > 0 && !column.type(true).isValid(column.val(row - 1))) {
+        if (
+            row > 0 &&
+            !column.type(true).isValid(column.val(row - 1)) &&
+            !column.val(row - 1) &&
+            column.val(row - 1) !== null
+        ) {
             td.classList.add('parsingError');
         }
         if (
