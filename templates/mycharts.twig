@@ -177,6 +177,12 @@
             "{{ org.id }}": {{ org.settings.folders | json | raw }}
         {% endfor %}
     };
+    window.organizationEmbedSettings = {
+        {% for org in organizations %}
+            {{ loop.index0 > 0 ? "," : "" }}
+            "{{ org.id }}": {{ org.settings.embed | json | raw }}
+        {% endfor %}
+    };
 </script>
 
 <div id="mycharts-modal" class="hidden">
@@ -212,13 +218,6 @@
                         <i class="icon-pencil"></i> {% trans "Edit this chart" %}
                     </a>
                 </li>
-                <li class="published">
-                    <a class="btn embed hidden">
-                        <i class="icon-share"></i>
-                        <span class="embed-show">{% trans "Show embed code" %}</span>
-                        <span class="embed-hide">{% trans "Hide embed code" %}</span>
-                    </a>
-                </li>
                 <li class="action-duplicate">
                     <form>
                         <input type="hidden" name="redirect" value="1" />
@@ -227,14 +226,24 @@
                         </button>
                     </form>
                 </li>
+                <li class="published">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="icon-pencil"></i> {% trans "Copy embed code"  %}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu embed-codes">
+
+                        </ul>
+                        <textarea class="embed-code-copy" style="width:3px;height:3px;opacity:0"></textarea>
+                    </div>
+                    <p class="copy-success small-help hidden"></p>
+                </li>
                 {{ hook('mycharts_modal_actions') }}
             </ul>
 
         </div>
         <iframe src="" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" oallowfullscreen="" msallowfullscreen="" style="background: [[ iframeBg ]]; border-color: [[ iframeBg ]]; width: [[ iframeW ]]px; height: [[ iframeH ]]px"></iframe>
-        <div class="embed-code hidden" style="width:[[ iframeW ]]px; height: [[ iframeH ]]px">
-            <div>&lt;iframe src="[[ publicUrl ]]" frameborder="0" allowtransparency="true" allowfullscreen="allowfullscreen" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" oallowfullscreen="oallowfullscreen" msallowfullscreen="msallowfullscreen" width="[[ iframeW ]]" height="[[ iframeH ]]" &gt;&lt;/iframe&gt;</div>
-        </div>
     </div>
 </div>
 

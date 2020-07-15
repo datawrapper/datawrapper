@@ -73,6 +73,37 @@ define(function() {
         });
         $('.btn-edit', wrapper).removeClass('hidden');
         if (!chart.publishedAt) $('.published', wrapper).remove();
+        else {
+            var embedCodes = chart.metadata.publish['embed-codes'] || {};
+            var embedSettings = organizationEmbedSettings[chart.organizationId];
+            var preferredEmbed = embedSettings.preferred_embed;
+            // preferred embed to top of list
+            var embedCodesTypes = Object.keys(embedCodes).sort(function(a,b){
+                return a.replace('embed-method-','') === preferredEmbed ? -1 : b.replace('embed-method-','') === preferredEmbed ? 1 : 0;
+            });
+            embedCodesTypes.forEach(function(key,i) {
+                var n = key === 'embed-method-custom' ? embedSettings.custom_embed.title : dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')];
+                var label = n + (i === 0 ? ' <span style="font-size:85%; color:#adadad"> ('+dw.backend.__messages.core["default"]+') </span>' : '');
+                $('ul.embed-codes', wrapper).append('<li><a name="'+n+'"href="" data-embed-method="' + key + '">' + label +'</a></li>');
+            });
+            var timeout;
+            $('ul.embed-codes li a', wrapper).click(function(evt) {
+                clearTimeout(timeout);
+                var key = $(this).data('embed-method');
+                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key].replace(/&#60;/gm,'<').replace(/&#62;/gm,'>'));
+                textarea.get(0).select();
+                var ok = document.execCommand('copy');
+                if (ok) {
+                    $('.copy-success', wrapper).removeClass('hidden');
+                    var message = dw.backend.__messages.core["copy-success"];
+                    $('.copy-success', wrapper).html(dw.utils.purifyHtml(message,'').replace('%embed-code-type%','<b>'+evt.currentTarget.name+'</b>'));
+                    timeout = setTimeout(function() {
+                        $('.copy-success', wrapper).addClass('hidden');
+                    }, 3000);
+                }
+                event.preventDefault();
+            });
+        }
         if (!chart.forkedFrom) $('.forked', wrapper).remove();
         else {
             $('.forked a', wrapper).click(function(e) {
