@@ -187,6 +187,13 @@ function prepare_short_arrays($charts) {
     foreach ($charts as $chart) {
         $flat = $chart->serialize(true);
 
+        if (isset($flat['metadata']['publish']['embed-codes'])) {
+            $embed_codes = [];
+            foreach ($flat['metadata']['publish']['embed-codes'] as $key => $value) {
+                $embed_codes[$key] = str_replace('<','&#60;',$value);
+                $embed_codes[$key] = str_replace('>','&#62;',$embed_codes[$key]);
+            }
+        }
         $flat['metadata'] = [
             'visualize' => [
                 'map-type-set' => $flat['metadata']['visualize']['map-type-set'] ?? false
@@ -195,7 +202,7 @@ function prepare_short_arrays($charts) {
                 'embed-height' => $flat['metadata']['publish']['embed-height'] ?? false,
                 'embed-width' => $flat['metadata']['publish']['embed-width'] ?? false,
                 'background' => $flat['metadata']['publish']['background'] ?? false,
-                'embed-codes' => $flat['metadata']['publish']['embed-codes'] ?? false
+                'embed-codes' => $embed_codes ?? false
             ]
         ];
 
