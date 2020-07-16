@@ -59,7 +59,6 @@ export default function (app, chart, dataset, Handsontable) {
         if (
             row > 0 &&
             !column.type(true).isValid(column.val(row - 1)) &&
-            !column.val(row - 1) &&
             column.val(row - 1) !== null
         ) {
             td.classList.add('parsingError');
