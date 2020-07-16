@@ -990,9 +990,6 @@ body.cms-mode .row.create-nav {
   background: #fee;
   color: #c00;
 }
-.chart-editor.dw-create-describe .handsontable tr td.emptyCell {
-  background: #f3f3f3;
-}
 .chart-editor.dw-create-describe .handsontable tr td.readOnly.firstRow {
   background: #EAEAEA;
   border-right-color: #aaa;
