@@ -482,7 +482,7 @@
   "Your changes have been saved.": "Die Änderungen wurden gespeichert.",
   "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!",
   "Make sure the data looks right": "Überprüfe dass die Daten richtig aussehen",
-  "describe / data-looks-right": "In der nebenstehenden Tabelle sollten <span class =\"type-hl\" style=\"color:#297EA8\">Zahlen</span> in Blau, Zeitangaben (z.B. ein <span class =\"type-hl\" style=\"color:#39A832\">Datum</span>) in grün und <span class =\"type-hl\" style=\"color:black\">Text</span> in schwarz angezeigt werden. Eine <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">rote</span> Zelle deutet darauf hin, dass es ein Problem mit deinen Daten gibt.",
+  "describe / data-looks-right": "In der nebenstehenden Tabelle sollten <span class =\"type-hl\" style=\"color:#297EA8\">Zahlen</span> in Blau, Zeitangaben (z.B. ein <span class =\"type-hl\" style=\"color:#39A832\">Datum</span>) in grün und <span class =\"type-hl\" style=\"color:black\">Text</span> in schwarz angezeigt werden. Eine <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">rote</span> Zelle deutet darauf hin, dass es ein Problem mit deinen Daten gibt. <br><span class=\"type-hl\" style=\"color:#ccc; background-color:#fff; padding:0px 10px\">–</span> Zellen enthalten keine Daten.",
   "First row as label": "Erste Zeile als Beschriftung",
   "Where did you get the data?": "Woher hast du die Daten?",
   "Who published the data in the first place?": "Wer hat die Daten zuerst veröffentlicht?",
