@@ -51,6 +51,8 @@
   "controls / custom-format / info": "Learn more about custom number formats in this <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy article</a>.",
   "controls / custom-format / custom / number": "For help on custom formats, check the <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">numeral.js documentation</a>.",
   "controls / custom-format / custom / date": "For help on custom formats, check the <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js documentation</a>.",
+  "controls / custom-format / custom": "(custom)",
+  "controls / custom-format / auto": "(automatic)",
   "controls / gradient-editor / how-this-works": "How this works:",
   "controls / gradient-editor / got-it": "Got it",
   "controls / gradient-editor / help": "Click anywhere in the gradient to add new color stops. Click color stops to change color. Drag them up or down to delete.",
@@ -480,7 +482,7 @@
   "Your changes have been saved.": "Your changes have been saved.",
   "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!",
   "Make sure the data looks right": "Make sure the data looks right",
-  "describe / data-looks-right": "Please make sure that Datawrapper interprets your data correctly. In the table <span class =\"type-hl\" style=\"color:#297EA8\">number</span> columns should be shown in blue, <span class =\"type-hl\" style=\"color:#39A832\">dates</span> in green and <span class =\"type-hl\" style=\"color:black\">text</span> in black. A  <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">red</span> cell indicates missing data or a problem in your dataset that needs to be fixed.",
+  "describe / data-looks-right": "Please make sure that Datawrapper interprets your data correctly. In the table <span class=\"type-hl\" style=\"color:#297EA8\">number</span> columns should be shown in blue, <span class=\"type-hl\" style=\"color:#39A832\">dates</span> in green and <span class=\"type-hl\" style=\"color:black\">text</span> in black. A  <span class=\"type-hl\" style=\"color:#c00; background-color:#fee\">red</span> cell indicates a problem in your dataset that needs to be fixed. <span class=\"type-hl\" style=\"color:#ccc; background-color:#fff; padding:0px 10px\">–</span> cells contain no data.",
   "First row as label": "First row as label",
   "Where did you get the data?": "Where did you get the data?",
   "Who published the data in the first place?": "Who published the data in the first place?",
@@ -717,5 +719,6 @@
   "cc / formula / error / unexpected tcomma": "Unexpected comma",
   "cc / formula / error / unexpected tparen": "Unexpected bracket",
   "cc / formula / error / unexpected tsemicolon": "Unexpected semicolon",
-  "cc / formula / error / unexpected teof": "Unexpected end of formula"
+  "cc / formula / error / unexpected teof": "Unexpected end of formula",
+  "copy": "Copy"
 }
