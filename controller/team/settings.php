@@ -137,7 +137,7 @@
 	            'themes' => $getThemes($org),
 	            'folders' => $getFolders($org),
 	            'visualizations' => $getVisualizations(),
-	            'visualizationArchive' => $getVisArchive(),
+	            'visualizationsArchive' => $getVisArchive(),
 	            'defaultTheme' => $org->getDefaultTheme() ? $org->getDefaultTheme() : $getSystemDefaultTheme(),
 	            'pluginTabs' => $tabs ? $tabs : [],
 	            'settings' => $teamSettings,
