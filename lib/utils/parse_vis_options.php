@@ -5,7 +5,10 @@
  */
 
 function parse_vis_options(&$vis) {
-    $option_parts = ['options'];
+    $option_parts = [];
+    if (!empty($vis['options'])) {
+        $option_parts[] = 'options';
+    }
     if (!empty($vis['annotate_options'])) {
         $option_parts[] = 'annotate_options';
     }
