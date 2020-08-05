@@ -237,7 +237,7 @@
   "publish / status / call-webhook": "Team-Webhook ausführen",
   "publish / status / call-slack-webhook": "Slack benachrichtigen",
   "publish / status / call-msteams-webhook": "Microsoft Teams benachrichtigen",
-  "publish / status / creating_images": "Bilddateien erstellen",
+  "publish / status / creating-images": "Bilddateien erstellen",
   "upload / drag-csv-here": "Ziehe deine CSV-Datei hier her zum Hochladen...",
   "upload / title": "Wie möchtest du deine Daten hochladen?",
   "upload / copy-paste": "Daten kopieren",
@@ -376,6 +376,7 @@
   "teams / tab / adminProducts": "Produkte",
   "teams / group / users": "Allgemein",
   "teams / group / advanced": "Erweitert",
+  "teams / group / publishing": "Veröffentlichung",
   "teams / group / internal": "Intern",
   "teams / loading-page": "Einstellungen werden geladen…",
   "teams / products / h1": "Produkte verwalten",
@@ -482,7 +483,7 @@
   "Your changes have been saved.": "Die Änderungen wurden gespeichert.",
   "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!",
   "Make sure the data looks right": "Überprüfe dass die Daten richtig aussehen",
-  "describe / data-looks-right": "In der nebenstehenden Tabelle sollten <span class =\"type-hl\" style=\"color:#297EA8\">Zahlen</span> in Blau, Zeitangaben (z.B. ein <span class =\"type-hl\" style=\"color:#39A832\">Datum</span>) in grün und <span class =\"type-hl\" style=\"color:black\">Text</span> in schwarz angezeigt werden. Eine <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">rote</span> Zelle deutet darauf hin, dass Daten fehlen oder es ein Problem mit deinen Daten gibt.",
+  "describe / data-looks-right": "In der nebenstehenden Tabelle sollten <span class =\"type-hl\" style=\"color:#297EA8\">Zahlen</span> in Blau, Zeitangaben (z.B. ein <span class =\"type-hl\" style=\"color:#39A832\">Datum</span>) in grün und <span class =\"type-hl\" style=\"color:black\">Text</span> in schwarz angezeigt werden. Eine <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">rote</span> Zelle deutet darauf hin, dass es ein Problem mit deinen Daten gibt. <br><span class=\"type-hl\" style=\"color:#ccc; background-color:#fff; padding:0px 10px\">–</span> Zellen enthalten keine Daten.",
   "First row as label": "Erste Zeile als Beschriftung",
   "Where did you get the data?": "Woher hast du die Daten?",
   "Who published the data in the first place?": "Wer hat die Daten zuerst veröffentlicht?",
@@ -719,5 +720,6 @@
   "cc / formula / error / unexpected tcomma": "Unerwartetes Komma",
   "cc / formula / error / unexpected tparen": "Unerwartete Klammer",
   "cc / formula / error / unexpected tsemicolon": "Unerwartetes Semikolon",
-  "cc / formula / error / unexpected teof": "Unerwartetes Formelende"
+  "cc / formula / error / unexpected teof": "Unerwartetes Formelende",
+  "copy": "Kopie"
 }
