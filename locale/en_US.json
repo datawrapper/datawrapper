@@ -93,6 +93,8 @@
   "controls / tooltip-editor / err / unexpected-token": "Invalid input",
   "controls / tooltip-editor / add-column": "(add column)",
   "controls / tooltip-editor / select-format": "(format)",
+  "controls / tooltip-editor / sticky": "Clicking makes tooltip stick",
+  "controls / tooltip-editor / sticky / help": "This option will make tooltips \"sticky\" after the user is clicking elements in the visualization. This is useful if you want to allow users to interact with the tooltip content, for instance to let them click on links.",
   "controls / legend / title": "Customize legend\n",
   "You must enter a password.": "You must enter a password.",
   "Both passwords must be the same.": "Both passwords must be the same.",

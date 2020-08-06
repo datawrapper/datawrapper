@@ -93,6 +93,8 @@
   "controls / tooltip-editor / err / unexpected-token": "Invalide Eingabe",
   "controls / tooltip-editor / add-column": "(Spalte hinzufügen)",
   "controls / tooltip-editor / select-format": "(Format)",
+  "controls / tooltip-editor / sticky": "Tooltips beim Klicken anheften",
+  "controls / tooltip-editor / sticky / help": "Diese Einstellung heftet Tooltips an, nachdem Nutzer auf Elemente in der Visualisierung klicken. Das ist nützlich wenn Nutzer mit dem Inhalt des Tooltips interagieren soll, z.B. um Links im Tooltip anzuklicken.",
   "controls / legend / title": "Legende anpassen",
   "You must enter a password.": "Sie müssen ein Kennwort eingeben.",
   "Both passwords must be the same.": "Beide Passwörter müssen übereinstimmen.",
