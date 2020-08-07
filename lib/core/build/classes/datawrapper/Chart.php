@@ -127,11 +127,6 @@ class Chart extends BaseChart {
         return $path;
     }
 
-    public function getStaticPath() {
-        $path = chart_publish_directory() . 'static/' . $this->getPublicId();
-        return $path;
-    }
-
     public function getRelativeDataPath() {
         $path = 'data/' . $this->getCreatedAt('Ym');
         return $path;
@@ -396,20 +391,6 @@ class Chart extends BaseChart {
         );
     }
 
-    public function getPublicId() {
-        if (!empty($GLOBALS['dw_config']['chart_id_salt'])) {
-            return md5(
-                $this->getID() .
-                "--" .
-                strtotime($this->getCreatedAt()) .
-                "--" .
-                $GLOBALS['dw_config']['chart_id_salt']
-            );
-        } else {
-            return $this->getID();
-        }
-    }
-
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
@@ -439,13 +420,6 @@ class Chart extends BaseChart {
 
 
         return $type;
-    }
-
-    /*
-     * return URL of this chart on Datawrapper
-     */
-    public function getLocalUrl() {
-        return get_current_protocol() . '://' . $GLOBALS['dw_config']['chart_domain'] . '/' . $this->getPublicId() . '/index.html';
     }
 
     public function getNamespace() {
