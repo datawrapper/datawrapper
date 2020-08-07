@@ -101,7 +101,8 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
                 Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
             'auto_publish' => !empty($app->request()->params('doit')),
             'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
-            'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
+            'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW),
+            'mayPublish' => $user->mayPublish($chart)
         ];
         $app->render('chart/publish.twig', $page);
     });

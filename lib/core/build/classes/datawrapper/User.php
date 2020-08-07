@@ -312,10 +312,9 @@ class User extends BaseUser {
      */
     public function mayPublish($chart) {
         if (!$this->isLoggedIn() || !$this->isActivated()) return false;
-        if (DatawrapperHooks::hookRegistered(DatawrapperHooks::USER_MAY_PUBLISH)) {
-            $user = DatawrapperSession::getUser(0);
-            foreach (DatawrapperHooks::execute(DatawrapperHooks::USER_MAY_PUBLISH, $user, $chart) as $value) {
-                if ($value === false) return false;
+        if ($chart->getOrganization()) {
+            if ($chart->getOrganization()->getSettings('restrictPublishToAdministrators')) {
+                return $this->canAdministrateTeam($chart->getOrganization());
             }
         }
         return true;
