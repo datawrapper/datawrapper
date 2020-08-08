@@ -240,6 +240,7 @@
   "publish / status / call-slack-webhook": "Slack benachrichtigen",
   "publish / status / call-msteams-webhook": "Microsoft Teams benachrichtigen",
   "publish / status / creating-images": "Bilddateien erstellen",
+  "publish / forbidden": "Aufgrund der Einstellungen deines Teams ist es derzeit für dich nicht möglich, Visualisierungen zu veröffentlichen. Wende dich stattdessen an einen Team-Administrator.",
   "upload / drag-csv-here": "Ziehe deine CSV-Datei hier her zum Hochladen...",
   "upload / title": "Wie möchtest du deine Daten hochladen?",
   "upload / copy-paste": "Daten kopieren",

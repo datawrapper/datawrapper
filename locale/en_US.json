@@ -240,6 +240,7 @@
   "publish / status / call-slack-webhook": "Notify Slack",
   "publish / status / call-msteams-webhook": "Notify Microsoft Teams",
   "publish / status / creating-images": "Creating images",
+  "publish / forbidden": "Due to your team's settings, it is currently not possible for you to publish this visualization. Please contact a team administrator for help.",
   "upload / drag-csv-here": "Drag your CSV file here to upload...",
   "upload / title": "How do you want to upload your data?",
   "upload / copy-paste": "Copy & paste data table",

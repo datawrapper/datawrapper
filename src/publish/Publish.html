@@ -66,12 +66,9 @@
         {/if}
     </div>
     {/if} {:else}
-
     <div class="alert alert-info">
-        Due to your team's settings, it is currently not possible for you to publish this
-        visualization. Please contact a team administrator for help.
+        {@html __('publish / forbidden')}
     </div>
-
     {/if}
 
     <div style="margin-top: 30px;" class="{published?'':'inactive'}">
