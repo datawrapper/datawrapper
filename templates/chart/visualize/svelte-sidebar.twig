@@ -1,6 +1,6 @@
+{{ hook('visualize_before_svelte_sidebar', chart) }}
+
 <div class="span4 visconfig">
-
-
 
     <div class="vis-options" id="{{vis['svelte-sidebar']['key']}}">
         <div style="color: #333;">
@@ -20,7 +20,7 @@
 <script type="text/javascript">
 
 require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, visualize) {
-    console.log({mod, visualize});
+
     var App = mod.App,
         data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
