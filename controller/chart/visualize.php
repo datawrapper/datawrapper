@@ -91,13 +91,29 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             });
         }
 
+        $vis_archive = $GLOBALS['dw_config']['vis_archive'] ?? [];
+
+        $visualizations = DatawrapperVisualization::all();
+        $userVisualizations = [];
+        $visArchive = [];
+        foreach ($visualizations as $v) {
+            if ($user->canCreateVisualization($v['id'], $chart) && $v['svelte-workflow'] == 'chart' && ($v['namespace'] ?? 'chart') != 'map' && !empty($v['title'])) {
+                if (in_array($v['id'], $vis_archive)) {
+                    $visArchive[] = $v;
+                } else {
+                    $userVisualizations[] = $v;
+                }
+            }
+        }
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
             'chartData' => $chart->loadData(),
             'chart' => $chart,
             'step' => $step,
             'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
-            'visualizations' => DatawrapperVisualization::all(),
+            'visualizations' => $visualizations,
+            'userVisualizations' => $userVisualizations,
+            'visArchive' => $visArchive,
             'vis' => $vis,
             'themes' => $themeMeta,
             'theme' => $theme,
@@ -111,11 +127,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);
 
-        if (!empty($vis['svelte-editor'])) {
-            $app->render('chart/svelte-editor.twig', $page);
-        } else {
-            $app->render('chart/visualize.twig', $page);
-        }
+        $app->render('chart/visualize.twig', $page);
     });
 })->conditions([
     'step' => '((?!(create|edit|publish|upload|describe|preview|data|data\.csv|_static|token)).)+'

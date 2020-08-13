@@ -1,0 +1,40 @@
+<div class="section select-visualization">
+    <div class="vis-selector-unfolded">
+        <div class="vis-thumbs">
+            {#each visualizations as vis}
+            <div class="vis-thumb" class:active="vis.id === $type">
+                {@html vis.icon}
+                <div class="title">{@html vis.title}</div>
+            </div>
+            {/each}
+        </div>
+
+        <div class="vis-archive-select">
+            <SelectInput options="{archiveOpts}" label="{__('visualize / vis archive')}" />
+        </div>
+
+        <p><b>{ __("Hint") }:</b> { __('visualize / transpose-hint') }</p>
+    </div>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import SelectInput from '@datawrapper/controls/Select.html';
+
+    export default {
+        components: {
+            SelectInput
+        },
+        computed: {
+            archiveOpts({ visArchive }) {
+                return [
+                    {
+                        value: null,
+                        label: '---'
+                    }
+                ].concat(visArchive.map(vis => ({ value: vis.id, label: vis.title })));
+            }
+        },
+        helpers: { __ }
+    };
+</script>
