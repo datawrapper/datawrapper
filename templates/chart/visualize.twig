@@ -4,11 +4,11 @@
 {{ parent() }}
 
 {{ hook('visualize_before_content', chart) }}
+{{ hook('visualize_before_svelte_sidebar', chart) }}
 
-<script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.bundle.min.js"></script>
 <script type="text/javascript" src="/static/vendor/scrolltofixed/jquery-scrolltofixed-min.js"></script>
-
-
+<script type="text/javascript" src="/static/js/svelte/visualize.js?v={{ sha }}"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/visualize.css?v={{ sha }}">
 
 <script type="text/javascript">
 var visData = {{ vis_data | raw }};
@@ -34,17 +34,36 @@ dw.backend.ready(function() {
 <div class="dw-create-visualize chart-editor chart-editor-{{ mode }}">
     <div class="row">
 
-        {% if vis['svelte-sidebar'] %}
+        <script type="text/javascript">
+            require(['svelte/visualize'], function(mod) {
+                // // Initialize API wrapper with domain, if API wrapper is present in the default props
+                // if (data.api && data.api.init) {
+                //     data.api.init({ domain: 'api.datawrapper.local' })
+                // }
 
-        {% include 'chart/visualize/svelte-sidebar.twig' %}
+                var app;
+                var App = mod.App,
+                data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
-        {% else %}
+                var chartData = {{chart.toStruct()|json|raw}};
 
-        {% include "chart/visualize/sidebar.twig" %}
+                mod.init({
+                    chartData: chartData,
+                    target: document.querySelector('#svelte-visualize'),
+                    data: data,
+                    theme: '{{theme.id}}',
+                    themeData: {{theme.data|json|raw}},
+                    visData: {{vis|json|raw}},
+                    user: {{userArray|json|raw}},
+                    locales: {{chartLocales|json|raw}},
+                    themes: {{userThemes|json|raw}}
+                })
+            });
+        </script>
+        <div class="span4" id="svelte-visualize">
 
-        {% endif %}
+        </div>
         <div class="span8">
-
             <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
                 <div id="iframe-wrapper" style="height:500px; overflow:visible;">
                     <iframe src="" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
@@ -55,10 +74,10 @@ dw.backend.ready(function() {
 
                 <div id="notifications"></div>
             </div>
-
         </div>
-
     </div>
 </div>
+
+
 
 {% endblock %}
