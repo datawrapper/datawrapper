@@ -1,1 +1,2901 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define("svelte/visualize",e):(t=t||self).visualize=e()}(this,(function(){"use strict";var t=function(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")};function e(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}var r=function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t};function n(t,e,r){return t(r={path:e,exports:{},require:function(t,e){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==e&&r.path)}},r.exports),r.exports}var i=n((function(t){function e(r){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?t.exports=e=function(t){return typeof t}:t.exports=e=function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},e(r)}t.exports=e}));var o=function(t){if(void 0===t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t};var a=function(t,e){return!e||"object"!==i(e)&&"function"!=typeof e?o(t):e},s=n((function(t){function e(r){return t.exports=e=Object.setPrototypeOf?Object.getPrototypeOf:function(t){return t.__proto__||Object.getPrototypeOf(t)},e(r)}t.exports=e})),u=n((function(t){function e(r,n){return t.exports=e=Object.setPrototypeOf||function(t,e){return t.__proto__=e,t},e(r,n)}t.exports=e}));var c=function(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function");t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,writable:!0,configurable:!0}}),e&&u(t,e)};var f=function(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n};var p=function(t,e){if(t){if("string"==typeof t)return f(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);return"Object"===r&&t.constructor&&(r=t.constructor.name),"Map"===r||"Set"===r?Array.from(t):"Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)?f(t,e):void 0}};var l=function(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t};function h(t,e){for(var r in e)t[r]=e[r];return t}function v(){return Object.create(null)}function d(t,e){return t!=t?e==e:t!==e||t&&"object"===i(t)||"function"==typeof t}function m(t,e){return t!=t?e==e:t!==e}function y(t,e){this._handlers={},this._dependents=[],this._computed=v(),this._sortedComputedProperties=[],this._state=h({},t),this._differs=e&&e.immutable?m:d}function g(t,e){for(var r=0;r<e.length;r+=1){if(!t)return;t=t[e[r]]}return t}h(y.prototype,{_add:function(t,e){this._dependents.push({component:t,props:e})},_init:function(t){for(var e={},r=0;r<t.length;r+=1){var n=t[r];e["$"+n]=this._state[n]}return e},_remove:function(t){for(var e=this._dependents.length;e--;)if(this._dependents[e].component===t)return void this._dependents.splice(e,1)},_set:function(t,e){var r=this,n=this._state;this._state=h(h({},n),t);for(var i=0;i<this._sortedComputedProperties.length;i+=1)this._sortedComputedProperties[i].update(this._state,e);this.fire("state",{changed:e,previous:n,current:this._state}),this._dependents.filter((function(t){for(var n={},i=!1,o=0;o<t.props.length;o+=1){var a=t.props[o];a in e&&(n["$"+a]=r._state[a],i=!0)}if(i)return t.component._stage(n),!0})).forEach((function(t){t.component.set({})})),this.fire("update",{changed:e,previous:n,current:this._state})},_sortComputedProperties:function(){var t,e=this._computed,r=this._sortedComputedProperties=[],n=v();function i(o){var a=e[o];a&&(a.deps.forEach((function(e){if(e===t)throw new Error("Cyclical dependency detected between ".concat(e," <-> ").concat(o));i(e)})),n[o]||(n[o]=!0,r.push(a)))}for(var o in this._computed)i(t=o)},compute:function(t,e,r){var n,i=this,o={deps:e,update:function(o,a,s){var u=e.map((function(t){return t in a&&(s=!0),o[t]}));if(s){var c=r.apply(null,u);i._differs(c,n)&&(n=c,a[t]=!0,o[t]=n)}}};this._computed[t]=o,this._sortComputedProperties();var a=h({},this._state),s={};o.update(a,s,!0),this._set(a,s)},fire:function(t,e){var r=t in this._handlers&&this._handlers[t].slice();if(r)for(var n=0;n<r.length;n+=1){var i=r[n];if(!i.__calling)try{i.__calling=!0,i.call(this,e)}finally{i.__calling=!1}}},get:function(){return this._state},on:function(t,e){var r=this._handlers[t]||(this._handlers[t]=[]);return r.push(e),{cancel:function(){var t=r.indexOf(e);~t&&r.splice(t,1)}}},set:function(t){var e=this._state,r=this._changed={},n=!1;for(var i in t){if(this._computed[i])throw new Error("'".concat(i,"' is a read-only computed property"));this._differs(t[i],e[i])&&(r[i]=n=!0)}n&&this._set(t,r)}});var M="object"==("undefined"==typeof self?"undefined":i(self))&&self.self===self&&self||"object"==("undefined"==typeof global?"undefined":i(global))&&global.global===global&&global||Function("return this")()||{},Y=Array.prototype,w=Object.prototype,b="undefined"!=typeof Symbol?Symbol.prototype:null,E=Y.push,A=Y.slice,x=w.toString,O=w.hasOwnProperty,D="undefined"!=typeof ArrayBuffer,N=Array.isArray,T=Object.keys,S=Object.create,C=D&&ArrayBuffer.isView,_=isNaN,I=isFinite,R=!{toString:null}.propertyIsEnumerable("toString"),k=["valueOf","isPrototypeOf","toString","propertyIsEnumerable","hasOwnProperty","toLocaleString"],j=Math.pow(2,53)-1;function L(t,e){return e=null==e?t.length-1:+e,function(){for(var r=Math.max(arguments.length-e,0),n=Array(r),i=0;i<r;i++)n[i]=arguments[i+e];switch(e){case 0:return t.call(this,n);case 1:return t.call(this,arguments[0],n);case 2:return t.call(this,arguments[0],arguments[1],n)}var o=Array(e+1);for(i=0;i<e;i++)o[i]=arguments[i];return o[e]=n,t.apply(this,o)}}function P(t){var e=i(t);return"function"===e||"object"===e&&!!t}function U(t){return!0===t||!1===t||"[object Boolean]"===x.call(t)}function F(t){return function(e){return x.call(e)==="[object "+t+"]"}}var H=F("String"),B=F("Number"),V=F("Date"),W=F("RegExp"),z=F("Error"),G=F("Symbol"),$=F("Map"),q=F("WeakMap"),X=F("Set"),J=F("WeakSet"),K=F("ArrayBuffer"),Q=F("DataView"),Z=N||F("Array"),tt=F("Function"),et=M.document&&M.document.childNodes;"function"!=typeof/./&&"object"!=("undefined"==typeof Int8Array?"undefined":i(Int8Array))&&"function"!=typeof et&&(tt=function(t){return"function"==typeof t||!1});var rt=tt;function nt(t,e){return null!=t&&O.call(t,e)}var it=F("Arguments");!function(){it(arguments)||(it=function(t){return nt(t,"callee")})}();var ot=it;function at(t){return B(t)&&_(t)}function st(t){return function(){return t}}function ut(t){return function(e){var r=t(e);return"number"==typeof r&&r>=0&&r<=j}}function ct(t){return function(e){return null==e?void 0:e[t]}}var ft=ct("byteLength"),pt=ut(ft),lt=/\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;var ht=D?function(t){return C?C(t)&&!Q(t):pt(t)&&lt.test(x.call(t))}:st(!1),vt=ct("length"),dt=ut(vt);function mt(t,e){e=function(t){for(var e={},r=t.length,n=0;n<r;++n)e[t[n]]=!0;return{contains:function(t){return e[t]},push:function(r){return e[r]=!0,t.push(r)}}}(e);var r=k.length,n=t.constructor,i=rt(n)&&n.prototype||w,o="constructor";for(nt(t,o)&&!e.contains(o)&&e.push(o);r--;)(o=k[r])in t&&t[o]!==i[o]&&!e.contains(o)&&e.push(o)}function yt(t){if(!P(t))return[];if(T)return T(t);var e=[];for(var r in t)nt(t,r)&&e.push(r);return R&&mt(t,e),e}function gt(t,e){var r=yt(e),n=r.length;if(null==t)return!n;for(var i=Object(t),o=0;o<n;o++){var a=r[o];if(e[a]!==i[a]||!(a in i))return!1}return!0}function Mt(t){return t instanceof Mt?t:this instanceof Mt?void(this._wrapped=t):new Mt(t)}function Yt(t,e,r,n){if(t===e)return 0!==t||1/t==1/e;if(null==t||null==e)return!1;if(t!=t)return e!=e;var o=i(t);return("function"===o||"object"===o||"object"==i(e))&&function t(e,r,n,o){e instanceof Mt&&(e=e._wrapped);r instanceof Mt&&(r=r._wrapped);var a=x.call(e);if(a!==x.call(r))return!1;switch(a){case"[object RegExp]":case"[object String]":return""+e==""+r;case"[object Number]":return+e!=+e?+r!=+r:0==+e?1/+e==1/r:+e==+r;case"[object Date]":case"[object Boolean]":return+e==+r;case"[object Symbol]":return b.valueOf.call(e)===b.valueOf.call(r);case"[object ArrayBuffer]":return t(new DataView(e),new DataView(r),n,o);case"[object DataView]":var s=ft(e);if(s!==ft(r))return!1;for(;s--;)if(e.getUint8(s)!==r.getUint8(s))return!1;return!0}if(ht(e))return t(new DataView(e.buffer),new DataView(r.buffer),n,o);var u="[object Array]"===a;if(!u){if("object"!=i(e)||"object"!=i(r))return!1;var c=e.constructor,f=r.constructor;if(c!==f&&!(rt(c)&&c instanceof c&&rt(f)&&f instanceof f)&&"constructor"in e&&"constructor"in r)return!1}o=o||[];var p=(n=n||[]).length;for(;p--;)if(n[p]===e)return o[p]===r;if(n.push(e),o.push(r),u){if((p=e.length)!==r.length)return!1;for(;p--;)if(!Yt(e[p],r[p],n,o))return!1}else{var l,h=yt(e);if(p=h.length,yt(r).length!==p)return!1;for(;p--;)if(l=h[p],!nt(r,l)||!Yt(e[l],r[l],n,o))return!1}return n.pop(),o.pop(),!0}(t,e,r,n)}function wt(t){if(!P(t))return[];var e=[];for(var r in t)e.push(r);return R&&mt(t,e),e}function bt(t){for(var e=yt(t),r=e.length,n=Array(r),i=0;i<r;i++)n[i]=t[e[i]];return n}function Et(t){for(var e={},r=yt(t),n=0,i=r.length;n<i;n++)e[t[r[n]]]=r[n];return e}function At(t){var e=[];for(var r in t)rt(t[r])&&e.push(r);return e.sort()}function xt(t,e){return function(r){var n=arguments.length;if(e&&(r=Object(r)),n<2||null==r)return r;for(var i=1;i<n;i++)for(var o=arguments[i],a=t(o),s=a.length,u=0;u<s;u++){var c=a[u];e&&void 0!==r[c]||(r[c]=o[c])}return r}}Mt.VERSION="1.11.0",Mt.prototype.value=function(){return this._wrapped},Mt.prototype.valueOf=Mt.prototype.toJSON=Mt.prototype.value,Mt.prototype.toString=function(){return String(this._wrapped)};var Ot=xt(wt),Dt=xt(yt),Nt=xt(wt,!0);function Tt(t){if(!P(t))return{};if(S)return S(t);var e=function(){};e.prototype=t;var r=new e;return e.prototype=null,r}function St(t){return P(t)?Z(t)?t.slice():Ot({},t):t}function Ct(t){return t}function _t(t){return t=Dt({},t),function(e){return gt(e,t)}}function It(t,e){for(var r=e.length,n=0;n<r;n++){if(null==t)return;t=t[e[n]]}return r?t:void 0}function Rt(t){return Z(t)?function(e){return It(e,t)}:ct(t)}function kt(t,e,r){if(void 0===e)return t;switch(null==r?3:r){case 1:return function(r){return t.call(e,r)};case 3:return function(r,n,i){return t.call(e,r,n,i)};case 4:return function(r,n,i,o){return t.call(e,r,n,i,o)}}return function(){return t.apply(e,arguments)}}function jt(t,e,r){return null==t?Ct:rt(t)?kt(t,e,r):P(t)&&!Z(t)?_t(t):Rt(t)}function Lt(t,e){return jt(t,e,1/0)}function Pt(t,e,r){return Mt.iteratee!==Lt?Mt.iteratee(t,e):jt(t,e,r)}function Ut(t,e){return null==e&&(e=t,t=0),t+Math.floor(Math.random()*(e-t+1))}Mt.iteratee=Lt;var Ft=Date.now||function(){return(new Date).getTime()};function Ht(t){var e=function(e){return t[e]},r="(?:"+yt(t).join("|")+")",n=RegExp(r),i=RegExp(r,"g");return function(t){return t=null==t?"":""+t,n.test(t)?t.replace(i,e):t}}var Bt={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#x27;","`":"&#x60;"},Vt=Ht(Bt),Wt=Ht(Et(Bt)),zt=Mt.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g},Gt=/(.)^/,$t={"'":"'","\\":"\\","\r":"r","\n":"n","\u2028":"u2028","\u2029":"u2029"},qt=/\\|'|\r|\n|\u2028|\u2029/g;function Xt(t){return"\\"+$t[t]}var Jt=0;function Kt(t,e,r,n,i){if(!(n instanceof e))return t.apply(r,i);var o=Tt(t.prototype),a=t.apply(o,i);return P(a)?a:o}var Qt=L((function(t,e){var r=Qt.placeholder;return function n(){for(var i=0,o=e.length,a=Array(o),s=0;s<o;s++)a[s]=e[s]===r?arguments[i++]:e[s];for(;i<arguments.length;)a.push(arguments[i++]);return Kt(t,n,this,this,a)}}));Qt.placeholder=Mt;var Zt=L((function(t,e,r){if(!rt(t))throw new TypeError("Bind must be called on a function");var n=L((function(i){return Kt(t,n,e,this,r.concat(i))}));return n}));function te(t,e,r,n){if(n=n||[],e||0===e){if(e<=0)return n.concat(t)}else e=1/0;for(var i=n.length,o=0,a=vt(t);o<a;o++){var s=t[o];if(dt(s)&&(Z(s)||ot(s)))if(e>1)te(s,e-1,r,n),i=n.length;else for(var u=0,c=s.length;u<c;)n[i++]=s[u++];else r||(n[i++]=s)}return n}var ee=L((function(t,e){var r=(e=te(e,!1,!1)).length;if(r<1)throw new Error("bindAll must be passed function names");for(;r--;){var n=e[r];t[n]=Zt(t[n],t)}return t}));var re=L((function(t,e,r){return setTimeout((function(){return t.apply(null,r)}),e)})),ne=Qt(re,Mt,1);function ie(t){return function(){return!t.apply(this,arguments)}}function oe(t,e){var r;return function(){return--t>0&&(r=e.apply(this,arguments)),t<=1&&(e=null),r}}var ae=Qt(oe,2);function se(t,e,r){e=Pt(e,r);for(var n,i=yt(t),o=0,a=i.length;o<a;o++)if(e(t[n=i[o]],n,t))return n}function ue(t){return function(e,r,n){r=Pt(r,n);for(var i=vt(e),o=t>0?0:i-1;o>=0&&o<i;o+=t)if(r(e[o],o,e))return o;return-1}}var ce=ue(1),fe=ue(-1);function pe(t,e,r,n){for(var i=(r=Pt(r,n,1))(e),o=0,a=vt(t);o<a;){var s=Math.floor((o+a)/2);r(t[s])<i?o=s+1:a=s}return o}function le(t,e,r){return function(n,i,o){var a=0,s=vt(n);if("number"==typeof o)t>0?a=o>=0?o:Math.max(o+s,a):s=o>=0?Math.min(o+1,s):o+s+1;else if(r&&o&&s)return n[o=r(n,i)]===i?o:-1;if(i!=i)return(o=e(A.call(n,a,s),at))>=0?o+a:-1;for(o=t>0?a:s-1;o>=0&&o<s;o+=t)if(n[o]===i)return o;return-1}}var he=le(1,ce,pe),ve=le(-1,fe);function de(t,e,r){var n=(dt(t)?ce:se)(t,e,r);if(void 0!==n&&-1!==n)return t[n]}function me(t,e,r){var n,i;if(e=kt(e,r),dt(t))for(n=0,i=t.length;n<i;n++)e(t[n],n,t);else{var o=yt(t);for(n=0,i=o.length;n<i;n++)e(t[o[n]],o[n],t)}return t}function ye(t,e,r){e=Pt(e,r);for(var n=!dt(t)&&yt(t),i=(n||t).length,o=Array(i),a=0;a<i;a++){var s=n?n[a]:a;o[a]=e(t[s],s,t)}return o}function ge(t){var e=function(e,r,n,i){var o=!dt(e)&&yt(e),a=(o||e).length,s=t>0?0:a-1;for(i||(n=e[o?o[s]:s],s+=t);s>=0&&s<a;s+=t){var u=o?o[s]:s;n=r(n,e[u],u,e)}return n};return function(t,r,n,i){var o=arguments.length>=3;return e(t,kt(r,i,4),n,o)}}var Me=ge(1),Ye=ge(-1);function we(t,e,r){var n=[];return e=Pt(e,r),me(t,(function(t,r,i){e(t,r,i)&&n.push(t)})),n}function be(t,e,r){e=Pt(e,r);for(var n=!dt(t)&&yt(t),i=(n||t).length,o=0;o<i;o++){var a=n?n[o]:o;if(!e(t[a],a,t))return!1}return!0}function Ee(t,e,r){e=Pt(e,r);for(var n=!dt(t)&&yt(t),i=(n||t).length,o=0;o<i;o++){var a=n?n[o]:o;if(e(t[a],a,t))return!0}return!1}function Ae(t,e,r,n){return dt(t)||(t=bt(t)),("number"!=typeof r||n)&&(r=0),he(t,e,r)>=0}var xe=L((function(t,e,r){var n,i;return rt(e)?i=e:Z(e)&&(n=e.slice(0,-1),e=e[e.length-1]),ye(t,(function(t){var o=i;if(!o){if(n&&n.length&&(t=It(t,n)),null==t)return;o=t[e]}return null==o?o:o.apply(t,r)}))}));function Oe(t,e){return ye(t,Rt(e))}function De(t,e,r){var n,o,a=-1/0,s=-1/0;if(null==e||"number"==typeof e&&"object"!=i(t[0])&&null!=t)for(var u=0,c=(t=dt(t)?t:bt(t)).length;u<c;u++)null!=(n=t[u])&&n>a&&(a=n);else e=Pt(e,r),me(t,(function(t,r,n){((o=e(t,r,n))>s||o===-1/0&&a===-1/0)&&(a=t,s=o)}));return a}function Ne(t,e,r){if(null==e||r)return dt(t)||(t=bt(t)),t[Ut(t.length-1)];var n=dt(t)?St(t):bt(t),i=vt(n);e=Math.max(Math.min(e,i),0);for(var o=i-1,a=0;a<e;a++){var s=Ut(a,o),u=n[a];n[a]=n[s],n[s]=u}return n.slice(0,e)}function Te(t,e){return function(r,n,i){var o=e?[[],[]]:{};return n=Pt(n,i),me(r,(function(e,i){var a=n(e,i,r);t(o,e,a)})),o}}var Se=Te((function(t,e,r){nt(t,r)?t[r].push(e):t[r]=[e]})),Ce=Te((function(t,e,r){t[r]=e})),_e=Te((function(t,e,r){nt(t,r)?t[r]++:t[r]=1})),Ie=Te((function(t,e,r){t[r?0:1].push(e)}),!0),Re=/[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;function ke(t,e,r){return e in r}var je=L((function(t,e){var r={},n=e[0];if(null==t)return r;rt(n)?(e.length>1&&(n=kt(n,e[1])),e=wt(t)):(n=ke,e=te(e,!1,!1),t=Object(t));for(var i=0,o=e.length;i<o;i++){var a=e[i],s=t[a];n(s,a,t)&&(r[a]=s)}return r})),Le=L((function(t,e){var r,n=e[0];return rt(n)?(n=ie(n),e.length>1&&(r=e[1])):(e=ye(te(e,!1,!1),String),n=function(t,r){return!Ae(e,r)}),je(t,n,r)}));function Pe(t,e,r){return A.call(t,0,Math.max(0,t.length-(null==e||r?1:e)))}function Ue(t,e,r){return null==t||t.length<1?null==e||r?void 0:[]:null==e||r?t[0]:Pe(t,t.length-e)}function Fe(t,e,r){return A.call(t,null==e||r?1:e)}var He=L((function(t,e){return e=te(e,!0,!0),we(t,(function(t){return!Ae(e,t)}))})),Be=L((function(t,e){return He(t,e)}));function Ve(t,e,r,n){U(e)||(n=r,r=e,e=!1),null!=r&&(r=Pt(r,n));for(var i=[],o=[],a=0,s=vt(t);a<s;a++){var u=t[a],c=r?r(u,a,t):u;e&&!r?(a&&o===c||i.push(u),o=c):r?Ae(o,c)||(o.push(c),i.push(u)):Ae(i,u)||i.push(u)}return i}var We=L((function(t){return Ve(te(t,!0,!0))}));function ze(t){for(var e=t&&De(t,vt).length||0,r=Array(e),n=0;n<e;n++)r[n]=Oe(t,n);return r}var Ge=L(ze);function $e(t,e){return t._chain?Mt(e).chain():e}function qe(t){return me(At(t),(function(e){var r=Mt[e]=t[e];Mt.prototype[e]=function(){var t=[this._wrapped];return E.apply(t,arguments),$e(this,r.apply(Mt,t))}})),Mt}me(["pop","push","reverse","shift","sort","splice","unshift"],(function(t){var e=Y[t];Mt.prototype[t]=function(){var r=this._wrapped;return null!=r&&(e.apply(r,arguments),"shift"!==t&&"splice"!==t||0!==r.length||delete r[0]),$e(this,r)}})),me(["concat","join","slice"],(function(t){var e=Y[t];Mt.prototype[t]=function(){var t=this._wrapped;return null!=t&&(t=e.apply(t,arguments)),$e(this,t)}}));var Xe=qe(Object.freeze({__proto__:null,VERSION:"1.11.0",restArguments:L,isObject:P,isNull:function(t){return null===t},isUndefined:function(t){return void 0===t},isBoolean:U,isElement:function(t){return!(!t||1!==t.nodeType)},isString:H,isNumber:B,isDate:V,isRegExp:W,isError:z,isSymbol:G,isMap:$,isWeakMap:q,isSet:X,isWeakSet:J,isArrayBuffer:K,isDataView:Q,isArray:Z,isFunction:rt,isArguments:ot,isFinite:function(t){return!G(t)&&I(t)&&!isNaN(parseFloat(t))},isNaN:at,isTypedArray:ht,isEmpty:function(t){return null==t||(dt(t)&&(Z(t)||H(t)||ot(t))?0===t.length:0===yt(t).length)},isMatch:gt,isEqual:function(t,e){return Yt(t,e)},keys:yt,allKeys:wt,values:bt,pairs:function(t){for(var e=yt(t),r=e.length,n=Array(r),i=0;i<r;i++)n[i]=[e[i],t[e[i]]];return n},invert:Et,functions:At,methods:At,extend:Ot,extendOwn:Dt,assign:Dt,defaults:Nt,create:function(t,e){var r=Tt(t);return e&&Dt(r,e),r},clone:St,tap:function(t,e){return e(t),t},has:function(t,e){if(!Z(e))return nt(t,e);for(var r=e.length,n=0;n<r;n++){var i=e[n];if(null==t||!O.call(t,i))return!1;t=t[i]}return!!r},mapObject:function(t,e,r){e=Pt(e,r);for(var n=yt(t),i=n.length,o={},a=0;a<i;a++){var s=n[a];o[s]=e(t[s],s,t)}return o},identity:Ct,constant:st,noop:function(){},property:Rt,propertyOf:function(t){return null==t?function(){}:function(e){return Z(e)?It(t,e):t[e]}},matcher:_t,matches:_t,times:function(t,e,r){var n=Array(Math.max(0,t));e=kt(e,r,1);for(var i=0;i<t;i++)n[i]=e(i);return n},random:Ut,now:Ft,escape:Vt,unescape:Wt,templateSettings:zt,template:function(t,e,r){!e&&r&&(e=r),e=Nt({},e,Mt.templateSettings);var n,i=RegExp([(e.escape||Gt).source,(e.interpolate||Gt).source,(e.evaluate||Gt).source].join("|")+"|$","g"),o=0,a="__p+='";t.replace(i,(function(e,r,n,i,s){return a+=t.slice(o,s).replace(qt,Xt),o=s+e.length,r?a+="'+\n((__t=("+r+"))==null?'':_.escape(__t))+\n'":n?a+="'+\n((__t=("+n+"))==null?'':__t)+\n'":i&&(a+="';\n"+i+"\n__p+='"),e})),a+="';\n",e.variable||(a="with(obj||{}){\n"+a+"}\n"),a="var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};\n"+a+"return __p;\n";try{n=new Function(e.variable||"obj","_",a)}catch(t){throw t.source=a,t}var s=function(t){return n.call(this,t,Mt)},u=e.variable||"obj";return s.source="function("+u+"){\n"+a+"}",s},result:function(t,e,r){Z(e)||(e=[e]);var n=e.length;if(!n)return rt(r)?r.call(t):r;for(var i=0;i<n;i++){var o=null==t?void 0:t[e[i]];void 0===o&&(o=r,i=n),t=rt(o)?o.call(t):o}return t},uniqueId:function(t){var e=++Jt+"";return t?t+e:e},chain:function(t){var e=Mt(t);return e._chain=!0,e},iteratee:Lt,partial:Qt,bind:Zt,bindAll:ee,memoize:function(t,e){var r=function r(n){var i=r.cache,o=""+(e?e.apply(this,arguments):n);return nt(i,o)||(i[o]=t.apply(this,arguments)),i[o]};return r.cache={},r},delay:re,defer:ne,throttle:function(t,e,r){var n,i,o,a,s=0;r||(r={});var u=function(){s=!1===r.leading?0:Ft(),n=null,a=t.apply(i,o),n||(i=o=null)},c=function(){var c=Ft();s||!1!==r.leading||(s=c);var f=e-(c-s);return i=this,o=arguments,f<=0||f>e?(n&&(clearTimeout(n),n=null),s=c,a=t.apply(i,o),n||(i=o=null)):n||!1===r.trailing||(n=setTimeout(u,f)),a};return c.cancel=function(){clearTimeout(n),s=0,n=i=o=null},c},debounce:function(t,e,r){var n,i,o=function(e,r){n=null,r&&(i=t.apply(e,r))},a=L((function(a){if(n&&clearTimeout(n),r){var s=!n;n=setTimeout(o,e),s&&(i=t.apply(this,a))}else n=re(o,e,this,a);return i}));return a.cancel=function(){clearTimeout(n),n=null},a},wrap:function(t,e){return Qt(e,t)},negate:ie,compose:function(){var t=arguments,e=t.length-1;return function(){for(var r=e,n=t[e].apply(this,arguments);r--;)n=t[r].call(this,n);return n}},after:function(t,e){return function(){if(--t<1)return e.apply(this,arguments)}},before:oe,once:ae,findKey:se,findIndex:ce,findLastIndex:fe,sortedIndex:pe,indexOf:he,lastIndexOf:ve,find:de,detect:de,findWhere:function(t,e){return de(t,_t(e))},each:me,forEach:me,map:ye,collect:ye,reduce:Me,foldl:Me,inject:Me,reduceRight:Ye,foldr:Ye,filter:we,select:we,reject:function(t,e,r){return we(t,ie(Pt(e)),r)},every:be,all:be,some:Ee,any:Ee,contains:Ae,includes:Ae,include:Ae,invoke:xe,pluck:Oe,where:function(t,e){return we(t,_t(e))},max:De,min:function(t,e,r){var n,o,a=1/0,s=1/0;if(null==e||"number"==typeof e&&"object"!=i(t[0])&&null!=t)for(var u=0,c=(t=dt(t)?t:bt(t)).length;u<c;u++)null!=(n=t[u])&&n<a&&(a=n);else e=Pt(e,r),me(t,(function(t,r,n){((o=e(t,r,n))<s||o===1/0&&a===1/0)&&(a=t,s=o)}));return a},shuffle:function(t){return Ne(t,1/0)},sample:Ne,sortBy:function(t,e,r){var n=0;return e=Pt(e,r),Oe(ye(t,(function(t,r,i){return{value:t,index:n++,criteria:e(t,r,i)}})).sort((function(t,e){var r=t.criteria,n=e.criteria;if(r!==n){if(r>n||void 0===r)return 1;if(r<n||void 0===n)return-1}return t.index-e.index})),"value")},groupBy:Se,indexBy:Ce,countBy:_e,partition:Ie,toArray:function(t){return t?Z(t)?A.call(t):H(t)?t.match(Re):dt(t)?ye(t,Ct):bt(t):[]},size:function(t){return null==t?0:dt(t)?t.length:yt(t).length},pick:je,omit:Le,first:Ue,head:Ue,take:Ue,initial:Pe,last:function(t,e,r){return null==t||t.length<1?null==e||r?void 0:[]:null==e||r?t[t.length-1]:Fe(t,Math.max(0,t.length-e))},rest:Fe,tail:Fe,drop:Fe,compact:function(t){return we(t,Boolean)},flatten:function(t,e){return te(t,e,!1)},without:Be,uniq:Ve,unique:Ve,union:We,intersection:function(t){for(var e=[],r=arguments.length,n=0,i=vt(t);n<i;n++){var o=t[n];if(!Ae(e,o)){var a;for(a=1;a<r&&Ae(arguments[a],o);a++);a===r&&e.push(o)}}return e},difference:He,unzip:ze,transpose:ze,zip:Ge,object:function(t,e){for(var r={},n=0,i=vt(t);n<i;n++)e?r[t[n]]=e[n]:r[t[n][0]]=t[n][1];return r},range:function(t,e,r){null==e&&(e=t||0,t=0),r||(r=e<t?-1:1);for(var n=Math.max(Math.ceil((e-t)/r),0),i=Array(n),o=0;o<n;o++,t+=r)i[o]=t;return i},chunk:function(t,e){if(null==e||e<1)return[];for(var r=[],n=0,i=t.length;n<i;)r.push(A.call(t,n,n+=e));return r},mixin:qe,default:Mt}));function Je(t){var e={},r=t.slice(0);function n(t){for(var r=t.name(),n=r,i=1;e.hasOwnProperty(n);)n=r+"."+i++;n!==r&&t.name(n)}t.forEach((function(t){n(t),e[t.name()]=t}));var i={columns:function(){return t},column:function(r){if(Xe.isString(r)){if(void 0!==e[r])return e[r];throw new Error('No column found with that name: "'+r+'"')}if(!(r<0)){if(void 0!==t[r])return t[r];throw new Error("No column found with that name or index: "+r)}},numColumns:function(){return t.length},numRows:function(){return t[0].length},eachColumn:function(e){t.forEach(e)},hasColumn:function(r){return void 0!==(Xe.isString(r)?e[r]:t[r])},indexOf:function(r){return i.hasColumn(r)?t.indexOf(e[r]):-1},list:function(){return Xe.range(t[0].length).map((function(e){var r={};return t.forEach((function(t){r[t.name()]=t.val(e)})),r}))},csv:function(){var e="";return t.forEach((function(t,r){var n=t.title();n.indexOf('"')>-1&&n.replace('"','\\"'),n.indexOf(",")>-1&&(n='"'+n+'"'),e+=(r>0?",":"")+n})),Xe.range(i.numRows()).forEach((function(r){e+="\n",t.forEach((function(t,n){var i=""+("date"===t.type()?t.raw(r):t.val(r));i.indexOf('"')>-1&&i.replace('"','\\"'),i.indexOf(",")>-1&&(i='"'+i+'"'),e+=(n>0?",":"")+i}))})),e},toCSV:function(){return this.csv()},filterColumns:function(r){return t=t.filter((function(t){return!r[t.name()]})),Xe.each(r,(function(t,r){t&&e[r]&&delete e[r]})),i},eachRow:function(t){var e;for(e=0;e<i.numRows();e++)t(e);return i},add:function(o){return n(o),t.push(o),e[o.name()]=o,r.push(o),i},limitRows:function(e){return t.forEach((function(t){t.limitRows(e)})),i},limitColumns:function(e){return t.length>e&&(t.length=e,r.length=e),i},columnOrder:function(e){return arguments.length?(t.length=0,e.forEach((function(e){t.push(r[e])})),i):t.map((function(t){return r.indexOf(t)}))}};return i}function Ke(t,e){return Math.abs(t-e)<1e-6}Xe._=Xe;var Qe=/^ */.source,Ze=/[*']* *$/.source,tr=/[ \-/.]?/.source,er=/[ \-/.]/.source,rr=/[ \-/.;,]/.source,nr=/[ \-|T]/.source,ir=/[ \-/.m]/.source,or={YY:{parse:/['’‘]?(\d{2})/},YYYY:{test:/([12]\d{3})/,parse:/(\d{4})/},YYYY2:{test:/(?:1[7-9]|20)\d{2}/,parse:/(\d{4})/},H:{parse:/h([12])/},Q:{parse:/q([1234])/},W:{parse:/w([0-5]?[0-9])/},MM:{test:/(0?[1-9]|1[0-2])/,parse:/(0?[1-9]|1[0-2])/},DD:{parse:/(0?[1-9]|[1-2][0-9]|3[01])/},DOW:{parse:/([0-7])/},HHMM:{parse:/(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *(am|pm)?/}},ar={0:["jan","january","januar","jänner","jän","janv","janvier","ene","enero","gen","gennaio","janeiro"],1:["feb","february","febr","februar","fév","févr","février","febrero","febbraio","fev","fevereiro"],2:["mar","mär","march","mrz","märz","mars","mars","marzo","marzo","março"],3:["apr","april","apr","april","avr","avril","abr","abril","aprile"],4:["may","mai","mayo","mag","maggio","maio","maj"],5:["jun","june","juni","juin","junio","giu","giugno","junho"],6:["jul","july","juli","juil","juillet","julio","lug","luglio","julho"],7:["aug","august","août","ago","agosto"],8:["sep","september","sept","septembre","septiembre","set","settembre","setembro"],9:["oct","october","okt","oktober","octobre","octubre","ott","ottobre","out","outubro"],10:["nov","november","november","novembre","noviembre","novembre","novembro"],11:["dec","december","dez","des","dezember","déc","décembre","dic","diciembre","dicembre","desember","dezembro"]},sr={};Xe.each(ar,(function(t,e){Xe.each(t,(function(t){sr[t]=e}))})),or.MMM={parse:new RegExp("("+Xe.flatten(Xe.values(ar)).join("|")+")")},Xe.each(or,(function(t){t.parse=t.parse.source,Xe.isRegExp(t.test)?t.test=t.test.source:t.test=t.parse}));var ur={YYYY:{test:cr(or.YYYY2.test),parse:cr(or.YYYY2.parse),precision:"year"},"YYYY-H":{test:cr(or.YYYY.test,tr,or.H.test),parse:cr(or.YYYY.parse,tr,or.H.parse),precision:"half"},"H-YYYY":{test:cr(or.H.test,er,or.YYYY.test),parse:cr(or.H.parse,er,or.YYYY.parse),precision:"half"},"YYYY-Q":{test:cr(or.YYYY.test,tr,or.Q.test),parse:cr(or.YYYY.parse,tr,or.Q.parse),precision:"quarter"},"Q-YYYY":{test:cr(or.Q.test,er,or.YYYY.test),parse:cr(or.Q.parse,er,or.YYYY.parse),precision:"quarter"},"YYYY-M":{test:cr(or.YYYY.test,ir,or.MM.test),parse:cr(or.YYYY.parse,ir,or.MM.parse),precision:"month"},"M-YYYY":{test:cr(or.MM.test,er,or.YYYY.test),parse:cr(or.MM.parse,er,or.YYYY.parse),precision:"month"},"YYYY-MMM":{test:cr(or.YYYY.test,er,or.MMM.parse),parse:cr(or.YYYY.parse,er,or.MMM.parse),precision:"month"},"MMM-YYYY":{test:cr(or.MMM.parse,er,or.YYYY.test),parse:cr(or.MMM.parse,er,or.YYYY.parse),precision:"month"},"MMM-YY":{test:cr(or.MMM.parse,er,or.YY.test),parse:cr(or.MMM.parse,er,or.YY.parse),precision:"month"},MMM:{test:cr(or.MMM.parse),parse:cr(or.MMM.parse),precision:"month"},"YYYY-WW":{test:cr(or.YYYY.test,tr,or.W.test),parse:cr(or.YYYY.parse,tr,or.W.parse),precision:"week"},"WW-YYYY":{test:cr(or.W.test,er,or.YYYY.test),parse:cr(or.W.parse,er,or.YYYY.parse),precision:"week"},"MM/DD/YYYY":{test:cr(or.MM.test,"([\\-\\/])",or.DD.test,"\\2",or.YYYY.test),parse:cr(or.MM.parse,"([\\-\\/])",or.DD.parse,"\\2",or.YYYY.parse),precision:"day"},"MM/DD/YY":{test:cr(or.MM.test,"([\\-\\/])",or.DD.test,"\\2",or.YY.test),parse:cr(or.MM.parse,"([\\-\\/])",or.DD.parse,"\\2",or.YY.parse),precision:"day"},"DD/MM/YY":{test:cr(or.DD.test,"([\\-\\.\\/ ?])",or.MM.test,"\\2",or.YY.test),parse:cr(or.DD.parse,"([\\-\\.\\/ ?])",or.MM.parse,"\\2",or.YY.parse),precision:"day"},"DD/MM/YYYY":{test:cr(or.DD.test,"([\\-\\.\\/ ?])",or.MM.test,"\\2",or.YYYY.test),parse:cr(or.DD.parse,"([\\-\\.\\/ ?])",or.MM.parse,"\\2",or.YYYY.parse),precision:"day"},"DD/MMM/YYYY":{test:cr(or.DD.test,"([\\-\\.\\/ ?])",or.MMM.test,"\\2",or.YYYY.test),parse:cr(or.DD.parse,"([\\-\\.\\/ ?])",or.MMM.parse,"\\2",or.YYYY.parse),precision:"day"},"DD/MMM/YY":{test:cr(or.DD.test,"([\\-\\.\\/ ?])",or.MMM.test,"\\2",or.YY.test),parse:cr(or.DD.parse,"([\\-\\.\\/ ?])",or.MMM.parse,"\\2",or.YY.parse),precision:"day"},"YYYY-MM-DD":{test:cr(or.YYYY.test,"([\\-\\.\\/ ?])",or.MM.test,"\\2",or.DD.test),parse:cr(or.YYYY.parse,"([\\-\\.\\/ ?])",or.MM.parse,"\\2",or.DD.parse),precision:"day"},"MMM-DD-YYYY":{test:cr(or.MMM.test,er,or.DD.test,rr,or.YYYY.test),parse:cr(or.MMM.parse,er,or.DD.parse,rr,or.YYYY.parse),precision:"day"},"YYYY-WW-d":{test:cr(or.YYYY.test,tr,or.W.test,er,or.DOW.test),parse:cr(or.YYYY.parse,tr,or.W.parse,er,or.DOW.parse),precision:"day"},"MM/DD/YYYY HH:MM":{test:cr(or.MM.test,"([\\-\\/])",or.DD.test,"\\2",or.YYYY.test,nr,or.HHMM.test),parse:cr(or.MM.parse,"([\\-\\/])",or.DD.parse,"\\2",or.YYYY.parse,nr,or.HHMM.parse),precision:"day-minutes"},"DD.MM.YYYY HH:MM":{test:cr(or.DD.test,"([\\-\\.\\/ ?])",or.MM.test,"\\2",or.YYYY.test,nr,or.HHMM.test),parse:cr(or.DD.parse,"([\\-\\.\\/ ?])",or.MM.parse,"\\2",or.YYYY.parse,nr,or.HHMM.parse),precision:"day-minutes"},"YYYY-MM-DD HH:MM":{test:cr(or.YYYY.test,"([\\-\\.\\/ ?])",or.MM.test,"\\2",or.DD.test,nr,or.HHMM.test),parse:cr(or.YYYY.parse,"([\\-\\.\\/ ?])",or.MM.parse,"\\2",or.DD.parse,nr,or.HHMM.parse),precision:"day-minutes"},ISO8601:{test:/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d:[0-5]\d|Z)/,parse:function(t){return t},precision:"day-seconds"}};function cr(){return new RegExp(Qe+Array.prototype.slice.call(arguments).join(" *")+Ze,"i")}function fr(t,e){var r=ur[e];return Xe.isRegExp(r.test)?r.test.test(t):r.test(t,e)}function pr(t,e,r){var n=new Date(Date.UTC(t,0,3));return n.setUTCDate(3-n.getUTCDay()+7*(e-1)+parseInt(r,10)),n}function lr(t,e){return 12!==t?t+("pm"===e?12:0):"am"===e?0:12}var hr={text:function(){return{parse:Xe.identity,errors:function(){return 0},name:function(){return"text"},formatter:function(){return Xe.identity},isValid:function(){return!0},format:function(){}}},number:function(t){var e,r=0,n={"-.":/^ *[-–—−]?[0-9]*(\.[0-9]+)?(e[+-][0-9]+)?%? *$/,"-,":/^ *[-–—−]?[0-9]*(,[0-9]+)?%? *$/,",.":/^ *[-–—−]?[0-9]{1,3}(,[0-9]{3})*(\.[0-9]+)?%? *$/,".,":/^ *[-–—−]?[0-9]{1,3}(\.[0-9]{3})*(,[0-9]+)?%? *$/," .":/^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(\.[0-9]+)?%? *$/," ,":/^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(,[0-9]+)?%? *$/,"'.":/^ *[-–—−]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/},i={"-.":"1234.56","-,":"1234,56",",.":"1,234.56",".,":"1.234,56"," .":"1 234.56"," ,":"1 234,56"," .":"1 234.56"," ,":"1 234,56"," .":"1 234.56"," ,":"1 234,56"},o={na:1,"n/a":1,"-":1,":":1},a={},s=["-.",0];t=t||[],Xe.each(t,(function(t){Xe.each(n,(function(e,r){void 0===a[r]&&(a[r]=0),e.test(t)&&(a[r]+=1,a[r]>s[1]&&(s[0]=r,s[1]=a[r]))}))})),e=s[0];var u={parse:function(t){if(Xe.isNumber(t)||Xe.isUndefined(t)||Xe.isNull(t))return t;var n=t.replace("%","").replace("−","-").replace(/[   ]/g,"").replace("–","-").replace("—","-");return"-"!==e[0]&&(n=n.replace(new RegExp("."===e[0]?"\\.":e[0],"g"),"")),"."!==e[1]&&(n=n.replace(e[1],".")),isNaN(n)||""===n?(o[n.toLowerCase()]||""===n||r++,t):Number(n)},toNum:function(t){return t},fromNum:function(t){return t},errors:function(){return r},name:function(){return"number"},formatter:function(t){var e=t["number-format"]||"-",r=Number(t["number-divisor"]||0),n=(t["number-append"]||"").replace(/ /g," "),i=(t["number-prepend"]||"").replace(/ /g," ");return function(t,o,a){if(isNaN(t))return t;var s=e;if(0!==r&&"-"===s&&(s="n1"),0!==r&&(t=Number(t)/Math.pow(10,r)),"s"===s.substr(0,1)){var u=+s.substr(1);s="n"+Math.max(0,function(t,e){return 0===t?0:Math.round(e-Math.ceil(Math.log(Math.abs(t))/Math.LN10))}(t,u))}return a&&(s="n0"),"-"===s&&(s=Ke(t,Math.round(t))?"n0":Ke(t,.1*Math.round(10*t))?"n1":Ke(t,.01*Math.round(100*t))?"n2":Ke(t,.001*Math.round(1e3*t))?"n3":Ke(t,1e-4*Math.round(1e4*t))?"n4":Ke(t,1e-5*Math.round(1e5*t))?"n5":"n6"),t=Globalize.format(t,"-"!==s?s:null),o?i+t+n:t}},isValid:function(t){return""===t||o[String(t).toLowerCase()]||Xe.isNumber(u.parse(t))},ambiguousFormats:function(){var t=[];return Xe.each(a,(function(e,r){e===s[1]&&t.push([r,i[r]])})),t},format:function(t){return arguments.length?(e=t,u):e}};return u},date:function(t){var e,r=0,n={},i=["",0];t=t||[],Xe.each(ur,(function(e,r){Xe.each(t,(function(t){void 0===n[r]&&(n[r]=0),fr(t,r)&&(n[r]+=1,n[r]>i[1]&&(i[0]=r,i[1]=n[r]))}))})),e=i[0];var o={parse:function(t){if(Xe.isDate(t)||Xe.isUndefined(t))return t;if(!e||!Xe.isString(t))return r++,t;var n,i,o,a=(n=t.toLowerCase(),o=ur[i=e],Xe.isRegExp(o.parse)?n.match(o.parse):o.parse(n,i));if(!a)return r++,t;function s(t){return(t=+t)<30?2e3+t:1900+t}fr(t,e)||r++;var u=(new Date).getFullYear();switch(e){case"YYYY":return new Date(a[1],0,1);case"YYYY-H":return new Date(a[1],6*(a[2]-1),1);case"H-YYYY":return new Date(a[2],6*(a[1]-1),1);case"YYYY-Q":return new Date(a[1],3*(a[2]-1),1);case"Q-YYYY":return new Date(a[2],3*(a[1]-1),1);case"YYYY-M":return new Date(a[1],a[2]-1,1);case"M-YYYY":return new Date(a[2],a[1]-1,1);case"YYYY-MMM":return new Date(+a[1],sr[a[2]],1);case"MMM-YYYY":return new Date(+a[2],sr[a[1]],1);case"MMM-YY":return new Date(s(+a[2]),sr[a[1]],1);case"MMM":return new Date(u,sr[a[1]],1);case"YYYY-WW":return pr(a[1],a[2],1);case"WW-YYYY":return pr(a[2],a[1],1);case"YYYY-WW-d":return pr(a[1],a[2],a[3]);case"YYYY-MM-DD":return new Date(a[1],a[3]-1,a[4]);case"DD/MM/YYYY":return new Date(a[4],a[3]-1,a[1]);case"DD/MMM/YYYY":return new Date(a[4],sr[a[3]],a[1]);case"DD/MMM/YY":return new Date(s(a[4]),sr[a[3]],a[1]);case"MM/DD/YYYY":return new Date(a[4],a[1]-1,a[3]);case"MM/DD/YY":return new Date(s(a[4]),a[1]-1,a[3]);case"DD/MM/YY":return new Date(s(a[4]),a[3]-1,a[1]);case"MMM-DD-YYYY":return new Date(a[3],sr[a[1]],a[2]);case"YYYY-MM-DD HH:MM":return new Date(+a[1],a[3]-1,+a[4],lr(+a[5],a[8]),+a[6]||0,+a[7]||0);case"DD.MM.YYYY HH:MM":return new Date(+a[4],a[3]-1,+a[1],lr(+a[5],a[8]),+a[6]||0,+a[7]||0);case"MM/DD/YYYY HH:MM":return new Date(+a[4],a[1]-1,+a[3],lr(+a[5],a[8]),+a[6]||0,+a[7]||0);case"ISO8601":return new Date(a.toUpperCase());default:console.warn("unknown format",e)}return r++,t},toNum:function(t){return Xe.isDate(t)?t.getTime():Number.NaN},fromNum:function(t){return new Date(t)},errors:function(){return r},name:function(){return"date"},format:function(t){return arguments.length?(e=t,o):e},precision:function(){return ur[e].precision},formatter:function(){if(!e)return Xe.identity;var t=Globalize.culture().calendar.patterns.M.replace("MMMM","MMM");switch(ur[e].precision){case"year":return function(t){return Xe.isDate(t)?t.getFullYear():t};case"half":return function(t){return Xe.isDate(t)?t.getFullYear()+" H"+(t.getMonth()/6+1):t};case"quarter":return function(t){return Xe.isDate(t)?t.getFullYear()+" Q"+(t.getMonth()/3+1):t};case"month":return function(t){return Xe.isDate(t)?Globalize.format(t,"MMM yy"):t};case"week":return function(t){return Xe.isDate(t)?function(t){var e=t.getUTCDay(),r=new Date(t.valueOf());r.setDate(r.getDate()-(e+6)%7+3);var n=r.getUTCFullYear(),i=Math.floor((r.getTime()-new Date(n,0,1,-6))/864e5);return[n,1+Math.floor(i/7),e>0?e:7]}(t).slice(0,2).join(" W"):t};case"day":return function(t,e){return Xe.isDate(t)?Globalize.format(t,e?"D":"d"):t};case"day-minutes":return function(e){return Xe.isDate(e)?Globalize.format(e,t).replace(" ","&nbsp;")+" - "+Globalize.format(e,"t").replace(" ","&nbsp;"):e};case"day-seconds":return function(t){return Xe.isDate(t)?Globalize.format(t,"T").replace(" ","&nbsp;"):t}}},isValid:function(t){return Xe.isDate(o.parse(t))},ambiguousFormats:function(){var t=[];return Xe.each(n,(function(e,r){e===i[1]&&t.push([r,r])})),t}};return o}},vr=/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,dr=/<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;function mr(t,e){if(null===t)return null;if(void 0!==t){if((t=String(t)).indexOf("<")<0||t.indexOf(">")<0)return t;if(t=function(t,e){e=(((void 0!==e?e||"":"<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>")+"").toLowerCase().match(/<[a-z][a-z0-9]*>/g)||[]).join("");var r=t,n=t;for(;;)if(n=(r=n).replace(dr,"").replace(vr,(function(t,r){return e.indexOf("<"+r.toLowerCase()+">")>-1?t:""})),r===n)return n}(t,e),"undefined"==typeof document)return t;var r=document.createElement("div");r.innerHTML=t;for(var n=r.querySelectorAll("*"),i=0;i<n.length;i++){"a"===n[i].nodeName.toLowerCase()&&("_self"!==n[i].getAttribute("target")&&n[i].setAttribute("target","_blank"),n[i].setAttribute("rel","nofollow noopener noreferrer"),n[i].getAttribute("href")&&n[i].getAttribute("href").trim().startsWith("javascript:")&&n[i].setAttribute("href",""));for(var o=0;o<n[i].attributes.length;o++){var a=n[i].attributes[o];a.specified&&"on"===a.name.substr(0,2)&&n[i].removeAttribute(a.name)}}return r.innerHTML}}function yr(t,e,r){function n(t){return null!=t&&""!==t}var i,o,a=Xe.shuffle(Xe.range(e.length)).filter((function(t){return n(e[t])})).slice(0,200).map((function(t){return e[t]}));r=r?hr[r](a):function(t){if(Xe.every(e,Xe.isNumber))return hr.number();if(Xe.every(e,Xe.isDate))return hr.date();var r,i=[hr.date(t),hr.number(t),hr.text()],o=.1*e.filter(n).length;return Xe.each(e,(function(t){Xe.each(i,(function(e){e.parse(t)}))})),Xe.every(i,(function(t){return t.errors()<o&&(r=t),!r})),Xe.isUndefined(r)&&(r=i[2]),r}(a);var s,u=e.slice(0),c={name:function(){return arguments.length?(t=arguments[0],c):mr(t)},title:function(){return arguments.length?(s=arguments[0],c):mr(s||t)},length:e.length,val:function(t,n){if(arguments.length){var i=n?u:e;return t<0&&(t+=i.length),r.parse(Xe.isDate(i[t])||Xe.isNumber(i[t])?i[t]:mr(i[t]))}},values:function(t){var n=t?u:e;return n=Xe.map(n,(function(t){return Xe.isDate(t)||Xe.isNumber(t)?t:mr(t)})),Xe.map(n,r.parse)},each:function(t){for(var r=0;r<e.length;r++)t(c.val(r),r)},raw:function(t,r){return arguments.length?2===arguments.length?(e[t]=r,c):Xe.isDate(e[t])||Xe.isNumber(e[t])?e[t]:mr(e[t]):e.map((function(t){return Xe.isDate(t)||Xe.isNumber(t)?t:mr(t)}))},type:function(t){if(!0===t)return r;if(Xe.isString(t)){if(hr[t])return r=hr[t](a),c;throw new Error("unknown column type: "+t)}return r.name()},range:function(){return!!r.toNum&&(i||(i=[Number.MAX_VALUE,-Number.MAX_VALUE],c.each((function(t){t=r.toNum(t),Xe.isNumber(t)&&!Xe.isNaN(t)&&(t<i[0]&&(i[0]=t),t>i[1]&&(i[1]=t))})),i[0]=r.fromNum(i[0]),i[1]=r.fromNum(i[1])),i)},total:function(){return!!r.toNum&&(o||(o=0,c.each((function(t){o+=r.toNum(t)})),o=r.fromNum(o)),o)},filterRows:function(t){return e=[],arguments.length?Xe.each(t,(function(t){e.push(u[t])})):e=u.slice(0),c.length=e.length,i=o=!1,c},toString:function(){return t+" ("+r.name()+")"},indexOf:function(t){return Xe.find(Xe.range(e.length),(function(e){return c.val(e)===t}))},limitRows:function(t){u.length>t&&(u.length=t,e.length=t,c.length=t)}};return c}function gr(t){return{dataset:function(){if(t.url){var e=(new Date).getTime(),r="".concat(t.url).concat(t.url.indexOf("?")>-1?"&":"?","v=").concat(t.url.indexOf("//static.dwcdn.net")>-1?e-e%6e4:e);return window.fetch(r).then((function(t){return t.text()})).then((function(e){return new Mr(t).parse(e)}))}if(t.csv||""===t.csv)return new Promise((function(e){e(t.csv)})).then((function(e){return new Mr(t).parse(e)}));throw new Error("you need to provide either an URL or CSV data.")},parse:function(){return new Mr(t).parse(t.csv)}}}Je.delimited=gr;var Mr=function(){function e(r){t(this,e),r=Object.assign({delimiter:"auto",quoteChar:'"',skipRows:0,emptyValue:null,transpose:!1,firstRowIsHeader:!0},r),this.__delimiterPatterns=Yr(r.delimiter,r.quoteChar),this.opts=r}return r(e,[{key:"parse",value:function(t){this.__rawData=t;var e=this.opts;"auto"===e.delimiter&&(e.delimiter=this.guessDelimiter(t,e.skipRows),this.__delimiterPatterns=Yr(e.delimiter,e.quoteChar));var r,n="|"!==e.delimiter?"|":"#";return t=n+"\n"+t.replace(/[ \r\n\f]+$/g,"")+n,r=function(t,e,r){r=r||",";for(var i,o=[[]],a=null;a=t.exec(e);){var s=a[1];s.length&&s!==r&&o.push([]),i=a[2]?a[2].replace(new RegExp('""',"g"),'"'):a[3],o[o.length-1].push(void 0===i?"":i)}o[0][0].substr(0,1)===n&&(o[0][0]=o[0][0].substr(1));var u=o.length-1,c=o[u].length-1,f=o[u][c].length-1;return o[u][c].substr(f)===n&&(o[u][c]=o[u][c].substr(0,f)),o.slice(1)}(this.__delimiterPatterns,t,e.delimiter),e.transpose&&(r=function(t){var e,r,n=t,i=n.length?n.length:0,o=n[0]instanceof Array?n[0].length:0;if(0===o||0===i)return[];var a=[];for(e=0;e<o;e++)for(a[e]=[],r=0;r<i;r++)a[e][r]=n[r][e];return a}(r)),function(t){var r=[],n={},i=t.length,o=t[0].length,a=e.skipRows,s=[];e.firstRowIsHeader&&(s=t[a],a++);for(var u=0;u<o;u++){var c=Xe.isString(s[u])?s[u].replace(/^\s+|\s+$/g,""):"",f=""!==c?"":1;for(c=""!==c?c:"X.";void 0!==n[c+f];)f=""===f?1:f+1;r.push({name:c+f,data:[]}),n[c+f]=!0}return Xe.range(a,i).forEach((function(n){r.forEach((function(r,i){r.data.push(""!==t[n][i]?t[n][i]:e.emptyValue)}))})),Je(r=r.map((function(t){return yr(t.name,t.data)})))}(r)}},{key:"guessDelimiter",value:function(t){var e=0,r=-1,n=this,i=["\t",";","|",","];return i.forEach((function(i,o){var a=Yr(i,n.quoteChar),s=t.match(a).length;"\t"===i&&(s*=1.15),s>e&&(e=s,r=o)})),i[r]}}]),e}();function Yr(t,e){return new RegExp("(\\"+t+"|\\r?\\n|\\r|^)(?:"+e+"([^"+e+"]*(?:"+e+'"[^'+e+"]*)*)"+e+"|([^"+e+"\\"+t+"\\r\\n]*))","gi")}function wr(t){return{dataset:function(){if(t.url)return fetch(t.url).then((function(t){return t.text()})).then((function(t){return JSON.parse(t)}));if(t.csv)return new Promise((function(e){e(t.csv)})).then((function(t){return JSON.parse(t)}));throw new Error("you need to provide either an URL or CSV data.")},parse:function(){return JSON.parse(t.csv)}}}function br(t,e){var r=t.getMetadata("data.column-order",[]);return r.length&&r.length===e.numColumns()&&e.columnOrder(r),e}function Er(t,e){var r=t.getMetadata("data.changes",[]),n=t.getMetadata("data.transpose",!1);r.forEach((function(t){var r="row",i="column";if(n&&(r="column",i="row"),e.hasColumn(t[i]))if(t.ignored=!1,0===t[r]){if(t.previous&&"undefined"!==t.previous)if(e.column(t[i]).title()!==t.previous)return;e.column(t[i]).title(t.value)}else{if(t.previous&&"undefined"!==t.previous)if(e.column(t[i]).raw(t[r]-1)!==t.previous)return;e.column(t[i]).raw(t[r]-1,t.value)}}));var i=t.getMetadata("data.column-format",{});return Xe.each(i,(function(t,r){t.type&&e.hasColumn(r)&&"auto"!==t.type&&e.column(r).type(t.type),t["input-format"]&&e.hasColumn(r)&&e.column(r).type(!0).format(t["input-format"])})),e}Je.json=wr;var Ar=function(t){if(Array.isArray(t))return t};var xr=function(t,e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(t)){var r=[],n=!0,i=!1,o=void 0;try{for(var a,s=t[Symbol.iterator]();!(n=(a=s.next()).done)&&(r.push(a.value),!e||r.length!==e);n=!0);}catch(t){i=!0,o=t}finally{try{n||null==s.return||s.return()}finally{if(i)throw o}}return r}};var Or=function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")};var Dr=function(t,e){return Ar(t)||xr(t,e)||p(t,e)||Or()};function Nr(t){return t.toString().toLowerCase().replace(/\s+/g,"_").replace(/[^\w-]+/g,"").replace(/-/g,"_").replace(/__+/g,"_").replace(/^_+/,"").replace(/_+$/,"").replace(/^(\d)/,"_$1").replace(/^(and|or|in|true|false)$/,"$1_")}function Tr(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(!e)return t;for(var n=e.split("."),i=t,o=0;o<n.length&&null!=i;o++)i=i[n[o]];return null==i?r:i}var Sr=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(t){return!1}},Cr=n((function(t){function e(r,n,i){return Sr()?t.exports=e=Reflect.construct:t.exports=e=function(t,e,r){var n=[null];n.push.apply(n,e);var i=new(Function.bind.apply(t,n));return r&&u(i,r.prototype),i},e.apply(null,arguments)}t.exports=e})),_r="TOP",Ir="TPAREN";function Rr(t,e,r){this.type=t,this.value=e,this.index=r}function kr(t,e){this.pos=0,this.current=null,this.unaryOps=t.unaryOps,this.binaryOps=t.binaryOps,this.ternaryOps=t.ternaryOps,this.consts=t.consts,this.expression=e,this.savedPosition=0,this.savedCurrent=null,this.options=t.options,this.parser=t}Rr.prototype.toString=function(){return this.type+": "+this.value},kr.prototype.newToken=function(t,e,r){return new Rr(t,e,null!=r?r:this.pos)},kr.prototype.save=function(){this.savedPosition=this.pos,this.savedCurrent=this.current},kr.prototype.restore=function(){this.pos=this.savedPosition,this.current=this.savedCurrent},kr.prototype.next=function(){return this.pos>=this.expression.length?this.newToken("TEOF","EOF"):this.isWhitespace()||this.isComment()?this.next():this.isRadixInteger()||this.isNumber()||this.isOperator()||this.isString()||this.isParen()||this.isBracket()||this.isComma()||this.isSemicolon()||this.isNamedOp()||this.isConst()||this.isName()?this.current:void this.parseError('Unknown character "'+this.expression.charAt(this.pos)+'"')},kr.prototype.isString=function(){var t=!1,e=this.pos,r=this.expression.charAt(e);if("'"===r||'"'===r)for(var n=this.expression.indexOf(r,e+1);n>=0&&this.pos<this.expression.length;){if(this.pos=n+1,"\\"!==this.expression.charAt(n-1)){var i=this.expression.substring(e+1,n);this.current=this.newToken("TSTRING",this.unescape(i),e),t=!0;break}n=this.expression.indexOf(r,n+1)}return t},kr.prototype.isParen=function(){var t=this.expression.charAt(this.pos);return("("===t||")"===t)&&(this.current=this.newToken(Ir,t),this.pos++,!0)},kr.prototype.isBracket=function(){var t=this.expression.charAt(this.pos);return!("["!==t&&"]"!==t||!this.isOperatorEnabled("["))&&(this.current=this.newToken("TBRACKET",t),this.pos++,!0)},kr.prototype.isComma=function(){return","===this.expression.charAt(this.pos)&&(this.current=this.newToken("TCOMMA",","),this.pos++,!0)},kr.prototype.isSemicolon=function(){return";"===this.expression.charAt(this.pos)&&(this.current=this.newToken("TSEMICOLON",";"),this.pos++,!0)},kr.prototype.isConst=function(){for(var t=this.pos,e=t;e<this.expression.length;e++){var r=this.expression.charAt(e);if(r.toUpperCase()===r.toLowerCase()&&(e===this.pos||"_"!==r&&"."!==r&&(r<"0"||r>"9")))break}if(e>t){var n=this.expression.substring(t,e);if(n in this.consts)return this.current=this.newToken("TNUMBER",this.consts[n]),this.pos+=n.length,!0}return!1},kr.prototype.isNamedOp=function(){for(var t=this.pos,e=t;e<this.expression.length;e++){var r=this.expression.charAt(e);if(r.toUpperCase()===r.toLowerCase()&&(e===this.pos||"_"!==r&&(r<"0"||r>"9")))break}if(e>t){var n=this.expression.substring(t,e);if(this.isOperatorEnabled(n)&&(n in this.binaryOps||n in this.unaryOps||n in this.ternaryOps))return this.current=this.newToken(_r,n),this.pos+=n.length,!0}return!1},kr.prototype.isName=function(){for(var t=this.pos,e=t,r=!1;e<this.expression.length;e++){var n=this.expression.charAt(e);if(n.toUpperCase()===n.toLowerCase()){if(e===this.pos&&("$"===n||"_"===n)){"_"===n&&(r=!0);continue}if(e===this.pos||!r||"_"!==n&&(n<"0"||n>"9"))break}else r=!0}if(r){var i=this.expression.substring(t,e);return this.current=this.newToken("TNAME",i),this.pos+=i.length,!0}return!1},kr.prototype.isWhitespace=function(){for(var t=!1,e=this.expression.charAt(this.pos);!(" "!==e&&"\t"!==e&&"\n"!==e&&"\r"!==e||(t=!0,this.pos++,this.pos>=this.expression.length));)e=this.expression.charAt(this.pos);return t};var jr=/^[0-9a-f]{4}$/i;kr.prototype.unescape=function(t){var e=t.indexOf("\\");if(e<0)return t;for(var r=t.substring(0,e);e>=0;){var n=t.charAt(++e);switch(n){case"'":r+="'";break;case'"':r+='"';break;case"\\":r+="\\";break;case"/":r+="/";break;case"b":r+="\b";break;case"f":r+="\f";break;case"n":r+="\n";break;case"r":r+="\r";break;case"t":r+="\t";break;case"u":var i=t.substring(e+1,e+5);jr.test(i)||this.parseError("Illegal escape sequence: \\u"+i),r+=String.fromCharCode(parseInt(i,16)),e+=4;break;default:throw this.parseError('Illegal escape sequence: "\\'+n+'"')}++e;var o=t.indexOf("\\",e);r+=t.substring(e,o<0?t.length:o),e=o}return r},kr.prototype.isComment=function(){return"/"===this.expression.charAt(this.pos)&&"*"===this.expression.charAt(this.pos+1)&&(this.pos=this.expression.indexOf("*/",this.pos)+2,1===this.pos&&(this.pos=this.expression.length),!0)},kr.prototype.isRadixInteger=function(){var t,e,r=this.pos;if(r>=this.expression.length-2||"0"!==this.expression.charAt(r))return!1;if(++r,"x"===this.expression.charAt(r))t=16,e=/^[0-9a-f]$/i,++r;else{if("b"!==this.expression.charAt(r))return!1;t=2,e=/^[01]$/i,++r}for(var n=!1,i=r;r<this.expression.length;){var o=this.expression.charAt(r);if(!e.test(o))break;r++,n=!0}return n&&(this.current=this.newToken("TNUMBER",parseInt(this.expression.substring(i,r),t)),this.pos=r),n},kr.prototype.isNumber=function(){for(var t,e=!1,r=this.pos,n=r,i=r,o=!1,a=!1;r<this.expression.length&&((t=this.expression.charAt(r))>="0"&&t<="9"||!o&&"."===t);)"."===t?o=!0:a=!0,r++,e=a;if(e&&(i=r),"e"===t||"E"===t){r++;for(var s=!0,u=!1;r<this.expression.length;){if(t=this.expression.charAt(r),!s||"+"!==t&&"-"!==t){if(!(t>="0"&&t<="9"))break;u=!0,s=!1}else s=!1;r++}u||(r=i)}return e?(this.current=this.newToken("TNUMBER",parseFloat(this.expression.substring(n,r))),this.pos=r):this.pos=i,e},kr.prototype.isOperator=function(){var t=this.pos,e=this.expression.charAt(this.pos);if("+"===e||"-"===e||"*"===e||"/"===e||"%"===e||"^"===e||"?"===e||":"===e||"."===e)this.current=this.newToken(_r,e);else if("∙"===e||"•"===e)this.current=this.newToken(_r,"*");else if(">"===e)"="===this.expression.charAt(this.pos+1)?(this.current=this.newToken(_r,">="),this.pos++):this.current=this.newToken(_r,">");else if("<"===e)"="===this.expression.charAt(this.pos+1)?(this.current=this.newToken(_r,"<="),this.pos++):this.current=this.newToken(_r,"<");else if("|"===e){if("|"!==this.expression.charAt(this.pos+1))return!1;this.current=this.newToken(_r,"||"),this.pos++}else if("="===e)"="===this.expression.charAt(this.pos+1)?(this.current=this.newToken(_r,"=="),this.pos++):this.current=this.newToken(_r,e);else{if("!"!==e)return!1;"="===this.expression.charAt(this.pos+1)?(this.current=this.newToken(_r,"!="),this.pos++):this.current=this.newToken(_r,e)}return this.pos++,!!this.isOperatorEnabled(this.current.value)||(this.pos=t,!1)},kr.prototype.isOperatorEnabled=function(t){return this.parser.isOperatorEnabled(t)},kr.prototype.getCoordinates=function(){var t,e=0,r=-1;do{e++,t=this.pos-r,r=this.expression.indexOf("\n",r+1)}while(r>=0&&r<this.pos);return{line:e,column:t}},kr.prototype.parseError=function(t){var e=this.getCoordinates();throw new Error("parse error ["+e.line+":"+e.column+"]: "+t)};var Lr="IEXPR";function Pr(t,e){this.type=t,this.value=null!=e?e:0}function Ur(t){return new Pr("IOP1",t)}function Fr(t){return new Pr("IOP2",t)}function Hr(t,e,r){this.parser=t,this.tokens=e,this.current=null,this.nextToken=null,this.next(),this.savedCurrent=null,this.savedNextToken=null,this.allowMemberAccess=!1!==r.allowMemberAccess}Pr.prototype.toString=function(){switch(this.type){case"INUMBER":case"IOP1":case"IOP2":case"IOP3":case"IVAR":case"IVARNAME":case"IENDSTATEMENT":return this.value;case"IFUNCALL":return"CALL "+this.value;case"IFUNDEF":return"DEF "+this.value;case"IARRAY":return"ARRAY "+this.value;case"IMEMBER":return"."+this.value;default:return"Invalid Instruction"}},Hr.prototype.next=function(){return this.current=this.nextToken,this.nextToken=this.tokens.next()},Hr.prototype.tokenMatches=function(t,e){return void 0===e||(Array.isArray(e)?function(t,e){for(var r=0;r<t.length;r++)if(t[r]===e)return!0;return!1}(e,t.value):"function"==typeof e?e(t):t.value===e)},Hr.prototype.save=function(){this.savedCurrent=this.current,this.savedNextToken=this.nextToken,this.tokens.save()},Hr.prototype.restore=function(){this.tokens.restore(),this.current=this.savedCurrent,this.nextToken=this.savedNextToken},Hr.prototype.accept=function(t,e){return!(this.nextToken.type!==t||!this.tokenMatches(this.nextToken,e))&&(this.next(),!0)},Hr.prototype.expect=function(t,e){if(!this.accept(t,e)){var r=this.tokens.getCoordinates();throw new Error("parse error ["+r.line+":"+r.column+"]: Expected "+(e||t))}},Hr.prototype.parseAtom=function(t){var e=this.tokens.unaryOps;if(this.accept("TNAME")||this.accept(_r,(function(t){return t.value in e})))t.push(new Pr("IVAR",this.current.value));else if(this.accept("TNUMBER"))t.push(new Pr("INUMBER",this.current.value));else if(this.accept("TSTRING"))t.push(new Pr("INUMBER",this.current.value));else if(this.accept(Ir,"("))this.parseExpression(t),this.expect(Ir,")");else{if(!this.accept("TBRACKET","["))throw new Error("unexpected "+this.nextToken);if(this.accept("TBRACKET","]"))t.push(new Pr("IARRAY",0));else{var r=this.parseArrayList(t);t.push(new Pr("IARRAY",r))}}},Hr.prototype.parseExpression=function(t){var e=[];this.parseUntilEndStatement(t,e)||(this.parseVariableAssignmentExpression(e),this.parseUntilEndStatement(t,e)||this.pushExpression(t,e))},Hr.prototype.pushExpression=function(t,e){for(var r=0,n=e.length;r<n;r++)t.push(e[r])},Hr.prototype.parseUntilEndStatement=function(t,e){return!!this.accept("TSEMICOLON")&&(!this.nextToken||"TEOF"===this.nextToken.type||this.nextToken.type===Ir&&")"===this.nextToken.value||e.push(new Pr("IENDSTATEMENT")),"TEOF"!==this.nextToken.type&&this.parseExpression(e),t.push(new Pr(Lr,e)),!0)},Hr.prototype.parseArrayList=function(t){for(var e=0;!this.accept("TBRACKET","]");)for(this.parseExpression(t),++e;this.accept("TCOMMA");)this.parseExpression(t),++e;return e},Hr.prototype.parseVariableAssignmentExpression=function(t){for(this.parseConditionalExpression(t);this.accept(_r,"=");){var e=t.pop(),r=[],n=t.length-1;if("IFUNCALL"!==e.type){if("IVAR"!==e.type&&"IMEMBER"!==e.type)throw new Error("expected variable for assignment");this.parseVariableAssignmentExpression(r),t.push(new Pr("IVARNAME",e.value)),t.push(new Pr(Lr,r)),t.push(Fr("="))}else{if(!this.tokens.isOperatorEnabled("()="))throw new Error("function definition is not permitted");for(var i=0,o=e.value+1;i<o;i++){var a=n-i;"IVAR"===t[a].type&&(t[a]=new Pr("IVARNAME",t[a].value))}this.parseVariableAssignmentExpression(r),t.push(new Pr(Lr,r)),t.push(new Pr("IFUNDEF",e.value))}}},Hr.prototype.parseConditionalExpression=function(t){for(this.parseOrExpression(t);this.accept(_r,"?");){var e=[],r=[];this.parseConditionalExpression(e),this.expect(_r,":"),this.parseConditionalExpression(r),t.push(new Pr(Lr,e)),t.push(new Pr(Lr,r)),t.push(new Pr("IOP3","?"))}},Hr.prototype.parseOrExpression=function(t){for(this.parseAndExpression(t);this.accept(_r,"or");){var e=[];this.parseAndExpression(e),t.push(new Pr(Lr,e)),t.push(Fr("or"))}},Hr.prototype.parseAndExpression=function(t){for(this.parseComparison(t);this.accept(_r,"and");){var e=[];this.parseComparison(e),t.push(new Pr(Lr,e)),t.push(Fr("and"))}};var Br=["==","!=","<","<=",">=",">","in"];Hr.prototype.parseComparison=function(t){for(this.parseAddSub(t);this.accept(_r,Br);){var e=this.current;this.parseAddSub(t),t.push(Fr(e.value))}};var Vr=["+","-","||"];Hr.prototype.parseAddSub=function(t){for(this.parseTerm(t);this.accept(_r,Vr);){var e=this.current;this.parseTerm(t),t.push(Fr(e.value))}};var Wr=["*","/","%"];function zr(t,e){return Number(t)+Number(e)}function Gr(t,e){return t-e}function $r(t,e){return t*e}function qr(t,e){return t/e}function Xr(t,e){return t%e}function Jr(t,e){return t===e}function Kr(t,e){return t!==e}function Qr(t,e){return t>e}function Zr(t,e){return t<e}function tn(t,e){return t>=e}function en(t,e){return t<=e}function rn(t,e){return Boolean(t&&e)}function nn(t,e){return Boolean(t||e)}function on(t){return Math.log(t)*Math.LOG10E}function an(t){return-t}function sn(t){return!t}function un(t){return t<0?Math.ceil(t):Math.floor(t)}function cn(t){return Math.random()*(t||1)}function fn(t){return Array.isArray(t)?t.length:String(t).length}function pn(t,e,r){return t?e:r}function ln(t,e){return void 0===e||0==+e?Math.round(t):(t=+t,e=-+e,isNaN(t)||"number"!=typeof e||e%1!=0?NaN:(t=t.toString().split("e"),+((t=(t=Math.round(+(t[0]+"e"+(t[1]?+t[1]-e:-e)))).toString().split("e"))[0]+"e"+(t[1]?+t[1]+e:e))))}function hn(t,e){return t[0|e]}function vn(t){return 1===arguments.length&&Array.isArray(t)?Math.max.apply(Math,t):Math.max.apply(Math,arguments)}function dn(t){return 1===arguments.length&&Array.isArray(t)?Math.min.apply(Math,t):Math.min.apply(Math,arguments)}function mn(t,e){if("function"!=typeof t)throw new Error("First argument to map is not a function");if(!Array.isArray(e))throw new Error("Second argument to map is not an array");return e.map((function(e,r){return t(e,r)}))}function yn(t,e,r){if("function"!=typeof t)throw new Error("First argument to fold is not a function");if(!Array.isArray(r))throw new Error("Second argument to fold is not an array");return r.reduce((function(e,r,n){return t(e,r,n)}),e)}function gn(t,e){if("function"!=typeof t)throw new Error("First argument to filter is not a function");if(!Array.isArray(e))throw new Error("Second argument to filter is not an array");return e.filter((function(e,r){return t(e,r)}))}function Mn(t){return(t>0)-(t<0)||+t}function Yn(t){return Math.log(1+t)}function wn(t){return Math.log(t)/Math.LN2}function bn(t){if(!Array.isArray(t))throw new Error("Sum argument is not an array");return t.reduce((function(t,e){return t+Number(e)}),0)}function En(t,e,r){var n,i,o,a,s,u,c=[];if(xn(t))return On(t,r);for(var f=t.length,p=0;p<f;p++){var l=t[p],h=l.type;if("INUMBER"===h||"IVARNAME"===h)c.push(l.value);else if("IOP2"===h)i=c.pop(),n=c.pop(),"and"===l.value?c.push(!!n&&!!En(i,e,r)):"or"===l.value?c.push(!!n||!!En(i,e,r)):"="===l.value?(a=e.binaryOps[l.value],c.push(a(n,En(i,e,r),r))):(a=e.binaryOps[l.value],c.push(a(On(n,r),On(i,r))));else if("IOP3"===h)o=c.pop(),i=c.pop(),n=c.pop(),"?"===l.value?c.push(En(n?i:o,e,r)):(a=e.ternaryOps[l.value],c.push(a(On(n,r),On(i,r),On(o,r))));else if("IVAR"===h)if(l.value in e.functions)c.push(e.functions[l.value]);else if(l.value in e.unaryOps&&e.parser.isOperatorEnabled(l.value))c.push(e.unaryOps[l.value]);else{var v=r[l.value];if(void 0===v)throw new Error("undefined variable: "+l.value);c.push(v)}else if("IOP1"===h)n=c.pop(),a=e.unaryOps[l.value],c.push(a(On(n,r)));else if("IFUNCALL"===h){for(u=l.value,s=[];u-- >0;)s.unshift(On(c.pop(),r));if(!(a=c.pop()).apply||!a.call)throw new Error(a+" is not a function");c.push(a.apply(void 0,s))}else if("IFUNDEF"===h)c.push(function(){for(var t=c.pop(),n=[],i=l.value;i-- >0;)n.unshift(c.pop());var o=c.pop(),a=function(){for(var i=Object.assign({},r),o=0,a=n.length;o<a;o++)i[n[o]]=arguments[o];return En(t,e,i)};return Object.defineProperty(a,"name",{value:o,writable:!1}),r[o]=a,a}());else if(h===Lr)c.push(An(l,e));else if("IEXPREVAL"===h)c.push(l);else if("IMEMBER"===h)n=c.pop(),c.push(n[l.value]);else if("IENDSTATEMENT"===h)c.pop();else{if("IARRAY"!==h)throw new Error("invalid Expression");for(u=l.value,s=[];u-- >0;)s.unshift(c.pop());c.push(s)}}if(c.length>1)throw new Error("invalid Expression (parity)");return 0===c[0]?0:On(c[0],r)}function An(t,e,r){return xn(t)?t:{type:"IEXPREVAL",value:function(r){return En(t.value,e,r)}}}function xn(t){return t&&"IEXPREVAL"===t.type}function On(t,e){return xn(t)?t.value(e):t}function Dn(t,e){this.tokens=t,this.parser=e,this.unaryOps=e.unaryOps,this.binaryOps=e.binaryOps,this.ternaryOps=e.ternaryOps,this.functions=e.functions}function Nn(t){return t.trim()}function Tn(t){this.options=t||{},this.unaryOps={SIN:Math.sin,COS:Math.cos,TAN:Math.tan,ASIN:Math.asin,ACOS:Math.acos,ATAN:Math.atan,SQRT:Math.sqrt,LOG:Math.log,LOG2:Math.log2||wn,LN:Math.log,LG:Math.log10||on,LOG10:Math.log10||on,LOG1P:Math.log1p||Yn,ABS:Math.abs,CEIL:Math.ceil,TRIM:Nn,FLOOR:Math.floor,ISNULL:function(t){return null===t},TRUNC:Math.trunc||un,"-":an,"+":Number,EXP:Math.exp,NOT:sn,LENGTH:fn,"!":sn,SIGN:Math.sign||Mn,TEXT:function(t){return e(t)?t.toISOString():String(t)},NUMBER:Number},this.binaryOps={"+":zr,"-":Gr,"*":$r,"/":qr,"%":Xr,"^":Math.pow,"==":Jr,"!=":Kr,">":Qr,"<":Zr,">=":tn,"<=":en,and:rn,or:nn,in:function(t,e){return Array.isArray(e)?e.includes(t):String(e).includes(t)},"[":hn},this.ternaryOps={"?":pn};var e=function(t){return t instanceof Date&&!isNaN(t)},r=function(t){if(e(t))return t;try{var r=new Date(t);return e(r)?r:null}catch(t){return null}};function n(t){return(1===arguments.length&&Array.isArray(t)?t:Array.from(arguments)).slice(0).filter((function(t){return!isNaN(t)&&Number.isFinite(t)}))}var i=/\w*/g,o=/\w\S*/g;try{i=new RegExp("\\p{L}*","ug"),o=new RegExp("[\\p{L}\\p{N}]\\S*","ug")}catch(t){}this.functions={IF:pn,RANDOM:cn,MIN:function(){var t=n.apply(this,arguments);return dn(t)},MAX:function(){return vn(n.apply(this,arguments))},SUM:function(){return bn(n.apply(this,arguments))},MEAN:function(){var t=n.apply(this,arguments);return bn(t)/t.length},MEDIAN:function(){var t=n.apply(this,arguments).sort((function(t,e){return t-e})),e=Math.floor(t.length/2);return t.length%2==1?t[e]:.5*(t[e-1]+t[e])},POW:Math.pow,ATAN2:Math.atan2,ROUND:ln,CONCAT:function(){return Array.from(arguments).join("")},TRIM:Nn,SUBSTR:function(t,e,r){return t.substr(e,r)},REPLACE:function(t,e,r){return t.replace(e,r)},SPLIT:function(t,e){return String(t).split(e)},LOWER:function(t){return String(t).toLowerCase()},UPPER:function(t){return String(t).toUpperCase()},PROPER:function(t){return String(t).replace(i,(function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase()}))},TITLE:function(t){return String(t).replace(o,(function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase()}))},SORT:function(t){var e=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(!Array.isArray(t))throw new Error("First argument to SORT is not an array");return t.slice(0).sort((function(t,n){return((t="string"==typeof r?t[r]:"function"==typeof r?r(t):t)>(n="string"==typeof r?n[r]:"function"==typeof r?r(n):n)?1:t<n?-1:0)*(e?1:-1)}))},SLICE:function(t,e,r){if(!Array.isArray(t))throw new Error("First argument to SLICE is not an array");return t.slice(e,r)},JOIN:function(t,e){var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(!Array.isArray(t))throw new Error("First argument to JOIN is not an array");return r?[t.slice(0,t.length-1).join(e),t[t.length-1]].join(r):t.join(e)},MAP:mn,FOLD:yn,FILTER:gn,PLUCK:function(t,e){if(!Array.isArray(t))throw new Error("First argument to PLUCK is not an array");return t.map((function(t){return t[e]}))},INDEXOF:function(t,e){return Array.isArray(t)||(t=String(t)),t.indexOf(e)},RANGE:function(t,e,r){null==e&&(e=t||0,t=0),r||(r=e<t?-1:1);for(var n=Math.max(Math.ceil((e-t)/r),0),i=Array(n),o=0;o<n;o++,t+=r)i[o]=t;return i},FIND:function(t,e){if(!Array.isArray(t))throw new Error("First argument to FIND is not an array");if("function"!=typeof e)throw new Error("Second argument to FIND is not a function");for(var r=t.length,n=0;n<r;n++)if(e(t[n]))return t[n];return null},EVERY:function(t,e){if(!Array.isArray(t))throw new Error("First argument to EVERY is not an array");if("function"!=typeof e)throw new Error("Second argument to EVERY is not a function");for(var r=t.length,n=!0,i=0;i<r;i++)if(!(n=n&&e(t[i])))return!1;return!0},SOME:function(t,e){if(!Array.isArray(t))throw new Error("First argument to SOME is not an array");if("function"!=typeof e)throw new Error("Second argument to SOME is not a function");for(var r=t.length,n=!1,i=0;i<r;i++)if(n=n||e(t[i]))return!0;return!1},DATE:function(){return arguments.length>1&&(arguments[1]=arguments[1]-1),Cr(Date,Array.prototype.slice.call(arguments))},YEAR:function(t){return(t=r(t))?t.getFullYear():null},MONTH:function(t){return(t=r(t))?t.getMonth()+1:null},DAY:function(t){return(t=r(t))?t.getDate():null},WEEKDAY:function(t){return(t=r(t))?t.getDay():null},HOURS:function(t){return(t=r(t))?t.getHours():null},MINUTES:function(t){return(t=r(t))?t.getMinutes():null},SECONDS:function(t){return(t=r(t))?t.getSeconds():null},DATEDIFF:function(t,e){return t=r(t),e=r(e),t&&e?(e.getTime()-t.getTime())/864e5:null},TIMEDIFF:function(t,e){return t=r(t),e=r(e),t&&e?(e.getTime()-t.getTime())/1e3:null}},this.consts={E:Math.E,PI:Math.PI,TRUE:!0,FALSE:!1,NA:Number.NaN,NULL:Number.NaN}}Hr.prototype.parseTerm=function(t){for(this.parseFactor(t);this.accept(_r,Wr);){var e=this.current;this.parseFactor(t),t.push(Fr(e.value))}},Hr.prototype.parseFactor=function(t){var e=this.tokens.unaryOps;if(this.save(),this.accept(_r,(function(t){return t.value in e}))){if("-"!==this.current.value&&"+"!==this.current.value){if(this.nextToken.type===Ir&&"("===this.nextToken.value)return this.restore(),void this.parseExponential(t);if("TSEMICOLON"===this.nextToken.type||"TCOMMA"===this.nextToken.type||"TEOF"===this.nextToken.type||this.nextToken.type===Ir&&")"===this.nextToken.value)return this.restore(),void this.parseAtom(t)}var r=this.current;this.parseFactor(t),t.push(Ur(r.value))}else this.parseExponential(t)},Hr.prototype.parseExponential=function(t){for(this.parsePostfixExpression(t);this.accept(_r,"^");)this.parseFactor(t),t.push(Fr("^"))},Hr.prototype.parsePostfixExpression=function(t){for(this.parseFunctionCall(t);this.accept(_r,"!");)t.push(Ur("!"))},Hr.prototype.parseFunctionCall=function(t){var e=this.tokens.unaryOps;if(this.accept(_r,(function(t){return t.value in e}))){var r=this.current;this.parseAtom(t),t.push(Ur(r.value))}else for(this.parseMemberExpression(t);this.accept(Ir,"(");)if(this.accept(Ir,")"))t.push(new Pr("IFUNCALL",0));else{var n=this.parseArgumentList(t);t.push(new Pr("IFUNCALL",n))}},Hr.prototype.parseArgumentList=function(t){for(var e=0;!this.accept(Ir,")");)for(this.parseExpression(t),++e;this.accept("TCOMMA");)this.parseExpression(t),++e;return e},Hr.prototype.parseMemberExpression=function(t){for(this.parseAtom(t);this.accept(_r,".")||this.accept("TBRACKET","[");){var e=this.current;if("."===e.value){if(!this.allowMemberAccess)throw new Error('unexpected ".", member access is not permitted');this.expect("TNAME"),t.push(new Pr("IMEMBER",this.current.value))}else{if("["!==e.value)throw new Error("unexpected symbol: "+e.value);if(!this.tokens.isOperatorEnabled("["))throw new Error('unexpected "[]", arrays are disabled');this.parseExpression(t),this.expect("TBRACKET","]"),t.push(Fr("["))}}},Dn.prototype.evaluate=function(t){return t=t||{},En(this.tokens,this,t)},Dn.prototype.variables=function(){return(this.tokens||[]).filter((function(t){return"IVAR"===t.type})).map((function(t){return t.value}))},Tn.prototype.parse=function(t){var e=[],r=new Hr(this,new kr(this,t),{allowMemberAccess:!0});return r.parseExpression(e),r.expect("TEOF","EOF"),new Dn(e,this)},Tn.prototype.evaluate=function(t,e){return this.parse(t).evaluate(e)};var Sn=new Tn;Tn.parse=function(t){return Sn.parse(t)},Tn.evaluate=function(t,e){return Sn.parse(t).evaluate(e)},Tn.keywords=["ABS","ACOS","ACOSH","and","ASIN","ASINH","ATAN","ATAN2","ATANH","CBRT","CEIL","CONCAT","COS","COSH","DATEDIFF","DAY","E","EVERY","EXP","EXPM1","FIND","FLOOR","HOURS","IF","in","INDEXOF","ISNULL","JOIN","LENGTH","LN","LOG","LOG10","LOG1P","LOG2","LOWER","MAP","MAX","MEAN","MEDIAN","MIN","MINUTES","MONTH","NOT","NOT","or","PI","PLUCK","POW","PROPER","RANDOM","RANGE","REPLACE","ROUND","SECONDS","SIGN","SIN","SINH","SLICE","SOME","SORT","SPLIT","SQRT","SUBSTR","SUM","TAN","TANH","TIMEDIFF","TITLE","TRIM","TRUNC","UPPER","WEEKDAY","YEAR"];var Cn={"+":"add","-":"subtract","*":"multiply","/":"divide","%":"remainder","^":"power","!":"factorial","<":"comparison",">":"comparison","<=":"comparison",">=":"comparison","==":"comparison","!=":"comparison","||":"concatenate",AND:"logical",OR:"logical",NOT:"logical",IN:"logical","?":"conditional",":":"conditional","=":"assignment","[":"array","()=":"fndef"};function _n(t,e){var r=Tr(t.get(),"metadata.describe.computed-columns",{});Array.isArray(r)||(r=Object.keys(r).reduce((function(t,e){return t.push({name:e,formula:r[e]}),t}),[]));var n=Er(t,e).list(),i={},o={},a=new Tn;e.eachColumn((function(t){if(!t.isComputed)if(i[t.name()]=Nr(t.name()),"number"===t.type()){var e=t.range(),r=Dr(e,2),n=r[0],a=r[1];o[t.name()]={min:n,max:a,sum:p(t.values()),mean:l(t.values()),median:h(t.values())}}else if("date"===t.type()){var s=t.range(),u=Dr(s,2),c=u[0],f=u[1];o[t.name()]={min:c,max:f}}}));var s=r.reduce((function(t,r,n){var i=Nr(r.name);return t.set(i,{name:r.name,index:e.numColumns()+n,key:i,formula:r.formula,visited:0,computed:!1,dependsOn:[]})}),new Map);r.forEach((function(t){var e=t.formula,r=t.name,n=s.get(Nr(r));if(e.trim())try{n.expr=a.parse(e.trim()),n.expr.variables().forEach((function(t){t=t.split("__")[0],s.has(t)&&n.dependsOn.push(s.get(t))}))}catch(t){n.error=t.message}else n.expr={evaluate:function(){return""},variables:function(){return[]}}}));for(var u=[],c=0;s.size&&!(c>1e3);)s.forEach((function(t){c++;try{f(t,[])}catch(e){if(!e.message.startsWith("circular-dependency"))throw e;t.error=e.message,s.delete(t.key),u.push(t)}}));return u.forEach((function(e){if(e.error){var r=yr(e.name,n.map((function(t){return"null"})));r.isComputed=!0,r.formula=e.formula,r.errors=[{message:e.error,row:"all"}],e.column=r}else e.column=function(e){var r=e.formula,a=e.name,s=e.expr,u=e.error,c=e.index,f=[];u&&f.push({row:"all",message:u});var v=Tr(t,"metadata.data.changes",[]).filter((function(t){return t.column===c&&t.row>0})).reduce((function(t,e){var r=t.get(e.row-1);return r&&(e.previous=r.previous),t.set(e.row-1,e),t}),new Map),d=n.map((function(t,e){var r,n={ROWNUMBER:e};Xe.each(t,(function(t,e){i[e]&&(n[i[e]]=t,o[e]&&Object.keys(o[e]).forEach((function(t){n["".concat(i[e],"__").concat(t)]=o[e][t]})))}));try{"function"==typeof(r=s.evaluate(n))&&(f.push({message:"formula returned function",row:e}),r=null)}catch(t){f.push({message:t.message,row:e}),r=null}if(v.has(e)){var a=v.get(e);if(void 0===a.previous||a.previous==r)return a.value}return r}));i[a]=Nr(a),d.forEach((function(t,e){n[e][a]=t}));var m=yr(a,d.map((function(t){return Xe.isBoolean(t)?t?"yes":"no":Xe.isDate(t)?t.toISOString():Xe.isNumber(t)?String(t):Xe.isNull(t)?null:String(t)})));if("number"===m.type()){var y=m.range(),g=Dr(y,2),M=g[0],Y=g[1];o[a]={min:M,max:Y,sum:p(m.values()),mean:l(m.values()),median:h(m.values())}}else if("date"===m.type()){var w=m.range(),b=Dr(w,2),E=b[0],A=b[1];o[a]={min:E,max:A}}return m.isComputed=!0,m.errors=f,m.formula=r,m}(e)})),u.sort((function(t,e){return t.index-e.index})).forEach((function(t){var r=t.column;return e.add(r)})),e;function f(t,e){if(!t.computed){e.push(t.name);for(var r=0;r<e.length-2;r++)if(t.name===e[r])throw new Error("circular-dependency: "+e.join(" ‣ "));t.curIter=c;for(var n=!0,i=0;i<t.dependsOn.length;i++)n=n&&t.dependsOn[i].computed;n?(t.computed=!0,u.push(t),s.delete(t.key)):e.length<10&&t.dependsOn.forEach((function(t){f(t,e.slice(0))}))}}function p(t){var e,r=0,n=t.length,i=-1;if(1===arguments.length)for(;++i<n;)m(e=+t[i])&&(r+=e);return r}function l(t){for(var e,r=0,n=t.length,i=-1,o=n;++i<n;)m(e=d(t[i]))?r+=e:--o;if(o)return r/o}function h(t){var e,r=[],n=t.length,i=-1;if(1===arguments.length)for(;++i<n;)m(e=d(t[i]))&&r.push(e);if(r.length)return v(r.sort(y),.5)}function v(t,e){var r=(t.length-1)*e+1,n=Math.floor(r),i=+t[n-1],o=r-n;return o?i+o*(t[n]-i):i}function d(t){return null===t?NaN:+t}function m(t){return!isNaN(t)}function y(t,e){return t<e?-1:t>e?1:t>=e?0:NaN}}Tn.prototype.isOperatorEnabled=function(t){var e=function(t){return Object.prototype.hasOwnProperty.call(Cn,t)?Cn[t]:t}(t),r=this.options.operators||{};return!(e in r&&!r[e])};var In=function(t){return-1!==Function.toString.call(t).indexOf("[native code]")},Rn=n((function(t){function e(r){var n="function"==typeof Map?new Map:void 0;return t.exports=e=function(t){if(null===t||!In(t))return t;if("function"!=typeof t)throw new TypeError("Super expression must either be null or a function");if(void 0!==n){if(n.has(t))return n.get(t);n.set(t,e)}function e(){return Cr(t,arguments,s(this).constructor)}return e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),u(e,t)},e(r)}t.exports=e}));var kn=function(t,e){if(null==t)return{};var r,n,i={},o=Object.keys(t);for(n=0;n<o.length;n++)r=o[n],e.indexOf(r)>=0||(i[r]=t[r]);return i};var jn=function(t,e){if(null==t)return{};var r,n,i=kn(t,e);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(t);for(n=0;n<o.length;n++)r=o[n],e.indexOf(r)>=0||Object.prototype.propertyIsEnumerable.call(t,r)&&(i[r]=t[r])}return i},Ln=n((function(t,e){var r;r=function(){function t(){for(var t=0,e={};t<arguments.length;t++){var r=arguments[t];for(var n in r)e[n]=r[n]}return e}function e(t){return t.replace(/(%[0-9A-Z]{2})+/g,decodeURIComponent)}return function r(n){function i(){}function o(e,r,o){if("undefined"!=typeof document){"number"==typeof(o=t({path:"/"},i.defaults,o)).expires&&(o.expires=new Date(1*new Date+864e5*o.expires)),o.expires=o.expires?o.expires.toUTCString():"";try{var a=JSON.stringify(r);/^[\{\[]/.test(a)&&(r=a)}catch(t){}r=n.write?n.write(r,e):encodeURIComponent(String(r)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent),e=encodeURIComponent(String(e)).replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent).replace(/[\(\)]/g,escape);var s="";for(var u in o)o[u]&&(s+="; "+u,!0!==o[u]&&(s+="="+o[u].split(";")[0]));return document.cookie=e+"="+r+s}}function a(t,r){if("undefined"!=typeof document){for(var i={},o=document.cookie?document.cookie.split("; "):[],a=0;a<o.length;a++){var s=o[a].split("="),u=s.slice(1).join("=");r||'"'!==u.charAt(0)||(u=u.slice(1,-1));try{var c=e(s[0]);if(u=(n.read||n)(u,c)||e(u),r)try{u=JSON.parse(u)}catch(t){}if(i[c]=u,t===c)break}catch(t){}}return t?i[t]:i}}return i.set=o,i.get=function(t){return a(t,!1)},i.getJSON=function(t){return a(t,!0)},i.remove=function(e,r){o(e,"",t(r,{expires:-1}))},i.defaults={},i.withConverter=r,i}((function(){}))},t.exports=r()}));function Pn(t,e){var r=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),r.push.apply(r,n)}return r}function Un(t){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{};e%2?Pn(Object(r),!0).forEach((function(e){l(t,e,r[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(r)):Pn(Object(r)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(r,e))}))}return t}var Fn=new Set(["get","head","options","trace"]);function Hn(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!e.fetch)try{e.fetch=window.fetch}catch(t){throw new Error("Neither options.fetch nor window.fetch is defined.")}if(!e.baseUrl)try{e.baseUrl="//".concat(window.dw.backend.__api_domain)}catch(t){throw new Error("Neither options.baseUrl nor window.dw is defined.")}var r,n=Un({payload:null,raw:!1,method:"GET",mode:"cors",credentials:"include"},e,{headers:Un({"Content-Type":"application/json"},e.headers)}),i=n.payload,o=n.baseUrl,a=n.fetch,s=n.raw,u=jn(n,["payload","baseUrl","fetch","raw"]),c="".concat(o.replace(/\/$/,""),"/").concat(t.replace(/^\//,""));if(i&&(u.body=JSON.stringify(i)),Fn.has(u.method.toLowerCase()))r=a(c,u);else{var f=Ln.get("crumb");f?(u.headers["X-CSRF-Token"]=f,r=a(c,u)):r=Hn("/v3/me",{fetch:a,baseUrl:o}).then((function(){var t=Ln.get("crumb");t&&(u.headers["X-CSRF-Token"]=t)})).catch((function(){})).then((function(){return a(c,u)}))}return r.then((function(t){if(s)return t;if(!t.ok)throw new Wn(t);if(204===t.status||!t.headers.get("content-type"))return t;var e=t.headers.get("content-type").split(";")[0];return"application/json"===e?t.json():"image/png"===e||"application/pdf"===e?t.blob():t.text()}))}Hn.get=Vn("GET"),Hn.patch=Vn("PATCH");var Bn=Hn.put=Vn("PUT");Hn.post=Vn("POST"),Hn.head=Vn("HEAD");function Vn(t){return function(e,r){if(r&&r.method)throw new Error("Setting option.method is not allowed in httpReq.".concat(t.toLowerCase(),"()"));return Hn(e,Un({},r,{method:t}))}}Hn.delete=Vn("DELETE");var Wn=function(e){function r(e){var n;return t(this,r),(n=a(this,s(r).call(this))).name="HttpReqError",n.status=e.status,n.statusText=e.statusText,n.message="[".concat(e.status,"] ").concat(e.statusText),n.response=e,n}return c(r,e),r}(Rn(Error));var zn=Xe.debounce((function(t,e){var r=t.serialize();Bn("/v3/charts/".concat(r.id),{payload:r}).then((function(){e&&e()})).catch((function(t){console.error("Could not store chart changes",t)}))}),1e3),Gn=Xe.debounce((function(t,e){var r=t.getMetadata("data.json")?JSON.stringify(t.dataset()):t.rawData();Bn("/v3/charts/".concat(t.get().id,"/data"),{body:r,headers:{"Content-Type":"text/csv"}}).then((function(){e&&e()})).catch((function(t){console.error("Could not store chart data",t)}))}),1e3),$n=function(e){function n(){return t(this,n),a(this,s(n).apply(this,arguments))}return c(n,e),r(n,[{key:"load",value:function(t,e){var r=this,n={firstRowIsHeader:this.getMetadata("data.horizontal-header",!0),transpose:this.getMetadata("data.transpose",!1)};return t&&!e?n.csv=t:n.url=e||"data.csv",n.csv&&(this._rawData=n.csv),(this.getMetadata("data.json",!1)?wr(n):gr(n)).dataset().then((function(t){return r.dataset(t),t})).catch((function(t){console.error("could not fetch datasource",t)}))}},{key:"dataset",value:function(t){if(arguments.length){!0!==t&&(this._dataset_cache=t);var e="function"!=typeof t.list;return this._dataset=e?t:br(this,Er(this,_n(this,!0===t?this._dataset_cache:t))),e&&this.set({dataset:t}),this._dataset}return this._dataset}},{key:"theme",value:function(t){return arguments.length?(this.set({theme:t}),this):this.get().theme}},{key:"vis",value:function(t){return arguments.length?(this.set({vis:t}),this):this.get().vis}},{key:"locale",value:function(t,e){return arguments.length&&(this._locale=t=t.replace("_","-"),window.Globalize&&qn(t,e)),this._locale}},{key:"getMetadata",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=this.get(),n=r.metadata;if(!t)return n;var i=t.split("."),o=n;return Xe.some(i,(function(t){return!(!Xe.isUndefined(o)&&!Xe.isNull(o))||(o=o[t],!1)})),Xe.isUndefined(o)||Xe.isNull(o)?e:o}},{key:"setMetadata",value:function(t,e){var r,n,i=t.split("."),o=i.pop(),a=this.get().metadata,s=a;return i.forEach((function(t){(Xe.isUndefined(s[t])||Xe.isNull(s[t]))&&(s[t]={}),s=s[t]})),r=s[o],n=e,JSON.stringify(r)!==JSON.stringify(n)&&(s[o]=e,this.set({metadata:a})),this}},{key:"store",value:function(t){zn(this,t)}},{key:"storeData",value:function(t){Gn(this,t)}},{key:"serialize",value:function(){var t=this.get(),e={};return["id","title","theme","createdAt","lastModifiedAt","type","metadata","authorId","showInGallery","language","guestSession","lastEditStep","publishedAt","publicUrl","publicVersion","organizationId","forkedFrom","externalData","forkable","isFork","inFolder","author"].forEach((function(r){e[r]=t[r]})),e}},{key:"passiveMode",value:function(){var t=this;this.set({passiveMode:!0}),setTimeout((function(){return t.set({passiveMode:!1})}),100)}},{key:"isPassive",value:function(){return this.get().passiveMode}},{key:"rawData",value:function(){return this._rawData}}]),n}(y);function qn(t,e){Object.prototype.hasOwnProperty.call(window.Globalize.cultures,t)?(window.Globalize.culture(t),"function"==typeof e&&e()):function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;new Promise((function(r,n){var i=document.createElement("script");i.src=t,i.onload=function(){e&&e(),r()},i.onerror=n,document.body.appendChild(i)}))}("/static/vendor/globalize/cultures/globalize.culture.".concat(t,".js"),(function(){window.Globalize.culture(t),"function"==typeof e&&e()}))}return $n.prototype.observeDeep=function(t,e,r){var n=t.replace(/\[(\d+)\]/g,".$1").split("."),o=n[0],a=e.bind(this),s=g(this.get(),n);return r&&!1===r.init||a(s),this.on(r&&r.defer?"update":"state",(function(t){var e=t.changed,r=t.current;t.previous;if(e[o]){var u=g(r,n);u===s&&"object"!==i(u)&&"function"!=typeof u||(a(u,s),s=u)}}))},{Chart:$n}}));
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@datawrapper/chart-core/lib/dw/svelteChart')) :
+	typeof define === 'function' && define.amd ? define('svelte/visualize', ['@datawrapper/chart-core/lib/dw/svelteChart'], factory) :
+	(global = global || self, global.visualize = factory(global.Chart));
+}(this, function (Chart) { 'use strict';
+
+	Chart = Chart && Chart.hasOwnProperty('default') ? Chart['default'] : Chart;
+
+	function createCommonjsModule(fn, basedir, module) {
+		return module = {
+		  path: basedir,
+		  exports: {},
+		  require: function (path, base) {
+	      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+	    }
+		}, fn(module, module.exports), module.exports;
+	}
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+	}
+
+	var _typeof_1 = createCommonjsModule(function (module) {
+	  function _typeof(obj) {
+	    "@babel/helpers - typeof";
+
+	    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+	      module.exports = _typeof = function _typeof(obj) {
+	        return typeof obj;
+	      };
+	    } else {
+	      module.exports = _typeof = function _typeof(obj) {
+	        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+	      };
+	    }
+
+	    return _typeof(obj);
+	  }
+
+	  module.exports = _typeof;
+	});
+
+	function noop() {}
+
+	function assign(tar, src) {
+	  for (var k in src) {
+	    tar[k] = src[k];
+	  }
+
+	  return tar;
+	}
+
+	function assignTrue(tar, src) {
+	  for (var k in src) {
+	    tar[k] = 1;
+	  }
+
+	  return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+	  element.__svelte_meta = {
+	    loc: {
+	      file: file,
+	      line: line,
+	      column: column,
+	      char: char
+	    }
+	  };
+	}
+
+	function append(target, node) {
+	  target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+	  target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+	  node.parentNode.removeChild(node);
+	}
+
+	function reinsertChildren(parent, target) {
+	  while (parent.firstChild) {
+	    target.appendChild(parent.firstChild);
+	  }
+	}
+
+	function destroyEach(iterations, detach) {
+	  for (var i = 0; i < iterations.length; i += 1) {
+	    if (iterations[i]) iterations[i].d(detach);
+	  }
+	}
+
+	function createFragment() {
+	  return document.createDocumentFragment();
+	}
+
+	function createElement(name) {
+	  return document.createElement(name);
+	}
+
+	function createText(data) {
+	  return document.createTextNode(data);
+	}
+
+	function createComment() {
+	  return document.createComment('');
+	}
+
+	function addListener(node, event, handler, options) {
+	  node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+	  node.removeEventListener(event, handler, options);
+	}
+
+	function setAttribute(node, attribute, value) {
+	  if (value == null) node.removeAttribute(attribute);else node.setAttribute(attribute, value);
+	}
+
+	function setData(text, data) {
+	  text.data = '' + data;
+	}
+
+	function setStyle(node, key, value) {
+	  node.style.setProperty(key, value);
+	}
+
+	function selectOption(select, value) {
+	  for (var i = 0; i < select.options.length; i += 1) {
+	    var option = select.options[i];
+
+	    if (option.__value === value) {
+	      option.selected = true;
+	      return;
+	    }
+	  }
+	}
+
+	function selectValue(select) {
+	  var selectedOption = select.querySelector(':checked') || select.options[0];
+	  return selectedOption && selectedOption.__value;
+	}
+
+	function toggleClass(element, name, toggle) {
+	  element.classList[toggle ? 'add' : 'remove'](name);
+	}
+
+	function blankObject() {
+	  return Object.create(null);
+	}
+
+	function destroy(detach) {
+	  this.destroy = noop;
+	  this.fire('destroy');
+	  this.set = noop;
+
+	  this._fragment.d(detach !== false);
+
+	  this._fragment = null;
+	  this._state = {};
+	}
+
+	function destroyDev(detach) {
+	  destroy.call(this, detach);
+
+	  this.destroy = function () {
+	    console.warn('Component was already destroyed');
+	  };
+	}
+
+	function _differs(a, b) {
+	  return a != a ? b == b : a !== b || a && _typeof_1(a) === 'object' || typeof a === 'function';
+	}
+
+	function fire(eventName, data) {
+	  var handlers = eventName in this._handlers && this._handlers[eventName].slice();
+
+	  if (!handlers) return;
+
+	  for (var i = 0; i < handlers.length; i += 1) {
+	    var handler = handlers[i];
+
+	    if (!handler.__calling) {
+	      try {
+	        handler.__calling = true;
+	        handler.call(this, data);
+	      } finally {
+	        handler.__calling = false;
+	      }
+	    }
+	  }
+	}
+
+	function flush(component) {
+	  component._lock = true;
+	  callAll(component._beforecreate);
+	  callAll(component._oncreate);
+	  callAll(component._aftercreate);
+	  component._lock = false;
+	}
+
+	function get() {
+	  return this._state;
+	}
+
+	function init(component, options) {
+	  component._handlers = blankObject();
+	  component._slots = blankObject();
+	  component._bind = options._bind;
+	  component._staged = {};
+	  component.options = options;
+	  component.root = options.root || component;
+	  component.store = options.store || component.root.store;
+
+	  if (!options.root) {
+	    component._beforecreate = [];
+	    component._oncreate = [];
+	    component._aftercreate = [];
+	  }
+	}
+
+	function on(eventName, handler) {
+	  var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+	  handlers.push(handler);
+	  return {
+	    cancel: function cancel() {
+	      var index = handlers.indexOf(handler);
+	      if (~index) handlers.splice(index, 1);
+	    }
+	  };
+	}
+
+	function set(newState) {
+	  this._set(assign({}, newState));
+
+	  if (this.root._lock) return;
+	  flush(this.root);
+	}
+
+	function _set(newState) {
+	  var oldState = this._state,
+	      changed = {},
+	      dirty = false;
+	  newState = assign(this._staged, newState);
+	  this._staged = {};
+
+	  for (var key in newState) {
+	    if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+	  }
+
+	  if (!dirty) return;
+	  this._state = assign(assign({}, oldState), newState);
+
+	  this._recompute(changed, this._state);
+
+	  if (this._bind) this._bind(changed, this._state);
+
+	  if (this._fragment) {
+	    this.fire("state", {
+	      changed: changed,
+	      current: this._state,
+	      previous: oldState
+	    });
+
+	    this._fragment.p(changed, this._state);
+
+	    this.fire("update", {
+	      changed: changed,
+	      current: this._state,
+	      previous: oldState
+	    });
+	  }
+	}
+
+	function _stage(newState) {
+	  assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+	  if (_typeof_1(newState) !== 'object') {
+	    throw new Error(this._debugName + '.set was called without an object of data key-values to update.');
+	  }
+
+	  this._checkReadOnly(newState);
+
+	  set.call(this, newState);
+	}
+
+	function callAll(fns) {
+	  while (fns && fns.length) {
+	    fns.shift()();
+	  }
+	}
+
+	function _mount(target, anchor) {
+	  this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	function removeFromStore() {
+	  this.store._remove(this);
+	}
+	var protoDev = {
+	  destroy: destroyDev,
+	  get: get,
+	  fire: fire,
+	  on: on,
+	  set: setDev,
+	  _recompute: noop,
+	  _set: _set,
+	  _stage: _stage,
+	  _mount: _mount,
+	  _differs: _differs
+	};
+
+	/* globals dw */
+	var __messages = {};
+
+	function initMessages() {
+	  var scope = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'core';
+
+	  // let's check if we're in a chart
+	  if (scope === 'chart') {
+	    if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	      // use in-chart translations
+	      __messages[scope] = window.__dw.vis.meta.locale || {};
+	    }
+	  } else {
+	    // use backend translations
+	    __messages[scope] = scope === 'core' ? dw.backend.__messages.core : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	  }
+	}
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+
+
+	function __(key) {
+	  var _arguments = arguments;
+	  var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'core';
+	  key = key.trim();
+	  if (!__messages[scope]) initMessages(scope);
+	  if (!__messages[scope][key]) return 'MISSING:' + key;
+	  var translation = __messages[scope][key];
+
+	  if (typeof translation === 'string' && arguments.length > 2) {
+	    // replace $0, $1 etc with remaining arguments
+	    translation = translation.replace(/\$(\d)/g, function (m, i) {
+	      i = 2 + Number(i);
+	      if (_arguments[i] === undefined) return m;
+	      return _arguments[i];
+	    });
+	  }
+
+	  return translation;
+	}
+
+	/* visualize/TabNav.html generated by Svelte v2.16.1 */
+	var allTabs = [{
+	  id: 'pick',
+	  title: __('Chart type')
+	}, {
+	  id: 'refine',
+	  title: __('Refine')
+	}, {
+	  id: 'annotate',
+	  title: __('Annotate')
+	}, {
+	  id: 'design',
+	  title: __('Design')
+	}];
+
+	function tabs(_ref) {
+	  var showChartPicker = _ref.showChartPicker;
+	  return showChartPicker ? allTabs : allTabs.slice(1);
+	}
+
+	function data() {
+	  return {
+	    showChartPicker: true
+	  };
+	}
+
+	function onstate(_ref2) {
+	  var changed = _ref2.changed,
+	      current = _ref2.current,
+	      previous = _ref2.previous;
+
+	  if (changed.tab && previous && current.tab) {
+	    window.location.hash = '#' + current.tab;
+	  }
+	}
+	var file = "visualize/TabNav.html";
+
+	function click_handler(event) {
+	  event.preventDefault();
+	  var _this$_svelte = this._svelte,
+	      component = _this$_svelte.component,
+	      ctx = _this$_svelte.ctx;
+	  component.set({
+	    tab: ctx.t.id
+	  });
+	}
+
+	function get_each_context(ctx, list, i) {
+	  var child_ctx = Object.create(ctx);
+	  child_ctx.t = list[i];
+	  return child_ctx;
+	}
+
+	function create_main_fragment(component, ctx) {
+	  var div, ul;
+	  var each_value = ctx.tabs;
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value.length; i += 1) {
+	    each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
+	  }
+
+	  return {
+	    c: function create() {
+	      div = createElement("div");
+	      ul = createElement("ul");
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].c();
+	      }
+
+	      ul.className = "nav nav-tabs visualize-nav-tabs";
+	      addLoc(ul, file, 1, 4, 38);
+	      setStyle(div, "margin-bottom", "20px");
+	      addLoc(div, file, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div, anchor);
+	      append(div, ul);
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].m(ul, null);
+	      }
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.tab || changed.tabs) {
+	        each_value = ctx.tabs;
+
+	        for (var i = 0; i < each_value.length; i += 1) {
+	          var child_ctx = get_each_context(ctx, each_value, i);
+
+	          if (each_blocks[i]) {
+	            each_blocks[i].p(changed, child_ctx);
+	          } else {
+	            each_blocks[i] = create_each_block(component, child_ctx);
+	            each_blocks[i].c();
+	            each_blocks[i].m(ul, null);
+	          }
+	        }
+
+	        for (; i < each_blocks.length; i += 1) {
+	          each_blocks[i].d(1);
+	        }
+
+	        each_blocks.length = each_value.length;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div);
+	      }
+
+	      destroyEach(each_blocks, detach);
+	    }
+	  };
+	} // (3:8) {#each tabs as t}
+
+
+	function create_each_block(component, ctx) {
+	  var li,
+	      a,
+	      raw_value = ctx.t.title,
+	      a_href_value;
+	  return {
+	    c: function create() {
+	      li = createElement("li");
+	      a = createElement("a");
+	      a._svelte = {
+	        component: component,
+	        ctx: ctx
+	      };
+	      addListener(a, "click", click_handler);
+	      a.href = a_href_value = "#" + ctx.t.id;
+	      addLoc(a, file, 3, 40, 149);
+	      toggleClass(li, "active", ctx.tab === ctx.t.id);
+	      addLoc(li, file, 3, 8, 117);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, li, anchor);
+	      append(li, a);
+	      a.innerHTML = raw_value;
+	    },
+	    p: function update(changed, _ctx) {
+	      ctx = _ctx;
+
+	      if (changed.tabs && raw_value !== (raw_value = ctx.t.title)) {
+	        a.innerHTML = raw_value;
+	      }
+
+	      a._svelte.ctx = ctx;
+
+	      if (changed.tabs && a_href_value !== (a_href_value = "#" + ctx.t.id)) {
+	        a.href = a_href_value;
+	      }
+
+	      if (changed.tab || changed.tabs) {
+	        toggleClass(li, "active", ctx.tab === ctx.t.id);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(li);
+	      }
+
+	      removeListener(a, "click", click_handler);
+	    }
+	  };
+	}
+
+	function TabNav(options) {
+	  var _this = this;
+
+	  this._debugName = '<TabNav>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data(), options.data);
+
+	  this._recompute({
+	    showChartPicker: 1
+	  }, this._state);
+
+	  if (!('showChartPicker' in this._state)) console.warn("<TabNav> was created without expected data property 'showChartPicker'");
+	  if (!('tab' in this._state)) console.warn("<TabNav> was created without expected data property 'tab'");
+	  this._intro = true;
+	  this._handlers.state = [onstate];
+	  onstate.call(this, {
+	    changed: assignTrue({}, this._state),
+	    current: this._state
+	  });
+	  this._fragment = create_main_fragment(this, this._state);
+
+	  this.root._oncreate.push(function () {
+	    _this.fire("update", {
+	      changed: assignTrue({}, _this._state),
+	      current: _this._state
+	    });
+	  });
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+
+	    flush(this);
+	  }
+	}
+
+	assign(TabNav.prototype, protoDev);
+
+	TabNav.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	  if ('tabs' in newState && !this._updatingReadonlyProperty) throw new Error("<TabNav>: Cannot set read-only property 'tabs'");
+	};
+
+	TabNav.prototype._recompute = function _recompute(changed, state) {
+	  if (changed.showChartPicker) {
+	    if (this._differs(state.tabs, state.tabs = tabs(state))) changed.tabs = true;
+	  }
+	};
+
+	/* visualize/ButtonNav.html generated by Svelte v2.16.1 */
+
+	function data$1() {
+	  return {
+	    showChartPicker: false
+	  };
+	}
+	var methods = {
+	  back: function back() {
+	    var _this$get = this.get(),
+	        tab = _this$get.tab,
+	        showChartPicker = _this$get.showChartPicker;
+
+	    if (tab === 'refine' && !showChartPicker || tab === 'pick') location.href = 'data';else if (tab === 'refine' && showChartPicker) this.set({
+	      tab: 'pick'
+	    });else if (tab === 'annotate') this.set({
+	      tab: 'refine'
+	    });else if (tab === 'design') this.set({
+	      tab: 'annotate'
+	    });
+	  },
+	  proceed: function proceed() {
+	    var _this$get2 = this.get(),
+	        tab = _this$get2.tab;
+
+	    if (tab === 'design') location.href = 'publish';else if (tab === 'annotate') this.set({
+	      tab: 'design'
+	    });else if (tab === 'refine') this.set({
+	      tab: 'annotate'
+	    });else if (tab === 'pick') this.set({
+	      tab: 'refine'
+	    });
+	  }
+	};
+	var file$1 = "visualize/ButtonNav.html";
+
+	function create_main_fragment$1(component, ctx) {
+	  var div,
+	      a0,
+	      i0,
+	      text0,
+	      text1_value = __("Back"),
+	      text1,
+	      text2,
+	      a1,
+	      text3_value = __("Proceed"),
+	      text3,
+	      text4,
+	      i1;
+
+	  function click_handler(event) {
+	    event.preventDefault();
+	    component.back();
+	  }
+
+	  function click_handler_1(event) {
+	    event.preventDefault();
+	    component.proceed();
+	  }
+
+	  return {
+	    c: function create() {
+	      div = createElement("div");
+	      a0 = createElement("a");
+	      i0 = createElement("i");
+	      text0 = createText(" ");
+	      text1 = createText(text1_value);
+	      text2 = createText("\n    ");
+	      a1 = createElement("a");
+	      text3 = createText(text3_value);
+	      text4 = createText(" ");
+	      i1 = createElement("i");
+	      i0.className = "fa fa-chevron-left fa-fw icon-btn-left";
+	      addLoc(i0, file$1, 1, 73, 129);
+	      addListener(a0, "click", click_handler);
+	      a0.className = "btn submitk";
+	      a0.href = "#back";
+	      addLoc(a0, file$1, 1, 4, 60);
+	      i1.className = "fa fa-chevron-right fa-fw icon-btn-right";
+	      addLoc(i1, file$1, 2, 108, 310);
+	      addListener(a1, "click", click_handler_1);
+	      a1.className = "btn submit btn-primary";
+	      a1.href = "#proceed";
+	      addLoc(a1, file$1, 2, 4, 206);
+	      div.className = "btn-group buttons";
+	      setStyle(div, "margin", "20px 0");
+	      addLoc(div, file$1, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div, anchor);
+	      append(div, a0);
+	      append(a0, i0);
+	      append(a0, text0);
+	      append(a0, text1);
+	      append(div, text2);
+	      append(div, a1);
+	      append(a1, text3);
+	      append(a1, text4);
+	      append(a1, i1);
+	    },
+	    p: noop,
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div);
+	      }
+
+	      removeListener(a0, "click", click_handler);
+	      removeListener(a1, "click", click_handler_1);
+	    }
+	  };
+	}
+
+	function ButtonNav(options) {
+	  this._debugName = '<ButtonNav>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data$1(), options.data);
+	  this._intro = true;
+	  this._fragment = create_main_fragment$1(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+	  }
+	}
+
+	assign(ButtonNav.prototype, protoDev);
+	assign(ButtonNav.prototype, methods);
+
+	ButtonNav.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	/* visualize/Empty.html generated by Svelte v2.16.1 */
+	var file$2 = "visualize/Empty.html";
+
+	function create_main_fragment$2(component, ctx) {
+	  var p;
+	  return {
+	    c: function create() {
+	      p = createElement("p");
+	      p.textContent = "nothing here";
+	      p.className = "mini-help";
+	      addLoc(p, file$2, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, p, anchor);
+	    },
+	    p: noop,
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(p);
+	      }
+	    }
+	  };
+	}
+
+	function Empty(options) {
+	  this._debugName = '<Empty>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign({}, options.data);
+	  this._intro = true;
+	  this._fragment = create_main_fragment$2(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+	  }
+	}
+
+	assign(Empty.prototype, protoDev);
+
+	Empty.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	/* node_modules/@datawrapper/controls/ControlGroup.html generated by Svelte v2.16.1 */
+
+	function data$2() {
+	  return {
+	    disabled: false,
+	    help: false,
+	    type: 'default',
+	    valign: 'baseline',
+	    inline: false
+	  };
+	}
+	var def = {
+	  width: '100px'
+	};
+	var file$3 = "node_modules/datawrapper/controls/ControlGroup.html";
+
+	function create_main_fragment$3(component, ctx) {
+	  var div1,
+	      text0,
+	      div0,
+	      slot_content_default = component._slotted.default,
+	      text1,
+	      div1_class_value;
+	  var if_block0 = ctx.label && create_if_block_1(component, ctx);
+	  var if_block1 = ctx.help && create_if_block(component, ctx);
+	  return {
+	    c: function create() {
+	      div1 = createElement("div");
+	      if (if_block0) if_block0.c();
+	      text0 = createText("\n    ");
+	      div0 = createElement("div");
+	      text1 = createText("\n    ");
+	      if (if_block1) if_block1.c();
+	      div0.className = "controls svelte-p72242";
+	      setStyle(div0, "width", "calc(100% - " + (ctx.width || def.width) + " - 32px)");
+	      toggleClass(div0, "form-inline", ctx.inline);
+	      addLoc(div0, file$3, 4, 4, 218);
+	      div1.className = div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-p72242";
+	      addLoc(div1, file$3, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div1, anchor);
+	      if (if_block0) if_block0.m(div1, null);
+	      append(div1, text0);
+	      append(div1, div0);
+
+	      if (slot_content_default) {
+	        append(div0, slot_content_default);
+	      }
+
+	      append(div1, text1);
+	      if (if_block1) if_block1.m(div1, null);
+	    },
+	    p: function update(changed, ctx) {
+	      if (ctx.label) {
+	        if (if_block0) {
+	          if_block0.p(changed, ctx);
+	        } else {
+	          if_block0 = create_if_block_1(component, ctx);
+	          if_block0.c();
+	          if_block0.m(div1, text0);
+	        }
+	      } else if (if_block0) {
+	        if_block0.d(1);
+	        if_block0 = null;
+	      }
+
+	      if (changed.width) {
+	        setStyle(div0, "width", "calc(100% - " + (ctx.width || def.width) + " - 32px)");
+	      }
+
+	      if (changed.inline) {
+	        toggleClass(div0, "form-inline", ctx.inline);
+	      }
+
+	      if (ctx.help) {
+	        if (if_block1) {
+	          if_block1.p(changed, ctx);
+	        } else {
+	          if_block1 = create_if_block(component, ctx);
+	          if_block1.c();
+	          if_block1.m(div1, null);
+	        }
+	      } else if (if_block1) {
+	        if_block1.d(1);
+	        if_block1 = null;
+	      }
+
+	      if ((changed.type || changed.valign) && div1_class_value !== (div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-p72242")) {
+	        div1.className = div1_class_value;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div1);
+	      }
+
+	      if (if_block0) if_block0.d();
+
+	      if (slot_content_default) {
+	        reinsertChildren(div0, slot_content_default);
+	      }
+
+	      if (if_block1) if_block1.d();
+	    }
+	  };
+	} // (2:4) {#if label}
+
+
+	function create_if_block_1(component, ctx) {
+	  var label;
+	  return {
+	    c: function create() {
+	      label = createElement("label");
+	      setStyle(label, "width", ctx.width || def.width);
+	      label.className = "control-label svelte-p72242";
+	      toggleClass(label, "disabled", ctx.disabled);
+	      addLoc(label, file$3, 2, 4, 104);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, label, anchor);
+	      label.innerHTML = ctx.label;
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.label) {
+	        label.innerHTML = ctx.label;
+	      }
+
+	      if (changed.width) {
+	        setStyle(label, "width", ctx.width || def.width);
+	      }
+
+	      if (changed.disabled) {
+	        toggleClass(label, "disabled", ctx.disabled);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(label);
+	      }
+	    }
+	  };
+	} // (8:4) {#if help}
+
+
+	function create_if_block(component, ctx) {
+	  var p, p_class_value;
+	  return {
+	    c: function create() {
+	      p = createElement("p");
+	      setStyle(p, "padding-left", ctx.inline ? 0 : ctx.width || def.width);
+	      p.className = p_class_value = "mini-help " + ctx.type + " svelte-p72242";
+	      toggleClass(p, "mini-help-block", !ctx.inline);
+	      addLoc(p, file$3, 8, 4, 369);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, p, anchor);
+	      p.innerHTML = ctx.help;
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.help) {
+	        p.innerHTML = ctx.help;
+	      }
+
+	      if (changed.inline || changed.width) {
+	        setStyle(p, "padding-left", ctx.inline ? 0 : ctx.width || def.width);
+	      }
+
+	      if (changed.type && p_class_value !== (p_class_value = "mini-help " + ctx.type + " svelte-p72242")) {
+	        p.className = p_class_value;
+	      }
+
+	      if (changed.type || changed.inline) {
+	        toggleClass(p, "mini-help-block", !ctx.inline);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(p);
+	      }
+	    }
+	  };
+	}
+
+	function ControlGroup(options) {
+	  this._debugName = '<ControlGroup>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data$2(), options.data);
+	  if (!('type' in this._state)) console.warn("<ControlGroup> was created without expected data property 'type'");
+	  if (!('valign' in this._state)) console.warn("<ControlGroup> was created without expected data property 'valign'");
+	  if (!('label' in this._state)) console.warn("<ControlGroup> was created without expected data property 'label'");
+	  if (!('width' in this._state)) console.warn("<ControlGroup> was created without expected data property 'width'");
+	  if (!('inline' in this._state)) console.warn("<ControlGroup> was created without expected data property 'inline'");
+	  if (!('help' in this._state)) console.warn("<ControlGroup> was created without expected data property 'help'");
+	  this._intro = true;
+	  this._slotted = options.slots || {};
+	  this._fragment = create_main_fragment$3(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+	  }
+	}
+
+	assign(ControlGroup.prototype, protoDev);
+
+	ControlGroup.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	/* node_modules/@datawrapper/controls/BaseSelect.html generated by Svelte v2.16.1 */
+
+	function data$3() {
+	  return {
+	    disabled: false,
+	    width: 'auto',
+	    labelWidth: 'auto',
+	    options: [],
+	    optgroups: []
+	  };
+	}
+	var file$4 = "node_modules/datawrapper/controls/BaseSelect.html";
+
+	function get_each_context_2(ctx, list, i) {
+	  var child_ctx = Object.create(ctx);
+	  child_ctx.opt = list[i];
+	  return child_ctx;
+	}
+
+	function get_each_context_1(ctx, list, i) {
+	  var child_ctx = Object.create(ctx);
+	  child_ctx.optgroup = list[i];
+	  return child_ctx;
+	}
+
+	function get_each_context$1(ctx, list, i) {
+	  var child_ctx = Object.create(ctx);
+	  child_ctx.opt = list[i];
+	  return child_ctx;
+	}
+
+	function create_main_fragment$4(component, ctx) {
+	  var select,
+	      if_block0_anchor,
+	      select_updating = false;
+	  var if_block0 = ctx.options.length && create_if_block_1$1(component, ctx);
+	  var if_block1 = ctx.optgroups.length && create_if_block$1(component, ctx);
+
+	  function select_change_handler() {
+	    select_updating = true;
+	    component.set({
+	      value: selectValue(select)
+	    });
+	    select_updating = false;
+	  }
+
+	  return {
+	    c: function create() {
+	      select = createElement("select");
+	      if (if_block0) if_block0.c();
+	      if_block0_anchor = createComment();
+	      if (if_block1) if_block1.c();
+	      addListener(select, "change", select_change_handler);
+	      if (!('value' in ctx)) component.root._beforecreate.push(select_change_handler);
+	      select.className = "select-css svelte-v0oq4b";
+	      select.disabled = ctx.disabled;
+	      setStyle(select, "width", ctx.width);
+	      addLoc(select, file$4, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, select, anchor);
+	      if (if_block0) if_block0.m(select, null);
+	      append(select, if_block0_anchor);
+	      if (if_block1) if_block1.m(select, null);
+	      selectOption(select, ctx.value);
+	    },
+	    p: function update(changed, ctx) {
+	      if (ctx.options.length) {
+	        if (if_block0) {
+	          if_block0.p(changed, ctx);
+	        } else {
+	          if_block0 = create_if_block_1$1(component, ctx);
+	          if_block0.c();
+	          if_block0.m(select, if_block0_anchor);
+	        }
+	      } else if (if_block0) {
+	        if_block0.d(1);
+	        if_block0 = null;
+	      }
+
+	      if (ctx.optgroups.length) {
+	        if (if_block1) {
+	          if_block1.p(changed, ctx);
+	        } else {
+	          if_block1 = create_if_block$1(component, ctx);
+	          if_block1.c();
+	          if_block1.m(select, null);
+	        }
+	      } else if (if_block1) {
+	        if_block1.d(1);
+	        if_block1 = null;
+	      }
+
+	      if (!select_updating && changed.value) selectOption(select, ctx.value);
+
+	      if (changed.disabled) {
+	        select.disabled = ctx.disabled;
+	      }
+
+	      if (changed.width) {
+	        setStyle(select, "width", ctx.width);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(select);
+	      }
+
+	      if (if_block0) if_block0.d();
+	      if (if_block1) if_block1.d();
+	      removeListener(select, "change", select_change_handler);
+	    }
+	  };
+	} // (2:4) {#if options.length}
+
+
+	function create_if_block_1$1(component, ctx) {
+	  var each_anchor;
+	  var each_value = ctx.options;
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value.length; i += 1) {
+	    each_blocks[i] = create_each_block_2(component, get_each_context$1(ctx, each_value, i));
+	  }
+
+	  return {
+	    c: function create() {
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].c();
+	      }
+
+	      each_anchor = createComment();
+	    },
+	    m: function mount(target, anchor) {
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].m(target, anchor);
+	      }
+
+	      insert(target, each_anchor, anchor);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.options) {
+	        each_value = ctx.options;
+
+	        for (var i = 0; i < each_value.length; i += 1) {
+	          var child_ctx = get_each_context$1(ctx, each_value, i);
+
+	          if (each_blocks[i]) {
+	            each_blocks[i].p(changed, child_ctx);
+	          } else {
+	            each_blocks[i] = create_each_block_2(component, child_ctx);
+	            each_blocks[i].c();
+	            each_blocks[i].m(each_anchor.parentNode, each_anchor);
+	          }
+	        }
+
+	        for (; i < each_blocks.length; i += 1) {
+	          each_blocks[i].d(1);
+	        }
+
+	        each_blocks.length = each_value.length;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      destroyEach(each_blocks, detach);
+
+	      if (detach) {
+	        detachNode(each_anchor);
+	      }
+	    }
+	  };
+	} // (2:25) {#each options as opt}
+
+
+	function create_each_block_2(component, ctx) {
+	  var option,
+	      text_value = ctx.opt.label,
+	      text,
+	      option_value_value;
+	  return {
+	    c: function create() {
+	      option = createElement("option");
+	      text = createText(text_value);
+	      option.__value = option_value_value = ctx.opt.value;
+	      option.value = option.__value;
+	      addLoc(option, file$4, 2, 4, 145);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, option, anchor);
+	      append(option, text);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.options && text_value !== (text_value = ctx.opt.label)) {
+	        setData(text, text_value);
+	      }
+
+	      if (changed.options && option_value_value !== (option_value_value = ctx.opt.value)) {
+	        option.__value = option_value_value;
+	      }
+
+	      option.value = option.__value;
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(option);
+	      }
+	    }
+	  };
+	} // (4:18) {#if optgroups.length}
+
+
+	function create_if_block$1(component, ctx) {
+	  var each_anchor;
+	  var each_value_1 = ctx.optgroups;
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value_1.length; i += 1) {
+	    each_blocks[i] = create_each_block$1(component, get_each_context_1(ctx, each_value_1, i));
+	  }
+
+	  return {
+	    c: function create() {
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].c();
+	      }
+
+	      each_anchor = createComment();
+	    },
+	    m: function mount(target, anchor) {
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].m(target, anchor);
+	      }
+
+	      insert(target, each_anchor, anchor);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.optgroups) {
+	        each_value_1 = ctx.optgroups;
+
+	        for (var i = 0; i < each_value_1.length; i += 1) {
+	          var child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+	          if (each_blocks[i]) {
+	            each_blocks[i].p(changed, child_ctx);
+	          } else {
+	            each_blocks[i] = create_each_block$1(component, child_ctx);
+	            each_blocks[i].c();
+	            each_blocks[i].m(each_anchor.parentNode, each_anchor);
+	          }
+	        }
+
+	        for (; i < each_blocks.length; i += 1) {
+	          each_blocks[i].d(1);
+	        }
+
+	        each_blocks.length = each_value_1.length;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      destroyEach(each_blocks, detach);
+
+	      if (detach) {
+	        detachNode(each_anchor);
+	      }
+	    }
+	  };
+	} // (6:8) {#each optgroup.options as opt}
+
+
+	function create_each_block_1(component, ctx) {
+	  var option,
+	      text_value = ctx.opt.label,
+	      text,
+	      option_value_value;
+	  return {
+	    c: function create() {
+	      option = createElement("option");
+	      text = createText(text_value);
+	      option.__value = option_value_value = ctx.opt.value;
+	      option.value = option.__value;
+	      addLoc(option, file$4, 6, 8, 353);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, option, anchor);
+	      append(option, text);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.optgroups && text_value !== (text_value = ctx.opt.label)) {
+	        setData(text, text_value);
+	      }
+
+	      if (changed.optgroups && option_value_value !== (option_value_value = ctx.opt.value)) {
+	        option.__value = option_value_value;
+	      }
+
+	      option.value = option.__value;
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(option);
+	      }
+	    }
+	  };
+	} // (4:41) {#each optgroups as optgroup}
+
+
+	function create_each_block$1(component, ctx) {
+	  var optgroup, optgroup_label_value;
+	  var each_value_2 = ctx.optgroup.options;
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value_2.length; i += 1) {
+	    each_blocks[i] = create_each_block_1(component, get_each_context_2(ctx, each_value_2, i));
+	  }
+
+	  return {
+	    c: function create() {
+	      optgroup = createElement("optgroup");
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].c();
+	      }
+
+	      setAttribute(optgroup, "label", optgroup_label_value = ctx.optgroup.label);
+	      addLoc(optgroup, file$4, 4, 4, 269);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, optgroup, anchor);
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].m(optgroup, null);
+	      }
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.optgroups) {
+	        each_value_2 = ctx.optgroup.options;
+
+	        for (var i = 0; i < each_value_2.length; i += 1) {
+	          var child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+	          if (each_blocks[i]) {
+	            each_blocks[i].p(changed, child_ctx);
+	          } else {
+	            each_blocks[i] = create_each_block_1(component, child_ctx);
+	            each_blocks[i].c();
+	            each_blocks[i].m(optgroup, null);
+	          }
+	        }
+
+	        for (; i < each_blocks.length; i += 1) {
+	          each_blocks[i].d(1);
+	        }
+
+	        each_blocks.length = each_value_2.length;
+	      }
+
+	      if (changed.optgroups && optgroup_label_value !== (optgroup_label_value = ctx.optgroup.label)) {
+	        setAttribute(optgroup, "label", optgroup_label_value);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(optgroup);
+	      }
+
+	      destroyEach(each_blocks, detach);
+	    }
+	  };
+	}
+
+	function BaseSelect(options) {
+	  this._debugName = '<BaseSelect>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data$3(), options.data);
+	  if (!('disabled' in this._state)) console.warn("<BaseSelect> was created without expected data property 'disabled'");
+	  if (!('value' in this._state)) console.warn("<BaseSelect> was created without expected data property 'value'");
+	  if (!('width' in this._state)) console.warn("<BaseSelect> was created without expected data property 'width'");
+	  if (!('options' in this._state)) console.warn("<BaseSelect> was created without expected data property 'options'");
+	  if (!('optgroups' in this._state)) console.warn("<BaseSelect> was created without expected data property 'optgroups'");
+	  this._intro = true;
+	  this._fragment = create_main_fragment$4(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+
+	    flush(this);
+	  }
+	}
+
+	assign(BaseSelect.prototype, protoDev);
+
+	BaseSelect.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	/* node_modules/@datawrapper/controls/Select.html generated by Svelte v2.16.1 */
+
+	function controlWidth(_ref) {
+	  var inline = _ref.inline,
+	      width = _ref.width;
+	  return inline ? width || 'auto' : width;
+	}
+
+	function labelWidth(_ref2) {
+	  var inline = _ref2.inline,
+	      labelWidth = _ref2.labelWidth;
+	  return inline ? labelWidth || 'auto' : labelWidth;
+	}
+
+	function data$4() {
+	  return {
+	    disabled: false,
+	    width: null,
+	    labelWidth: null,
+	    options: [],
+	    optgroups: [],
+	    valign: 'middle',
+	    inline: true,
+	    help: ''
+	  };
+	}
+
+	function create_main_fragment$5(component, ctx) {
+	  var baseselect_updating = {},
+	      controlgroup_updating = {};
+	  var baseselect_initial_data = {
+	    width: ctx.controlWidth
+	  };
+
+	  if (ctx.value !== void 0) {
+	    baseselect_initial_data.value = ctx.value;
+	    baseselect_updating.value = true;
+	  }
+
+	  if (ctx.disabled !== void 0) {
+	    baseselect_initial_data.disabled = ctx.disabled;
+	    baseselect_updating.disabled = true;
+	  }
+
+	  if (ctx.options !== void 0) {
+	    baseselect_initial_data.options = ctx.options;
+	    baseselect_updating.options = true;
+	  }
+
+	  if (ctx.optgroups !== void 0) {
+	    baseselect_initial_data.optgroups = ctx.optgroups;
+	    baseselect_updating.optgroups = true;
+	  }
+
+	  var baseselect = new BaseSelect({
+	    root: component.root,
+	    store: component.store,
+	    data: baseselect_initial_data,
+	    _bind: function _bind(changed, childState) {
+	      var newState = {};
+
+	      if (!baseselect_updating.value && changed.value) {
+	        newState.value = childState.value;
+	      }
+
+	      if (!baseselect_updating.disabled && changed.disabled) {
+	        newState.disabled = childState.disabled;
+	      }
+
+	      if (!baseselect_updating.options && changed.options) {
+	        newState.options = childState.options;
+	      }
+
+	      if (!baseselect_updating.optgroups && changed.optgroups) {
+	        newState.optgroups = childState.optgroups;
+	      }
+
+	      component._set(newState);
+
+	      baseselect_updating = {};
+	    }
+	  });
+
+	  component.root._beforecreate.push(function () {
+	    baseselect._bind({
+	      value: 1,
+	      disabled: 1,
+	      options: 1,
+	      optgroups: 1
+	    }, baseselect.get());
+	  });
+
+	  var controlgroup_initial_data = {
+	    width: ctx.labelWidth,
+	    type: "select"
+	  };
+
+	  if (ctx.valign !== void 0) {
+	    controlgroup_initial_data.valign = ctx.valign;
+	    controlgroup_updating.valign = true;
+	  }
+
+	  if (ctx.label !== void 0) {
+	    controlgroup_initial_data.label = ctx.label;
+	    controlgroup_updating.label = true;
+	  }
+
+	  if (ctx.disabled !== void 0) {
+	    controlgroup_initial_data.disabled = ctx.disabled;
+	    controlgroup_updating.disabled = true;
+	  }
+
+	  if (ctx.help !== void 0) {
+	    controlgroup_initial_data.help = ctx.help;
+	    controlgroup_updating.help = true;
+	  }
+
+	  if (ctx.inline !== void 0) {
+	    controlgroup_initial_data.inline = ctx.inline;
+	    controlgroup_updating.inline = true;
+	  }
+
+	  var controlgroup = new ControlGroup({
+	    root: component.root,
+	    store: component.store,
+	    slots: {
+	      default: createFragment()
+	    },
+	    data: controlgroup_initial_data,
+	    _bind: function _bind(changed, childState) {
+	      var newState = {};
+
+	      if (!controlgroup_updating.valign && changed.valign) {
+	        newState.valign = childState.valign;
+	      }
+
+	      if (!controlgroup_updating.label && changed.label) {
+	        newState.label = childState.label;
+	      }
+
+	      if (!controlgroup_updating.disabled && changed.disabled) {
+	        newState.disabled = childState.disabled;
+	      }
+
+	      if (!controlgroup_updating.help && changed.help) {
+	        newState.help = childState.help;
+	      }
+
+	      if (!controlgroup_updating.inline && changed.inline) {
+	        newState.inline = childState.inline;
+	      }
+
+	      component._set(newState);
+
+	      controlgroup_updating = {};
+	    }
+	  });
+
+	  component.root._beforecreate.push(function () {
+	    controlgroup._bind({
+	      valign: 1,
+	      label: 1,
+	      disabled: 1,
+	      help: 1,
+	      inline: 1
+	    }, controlgroup.get());
+	  });
+
+	  return {
+	    c: function create() {
+	      baseselect._fragment.c();
+
+	      controlgroup._fragment.c();
+	    },
+	    m: function mount(target, anchor) {
+	      baseselect._mount(controlgroup._slotted.default, null);
+
+	      controlgroup._mount(target, anchor);
+	    },
+	    p: function update(changed, _ctx) {
+	      ctx = _ctx;
+	      var baseselect_changes = {};
+	      if (changed.controlWidth) baseselect_changes.width = ctx.controlWidth;
+
+	      if (!baseselect_updating.value && changed.value) {
+	        baseselect_changes.value = ctx.value;
+	        baseselect_updating.value = ctx.value !== void 0;
+	      }
+
+	      if (!baseselect_updating.disabled && changed.disabled) {
+	        baseselect_changes.disabled = ctx.disabled;
+	        baseselect_updating.disabled = ctx.disabled !== void 0;
+	      }
+
+	      if (!baseselect_updating.options && changed.options) {
+	        baseselect_changes.options = ctx.options;
+	        baseselect_updating.options = ctx.options !== void 0;
+	      }
+
+	      if (!baseselect_updating.optgroups && changed.optgroups) {
+	        baseselect_changes.optgroups = ctx.optgroups;
+	        baseselect_updating.optgroups = ctx.optgroups !== void 0;
+	      }
+
+	      baseselect._set(baseselect_changes);
+
+	      baseselect_updating = {};
+	      var controlgroup_changes = {};
+	      if (changed.labelWidth) controlgroup_changes.width = ctx.labelWidth;
+
+	      if (!controlgroup_updating.valign && changed.valign) {
+	        controlgroup_changes.valign = ctx.valign;
+	        controlgroup_updating.valign = ctx.valign !== void 0;
+	      }
+
+	      if (!controlgroup_updating.label && changed.label) {
+	        controlgroup_changes.label = ctx.label;
+	        controlgroup_updating.label = ctx.label !== void 0;
+	      }
+
+	      if (!controlgroup_updating.disabled && changed.disabled) {
+	        controlgroup_changes.disabled = ctx.disabled;
+	        controlgroup_updating.disabled = ctx.disabled !== void 0;
+	      }
+
+	      if (!controlgroup_updating.help && changed.help) {
+	        controlgroup_changes.help = ctx.help;
+	        controlgroup_updating.help = ctx.help !== void 0;
+	      }
+
+	      if (!controlgroup_updating.inline && changed.inline) {
+	        controlgroup_changes.inline = ctx.inline;
+	        controlgroup_updating.inline = ctx.inline !== void 0;
+	      }
+
+	      controlgroup._set(controlgroup_changes);
+
+	      controlgroup_updating = {};
+	    },
+	    d: function destroy(detach) {
+	      baseselect.destroy();
+	      controlgroup.destroy(detach);
+	    }
+	  };
+	}
+
+	function Select(options) {
+	  this._debugName = '<Select>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data$4(), options.data);
+
+	  this._recompute({
+	    inline: 1,
+	    width: 1,
+	    labelWidth: 1
+	  }, this._state);
+
+	  if (!('inline' in this._state)) console.warn("<Select> was created without expected data property 'inline'");
+	  if (!('width' in this._state)) console.warn("<Select> was created without expected data property 'width'");
+	  if (!('valign' in this._state)) console.warn("<Select> was created without expected data property 'valign'");
+	  if (!('label' in this._state)) console.warn("<Select> was created without expected data property 'label'");
+	  if (!('disabled' in this._state)) console.warn("<Select> was created without expected data property 'disabled'");
+	  if (!('help' in this._state)) console.warn("<Select> was created without expected data property 'help'");
+	  if (!('value' in this._state)) console.warn("<Select> was created without expected data property 'value'");
+	  if (!('options' in this._state)) console.warn("<Select> was created without expected data property 'options'");
+	  if (!('optgroups' in this._state)) console.warn("<Select> was created without expected data property 'optgroups'");
+	  this._intro = true;
+	  this._fragment = create_main_fragment$5(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+
+	    flush(this);
+	  }
+	}
+
+	assign(Select.prototype, protoDev);
+
+	Select.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	  if ('controlWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<Select>: Cannot set read-only property 'controlWidth'");
+	  if ('labelWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<Select>: Cannot set read-only property 'labelWidth'");
+	};
+
+	Select.prototype._recompute = function _recompute(changed, state) {
+	  if (changed.inline || changed.width) {
+	    if (this._differs(state.controlWidth, state.controlWidth = controlWidth(state))) changed.controlWidth = true;
+	  }
+
+	  if (changed.inline || changed.labelWidth) {
+	    if (this._differs(state.labelWidth, state.labelWidth = labelWidth(state))) changed.labelWidth = true;
+	  }
+	};
+
+	/* visualize/Design.html generated by Svelte v2.16.1 */
+
+	function themeOptions(_ref) {
+	  var $themes = _ref.$themes;
+	  return $themes.map(function (t) {
+	    return {
+	      value: t.id,
+	      label: t.title
+	    };
+	  });
+	}
+
+	function data$5() {
+	  return {
+	    designBlocks: []
+	  };
+	}
+
+	function oncreate() {
+	  var chart = this.store;
+
+	  var _dw$backend$hooks$cal = dw.backend.hooks.call('design-blocks', [chart]),
+	      results = _dw$backend$hooks$cal.results;
+
+	  this.set({
+	    designBlocks: results.sort(function (a, b) {
+	      return (b.priority || 0) - (a.priority || 0);
+	    })
+	  });
+	}
+
+	function get_each_context$2(ctx, list, i) {
+	  var child_ctx = Object.create(ctx);
+	  child_ctx.b = list[i];
+	  return child_ctx;
+	}
+
+	function create_main_fragment$6(component, ctx) {
+	  var selectinput_updating = {},
+	      text,
+	      each_anchor;
+	  var selectinput_initial_data = {
+	    label: "Select layout:",
+	    options: ctx.themeOptions,
+	    labelWidth: "100px",
+	    width: "200px"
+	  };
+
+	  if (ctx.$theme !== void 0) {
+	    selectinput_initial_data.value = ctx.$theme;
+	    selectinput_updating.value = true;
+	  }
+
+	  var selectinput = new Select({
+	    root: component.root,
+	    store: component.store,
+	    data: selectinput_initial_data,
+	    _bind: function _bind(changed, childState) {
+	      var newStoreState = {};
+
+	      if (!selectinput_updating.value && changed.value) {
+	        newStoreState.theme = childState.value;
+	      }
+
+	      component.store.set(newStoreState);
+	      selectinput_updating = {};
+	    }
+	  });
+
+	  component.root._beforecreate.push(function () {
+	    selectinput._bind({
+	      value: 1
+	    }, selectinput.get());
+	  });
+
+	  var each_value = ctx.designBlocks;
+	  var each_blocks = [];
+
+	  for (var i = 0; i < each_value.length; i += 1) {
+	    each_blocks[i] = create_each_block$2(component, get_each_context$2(ctx, each_value, i));
+	  }
+
+	  return {
+	    c: function create() {
+	      selectinput._fragment.c();
+
+	      text = createText("\n\n");
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].c();
+	      }
+
+	      each_anchor = createComment();
+	    },
+	    m: function mount(target, anchor) {
+	      selectinput._mount(target, anchor);
+
+	      insert(target, text, anchor);
+
+	      for (var i = 0; i < each_blocks.length; i += 1) {
+	        each_blocks[i].m(target, anchor);
+	      }
+
+	      insert(target, each_anchor, anchor);
+	    },
+	    p: function update(changed, _ctx) {
+	      ctx = _ctx;
+	      var selectinput_changes = {};
+	      if (changed.themeOptions) selectinput_changes.options = ctx.themeOptions;
+
+	      if (!selectinput_updating.value && changed.$theme) {
+	        selectinput_changes.value = ctx.$theme;
+	        selectinput_updating.value = ctx.$theme !== void 0;
+	      }
+
+	      selectinput._set(selectinput_changes);
+
+	      selectinput_updating = {};
+
+	      if (changed.designBlocks) {
+	        each_value = ctx.designBlocks;
+
+	        for (var i = 0; i < each_value.length; i += 1) {
+	          var child_ctx = get_each_context$2(ctx, each_value, i);
+
+	          if (each_blocks[i]) {
+	            each_blocks[i].p(changed, child_ctx);
+	          } else {
+	            each_blocks[i] = create_each_block$2(component, child_ctx);
+	            each_blocks[i].c();
+	            each_blocks[i].m(each_anchor.parentNode, each_anchor);
+	          }
+	        }
+
+	        for (; i < each_blocks.length; i += 1) {
+	          each_blocks[i].d(1);
+	        }
+
+	        each_blocks.length = each_value.length;
+	      }
+	    },
+	    d: function destroy(detach) {
+	      selectinput.destroy(detach);
+
+	      if (detach) {
+	        detachNode(text);
+	      }
+
+	      destroyEach(each_blocks, detach);
+
+	      if (detach) {
+	        detachNode(each_anchor);
+	      }
+	    }
+	  };
+	} // (3:0) {#each designBlocks as b}
+
+
+	function create_each_block$2(component, ctx) {
+	  var switch_instance_anchor;
+	  var switch_value = ctx.b.ui;
+
+	  function switch_props(ctx) {
+	    var switch_instance_initial_data = {
+	      name: ctx.b.name,
+	      data: ctx.b.data || {}
+	    };
+	    return {
+	      root: component.root,
+	      store: component.store,
+	      data: switch_instance_initial_data
+	    };
+	  }
+
+	  if (switch_value) {
+	    var switch_instance = new switch_value(switch_props(ctx));
+	  }
+
+	  return {
+	    c: function create() {
+	      if (switch_instance) switch_instance._fragment.c();
+	      switch_instance_anchor = createComment();
+	    },
+	    m: function mount(target, anchor) {
+	      if (switch_instance) {
+	        switch_instance._mount(target, anchor);
+	      }
+
+	      insert(target, switch_instance_anchor, anchor);
+	    },
+	    p: function update(changed, ctx) {
+	      var switch_instance_changes = {};
+	      if (changed.designBlocks) switch_instance_changes.name = ctx.b.name;
+	      if (changed.designBlocks) switch_instance_changes.data = ctx.b.data || {};
+
+	      if (switch_value !== (switch_value = ctx.b.ui)) {
+	        if (switch_instance) {
+	          switch_instance.destroy();
+	        }
+
+	        if (switch_value) {
+	          switch_instance = new switch_value(switch_props(ctx));
+
+	          switch_instance._fragment.c();
+
+	          switch_instance._mount(switch_instance_anchor.parentNode, switch_instance_anchor);
+	        } else {
+	          switch_instance = null;
+	        }
+	      } else if (switch_value) {
+	        switch_instance._set(switch_instance_changes);
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(switch_instance_anchor);
+	      }
+
+	      if (switch_instance) switch_instance.destroy(detach);
+	    }
+	  };
+	}
+
+	function Design(options) {
+	  var _this = this;
+
+	  this._debugName = '<Design>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  if (!options.store) {
+	    throw new Error("<Design> references store properties, but no store was provided");
+	  }
+
+	  init(this, options);
+	  this._state = assign(assign(this.store._init(["themes", "theme"]), data$5()), options.data);
+
+	  this.store._add(this, ["themes", "theme"]);
+
+	  this._recompute({
+	    $themes: 1
+	  }, this._state);
+
+	  if (!('$themes' in this._state)) console.warn("<Design> was created without expected data property '$themes'");
+	  if (!('$theme' in this._state)) console.warn("<Design> was created without expected data property '$theme'");
+	  if (!('designBlocks' in this._state)) console.warn("<Design> was created without expected data property 'designBlocks'");
+	  this._intro = true;
+	  this._handlers.destroy = [removeFromStore];
+	  this._fragment = create_main_fragment$6(this, this._state);
+
+	  this.root._oncreate.push(function () {
+	    oncreate.call(_this);
+
+	    _this.fire("update", {
+	      changed: assignTrue({}, _this._state),
+	      current: _this._state
+	    });
+	  });
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+
+	    flush(this);
+	  }
+	}
+
+	assign(Design.prototype, protoDev);
+
+	Design.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	  if ('themeOptions' in newState && !this._updatingReadonlyProperty) throw new Error("<Design>: Cannot set read-only property 'themeOptions'");
+	};
+
+	Design.prototype._recompute = function _recompute(changed, state) {
+	  if (changed.$themes) {
+	    if (this._differs(state.themeOptions, state.themeOptions = themeOptions(state))) changed.themeOptions = true;
+	  }
+	};
+
+	/* globals dw */
+	var __messages$1 = {};
+
+	function initMessages$1() {
+	  var scope = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'core';
+
+	  // let's check if we're in a chart
+	  if (scope === 'chart') {
+	    if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	      // use in-chart translations
+	      __messages$1[scope] = window.__dw.vis.meta.locale || {};
+	    }
+	  } else {
+	    // use backend translations
+	    __messages$1[scope] = scope === 'core' ? dw.backend.__messages.core : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	  }
+	}
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+
+
+	function __$1(key) {
+	  var _arguments = arguments;
+	  var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'core';
+	  key = key.trim();
+	  if (!__messages$1[scope]) initMessages$1(scope);
+	  if (!__messages$1[scope][key]) return 'MISSING:' + key;
+	  var translation = __messages$1[scope][key];
+
+	  if (typeof translation === 'string' && arguments.length > 2) {
+	    // replace $0, $1 etc with remaining arguments
+	    translation = translation.replace(/\$(\d)/g, function (m, i) {
+	      i = 2 + Number(i);
+	      if (_arguments[i] === undefined) return m;
+	      return _arguments[i];
+	    });
+	  }
+
+	  return translation;
+	}
+
+	/* node_modules/@datawrapper/controls/editor/ChartDescription.html generated by Svelte v2.16.1 */
+	var file$5 = "node_modules/datawrapper/controls/editor/ChartDescription.html";
+
+	function create_main_fragment$7(component, ctx) {
+	  var div5,
+	      div0,
+	      label0,
+	      input0,
+	      text0,
+	      text1_value = __$1('annotate / hide-title'),
+	      text1,
+	      text2,
+	      label1,
+	      text3_value = __$1('Title'),
+	      text3,
+	      text4,
+	      input1,
+	      input1_updating = false,
+	      text5,
+	      label2,
+	      text6_value = __$1('Description'),
+	      text6,
+	      text7,
+	      textarea,
+	      textarea_updating = false,
+	      text8,
+	      label3,
+	      text9_value = __$1('Notes'),
+	      text9,
+	      text10,
+	      input2,
+	      input2_updating = false,
+	      text11,
+	      div3,
+	      div1,
+	      label4,
+	      text12_value = __$1('Source name'),
+	      text12,
+	      text13,
+	      input3,
+	      input3_updating = false,
+	      text14,
+	      div2,
+	      label5,
+	      text15_value = __$1('Source URL'),
+	      text15,
+	      text16,
+	      input4,
+	      input4_updating = false,
+	      text17,
+	      div4,
+	      label6,
+	      text18_value = __$1('visualize / annotate / byline'),
+	      text18,
+	      text19,
+	      input5,
+	      input5_updating = false;
+
+	  function input0_change_handler() {
+	    var $ = component.store.get();
+	    ctx.$metadata.describe['hide-title'] = input0.checked;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	  }
+
+	  function input1_input_handler() {
+	    input1_updating = true;
+	    component.store.set({
+	      title: input1.value
+	    });
+	    input1_updating = false;
+	  }
+
+	  function textarea_input_handler() {
+	    var $ = component.store.get();
+	    textarea_updating = true;
+	    ctx.$metadata.describe.intro = textarea.value;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	    textarea_updating = false;
+	  }
+
+	  function input2_input_handler() {
+	    var $ = component.store.get();
+	    input2_updating = true;
+	    ctx.$metadata.annotate.notes = input2.value;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	    input2_updating = false;
+	  }
+
+	  function input3_input_handler() {
+	    var $ = component.store.get();
+	    input3_updating = true;
+	    ctx.$metadata.describe['source-name'] = input3.value;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	    input3_updating = false;
+	  }
+
+	  function input4_input_handler() {
+	    var $ = component.store.get();
+	    input4_updating = true;
+	    ctx.$metadata.describe['source-url'] = input4.value;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	    input4_updating = false;
+	  }
+
+	  function input5_input_handler() {
+	    var $ = component.store.get();
+	    input5_updating = true;
+	    ctx.$metadata.describe.byline = input5.value;
+	    component.store.set({
+	      metadata: $.metadata
+	    });
+	    input5_updating = false;
+	  }
+
+	  return {
+	    c: function create() {
+	      div5 = createElement("div");
+	      div0 = createElement("div");
+	      label0 = createElement("label");
+	      input0 = createElement("input");
+	      text0 = createText(" ");
+	      text1 = createText(text1_value);
+	      text2 = createText("\n\n        ");
+	      label1 = createElement("label");
+	      text3 = createText(text3_value);
+	      text4 = createText("\n        ");
+	      input1 = createElement("input");
+	      text5 = createText("\n\n        ");
+	      label2 = createElement("label");
+	      text6 = createText(text6_value);
+	      text7 = createText("\n        ");
+	      textarea = createElement("textarea");
+	      text8 = createText("\n\n        ");
+	      label3 = createElement("label");
+	      text9 = createText(text9_value);
+	      text10 = createText("\n        ");
+	      input2 = createElement("input");
+	      text11 = createText("\n\n    ");
+	      div3 = createElement("div");
+	      div1 = createElement("div");
+	      label4 = createElement("label");
+	      text12 = createText(text12_value);
+	      text13 = createText("\n            ");
+	      input3 = createElement("input");
+	      text14 = createText("\n        ");
+	      div2 = createElement("div");
+	      label5 = createElement("label");
+	      text15 = createText(text15_value);
+	      text16 = createText("\n            ");
+	      input4 = createElement("input");
+	      text17 = createText("\n\n    ");
+	      div4 = createElement("div");
+	      label6 = createElement("label");
+	      text18 = createText(text18_value);
+	      text19 = createText("\n        ");
+	      input5 = createElement("input");
+	      addListener(input0, "change", input0_change_handler);
+	      setAttribute(input0, "type", "checkbox");
+	      input0.className = "svelte-jsjdf7";
+	      addLoc(input0, file$5, 3, 12, 143);
+	      label0.className = "hide-title svelte-jsjdf7";
+	      addLoc(label0, file$5, 2, 8, 104);
+	      label1.className = "control-label";
+	      label1.htmlFor = "text-title";
+	      addLoc(label1, file$5, 6, 8, 279);
+	      addListener(input1, "input", input1_input_handler);
+	      input1.className = "input-xlarge span4";
+	      input1.autocomplete = "off";
+	      setAttribute(input1, "type", "text");
+	      addLoc(input1, file$5, 7, 8, 355);
+	      label2.className = "control-label";
+	      label2.htmlFor = "text-intro";
+	      addLoc(label2, file$5, 9, 8, 452);
+	      addListener(textarea, "input", textarea_input_handler);
+	      textarea.id = "text-intro";
+	      textarea.className = "input-xlarge span4";
+	      addLoc(textarea, file$5, 10, 8, 534);
+	      label3.className = "control-label";
+	      label3.htmlFor = "text-notes";
+	      addLoc(label3, file$5, 12, 8, 646);
+	      addListener(input2, "input", input2_input_handler);
+	      input2.className = "input-xlarge span4";
+	      setAttribute(input2, "type", "text");
+	      addLoc(input2, file$5, 13, 8, 722);
+	      div0.className = "pull-left";
+	      setStyle(div0, "position", "relative");
+	      addLoc(div0, file$5, 1, 4, 44);
+	      label4.className = "control-label";
+	      addLoc(label4, file$5, 18, 12, 883);
+	      addListener(input3, "input", input3_input_handler);
+	      input3.className = "span2";
+	      input3.placeholder = __$1('name of the organisation');
+	      setAttribute(input3, "type", "text");
+	      addLoc(input3, file$5, 19, 12, 952);
+	      div1.className = "span2";
+	      addLoc(div1, file$5, 17, 8, 851);
+	      label5.className = "control-label";
+	      addLoc(label5, file$5, 22, 12, 1137);
+	      addListener(input4, "input", input4_input_handler);
+	      input4.className = "span2";
+	      input4.placeholder = __$1('URL of the dataset');
+	      setAttribute(input4, "type", "text");
+	      addLoc(input4, file$5, 23, 12, 1205);
+	      div2.className = "span2";
+	      addLoc(div2, file$5, 21, 8, 1105);
+	      div3.className = "row";
+	      addLoc(div3, file$5, 16, 4, 825);
+	      label6.className = "control-label";
+	      addLoc(label6, file$5, 28, 8, 1394);
+	      addListener(input5, "input", input5_input_handler);
+	      input5.className = "input-xlarge span4";
+	      input5.placeholder = __$1('visualize / annotate / byline / placeholder');
+	      setAttribute(input5, "type", "text");
+	      addLoc(input5, file$5, 29, 8, 1477);
+	      div4.className = "chart-byline";
+	      addLoc(div4, file$5, 27, 4, 1359);
+	      div5.className = "story-title control-group";
+	      addLoc(div5, file$5, 0, 0, 0);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div5, anchor);
+	      append(div5, div0);
+	      append(div0, label0);
+	      append(label0, input0);
+	      input0.checked = ctx.$metadata.describe['hide-title'];
+	      append(label0, text0);
+	      append(label0, text1);
+	      append(div0, text2);
+	      append(div0, label1);
+	      append(label1, text3);
+	      append(div0, text4);
+	      append(div0, input1);
+	      input1.value = ctx.$title;
+	      append(div0, text5);
+	      append(div0, label2);
+	      append(label2, text6);
+	      append(div0, text7);
+	      append(div0, textarea);
+	      textarea.value = ctx.$metadata.describe.intro;
+	      append(div0, text8);
+	      append(div0, label3);
+	      append(label3, text9);
+	      append(div0, text10);
+	      append(div0, input2);
+	      input2.value = ctx.$metadata.annotate.notes;
+	      append(div5, text11);
+	      append(div5, div3);
+	      append(div3, div1);
+	      append(div1, label4);
+	      append(label4, text12);
+	      append(div1, text13);
+	      append(div1, input3);
+	      input3.value = ctx.$metadata.describe['source-name'];
+	      append(div3, text14);
+	      append(div3, div2);
+	      append(div2, label5);
+	      append(label5, text15);
+	      append(div2, text16);
+	      append(div2, input4);
+	      input4.value = ctx.$metadata.describe['source-url'];
+	      append(div5, text17);
+	      append(div5, div4);
+	      append(div4, label6);
+	      append(label6, text18);
+	      append(div4, text19);
+	      append(div4, input5);
+	      input5.value = ctx.$metadata.describe.byline;
+	    },
+	    p: function update(changed, _ctx) {
+	      ctx = _ctx;
+	      if (changed.$metadata) input0.checked = ctx.$metadata.describe['hide-title'];
+	      if (!input1_updating && changed.$title) input1.value = ctx.$title;
+	      if (!textarea_updating && changed.$metadata) textarea.value = ctx.$metadata.describe.intro;
+	      if (!input2_updating && changed.$metadata) input2.value = ctx.$metadata.annotate.notes;
+	      if (!input3_updating && changed.$metadata) input3.value = ctx.$metadata.describe['source-name'];
+	      if (!input4_updating && changed.$metadata) input4.value = ctx.$metadata.describe['source-url'];
+	      if (!input5_updating && changed.$metadata) input5.value = ctx.$metadata.describe.byline;
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div5);
+	      }
+
+	      removeListener(input0, "change", input0_change_handler);
+	      removeListener(input1, "input", input1_input_handler);
+	      removeListener(textarea, "input", textarea_input_handler);
+	      removeListener(input2, "input", input2_input_handler);
+	      removeListener(input3, "input", input3_input_handler);
+	      removeListener(input4, "input", input4_input_handler);
+	      removeListener(input5, "input", input5_input_handler);
+	    }
+	  };
+	}
+
+	function ChartDescription(options) {
+	  this._debugName = '<ChartDescription>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  if (!options.store) {
+	    throw new Error("<ChartDescription> references store properties, but no store was provided");
+	  }
+
+	  init(this, options);
+	  this._state = assign(this.store._init(["metadata", "title"]), options.data);
+
+	  this.store._add(this, ["metadata", "title"]);
+
+	  if (!('$metadata' in this._state)) console.warn("<ChartDescription> was created without expected data property '$metadata'");
+	  if (!('$title' in this._state)) console.warn("<ChartDescription> was created without expected data property '$title'");
+	  this._intro = true;
+	  this._handlers.destroy = [removeFromStore];
+	  this._fragment = create_main_fragment$7(this, this._state);
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+	  }
+	}
+
+	assign(ChartDescription.prototype, protoDev);
+
+	ChartDescription.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	/* visualize/App.html generated by Svelte v2.16.1 */
+
+	function data$6() {
+	  return {
+	    tab: 'refine',
+	    showChartPicker: true,
+	    Refine: Empty,
+	    Annotate: Empty
+	  };
+	}
+
+	function oncreate$1() {
+	  if (['#pick', '#refine', '#annotate', '#design'].includes(window.location.hash)) {
+	    console.log(window.location.hash);
+	    this.set({
+	      tab: window.location.hash.substr(1)
+	    });
+	  }
+	}
+	var file$6 = "visualize/App.html";
+
+	function create_main_fragment$8(component, ctx) {
+	  var tabnav_updating = {},
+	      text0,
+	      div3,
+	      text1,
+	      div0,
+	      text2,
+	      div1,
+	      text3,
+	      text4,
+	      div2,
+	      text5,
+	      buttonnav_updating = {},
+	      text6,
+	      input,
+	      text7;
+	  var tabnav_initial_data = {
+	    showChartPicker: ctx.showChartPicker
+	  };
+
+	  if (ctx.tab !== void 0) {
+	    tabnav_initial_data.tab = ctx.tab;
+	    tabnav_updating.tab = true;
+	  }
+
+	  var tabnav = new TabNav({
+	    root: component.root,
+	    store: component.store,
+	    data: tabnav_initial_data,
+	    _bind: function _bind(changed, childState) {
+	      var newState = {};
+
+	      if (!tabnav_updating.tab && changed.tab) {
+	        newState.tab = childState.tab;
+	      }
+
+	      component._set(newState);
+
+	      tabnav_updating = {};
+	    }
+	  });
+
+	  component.root._beforecreate.push(function () {
+	    tabnav._bind({
+	      tab: 1
+	    }, tabnav.get());
+	  });
+
+	  var if_block = ctx.showChartPicker && create_if_block$2(component, ctx);
+	  var switch_value = ctx.Refine;
+
+	  function switch_props(ctx) {
+	    var switch_instance0_initial_data = {
+	      tab: ctx.tab
+	    };
+	    return {
+	      root: component.root,
+	      store: component.store,
+	      data: switch_instance0_initial_data
+	    };
+	  }
+
+	  if (switch_value) {
+	    var switch_instance0 = new switch_value(switch_props(ctx));
+	  }
+
+	  var chartdescription = new ChartDescription({
+	    root: component.root,
+	    store: component.store
+	  });
+	  var switch_value_1 = ctx.Annotate;
+
+	  function switch_props_1(ctx) {
+	    var switch_instance1_initial_data = {
+	      tab: ctx.tab
+	    };
+	    return {
+	      root: component.root,
+	      store: component.store,
+	      data: switch_instance1_initial_data
+	    };
+	  }
+
+	  if (switch_value_1) {
+	    var switch_instance1 = new switch_value_1(switch_props_1(ctx));
+	  }
+
+	  var design = new Design({
+	    root: component.root,
+	    store: component.store
+	  });
+	  var buttonnav_initial_data = {
+	    showChartPicker: ctx.showChartPicker
+	  };
+
+	  if (ctx.tab !== void 0) {
+	    buttonnav_initial_data.tab = ctx.tab;
+	    buttonnav_updating.tab = true;
+	  }
+
+	  var buttonnav = new ButtonNav({
+	    root: component.root,
+	    store: component.store,
+	    data: buttonnav_initial_data,
+	    _bind: function _bind(changed, childState) {
+	      var newState = {};
+
+	      if (!buttonnav_updating.tab && changed.tab) {
+	        newState.tab = childState.tab;
+	      }
+
+	      component._set(newState);
+
+	      buttonnav_updating = {};
+	    }
+	  });
+
+	  component.root._beforecreate.push(function () {
+	    buttonnav._bind({
+	      tab: 1
+	    }, buttonnav.get());
+	  });
+
+	  function input_change_handler() {
+	    component.set({
+	      showChartPicker: input.checked
+	    });
+	  }
+
+	  return {
+	    c: function create() {
+	      tabnav._fragment.c();
+
+	      text0 = createText("\n\n");
+	      div3 = createElement("div");
+	      if (if_block) if_block.c();
+	      text1 = createText("\n\n    \n    ");
+	      div0 = createElement("div");
+	      if (switch_instance0) switch_instance0._fragment.c();
+	      text2 = createText("\n\n    \n    ");
+	      div1 = createElement("div");
+
+	      chartdescription._fragment.c();
+
+	      text3 = createText("\n        ");
+	      if (switch_instance1) switch_instance1._fragment.c();
+	      text4 = createText("\n\n    \n    ");
+	      div2 = createElement("div");
+
+	      design._fragment.c();
+
+	      text5 = createText("\n\n    ");
+
+	      buttonnav._fragment.c();
+
+	      text6 = createText("\n\n");
+	      input = createElement("input");
+	      text7 = createText(" show chart picker");
+	      toggleClass(div0, "hide-smart", ctx.tab !== 'refine');
+	      addLoc(div0, file$6, 11, 4, 243);
+	      toggleClass(div1, "hide-smart", ctx.tab !== 'annotate');
+	      addLoc(div1, file$6, 16, 4, 374);
+	      toggleClass(div2, "hide-smart", ctx.tab !== 'design');
+	      addLoc(div2, file$6, 22, 4, 536);
+	      div3.className = "form-horizontal vis-options";
+	      addLoc(div3, file$6, 2, 0, 39);
+	      addListener(input, "change", input_change_handler);
+	      setAttribute(input, "type", "checkbox");
+	      addLoc(input, file$6, 29, 0, 662);
+	    },
+	    m: function mount(target, anchor) {
+	      tabnav._mount(target, anchor);
+
+	      insert(target, text0, anchor);
+	      insert(target, div3, anchor);
+	      if (if_block) if_block.m(div3, null);
+	      append(div3, text1);
+	      append(div3, div0);
+
+	      if (switch_instance0) {
+	        switch_instance0._mount(div0, null);
+	      }
+
+	      append(div3, text2);
+	      append(div3, div1);
+
+	      chartdescription._mount(div1, null);
+
+	      append(div1, text3);
+
+	      if (switch_instance1) {
+	        switch_instance1._mount(div1, null);
+	      }
+
+	      append(div3, text4);
+	      append(div3, div2);
+
+	      design._mount(div2, null);
+
+	      append(div3, text5);
+
+	      buttonnav._mount(div3, null);
+
+	      insert(target, text6, anchor);
+	      insert(target, input, anchor);
+	      input.checked = ctx.showChartPicker;
+	      insert(target, text7, anchor);
+	    },
+	    p: function update(changed, _ctx) {
+	      ctx = _ctx;
+	      var tabnav_changes = {};
+	      if (changed.showChartPicker) tabnav_changes.showChartPicker = ctx.showChartPicker;
+
+	      if (!tabnav_updating.tab && changed.tab) {
+	        tabnav_changes.tab = ctx.tab;
+	        tabnav_updating.tab = ctx.tab !== void 0;
+	      }
+
+	      tabnav._set(tabnav_changes);
+
+	      tabnav_updating = {};
+
+	      if (ctx.showChartPicker) {
+	        if (if_block) {
+	          if_block.p(changed, ctx);
+	        } else {
+	          if_block = create_if_block$2(component, ctx);
+	          if_block.c();
+	          if_block.m(div3, text1);
+	        }
+	      } else if (if_block) {
+	        if_block.d(1);
+	        if_block = null;
+	      }
+
+	      var switch_instance0_changes = {};
+	      if (changed.tab) switch_instance0_changes.tab = ctx.tab;
+
+	      if (switch_value !== (switch_value = ctx.Refine)) {
+	        if (switch_instance0) {
+	          switch_instance0.destroy();
+	        }
+
+	        if (switch_value) {
+	          switch_instance0 = new switch_value(switch_props(ctx));
+
+	          switch_instance0._fragment.c();
+
+	          switch_instance0._mount(div0, null);
+	        } else {
+	          switch_instance0 = null;
+	        }
+	      } else if (switch_value) {
+	        switch_instance0._set(switch_instance0_changes);
+	      }
+
+	      if (changed.tab) {
+	        toggleClass(div0, "hide-smart", ctx.tab !== 'refine');
+	      }
+
+	      var switch_instance1_changes = {};
+	      if (changed.tab) switch_instance1_changes.tab = ctx.tab;
+
+	      if (switch_value_1 !== (switch_value_1 = ctx.Annotate)) {
+	        if (switch_instance1) {
+	          switch_instance1.destroy();
+	        }
+
+	        if (switch_value_1) {
+	          switch_instance1 = new switch_value_1(switch_props_1(ctx));
+
+	          switch_instance1._fragment.c();
+
+	          switch_instance1._mount(div1, null);
+	        } else {
+	          switch_instance1 = null;
+	        }
+	      } else if (switch_value_1) {
+	        switch_instance1._set(switch_instance1_changes);
+	      }
+
+	      if (changed.tab) {
+	        toggleClass(div1, "hide-smart", ctx.tab !== 'annotate');
+	        toggleClass(div2, "hide-smart", ctx.tab !== 'design');
+	      }
+
+	      var buttonnav_changes = {};
+	      if (changed.showChartPicker) buttonnav_changes.showChartPicker = ctx.showChartPicker;
+
+	      if (!buttonnav_updating.tab && changed.tab) {
+	        buttonnav_changes.tab = ctx.tab;
+	        buttonnav_updating.tab = ctx.tab !== void 0;
+	      }
+
+	      buttonnav._set(buttonnav_changes);
+
+	      buttonnav_updating = {};
+	      if (changed.showChartPicker) input.checked = ctx.showChartPicker;
+	    },
+	    d: function destroy(detach) {
+	      tabnav.destroy(detach);
+
+	      if (detach) {
+	        detachNode(text0);
+	        detachNode(div3);
+	      }
+
+	      if (if_block) if_block.d();
+	      if (switch_instance0) switch_instance0.destroy();
+	      chartdescription.destroy();
+	      if (switch_instance1) switch_instance1.destroy();
+	      design.destroy();
+	      buttonnav.destroy();
+
+	      if (detach) {
+	        detachNode(text6);
+	        detachNode(input);
+	      }
+
+	      removeListener(input, "change", input_change_handler);
+
+	      if (detach) {
+	        detachNode(text7);
+	      }
+	    }
+	  };
+	} // (4:4) {#if showChartPicker}
+
+
+	function create_if_block$2(component, ctx) {
+	  var div;
+	  return {
+	    c: function create() {
+	      div = createElement("div");
+	      div.textContent = "Chart picker!";
+	      toggleClass(div, "hide-smart", ctx.tab !== 'pick');
+	      addLoc(div, file$6, 5, 4, 135);
+	    },
+	    m: function mount(target, anchor) {
+	      insert(target, div, anchor);
+	    },
+	    p: function update(changed, ctx) {
+	      if (changed.tab) {
+	        toggleClass(div, "hide-smart", ctx.tab !== 'pick');
+	      }
+	    },
+	    d: function destroy(detach) {
+	      if (detach) {
+	        detachNode(div);
+	      }
+	    }
+	  };
+	}
+
+	function App(options) {
+	  var _this = this;
+
+	  this._debugName = '<App>';
+
+	  if (!options || !options.target && !options.root) {
+	    throw new Error("'target' is a required option");
+	  }
+
+	  init(this, options);
+	  this._state = assign(data$6(), options.data);
+	  if (!('tab' in this._state)) console.warn("<App> was created without expected data property 'tab'");
+	  if (!('showChartPicker' in this._state)) console.warn("<App> was created without expected data property 'showChartPicker'");
+	  if (!('Refine' in this._state)) console.warn("<App> was created without expected data property 'Refine'");
+	  if (!('Annotate' in this._state)) console.warn("<App> was created without expected data property 'Annotate'");
+	  this._intro = true;
+	  this._fragment = create_main_fragment$8(this, this._state);
+
+	  this.root._oncreate.push(function () {
+	    oncreate$1.call(_this);
+
+	    _this.fire("update", {
+	      changed: assignTrue({}, _this._state),
+	      current: _this._state
+	    });
+	  });
+
+	  if (options.target) {
+	    if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+
+	    this._fragment.c();
+
+	    this._mount(options.target, options.anchor);
+
+	    flush(this);
+	  }
+	}
+
+	assign(App.prototype, protoDev);
+
+	App.prototype._checkReadOnly = function _checkReadOnly(newState) {};
+
+	var main = {
+	  init: init$1
+	};
+	/* globals dw, $, _ */
+
+	function init$1(_ref) {
+	  var chartData = _ref.chartData,
+	      data = _ref.data,
+	      target = _ref.target,
+	      themeId = _ref.themeId,
+	      themeData = _ref.themeData,
+	      visData = _ref.visData,
+	      user = _ref.user,
+	      locales = _ref.locales,
+	      themes = _ref.themes;
+	  chartData.mode = getQueryVariable("mode") || "web";
+	  var chart = new Chart(chartData);
+	  window.chart2 = chart;
+	  var visCache = {};
+	  visCache[visData.id] = visData;
+	  chart.set({
+	    writable: true,
+	    themeData: themeData,
+	    user: user,
+	    locales: locales,
+	    themes: themes,
+	    visualization: visCache[visData.id]
+	  });
+	  chart.compute('axes', ['visualization'], function (visualization) {
+	    if (!visualization) {
+	      return [];
+	    }
+
+	    return _.values(visualization.axes || {});
+	  });
+	  var app;
+	  chart.load(dw.backend.__currentData).then(function (ds) {
+	    console.log('chart loaded', ds); // remove ignored columns
+
+	    var columnFormat = chart.getMetadata('data.column-format', {});
+	    var ignore = {};
+
+	    _.each(columnFormat, function (format, key) {
+	      ignore[key] = !!format.ignore;
+	    });
+
+	    if (ds.filterColumns) ds.filterColumns(ignore);
+	    chart.set({
+	      dataset: ds
+	    });
+	    getContext(function (win, doc) {
+	      chart.set({
+	        vis: win.__dw.vis
+	      });
+	      target.innerHTML = '';
+	      app = new App({
+	        store: chart,
+	        target: target // data: data
+
+	      }); // observe changes to old chart object
+
+	      dw.backend.currentChart.onChange(function (ds, changed) {
+	        var attr = dw.backend.currentChart.attributes();
+	        chart.set(attr); // if (changed == 'metadata.data.changes') {
+	        //     const dataset = chart.dataset(true);
+	        //     chart.set({ dataset });
+	        // }
+
+	        setTimeout(function () {
+	        }, 100);
+	      });
+	    });
+	  });
+	}
+
+	function getQueryVariable(variable) {
+	  var query = window.location.search.substring(1);
+	  var vars = query.split('&');
+
+	  for (var i = 0; i < vars.length; i++) {
+	    var pair = vars[i].split('=');
+
+	    if (decodeURIComponent(pair[0]) === variable) {
+	      return decodeURIComponent(pair[1]);
+	    }
+	  }
+	}
+
+	function getContext(callback) {
+	  var win = $('#iframe-vis').get(0).contentWindow;
+	  var doc = $('#iframe-vis').get(0).contentDocument;
+
+	  if (!win || !win.__dw || !win.__dw.vis) {
+	    return setTimeout(function () {
+	      getContext(callback);
+	    }, 200);
+	  }
+
+	  callback(win, doc);
+	}
+
+	return main;
+
+}));
+//# sourceMappingURL=visualize.js.map

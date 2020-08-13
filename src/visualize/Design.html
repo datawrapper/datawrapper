@@ -1,0 +1,39 @@
+<SelectInput
+    label="Select layout:"
+    options="{themeOptions}"
+    labelWidth="100px"
+    width="200px"
+    bind:value="$theme"
+/>
+
+{#each designBlocks as b}
+<svelte:component this="{b.ui}" name="{b.name}" data="{b.data || {}}" />
+{/each}
+
+<script>
+    /* globals dw */
+    import SelectInput from '@datawrapper/controls/Select.html';
+
+    export default {
+        components: { SelectInput },
+        data() {
+            return {
+                designBlocks: []
+            };
+        },
+        computed: {
+            themeOptions({ $themes }) {
+                return $themes.map(t => {
+                    return { value: t.id, label: t.title };
+                });
+            }
+        },
+        oncreate() {
+            const chart = this.store;
+            const { results } = dw.backend.hooks.call('design-blocks', [chart]);
+            this.set({
+                designBlocks: results.sort((a, b) => (b.priority || 0) - (a.priority || 0))
+            });
+        }
+    };
+</script>

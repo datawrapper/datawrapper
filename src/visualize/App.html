@@ -1,0 +1,60 @@
+<TabNav bind:tab {showChartPicker} />
+
+<div class="form-horizontal vis-options">
+    {#if showChartPicker}
+    <!-- Chart Type -->
+    <div class:hide-smart="tab !== 'pick'">
+        Chart picker!
+    </div>
+    {/if}
+
+    <!-- Refine -->
+    <div class:hide-smart="tab !== 'refine'">
+        <svelte:component this="{Refine}" {tab} />
+    </div>
+
+    <!-- Annotate -->
+    <div class:hide-smart="tab !== 'annotate'">
+        <ChartDescription />
+        <svelte:component this="{Annotate}" {tab} />
+    </div>
+
+    <!-- Design -->
+    <div class:hide-smart="tab !== 'design'">
+        <Design />
+    </div>
+
+    <ButtonNav bind:tab {showChartPicker} />
+</div>
+
+<input type="checkbox" bind:checked="showChartPicker" /> show chart picker
+
+<script>
+    import TabNav from './TabNav.html';
+    import ButtonNav from './ButtonNav.html';
+    import Empty from './Empty.html';
+    import Design from './Design.html';
+    import ChartDescription from '@datawrapper/controls/editor/ChartDescription.html';
+
+    export default {
+        components: {
+            TabNav,
+            ButtonNav,
+            Design,
+            ChartDescription
+        },
+        data() {
+            return {
+                tab: 'refine',
+                showChartPicker: true,
+                Refine: Empty,
+                Annotate: Empty
+            };
+        },
+        oncreate() {
+            if (['#pick', '#refine', '#annotate', '#design'].includes(window.location.hash)) {
+                this.set({ tab: window.location.hash.substr(1) });
+            }
+        }
+    };
+</script>
