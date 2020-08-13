@@ -6,7 +6,19 @@ export default { init };
 
 /* globals dw, $, _ */
 
-function init({ chartData, data, target, themeId, themeData, visData, user, locales, themes }) {
+function init({
+    chartData,
+    data,
+    target,
+    themeId,
+    themeData,
+    visData,
+    user,
+    locales,
+    themes,
+    visualizations,
+    visArchive
+}) {
     chartData.mode = getQueryVariable('mode') || 'web';
     var chart = new Chart(chartData);
     window.chart2 = chart;
@@ -52,8 +64,11 @@ function init({ chartData, data, target, themeId, themeData, visData, user, loca
 
             app = new App({
                 store: chart,
-                target
-                // data: data
+                target,
+                data: {
+                    visualizations,
+                    visArchive
+                }
             });
 
             // observe changes to old chart object

@@ -4,7 +4,7 @@
     {#if showChartPicker}
     <!-- Chart Type -->
     <div class:hide-smart="tab !== 'pick'">
-        Chart picker!
+        <ChartPicker {visualizations} {visArchive} />
     </div>
     {/if}
 
@@ -34,6 +34,7 @@
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
     import Design from './Design.html';
+    import ChartPicker from './ChartPicker.html';
     import ChartDescription from '@datawrapper/controls/editor/ChartDescription.html';
 
     export default {
@@ -41,6 +42,7 @@
             TabNav,
             ButtonNav,
             Design,
+            ChartPicker,
             ChartDescription
         },
         data() {
@@ -48,7 +50,9 @@
                 tab: 'refine',
                 showChartPicker: true,
                 Refine: Empty,
-                Annotate: Empty
+                Annotate: Empty,
+                visualizations: [],
+                visArchvive: []
             };
         },
         oncreate() {
