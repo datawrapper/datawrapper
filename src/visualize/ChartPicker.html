@@ -2,7 +2,7 @@
     <div class="vis-selector-unfolded">
         <div class="vis-thumbs">
             {#each visualizations as vis}
-            <div class="vis-thumb" class:active="vis.id === $type">
+            <div class="vis-thumb" class:active="vis.id === $type" on:click="loadVis(vis.id)">
                 {@html vis.icon}
                 <div class="title">{@html vis.title}</div>
             </div>
@@ -35,6 +35,14 @@
                 ].concat(visArchive.map(vis => ({ value: vis.id, label: vis.title })));
             }
         },
-        helpers: { __ }
+        helpers: { __ },
+        methods: {
+            loadVis(id) {
+                const { type } = this.store.get();
+                if (id !== type) {
+                    this.fire('change', id);
+                }
+            }
+        }
     };
 </script>

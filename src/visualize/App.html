@@ -4,18 +4,24 @@
     {#if showChartPicker}
     <!-- Chart Type -->
     <div class:hide-smart="tab !== 'pick'">
-        <ChartPicker {visualizations} {visArchive} />
+        <ChartPicker {visualizations} {visArchive} on:change="loadVis(event)" />
     </div>
     {/if}
 
     <!-- Refine -->
     <div class:hide-smart="tab !== 'refine'">
+        {#if visLoading}
+        <Loading />
+        {/if}
         <svelte:component this="{Refine}" {tab} />
     </div>
 
     <!-- Annotate -->
     <div class:hide-smart="tab !== 'annotate'">
         <ChartDescription />
+        {#if visLoading}
+        <Loading />
+        {/if}
         <svelte:component this="{Annotate}" {tab} />
     </div>
 
@@ -27,15 +33,15 @@
     <ButtonNav bind:tab {showChartPicker} />
 </div>
 
-<input type="checkbox" bind:checked="showChartPicker" /> show chart picker
-
 <script>
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
     import Design from './Design.html';
     import ChartPicker from './ChartPicker.html';
+    import Loading from './Loading.html';
     import ChartDescription from '@datawrapper/controls/editor/ChartDescription.html';
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
         components: {
@@ -43,6 +49,7 @@
             ButtonNav,
             Design,
             ChartPicker,
+            Loading,
             ChartDescription
         },
         data() {
@@ -52,13 +59,54 @@
                 Refine: Empty,
                 Annotate: Empty,
                 visualizations: [],
-                visArchvive: []
+                visArchvive: [],
+                visLoading: false,
+                defaultVisType: ''
             };
+        },
+        methods: {
+            loadVis(id) {
+                const { visualizations } = this.get();
+                const vis = visualizations.find(v => v.id === id);
+                this.set({ visLoading: true });
+                if (!vis.controls) {
+                    console.error('This visualization does not define new svelte controls');
+                    return;
+                }
+                Promise.all([
+                    loadScript(`/static/plugins/${vis.controls.js}`),
+                    loadStylesheet(`/static/plugins/${vis.controls.css}`)
+                ]).then(() => {
+                    /* crazy workaround:
+                     * since only the first requirejs call will fail with an
+                     * a Mismatched anonymous define() modules error
+                     * we'll just load the module twice
+                     */
+                    try {
+                        require([vis.controls.amd], mod => {});
+                    } catch (e) {}
+                    require([vis.controls.amd], mod => {
+                        const { tab, defaultVisType } = this.get();
+                        const chartTypeSet =
+                            this.store.getMetadata('metadata.visualize.chart-type-set', false) ||
+                            id !== defaultVisType;
+                        this.set({
+                            visLoading: false,
+                            Refine: mod.Refine || Empty,
+                            Annotate: mod.Annotate || Empty,
+                            tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+                        });
+                    });
+                });
+            }
         },
         oncreate() {
             if (['#pick', '#refine', '#annotate', '#design'].includes(window.location.hash)) {
                 this.set({ tab: window.location.hash.substr(1) });
             }
+            // load visualization
+            const { type } = this.store.get();
+            this.loadVis(type);
         }
     };
 </script>
