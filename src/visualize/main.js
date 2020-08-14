@@ -17,7 +17,8 @@ function init({
     locales,
     themes,
     visualizations,
-    visArchive
+    visArchive,
+    defaultVisType
 }) {
     chartData.mode = getQueryVariable('mode') || 'web';
     var chart = new Chart(chartData);
@@ -67,7 +68,8 @@ function init({
                 target,
                 data: {
                     visualizations,
-                    visArchive
+                    visArchive,
+                    defaultVisType
                 }
             });
 

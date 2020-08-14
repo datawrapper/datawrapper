@@ -114,6 +114,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'visualizations' => $visualizations,
             'userVisualizations' => $userVisualizations,
             'visArchive' => $visArchive,
+            'defaultVisType' => $GLOBALS['dw_config']['defaults']['vis'],
             'vis' => $vis,
             'themes' => $themeMeta,
             'theme' => $theme,
