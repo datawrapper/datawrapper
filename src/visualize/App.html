@@ -86,10 +86,18 @@
                         require([vis.controls.amd], mod => {});
                     } catch (e) {}
                     require([vis.controls.amd], mod => {
+                        // apply vis default metadata
+                        const visualize = {
+                            ...(vis.controls.defaults || {}),
+                            ...this.store.getMetadata('visualize', {})
+                        };
+                        this.store.setMetadata('visualize', visualize);
+                        // determine if we automaticall switch to refine tab
                         const { tab, defaultVisType } = this.get();
                         const chartTypeSet =
                             this.store.getMetadata('metadata.visualize.chart-type-set', false) ||
                             id !== defaultVisType;
+                        // set refine & annotate controls and switch tab
                         this.set({
                             visLoading: false,
                             Refine: mod.Refine || Empty,
