@@ -2915,6 +2915,7 @@
       var _this$get = this.get(),
           visualizations = _this$get.visualizations;
 
+      var chart = this.store;
       var vis = visualizations.find(function (v) {
         return v.id === id;
       });
@@ -2925,6 +2926,16 @@
       if (!vis.controls) {
         console.error('This visualization does not define new svelte controls');
         return;
+      }
+
+      var _chart$get = chart.get(),
+          type = _chart$get.type;
+
+      if (type !== id) {
+        chart.setMetadata('visualize.chart-type-set', true);
+        chart.set({
+          type: id
+        });
       }
 
       Promise.all([loadScript("/static/plugins/".concat(vis.controls.js)), loadStylesheet("/static/plugins/".concat(vis.controls.css))]).then(function () {
@@ -2938,23 +2949,55 @@
         } catch (e) {}
 
         require([vis.controls.amd], function (mod) {
-          // apply vis default metadata
-          var visualize = _objectSpread({}, vis.controls.defaults || {}, {}, _this.store.getMetadata('visualize', {}));
+          _this.set({
+            Refine: Empty,
+            Annotate: Empty
+          });
 
-          _this.store.setMetadata('visualize', visualize); // determine if we automaticall switch to refine tab
+          if (mod.migrate) {
+            var _chart$get2 = chart.get(),
+                metadata = _chart$get2.metadata;
 
+            mod.migrate(id, metadata);
+            chart.set({
+              metadata: metadata
+            });
+          } // apply vis default metadata
+
+
+          var visualize = _objectSpread({}, vis.controls.defaults || {}, {}, chart.getMetadata('visualize', {}));
+
+          chart.setMetadata('visualize', visualize);
+          chart.set({
+            visualization: vis
+          }); // determine if we automaticall switch to refine tab
 
           var _this$get2 = _this.get(),
               tab = _this$get2.tab,
               defaultVisType = _this$get2.defaultVisType;
 
-          var chartTypeSet = _this.store.getMetadata('metadata.visualize.chart-type-set', false) || id !== defaultVisType; // set refine & annotate controls and switch tab
+          var chartTypeSet = chart.getMetadata('visualize.chart-type-set', false) || id !== defaultVisType;
 
           _this.set({
-            visLoading: false,
-            Refine: mod.Refine || Empty,
-            Annotate: mod.Annotate || Empty,
             tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+          });
+
+          dw.backend.once('vis-ready', function () {
+            // wait for chart preview
+            getContext(function (win) {
+              // set refine & annotate controls and switch tab
+              chart.set({
+                vis: win.__dw.vis
+              });
+
+              _this.set({
+                visLoading: false,
+                Refine: mod.Refine || Empty,
+                Annotate: mod.Annotate || Empty
+              });
+
+              dw.backend.fire('options-reloaded');
+            });
           });
         });
       });
@@ -2974,6 +3017,20 @@
 
     this.loadVis(type);
   }
+
+  function getContext(callback) {
+    var win = $('#iframe-vis').get(0).contentWindow;
+    var doc = $('#iframe-vis').get(0).contentDocument;
+
+    if (!win || !win.__dw || !win.__dw.vis) {
+      return setTimeout(function () {
+        getContext(callback);
+      }, 200);
+    }
+
+    callback(win, doc);
+  }
+
   var file$7 = "visualize/App.html";
 
   function create_main_fragment$a(component, ctx) {
@@ -9776,7 +9833,7 @@
       chart.set({
         dataset: ds
       });
-      getContext(function (win, doc) {
+      getContext$1(function (win, doc) {
         chart.set({
           vis: win.__dw.vis
         });
@@ -9827,31 +9884,6 @@
             chart.set({
               themeData: res.data
             });
-          });
-        }
-      }
-
-      if (changed.type) {
-        if (app && app.destroy) {
-          app.destroy();
-        }
-
-        if (visCache[current.type]) {
-          // re-use cached visualization
-          chart.set({
-            visualization: visCache[current.type]
-          });
-        } else {
-          // load new vis data
-          getJSON('/api/visualizations/' + current.type, function (res) {
-            if (res.status === 'ok') {
-              visCache[current.type] = res.data.data;
-              chart.set({
-                visualization: visCache[current.type]
-              });
-            } else {
-              console.warn('vis not loaded', res);
-            }
           });
         }
       }
@@ -9920,6 +9952,9 @@
         }
       }
     });
+    return {
+      app: app
+    };
   }
 
   function getQueryVariable(variable) {
@@ -9935,13 +9970,13 @@
     }
   }
 
-  function getContext(callback) {
+  function getContext$1(callback) {
     var win = $('#iframe-vis').get(0).contentWindow;
     var doc = $('#iframe-vis').get(0).contentDocument;
 
     if (!win || !win.__dw || !win.__dw.vis) {
       return setTimeout(function () {
-        getContext(callback);
+        getContext$1(callback);
       }, 200);
     }
 

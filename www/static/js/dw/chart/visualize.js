@@ -1,41 +1,34 @@
 /* globals dw, define, $ */
 define([
-    './visualize/options',
-    './visualize/themes',
     './visualize/loadVisDeferred',
-    './visualize/initTabNav',
     './visualize/enableInlineEditing',
     './visualize/liveUpdate',
     'js/misc/classify',
     'js/misc/jquery.easing'
-], function(visOptions, themes, loadVisDfd, initTabNav, enableInlineEditing, liveUpdate, classify) {
+], function (loadVisDfd, enableInlineEditing, liveUpdate, classify) {
     var _typeHasChanged = false;
     var _themeHasChanged = false;
     var _axesHaveChanged = false;
     var _transposed = false;
 
-    var _optionsSynchronized = false;
     var chart = dw.backend.currentChart;
     var visMetas = {};
     var iframe = $('#iframe-vis');
 
     function init(themesJSON, _visMetas, visJSON, mode) {
-        themes.init(themesJSON);
-
         visMetas = _visMetas;
 
         dw.backend.__currentVisLoaded = loadVisDfd.promise();
 
-        chart.onSave(function(chart) {
+        chart.onSave(function (chart) {
             onChartSave(chart);
         });
 
-        dw.backend.on('dataset-changed', function() {
+        dw.backend.on('dataset-changed', function () {
             iframe.attr('src', '');
 
             // reload options
-            loadOptions().done(function() {
-                dw.backend.fire('options-reloaded');
+            dw.backend.on('options-reloaded', function () {
                 loadVis();
             });
             // remove all notifications
@@ -55,9 +48,7 @@ define([
 
         // initialize some UI actions
         if (!visMetas[chart.get('type')]['svelte-sidebar']) {
-            initTabNav(visMetas[chart.get('type')].namespace);
             initTransposeLink();
-            initVisSelector();
         }
 
         initScrollToFix();
@@ -66,7 +57,7 @@ define([
             window.location.hash = '#refine-the-chart';
         }
 
-        $(window).on('keyup', function(e) {
+        $(window).on('keyup', function (e) {
             if (e.ctrlKey && e.keyCode === 82) {
                 // reload iframe on ctrl+r
                 iframe.get(0).contentWindow.location.reload();
@@ -81,30 +72,20 @@ define([
             iframe.one('load', updateVisBackground);
 
             dw.backend.fire('theme-changed-and-loaded');
-            if (svelteControls) {
-                themes.updateUI();
-            } else {
-                loadOptions().done(function() {
-                    loadVis();
-                    themes.updateUI();
-                });
-            }
         }
 
         if (_typeHasChanged) {
             iframe.attr('src', '');
-            dw.backend.fire('type-changed', [visMetas[dw.backend.currentChart.get('type')], dw.backend.currentVis.meta]);
+            dw.backend.fire('type-changed', [
+                visMetas[dw.backend.currentChart.get('type')],
+                dw.backend.currentVis.meta
+            ]);
         }
 
         if (_axesHaveChanged) dw.backend.fire('axes-changed');
         if (_transposed) dw.backend.fire('dataset-transposed');
 
         if ((_axesHaveChanged && !svelteControls) || _transposed || _typeHasChanged) {
-            // reload options
-            loadOptions().done(function() {
-                dw.backend.fire('options-reloaded');
-                loadVis();
-            });
             // remove all notifications
             $('#notifications .notification').fadeOutAndRemove();
         } else if (_axesHaveChanged && svelteControls) {
@@ -135,16 +116,19 @@ define([
         chart.sync('#describe-source-url', 'metadata.describe.source-url');
         chart.sync('#describe-byline', 'metadata.describe.byline');
 
-        $('#text-title').focus(function(evt) {
+        $('#text-title').focus(function (evt) {
             var val = $(evt.target).val();
             if (val.substr(0, 2) === '[ ' && val.substr(val.length - 2) === ' ]') {
                 evt.target.select();
             }
         });
 
-        chart.onChange(function(chart, key, value) {
+        chart.onChange(function (chart, key, value) {
             function changed(test) {
-                return key.substr(0, test.length) === test || key.replace(/metadata/, 'metadata.print').substr(0, test.length) === test;
+                return (
+                    key.substr(0, test.length) === test ||
+                    key.replace(/metadata/, 'metadata.print').substr(0, test.length) === test
+                );
             }
 
             if (key === 'type') _typeHasChanged = true;
@@ -171,7 +155,7 @@ define([
         var chk;
 
         // periodically check if vis is initialized in iframe
-        chk = setInterval(function() {
+        chk = setInterval(function () {
             if (win.__dw && win.__dw.vis) {
                 clearInterval(chk);
                 iframeReady();
@@ -194,7 +178,7 @@ define([
 
         dw.backend.on('vis-rendered', visualizationRendered);
 
-        $(window).on('message', function(evt) {
+        $(window).on('message', function (evt) {
             evt = evt.originalEvent;
             if (evt.source === win) {
                 if (evt.data === 'datawrapper:vis:init') {
@@ -219,106 +203,12 @@ define([
         enableInlineEditing(iframe, chart);
     }
 
-    function showLoadingIndicator() {
-        $('.vis-options-refine-loading').remove();
-        $('.vis-options-refine, .vis-options-annotate').append(
-            '<div class="vis-options-refine-loading"><i class="fa fa-circle-o-notch fa-spin"></i></div>'
-        );
-        $('.vis-options-refine > fieldset, .vis-options-annotate > fieldset').css('opacity', '0.5');
-    }
-
-    /*
-     * reload the chart specific options
-     */
-    function loadOptions(delay) {
-        showLoadingIndicator();
-
-        var loaded = $.Deferred();
-        _optionsSynchronized = false;
-        var l = 0;
-
-        $('.vis-options-refine').load('/xhr/' + chart.get('id') + '/vis-options?nocache=' + Math.random(), _loaded);
-        $('.vis-options-annotate').load('/xhr/' + chart.get('id') + '/vis-options?annotate=1&nocache=' + Math.random(), _loaded);
-        function _loaded() {
-            l++;
-            if (l === 2) {
-                loaded.resolve();
-                syncUI();
-                loadVis();
-            }
-        }
-
-        return loaded.promise();
-    }
-
     function initTransposeLink() {
-        $('#btn-transpose').click(function(e) {
+        $('#btn-transpose').click(function (e) {
             e.preventDefault();
             chart.set('metadata.data.transpose', !chart.get('metadata.data.transpose'));
             chart.load().done(onDatasetLoaded);
-            showLoadingIndicator();
-            setTimeout(function() {
-                loadOptions();
-            }, 2000);
         });
-    }
-
-    function initVisSelector() {
-        // graphical vis selector
-        var unfolded = $('.vis-selector-unfolded');
-        var folded = $('.vis-selector-folded');
-        var thumbs = $('.vis-thumb');
-        var selVis = $('.vis-selected');
-        var archived = $('.vis-archive-select select');
-
-        unfolded
-            .show()
-            .data('h', unfolded.height())
-            .hide();
-        thumbs.click(function(e) {
-            var thumb = $(e.target);
-            if (!thumb.hasClass('vis-thumb')) thumb = thumb.parents('.vis-thumb');
-            thumbs.removeClass('active');
-            thumb.addClass('active');
-            selVis.html('<img src="' + thumb.data('static-path') + thumb.data('id') + '.png" width="24" />' + thumb.data('title'));
-
-            if (thumb.data('id') !== chart.get('type')) showLoadingIndicator();
-
-            setTimeout(function() {
-                /*
-                folded.show();
-                unfolded.animate({ height: 0 }, 300, 'easeOutExpo', function() {
-                    unfolded.hide();
-                });
-                */
-                chart.set('type', thumb.data('id'));
-                chart.set('metadata.visualize.chart-type-set', true);
-            }, 100);
-            if (archived.length) {
-                archived.prop('value', '');
-            }
-        });
-
-        folded.click(function() {
-            folded.hide();
-            unfolded
-                .height(0)
-                .show()
-                .animate({ height: unfolded.data('h') }, 300);
-        });
-
-        unfolded.show();
-        folded.hide();
-
-        if (archived.length) {
-            archived.on('change', function() {
-                var visId = archived.prop('value');
-                if (visId && visId !== '---') {
-                    thumbs.removeClass('active');
-                    chart.set('type', visId);
-                }
-            });
-        }
     }
 
     function onDatasetLoaded() {
@@ -330,14 +220,18 @@ define([
     function loadVis() {
         if (iframe.attr('src') === '') {
             // load vis in iframe if not done yet
-            var src = '/preview/' + chart.get('id') + '?innersvg=1&random=' + Math.floor(Math.random() * 100000);
+            var src =
+                '/preview/' +
+                chart.get('id') +
+                '?innersvg=1&random=' +
+                Math.floor(Math.random() * 100000);
             iframe.attr('src', src);
         }
         if (dw.visualization.has(chart.get('type'))) {
             loadVisDone(dw.visualization(chart.get('type')));
         } else {
             // we need to load the vis render code
-            loadVisJS(chart.get('type'), function() {
+            loadVisJS(chart.get('type'), function () {
                 loadVisDone(dw.visualization(chart.get('type')));
             });
         }
@@ -347,24 +241,22 @@ define([
             dw.backend.currentVis.meta = visMetas[chart.get('type')];
             dw.backend.fire('backend-vis-loaded', dw.backend.currentVis);
 
-            visOptions.init(chart, visMetas[chart.get('type')]);
-            if (!_optionsSynchronized) {
-                _optionsSynchronized = true;
-                visOptions.sync();
-            }
             loadVisDfd.resolve();
         }
 
         function loadVisJS(type, callback) {
             if (dw.backend.__visLoaded[type]) return callback();
-            if (dw.backend.__visDependencies[type] && !dw.backend.__visLoaded[dw.backend.__visDependencies[type]]) {
+            if (
+                dw.backend.__visDependencies[type] &&
+                !dw.backend.__visLoaded[dw.backend.__visDependencies[type]]
+            ) {
                 // first load dependency
-                loadVisJS(dw.backend.__visDependencies[type], function() {
+                loadVisJS(dw.backend.__visDependencies[type], function () {
                     // then load this type
                     loadVisJS(type, callback);
                 });
             } else {
-                $.getScript(dw.backend.__visRenderUrls[type], function() {
+                $.getScript(dw.backend.__visRenderUrls[type], function () {
                     // if (!dw.backend.__visLoaded[type]) console.log('loaded visualization', type);
                     dw.backend.__visLoaded[type] = true;
                     callback();
@@ -377,7 +269,10 @@ define([
         var theme = dw.theme(dw.backend.currentChart.get('theme'));
         // and show msg if chart needs more space
         var iframe = $('#iframe-vis').contents();
-        var bgcol = theme && theme.colors && theme.colors.background ? theme.colors.background : $('body', iframe).css('background-color');
+        var bgcol =
+            theme && theme.colors && theme.colors.background
+                ? theme.colors.background
+                : $('body', iframe).css('background-color');
         var isTransparent = bgcol === 'transparent' || bgcol === 'rgba(0, 0, 0, 0)';
 
         $('#iframe-wrapper').css({
@@ -390,7 +285,7 @@ define([
         scrollFixCont.scrollToFixed({
             marginTop: 0,
             zIndex: 999,
-            limit: function() {
+            limit: function () {
                 // var sftop = scrollFixCont.offset().top;
                 var ftminsfh = $('footer.footer').offset().top - scrollFixCont.height() - 60;
                 // if (sftop > ftminsfh) return sftop+10;

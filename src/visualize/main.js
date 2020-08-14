@@ -116,26 +116,6 @@ function init({
             }
         }
 
-        if (changed.type) {
-            if (app && app.destroy) {
-                app.destroy();
-            }
-            if (visCache[current.type]) {
-                // re-use cached visualization
-                chart.set({ visualization: visCache[current.type] });
-            } else {
-                // load new vis data
-                getJSON('/api/visualizations/' + current.type, function (res) {
-                    if (res.status === 'ok') {
-                        visCache[current.type] = res.data.data;
-                        chart.set({ visualization: visCache[current.type] });
-                    } else {
-                        console.warn('vis not loaded', res);
-                    }
-                });
-            }
-        }
-
         if (
             (previous && changed.title) ||
             changed.theme ||
@@ -201,6 +181,10 @@ function init({
             }
         }
     });
+
+    return {
+        app
+    };
 }
 
 function getQueryVariable(variable) {

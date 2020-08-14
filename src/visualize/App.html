@@ -34,6 +34,7 @@
 </div>
 
 <script>
+    /* globals dw, $  */
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
@@ -67,11 +68,19 @@
         methods: {
             loadVis(id) {
                 const { visualizations } = this.get();
+                const chart = this.store;
                 const vis = visualizations.find(v => v.id === id);
                 this.set({ visLoading: true });
                 if (!vis.controls) {
                     console.error('This visualization does not define new svelte controls');
                     return;
+                }
+                const { type } = chart.get();
+                if (type !== id) {
+                    chart.setMetadata('visualize.chart-type-set', true);
+                    chart.set({
+                        type: id
+                    });
                 }
                 Promise.all([
                     loadScript(`/static/plugins/${vis.controls.js}`),
@@ -86,23 +95,47 @@
                         require([vis.controls.amd], mod => {});
                     } catch (e) {}
                     require([vis.controls.amd], mod => {
+                        this.set({
+                            Refine: Empty,
+                            Annotate: Empty
+                        });
+                        if (mod.migrate) {
+                            const { metadata } = chart.get();
+                            mod.migrate(id, metadata);
+                            chart.set({ metadata });
+                        }
+
                         // apply vis default metadata
                         const visualize = {
                             ...(vis.controls.defaults || {}),
-                            ...this.store.getMetadata('visualize', {})
+                            ...chart.getMetadata('visualize', {})
                         };
-                        this.store.setMetadata('visualize', visualize);
+                        chart.setMetadata('visualize', visualize);
+                        chart.set({
+                            visualization: vis
+                        });
                         // determine if we automaticall switch to refine tab
                         const { tab, defaultVisType } = this.get();
                         const chartTypeSet =
-                            this.store.getMetadata('metadata.visualize.chart-type-set', false) ||
+                            chart.getMetadata('visualize.chart-type-set', false) ||
                             id !== defaultVisType;
-                        // set refine & annotate controls and switch tab
+
                         this.set({
-                            visLoading: false,
-                            Refine: mod.Refine || Empty,
-                            Annotate: mod.Annotate || Empty,
                             tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+                        });
+
+                        dw.backend.once('vis-ready', () => {
+                            // wait for chart preview
+                            getContext(win => {
+                                // set refine & annotate controls and switch tab
+                                chart.set({ vis: win.__dw.vis });
+                                this.set({
+                                    visLoading: false,
+                                    Refine: mod.Refine || Empty,
+                                    Annotate: mod.Annotate || Empty
+                                });
+                                dw.backend.fire('options-reloaded');
+                            });
                         });
                     });
                 });
@@ -117,4 +150,15 @@
             this.loadVis(type);
         }
     };
+
+    function getContext(callback) {
+        var win = $('#iframe-vis').get(0).contentWindow;
+        var doc = $('#iframe-vis').get(0).contentDocument;
+        if (!win || !win.__dw || !win.__dw.vis) {
+            return setTimeout(function () {
+                getContext(callback);
+            }, 200);
+        }
+        callback(win, doc);
+    }
 </script>

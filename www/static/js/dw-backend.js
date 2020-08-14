@@ -44,6 +44,7 @@ var dw = window.dw || {};
         $.extend(o, {
             on: onEvent,
             one: oneEvent,
+            once: oneEvent,
             off: offEvent,
             trigger: fireEvent,
             ready: function (cb) {
