@@ -18,7 +18,7 @@
 
     <!-- Annotate -->
     <div class:hide-smart="tab !== 'annotate'">
-        <ChartDescription />
+        <Annotate />
         {#if visLoading}
         <Loading />
         {/if}
@@ -38,20 +38,20 @@
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
+    import Annotate from './Annotate.html';
     import Design from './Design.html';
     import ChartPicker from './ChartPicker.html';
     import Loading from './Loading.html';
-    import ChartDescription from '@datawrapper/controls/editor/ChartDescription.html';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
         components: {
             TabNav,
             ButtonNav,
+            Annotate,
             Design,
             ChartPicker,
-            Loading,
-            ChartDescription
+            Loading
         },
         data() {
             return {
@@ -124,19 +124,19 @@
                             tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
                         });
 
-                        dw.backend.once('vis-ready', () => {
-                            // wait for chart preview
-                            getContext(win => {
-                                // set refine & annotate controls and switch tab
-                                chart.set({ vis: win.__dw.vis });
-                                this.set({
-                                    visLoading: false,
-                                    Refine: mod.Refine || Empty,
-                                    Annotate: mod.Annotate || Empty
-                                });
-                                dw.backend.fire('options-reloaded');
+                        // dw.backend.once('vis-ready', () => {
+                        // wait for chart preview
+                        getContext(win => {
+                            // set refine & annotate controls and switch tab
+                            chart.set({ vis: win.__dw.vis });
+                            this.set({
+                                visLoading: false,
+                                Refine: mod.Refine || Empty,
+                                Annotate: mod.Annotate || Empty
                             });
+                            dw.backend.fire('options-reloaded');
                         });
+                        // });
                     });
                 });
             }
