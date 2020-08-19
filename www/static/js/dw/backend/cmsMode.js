@@ -1,36 +1,38 @@
+/* global $, define, dw */
 
-define(function() {
-
-    var cmsMode = false,
-        cmsConfig = {};
+define(function () {
+    var cmsMode = false;
+    var cmsConfig = {};
 
     return {
-        isCmsMode: function() {
+        isCmsMode: function () {
             return cmsMode;
         },
-        getCmsConfig: function() {
+        getCmsConfig: function () {
             return cmsConfig;
         },
-        init: function() {
-            if (window.top == window.self) return;
+        init: function () {
+            if (window.top === window.self) return;
 
             $('body').addClass('cms-mode');
 
-            window.parent.postMessage({
-                'datawrapperIsListening': 1
-            }, "*");
+            window.parent.postMessage(
+                {
+                    datawrapperIsListening: 1
+                },
+                '*'
+            );
 
-            $(window).on('message', function(e) {
+            $(window).on('message', function (e) {
                 var data = e.originalEvent.data;
 
                 if (data.datawrapperCMSMode) {
                     cmsMode = true;
-                    cmsConfig = data.datawrapperCMSMode
+                    cmsConfig = data.datawrapperCMSMode;
                     $('body').addClass('cms-mode');
                     dw.backend.fire('cmsModeActivated');
                 }
             });
         }
     };
-
 });

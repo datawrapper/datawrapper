@@ -1,13 +1,15 @@
-define(function(require) {
-    var $ = require('jquery'),
-        handler = require('./handler'),
-        twig = require('./twig_globals'),
-        no_reload_folder_change = require('./no_reload_folder_change'),
-        buildLink = require('./buildLink'),
-        cft;
+/* global alert, define, prompt, location */
 
-    return function() {
-        cft = window['ChartFolderTree'];
+define(function (require) {
+    var $ = require('jquery');
+    var httpReq = require('./httpReq');
+    var twig = require('./twig_globals');
+    var noReloadFolderChange = require('./no_reload_folder_change');
+    var buildLink = require('./buildLink');
+    var cft;
+
+    return function () {
+        cft = window.ChartFolderTree;
 
         function cleanResponse(folder) {
             delete folder.user;
@@ -17,48 +19,45 @@ define(function(require) {
             return folder;
         }
 
-        $('.add-folder').click(function(e) {
-            var nuname,
-                id = cft.getCurrentFolder();
+        $('.add-folder').click(function (e) {
+            var nuname;
+            var id = cft.getCurrentFolder();
 
             e.preventDefault();
             nuname = prompt(twig.globals.strings.enter_folder_name);
             if (!nuname) return;
 
-            $.ajax({
-                url: '/api/2/folders',
-                type: 'POST',
-                processData: false,
-                contentType: "application/json",
-                data: JSON.stringify({
-                    name: nuname,
-                    parent: id.folder,
-                    organization: id.organization
-                }),
-                dataType: 'JSON'
-            }).done(function(res) {
-                if (res.status == 'error') {
-                    alert(res.message);
-                } else if (res.status == 'ok') {
-                    cft.addFolder(cleanResponse(res.data));
-                    no_reload_folder_change.repaintSubfolders();
+            httpReq
+                .post('/api/2/folders', {
+                    payload: {
+                        name: nuname,
+                        parent: id.folder,
+                        organization: id.organization
+                    }
+                })
+                .then(function (data) {
+                    cft.addFolder(cleanResponse(data));
+                    noReloadFolderChange.repaintSubfolders();
                     cft.reRenderTree();
-                    no_reload_folder_change.reenableClicks();
-                }
-            }).fail(handler.fail);
+                    noReloadFolderChange.reenableClicks();
+                })
+                .catch(function (err) {
+                    alert('API Error');
+                    console.error(err.message);
+                    location.reload();
+                });
         });
 
-        $('#rename-folder').click(function(e) {
+        $('#rename-folder').click(function (e) {
             // fancier inline editing!
-            var id = cft.getCurrentFolder(),
-                folder_name = cft.getFolderNameById(id.folder),
-
-                curname = $('#current-folder-name')
+            var id = cft.getCurrentFolder();
+            var folderName = cft.getFolderNameById(id.folder);
+            var curname = $('#current-folder-name')
                 .attr('contenteditable', true)
-                .on('focus', function(evt) {
+                .on('focus', function (evt) {
                     // select all on focus
                     var div = evt.target;
-                    window.setTimeout(function() {
+                    window.setTimeout(function () {
                         var sel, range;
                         if (window.getSelection && document.createRange) {
                             range = document.createRange();
@@ -73,13 +72,14 @@ define(function(require) {
                         }
                     }, 1);
                 })
-                .on('keypress', function(evt) {
-                    if (evt.which == 13) { // return
+                .on('keypress', function (evt) {
+                    if (evt.which === 13) {
+                        // return
                         done();
                         evt.preventDefault();
-                    } else if (evt.keyCode == 27) { // esc
-                        curname.text(folder_name)
-                            .attr('contenteditable', null);
+                    } else if (evt.keyCode === 27) {
+                        // esc
+                        curname.text(folderName).attr('contenteditable', null);
                         curname.off('focus keypress blur');
                     }
                 })
@@ -87,34 +87,25 @@ define(function(require) {
                 .focus();
 
             function done() {
-                var new_name = curname
-                    .attr('contenteditable', null)
-                    .text().trim();
+                var newName = curname.attr('contenteditable', null).text().trim();
 
-                curname.text(new_name);
+                curname.text(newName);
 
-                if (new_name != folder_name && new_name) {
-                    folder_name = new_name;
-                    $.ajax({
-                        url: '/api/2/folders/' + id.folder,
-                        type: 'PUT',
-                        processData: false,
-                        contentType: "application/json",
-                        data: JSON.stringify({ name: new_name }),
-                        dataType: 'JSON'
-                    }).done(function(res) {
-                        if (res.status == 'error') {
-                            alert(res.message);
-                            curname.text(folder_name);
-                        } else if (res.status == 'ok') {
-                            $('.folders li.active a span').text(res.data.name);
-                            cft.setFolderName(id.folder, res.data.name);
-                        }
-                    }).fail(function(err) {
-                        alert('API Error');
-                        console.error(err);
-                        curname.text(folder_name);
-                    });
+                if (newName !== folderName && newName) {
+                    folderName = newName;
+                    httpReq
+                        .put('/api/2/folders/' + id.folder, {
+                            payload: { name: newName }
+                        })
+                        .then(function (data) {
+                            $('.folders li.active a span').text(data.name);
+                            cft.setFolderName(id.folder, data.name);
+                        })
+                        .catch(function (err) {
+                            alert('API Error');
+                            console.error(err.message);
+                            curname.text(folderName);
+                        });
                 }
                 curname.off('focus keypress blur');
             }
@@ -122,32 +113,30 @@ define(function(require) {
             e.preventDefault();
         });
 
-        $('#delete-folder').click(function(e) {
+        $('#delete-folder').click(function (e) {
             var id = cft.getCurrentFolder();
 
             e.preventDefault();
-            $.ajax({
-                url: '/api/2/folders/' + id.folder,
-                type: 'DELETE',
-                contentType: "application/json",
-                dataType: 'JSON'
-            }).done(function(res) {
-                if (res.status == 'error') {
-                    alert(res.message);
-                } else if (res.status == 'ok') {
-                    var parent_link = buildLink(cft.getParentFolder(id));
+            httpReq
+                .delete('/api/2/folders/' + id.folder)
+                .then(function () {
+                    var parentLink = buildLink(cft.getParentFolder(id));
                     cft.deleteFolder(id);
-                    no_reload_folder_change.reloadLink(parent_link);
+                    noReloadFolderChange.reloadLink(parentLink);
                     cft.reRenderTree();
-                    no_reload_folder_change.reenableClicks();
-                }
-            }).fail(handler.fail);
+                    noReloadFolderChange.reenableClicks();
+                })
+                .catch(function (err) {
+                    alert('API Error');
+                    console.error(err.message);
+                    location.reload();
+                });
         });
 
-        cft.setCurrentFolderFuncs(function() {
-            var cur = cft.getCurrentFolder(),
-                ren = $('#rename-folder'),
-                del = $('#delete-folder');
+        cft.setCurrentFolderFuncs(function () {
+            var cur = cft.getCurrentFolder();
+            var ren = $('#rename-folder');
+            var del = $('#delete-folder');
 
             if (cur.folder) {
                 if (cft.hasSubFolders(cur.folder)) del.hide();

@@ -1,22 +1,21 @@
+/* global $, define, location */
 
-define(function() {
+define(function (require) {
+    var httpReq = require('./httpReq');
 
-    /*
-     * activate the language links in main navbar
+    /**
+     * Activate the language links in main navbar
      */
-    return function() {
-        $('a[href|=#lang]').click(function(evt) {
+    return function () {
+        $('a[href|=#lang]').click(function (evt) {
             evt.preventDefault();
-            $.ajax({
-                url: '/api/account/lang',
-                type: 'PUT',
-                data: JSON.stringify({ lang: $(evt.target).attr('href').substr(6) }),
-                processData: false,
-                success: function(data) {
+            httpReq
+                .put('/api/account/lang', {
+                    payload: { lang: $(evt.target).attr('href').substr(6) }
+                })
+                .then(function (data) {
                     location.reload();
-                }
-            });
+                });
         });
     };
-
 });
