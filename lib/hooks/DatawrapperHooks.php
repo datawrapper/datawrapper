@@ -151,7 +151,6 @@ class DatawrapperHooks {
     const VISUALIZE_BEFORE_THEME_SELECTOR = 'visualize_before_theme_selector';
     const VISUALIZE_AFTER_THEME_SELECTOR = 'visualize_after_theme_selector';
     const CUSTOM_ANNOTATION_CONTROLS = 'custom_annotation_controls';
-    const AFTER_CUSTOM_ANNOTATION_CONTROLS = 'after_custom_annotation_controls';
     const VISUALIZE_BEFORE_SVELTE_SIDEBAR = 'visualize_before_svelte_sidebar';
 
     // add user account settings pages
