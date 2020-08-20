@@ -60,16 +60,16 @@
                 Refine: Empty,
                 Annotate: Empty,
                 visualizations: [],
-                visArchvive: [],
+                visArchive: [],
                 visLoading: false,
                 defaultVisType: ''
             };
         },
         methods: {
             loadVis(id) {
-                const { visualizations } = this.get();
+                const { visArchive, visualizations } = this.get();
                 const chart = this.store;
-                const vis = visualizations.find(v => v.id === id);
+                const vis = [...visArchive, ...visualizations].find(v => v.id === id);
                 this.set({ visLoading: true });
                 if (!vis.controls) {
                     console.error('This visualization does not define new svelte controls');
