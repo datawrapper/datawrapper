@@ -106,6 +106,9 @@ var dw = window.dw || {};
                 if (!hooks[hook]) hooks[hook] = [];
                 hooks[hook].push(callback);
             },
+            unregister: function (hook) {
+                if (hooks[hook]) delete hooks[hook];
+            },
             call: function (hook, args) {
                 var results = [];
                 var errors = [];
