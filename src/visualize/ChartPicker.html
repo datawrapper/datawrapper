@@ -10,7 +10,11 @@
         </div>
 
         <div class="vis-archive-select">
-            <SelectInput options="{archiveOpts}" label="{__('visualize / vis archive')}" />
+            <SelectInput
+                options="{archiveOpts}"
+                label="{__('visualize / vis archive')}"
+                on:change="loadVis(event.target.value)"
+            />
         </div>
 
         <p><b>{ __("Hint") }:</b> { __('visualize / transpose-hint') }</p>
