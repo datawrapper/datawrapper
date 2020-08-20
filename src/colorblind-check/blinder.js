@@ -1,4 +1,4 @@
-var blinder = (function () {
+const blinder = (function () {
 'use strict';
 
 function createCommonjsModule(fn, module) {
@@ -784,9 +784,9 @@ ONECOLOR.installMethod('toAlpha', function (color) {
  * https://github.com/skratchdot/color-blind
  *
  * This source was copied from http://mudcu.be/sphere/js/Color.Blind.js
- * 
+ *
  * It contains modifications for use in node.js.
- * 
+ *
  * The original copyright is included below.
  *
  * Copyright (c) 2014 skratchdot
@@ -797,7 +797,7 @@ ONECOLOR.installMethod('toAlpha', function (color) {
     The Color Blindness Simulation function is
     copyright (c) 2000-2001 by Matthew Wickline and the
     Human-Computer Interaction Resource Network ( http://hcirn.com/ ).
-    
+
     It is used with the permission of Matthew Wickline and HCIRN,
     and is freely available for non-commercial use. For commercial use, please
     contact the Human-Computer Interaction Resource Network ( http://hcirn.com/ ).
@@ -824,7 +824,7 @@ ONECOLOR.installMethod('toAlpha', function (color) {
 		abv = 0.294976; // color axis begining point (490nm), v coord
 		aeu = 0.665764; // color axis ending point (610nm), u coord
 		aev = 0.334011; // color axis ending point (610nm), v coord
-			
+
 	m = (aev - abv) / (aeu - abu); // slope of color axis
 	yi = blind[t].abv - blind[t].abu * blind[t].m; // "y-intercept" of axis (on the "v" axis at u=0)
 
@@ -1043,3 +1043,5 @@ for (var key in colorVisionData) {
 return colorBlind;
 
 }());
+
+export default blinder;

@@ -569,6 +569,7 @@
   "colorblind / info / deut": "<b>Deuteranopia</b> is a form of red-green blindness (1% of males).",
   "colorblind / info / prot": "<b>Protanopia</b> is a form of red-green blindness (1% of males).",
   "colorblind / info / trit": "<b>Tritanopia</b> is a form of blue-yellow blindness (less than 1% affected).",
+  "colorblind / info / bw": "<b>Achromatopsia</b> (total color blindness) is very rare. But for most accessibility \"get it right in black and white\" 🙂",
   "Highlight the most import elements (optional)": "Highlight the most important elements (optional)",
   "select element": "select element",
   "Initial row to display": "Initial row to display",

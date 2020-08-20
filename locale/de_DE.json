@@ -569,6 +569,7 @@
   "colorblind / info / deut": "<b>Deuteranopie</b> oder <i>Grünblindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft etwa 1% von Männern)",
   "colorblind / info / prot": "<b>Protanopie</b> oder <i>Rotblindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft etwa 1% von Männern)",
   "colorblind / info / trit": "<b>Tritanopie</b> oder <i>Blaublindheit</i> ist eine Form von Farbfehlsichtigkeit (betrifft weniger als 1%)",
+  "colorblind / info / bw": "<b>Achromatopsie</b> oder <i>totale Farbenblindheit</i> ist sehr selten, aber wirklich barrierefreie Visualisierungen funktionieren auch ohne Farben 🙂",
   "Highlight the most import elements (optional)": "Hebe die wichtigsten Elemente hervor (optional)",
   "select element": "Element auswählen",
   "Initial row to display": "Diese Zeile anzeigen",
