@@ -146,11 +146,6 @@
                 }
             },
             runTests() {
-                this.set({ testing: true });
-                setTimeout(() => {
-                    this.set({ testing: false });
-                }, 4000);
-
                 // get list of all colors used in last run
                 let colors = __dw.vis.colorsUsed();
                 let sample;
@@ -177,6 +172,9 @@
                     sample = colors;
                 }
 
+                const { testing } = this.get();
+                if (testing) return;
+
                 if (!sample.length) {
                     // wait a second
                     setTimeout(() => {
@@ -184,6 +182,11 @@
                     }, 1000);
                     return;
                 }
+
+                this.set({ testing: true });
+                setTimeout(() => {
+                    this.set({ testing: false });
+                }, 4000);
 
                 // auto-test 3 simulations
 
@@ -201,12 +204,13 @@
                             res[mode] = 0;
                         }
                     });
-                    this.set({ warnings, testing: false });
+                    this.set({ warnings });
                 } else {
                     // just one color
-                    this.set({ testing: false });
                     res = { deuteranopia: 0, protanopia: 0, tritanopia: 0 };
                 }
+
+                this.set({ testing: false });
 
                 if (window.location.search === '?cbchk') {
                     if (chart.save) {
