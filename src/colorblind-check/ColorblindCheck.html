@@ -147,6 +147,10 @@
             },
             runTests() {
                 this.set({ testing: true });
+                setTimeout(() => {
+                    this.set({ testing: false });
+                }, 4000);
+
                 // get list of all colors used in last run
                 let colors = __dw.vis.colorsUsed();
                 let sample;
@@ -255,18 +259,6 @@
             }
         },
         oncreate() {
-            this.initIframe(chart, () => {
-                chart.onChange(() => {
-                    this.set({
-                        testing: true
-                    });
-                    // this.resetWarnings();
-                    setTimeout(() => {
-                        this.set({ testing: false });
-                    }, 4000);
-                });
-            });
-
             window.addEventListener('message', evt => {
                 if (evt.data === 'datawrapper:vis:init') {
                     this.initIframe();
