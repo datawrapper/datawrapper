@@ -2071,7 +2071,17 @@ body.cms-mode .row.create-nav {
   background: rgba(0, 0, 0, 0.05);
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button > i.warning {
-  display: none;
+  opacity: 0;
+  display: inline-block;
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  font-size: 14px;
+  color: #c71e1d;
+  border-radius: 50%;
+  width: 18px;
+  pointer-events: none;
+  height: 18px;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning {
   box-shadow: inset 0px -1px 0px 0px #c71e1d;
@@ -2085,16 +2095,7 @@ body.cms-mode .row.create-nav {
   opacity: 0.5;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container .button.warning i.warning {
-  display: inline-block;
-  position: absolute;
-  top: 7px;
-  left: 8px;
-  font-size: 14px;
-  color: #c71e1d;
-  border-radius: 50%;
-  width: 18px;
-  pointer-events: none;
-  height: 18px;
+  opacity: 1;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container.print .button {
   padding: 0px 14px;
@@ -3012,13 +3013,6 @@ body.dw-mycharts.mycharts-search-results .mycharts-search-wrapper .im.im-x-mark-
   padding: 20px;
   border-radius: 2px;
   box-shadow: 0 0 25px #444;
-}
-
-.mycharts-modal .copy-success {
-  font-size:12px;
-  line-height:16px;
-  margin-top:6px;
-  color:#09bb9f;
 }
 .mycharts-modal .btn.embed .embed-hide {
   display: none;

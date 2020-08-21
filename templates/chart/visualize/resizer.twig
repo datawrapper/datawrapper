@@ -1,7 +1,6 @@
 <div class="toolbar" style="margin-top: 90px;">
     {{ svelte('resizer', {'chart': chart, 'theme': theme.getThemeData() }) }}
-
-    {% include 'chart/visualize/colorblind-check.twig' %}
+    {{ svelte('colorblind-check', {'chart': chart, 'theme': theme.getThemeData() }) }}
 </div>
 
 <style type="text/css">

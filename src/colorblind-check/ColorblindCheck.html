@@ -1,0 +1,285 @@
+<div class="toolbar-container web colorblind-check">
+    <div class="toolbar-caption">
+        {__('colorblind / caption')} {#if testing}<i class="fa fa-cog fa-spin prog-ress"></i>{/if}
+    </div>
+    {#each modes as mode}
+    <div
+        class="button"
+        on:click="setMode(mode.id)"
+        class:warning="warnings[mode.id]"
+        class:active="mode.id === activeMode"
+    >
+        <img alt="{mode.id}" src="/static/img/colorblind-check/{mode.icon}" />
+        <i class="warning fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {mode.label} {#if mode.info}
+        <div class="more-info">
+            <span class="arrow">▲</span><br />
+            {@html mode.info}
+        </div>
+        {/if}
+    </div>
+    {/each}
+</div>
+
+<style type="text/css">
+    .colorblind-check {
+        margin-left: 20px !important;
+    }
+    .colorblind-check .button {
+        transition: all 0.3s ease;
+    }
+    .colorblind-check .button i.warning {
+        transition: opacity 0.3s ease;
+    }
+</style>
+
+<script>
+    /* globals $, chart, Event */
+    import { __ } from '@datawrapper/shared/l10n';
+    import blinder from './blinder';
+    import chroma from 'chroma-js';
+
+    let __dw;
+    const lastColors = new Set();
+    let colorLookup = {};
+
+    export default {
+        data() {
+            return {
+                activeMode: 'normal',
+                testing: false,
+                warnings: {
+                    deuteranopia: false,
+                    protanopia: false,
+                    tritanopia: false
+                }
+            };
+        },
+        helpers: {
+            __,
+            modes: [
+                {
+                    id: 'normal',
+                    label: 'Norm',
+                    icon: 'norm.png',
+                    info: false
+                },
+                {
+                    id: 'deuteranopia',
+                    label: 'Deut',
+                    icon: 'deut.png',
+                    info: __('colorblind / info / deut')
+                },
+                {
+                    id: 'protanopia',
+                    label: 'Prot',
+                    icon: 'prot.png',
+                    info: __('colorblind / info / prot')
+                },
+                {
+                    id: 'tritanopia',
+                    label: 'Trit',
+                    icon: 'trit.png',
+                    info: __('colorblind / info / trit')
+                },
+                {
+                    id: 'achromatopsia',
+                    label: 'Achr',
+                    icon: 'bw.png',
+                    info: __('colorblind / info / bw')
+                }
+            ]
+        },
+        methods: {
+            setMode(mode) {
+                this.set({ activeMode: mode });
+                colorLookup = {};
+                this.forceRerender();
+            },
+            resetWarnings() {
+                this.set({
+                    warnings: {
+                        deuteranopia: false,
+                        protanopia: false,
+                        tritanopia: false
+                    }
+                });
+            },
+            forceRerender() {
+                this.initIframe(() => {
+                    $('#iframe-vis').get(0).contentWindow.__dw.render();
+                    $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
+                });
+            },
+            initIframe(callback) {
+                const iframe = $('#iframe-vis').get(0);
+                const iframeWin = iframe.contentWindow;
+
+                if (!iframeWin.__dw) return setTimeout(() => this.initIframe(callback), 5);
+
+                __dw = iframeWin.__dw;
+
+                if (!__dw.colorMapInjected) {
+                    iframeWin.__dwColorMap = color => this.colorMap(color);
+                    __dw.colorMapInjected = true;
+                }
+                if (typeof callback === 'function') callback();
+            },
+            colorMap(color) {
+                const { activeMode } = this.get();
+                if (
+                    activeMode === 'normal' ||
+                    !color ||
+                    color === 'none' ||
+                    color === 'transparent' ||
+                    color === 'auto'
+                )
+                    return color;
+                var k = String(color);
+                lastColors.add(k);
+                if (colorLookup[k] !== undefined) return colorLookup[k];
+                try {
+                    color = chroma(k).hex();
+                    return (colorLookup[k] = blinder[activeMode](color));
+                } catch (e) {
+                    return color;
+                }
+            }, //
+            runTests() {
+                // get list of all colors used in last run
+                let colors = __dw.vis.colorsUsed().filter(c => chroma(c).get('lch.c') > 1.5);
+
+                let sample;
+                if (colors.length > 30) {
+                    colors = colors
+                        .map(function (c) {
+                            var col = chroma(c);
+                            return {
+                                raw: c,
+                                color: col,
+                                hue: col.get('lch.h')
+                            };
+                        })
+                        .sort(function (a, b) {
+                            return a.hue - b.hue;
+                        })
+                        .map(function (c) {
+                            return c.color;
+                        });
+                    // sample colors from hue gradient
+                    sample = chroma.scale(colors).colors(40);
+                } else {
+                    // use all colors
+                    sample = colors;
+                }
+
+                const { testing } = this.get();
+                if (testing) return;
+
+                if (!sample.length) {
+                    // wait a second
+                    setTimeout(() => {
+                        this.runTests();
+                    }, 1000);
+                    return;
+                }
+
+                this.set({ testing: true });
+                setTimeout(() => {
+                    this.set({ testing: false });
+                }, 4000);
+
+                // auto-test 3 simulations
+
+                var res = {};
+
+                if (colors.length > 1) {
+                    // this.resetWarnings();
+                    const { warnings } = this.get();
+                    Object.keys(warnings).forEach(mode => {
+                        if (!this.testSample(sample, mode)) {
+                            warnings[mode] = true;
+                            res[mode] = 1;
+                        } else {
+                            warnings[mode] = false;
+                            res[mode] = 0;
+                        }
+                    });
+                    this.set({ warnings });
+                } else {
+                    // just one color
+                    res = { deuteranopia: 0, protanopia: 0, tritanopia: 0 };
+                }
+
+                this.set({ testing: false });
+
+                if (window.location.search === '?cbchk') {
+                    if (chart.save) {
+                        chart.set('metadata.colorblind', res);
+                    } else {
+                        setTimeout(function () {
+                            chart.set('metadata.colorblind', res);
+                        }, 3000);
+                    }
+                }
+
+                colorLookup = {};
+            },
+            testSample(sample, type) {
+                let ok = 0;
+                let notok = 0;
+                const ratioThres = 5;
+                const smallestPercievableDistance = 9.2;
+                const k = sample.length;
+                if (!k) {
+                    return true;
+                }
+                // compute distances between colors
+                for (var a = 0; a < k; a++) {
+                    for (var b = a + 1; b < k; b++) {
+                        try {
+                            var colA = chroma(sample[a]);
+                            var colB = chroma(sample[b]);
+                        } catch (e) {
+                            // something odd with either of the colors, ignore
+                            continue;
+                        }
+                        const dstNorm = difference(colA, colB);
+                        if (dstNorm < smallestPercievableDistance) continue;
+                        const aSim = blinder[type](colA.hex());
+                        const bSim = blinder[type](colB.hex());
+                        const dstSim = difference(aSim, bSim);
+                        const isNotOk =
+                            dstNorm / dstSim > ratioThres && dstSim < smallestPercievableDistance;
+                        if (isNotOk) {
+                        }
+                        // count combinations that are problematic
+                        if (isNotOk) notok++;
+                        else ok++;
+                    }
+                }
+
+                // compute share of problematic samples
+                return notok / (ok + notok) < 0.03;
+            }
+        },
+        oncreate() {
+            window.addEventListener('message', evt => {
+                if (evt.data === 'datawrapper:vis:init') {
+                    this.initIframe();
+                }
+                if (evt.data === 'datawrapper:vis:rendered') {
+                    this.runTests();
+                }
+            });
+            // run test upon first load
+            this.initIframe(() => {
+                this.runTests();
+            });
+        }
+    };
+
+    function difference(colA, colB) {
+        return 0.5 * (chroma.deltaE(colA, colB) + chroma.deltaE(colB, colA));
+    }
+</script>
