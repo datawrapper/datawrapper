@@ -58,7 +58,7 @@ function error_not_allowed_to_publish() {
 function error_chart_not_found($id) {
     error_page('chart',
         __('Whoops! We couldn\'t find that chart..'),
-        __('Sorry, but it seems that there is no chart with the id <b>'.$id.'</b> (anymore)'),
+        str_replace('%s', htmlspecialchars($id), __('Sorry, but it seems that there is no chart with the id <b>%s</b> (anymore)')),
         false, 404
     );
 }
@@ -121,4 +121,3 @@ function error_mycharts_user_not_found() {
         __('There is no user with the given user id.')
     );
 }
-
