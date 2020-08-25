@@ -48,7 +48,7 @@ define(function() {
                 if (val !== '' && val != $.trim($(evt.target).data('old-value'))) {
                     var changes = chart.get('metadata.data.changes', []).slice(0);
                     r.forEach(function(r) {
-                        change = { row: r, column: c, value: val };
+                        var change = { row: r, column: c, value: val };
                         changes.push(change);
                     });
                     chart.set('metadata.data.changes', clone(changes));

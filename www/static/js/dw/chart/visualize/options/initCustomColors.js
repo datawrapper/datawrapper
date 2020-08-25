@@ -1,3 +1,4 @@
+/* global chroma */
 
 define(function() {
 
@@ -6,7 +7,7 @@ define(function() {
      */
     function initCustomColors(chart) {
         var customColors = $('#customColors'),
-            sel = chart.get('metadata.visualize.custom-colors', {});
+            sel = chart.get('metadata.visualize.custom-colors', {}),
             labels = dw.backend.currentVis.keys();
 
         if (_.isEmpty(labels)) {
