@@ -76,7 +76,7 @@ define(function() {
         else {
             var embedCodes = chart.metadata.publish['embed-codes'] || {};
             var embedSettings = organizationEmbedSettings[chart.organizationId];
-            var preferredEmbed = embedSettings.preferred_embed;
+            var preferredEmbed = embedSettings ? embedSettings.preferred_embed : 'embed-method-responsive';
             // preferred embed to top of list
             var embedCodesTypes = Object.keys(embedCodes).sort(function(a,b){
                 return a.replace('embed-method-','') === preferredEmbed ? -1 : b.replace('embed-method-','') === preferredEmbed ? 1 : 0;
