@@ -1,6 +1,8 @@
 /* global organizationEmbedSettings */
 
-define(function () {
+define(function (require) {
+    var httpReq = require('./httpReq');
+
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());
 
@@ -50,27 +52,13 @@ define(function () {
 
         // update form action for duplicate button
         $('.action-duplicate .duplicate', wrapper).click(function () {
-            $.ajax({
-                type: 'POST',
-                url:
-                    window.location.protocol +
-                    '//' +
-                    window.dw.backend.__api_domain +
-                    '/v3/charts/' +
-                    chart.id +
-                    '/copy',
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (data) {
-                    window.open('/chart/' + data.id + '/visualize', '_blank');
+            httpReq.post('/v3/charts/' + chart.id + '/copy').then(function (data) {
+                window.open('/chart/' + data.id + '/visualize', '_blank');
 
-                    require(['dw/mycharts/no_reload_folder_change'], function (api) {
-                        api.reloadLink(location.pathname);
-                        overlay.close();
-                    });
-                },
-                dataType: 'json'
+                require(['dw/mycharts/no_reload_folder_change'], function (api) {
+                    api.reloadLink(location.pathname);
+                    overlay.close();
+                });
             });
         });
 

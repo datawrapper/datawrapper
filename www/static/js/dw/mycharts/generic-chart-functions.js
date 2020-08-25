@@ -1,5 +1,6 @@
 define(function (require) {
     var $ = require('jquery'),
+        httpReq = require('./httpReq'),
         twig = require('./twig_globals'),
         showChartModal = require('./showChartModal'),
         cft;
@@ -39,23 +40,9 @@ define(function (require) {
             e.preventDefault();
             var id = $(e.target).parents('.chart').data('id');
 
-            $.ajax({
-                type: 'POST',
-                url:
-                    window.location.protocol +
-                    '//' +
-                    window.dw.backend.__api_domain +
-                    '/v3/charts/' +
-                    id +
-                    '/copy',
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (data) {
-                    // redirect to copied chart
-                    window.location.href = '/chart/' + data.id + '/visualize';
-                },
-                dataType: 'json'
+            httpReq.post('/v3/charts/' + id + '/copy').then(function (data) {
+                // redirect to copied chart
+                window.location.href = '/chart/' + data.id + '/visualize';
             });
         });
 
