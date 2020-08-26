@@ -20,9 +20,9 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
     } else if (!empty($_COOKIE['DW-SESSION'])) {
         $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
         if (!empty($_COOKIE['crumb'])) {
-            // FIXME: Sanitize the cookie value before putting it in HTTP headers.
             $headers[] = 'Cookie: crumb='.$_COOKIE['crumb'];
             $headers[] = 'X-CSRF-Token: '.$_COOKIE['crumb'];
+            $headers[] = sprintf('Referer: %s://%s', $protocol, $GLOBALS['dw_config']['domain']);
         }
     }
 
