@@ -1,3 +1,5 @@
+/* global organizationEmbedSettings */
+
 define(function() {
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());

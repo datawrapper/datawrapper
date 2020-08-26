@@ -1,3 +1,4 @@
+/* global chart */
 
 define(function() {
 

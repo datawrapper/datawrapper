@@ -38,21 +38,15 @@ define(function(require) {
                 var li = $(
                     '<li folder-id="' +
                         folder.id +
-                        '">\n\
-                    <div class="collapse-toggle"></div>\n\
-                    <a href="' +
+                        '">\n<div class="collapse-toggle"></div>\n<a href="' +
                         genHref(org_id, folder.id) +
-                        '">\n\
-                        ' +
+                        '">\n' +
                         folder_icon_open +
                         folder_icon_closed +
-                        '\n\
-                          <span>' +
+                        '\n<span>' +
                         dw.utils.purifyHtml(folder.name, '') +
                         (folder.charts > 0 ? '<span class="chart-count">(' + folder.charts + ')</span>' : '') +
-                        '</span>\n\
-                    </a>\n\
-                </li>'
+                        '</span>\n</a>\n</li>'
                 ).appendTo(parent);
                 if (folder.sub) {
                     li.addClass('has-subtree');

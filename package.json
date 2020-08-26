@@ -3,7 +3,7 @@
     "version": "1.25.2",
     "scripts": {
         "format": "prettier 'src/**/*.{js,html}' --write",
-        "lint": "prettier --check 'src/**/*.{js,html}' && healthier 'src/**/*.{js,html}'",
+        "lint": "healthier 'src/**/*.{js,html}' && healthier 'www/static/js/dw/**/*.js' && prettier --check 'src/**/*.{js,html}'",
         "watch": "watch 'make assets' assets/"
     },
     "repository": {
@@ -66,6 +66,35 @@
         "plugins": [
             "html",
             "@tivac/svelte"
+        ],
+        "overrides": [
+            {
+                "files": [
+                    "www/static/js/dw/**/*.js"
+                ],
+                "env": {
+                    "browser": true
+                },
+                "globals": {
+                    "$": "readonly",
+                    "_": "readonly",
+                    "Globalize": "readonly",
+                    "define": "readonly",
+                    "dw": "readonly"
+                },
+                "rules": {
+                    "camelcase": "warn",
+                    "no-console": "warn",
+                    "no-unused-vars": "warn",
+                    "one-var": "warn",
+                    "dot-notation": "warn",
+                    "eqeqeq": "warn",
+                    "no-unneeded-ternary": "warn",
+                    "spaced-comment": "warn",
+                    "no-useless-escape": "warn",
+                    "new-cap": "warn"
+                }
+            }
         ]
     },
     "ava": {
