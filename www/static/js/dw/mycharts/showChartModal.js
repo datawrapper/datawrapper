@@ -1,7 +1,7 @@
 /* global organizationEmbedSettings */
 
 define(function (require) {
-    var httpReq = require('./httpReq');
+    var httpReq = require('../backend/httpReq');
 
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());

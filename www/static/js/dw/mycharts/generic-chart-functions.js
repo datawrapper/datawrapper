@@ -1,6 +1,6 @@
 define(function (require) {
     var $ = require('jquery'),
-        httpReq = require('./httpReq'),
+        httpReq = require('../backend/httpReq'),
         twig = require('./twig_globals'),
         showChartModal = require('./showChartModal'),
         cft;

@@ -1,7 +1,7 @@
 /* global chart */
 
 define(function (require) {
-    var httpReq = require('./httpReq');
+    var httpReq = require('../backend/httpReq');
 
     function init(chartUrl) {
         $('.chart-actions .action-duplicate a').click(function (e) {
