@@ -1,25 +1,24 @@
-
-define(
-    ['./options/initCustomColors', './options/syncVisOptions', './options/unsyncVisOptions'],
-
-function(initCustomColors, syncVisOptions, unsyncVisOptions) {
-
+define([
+    './options/initCustomColors',
+    './options/syncVisOptions',
+    './options/unsyncVisOptions'
+], function (initCustomColors, syncVisOptions, unsyncVisOptions) {
     var _chart, _vis;
 
     return {
-        init: function(chart, vis) {
+        init: function (chart, vis) {
             _chart = chart;
             _vis = vis;
         },
 
-        sync: function() {
+        sync: function () {
             syncVisOptions(_vis, _chart);
             $('.select-row').hide();
             initCustomColors(_chart);
 
             var containers = $('.vis-options');
 
-            containers.each(function(i, el) {
+            containers.each(function (i, el) {
                 $('.vis-option-help', el).tooltip({
                     placement: 'right',
                     html: true,
@@ -31,30 +30,35 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
                 });
             });
 
-            var type = _chart.get('type'), usrPref = {};
+            var type = _chart.get('type'),
+                usrPref = {};
             try {
                 usrPref = JSON.parse(localStorage.getItem('dw-vis-groups')) || {};
             } catch (e) {}
 
             if (!usrPref[type]) usrPref[type] = {};
 
-            _.each(usrPref[type], function(val, key) {
+            _.each(usrPref[type], function (val, key) {
                 // initialize state from user preferences
-                $('#vis-options-'+key)[val == 'open' ? 'addClass' : 'removeClass']('group-open');
+                $('#vis-options-' + key)[val == 'open' ? 'addClass' : 'removeClass']('group-open');
             });
 
             // don't react to a group that contains `svelte-group` class,
             // since it will handle the toggle functionality on its own
-            $('.vis-option-type-group:not(.notoggle,.svelte-group) > label.group-title').click(function() {
-                var $g = $(this).parents('.vis-option-type-group').toggleClass('group-open');
-                $(window).resize();
-                try {
-                    usrPref[type][$g.data('group-key')] = $g.hasClass('group-open') ? 'open' : 'closed';
-                    localStorage.setItem('dw-vis-groups', JSON.stringify(usrPref));
-                } catch (e) {}
-            });
+            $('.vis-option-type-group:not(.notoggle,.svelte-group) > label.group-title').click(
+                function () {
+                    var $g = $(this).parents('.vis-option-type-group').toggleClass('group-open');
+                    $(window).resize();
+                    try {
+                        usrPref[type][$g.data('group-key')] = $g.hasClass('group-open')
+                            ? 'open'
+                            : 'closed';
+                        localStorage.setItem('dw-vis-groups', JSON.stringify(usrPref));
+                    } catch (e) {}
+                }
+            );
 
-            $('.vis-option-group').each(function() {
+            $('.vis-option-group').each(function () {
                 var $control_grp = $(this),
                     $control_lbl = $('.control-label', $control_grp).css('max-width', 'auto'),
                     $controls = $('.controls', $control_grp).css('max-width', 'auto');
@@ -67,11 +71,8 @@ function(initCustomColors, syncVisOptions, unsyncVisOptions) {
             });
         },
 
-        reset: function() {
+        reset: function () {
             unsyncVisOptions(_vis, _chart);
         }
-
-
     };
-
 });

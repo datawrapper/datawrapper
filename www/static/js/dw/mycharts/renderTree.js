@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     var cft,
         twig = require('./twig_globals');
 
@@ -7,15 +7,21 @@ define(function(require) {
     }
 
     function genHref(org_id, folder_id) {
-        return (org_id ? '/team/' + org_id + '/' : twig.globals.strings.mycharts_base + '/') + folder_id;
+        return (
+            (org_id ? '/team/' + org_id + '/' : twig.globals.strings.mycharts_base + '/') +
+            folder_id
+        );
     }
 
     function changeChartCount(folder_id, org_id, chart_count) {
-        var folder = folder_id ? $('ul.folders-left li[folder-id="' + folder_id + '"]') : $(org_id ? '#org-root' + getOrgTag(org_id) : '#user-root');
+        var folder = folder_id
+            ? $('ul.folders-left li[folder-id="' + folder_id + '"]')
+            : $(org_id ? '#org-root' + getOrgTag(org_id) : '#user-root');
 
         folder.find('span.chart-count').remove();
 
-        if (chart_count > 0) folder.find('span').append('<span class="chart-count">(' + chart_count + ')</span>');
+        if (chart_count > 0)
+            folder.find('span').append('<span class="chart-count">(' + chart_count + ')</span>');
     }
 
     function changeActiveFolder(folder_id, org_id) {
@@ -34,7 +40,7 @@ define(function(require) {
             folder_icon_closed = '<i class="im im-folder"></i>';
 
         function traverse(parent, subtree) {
-            subtree.forEach(function(folder) {
+            subtree.forEach(function (folder) {
                 var li = $(
                     '<li folder-id="' +
                         folder.id +
@@ -45,7 +51,9 @@ define(function(require) {
                         folder_icon_closed +
                         '\n<span>' +
                         dw.utils.purifyHtml(folder.name, '') +
-                        (folder.charts > 0 ? '<span class="chart-count">(' + folder.charts + ')</span>' : '') +
+                        (folder.charts > 0
+                            ? '<span class="chart-count">(' + folder.charts + ')</span>'
+                            : '') +
                         '</span>\n</a>\n</li>'
                 ).appendTo(parent);
                 if (folder.sub) {
@@ -60,7 +68,7 @@ define(function(require) {
         traverse($(tag), tree);
     }
 
-    return function() {
+    return function () {
         cft = window['ChartFolderTree'];
         cft.setRenderCallbacks({
             changeChartCount: changeChartCount,

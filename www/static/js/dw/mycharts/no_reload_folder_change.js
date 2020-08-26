@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     var $ = require('jquery'),
         twig = require('./twig_globals'),
         multiselection = require('./multiselection'),
@@ -6,10 +6,7 @@ define(function(require) {
         cft;
 
     function link_reader(link) {
-        var parsed = link
-                .split('?')[0]
-                .slice(1)
-                .split('/'),
+        var parsed = link.split('?')[0].slice(1).split('/'),
             id = {
                 org: false,
                 folder: false
@@ -39,7 +36,10 @@ define(function(require) {
         li.classList.add('span2');
         li.setAttribute('folder-id', folder.id);
         a.classList.add('thumbnail');
-        a.setAttribute('href', org_id ? '/team/' + org_id + '/' + folder.id : '/mycharts/' + folder.id);
+        a.setAttribute(
+            'href',
+            org_id ? '/team/' + org_id + '/' + folder.id : '/mycharts/' + folder.id
+        );
         i.classList.add('im');
         i.classList.add('im-folder');
         i.classList.add('im-fw');
@@ -54,16 +54,14 @@ define(function(require) {
         var id = cft.getCurrentFolder(),
             subfolders = $('ul.subfolders');
 
-        $('ul.subfolders li.span2')
-            .not('.add-button')
-            .remove();
+        $('ul.subfolders li.span2').not('.add-button').remove();
 
         if (id.folder) {
-            cft.getSubFolders(id.folder).forEach(function(folder) {
+            cft.getSubFolders(id.folder).forEach(function (folder) {
                 subfolders.prepend(build_thumbnail(folder, id.organization));
             });
         } else {
-            cft.getRootSubFolders(id.organization).forEach(function(folder) {
+            cft.getRootSubFolders(id.organization).forEach(function (folder) {
                 subfolders.prepend(build_thumbnail(folder, id.organization));
             });
         }
@@ -78,18 +76,23 @@ define(function(require) {
 
         line.empty();
         $('#current-folder-name').empty();
-        $('#current-root').attr('href', id.organization ? '/team/' + id.organization : twig.globals.strings.mycharts_base);
+        $('#current-root').attr(
+            'href',
+            id.organization ? '/team/' + id.organization : twig.globals.strings.mycharts_base
+        );
         $('#current-root').text(cur_org_name ? cur_org_name : twig.globals.strings.mycharts_trans);
 
         if (!id.folder) return;
-        cft.getIdsToFolder(id.folder).forEach(function(id) {
+        cft.getIdsToFolder(id.folder).forEach(function (id) {
             var a = document.createElement('a'),
                 folder = cft.getFolderById(id);
 
             a.innerText = dw.utils.purifyHtml(folder.name, '');
             a.setAttribute(
                 'href',
-                folder.organization ? '/team/' + folder.organization + '/' + folder.id : twig.globals.strings.mycharts_base + '/' + folder.id
+                folder.organization
+                    ? '/team/' + folder.organization + '/' + folder.id
+                    : twig.globals.strings.mycharts_base + '/' + folder.id
             );
             line.append(sep, a);
         });
@@ -103,9 +106,7 @@ define(function(require) {
         $('#sort-dropdown').removeAttr('data-toggle');
         $('ul.subfolders').hide();
         $('.gallery hr').hide();
-        $('#current-folder > *')
-            .not('#current-folder-name')
-            .hide();
+        $('#current-folder > *').not('#current-folder-name').hide();
         $('ul.folders-left li.active').removeClass('active');
         $('#current-folder-name').text(twig.globals.strings.search);
     }
@@ -116,9 +117,7 @@ define(function(require) {
         $('input.search-query').val('');
         $('ul.subfolders').show();
         $('.gallery hr').show();
-        $('#current-folder > *')
-            .not('#current-folder-name')
-            .show();
+        $('#current-folder > *').not('#current-folder-name').show();
         repaint_breadcrumb();
         repaint_subfolders();
     }
@@ -142,7 +141,7 @@ define(function(require) {
 
         var chart_list = $('.mycharts-chart-list')
             .addClass('reloading')
-            .load(path, function() {
+            .load(path, function () {
                 var id = link_reader(path);
 
                 window.history.pushState(null, '', path.slice(0, path.lastIndexOf('xhr=1') - 1));
@@ -164,7 +163,7 @@ define(function(require) {
     }
 
     function set_click(selector) {
-        $(selector).on('click', function(evt) {
+        $(selector).on('click', function (evt) {
             var path = $(evt.currentTarget).attr('href');
             evt.preventDefault();
             if (!$(evt.currentTarget).hasClass('pagination')) cft.setSearchDisabled();
@@ -184,15 +183,9 @@ define(function(require) {
         if ($(el).hasClass('root-folder')) {
             return $(el).attr('id') == 'user-root'
                 ? false
-                : $(el)
-                      .attr('id')
-                      .replace('org-root-', '');
+                : $(el).attr('id').replace('org-root-', '');
         } else {
-            return getOrganizationId(
-                $(el)
-                    .closest('ul')
-                    .prev()
-            );
+            return getOrganizationId($(el).closest('ul').prev());
         }
     }
 
@@ -219,13 +212,13 @@ define(function(require) {
     }
 
     function toggleSubtree() {
-        $('li.has-subtree, .root-folder').each(function(index, el) {
+        $('li.has-subtree, .root-folder').each(function (index, el) {
             if (isCollapsed(el)) {
                 $(this).addClass('subtree-collapsed');
             }
         });
 
-        $('.folders-left li a > .im,.folders-left li .collapse-toggle').click(function(evt) {
+        $('.folders-left li a > .im,.folders-left li .collapse-toggle').click(function (evt) {
             var li = $(evt.currentTarget).parents('li');
             if (li.is('.has-subtree,.root-folder')) {
                 evt.preventDefault();
@@ -233,11 +226,12 @@ define(function(require) {
                 li.toggleClass('subtree-collapsed');
 
                 var folderId = getId($(this).parent()),
-                    isCollapsed = $(this)
-                        .parent()
-                        .hasClass('subtree-collapsed');
+                    isCollapsed = $(this).parent().hasClass('subtree-collapsed');
 
-                window.localStorage.setItem('chart-folder-' + folderId, isCollapsed ? 'collapsed' : 'expanded');
+                window.localStorage.setItem(
+                    'chart-folder-' + folderId,
+                    isCollapsed ? 'collapsed' : 'expanded'
+                );
             }
         });
     }

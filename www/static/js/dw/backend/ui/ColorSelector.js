@@ -1,6 +1,6 @@
 /* globals $, dw, define _ */
-define(['chroma'], function(chroma) {
-    return function() {
+define(['chroma'], function (chroma) {
+    return function () {
         /*
          * API-draft:
          *
@@ -10,7 +10,7 @@ define(['chroma'], function(chroma) {
          *    change: function(new_color) { }  // called after user closed popup
          * });
          */
-        $.fn.colorselector = function(opts) {
+        $.fn.colorselector = function (opts) {
             $('.color-selector').remove();
             var btn = $(this);
             var popup = $('<div />')
@@ -22,9 +22,10 @@ define(['chroma'], function(chroma) {
                 .appendTo('body');
             var colorAxes = {};
             var colorAxesConfig = {};
-            var hexEditable = opts.config && opts.config.controls && opts.config.controls.hexEditable;
+            var hexEditable =
+                opts.config && opts.config.controls && opts.config.controls.hexEditable;
             var rowCount = opts.config && opts.config.rowCount ? opts.config.rowCount : false;
-            ['hue', 'saturation', 'lightness'].forEach(function(key) {
+            ['hue', 'saturation', 'lightness'].forEach(function (key) {
                 if (opts.config) {
                     colorAxesConfig[key] = opts.config.controls[key];
                 } else {
@@ -32,31 +33,27 @@ define(['chroma'], function(chroma) {
                 }
             });
 
-            var palette = $('<div />')
-                .addClass('palette')
-                .appendTo(popup);
+            var palette = $('<div />').addClass('palette').appendTo(popup);
             if (colorAxesConfig.lightness) {
-                var lightness = $('<div />')
-                    .addClass('color-axis lightness')
-                    .appendTo(popup);
+                var lightness = $('<div />').addClass('color-axis lightness').appendTo(popup);
                 colorAxes.lightness = lightness;
             }
             if (colorAxesConfig.saturation) {
-                var saturation = $('<div />')
-                    .addClass('color-axis saturation')
-                    .appendTo(popup);
+                var saturation = $('<div />').addClass('color-axis saturation').appendTo(popup);
                 colorAxes.saturation = saturation;
             }
             if (colorAxesConfig.hue) {
-                var hue = $('<div />')
-                    .addClass('color-axis hue')
-                    .appendTo(popup);
+                var hue = $('<div />').addClass('color-axis hue').appendTo(popup);
                 colorAxes.hue = hue;
             }
-            var bottom = $('<div />')
-                .addClass('footer')
-                .appendTo(popup);
-            var hexTf = $("<input class='hex" + (hexEditable ? '' : ' readonly') + "' type='text'" + (hexEditable ? '' : ' readonly') + '/>')
+            var bottom = $('<div />').addClass('footer').appendTo(popup);
+            var hexTf = $(
+                "<input class='hex" +
+                    (hexEditable ? '' : ' readonly') +
+                    "' type='text'" +
+                    (hexEditable ? '' : ' readonly') +
+                    '/>'
+            )
                 .addClass('hex')
                 .appendTo(bottom);
             var okBtn = $('<button />')
@@ -66,7 +63,7 @@ define(['chroma'], function(chroma) {
 
             addcol(opts.color, bottom);
             // initialize palette colors
-            $.each(opts.palette, function(i, color) {
+            $.each(opts.palette, function (i, color) {
                 addcol(color, palette, true);
             });
 
@@ -77,12 +74,12 @@ define(['chroma'], function(chroma) {
                 if (_.isFunction(opts.change)) opts.change(opts.color);
             }
 
-            hexTf.change(function() {
+            hexTf.change(function () {
                 setColor(hexTf.val());
             });
             okBtn.click(closePopup);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 $('body').one('click', body_click);
             }, 300);
 
@@ -96,13 +93,13 @@ define(['chroma'], function(chroma) {
 
                 opts.color = hex;
 
-                Object.keys(colorAxes).forEach(function(key, i) {
+                Object.keys(colorAxes).forEach(function (key, i) {
                     if (cont !== colorAxes[key] || (key === 'hue' && cont === colorAxes.hue)) {
                         colorAxes[key].html('');
                         var values = spread(center[i], spread_[i], steps[i], steps2[i]);
                         // shift center to match color
                         center[i] += lch[i] - dw.utils.nearest(values, lch[i]);
-                        _.each(spread(center[i], spread_[i], steps[i], steps2[i]), function(x) {
+                        _.each(spread(center[i], spread_[i], steps[i], steps2[i]), function (x) {
                             var lch_ = lch.slice(0);
                             lch_[i] = x;
                             addcol(chroma.lch(lch_).hex(), colorAxes[key]);
@@ -111,19 +108,15 @@ define(['chroma'], function(chroma) {
                 });
                 hexTf.val(hex).css({
                     background: hex,
-                    'border-color': chroma(hex)
-                        .darker()
-                        .hex(),
+                    'border-color': chroma(hex).darker().hex(),
                     color:
                         chroma(hex).luminance() > 0.45
                             ? 'rgba(0,0,0,' + (hexEditable ? 1 : 0.3) + ')'
                             : 'rgba(255,255,255,' + (hexEditable ? 1 : 0.6) + ')'
                 });
+                $('.color', popup).removeClass('selected').removeClass('inverted');
                 $('.color', popup)
-                    .removeClass('selected')
-                    .removeClass('inverted');
-                $('.color', popup)
-                    .filter(function(i, e) {
+                    .filter(function (i, e) {
                         return $(e).data('color') === hex;
                     })
                     .addClass('selected');
@@ -131,7 +124,7 @@ define(['chroma'], function(chroma) {
                     $('.color.selected', colorAxes.hue).removeClass('selected');
                 }
                 $('.color.selected', popup)
-                    .filter(function(i, e) {
+                    .filter(function (i, e) {
                         return chroma($(e).data('color')).luminance() < 0.05;
                     })
                     .addClass('inverted');
@@ -154,18 +147,21 @@ define(['chroma'], function(chroma) {
 
             function addcol(color, cont, resizeSwatch) {
                 var swatchDims = rowCount ? (157 - 2 * rowCount) / rowCount : '';
-                var styleString = resizeSwatch && rowCount ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'" : '';
+                var styleString =
+                    resizeSwatch && rowCount
+                        ? "style='width: " + swatchDims + 'px; height: ' + swatchDims + "px'"
+                        : '';
                 $('<div ' + styleString + ' />')
                     .addClass('color')
                     .data('color', color)
                     .css('background', color)
-                    .click(function(evt) {
+                    .click(function (evt) {
                         var c = $(evt.target);
                         setColor(c.data('color'), cont);
                         // stop propagation so body.click won't fire
                         evt.stopPropagation();
                     })
-                    .dblclick(function(evt) {
+                    .dblclick(function (evt) {
                         var c = $(evt.target);
                         opts.color = c.data('color');
                         closePopup();

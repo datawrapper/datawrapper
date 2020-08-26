@@ -1,5 +1,4 @@
-define(function(require) {
-
+define(function (require) {
     var $ = require('jquery'),
         _ = require('underscore'),
         twig = require('./mycharts/twig_globals'),
@@ -13,11 +12,15 @@ define(function(require) {
         sort_order_and_search = require('./mycharts/sort_order_and_search'),
         drag_n_drop = require('./mycharts/drag_n_drop');
 
-    return function(obj) {
+    return function (obj) {
         twig.init(obj);
 
-        $('document').ready(function() {
-            window['ChartFolderTree'] = new chartFolderTree(twig.globals.preload, twig.globals.current, twig.globals.charts);
+        $('document').ready(function () {
+            window['ChartFolderTree'] = new chartFolderTree(
+                twig.globals.preload,
+                twig.globals.current,
+                twig.globals.charts
+            );
             delete twig.globals.preload;
             delete twig.globals.current;
             delete twig.globals.charts;

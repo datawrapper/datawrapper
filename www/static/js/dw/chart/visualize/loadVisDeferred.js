@@ -1,20 +1,17 @@
-
-define(function() {
-
-    return (function() {
+define(function () {
+    return (function () {
         var callbacks = $.Callbacks();
         return {
-            promise: function() {
+            promise: function () {
                 return {
-                    done: function(cb) {
+                    done: function (cb) {
                         callbacks.add(cb);
                     }
                 };
             },
-            resolve: function() {
+            resolve: function () {
                 callbacks.fire();
             }
         };
     })();
-
 });
