@@ -1,6 +1,6 @@
 /* global organizationEmbedSettings */
 
-define(function() {
+define(function () {
     _.templateSettings = { interpolate: /\[\[(.+?)\]\]/g };
     var chartDetailTpl = _.template($('#mycharts-modal').html());
 
@@ -10,14 +10,15 @@ define(function() {
         var meta = chart.metadata,
             bg = meta.publish && meta.publish.background ? meta.publish.background : '#fff',
             chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
-            date_fmt = function(d) {
+            date_fmt = function (d) {
                 d = new Date(d.split(' ')[0]);
                 return Globalize.format(d, 'ddd') + ', ' + Globalize.format(d, 'd');
             },
             data = {
                 chartID: chart.id,
                 namespace:
-                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') && chart.metadata.visualize['map-type-set']
+                    (chart.type == 'd3-maps-choropleth' || chart.type == 'd3-maps-symbols') &&
+                    chart.metadata.visualize['map-type-set']
                         ? 'map'
                         : 'chart',
                 chartUrl: location.protocol + '//' + dw.backend.__domain + chartUrl,
@@ -42,33 +43,38 @@ define(function() {
                 }
             });
         $('iframe', wrapper).attr('src', data.chartUrl);
-        $('.close', wrapper).click(function(e) {
+        $('.close', wrapper).click(function (e) {
             e.preventDefault();
             overlay.close();
         });
 
         // update form action for duplicate button
-        $('.action-duplicate .duplicate', wrapper)
-            .click(function() {
-                $.ajax({
-                    type: "POST",
-                    url: window.location.protocol + '//' + window.dw.backend.__api_domain + '/v3/charts/'+chart.id+'/copy',
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function(data) {
-                        window.open('/chart/' + data.id + '/visualize', '_blank');
+        $('.action-duplicate .duplicate', wrapper).click(function () {
+            $.ajax({
+                type: 'POST',
+                url:
+                    window.location.protocol +
+                    '//' +
+                    window.dw.backend.__api_domain +
+                    '/v3/charts/' +
+                    chart.id +
+                    '/copy',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    window.open('/chart/' + data.id + '/visualize', '_blank');
 
-                        require(['dw/mycharts/no_reload_folder_change'], function(api) {
-                            api.reloadLink(location.pathname);
-                            overlay.close();
-                        });
-                    },
-                    dataType: 'json'
-                });
+                    require(['dw/mycharts/no_reload_folder_change'], function (api) {
+                        api.reloadLink(location.pathname);
+                        overlay.close();
+                    });
+                },
+                dataType: 'json'
             });
+        });
 
-        $('.embed', wrapper).click(function(e) {
+        $('.embed', wrapper).click(function (e) {
             e.preventDefault();
             $('.embed-code', wrapper).toggleClass('hidden');
             $('.embed', wrapper).toggleClass('embed-shown');
@@ -78,28 +84,61 @@ define(function() {
         else {
             var embedCodes = chart.metadata.publish['embed-codes'] || {};
             var embedSettings = organizationEmbedSettings[chart.organizationId];
-            var preferredEmbed = embedSettings ? embedSettings.preferred_embed : 'embed-method-responsive';
+            var preferredEmbed = embedSettings
+                ? embedSettings.preferred_embed
+                : 'embed-method-responsive';
             // preferred embed to top of list
-            var embedCodesTypes = Object.keys(embedCodes).sort(function(a,b){
-                return a.replace('embed-method-','') === preferredEmbed ? -1 : b.replace('embed-method-','') === preferredEmbed ? 1 : 0;
+            var embedCodesTypes = Object.keys(embedCodes).sort(function (a, b) {
+                return a.replace('embed-method-', '') === preferredEmbed
+                    ? -1
+                    : b.replace('embed-method-', '') === preferredEmbed
+                    ? 1
+                    : 0;
             });
-            embedCodesTypes.forEach(function(key,i) {
-                var n = key === 'embed-method-custom' ? embedSettings.custom_embed.title : dw.backend.__messages.core[key.replace('embed-method-', 'publish / embed / ')];
-                var label = n + (i === 0 ? ' <span style="font-size:85%; color:#adadad"> ('+dw.backend.__messages.core["default"]+') </span>' : '');
-                $('ul.embed-codes', wrapper).append('<li><a name="'+n+'"href="" data-embed-method="' + key + '">' + label +'</a></li>');
+            embedCodesTypes.forEach(function (key, i) {
+                var n =
+                    key === 'embed-method-custom'
+                        ? embedSettings.custom_embed.title
+                        : dw.backend.__messages.core[
+                              key.replace('embed-method-', 'publish / embed / ')
+                          ];
+                var label =
+                    n +
+                    (i === 0
+                        ? ' <span style="font-size:85%; color:#adadad"> (' +
+                          dw.backend.__messages.core['default'] +
+                          ') </span>'
+                        : '');
+                $('ul.embed-codes', wrapper).append(
+                    '<li><a name="' +
+                        n +
+                        '"href="" data-embed-method="' +
+                        key +
+                        '">' +
+                        label +
+                        '</a></li>'
+                );
             });
             var timeout;
-            $('ul.embed-codes li a', wrapper).click(function(evt) {
+            $('ul.embed-codes li a', wrapper).click(function (evt) {
                 clearTimeout(timeout);
                 var key = $(this).data('embed-method');
-                var textarea = $('.embed-code-copy', wrapper).val(chart.metadata.publish['embed-codes'][key].replace(/&#60;/gm,'<').replace(/&#62;/gm,'>'));
+                var textarea = $('.embed-code-copy', wrapper).val(
+                    chart.metadata.publish['embed-codes'][key]
+                        .replace(/&#60;/gm, '<')
+                        .replace(/&#62;/gm, '>')
+                );
                 textarea.get(0).select();
                 var ok = document.execCommand('copy');
                 if (ok) {
                     $('.copy-success', wrapper).removeClass('hidden');
-                    var message = dw.backend.__messages.core["copy-success"];
-                    $('.copy-success', wrapper).html(dw.utils.purifyHtml(message,'').replace('%embed-code-type%','<b>'+evt.currentTarget.name+'</b>'));
-                    timeout = setTimeout(function() {
+                    var message = dw.backend.__messages.core['copy-success'];
+                    $('.copy-success', wrapper).html(
+                        dw.utils
+                            .purifyHtml(message, '')
+                            .replace('%embed-code-type%', '<b>' + evt.currentTarget.name + '</b>')
+                    );
+                    timeout = setTimeout(function () {
                         $('.copy-success', wrapper).addClass('hidden');
                     }, 3000);
                 }
@@ -108,10 +147,10 @@ define(function() {
         }
         if (!chart.forkedFrom) $('.forked', wrapper).remove();
         else {
-            $('.forked a', wrapper).click(function(e) {
+            $('.forked a', wrapper).click(function (e) {
                 // navigate to source chart
                 e.preventDefault();
-                $.getJSON('/api/2/charts/' + chart.forkedFrom, function(res) {
+                $.getJSON('/api/2/charts/' + chart.forkedFrom, function (res) {
                     showChartModal(res.data);
                 });
             });

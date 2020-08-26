@@ -1,5 +1,5 @@
 /* globals define, _, dw */
-define(function() {
+define(function () {
     /*
      * initializes the
      */
@@ -9,9 +9,15 @@ define(function() {
         var needReload = false;
 
         _.extend(__dw, {
-            attributes: function(attrs) {
+            attributes: function (attrs) {
                 var render = false;
-                var requiresReload = ['type', 'theme', 'metadata.data.transpose', 'metadata.axes', 'language'];
+                var requiresReload = [
+                    'type',
+                    'theme',
+                    'metadata.data.transpose',
+                    'metadata.axes',
+                    'language'
+                ];
                 var options = dw.backend.currentVis.meta.options;
 
                 for (var name in options) {
@@ -32,7 +38,7 @@ define(function() {
                     }
                 }
 
-                requiresReload.forEach(function(key) {
+                requiresReload.forEach(function (key) {
                     if (changed(key)) {
                         needReload = true;
                     }
@@ -64,16 +70,19 @@ define(function() {
                     var p0 = __dw.old_attrs;
                     var p1 = attrs;
                     key = key.split('.');
-                    _.each(key, function(k) {
+                    _.each(key, function (k) {
                         p0 = p0[k] || {};
                         p1 = p1[k] || {};
                     });
                     return JSON.stringify(p0) !== JSON.stringify(p1);
                 }
             },
-            saved: function() {
+            saved: function () {
                 if (needReload) {
-                    iframe.attr('src', iframe.attr('src').replace(/&random=\d+/, '&random=' + _.random(100000)));
+                    iframe.attr(
+                        'src',
+                        iframe.attr('src').replace(/&random=\d+/, '&random=' + _.random(100000))
+                    );
                 }
             }
         });
@@ -91,7 +100,7 @@ define(function() {
                 win.__dwUpdate({ chart: attributes });
             }
         } else {
-            setTimeout(function() {
+            setTimeout(function () {
                 updateChartInIframe(iframe, attributes);
             }, 100);
         }

@@ -1,11 +1,22 @@
-define(function() {
-    return function(chart_id, preview, closeCb) {
-        $.getJSON('/api/charts/' + chart_id, function(res) {
+define(function () {
+    return function (chart_id, preview, closeCb) {
+        $.getJSON('/api/charts/' + chart_id, function (res) {
             if (res.status == 'ok') {
                 var chart = res.data;
                 var chartUrl = preview
-                        ? location.protocol + '//' + dw.backend.__domain + '/preview/' + chart.id + '?innersvg=1'
-                        : chart.publicUrl || location.protocol + '//' + dw.backend.__chartCacheDomain + '/' + chart.id + '/index.html';
+                    ? location.protocol +
+                      '//' +
+                      dw.backend.__domain +
+                      '/preview/' +
+                      chart.id +
+                      '?innersvg=1'
+                    : chart.publicUrl ||
+                      location.protocol +
+                          '//' +
+                          dw.backend.__chartCacheDomain +
+                          '/' +
+                          chart.id +
+                          '/index.html';
                 var chartIframe = $(
                     '<iframe src="' +
                         chartUrl +
@@ -13,7 +24,7 @@ define(function() {
                 );
                 var wrapper = $('<div></div>');
                 var overlay = wrapper.overlay({
-                    onClose: function() {
+                    onClose: function () {
                         if ($.isFunction(closeCb)) closeCb();
                     }
                 });

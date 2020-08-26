@@ -2,8 +2,8 @@
     "name": "datawrapper",
     "version": "1.25.2",
     "scripts": {
-        "format": "prettier 'src/**/*.{js,html}' --write",
-        "lint": "healthier 'src/**/*.{js,html}' && healthier 'www/static/js/dw/**/*.js' && prettier --check 'src/**/*.{js,html}'",
+        "format": "prettier  --write 'src/**/*.{js,html}' && prettier --write 'www/static/js/dw/**/*.js'",
+        "lint": "healthier 'src/**/*.{js,html}' && healthier 'www/static/js/dw/**/*.js' && prettier --check 'src/**/*.{js,html}' && prettier --check 'www/static/js/dw/**/*.js'",
         "watch": "watch 'make assets' assets/"
     },
     "repository": {
