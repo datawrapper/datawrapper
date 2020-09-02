@@ -1,22 +1,33 @@
-define(function() {
-    return function(chart_id, preview, closeCb) {
-        $.getJSON('/api/charts/' + chart_id, function(res) {
+define(function () {
+    return function (chart_id, preview, closeCb) {
+        $.getJSON('/api/charts/' + chart_id, function (res) {
             if (res.status == 'ok') {
-                var chart = res.data,
-                    chartUrl = preview
-                        ? location.protocol + '//' + dw.backend.__domain + '/preview/' + chart.id + '?innersvg=1'
-                        : chart.publicUrl || location.protocol + '//' + dw.backend.__chartCacheDomain + '/' + chart.id + '/index.html';
-                (chartIframe = $(
+                var chart = res.data;
+                var chartUrl = preview
+                    ? location.protocol +
+                      '//' +
+                      dw.backend.__domain +
+                      '/preview/' +
+                      chart.id +
+                      '?innersvg=1'
+                    : chart.publicUrl ||
+                      location.protocol +
+                          '//' +
+                          dw.backend.__chartCacheDomain +
+                          '/' +
+                          chart.id +
+                          '/index.html';
+                var chartIframe = $(
                     '<iframe src="' +
                         chartUrl +
                         '" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>'
-                )),
-                    (wrapper = $('<div></div>')),
-                    (overlay = wrapper.overlay({
-                        onClose: function() {
-                            if ($.isFunction(closeCb)) closeCb();
-                        }
-                    }));
+                );
+                var wrapper = $('<div></div>');
+                var overlay = wrapper.overlay({
+                    onClose: function () {
+                        if ($.isFunction(closeCb)) closeCb();
+                    }
+                });
                 wrapper.append('<a class="close close-button">&#9747;</a>');
                 wrapper.append(chartIframe);
 

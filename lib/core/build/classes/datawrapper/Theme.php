@@ -15,58 +15,6 @@
  */
 class Theme extends BaseTheme
 {
-    public function getCSS($visLess) {
-        global $app;
-        global $appTwig;
-        $theme = $this;
-
-        // compile: theme-variables, chart.base.less, visulization.less
-        $lessData = $this->getThemeDataAsFlatArray();
-        $twig = (empty($appTwig) ? $app->view()->getEnvironment() : $appTwig->view()->getEnvironment());
-        $twigData = array_merge($this->getThemeData(), $lessData);
-        $twigData['fonts'] = $this->getAssetFonts();
-
-        $baseLess = $twig->render('chart-styles.less.twig', $twigData);
-
-        $allThemeLess = $this->getLess();
-
-        $lessData['colors_perceived_bg'] =
-            empty($lessData['colors_background']) ||
-                $lessData['colors_background'] == '~"transparent"' ? '~"white"' :
-                $lessData['colors_background'];
-
-        $less = new lessc;
-
-        array_walk_recursive($lessData, function (&$value, $key) {
-            if (is_bool($value)) $value = $value ? 1 : 0;
-        });
-
-        $less->setVariables($lessData);
-
-        while (!empty($theme->getExtend())) {
-            $theme = ThemeQuery::create()->findPk($theme->getExtend());
-            $allThemeLess = $theme->getLess() . "\n\n\n" . $allThemeLess;
-        }
-
-        $allVisLess = "";
-
-        foreach ($visLess as $visPath) {
-            $parts = explode("/", $visPath);
-            $filename = $parts[sizeof($parts)-1];
-            unset($parts[sizeof($parts)-1]);
-            $dir = implode("/", $parts);
-
-            $visTwig = new \Twig_Environment(new \Twig_Loader_Filesystem($dir));
-            $vis = $visTwig->render($filename, $twigData);
-            $less->setImportDir($dir);
-
-            $allVisLess .= $less->compile($vis);
-        }
-
-
-        return $less->compile($baseLess . "\n" . $allVisLess . "\n" . $allThemeLess);
-    }
-
     public function getThemeData($key = null) {
         if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
             $data = DatawrapperHooks::execute("get_default_theme")[0];
@@ -103,80 +51,6 @@ class Theme extends BaseTheme
         }
     }
 
-
-    public function getThemeDataAsFlatArray($data = null, $prefix = "", $format = 'twig') {
-        if ($data == null) $data = $this->getThemeData();
-
-        $f = [];
-
-        foreach ($data as $k => $d) {
-            $px = $prefix;
-
-            if ($px == "") {
-                $px = $k;
-            } else {
-                $px .= "_" . $k;
-            }
-
-            if (is_array($d)) {
-                if (sizeof($d) > 0) {
-                    $f = array_merge($f, $this->getThemeDataAsFlatArray($d, $px));
-                }
-            } else {
-                if ($format = "less") {
-                    if (is_string($d)) {
-                        $f[$px] = '~"' . $d . '"';
-                    } else {
-                        $f[$px] = $d;
-                    }
-                } else {
-                    $f[$px] = $d;
-                }
-
-            }
-        }
-
-        return $f;
-    }
-
-    public function getAssetUrl($name) {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
-        return $assets[$name]['url'];
-    }
-
-    public function addAssetFile($name, $url) {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
-
-        $assets[$name] = array(
-            "url" => $url,
-            "type" => "file"
-        );
-
-        $this->setAssets(json_encode($assets));
-        $this->save();
-    }
-
-    public function addAssetFont($name, $type, $urls) {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
-
-        $assets[$name] = [];
-        $assets[$name]['method'] = $type;
-
-        if ($type == "import") {
-            $assets[$name]['import'] = $urls['import'];
-        } else {
-            $assets[$name]['files'] = $urls;
-        }
-
-        $assets[$name]['type'] = "font";
-
-        $this->setAssets(json_encode($assets));
-        $this->save();
-    }
-
     public function getAssetFiles() {
         $assets = $this->getExtendedAssets();
         return array_filter($assets, function($v) { return $v['type'] == "file"; });
@@ -185,14 +59,6 @@ class Theme extends BaseTheme
     public function getAssetFonts() {
         $assets = $this->getExtendedAssets();
         return array_filter($assets, function($v) { return $v['type'] == "font"; });
-    }
-
-    public function removeAsset($name) {
-        $assets = json_decode(parent::getAssets(), true);
-        if (!is_array($assets)) $assets = array();
-        unset($assets[$name]);
-        $this->setAssets(json_encode($assets));
-        $this->save();
     }
 
     public function getExtendedAssets() {

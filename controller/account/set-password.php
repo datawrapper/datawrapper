@@ -13,7 +13,7 @@ $app->get('/account/set-password/:token', function ($token) use ($app) {
           ->find();
 
         if (count($users) != 1) {
-            $app->redirect('/?t=e&m='.__('This activation token is invalid. Your email address is probably already activated.'));
+            $app->redirect('/?t=e&m='.urlencode(__('This activation token is invalid. Your email address is probably already activated.')));
         } else {
             $page = array();
             add_header_vars($page, 'about');

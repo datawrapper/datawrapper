@@ -34,6 +34,7 @@ class DatawrapperSession {
             $domain = $GLOBALS['dw_config']['domain'];
         }
 
+        $sameSite = (isset($GLOBALS['dw_config']['debug']) && $GLOBALS['dw_config']['debug'] == true) ? 'None' : 'Lax';
 
         $cookieOpts = [
             'lifetime' => $lifetime,
@@ -41,7 +42,7 @@ class DatawrapperSession {
             'domain' => $domain,
             'secure' => get_current_protocol() === 'https',
             'httponly' => true,
-            'SameSite' => 'Lax'
+            'SameSite' => $sameSite
         ];
 
         session_set_cookie_params($cookieOpts);
@@ -59,7 +60,7 @@ class DatawrapperSession {
             unset($cookieOpts['lifetime']);
             $cookieOpts['expires'] = time() + $lifetime;
             $cookieOpts['samesite'] = (isset($_SESSION['type']) && $_SESSION['type']
-                == 'token') ? 'None' : 'Lax';
+                == 'token') ? 'None' : $sameSite;
             setcookie($ses, $_COOKIE[$ses], $cookieOpts);
         }
     }

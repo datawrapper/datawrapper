@@ -28,7 +28,7 @@ $app->get('/datawrapper-invite/:invite_token', function ($invite_token) use ($ap
 
     $page = array();
     add_header_vars($page, 'about');
-    $page['message_h1'] = str_replace('%s', $userOrg->getOrganization()->getName(), __('team / invite / headline'));
+    $page['message_h1'] = str_replace('%s', htmlspecialchars($userOrg->getOrganization()->getName()), __('team / invite / headline'));
     $page['message_p'] = __('team / invite / intro');
     $page['message_button'] = 'Set password &amp; join team';
     $page['email'] = $invitee->getEmail();
@@ -131,7 +131,7 @@ $app->get('/team/:id/invite/:invite_token/reject', function($teamId, $token) use
     if ($status === 204) {
         if (DatawrapperSession::isLoggedIn()) {
             $teamName = OrganizationQuery::create()->findPk($teamId)->getName();
-            $app->redirect('/?t=s&m=<b>'.urlencode(str_replace('%s', $teamName, __('teams / reject-invitation / success'))).'</b>');
+            $app->redirect('/?t=s&m='.urlencode(str_replace('%s', $teamName, __('teams / reject-invitation / success'))));
         } else {
             $app->redirect('https://www.datawrapper.de/?teamRejectSuccess');
         }

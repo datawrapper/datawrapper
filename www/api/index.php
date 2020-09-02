@@ -154,7 +154,6 @@ require_once ROOT_PATH . 'lib/api/teams.php';
 require_once ROOT_PATH . 'lib/api/products.php';
 require_once ROOT_PATH . 'lib/api/folders.php';
 require_once ROOT_PATH . 'lib/api/themes.php';
-require_once ROOT_PATH . 'lib/api/actions.php';
 
 /**
  * Step 4: Run the Slim application

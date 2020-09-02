@@ -1,4 +1,3 @@
-
 /*
  * backend
  */
@@ -14,43 +13,52 @@ define([
     './backend/popupChart',
     './backend/notification',
     './backend/setUserData',
-    './backend/cmsMode',
-    ],
-
-function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
-    checkPassword, ColorSelector, NumberStepper, popupChart,
-    notification, setUserData, cmsMode) {
-
+    './backend/cmsMode'
+], function (
+    syncChart,
+    initializeSignUp,
+    initLanguageLinks,
+    initializeLogout,
+    checkPassword,
+    ColorSelector,
+    NumberStepper,
+    popupChart,
+    notification,
+    setUserData,
+    cmsMode
+) {
     var backend = {};
 
-    _.extend(backend, {
-        init: function() {
-            // syncChart(dw.backend.currentChart);
-            initializeSignUp();
-            initLanguageLinks();
-            initializeLogout();
+    _.extend(
+        backend,
+        {
+            init: function () {
+                // syncChart(dw.backend.currentChart);
+                initializeSignUp();
+                initLanguageLinks();
+                initializeLogout();
 
-            // init custom jquery ui
-            ColorSelector();
-            NumberStepper();
+                // init custom jquery ui
+                ColorSelector();
+                NumberStepper();
 
-            this.cmsMode.init();
+                this.cmsMode.init();
 
-            $('a[data-toggle=modal]').click(function(e) {
-                var a = $(e.target),
-                    tgt = $(a.data('target'));
-                tgt.modal();
-            });
+                $('a[data-toggle=modal]').click(function (e) {
+                    var a = $(e.target),
+                        tgt = $(a.data('target'));
+                    tgt.modal();
+                });
+            },
+
+            syncChart: syncChart,
+            popupChart: popupChart,
+            checkPassword: checkPassword,
+            setUserData: setUserData,
+            cmsMode: cmsMode
         },
-
-        syncChart: syncChart,
-        popupChart: popupChart,
-        checkPassword: checkPassword,
-        setUserData: setUserData,
-        cmsMode: cmsMode
-
-    }, notification);
+        notification
+    );
 
     return backend;
-
 });

@@ -26,54 +26,6 @@ $apiTeamsGetUserTeams = function() use ($app) {
 $app->get('/(organizations|teams)/user', $apiTeamsGetUserTeams);
 
 /*
- * toggle plugin permissions of organization
- */
-$app->put('/(organizations|teams)/:id/plugins/:op/:plugin_id', function($org_id, $op, $plugin_id) use ($app) {
-    if (!check_scopes(['team:write'])) return;
-    if_is_admin(function() use ($app, $org_id, $op, $plugin_id) {
-        $org = OrganizationQuery::create()->findPk($org_id);
-        $plugin = PluginQuery::create()->findPk($plugin_id);
-        if (!$org) return error('unknown-organization', 'Organization not found');
-        if (!$plugin) return error('unknown-plugin', 'Plugin not found');
-        if ($op == 'config') {
-            $data = json_decode($app->request()->getBody(), true);
-            // store custom config value
-            $key = 'custom_config/' . $org->getId() . '/' . $data['key'];
-            $q = PluginDataQuery::create()
-                  ->filterByPlugin($plugin)
-                  ->filterByKey($key)
-                  ->findOne();
-            if (is_null($data['value'])) {
-                // remove value
-                if ($q) $q->delete();
-                ok();
-            } else {
-                // udpate value
-                if (!$q) {
-                    $q = new PluginData();
-                    $q->setPlugin($plugin);
-                    $q->setKey($key);
-                }
-                $q->setData($data['value']);
-                $q->setStoredAt(time());
-                $q->save();
-                ok($q->toArray());
-            }
-        } else {
-            // change plugin permission
-            if ($org->hasPlugin($plugin)) {
-                if ($op == 'remove' || $op == 'toggle') $org->removePlugin($plugin);
-            } else {
-                if ($op == '' || $op == 'toggle') $org->addPlugin($plugin);
-            }
-            $org->save();
-            ok(array('active' => $org->hasPlugin($plugin)));
-        }
-    });
-})->conditions(array('op' => '(remove|add|toggle|config)'));
-
-
-/*
  * get charts of an organization
  */
 $app->get('/(organizations|teams)/:id/charts', function($org_id) use ($app) {
