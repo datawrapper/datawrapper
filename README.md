@@ -4,7 +4,7 @@ This is _Datawrapper Core_, the open source platform that powers the charting to
 
 Most of the functionality in Datawrapper is provided by plugins, [some of which are open source](https://github.com/datawrapper?utf8=%E2%9C%93&q=plugin-&type=public&language=) but the majority is not. 
 
-Note that significant parts of the Datawrapper core have been rewritten in Node.js already, you can find them in the following repositories:
+Note that significant parts of the Datawrapper core have been rewritten in Node.js, you can find them in the following repositories:
 
 - [api](https://github.com/datawrapper/api) is our new v3 REST API
 - [frontend](https://github.com/datawrapper/frontend) is our new frontend server
