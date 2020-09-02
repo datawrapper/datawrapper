@@ -26,7 +26,7 @@ define(['chroma'], function (chroma) {
                 opts.config && opts.config.controls && opts.config.controls.hexEditable;
             var rowCount = opts.config && opts.config.rowCount ? opts.config.rowCount : false;
             ['hue', 'saturation', 'lightness'].forEach(function (key) {
-                if (opts.config) {
+                if (opts.config && opts.config.controls) {
                     colorAxesConfig[key] = opts.config.controls[key];
                 } else {
                     colorAxesConfig[key] = true;
