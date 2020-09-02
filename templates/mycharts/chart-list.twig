@@ -60,6 +60,6 @@
 
 {% if not title is defined %}
         <script type="text/javascript">
-            window.ChartFolderTree.updateCharts({{ charts | json | raw }});
+            cft.updateCharts({{ charts | json | raw }});
         </script>
 {% endif %}
