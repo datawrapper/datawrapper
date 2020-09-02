@@ -1288,6 +1288,23 @@ body.cms-mode .row.create-nav {
   border-radius: 1px;
   box-sizing: border-box;
 }
+
+.color-selector .color-group:first-child {
+    margin-top: 0px;
+}
+
+.color-selector .color-group {
+    margin-top: 5px;
+}
+
+.color-selector .color-group .name {
+    line-height: 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #6c6c6c;
+    margin-bottom: 2px;
+}
+
 .color-selector .color {
   cursor: pointer;
 }
