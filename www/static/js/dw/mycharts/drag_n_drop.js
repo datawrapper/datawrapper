@@ -7,6 +7,13 @@ define(function (require) {
         cft,
         drag_data;
 
+    /**
+     * @see https://stackoverflow.com/a/22706073
+     */
+    function escapeHTML(s) {
+        return new Option(s).innerHTML;
+    }
+
     function getMultiDragImage(chart_ids) {
         var l = chart_ids.length + 5,
             offset = 10,
@@ -234,7 +241,11 @@ define(function (require) {
                                     : 'confirm_move_chart_to_org'
                             ].replace(
                                 '%s',
-                                cft.getOrgNameById(identifyTarget($(e.currentTarget)).organization)
+                                escapeHTML(
+                                    cft.getOrgNameById(
+                                        identifyTarget($(e.currentTarget)).organization
+                                    )
+                                )
                             )
                         );
                 } else if (isOrgToUserMove(e)) {
