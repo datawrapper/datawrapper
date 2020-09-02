@@ -24,6 +24,7 @@ define(function (require) {
             delete twig.globals.preload;
             delete twig.globals.current;
             delete twig.globals.charts;
+            window.cft = window['ChartFolderTree'];
             renderTree();
             no_reload_folder_change.init();
             no_reload_folder_change.repaintBreadcrumb();

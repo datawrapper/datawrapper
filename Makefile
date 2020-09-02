@@ -14,9 +14,6 @@ assets: www/static/css/datawrapper.css www/static/css/chart.base.css
 sync-db:
 	@php scripts/sync-db.php
 
-translations:
-	scripts/update-translations
-
 www/static/css/datawrapper.css: assets/styles/datawrapper/* assets/styles/datawrapper/**/* assets/styles/datawrapper/**/**/*
 	node_modules/.bin/lessc assets/styles/datawrapper/main.less > $@
 
