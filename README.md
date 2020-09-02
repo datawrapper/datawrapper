@@ -12,7 +12,7 @@ Note that significant parts of the Datawrapper core have been rewritten in Node.
 - [shared](https://github.com/datawrapper/shared) contains JavaScript utility functions used throughout datawrapper
 - [orm](https://github.com/datawrapper/orm) contains our internal database models
 
-Datawrapper was created in 2012 by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-Bril](http://nkb.fr) and [Gregor Aisch](http://driven-by-data.net/). Since 2014 it is developed by the [Datawrapper GmbH](https://www.datawrapper.de/about-us/).
+Datawrapper was created in 2012 by [Mirko Lorenz](http://www.mirkolorenz.com/), [Nicolas Kayser-Bril](http://nkb.fr) and [Gregor Aisch](http://driven-by-data.net/). Since 2014 it is developed by [Datawrapper GmbH](https://www.datawrapper.de/about-us/).
 
 Datawrapper has in the past received funding by [ABZV](http://www.abzv.de/).
 
