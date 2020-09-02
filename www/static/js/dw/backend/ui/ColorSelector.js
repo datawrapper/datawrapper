@@ -63,21 +63,15 @@ define(['chroma'], function (chroma) {
 
             addcol(opts.color, bottom);
             // initialize palette colors
-<<<<<<< HEAD
             if (opts.groups) {
-                $.each(opts.groups, function(i, group) {
+                $.each(opts.groups, function (i, group) {
                     addGroup(group, palette);
                 });
             } else {
-                $.each(opts.palette, function(i, color) {
+                $.each(opts.palette, function (i, color) {
                     addcol(color, palette, true);
                 });
             }
-=======
-            $.each(opts.palette, function (i, color) {
-                addcol(color, palette, true);
-            });
->>>>>>> master
 
             setColor(opts.color);
 
@@ -163,10 +157,10 @@ define(['chroma'], function (chroma) {
                     var $title = $('<div class="name">' + group.name + '</div>');
                     $title.appendTo($group);
                 }
-                $.each(group.colors, function(i, subgroup) {
+                $.each(group.colors, function (i, subgroup) {
                     var $subgroup = $('<div/>');
                     $subgroup.appendTo($group);
-                    subgroup.forEach(function(color) {
+                    subgroup.forEach(function (color) {
                         addcol(color, $subgroup, true);
                     });
                 });
