@@ -6,7 +6,7 @@
     <h1 class="title">{__('account / settings')}</h1>
     {#each invitations as team}
     <div class="alert alert-info">
-        {@html __('account / team-invite').replace('%s', truncate(team.name, 20, 10))}
+        {@html __('account / team-invite').replace('%s', escapeHTML(truncate(team.name, 20, 10)))}
         <!-- prettier-ignore -->
         <a href="/team/{team.id}/invite/{team.token}/accept" class="btn btn-primary">{ __('account / team-invite / accept') }</a>
         <!-- prettier-ignore -->
@@ -19,12 +19,20 @@
     <NavTabs basePath="account" ref:navTabs groups="{groups}" bind:activeTab />
 </div>
 <script>
-    /* globals dw */
+    /* global Option, dw */
+
     import { __ } from '@datawrapper/shared/l10n';
     import truncate from '@datawrapper/shared/truncate';
     import EditProfile from './EditProfile.html';
     import NavTabs from '../shared/NavTabs.html';
     import MyTeams from './MyTeams.html';
+
+    /**
+     * @see https://stackoverflow.com/a/22706073
+     */
+    function escapeHTML(s) {
+        return new Option(s).innerHTML;
+    }
 
     const EditProfileTab = {
         title: __('account / profile'),
@@ -69,7 +77,8 @@
         },
         helpers: {
             __,
-            truncate
+            truncate,
+            escapeHTML
         },
         methods: {
             setTab(id) {
