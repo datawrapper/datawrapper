@@ -164,6 +164,7 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
         if (previous && changed.title || changed.theme || changed.type ||
             changed.metadata || changed.language || changed.lastEditStep) {
+
             chart.store(function() {
                 var iframe = document.querySelector('#iframe-vis');
                 if (iframe && iframe.contentWindow) {
@@ -173,6 +174,7 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                     }
                 }
             });
+
             if (!dontPush) {
                 var s = JSON.stringify(chart.serialize());
                 if (historyPos > 0) {
@@ -183,12 +185,14 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                 editHistory.length = Math.min(editHistory.length, 50);
                 historyPos = 0;
             }
+
+
             if (!passiveMode && dw && dw.backend && dw.backend.currentChart) {
                 var iframe = document.querySelector('#iframe-vis');
                 if (iframe && iframe.contentWindow) {
                     var win = iframe.contentWindow;
                     if (win.__dw && win.__dw.attributes) {
-                        win.__dw.attributes({
+                        var attributes = {
                             id: current.id,
                             title: current.title,
                             theme: current.theme,
@@ -196,11 +200,20 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                             externalData: current.externalData,
                             language: current.language,
                             metadata: current.metadata
-                        });
+                        }
+
+                        win.__dw.attributes(attributes);
+
+                        if (win.__dwUpdate) {
+                            win.__dwUpdate({ chart: attributes });
+                        }
                     }
                 }
 
                 // set metadata directly without saving again
+                dw.backend.currentChart.attributes().title = current.title;
+                dw.backend.currentChart.attributes().theme = current.theme;
+                dw.backend.currentChart.attributes().language = current.language;
                 dw.backend.currentChart.attributes().metadata = JSON.parse(JSON.stringify(current.metadata));
             }
         }
