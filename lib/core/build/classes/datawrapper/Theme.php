@@ -16,24 +16,20 @@
 class Theme extends BaseTheme
 {
     public function getThemeData($key = null) {
-        if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
-            $data = DatawrapperHooks::execute("get_default_theme")[0];
-        } else {
-            $theme = $this;
-            $themeData = [$theme->getData()];
+        $theme = $this;
+        $themeData = [$theme->getData()];
 
-            while ($theme->getExtend() != null) {
-                $theme = ThemeQuery::create()->findPk($theme->getExtend());
-                $themeData[] = $theme->getData();
-            }
+        while ($theme->getExtend() != null) {
+            $theme = ThemeQuery::create()->findPk($theme->getExtend());
+            $themeData[] = $theme->getData();
+        }
 
-            $themeList = array_reverse($themeData);
+        $themeList = array_reverse($themeData);
 
-            $data = array();
+        $data = array();
 
-            foreach ($themeList as $theme) {
-                $data = $this->extendArray($data, $theme);
-            }
+        foreach ($themeList as $theme) {
+            $data = $this->extendArray($data, $theme);
         }
 
         if (Hooks::hookRegistered('set_theme_data')) {
@@ -78,12 +74,7 @@ class Theme extends BaseTheme
      */
     public function getData($key = null, $meta = null) {
         if (empty($meta)) {
-            if ($this->getId() == "default" && DatawrapperHooks::hookRegistered("get_default_theme")) {
-                $meta = DatawrapperHooks::execute("get_default_theme")[0];
-            } else {
-                $meta = json_decode(parent::getData(), true);
-            }
-
+            $meta = json_decode(parent::getData(), true);
             if (!is_array($meta)) $meta = array();
         }
 
