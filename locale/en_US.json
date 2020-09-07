@@ -740,5 +740,6 @@
   "cc / formula / error / unexpected tsemicolon": "Unexpected semicolon",
   "cc / formula / error / unexpected teof": "Unexpected end of formula",
   "copy": "Copy",
-  "publish / status / creating_images": "Creating images"
+  "publish / status / creating_images": "Creating images",
+  "controls / legend / switch": "Show map legend"
 }
