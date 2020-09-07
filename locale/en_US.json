@@ -45,7 +45,7 @@
   "controls / color-scale / interpolation": "Interpolation",
   "controls / color-scale / interpolation / help": "TODO",
   "controls / color-scale / interpolation / linear": "continuous",
-  "controls / color-scale / interpolation / discrete": "bins",
+  "controls / color-scale / interpolation / discrete": "steps",
   "controls / color-scale / breaks / count": "Count",
   "controls / color-scale / breaks / linear": "Linear",
   "controls / color-scale / breaks / nice": "Pretty breaks",
