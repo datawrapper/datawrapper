@@ -74,7 +74,8 @@ define(function () {
                         p0 = p0[k] || {};
                         p1 = p1[k] || {};
                     });
-                    return JSON.stringify(p0) !== JSON.stringify(p1);
+
+                    return !_.isEqual(p0, p1);
                 }
             },
             saved: function () {
