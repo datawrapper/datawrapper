@@ -1,4 +1,8 @@
 define(function () {
+    var CSRF_COOKIE_NAME = 'crumb';
+    var CSRF_TOKEN_HEADER = 'X-CSRF-Token';
+    var CSRF_SAFE_METHODS = ['get', 'head', 'options', 'trace']; // according to RFC7231
+
     /**
      * An implementation of httpReq compatible with IE 11.
      *
@@ -10,13 +14,7 @@ define(function () {
      *
      * @see https://github.com/datawrapper/shared/blob/master/httpReq.js
      */
-    function httpReq(
-        path,
-        options = {},
-        csrfCookieName = 'crumb',
-        csrfTokenHeader = 'X-CSRF-Token',
-        csrfSafeMethods = ['get', 'head', 'options', 'trace'] // according to RFC7231
-    ) {
+    function httpReq(path, options = {}) {
         var opts = Object.assign(
             {
                 payload: null,
@@ -29,8 +27,8 @@ define(function () {
             options
         );
         opts.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
-        if (csrfSafeMethods.indexOf(opts.method.toLowerCase()) === -1) {
-            opts.headers[csrfTokenHeader] = getCookie(csrfCookieName);
+        if (CSRF_SAFE_METHODS.indexOf(opts.method.toLowerCase()) === -1) {
+            opts.headers[CSRF_TOKEN_HEADER] = getCookie(CSRF_COOKIE_NAME);
         }
         return $.ajax({
             url: [opts.baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
