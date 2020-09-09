@@ -45,7 +45,7 @@ define(function () {
             }
         }
 
-        deferred
+        return deferred
             .then(function () {
                 return $.ajax({
                     url: [opts.baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
