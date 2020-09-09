@@ -27,32 +27,51 @@ define(function () {
             options
         );
         opts.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+
+        var deferred = $.Deferred();
+        deferred.resolve();
         if (CSRF_SAFE_METHODS.indexOf(opts.method.toLowerCase()) === -1) {
-            opts.headers[CSRF_TOKEN_HEADER] = getCookie(CSRF_COOKIE_NAME);
+            var csrfCookieValue = getCookie(CSRF_COOKIE_NAME);
+            if (csrfCookieValue) {
+                opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+            } else {
+                deferred = httpReq('/v3/me', { baseUrl: opts.baseUrl }).then(function () {
+                    var csrfCookieValue = getCookie(CSRF_COOKIE_NAME);
+                    if (!csrfCookieValue) {
+                        throw new Error("Server didn't set the CSRF cookie.");
+                    }
+                    opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+                });
+            }
         }
-        return $.ajax({
-            url: [opts.baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
-            type: opts.method,
-            contentType: opts.headers['Content-Type'],
-            context: this,
-            crossDomain: opts.mode === 'cors',
-            data: opts.payload && JSON.stringify(opts.payload),
-            headers: opts.headers,
-            xhrFields: {
-                withCredentials: opts.credentials === 'include'
-            }
-        }).then(function (data, textStatus, jqXhr) {
-            if (opts.raw) {
-                return jqXhr;
-            }
-            if (jqXhr.status < 200 || jqXhr.status > 299) {
-                return $.Deferred().fail(new HttpReqError(jqXhr));
-            }
-            if (jqXhr.status === 204 || !jqXhr.getResponseHeader('Content-Type')) {
-                return jqXhr; // no content
-            }
-            return data;
-        });
+
+        deferred
+            .then(function () {
+                return $.ajax({
+                    url: [opts.baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
+                    type: opts.method,
+                    contentType: opts.headers['Content-Type'],
+                    context: this,
+                    crossDomain: opts.mode === 'cors',
+                    data: opts.payload && JSON.stringify(opts.payload),
+                    headers: opts.headers,
+                    xhrFields: {
+                        withCredentials: opts.credentials === 'include'
+                    }
+                });
+            })
+            .then(function (data, textStatus, jqXhr) {
+                if (opts.raw) {
+                    return jqXhr;
+                }
+                if (jqXhr.status < 200 || jqXhr.status > 299) {
+                    return $.Deferred().fail(new HttpReqError(jqXhr));
+                }
+                if (jqXhr.status === 204 || !jqXhr.getResponseHeader('Content-Type')) {
+                    return jqXhr; // no content
+                }
+                return data;
+            });
     }
 
     var get = (httpReq.get = httpReqVerb('GET'));
