@@ -51,7 +51,8 @@ define(function (require) {
         });
 
         // update form action for duplicate button
-        $('.action-duplicate .duplicate', wrapper).click(function () {
+        $('.action-duplicate .duplicate', wrapper).click(function (e) {
+            e.preventDefault();
             httpReq.post('/v3/charts/' + chart.id + '/copy').then(function (data) {
                 window.open('/chart/' + data.id + '/visualize', '_blank');
 
