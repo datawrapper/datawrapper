@@ -14,7 +14,7 @@ define(function () {
      *
      * @see https://github.com/datawrapper/shared/blob/master/httpReq.js
      */
-    function httpReq(path, options = {}) {
+    function httpReq(path, options) {
         var opts = Object.assign(
             {
                 payload: null,
@@ -24,7 +24,7 @@ define(function () {
                 mode: 'cors',
                 credentials: 'include'
             },
-            options
+            options || {}
         );
         opts.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
 
@@ -87,13 +87,13 @@ define(function () {
     httpReq.delete = httpReqVerb('DELETE');
 
     function httpReqVerb(method) {
-        return function (path, options = {}) {
+        return function (path, options) {
             if (options && options.method) {
                 throw new Error(
                     'Setting option.method is not allowed in httpReq.' + method.toLowerCase() + '()'
                 );
             }
-            return httpReq(path, Object.assign(options, { method: method }));
+            return httpReq(path, Object.assign(options || {}, { method: method }));
         };
     }
 
