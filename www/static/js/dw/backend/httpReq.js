@@ -87,7 +87,7 @@ define(function () {
     httpReq.delete = httpReqVerb('DELETE');
 
     function httpReqVerb(method) {
-        return function (path, options) {
+        return function (path, options = {}) {
             if (options && options.method) {
                 throw new Error(
                     'Setting option.method is not allowed in httpReq.' + method.toLowerCase() + '()'
