@@ -106,7 +106,7 @@
   "controls / tooltip-editor / sticky": "Clicking makes tooltip stick",
   "controls / tooltip-editor / sticky / help": "This option will make tooltips \"sticky\" after the user is clicking elements in the visualization. This is useful if you want to allow users to interact with the tooltip content, for instance to let them click on links.",
   "controls / tooltip-editor / migrated": "<strong>Heads up!</strong> We changed the syntax of the tooltip formulas. Please make sure your tooltips still look ok. <a href=\"\">Read more about what has changed</a>.",
-  "controls / legend / title": "Customize legend\n",
+  "controls / legend / title": "Legend",
   "You must enter a password.": "You must enter a password.",
   "Both passwords must be the same.": "Both passwords must be the same.",
   "The password is incorrect.": "The password is incorrect.",
