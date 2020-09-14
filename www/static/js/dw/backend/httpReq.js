@@ -15,53 +15,52 @@ define(function () {
      * @see https://github.com/datawrapper/shared/blob/master/httpReq.js
      */
     function httpReq(path, options) {
-        var opts = Object.assign(
-            {
-                payload: null,
-                raw: false,
-                method: 'GET',
-                baseUrl: '//' + dw.backend.__api_domain,
-                mode: 'cors',
-                credentials: 'include'
-            },
-            options || {}
-        );
-        opts.headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers);
+        var baseUrl = options.baseUrl || '//' + dw.backend.__api_domain;
+        var method = options.method || 'GET';
+        var headers = Object.assign({}, options.headers);
+        if (headers['Content-Type'] === undefined && !options.formData) {
+            headers['Content-Type'] = 'application/json';
+        }
 
         var deferred = $.Deferred();
         deferred.resolve();
-        if (CSRF_SAFE_METHODS.indexOf(opts.method.toLowerCase()) === -1) {
+        if (CSRF_SAFE_METHODS.indexOf(method.toLowerCase()) === -1) {
             var csrfCookieValue = getCookie(CSRF_COOKIE_NAME);
             if (csrfCookieValue) {
-                opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+                headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
             } else {
-                deferred = httpReq('/v3/me', { baseUrl: opts.baseUrl }).then(function () {
-                    var csrfCookieValue = getCookie(CSRF_COOKIE_NAME);
-                    if (!csrfCookieValue) {
-                        throw new Error("Server didn't set the CSRF cookie.");
-                    }
-                    opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
-                });
+                httpReq('/v3/me', { baseUrl: baseUrl })
+                    .then(function () {
+                        var csrfCookieValue = getCookie(CSRF_COOKIE_NAME);
+                        if (csrfCookieValue) {
+                            headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+                        }
+                    })
+                    .always(function () {
+                        deferred.resolve();
+                    });
             }
         }
 
         return deferred
             .then(function () {
                 return $.ajax({
-                    url: [opts.baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
-                    type: opts.method,
-                    contentType: opts.headers['Content-Type'],
+                    url: [baseUrl.replace(/\/$/, ''), path.replace(/^\//, '')].join('/'),
+                    type: method,
+                    headers: headers,
+                    contentType: options.formData ? false : headers['Content-Type'],
                     context: this,
-                    crossDomain: opts.mode === 'cors',
-                    data: opts.payload && JSON.stringify(opts.payload),
-                    headers: opts.headers,
+                    crossDomain: !options.mode || options.mode === 'cors',
+                    data: options.formData || (options.payload && JSON.stringify(options.payload)),
+                    processData:
+                        options.processData !== undefined ? options.processData : !options.formData,
                     xhrFields: {
-                        withCredentials: opts.credentials === 'include'
+                        withCredentials: !options.credential || options.credentials === 'include'
                     }
                 });
             })
             .then(function (data, textStatus, jqXhr) {
-                if (opts.raw) {
+                if (options.raw) {
                     return jqXhr;
                 }
                 if (jqXhr.status < 200 || jqXhr.status > 299) {
@@ -132,6 +131,7 @@ define(function () {
         patch: patch,
         put: put,
         post: post,
-        head: head
+        head: head,
+        delete: httpReq.delete
     };
 });
