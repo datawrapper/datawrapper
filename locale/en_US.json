@@ -751,5 +751,8 @@
   "fewer-options": "Fewer options",
   "controls / legend / orientation / note-after": "when placing the legend below or above the visualization.",
   "controls / legend / orientation / note-before": "We <strong>highly recommend</strong> to select the",
-  "controls / legend / orientation / note-link": "horizontal layout"
+  "controls / legend / orientation / note-link": "horizontal layout",
+  "controls / legend / edit-labels": "Edit labels",
+  "controls / legend / edit-labels / mini-help-1": "Click labels to edit, drag items to re-order",
+  "controls / legend / edit-labels / mini-help-2": "Click labels to edit"
 }

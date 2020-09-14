@@ -749,7 +749,10 @@
   "controls / color-category / select-one-or-more-w-label": "Wähle eine oder mehrere Einträge aus um die Farben oder Beschriftungen zu ändern.",
   "more-options": "Mehr Optionen",
   "fewer-options": "Weniger Optionen",
-  "controls / legend / orientation / note-after": "auszuwählen, wenn sie die Legende unter oder über der Visualisierung platzieren.",
+  "controls / legend / orientation / note-after": "auszuwählen, wenn die Legende unter oder über der Visualisierung platziert wird.",
   "controls / legend / orientation / note-before": "Wir empfehlen <strong> ausdrücklich, </strong> die",
-  "controls / legend / orientation / note-link": "horizontale Anordnung"
+  "controls / legend / orientation / note-link": "horizontale Anordnung",
+  "controls / legend / edit-labels": "Beschriftungen bearbeiten",
+  "controls / legend / edit-labels / mini-help-1": "Text zum Bearbeiten anklicken, Elemente ziehen zum umsortieren",
+  "controls / legend / edit-labels / mini-help-2": "Text zum Bearbeiten anklicken"
 }
