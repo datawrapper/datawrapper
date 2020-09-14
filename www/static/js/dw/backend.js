@@ -3,29 +3,31 @@
  */
 
 define([
-    './backend/syncChart',
-    './backend/initializeSignUp',
+    './backend/checkPassword',
+    './backend/cmsMode',
+    './backend/httpReq',
     './backend/initLanguageLinks',
     './backend/initializeLogout',
-    './backend/checkPassword',
-    './backend/ui/ColorSelector',
-    './backend/ui/NumberStepper',
-    './backend/popupChart',
+    './backend/initializeSignUp',
     './backend/notification',
+    './backend/popupChart',
     './backend/setUserData',
-    './backend/cmsMode'
+    './backend/syncChart',
+    './backend/ui/ColorSelector',
+    './backend/ui/NumberStepper'
 ], function (
-    syncChart,
-    initializeSignUp,
+    checkPassword,
+    cmsMode,
+    httpReq,
     initLanguageLinks,
     initializeLogout,
-    checkPassword,
-    ColorSelector,
-    NumberStepper,
-    popupChart,
+    initializeSignUp,
     notification,
+    popupChart,
     setUserData,
-    cmsMode
+    syncChart,
+    ColorSelector,
+    NumberStepper
 ) {
     var backend = {};
 
@@ -51,11 +53,12 @@ define([
                 });
             },
 
-            syncChart: syncChart,
-            popupChart: popupChart,
             checkPassword: checkPassword,
+            cmsMode: cmsMode,
+            httpReq: httpReq,
+            popupChart: popupChart,
             setUserData: setUserData,
-            cmsMode: cmsMode
+            syncChart: syncChart
         },
         notification
     );
