@@ -1,9 +1,5 @@
 <?php
 
-function init_redis($host, $port, $password) {
-	Redis::init($host, $port, $password);
-}
-
 class Redis {
 	private static $redis;
 	private static $initialized;
