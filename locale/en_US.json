@@ -754,5 +754,6 @@
   "controls / legend / orientation / note-link": "horizontal layout",
   "controls / legend / edit-labels": "Edit labels",
   "controls / legend / edit-labels / mini-help-1": "Click labels to edit, drag items to re-order",
-  "controls / legend / edit-labels / mini-help-2": "Click labels to edit"
+  "controls / legend / edit-labels / mini-help-2": "Click labels to edit",
+  "controls / legend / reverse": "Reverse legend item order"
 }

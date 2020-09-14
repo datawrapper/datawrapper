@@ -754,5 +754,6 @@
   "controls / legend / orientation / note-link": "horizontale Anordnung",
   "controls / legend / edit-labels": "Beschriftungen bearbeiten",
   "controls / legend / edit-labels / mini-help-1": "Text zum Bearbeiten anklicken, Elemente ziehen zum umsortieren",
-  "controls / legend / edit-labels / mini-help-2": "Text zum Bearbeiten anklicken"
+  "controls / legend / edit-labels / mini-help-2": "Text zum Bearbeiten anklicken",
+  "controls / legend / reverse": "Reihenfolge der Legende umkehren"
 }
