@@ -28,7 +28,7 @@ class Redis {
 	}
 
 	public static function del($key) {
-		return self::$redis->set($key);
+		return self::$redis->del($key);
 	}
 
 	public static function keys($key) {
