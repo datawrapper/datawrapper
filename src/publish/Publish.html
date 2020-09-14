@@ -298,7 +298,7 @@
 
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
-    import request from '@datawrapper/shared/httpReq';
+    import httpReq from '@datawrapper/shared/httpReq';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import get from '@datawrapper/shared/get';
 
@@ -401,14 +401,14 @@
                         }`
                     });
                     // publish chart
-                    request
+                    httpReq
                         .post(`/v3/charts/${chartId}/publish`)
                         .then(res => {
                             this.set({
                                 published: true,
                                 progress: ['done']
                             });
-                            request.get(`/v3/charts/${chartId}`).then(res => {
+                            httpReq.get(`/v3/charts/${chartId}`).then(res => {
                                 trackEvent('Chart Editor', 'publish-success');
                                 this.publishFinished(res);
                             });
@@ -430,7 +430,7 @@
             updateStatus() {
                 const { statusUrl } = this.get();
                 if (!statusUrl) return;
-                request.get(statusUrl).then(res => {
+                httpReq.get(statusUrl).then(res => {
                     this.set({
                         progress: res.progress || [],
                         now: new Date().getTime()
@@ -552,7 +552,7 @@
             duplicate() {
                 const { id } = this.store.get();
                 trackEvent('Chart Editor', 'duplicate');
-                request.post(`/v3/charts/${id}/copy`).then(res => {
+                httpReq.post(`/v3/charts/${id}/copy`).then(res => {
                     // redirect to copied chart
                     window.location.href = `/edit/${res.id}/visualize`;
                 });

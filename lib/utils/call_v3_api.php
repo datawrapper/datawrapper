@@ -19,6 +19,11 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
         $headers[] = 'Authorization: ' . $h['Authorization'];
     } else if (!empty($_COOKIE['DW-SESSION'])) {
         $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
+        if (!empty($_COOKIE['crumb'])) {
+            $headers[] = 'Cookie: crumb='.$_COOKIE['crumb'];
+            $headers[] = 'X-CSRF-Token: '.$_COOKIE['crumb'];
+            $headers[] = sprintf('Referer: %s://%s', $protocol, $GLOBALS['dw_config']['domain']);
+        }
     }
 
     curl_setopt_array($ch, [

@@ -247,7 +247,7 @@
     import Help from '@datawrapper/controls/Help.html';
 
     import { __ } from '@datawrapper/shared/l10n';
-    import request from '@datawrapper/shared/httpReq';
+    import httpReq from '@datawrapper/shared/httpReq';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import get from '@datawrapper/shared/get';
 
@@ -349,14 +349,14 @@
                             statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`
                         });
                         // publish chart
-                        request
+                        httpReq
                             .post(`/v3/charts/${chart.id}/publish`)
                             .then(res => {
                                 this.set({
                                     published: true,
                                     progress: ['done']
                                 });
-                                request.get(`/v3/charts/${chart.id}`).then(res => {
+                                httpReq.get(`/v3/charts/${chart.id}`).then(res => {
                                     trackEvent('Chart Editor', 'publish-success');
                                     me.publishFinished(res);
                                 });
@@ -375,7 +375,7 @@
                 const me = this;
                 const { statusUrl } = me.get();
                 if (!statusUrl) return;
-                request.get(statusUrl).then(res => {
+                httpReq.get(statusUrl).then(res => {
                     this.set({
                         progress: res.progress || [],
                         now: new Date().getTime()
