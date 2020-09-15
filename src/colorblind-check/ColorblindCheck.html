@@ -149,7 +149,7 @@
                 // get list of all colors used in last run
                 if (!__dw.vis) {
                     // try again later
-                    setTimeout(() => {
+                    return setTimeout(() => {
                         this.runTests();
                     }, 1000);
                 }
