@@ -21,7 +21,7 @@
             back() {
                 const { tab, showChartPicker } = this.get();
                 if ((tab === 'refine' && !showChartPicker) || tab === 'pick')
-                    window.location.href = 'data';
+                    window.location.href = 'describe';
                 else if (tab === 'refine' && showChartPicker) this.set({ tab: 'pick' });
                 else if (tab === 'annotate') this.set({ tab: 'refine' });
                 else if (tab === 'design') this.set({ tab: 'annotate' });
