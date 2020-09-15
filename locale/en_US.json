@@ -755,5 +755,10 @@
   "controls / legend / edit-labels": "Edit labels",
   "controls / legend / edit-labels / mini-help-1": "Click labels to edit, drag items to re-order",
   "controls / legend / edit-labels / mini-help-2": "Click labels to edit",
-  "controls / legend / reverse": "Reverse legend item order"
+  "controls / legend / reverse": "Reverse legend item order",
+  "controls / legend / interactive": "Enable mouse interactions",
+  "controls / legend / interactive / help": "If enabled, readers can hover the legend to see corresponding elements in the visualization and vice versa.",
+  "left": "left",
+  "center": "center",
+  "right": "right"
 }
