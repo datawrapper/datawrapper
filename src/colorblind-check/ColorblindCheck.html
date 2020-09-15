@@ -147,6 +147,12 @@
             }, //
             runTests() {
                 // get list of all colors used in last run
+                if (!__dw.vis) {
+                    // try again later
+                    setTimeout(() => {
+                        this.runTests();
+                    }, 1000);
+                }
                 let colors = __dw.vis
                     .colorsUsed()
                     .filter(c => chroma.valid(c) && chroma(c).get('lch.c') > 1.5);
