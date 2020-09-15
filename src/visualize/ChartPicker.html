@@ -11,13 +11,18 @@
 
         <div class="vis-archive-select">
             <SelectInput
+                width="180px"
                 options="{archiveOpts}"
                 label="{__('visualize / vis archive')}"
                 on:change="loadVis(event.target.value)"
             />
         </div>
 
-        <p><b>{ __("Hint") }:</b> { __('visualize / transpose-hint') }</p>
+        <p>
+            <b>{ __("Hint") }:</b>
+            In case the visualization doesn't look like you expected, you should try to
+            <a href="#" on:click="transpose()">transpose the data</a>.
+        </p>
     </div>
 </div>
 
@@ -46,6 +51,11 @@
                 if (id !== type) {
                     this.fire('change', id);
                 }
+            },
+            transpose() {
+                const { metadata } = this.store.get();
+                metadata.data.transpose = !metadata.data.transpose;
+                this.store.set({ metadata });
             }
         }
     };
