@@ -11,6 +11,9 @@ const production = !process.env.ROLLUP_WATCH;
 
 const targets = [];
 
+build('visualize');
+
+/*
 build('fields');
 build('team-settings');
 build('account');
@@ -24,11 +27,9 @@ build('publish/guest');
 build('publish/pending-activation');
 build('describe');
 build('describe/hot', { noAMD: true });
-build('visualize');
 build('upload');
 build('highlight');
-build('resizer');
-build('colorblind-check');
+*/
 
 export default targets;
 
@@ -88,26 +89,27 @@ function build(appId, opts) {
             commonjs(),
             json(),
 
-            babel({
-                // don't exclude anything!
-                // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
-                extensions: ['.js', '.mjs', '.html'],
-                babelHelpers: 'runtime',
-                presets: [
-                    [
-                        '@babel/env',
-                        {
-                            targets: 'last 2 versions, not IE 10, not dead',
-                            corejs: 3,
-                            useBuiltIns: 'entry'
-                        }
+            production &&
+                babel({
+                    // don't exclude anything!
+                    // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
+                    extensions: ['.js', '.mjs', '.html'],
+                    babelHelpers: 'runtime',
+                    presets: [
+                        [
+                            '@babel/env',
+                            {
+                                targets: 'last 2 versions, not IE 10, not dead',
+                                corejs: 3,
+                                useBuiltIns: 'entry'
+                            }
+                        ]
+                    ],
+                    plugins: [
+                        'babel-plugin-transform-async-to-promises',
+                        '@babel/plugin-transform-runtime'
                     ]
-                ],
-                plugins: [
-                    'babel-plugin-transform-async-to-promises',
-                    '@babel/plugin-transform-runtime'
-                ]
-            }),
+                }),
             production && terser()
         ]
     });

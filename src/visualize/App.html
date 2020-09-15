@@ -1,36 +1,61 @@
-<TabNav bind:tab {showChartPicker} />
+<div class="dw-create-visualize chart-editor chart-editor-{{ mode }}">
+    <div class="row">
+        <div class="span4 visconfig">
+            <TabNav bind:tab {showChartPicker} />
 
-<div class="form-horizontal vis-options">
-    {#if showChartPicker}
-    <!-- Chart Type -->
-    <div class:hide-smart="tab !== 'pick'">
-        <ChartPicker {visualizations} {visArchive} on:change="loadVis(event)" />
+            <div class="form-horizontal vis-options">
+                {#if showChartPicker}
+                <!-- Chart Type -->
+                <div class:hide-smart="tab !== 'pick'">
+                    <ChartPicker {visualizations} {visArchive} on:change="loadVis(event)" />
+                </div>
+                {/if}
+
+                <!-- Refine -->
+                <div class:hide-smart="tab !== 'refine'">
+                    {#if visLoading}
+                    <Loading />
+                    {/if}
+                    <svelte:component this="{Refine}" {tab} />
+                </div>
+
+                <!-- Annotate -->
+                <div class:hide-smart="tab !== 'annotate'">
+                    <Annotate />
+                    {#if visLoading}
+                    <Loading />
+                    {/if}
+                    <svelte:component this="{Annotate}" {tab} />
+                </div>
+
+                <!-- Design -->
+                <div class:hide-smart="tab !== 'design'">
+                    <Design />
+                </div>
+
+                <ButtonNav bind:tab {showChartPicker} />
+            </div>
+        </div>
+        <div class="span8">
+            <div
+                class="scrollfix-cont"
+                data-offset-top="100"
+                data-offset-bottom="130"
+                style="position: relative;"
+            >
+                <div id="iframe-wrapper" style="height: 500px; overflow: visible;">
+                    <iframe src="/preview/{ $id }" id="iframe-vis"></iframe>
+                </div>
+
+                <div class="toolbar" style="margin-top: 90px;">
+                    <Resizer />
+                    <ColorblindCheck />
+                </div>
+
+                <div id="notifications"></div>
+            </div>
+        </div>
     </div>
-    {/if}
-
-    <!-- Refine -->
-    <div class:hide-smart="tab !== 'refine'">
-        {#if visLoading}
-        <Loading />
-        {/if}
-        <svelte:component this="{Refine}" {tab} />
-    </div>
-
-    <!-- Annotate -->
-    <div class:hide-smart="tab !== 'annotate'">
-        <Annotate />
-        {#if visLoading}
-        <Loading />
-        {/if}
-        <svelte:component this="{Annotate}" {tab} />
-    </div>
-
-    <!-- Design -->
-    <div class:hide-smart="tab !== 'design'">
-        <Design />
-    </div>
-
-    <ButtonNav bind:tab {showChartPicker} />
 </div>
 
 <script>
@@ -42,6 +67,8 @@
     import Design from './Design.html';
     import ChartPicker from './ChartPicker.html';
     import Loading from './Loading.html';
+    import Resizer from './Resizer.html';
+    import ColorblindCheck from './colorblind-check/ColorblindCheck.html';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
@@ -51,7 +78,9 @@
             Annotate,
             Design,
             ChartPicker,
-            Loading
+            Loading,
+            Resizer,
+            ColorblindCheck
         },
         data() {
             return {

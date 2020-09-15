@@ -20,9 +20,7 @@ function init({
     visArchive,
     defaultVisType
 }) {
-    chartData.mode = getQueryVariable('mode') || 'web';
     var chart = new Chart(chartData);
-    window.chart2 = chart;
 
     const themeCache = {};
     const visCache = {};
@@ -58,34 +56,20 @@ function init({
 
         chart.set({ dataset: ds });
 
+        target.innerHTML = '';
+
+        app = new App({
+            store: chart,
+            target,
+            data: {
+                visualizations,
+                visArchive,
+                defaultVisType
+            }
+        });
+
         getContext(function (win, doc) {
             chart.set({ vis: win.__dw.vis });
-
-            target.innerHTML = '';
-
-            app = new App({
-                store: chart,
-                target,
-                data: {
-                    visualizations,
-                    visArchive,
-                    defaultVisType
-                }
-            });
-
-            // observe changes to old chart object
-            dw.backend.currentChart.onChange(function (ds, changed) {
-                passiveMode = true;
-                var attr = dw.backend.currentChart.attributes();
-                chart.set(attr);
-                // if (changed == 'metadata.data.changes') {
-                //     const dataset = chart.dataset(true);
-                //     chart.set({ dataset });
-                // }
-                setTimeout(function () {
-                    passiveMode = false;
-                }, 100);
-            });
         });
     });
 
@@ -146,9 +130,13 @@ function init({
             if (!passiveMode && dw && dw.backend && dw.backend.currentChart) {
                 var iframe = document.querySelector('#iframe-vis');
                 if (iframe && iframe.contentWindow) {
+                    // update iframe
+
                     var win = iframe.contentWindow;
-                    if (win.__dw && win.__dw.attributes) {
-                        win.__dw.attributes({
+                    if (win.__dw && win.__dwUpdate) {
+                        const __dw = win.__dw;
+
+                        const attributes = {
                             id: current.id,
                             title: current.title,
                             theme: current.theme,
@@ -156,14 +144,18 @@ function init({
                             externalData: current.externalData,
                             language: current.language,
                             metadata: current.metadata
+                        };
+
+                        __dw.vis.chart().attributes(attributes);
+                        __dw.old_attrs = JSON.parse(JSON.stringify(attributes));
+                        __dw.vis.chart().load(__dw.params.data);
+                        __dw.render();
+
+                        win.__dwUpdate({
+                            chart: attributes
                         });
                     }
                 }
-
-                // set metadata directly without saving again
-                dw.backend.currentChart.attributes().metadata = JSON.parse(
-                    JSON.stringify(current.metadata)
-                );
             }
         }
     });
@@ -185,17 +177,6 @@ function init({
     return {
         app
     };
-}
-
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (decodeURIComponent(pair[0]) === variable) {
-            return decodeURIComponent(pair[1]);
-        }
-    }
 }
 
 function getContext(callback) {
