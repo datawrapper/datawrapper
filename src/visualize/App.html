@@ -143,15 +143,16 @@
                         chart.set({
                             visualization: vis
                         });
-                        // determine if we automaticall switch to refine tab
-                        const { tab, defaultVisType } = this.get();
-                        const chartTypeSet =
-                            chart.getMetadata('visualize.chart-type-set', false) ||
-                            id !== defaultVisType;
 
-                        this.set({
-                            tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
-                        });
+                        // determine if we automaticall switch to refine tab
+                        // const { tab, defaultVisType } = this.get();
+                        // const chartTypeSet =
+                        //     chart.getMetadata('visualize.chart-type-set', false) ||
+                        //     id !== defaultVisType;
+
+                        // this.set({
+                        //     tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+                        // });
 
                         // dw.backend.once('vis-ready', () => {
                         // wait for chart preview
