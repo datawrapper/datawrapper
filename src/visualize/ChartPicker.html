@@ -21,7 +21,10 @@
         <p>
             <b>{ __("Hint") }:</b>
             In case the visualization doesn't look like you expected, you should try to
-            <a href="#" on:click="transpose()">transpose the data</a>.
+            <button class="plain-link" on:click="transpose()" on:mousedown="event.preventDefault()">
+                transpose the data
+            </button>
+            .
         </p>
     </div>
 </div>
