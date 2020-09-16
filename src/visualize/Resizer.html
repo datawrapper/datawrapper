@@ -285,7 +285,7 @@
                 );
 
                 $('.visconfig')
-                    .css('min-height', +h + 250)
+                    .css('min-height', +h + 250) // Randomly adds 250px?! TODO: Clarify if that's really necessary.
                     .animate({
                         left: Math.min(0, maxW - w) / 2
                     });

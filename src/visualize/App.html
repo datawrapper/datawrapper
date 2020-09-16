@@ -1,6 +1,6 @@
 <div class="dw-create-visualize chart-editor">
-    <div class="row vis-wrapper" use:scroll>
-        <div class="span4 visconfig">
+    <div class="row vis-wrapper" use:sticky>
+        <div class="span4 visconfig" ref:sidebar>
             <TabNav bind:tab {showChartPicker} />
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
@@ -38,8 +38,8 @@
 
         <div class="span8">
             <div
-                class="vis-main"
-                ref:main
+                class="vis-canvas"
+                ref:canvas
                 class:stickyBottom="stickyBottom"
                 class:stickyTop="stickyTop"
             >
@@ -63,19 +63,19 @@
         position: relative;
     }
 
-    .vis-main {
+    .vis-canvas {
         position: absolute;
         top: 0;
         padding: 35px 0;
     }
 
-    .vis-main.stickyBottom {
+    .vis-canvas.stickyBottom {
         position: absolute;
         top: auto;
         bottom: 0;
     }
 
-    .vis-main.stickyTop {
+    .vis-canvas.stickyTop {
         position: fixed;
         top: 0;
         bottom: auto;
@@ -121,21 +121,25 @@
             };
         },
         actions: {
-            scroll(wrapper) {
+            sticky(wrapper) {
                 const checkOffset = () => {
                     const { top, bottom } = wrapper.getBoundingClientRect();
-                    const hasOffsetBottom = bottom < this.refs.main.scrollHeight;
+                    const canvasHeight = this.refs.canvas.scrollHeight;
+                    const sidebarHeight = this.refs.sidebar.scrollHeight;
+                    const useSticky = canvasHeight < sidebarHeight;
                     this.set({
-                        stickyTop: top < 0 && !hasOffsetBottom,
-                        stickyBottom: hasOffsetBottom
+                        stickyTop: useSticky && top < 0 && bottom > canvasHeight,
+                        stickyBottom: useSticky && bottom < canvasHeight
                     });
                 };
 
                 window.addEventListener('scroll', checkOffset);
+                wrapper.addEventListener('resize', checkOffset);
 
                 return {
                     destroy() {
                         window.removeEventListener('scroll', checkOffset);
+                        wrapper.removeEventListener('resize', checkOffset);
                     }
                 };
             }
