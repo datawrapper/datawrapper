@@ -1,8 +1,7 @@
 <div class="dw-create-visualize chart-editor">
-    <div class="row">
+    <div class="row vis-wrapper" use:scroll>
         <div class="span4 visconfig">
             <TabNav bind:tab {showChartPicker} />
-
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
                 <!-- Chart Type -->
@@ -36,12 +35,13 @@
                 <ButtonNav bind:tab {showChartPicker} />
             </div>
         </div>
+
         <div class="span8">
             <div
-                class="scrollfix-cont"
-                data-offset-top="100"
-                data-offset-bottom="130"
-                style="position: relative;"
+                class="vis-main"
+                ref:main
+                class:stickyBottom="stickyBottom"
+                class:stickyTop="stickyTop"
             >
                 <div id="iframe-wrapper" style="height: 500px; overflow: visible;">
                     <iframe src="/preview/{ $id }" id="iframe-vis"></iframe>
@@ -57,6 +57,30 @@
         </div>
     </div>
 </div>
+
+<style>
+    .vis-wrapper {
+        position: relative;
+    }
+
+    .vis-main {
+        position: absolute;
+        top: 0;
+        padding: 35px 0;
+    }
+
+    .vis-main.stickyBottom {
+        position: absolute;
+        top: auto;
+        bottom: 0;
+    }
+
+    .vis-main.stickyTop {
+        position: fixed;
+        top: 0;
+        bottom: auto;
+    }
+</style>
 
 <script>
     /* globals dw, $  */
@@ -91,8 +115,30 @@
                 visualizations: [],
                 visArchive: [],
                 visLoading: false,
-                defaultVisType: ''
+                defaultVisType: '',
+                stickyTop: false,
+                stickyBottom: false
             };
+        },
+        actions: {
+            scroll(wrapper) {
+                const checkOffset = () => {
+                    const { top, bottom } = wrapper.getBoundingClientRect();
+                    const hasOffsetBottom = bottom < this.refs.main.scrollHeight;
+                    this.set({
+                        stickyTop: top < 0 && !hasOffsetBottom,
+                        stickyBottom: hasOffsetBottom
+                    });
+                };
+
+                window.addEventListener('scroll', checkOffset);
+
+                return {
+                    destroy() {
+                        window.removeEventListener('scroll', checkOffset);
+                    }
+                };
+            }
         },
         methods: {
             loadVis(id) {
