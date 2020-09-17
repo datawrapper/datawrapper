@@ -756,7 +756,7 @@
   "controls / legend / edit-labels / mini-help-1": "Text zum Bearbeiten anklicken, Elemente ziehen zum umsortieren",
   "controls / legend / edit-labels / mini-help-2": "Text zum Bearbeiten anklicken",
   "controls / legend / reverse": "Reihenfolge der Legende umkehren",
-  "controls / legend / interactive": "Mausinteraktionen aktivieren",
+  "controls / legend / interactive": "Hervorhebung bei Hover aktivieren",
   "controls / legend / interactive / help": "Wenn diese Option aktiviert ist, können Leser mit der Maus über die Legende fahren, um die entsprechenden Elemente in der Visualisierung anzuzeigen, und umgekehrt.",
   "left": "links",
   "center": "mitte",
