@@ -2286,9 +2286,12 @@ Each of these property-direction combinations needs to be appended with one of 6
   justify-content: center;
   align-items: center;
   width: auto;
-  height: 42px;
-  margin-top: 30px;
-  margin-bottom: 80px;
+  margin: 20px 0;
+}
+@media (min-width: 980px) {
+  .chart-editor.dw-create-visualize .toolbar {
+    margin: 50px 0;
+  }
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2297,7 +2300,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 20px;
+  margin: 20px 0 10px 20px;
   position: relative;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container:first-child {
