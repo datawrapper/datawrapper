@@ -1,6 +1,26 @@
 <div class="dw-create-visualize chart-editor">
-    <div class="row vis-wrapper" ref:wrapper>
-        <div class="span4 visconfig" ref:sidebar>
+    <div class="vis-wrapper" ref:wrapper>
+        <div
+            class="vis-main"
+            ref:canvas
+            class:stickyBottom="stickyBottom"
+            class:stickyTop="stickyTop"
+        >
+            <div class="container">
+                <div class="vis-canvas">
+                    <ChartPreview src="/preview/{ $id }" on:resize="makePreviewSticky()" />
+
+                    <div class="toolbar" style="margin-top: 90px;">
+                        <Resizer />
+                        <ColorblindCheck />
+                    </div>
+
+                    <div id="notifications"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="visconfig vis-sidebar" ref:sidebar>
             <TabNav bind:tab {showChartPicker} />
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
@@ -35,48 +55,44 @@
                 <ButtonNav bind:tab {showChartPicker} />
             </div>
         </div>
-
-        <div class="span8">
-            <div
-                class="vis-canvas"
-                ref:canvas
-                class:stickyBottom="stickyBottom"
-                class:stickyTop="stickyTop"
-            >
-                <ChartPreview src="/preview/{ $id }" on:resize="makePreviewSticky()" />
-
-                <div class="toolbar" style="margin-top: 90px;">
-                    <Resizer />
-                    <ColorblindCheck />
-                </div>
-
-                <div id="notifications"></div>
-            </div>
-        </div>
     </div>
 </div>
 
 <style>
-    .vis-wrapper {
-        position: relative;
-    }
+    @media (min-width: 980px) {
+        .vis-wrapper {
+            position: relative;
+        }
 
-    .vis-canvas {
-        position: absolute;
-        top: 0;
-        padding: 10px;
-    }
+        .vis-main {
+            position: relative;
+            top: 0;
+            padding: 15px;
+        }
 
-    .vis-canvas.stickyBottom {
-        position: absolute;
-        top: auto;
-        bottom: 0;
-    }
+        .vis-main.stickyBottom {
+            position: absolute;
+            top: auto;
+            bottom: 0;
+        }
 
-    .vis-canvas.stickyTop {
-        position: fixed;
-        top: 0;
-        bottom: auto;
+        .vis-main.stickyTop {
+            position: fixed;
+            top: 0;
+            bottom: auto;
+        }
+
+        .vis-main {
+            position: absolute;
+        }
+
+        .vis-sidebar {
+            width: 33%;
+        }
+
+        .vis-canvas {
+            padding-left: 33%;
+        }
     }
 </style>
 
