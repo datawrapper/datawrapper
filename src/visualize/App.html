@@ -1,5 +1,5 @@
 <div class="dw-create-visualize chart-editor">
-    <div class="row vis-wrapper" use:sticky>
+    <div class="row vis-wrapper" ref:wrapper>
         <div class="span4 visconfig" ref:sidebar>
             <TabNav bind:tab {showChartPicker} />
             <div class="form-horizontal vis-options">
@@ -43,9 +43,7 @@
                 class:stickyBottom="stickyBottom"
                 class:stickyTop="stickyTop"
             >
-                <div id="iframe-wrapper" style="height: 500px; overflow: visible;">
-                    <iframe src="/preview/{ $id }" id="iframe-vis"></iframe>
-                </div>
+                <ChartPreview src="/preview/{ $id }" on:resize="makePreviewSticky()" />
 
                 <div class="toolbar" style="margin-top: 90px;">
                     <Resizer />
@@ -66,7 +64,7 @@
     .vis-canvas {
         position: absolute;
         top: 0;
-        padding: 35px 0;
+        padding: 10px;
     }
 
     .vis-canvas.stickyBottom {
@@ -84,6 +82,8 @@
 
 <script>
     /* globals dw, $  */
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+    import { ChartPreview } from '@datawrapper/controls';
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
@@ -93,7 +93,6 @@
     import Loading from './Loading.html';
     import Resizer from './Resizer.html';
     import ColorblindCheck from './colorblind-check/ColorblindCheck.html';
-    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
 
     export default {
         components: {
@@ -104,7 +103,8 @@
             ChartPicker,
             Loading,
             Resizer,
-            ColorblindCheck
+            ColorblindCheck,
+            ChartPreview
         },
         data() {
             return {
@@ -120,31 +120,17 @@
                 stickyBottom: false
             };
         },
-        actions: {
-            sticky(wrapper) {
-                const checkOffset = () => {
-                    const { top, bottom } = wrapper.getBoundingClientRect();
-                    const canvasHeight = this.refs.canvas.scrollHeight;
-                    const sidebarHeight = this.refs.sidebar.scrollHeight;
-                    const useSticky = canvasHeight < sidebarHeight;
-                    this.set({
-                        stickyTop: useSticky && top < 0 && bottom > canvasHeight,
-                        stickyBottom: useSticky && bottom < canvasHeight
-                    });
-                };
-
-                window.addEventListener('scroll', checkOffset);
-                wrapper.addEventListener('resize', checkOffset);
-
-                return {
-                    destroy() {
-                        window.removeEventListener('scroll', checkOffset);
-                        wrapper.removeEventListener('resize', checkOffset);
-                    }
-                };
-            }
-        },
         methods: {
+            makePreviewSticky() {
+                const { top, bottom } = this.refs.wrapper.getBoundingClientRect();
+                const canvasHeight = this.refs.canvas.scrollHeight;
+                const sidebarHeight = this.refs.sidebar.scrollHeight;
+                const useSticky = canvasHeight < sidebarHeight;
+                this.set({
+                    stickyTop: useSticky && top < 0 && bottom >= canvasHeight,
+                    stickyBottom: useSticky && bottom < canvasHeight
+                });
+            },
             loadVis(id) {
                 const { visArchive, visualizations } = this.get();
                 const chart = this.store;
@@ -222,12 +208,23 @@
             }
         },
         oncreate() {
+            // update tab navigation based on URL hash:
             if (['#pick', '#refine', '#annotate', '#design'].includes(window.location.hash)) {
                 this.set({ tab: window.location.hash.substr(1) });
             }
-            // load visualization
+
+            // load visualization:
             const { type } = this.store.get();
             this.loadVis(type);
+
+            // add event handler for making the preview stick to the viewport:
+            const makePreviewSticky = () => this.makePreviewSticky();
+            window.addEventListener('scroll', makePreviewSticky);
+
+            // remove event handler when this component destroyed:
+            this.on('destroy', () => {
+                window.removeEventListener('scroll', makePreviewSticky);
+            });
         }
     };
 
