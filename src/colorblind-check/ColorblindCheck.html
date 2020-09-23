@@ -106,7 +106,9 @@
                 });
             },
             forceRerender() {
+                const { activeMode } = this.get();
                 this.initIframe(() => {
+                    $('#iframe-vis').get(0).contentWindow.__dwColorMode = activeMode;
                     $('#iframe-vis').get(0).contentWindow.__dw.render();
                     $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
                 });
