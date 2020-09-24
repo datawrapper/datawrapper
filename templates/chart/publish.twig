@@ -34,18 +34,19 @@ dw.backend.ready(function() {
         {% else %}
             {% include "chart/publish/activated.twig" %}
         {% endif %}
-
         </div>
 
         <div class="span7">
             <div class="messages"></div>
-            <iframe src="{{ chartUrlLocal }}" id="iframe-vis" style="position:sticky;top:20px;width:{{ embedWidth }};height:{{ embedHeight }}" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
+            <iframe
+                src="{{ chartUrlLocal }}"
+                id="iframe-vis"
+                style="position:sticky;top:20px;width:{{ embedWidth }};height:{{ embedHeight }}"
+                scrolling="no"
+                allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen
+            ></iframe>
         </div>
     </div>
-
 </div>
 
-
-
 {% endblock %}
-
