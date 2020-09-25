@@ -85,10 +85,34 @@
         dw.backend.__commit_sha = '{{ COMMIT_SHA }}';
         dw.backend.__auth_salt = '{{ DW_AUTH_SALT }}';
         dw.backend.__messages = {{ messages | json | raw }};
+        dw.backend.__messages_hash = '{{ messages_hash }}';
         dw.backend.__svelteApps = {};
 
         if (dw.backend.__userData.length === 0) {
             dw.backend.__userData = {};
+        }
+        if (window.localStorage && window.localStorage.getItem) {
+            // check if message hash is newer
+            var oldHash = window.localStorage.getItem('messages_hash');
+            var oldMessages = window.localStorage.getItem('messages');
+
+            if (!dw.backend.__messages.core && !oldMessages) {
+                // we have a problem, the local storage might have been
+                // cleared but the cookie is still set!
+                // let's unset the cookie and reload
+                document.cookie = 'DW-MESSAGES-HASH=';
+                window.location.reload();
+            }
+            if (dw.backend.__messages_hash !== oldHash && dw.backend.__messages.core) {
+                // yes it is, let's store new translations
+                window.localStorage.setItem('messages_hash', dw.backend.__messages_hash);
+                window.localStorage.setItem('messages', JSON.stringify(dw.backend.__messages));
+                // also set cookie so server knows we have stored this version
+                window.document.cookie = 'DW-MESSAGES-HASH='+dw.backend.__messages_hash;
+            } else if (oldHash && !dw.backend.__messages.core) {
+                // restore translation from cache
+                dw.backend.__messages = JSON.parse(oldMessages);
+            }
         }
 
         $(function() {
