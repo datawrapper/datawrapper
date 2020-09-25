@@ -17,7 +17,7 @@ class Datawrapper_L10N {
             $fallback = $this->loadMessageJSON('en_US');
             foreach ($fallback as $scope => $msg) {
                 foreach ($messages[$scope] as $key => $translation) {
-                    if ($GLOBALS['dw_config']['debug'] !== true) {
+                    if (($GLOBALS['dw_config']['debug'] ?? false) !== true) {
                         if (empty($translation) && !empty($msg[$key])) {
                             // translation is empty or missing, but we have a falllback
                             $messages[$scope][$key] = $msg[$key];
