@@ -118,6 +118,11 @@ class Datawrapper_L10N {
         return $all;
     }
 
+    public function getClientMessagesHash() {
+        $msg = $this->getClientMessages();
+        return md5(json_encode($msg));
+    }
+
 }
 
 
