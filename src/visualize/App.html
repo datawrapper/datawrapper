@@ -147,42 +147,33 @@
                     stickyBottom: useSticky && bottom < canvasHeight
                 });
             },
-            loadVis(id) {
-                const { visArchive, visualizations } = this.get();
+            loadVis(type) {
+                this.store.set({ type });
+                this.loadControls(type);
+            },
+            loadControls(type) {
                 const chart = this.store;
-                const vis = [...visArchive, ...visualizations].find(v => v.id === id);
+                const { visArchive, visualizations } = this.get();
+                const vis = [...visArchive, ...visualizations].find(v => v.id === type);
                 this.set({ visLoading: true });
                 if (!vis.controls) {
                     console.error('This visualization does not define new svelte controls');
                     return;
                 }
-                const { type } = chart.get();
-                if (type !== id) {
-                    chart.setMetadata('visualize.chart-type-set', true);
-                    chart.set({
-                        type: id
-                    });
-                }
+
                 Promise.all([
                     loadScript(`/static/plugins/${vis.controls.js}`),
                     loadStylesheet(`/static/plugins/${vis.controls.css}`)
                 ]).then(() => {
-                    /* crazy workaround:
-                     * since only the first requirejs call will fail with an
-                     * a Mismatched anonymous define() modules error
-                     * we'll just load the module twice
-                     */
-                    try {
-                        require([vis.controls.amd], mod => {});
-                    } catch (e) {}
                     require([vis.controls.amd], mod => {
                         this.set({
                             Refine: Empty,
                             Annotate: Empty
                         });
+
                         if (mod.migrate) {
                             const { metadata } = chart.get();
-                            mod.migrate(id, metadata);
+                            mod.migrate(type, metadata);
                             chart.set({ metadata });
                         }
 
@@ -192,9 +183,7 @@
                             ...chart.getMetadata('visualize', {})
                         };
                         chart.setMetadata('visualize', visualize);
-                        chart.set({
-                            visualization: vis
-                        });
+                        chart.set({ visualization: vis });
 
                         // determine if we automaticall switch to refine tab
                         // const { tab, defaultVisType } = this.get();
@@ -206,8 +195,6 @@
                         //     tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
                         // });
 
-                        // dw.backend.once('vis-ready', () => {
-                        // wait for chart preview
                         getContext(win => {
                             // set refine & annotate controls and switch tab
                             chart.set({ vis: win.__dw.vis });
@@ -218,7 +205,6 @@
                             });
                             dw.backend.fire('options-reloaded');
                         });
-                        // });
                     });
                 });
             }
@@ -237,7 +223,7 @@
             const makePreviewSticky = () => this.makePreviewSticky();
             window.addEventListener('scroll', makePreviewSticky);
 
-            // remove event handler when this component destroyed:
+            // remove event handler when this component is destroyed:
             this.on('destroy', () => {
                 window.removeEventListener('scroll', makePreviewSticky);
             });

@@ -43,7 +43,7 @@ function init({
         return _.values(visualization.axes || {});
     });
 
-    let app, passiveMode;
+    let app;
 
     chart.load(dw.backend.__currentData).then(function (ds) {
         // remove ignored columns
@@ -109,14 +109,11 @@ function init({
             changed.lastEditStep
         ) {
             chart.store(function () {
-                var iframe = document.querySelector('#iframe-vis');
-                if (iframe && iframe.contentWindow) {
-                    var win = iframe.contentWindow;
-                    if (win.__dw && win.__dw.saved) {
-                        win.__dw.saved();
-                    }
-                }
+                getContext(win => {
+                    win.__dw.saved && win.__dw.saved();
+                });
             });
+
             if (!dontPush) {
                 var s = JSON.stringify(chart.serialize());
                 if (historyPos > 0) {
@@ -126,36 +123,6 @@ function init({
                 if (editHistory[0] !== s) editHistory.unshift(s);
                 editHistory.length = Math.min(editHistory.length, 50);
                 historyPos = 0;
-            }
-            if (!passiveMode && dw && dw.backend && dw.backend.currentChart) {
-                var iframe = document.querySelector('#iframe-vis');
-                if (iframe && iframe.contentWindow) {
-                    // update iframe
-
-                    var win = iframe.contentWindow;
-                    if (win.__dw && win.__dwUpdate) {
-                        const __dw = win.__dw;
-
-                        const attributes = {
-                            id: current.id,
-                            title: current.title,
-                            theme: current.theme,
-                            type: current.type,
-                            externalData: current.externalData,
-                            language: current.language,
-                            metadata: current.metadata
-                        };
-
-                        __dw.vis.chart().attributes(attributes);
-                        __dw.old_attrs = JSON.parse(JSON.stringify(attributes));
-                        __dw.vis.chart().load(__dw.params.data);
-                        __dw.render();
-
-                        win.__dwUpdate({
-                            chart: attributes
-                        });
-                    }
-                }
             }
         }
     });
