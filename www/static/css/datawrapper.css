@@ -1727,7 +1727,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize.chart-editor-print .resizer {
   display: none;
 }
-.chart-editor.dw-create-visualize .visualization [contenteditable=true]:hover:after {
+.chart-editor.dw-create-visualize .visualization [contenteditable='true']:hover:after {
   content: ' click to edit';
   font-style: italic;
   font-size: 12px;
@@ -2130,7 +2130,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   padding-left: 1ex;
   color: #666;
 }
-.chart-editor.dw-create-visualize .resize-chart input[type=text] {
+.chart-editor.dw-create-visualize .resize-chart input[type='text'] {
   width: 4ex;
   position: relative;
   top: 3px;
@@ -2143,7 +2143,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   top: -60px !important;
 }
 .chart-editor.dw-create-visualize .alert-warning h4 {
-  color: #A0711F;
+  color: #a0711f;
   margin: 2px 0 5px;
 }
 .chart-editor.dw-create-visualize .visualize-nav-tabs {
@@ -2196,7 +2196,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 }
 .chart-editor.dw-create-visualize .visconfig label,
 .chart-editor.dw-create-visualize .visconfig select,
-.chart-editor.dw-create-visualize .visconfig input[type=text],
+.chart-editor.dw-create-visualize .visconfig input[type='text'],
 .chart-editor.dw-create-visualize .visconfig textarea {
   font-size: 14px;
   line-height: 16px;
@@ -2206,15 +2206,11 @@ Each of these property-direction combinations needs to be appended with one of 6
 @media only screen and (max-width: 1199px) {
   .chart-editor.dw-create-visualize .visconfig label,
   .chart-editor.dw-create-visualize .visconfig select,
-  .chart-editor.dw-create-visualize .visconfig input[type=text],
+  .chart-editor.dw-create-visualize .visconfig input[type='text'],
   .chart-editor.dw-create-visualize .visconfig textarea {
     font-size: 13px;
     line-height: 15px;
   }
-}
-.chart-editor.dw-create-visualize .visconfig #text-intro {
-  min-width: 356px;
-  max-width: 356px;
 }
 .chart-editor.dw-create-visualize .visconfig label.separator {
   font-weight: 500;
@@ -2241,25 +2237,25 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-group .vis-option-type-separator:first-child label.separator {
   margin-top: -5px;
 }
-.chart-editor.dw-create-visualize .visconfig input[type="radio"],
-.chart-editor.dw-create-visualize .visconfig input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig input[type='radio'],
+.chart-editor.dw-create-visualize .visconfig input[type='checkbox'] {
   margin: 2px 0 0;
 }
 .chart-editor.dw-create-visualize .visconfig label.checkbox {
   padding-left: 17px;
 }
-.chart-editor.dw-create-visualize .visconfig label.checkbox input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig label.checkbox input[type='checkbox'] {
   margin-left: -17px;
 }
 .chart-editor.dw-create-visualize .visconfig .publish-btn,
 .chart-editor.dw-create-visualize .visconfig .proceed-btn {
-  border-top-right-radius: 4px!important;
-  border-bottom-right-radius: 4px!important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 .chart-editor.dw-create-visualize .visconfig .btn-stepback,
 .chart-editor.dw-create-visualize .visconfig .btn-tabback {
-  border-top-left-radius: 4px!important;
-  border-bottom-left-radius: 4px!important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
 }
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea {
   margin-top: 10px;
@@ -2479,7 +2475,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 .vis-option-type-chart-description {
   padding-bottom: 1px;
 }
-.vis-option-type-chart-description input[type="text"],
+.vis-option-type-chart-description input[type='text'],
 .vis-option-type-chart-description textarea {
   margin-bottom: 5px;
 }
@@ -2496,24 +2492,24 @@ Each of these property-direction combinations needs to be appended with one of 6
   max-width: 180px;
 }
 textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
+input[type='text'],
+input[type='password'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='date'],
+input[type='month'],
+input[type='time'],
+input[type='week'],
+input[type='number'],
+input[type='email'],
+input[type='url'],
+input[type='search'],
+input[type='tel'],
+input[type='color'],
 .uneditable-input {
-  -webkit-box-shadow: none!important;
-  -moz-box-shadow: none!important;
-  box-shadow: none!important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
   border: 1px solid #ddd;
   border-top-color: #ccc;
   border-left-color: #ccc;
