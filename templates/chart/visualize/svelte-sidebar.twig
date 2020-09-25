@@ -26,10 +26,6 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
     var chartData = {{chart.toStruct()|json|raw}};
 
-    if (typeof mod.migrate === "function") {
-        mod.migrate(chartData.type, chartData.metadata);
-    }
-
     // set defaults
     chartData.metadata.visualize = _.extend(
         {{vis['svelte-sidebar']['defaults']|json|raw}},
@@ -84,6 +80,12 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
             ignore[key] = !!format.ignore;
         });
         if (ds.filterColumns) ds.filterColumns(ignore);
+
+        if (typeof mod.migrate === "function") {
+            mod.migrate(chartData.type, chartData.metadata, ds);
+        }
+
+        chart.applyDatasetChanges();
 
         chart.set({dataset: ds});
 
