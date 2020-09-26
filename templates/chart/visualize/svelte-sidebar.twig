@@ -26,6 +26,11 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
     var chartData = {{chart.toStruct()|json|raw}};
 
+    // make sure all core metadata properties are set before loading controls
+    _.each(['annotate', 'axes', 'data', 'describe', 'publish', 'visualize'], function (key) {
+        if (chartData.metadata[key] === undefined) chartData.metadata[key] = {};
+    });
+
     if (typeof mod.migrate === "function") {
         mod.migrate(chartData.type, chartData.metadata);
     }
