@@ -171,6 +171,15 @@
                             Annotate: Empty
                         });
 
+                        // make sure all core metadata properties are set before loading controls
+                        ['annotate', 'axes', 'data', 'describe', 'publish', 'visualize'].forEach(
+                            key => {
+                                if (chart.getMetadata(key) === undefined) {
+                                    chart.setMetadata(key, {});
+                                }
+                            }
+                        );
+
                         if (mod.migrate) {
                             const { metadata } = chart.get();
                             mod.migrate(type, metadata);
