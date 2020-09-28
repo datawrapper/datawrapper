@@ -85,7 +85,7 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
             mod.migrate(chartData.type, chartData.metadata, ds);
         }
 
-        chart.applyDatasetChanges();
+        this.chart().dataset(true);
 
         chart.set({dataset: ds});
 
