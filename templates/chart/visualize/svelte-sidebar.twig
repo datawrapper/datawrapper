@@ -39,10 +39,6 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
             mod.migrate(chartData.type, chartData.metadata, ds);
         }
 
-        // re-apply changes, so migration code is able to
-        // change column types
-        chart.dataset(true);
-
         // set defaults
         chartData.metadata.visualize = _.extend(
             {{vis['svelte-sidebar']['defaults']|json|raw}},
@@ -51,7 +47,12 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
         chartData.mode = getQueryVariable("mode") || "web";
 
+        // re-set chart data after migration and defaults
         chart.set(chartData);
+
+        // re-apply changes, so migration code is able to
+        // change column types
+        chart.dataset(true);
 
         window.chart2 = chart;
         var getJSON = mod.utils.getJSON;
