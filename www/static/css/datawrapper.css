@@ -3351,7 +3351,7 @@ body.dw h1 {
   width: 100%;
   z-index: 10000;
   background: #fcf8e3;
-  color: #c09853;
+  color: #000;
   border-bottom: 1px solid #edddbe;
   box-sizing: border-box;
   text-align: center;
@@ -3359,7 +3359,7 @@ body.dw h1 {
 .dw-alert-message h2,
 .dw-alert-message p,
 .dw-alert-message li {
-  color: #fff;
+  color: #000;
 }
 .dw-alert-message li {
   display: inline-block;
@@ -3388,6 +3388,11 @@ body.dw h1 {
 }
 .dw-alert-message.dw-alert-warning a {
   color: #f6d99d;
+}
+.dw-alert-message.dw-alert-warning h2,
+.dw-alert-message.dw-alert-warning p,
+.dw-alert-message.dw-alert-warning li {
+  color: white;
 }
 html h2 {
   font-size: 24px;
