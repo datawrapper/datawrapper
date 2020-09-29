@@ -594,7 +594,7 @@
   "Design": "Design",
   "Select visualization": "Select visualization",
   "Hint": "Hinweis",
-  "visualize / transpose-hint": "Für den Fall, dass die Visualisierung nicht wie erwartet aussieht, versuche die [LINK]Daten zu transponieren[/LINK].",
+  "visualize / transpose-hint": "Für den Fall, dass die Visualisierung nicht wie erwartet aussieht, versuche die",
   "Tell the story": "Tell the story",
   "Title": "Titel",
   "Description": "Beschreibung",
@@ -760,5 +760,6 @@
   "controls / legend / interactive / help": "Wenn diese Option aktiviert ist, können Leser mit der Maus über die Legende fahren, um die entsprechenden Elemente in der Visualisierung anzuzeigen, und umgekehrt.",
   "left": "links",
   "center": "mitte",
-  "right": "rechts"
+  "right": "rechts",
+  "visualize / transpose-button": "Daten zu transponieren"
 }

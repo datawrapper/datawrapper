@@ -594,7 +594,7 @@
   "Design": "Design",
   "Select visualization": "Select visualization",
   "Hint": "Hint",
-  "visualize / transpose-hint": "In case the visualization doesn't look like you expected, you should try to [LINK]transpose the data[/LINK]",
+  "visualize / transpose-hint": "In case the visualization doesn't look like you expected, you should try to",
   "Tell the story": "Tell the story",
   "Title": "Title",
   "Description": "Description",
@@ -760,5 +760,6 @@
   "controls / legend / interactive / help": "If enabled, readers can hover the legend to see corresponding elements in the visualization and vice versa.",
   "left": "left",
   "center": "center",
-  "right": "right"
+  "right": "right",
+  "visualize / transpose-button": "transpose the data"
 }
