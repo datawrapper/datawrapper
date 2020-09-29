@@ -267,8 +267,8 @@
 
                 const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
 
-                chart.set('metadata.publish.embed-width', w);
-                chart.set('metadata.publish.embed-height', h);
+                chart.setMetadata('publish.embed-width', w);
+                chart.setMetadata('publish.embed-height', h);
 
                 $('#iframe-wrapper').animate(
                     {
@@ -295,12 +295,12 @@
                 this.set({ width_txt: width, height_txt: height });
 
                 if (this.get().mode === 'web') {
-                    dw.backend.currentChart.set('metadata.publish.embed-width', Math.round(w));
-                    dw.backend.currentChart.set('metadata.publish.embed-height', Math.round(h));
+                    dw.backend.currentChart.setMetadata('publish.embed-width', Math.round(w));
+                    dw.backend.currentChart.setMetadata('publish.embed-height', Math.round(h));
                 } else {
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.width', width);
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.height', height);
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.unit', unit);
+                    dw.backend.currentChart.setMetadata('publish.export-pdf.width', width);
+                    dw.backend.currentChart.setMetadata('publish.export-pdf.height', height);
+                    dw.backend.currentChart.setMetadata('publish.export-pdf.unit', unit);
                 }
 
                 this.measureChartHeight();
@@ -320,7 +320,7 @@
                             var h = chartBody.getBoundingClientRect().height;
                             if (h !== chart.get('metadata.publish.chart-height')) {
                                 if (dw.backend.currentVis) {
-                                    chart.set('metadata.publish.chart-height', h);
+                                    chart.setMetadata('publish.chart-height', h);
                                     if (chart.save) chart.save();
                                 }
                             }
