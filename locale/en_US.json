@@ -743,7 +743,7 @@
   "publish / status / creating_images": "Creating images",
   "controls / legend / switch": "Show map legend",
   "controls / color-scale / custom-breaks": "Upper and lower class limits",
-  "controls / color-scale / custom-breaks / warning": "The custom class limits must be in ascending order and may not exceed the value range of your dataset (%min - %max).",
+  "controls / color-scale / custom-breaks / warning": "The custom class limits must be in ascending order.",
   "controls / color-scale / pretty-note": "Rounded breaks aren't available for every step count. Try increasing/decreasing the count until the map changes.",
   "controls / color-scale / custom-range / help": "You can use a custom range if you want to \"fix\" the color palette to a certain value range. This can be useful for dealing with outliers, to set a center for a diverging palette, or if you're using <a target=\"_blank\" href=\"https://academy.datawrapper.de/article/60-external-data-sources\">external data sources</a>.",
   "controls / color-category / select-one-or-more-w-label": "Select one or more items to set a color or change the label.",

@@ -743,7 +743,7 @@
   "publish / status / creating_images": "Bilddateien werden erstellt",
   "controls / legend / switch": "Kartenlegende anzeigen",
   "controls / color-scale / custom-breaks": "Obere und untere Klassengrenzen",
-  "controls / color-scale / custom-breaks / warning": "Die Klassengrenzen müssen in aufsteigender Reihenfolge sein und dürfen den Wertebereich deiner Daten nicht überschreiten  (%min - %max).",
+  "controls / color-scale / custom-breaks / warning": "Die Klassengrenzen müssen in aufsteigender Reihenfolge sein.",
   "controls / color-scale / pretty-note": "Gerundete Klassen funktionieren nicht für jede Anzahl von Schritten. Versuche, die Anzhal zu erhöhen oder verringern, bis sich die Karte ändert.",
   "controls / color-scale / custom-range / help": "Du kannst den Bereich anpassen, wenn du die Farbpalette auf einen bestimmten Wertebereich \"fixieren\" möchtest. Dies kann nützlich sein, um mit \"Ausreißern\" umzugehen, um den zentralen Wert für eine divergierende Palette festzulegen oder wenn du <a target=\"_blank\" href=\"https://academy.datawrapper.de/article/60-external-data-sources\"> externe Datenquellen </a> verwendest.",
   "controls / color-category / select-one-or-more-w-label": "Wähle eine oder mehrere Einträge aus um die Farben oder Beschriftungen zu ändern.",
