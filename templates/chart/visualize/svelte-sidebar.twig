@@ -33,6 +33,11 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
     var chart = new visualize.Chart(chartData);
 
+    var themeCache = {};
+    var visCache = {};
+    themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
+    visCache['{{vis.id}}'] = {{vis|json|raw}};
+
     chart.load(dw.backend.__currentData).then(function(ds) {
 
         if (typeof mod.migrate === "function") {
@@ -56,11 +61,6 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
         window.chart2 = chart;
         var getJSON = mod.utils.getJSON;
-
-        var themeCache = {};
-        var visCache = {};
-        themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
-        visCache['{{vis.id}}'] = {{vis|json|raw}};
 
         chart.set({
             writable: true,
