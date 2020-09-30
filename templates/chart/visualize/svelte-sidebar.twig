@@ -35,6 +35,9 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
     var themeCache = {};
     var visCache = {};
+    var getJSON = mod.utils.getJSON;
+    var app;
+
     themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
     visCache['{{vis.id}}'] = {{vis|json|raw}};
 
@@ -60,7 +63,6 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
         chart.dataset(true);
 
         window.chart2 = chart;
-        var getJSON = mod.utils.getJSON;
 
         chart.set({
             writable: true,
@@ -88,8 +90,6 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
             }
             callback(win, doc);
         }
-
-        var app;
 
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
