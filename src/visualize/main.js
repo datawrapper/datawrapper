@@ -78,22 +78,22 @@ function init({
 
     chart.on('update', function ({ changed, current, previous }) {
         // observe theme changes and load new theme data if needed
-        if (changed.themeId) {
+        if (changed.theme) {
             // console.log('theme has changed', current.theme);
-            if (themeCache[current.themeId]) {
+            if (themeCache[current.theme]) {
                 // re-use cached theme
-                chart.set({ themeData: themeCache[current.themeId] });
+                chart.set({ themeData: themeCache[current.theme] });
             } else {
                 // load new theme data
                 getJSON(
                     '//' +
                         dw.backend.__api_domain +
                         '/v3/themes/' +
-                        current.themeId +
+                        current.theme +
                         '?extend=true',
                     function (res) {
-                        themeCache[current.themeId] = res.data;
-                        dw.theme.register(current.themeId, res.data);
+                        themeCache[current.theme] = res.data;
+                        dw.theme.register(current.theme, res.data);
                         chart.set({ themeData: res.data });
                     }
                 );
@@ -103,7 +103,7 @@ function init({
         if (
             previous &&
             (changed.title ||
-                changed.themeId ||
+                changed.theme ||
                 changed.type ||
                 changed.metadata ||
                 changed.language ||

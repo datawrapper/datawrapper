@@ -1,6 +1,6 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('../../../../../../../../../static/vendor/jschardet/jschardet.min.js'), require('../../../../../../../../../static/vendor/xlsx/xlsx.full.min.js')) :
-	typeof define === 'function' && define.amd ? define('svelte/upload', ['../../../../../../../../../static/vendor/jschardet/jschardet.min.js', '../../../../../../../../../static/vendor/xlsx/xlsx.full.min.js'], factory) :
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('../../../../../../../../static/vendor/jschardet/jschardet.min.js'), require('../../../../../../../../static/vendor/xlsx/xlsx.full.min.js')) :
+	typeof define === 'function' && define.amd ? define('svelte/upload', ['../../../../../../../../static/vendor/jschardet/jschardet.min.js', '../../../../../../../../static/vendor/xlsx/xlsx.full.min.js'], factory) :
 	(global = global || self, global.upload = factory(global.jschardet));
 }(this, function (jschardet) { 'use strict';
 
