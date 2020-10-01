@@ -13,24 +13,22 @@
 
 <script type="text/javascript">
     require(['svelte/visualize'], function(mod) {
-        var App = mod.App,
-        data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
-
-        var chartData = {{chart.toStruct()|json|raw}};
+        var App = mod.App;
 
         mod.init({
-            chartData: chartData,
             target: document.querySelector('#svelte-visualize'),
-            data: data,
-            theme: '{{theme.id}}',
-            themeData: {{theme.data|json|raw}},
-            visData: {{vis|json|raw}},
-            user: {{userArray|json|raw}},
-            locales: {{chartLocales|json|raw}},
-            themes: {{userThemes|json|raw}},
-            visualizations: {{userVisualizations|json|raw}},
+
+            csv: {{chartData|json|raw}},
+            chartData: {{chart.toStruct()|json|raw}},
+            namespace: {{chart.namespace|json|raw }},
+            defaultVisType: '{{defaultVisType}}',
+
+            visualizations: {{visualizations|json|raw}},
             visArchive: {{visArchive|json|raw}},
-            defaultVisType: '{{defaultVisType}}'
+
+            theme: '{{theme.id}}',
+            themes: {{userThemes|json|raw}},
+            themeData: {{theme.data|json|raw}}
         })
     });
 </script>

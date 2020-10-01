@@ -5091,8 +5091,8 @@
 	        src: false,
 	        loading: true,
 	        // resize logic
-	        width: 500,
-	        height: 500,
+	        width: dw.backend.currentChart.get().metadata.publish['embed-width'],
+	        height: dw.backend.currentChart.get().metadata.publish['embed-height'],
 	        border: 10,
 	        resizable: true,
 	        resizing: false,

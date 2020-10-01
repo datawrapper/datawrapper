@@ -13,13 +13,6 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $chart->refreshExternalData();
 
-        if (!DatawrapperHooks::hookRegistered(DatawrapperHooks::RENDER_RESIZE_CONTROL)) {
-            DatawrapperHooks::register(DatawrapperHooks::RENDER_RESIZE_CONTROL, function() {
-                global $app;
-                $app->render('chart/visualize/resizer.twig');
-            });
-        }
-
         // check if this chart type is using the new editor
         $vis = DatawrapperVisualization::get($chart->getType());
         if (!empty($vis['svelte-workflow']) && $vis['svelte-workflow'] != 'chart') {
@@ -35,69 +28,31 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             return;
         }
 
-        $allThemes = ThemeQuery::create()->allThemesForUser($chart);
-        $themeMeta = [];
-
-        foreach ($allThemes as $theme) {
-            $themeMeta[] = array(
-                "id" => $theme->getId(),
-                "title" => $theme->getTitle(),
-                "data" => $theme->getThemeData()
-            );
-        }
-
-        try {
-            $allVis = array();
-
-            foreach (DatawrapperVisualization::all() as $vis) {
-                unset($vis['options']['basemap']);
-                unset($vis['icon']);
-                $allVis[$vis['id']] = $vis;
-            }
-
-            $visData = json_encode(array(
-                'visualizations' => $allVis,
-                'vis' => DatawrapperVisualization::get($chart->getType()),
-                'themes' => $themeMeta,
-            ));
-        } catch (Exception $e) {
-            error('io-error', $e->getMessage());
-        }
-
         $vis = DatawrapperVisualization::get($chart->getType());
-        parse_vis_options($vis);
 
         [$status, $theme] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
         if ($status != 200) {
             [$status, $theme] = call_v3_api('GET', '/themes/default');
         }
 
-        $org = $chart->getOrganization();
-        $customFields = [];
-        if ($org) $customFields = $org->getSettings("customFields") ?? [];
-
-        if (sizeof($customFields) > 0) {
-            Hooks::register(Hooks::CUSTOM_ANNOTATION_CONTROLS, function($chart) use ($customFields) {
-                global $app;
-                $app->render('svelte.twig', [
-                    'app_id' => 'fields',
-                    'app_js' => '/static/js/svelte/fields.js',
-                    'app_css' => '/static/css/svelte/fields.css',
-                    'config' => $GLOBALS['dw_config'],
-                    'twig_data' => [
-                        'customFields' => $customFields
-                    ]
-                ]);
-            });
-        }
+        $userVisualizations = [];
 
         $vis_archive = $GLOBALS['dw_config']['vis_archive'] ?? [];
-
         $visualizations = DatawrapperVisualization::all();
-        $userVisualizations = [];
         $visArchive = [];
+
         foreach ($visualizations as $v) {
-            if ($user->canCreateVisualization($v['id'], $chart) && $v['svelte-workflow'] == 'chart' && ($v['namespace'] ?? 'chart') != 'map' && !empty($v['title'])) {
+            if ($user->canCreateVisualization($v['id'], $chart) && !empty($v['title'])) {
+                $v = [
+                    'id' => $v['id'],
+                    'axes' => $v['axes'],
+                    'title' => $v['title'],
+                    'namespace' => $v['namespace'] ?? 'chart',
+                    'controls' => $v['controls'] ?? [],
+                    'icon' => $v['icon'],
+                    'icon_path' => '/static/plugins/' . $v['__plugin'] . '/' . $v['id'] . '.svg',
+                ];
+
                 if (in_array($v['id'], $vis_archive)) {
                     $visArchive[] = $v;
                 } else {
@@ -105,25 +60,22 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
                 }
             }
         }
+
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
-            'chartData' => $chart->loadData(),
+
             'chart' => $chart,
+            'chartData' => $chart->loadData(),
             'step' => $step,
-            'visualizations_deps' => DatawrapperVisualization::all('dependencies'),
-            'visualizations' => $visualizations,
-            'userVisualizations' => $userVisualizations,
-            'visArchive' => $visArchive,
             'defaultVisType' => $GLOBALS['dw_config']['defaults']['vis'],
-            'vis' => $vis,
-            'themes' => $themeMeta,
+
+            'visualizations' => $userVisualizations,
+            'visArchive' => $visArchive,
+
             'theme' => $theme,
             'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),
-            'type' => $chart->getNamespace(),
-            'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
-            'vis_data' => $visData
         );
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);

@@ -1,9 +1,9 @@
 <div class="section select-visualization">
     <div class="vis-selector-unfolded">
         <div class="vis-thumbs">
-            {#each visualizations as vis}
+            {#each namespaceVisualizations as vis}
             <div class="vis-thumb" class:active="vis.id === $type" on:click="loadVis(vis.id)">
-                {@html vis.icon}
+                {@html vis.icon }
                 <div class="title">{@html vis.title}</div>
             </div>
             {/each}
@@ -28,6 +28,16 @@
     </div>
 </div>
 
+<style>
+    .vis-thumb img {
+        width: 30px;
+        height: 40px;
+        margin-left: 27px;
+        margin-top: 10px;
+        overflow: visible;
+    }
+</style>
+
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import SelectInput from '@datawrapper/controls/Select.html';
@@ -44,6 +54,15 @@
                         label: '---'
                     }
                 ].concat(visArchive.map(vis => ({ value: vis.id, label: vis.title })));
+            },
+            namespaceVisualizations({ namespace, visualizations }) {
+                if (namespace === 'chart' || namespace === 'table') {
+                    return visualizations.filter(
+                        el => ['chart', 'table'].indexOf(el.namespace) > -1
+                    );
+                } else {
+                    return visualizations.filter(el => el.namespace === namespace);
+                }
             }
         },
         helpers: { __ },

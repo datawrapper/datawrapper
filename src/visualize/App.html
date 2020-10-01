@@ -26,7 +26,12 @@
                 {#if showChartPicker}
                 <!-- Chart Type -->
                 <div class:hide-smart="tab !== 'pick'">
-                    <ChartPicker {visualizations} {visArchive} on:change="loadVis(event)" />
+                    <ChartPicker
+                        {visualizations}
+                        {visArchive}
+                        {namespace}
+                        on:change="loadVis(event)"
+                    />
                 </div>
                 {/if}
 
@@ -99,7 +104,7 @@
 </style>
 
 <script>
-    /* globals dw, $  */
+    /* globals dw  */
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import { ChartPreview } from '@datawrapper/controls';
     import TabNav from './TabNav.html';
@@ -127,7 +132,6 @@
         data() {
             return {
                 tab: 'refine',
-                showChartPicker: true,
                 Refine: Empty,
                 Annotate: Empty,
                 visualizations: [],
@@ -135,8 +139,14 @@
                 visLoading: false,
                 defaultVisType: '',
                 stickyTop: false,
-                stickyBottom: false
+                stickyBottom: false,
+                namespace: 'chart'
             };
+        },
+        computed: {
+            showChartPicker({ namespace }) {
+                return namespace !== 'map';
+            }
         },
         methods: {
             makePreviewSticky() {
@@ -186,7 +196,7 @@
 
                         if (mod.migrate) {
                             const { metadata } = chart.get();
-                            mod.migrate(type, metadata);
+                            mod.migrate(type, metadata, chart.dataset());
                             chart.set({ metadata });
                         }
 

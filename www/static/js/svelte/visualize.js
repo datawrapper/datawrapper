@@ -4562,8 +4562,8 @@
 	        src: false,
 	        loading: true,
 	        // resize logic
-	        width: 500,
-	        height: 500,
+	        width: dw.backend.currentChart.get().metadata.publish['embed-width'],
+	        height: dw.backend.currentChart.get().metadata.publish['embed-height'],
 	        border: 10,
 	        resizable: true,
 	        resizing: false,
@@ -28722,6 +28722,13 @@
 	        }
 	    ].concat(visArchive.map(vis => ({ value: vis.id, label: vis.title })));
 	}
+	function namespaceVisualizations({ namespace, visualizations }) {
+	    if (namespace === 'chart' || namespace === 'table') {
+	        return visualizations.filter(el => ['chart', 'table'].indexOf(el.namespace) > -1);
+	    } else {
+	        return visualizations.filter(el => el.namespace === namespace);
+	    }
+	}
 	var methods$p = {
 	    loadVis(id) {
 	        const { type } = this.store.get();
@@ -28753,7 +28760,7 @@
 	function create_main_fragment$R(component, ctx) {
 		var div3, div2, div0, text0, div1, text1, p, b, text2_value = __$1("Hint"), text2, text3, text4, text5_value = __$1("visualize / transpose-hint "), text5, text6, button, text7_value = __$1("visualize / transpose-button "), text7;
 
-		var each_value = ctx.visualizations;
+		var each_value = ctx.namespaceVisualizations;
 
 		var each_blocks = [];
 
@@ -28810,13 +28817,13 @@
 				div0.className = "vis-thumbs";
 				addLoc(div0, file$H, 2, 8, 91);
 				div1.className = "vis-archive-select";
-				addLoc(div1, file$H, 11, 8, 408);
-				addLoc(b, file$H, 21, 12, 703);
+				addLoc(div1, file$H, 11, 8, 418);
+				addLoc(b, file$H, 21, 12, 713);
 				addListener(button, "click", click_handler_1);
 				addListener(button, "mousedown", mousedown_handler);
 				button.className = "plain-link";
-				addLoc(button, file$H, 23, 12, 788);
-				addLoc(p, file$H, 20, 8, 687);
+				addLoc(button, file$H, 23, 12, 798);
+				addLoc(p, file$H, 20, 8, 697);
 				div2.className = "vis-selector-unfolded";
 				addLoc(div2, file$H, 1, 4, 47);
 				div3.className = "section select-visualization";
@@ -28848,8 +28855,8 @@
 			},
 
 			p: function update(changed, ctx) {
-				if (changed.visualizations || changed.$type) {
-					each_value = ctx.visualizations;
+				if (changed.namespaceVisualizations || changed.$type) {
+					each_value = ctx.namespaceVisualizations;
 
 					for (var i = 0; i < each_value.length; i += 1) {
 						const child_ctx = get_each_context$h(ctx, each_value, i);
@@ -28888,7 +28895,7 @@
 		};
 	}
 
-	// (4:12) {#each visualizations as vis}
+	// (4:12) {#each namespaceVisualizations as vis}
 	function create_each_block$i(component, ctx) {
 		var div1, raw0_value = ctx.vis.icon, raw0_after, text, div0, raw1_value = ctx.vis.title;
 
@@ -28899,14 +28906,14 @@
 				text = createText("\n                ");
 				div0 = createElement("div");
 				div0.className = "title";
-				addLoc(div0, file$H, 6, 16, 302);
+				addLoc(div0, file$H, 6, 16, 312);
 
 				div1._svelte = { component, ctx };
 
 				addListener(div1, "click", click_handler$b);
 				div1.className = "vis-thumb";
 				toggleClass(div1, "active", ctx.vis.id === ctx.$type);
-				addLoc(div1, file$H, 4, 12, 170);
+				addLoc(div1, file$H, 4, 12, 179);
 			},
 
 			m: function mount(target, anchor) {
@@ -28920,17 +28927,17 @@
 
 			p: function update(changed, _ctx) {
 				ctx = _ctx;
-				if ((changed.visualizations) && raw0_value !== (raw0_value = ctx.vis.icon)) {
+				if ((changed.namespaceVisualizations) && raw0_value !== (raw0_value = ctx.vis.icon)) {
 					detachBefore(raw0_after);
 					raw0_after.insertAdjacentHTML("beforebegin", raw0_value);
 				}
 
-				if ((changed.visualizations) && raw1_value !== (raw1_value = ctx.vis.title)) {
+				if ((changed.namespaceVisualizations) && raw1_value !== (raw1_value = ctx.vis.title)) {
 					div0.innerHTML = raw1_value;
 				}
 
 				div1._svelte.ctx = ctx;
-				if ((changed.visualizations || changed.$type)) {
+				if ((changed.namespaceVisualizations || changed.$type)) {
 					toggleClass(div1, "active", ctx.vis.id === ctx.$type);
 				}
 			},
@@ -28958,9 +28965,11 @@
 		this._state = assign(this.store._init(["type"]), options.data);
 		this.store._add(this, ["type"]);
 
-		this._recompute({ visArchive: 1 }, this._state);
+		this._recompute({ visArchive: 1, namespace: 1, visualizations: 1 }, this._state);
 		if (!('visArchive' in this._state)) console.warn("<ChartPicker> was created without expected data property 'visArchive'");
+		if (!('namespace' in this._state)) console.warn("<ChartPicker> was created without expected data property 'namespace'");
 		if (!('visualizations' in this._state)) console.warn("<ChartPicker> was created without expected data property 'visualizations'");
+
 		if (!('$type' in this._state)) console.warn("<ChartPicker> was created without expected data property '$type'");
 		this._intro = true;
 
@@ -28982,11 +28991,16 @@
 
 	ChartPicker.prototype._checkReadOnly = function _checkReadOnly(newState) {
 		if ('archiveOpts' in newState && !this._updatingReadonlyProperty) throw new Error("<ChartPicker>: Cannot set read-only property 'archiveOpts'");
+		if ('namespaceVisualizations' in newState && !this._updatingReadonlyProperty) throw new Error("<ChartPicker>: Cannot set read-only property 'namespaceVisualizations'");
 	};
 
 	ChartPicker.prototype._recompute = function _recompute(changed, state) {
 		if (changed.visArchive) {
 			if (this._differs(state.archiveOpts, (state.archiveOpts = archiveOpts(state)))) changed.archiveOpts = true;
+		}
+
+		if (changed.namespace || changed.visualizations) {
+			if (this._differs(state.namespaceVisualizations, (state.namespaceVisualizations = namespaceVisualizations(state)))) changed.namespaceVisualizations = true;
 		}
 	};
 
@@ -35374,10 +35388,12 @@
 
 
 
+	function showChartPicker({namespace}) {
+	    return namespace !== 'map';
+	}
 	function data$J() {
 	    return {
 	        tab: 'refine',
-	        showChartPicker: true,
 	        Refine: Empty,
 	        Annotate: Empty,
 	        visualizations: [],
@@ -35385,7 +35401,8 @@
 	        visLoading: false,
 	        defaultVisType: '',
 	        stickyTop: false,
-	        stickyBottom: false
+	        stickyBottom: false,
+	        namespace: 'chart'
 	    };
 	}
 	var methods$s = {
@@ -35436,7 +35453,7 @@
 
 	                if (mod.migrate) {
 	                    const { metadata } = chart.get();
-	                    mod.migrate(type, metadata);
+	                    mod.migrate(type, metadata, chart.dataset());
 	                    chart.set({ metadata });
 	                }
 
@@ -35643,11 +35660,11 @@
 				toggleClass(div4, "stickyTop", ctx.stickyTop);
 				addLoc(div4, file$L, 2, 8, 97);
 				toggleClass(div5, "hide-smart", ctx.tab !== 'refine');
-				addLoc(div5, file$L, 33, 16, 1156);
+				addLoc(div5, file$L, 33, 16, 1168);
 				toggleClass(div6, "hide-smart", ctx.tab !== 'annotate');
-				addLoc(div6, file$L, 42, 16, 1458);
+				addLoc(div6, file$L, 42, 16, 1470);
 				toggleClass(div7, "hide-smart", ctx.tab !== 'design');
-				addLoc(div7, file$L, 52, 16, 1795);
+				addLoc(div7, file$L, 52, 16, 1807);
 				div8.className = "form-horizontal vis-options";
 				addLoc(div8, file$L, 24, 12, 797);
 				div9.className = "visconfig vis-sidebar svelte-q5bgnd";
@@ -35797,7 +35814,8 @@
 
 		var chartpicker_initial_data = {
 		 	visualizations: ctx.visualizations,
-		 	visArchive: ctx.visArchive
+		 	visArchive: ctx.visArchive,
+		 	namespace: ctx.namespace
 		 };
 		var chartpicker = new ChartPicker({
 			root: component.root,
@@ -35826,6 +35844,7 @@
 				var chartpicker_changes = {};
 				if (changed.visualizations) chartpicker_changes.visualizations = ctx.visualizations;
 				if (changed.visArchive) chartpicker_changes.visArchive = ctx.visArchive;
+				if (changed.namespace) chartpicker_changes.namespace = ctx.namespace;
 				chartpicker._set(chartpicker_changes);
 
 				if (changed.tab) {
@@ -36038,11 +36057,14 @@
 		this.refs = {};
 		this._state = assign(assign(this.store._init(["id"]), data$J()), options.data);
 		this.store._add(this, ["id"]);
+
+		this._recompute({ namespace: 1 }, this._state);
+		if (!('namespace' in this._state)) console.warn("<App> was created without expected data property 'namespace'");
 		if (!('stickyBottom' in this._state)) console.warn("<App> was created without expected data property 'stickyBottom'");
 		if (!('stickyTop' in this._state)) console.warn("<App> was created without expected data property 'stickyTop'");
 		if (!('$id' in this._state)) console.warn("<App> was created without expected data property '$id'");
 		if (!('tab' in this._state)) console.warn("<App> was created without expected data property 'tab'");
-		if (!('showChartPicker' in this._state)) console.warn("<App> was created without expected data property 'showChartPicker'");
+
 		if (!('visualizations' in this._state)) console.warn("<App> was created without expected data property 'visualizations'");
 		if (!('visArchive' in this._state)) console.warn("<App> was created without expected data property 'visArchive'");
 		if (!('visLoading' in this._state)) console.warn("<App> was created without expected data property 'visLoading'");
@@ -36072,6 +36094,13 @@
 	assign(App.prototype, methods$s);
 
 	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('showChartPicker' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'showChartPicker'");
+	};
+
+	App.prototype._recompute = function _recompute(changed, state) {
+		if (changed.namespace) {
+			if (this._differs(state.showChartPicker, (state.showChartPicker = showChartPicker(state)))) changed.showChartPicker = true;
+		}
 	};
 
 	function assign$1(tar, src) {
@@ -44347,39 +44376,33 @@
 
 	var main = { init: init$1 };
 
-	/* globals dw, $, _ */
+	/* globals dw,_ */
 
 	function init$1({
-	    chartData,
-	    data,
 	    target,
-	    theme,
-	    themeData,
-	    visData,
-	    user,
-	    locales,
-	    themes,
+	    csv,
+	    chartData,
+	    namespace,
+	    defaultVisType,
 	    visualizations,
 	    visArchive,
-	    defaultVisType
+	    theme,
+	    themes,
+	    themeData
 	}) {
 	    var chart = new Chart(chartData);
 
 	    const themeCache = {};
-	    const visCache = {};
 	    themeCache[theme] = themeData;
 	    dw.theme.register(theme, themeData);
-	    visCache[visData.id] = visData;
 
 	    dw.backend.currentChart = chart;
 
 	    chart.set({
 	        writable: true,
 	        themeData: themeData,
-	        user,
-	        locales,
 	        themes,
-	        visualization: visCache[visData.id]
+	        visualization: visualizations[chartData.type]
 	    });
 
 	    chart.compute('axes', ['visualization'], function (visualization) {
@@ -44391,7 +44414,7 @@
 
 	    let app;
 
-	    chart.load(dw.backend.__currentData).then(function (ds) {
+	    chart.load(csv).then(function (ds) {
 	        // remove ignored columns
 	        var columnFormat = chart.getMetadata('data.column-format', {});
 	        var ignore = {};
@@ -44409,6 +44432,7 @@
 	            target,
 	            data: {
 	                visualizations,
+	                namespace,
 	                visArchive,
 	                defaultVisType
 	            }

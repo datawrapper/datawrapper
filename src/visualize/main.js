@@ -4,39 +4,33 @@ import { getJSON } from '@datawrapper/shared/fetch';
 
 export default { init };
 
-/* globals dw, $, _ */
+/* globals dw,_ */
 
 function init({
-    chartData,
-    data,
     target,
-    theme,
-    themeData,
-    visData,
-    user,
-    locales,
-    themes,
+    csv,
+    chartData,
+    namespace,
+    defaultVisType,
     visualizations,
     visArchive,
-    defaultVisType
+    theme,
+    themes,
+    themeData
 }) {
     var chart = new Chart(chartData);
 
     const themeCache = {};
-    const visCache = {};
     themeCache[theme] = themeData;
     dw.theme.register(theme, themeData);
-    visCache[visData.id] = visData;
 
     dw.backend.currentChart = chart;
 
     chart.set({
         writable: true,
         themeData: themeData,
-        user,
-        locales,
         themes,
-        visualization: visCache[visData.id]
+        visualization: visualizations[chartData.type]
     });
 
     chart.compute('axes', ['visualization'], function (visualization) {
@@ -48,7 +42,7 @@ function init({
 
     let app;
 
-    chart.load(dw.backend.__currentData).then(function (ds) {
+    chart.load(csv).then(function (ds) {
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
@@ -66,6 +60,7 @@ function init({
             target,
             data: {
                 visualizations,
+                namespace,
                 visArchive,
                 defaultVisType
             }
@@ -86,11 +81,7 @@ function init({
             } else {
                 // load new theme data
                 getJSON(
-                    '//' +
-                        dw.backend.__api_domain +
-                        '/v3/themes/' +
-                        current.theme +
-                        '?extend=true',
+                    '//' + dw.backend.__api_domain + '/v3/themes/' + current.theme + '?extend=true',
                     function (res) {
                         themeCache[current.theme] = res.data;
                         dw.theme.register(current.theme, res.data);
