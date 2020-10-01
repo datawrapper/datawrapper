@@ -12,7 +12,6 @@ const production = !process.env.ROLLUP_WATCH;
 const targets = [];
 
 build('visualize');
-build('fields');
 build('team-settings');
 build('account');
 build('chart-breadcrumb');
@@ -26,7 +25,6 @@ build('publish/pending-activation');
 build('describe');
 build('describe/hot', { noAMD: true });
 build('upload');
-build('highlight');
 
 export default targets;
 
