@@ -246,15 +246,4 @@
             });
         }
     };
-
-    function getContext(callback) {
-        var win = $('#iframe-vis').get(0).contentWindow;
-        var doc = $('#iframe-vis').get(0).contentDocument;
-        if (!win || !win.__dw || !win.__dw.vis) {
-            return setTimeout(function () {
-                getContext(callback);
-            }, 200);
-        }
-        callback(win, doc);
-    }
 </script>
