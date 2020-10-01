@@ -215,23 +215,23 @@
             },
             activate(mode) {
                 if (mode === 'web') {
-                    if (dw.backend.currentChart.get('metadata.custom.webToPrint.webChartId')) {
+                    if (this.store.getMetadata('custom.webToPrint.webChartId')) {
                         window.location =
                             window.location.protocol +
                             '//' +
                             window.location.host +
                             '/chart/' +
-                            dw.backend.currentChart.get('metadata.custom.webToPrint.webChartId') +
+                            this.store.getMetadata('custom.webToPrint.webChartId') +
                             '/visualize';
                     }
                 } else if (mode === 'print') {
-                    if (dw.backend.currentChart.get('metadata.custom.webToPrint.printChartId')) {
+                    if (this.store.getMetadata('custom.webToPrint.printChartId')) {
                         window.location =
                             window.location.protocol +
                             '//' +
                             window.location.host +
                             '/chart/' +
-                            dw.backend.currentChart.get('metadata.custom.webToPrint.printChartId') +
+                            this.store.getMetadata('custom.webToPrint.printChartId') +
                             '/visualize';
                     } else {
                         httpReq
@@ -267,8 +267,8 @@
 
                 const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
 
-                chart.setMetadata('publish.embed-width', w);
-                chart.setMetadata('publish.embed-height', h);
+                this.store.setMetadata('publish.embed-width', w);
+                this.store.setMetadata('publish.embed-height', h);
 
                 $('#iframe-wrapper').animate(
                     {
@@ -295,12 +295,12 @@
                 this.set({ width_txt: width, height_txt: height });
 
                 if (this.get().mode === 'web') {
-                    dw.backend.currentChart.setMetadata('publish.embed-width', Math.round(w));
-                    dw.backend.currentChart.setMetadata('publish.embed-height', Math.round(h));
+                    this.store.setMetadata('publish.embed-width', Math.round(w));
+                    this.store.setMetadata('publish.embed-height', Math.round(h));
                 } else {
-                    dw.backend.currentChart.setMetadata('publish.export-pdf.width', width);
-                    dw.backend.currentChart.setMetadata('publish.export-pdf.height', height);
-                    dw.backend.currentChart.setMetadata('publish.export-pdf.unit', unit);
+                    this.store.setMetadata('publish.export-pdf.width', width);
+                    this.store.setMetadata('publish.export-pdf.height', height);
+                    this.store.setMetadata('publish.export-pdf.unit', unit);
                 }
 
                 this.measureChartHeight();
@@ -318,11 +318,9 @@
 
                         if (chartBody && chartBody.getBoundingClientRect) {
                             var h = chartBody.getBoundingClientRect().height;
-                            if (h !== chart.get('metadata.publish.chart-height')) {
-                                if (dw.backend.currentVis) {
-                                    chart.setMetadata('publish.chart-height', h);
-                                    if (chart.save) chart.save();
-                                }
+                            if (h !== app.store.get('metadata.publish.chart-height')) {
+                                app.store.setMetadata('publish.chart-height', h);
+                                if (app.store.save) app.store.save();
                             }
                         } else {
                             setTimeout(app.measureChartHeight, 2000);
@@ -407,7 +405,7 @@
         },
         oncreate() {
             this.set({
-                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web')
+                mode: this.store.getMetadata('custom.webToPrint.mode', 'web')
             });
         },
         onstate({ changed, current, previous }) {
@@ -432,10 +430,10 @@
             if (changed.mode) {
                 if (current.mode === 'web') {
                     this.set({
-                        width: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height: dw.backend.currentChart.get('metadata.publish.embed-height'),
-                        width_txt: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height')
+                        width: this.store.getMetadata('publish.embed-width'),
+                        height: this.store.getMetadata('publish.embed-height'),
+                        width_txt: this.store.getMetadata('publish.embed-width'),
+                        height_txt: this.store.getMetadata('publish.embed-height')
                     });
 
                     this.registerDragAndDropListener();
@@ -461,7 +459,7 @@
                             'metadata.publish.export-pdf.height',
                             80
                         ),
-                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm')
+                        unit: this.store.getMetadata('publish.export-pdf.unit', 'mm')
                     });
 
                     app.updateSize();

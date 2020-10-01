@@ -1,1 +1,2450 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define("svelte/publish_old",t):(e=e||self).publish=t()}(this,(function(){"use strict";function e(e,t,n){return e(n={path:t,exports:{},require:function(e,t){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==t&&n.path)}},n.exports),n.exports}var t=e((function(e){function t(n){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?e.exports=t=function(e){return typeof e}:e.exports=t=function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},t(n)}e.exports=t}));var n=function(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e};function r(){}function i(e,t){for(var n in t)e[n]=t[n];return e}function s(e,t){for(var n in t)e[n]=1;return e}function o(e,t){e.appendChild(t)}function a(e,t,n){e.insertBefore(t,n)}function u(e){e.parentNode.removeChild(e)}function c(e){for(;e.nextSibling;)e.parentNode.removeChild(e.nextSibling)}function l(e,t){for(var n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function p(){return document.createDocumentFragment()}function f(e){return document.createElement(e)}function d(e){return document.createTextNode(e)}function h(e,t,n,r){e.addEventListener(t,n,r)}function b(e,t,n,r){e.removeEventListener(t,n,r)}function m(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n)}function _(e,t){e.data=""+t}function v(e,t,n){e.style.setProperty(t,n)}function g(e,t,n){e.classList[n?"add":"remove"](t)}function w(){return Object.create(null)}function y(e,n){return e!=e?n==n:e!==n||e&&"object"===t(e)||"function"==typeof e}function N(e,t){return e!=e?t==t:e!==t}function x(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var r=0;r<n.length;r+=1){var i=n[r];if(!i.__calling)try{i.__calling=!0,i.call(this,t)}finally{i.__calling=!1}}}function O(e){e._lock=!0,S(e._beforecreate),S(e._oncreate),S(e._aftercreate),e._lock=!1}function T(){return this._state}function j(e,t){e._handlers=w(),e._slots=w(),e._bind=t._bind,e._staged={},e.options=t,e.root=t.root||e,e.store=t.store||e.root.store,t.root||(e._beforecreate=[],e._oncreate=[],e._aftercreate=[])}function C(e,t){var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}}function S(e){for(;e&&e.length;)e.shift()()}var k={destroy:function(e){this.destroy=r,this.fire("destroy"),this.set=r,this._fragment.d(!1!==e),this._fragment=null,this._state={}},get:T,fire:x,on:C,set:function(e){this._set(i({},e)),this.root._lock||O(this.root)},_recompute:r,_set:function(e){var t=this._state,n={},r=!1;for(var s in e=i(this._staged,e),this._staged={},e)this._differs(e[s],t[s])&&(n[s]=r=!0);r&&(this._state=i(i({},t),e),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:t}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:t})))},_stage:function(e){i(this._staged,e)},_mount:function(e,t){this._fragment[this._fragment.i?"i":"m"](e,t||null)},_differs:y};var E={show:function(){var e=this,t=setTimeout((function(){e.set({visible:!0})}),400);this.set({t:t})},hide:function(){var e=this.get().t;clearTimeout(e),this.set({visible:!1})}};function L(e,t){var n,r,i,s,c=e._slotted.default;return{c:function(){n=f("div"),r=f("i"),i=d("\n        "),r.className="hat-icon im im-graduation-hat svelte-9o0fpa",n.className="content svelte-9o0fpa"},m:function(e,t){a(e,n,t),o(n,r),o(n,i),c&&(o(n,s||(s=document.createComment(""))),o(n,c))},d:function(e){e&&u(n),c&&function(e,t){for(;e.nextSibling;)t.appendChild(e.nextSibling)}(s,c)}}}function U(e){j(this,e),this._state=i({visible:!1},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){var n,r,i,s=t.visible&&L(e);function c(t){e.show()}function l(t){e.hide()}return{c:function(){n=f("div"),(r=f("span")).textContent="?",i=d("\n    "),s&&s.c(),r.className="help-icon svelte-9o0fpa",h(n,"mouseenter",c),h(n,"mouseleave",l),n.className="help svelte-9o0fpa"},m:function(e,t){a(e,n,t),o(n,r),o(n,i),s&&s.m(n,null)},p:function(t,r){r.visible?s||((s=L(e)).c(),s.m(n,null)):s&&(s.d(1),s=null)},d:function(e){e&&u(n),s&&s.d(),b(n,"mouseenter",c),b(n,"mouseleave",l)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor))}i(U.prototype,k),i(U.prototype,E);var M={};function P(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"core";"chart"===e?window.__dw&&window.__dw.vis&&window.__dw.vis.meta&&(M[e]=window.__dw.vis.meta.locale||{}):M[e]="core"===e?dw.backend.__messages.core:Object.assign({},dw.backend.__messages.core,dw.backend.__messages[e])}function H(e){var t=arguments,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"core";if(e=e.trim(),M[n]||P(n),!M[n][e])return"MISSING:"+e;var r=M[n][e];return"string"==typeof r&&arguments.length>2&&(r=r.replace(/\$(\d)/g,(function(e,n){return n=2+Number(n),void 0===t[n]?e:t[n]}))),r}var D=function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")};var A=function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e};var R=function(e,n){return!n||"object"!==t(n)&&"function"!=typeof n?A(e):n},G=e((function(e){function t(n){return e.exports=t=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)},t(n)}e.exports=t})),I=e((function(e){function t(n,r){return e.exports=t=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e},t(n,r)}e.exports=t}));var F=function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&I(e,t)};var q=function(e){return-1!==Function.toString.call(e).indexOf("[native code]")};var B=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(e){return!1}},W=e((function(e){function t(n,r,i){return B()?e.exports=t=Reflect.construct:e.exports=t=function(e,t,n){var r=[null];r.push.apply(r,t);var i=new(Function.bind.apply(e,r));return n&&I(i,n.prototype),i},t.apply(null,arguments)}e.exports=t})),J=e((function(e){function t(n){var r="function"==typeof Map?new Map:void 0;return e.exports=t=function(e){if(null===e||!q(e))return e;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if(void 0!==r){if(r.has(e))return r.get(e);r.set(e,t)}function t(){return W(e,arguments,G(this).constructor)}return t.prototype=Object.create(e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),I(t,e)},t(n)}e.exports=t}));var $=function(e,t){if(null==e)return{};var n,r,i={},s=Object.keys(e);for(r=0;r<s.length;r++)n=s[r],t.indexOf(n)>=0||(i[n]=e[n]);return i};var X=function(e,t){if(null==e)return{};var n,r,i=$(e,t);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(e);for(r=0;r<s.length;r++)n=s[r],t.indexOf(n)>=0||Object.prototype.propertyIsEnumerable.call(e,n)&&(i[n]=e[n])}return i},V=e((function(e,t){var n;n=function(){function e(){for(var e=0,t={};e<arguments.length;e++){var n=arguments[e];for(var r in n)t[r]=n[r]}return t}function t(e){return e.replace(/(%[0-9A-Z]{2})+/g,decodeURIComponent)}return function n(r){function i(){}function s(t,n,s){if("undefined"!=typeof document){"number"==typeof(s=e({path:"/"},i.defaults,s)).expires&&(s.expires=new Date(1*new Date+864e5*s.expires)),s.expires=s.expires?s.expires.toUTCString():"";try{var o=JSON.stringify(n);/^[\{\[]/.test(o)&&(n=o)}catch(e){}n=r.write?r.write(n,t):encodeURIComponent(String(n)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent),t=encodeURIComponent(String(t)).replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent).replace(/[\(\)]/g,escape);var a="";for(var u in s)s[u]&&(a+="; "+u,!0!==s[u]&&(a+="="+s[u].split(";")[0]));return document.cookie=t+"="+n+a}}function o(e,n){if("undefined"!=typeof document){for(var i={},s=document.cookie?document.cookie.split("; "):[],o=0;o<s.length;o++){var a=s[o].split("="),u=a.slice(1).join("=");n||'"'!==u.charAt(0)||(u=u.slice(1,-1));try{var c=t(a[0]);if(u=(r.read||r)(u,c)||t(u),n)try{u=JSON.parse(u)}catch(e){}if(i[c]=u,e===c)break}catch(e){}}return e?i[e]:i}}return i.set=s,i.get=function(e){return o(e,!1)},i.getJSON=function(e){return o(e,!0)},i.remove=function(t,n){s(t,"",e(n,{expires:-1}))},i.defaults={},i.withConverter=n,i}((function(){}))},e.exports=n()}));function Z(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r)}return n}function z(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{};t%2?Z(Object(r),!0).forEach((function(t){n(e,t,r[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(r)):Z(Object(r)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(r,t))}))}return e}var K=new Set(["get","head","options","trace"]);function Q(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!t.fetch)try{t.fetch=window.fetch}catch(e){throw new Error("Neither options.fetch nor window.fetch is defined.")}if(!t.baseUrl)try{t.baseUrl="//".concat(window.dw.backend.__api_domain)}catch(e){throw new Error("Neither options.baseUrl nor window.dw is defined.")}var n,r=z({payload:null,raw:!1,method:"GET",mode:"cors",credentials:"include"},t,{headers:z({"Content-Type":"application/json"},t.headers)}),i=r.payload,s=r.baseUrl,o=r.fetch,a=r.raw,u=X(r,["payload","baseUrl","fetch","raw"]),c="".concat(s.replace(/\/$/,""),"/").concat(e.replace(/^\//,""));if(i&&(u.body=JSON.stringify(i)),K.has(u.method.toLowerCase()))n=o(c,u);else{var l=V.get("crumb");l?(u.headers["X-CSRF-Token"]=l,n=o(c,u)):n=Q("/v3/me",{fetch:o,baseUrl:s}).then((function(){var e=V.get("crumb");e&&(u.headers["X-CSRF-Token"]=e)})).catch((function(){})).then((function(){return o(c,u)}))}return n.then((function(e){if(a)return e;if(!e.ok)throw new ee(e);if(204===e.status||!e.headers.get("content-type"))return e;var t=e.headers.get("content-type").split(";")[0];return"application/json"===t?e.json():"image/png"===t||"application/pdf"===t?e.blob():e.text()}))}Q.get=Y("GET"),Q.patch=Y("PATCH"),Q.put=Y("PUT"),Q.post=Y("POST"),Q.head=Y("HEAD");function Y(e){return function(t,n){if(n&&n.method)throw new Error("Setting option.method is not allowed in httpReq.".concat(e.toLowerCase(),"()"));return Q(t,z({},n,{method:e}))}}Q.delete=Y("DELETE");var ee=function(e){function t(e){var n;return D(this,t),(n=R(this,G(t).call(this))).name="HttpReqError",n.status=e.status,n.statusText=e.statusText,n.message="[".concat(e.status,"] ").concat(e.statusText),n.response=e,n}return F(t,e),t}(J(Error));function te(e,t,n,r){window._paq&&window._paq.push(["trackEvent",e,t,n,r])}var ne=!0;var re={publish:function(){var e=this,t=this;if(window.chart.save){var n=t.get().chart;t.set({publishing:!0,publishStarted:(new Date).getTime(),now:(new Date).getTime(),progress:[],publish_error:!1}),t.set({chart:n}),te("Chart Editor","publish"),window.chart.attributes(n).save().then((function(r){e.set({statusUrl:"/v3/charts/".concat(n.id,"/publish/status/").concat(n.publicVersion)}),Q.post("/v3/charts/".concat(n.id,"/publish")).then((function(r){e.set({published:!0,progress:["done"]}),Q.get("/v3/charts/".concat(n.id)).then((function(e){te("Chart Editor","publish-success"),t.publishFinished(e)}))})).catch((function(e){te("Chart Editor","publish-error",e.message)})),setTimeout((function(){t.get().publishing&&t.updateStatus()}),1e3)}))}else setTimeout((function(){t.publish()}),100)},updateStatus:function(){var e=this,t=this.get().statusUrl;t&&Q.get(t).then((function(t){e.set({progress:t.progress||[],now:(new Date).getTime()}),e.get().publishing&&setTimeout((function(){e.updateStatus()}),500)}))},publishFinished:function(e){var t=this;this.set({progress:["done"],published:!0,publishStarted:0,needs_republish:!1}),setTimeout((function(){return t.set({publishing:!1})}),1e3),this.set({chart:e}),window.parent.postMessage({source:"datawrapper",type:"chart-publish",chartId:e.id},"*"),window.chart.attributes(e)},copy:function(e){var t=this;t.refs.embedInput.select();try{document.execCommand("copy")&&(te("Chart Editor","embedcode-copy"),t.set({copy_success:!0}),setTimeout((function(){return t.set({copy_success:!1})}),300))}catch(e){}}};function ie(e){var t=e.changed,n=e.current,r=window.dw&&window.dw.backend&&window.dw.backend.setUserData;if(t.embed_type&&r){var i=window.dw.backend.__userData;if(!n.embed_type||!i)return;i.embed_type=n.embed_type,window.dw.backend.setUserData(i)}if(t.shareurl_type&&r){var s=window.dw.backend.__userData;if(!n.shareurl_type||!s)return;s.shareurl_type=n.shareurl_type,window.dw.backend.setUserData(s)}t.published&&window.document.querySelector(".dw-create-publish .publish-step").classList[n.published?"add":"remove"]("is-published"),t.auto_publish&&n.auto_publish&&ne&&(this.publish(),ne=!1,window.history.replaceState("","",window.location.pathname))}function se(e,t,n){var r=Object.create(e);return r.tpl=t[n],r}function oe(e,t,n){var r=Object.create(e);return r.tpl=t[n],r}function ae(e,t,n){var r=Object.create(e);return r.tpl=t[n],r}function ue(e,t,n){var r=Object.create(e);return r.step=t[n],r.i=n,r}function ce(e,t){var n,r=H("publish / publish-intro");return{c:function(){v(n=f("p"),"margin-bottom","20px")},m:function(e,t){a(e,n,t),n.innerHTML=r},d:function(e){e&&u(n)}}}function le(e,t){var n,r=H("publish / republish-intro");return{c:function(){n=f("p")},m:function(e,t){a(e,n,t),n.innerHTML=r},d:function(e){e&&u(n)}}}function pe(e,t){var n,r,i,s,c,l,p=H("publish / publish-btn");return{c:function(){n=f("span"),r=f("i"),s=d("\n        "),c=f("span"),l=d(p),r.className=i="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-1wigpa8",c.className="title svelte-1wigpa8",n.className="publish"},m:function(e,t){a(e,n,t),o(n,r),o(n,s),o(n,c),o(c,l)},p:function(e,t){e.publishing&&i!==(i="fa fa-fw "+(t.publishing?"fa-refresh fa-spin":"fa-cloud-upload")+" svelte-1wigpa8")&&(r.className=i)},d:function(e){e&&u(n)}}}function fe(e,t){var n,r,i,s,c,l,p=H("publish / republish-btn");return{c:function(){n=f("span"),r=f("i"),s=d("\n        "),c=f("span"),l=d(p),r.className=i="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":"")+" svelte-1wigpa8",c.className="title svelte-1wigpa8",n.className="re-publish"},m:function(e,t){a(e,n,t),o(n,r),o(n,s),o(n,c),o(c,l)},p:function(e,t){e.publishing&&i!==(i="fa fa-fw fa-refresh "+(t.publishing?"fa-spin":"")+" svelte-1wigpa8")&&(r.className=i)},d:function(e){e&&u(n)}}}function de(e,t){var n,r,i,s,c=H("publish / publish-btn-intro");return{c:function(){n=f("div"),(r=f("div")).innerHTML='<i class="fa fa-chevron-left"></i>',i=d("\n    "),s=f("div"),r.className="arrow svelte-1wigpa8",s.className="text svelte-1wigpa8",n.className="publish-intro svelte-1wigpa8"},m:function(e,t){a(e,n,t),o(n,r),o(n,i),o(n,s),s.innerHTML=c},d:function(e){e&&u(n)}}}function he(e,t){var n,r=H("publish / republish-alert");return{c:function(){(n=f("div")).className="btn-aside alert svelte-1wigpa8"},m:function(e,t){a(e,n,t),n.innerHTML=r},d:function(e){e&&u(n)}}}function be(e,t){var n,r=H("publish / publish-success");return{c:function(){(n=f("div")).className="alert alert-success"},m:function(e,t){a(e,n,t),n.innerHTML=r},d:function(e){e&&u(n)}}}function me(e,t){var n;return{c:function(){(n=f("div")).className="alert alert-error"},m:function(e,r){a(e,n,r),n.innerHTML=t.publish_error},p:function(e,t){e.publish_error&&(n.innerHTML=t.publish_error)},d:function(e){e&&u(n)}}}function _e(e,t){var n,r,i,s=H("publish / progress / please-wait"),c=t.publishWait>3e3&&ve(e,t);return{c:function(){n=f("div"),r=d(s),i=d(" "),c&&c.c(),n.className="alert alert-info publishing"},m:function(e,t){a(e,n,t),o(n,r),o(n,i),c&&c.m(n,null)},p:function(t,r){r.publishWait>3e3?c?c.p(t,r):((c=ve(e,r)).c(),c.m(n,null)):c&&(c.d(1),c=null)},d:function(e){e&&u(n),c&&c.d()}}}function ve(e,t){for(var n,r=t.progress,i=[],s=0;s<r.length;s+=1)i[s]=ge(e,ue(t,r,s));return{c:function(){n=f("ul");for(var e=0;e<i.length;e+=1)i[e].c();n.className="publish-progress unstyled svelte-1wigpa8"},m:function(e,t){a(e,n,t);for(var r=0;r<i.length;r+=1)i[r].m(n,null)},p:function(t,s){if(t.progress){r=s.progress;for(var o=0;o<r.length;o+=1){var a=ue(s,r,o);i[o]?i[o].p(t,a):(i[o]=ge(e,a),i[o].c(),i[o].m(n,null))}for(;o<i.length;o+=1)i[o].d(1);i.length=r.length}},d:function(e){e&&u(n),l(i,e)}}}function ge(e,t){var n,r,i,s,l,p=H("publish / status / "+t.step);return{c:function(){n=f("li"),r=f("i"),s=d("\n            "),l=f("noscript"),r.className=i="fa fa-fw "+(t.i<t.progress.length-1?"fa-check":"fa-spinner fa-pulse")+" svelte-1wigpa8",n.className="svelte-1wigpa8",g(n,"done",t.i<t.progress.length-1)},m:function(e,t){a(e,n,t),o(n,r),o(n,s),o(n,l),l.insertAdjacentHTML("afterend",p)},p:function(e,t){e.progress&&i!==(i="fa fa-fw "+(t.i<t.progress.length-1?"fa-check":"fa-spinner fa-pulse")+" svelte-1wigpa8")&&(r.className=i),e.progress&&p!==(p=H("publish / status / "+t.step))&&(c(l),l.insertAdjacentHTML("afterend",p)),e.progress&&g(n,"done",t.i<t.progress.length-1)},d:function(e){e&&u(n)}}}function we(e,t){var n,r,i,s,l,p=t.tpl.name;function _(){e.set({shareurl_type:r.__value})}return{c:function(){n=f("label"),r=f("input"),s=d("\n                        "),l=f("noscript"),e._bindingGroups[0].push(r),h(r,"change",_),r.__value=i=t.tpl.id,r.value=r.__value,m(r,"type","radio"),r.name="url-type",r.className="svelte-1wigpa8",n.className="radio"},m:function(e,i){a(e,n,i),o(n,r),r.checked=r.__value===t.shareurl_type,o(n,s),o(n,l),l.insertAdjacentHTML("afterend",p)},p:function(e,t){e.shareurl_type&&(r.checked=r.__value===t.shareurl_type),e.plugin_shareurls&&i!==(i=t.tpl.id)&&(r.__value=i),r.value=r.__value,e.plugin_shareurls&&p!==(p=t.tpl.name)&&(c(l),l.insertAdjacentHTML("afterend",p))},d:function(t){t&&u(n),e._bindingGroups[0].splice(e._bindingGroups[0].indexOf(r),1),b(r,"change",_)}}}function ye(e,t){var n,r,i,s,l,p=t.tpl.title;function _(){e.set({embed_type:r.__value})}return{c:function(){n=f("label"),r=f("input"),s=d(" "),l=f("noscript"),e._bindingGroups[1].push(r),h(r,"change",_),m(r,"type","radio"),r.__value=i=t.tpl.id,r.value=r.__value,r.className="svelte-1wigpa8",n.className="radio"},m:function(e,i){a(e,n,i),o(n,r),r.checked=r.__value===t.embed_type,o(n,s),o(n,l),l.insertAdjacentHTML("afterend",p)},p:function(e,t){e.embed_type&&(r.checked=r.__value===t.embed_type),e.embed_templates&&i!==(i=t.tpl.id)&&(r.__value=i),r.value=r.__value,e.embed_templates&&p!==(p=t.tpl.title)&&(c(l),l.insertAdjacentHTML("afterend",p))},d:function(t){t&&u(n),e._bindingGroups[1].splice(e._bindingGroups[1].indexOf(r),1),b(r,"change",_)}}}function Ne(e,t){var n,r,i,s,l,p,h=t.tpl.title,b=t.tpl.text;return{c:function(){n=f("div"),r=f("b"),i=d(h),s=d(":"),l=d(" "),p=f("noscript")},m:function(e,t){a(e,n,t),o(n,r),o(r,i),o(r,s),o(n,l),o(n,p),p.insertAdjacentHTML("afterend",b)},p:function(e,t){e.embed_templates&&h!==(h=t.tpl.title)&&_(i,h),e.embed_templates&&b!==(b=t.tpl.text)&&(c(p),p.insertAdjacentHTML("afterend",b))},d:function(e){e&&u(n)}}}function xe(e){var t=this;j(this,e),this.refs={},this._state=i({chart:{id:""},embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,publishStarted:0,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:[],shareurl_type:"default",embed_type:"responsive",copy_success:!1,statusUrl:!1},e.data),this._recompute({shareurl_type:1,chart:1,plugin_shareurls:1,published:1,embed_type:1,publishStarted:1,now:1},this._state),this._bindingGroups=[[],[]],this._intro=!0,this._handlers.state=[ie],ie.call(this,{changed:s({},this._state),current:this._state}),this._fragment=function(e,t){var n,r,i,s,c,g,w,y,N,x,O,T,j,C,S,k,E,L,M,P,D,A,R,G,I,F,q,B,W,J,$,X,V,Z,z,K,Q,Y,ee,te,ne,re,ie,ue,ve,ge,xe,Oe,Te,je,Ce,Se,ke,Ee,Le,Ue,Me,Pe=H("publish / share-embed"),He=H("publish / share-url"),De=H("publish / share-url / fullscreen"),Ae=H("publish / help / share-url"),Re=H("publish / embed"),Ge=H("publish / copy"),Ie=H("publish / copy-success"),Fe=H("publish / embed / help");function qe(e){return e.published?le:ce}var Be=qe(t),We=Be(e,t);function Je(e){return e.published?fe:pe}var $e=Je(t),Xe=$e(e,t);function Ve(t){e.publish()}var Ze=!t.published&&de(),ze=t.needs_republish&&!t.publishing&&he(),Ke=t.published&&!t.needs_republish&&t.progress&&t.progress.includes("done")&&!t.publishing&&be(),Qe=t.publish_error&&me(e,t),Ye=t.publishing&&_e(e,t);function et(){e.set({shareurl_type:A.__value})}for(var tt=t.plugin_shareurls,nt=[],rt=0;rt<tt.length;rt+=1)nt[rt]=we(e,ae(t,tt,rt));var it=new U({root:e.root,store:e.store,slots:{default:p()}}),st=t.embed_templates,ot=[];for(rt=0;rt<st.length;rt+=1)ot[rt]=ye(e,oe(t,st,rt));function at(n){e.copy(t.embedCode)}var ut=t.embed_templates.slice(2),ct=[];for(rt=0;rt<ut.length;rt+=1)ct[rt]=Ne(e,se(t,ut,rt));var lt=new U({root:e.root,store:e.store,slots:{default:p()}});return{c:function(){We.c(),n=d("\n\n"),r=f("button"),Xe.c(),s=d("\n\n"),Ze&&Ze.c(),c=d(" "),ze&&ze.c(),g=d(" "),Ke&&Ke.c(),w=d(" "),Qe&&Qe.c(),y=d(" "),Ye&&Ye.c(),N=d("\n\n"),x=f("div"),O=f("h2"),T=d("\n    "),j=f("div"),C=f("i"),S=d("\n        "),k=f("div"),E=f("div"),L=f("b"),M=d("\n                "),P=f("div"),D=f("label"),A=f("input"),R=d("\n                        "),G=f("noscript"),I=d("\n                    ");for(var o=0;o<nt.length;o+=1)nt[o].c();F=d("\n            "),q=f("div"),B=f("a"),W=d(t.shareUrl),J=d("\n        "),$=f("div"),it._fragment.c(),X=d("\n\n    "),V=f("div"),Z=f("i"),z=d("\n        "),K=f("div"),Q=f("div"),Y=f("b"),ee=d("\n                "),te=f("div");for(o=0;o<ot.length;o+=1)ot[o].c();ne=d("\n            "),re=f("div"),ie=f("textarea"),ue=d("\n                "),ve=f("button"),ge=f("i"),xe=d(" "),Oe=d(Ge),Te=d("\n                "),je=f("div"),Ce=d(Ie),ke=d("\n        "),Ee=f("div"),Le=f("noscript"),Ue=d(" ");for(o=0;o<ct.length;o+=1)ct[o].c();lt._fragment.c(),h(r,"click",Ve),r.disabled=t.publishing,r.className=i="btn-publish btn btn-primary btn-large "+(t.published?"":"btn-first-publish")+" svelte-1wigpa8",C.className="icon fa fa-link fa-fw",e._bindingGroups[0].push(A),h(A,"change",et),A.__value="default",A.value=A.__value,m(A,"type","radio"),A.name="url-type",A.className="svelte-1wigpa8",D.className="radio",P.className="embed-options svelte-1wigpa8",E.className="h",B.target="_blank",B.className="share-url svelte-1wigpa8",B.href=t.shareUrl,q.className="inpt",k.className="ctrls",j.className="block",Z.className="icon fa fa-code fa-fw",te.className="embed-options svelte-1wigpa8",Q.className="h",m(ie,"type","text"),ie.className="input embed-code svelte-1wigpa8",ie.readOnly=!0,ie.value=t.embedCode,ge.className="fa fa-copy",h(ve,"click",at),ve.className="btn btn-copy",ve.title="copy",je.className=Se="copy-success "+(t.copy_success?"show":"")+" svelte-1wigpa8",re.className="inpt",K.className="ctrls",V.className="block",v(x,"margin-top","20px"),x.className=Me=t.published?"":"inactive"},m:function(i,u){We.m(i,u),a(i,n,u),a(i,r,u),Xe.m(r,null),a(i,s,u),Ze&&Ze.m(i,u),a(i,c,u),ze&&ze.m(i,u),a(i,g,u),Ke&&Ke.m(i,u),a(i,w,u),Qe&&Qe.m(i,u),a(i,y,u),Ye&&Ye.m(i,u),a(i,N,u),a(i,x,u),o(x,O),O.innerHTML=Pe,o(x,T),o(x,j),o(j,C),o(j,S),o(j,k),o(k,E),o(E,L),L.innerHTML=He,o(E,M),o(E,P),o(P,D),o(D,A),A.checked=A.__value===t.shareurl_type,o(D,R),o(D,G),G.insertAdjacentHTML("afterend",De),o(P,I);for(var l=0;l<nt.length;l+=1)nt[l].m(P,null);o(k,F),o(k,q),o(q,B),o(B,W),o(j,J),o(it._slotted.default,$),$.innerHTML=Ae,it._mount(j,null),o(x,X),o(x,V),o(V,Z),o(V,z),o(V,K),o(K,Q),o(Q,Y),Y.innerHTML=Re,o(Q,ee),o(Q,te);for(l=0;l<ot.length;l+=1)ot[l].m(te,null);o(K,ne),o(K,re),o(re,ie),e.refs.embedInput=ie,o(re,ue),o(re,ve),o(ve,ge),o(ve,xe),o(ve,Oe),o(re,Te),o(re,je),o(je,Ce),o(V,ke),o(lt._slotted.default,Ee),o(Ee,Le),Le.insertAdjacentHTML("beforebegin",Fe),o(Ee,Ue);for(l=0;l<ct.length;l+=1)ct[l].m(Ee,null);lt._mount(V,null)},p:function(s,o){if(Be!==(Be=qe(t=o))&&(We.d(1),(We=Be(e,t)).c(),We.m(n.parentNode,n)),$e===($e=Je(t))&&Xe?Xe.p(s,t):(Xe.d(1),(Xe=$e(e,t)).c(),Xe.m(r,null)),s.publishing&&(r.disabled=t.publishing),s.published&&i!==(i="btn-publish btn btn-primary btn-large "+(t.published?"":"btn-first-publish")+" svelte-1wigpa8")&&(r.className=i),t.published?Ze&&(Ze.d(1),Ze=null):Ze||((Ze=de()).c(),Ze.m(c.parentNode,c)),t.needs_republish&&!t.publishing?ze||((ze=he()).c(),ze.m(g.parentNode,g)):ze&&(ze.d(1),ze=null),t.published&&!t.needs_republish&&t.progress&&t.progress.includes("done")&&!t.publishing?Ke||((Ke=be()).c(),Ke.m(w.parentNode,w)):Ke&&(Ke.d(1),Ke=null),t.publish_error?Qe?Qe.p(s,t):((Qe=me(e,t)).c(),Qe.m(y.parentNode,y)):Qe&&(Qe.d(1),Qe=null),t.publishing?Ye?Ye.p(s,t):((Ye=_e(e,t)).c(),Ye.m(N.parentNode,N)):Ye&&(Ye.d(1),Ye=null),s.shareurl_type&&(A.checked=A.__value===t.shareurl_type),s.plugin_shareurls||s.shareurl_type){tt=t.plugin_shareurls;for(var a=0;a<tt.length;a+=1){var u=ae(t,tt,a);nt[a]?nt[a].p(s,u):(nt[a]=we(e,u),nt[a].c(),nt[a].m(P,null))}for(;a<nt.length;a+=1)nt[a].d(1);nt.length=tt.length}if(s.shareUrl&&(_(W,t.shareUrl),B.href=t.shareUrl),s.embed_templates||s.embed_type){st=t.embed_templates;for(a=0;a<st.length;a+=1){var l=oe(t,st,a);ot[a]?ot[a].p(s,l):(ot[a]=ye(e,l),ot[a].c(),ot[a].m(te,null))}for(;a<ot.length;a+=1)ot[a].d(1);ot.length=st.length}if(s.embedCode&&(ie.value=t.embedCode),s.copy_success&&Se!==(Se="copy-success "+(t.copy_success?"show":"")+" svelte-1wigpa8")&&(je.className=Se),s.embed_templates){ut=t.embed_templates.slice(2);for(a=0;a<ut.length;a+=1){var p=se(t,ut,a);ct[a]?ct[a].p(s,p):(ct[a]=Ne(e,p),ct[a].c(),ct[a].m(Ee,null))}for(;a<ct.length;a+=1)ct[a].d(1);ct.length=ut.length}s.published&&Me!==(Me=t.published?"":"inactive")&&(x.className=Me)},d:function(t){We.d(t),t&&(u(n),u(r)),Xe.d(),b(r,"click",Ve),t&&u(s),Ze&&Ze.d(t),t&&u(c),ze&&ze.d(t),t&&u(g),Ke&&Ke.d(t),t&&u(w),Qe&&Qe.d(t),t&&u(y),Ye&&Ye.d(t),t&&(u(N),u(x)),e._bindingGroups[0].splice(e._bindingGroups[0].indexOf(A),1),b(A,"change",et),l(nt,t),it.destroy(),l(ot,t),e.refs.embedInput===ie&&(e.refs.embedInput=null),b(ve,"click",at),l(ct,t),lt.destroy()}}}(this,this._state),this.root._oncreate.push((function(){t.fire("update",{changed:s({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),O(this))}function Oe(e,t){this._handlers={},this._dependents=[],this._computed=w(),this._sortedComputedProperties=[],this._state=i({},e),this._differs=t&&t.immutable?N:y}i(xe.prototype,k),i(xe.prototype,re),xe.prototype._recompute=function(e,t){var n,r,i,s,o,a;(e.shareurl_type||e.chart||e.plugin_shareurls||e.published)&&this._differs(t.shareUrl,t.shareUrl=function(e){var t=e.shareurl_type,n=e.chart,r=e.plugin_shareurls;if(!e.published)return"https://www.datawrapper.de/...";if("default"===t)return n.publicUrl;var i="";return r.forEach((function(e){e.id===t&&(i=(i=e.url.replace(/%chart_id%/g,n.id)).replace(/%(.*?)%/g,(function(e,t){return function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(!t)return e;for(var r=t.split("."),i=e,s=0;s<r.length&&null!=i;s++)i=i[r[s]];return null==i?n:i}({id:n.id,metadata:n.metadata},t)})))})),i}(t))&&(e.shareUrl=!0),(e.embed_type||e.chart)&&this._differs(t.embedCode,t.embedCode=(r=(n=t).embed_type,(i=n.chart).metadata?i.metadata.publish&&!i.metadata.publish["embed-codes"]?'<iframe src="'.concat(i.publicUrl,'" width="100%" height="').concat(i.metadata.publish["embed-height"],'" scrolling="no" frameborder="0" allowtransparency="true"></iframe>'):i.metadata.publish["embed-codes"]["embed-method-"+r]?i.metadata.publish["embed-codes"]["embed-method-"+r]:"":""))&&(e.embedCode=!0),(e.publishStarted||e.now)&&this._differs(t.publishWait,t.publishWait=(o=(s=t).publishStarted,a=s.now,o>0?a-o:0))&&(e.publishWait=!0)},i(Oe.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var r=e[n];t["$"+r]=this._state[r]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_set:function(e,t){var n=this,r=this._state;this._state=i(i({},r),e);for(var s=0;s<this._sortedComputedProperties.length;s+=1)this._sortedComputedProperties[s].update(this._state,t);this.fire("state",{changed:t,previous:r,current:this._state}),this._dependents.filter((function(e){for(var r={},i=!1,s=0;s<e.props.length;s+=1){var o=e.props[s];o in t&&(r["$"+o]=n._state[o],i=!0)}if(i)return e.component._stage(r),!0})).forEach((function(e){e.component.set({})})),this.fire("update",{changed:t,previous:r,current:this._state})},_sortComputedProperties:function(){var e,t=this._computed,n=this._sortedComputedProperties=[],r=w();function i(s){var o=t[s];o&&(o.deps.forEach((function(t){if(t===e)throw new Error("Cyclical dependency detected between ".concat(t," <-> ").concat(s));i(t)})),r[s]||(r[s]=!0,n.push(o)))}for(var s in this._computed)i(e=s)},compute:function(e,t,n){var r,s=this,o={deps:t,update:function(i,o,a){var u=t.map((function(e){return e in o&&(a=!0),i[e]}));if(a){var c=n.apply(null,u);s._differs(c,r)&&(r=c,o[e]=!0,i[e]=r)}}};this._computed[e]=o,this._sortComputedProperties();var a=i({},this._state),u={};o.update(a,u,!0),this._set(a,u)},fire:x,get:T,on:C,set:function(e){var t=this._state,n=this._changed={},r=!1;for(var i in e){if(this._computed[i])throw new Error("'".concat(i,"' is a read-only computed property"));this._differs(e[i],t[i])&&(n[i]=r=!0)}r&&this._set(e,n)}});return{App:xe,data:{chart:{id:""},embed_templates:[],plugin_shareurls:[],published:!1,publishing:!1,needs_republish:!1,publish_error:!1,auto_publish:!1,progress:[],shareurl_type:"default",embed_type:"responsive",copy_success:!1},store:new Oe({})}}));
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/publish_old', factory) :
+	(global = global || self, global.publish = factory());
+}(this, function () { 'use strict';
+
+	function noop() {}
+
+	function assign(tar, src) {
+		for (var k in src) tar[k] = src[k];
+		return tar;
+	}
+
+	function assignTrue(tar, src) {
+		for (var k in src) tar[k] = 1;
+		return tar;
+	}
+
+	function addLoc(element, file, line, column, char) {
+		element.__svelte_meta = {
+			loc: { file, line, column, char }
+		};
+	}
+
+	function append(target, node) {
+		target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+		target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+		node.parentNode.removeChild(node);
+	}
+
+	function detachAfter(before) {
+		while (before.nextSibling) {
+			before.parentNode.removeChild(before.nextSibling);
+		}
+	}
+
+	function reinsertAfter(before, target) {
+		while (before.nextSibling) target.appendChild(before.nextSibling);
+	}
+
+	function destroyEach(iterations, detach) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) iterations[i].d(detach);
+		}
+	}
+
+	function createFragment() {
+		return document.createDocumentFragment();
+	}
+
+	function createElement(name) {
+		return document.createElement(name);
+	}
+
+	function createText(data) {
+		return document.createTextNode(data);
+	}
+
+	function createComment() {
+		return document.createComment('');
+	}
+
+	function addListener(node, event, handler, options) {
+		node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+		node.removeEventListener(event, handler, options);
+	}
+
+	function setAttribute(node, attribute, value) {
+		if (value == null) node.removeAttribute(attribute);
+		else node.setAttribute(attribute, value);
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
+	}
+
+	function setStyle(node, key, value) {
+		node.style.setProperty(key, value);
+	}
+
+	function toggleClass(element, name, toggle) {
+		element.classList[toggle ? 'add' : 'remove'](name);
+	}
+
+	function blankObject() {
+		return Object.create(null);
+	}
+
+	function destroy(detach) {
+		this.destroy = noop;
+		this.fire('destroy');
+		this.set = noop;
+
+		this._fragment.d(detach !== false);
+		this._fragment = null;
+		this._state = {};
+	}
+
+	function destroyDev(detach) {
+		destroy.call(this, detach);
+		this.destroy = function() {
+			console.warn('Component was already destroyed');
+		};
+	}
+
+	function _differs(a, b) {
+		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+
+	function _differsImmutable(a, b) {
+		return a != a ? b == b : a !== b;
+	}
+
+	function fire(eventName, data) {
+		var handlers =
+			eventName in this._handlers && this._handlers[eventName].slice();
+		if (!handlers) return;
+
+		for (var i = 0; i < handlers.length; i += 1) {
+			var handler = handlers[i];
+
+			if (!handler.__calling) {
+				try {
+					handler.__calling = true;
+					handler.call(this, data);
+				} finally {
+					handler.__calling = false;
+				}
+			}
+		}
+	}
+
+	function flush(component) {
+		component._lock = true;
+		callAll(component._beforecreate);
+		callAll(component._oncreate);
+		callAll(component._aftercreate);
+		component._lock = false;
+	}
+
+	function get() {
+		return this._state;
+	}
+
+	function init(component, options) {
+		component._handlers = blankObject();
+		component._slots = blankObject();
+		component._bind = options._bind;
+		component._staged = {};
+
+		component.options = options;
+		component.root = options.root || component;
+		component.store = options.store || component.root.store;
+
+		if (!options.root) {
+			component._beforecreate = [];
+			component._oncreate = [];
+			component._aftercreate = [];
+		}
+	}
+
+	function on(eventName, handler) {
+		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+		handlers.push(handler);
+
+		return {
+			cancel: function() {
+				var index = handlers.indexOf(handler);
+				if (~index) handlers.splice(index, 1);
+			}
+		};
+	}
+
+	function set(newState) {
+		this._set(assign({}, newState));
+		if (this.root._lock) return;
+		flush(this.root);
+	}
+
+	function _set(newState) {
+		var oldState = this._state,
+			changed = {},
+			dirty = false;
+
+		newState = assign(this._staged, newState);
+		this._staged = {};
+
+		for (var key in newState) {
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign(assign({}, oldState), newState);
+		this._recompute(changed, this._state);
+		if (this._bind) this._bind(changed, this._state);
+
+		if (this._fragment) {
+			this.fire("state", { changed: changed, current: this._state, previous: oldState });
+			this._fragment.p(changed, this._state);
+			this.fire("update", { changed: changed, current: this._state, previous: oldState });
+		}
+	}
+
+	function _stage(newState) {
+		assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+		if (typeof newState !== 'object') {
+			throw new Error(
+				this._debugName + '.set was called without an object of data key-values to update.'
+			);
+		}
+
+		this._checkReadOnly(newState);
+		set.call(this, newState);
+	}
+
+	function callAll(fns) {
+		while (fns && fns.length) fns.shift()();
+	}
+
+	function _mount(target, anchor) {
+		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	var protoDev = {
+		destroy: destroyDev,
+		get,
+		fire,
+		on,
+		set: setDev,
+		_recompute: noop,
+		_set,
+		_stage,
+		_mount,
+		_differs
+	};
+
+	/* Users/sjockers/Projects/datawrapper/controls/v2/Help.html generated by Svelte v2.16.1 */
+
+	function data() {
+	    return {
+	        visible: false
+	    };
+	}
+	var methods = {
+	    show() {
+	        const t = setTimeout(() => {
+	            this.set({ visible: true });
+	        }, 400);
+	        this.set({ t });
+	    },
+	    hide() {
+	        const { t } = this.get();
+	        clearTimeout(t);
+	        this.set({ visible: false });
+	    }
+	};
+
+	const file = "Users/sjockers/Projects/datawrapper/controls/v2/Help.html";
+
+	function create_main_fragment(component, ctx) {
+		var div, span, text_1;
+
+		var if_block = (ctx.visible) && create_if_block(component);
+
+		function mouseenter_handler(event) {
+			component.show();
+		}
+
+		function mouseleave_handler(event) {
+			component.hide();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				span = createElement("span");
+				span.textContent = "?";
+				text_1 = createText("\n    ");
+				if (if_block) if_block.c();
+				span.className = "help-icon svelte-1dimwu7";
+				addLoc(span, file, 1, 4, 69);
+				addListener(div, "mouseenter", mouseenter_handler);
+				addListener(div, "mouseleave", mouseleave_handler);
+				div.className = "help svelte-1dimwu7";
+				addLoc(div, file, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, span);
+				append(div, text_1);
+				if (if_block) if_block.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.visible) {
+					if (!if_block) {
+						if_block = create_if_block(component);
+						if_block.c();
+						if_block.m(div, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (if_block) if_block.d();
+				removeListener(div, "mouseenter", mouseenter_handler);
+				removeListener(div, "mouseleave", mouseleave_handler);
+			}
+		};
+	}
+
+	// (3:4) {#if visible}
+	function create_if_block(component, ctx) {
+		var div, i, text, slot_content_default = component._slotted.default, slot_content_default_before;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				i = createElement("i");
+				text = createText("\n        ");
+				i.className = "hat-icon im im-graduation-hat svelte-1dimwu7";
+				addLoc(i, file, 4, 8, 154);
+				div.className = "content svelte-1dimwu7";
+				addLoc(div, file, 3, 4, 124);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, i);
+				append(div, text);
+
+				if (slot_content_default) {
+					append(div, slot_content_default_before || (slot_content_default_before = createComment()));
+					append(div, slot_content_default);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_default) {
+					reinsertAfter(slot_content_default_before, slot_content_default);
+				}
+			}
+		};
+	}
+
+	function Help(options) {
+		this._debugName = '<Help>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data(), options.data);
+		if (!('visible' in this._state)) console.warn("<Help> was created without expected data property 'visible'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(Help.prototype, protoDev);
+	assign(Help.prototype, methods);
+
+	Help.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* globals dw */
+
+	let __messages = {};
+
+	function initMessages(scope = 'core') {
+	    // let's check if we're in a chart
+	    if (scope === 'chart') {
+	        if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	            // use in-chart translations
+	            __messages[scope] = window.__dw.vis.meta.locale || {};
+	        }
+	    } else {
+	        // use backend translations
+	        __messages[scope] =
+	            scope === 'core'
+	                ? dw.backend.__messages.core
+	                : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	    }
+	}
+
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+	function __(key, scope = 'core') {
+	    key = key.trim();
+	    if (!__messages[scope]) initMessages(scope);
+	    if (!__messages[scope][key]) return 'MISSING:' + key;
+	    var translation = __messages[scope][key];
+
+	    if (typeof translation === 'string' && arguments.length > 2) {
+	        // replace $0, $1 etc with remaining arguments
+	        translation = translation.replace(/\$(\d)/g, (m, i) => {
+	            i = 2 + Number(i);
+	            if (arguments[i] === undefined) return m;
+	            return arguments[i];
+	        });
+	    }
+	    return translation;
+	}
+
+	function createCommonjsModule(fn, basedir, module) {
+		return module = {
+		  path: basedir,
+		  exports: {},
+		  require: function (path, base) {
+	      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+	    }
+		}, fn(module, module.exports), module.exports;
+	}
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+	}
+
+	var js_cookie = createCommonjsModule(function (module, exports) {
+	(function (factory) {
+		var registeredInModuleLoader;
+		{
+			module.exports = factory();
+			registeredInModuleLoader = true;
+		}
+		if (!registeredInModuleLoader) {
+			var OldCookies = window.Cookies;
+			var api = window.Cookies = factory();
+			api.noConflict = function () {
+				window.Cookies = OldCookies;
+				return api;
+			};
+		}
+	}(function () {
+		function extend () {
+			var i = 0;
+			var result = {};
+			for (; i < arguments.length; i++) {
+				var attributes = arguments[ i ];
+				for (var key in attributes) {
+					result[key] = attributes[key];
+				}
+			}
+			return result;
+		}
+
+		function decode (s) {
+			return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+		}
+
+		function init (converter) {
+			function api() {}
+
+			function set (key, value, attributes) {
+				if (typeof document === 'undefined') {
+					return;
+				}
+
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					var result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				value = converter.write ?
+					converter.write(value, key) :
+					encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+				key = encodeURIComponent(String(key))
+					.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
+					.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+
+					// Considers RFC 6265 section 5.2:
+					// ...
+					// 3.  If the remaining unparsed-attributes contains a %x3B (";")
+					//     character:
+					// Consume the characters of the unparsed-attributes up to,
+					// not including, the first %x3B (";") character.
+					// ...
+					stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+				}
+
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			function get (key, json) {
+				if (typeof document === 'undefined') {
+					return;
+				}
+
+				var jar = {};
+				// To prevent the for loop in the first place assign an empty array
+				// in case there are no cookies at all.
+				var cookies = document.cookie ? document.cookie.split('; ') : [];
+				var i = 0;
+
+				for (; i < cookies.length; i++) {
+					var parts = cookies[i].split('=');
+					var cookie = parts.slice(1).join('=');
+
+					if (!json && cookie.charAt(0) === '"') {
+						cookie = cookie.slice(1, -1);
+					}
+
+					try {
+						var name = decode(parts[0]);
+						cookie = (converter.read || converter)(cookie, name) ||
+							decode(cookie);
+
+						if (json) {
+							try {
+								cookie = JSON.parse(cookie);
+							} catch (e) {}
+						}
+
+						jar[name] = cookie;
+
+						if (key === name) {
+							break;
+						}
+					} catch (e) {}
+				}
+
+				return key ? jar[key] : jar;
+			}
+
+			api.set = set;
+			api.get = function (key) {
+				return get(key, false /* read as raw */);
+			};
+			api.getJSON = function (key) {
+				return get(key, true /* read as json */);
+			};
+			api.remove = function (key, attributes) {
+				set(key, '', extend(attributes, {
+					expires: -1
+				}));
+			};
+
+			api.defaults = {};
+
+			api.withConverter = init;
+
+			return api;
+		}
+
+		return init(function () {});
+	}));
+	});
+
+	const CSRF_COOKIE_NAME = 'crumb';
+	const CSRF_TOKEN_HEADER = 'X-CSRF-Token';
+	const CSRF_SAFE_METHODS = new Set(['get', 'head', 'options', 'trace']); // according to RFC7231
+
+	/**
+	 * The response body is automatically parsed according
+	 * to the response content type.
+	 *
+	 * @exports httpReq
+	 * @kind function
+	 *
+	 * @param {string} path               - the url path that gets appended to baseUrl
+	 * @param {object} options.payload    - payload to be send with req
+	 * @param {boolean} options.raw       - disable parsing of response body, returns raw response
+	 * @param {string} options.baseUrl    - base for url, defaults to dw api domain
+	 * @param {*} options                 - see documentation for window.fetch for additional options
+	 *
+	 * @returns {Promise} promise of parsed response body or raw response
+	 *
+	 * @example
+	 *  import httpReq from '@datawrapper/shared/httpReq';
+	 *  let res = await httpReq('/v3/charts', {
+	 *      method: 'post',
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 *  import { post } from '@datawrapper/shared/httpReq';
+	 *  res = await post('/v3/charts', {
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 */
+	function httpReq(path, options = {}) {
+	    if (!options.fetch) {
+	        try {
+	            options.fetch = window.fetch;
+	        } catch (e) {
+	            throw new Error('Neither options.fetch nor window.fetch is defined.');
+	        }
+	    }
+	    if (!options.baseUrl) {
+	        try {
+	            options.baseUrl = `//${window.dw.backend.__api_domain}`;
+	        } catch (e) {
+	            throw new Error('Neither options.baseUrl nor window.dw is defined.');
+	        }
+	    }
+	    const { payload, baseUrl, fetch, raw, ...opts } = {
+	        payload: null,
+	        raw: false,
+	        method: 'GET',
+	        mode: 'cors',
+	        credentials: 'include',
+	        ...options,
+	        headers: {
+	            'Content-Type': 'application/json',
+	            ...options.headers
+	        }
+	    };
+	    const url = `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+	    if (payload) {
+	        // overwrite body
+	        opts.body = JSON.stringify(payload);
+	    }
+
+	    let promise;
+	    if (!CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
+	        let csrfCookieValue = js_cookie.get(CSRF_COOKIE_NAME);
+	        if (csrfCookieValue) {
+	            opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+	            promise = fetch(url, opts);
+	        } else {
+	            promise = httpReq('/v3/me', { fetch, baseUrl })
+	                .then(() => {
+	                    const csrfCookieValue = js_cookie.get(CSRF_COOKIE_NAME);
+	                    if (csrfCookieValue) {
+	                        opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+	                    }
+	                })
+	                .catch(() => {}) // Ignore errors from /v3/me. It probably means the user is not logged in.
+	                .then(() => fetch(url, opts));
+	        }
+	    } else {
+	        promise = fetch(url, opts);
+	    }
+	    // The variable `promise` and the repeated `fetch(url, opts)` could be replaced with `await
+	    // httpReq('/v3/me'...)`, but then we would need to configure babel to transform async/await for
+	    // all repositories that use @datawrapper/shared.
+
+	    return promise.then(res => {
+	        if (raw) return res;
+	        if (!res.ok) throw new HttpReqError(res);
+	        if (res.status === 204 || !res.headers.get('content-type')) return res; // no content
+	        // trim away the ;charset=utf-8 from content-type
+	        const contentType = res.headers.get('content-type').split(';')[0];
+	        if (contentType === 'application/json') {
+	            return res.json();
+	        }
+	        if (contentType === 'image/png' || contentType === 'application/pdf') {
+	            return res.blob();
+	        }
+	        // default to text for all other content types
+	        return res.text();
+	    });
+	}
+
+	/**
+	 * Like `httpReq` but with fixed http method GET
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.get
+	 * @kind function
+	 */
+	const get$1 = (httpReq.get = httpReqVerb('GET'));
+
+	/**
+	 * Like `httpReq` but with fixed http method PATCH
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.patch
+	 * @kind function
+	 */
+	const patch = (httpReq.patch = httpReqVerb('PATCH'));
+
+	/**
+	 * Like `httpReq` but with fixed http method PUT
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.put
+	 * @kind function
+	 */
+	const put = (httpReq.put = httpReqVerb('PUT'));
+
+	/**
+	 * Like `httpReq` but with fixed http method POST
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.post
+	 * @kind function
+	 */
+	const post = (httpReq.post = httpReqVerb('POST'));
+
+	/**
+	 * Like `httpReq` but with fixed http method HEAD
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.head
+	 * @kind function
+	 */
+	const head = (httpReq.head = httpReqVerb('HEAD'));
+
+	/**
+	 * Like `httpReq` but with fixed http method DELETE
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.delete
+	 * @kind function
+	 */
+	httpReq.delete = httpReqVerb('DELETE');
+
+	function httpReqVerb(method) {
+	    return (path, options) => {
+	        if (options && options.method) {
+	            throw new Error(
+	                `Setting option.method is not allowed in httpReq.${method.toLowerCase()}()`
+	            );
+	        }
+	        return httpReq(path, { ...options, method });
+	    };
+	}
+
+	class HttpReqError extends Error {
+	    constructor(res) {
+	        super();
+	        this.name = 'HttpReqError';
+	        this.status = res.status;
+	        this.statusText = res.statusText;
+	        this.message = `[${res.status}] ${res.statusText}`;
+	        this.response = res;
+	    }
+	}
+
+	/**
+	 * tracks a custom event in Matomo
+	 *
+	 *
+	 * @param {string} category - the event category
+	 * @param {string} category - the event action
+	 * @param {string} category - the event name
+	 * @param {string|number} category - the event value, optional
+	 */
+	function trackEvent(category, action, name, value) {
+	    if (window._paq) {
+	        window._paq.push(['trackEvent', category, action, name, value]);
+	    }
+	}
+
+	/**
+	 * Safely access object properties without throwing nasty
+	 * `cannot access X of undefined` errors if a property along the
+	 * way doesn't exist.
+	 *
+	 * @exports get
+	 * @kind function
+	 *
+	 *
+	 * @param object - the object which properties you want to acccess
+	 * @param {String} key - dot-separated keys aka "path" to the property
+	 * @param {*} _default - the fallback value to be returned if key doesn't exist
+	 *
+	 * @returns the value
+	 *
+	 * @example
+	 * import get from '@datawrapper/shared/get';
+	 * const someObject = { key: { list: ['a', 'b', 'c']}};
+	 * get(someObject, 'key.list[2]') // returns 'c'
+	 * get(someObject, 'missing.key') // returns undefined
+	 * get(someObject, 'missing.key', false) // returns false
+	 */
+	function get$2(object, key = null, _default = null) {
+	    if (!key) return object;
+	    // expand keys
+	    const keys = key.split('.');
+	    let pt = object;
+
+	    for (let i = 0; i < keys.length; i++) {
+	        if (pt === null || pt === undefined) break; // break out of the loop
+	        // move one more level in
+	        pt = pt[keys[i]];
+	    }
+	    return pt === undefined || pt === null ? _default : pt;
+	}
+
+	/* publish/App.html generated by Svelte v2.16.1 */
+
+
+
+	let initial_auto_publish = true;
+
+	function shareUrl({ shareurl_type, chart, plugin_shareurls, published }) {
+	    if (!published) return 'https://www.datawrapper.de/...';
+	    if (shareurl_type === 'default') return chart.publicUrl;
+	    let url = '';
+	    plugin_shareurls.forEach(t => {
+	        if (t.id === shareurl_type) {
+	            url = t.url.replace(/%chart_id%/g, chart.id);
+
+	            url = url.replace(/%(.*?)%/g, (match, path) => {
+	                return get$2(
+	                    {
+	                        id: chart.id,
+	                        metadata: chart.metadata
+	                    },
+	                    path
+	                );
+	            });
+	        }
+	    });
+	    return url;
+	}
+	function embedCode({ embed_type, chart }) {
+	    if (!chart.metadata) return '';
+	    if (chart.metadata.publish && !chart.metadata.publish['embed-codes'])
+	        return `<iframe src="${chart.publicUrl}" width="100%" height="${chart.metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
+
+	    if (chart.metadata.publish['embed-codes']['embed-method-' + embed_type]) {
+	        return chart.metadata.publish['embed-codes']['embed-method-' + embed_type];
+	    } else {
+	        return '';
+	    }
+	}
+	function publishWait({ publishStarted, now }) {
+	    return publishStarted > 0 ? now - publishStarted : 0;
+	}
+	function data$1() {
+	    return {
+	        chart: {
+	            id: ''
+	        },
+	        embed_templates: [],
+	        plugin_shareurls: [],
+	        published: false,
+	        publishing: false,
+	        publishStarted: 0,
+	        needs_republish: false,
+	        publish_error: false,
+	        auto_publish: false,
+	        progress: [],
+	        shareurl_type: 'default',
+	        embed_type: 'responsive',
+	        copy_success: false,
+	        statusUrl: false
+	    };
+	}
+	var methods$1 = {
+	    publish() {
+	        const me = this;
+	        // wait another 100ms until the page is ready
+	        if (!window.chart.save) {
+	            setTimeout(() => {
+	                me.publish();
+	            }, 100);
+	            return;
+	        }
+	        const { chart } = me.get();
+
+	        me.set({
+	            publishing: true,
+	            publishStarted: new Date().getTime(),
+	            now: new Date().getTime(),
+	            progress: [],
+	            publish_error: false
+	        });
+
+	        // update charts
+	        me.set({ chart });
+
+	        trackEvent('Chart Editor', 'publish');
+
+	        window.chart
+	            .attributes(chart)
+	            .save()
+	            .then(d => {
+	                this.set({
+	                    statusUrl: `/v3/charts/${chart.id}/publish/status/${chart.publicVersion}`
+	                });
+	                // publish chart
+	                httpReq
+	                    .post(`/v3/charts/${chart.id}/publish`)
+	                    .then(res => {
+	                        this.set({
+	                            published: true,
+	                            progress: ['done']
+	                        });
+	                        httpReq.get(`/v3/charts/${chart.id}`).then(res => {
+	                            trackEvent('Chart Editor', 'publish-success');
+	                            me.publishFinished(res);
+	                        });
+	                    })
+	                    .catch(error => {
+	                        trackEvent('Chart Editor', 'publish-error', error.message);
+	                    });
+	                setTimeout(() => {
+	                    const { publishing } = me.get();
+	                    if (publishing) me.updateStatus();
+	                }, 1000);
+	            });
+	    },
+
+	    updateStatus() {
+	        const me = this;
+	        const { statusUrl } = me.get();
+	        if (!statusUrl) return;
+	        httpReq.get(statusUrl).then(res => {
+	            this.set({
+	                progress: res.progress || [],
+	                now: new Date().getTime()
+	            });
+	            const { publishing } = this.get();
+	            if (publishing) {
+	                setTimeout(() => {
+	                    this.updateStatus();
+	                }, 500);
+	            }
+	        });
+	    },
+
+	    publishFinished(chartInfo) {
+	        this.set({
+	            progress: ['done'],
+	            published: true,
+	            publishStarted: 0,
+	            needs_republish: false
+	        });
+	        // give user 1s to read the success message
+	        setTimeout(() => this.set({ publishing: false }), 1000);
+	        this.set({ chart: chartInfo });
+
+	        window.parent.postMessage(
+	            {
+	                source: 'datawrapper',
+	                type: 'chart-publish',
+	                chartId: chartInfo.id
+	            },
+	            '*'
+	        );
+
+	        window.chart.attributes(chartInfo);
+	    },
+
+	    copy(embedCode) {
+	        const me = this;
+	        me.refs.embedInput.select();
+	        try {
+	            var successful = document.execCommand('copy');
+	            if (successful) {
+	                trackEvent('Chart Editor', 'embedcode-copy');
+	                me.set({ copy_success: true });
+	                setTimeout(() => me.set({ copy_success: false }), 300);
+	            }
+	        } catch (err) {
+	            // console.log('Oops, unable to copy');
+	        }
+	    }
+	};
+
+	function onstate({ changed, current }) {
+	    const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
+	    if (changed.embed_type && userDataReady) {
+	        const data = window.dw.backend.__userData;
+	        if (!current.embed_type || !data) return;
+	        data.embed_type = current.embed_type;
+	        window.dw.backend.setUserData(data);
+	    }
+	    if (changed.shareurl_type && userDataReady) {
+	        const data = window.dw.backend.__userData;
+	        if (!current.shareurl_type || !data) return;
+	        data.shareurl_type = current.shareurl_type;
+	        window.dw.backend.setUserData(data);
+	    }
+	    if (changed.published) {
+	        window.document
+	            .querySelector('.dw-create-publish .publish-step')
+	            .classList[current.published ? 'add' : 'remove']('is-published');
+	    }
+	    if (changed.auto_publish) {
+	        if (current.auto_publish && initial_auto_publish) {
+	            this.publish();
+	            initial_auto_publish = false;
+	            window.history.replaceState('', '', window.location.pathname);
+	        }
+	    }
+	}
+	const file$1 = "publish/App.html";
+
+	function get_each2_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function get_each1_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function get_each0_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tpl = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.step = list[i];
+		child_ctx.i = i;
+		return child_ctx;
+	}
+
+	function create_main_fragment$1(component, ctx) {
+		var text0, button0, button0_class_value, text1, text2, text3, text4, text5, text6, div13, h2, raw0_value = __('publish / share-embed'), text7, div5, i0, text8, div3, div1, b0, raw1_value = __('publish / share-url'), text9, div0, label, input, text10, raw2_value = __('publish / share-url / fullscreen'), raw2_before, text11, text12, div2, a, text13, text14, div4, raw3_value = __('publish / help / share-url'), text15, div12, i1, text16, div10, div7, b1, raw4_value = __('publish / embed'), text17, div6, text18, div9, textarea, text19, button1, i2, text20, text21_value = __('publish / copy'), text21, text22, div8, text23_value = __('publish / copy-success'), text23, div8_class_value, text24, div11, raw5_value = __('publish / embed / help'), raw5_after, text25, div13_class_value;
+
+		function select_block_type(ctx) {
+			if (ctx.published) return create_if_block_7;
+			return create_else_block_1;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		function select_block_type_1(ctx) {
+			if (ctx.published) return create_if_block_6;
+			return create_else_block;
+		}
+
+		var current_block_type_1 = select_block_type_1(ctx);
+		var if_block1 = current_block_type_1(component, ctx);
+
+		function click_handler(event) {
+			component.publish();
+		}
+
+		var if_block2 = (!ctx.published) && create_if_block_5();
+
+		var if_block3 = (ctx.needs_republish && !ctx.publishing) && create_if_block_4();
+
+		var if_block4 = (ctx.published && !ctx.needs_republish && ctx.progress && ctx.progress.includes('done') && !ctx.publishing) && create_if_block_3();
+
+		var if_block5 = (ctx.publish_error) && create_if_block_2(component, ctx);
+
+		var if_block6 = (ctx.publishing) && create_if_block$1(component, ctx);
+
+		function input_change_handler() {
+			component.set({ shareurl_type: input.__value });
+		}
+
+		var each0_value = ctx.plugin_shareurls;
+
+		var each0_blocks = [];
+
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_2(component, get_each0_context(ctx, each0_value, i));
+		}
+
+		var help0 = new Help({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		var each1_value = ctx.embed_templates;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block_1(component, get_each1_context(ctx, each1_value, i));
+		}
+
+		function click_handler_1(event) {
+			component.copy(ctx.embedCode);
+		}
+
+		var each2_value = ctx.embed_templates.slice(2);
+
+		var each2_blocks = [];
+
+		for (var i = 0; i < each2_value.length; i += 1) {
+			each2_blocks[i] = create_each_block(component, get_each2_context(ctx, each2_value, i));
+		}
+
+		var help1 = new Help({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		return {
+			c: function create() {
+				if_block0.c();
+				text0 = createText("\n\n");
+				button0 = createElement("button");
+				if_block1.c();
+				text1 = createText("\n\n");
+				if (if_block2) if_block2.c();
+				text2 = createText(" ");
+				if (if_block3) if_block3.c();
+				text3 = createText(" ");
+				if (if_block4) if_block4.c();
+				text4 = createText(" ");
+				if (if_block5) if_block5.c();
+				text5 = createText(" ");
+				if (if_block6) if_block6.c();
+				text6 = createText("\n\n");
+				div13 = createElement("div");
+				h2 = createElement("h2");
+				text7 = createText("\n    ");
+				div5 = createElement("div");
+				i0 = createElement("i");
+				text8 = createText("\n        ");
+				div3 = createElement("div");
+				div1 = createElement("div");
+				b0 = createElement("b");
+				text9 = createText("\n                ");
+				div0 = createElement("div");
+				label = createElement("label");
+				input = createElement("input");
+				text10 = createText("\n                        ");
+				raw2_before = createElement('noscript');
+				text11 = createText("\n                    ");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
+				}
+
+				text12 = createText("\n            ");
+				div2 = createElement("div");
+				a = createElement("a");
+				text13 = createText(ctx.shareUrl);
+				text14 = createText("\n        ");
+				div4 = createElement("div");
+				help0._fragment.c();
+				text15 = createText("\n\n    ");
+				div12 = createElement("div");
+				i1 = createElement("i");
+				text16 = createText("\n        ");
+				div10 = createElement("div");
+				div7 = createElement("div");
+				b1 = createElement("b");
+				text17 = createText("\n                ");
+				div6 = createElement("div");
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
+				}
+
+				text18 = createText("\n            ");
+				div9 = createElement("div");
+				textarea = createElement("textarea");
+				text19 = createText("\n                ");
+				button1 = createElement("button");
+				i2 = createElement("i");
+				text20 = createText(" ");
+				text21 = createText(text21_value);
+				text22 = createText("\n                ");
+				div8 = createElement("div");
+				text23 = createText(text23_value);
+				text24 = createText("\n        ");
+				div11 = createElement("div");
+				raw5_after = createElement('noscript');
+				text25 = createText(" ");
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].c();
+				}
+
+				help1._fragment.c();
+				addListener(button0, "click", click_handler);
+				button0.disabled = ctx.publishing;
+				button0.className = button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published?'':'btn-first-publish') + " svelte-1wigpa8";
+				addLoc(button0, file$1, 6, 0, 154);
+				addLoc(h2, file$1, 62, 4, 1947);
+				i0.className = "icon fa fa-link fa-fw";
+				addLoc(i0, file$1, 64, 8, 2025);
+				addLoc(b0, file$1, 67, 16, 2135);
+				component._bindingGroups[0].push(input);
+				addListener(input, "change", input_change_handler);
+				input.__value = "default";
+				input.value = input.__value;
+				setAttribute(input, "type", "radio");
+				input.name = "url-type";
+				input.className = "svelte-1wigpa8";
+				addLoc(input, file$1, 70, 24, 2287);
+				label.className = "radio";
+				addLoc(label, file$1, 69, 20, 2241);
+				div0.className = "embed-options svelte-1wigpa8";
+				addLoc(div0, file$1, 68, 16, 2193);
+				div1.className = "h";
+				addLoc(div1, file$1, 66, 12, 2103);
+				a.target = "_blank";
+				a.className = "share-url svelte-1wigpa8";
+				a.href = ctx.shareUrl;
+				addLoc(a, file$1, 92, 16, 3130);
+				div2.className = "inpt";
+				addLoc(div2, file$1, 91, 12, 3095);
+				div3.className = "ctrls";
+				addLoc(div3, file$1, 65, 8, 2071);
+				addLoc(div4, file$1, 96, 12, 3261);
+				div5.className = "block";
+				addLoc(div5, file$1, 63, 4, 1997);
+				i1.className = "icon fa fa-code fa-fw";
+				addLoc(i1, file$1, 101, 8, 3374);
+				addLoc(b1, file$1, 104, 16, 3484);
+				div6.className = "embed-options svelte-1wigpa8";
+				addLoc(div6, file$1, 105, 16, 3538);
+				div7.className = "h";
+				addLoc(div7, file$1, 103, 12, 3452);
+				setAttribute(textarea, "type", "text");
+				textarea.className = "input embed-code svelte-1wigpa8";
+				textarea.readOnly = true;
+				textarea.value = ctx.embedCode;
+				addLoc(textarea, file$1, 115, 16, 3936);
+				i2.className = "fa fa-copy";
+				addLoc(i2, file$1, 123, 20, 4262);
+				addListener(button1, "click", click_handler_1);
+				button1.className = "btn btn-copy";
+				button1.title = "copy";
+				addLoc(button1, file$1, 122, 16, 4172);
+				div8.className = div8_class_value = "copy-success " + (ctx.copy_success ? 'show':'') + " svelte-1wigpa8";
+				addLoc(div8, file$1, 125, 16, 4356);
+				div9.className = "inpt";
+				addLoc(div9, file$1, 114, 12, 3901);
+				div10.className = "ctrls";
+				addLoc(div10, file$1, 102, 8, 3420);
+				addLoc(div11, file$1, 131, 12, 4547);
+				div12.className = "block";
+				addLoc(div12, file$1, 100, 4, 3346);
+				setStyle(div13, "margin-top", "20px");
+				div13.className = div13_class_value = ctx.published?'':'inactive';
+				addLoc(div13, file$1, 61, 0, 1877);
+			},
+
+			m: function mount(target, anchor) {
+				if_block0.m(target, anchor);
+				insert(target, text0, anchor);
+				insert(target, button0, anchor);
+				if_block1.m(button0, null);
+				insert(target, text1, anchor);
+				if (if_block2) if_block2.m(target, anchor);
+				insert(target, text2, anchor);
+				if (if_block3) if_block3.m(target, anchor);
+				insert(target, text3, anchor);
+				if (if_block4) if_block4.m(target, anchor);
+				insert(target, text4, anchor);
+				if (if_block5) if_block5.m(target, anchor);
+				insert(target, text5, anchor);
+				if (if_block6) if_block6.m(target, anchor);
+				insert(target, text6, anchor);
+				insert(target, div13, anchor);
+				append(div13, h2);
+				h2.innerHTML = raw0_value;
+				append(div13, text7);
+				append(div13, div5);
+				append(div5, i0);
+				append(div5, text8);
+				append(div5, div3);
+				append(div3, div1);
+				append(div1, b0);
+				b0.innerHTML = raw1_value;
+				append(div1, text9);
+				append(div1, div0);
+				append(div0, label);
+				append(label, input);
+
+				input.checked = input.__value === ctx.shareurl_type;
+
+				append(label, text10);
+				append(label, raw2_before);
+				raw2_before.insertAdjacentHTML("afterend", raw2_value);
+				append(div0, text11);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(div0, null);
+				}
+
+				append(div3, text12);
+				append(div3, div2);
+				append(div2, a);
+				append(a, text13);
+				append(div5, text14);
+				append(help0._slotted.default, div4);
+				div4.innerHTML = raw3_value;
+				help0._mount(div5, null);
+				append(div13, text15);
+				append(div13, div12);
+				append(div12, i1);
+				append(div12, text16);
+				append(div12, div10);
+				append(div10, div7);
+				append(div7, b1);
+				b1.innerHTML = raw4_value;
+				append(div7, text17);
+				append(div7, div6);
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(div6, null);
+				}
+
+				append(div10, text18);
+				append(div10, div9);
+				append(div9, textarea);
+				component.refs.embedInput = textarea;
+				append(div9, text19);
+				append(div9, button1);
+				append(button1, i2);
+				append(button1, text20);
+				append(button1, text21);
+				append(div9, text22);
+				append(div9, div8);
+				append(div8, text23);
+				append(div12, text24);
+				append(help1._slotted.default, div11);
+				append(div11, raw5_after);
+				raw5_after.insertAdjacentHTML("beforebegin", raw5_value);
+				append(div11, text25);
+
+				for (var i = 0; i < each2_blocks.length; i += 1) {
+					each2_blocks[i].m(div11, null);
+				}
+
+				help1._mount(div12, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(text0.parentNode, text0);
+				}
+
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type_1(component, ctx);
+					if_block1.c();
+					if_block1.m(button0, null);
+				}
+
+				if (changed.publishing) {
+					button0.disabled = ctx.publishing;
+				}
+
+				if ((changed.published) && button0_class_value !== (button0_class_value = "btn-publish btn btn-primary btn-large " + (ctx.published?'':'btn-first-publish') + " svelte-1wigpa8")) {
+					button0.className = button0_class_value;
+				}
+
+				if (!ctx.published) {
+					if (!if_block2) {
+						if_block2 = create_if_block_5();
+						if_block2.c();
+						if_block2.m(text2.parentNode, text2);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
+				}
+
+				if (ctx.needs_republish && !ctx.publishing) {
+					if (!if_block3) {
+						if_block3 = create_if_block_4();
+						if_block3.c();
+						if_block3.m(text3.parentNode, text3);
+					}
+				} else if (if_block3) {
+					if_block3.d(1);
+					if_block3 = null;
+				}
+
+				if (ctx.published && !ctx.needs_republish && ctx.progress && ctx.progress.includes('done') && !ctx.publishing) {
+					if (!if_block4) {
+						if_block4 = create_if_block_3();
+						if_block4.c();
+						if_block4.m(text4.parentNode, text4);
+					}
+				} else if (if_block4) {
+					if_block4.d(1);
+					if_block4 = null;
+				}
+
+				if (ctx.publish_error) {
+					if (if_block5) {
+						if_block5.p(changed, ctx);
+					} else {
+						if_block5 = create_if_block_2(component, ctx);
+						if_block5.c();
+						if_block5.m(text5.parentNode, text5);
+					}
+				} else if (if_block5) {
+					if_block5.d(1);
+					if_block5 = null;
+				}
+
+				if (ctx.publishing) {
+					if (if_block6) {
+						if_block6.p(changed, ctx);
+					} else {
+						if_block6 = create_if_block$1(component, ctx);
+						if_block6.c();
+						if_block6.m(text6.parentNode, text6);
+					}
+				} else if (if_block6) {
+					if_block6.d(1);
+					if_block6 = null;
+				}
+
+				if (changed.shareurl_type) input.checked = input.__value === ctx.shareurl_type;
+
+				if (changed.plugin_shareurls || changed.shareurl_type) {
+					each0_value = ctx.plugin_shareurls;
+
+					for (var i = 0; i < each0_value.length; i += 1) {
+						const child_ctx = get_each0_context(ctx, each0_value, i);
+
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
+						} else {
+							each0_blocks[i] = create_each_block_2(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(div0, null);
+						}
+					}
+
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
+					}
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (changed.shareUrl) {
+					setData(text13, ctx.shareUrl);
+					a.href = ctx.shareUrl;
+				}
+
+				if (changed.embed_templates || changed.embed_type) {
+					each1_value = ctx.embed_templates;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						const child_ctx = get_each1_context(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx);
+						} else {
+							each1_blocks[i] = create_each_block_1(component, child_ctx);
+							each1_blocks[i].c();
+							each1_blocks[i].m(div6, null);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
+				}
+
+				if (changed.embedCode) {
+					textarea.value = ctx.embedCode;
+				}
+
+				if ((changed.copy_success) && div8_class_value !== (div8_class_value = "copy-success " + (ctx.copy_success ? 'show':'') + " svelte-1wigpa8")) {
+					div8.className = div8_class_value;
+				}
+
+				if (changed.embed_templates) {
+					each2_value = ctx.embed_templates.slice(2);
+
+					for (var i = 0; i < each2_value.length; i += 1) {
+						const child_ctx = get_each2_context(ctx, each2_value, i);
+
+						if (each2_blocks[i]) {
+							each2_blocks[i].p(changed, child_ctx);
+						} else {
+							each2_blocks[i] = create_each_block(component, child_ctx);
+							each2_blocks[i].c();
+							each2_blocks[i].m(div11, null);
+						}
+					}
+
+					for (; i < each2_blocks.length; i += 1) {
+						each2_blocks[i].d(1);
+					}
+					each2_blocks.length = each2_value.length;
+				}
+
+				if ((changed.published) && div13_class_value !== (div13_class_value = ctx.published?'':'inactive')) {
+					div13.className = div13_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if_block0.d(detach);
+				if (detach) {
+					detachNode(text0);
+					detachNode(button0);
+				}
+
+				if_block1.d();
+				removeListener(button0, "click", click_handler);
+				if (detach) {
+					detachNode(text1);
+				}
+
+				if (if_block2) if_block2.d(detach);
+				if (detach) {
+					detachNode(text2);
+				}
+
+				if (if_block3) if_block3.d(detach);
+				if (detach) {
+					detachNode(text3);
+				}
+
+				if (if_block4) if_block4.d(detach);
+				if (detach) {
+					detachNode(text4);
+				}
+
+				if (if_block5) if_block5.d(detach);
+				if (detach) {
+					detachNode(text5);
+				}
+
+				if (if_block6) if_block6.d(detach);
+				if (detach) {
+					detachNode(text6);
+					detachNode(div13);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+
+				destroyEach(each0_blocks, detach);
+
+				help0.destroy();
+
+				destroyEach(each1_blocks, detach);
+
+				if (component.refs.embedInput === textarea) component.refs.embedInput = null;
+				removeListener(button1, "click", click_handler_1);
+
+				destroyEach(each2_blocks, detach);
+
+				help1.destroy();
+			}
+		};
+	}
+
+	// (3:0) {:else}
+	function create_else_block_1(component, ctx) {
+		var p, raw_value = __('publish / publish-intro');
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				setStyle(p, "margin-bottom", "20px");
+				addLoc(p, file$1, 3, 0, 72);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (1:0) {#if published}
+	function create_if_block_7(component, ctx) {
+		var p, raw_value = __('publish / republish-intro');
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				addLoc(p, file$1, 1, 0, 16);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (17:4) {:else}
+	function create_else_block(component, ctx) {
+		var span1, i, i_class_value, text0, span0, text1_value = __('publish / publish-btn'), text1;
+
+		return {
+			c: function create() {
+				span1 = createElement("span");
+				i = createElement("i");
+				text0 = createText("\n        ");
+				span0 = createElement("span");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-1wigpa8";
+				addLoc(i, file$1, 18, 9, 556);
+				span0.className = "title svelte-1wigpa8";
+				addLoc(span0, file$1, 19, 8, 645);
+				span1.className = "publish";
+				addLoc(span1, file$1, 17, 4, 525);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span1, anchor);
+				append(span1, i);
+				append(span1, text0);
+				append(span1, span0);
+				append(span0, text1);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw " + (ctx.publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload') + " svelte-1wigpa8")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span1);
+				}
+			}
+		};
+	}
+
+	// (12:4) {#if published}
+	function create_if_block_6(component, ctx) {
+		var span1, i, i_class_value, text0, span0, text1_value = __('publish / republish-btn'), text1;
+
+		return {
+			c: function create() {
+				span1 = createElement("span");
+				i = createElement("i");
+				text0 = createText("\n        ");
+				span0 = createElement("span");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-1wigpa8";
+				addLoc(i, file$1, 13, 9, 362);
+				span0.className = "title svelte-1wigpa8";
+				addLoc(span0, file$1, 14, 8, 436);
+				span1.className = "re-publish";
+				addLoc(span1, file$1, 12, 4, 328);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span1, anchor);
+				append(span1, i);
+				append(span1, text0);
+				append(span1, span0);
+				append(span0, text1);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.publishing) && i_class_value !== (i_class_value = "fa fa-fw fa-refresh " + (ctx.publishing ? 'fa-spin' : '') + " svelte-1wigpa8")) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span1);
+				}
+			}
+		};
+	}
+
+	// (25:0) {#if !published}
+	function create_if_block_5(component, ctx) {
+		var div2, div0, i, text, div1, raw_value = __('publish / publish-btn-intro');
+
+		return {
+			c: function create() {
+				div2 = createElement("div");
+				div0 = createElement("div");
+				i = createElement("i");
+				text = createText("\n    ");
+				div1 = createElement("div");
+				i.className = "fa fa-chevron-left";
+				addLoc(i, file$1, 27, 8, 814);
+				div0.className = "arrow svelte-1wigpa8";
+				addLoc(div0, file$1, 26, 4, 786);
+				div1.className = "text svelte-1wigpa8";
+				addLoc(div1, file$1, 29, 4, 864);
+				div2.className = "publish-intro svelte-1wigpa8";
+				addLoc(div2, file$1, 25, 0, 754);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div2, anchor);
+				append(div2, div0);
+				append(div0, i);
+				append(div2, text);
+				append(div2, div1);
+				div1.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div2);
+				}
+			}
+		};
+	}
+
+	// (34:6) {#if needs_republish && !publishing}
+	function create_if_block_4(component, ctx) {
+		var div, raw_value = __('publish / republish-alert');
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "btn-aside alert svelte-1wigpa8";
+				addLoc(div, file$1, 34, 0, 995);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (38:6) {#if published && !needs_republish && progress && progress.includes('done') && !publishing}
+	function create_if_block_3(component, ctx) {
+		var div, raw_value = __('publish / publish-success');
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "alert alert-success";
+				addLoc(div, file$1, 38, 0, 1175);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (42:6) {#if publish_error}
+	function create_if_block_2(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "alert alert-error";
+				addLoc(div, file$1, 42, 0, 1287);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.publish_error;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.publish_error) {
+					div.innerHTML = ctx.publish_error;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (46:6) {#if publishing}
+	function create_if_block$1(component, ctx) {
+		var div, text0_value = __("publish / progress / please-wait"), text0, text1;
+
+		var if_block = (ctx.publishWait > 3000) && create_if_block_1(component, ctx);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText(text0_value);
+				text1 = createText(" ");
+				if (if_block) if_block.c();
+				div.className = "alert alert-info publishing";
+				addLoc(div, file$1, 46, 0, 1376);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				append(div, text1);
+				if (if_block) if_block.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.publishWait > 3000) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_1(component, ctx);
+						if_block.c();
+						if_block.m(div, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (48:47) {#if publishWait > 3000}
+	function create_if_block_1(component, ctx) {
+		var ul;
+
+		var each_value = ctx.progress;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block_3(component, get_each_context(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				ul.className = "publish-progress unstyled svelte-1wigpa8";
+				addLoc(ul, file$1, 49, 4, 1542);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, ul, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.progress) {
+					each_value = ctx.progress;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_3(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(ul);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (51:8) {#each progress as step,i}
+	function create_each_block_3(component, ctx) {
+		var li, i_1, i_1_class_value, text, raw_value = __('publish / status / '+ctx.step), raw_before;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				i_1 = createElement("i");
+				text = createText("\n            ");
+				raw_before = createElement('noscript');
+				i_1.className = i_1_class_value = "fa fa-fw " + (ctx.i < ctx.progress.length-1 ? 'fa-check' : 'fa-spinner fa-pulse') + " svelte-1wigpa8";
+				addLoc(i_1, file$1, 52, 12, 1676);
+				li.className = "svelte-1wigpa8";
+				toggleClass(li, "done", ctx.i < ctx.progress.length-1);
+				addLoc(li, file$1, 51, 8, 1624);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, i_1);
+				append(li, text);
+				append(li, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.progress) && i_1_class_value !== (i_1_class_value = "fa fa-fw " + (ctx.i < ctx.progress.length-1 ? 'fa-check' : 'fa-spinner fa-pulse') + " svelte-1wigpa8")) {
+					i_1.className = i_1_class_value;
+				}
+
+				if ((changed.progress) && raw_value !== (raw_value = __('publish / status / '+ctx.step))) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+
+				if (changed.progress) {
+					toggleClass(li, "done", ctx.i < ctx.progress.length-1);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+			}
+		};
+	}
+
+	// (79:20) {#each plugin_shareurls as tpl}
+	function create_each_block_2(component, ctx) {
+		var label, input, input_value_value, text, raw_value = ctx.tpl.name, raw_before;
+
+		function input_change_handler() {
+			component.set({ shareurl_type: input.__value });
+		}
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text = createText("\n                        ");
+				raw_before = createElement('noscript');
+				component._bindingGroups[0].push(input);
+				addListener(input, "change", input_change_handler);
+				input.__value = input_value_value = ctx.tpl.id;
+				input.value = input.__value;
+				setAttribute(input, "type", "radio");
+				input.name = "url-type";
+				input.className = "svelte-1wigpa8";
+				addLoc(input, file$1, 80, 24, 2724);
+				label.className = "radio";
+				addLoc(label, file$1, 79, 20, 2678);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.shareurl_type;
+
+				append(label, text);
+				append(label, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.shareurl_type) input.checked = input.__value === ctx.shareurl_type;
+				if ((changed.plugin_shareurls) && input_value_value !== (input_value_value = ctx.tpl.id)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if ((changed.plugin_shareurls) && raw_value !== (raw_value = ctx.tpl.name)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+			}
+		};
+	}
+
+	// (107:20) {#each embed_templates as tpl}
+	function create_each_block_1(component, ctx) {
+		var label, input, input_value_value, text, raw_value = ctx.tpl.title, raw_before;
+
+		function input_change_handler() {
+			component.set({ embed_type: input.__value });
+		}
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text = createText(" ");
+				raw_before = createElement('noscript');
+				component._bindingGroups[1].push(input);
+				addListener(input, "change", input_change_handler);
+				setAttribute(input, "type", "radio");
+				input.__value = input_value_value = ctx.tpl.id;
+				input.value = input.__value;
+				input.className = "svelte-1wigpa8";
+				addLoc(input, file$1, 108, 25, 3683);
+				label.className = "radio";
+				addLoc(label, file$1, 107, 20, 3637);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.embed_type;
+
+				append(label, text);
+				append(label, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.embed_type) input.checked = input.__value === ctx.embed_type;
+				if ((changed.embed_templates) && input_value_value !== (input_value_value = ctx.tpl.id)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if ((changed.embed_templates) && raw_value !== (raw_value = ctx.tpl.title)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[1].splice(component._bindingGroups[1].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+			}
+		};
+	}
+
+	// (133:54) {#each embed_templates.slice(2) as tpl}
+	function create_each_block(component, ctx) {
+		var div, b, text0_value = ctx.tpl.title, text0, text1, text2, raw_value = ctx.tpl.text, raw_before;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				b = createElement("b");
+				text0 = createText(text0_value);
+				text1 = createText(":");
+				text2 = createText(" ");
+				raw_before = createElement('noscript');
+				addLoc(b, file$1, 133, 21, 4668);
+				addLoc(div, file$1, 133, 16, 4663);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, b);
+				append(b, text0);
+				append(b, text1);
+				append(div, text2);
+				append(div, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.embed_templates) && text0_value !== (text0_value = ctx.tpl.title)) {
+					setData(text0, text0_value);
+				}
+
+				if ((changed.embed_templates) && raw_value !== (raw_value = ctx.tpl.text)) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	function App(options) {
+		this._debugName = '<App>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data$1(), options.data);
+
+		this._recompute({ shareurl_type: 1, chart: 1, plugin_shareurls: 1, published: 1, embed_type: 1, publishStarted: 1, now: 1 }, this._state);
+		if (!('shareurl_type' in this._state)) console.warn("<App> was created without expected data property 'shareurl_type'");
+		if (!('chart' in this._state)) console.warn("<App> was created without expected data property 'chart'");
+		if (!('plugin_shareurls' in this._state)) console.warn("<App> was created without expected data property 'plugin_shareurls'");
+		if (!('published' in this._state)) console.warn("<App> was created without expected data property 'published'");
+		if (!('embed_type' in this._state)) console.warn("<App> was created without expected data property 'embed_type'");
+		if (!('publishStarted' in this._state)) console.warn("<App> was created without expected data property 'publishStarted'");
+		if (!('now' in this._state)) console.warn("<App> was created without expected data property 'now'");
+		if (!('publishing' in this._state)) console.warn("<App> was created without expected data property 'publishing'");
+		if (!('needs_republish' in this._state)) console.warn("<App> was created without expected data property 'needs_republish'");
+		if (!('progress' in this._state)) console.warn("<App> was created without expected data property 'progress'");
+		if (!('publish_error' in this._state)) console.warn("<App> was created without expected data property 'publish_error'");
+
+
+		if (!('embed_templates' in this._state)) console.warn("<App> was created without expected data property 'embed_templates'");
+
+		if (!('copy_success' in this._state)) console.warn("<App> was created without expected data property 'copy_success'");
+		this._bindingGroups = [[], []];
+		this._intro = true;
+
+		this._handlers.state = [onstate];
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$1(this, this._state);
+
+		this.root._oncreate.push(() => {
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(App.prototype, protoDev);
+	assign(App.prototype, methods$1);
+
+	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('shareUrl' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'shareUrl'");
+		if ('embedCode' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'embedCode'");
+		if ('publishWait' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'publishWait'");
+	};
+
+	App.prototype._recompute = function _recompute(changed, state) {
+		if (changed.shareurl_type || changed.chart || changed.plugin_shareurls || changed.published) {
+			if (this._differs(state.shareUrl, (state.shareUrl = shareUrl(state)))) changed.shareUrl = true;
+		}
+
+		if (changed.embed_type || changed.chart) {
+			if (this._differs(state.embedCode, (state.embedCode = embedCode(state)))) changed.embedCode = true;
+		}
+
+		if (changed.publishStarted || changed.now) {
+			if (this._differs(state.publishWait, (state.publishWait = publishWait(state)))) changed.publishWait = true;
+		}
+	};
+
+	function Store(state, options) {
+		this._handlers = {};
+		this._dependents = [];
+
+		this._computed = blankObject();
+		this._sortedComputedProperties = [];
+
+		this._state = assign({}, state);
+		this._differs = options && options.immutable ? _differsImmutable : _differs;
+	}
+
+	assign(Store.prototype, {
+		_add(component, props) {
+			this._dependents.push({
+				component: component,
+				props: props
+			});
+		},
+
+		_init(props) {
+			const state = {};
+			for (let i = 0; i < props.length; i += 1) {
+				const prop = props[i];
+				state['$' + prop] = this._state[prop];
+			}
+			return state;
+		},
+
+		_remove(component) {
+			let i = this._dependents.length;
+			while (i--) {
+				if (this._dependents[i].component === component) {
+					this._dependents.splice(i, 1);
+					return;
+				}
+			}
+		},
+
+		_set(newState, changed) {
+			const previous = this._state;
+			this._state = assign(assign({}, previous), newState);
+
+			for (let i = 0; i < this._sortedComputedProperties.length; i += 1) {
+				this._sortedComputedProperties[i].update(this._state, changed);
+			}
+
+			this.fire('state', {
+				changed,
+				previous,
+				current: this._state
+			});
+
+			this._dependents
+				.filter(dependent => {
+					const componentState = {};
+					let dirty = false;
+
+					for (let j = 0; j < dependent.props.length; j += 1) {
+						const prop = dependent.props[j];
+						if (prop in changed) {
+							componentState['$' + prop] = this._state[prop];
+							dirty = true;
+						}
+					}
+
+					if (dirty) {
+						dependent.component._stage(componentState);
+						return true;
+					}
+				})
+				.forEach(dependent => {
+					dependent.component.set({});
+				});
+
+			this.fire('update', {
+				changed,
+				previous,
+				current: this._state
+			});
+		},
+
+		_sortComputedProperties() {
+			const computed = this._computed;
+			const sorted = this._sortedComputedProperties = [];
+			const visited = blankObject();
+			let currentKey;
+
+			function visit(key) {
+				const c = computed[key];
+
+				if (c) {
+					c.deps.forEach(dep => {
+						if (dep === currentKey) {
+							throw new Error(`Cyclical dependency detected between ${dep} <-> ${key}`);
+						}
+
+						visit(dep);
+					});
+
+					if (!visited[key]) {
+						visited[key] = true;
+						sorted.push(c);
+					}
+				}
+			}
+
+			for (const key in this._computed) {
+				visit(currentKey = key);
+			}
+		},
+
+		compute(key, deps, fn) {
+			let value;
+
+			const c = {
+				deps,
+				update: (state, changed, dirty) => {
+					const values = deps.map(dep => {
+						if (dep in changed) dirty = true;
+						return state[dep];
+					});
+
+					if (dirty) {
+						const newValue = fn.apply(null, values);
+						if (this._differs(newValue, value)) {
+							value = newValue;
+							changed[key] = true;
+							state[key] = value;
+						}
+					}
+				}
+			};
+
+			this._computed[key] = c;
+			this._sortComputedProperties();
+
+			const state = assign({}, this._state);
+			const changed = {};
+			c.update(state, changed, true);
+			this._set(state, changed);
+		},
+
+		fire,
+
+		get,
+
+		on,
+
+		set(newState) {
+			const oldState = this._state;
+			const changed = this._changed = {};
+			let dirty = false;
+
+			for (const key in newState) {
+				if (this._computed[key]) throw new Error(`'${key}' is a read-only computed property`);
+				if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+			}
+			if (!dirty) return;
+
+			this._set(newState, changed);
+		}
+	});
+
+	/* eslint camelcase: "off" */
+	const store = new Store({});
+
+	const data$2 = {
+	    chart: {
+	        id: ''
+	    },
+	    embed_templates: [],
+	    plugin_shareurls: [],
+	    published: false,
+	    publishing: false,
+	    needs_republish: false,
+	    publish_error: false,
+	    auto_publish: false,
+	    progress: [],
+	    shareurl_type: 'default',
+	    embed_type: 'responsive',
+	    copy_success: false
+	};
+
+	var main = { App, data: data$2, store };
+
+	return main;
+
+}));
+//# sourceMappingURL=publish_old.js.map

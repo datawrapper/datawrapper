@@ -42,6 +42,12 @@
 {{ hook('chart_editor_alert', chart, user) }}
 
 <script type="text/javascript">
+    dw.backend.__currentData = {{ chart.loadData | json | raw }};
+</script>
+
+{% if createstep != 3 %}
+
+<script type="text/javascript">
 
     dw.backend.__currentData = {{ chart.loadData | json | raw }};
     // initialize current chart
@@ -90,10 +96,9 @@ dw.backend.ready(function() {
         window.open(window.location.href.replace(chart.get('id'), res.id));
     }
     {% endif %}
-});
-
-
+})
 </script>
 
+{% endif %}
 
 {% endblock %}

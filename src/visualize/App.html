@@ -34,8 +34,9 @@
                 <div class:hide-smart="tab !== 'refine'">
                     {#if visLoading}
                     <Loading />
-                    {/if}
+                    {:else}
                     <svelte:component this="{Refine}" {tab} />
+                    {/if}
                 </div>
 
                 <!-- Annotate -->
@@ -43,8 +44,9 @@
                     <Annotate />
                     {#if visLoading}
                     <Loading />
-                    {/if}
+                    {:else}
                     <svelte:component this="{Annotate}" {tab} />
+                    {/if}
                 </div>
 
                 <!-- Design -->
@@ -148,6 +150,7 @@
                 });
             },
             loadVis(type) {
+                this.set({ visLoading: true });
                 this.store.set({ type });
                 this.loadControls(type);
             },
@@ -155,7 +158,7 @@
                 const chart = this.store;
                 const { visArchive, visualizations } = this.get();
                 const vis = [...visArchive, ...visualizations].find(v => v.id === type);
-                this.set({ visLoading: true });
+
                 if (!vis.controls) {
                     console.error('This visualization does not define new svelte controls');
                     return;
@@ -163,13 +166,14 @@
 
                 Promise.all([
                     loadScript(`/static/plugins/${vis.controls.js}`),
+                    loadScript(
+                        `${window.location.protocol}//${window.dw.backend.__api_domain}/v3/visualizations/${vis.id}/script.js`
+                    ),
                     loadStylesheet(`/static/plugins/${vis.controls.css}`)
                 ]).then(() => {
                     require([vis.controls.amd], mod => {
-                        this.set({
-                            Refine: Empty,
-                            Annotate: Empty
-                        });
+                        // initialize with empty Refine and Annotate panel
+                        this.set({ Refine: Empty, Annotate: Empty });
 
                         // make sure all core metadata properties are set before loading controls
                         ['annotate', 'axes', 'data', 'describe', 'publish', 'visualize'].forEach(
@@ -204,16 +208,21 @@
                         //     tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
                         // });
 
-                        getContext(win => {
-                            // set refine & annotate controls and switch tab
-                            chart.set({ vis: win.__dw.vis });
-                            this.set({
-                                visLoading: false,
-                                Refine: mod.Refine || Empty,
-                                Annotate: mod.Annotate || Empty
-                            });
-                            dw.backend.fire('options-reloaded');
+                        const vis2 = dw.visualization(vis.id);
+                        vis2.meta = vis;
+                        vis2.lang = chart.get().language.substr(0, 2);
+
+                        vis2.chart(chart);
+                        chart.vis(vis2);
+                        chart.theme(dw.theme(chart.get().theme));
+
+                        this.set({
+                            visLoading: false,
+                            Refine: mod.Refine || Empty,
+                            Annotate: mod.Annotate || Empty
                         });
+
+                        // dw.backend.fire('options-reloaded');
                     });
                 });
             }

@@ -10,7 +10,7 @@ function init({
     chartData,
     data,
     target,
-    themeId,
+    theme,
     themeData,
     visData,
     user,
@@ -24,8 +24,11 @@ function init({
 
     const themeCache = {};
     const visCache = {};
-    themeCache[themeId] = themeData;
+    themeCache[theme] = themeData;
+    dw.theme.register(theme, themeData);
     visCache[visData.id] = visData;
+
+    dw.backend.currentChart = chart;
 
     chart.set({
         writable: true,
@@ -67,33 +70,30 @@ function init({
                 defaultVisType
             }
         });
-
-        getContext(function (win, doc) {
-            chart.set({ vis: win.__dw.vis });
-        });
     });
 
     const editHistory = [];
     let dontPush = false;
     let historyPos = 0;
 
-    chart.on('state', function (_ref) {
-        var changed = _ref.changed;
-        var current = _ref.current;
-        var previous = _ref.previous;
-
+    chart.on('update', function ({ changed, current, previous }) {
         // observe theme changes and load new theme data if needed
-        if (changed.theme) {
+        if (changed.themeId) {
             // console.log('theme has changed', current.theme);
-            if (themeCache[current.theme]) {
+            if (themeCache[current.themeId]) {
                 // re-use cached theme
-                chart.set({ themeData: themeCache[current.theme] });
+                chart.set({ themeData: themeCache[current.themeId] });
             } else {
                 // load new theme data
                 getJSON(
-                    '//' + dw.backend.__api_domain + '/v3/themes/' + current.theme + '?extend=true',
+                    '//' +
+                        dw.backend.__api_domain +
+                        '/v3/themes/' +
+                        current.themeId +
+                        '?extend=true',
                     function (res) {
-                        themeCache[current.theme] = res.data;
+                        themeCache[current.themeId] = res.data;
+                        dw.theme.register(current.themeId, res.data);
                         chart.set({ themeData: res.data });
                     }
                 );
@@ -101,18 +101,15 @@ function init({
         }
 
         if (
-            (previous && changed.title) ||
-            changed.theme ||
-            changed.type ||
-            changed.metadata ||
-            changed.language ||
-            changed.lastEditStep
+            previous &&
+            (changed.title ||
+                changed.themeId ||
+                changed.type ||
+                changed.metadata ||
+                changed.language ||
+                changed.lastEditStep)
         ) {
-            chart.store(function () {
-                getContext(win => {
-                    win.__dw.saved && win.__dw.saved();
-                });
-            });
+            chart.store();
 
             if (!dontPush) {
                 var s = JSON.stringify(chart.serialize());
@@ -144,15 +141,4 @@ function init({
     return {
         app
     };
-}
-
-function getContext(callback) {
-    var win = $('#iframe-vis').get(0).contentWindow;
-    var doc = $('#iframe-vis').get(0).contentDocument;
-    if (!win || !win.__dw || !win.__dw.vis) {
-        return setTimeout(function () {
-            getContext(callback);
-        }, 200);
-    }
-    callback(win, doc);
 }

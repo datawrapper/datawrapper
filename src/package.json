@@ -32,7 +32,6 @@
         "svelte": "^2.16.1",
         "svelte2": "npm:svelte@^2.16.1",
         "svelte-transitions": "^1.2.0",
-        "svelte2": "npm:svelte@^2.16.1",
         "underscore-es": "^1.9.8"
     },
     "dependencies": {
