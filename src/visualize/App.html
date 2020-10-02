@@ -30,6 +30,7 @@
                         {visualizations}
                         {visArchive}
                         {namespace}
+                        on:transpose="transpose(event)"
                         on:change="loadVis(event)"
                     />
                 </div>
@@ -104,7 +105,7 @@
 </style>
 
 <script>
-    /* globals dw  */
+    /* globals dw */
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
     import TabNav from './TabNav.html';
@@ -163,6 +164,9 @@
                 this.set({ visLoading: true });
                 this.store.set({ type });
                 this.loadControls(type);
+            },
+            transpose() {
+                this.store.transpose();
             },
             loadControls(type) {
                 const chart = this.store;

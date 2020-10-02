@@ -21,7 +21,11 @@
         <p>
             <b>{ __("Hint") }:</b>
             { __("visualize / transpose-hint ") }
-            <button class="plain-link" on:click="transpose()" on:mousedown="event.preventDefault()">
+            <button
+                class="plain-link"
+                on:click="fire('transpose')"
+                on:mousedown="event.preventDefault()"
+            >
                 { __("visualize / transpose-button ") }
             </button>
         </p>
@@ -72,11 +76,6 @@
                 if (id !== type) {
                     this.fire('change', id);
                 }
-            },
-            transpose() {
-                const { metadata } = this.store.get();
-                metadata.data.transpose = !metadata.data.transpose;
-                this.store.set({ metadata });
             }
         }
     };
