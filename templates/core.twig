@@ -24,7 +24,14 @@
     <link href="{{ config.static_path }}/vendor/iconicfont/css/iconmonstr-iconic-font.min.css" rel="stylesheet" type="text/css">
 
 
-    <script src="/polyfill"></script>
+    <script type="text/javascript">
+        if (navigator.userAgent.indexOf('MSIE') !== -1
+            || navigator.appVersion.indexOf('Internet Explorer/') > -1
+            || navigator.appVersion.indexOf('Trident/7.0') > -1) {
+
+            document.write("<script src=\"/polyfill\"><\/script>");
+        }
+    </script>
 
     {% if config.custom_css %}<link href="{{ config.static_path }}/custom/{{ config.custom_css }}?v={{ COMMIT_SHA }}" rel="stylesheet">{% endif %}
     {% if config.custom_favicon %}<link href="{{ config.custom_favicon }}" rel="shortcut icon">{% endif %}
