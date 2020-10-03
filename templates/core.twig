@@ -111,12 +111,13 @@
                 // yes it is, let's store new translations
                 window.localStorage.setItem('messages_hash', dw.backend.__messages_hash);
                 window.localStorage.setItem('messages', JSON.stringify(dw.backend.__messages));
-                // also set cookie so server knows we have stored this version
-                window.document.cookie = 'DW-MESSAGES-HASH='+dw.backend.__messages_hash;
             } else if (oldHash && !dw.backend.__messages.core) {
                 // restore translation from cache
                 dw.backend.__messages = JSON.parse(oldMessages);
             }
+
+            // also set cookie so server knows we have stored this version
+            window.document.cookie = 'DW-MESSAGES-HASH='+dw.backend.__messages_hash;
         }
 
         $(function() {
