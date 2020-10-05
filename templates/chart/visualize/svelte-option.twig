@@ -22,10 +22,6 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
 
     var chartData = {{chart.toStruct()|json|raw}};
 
-    if (typeof mod.migrate === "function" && !mod.migrateAfterData) {
-        mod.migrate(chartData.type, chartData.metadata);
-    }
-
     // set defaults
     chartData.metadata.visualize = _.extend(
         {{defaults|json|raw}},
@@ -73,6 +69,11 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
     var app;
 
     chart.load(dw.backend.__currentData).then(function(ds) {
+
+        if (typeof mod.migrate === "function") {
+            mod.migrate(chartData.type, chartData.metadata, ds);
+        }
+
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
@@ -82,12 +83,6 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
         if (ds.filterColumns) ds.filterColumns(ignore);
 
         chart.set({dataset: ds});
-
-        if (typeof mod.migrate === "function" && mod.migrateAfterData) {
-            var chartData  = chart.getMetadata();
-            mod.migrate(chart.get().type, chartData, chart.dataset());
-            chart.set('metadata', chartData);
-        }
 
         getContext(function(win, doc) {
             chart.set({vis: win.__dw.vis});
