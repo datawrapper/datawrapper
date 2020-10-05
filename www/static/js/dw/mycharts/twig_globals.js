@@ -1,6 +1,6 @@
-define(function() {
+define(function () {
     return {
-        init: function(twig) {
+        init: function (twig) {
             this.globals = twig;
             delete this.init;
         }

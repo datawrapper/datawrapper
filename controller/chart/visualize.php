@@ -101,6 +101,9 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'vis' => $vis,
             'themes' => $themeMeta,
             'theme' => $theme,
+            'userThemes' => array_map(function($t) {
+                    return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
+                }, ThemeQuery::create()->allThemesForUser($chart)),
             'type' => $chart->getNamespace(),
             'debug' => !empty($GLOBALS['dw_config']['debug_export_test_cases']) ? '1' : '0',
             'vis_data' => $visData

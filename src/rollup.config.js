@@ -28,6 +28,7 @@ build('visualize');
 build('upload');
 build('highlight');
 build('resizer');
+build('colorblind-check');
 
 export default targets;
 
