@@ -18,7 +18,8 @@ function init({
     themes,
     themeData
 }) {
-    var chart = new Chart(chartData);
+    const chart = new Chart(chartData);
+    let app;
 
     const themeCache = {};
     themeCache[theme] = themeData;
@@ -40,9 +41,7 @@ function init({
         return _.values(visualization.axes || {});
     });
 
-    let app;
-
-    chart.load(csv).then(function (ds) {
+    function initializeDataset(ds) {
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
@@ -52,6 +51,10 @@ function init({
         if (ds.filterColumns) ds.filterColumns(ignore);
 
         chart.set({ dataset: ds });
+    }
+
+    chart.load(csv).then(function (ds) {
+        initializeDataset(ds);
 
         target.innerHTML = '';
 
@@ -71,10 +74,15 @@ function init({
     let dontPush = false;
     let historyPos = 0;
 
+    // Reload dataset when table is transposed
+    chart.observeDeep('metadata.data.transpose', (currentValue, previousValue) => {
+        if (previousValue === undefined) return;
+        chart.load(csv).then(initializeDataset);
+    });
+
     chart.on('update', function ({ changed, current, previous }) {
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
-            // console.log('theme has changed', current.theme);
             if (themeCache[current.theme]) {
                 // re-use cached theme
                 chart.set({ themeData: themeCache[current.theme] });

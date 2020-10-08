@@ -30,7 +30,6 @@
                         {visualizations}
                         {visArchive}
                         {namespace}
-                        on:transpose="transpose(event)"
                         on:change="loadVis(event)"
                     />
                 </div>
@@ -164,9 +163,6 @@
                 this.set({ visLoading: true });
                 this.store.set({ type });
                 this.loadControls(type);
-            },
-            transpose() {
-                this.store.transpose();
             },
             loadControls(type) {
                 const chart = this.store;
