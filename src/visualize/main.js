@@ -31,7 +31,8 @@ function init({
         writable: true,
         themeData: themeData,
         themes,
-        visualization: visualizations[chartData.type]
+        visualization: visualizations[chartData.type],
+        lastEditStep: 3
     });
 
     chart.compute('axes', ['visualization'], function (visualization) {
