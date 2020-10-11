@@ -1,12 +1,12 @@
+/* global chroma */
 
-define(function() {
-
+define(function () {
     /*
      * initialize the custom color dialog
      */
     function initCustomColors(chart) {
         var customColors = $('#customColors'),
-            sel = chart.get('metadata.visualize.custom-colors', {});
+            sel = chart.get('metadata.visualize.custom-colors', {}),
             labels = dw.backend.currentVis.keys();
 
         if (_.isEmpty(labels)) {
@@ -30,8 +30,8 @@ define(function() {
                 s = lbl[0];
                 lbl = lbl[1];
             }
-            var li = $('<li data-series="'+s+'"></li>');
-            li.append('<div class="color">×</div><label>'+lbl+'</label>');
+            var li = $('<li data-series="' + s + '"></li>');
+            li.append('<div class="color">×</div><label>' + lbl + '</label>');
             if (sel[s]) {
                 $('.color', li).html('').css('background', sel[s]);
                 li.data('color', sel[s]);
@@ -40,20 +40,25 @@ define(function() {
         }
 
         function dataseriesClick(e) {
-            var li = e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
+            var li =
+                e.target.nodeName.toLowerCase() == 'li' ? $(e.target) : $(e.target).parents('li');
             if (!e.shiftKey) $('#customColors .dataseries li').removeClass('selected');
             if (e.shiftKey && li.hasClass('selected')) li.removeClass('selected');
             else li.addClass('selected');
             customColorSelectSeries();
 
-            if (e.shiftKey) { // clear selection
+            if (e.shiftKey) {
+                // clear selection
                 if (window.getSelection) {
-                    if (window.getSelection().empty) {  // Chrome
+                    if (window.getSelection().empty) {
+                        // Chrome
                         window.getSelection().empty();
-                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                    } else if (window.getSelection().removeAllRanges) {
+                        // Firefox
                         window.getSelection().removeAllRanges();
                     }
-                } else if (document.selection) {  // IE?
+                } else if (document.selection) {
+                    // IE?
                     document.selection.empty();
                 }
             }
@@ -88,24 +93,22 @@ define(function() {
             else $('#user-color').val('');
 
             $('#palette-colors')
-              .data('color', li.data('color'))
-              .colorpicker({
-                change: function(color) {
-                    $('#user-color').val('');
-                    setNewColorForCurrentSeries(color);
-                }
-            });
+                .data('color', li.data('color'))
+                .colorpicker({
+                    change: function (color) {
+                        $('#user-color').val('');
+                        setNewColorForCurrentSeries(color);
+                    }
+                });
         }
 
         // set a new color and save
         function setNewColorForCurrentSeries(color) {
             var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {})),
                 li = $('#customColors .dataseries li.selected');
-            $('.color', li)
-                .css('background', color)
-                .html('');
+            $('.color', li).css('background', color).html('');
             li.data('color', color);
-            li.each(function(i, el) {
+            li.each(function (i, el) {
                 sel[$(el).data('series')] = color;
             });
             chart.set('metadata.visualize.custom-colors', sel);
@@ -115,11 +118,9 @@ define(function() {
         function resetColorChoice(e) {
             var li = $('#customColors .dataseries li.selected');
             li.data('color', '');
-            $('.color', li)
-                .css('background', '')
-                .html('×');
+            $('.color', li).css('background', '').html('×');
             var sel = $.extend({}, chart.get('metadata.visualize.custom-colors', {}));
-            li.each(function(i, li) {
+            li.each(function (i, li) {
                 sel[$(li).data('series')] = '';
             });
             chart.set('metadata.visualize.custom-colors', sel);

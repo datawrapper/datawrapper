@@ -27,6 +27,10 @@ if (isset($dw_config['automake']) && $dw_config['automake'] == true && !defined(
     }
 }
 
+if (isset($dw_config['redis']) && !empty($dw_config['redis']['host'])) {
+    Redis::init($dw_config['redis']['host'], $dw_config['redis']['port'], $dw_config['redis']['password']);
+}
+
 if (!isset($dw_config['static_path'])) $dw_config['static_path'] = '/static';
 
 // Include the main Propel script

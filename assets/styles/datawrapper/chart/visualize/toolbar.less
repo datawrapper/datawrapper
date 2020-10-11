@@ -96,7 +96,17 @@
                 background: rgba(0,0,0,0.05);
             }
             > i.warning {
-                display: none;
+                opacity: 0;
+                display: inline-block;
+                position: absolute;
+                top: 7px;
+                left: 8px;
+                font-size: 14px;
+                color: #c71e1d;
+                border-radius: 50%;
+                width: 18px;
+                pointer-events: none;
+                height: 18px;
             }
 
             &.warning {
@@ -112,16 +122,8 @@
                 }
 
                 i.warning {
-                   display: inline-block;
-                    position: absolute;
-                    top: 7px;
-                    left: 8px;
-                    font-size: 14px;
-                    color: #c71e1d;
-                    border-radius: 50%;
-                    width: 18px;
-                    pointer-events: none;
-                    height: 18px;
+                    opacity: 1;
+
                 }
             }
 

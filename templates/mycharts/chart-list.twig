@@ -23,7 +23,7 @@
 
                 <div class="thumbnail" data-id="{{ chart.id }}">
 
-                    <a class="popup" href="#/_/{{ chart.id }}">
+                    <a class="popup" href="/chart/{{ chart.id }}/edit">
                         {% if organization_settings[chart.organizationId] and organization_settings[chart.organizationId].displayLocale %}
                             <span class="locale">{{ chart.language }}</span>
                         {% endif %}

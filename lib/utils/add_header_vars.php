@@ -191,7 +191,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $addToDropdown = function(&$dropdown, $org, $isActive) use ($user) {
                 $team = [
                     'url' => '#team-activate',
-                    'title' => truncate($org->getName()),
+                    'title' => htmlspecialchars(truncate($org->getName())),
                     'icon' => ($isActive ? 'fa fa-check-circle' : 'no-icon'),
                     'data' => [
                         'id' => $org->getId()
@@ -308,7 +308,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     }
     $user = DatawrapperSession::getUser();
     $page['headlinks'] = $headlinks;
-    $page['favicon'] = $config['custom_favicon'] ?? ($config['debug'] ? 'favicon-dev.png' : 'favicon.png');
+    $page['favicon'] = $config['custom_favicon'] ?? (($config['debug'] ?? false) ? 'favicon-dev.png' : 'favicon.png');
     $page['user'] = $user;
     $page['userData'] = $user->isLoggedIn() ? $user->getUserData() : false;
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
@@ -330,6 +330,12 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['alternative_signins'] = DatawrapperHooks::execute(DatawrapperHooks::ALTERNATIVE_SIGNIN);
     global $__l10n;
     $page['messages'] = $__l10n->getClientMessages();
+    $page['messages_hash'] = $__l10n->getClientMessagesHash();
+    if (!empty($_COOKIE['DW-MESSAGES-HASH']) && $_COOKIE['DW-MESSAGES-HASH'] ==  $page['messages_hash']) {
+        // the client aleady has a cache of the messages, let's not send them again
+        // to save some bandwidth!
+        $page['messages'] = new stdClass();
+    }
     if (empty($page['dependencies'])) {
         $page['dependencies'] = ['dayjs' => false];
     }
@@ -369,7 +375,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         $commit = file_get_contents(ROOT_PATH . 'sha');
         $page['COMMIT_SHA'] = substr($commit, 0, 8);
 
-        if ($config['debug']) {
+        if ($config['debug'] ?? false) {
             try {
                 if (file_exists('../.git/HEAD')) {
                     // parse git branch
@@ -386,4 +392,3 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
     }
 }
-

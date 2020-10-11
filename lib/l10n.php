@@ -16,7 +16,14 @@ class Datawrapper_L10N {
         if ($locale != 'en_US') {
             $fallback = $this->loadMessageJSON('en_US');
             foreach ($fallback as $scope => $msg) {
-                $messages[$scope] = isset($messages[$scope]) ? array_merge($msg, $messages[$scope]) : $msg;
+                foreach ($messages[$scope] as $key => $translation) {
+                    if (($GLOBALS['dw_config']['debug'] ?? false) !== true) {
+                        if (empty($translation) && !empty($msg[$key])) {
+                            // translation is empty or missing, but we have a falllback
+                            $messages[$scope][$key] = $msg[$key];
+                        }
+                    }
+                }
             }
         }
 
@@ -116,6 +123,11 @@ class Datawrapper_L10N {
             $all[$scope] = $this->getMessages($scope);
         }
         return $all;
+    }
+
+    public function getClientMessagesHash() {
+        $msg = $this->getClientMessages();
+        return md5(json_encode($msg));
     }
 
 }

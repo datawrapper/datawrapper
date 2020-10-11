@@ -1,11 +1,9 @@
-
-define(function() {
-
-    return function(vis, chart) {
+define(function () {
+    return function (vis, chart) {
         // ungroup groups
-        _.each(vis.options, function(opt, key) {
+        _.each(vis.options, function (opt, key) {
             if (opt.type == 'group') {
-                _.each(opt.options, function(o,k) {
+                _.each(opt.options, function (o, k) {
                     vis.options[k] = o;
                 });
                 // delete vis.options[key];
@@ -14,9 +12,9 @@ define(function() {
 
         // also move annotate_options back to options
         if (vis.annotate_options) {
-            _.each(vis.annotate_options, function(opt, key) {
+            _.each(vis.annotate_options, function (opt, key) {
                 if (opt.type == 'group') {
-                    _.each(opt.options, function(o,k) {
+                    _.each(opt.options, function (o, k) {
                         vis.options[k] = o;
                     });
                 } else {
@@ -26,21 +24,24 @@ define(function() {
         }
 
         // at first set default values
-        _.each(vis.options, function(opt, key) {
+        _.each(vis.options, function (opt, key) {
             if (opt.type == 'group') return;
-            if (_.isUndefined(chart.get('metadata.visualize.'+key)) && !_.isUndefined(opt.default)) {
-                chart.set('metadata.visualize.'+key, opt.default);
+            if (
+                _.isUndefined(chart.get('metadata.visualize.' + key)) &&
+                !_.isUndefined(opt.default)
+            ) {
+                chart.set('metadata.visualize.' + key, opt.default);
             }
         });
         // now check dependencies
         checkDepends();
 
         // trigger vis option synchronization
-        _.each(vis.options, function(opt, key) {
+        _.each(vis.options, function (opt, key) {
             if (opt.type == 'group') return;
-            if (!$('#vis-options-'+key).hasClass('hidden')) {
-                if (chart.get('metadata.visualize.'+key) === undefined && opt.default) {
-                    chart.set('metadata.visualize.'+key, opt.default);
+            if (!$('#vis-options-' + key).hasClass('hidden')) {
+                if (chart.get('metadata.visualize.' + key) === undefined && opt.default) {
+                    chart.set('metadata.visualize.' + key, opt.default);
                 }
                 // fire custom event so hooked vis options can sync
                 dw.backend.fire('sync-option:' + $.trim(opt.type), {
@@ -70,59 +71,76 @@ define(function() {
                 colFormat = chart.get('metadata.data.column-format', {}),
                 _vis = dw.backend.currentVis;
 
-            _.each(_vis.meta.axes, function(opts, key) {
+            _.each(_vis.meta.axes, function (opts, key) {
                 var columns = _vis.axes(true)[key];
                 columns = _.isArray(columns) ? columns : columns ? [columns] : [];
-                axesColumns[key] = columns.filter(function(col) {
+                axesColumns[key] = columns.filter(function (col) {
                     // remove ignored columns
                     if (colFormat[col.name()]) return !colFormat[col.name()].ignore;
                     return true;
                 });
             });
 
-            _.each(vis.options, function(opt, key) {
+            _.each(vis.options, function (opt, key) {
                 var visible = true;
 
                 if (opt['depends-on'] !== undefined) {
                     // special conditions:
-                    _.each(opt['depends-on'], function(val, key) {
+                    _.each(opt['depends-on'], function (val, key) {
                         if (minColsRegex.test(key)) {
                             key = key.match(minColsRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length >= +val;
+                            visible =
+                                visible &&
+                                !_.isUndefined(axesColumns[key]) &&
+                                axesColumns[key].length >= +val;
                         } else if (maxColsRegex.test(key)) {
                             key = key.match(maxColsRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) && axesColumns[key].length <= +val;
+                            visible =
+                                visible &&
+                                !_.isUndefined(axesColumns[key]) &&
+                                axesColumns[key].length <= +val;
                         } else if (key == 'chart.missing_values') {
                             visible = visible && chart.hasMissingValues() == val;
                         } else if (key == 'chart.min_row_num') {
                             visible = visible && dataset.numRows() >= +val;
-                        }  else if (key == 'chart.max_row_num') {
+                        } else if (key == 'chart.max_row_num') {
                             visible = visible && dataset.numRows() <= +val;
                         } else if (minValueRegex.test(key)) {
                             key = key.match(minValueRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) &&
-                                        compare(dw.utils.minMax(axesColumns[key])[0]);
+                            visible =
+                                visible &&
+                                !_.isUndefined(axesColumns[key]) &&
+                                compare(dw.utils.minMax(axesColumns[key])[0]);
                         } else if (maxValueRegex.test(key)) {
                             key = key.match(maxValueRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) &&
-                                        compare(dw.utils.minMax(axesColumns[key])[1]);
+                            visible =
+                                visible &&
+                                !_.isUndefined(axesColumns[key]) &&
+                                compare(dw.utils.minMax(axesColumns[key])[1]);
                         } else if (magnitudeRangeRegex.test(key)) {
                             key = key.match(magnitudeRangeRegex)[1];
-                            visible = visible && !_.isUndefined(axesColumns[key]) &&
+                            visible =
+                                visible &&
+                                !_.isUndefined(axesColumns[key]) &&
                                 compare(dw.utils.magnitudeRange(dw.utils.minMax(axesColumns[key])));
                         } else if (columnTypeRegex.test(key)) {
                             key = key.match(columnTypeRegex)[1];
-                            visible = visible && 
+                            visible =
+                                visible &&
                                 !_.isUndefined(axesColumns[key]) &&
                                 !_.isEmpty(axesColumns[key]) &&
                                 axesColumns[key][0].type() == val;
                         } else if (isNullRegex.test(key)) {
                             key = key.match(isNullRegex)[1];
-                            visible = visible && _.isNull(chart.get('metadata.visualize.'+key, null)) === val;
+                            visible =
+                                visible &&
+                                _.isNull(chart.get('metadata.visualize.' + key, null)) === val;
                         } else {
-                            visible = visible && (_.isArray(val) ?
-                                val.indexOf(chart.get('metadata.visualize.'+key)) > -1 :
-                                chart.get('metadata.visualize.'+key) == val);                            
+                            visible =
+                                visible &&
+                                (_.isArray(val)
+                                    ? val.indexOf(chart.get('metadata.visualize.' + key)) > -1
+                                    : chart.get('metadata.visualize.' + key) == val);
                         }
 
                         function compare(v) {
@@ -137,10 +155,9 @@ define(function() {
                         }
                     });
                 }
-                if (visible) $('#vis-options-'+key).removeClass('hide-smart');
-                else $('#vis-options-'+key).addClass('hide-smart');
+                if (visible) $('#vis-options-' + key).removeClass('hide-smart');
+                else $('#vis-options-' + key).addClass('hide-smart');
             });
         }
     };
-
 });

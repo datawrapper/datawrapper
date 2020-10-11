@@ -1,6 +1,6 @@
+{{ hook('visualize_before_svelte_sidebar', chart) }}
+
 <div class="span4 visconfig">
-
-
 
     <div class="vis-options" id="{{vis['svelte-sidebar']['key']}}">
         <div style="color: #333;">
@@ -20,63 +20,77 @@
 <script type="text/javascript">
 
 require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, visualize) {
-    console.log({mod, visualize});
+
     var App = mod.App,
         data = _.extend({}, mod.data || {}, {{ twig_data | json | raw }});
 
     var chartData = {{chart.toStruct()|json|raw}};
 
-    if (typeof mod.migrate === "function") {
-        mod.migrate(chartData.type, chartData.metadata);
-    }
-
-    // set defaults
-    chartData.metadata.visualize = _.extend(
-        {{vis['svelte-sidebar']['defaults']|json|raw}},
-        chartData.metadata.visualize
-    );
-
-    chartData.mode = getQueryVariable("mode") || "web";
+    // make sure all core metadata properties are set before loading controls
+    _.each(['annotate', 'axes', 'data', 'describe', 'publish', 'visualize'], function (key) {
+        if (chartData.metadata[key] === undefined) chartData.metadata[key] = {};
+    });
 
     var chart = new visualize.Chart(chartData);
-    window.chart2 = chart;
-    var getJSON = mod.utils.getJSON;
 
     var themeCache = {};
     var visCache = {};
+    var getJSON = mod.utils.getJSON;
+    var app;
+
     themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
     visCache['{{vis.id}}'] = {{vis|json|raw}};
 
-    chart.set({
-        writable: true,
-        themeData: themeCache['{{theme.id}}'],
-        user: {{userArray|json|raw}},
-        locales: {{chartLocales|json|raw}},
-        themes: {{userThemes|json|raw}},
-        visualization: visCache['{{vis.id}}']
-    });
-
-    chart.compute('axes', ['visualization'], function(visualization) {
-        if (!visualization) {
-            return [];
-        }
-        return _.values(visualization.axes || {});
-    });
-
-    function getContext(callback) {
-        var win = $('#iframe-vis').get(0).contentWindow;
-        var doc = $('#iframe-vis').get(0).contentDocument;
-        if (!win || !win.__dw || !win.__dw.vis) {
-            return setTimeout(function () {
-                getContext(callback);
-            }, 200);
-        }
-        callback(win, doc);
-    }
-
-    var app;
-
     chart.load(dw.backend.__currentData).then(function(ds) {
+
+        if (typeof mod.migrate === "function") {
+            mod.migrate(chartData.type, chartData.metadata, ds);
+        }
+
+        // set defaults
+        chartData.metadata.visualize = _.extend(
+            {{vis['svelte-sidebar']['defaults']|json|raw}},
+            chartData.metadata.visualize
+        );
+
+        chartData.mode = getQueryVariable("mode") || "web";
+
+        // re-set chart data after migration and defaults
+        chart.set(chartData);
+
+        // re-apply changes, so migration code is able to
+        // change column types
+        chart.dataset(true);
+
+        window.chart2 = chart;
+
+        chart.set({
+            writable: true,
+            themeData: themeCache['{{theme.id}}'],
+            user: {{userArray|json|raw}},
+            locales: {{chartLocales|json|raw}},
+            themes: {{userThemes|json|raw}},
+            visualization: visCache['{{vis.id}}']
+        });
+
+        chart.compute('axes', ['visualization'], function(visualization) {
+            if (!visualization) {
+                return [];
+            }
+            return _.values(visualization.axes || {});
+        });
+
+        function getContext(callback) {
+            var win = $('#iframe-vis').get(0).contentWindow;
+            var doc = $('#iframe-vis').get(0).contentDocument;
+            if (!win || !win.__dw || !win.__dw.vis) {
+                return setTimeout(function () {
+                    getContext(callback);
+                }, 200);
+            }
+            callback(win, doc);
+        }
+
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
@@ -164,6 +178,7 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
 
         if (previous && changed.title || changed.theme || changed.type ||
             changed.metadata || changed.language || changed.lastEditStep) {
+
             chart.store(function() {
                 var iframe = document.querySelector('#iframe-vis');
                 if (iframe && iframe.contentWindow) {
@@ -173,6 +188,7 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                     }
                 }
             });
+
             if (!dontPush) {
                 var s = JSON.stringify(chart.serialize());
                 if (historyPos > 0) {
@@ -183,12 +199,14 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                 editHistory.length = Math.min(editHistory.length, 50);
                 historyPos = 0;
             }
+
+
             if (!passiveMode && dw && dw.backend && dw.backend.currentChart) {
                 var iframe = document.querySelector('#iframe-vis');
                 if (iframe && iframe.contentWindow) {
                     var win = iframe.contentWindow;
                     if (win.__dw && win.__dw.attributes) {
-                        win.__dw.attributes({
+                        var attributes = {
                             id: current.id,
                             title: current.title,
                             theme: current.theme,
@@ -196,11 +214,20 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
                             externalData: current.externalData,
                             language: current.language,
                             metadata: current.metadata
-                        });
+                        }
+
+                        win.__dw.attributes(attributes);
+
+                        if (win.__dwUpdate) {
+                            win.__dwUpdate({ chart: attributes });
+                        }
                     }
                 }
 
                 // set metadata directly without saving again
+                dw.backend.currentChart.attributes().title = current.title;
+                dw.backend.currentChart.attributes().theme = current.theme;
+                dw.backend.currentChart.attributes().language = current.language;
                 dw.backend.currentChart.attributes().metadata = JSON.parse(JSON.stringify(current.metadata));
             }
         }

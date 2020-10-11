@@ -1,56 +1,67 @@
-
 /*
  * backend
  */
 
 define([
-    './backend/syncChart',
-    './backend/initializeSignUp',
+    './backend/checkPassword',
+    './backend/cmsMode',
+    './backend/httpReq',
     './backend/initLanguageLinks',
     './backend/initializeLogout',
-    './backend/checkPassword',
-    './backend/ui/ColorSelector',
-    './backend/ui/NumberStepper',
-    './backend/popupChart',
+    './backend/initializeSignUp',
     './backend/notification',
+    './backend/popupChart',
     './backend/setUserData',
-    './backend/cmsMode',
-    ],
-
-function(syncChart, initializeSignUp, initLanguageLinks, initializeLogout,
-    checkPassword, ColorSelector, NumberStepper, popupChart,
-    notification, setUserData, cmsMode) {
-
+    './backend/syncChart',
+    './backend/ui/ColorSelector',
+    './backend/ui/NumberStepper'
+], function (
+    checkPassword,
+    cmsMode,
+    httpReq,
+    initLanguageLinks,
+    initializeLogout,
+    initializeSignUp,
+    notification,
+    popupChart,
+    setUserData,
+    syncChart,
+    ColorSelector,
+    NumberStepper
+) {
     var backend = {};
 
-    _.extend(backend, {
-        init: function() {
-            // syncChart(dw.backend.currentChart);
-            initializeSignUp();
-            initLanguageLinks();
-            initializeLogout();
+    _.extend(
+        backend,
+        {
+            init: function () {
+                // syncChart(dw.backend.currentChart);
+                initializeSignUp();
+                initLanguageLinks();
+                initializeLogout();
 
-            // init custom jquery ui
-            ColorSelector();
-            NumberStepper();
+                // init custom jquery ui
+                ColorSelector();
+                NumberStepper();
 
-            this.cmsMode.init();
+                this.cmsMode.init();
 
-            $('a[data-toggle=modal]').click(function(e) {
-                var a = $(e.target),
-                    tgt = $(a.data('target'));
-                tgt.modal();
-            });
+                $('a[data-toggle=modal]').click(function (e) {
+                    var a = $(e.target),
+                        tgt = $(a.data('target'));
+                    tgt.modal();
+                });
+            },
+
+            checkPassword: checkPassword,
+            cmsMode: cmsMode,
+            httpReq: httpReq,
+            popupChart: popupChart,
+            setUserData: setUserData,
+            syncChart: syncChart
         },
-
-        syncChart: syncChart,
-        popupChart: popupChart,
-        checkPassword: checkPassword,
-        setUserData: setUserData,
-        cmsMode: cmsMode
-
-    }, notification);
+        notification
+    );
 
     return backend;
-
 });

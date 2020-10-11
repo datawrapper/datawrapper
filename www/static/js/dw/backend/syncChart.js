@@ -1,62 +1,60 @@
-define(function() {
-    return function(chart) {
+define(function (require) {
+    var httpReq = require('./httpReq');
+
+    return function (chart) {
         var saveTimeout,
             unsavedChanges = false,
             nextSaveDeferred = $.Deferred(),
             saveCallbacks = [];
 
         function save() {
-            return $.ajax({
-                url: '//' + dw.backend.__api_domain + '/v3/charts/' + chart.get('id'),
-                type: 'PUT',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify(chart.attributes()),
-                processData: false,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function(data) {
+            return httpReq
+                .put('/v3/charts/' + chart.get('id'), {
+                    payload: chart.attributes()
+                })
+                .then(function (data) {
                     //console.debug('save completed');
                     // run callbacks
                     unsavedChanges = false;
-                    _.each(saveCallbacks, function(cb) {
+                    _.each(saveCallbacks, function (cb) {
                         cb(chart);
                     });
                     nextSaveDeferred.resolve({ data: data });
                     // create new deferred
                     nextSaveDeferred = $.Deferred();
-                },
-                error: function(err, res) {
-                    console.log(err.responseText);
-                    dw.backend.logError('The chart changes could not be saved because of a server error.', '.chart-editor');
-                }
-            });
+                })
+                .fail(function (e) {
+                    console.error(e.message);
+                    dw.backend.logError(
+                        'The chart changes could not be saved because of a server error.',
+                        '.chart-editor'
+                    );
+                });
         }
 
         chart.save = save;
 
         chart.saveSoon = _.debounce(save, 1000);
 
-        chart.onSave = function(callback) {
+        chart.onSave = function (callback) {
             saveCallbacks.push(callback);
         };
 
-        chart.hasUnsavedChanges = function() {
+        chart.hasUnsavedChanges = function () {
             return unsavedChanges;
         };
 
-        chart.nextSavePromise = function() {
+        chart.nextSavePromise = function () {
             return nextSaveDeferred.promise();
         };
 
-        chart.sync = function(el, attribute, _default) {
-          if (_.isString(el)) el = $(el);
+        chart.sync = function (el, attribute, _default) {
+            if (_.isString(el)) el = $(el);
             el.data('sync-attribute', attribute);
 
             // initialize current state in UI
             var curVal = chart.get(attribute, _default);
-            if (el.is('input[type=checkbox]'))  {
+            if (el.is('input[type=checkbox]')) {
                 el.prop('checked', curVal);
             } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                 el.val(curVal);
@@ -64,7 +62,10 @@ define(function() {
                 if (_.isBoolean(curVal)) {
                     curVal = curVal ? 'yes' : 'no';
                 }
-                $('input:radio[name='+el.attr('name')+'][value='+curVal+']').prop('checked', 'checked');
+                $('input:radio[name=' + el.attr('name') + '][value=' + curVal + ']').prop(
+                    'checked',
+                    'checked'
+                );
             }
 
             function storeElementValue(el) {
@@ -77,7 +78,7 @@ define(function() {
                 } else if (el.is('input[type=text]') || el.is('textarea') || el.is('select')) {
                     val = el.val();
                 } else if (el.is('input[type=radio]')) {
-                    val = $('input:radio[name='+el.attr('name')+']:checked').val();
+                    val = $('input:radio[name=' + el.attr('name') + ']:checked').val();
                     if (val === 'yes') val = true;
                     else if (val === 'no') val = false;
                 }
@@ -86,26 +87,25 @@ define(function() {
                 }
             }
 
-            el.change(function(evt) {
+            el.change(function (evt) {
                 storeElementValue($(evt.target));
             });
 
             if (el.is('input[type=text]') || el.is('textarea')) {
-                el.keyup(function(evt) {
+                el.keyup(function (evt) {
                     storeElementValue($(evt.target));
                 });
             }
         };
 
-        chart.onChange(function() {
+        chart.onChange(function () {
             unsavedChanges = true;
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(save, 800);
         });
 
-        window.onbeforeunload = function(e) {
+        window.onbeforeunload = function (e) {
             if (unsavedChanges) return 'Caution: unsaved changes';
         };
     };
-
 });

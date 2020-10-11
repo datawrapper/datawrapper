@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     var $ = require('jquery'),
         multiselection = require('./multiselection'),
         twig = require('./twig_globals'),
@@ -7,25 +7,32 @@ define(function(require) {
         cft,
         drag_data;
 
+    /**
+     * @see https://stackoverflow.com/a/22706073
+     */
+    function escapeHTML(s) {
+        return new Option(s).innerHTML;
+    }
+
     function getMultiDragImage(chart_ids) {
         var l = chart_ids.length + 5,
             offset = 10,
             div = $('<div class="custom-drag-image" />')
                 .css({
                     position: 'absolute',
-                    top:-1000,
-                    left: -1000,
+                    top: -1000,
+                    left: -1000
                 })
                 .appendTo('ul.thumbnails');
-        chart_ids.forEach(function(id, i) {
-            $('.thumbnails li.chart[data-id="'+id+'"]')
+        chart_ids.forEach(function (id, i) {
+            $('.thumbnails li.chart[data-id="' + id + '"]')
                 .clone(false)
                 .css({
                     position: 'absolute',
-                    zIndex: l-i,
-                    top: (offset*i)+'px',
-                    left: (offset*i)+'px',
-                    opacity: 1 - (i*0.1)
+                    zIndex: l - i,
+                    top: offset * i + 'px',
+                    left: offset * i + 'px',
+                    opacity: 1 - i * 0.1
                 })
                 .addClass('drag-image')
                 .appendTo(div);
@@ -40,7 +47,7 @@ define(function(require) {
         charts.find('*').attr('draggable', 'false');
         charts.attr('draggable', 'true');
 
-        charts.on('dragstart', function(e) {
+        charts.on('dragstart', function (e) {
             var chart_ids = [e.target.getAttribute('data-id')],
                 ev = e.originalEvent;
             if (multiselection.selected.has(chart_ids[0])) {
@@ -54,11 +61,11 @@ define(function(require) {
             };
             ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
             dragImage = chart_ids.length == 1 ? e.target : getMultiDragImage(chart_ids);
-            ev.dataTransfer.setDragImage(dragImage, 0,0);
-            ev.dataTransfer.dropEffect = "move";
+            ev.dataTransfer.setDragImage(dragImage, 0, 0);
+            ev.dataTransfer.dropEffect = 'move';
         });
 
-        charts.on('dragend', function() {
+        charts.on('dragend', function () {
             $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
             $('.custom-drag-image').remove();
@@ -66,12 +73,14 @@ define(function(require) {
     }
 
     function enableFolderDrag() {
-        var folders = $('ul.folders-left li').add('ul.subfolders li.span2').not('.add-button,.root-folder');
+        var folders = $('ul.folders-left li')
+            .add('ul.subfolders li.span2')
+            .not('.add-button,.root-folder');
         // FIXME: We should disable some more things likely to be dragged, that we don't want to be dragged
 
         folders.find('*').attr('draggable', 'false');
         folders.attr('draggable', 'true');
-        folders.on('dragstart', function(e) {
+        folders.on('dragstart', function (e) {
             var ev = e.originalEvent,
                 tar = e.currentTarget,
                 folder_id = parseInt($(tar).attr('folder-id'));
@@ -82,10 +91,10 @@ define(function(require) {
             };
             ev.dataTransfer.setData('application/json', JSON.stringify(drag_data));
             ev.dataTransfer.setDragImage(tar, 0, 0);
-            ev.dataTransfer.dropEffect = "move";
+            ev.dataTransfer.dropEffect = 'move';
         });
 
-        folders.on('dragend', function() {
+        folders.on('dragend', function () {
             $('.chart-move-message').remove();
             $('ul.folders-left li').removeClass('dragtar');
         });
@@ -97,24 +106,29 @@ define(function(require) {
             url: '/api/2/folders/' + target,
             type: 'PUT',
             processData: false,
-            contentType: "application/json",
+            contentType: 'application/json',
             data: JSON.stringify({
                 add: charts
             }),
             dataType: 'JSON'
-        }).done(function() {
-            cft.moveNChartsTo(charts, id);
-            no_reload_folder_change.reloadLink(location.href);
-        }).fail(handler.fail);
-        $('.mycharts-chart-list ul.thumbnails li.span2.chart').not('.drag-image').each(function(idx, chart) {
-            if (charts.filter(function (ele) {
-                if (ele === $(chart).data('id'))
-                    return true;
-                return false;
-            }).length > 0) {
-                chart.remove();
-            }
-        });
+        })
+            .done(function () {
+                cft.moveNChartsTo(charts, id);
+                no_reload_folder_change.reloadLink(location.href);
+            })
+            .fail(handler.fail);
+        $('.mycharts-chart-list ul.thumbnails li.span2.chart')
+            .not('.drag-image')
+            .each(function (idx, chart) {
+                if (
+                    charts.filter(function (ele) {
+                        if (ele === $(chart).data('id')) return true;
+                        return false;
+                    }).length > 0
+                ) {
+                    chart.remove();
+                }
+            });
     }
 
     function moveFolder(folder, target, id) {
@@ -122,20 +136,22 @@ define(function(require) {
             url: '/api/2/folders/' + folder,
             type: 'PUT',
             processData: false,
-            contentType: "application/json",
+            contentType: 'application/json',
             data: JSON.stringify(target),
             dataType: 'JSON'
-        }).done(function(res) {
-            if (res.status == 'error') {
-                alert(res.message);
-            } else if (res.status == 'ok') {
-                cft.moveFolderToFolder(folder, id);
-                no_reload_folder_change.repaintBreadcrumb();
-                no_reload_folder_change.repaintSubfolders();
-                cft.reRenderTree();
-                no_reload_folder_change.reenableClicks();
-            }
-        }).fail(handler.fail);
+        })
+            .done(function (res) {
+                if (res.status == 'error') {
+                    alert(res.message);
+                } else if (res.status == 'ok') {
+                    cft.moveFolderToFolder(folder, id);
+                    no_reload_folder_change.repaintBreadcrumb();
+                    no_reload_folder_change.repaintSubfolders();
+                    cft.reRenderTree();
+                    no_reload_folder_change.reenableClicks();
+                }
+            })
+            .fail(handler.fail);
     }
 
     function prepareChartTarget(id) {
@@ -162,7 +178,7 @@ define(function(require) {
         } else {
             var parsed = target.find('a').attr('href').slice(1).split('/');
             id.folder = false;
-            id.organization = (parsed[0] == 'mycharts') ? false : parsed[1];
+            id.organization = parsed[0] == 'mycharts' ? false : parsed[1];
             return id;
         }
     }
@@ -176,7 +192,7 @@ define(function(require) {
             var trans;
             try {
                 trans = JSON.parse(e.originalEvent.dataTransfer.getData('application/json'));
-            } catch(err) {
+            } catch (err) {
                 trans = false;
             }
             return trans;
@@ -185,8 +201,13 @@ define(function(require) {
         function isValidDrop(e) {
             if (drag_data.type === 'folder') {
                 var target = identifyTarget($(e.currentTarget));
-                return !(cft.isSubfolderOf(drag_data.id, target.folder) || 
-                    cft.isParentFolder(drag_data.id, {id: target.folder, organization: target.organization}));
+                return !(
+                    cft.isSubfolderOf(drag_data.id, target.folder) ||
+                    cft.isParentFolder(drag_data.id, {
+                        id: target.folder,
+                        organization: target.organization
+                    })
+                );
             }
             // else is chart
             return true;
@@ -202,7 +223,7 @@ define(function(require) {
             return cft.isOrgToUserMove(drag_data, target);
         }
 
-        drop_targets.on('dragenter', function(e) {
+        drop_targets.on('dragenter', function (e) {
             e.preventDefault();
             drop_targets.removeClass('dragtar');
             $('.chart-move-message').remove();
@@ -213,33 +234,47 @@ define(function(require) {
                 if (isUserToOrgMove(e)) {
                     $('<div class="chart-move-message" />')
                         .appendTo('body')
-                        .html(twig.globals.strings[
-                                drag_data.type == 'folder' ? 'confirm_move_folder_to_org' : 'confirm_move_chart_to_org'
-                            ].replace('%s', cft.getOrgNameById(identifyTarget($(e.currentTarget)).organization))
+                        .html(
+                            twig.globals.strings[
+                                drag_data.type == 'folder'
+                                    ? 'confirm_move_folder_to_org'
+                                    : 'confirm_move_chart_to_org'
+                            ].replace(
+                                '%s',
+                                escapeHTML(
+                                    cft.getOrgNameById(
+                                        identifyTarget($(e.currentTarget)).organization
+                                    )
+                                )
+                            )
                         );
                 } else if (isOrgToUserMove(e)) {
                     $('<div class="chart-move-message" />')
                         .appendTo('body')
-                        .html(twig.globals.strings[
-                            drag_data.type == 'folder' ? 'confirm_move_folder_to_user' : 'confirm_move_chart_to_user'
-                        ]);
+                        .html(
+                            twig.globals.strings[
+                                drag_data.type == 'folder'
+                                    ? 'confirm_move_folder_to_user'
+                                    : 'confirm_move_chart_to_user'
+                            ]
+                        );
                 }
             } else {
                 e.originalEvent.dataTransfer.dropEffect = 'none';
             }
         });
 
-        drop_targets.on('dragover', function(e) {
+        drop_targets.on('dragover', function (e) {
             e.preventDefault();
         });
 
-        drop_targets.on('drop', function(e) {
+        drop_targets.on('drop', function (e) {
             var trans,
                 id = identifyTarget($(e.currentTarget));
             e.preventDefault();
             drop_targets.removeClass('dragtar');
             trans = getTrans(e);
-            if(!trans || typeof(trans.type) === 'undefined') {
+            if (!trans || typeof trans.type === 'undefined') {
                 alert("You may drop this here, but I can't work with it");
                 return;
             }
@@ -266,7 +301,7 @@ define(function(require) {
         enableFolderDrag();
     }
 
-    return function() {
+    return function () {
         enableDnD();
         cft = window['ChartFolderTree'];
         cft.setDnDCallback(enableDnD);
