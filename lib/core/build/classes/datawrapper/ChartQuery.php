@@ -52,7 +52,6 @@ class ChartQuery extends BaseChartQuery {
 
         $chart->setLocale(DatawrapperSession::getLanguage());
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
-        $chart->setPublicUrl($chart->getLocalUrl());
 
         $chart->setTheme(isset($defaults['theme']) ? $defaults['theme'] : 'default');
 
