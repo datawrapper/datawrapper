@@ -50,7 +50,16 @@ class ChartQuery extends BaseChartQuery {
         $title = '[ ' . $untitled . ' ]';
         $chart->setTitle($title);
 
-        $chart->setLocale(DatawrapperSession::getLanguage());
+
+        $sessionLanguage = DatawrapperSession::getLanguage();
+        if ($sessionLanguage === 'de') {
+            $chart->setLocale('de-DE');
+        } else if ($sessionLanguage === 'en') {
+            $chart->setLocale('en-US');
+        } else {
+            $chart->setLocale($sessionLanguage);
+        }
+
         $chart->setType(isset($defaults['vis']) ? $defaults['vis'] : 'bar-chart');
         $chart->setPublicUrl($chart->getLocalUrl());
 
