@@ -72,14 +72,18 @@ require(['{{ amdPath }}', 'svelte/visualize'], function(mod, visualize) {
         });
 
         function getContext(callback) {
-            var win = $('#iframe-vis').get(0).contentWindow;
-            var doc = $('#iframe-vis').get(0).contentDocument;
-            if (!win || !win.__dw || !win.__dw.vis) {
-                return setTimeout(function () {
-                    getContext(callback);
-                }, 200);
+            if ($('#iframe-vis').get(0)) {
+                var win = $('#iframe-vis').get(0).contentWindow;
+                var doc = $('#iframe-vis').get(0).contentDocument;
+                if (win && win.__dw && win.__dw.vis) {
+                    callback(win, doc);
+                    return;
+                }
             }
-            callback(win, doc);
+
+            return setTimeout(function () {
+                getContext(callback);
+            }, 200);
         }
 
         // remove ignored columns
