@@ -1933,23 +1933,6 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize .vis-options .tooltip.right .tooltip-arrow {
   border-right-color: #eee;
 }
-.chart-editor.dw-create-visualize .highlighted-series li {
-  margin-bottom: 3px;
-  margin-right: 10px;
-  float: left;
-  display: inline;
-}
-.chart-editor.dw-create-visualize .highlighted-series .badge {
-  max-width: 100%;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.chart-editor.dw-create-visualize .highlighted-series .badge .icon-remove {
-  position: relative;
-  left: -4px;
-  top: 1px;
-}
 .chart-editor.dw-create-visualize .select-visualization p {
   margin-top: 15px;
 }
@@ -3362,7 +3345,7 @@ body.dw h1 {
   width: 100%;
   z-index: 10000;
   background: #fcf8e3;
-  color: #000;
+  color: #c09853;
   border-bottom: 1px solid #edddbe;
   box-sizing: border-box;
   text-align: center;
@@ -3370,7 +3353,7 @@ body.dw h1 {
 .dw-alert-message h2,
 .dw-alert-message p,
 .dw-alert-message li {
-  color: #000;
+  color: #fff;
 }
 .dw-alert-message li {
   display: inline-block;
@@ -3399,11 +3382,6 @@ body.dw h1 {
 }
 .dw-alert-message.dw-alert-warning a {
   color: #f6d99d;
-}
-.dw-alert-message.dw-alert-warning h2,
-.dw-alert-message.dw-alert-warning p,
-.dw-alert-message.dw-alert-warning li {
-  color: white;
 }
 html h2 {
   font-size: 24px;
