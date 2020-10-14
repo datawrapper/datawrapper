@@ -5,15 +5,14 @@ define(function () {
     return function () {
         $('a[href|=#lang]').click(function (evt) {
             evt.preventDefault();
-            $.ajax({
-                url: '/api/account/lang',
-                type: 'PUT',
-                data: JSON.stringify({ lang: $(evt.target).attr('href').substr(6) }),
-                processData: false,
-                success: function (data) {
+
+            dw.backend.httpReq
+                .patch('/v3/me', {
+                    payload: { language: $(evt.target).attr('href').substr(6) }
+                })
+                .then(function () {
                     location.reload();
-                }
-            });
+                });
         });
     };
 });
