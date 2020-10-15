@@ -14,14 +14,13 @@
                         <Resizer />
                         <ColorblindCheck />
                     </div>
-
-                    <div id="notifications"></div>
                 </div>
             </div>
         </div>
 
         <div class="visconfig vis-sidebar" ref:sidebar>
             <TabNav bind:tab {showChartPicker} />
+
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
                 <!-- Chart Type -->
@@ -40,6 +39,7 @@
                     {#if visLoading}
                     <Loading />
                     {:else}
+                    <Notifications />
                     <svelte:component this="{Refine}" {tab} />
                     {/if}
                 </div>
@@ -115,6 +115,7 @@
     import ChartPicker from './ChartPicker.html';
     import Loading from './Loading.html';
     import Resizer from './Resizer.html';
+    import Notifications from './Notifications.html';
     import ColorblindCheck from './colorblind-check/ColorblindCheck.html';
 
     export default {
@@ -127,7 +128,8 @@
             Loading,
             Resizer,
             ColorblindCheck,
-            ChartPreview
+            ChartPreview,
+            Notifications
         },
         data() {
             return {
