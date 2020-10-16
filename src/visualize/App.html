@@ -39,8 +39,8 @@
                     {#if visLoading}
                     <Loading />
                     {:else}
-                    <Notifications />
-                    <svelte:component this="{Refine}" {tab} />
+                    <Notifications {notifications} />
+                    <svelte:component this="{Refine}" {tab} on:notify="addNotification(event)" />
                     {/if}
                 </div>
 
@@ -142,7 +142,8 @@
                 defaultVisType: '',
                 stickyTop: false,
                 stickyBottom: false,
-                namespace: 'chart'
+                namespace: 'chart',
+                notifications: []
             };
         },
         computed: {
@@ -151,18 +152,22 @@
             }
         },
         methods: {
+            addNotification(notification) {
+                const { notifications } = this.get();
+                notifications.push(notification);
+                this.set({ notifications });
+            },
             initNotifications() {
                 const missingColumns = this.findMissingColumns();
                 const missingColumnsMessage =
                     'The visualization needs at least one column of the type <b>%type</b> to populate the axis <b>%axis</b>.'; // TODO: Move to translations and rephrase
-                const notifications = missingColumns.map(({ type, axis }) => ({
+                return missingColumns.map(({ type, axis }) => ({
                     type: 'error',
-                    closeable: false,
+                    closeable: true,
                     message: missingColumnsMessage
                         .replace('%type', type.join(' or '))
                         .replace('%axis', axis)
                 }));
-                this.store.set({ notifications });
             },
             findMissingColumns() {
                 const { vis } = this.store.get();
@@ -254,10 +259,9 @@
                         this.set({
                             visLoading: false,
                             Refine: mod.Refine || Empty,
-                            Annotate: mod.Annotate || Empty
+                            Annotate: mod.Annotate || Empty,
+                            notifications: this.initNotifications()
                         });
-
-                        this.initNotifications();
                     });
                 });
             }
