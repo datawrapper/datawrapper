@@ -151,6 +151,30 @@
             }
         },
         methods: {
+            initNotifications() {
+                const missingColumns = this.findMissingColumns();
+                const missingColumnsMessage =
+                    'The visualization needs at least one column of the type <b>%type</b> to populate the axis <b>%axis</b>.'; // TODO: Move to translations and rephrase
+                const notifications = missingColumns.map(({ type, axis }) => ({
+                    type: 'error',
+                    closeable: false,
+                    message: missingColumnsMessage
+                        .replace('%type', type.join(' or '))
+                        .replace('%axis', axis)
+                }));
+                this.store.set({ notifications });
+            },
+            findMissingColumns() {
+                const { vis } = this.store.get();
+                return Object.keys(vis.meta.axes).reduce((missingColumns, axis) => {
+                    const isRequired = !vis.meta.axes[axis].optional;
+                    const isEmpty = !vis.axes()[axis];
+                    if (isEmpty && isRequired) {
+                        missingColumns.push({ axis, type: vis.meta.axes[axis].accepts });
+                    }
+                    return missingColumns;
+                }, []);
+            },
             makePreviewSticky() {
                 const { top, bottom } = this.refs.wrapper.getBoundingClientRect();
                 const canvasHeight = this.refs.canvas.scrollHeight;
@@ -233,7 +257,7 @@
                             Annotate: mod.Annotate || Empty
                         });
 
-                        // dw.backend.fire('options-reloaded');
+                        this.initNotifications();
                     });
                 });
             }
