@@ -741,7 +741,7 @@
   "cc / formula / error / unexpected teof": "Unexpected end of formula",
   "copy": "Copy",
   "publish / status / creating_images": "Creating images",
-  "controls / legend / switch": "Show map legend",
+  "controls / legend / switch": "Show color legend",
   "controls / color-scale / custom-breaks": "Upper and lower class limits",
   "controls / color-scale / custom-breaks / warning": "The custom class limits must be in ascending order.",
   "controls / color-scale / pretty-note": "Rounded breaks aren't available for every step count. Try increasing/decreasing the count until the map changes.",
@@ -760,5 +760,10 @@
   "controls / legend / interactive / help": "If enabled, readers can hover the legend to see corresponding elements in the visualization and vice versa.",
   "left": "left",
   "center": "center",
-  "right": "right"
+  "right": "right",
+  "controls / legend / above-vis": "above visualization",
+  "controls / legend / below-vis": "below visualization",
+  "controls / legend / mobile-note": "Note that orientation, position, size, and offset settings are being ignored on mobile devices where the legend is always positioned outside of the visualization.",
+  "controls / legend / def-group": "Group",
+  "controls / legend / disabled-note": "Your visualization is using colors, so we recommend you add a legend to explain what the colors mean."
 }

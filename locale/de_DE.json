@@ -741,7 +741,7 @@
   "cc / formula / error / unexpected teof": "Unerwartetes Formelende",
   "copy": "Kopie",
   "publish / status / creating_images": "Bilddateien werden erstellt",
-  "controls / legend / switch": "Kartenlegende anzeigen",
+  "controls / legend / switch": "Farblegende anzeigen",
   "controls / color-scale / custom-breaks": "Obere und untere Klassengrenzen",
   "controls / color-scale / custom-breaks / warning": "Die Klassengrenzen müssen in aufsteigender Reihenfolge sein.",
   "controls / color-scale / pretty-note": "Gerundete Klassen funktionieren nicht für jede Anzahl von Schritten. Versuche, die Anzhal zu erhöhen oder verringern, bis sich die Karte ändert.",
@@ -760,5 +760,10 @@
   "controls / legend / interactive / help": "Wenn diese Option aktiviert ist, können Leser mit der Maus über die Legende fahren, um die entsprechenden Elemente in der Visualisierung anzuzeigen, und umgekehrt.",
   "left": "links",
   "center": "mitte",
-  "right": "rechts"
+  "right": "rechts",
+  "controls / legend / above-vis": "über der Visualisierung",
+  "controls / legend / below-vis": "unter der Visualisierung",
+  "controls / legend / mobile-note": "Beachte das die Einstellungen für Ausrichtung, Größe und Abstand der Legende bei der mobilen Darstellung ignoriert werden, da die Legende dort immer außerhalb der Visualisierung angezeigt wird.",
+  "controls / legend / def-group": "Gruppe",
+  "controls / legend / disabled-note": "Deine Visualisierung verwendet Farben. Wir empfehlen, eine Legende hinzuzufügen, um zu erklären, was die Farben bedeuten."
 }
