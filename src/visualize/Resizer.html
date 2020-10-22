@@ -116,6 +116,8 @@
                 mode: '',
                 width: 600,
                 height: 400,
+                width_txt: null,
+                height_txt: null,
                 unit: 'px',
                 units: [
                     { value: 'mm', label: 'mm', step: 1, decimals: 0 },
@@ -145,8 +147,10 @@
                         width: 600
                     }
                 ],
+                preset: null,
                 hasPresets: false,
-                printExpanded: false
+                printExpanded: false,
+                theme: null
             };
         },
         computed: {
