@@ -43,7 +43,6 @@
     import Settings from './tabs/Settings.html';
     import DeleteTeam from './tabs/DeleteTeam.html';
     import ProductTable from './tabs/ProductTable.html';
-    import Loading from './tabs/Loading.html';
     import storeTeamSettings from './storeTeamSettings';
 
     const SettingsTab = {
@@ -72,7 +71,6 @@
 
     export default {
         components: {
-            Loading,
             NavTabs
         },
         data() {
@@ -190,7 +188,7 @@
                 return groups;
             }
         },
-        helpers: { __, truncate },
+        helpers: { __ },
         methods: {
             onTabChange({ team, settings, defaultTheme }, tab) {
                 storeTeamSettings(team, settings, defaultTheme).then(() => {
