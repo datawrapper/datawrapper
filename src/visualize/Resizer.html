@@ -306,11 +306,9 @@
                 this.measureChartHeight();
             },
             measureChartHeight() {
-                const app = this;
-
                 clearTimeout(window.measureChartHeightTimeout);
 
-                window.measureChartHeightTimeout = setTimeout(function () {
+                window.measureChartHeightTimeout = setTimeout(() => {
                     const iframe = $('#iframe-vis').get(0).contentWindow;
 
                     if (iframe) {
@@ -318,15 +316,15 @@
 
                         if (chartBody && chartBody.getBoundingClientRect) {
                             var h = chartBody.getBoundingClientRect().height;
-                            if (h !== app.store.get('metadata.publish.chart-height')) {
-                                app.store.setMetadata('publish.chart-height', h);
-                                if (app.store.save) app.store.save();
+                            if (h !== this.store.get('metadata.publish.chart-height')) {
+                                this.store.setMetadata('publish.chart-height', h);
+                                if (this.store.save) this.store.save();
                             }
                         } else {
-                            setTimeout(app.measureChartHeight, 2000);
+                            setTimeout(() => this.measureChartHeight(), 1000);
                         }
                     }
-                }, 2000);
+                }, 1000);
             },
             registerDragAndDropListener() {
                 const app = this;
