@@ -2,7 +2,7 @@
 <div class="notifications">
     {#each notifications as note}
     <Alert visible type="{note.type}" closeable="{note.closeable}">
-        <p>{@html note.message}</p>
+        {@html note.message}
     </Alert>
     {/each}
 </div>
