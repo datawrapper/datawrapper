@@ -111,6 +111,7 @@
 <script>
     /* globals dw */
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+    import { __ } from '@datawrapper/shared/l10n';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
@@ -171,9 +172,9 @@
                 return missingColumns.map(({ type, axis }) => ({
                     type: 'error',
                     closeable: true,
-                    message: 'The visualization needs at least one column of the type <b>%type</b> to populate the axis <b>%axis</b>.'
-                        .replace('%type', type.join(' or '))
-                        .replace('%axis', axis)
+                    message: __('visualize / notifications / missing-column')
+                        .replace('[%s:type]', type.join(' / '))
+                        .replace('[%s:axis]', axis)
                 }));
             }
         },

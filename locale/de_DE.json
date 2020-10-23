@@ -761,5 +761,6 @@
   "left": "links",
   "center": "mitte",
   "right": "rechts",
-  "visualize / transpose-button": "Daten zu transponieren"
+  "visualize / transpose-button": "Daten zu transponieren",
+  "visualize / notifications / missing-column": "Das Diagramm benötigt mindestens eine Spalte vom Typ <b>[%s:type]</b>, um die Achse <b>[%s:axis]</b> zu füllen. "
 }

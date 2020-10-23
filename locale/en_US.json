@@ -761,5 +761,6 @@
   "left": "left",
   "center": "center",
   "right": "right",
-  "visualize / transpose-button": "transpose the data"
+  "visualize / transpose-button": "transpose the data",
+  "visualize / notifications / missing-column": "The chart needs at least one column of the type <b>[%s:type]</b> to populate the axis <b>[%s:axis]</b>. "
 }
