@@ -43,6 +43,7 @@
                     <svelte:component
                         this="{Refine}"
                         {tab}
+                        ref:refine
                         bind:notifications="chartNotifications"
                     />
                     {/if}
@@ -154,31 +155,32 @@
         computed: {
             showChartPicker({ namespace }) {
                 return namespace !== 'map';
-            }
-        },
-        methods: {
-            computeNotifications() {
-                const missingColumns = this.findMissingColumns();
-                const missingColumnMessage =
-                    'The visualization needs at least one column of the type <b>%type</b> to populate the axis <b>%axis</b>.'; // TODO: Move to translations and rephrase
+            },
+            missingColumns({ $vis }) {
+                if (!$vis) return [];
+                return Object.keys($vis.meta.axes).reduce((missingCols, axis) => {
+                    const isRequired = !$vis.meta.axes[axis].optional;
+                    const isEmpty = !$vis.axes()[axis];
+                    if (isEmpty && isRequired) {
+                        missingCols.push({ axis, type: $vis.meta.axes[axis].accepts });
+                    }
+                    return missingCols;
+                }, []);
+            },
+            columnNotifications({ missingColumns }) {
                 return missingColumns.map(({ type, axis }) => ({
                     type: 'error',
                     closeable: true,
-                    message: missingColumnMessage
+                    message: 'The visualization needs at least one column of the type <b>%type</b> to populate the axis <b>%axis</b>.'
                         .replace('%type', type.join(' or '))
                         .replace('%axis', axis)
                 }));
-            },
-            findMissingColumns() {
-                const { vis } = this.store.get();
-                return Object.keys(vis.meta.axes).reduce((missingColumns, axis) => {
-                    const isRequired = !vis.meta.axes[axis].optional;
-                    const isEmpty = !vis.axes()[axis];
-                    if (isEmpty && isRequired) {
-                        missingColumns.push({ axis, type: vis.meta.axes[axis].accepts });
-                    }
-                    return missingColumns;
-                }, []);
+            }
+        },
+        methods: {
+            updateNotifications(chartNotifications) {
+                const { columnNotifications } = this.get();
+                this.set({ notifications: [...columnNotifications, ...chartNotifications] });
             },
             makePreviewSticky() {
                 const { top, bottom } = this.refs.wrapper.getBoundingClientRect();
@@ -260,9 +262,13 @@
                         this.set({
                             visLoading: false,
                             Refine: mod.Refine || Empty,
-                            Annotate: mod.Annotate || Empty,
-                            notifications: this.computeNotifications()
+                            Annotate: mod.Annotate || Empty
                         });
+
+                        // get initial notifications from refine control:
+                        // (without, notifications will not be immediately displayed)
+                        const { notifications } = this.refs.refine.get();
+                        this.updateNotifications(notifications);
                     });
                 });
             }
@@ -288,11 +294,7 @@
         },
         onstate({ previous, current, changed }) {
             if (previous && changed.chartNotifications) {
-                const notifications = [
-                    ...this.computeNotifications(),
-                    ...current.chartNotifications
-                ];
-                this.set({ notifications });
+                this.updateNotifications(current.chartNotifications);
             }
         }
     };
