@@ -298,7 +298,7 @@
             // remove event handler when this component is destroyed:
             this.on('destroy', () => {
                 window.removeEventListener('scroll', makePreviewSticky);
-                resizeObserver.disconnect();
+                if (resizeObserver) resizeObserver.disconnect();
             });
 
             window.chart = this.store;
