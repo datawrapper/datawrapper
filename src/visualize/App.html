@@ -179,7 +179,7 @@
             }
         },
         methods: {
-            updateNotifications(chartNotifications) {
+            updateNotifications(chartNotifications = []) {
                 const { columnNotifications } = this.get();
                 this.set({ notifications: [...columnNotifications, ...chartNotifications] });
             },
