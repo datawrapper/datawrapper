@@ -292,6 +292,8 @@
             this.on('destroy', () => {
                 window.removeEventListener('scroll', makePreviewSticky);
             });
+
+            window.chart = this.store;
         },
         onstate({ previous, current, changed }) {
             if (previous && changed.chartNotifications) {
