@@ -109,7 +109,7 @@
 </style>
 
 <script>
-    /* globals dw */
+    /* globals dw, ResizeObserver */
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import { __ } from '@datawrapper/shared/l10n';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
@@ -288,9 +288,17 @@
             const makePreviewSticky = () => this.makePreviewSticky();
             window.addEventListener('scroll', makePreviewSticky);
 
+            let resizeObserver;
+
+            try {
+                resizeObserver = new ResizeObserver(makePreviewSticky);
+                resizeObserver.observe(document.body);
+            } catch (ex) {}
+
             // remove event handler when this component is destroyed:
             this.on('destroy', () => {
                 window.removeEventListener('scroll', makePreviewSticky);
+                resizeObserver.disconnect();
             });
 
             window.chart = this.store;
