@@ -2,7 +2,7 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define('svelte/visualize', factory) :
 	(global = global || self, global.visualize = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
 	function noop() {}
 
@@ -458,9 +458,319 @@
 	    return translation;
 	}
 
+	// Current version.
+	var VERSION = '1.11.0';
+
+	// Establish the root object, `window` (`self`) in the browser, `global`
+	// on the server, or `this` in some virtual machines. We use `self`
+	// instead of `window` for `WebWorker` support.
+	var root = typeof self == 'object' && self.self === self && self ||
+	          typeof global == 'object' && global.global === global && global ||
+	          Function('return this')() ||
+	          {};
+
+	// Save bytes in the minified (but not gzipped) version:
+	var ObjProto = Object.prototype;
+	var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
+
+	// Create quick reference variables for speed access to core prototypes.
+	var toString = ObjProto.toString,
+	    hasOwnProperty = ObjProto.hasOwnProperty;
+
+	// Modern feature detection.
+	var supportsArrayBuffer = typeof ArrayBuffer !== 'undefined';
+
+	// All **ECMAScript 5+** native function implementations that we hope to use
+	// are declared here.
+	var nativeKeys = Object.keys,
+	    nativeIsView = supportsArrayBuffer && ArrayBuffer.isView;
+
+	// Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
+	var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
+	var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+	  'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
+
+	// The largest integer that can be represented exactly.
+	var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+
+	// If Underscore is called as a function, it returns a wrapped object that can
+	// be used OO-style. This wrapper holds altered versions of all functions added
+	// through `_.mixin`. Wrapped objects may be chained.
+	function _$1(obj) {
+	  if (obj instanceof _$1) return obj;
+	  if (!(this instanceof _$1)) return new _$1(obj);
+	  this._wrapped = obj;
+	}
+
+	_$1.VERSION = VERSION;
+
+	// Extracts the result from a wrapped and chained object.
+	_$1.prototype.value = function() {
+	  return this._wrapped;
+	};
+
+	// Provide unwrapping proxies for some methods used in engine operations
+	// such as arithmetic and JSON stringification.
+	_$1.prototype.valueOf = _$1.prototype.toJSON = _$1.prototype.value;
+
+	_$1.prototype.toString = function() {
+	  return String(this._wrapped);
+	};
+
+	// Internal helper to generate a function to obtain property `key` from `obj`.
+	function shallowProperty(key) {
+	  return function(obj) {
+	    return obj == null ? void 0 : obj[key];
+	  };
+	}
+
+	// Internal helper to obtain the `byteLength` property of an object.
+	var getByteLength = shallowProperty('byteLength');
+
+	// Internal function for creating a `toString`-based type tester.
+	function tagTester(name) {
+	  return function(obj) {
+	    return toString.call(obj) === '[object ' + name + ']';
+	  };
+	}
+
+	var isDataView = tagTester('DataView');
+
+	// Predicate-generating function. Often useful outside of Underscore.
+	function constant(value) {
+	  return function() {
+	    return value;
+	  };
+	}
+
+	// Common internal logic for `isArrayLike` and `isBufferLike`.
+	function createSizePropertyCheck(getSizeProperty) {
+	  return function(collection) {
+	    var sizeProperty = getSizeProperty(collection);
+	    return typeof sizeProperty == 'number' && sizeProperty >= 0 && sizeProperty <= MAX_ARRAY_INDEX;
+	  }
+	}
+
+	// Internal helper to determine whether we should spend extensive checks against
+	// `ArrayBuffer` et al.
+	var isBufferLike = createSizePropertyCheck(getByteLength);
+
+	// Is a given value a typed array?
+	var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
+	function isTypedArray(obj) {
+	  // `ArrayBuffer.isView` is the most future-proof, so use it when available.
+	  // Otherwise, fall back on the above regular expression.
+	  return nativeIsView ? (nativeIsView(obj) && !isDataView(obj)) :
+	                isBufferLike(obj) && typedArrayPattern.test(toString.call(obj));
+	}
+
+	var isTypedArray$1 = supportsArrayBuffer ? isTypedArray : constant(false);
+
+	var isFunction = tagTester('Function');
+
+	// Optimize `isFunction` if appropriate. Work around some `typeof` bugs in old
+	// v8, IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
+	var nodelist = root.document && root.document.childNodes;
+	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist != 'function') {
+	  isFunction = function(obj) {
+	    return typeof obj == 'function' || false;
+	  };
+	}
+
+	var isFunction$1 = isFunction;
+
+	// Is a given variable an object?
+	function isObject(obj) {
+	  var type = typeof obj;
+	  return type === 'function' || type === 'object' && !!obj;
+	}
+
+	// Internal function to check whether `key` is an own property name of `obj`.
+	function has(obj, key) {
+	  return obj != null && hasOwnProperty.call(obj, key);
+	}
+
+	// Internal helper to create a simple lookup structure.
+	// `collectNonEnumProps` used to depend on `_.contains`, but this led to
+	// circular imports. `emulatedSet` is a one-off solution that only works for
+	// arrays of strings.
+	function emulatedSet(keys) {
+	  var hash = {};
+	  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
+	  return {
+	    contains: function(key) { return hash[key]; },
+	    push: function(key) {
+	      hash[key] = true;
+	      return keys.push(key);
+	    }
+	  };
+	}
+
+	// Internal helper. Checks `keys` for the presence of keys in IE < 9 that won't
+	// be iterated by `for key in ...` and thus missed. Extends `keys` in place if
+	// needed.
+	function collectNonEnumProps(obj, keys) {
+	  keys = emulatedSet(keys);
+	  var nonEnumIdx = nonEnumerableProps.length;
+	  var constructor = obj.constructor;
+	  var proto = isFunction$1(constructor) && constructor.prototype || ObjProto;
+
+	  // Constructor is a special case.
+	  var prop = 'constructor';
+	  if (has(obj, prop) && !keys.contains(prop)) keys.push(prop);
+
+	  while (nonEnumIdx--) {
+	    prop = nonEnumerableProps[nonEnumIdx];
+	    if (prop in obj && obj[prop] !== proto[prop] && !keys.contains(prop)) {
+	      keys.push(prop);
+	    }
+	  }
+	}
+
+	// Retrieve the names of an object's own properties.
+	// Delegates to **ECMAScript 5**'s native `Object.keys`.
+	function keys(obj) {
+	  if (!isObject(obj)) return [];
+	  if (nativeKeys) return nativeKeys(obj);
+	  var keys = [];
+	  for (var key in obj) if (has(obj, key)) keys.push(key);
+	  // Ahem, IE < 9.
+	  if (hasEnumBug) collectNonEnumProps(obj, keys);
+	  return keys;
+	}
+
+	// Internal recursive comparison function for `_.isEqual`.
+	function eq(a, b, aStack, bStack) {
+	  // Identical objects are equal. `0 === -0`, but they aren't identical.
+	  // See the [Harmony `egal` proposal](https://wiki.ecmascript.org/doku.php?id=harmony:egal).
+	  if (a === b) return a !== 0 || 1 / a === 1 / b;
+	  // `null` or `undefined` only equal to itself (strict comparison).
+	  if (a == null || b == null) return false;
+	  // `NaN`s are equivalent, but non-reflexive.
+	  if (a !== a) return b !== b;
+	  // Exhaust primitive checks
+	  var type = typeof a;
+	  if (type !== 'function' && type !== 'object' && typeof b != 'object') return false;
+	  return deepEq(a, b, aStack, bStack);
+	}
+
+	// Internal recursive comparison function for `_.isEqual`.
+	function deepEq(a, b, aStack, bStack) {
+	  // Unwrap any wrapped objects.
+	  if (a instanceof _$1) a = a._wrapped;
+	  if (b instanceof _$1) b = b._wrapped;
+	  // Compare `[[Class]]` names.
+	  var className = toString.call(a);
+	  if (className !== toString.call(b)) return false;
+	  switch (className) {
+	    // These types are compared by value.
+	    case '[object RegExp]':
+	      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
+	    case '[object String]':
+	      // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
+	      // equivalent to `new String("5")`.
+	      return '' + a === '' + b;
+	    case '[object Number]':
+	      // `NaN`s are equivalent, but non-reflexive.
+	      // Object(NaN) is equivalent to NaN.
+	      if (+a !== +a) return +b !== +b;
+	      // An `egal` comparison is performed for other numeric values.
+	      return +a === 0 ? 1 / +a === 1 / b : +a === +b;
+	    case '[object Date]':
+	    case '[object Boolean]':
+	      // Coerce dates and booleans to numeric primitive values. Dates are compared by their
+	      // millisecond representations. Note that invalid dates with millisecond representations
+	      // of `NaN` are not equivalent.
+	      return +a === +b;
+	    case '[object Symbol]':
+	      return SymbolProto.valueOf.call(a) === SymbolProto.valueOf.call(b);
+	    case '[object ArrayBuffer]':
+	      // Coerce to `DataView` so we can fall through to the next case.
+	      return deepEq(new DataView(a), new DataView(b), aStack, bStack);
+	    case '[object DataView]':
+	      var byteLength = getByteLength(a);
+	      if (byteLength !== getByteLength(b)) {
+	        return false;
+	      }
+	      while (byteLength--) {
+	        if (a.getUint8(byteLength) !== b.getUint8(byteLength)) {
+	          return false;
+	        }
+	      }
+	      return true;
+	  }
+
+	  if (isTypedArray$1(a)) {
+	    // Coerce typed arrays to `DataView`.
+	    return deepEq(new DataView(a.buffer), new DataView(b.buffer), aStack, bStack);
+	  }
+
+	  var areArrays = className === '[object Array]';
+	  if (!areArrays) {
+	    if (typeof a != 'object' || typeof b != 'object') return false;
+
+	    // Objects with different constructors are not equivalent, but `Object`s or `Array`s
+	    // from different frames are.
+	    var aCtor = a.constructor, bCtor = b.constructor;
+	    if (aCtor !== bCtor && !(isFunction$1(aCtor) && aCtor instanceof aCtor &&
+	                             isFunction$1(bCtor) && bCtor instanceof bCtor)
+	                        && ('constructor' in a && 'constructor' in b)) {
+	      return false;
+	    }
+	  }
+	  // Assume equality for cyclic structures. The algorithm for detecting cyclic
+	  // structures is adapted from ES 5.1 section 15.12.3, abstract operation `JO`.
+
+	  // Initializing stack of traversed objects.
+	  // It's done here since we only need them for objects and arrays comparison.
+	  aStack = aStack || [];
+	  bStack = bStack || [];
+	  var length = aStack.length;
+	  while (length--) {
+	    // Linear search. Performance is inversely proportional to the number of
+	    // unique nested structures.
+	    if (aStack[length] === a) return bStack[length] === b;
+	  }
+
+	  // Add the first object to the stack of traversed objects.
+	  aStack.push(a);
+	  bStack.push(b);
+
+	  // Recursively compare objects and arrays.
+	  if (areArrays) {
+	    // Compare array lengths to determine if a deep comparison is necessary.
+	    length = a.length;
+	    if (length !== b.length) return false;
+	    // Deep compare the contents, ignoring non-numeric properties.
+	    while (length--) {
+	      if (!eq(a[length], b[length], aStack, bStack)) return false;
+	    }
+	  } else {
+	    // Deep compare objects.
+	    var _keys = keys(a), key;
+	    length = _keys.length;
+	    // Ensure that both objects contain the same number of properties before comparing deep equality.
+	    if (keys(b).length !== length) return false;
+	    while (length--) {
+	      // Deep compare each member
+	      key = _keys[length];
+	      if (!(has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
+	    }
+	  }
+	  // Remove the first object from the stack of traversed objects.
+	  aStack.pop();
+	  bStack.pop();
+	  return true;
+	}
+
+	// Perform a deep comparison to check if two objects are equal.
+	function isEqual(a, b) {
+	  return eq(a, b);
+	}
+
 	const TAGS = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
 	const COMMENTS_AND_PHP_TAGS = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-	const defaultAllowed = '<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
+	const defaultAllowed = '<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
 
 	/**
 	 * Remove all non-whitelisted html tags from the given string
@@ -495,16 +805,6 @@
 	            // special treatment for <a> elements
 	            if (sel[i].getAttribute('target') !== '_self') sel[i].setAttribute('target', '_blank');
 	            sel[i].setAttribute('rel', 'nofollow noopener noreferrer');
-	            if (
-	                sel[i].getAttribute('href') &&
-	                sel[i]
-	                    .getAttribute('href')
-	                    .trim()
-	                    .startsWith('javascript:')
-	            ) {
-	                // remove entire href to be safe
-	                sel[i].setAttribute('href', '');
-	            }
 	        }
 	        for (var j = 0; j < sel[i].attributes.length; j++) {
 	            var attrib = sel[i].attributes[j];
@@ -539,7 +839,27 @@
 	    }
 	}
 
-	/* home/david/Projects/core/libs/controls/v2/editor/ChartPreview.html generated by Svelte v2.16.1 */
+	/**
+	 * Clones an object
+	 *
+	 * @exports clone
+	 * @kind function
+	 *
+	 * @param {*} object - the thing that should be cloned
+	 * @returns {*} - the cloned thing
+	 */
+	function clone(o) {
+	    if (!o || typeof o !== 'object') return o;
+	    try {
+	        return JSON.parse(JSON.stringify(o));
+	    } catch (e) {
+	        return o;
+	    }
+	}
+
+	/* Users/sjockers/Projects/datawrapper/controls/v2/editor/ChartPreview.html generated by Svelte v2.16.1 */
+
+
 
 	let preview;
 	let startX;
@@ -548,9 +868,9 @@
 	let startHeight;
 
 	// Declare how to handle changes in the chart's attributes:
-	const UPDATE = ['title', 'metadata.describe'];
-	const RELOAD = ['type', 'theme', 'language'];
-	const RENDER = ['metadata.data.transpose', 'metadata.visualize', 'metadata.axes'];
+	const UPDATE = ['title', 'metadata.describe', 'metadata.annotate.notes', 'metadata.custom'];
+	const RELOAD = ['type', 'theme', 'language', 'metadata.data.transpose'];
+	const RENDER = ['metadata.visualize', 'metadata.axes'];
 	const IGNORE = ['metadata.visualize.text-annotations'];
 
 	function url({ $id, src }) {
@@ -624,7 +944,7 @@
 
 	            // Clone attributes for checking whether there were changes:
 	            this.set({
-	                previousAttributes: JSON.parse(JSON.stringify(this.store.serialize()))
+	                previousAttributes: clone(this.store.serialize())
 	            });
 	        });
 	    },
@@ -649,8 +969,7 @@
 	            p0 = p0[k] || {};
 	            p1 = p1[k] || {};
 	        });
-
-	        return JSON.stringify(p0) !== JSON.stringify(p1);
+	        return !isEqual(p0, p1);
 	    },
 
 	    dragStart(event) {
@@ -785,7 +1104,7 @@
 	    }
 	}
 
-	const file = "home/david/Projects/core/libs/controls/v2/editor/ChartPreview.html";
+	const file = "Users/sjockers/Projects/datawrapper/controls/v2/editor/ChartPreview.html";
 
 	function create_main_fragment(component, ctx) {
 		var div2, div0, iframe, text0, text1, div1;
@@ -1408,7 +1727,7 @@
 	    return translation;
 	}
 
-	/* home/david/Projects/core/libs/controls/v2/BaseText.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/BaseText.html generated by Svelte v2.16.1 */
 
 	const getScrollHeight = element => {
 	    const actualHeight = element.style.height; // Store original height of element
@@ -1447,7 +1766,7 @@
 	    const { expandable } = this.get();
 	    if (expandable) this.resize(this.refs.textarea);
 	}
-	const file$3 = "home/david/Projects/core/libs/controls/v2/BaseText.html";
+	const file$3 = "Users/sjockers/Projects/datawrapper/controls/v2/BaseText.html";
 
 	function create_main_fragment$4(component, ctx) {
 		var div;
@@ -1676,7 +1995,7 @@
 	BaseText.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/BaseTextArea.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/BaseTextArea.html generated by Svelte v2.16.1 */
 
 	function data$4() {
 	    return {
@@ -1687,7 +2006,7 @@
 	        height: 'auto'
 	    };
 	}
-	const file$4 = "home/david/Projects/core/libs/controls/v2/BaseTextArea.html";
+	const file$4 = "Users/sjockers/Projects/datawrapper/controls/v2/BaseTextArea.html";
 
 	function create_main_fragment$5(component, ctx) {
 		var div, textarea, textarea_updating = false;
@@ -1790,13 +2109,13 @@
 	BaseTextArea.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/editor/ChartDescription.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/editor/ChartDescription.html generated by Svelte v2.16.1 */
 
 
 
 
 
-	const file$5 = "home/david/Projects/core/libs/controls/v2/editor/ChartDescription.html";
+	const file$5 = "Users/sjockers/Projects/datawrapper/controls/v2/editor/ChartDescription.html";
 
 	function create_main_fragment$6(component, ctx) {
 		var div4, div0, label0, input, text0, text1_value = __$1('annotate / hide-title'), text1, text2, label1, text3_value = __$1('Title'), text3, text4, basetext0_updating = {}, text5, label2, text6_value = __$1('Description'), text6, text7, basetextarea_updating = {}, text8, label3, text9_value = __$1('Notes'), text9, text10, basetext1_updating = {}, text11, div3, div1, label4, text12_value = __$1('Source name'), text12, text13, basetext2_updating = {}, text14, div2, label5, text15_value = __$1('Source URL'), text15, text16, basetext3_updating = {}, text17, label6, text18_value = __$1('visualize / annotate / byline'), text18, text19, basetext4_updating = {};
@@ -2457,7 +2776,7 @@
 	Annotate.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/ControlGroup.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/ControlGroup.html generated by Svelte v2.16.1 */
 
 	function data$6() {
 	    return {
@@ -2472,7 +2791,7 @@
 	    width: '100px'
 	};
 
-	const file$7 = "home/david/Projects/core/libs/controls/v2/ControlGroup.html";
+	const file$7 = "Users/sjockers/Projects/datawrapper/controls/v2/ControlGroup.html";
 
 	function create_main_fragment$9(component, ctx) {
 		var div1, text0, div0, slot_content_default = component._slotted.default, text1, div1_class_value;
@@ -2738,7 +3057,7 @@
 	ControlGroup.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/BaseSelect.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/BaseSelect.html generated by Svelte v2.16.1 */
 
 	function data$7() {
 	    return {
@@ -2750,7 +3069,7 @@
 	        value: null
 	    };
 	}
-	const file$8 = "home/david/Projects/core/libs/controls/v2/BaseSelect.html";
+	const file$8 = "Users/sjockers/Projects/datawrapper/controls/v2/BaseSelect.html";
 
 	function get_each_context_2(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -3168,7 +3487,7 @@
 	BaseSelect.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/Select.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/Select.html generated by Svelte v2.16.1 */
 
 
 
@@ -3904,7 +4223,7 @@
 	Loading.prototype._checkReadOnly = function _checkReadOnly(newState) {
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/Radio.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/Radio.html generated by Svelte v2.16.1 */
 
 	function data$9() {
 	    return {
@@ -3922,7 +4241,7 @@
 	        this.set({ indeterminate: false });
 	    }
 	}
-	const file$b = "home/david/Projects/core/libs/controls/v2/Radio.html";
+	const file$b = "Users/sjockers/Projects/datawrapper/controls/v2/Radio.html";
 
 	function get_each_context$4(ctx, list, i) {
 		const child_ctx = Object.create(ctx);
@@ -5720,7 +6039,7 @@
 		}
 	};
 
-	/* home/david/Projects/core/libs/controls/v2/Alert.html generated by Svelte v2.16.1 */
+	/* Users/sjockers/Projects/datawrapper/controls/v2/Alert.html generated by Svelte v2.16.1 */
 
 	function data$b() {
 	    return {
@@ -5736,7 +6055,7 @@
 	    }
 	};
 
-	const file$d = "home/david/Projects/core/libs/controls/v2/Alert.html";
+	const file$d = "Users/sjockers/Projects/datawrapper/controls/v2/Alert.html";
 
 	function create_main_fragment$h(component, ctx) {
 		var if_block_anchor;
@@ -7442,7 +7761,7 @@
 	    };
 
 	    chroma.Color = Color_1;
-	    chroma.version = '2.0.6';
+	    chroma.version = '2.1.0';
 
 	    var chroma_1 = chroma;
 
@@ -7983,7 +8302,7 @@
 	    var rgb2hex_1 = rgb2hex;
 
 	    var RE_HEX = /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-	    var RE_HEXA = /^#?([A-Fa-f0-9]{8})$/;
+	    var RE_HEXA = /^#?([A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/;
 
 	    var hex2rgb = function (hex) {
 	        if (hex.match(RE_HEX)) {
@@ -8005,9 +8324,14 @@
 
 	        // match rgba hex format, eg #FF000077
 	        if (hex.match(RE_HEXA)) {
-	            if (hex.length === 9) {
+	            if (hex.length === 5 || hex.length === 9) {
 	                // remove optional leading #
 	                hex = hex.substr(1);
+	            }
+	            // expand short-notation to full eight-digit
+	            if (hex.length === 4) {
+	                hex = hex.split('');
+	                hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
 	            }
 	            var u$1 = parseInt(hex, 16);
 	            var r$1 = u$1 >> 24 & 0xFF;
@@ -8049,7 +8373,7 @@
 	            var rest = [], len = arguments.length - 1;
 	            while ( len-- > 0 ) rest[ len ] = arguments[ len + 1 ];
 
-	            if (!rest.length && type$5(h) === 'string' && [3,4,6,7,8,9].includes(h.length)) {
+	            if (!rest.length && type$5(h) === 'string' && [3,4,5,6,7,8,9].indexOf(h.length) >= 0) {
 	                return 'hex';
 	            }
 	        }
@@ -9287,7 +9611,7 @@
 	                dh = hue1-(hue0+360);
 	            } else if (hue1 < hue0 && hue0 - hue1 > 180) {
 	                dh = hue1+360-hue0;
-	            } else{
+	            } else {
 	                dh = hue1 - hue0;
 	            }
 	            hue = hue0 + f * dh;
@@ -9359,14 +9683,19 @@
 	    var sin$1 = Math.sin;
 	    var atan2$1 = Math.atan2;
 
-	    var average = function (colors, mode) {
+	    var average = function (colors, mode, weights) {
 	        if ( mode === void 0 ) mode='lrgb';
+	        if ( weights === void 0 ) weights=null;
 
 	        var l = colors.length;
+	        if (!weights) { weights = Array.from(new Array(l)).map(function () { return 1; }); }
+	        // normalize weights
+	        var k = l / weights.reduce(function(a, b) { return a + b; });
+	        weights.forEach(function (w,i) { weights[i] *= k; });
 	        // convert colors to Color objects
 	        colors = colors.map(function (c) { return new Color_1(c); });
 	        if (mode === 'lrgb') {
-	            return _average_lrgb(colors)
+	            return _average_lrgb(colors, weights)
 	        }
 	        var first = colors.shift();
 	        var xyz = first.get(mode);
@@ -9375,28 +9704,28 @@
 	        var dy = 0;
 	        // initial color
 	        for (var i=0; i<xyz.length; i++) {
-	            xyz[i] = xyz[i] || 0;
-	            cnt.push(isNaN(xyz[i]) ? 0 : 1);
+	            xyz[i] = (xyz[i] || 0) * weights[0];
+	            cnt.push(isNaN(xyz[i]) ? 0 : weights[0]);
 	            if (mode.charAt(i) === 'h' && !isNaN(xyz[i])) {
 	                var A = xyz[i] / 180 * PI$1;
-	                dx += cos$2(A);
-	                dy += sin$1(A);
+	                dx += cos$2(A) * weights[0];
+	                dy += sin$1(A) * weights[0];
 	            }
 	        }
 
-	        var alpha = first.alpha();
-	        colors.forEach(function (c) {
+	        var alpha = first.alpha() * weights[0];
+	        colors.forEach(function (c,ci) {
 	            var xyz2 = c.get(mode);
-	            alpha += c.alpha();
+	            alpha += c.alpha() * weights[ci+1];
 	            for (var i=0; i<xyz.length; i++) {
 	                if (!isNaN(xyz2[i])) {
-	                    cnt[i]++;
+	                    cnt[i] += weights[ci+1];
 	                    if (mode.charAt(i) === 'h') {
 	                        var A = xyz2[i] / 180 * PI$1;
-	                        dx += cos$2(A);
-	                        dy += sin$1(A);
+	                        dx += cos$2(A) * weights[ci+1];
+	                        dy += sin$1(A) * weights[ci+1];
 	                    } else {
-	                        xyz[i] += xyz2[i];
+	                        xyz[i] += xyz2[i] * weights[ci+1];
 	                    }
 	                }
 	            }
@@ -9417,13 +9746,12 @@
 	    };
 
 
-	    var _average_lrgb = function (colors) {
+	    var _average_lrgb = function (colors, weights) {
 	        var l = colors.length;
-	        var f = 1/l;
 	        var xyz = [0,0,0,0];
-	        for (var i = 0, list = colors; i < list.length; i += 1) {
-	            var col = list[i];
-
+	        for (var i=0; i < colors.length; i++) {
+	            var col = colors[i];
+	            var f = weights[i] / l;
 	            var rgb = col._rgb;
 	            xyz[0] += pow$4(rgb[0],2) * f;
 	            xyz[1] += pow$4(rgb[1],2) * f;
@@ -11032,7 +11360,7 @@
 	    };
 	}
 	var methods$7 = {
-	    updateNotifications(chartNotifications) {
+	    updateNotifications(chartNotifications = []) {
 	        const { columnNotifications } = this.get();
 	        this.set({ notifications: [...columnNotifications, ...chartNotifications] });
 	    },
@@ -12053,47 +12381,47 @@
 	}
 
 	// Current version.
-	var VERSION = '1.11.0';
+	var VERSION$1 = '1.11.0';
 
 	// Establish the root object, `window` (`self`) in the browser, `global`
 	// on the server, or `this` in some virtual machines. We use `self`
 	// instead of `window` for `WebWorker` support.
-	var root = typeof self == 'object' && self.self === self && self ||
+	var root$1 = typeof self == 'object' && self.self === self && self ||
 	          typeof global == 'object' && global.global === global && global ||
 	          Function('return this')() ||
 	          {};
 
 	// Save bytes in the minified (but not gzipped) version:
-	var ArrayProto = Array.prototype, ObjProto = Object.prototype;
-	var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
+	var ArrayProto = Array.prototype, ObjProto$1 = Object.prototype;
+	var SymbolProto$1 = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
 
 	// Create quick reference variables for speed access to core prototypes.
 	var push = ArrayProto.push,
 	    slice = ArrayProto.slice,
-	    toString = ObjProto.toString,
-	    hasOwnProperty = ObjProto.hasOwnProperty;
+	    toString$1 = ObjProto$1.toString,
+	    hasOwnProperty$1 = ObjProto$1.hasOwnProperty;
 
 	// Modern feature detection.
-	var supportsArrayBuffer = typeof ArrayBuffer !== 'undefined';
+	var supportsArrayBuffer$1 = typeof ArrayBuffer !== 'undefined';
 
 	// All **ECMAScript 5+** native function implementations that we hope to use
 	// are declared here.
 	var nativeIsArray = Array.isArray,
-	    nativeKeys = Object.keys,
+	    nativeKeys$1 = Object.keys,
 	    nativeCreate = Object.create,
-	    nativeIsView = supportsArrayBuffer && ArrayBuffer.isView;
+	    nativeIsView$1 = supportsArrayBuffer$1 && ArrayBuffer.isView;
 
 	// Create references to these builtin functions because we override them.
 	var _isNaN = isNaN,
 	    _isFinite = isFinite;
 
 	// Keys in IE < 9 that won't be iterated by `for key in ...` and thus missed.
-	var hasEnumBug = !{toString: null}.propertyIsEnumerable('toString');
-	var nonEnumerableProps = ['valueOf', 'isPrototypeOf', 'toString',
+	var hasEnumBug$1 = !{toString: null}.propertyIsEnumerable('toString');
+	var nonEnumerableProps$1 = ['valueOf', 'isPrototypeOf', 'toString',
 	  'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
 
 	// The largest integer that can be represented exactly.
-	var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+	var MAX_ARRAY_INDEX$1 = Math.pow(2, 53) - 1;
 
 	// Some functions take a variable number of arguments, or a few expected
 	// arguments at the beginning and then a variable number of values to operate
@@ -12124,7 +12452,7 @@
 	}
 
 	// Is a given variable an object?
-	function isObject(obj) {
+	function isObject$1(obj) {
 	  var type = typeof obj;
 	  return type === 'function' || type === 'object' && !!obj;
 	}
@@ -12141,7 +12469,7 @@
 
 	// Is a given value a boolean?
 	function isBoolean(obj) {
-	  return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+	  return obj === true || obj === false || toString$1.call(obj) === '[object Boolean]';
 	}
 
 	// Is a given value a DOM element?
@@ -12150,66 +12478,66 @@
 	}
 
 	// Internal function for creating a `toString`-based type tester.
-	function tagTester(name) {
+	function tagTester$1(name) {
 	  return function(obj) {
-	    return toString.call(obj) === '[object ' + name + ']';
+	    return toString$1.call(obj) === '[object ' + name + ']';
 	  };
 	}
 
-	var isString = tagTester('String');
+	var isString = tagTester$1('String');
 
-	var isNumber = tagTester('Number');
+	var isNumber = tagTester$1('Number');
 
-	var isDate = tagTester('Date');
+	var isDate = tagTester$1('Date');
 
-	var isRegExp = tagTester('RegExp');
+	var isRegExp = tagTester$1('RegExp');
 
-	var isError = tagTester('Error');
+	var isError = tagTester$1('Error');
 
-	var isSymbol = tagTester('Symbol');
+	var isSymbol = tagTester$1('Symbol');
 
-	var isMap = tagTester('Map');
+	var isMap = tagTester$1('Map');
 
-	var isWeakMap = tagTester('WeakMap');
+	var isWeakMap = tagTester$1('WeakMap');
 
-	var isSet = tagTester('Set');
+	var isSet = tagTester$1('Set');
 
-	var isWeakSet = tagTester('WeakSet');
+	var isWeakSet = tagTester$1('WeakSet');
 
-	var isArrayBuffer = tagTester('ArrayBuffer');
+	var isArrayBuffer = tagTester$1('ArrayBuffer');
 
-	var isDataView = tagTester('DataView');
+	var isDataView$1 = tagTester$1('DataView');
 
 	// Is a given value an array?
 	// Delegates to ECMA5's native `Array.isArray`.
-	var isArray = nativeIsArray || tagTester('Array');
+	var isArray = nativeIsArray || tagTester$1('Array');
 
-	var isFunction = tagTester('Function');
+	var isFunction$2 = tagTester$1('Function');
 
 	// Optimize `isFunction` if appropriate. Work around some `typeof` bugs in old
 	// v8, IE 11 (#1621), Safari 8 (#1929), and PhantomJS (#2236).
-	var nodelist = root.document && root.document.childNodes;
-	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist != 'function') {
-	  isFunction = function(obj) {
+	var nodelist$1 = root$1.document && root$1.document.childNodes;
+	if (typeof /./ != 'function' && typeof Int8Array != 'object' && typeof nodelist$1 != 'function') {
+	  isFunction$2 = function(obj) {
 	    return typeof obj == 'function' || false;
 	  };
 	}
 
-	var isFunction$1 = isFunction;
+	var isFunction$3 = isFunction$2;
 
 	// Internal function to check whether `key` is an own property name of `obj`.
-	function has(obj, key) {
-	  return obj != null && hasOwnProperty.call(obj, key);
+	function has$1(obj, key) {
+	  return obj != null && hasOwnProperty$1.call(obj, key);
 	}
 
-	var isArguments = tagTester('Arguments');
+	var isArguments = tagTester$1('Arguments');
 
 	// Define a fallback version of the method in browsers (ahem, IE < 9), where
 	// there isn't any inspectable "Arguments" type.
 	(function() {
 	  if (!isArguments(arguments)) {
 	    isArguments = function(obj) {
-	      return has(obj, 'callee');
+	      return has$1(obj, 'callee');
 	    };
 	  }
 	}());
@@ -12227,59 +12555,59 @@
 	}
 
 	// Predicate-generating function. Often useful outside of Underscore.
-	function constant(value) {
+	function constant$1(value) {
 	  return function() {
 	    return value;
 	  };
 	}
 
 	// Common internal logic for `isArrayLike` and `isBufferLike`.
-	function createSizePropertyCheck(getSizeProperty) {
+	function createSizePropertyCheck$1(getSizeProperty) {
 	  return function(collection) {
 	    var sizeProperty = getSizeProperty(collection);
-	    return typeof sizeProperty == 'number' && sizeProperty >= 0 && sizeProperty <= MAX_ARRAY_INDEX;
+	    return typeof sizeProperty == 'number' && sizeProperty >= 0 && sizeProperty <= MAX_ARRAY_INDEX$1;
 	  }
 	}
 
 	// Internal helper to generate a function to obtain property `key` from `obj`.
-	function shallowProperty(key) {
+	function shallowProperty$1(key) {
 	  return function(obj) {
 	    return obj == null ? void 0 : obj[key];
 	  };
 	}
 
 	// Internal helper to obtain the `byteLength` property of an object.
-	var getByteLength = shallowProperty('byteLength');
+	var getByteLength$1 = shallowProperty$1('byteLength');
 
 	// Internal helper to determine whether we should spend extensive checks against
 	// `ArrayBuffer` et al.
-	var isBufferLike = createSizePropertyCheck(getByteLength);
+	var isBufferLike$1 = createSizePropertyCheck$1(getByteLength$1);
 
 	// Is a given value a typed array?
-	var typedArrayPattern = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
-	function isTypedArray(obj) {
+	var typedArrayPattern$1 = /\[object ((I|Ui)nt(8|16|32)|Float(32|64)|Uint8Clamped|Big(I|Ui)nt64)Array\]/;
+	function isTypedArray$2(obj) {
 	  // `ArrayBuffer.isView` is the most future-proof, so use it when available.
 	  // Otherwise, fall back on the above regular expression.
-	  return nativeIsView ? (nativeIsView(obj) && !isDataView(obj)) :
-	                isBufferLike(obj) && typedArrayPattern.test(toString.call(obj));
+	  return nativeIsView$1 ? (nativeIsView$1(obj) && !isDataView$1(obj)) :
+	                isBufferLike$1(obj) && typedArrayPattern$1.test(toString$1.call(obj));
 	}
 
-	var isTypedArray$1 = supportsArrayBuffer ? isTypedArray : constant(false);
+	var isTypedArray$3 = supportsArrayBuffer$1 ? isTypedArray$2 : constant$1(false);
 
 	// Internal helper to obtain the `length` property of an object.
-	var getLength = shallowProperty('length');
+	var getLength = shallowProperty$1('length');
 
 	// Internal helper for collection methods to determine whether a collection
 	// should be iterated as an array or as an object.
 	// Related: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
 	// Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
-	var isArrayLike = createSizePropertyCheck(getLength);
+	var isArrayLike = createSizePropertyCheck$1(getLength);
 
 	// Internal helper to create a simple lookup structure.
 	// `collectNonEnumProps` used to depend on `_.contains`, but this led to
 	// circular imports. `emulatedSet` is a one-off solution that only works for
 	// arrays of strings.
-	function emulatedSet(keys) {
+	function emulatedSet$1(keys) {
 	  var hash = {};
 	  for (var l = keys.length, i = 0; i < l; ++i) hash[keys[i]] = true;
 	  return {
@@ -12294,18 +12622,18 @@
 	// Internal helper. Checks `keys` for the presence of keys in IE < 9 that won't
 	// be iterated by `for key in ...` and thus missed. Extends `keys` in place if
 	// needed.
-	function collectNonEnumProps(obj, keys) {
-	  keys = emulatedSet(keys);
-	  var nonEnumIdx = nonEnumerableProps.length;
+	function collectNonEnumProps$1(obj, keys) {
+	  keys = emulatedSet$1(keys);
+	  var nonEnumIdx = nonEnumerableProps$1.length;
 	  var constructor = obj.constructor;
-	  var proto = isFunction$1(constructor) && constructor.prototype || ObjProto;
+	  var proto = isFunction$3(constructor) && constructor.prototype || ObjProto$1;
 
 	  // Constructor is a special case.
 	  var prop = 'constructor';
-	  if (has(obj, prop) && !keys.contains(prop)) keys.push(prop);
+	  if (has$1(obj, prop) && !keys.contains(prop)) keys.push(prop);
 
 	  while (nonEnumIdx--) {
-	    prop = nonEnumerableProps[nonEnumIdx];
+	    prop = nonEnumerableProps$1[nonEnumIdx];
 	    if (prop in obj && obj[prop] !== proto[prop] && !keys.contains(prop)) {
 	      keys.push(prop);
 	    }
@@ -12314,13 +12642,13 @@
 
 	// Retrieve the names of an object's own properties.
 	// Delegates to **ECMAScript 5**'s native `Object.keys`.
-	function keys(obj) {
-	  if (!isObject(obj)) return [];
-	  if (nativeKeys) return nativeKeys(obj);
+	function keys$1(obj) {
+	  if (!isObject$1(obj)) return [];
+	  if (nativeKeys$1) return nativeKeys$1(obj);
 	  var keys = [];
-	  for (var key in obj) if (has(obj, key)) keys.push(key);
+	  for (var key in obj) if (has$1(obj, key)) keys.push(key);
 	  // Ahem, IE < 9.
-	  if (hasEnumBug) collectNonEnumProps(obj, keys);
+	  if (hasEnumBug$1) collectNonEnumProps$1(obj, keys);
 	  return keys;
 	}
 
@@ -12331,12 +12659,12 @@
 	  // Skip the more expensive `toString`-based type checks if `obj` has no
 	  // `.length`.
 	  if (isArrayLike(obj) && (isArray(obj) || isString(obj) || isArguments$1(obj))) return obj.length === 0;
-	  return keys(obj).length === 0;
+	  return keys$1(obj).length === 0;
 	}
 
 	// Returns whether an object has a given set of `key:value` pairs.
 	function isMatch(object, attrs) {
-	  var _keys = keys(attrs), length = _keys.length;
+	  var _keys = keys$1(attrs), length = _keys.length;
 	  if (object == null) return !length;
 	  var obj = Object(object);
 	  for (var i = 0; i < length; i++) {
@@ -12349,29 +12677,29 @@
 	// If Underscore is called as a function, it returns a wrapped object that can
 	// be used OO-style. This wrapper holds altered versions of all functions added
 	// through `_.mixin`. Wrapped objects may be chained.
-	function _$1(obj) {
-	  if (obj instanceof _$1) return obj;
-	  if (!(this instanceof _$1)) return new _$1(obj);
+	function _$2(obj) {
+	  if (obj instanceof _$2) return obj;
+	  if (!(this instanceof _$2)) return new _$2(obj);
 	  this._wrapped = obj;
 	}
 
-	_$1.VERSION = VERSION;
+	_$2.VERSION = VERSION$1;
 
 	// Extracts the result from a wrapped and chained object.
-	_$1.prototype.value = function() {
+	_$2.prototype.value = function() {
 	  return this._wrapped;
 	};
 
 	// Provide unwrapping proxies for some methods used in engine operations
 	// such as arithmetic and JSON stringification.
-	_$1.prototype.valueOf = _$1.prototype.toJSON = _$1.prototype.value;
+	_$2.prototype.valueOf = _$2.prototype.toJSON = _$2.prototype.value;
 
-	_$1.prototype.toString = function() {
+	_$2.prototype.toString = function() {
 	  return String(this._wrapped);
 	};
 
 	// Internal recursive comparison function for `_.isEqual`.
-	function eq(a, b, aStack, bStack) {
+	function eq$1(a, b, aStack, bStack) {
 	  // Identical objects are equal. `0 === -0`, but they aren't identical.
 	  // See the [Harmony `egal` proposal](https://wiki.ecmascript.org/doku.php?id=harmony:egal).
 	  if (a === b) return a !== 0 || 1 / a === 1 / b;
@@ -12382,17 +12710,17 @@
 	  // Exhaust primitive checks
 	  var type = typeof a;
 	  if (type !== 'function' && type !== 'object' && typeof b != 'object') return false;
-	  return deepEq(a, b, aStack, bStack);
+	  return deepEq$1(a, b, aStack, bStack);
 	}
 
 	// Internal recursive comparison function for `_.isEqual`.
-	function deepEq(a, b, aStack, bStack) {
+	function deepEq$1(a, b, aStack, bStack) {
 	  // Unwrap any wrapped objects.
-	  if (a instanceof _$1) a = a._wrapped;
-	  if (b instanceof _$1) b = b._wrapped;
+	  if (a instanceof _$2) a = a._wrapped;
+	  if (b instanceof _$2) b = b._wrapped;
 	  // Compare `[[Class]]` names.
-	  var className = toString.call(a);
-	  if (className !== toString.call(b)) return false;
+	  var className = toString$1.call(a);
+	  if (className !== toString$1.call(b)) return false;
 	  switch (className) {
 	    // These types are compared by value.
 	    case '[object RegExp]':
@@ -12414,13 +12742,13 @@
 	      // of `NaN` are not equivalent.
 	      return +a === +b;
 	    case '[object Symbol]':
-	      return SymbolProto.valueOf.call(a) === SymbolProto.valueOf.call(b);
+	      return SymbolProto$1.valueOf.call(a) === SymbolProto$1.valueOf.call(b);
 	    case '[object ArrayBuffer]':
 	      // Coerce to `DataView` so we can fall through to the next case.
-	      return deepEq(new DataView(a), new DataView(b), aStack, bStack);
+	      return deepEq$1(new DataView(a), new DataView(b), aStack, bStack);
 	    case '[object DataView]':
-	      var byteLength = getByteLength(a);
-	      if (byteLength !== getByteLength(b)) {
+	      var byteLength = getByteLength$1(a);
+	      if (byteLength !== getByteLength$1(b)) {
 	        return false;
 	      }
 	      while (byteLength--) {
@@ -12431,9 +12759,9 @@
 	      return true;
 	  }
 
-	  if (isTypedArray$1(a)) {
+	  if (isTypedArray$3(a)) {
 	    // Coerce typed arrays to `DataView`.
-	    return deepEq(new DataView(a.buffer), new DataView(b.buffer), aStack, bStack);
+	    return deepEq$1(new DataView(a.buffer), new DataView(b.buffer), aStack, bStack);
 	  }
 
 	  var areArrays = className === '[object Array]';
@@ -12443,8 +12771,8 @@
 	    // Objects with different constructors are not equivalent, but `Object`s or `Array`s
 	    // from different frames are.
 	    var aCtor = a.constructor, bCtor = b.constructor;
-	    if (aCtor !== bCtor && !(isFunction$1(aCtor) && aCtor instanceof aCtor &&
-	                             isFunction$1(bCtor) && bCtor instanceof bCtor)
+	    if (aCtor !== bCtor && !(isFunction$3(aCtor) && aCtor instanceof aCtor &&
+	                             isFunction$3(bCtor) && bCtor instanceof bCtor)
 	                        && ('constructor' in a && 'constructor' in b)) {
 	      return false;
 	    }
@@ -12474,18 +12802,18 @@
 	    if (length !== b.length) return false;
 	    // Deep compare the contents, ignoring non-numeric properties.
 	    while (length--) {
-	      if (!eq(a[length], b[length], aStack, bStack)) return false;
+	      if (!eq$1(a[length], b[length], aStack, bStack)) return false;
 	    }
 	  } else {
 	    // Deep compare objects.
-	    var _keys = keys(a), key;
+	    var _keys = keys$1(a), key;
 	    length = _keys.length;
 	    // Ensure that both objects contain the same number of properties before comparing deep equality.
-	    if (keys(b).length !== length) return false;
+	    if (keys$1(b).length !== length) return false;
 	    while (length--) {
 	      // Deep compare each member
 	      key = _keys[length];
-	      if (!(has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
+	      if (!(has$1(b, key) && eq$1(a[key], b[key], aStack, bStack))) return false;
 	    }
 	  }
 	  // Remove the first object from the stack of traversed objects.
@@ -12495,23 +12823,23 @@
 	}
 
 	// Perform a deep comparison to check if two objects are equal.
-	function isEqual(a, b) {
-	  return eq(a, b);
+	function isEqual$1(a, b) {
+	  return eq$1(a, b);
 	}
 
 	// Retrieve all the enumerable property names of an object.
 	function allKeys(obj) {
-	  if (!isObject(obj)) return [];
+	  if (!isObject$1(obj)) return [];
 	  var keys = [];
 	  for (var key in obj) keys.push(key);
 	  // Ahem, IE < 9.
-	  if (hasEnumBug) collectNonEnumProps(obj, keys);
+	  if (hasEnumBug$1) collectNonEnumProps$1(obj, keys);
 	  return keys;
 	}
 
 	// Retrieve the values of an object's properties.
 	function values(obj) {
-	  var _keys = keys(obj);
+	  var _keys = keys$1(obj);
 	  var length = _keys.length;
 	  var values = Array(length);
 	  for (var i = 0; i < length; i++) {
@@ -12523,7 +12851,7 @@
 	// Convert an object into a list of `[key, value]` pairs.
 	// The opposite of `_.object` with one argument.
 	function pairs(obj) {
-	  var _keys = keys(obj);
+	  var _keys = keys$1(obj);
 	  var length = _keys.length;
 	  var pairs = Array(length);
 	  for (var i = 0; i < length; i++) {
@@ -12535,7 +12863,7 @@
 	// Invert the keys and values of an object. The values must be serializable.
 	function invert(obj) {
 	  var result = {};
-	  var _keys = keys(obj);
+	  var _keys = keys$1(obj);
 	  for (var i = 0, length = _keys.length; i < length; i++) {
 	    result[obj[_keys[i]]] = _keys[i];
 	  }
@@ -12546,7 +12874,7 @@
 	function functions(obj) {
 	  var names = [];
 	  for (var key in obj) {
-	    if (isFunction$1(obj[key])) names.push(key);
+	    if (isFunction$3(obj[key])) names.push(key);
 	  }
 	  return names.sort();
 	}
@@ -12576,7 +12904,7 @@
 	// Assigns a given object with all the own properties in the passed-in
 	// object(s).
 	// (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
-	var extendOwn = createAssigner(keys);
+	var extendOwn = createAssigner(keys$1);
 
 	// Fill in a given object with default properties.
 	var defaults = createAssigner(allKeys, true);
@@ -12588,7 +12916,7 @@
 
 	// An internal function for creating a new object that inherits from another.
 	function baseCreate(prototype) {
-	  if (!isObject(prototype)) return {};
+	  if (!isObject$1(prototype)) return {};
 	  if (nativeCreate) return nativeCreate(prototype);
 	  var Ctor = ctor();
 	  Ctor.prototype = prototype;
@@ -12607,8 +12935,8 @@
 	}
 
 	// Create a (shallow-cloned) duplicate of an object.
-	function clone(obj) {
-	  if (!isObject(obj)) return obj;
+	function clone$1(obj) {
+	  if (!isObject$1(obj)) return obj;
 	  return isArray(obj) ? obj.slice() : extend({}, obj);
 	}
 
@@ -12623,14 +12951,14 @@
 	// Shortcut function for checking if an object has a given property directly on
 	// itself (in other words, not on a prototype). Unlike the internal `has`
 	// function, this public version can also traverse nested properties.
-	function has$1(obj, path) {
+	function has$2(obj, path) {
 	  if (!isArray(path)) {
-	    return has(obj, path);
+	    return has$1(obj, path);
 	  }
 	  var length = path.length;
 	  for (var i = 0; i < length; i++) {
 	    var key = path[i];
-	    if (obj == null || !hasOwnProperty.call(obj, key)) {
+	    if (obj == null || !hasOwnProperty$1.call(obj, key)) {
 	      return false;
 	    }
 	    obj = obj[key];
@@ -12666,7 +12994,7 @@
 	// properties down the given `path`, specified as an array of keys or indices.
 	function property(path) {
 	  if (!isArray(path)) {
-	    return shallowProperty(path);
+	    return shallowProperty$1(path);
 	  }
 	  return function(obj) {
 	    return deepGet(obj, path);
@@ -12700,8 +13028,8 @@
 	// an arbitrary callback, a property matcher, or a property accessor.
 	function baseIteratee(value, context, argCount) {
 	  if (value == null) return identity;
-	  if (isFunction$1(value)) return optimizeCb(value, context, argCount);
-	  if (isObject(value) && !isArray(value)) return matcher(value);
+	  if (isFunction$3(value)) return optimizeCb(value, context, argCount);
+	  if (isObject$1(value) && !isArray(value)) return matcher(value);
 	  return property(value);
 	}
 
@@ -12711,12 +13039,12 @@
 	function iteratee(value, context) {
 	  return baseIteratee(value, context, Infinity);
 	}
-	_$1.iteratee = iteratee;
+	_$2.iteratee = iteratee;
 
 	// The function we call internally to generate a callback. It invokes
 	// `_.iteratee` if overridden, otherwise `baseIteratee`.
 	function cb(value, context, argCount) {
-	  if (_$1.iteratee !== iteratee) return _$1.iteratee(value, context);
+	  if (_$2.iteratee !== iteratee) return _$2.iteratee(value, context);
 	  return baseIteratee(value, context, argCount);
 	}
 
@@ -12724,7 +13052,7 @@
 	// In contrast to `_.map` it returns an object.
 	function mapObject(obj, iteratee, context) {
 	  iteratee = cb(iteratee, context);
-	  var _keys = keys(obj),
+	  var _keys = keys$1(obj),
 	      length = _keys.length,
 	      results = {};
 	  for (var index = 0; index < length; index++) {
@@ -12776,7 +13104,7 @@
 	    return map[match];
 	  };
 	  // Regexes for identifying a key that needs to be escaped.
-	  var source = '(?:' + keys(map).join('|') + ')';
+	  var source = '(?:' + keys$1(map).join('|') + ')';
 	  var testRegexp = RegExp(source);
 	  var replaceRegexp = RegExp(source, 'g');
 	  return function(string) {
@@ -12806,7 +13134,7 @@
 
 	// By default, Underscore uses ERB-style template delimiters. Change the
 	// following template settings to use alternative delimiters.
-	var templateSettings = _$1.templateSettings = {
+	var templateSettings = _$2.templateSettings = {
 	  evaluate: /<%([\s\S]+?)%>/g,
 	  interpolate: /<%=([\s\S]+?)%>/g,
 	  escape: /<%-([\s\S]+?)%>/g
@@ -12840,7 +13168,7 @@
 	// NB: `oldSettings` only exists for backwards compatibility.
 	function template(text, settings, oldSettings) {
 	  if (!settings && oldSettings) settings = oldSettings;
-	  settings = defaults({}, settings, _$1.templateSettings);
+	  settings = defaults({}, settings, _$2.templateSettings);
 
 	  // Combine delimiters into one regular expression via alternation.
 	  var matcher = RegExp([
@@ -12885,7 +13213,7 @@
 	  }
 
 	  var template = function(data) {
-	    return render.call(this, data, _$1);
+	    return render.call(this, data, _$2);
 	  };
 
 	  // Provide the compiled source as a convenience for precompilation.
@@ -12902,7 +13230,7 @@
 	  if (!isArray(path)) path = [path];
 	  var length = path.length;
 	  if (!length) {
-	    return isFunction$1(fallback) ? fallback.call(obj) : fallback;
+	    return isFunction$3(fallback) ? fallback.call(obj) : fallback;
 	  }
 	  for (var i = 0; i < length; i++) {
 	    var prop = obj == null ? void 0 : obj[path[i]];
@@ -12910,7 +13238,7 @@
 	      prop = fallback;
 	      i = length; // Ensure we don't continue iterating.
 	    }
-	    obj = isFunction$1(prop) ? prop.call(obj) : prop;
+	    obj = isFunction$3(prop) ? prop.call(obj) : prop;
 	  }
 	  return obj;
 	}
@@ -12925,7 +13253,7 @@
 
 	// Start chaining a wrapped Underscore object.
 	function chain(obj) {
-	  var instance = _$1(obj);
+	  var instance = _$2(obj);
 	  instance._chain = true;
 	  return instance;
 	}
@@ -12937,7 +13265,7 @@
 	  if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
 	  var self = baseCreate(sourceFunc.prototype);
 	  var result = sourceFunc.apply(self, args);
-	  if (isObject(result)) return result;
+	  if (isObject$1(result)) return result;
 	  return self;
 	}
 
@@ -12959,12 +13287,12 @@
 	  return bound;
 	});
 
-	partial.placeholder = _$1;
+	partial.placeholder = _$2;
 
 	// Create a function bound to a given object (assigning `this`, and arguments,
 	// optionally).
 	var bind = restArguments(function(func, context, args) {
-	  if (!isFunction$1(func)) throw new TypeError('Bind must be called on a function');
+	  if (!isFunction$3(func)) throw new TypeError('Bind must be called on a function');
 	  var bound = restArguments(function(callArgs) {
 	    return executeBound(func, bound, context, this, args.concat(callArgs));
 	  });
@@ -13017,7 +13345,7 @@
 	  var memoize = function(key) {
 	    var cache = memoize.cache;
 	    var address = '' + (hasher ? hasher.apply(this, arguments) : key);
-	    if (!has(cache, address)) cache[address] = func.apply(this, arguments);
+	    if (!has$1(cache, address)) cache[address] = func.apply(this, arguments);
 	    return cache[address];
 	  };
 	  memoize.cache = {};
@@ -13034,7 +13362,7 @@
 
 	// Defers a function, scheduling it to run after the current call stack has
 	// cleared.
-	var defer = partial(delay, _$1, 1);
+	var defer = partial(delay, _$2, 1);
 
 	// Returns a function, that, when invoked, will only be triggered at most once
 	// during a given window of time. Normally, the throttled function will run
@@ -13171,7 +13499,7 @@
 	// Returns the first key on an object that passes a truth test.
 	function findKey(obj, predicate, context) {
 	  predicate = cb(predicate, context);
-	  var _keys = keys(obj), key;
+	  var _keys = keys$1(obj), key;
 	  for (var i = 0, length = _keys.length; i < length; i++) {
 	    key = _keys[i];
 	    if (predicate(obj[key], key, obj)) return key;
@@ -13270,7 +13598,7 @@
 	      iteratee(obj[i], i, obj);
 	    }
 	  } else {
-	    var _keys = keys(obj);
+	    var _keys = keys$1(obj);
 	    for (i = 0, length = _keys.length; i < length; i++) {
 	      iteratee(obj[_keys[i]], _keys[i], obj);
 	    }
@@ -13281,7 +13609,7 @@
 	// Return the results of applying the iteratee to each element.
 	function map(obj, iteratee, context) {
 	  iteratee = cb(iteratee, context);
-	  var _keys = !isArrayLike(obj) && keys(obj),
+	  var _keys = !isArrayLike(obj) && keys$1(obj),
 	      length = (_keys || obj).length,
 	      results = Array(length);
 	  for (var index = 0; index < length; index++) {
@@ -13296,7 +13624,7 @@
 	  // Wrap code that reassigns argument variables in a separate function than
 	  // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
 	  var reducer = function(obj, iteratee, memo, initial) {
-	    var _keys = !isArrayLike(obj) && keys(obj),
+	    var _keys = !isArrayLike(obj) && keys$1(obj),
 	        length = (_keys || obj).length,
 	        index = dir > 0 ? 0 : length - 1;
 	    if (!initial) {
@@ -13341,7 +13669,7 @@
 	// Determine whether all of the elements pass a truth test.
 	function every(obj, predicate, context) {
 	  predicate = cb(predicate, context);
-	  var _keys = !isArrayLike(obj) && keys(obj),
+	  var _keys = !isArrayLike(obj) && keys$1(obj),
 	      length = (_keys || obj).length;
 	  for (var index = 0; index < length; index++) {
 	    var currentKey = _keys ? _keys[index] : index;
@@ -13353,7 +13681,7 @@
 	// Determine if at least one element in the object passes a truth test.
 	function some(obj, predicate, context) {
 	  predicate = cb(predicate, context);
-	  var _keys = !isArrayLike(obj) && keys(obj),
+	  var _keys = !isArrayLike(obj) && keys$1(obj),
 	      length = (_keys || obj).length;
 	  for (var index = 0; index < length; index++) {
 	    var currentKey = _keys ? _keys[index] : index;
@@ -13372,7 +13700,7 @@
 	// Invoke a method (with arguments) on every item in a collection.
 	var invoke = restArguments(function(obj, path, args) {
 	  var contextPath, func;
-	  if (isFunction$1(path)) {
+	  if (isFunction$3(path)) {
 	    func = path;
 	  } else if (isArray(path)) {
 	    contextPath = path.slice(0, -1);
@@ -13461,7 +13789,7 @@
 	    if (!isArrayLike(obj)) obj = values(obj);
 	    return obj[random(obj.length - 1)];
 	  }
-	  var sample = isArrayLike(obj) ? clone(obj) : values(obj);
+	  var sample = isArrayLike(obj) ? clone$1(obj) : values(obj);
 	  var length = getLength(sample);
 	  n = Math.max(Math.min(n, length), 0);
 	  var last = length - 1;
@@ -13516,7 +13844,7 @@
 	// Groups the object's values by a criterion. Pass either a string attribute
 	// to group by, or a function that returns the criterion.
 	var groupBy = group(function(result, value, key) {
-	  if (has(result, key)) result[key].push(value); else result[key] = [value];
+	  if (has$1(result, key)) result[key].push(value); else result[key] = [value];
 	});
 
 	// Indexes the object's values by a criterion, similar to `_.groupBy`, but for
@@ -13529,7 +13857,7 @@
 	// either a string attribute to count by, or a function that returns the
 	// criterion.
 	var countBy = group(function(result, value, key) {
-	  if (has(result, key)) result[key]++; else result[key] = 1;
+	  if (has$1(result, key)) result[key]++; else result[key] = 1;
 	});
 
 	// Split a collection into two arrays: one whose elements all pass the given
@@ -13554,7 +13882,7 @@
 	// Return the number of elements in a collection.
 	function size(obj) {
 	  if (obj == null) return 0;
-	  return isArrayLike(obj) ? obj.length : keys(obj).length;
+	  return isArrayLike(obj) ? obj.length : keys$1(obj).length;
 	}
 
 	// Internal `_.pick` helper function to determine whether `key` is an enumerable
@@ -13567,7 +13895,7 @@
 	var pick = restArguments(function(obj, keys) {
 	  var result = {}, iteratee = keys[0];
 	  if (obj == null) return result;
-	  if (isFunction$1(iteratee)) {
+	  if (isFunction$3(iteratee)) {
 	    if (keys.length > 1) iteratee = optimizeCb(iteratee, keys[1]);
 	    keys = allKeys(obj);
 	  } else {
@@ -13586,7 +13914,7 @@
 	// Return a copy of the object without the disallowed properties.
 	var omit = restArguments(function(obj, keys) {
 	  var iteratee = keys[0], context;
-	  if (isFunction$1(iteratee)) {
+	  if (isFunction$3(iteratee)) {
 	    iteratee = negate(iteratee);
 	    if (keys.length > 1) context = keys[1];
 	  } else {
@@ -13775,26 +14103,26 @@
 
 	// Helper function to continue chaining intermediate results.
 	function chainResult(instance, obj) {
-	  return instance._chain ? _$1(obj).chain() : obj;
+	  return instance._chain ? _$2(obj).chain() : obj;
 	}
 
 	// Add your own custom functions to the Underscore object.
 	function mixin(obj) {
 	  each(functions(obj), function(name) {
-	    var func = _$1[name] = obj[name];
-	    _$1.prototype[name] = function() {
+	    var func = _$2[name] = obj[name];
+	    _$2.prototype[name] = function() {
 	      var args = [this._wrapped];
 	      push.apply(args, arguments);
-	      return chainResult(this, func.apply(_$1, args));
+	      return chainResult(this, func.apply(_$2, args));
 	    };
 	  });
-	  return _$1;
+	  return _$2;
 	}
 
 	// Add all mutator `Array` functions to the wrapper.
 	each(['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift'], function(name) {
 	  var method = ArrayProto[name];
-	  _$1.prototype[name] = function() {
+	  _$2.prototype[name] = function() {
 	    var obj = this._wrapped;
 	    if (obj != null) {
 	      method.apply(obj, arguments);
@@ -13809,7 +14137,7 @@
 	// Add all accessor `Array` functions to the wrapper.
 	each(['concat', 'join', 'slice'], function(name) {
 	  var method = ArrayProto[name];
-	  _$1.prototype[name] = function() {
+	  _$2.prototype[name] = function() {
 	    var obj = this._wrapped;
 	    if (obj != null) obj = method.apply(obj, arguments);
 	    return chainResult(this, obj);
@@ -13820,9 +14148,9 @@
 
 	var allExports = /*#__PURE__*/Object.freeze({
 		__proto__: null,
-		VERSION: VERSION,
+		VERSION: VERSION$1,
 		restArguments: restArguments,
-		isObject: isObject,
+		isObject: isObject$1,
 		isNull: isNull,
 		isUndefined: isUndefined,
 		isBoolean: isBoolean,
@@ -13838,17 +14166,17 @@
 		isSet: isSet,
 		isWeakSet: isWeakSet,
 		isArrayBuffer: isArrayBuffer,
-		isDataView: isDataView,
+		isDataView: isDataView$1,
 		isArray: isArray,
-		isFunction: isFunction$1,
+		isFunction: isFunction$3,
 		isArguments: isArguments$1,
 		isFinite: isFinite$1,
 		isNaN: isNaN$1,
-		isTypedArray: isTypedArray$1,
+		isTypedArray: isTypedArray$3,
 		isEmpty: isEmpty,
 		isMatch: isMatch,
-		isEqual: isEqual,
-		keys: keys,
+		isEqual: isEqual$1,
+		keys: keys$1,
 		allKeys: allKeys,
 		values: values,
 		pairs: pairs,
@@ -13860,12 +14188,12 @@
 		assign: extendOwn,
 		defaults: defaults,
 		create: create,
-		clone: clone,
+		clone: clone$1,
 		tap: tap,
-		has: has$1,
+		has: has$2,
 		mapObject: mapObject,
 		identity: identity,
-		constant: constant,
+		constant: constant$1,
 		noop: noop$1,
 		property: property,
 		propertyOf: propertyOf,
@@ -13963,15 +14291,15 @@
 		range: range,
 		chunk: chunk,
 		mixin: mixin,
-		'default': _$1
+		'default': _$2
 	});
 
 	// Default Export
 
 	// Add all of the Underscore functions to the wrapper object.
-	var _$2 = mixin(allExports);
+	var _$3 = mixin(allExports);
 	// Legacy Node.js API.
-	_$2._ = _$2;
+	_$3._ = _$3;
 
 	/*
 	 * Dataset class
@@ -14018,7 +14346,7 @@
 	         * @returns {dw.Column}
 	         */
 	        column(nameOrIndex) {
-	            if (_$2.isString(nameOrIndex)) {
+	            if (_$3.isString(nameOrIndex)) {
 	                // single column by name
 	                if (columnsByName[nameOrIndex] !== undefined) return columnsByName[nameOrIndex];
 	                throw new Error('No column found with that name: "' + nameOrIndex + '"');
@@ -14062,7 +14390,7 @@
 	         */
 	        hasColumn(nameOrIndex) {
 	            return (
-	                (_$2.isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !==
+	                (_$3.isString(nameOrIndex) ? columnsByName[nameOrIndex] : columns[nameOrIndex]) !==
 	                undefined
 	            );
 	        },
@@ -14082,7 +14410,7 @@
 	         * @returns {object[]}
 	         */
 	        list() {
-	            return _$2.range(columns[0].length).map(function(r) {
+	            return _$3.range(columns[0].length).map(function(r) {
 	                var o = {};
 	                columns.forEach(col => {
 	                    o[col.name()] = col.val(r);
@@ -14107,7 +14435,7 @@
 	                csv += (i > 0 ? sep : '') + t;
 	            });
 	            // add values
-	            _$2.range(dataset.numRows()).forEach(row => {
+	            _$3.range(dataset.numRows()).forEach(row => {
 	                csv += '\n';
 	                columns.forEach((col, i) => {
 	                    var t = '' + (col.type() === 'date' ? col.raw(row) : col.val(row));
@@ -14133,7 +14461,7 @@
 	         */
 	        filterColumns(ignore) {
 	            columns = columns.filter(c => !ignore[c.name()]);
-	            _$2.each(ignore, (ign, key) => {
+	            _$3.each(ignore, (ign, key) => {
 	                if (ign && columnsByName[key]) delete columnsByName[key];
 	            });
 	            return dataset;
@@ -14210,7 +14538,7 @@
 
 	function text() {
 	    return {
-	        parse: _$2.identity,
+	        parse: _$3.identity,
 	        errors: function() {
 	            return 0;
 	        },
@@ -14218,7 +14546,7 @@
 	            return 'text';
 	        },
 	        formatter: function() {
-	            return _$2.identity;
+	            return _$3.identity;
 	        },
 	        isValid: function() {
 	            return true;
@@ -14306,8 +14634,8 @@
 
 	    sample = sample || [];
 
-	    _$2.each(sample, function(n) {
-	        _$2.each(knownFormats, function(regex, fmt) {
+	    _$3.each(sample, function(n) {
+	        _$3.each(knownFormats, function(regex, fmt) {
 	            if (matches[fmt] === undefined) matches[fmt] = 0;
 	            if (regex.test(n)) {
 	                matches[fmt] += 1;
@@ -14323,7 +14651,7 @@
 	    // public interface
 	    var type = {
 	        parse: function(raw) {
-	            if (_$2.isNumber(raw) || _$2.isUndefined(raw) || _$2.isNull(raw)) return raw;
+	            if (_$3.isNumber(raw) || _$3.isUndefined(raw) || _$3.isNull(raw)) return raw;
 	            // replace percent sign, n-dash & m-dash, remove weird spaces
 	            var number = raw
 	                .replace('%', '')
@@ -14399,13 +14727,13 @@
 
 	        isValid: function(val) {
 	            return (
-	                val === '' || naStrings[String(val).toLowerCase()] || _$2.isNumber(type.parse(val))
+	                val === '' || naStrings[String(val).toLowerCase()] || _$3.isNumber(type.parse(val))
 	            );
 	        },
 
 	        ambiguousFormats: function() {
 	            var candidates = [];
-	            _$2.each(matches, function(cnt, fmt) {
+	            _$3.each(matches, function(cnt, fmt) {
 	                if (cnt === bestMatch[1]) {
 	                    candidates.push([fmt, formatLabels[fmt]]); // key, label
 	                }
@@ -14512,17 +14840,17 @@
 	};
 	const shortMonthKey = {};
 
-	_$2.each(MONTHS, function(abbr, m) {
-	    _$2.each(abbr, function(a) {
+	_$3.each(MONTHS, function(abbr, m) {
+	    _$3.each(abbr, function(a) {
 	        shortMonthKey[a] = m;
 	    });
 	});
 
-	rx.MMM = { parse: new RegExp('(' + _$2.flatten(_$2.values(MONTHS)).join('|') + ')') };
+	rx.MMM = { parse: new RegExp('(' + _$3.flatten(_$3.values(MONTHS)).join('|') + ')') };
 
-	_$2.each(rx, function(r) {
+	_$3.each(rx, function(r) {
 	    r.parse = r.parse.source;
-	    if (_$2.isRegExp(r.test)) r.test = r.test.source;
+	    if (_$3.isRegExp(r.test)) r.test = r.test.source;
 	    else r.test = r.parse;
 	});
 
@@ -14690,7 +15018,7 @@
 
 	function test(str, key) {
 	    var fmt = knownFormats[key];
-	    if (_$2.isRegExp(fmt.test)) {
+	    if (_$3.isRegExp(fmt.test)) {
 	        return fmt.test.test(str);
 	    } else {
 	        return fmt.test(str, key);
@@ -14699,7 +15027,7 @@
 
 	function parse(str, key) {
 	    var fmt = knownFormats[key];
-	    if (_$2.isRegExp(fmt.parse)) {
+	    if (_$3.isRegExp(fmt.parse)) {
 	        return str.match(fmt.parse);
 	    } else {
 	        return fmt.parse(str, key);
@@ -14734,8 +15062,8 @@
 
 	    sample = sample || [];
 
-	    _$2.each(knownFormats, function(format, key) {
-	        _$2.each(sample, function(n) {
+	    _$3.each(knownFormats, function(format, key) {
+	        _$3.each(sample, function(n) {
 	            if (matches[key] === undefined) matches[key] = 0;
 	            if (test(n, key)) {
 	                matches[key] += 1;
@@ -14751,8 +15079,8 @@
 	    // public interface
 	    const type = {
 	        parse: function(raw) {
-	            if (_$2.isDate(raw) || _$2.isUndefined(raw)) return raw;
-	            if (!format || !_$2.isString(raw)) {
+	            if (_$3.isDate(raw) || _$3.isUndefined(raw)) return raw;
+	            if (!format || !_$3.isString(raw)) {
 	                errors++;
 	                return raw;
 	            }
@@ -14862,7 +15190,7 @@
 	            return raw;
 	        },
 	        toNum: function(d) {
-	            return _$2.isDate(d) ? d.getTime() : Number.NaN;
+	            return _$3.isDate(d) ? d.getTime() : Number.NaN;
 	        },
 	        fromNum: function(i) {
 	            return new Date(i);
@@ -14888,28 +15216,28 @@
 
 	        // returns a function for formatting dates
 	        formatter: function() {
-	            if (!format) return _$2.identity;
+	            if (!format) return _$3.identity;
 	            var monthPattern = Globalize.culture().calendar.patterns.M.replace('MMMM', 'MMM');
 	            switch (knownFormats[format].precision) {
 	                case 'year':
 	                    return function(d) {
-	                        return !_$2.isDate(d) ? d : d.getFullYear();
+	                        return !_$3.isDate(d) ? d : d.getFullYear();
 	                    };
 	                case 'half':
 	                    return function(d) {
-	                        return !_$2.isDate(d) ? d : d.getFullYear() + ' H' + (d.getMonth() / 6 + 1);
+	                        return !_$3.isDate(d) ? d : d.getFullYear() + ' H' + (d.getMonth() / 6 + 1);
 	                    };
 	                case 'quarter':
 	                    return function(d) {
-	                        return !_$2.isDate(d) ? d : d.getFullYear() + ' Q' + (d.getMonth() / 3 + 1);
+	                        return !_$3.isDate(d) ? d : d.getFullYear() + ' Q' + (d.getMonth() / 3 + 1);
 	                    };
 	                case 'month':
 	                    return function(d) {
-	                        return !_$2.isDate(d) ? d : Globalize.format(d, 'MMM yy');
+	                        return !_$3.isDate(d) ? d : Globalize.format(d, 'MMM yy');
 	                    };
 	                case 'week':
 	                    return function(d) {
-	                        return !_$2.isDate(d)
+	                        return !_$3.isDate(d)
 	                            ? d
 	                            : dateToIsoWeek(d)
 	                                  .slice(0, 2)
@@ -14917,11 +15245,11 @@
 	                    };
 	                case 'day':
 	                    return function(d, verbose) {
-	                        return !_$2.isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd');
+	                        return !_$3.isDate(d) ? d : Globalize.format(d, verbose ? 'D' : 'd');
 	                    };
 	                case 'day-minutes':
 	                    return function(d) {
-	                        return !_$2.isDate(d)
+	                        return !_$3.isDate(d)
 	                            ? d
 	                            : Globalize.format(d, monthPattern).replace(' ', '&nbsp;') +
 	                                  ' - ' +
@@ -14929,18 +15257,18 @@
 	                    };
 	                case 'day-seconds':
 	                    return function(d) {
-	                        return !_$2.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;');
+	                        return !_$3.isDate(d) ? d : Globalize.format(d, 'T').replace(' ', '&nbsp;');
 	                    };
 	            }
 	        },
 
 	        isValid: function(val) {
-	            return _$2.isDate(type.parse(val));
+	            return _$3.isDate(type.parse(val));
 	        },
 
 	        ambiguousFormats: function() {
 	            var candidates = [];
-	            _$2.each(matches, function(cnt, fmt) {
+	            _$3.each(matches, function(cnt, fmt) {
 	                if (cnt === bestMatch[1]) {
 	                    candidates.push([fmt, fmt]); // key, label
 	                }
@@ -15062,29 +15390,29 @@
 	    }
 
 	    function guessType(sample) {
-	        if (_$2.every(rows, _$2.isNumber)) return columnTypes.number();
-	        if (_$2.every(rows, _$2.isDate)) return columnTypes.date();
+	        if (_$3.every(rows, _$3.isNumber)) return columnTypes.number();
+	        if (_$3.every(rows, _$3.isDate)) return columnTypes.date();
 	        // guessing column type by counting parsing errors
 	        // for every known type
 	        const types = [columnTypes.date(sample), columnTypes.number(sample), columnTypes.text()];
 	        let type;
 	        const tolerance = 0.1 * rows.filter(notEmpty).length; // allowing 10% mis-parsed values
 
-	        _$2.each(rows, function(val) {
-	            _$2.each(types, function(t) {
+	        _$3.each(rows, function(val) {
+	            _$3.each(types, function(t) {
 	                t.parse(val);
 	            });
 	        });
-	        _$2.every(types, function(t) {
+	        _$3.every(types, function(t) {
 	            if (t.errors() < tolerance) type = t;
 	            return !type;
 	        });
-	        if (_$2.isUndefined(type)) type = types[2]; // default to text;
+	        if (_$3.isUndefined(type)) type = types[2]; // default to text;
 	        return type;
 	    }
 
 	    // we pick random 200 non-empty values for column type testing
-	    const sample = _$2.shuffle(_$2.range(rows.length))
+	    const sample = _$3.shuffle(_$3.range(rows.length))
 	        .filter(function(i) {
 	            return notEmpty(rows[i]);
 	        })
@@ -15134,7 +15462,7 @@
 	            if (!arguments.length) return undefined;
 	            var r = unfiltered ? origRows : rows;
 	            if (i < 0) i += r.length;
-	            return type.parse(_$2.isDate(r[i]) || _$2.isNumber(r[i]) ? r[i] : purifyHTML$1(r[i]));
+	            return type.parse(_$3.isDate(r[i]) || _$3.isNumber(r[i]) ? r[i] : purifyHTML$1(r[i]));
 	        },
 
 	        /*
@@ -15142,10 +15470,10 @@
 	         */
 	        values(unfiltered) {
 	            var r = unfiltered ? origRows : rows;
-	            r = _$2.map(r, function(d) {
-	                return _$2.isDate(d) || _$2.isNumber(d) ? d : purifyHTML$1(d);
+	            r = _$3.map(r, function(d) {
+	                return _$3.isDate(d) || _$3.isNumber(d) ? d : purifyHTML$1(d);
 	            });
-	            return _$2.map(r, type.parse);
+	            return _$3.map(r, type.parse);
 	        },
 
 	        /**
@@ -15160,12 +15488,12 @@
 	        // access to raw values
 	        raw(i, val) {
 	            if (!arguments.length)
-	                return rows.map(d => (_$2.isDate(d) || _$2.isNumber(d) ? d : purifyHTML$1(d)));
+	                return rows.map(d => (_$3.isDate(d) || _$3.isNumber(d) ? d : purifyHTML$1(d)));
 	            if (arguments.length === 2) {
 	                rows[i] = val;
 	                return column;
 	            }
-	            return _$2.isDate(rows[i]) || _$2.isNumber(rows[i]) ? rows[i] : purifyHTML$1(rows[i]);
+	            return _$3.isDate(rows[i]) || _$3.isNumber(rows[i]) ? rows[i] : purifyHTML$1(rows[i]);
 	        },
 
 	        /**
@@ -15175,7 +15503,7 @@
 	         */
 	        type(o) {
 	            if (o === true) return type;
-	            if (_$2.isString(o)) {
+	            if (_$3.isString(o)) {
 	                if (columnTypes[o]) {
 	                    type = columnTypes[o](sample);
 	                    return column;
@@ -15193,7 +15521,7 @@
 	                range = [Number.MAX_VALUE, -Number.MAX_VALUE];
 	                column.each(function(v) {
 	                    v = type.toNum(v);
-	                    if (!_$2.isNumber(v) || _$2.isNaN(v)) return;
+	                    if (!_$3.isNumber(v) || _$3.isNaN(v)) return;
 	                    if (v < range[0]) range[0] = v;
 	                    if (v > range[1]) range[1] = v;
 	                });
@@ -15249,7 +15577,7 @@
 	        filterRows(r) {
 	            rows = [];
 	            if (arguments.length) {
-	                _$2.each(r, function(i) {
+	                _$3.each(r, function(i) {
 	                    rows.push(origRows[i]);
 	                });
 	            } else {
@@ -15266,7 +15594,7 @@
 	        },
 
 	        indexOf(val) {
-	            return _$2.find(_$2.range(rows.length), function(i) {
+	            return _$3.find(_$3.range(rows.length), function(i) {
 	                return column.val(i) === val;
 	            });
 	        },
@@ -15486,7 +15814,7 @@
 	            // check that columns names are unique and not empty
 
 	            for (var c = 0; c < columnCount; c++) {
-	                let col = _$2.isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '';
+	                let col = _$3.isString(srcColumns[c]) ? srcColumns[c].replace(/^\s+|\s+$/g, '') : '';
 	                let suffix = col !== '' ? '' : 1;
 	                col = col !== '' ? col : 'X.';
 	                while (columnNames[col + suffix] !== undefined) {
@@ -15499,7 +15827,7 @@
 	                columnNames[col + suffix] = true;
 	            }
 
-	            _$2.range(rowIndex, rowCount).forEach(row => {
+	            _$3.range(rowIndex, rowCount).forEach(row => {
 	                columns.forEach((c, i) => {
 	                    c.data.push(arrData[row][i] !== '' ? arrData[row][i] : opts.emptyValue);
 	                });
@@ -15646,7 +15974,7 @@
 
 	    // overwrite column types
 	    var columnFormats = chart.getMetadata('data.column-format', {});
-	    _$2.each(columnFormats, (columnFormat, key) => {
+	    _$3.each(columnFormats, (columnFormat, key) => {
 	        if (columnFormat.type && dataset.hasColumn(key) && columnFormat.type !== 'auto') {
 	            dataset.column(key).type(columnFormat.type);
 	        }
@@ -17615,9 +17943,7 @@
 	         */
 	        PLUCK(arr, key) {
 	            if (!Array.isArray(arr)) throw new Error('First argument to PLUCK is not an array');
-	            return arr.map(item =>
-	                Object.prototype.hasOwnProperty.call(item, key) ? item[key] : null
-	            );
+	            return arr.map(item => item[key]);
 	        },
 	        /**
 	         * Returns the index of the first occurance of an element in an array (or -1 if it's not in the array)
@@ -18231,7 +18557,7 @@
 	            const context = {
 	                ROWNUMBER: index
 	            };
-	            _$2.each(row, function(val, key) {
+	            _$3.each(row, function(val, key) {
 	                if (!columnNameToVar[key]) return;
 	                context[columnNameToVar[key]] = val;
 	                if (colAggregates[key]) {
@@ -18268,10 +18594,10 @@
 	        var virtualColumn = column(
 	            name,
 	            values.map(function(v) {
-	                if (_$2.isBoolean(v)) return v ? 'yes' : 'no';
-	                if (_$2.isDate(v)) return v.toISOString();
-	                if (_$2.isNumber(v)) return String(v);
-	                if (_$2.isNull(v)) return null;
+	                if (_$3.isBoolean(v)) return v ? 'yes' : 'no';
+	                if (_$3.isDate(v)) return v.toISOString();
+	                if (_$3.isNumber(v)) return String(v);
+	                if (_$3.isNull(v)) return null;
 	                return String(v);
 	            })
 	        );
@@ -18352,16 +18678,16 @@
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
 	/** Used as a reference to the global object. */
-	var root$1 = freeGlobal || freeSelf || Function('return this')();
+	var root$2 = freeGlobal || freeSelf || Function('return this')();
 
 	/** Built-in value references. */
-	var Symbol$1 = root$1.Symbol;
+	var Symbol$1 = root$2.Symbol;
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$1 = objectProto.hasOwnProperty;
+	var hasOwnProperty$2 = objectProto.hasOwnProperty;
 
 	/**
 	 * Used to resolve the
@@ -18381,7 +18707,7 @@
 	 * @returns {string} Returns the raw `toStringTag`.
 	 */
 	function getRawTag(value) {
-	  var isOwn = hasOwnProperty$1.call(value, symToStringTag),
+	  var isOwn = hasOwnProperty$2.call(value, symToStringTag),
 	      tag = value[symToStringTag];
 
 	  try {
@@ -18469,7 +18795,7 @@
 	 * _.isObject(null);
 	 * // => false
 	 */
-	function isObject$1(value) {
+	function isObject$2(value) {
 	  var type = typeof value;
 	  return value != null && (type == 'object' || type == 'function');
 	}
@@ -18497,8 +18823,8 @@
 	 * _.isFunction(/abc/);
 	 * // => false
 	 */
-	function isFunction$2(value) {
-	  if (!isObject$1(value)) {
+	function isFunction$4(value) {
+	  if (!isObject$2(value)) {
 	    return false;
 	  }
 	  // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -18508,7 +18834,7 @@
 	}
 
 	/** Used to detect overreaching core-js shims. */
-	var coreJsData = root$1['__core-js_shared__'];
+	var coreJsData = root$2['__core-js_shared__'];
 
 	/** Used to detect methods masquerading as native. */
 	var maskSrcKey = (function() {
@@ -18569,11 +18895,11 @@
 	var funcToString$1 = funcProto$1.toString;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
+	var hasOwnProperty$3 = objectProto$2.hasOwnProperty;
 
 	/** Used to detect if a method is native. */
 	var reIsNative = RegExp('^' +
-	  funcToString$1.call(hasOwnProperty$2).replace(reRegExpChar, '\\$&')
+	  funcToString$1.call(hasOwnProperty$3).replace(reRegExpChar, '\\$&')
 	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 	);
 
@@ -18586,10 +18912,10 @@
 	 *  else `false`.
 	 */
 	function baseIsNative(value) {
-	  if (!isObject$1(value) || isMasked(value)) {
+	  if (!isObject$2(value) || isMasked(value)) {
 	    return false;
 	  }
-	  var pattern = isFunction$2(value) ? reIsNative : reIsHostCtor;
+	  var pattern = isFunction$4(value) ? reIsNative : reIsHostCtor;
 	  return pattern.test(toSource(value));
 	}
 
@@ -18656,7 +18982,7 @@
 	var objectProto$3 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$3 = objectProto$3.hasOwnProperty;
+	var hasOwnProperty$4 = objectProto$3.hasOwnProperty;
 
 	/**
 	 * Gets the hash value for `key`.
@@ -18673,14 +18999,14 @@
 	    var result = data[key];
 	    return result === HASH_UNDEFINED ? undefined : result;
 	  }
-	  return hasOwnProperty$3.call(data, key) ? data[key] : undefined;
+	  return hasOwnProperty$4.call(data, key) ? data[key] : undefined;
 	}
 
 	/** Used for built-in method references. */
 	var objectProto$4 = Object.prototype;
 
 	/** Used to check objects for own properties. */
-	var hasOwnProperty$4 = objectProto$4.hasOwnProperty;
+	var hasOwnProperty$5 = objectProto$4.hasOwnProperty;
 
 	/**
 	 * Checks if a hash value for `key` exists.
@@ -18693,7 +19019,7 @@
 	 */
 	function hashHas(key) {
 	  var data = this.__data__;
-	  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$4.call(data, key);
+	  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$5.call(data, key);
 	}
 
 	/** Used to stand-in for `undefined` hash values. */
@@ -18785,7 +19111,7 @@
 	 * _.eq(NaN, NaN);
 	 * // => true
 	 */
-	function eq$1(value, other) {
+	function eq$2(value, other) {
 	  return value === other || (value !== value && other !== other);
 	}
 
@@ -18800,7 +19126,7 @@
 	function assocIndexOf(array, key) {
 	  var length = array.length;
 	  while (length--) {
-	    if (eq$1(array[length][0], key)) {
+	    if (eq$2(array[length][0], key)) {
 	      return length;
 	    }
 	  }
@@ -18917,7 +19243,7 @@
 	ListCache.prototype.set = listCacheSet;
 
 	/* Built-in method references that are verified to be native. */
-	var Map$1 = getNative(root$1, 'Map');
+	var Map$1 = getNative(root$2, 'Map');
 
 	/**
 	 * Removes all key-value entries from the map.
@@ -19221,7 +19547,7 @@
 	}
 
 	/* Built-in method references that are verified to be native. */
-	var Set$1 = getNative(root$1, 'Set');
+	var Set$1 = getNative(root$2, 'Set');
 
 	/**
 	 * This method returns `undefined`.
@@ -19357,7 +19683,7 @@
 	}
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeIsFinite = root$1.isFinite;
+	var nativeIsFinite = root$2.isFinite;
 
 	/**
 	 * Checks if `value` is a finite primitive number.
@@ -19459,6 +19785,25 @@
 	        return round(v, decimals);
 	    }
 	    return decimals;
+	}
+
+	/*
+	 * simple event callbacks, mimicing the $.Callbacks API
+	 */
+
+	function events() {
+	    const list = [];
+
+	    return {
+	        fire() {
+	            for (var i = list.length - 1; i >= 0; i--) {
+	                list[i].apply(this, arguments);
+	            }
+	        },
+	        add(callback) {
+	            list.push(callback);
+	        }
+	    };
 	}
 
 	var js_cookie$1 = createCommonjsModule(function (module, exports) {
@@ -19844,7 +20189,7 @@
 	    });
 	}
 
-	const storeChanges = _$2.throttle((chart, callback) => {
+	const storeChanges = _$3.throttle((chart, callback) => {
 	    const state = chart.serialize();
 
 	    put$1(`/v3/charts/${state.id}`, { payload: state })
@@ -19857,7 +20202,7 @@
 	        });
 	}, 1000);
 
-	const storeData = _$2.throttle((chart, callback) => {
+	const storeData = _$3.throttle((chart, callback) => {
 	    const data = chart.getMetadata('data.json') ? JSON.stringify(chart.dataset()) : chart.rawData();
 	    // const data = chart.rawData();
 	    put$1(`/v3/charts/${chart.get().id}/data`, {
@@ -19873,6 +20218,8 @@
 	            console.error('Could not store chart data', e);
 	        });
 	}, 1000);
+
+	const changeCallbacks = events();
 
 	class Chart extends Store {
 	    /*
@@ -19959,12 +20306,12 @@
 	        const keys = key.split('.');
 	        let pt = metadata;
 
-	        _$2.some(keys, key => {
-	            if (_$2.isUndefined(pt) || _$2.isNull(pt)) return true; // break out of the loop
+	        _$3.some(keys, key => {
+	            if (_$3.isUndefined(pt) || _$3.isNull(pt)) return true; // break out of the loop
 	            pt = pt[key];
 	            return false;
 	        });
-	        return _$2.isUndefined(pt) || _$2.isNull(pt) ? _default : pt;
+	        return _$3.isUndefined(pt) || _$3.isNull(pt) ? _default : pt;
 	    }
 
 	    setMetadata(key, value) {
@@ -19975,14 +20322,14 @@
 
 	        // resolve property until the parent dict
 	        keys.forEach(key => {
-	            if (_$2.isUndefined(pt[key]) || _$2.isNull(pt[key])) {
+	            if (_$3.isUndefined(pt[key]) || _$3.isNull(pt[key])) {
 	                pt[key] = {};
 	            }
 	            pt = pt[key];
 	        });
 
 	        // check if new value is set
-	        if (!_$2.isEqual(pt[lastKey], value)) {
+	        if (!_$3.isEqual(pt[lastKey], value)) {
 	            pt[lastKey] = value;
 	            this.set({ metadata });
 	        }
@@ -19996,6 +20343,10 @@
 
 	    storeData(callback) {
 	        storeData(this, callback);
+	    }
+
+	    onChange(c) {
+	        changeCallbacks.add(c);
 	    }
 
 	    serialize() {
@@ -20035,7 +20386,7 @@
 	        // pull output config from metadata
 	        // return column.formatter(config);
 	        var colFormat = get$3(this.get(), 'metadata.data.column-format', {});
-	        colFormat = _$2.clone(colFormat[column.name()] || { type: 'auto', 'number-format': 'auto' });
+	        colFormat = _$3.clone(colFormat[column.name()] || { type: 'auto', 'number-format': 'auto' });
 
 	        if (
 	            column.type() === 'number' &&
@@ -20221,5 +20572,5 @@
 
 	return main;
 
-}));
+})));
 //# sourceMappingURL=visualize.js.map
