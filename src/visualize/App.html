@@ -229,17 +229,18 @@
                             }
                         );
 
+                        // apply vis default metadata
+                        const visualize = {
+                            ...(vis.controls.defaults || {}),
+                            ...chart.getMetadata('visualize', {})
+                        };
+
                         if (mod.migrate) {
                             const { metadata } = chart.get();
                             mod.migrate(type, metadata, chart.dataset());
                             chart.set({ metadata });
                         }
 
-                        // apply vis default metadata
-                        const visualize = {
-                            ...(vis.controls.defaults || {}),
-                            ...chart.getMetadata('visualize', {})
-                        };
                         chart.setMetadata('visualize', visualize);
                         chart.set({ visualization: vis });
 
