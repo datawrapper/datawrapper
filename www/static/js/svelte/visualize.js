@@ -879,8 +879,8 @@
 
 	// Declare how to handle changes in the chart's attributes:
 	const UPDATE = ['title', 'metadata.describe', 'metadata.annotate.notes', 'metadata.custom'];
-	const RELOAD = ['type', 'theme', 'language', 'metadata.data.transpose'];
-	const RENDER = ['metadata.visualize', 'metadata.axes'];
+	const RELOAD = ['type', 'theme', 'language', 'metadata.data.transpose', 'metadata.axes'];
+	const RENDER = ['metadata.visualize'];
 	const IGNORE = ['metadata.visualize.text-annotations'];
 
 	function url({ $id, src }) {
@@ -899,7 +899,7 @@
 	        resizing: false,
 	        // inline editing
 	        editable: true,
-	        previousAttributes: {}
+	        previousAttributes: null
 	    };
 	}
 	var methods = {
@@ -934,28 +934,15 @@
 	        });
 	    },
 
-	    renderChart({ key, value }) {
+	    renderChart(attributes) {
 	        // Do not re-render in passive mode:
 	        if (this.get().passiveMode) return;
 
-	        // Figure out if re-rendering is really necessary:
-	        let shouldRender = IGNORE.reduce((render, ignoredKeys) => {
-	            if (this.hasChanged(ignoredKeys)) render = false;
-	            return render;
-	        }, this.hasChanged(key));
-
 	        this.getContext(win => {
-	            if (shouldRender) {
-	                // Re-render chart with new attributes:
-	                win.__dw.vis.chart().set(key, value);
-	                win.__dw.vis.chart().load(win.__dw.params.data);
-	                win.__dw.render();
-	            }
-
-	            // Clone attributes for checking whether there were changes:
-	            this.set({
-	                previousAttributes: clone(this.store.serialize())
-	            });
+	            // Re-render chart with new attributes:
+	            win.__dw.vis.chart().attributes(attributes);
+	            win.__dw.vis.chart().load(win.__dw.params.data);
+	            win.__dw.render();
 	        });
 	    },
 
@@ -969,17 +956,6 @@
 	            reloadOnce.cancel();
 	            this.refs.iframe.contentWindow.location.reload();
 	        });
-	    },
-
-	    hasChanged(key) {
-	        let p0 = this.store.serialize();
-	        let p1 = this.get().previousAttributes;
-	        const keys = key.split('.');
-	        keys.forEach(k => {
-	            p0 = p0[k] || {};
-	            p1 = p1[k] || {};
-	        });
-	        return !isEqual(p0, p1);
 	    },
 
 	    dragStart(event) {
@@ -1014,19 +990,68 @@
 	        }
 	    });
 
-	    // Observe change in attributes that require the chart wrapper to be updated:
-	    UPDATE.forEach(key => {
-	        this.store.observeDeep(key, this.updateChart.bind(this), { init: false });
-	    });
+	    this.store.on('update', ({ changed, current }) => {
+	        const { previousAttributes } = this.get();
 
-	    // Observe change in attributes that require the iframe to reload:
-	    RELOAD.forEach(key => {
-	        this.store.observeDeep(key, this.reloadChart.bind(this), { init: false });
-	    });
+	        if (!previousAttributes) {
+	            this.set({
+	                previousAttributes: clone(this.store.serialize())
+	            });
+	            return;
+	        }
 
-	    // Observe change in attributes that require the chart to re-render:
-	    RENDER.forEach(key => {
-	        this.store.observeDeep(key, value => this.renderChart({ key, value }), { init: false });
+	        let update, reload, render;
+	        const attributes = this.store.get();
+
+	        function hasChanged(key) {
+	            let p0 = attributes;
+	            let p1 = previousAttributes;
+	            const keys = key.split('.');
+	            keys.forEach(k => {
+	                p0 = p0[k] || {};
+	                p1 = p1[k] || {};
+	            });
+	            return !isEqual(p0, p1);
+	        }
+
+	        // Observe change in attributes that require the iframe to reload:
+	        RELOAD.forEach(key => {
+	            if (hasChanged(key)) {
+	                reload = true;
+	            }
+	        });
+
+	        if (reload) {
+	            this.reloadChart();
+	        } else {
+	            // Observe change in attributes that require the chart wrapper to be updated:
+	            UPDATE.forEach(key => {
+	                if (hasChanged(key)) {
+	                    update = true;
+	                }
+	            });
+
+	            // Observe change in attributes that require the chart to re-render:
+	            RENDER.forEach(key => {
+	                if (hasChanged(key)) {
+	                    render = true;
+	                }
+	            });
+
+	            IGNORE.forEach(key => {
+	                if (hasChanged(key)) {
+	                    render = false;
+	                }
+	            });
+
+	            if (update) this.updateChart();
+	            if (render) this.renderChart(attributes);
+	        }
+
+	        // Clone attributes for checking whether there were changes:
+	        this.set({
+	            previousAttributes: clone(this.store.serialize())
+	        });
 	    });
 	}
 	function onupdate({ changed, current }) {
