@@ -1055,8 +1055,11 @@
 	        const attributes = this.store.get();
 
 	        function hasChanged(key) {
-	            let p0 = attributes;
-	            let p1 = previousAttributes;
+	            // we need to clone these as cloning removes 'undefined' values
+	            // which would otherwise break the comparison with the already-cloned
+	            // previousAttributes
+	            let p0 = clone(attributes);
+	            let p1 = clone(previousAttributes);
 	            const keys = key.split('.');
 	            keys.forEach(k => {
 	                p0 = p0[k] || {};
