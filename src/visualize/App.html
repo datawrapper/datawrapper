@@ -229,19 +229,19 @@
                             }
                         );
 
-                        // apply vis default metadata
-                        const visualize = {
-                            ...(vis.controls.defaults || {}),
-                            ...chart.getMetadata('visualize', {})
-                        };
+                        const metadata = chart.getMetadata();
+                        const defaults = vis.controls.defaults || {};
+
+                        for (var field in defaults) {
+                            if (typeof metadata.visualize[field] === 'undefined')
+                                metadata.visualize[field] = defaults[field];
+                        }
 
                         if (mod.migrate) {
-                            const { metadata } = chart.get();
                             mod.migrate(type, metadata, chart.dataset());
                             chart.set({ metadata });
                         }
 
-                        chart.setMetadata('visualize', visualize);
                         chart.set({ visualization: vis });
 
                         // determine if we automaticall switch to refine tab
