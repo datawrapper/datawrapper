@@ -31,57 +31,66 @@ require(['{{vis['svelte-sidebar']['amd']}}', 'svelte/visualize'], function(mod, 
         if (chartData.metadata[key] === undefined) chartData.metadata[key] = {};
     });
 
-    if (typeof mod.migrate === "function") {
-        mod.migrate(chartData.type, chartData.metadata);
-    }
-
-    // set defaults
-    chartData.metadata.visualize = _.extend(
-        {{vis['svelte-sidebar']['defaults']|json|raw}},
-        chartData.metadata.visualize
-    );
-
-    chartData.mode = getQueryVariable("mode") || "web";
-
     var chart = new visualize.Chart(chartData);
-    window.chart2 = chart;
-    var getJSON = mod.utils.getJSON;
 
     var themeCache = {};
     var visCache = {};
+    var getJSON = mod.utils.getJSON;
+    var app;
+
     themeCache['{{theme.id}}'] = {{theme.data|json|raw}};
     visCache['{{vis.id}}'] = {{vis|json|raw}};
 
-    chart.set({
-        writable: true,
-        themeData: themeCache['{{theme.id}}'],
-        user: {{userArray|json|raw}},
-        locales: {{chartLocales|json|raw}},
-        themes: {{userThemes|json|raw}},
-        visualization: visCache['{{vis.id}}']
-    });
-
-    chart.compute('axes', ['visualization'], function(visualization) {
-        if (!visualization) {
-            return [];
-        }
-        return _.values(visualization.axes || {});
-    });
-
-    function getContext(callback) {
-        var win = $('#iframe-vis').get(0).contentWindow;
-        var doc = $('#iframe-vis').get(0).contentDocument;
-        if (!win || !win.__dw || !win.__dw.vis) {
-            return setTimeout(function () {
-                getContext(callback);
-            }, 200);
-        }
-        callback(win, doc);
-    }
-
-    var app;
-
     chart.load(dw.backend.__currentData).then(function(ds) {
+
+        if (typeof mod.migrate === "function") {
+            mod.migrate(chartData.type, chartData.metadata, ds);
+        }
+
+        // set defaults
+        chartData.metadata.visualize = _.extend(
+            {{vis['svelte-sidebar']['defaults']|json|raw}},
+            chartData.metadata.visualize
+        );
+
+        chartData.mode = getQueryVariable("mode") || "web";
+
+        // re-set chart data after migration and defaults
+        chart.set(chartData);
+
+        // re-apply changes, so migration code is able to
+        // change column types
+        chart.dataset(true);
+
+        window.chart2 = chart;
+
+        chart.set({
+            writable: true,
+            themeData: themeCache['{{theme.id}}'],
+            user: {{userArray|json|raw}},
+            locales: {{chartLocales|json|raw}},
+            themes: {{userThemes|json|raw}},
+            visualization: visCache['{{vis.id}}']
+        });
+
+        chart.compute('axes', ['visualization'], function(visualization) {
+            if (!visualization) {
+                return [];
+            }
+            return _.values(visualization.axes || {});
+        });
+
+        function getContext(callback) {
+            var win = $('#iframe-vis').get(0).contentWindow;
+            var doc = $('#iframe-vis').get(0).contentDocument;
+            if (!win || !win.__dw || !win.__dw.vis) {
+                return setTimeout(function () {
+                    getContext(callback);
+                }, 200);
+            }
+            callback(win, doc);
+        }
+
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
