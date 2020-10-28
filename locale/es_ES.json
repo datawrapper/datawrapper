@@ -594,7 +594,7 @@
   "Design": "Diseño",
   "Select visualization": "Seleccionar visualización",
   "Hint": "Consejo",
-  "visualize / transpose-hint": "En caso de que la visualización no se vea como esperabas, prueba a [LINK]transponer los datos[/LINK]",
+  "visualize / transpose-hint": "En caso de que la visualización no se vea como esperabas, prueba a",
   "Tell the story": "Contar la historia",
   "Title": "Título",
   "Description": "Descripción",
@@ -761,9 +761,6 @@
   "left": "izquierda",
   "center": "centro",
   "right": "derecha",
-  "controls / legend / above-vis": "",
-  "controls / legend / below-vis": "",
-  "controls / legend / mobile-note": "",
-  "controls / legend / def-group": "",
-  "controls / legend / disabled-note": ""
+  "visualize / transpose-button": "transponer los datos",
+  "visualize / notifications / missing-column": ""
 }

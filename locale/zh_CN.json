@@ -594,7 +594,7 @@
   "Design": "设计",
   "Select visualization": "选择可视化",
   "Hint": "提示",
-  "visualize / transpose-hint": "如果可视化效果不符合您的预期，则应尝试[LINK]转置数据[/LINK]",
+  "visualize / transpose-hint": "如果可视化效果不符合您的预期，则应尝试",
   "Tell the story": "讲故事",
   "Title": "标题",
   "Description": "说明",
@@ -761,9 +761,6 @@
   "left": "",
   "center": "",
   "right": "",
-  "controls / legend / above-vis": "",
-  "controls / legend / below-vis": "",
-  "controls / legend / mobile-note": "",
-  "controls / legend / def-group": "",
-  "controls / legend / disabled-note": ""
+  "visualize / transpose-button": "转置数据",
+  "visualize / notifications / missing-column": ""
 }
