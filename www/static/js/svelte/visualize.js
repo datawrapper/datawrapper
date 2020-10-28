@@ -881,7 +881,7 @@
 	const UPDATE = ['title', 'metadata.describe', 'metadata.annotate.notes', 'metadata.custom'];
 	const RELOAD = ['type', 'theme', 'language', 'metadata.data.transpose', 'metadata.axes'];
 	const RENDER = ['metadata.visualize'];
-	const IGNORE = ['metadata.visualize.text-annotations'];
+	const IGNORE = ['metadata.visualize.text-annotations', 'metadata.visualize.range-annotations'];
 
 	function url({ $id, src }) {
 	    // eslint-disable-next-line
@@ -935,6 +935,7 @@
 	    },
 
 	    renderChart(attributes) {
+	        console.log('render');
 	        // Do not re-render in passive mode:
 	        if (this.get().passiveMode) return;
 
