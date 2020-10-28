@@ -1062,7 +1062,7 @@
 	                p0 = p0[k] || {};
 	                p1 = p1[k] || {};
 	            });
-	            return (JSON.stringify(p0) !== JSON.stringify(p1) && !isEqual(p0, p1));
+	            return !isEqual(p0, p1);
 	        }
 
 	        // Observe change in attributes that require the iframe to reload:
