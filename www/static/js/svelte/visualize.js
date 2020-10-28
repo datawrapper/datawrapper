@@ -11432,7 +11432,7 @@
 	}
 	function data$e() {
 	    return {
-	        tab: 'refine',
+	        tab: 'pick',
 	        Refine: Empty,
 	        Annotate: Empty,
 	        visualizations: [],
@@ -11513,14 +11513,14 @@
 	                chart.set({ visualization: vis });
 
 	                // determine if we automaticall switch to refine tab
-	                // const { tab, defaultVisType } = this.get();
-	                // const chartTypeSet =
-	                //     chart.getMetadata('visualize.chart-type-set', false) ||
-	                //     id !== defaultVisType;
+	                const { tab } = this.get();
+	                const chartTypeSet = chart.getMetadata('visualize.chart-type-set', false);
 
-	                // this.set({
-	                //     tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
-	                // });
+	                this.set({
+	                    tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+	                });
+
+	                chart.setMetadata('visualize.chart-type-set', true);
 
 	                const vis2 = dw.visualization(vis.id);
 	                vis2.meta = vis;
