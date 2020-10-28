@@ -768,6 +768,57 @@
 	  return eq(a, b);
 	}
 
+	// A (possibly faster) way to get the current timestamp as an integer.
+	var now = Date.now || function() {
+	  return new Date().getTime();
+	};
+
+	// Returns a function, that, when invoked, will only be triggered at most once
+	// during a given window of time. Normally, the throttled function will run
+	// as much as it can, without ever going more than once per `wait` duration;
+	// but if you'd like to disable the execution on the leading edge, pass
+	// `{leading: false}`. To disable execution on the trailing edge, ditto.
+	function throttle(func, wait, options) {
+	  var timeout, context, args, result;
+	  var previous = 0;
+	  if (!options) options = {};
+
+	  var later = function() {
+	    previous = options.leading === false ? 0 : now();
+	    timeout = null;
+	    result = func.apply(context, args);
+	    if (!timeout) context = args = null;
+	  };
+
+	  var throttled = function() {
+	    var _now = now();
+	    if (!previous && options.leading === false) previous = _now;
+	    var remaining = wait - (_now - previous);
+	    context = this;
+	    args = arguments;
+	    if (remaining <= 0 || remaining > wait) {
+	      if (timeout) {
+	        clearTimeout(timeout);
+	        timeout = null;
+	      }
+	      previous = _now;
+	      result = func.apply(context, args);
+	      if (!timeout) context = args = null;
+	    } else if (!timeout && options.trailing !== false) {
+	      timeout = setTimeout(later, remaining);
+	    }
+	    return result;
+	  };
+
+	  throttled.cancel = function() {
+	    clearTimeout(timeout);
+	    previous = 0;
+	    timeout = context = args = null;
+	  };
+
+	  return throttled;
+	}
+
 	const TAGS = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
 	const COMMENTS_AND_PHP_TAGS = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
 	const defaultAllowed = '<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
@@ -934,18 +985,17 @@
 	        });
 	    },
 
-	    renderChart(attributes) {
-	        console.log('render');
+	    renderChart: throttle(function(attributes) {
 	        // Do not re-render in passive mode:
 	        if (this.get().passiveMode) return;
 
 	        this.getContext(win => {
 	            // Re-render chart with new attributes:
-	            win.__dw.vis.chart().attributes(attributes);
+	            win.__dw.vis.chart().set('metadata', attributes.metadata);
 	            win.__dw.vis.chart().load(win.__dw.params.data);
 	            win.__dw.render();
 	        });
-	    },
+	    }, 50),
 
 	    reloadChart() {
 	        // Do not reload in passive moder:
@@ -13138,7 +13188,7 @@
 	}
 
 	// A (possibly faster) way to get the current timestamp as an integer.
-	var now = Date.now || function() {
+	var now$1 = Date.now || function() {
 	  return new Date().getTime();
 	};
 
@@ -13414,20 +13464,20 @@
 	// as much as it can, without ever going more than once per `wait` duration;
 	// but if you'd like to disable the execution on the leading edge, pass
 	// `{leading: false}`. To disable execution on the trailing edge, ditto.
-	function throttle(func, wait, options) {
+	function throttle$1(func, wait, options) {
 	  var timeout, context, args, result;
 	  var previous = 0;
 	  if (!options) options = {};
 
 	  var later = function() {
-	    previous = options.leading === false ? 0 : now();
+	    previous = options.leading === false ? 0 : now$1();
 	    timeout = null;
 	    result = func.apply(context, args);
 	    if (!timeout) context = args = null;
 	  };
 
 	  var throttled = function() {
-	    var _now = now();
+	    var _now = now$1();
 	    if (!previous && options.leading === false) previous = _now;
 	    var remaining = wait - (_now - previous);
 	    context = this;
@@ -14246,7 +14296,7 @@
 		matches: matcher,
 		times: times,
 		random: random,
-		now: now,
+		now: now$1,
 		escape: _escape,
 		unescape: _unescape,
 		templateSettings: templateSettings,
@@ -14261,7 +14311,7 @@
 		memoize: memoize,
 		delay: delay,
 		defer: defer,
-		throttle: throttle,
+		throttle: throttle$1,
 		debounce: debounce,
 		wrap: wrap,
 		negate: negate,
