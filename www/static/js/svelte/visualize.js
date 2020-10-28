@@ -1085,7 +1085,7 @@
 	            // Observe change in attributes that require the chart to re-render:
 	            RENDER.forEach(key => {
 	                if (hasChanged(key)) {
-	                    debugger;
+	                    console.log('render: ',key);
 	                    render = true;
 	                }
 	            });
