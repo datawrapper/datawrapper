@@ -5,6 +5,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -105,6 +106,15 @@ function build(appId, opts) {
                         '@babel/plugin-transform-runtime'
                     ]
                 }),
+
+            /* hack to fix recursion problem caused by transpiling twice
+             * https://github.com/rollup/rollup-plugin-babel/issues/252#issuecomment-421541785
+             */
+            replace({
+                delimiters: ['', ''],
+                '_typeof2(Symbol.iterator)': 'typeof Symbol.iterator',
+                '_typeof2(obj);': 'typeof obj;'
+            }),
             production && terser()
         ]
     });
