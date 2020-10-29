@@ -1185,7 +1185,7 @@
 
 	        // Persist changes when edited element loses focus:
 	        el.addEventListener('blur', () => {
-	            el.innerHTML = el.innerHTML.replace(/(<br>)+$/g, ''); // Remove trailing line breaks
+	                            // Remove trailing line breaks
 	            updateContent(purifyHTML(el.innerHTML));
 	        });
 	    }
