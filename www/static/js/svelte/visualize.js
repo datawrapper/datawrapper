@@ -11512,14 +11512,6 @@
 
 	                chart.set({ visualization: vis });
 
-	                // determine if we automaticall switch to refine tab
-	                const { tab } = this.get();
-	                const chartTypeSet = chart.getMetadata('visualize.chart-type-set', false);
-
-	                this.set({
-	                    tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
-	                });
-
 	                chart.setMetadata('visualize.chart-type-set', true);
 
 	                const vis2 = dw.visualization(vis.id);
@@ -11569,6 +11561,14 @@
 	    this.on('destroy', () => {
 	        window.removeEventListener('scroll', makePreviewSticky);
 	        if (resizeObserver) resizeObserver.disconnect();
+	    });
+
+	    // determine if we automaticall switch to refine tab
+	    const { tab } = this.get();
+	    const chartTypeSet = this.store.getMetadata('visualize.chart-type-set', false);
+
+	    this.set({
+	        tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
 	    });
 
 	    window.chart = this.store;
