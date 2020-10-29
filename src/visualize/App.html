@@ -295,11 +295,11 @@
             });
 
             // determine if we automaticall switch to refine tab
-            const { tab } = this.get();
+            const { tab, showChartPicker } = this.get();
             const chartTypeSet = this.store.getMetadata('visualize.chart-type-set', false);
 
             this.set({
-                tab: tab === 'pick' && chartTypeSet ? 'refine' : tab
+                tab: tab === 'pick' && (!showChartPicker || chartTypeSet) ? 'refine' : tab
             });
 
             window.chart = this.store;
