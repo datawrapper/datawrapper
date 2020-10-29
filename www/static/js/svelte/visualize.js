@@ -1185,7 +1185,7 @@
 
 	        // Persist changes when edited element loses focus:
 	        el.addEventListener('blur', () => {
-	                            // Remove trailing line breaks
+	            // Remove trailing line breaks
 	            updateContent(purifyHTML(el.innerHTML));
 	        });
 	    }
@@ -2318,7 +2318,6 @@
 
 		var basetext3_initial_data = {
 		 	id: "text-source-link",
-		 	expandable: true,
 		 	placeholder: __$1('URL of the dataset')
 		 };
 		if (ctx.$metadata.describe['source-url'] !== void 0) {
@@ -2445,7 +2444,7 @@
 				addLoc(div3, file$5, 16, 4, 754);
 				label6.className = "control-label svelte-ucg8ir";
 				label6.htmlFor = "text-byline";
-				addLoc(label6, file$5, 27, 4, 1352);
+				addLoc(label6, file$5, 27, 4, 1341);
 				div4.className = "story-title";
 				addLoc(div4, file$5, 0, 0, 0);
 			},
