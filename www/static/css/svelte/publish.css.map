@@ -2,7 +2,7 @@
   "version": 3,
   "file": "publish.css",
   "sources": [
-    "../../../../src/node_modules/@datawrapper/controls/Help.html",
+    "../../../../../../libs/controls/v2/Help.html",
     "../../../../src/publish/Publish.html"
   ],
   "sourcesContent": [
