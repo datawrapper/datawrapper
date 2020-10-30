@@ -49,6 +49,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
                     'title' => $v['title'],
                     'namespace' => $v['namespace'] ?? 'chart',
                     'controls' => $v['controls'] ?? [],
+                    'height' => $v['height'] ?? 'fit',
                     'icon' => $v['icon'],
                     'icon_path' => '/static/plugins/' . $v['__plugin'] . '/' . $v['id'] . '.svg',
                 ];

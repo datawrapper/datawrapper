@@ -118,6 +118,7 @@
                 width_txt: null,
                 height_txt: null,
                 unit: 'px',
+                visLoading: false,
                 units: [
                     { value: 'mm', label: 'mm', step: 1, decimals: 0 },
                     { value: 'in', label: 'in', step: 0.01, decimals: 2 },
@@ -385,6 +386,8 @@
 
                 window.addEventListener('message', function (e) {
                     var message = e.data;
+
+                    if (app.get().loading) return;
 
                     if (typeof message['datawrapper-height'] !== 'undefined') {
                         var h;

@@ -1,6 +1,7 @@
 import App from './App.html';
 import Chart from '@datawrapper/chart-core/lib/dw/svelteChart';
 import { getJSON } from '@datawrapper/shared/fetch';
+import { get } from 'lodash';
 
 export default { init };
 
@@ -100,6 +101,27 @@ function init({
                         chart.set({ themeData: res.data });
                     }
                 );
+            }
+        }
+
+        if (changed.type) {
+            const oldVis = visualizations.filter(el => el.id === previous.type)[0];
+            const newVis = visualizations.filter(el => el.id === current.type)[0];
+
+            if (
+                oldVis.height === 'fixed' &&
+                newVis.height === 'fit' &&
+                get(current, 'metadata.publish.embed-height') > 800
+            ) {
+                const { metadata } = current;
+                metadata.publish['embed-height'] = 600;
+                this.set({ metadata });
+
+                if (app && app.refs.resizer) {
+                    app.set({ loading: true });
+                    app.refs.resizer.set({ height: 600 });
+                    app.refs.resizer.updateSize();
+                }
             }
         }
 
