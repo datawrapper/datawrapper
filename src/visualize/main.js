@@ -31,9 +31,12 @@ function init({
         writable: true,
         themeData: themeData,
         themes,
-        visualization: visualizations[chartData.type],
-        lastEditStep: 3
+        visualization: visualizations[chartData.type]
     });
+
+    if (chart.get().lastEditStep < 3) {
+        chart.set({ lastEditStep: 3 });
+    }
 
     chart.compute('axes', ['visualization'], function (visualization) {
         if (!visualization) {
