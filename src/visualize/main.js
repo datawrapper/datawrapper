@@ -1,7 +1,7 @@
 import App from './App.html';
 import Chart from '@datawrapper/chart-core/lib/dw/svelteChart';
 import { getJSON } from '@datawrapper/shared/fetch';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 export default { init };
 

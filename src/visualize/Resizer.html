@@ -238,7 +238,7 @@
                             '/visualize';
                     } else {
                         httpReq
-                            .post(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                            .post(`/v3/charts/${dw.backend.currentChart.get().id}/print`)
                             .then(data => {
                                 window.location = `${window.location.protocol}//${window.location.host}/chart/${data.id}/visualize`;
                             });
@@ -258,7 +258,7 @@
                 if (!window.confirm('Are you sure you want to reset to the web version?')) return;
 
                 httpReq
-                    .delete(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                    .delete(`/v3/charts/${dw.backend.currentChart.get().id}/print`)
                     .then(data => {
                         window.location.reload();
                     });
@@ -446,20 +446,20 @@
                     app.updateSize();
                 } else {
                     this.set({
-                        width: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.width',
+                        width: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.width',
                             120
                         ),
-                        height: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.height',
+                        height: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.height',
                             80
                         ),
-                        width_txt: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.width',
+                        width_txt: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.width',
                             120
                         ),
-                        height_txt: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.height',
+                        height_txt: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.height',
                             80
                         ),
                         unit: this.store.getMetadata('publish.export-pdf.unit', 'mm')
