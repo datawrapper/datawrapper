@@ -1,0 +1,38 @@
+<div class="btn-group buttons" style="margin: 20px 0;">
+    <a class="btn submitk" href="#back" on:click|preventDefault="back()"
+        ><i class="fa fa-chevron-left fa-fw icon-btn-left"></i> {__("Back") }</a
+    >
+    <a class="btn submit btn-primary" href="#proceed" on:click|preventDefault="proceed()">
+        {__("Proceed") } <i class="fa fa-chevron-right fa-fw icon-btn-right"></i
+    ></a>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        data() {
+            return {
+                showChartPicker: false
+            };
+        },
+        helpers: { __ },
+        methods: {
+            back() {
+                const { tab, showChartPicker } = this.get();
+                if ((tab === 'refine' && !showChartPicker) || tab === 'pick')
+                    window.location.href = 'describe';
+                else if (tab === 'refine' && showChartPicker) this.set({ tab: 'pick' });
+                else if (tab === 'annotate') this.set({ tab: 'refine' });
+                else if (tab === 'design') this.set({ tab: 'annotate' });
+            },
+            proceed() {
+                const { tab } = this.get();
+                if (tab === 'design') window.location.href = 'publish';
+                else if (tab === 'annotate') this.set({ tab: 'design' });
+                else if (tab === 'refine') this.set({ tab: 'annotate' });
+                else if (tab === 'pick') this.set({ tab: 'refine' });
+            }
+        }
+    };
+</script>

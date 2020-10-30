@@ -5,13 +5,14 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import babel from '@rollup/plugin-babel';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
 const targets = [];
 
-build('fields');
+build('visualize');
 build('team-settings');
 build('account');
 build('chart-breadcrumb');
@@ -24,11 +25,7 @@ build('publish/guest');
 build('publish/pending-activation');
 build('describe');
 build('describe/hot', { noAMD: true });
-build('visualize');
 build('upload');
-build('highlight');
-build('resizer');
-build('colorblind-check');
 
 export default targets;
 
@@ -88,25 +85,35 @@ function build(appId, opts) {
             commonjs(),
             json(),
 
-            babel({
-                // don't exclude anything!
-                // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
-                extensions: ['.js', '.mjs', '.html'],
-                babelHelpers: 'runtime',
-                presets: [
-                    [
-                        '@babel/env',
-                        {
-                            targets: 'last 2 versions, not IE 10, not dead',
-                            corejs: 3,
-                            useBuiltIns: 'entry'
-                        }
+            production &&
+                babel({
+                    // don't exclude anything!
+                    // exclude: [/node_modules\/(?!(@datawrapper|svelte)\/).*/],
+                    extensions: ['.js', '.mjs', '.html'],
+                    babelHelpers: 'runtime',
+                    presets: [
+                        [
+                            '@babel/env',
+                            {
+                                targets: 'last 2 versions, not IE 10, not dead',
+                                corejs: 3,
+                                useBuiltIns: 'entry'
+                            }
+                        ]
+                    ],
+                    plugins: [
+                        'babel-plugin-transform-async-to-promises',
+                        '@babel/plugin-transform-runtime'
                     ]
-                ],
-                plugins: [
-                    'babel-plugin-transform-async-to-promises',
-                    '@babel/plugin-transform-runtime'
-                ]
+                }),
+
+            /* hack to fix recursion problem caused by transpiling twice
+             * https://github.com/rollup/rollup-plugin-babel/issues/252#issuecomment-421541785
+             */
+            replace({
+                delimiters: ['', ''],
+                '_typeof2(Symbol.iterator)': 'typeof Symbol.iterator',
+                '_typeof2(obj);': 'typeof obj;'
             }),
             production && terser()
         ]

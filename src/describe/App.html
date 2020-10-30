@@ -287,7 +287,7 @@
             },
             revertChanges() {
                 const chart = this.store.get().dw_chart;
-                chart.set('metadata.data.changes', []);
+                chart.setMetadata('data.changes', []);
                 chart.saveSoon();
                 this.refs.hot.update();
             },
@@ -310,7 +310,7 @@
                     name: id,
                     formula: ''
                 });
-                chart.set('metadata.describe.computed-columns', computed);
+                chart.setMetadata('describe.computed-columns', computed);
                 chart.saveSoon();
                 const ds2 = chart.dataset(true);
                 this.refs.hot.update();
@@ -337,7 +337,7 @@
                         colFmt[col.name()] = { type: 'auto', ignore: hide };
                     }
                 });
-                chart.set('metadata.data.column-format', colFmt);
+                chart.setMetadata('data.column-format', colFmt);
                 chart.saveSoon();
                 setTimeout(() => {
                     this.refs.hot.get().hot.render();

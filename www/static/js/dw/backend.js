@@ -10,11 +10,8 @@ define([
     './backend/initializeLogout',
     './backend/initializeSignUp',
     './backend/notification',
-    './backend/popupChart',
     './backend/setUserData',
-    './backend/syncChart',
-    './backend/ui/ColorSelector',
-    './backend/ui/NumberStepper'
+    './backend/syncChart'
 ], function (
     checkPassword,
     cmsMode,
@@ -23,11 +20,8 @@ define([
     initializeLogout,
     initializeSignUp,
     notification,
-    popupChart,
     setUserData,
-    syncChart,
-    ColorSelector,
-    NumberStepper
+    syncChart
 ) {
     var backend = {};
 
@@ -39,10 +33,6 @@ define([
                 initializeSignUp();
                 initLanguageLinks();
                 initializeLogout();
-
-                // init custom jquery ui
-                ColorSelector();
-                NumberStepper();
 
                 this.cmsMode.init();
 
@@ -56,7 +46,6 @@ define([
             checkPassword: checkPassword,
             cmsMode: cmsMode,
             httpReq: httpReq,
-            popupChart: popupChart,
             setUserData: setUserData,
             syncChart: syncChart
         },

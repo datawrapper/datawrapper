@@ -4,61 +4,34 @@
 {{ parent() }}
 
 {{ hook('visualize_before_content', chart) }}
+{{ hook('visualize_before_svelte_sidebar', chart) }}
 
-<script type="text/javascript" charset="utf-8" src="/static/vendor/canvg/canvg.bundle.min.js"></script>
-<script type="text/javascript" src="/static/vendor/scrolltofixed/jquery-scrolltofixed-min.js"></script>
+<script type="text/javascript" src="/static/js/svelte/visualize.js?v={{ COMMIT_SHA }}"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/svelte/visualize.css?v={{ COMMIT_SHA }}">
 
-
+<div id="svelte-visualize"></div>
 
 <script type="text/javascript">
-var visData = {{ vis_data | raw }};
-dw.backend.__visRenderUrls = {
-    {% for vis in visualizations_deps %}
-    '{{ vis.id }}': '{{ vis.__static_path }}/{{ vis.id }}.js?v={{ vis.version }}',
-    {% endfor %}
-};
-dw.backend.__visDependencies = {
-    {% for vis in visualizations_deps %}{% if vis.extends %}
-    '{{ vis.id }}': '{{ vis.extends }}',
-    {% endif %}{% endfor %}
-}
-dw.backend.__visLoaded = {};
+    require(['svelte/visualize'], function(mod) {
+        var App = mod.App;
 
-dw.backend.ready(function() {
-    require(['dw/chart/visualize'], function(visualize) {
-        visualize.init(visData.themes, visData.visualizations, visData.vis, "{{ mode }}");
+        mod.init({
+            target: document.querySelector('#svelte-visualize'),
+
+            csv: {{chartData|json|raw}},
+            chartData: {{chart.toStruct()|json|raw}},
+            namespace: {{chart.namespace|json|raw }},
+            defaultVisType: '{{defaultVisType}}',
+
+            visualizations: {{visualizations|json|raw}},
+            visArchive: {{visArchive|json|raw}},
+
+            theme: '{{theme.id}}',
+            themes: {{userThemes|json|raw}},
+            themeData: {{theme.data|json|raw}}
+        })
     });
-});
 </script>
 
-<div class="dw-create-visualize chart-editor chart-editor-{{ mode }}">
-    <div class="row">
-
-        {% if vis['svelte-sidebar'] %}
-
-        {% include 'chart/visualize/svelte-sidebar.twig' %}
-
-        {% else %}
-
-        {% include "chart/visualize/sidebar.twig" %}
-
-        {% endif %}
-        <div class="span8">
-
-            <div class="scrollfix-cont" data-offset-top="100" data-offset-bottom="130" style="position:relative;">
-                <div id="iframe-wrapper" style="height:500px; overflow:visible;">
-                    <iframe src="" id="iframe-vis" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-                </div>
-
-                {{ hook('visualize_before_resizer') }}
-                {{ hook('render_resize_control') }}
-
-                <div id="notifications"></div>
-            </div>
-
-        </div>
-
-    </div>
-</div>
 
 {% endblock %}

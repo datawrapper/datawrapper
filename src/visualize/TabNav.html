@@ -1,0 +1,58 @@
+<div style="margin-bottom: 20px;">
+    <ul class="nav nav-tabs visualize-nav-tabs">
+        {#each tabs as t}
+        <li class:active="tab === t.id">
+            <a on:click|preventDefault="set({tab:t.id})" href="#{t.id}">{@html t.title}</a>
+        </li>
+        {/each}
+    </ul>
+</div>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    const allTabs = [
+        {
+            id: 'pick',
+            title: __('Chart type')
+        },
+        {
+            id: 'refine',
+            title: __('Refine')
+        },
+        {
+            id: 'annotate',
+            title: __('Annotate')
+        },
+        {
+            id: 'design',
+            title: __('Design')
+        }
+    ];
+
+    export default {
+        data() {
+            return {
+                showChartPicker: true,
+                visLoading: false
+            };
+        },
+        computed: {
+            tabs({ showChartPicker }) {
+                return showChartPicker ? allTabs : allTabs.slice(1);
+            }
+        },
+        onstate({ changed, current, previous }) {
+            if (changed.tab && previous && current.tab) {
+                window.location.hash = '#' + current.tab;
+            }
+        }
+    };
+</script>
+
+<style>
+    .fa {
+        color: #777;
+        margin-right: 5px;
+    }
+</style>

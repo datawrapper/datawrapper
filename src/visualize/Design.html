@@ -1,0 +1,25 @@
+<SelectInput
+    label="Select layout:"
+    options="{themeOptions}"
+    labelWidth="100px"
+    width="200px"
+    bind:value="$theme"
+/>
+
+<HookBlocks key="design-blocks" />
+
+<script>
+    import SelectInput from '@datawrapper/controls/Select.html';
+    import HookBlocks from './HookBlocks.html';
+
+    export default {
+        components: { SelectInput, HookBlocks },
+        computed: {
+            themeOptions({ $themes }) {
+                return $themes.map(t => {
+                    return { value: t.id, label: t.title };
+                });
+            }
+        }
+    };
+</script>

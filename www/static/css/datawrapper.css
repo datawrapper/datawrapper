@@ -1727,7 +1727,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize.chart-editor-print .resizer {
   display: none;
 }
-.chart-editor.dw-create-visualize .visualization [contenteditable=true]:hover:after {
+.chart-editor.dw-create-visualize .visualization [contenteditable='true']:hover:after {
   content: ' click to edit';
   font-style: italic;
   font-size: 12px;
@@ -1933,23 +1933,6 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize .vis-options .tooltip.right .tooltip-arrow {
   border-right-color: #eee;
 }
-.chart-editor.dw-create-visualize .highlighted-series li {
-  margin-bottom: 3px;
-  margin-right: 10px;
-  float: left;
-  display: inline;
-}
-.chart-editor.dw-create-visualize .highlighted-series .badge {
-  max-width: 100%;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.chart-editor.dw-create-visualize .highlighted-series .badge .icon-remove {
-  position: relative;
-  left: -4px;
-  top: 1px;
-}
 .chart-editor.dw-create-visualize .select-visualization p {
   margin-top: 15px;
 }
@@ -2130,7 +2113,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   padding-left: 1ex;
   color: #666;
 }
-.chart-editor.dw-create-visualize .resize-chart input[type=text] {
+.chart-editor.dw-create-visualize .resize-chart input[type='text'] {
   width: 4ex;
   position: relative;
   top: 3px;
@@ -2143,7 +2126,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   top: -60px !important;
 }
 .chart-editor.dw-create-visualize .alert-warning h4 {
-  color: #A0711F;
+  color: #a0711f;
   margin: 2px 0 5px;
 }
 .chart-editor.dw-create-visualize .visualize-nav-tabs {
@@ -2196,7 +2179,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 }
 .chart-editor.dw-create-visualize .visconfig label,
 .chart-editor.dw-create-visualize .visconfig select,
-.chart-editor.dw-create-visualize .visconfig input[type=text],
+.chart-editor.dw-create-visualize .visconfig input[type='text'],
 .chart-editor.dw-create-visualize .visconfig textarea {
   font-size: 14px;
   line-height: 16px;
@@ -2206,15 +2189,11 @@ Each of these property-direction combinations needs to be appended with one of 6
 @media only screen and (max-width: 1199px) {
   .chart-editor.dw-create-visualize .visconfig label,
   .chart-editor.dw-create-visualize .visconfig select,
-  .chart-editor.dw-create-visualize .visconfig input[type=text],
+  .chart-editor.dw-create-visualize .visconfig input[type='text'],
   .chart-editor.dw-create-visualize .visconfig textarea {
     font-size: 13px;
     line-height: 15px;
   }
-}
-.chart-editor.dw-create-visualize .visconfig #text-intro {
-  min-width: 356px;
-  max-width: 356px;
 }
 .chart-editor.dw-create-visualize .visconfig label.separator {
   font-weight: 500;
@@ -2241,25 +2220,25 @@ Each of these property-direction combinations needs to be appended with one of 6
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-group .vis-option-type-separator:first-child label.separator {
   margin-top: -5px;
 }
-.chart-editor.dw-create-visualize .visconfig input[type="radio"],
-.chart-editor.dw-create-visualize .visconfig input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig input[type='radio'],
+.chart-editor.dw-create-visualize .visconfig input[type='checkbox'] {
   margin: 2px 0 0;
 }
 .chart-editor.dw-create-visualize .visconfig label.checkbox {
   padding-left: 17px;
 }
-.chart-editor.dw-create-visualize .visconfig label.checkbox input[type="checkbox"] {
+.chart-editor.dw-create-visualize .visconfig label.checkbox input[type='checkbox'] {
   margin-left: -17px;
 }
 .chart-editor.dw-create-visualize .visconfig .publish-btn,
 .chart-editor.dw-create-visualize .visconfig .proceed-btn {
-  border-top-right-radius: 4px!important;
-  border-bottom-right-radius: 4px!important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
 }
 .chart-editor.dw-create-visualize .visconfig .btn-stepback,
 .chart-editor.dw-create-visualize .visconfig .btn-tabback {
-  border-top-left-radius: 4px!important;
-  border-bottom-left-radius: 4px!important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
 }
 .chart-editor.dw-create-visualize .visconfig .vis-option-type-textarea {
   margin-top: 10px;
@@ -2286,9 +2265,12 @@ Each of these property-direction combinations needs to be appended with one of 6
   justify-content: center;
   align-items: center;
   width: auto;
-  height: 42px;
-  margin-top: 30px;
-  margin-bottom: 80px;
+  margin: 20px 0;
+}
+@media (min-width: 980px) {
+  .chart-editor.dw-create-visualize .toolbar {
+    margin: 50px 0;
+  }
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -2297,7 +2279,7 @@ Each of these property-direction combinations needs to be appended with one of 6
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 20px;
+  margin: 20px 0 10px 20px;
   position: relative;
 }
 .chart-editor.dw-create-visualize .toolbar .toolbar-container:first-child {
@@ -2476,7 +2458,7 @@ Each of these property-direction combinations needs to be appended with one of 6
 .vis-option-type-chart-description {
   padding-bottom: 1px;
 }
-.vis-option-type-chart-description input[type="text"],
+.vis-option-type-chart-description input[type='text'],
 .vis-option-type-chart-description textarea {
   margin-bottom: 5px;
 }
@@ -2493,24 +2475,24 @@ Each of these property-direction combinations needs to be appended with one of 6
   max-width: 180px;
 }
 textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
+input[type='text'],
+input[type='password'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='date'],
+input[type='month'],
+input[type='time'],
+input[type='week'],
+input[type='number'],
+input[type='email'],
+input[type='url'],
+input[type='search'],
+input[type='tel'],
+input[type='color'],
 .uneditable-input {
-  -webkit-box-shadow: none!important;
-  -moz-box-shadow: none!important;
-  box-shadow: none!important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
   border: 1px solid #ddd;
   border-top-color: #ccc;
   border-left-color: #ccc;
@@ -2747,8 +2729,20 @@ input[type="color"],
   font-size: 16px;
   line-height: 50px;
   font-weight: 400;
-  margin-bottom: 0;
+  margin-bottom: 5px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  .dw .create-nav > * {
+    font-size: 14px;
+    line-height: 42px;
+    height: 42px;
+    margin-bottom: 5px;
+    margin-right: -10px;
+    padding-right: 10px;
+  }
 }
 .dw .create-nav a > span {
   pointer-events: none;
@@ -3351,7 +3345,7 @@ body.dw h1 {
   width: 100%;
   z-index: 10000;
   background: #fcf8e3;
-  color: #000;
+  color: #c09853;
   border-bottom: 1px solid #edddbe;
   box-sizing: border-box;
   text-align: center;
@@ -3359,7 +3353,7 @@ body.dw h1 {
 .dw-alert-message h2,
 .dw-alert-message p,
 .dw-alert-message li {
-  color: #000;
+  color: #fff;
 }
 .dw-alert-message li {
   display: inline-block;
@@ -3388,11 +3382,6 @@ body.dw h1 {
 }
 .dw-alert-message.dw-alert-warning a {
   color: #f6d99d;
-}
-.dw-alert-message.dw-alert-warning h2,
-.dw-alert-message.dw-alert-warning p,
-.dw-alert-message.dw-alert-warning li {
-  color: white;
 }
 html h2 {
   font-size: 24px;
@@ -3586,11 +3575,6 @@ dl.dl-horizontal dd {
     font-size: 11px;
     padding-left: 5px;
     white-space: nowrap;
-  }
-  .dw .create-nav div {
-    font-size: 14px;
-    line-height: 42px;
-    height: 42px;
   }
 }
 .tooltip {
@@ -3925,4 +3909,17 @@ button.btn > i.im {
 }
 button.btn-small > i.im {
   font-size: 0.7rem !important;
+}
+.plain-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  line-height: inherit;
+  font-size: inherit;
+  vertical-align: inherit;
+  color: #1d81a2;
+}
+.plain-link:hover {
+  text-decoration: underline;
+  color: #15607a;
 }

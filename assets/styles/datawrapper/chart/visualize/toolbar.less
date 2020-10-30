@@ -1,14 +1,14 @@
-
 .toolbar {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: auto;
-    height: 42px;
-    margin-top: 30px;
-    margin-bottom: 80px;
+    margin: 20px 0;
 
+    @media (min-width: 980px) {
+        margin: 50px 0;
+    }
 
     .toolbar-container {
         border: 1px solid rgba(0, 0, 0, 0.1);
@@ -17,7 +17,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 20px;
+        margin: 20px 0 10px 20px;
         position: relative;
 
         &:first-child {
@@ -32,12 +32,12 @@
             font-size: 11px;
             color: #999;
 
-              -webkit-touch-callout: none; /* iOS Safari */
-                -webkit-user-select: none; /* Safari */
-                 -khtml-user-select: none; /* Konqueror HTML */
-                   -moz-user-select: none; /* Firefox */
-                    -ms-user-select: none; /* Internet Explorer/Edge */
-                        user-select: none; /* Non-prefixed version, currently
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
                                               supported by Chrome and Opera */
 
             .warning {
@@ -49,7 +49,6 @@
             .fa.hide {
                 display: none;
             }
-
         }
 
         &.hide {
@@ -74,26 +73,26 @@
             border-right: 1px solid rgba(0, 0, 0, 0.1);
 
             &:hover {
-                background: rgba(0,0,0,0.05);
+                background: rgba(0, 0, 0, 0.05);
             }
 
             .column {
                 border-radius: 1px;
-                background: rgba(0,0,0,0.05);
+                background: rgba(0, 0, 0, 0.05);
                 width: 5px;
                 height: 10px;
                 margin-right: 2px;
                 margin-top: -10px;
 
                 &.active {
-                    background: rgba(0,0,0,0.2);
+                    background: rgba(0, 0, 0, 0.2);
                     height: 20px;
                     margin-top: 0;
                 }
             }
 
             &.active {
-                background: rgba(0,0,0,0.05);
+                background: rgba(0, 0, 0, 0.05);
             }
             > i.warning {
                 opacity: 0;
@@ -123,10 +122,8 @@
 
                 i.warning {
                     opacity: 1;
-
                 }
             }
-
         }
 
         &.print .button {
@@ -170,15 +167,15 @@
                 display: inline-block;
                 text-align: center;
                 width: 26px;
-                font-size:9px;
+                font-size: 9px;
                 position: relative;
                 // text-transform: uppercase;
                 color: #222;
                 padding: 0 4px;
                 user-select: none;
                 -webkit-user-select: none;
-                  -moz-user-select: none;
-                  -ms-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
 
                 img {
                     pointer-events: none;
@@ -217,6 +214,5 @@
                 display: block;
             }
         }
-
     } // .toolbar-container
 }
