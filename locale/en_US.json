@@ -818,8 +818,8 @@
   "controls / annotations / line / width": "Width",
   "controls / annotations / line / dash": "Dash",
   "controls / annotations / range / delete": "Delete range highlight",
-  "controls / annotation / type / range": "Range",
-  "controls / annotation / type / line": "Line",
+  "controls / annotations / type / range": "Range",
+  "controls / annotations / type / line": "Line",
   "controls / annotations / range-multi-select": "You selected %s range highlights.",
-  "controls / annotation / range-delete-selected": "Delete all selected highlights"
+  "controls / annotations / range-delete-selected": "Delete all selected highlights"
 }

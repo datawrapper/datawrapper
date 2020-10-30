@@ -818,8 +818,8 @@
   "controls / annotations / line / width": "Linienstärke",
   "controls / annotations / line / dash": "Strichelung",
   "controls / annotations / range / delete": "Bereichshervorhebung löschen",
-  "controls / annotation / type / range": "",
-  "controls / annotation / type / line": "",
+  "controls / annotations / type / range": "Bereich",
+  "controls / annotations / type / line": "Linie",
   "controls / annotations / range-multi-select": "Du hast %s Bereiche selektiert.",
-  "controls / annotation / range-delete-selected": ""
+  "controls / annotations / range-delete-selected": "Ausgewählte Hervorhebungen löschen"
 }

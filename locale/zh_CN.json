@@ -818,8 +818,8 @@
   "controls / annotations / line / width": "",
   "controls / annotations / line / dash": "",
   "controls / annotations / range / delete": "",
-  "controls / annotation / type / range": "",
-  "controls / annotation / type / line": "",
+  "controls / annotations / type / range": "",
+  "controls / annotations / type / line": "",
   "controls / annotations / range-multi-select": "",
-  "controls / annotation / range-delete-selected": ""
+  "controls / annotations / range-delete-selected": ""
 }
