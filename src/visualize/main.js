@@ -15,6 +15,7 @@ function init({
     defaultVisType,
     visualizations,
     visArchive,
+    webToPrint,
     theme,
     themes,
     themeData
@@ -70,7 +71,8 @@ function init({
                 visualizations,
                 namespace,
                 visArchive,
-                defaultVisType
+                defaultVisType,
+                webToPrint
             }
         });
     });
