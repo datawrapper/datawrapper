@@ -257,7 +257,7 @@
 
                         const vis2 = dw.visualization(vis.id);
                         vis2.meta = vis;
-                        vis2.lang = chart.get().language.substr(0, 2);
+                        vis2.lang = chart.get().language ? chart.get().language.substr(0, 2) : 'en';
 
                         vis2.chart(chart);
                         chart.vis(vis2);
