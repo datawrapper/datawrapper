@@ -237,6 +237,10 @@
                         const metadata = chart.getMetadata();
                         const defaults = vis.controls.defaults || {};
 
+                        if (metadata.axes === undefined || metadata.axes === null) {
+                            metadata.axes = {};
+                        }
+
                         for (var field in defaults) {
                             if (typeof metadata.visualize[field] === 'undefined')
                                 metadata.visualize[field] = defaults[field];
