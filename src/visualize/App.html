@@ -241,7 +241,9 @@
                             metadata.axes = {};
                         } else {
                             Object.keys(metadata.axes).forEach(col => {
-                                if (!chart.dataset().hasColumn(col)) delete metadata.axes[col];
+                                if (!chart.dataset().hasColumn(metadata.axes[col])) {
+                                    delete metadata.axes[col];
+                                }
                             });
                         }
 
