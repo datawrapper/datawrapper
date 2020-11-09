@@ -1,5 +1,5 @@
 <SelectInput
-    label="Select layout:"
+    label="{__('Select layout:')}"
     options="{themeOptions}"
     labelWidth="100px"
     width="200px"
@@ -11,6 +11,7 @@
 <script>
     import SelectInput from '@datawrapper/controls/Select.html';
     import HookBlocks from './HookBlocks.html';
+    import { __ } from '@datawrapper/shared/l10n';
 
     export default {
         components: { SelectInput, HookBlocks },
@@ -20,6 +21,7 @@
                     return { value: t.id, label: t.title };
                 });
             }
-        }
+        },
+        helpers: { __ }
     };
 </script>
