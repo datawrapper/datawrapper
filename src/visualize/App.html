@@ -1,0 +1,328 @@
+<div class="dw-create-visualize chart-editor">
+    <div class="vis-wrapper" ref:wrapper>
+        <div
+            class="vis-main"
+            ref:canvas
+            class:stickyBottom="stickyBottom"
+            class:stickyTop="stickyTop"
+        >
+            <div class="container">
+                <div class="vis-canvas">
+                    <ChartPreview
+                        bind:loading
+                        src="/preview/{ $id }"
+                        on:resize="makePreviewSticky()"
+                    />
+
+                    <div class="toolbar">
+                        <Resizer bind:webToPrint bind:loading ref:resizer />
+                        <ColorblindCheck />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="visconfig vis-sidebar" ref:sidebar>
+            <TabNav bind:tab {showChartPicker} />
+
+            <div class="form-horizontal vis-options">
+                {#if showChartPicker}
+                <!-- Chart Type -->
+                <div class:hide-smart="tab !== 'pick'">
+                    <ChartPicker
+                        {visualizations}
+                        {visArchive}
+                        {namespace}
+                        on:change="loadVis(event)"
+                    />
+                </div>
+                {/if}
+
+                <!-- Refine -->
+                <div class:hide-smart="tab !== 'refine'">
+                    {#if visLoading}
+                    <Loading />
+                    {:else}
+                    <Notifications {notifications} />
+                    <svelte:component
+                        this="{Refine}"
+                        {tab}
+                        ref:refine
+                        bind:notifications="chartNotifications"
+                    />
+                    {/if}
+                </div>
+
+                <!-- Annotate -->
+                <div class:hide-smart="tab !== 'annotate'">
+                    <Annotate />
+                    {#if visLoading}
+                    <Loading />
+                    {:else}
+                    <svelte:component this="{Annotate}" {tab} />
+                    {/if}
+                </div>
+
+                <!-- Design -->
+                <div class:hide-smart="tab !== 'design'">
+                    <Design />
+                </div>
+
+                <ButtonNav bind:tab {showChartPicker} />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media (min-width: 980px) {
+        .vis-wrapper {
+            position: relative;
+        }
+
+        .vis-main {
+            position: relative;
+            top: 0;
+            padding: 15px;
+        }
+
+        .vis-main.stickyBottom {
+            position: absolute;
+            top: auto;
+            bottom: 0;
+        }
+
+        .vis-main.stickyTop {
+            position: fixed;
+            top: 0;
+            bottom: auto;
+        }
+
+        .vis-main {
+            position: absolute;
+        }
+
+        .vis-sidebar {
+            width: 33%;
+        }
+
+        .vis-canvas {
+            padding-left: 33%;
+        }
+    }
+</style>
+
+<script>
+    /* globals dw, ResizeObserver */
+    import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
+    import { __ } from '@datawrapper/shared/l10n';
+    import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
+    import TabNav from './TabNav.html';
+    import ButtonNav from './ButtonNav.html';
+    import Empty from './Empty.html';
+    import Annotate from './Annotate.html';
+    import Design from './Design.html';
+    import ChartPicker from './ChartPicker.html';
+    import Loading from './Loading.html';
+    import Resizer from './Resizer.html';
+    import Notifications from './Notifications.html';
+    import ColorblindCheck from './colorblind-check/ColorblindCheck.html';
+
+    export default {
+        components: {
+            TabNav,
+            ButtonNav,
+            Annotate,
+            Design,
+            ChartPicker,
+            Loading,
+            Resizer,
+            ColorblindCheck,
+            ChartPreview,
+            Notifications
+        },
+        data() {
+            return {
+                tab: 'pick',
+                Refine: Empty,
+                Annotate: Empty,
+                visualizations: [],
+                visArchive: [],
+                loading: false,
+                visLoading: false,
+                defaultVisType: '',
+                stickyTop: false,
+                stickyBottom: false,
+                namespace: 'chart',
+                notifications: [],
+                chartNotifications: []
+            };
+        },
+        computed: {
+            showChartPicker({ namespace }) {
+                return namespace !== 'map';
+            },
+            missingColumns({ $vis }) {
+                if (!$vis) return [];
+                return Object.keys($vis.meta.axes).reduce((missingCols, axis) => {
+                    const isRequired = !$vis.meta.axes[axis].optional;
+                    const isEmpty = !$vis.axes()[axis];
+                    if (isEmpty && isRequired) {
+                        missingCols.push({ axis, type: $vis.meta.axes[axis].accepts });
+                    }
+                    return missingCols;
+                }, []);
+            },
+            columnNotifications({ missingColumns }) {
+                return missingColumns.map(({ type, axis }) => ({
+                    type: 'error',
+                    closeable: true,
+                    message: __('visualize / notifications / missing-column')
+                        .replace('[%s:type]', type.join(' / '))
+                        .replace('[%s:axis]', axis)
+                }));
+            }
+        },
+        methods: {
+            updateNotifications(chartNotifications = []) {
+                const { columnNotifications } = this.get();
+                this.set({ notifications: [...columnNotifications, ...chartNotifications] });
+            },
+            makePreviewSticky() {
+                const { top, bottom } = this.refs.wrapper.getBoundingClientRect();
+                const canvasHeight = this.refs.canvas.scrollHeight;
+                const sidebarHeight = this.refs.sidebar.scrollHeight;
+                const useSticky = canvasHeight < sidebarHeight;
+                this.set({
+                    stickyTop: useSticky && top < 0 && bottom >= canvasHeight,
+                    stickyBottom: useSticky && bottom < canvasHeight
+                });
+            },
+            loadVis(type) {
+                this.set({ visLoading: true });
+                this.store.set({ type });
+                this.loadControls(type);
+            },
+            loadControls(type) {
+                const chart = this.store;
+                const { visArchive, visualizations } = this.get();
+                const vis = [...visArchive, ...visualizations].find(v => v.id === type);
+                chart.set({ visualization: vis });
+
+                if (!vis.controls) {
+                    console.error('This visualization does not define new svelte controls');
+                    return;
+                }
+
+                Promise.all([
+                    loadScript(`/static/plugins/${vis.controls.js}`),
+                    loadScript(
+                        `${window.location.protocol}//${window.dw.backend.__api_domain}/v3/visualizations/${vis.id}/script.js`
+                    ),
+                    loadStylesheet(`/static/plugins/${vis.controls.css}`)
+                ]).then(() => {
+                    require([vis.controls.amd], mod => {
+                        // initialize with empty Refine and Annotate panel
+                        this.set({ Refine: Empty, Annotate: Empty });
+
+                        // make sure all core metadata properties are set before loading controls
+                        ['annotate', 'axes', 'data', 'describe', 'publish', 'visualize'].forEach(
+                            key => {
+                                if (chart.getMetadata(key) === undefined) {
+                                    chart.setMetadata(key, {});
+                                }
+                            }
+                        );
+
+                        const metadata = chart.getMetadata();
+                        const defaults = vis.controls.defaults || {};
+
+                        if (metadata.axes === undefined || metadata.axes === null) {
+                            metadata.axes = {};
+                        } else {
+                            Object.keys(metadata.axes).forEach(col => {
+                                if (!chart.dataset().hasColumn(metadata.axes[col])) {
+                                    delete metadata.axes[col];
+                                }
+                            });
+                        }
+
+                        for (var field in defaults) {
+                            if (typeof metadata.visualize[field] === 'undefined')
+                                metadata.visualize[field] = defaults[field];
+                        }
+
+                        if (mod.migrate) {
+                            mod.migrate(type, metadata, chart.dataset());
+                            chart.set({ metadata });
+                        }
+
+                        chart.set({ visualization: vis });
+
+                        chart.setMetadata('visualize.chart-type-set', true);
+
+                        const vis2 = dw.visualization(vis.id);
+                        vis2.meta = vis;
+                        vis2.lang = chart.get().language ? chart.get().language.substr(0, 2) : 'en';
+
+                        vis2.chart(chart);
+                        chart.vis(vis2);
+
+                        this.set({
+                            visLoading: false,
+                            Refine: mod.Refine || Empty,
+                            Annotate: mod.Annotate || Empty
+                        });
+
+                        // get initial notifications from refine control:
+                        // (without, notifications will not be immediately displayed)
+                        const { notifications } = this.refs.refine.get();
+                        this.updateNotifications(notifications);
+                    });
+                });
+            }
+        },
+        oncreate() {
+            // update tab navigation based on URL hash:
+            if (['#pick', '#refine', '#annotate', '#design'].includes(window.location.hash)) {
+                this.set({ tab: window.location.hash.substr(1) });
+            }
+
+            // load visualization:
+            const { type } = this.store.get();
+            this.loadVis(type);
+
+            // add event handler for making the preview stick to the viewport:
+            const makePreviewSticky = () => this.makePreviewSticky();
+            window.addEventListener('scroll', makePreviewSticky);
+
+            let resizeObserver;
+
+            try {
+                resizeObserver = new ResizeObserver(makePreviewSticky);
+                resizeObserver.observe(document.body);
+            } catch (ex) {}
+
+            // remove event handler when this component is destroyed:
+            this.on('destroy', () => {
+                window.removeEventListener('scroll', makePreviewSticky);
+                if (resizeObserver) resizeObserver.disconnect();
+            });
+
+            // determine if we automaticall switch to refine tab
+            const { tab, showChartPicker } = this.get();
+            const chartTypeSet = this.store.getMetadata('visualize.chart-type-set', false);
+
+            this.set({
+                tab: tab === 'pick' && (!showChartPicker || chartTypeSet) ? 'refine' : tab
+            });
+
+            window.chart = this.store;
+        },
+        onstate({ previous, current, changed }) {
+            if (previous && changed.chartNotifications) {
+                this.updateNotifications(current.chartNotifications);
+            }
+        }
+    };
+</script>

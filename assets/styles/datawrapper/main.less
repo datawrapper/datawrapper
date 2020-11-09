@@ -323,12 +323,6 @@ dl.dl-horizontal dd {
         padding-left: 5px;
         white-space: nowrap;
     }
-
-    .dw .create-nav div {
-        font-size: 14px;
-        line-height: 42px;
-        height: 42px;
-    }
 }
 
 .tooltip {
@@ -722,4 +716,20 @@ button.btn > i.im {
 
 button.btn-small > i.im {
     font-size: 0.7rem !important;
+}
+
+// Make buttons look and behave just like links:
+.plain-link {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    line-height: inherit;
+    font-size: inherit;
+    vertical-align: inherit;
+    color: @dw_blue_medium;
+
+    &:hover {
+        text-decoration: underline;
+        color: @dw_blue_dark;
+    }
 }

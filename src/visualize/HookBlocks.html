@@ -1,0 +1,22 @@
+{#each blocks as b}
+<svelte:component this="{b.ui}" name="{b.name}" data="{b.data || {}}" />
+{/each}
+
+<script>
+    /* globals dw */
+    export default {
+        data() {
+            return {
+                blocks: []
+            };
+        },
+        oncreate() {
+            const chart = this.store;
+            const { key } = this.get();
+            const { results } = dw.backend.hooks.call(key, [chart]);
+            this.set({
+                blocks: results.sort((a, b) => (b.priority || 0) - (a.priority || 0))
+            });
+        }
+    };
+</script>

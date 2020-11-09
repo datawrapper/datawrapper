@@ -1,0 +1,82 @@
+<div class="section select-visualization">
+    <div class="vis-selector-unfolded">
+        <div class="vis-thumbs">
+            {#each namespaceVisualizations as vis}
+            <div class="vis-thumb" class:active="vis.id === $type" on:click="loadVis(vis.id)">
+                {@html vis.icon }
+                <div class="title">{@html vis.title}</div>
+            </div>
+            {/each}
+        </div>
+
+        <div class="vis-archive-select">
+            <SelectInput
+                width="180px"
+                options="{archiveOpts}"
+                label="{__('visualize / vis archive')}"
+                on:change="loadVis(event.target.value)"
+            />
+        </div>
+
+        <p>
+            <b>{ __("Hint") }:</b>
+            { __("visualize / transpose-hint ") }
+            <button class="plain-link" on:click="transpose()" on:mousedown="event.preventDefault()">
+                { __("visualize / transpose-button ") }
+            </button>
+        </p>
+    </div>
+</div>
+
+<style>
+    .vis-thumb img {
+        width: 30px;
+        height: 40px;
+        margin-left: 27px;
+        margin-top: 10px;
+        overflow: visible;
+    }
+</style>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import SelectInput from '@datawrapper/controls/Select.html';
+
+    export default {
+        components: {
+            SelectInput
+        },
+        computed: {
+            archiveOpts({ visArchive }) {
+                return [
+                    {
+                        value: null,
+                        label: '---'
+                    }
+                ].concat(visArchive.map(vis => ({ value: vis.id, label: vis.title })));
+            },
+            namespaceVisualizations({ namespace, visualizations }) {
+                if (namespace === 'chart' || namespace === 'table') {
+                    return visualizations.filter(
+                        el => ['chart', 'table'].indexOf(el.namespace) > -1
+                    );
+                } else {
+                    return visualizations.filter(el => el.namespace === namespace);
+                }
+            }
+        },
+        helpers: { __ },
+        methods: {
+            loadVis(id) {
+                const { type } = this.store.get();
+                if (id !== type) {
+                    this.fire('change', id);
+                }
+            },
+            transpose() {
+                const transpose = this.store.getMetadata('data.transpose');
+                this.store.setMetadata('data.transpose', !transpose);
+            }
+        }
+    };
+</script>

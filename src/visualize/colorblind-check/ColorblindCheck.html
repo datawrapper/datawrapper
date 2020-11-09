@@ -225,10 +225,10 @@
 
                 if (window.location.search === '?cbchk') {
                     if (chart.save) {
-                        chart.set('metadata.colorblind', res);
+                        chart.setMetadata('colorblind', res);
                     } else {
                         setTimeout(function () {
-                            chart.set('metadata.colorblind', res);
+                            chart.setMetadata('colorblind', res);
                         }, 3000);
                     }
                 }

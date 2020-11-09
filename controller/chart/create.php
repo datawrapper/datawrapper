@@ -76,6 +76,11 @@ $app->map('/(chart|table)/create', function() use ($app) {
                         // copy title, type
                         $chart->setTitle($public_tpl->getTitle());
                         $chart->setType($public_tpl->getType());
+
+                        try {
+                            $chart->writeAsset($chart->getId() . ".map.json", $chart_tpl->loadAsset($chart_tpl->getId() . ".map.json"));
+                        } catch (Exception $ex) {}
+
                         // set last step to visualize
                     } else {
                         // if not we use the last version in datawrapper as fallback

@@ -82,6 +82,10 @@
 </div>
 
 <style>
+    .toolbar {
+        display: flex;
+    }
+
     .toolbar-container > div > *:last-child {
         border-right: none !important;
     }
@@ -96,9 +100,8 @@
 </style>
 
 <script>
-    /*  global dw, chart, $ */
-    import { Radio } from '@datawrapper/controls';
-    import { __ } from '@datawrapper/shared/l10n';
+    /*  global dw, $ */
+    import Radio from '@datawrapper/controls/Radio.html';
     import httpReq from '@datawrapper/shared/httpReq';
 
     const DPI = 96;
@@ -112,7 +115,10 @@
                 mode: '',
                 width: 600,
                 height: 400,
+                width_txt: null,
+                height_txt: null,
                 unit: 'px',
+                visLoading: false,
                 units: [
                     { value: 'mm', label: 'mm', step: 1, decimals: 0 },
                     { value: 'in', label: 'in', step: 0.01, decimals: 2 },
@@ -141,8 +147,10 @@
                         width: 600
                     }
                 ],
+                preset: null,
                 hasPresets: false,
-                printExpanded: false
+                printExpanded: false,
+                theme: null
             };
         },
         computed: {
@@ -189,7 +197,6 @@
                 return presets;
             }
         },
-        helpers: { __ },
         methods: {
             usePreset() {
                 const { preset, presets } = this.get();
@@ -211,27 +218,27 @@
             },
             activate(mode) {
                 if (mode === 'web') {
-                    if (dw.backend.currentChart.get('metadata.custom.webToPrint.webChartId')) {
+                    if (this.store.getMetadata('custom.webToPrint.webChartId')) {
                         window.location =
                             window.location.protocol +
                             '//' +
                             window.location.host +
                             '/chart/' +
-                            dw.backend.currentChart.get('metadata.custom.webToPrint.webChartId') +
+                            this.store.getMetadata('custom.webToPrint.webChartId') +
                             '/visualize';
                     }
                 } else if (mode === 'print') {
-                    if (dw.backend.currentChart.get('metadata.custom.webToPrint.printChartId')) {
+                    if (this.store.getMetadata('custom.webToPrint.printChartId')) {
                         window.location =
                             window.location.protocol +
                             '//' +
                             window.location.host +
                             '/chart/' +
-                            dw.backend.currentChart.get('metadata.custom.webToPrint.printChartId') +
+                            this.store.getMetadata('custom.webToPrint.printChartId') +
                             '/visualize';
                     } else {
                         httpReq
-                            .post(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                            .post(`/v3/charts/${dw.backend.currentChart.get().id}/print`)
                             .then(data => {
                                 window.location = `${window.location.protocol}//${window.location.host}/chart/${data.id}/visualize`;
                             });
@@ -251,7 +258,7 @@
                 if (!window.confirm('Are you sure you want to reset to the web version?')) return;
 
                 httpReq
-                    .delete(`/v3/charts/${dw.backend.currentChart.get('id')}/print`)
+                    .delete(`/v3/charts/${dw.backend.currentChart.get().id}/print`)
                     .then(data => {
                         window.location.reload();
                     });
@@ -263,8 +270,8 @@
 
                 const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
 
-                chart.set('metadata.publish.embed-width', w);
-                chart.set('metadata.publish.embed-height', h);
+                this.store.setMetadata('publish.embed-width', w);
+                this.store.setMetadata('publish.embed-height', h);
 
                 $('#iframe-wrapper').animate(
                     {
@@ -281,7 +288,7 @@
                 );
 
                 $('.visconfig')
-                    .css('min-height', +h + 250)
+                    .css('min-height', +h + 250) // Randomly adds 250px?! TODO: Clarify if that's really necessary.
                     .animate({
                         left: Math.min(0, maxW - w) / 2
                     });
@@ -291,22 +298,20 @@
                 this.set({ width_txt: width, height_txt: height });
 
                 if (this.get().mode === 'web') {
-                    dw.backend.currentChart.set('metadata.publish.embed-width', Math.round(w));
-                    dw.backend.currentChart.set('metadata.publish.embed-height', Math.round(h));
+                    this.store.setMetadata('publish.embed-width', Math.round(w));
+                    this.store.setMetadata('publish.embed-height', Math.round(h));
                 } else {
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.width', width);
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.height', height);
-                    dw.backend.currentChart.set('metadata.publish.export-pdf.unit', unit);
+                    this.store.setMetadata('publish.export-pdf.width', width);
+                    this.store.setMetadata('publish.export-pdf.height', height);
+                    this.store.setMetadata('publish.export-pdf.unit', unit);
                 }
 
                 this.measureChartHeight();
             },
             measureChartHeight() {
-                const app = this;
-
                 clearTimeout(window.measureChartHeightTimeout);
 
-                window.measureChartHeightTimeout = setTimeout(function () {
+                window.measureChartHeightTimeout = setTimeout(() => {
                     const iframe = $('#iframe-vis').get(0).contentWindow;
 
                     if (iframe) {
@@ -314,17 +319,15 @@
 
                         if (chartBody && chartBody.getBoundingClientRect) {
                             var h = chartBody.getBoundingClientRect().height;
-                            if (h !== chart.get('metadata.publish.chart-height')) {
-                                if (dw.backend.currentVis) {
-                                    chart.set('metadata.publish.chart-height', h);
-                                    if (chart.save) chart.save();
-                                }
+                            if (h !== this.store.get('metadata.publish.chart-height')) {
+                                this.store.setMetadata('publish.chart-height', h);
+                                if (this.store.save) this.store.save();
                             }
                         } else {
-                            setTimeout(app.measureChartHeight, 2000);
+                            setTimeout(() => this.measureChartHeight(), 1000);
                         }
                     }
-                }, 2000);
+                }, 1000);
             },
             registerDragAndDropListener() {
                 const app = this;
@@ -384,6 +387,8 @@
                 window.addEventListener('message', function (e) {
                     var message = e.data;
 
+                    if (app.get().loading) return;
+
                     if (typeof message['datawrapper-height'] !== 'undefined') {
                         var h;
 
@@ -403,7 +408,7 @@
         },
         oncreate() {
             this.set({
-                mode: dw.backend.currentChart.get('metadata.custom.webToPrint.mode', 'web')
+                mode: this.store.getMetadata('custom.webToPrint.mode', 'web')
             });
         },
         onstate({ changed, current, previous }) {
@@ -428,10 +433,10 @@
             if (changed.mode) {
                 if (current.mode === 'web') {
                     this.set({
-                        width: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height: dw.backend.currentChart.get('metadata.publish.embed-height'),
-                        width_txt: dw.backend.currentChart.get('metadata.publish.embed-width'),
-                        height_txt: dw.backend.currentChart.get('metadata.publish.embed-height')
+                        width: this.store.getMetadata('publish.embed-width'),
+                        height: this.store.getMetadata('publish.embed-height'),
+                        width_txt: this.store.getMetadata('publish.embed-width'),
+                        height_txt: this.store.getMetadata('publish.embed-height')
                     });
 
                     this.registerDragAndDropListener();
@@ -441,23 +446,23 @@
                     app.updateSize();
                 } else {
                     this.set({
-                        width: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.width',
+                        width: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.width',
                             120
                         ),
-                        height: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.height',
+                        height: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.height',
                             80
                         ),
-                        width_txt: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.width',
+                        width_txt: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.width',
                             120
                         ),
-                        height_txt: dw.backend.currentChart.get(
-                            'metadata.publish.export-pdf.height',
+                        height_txt: dw.backend.currentChart.getMetadata(
+                            'publish.export-pdf.height',
                             80
                         ),
-                        unit: dw.backend.currentChart.get('metadata.publish.export-pdf.unit', 'mm')
+                        unit: this.store.getMetadata('publish.export-pdf.unit', 'mm')
                     });
 
                     app.updateSize();

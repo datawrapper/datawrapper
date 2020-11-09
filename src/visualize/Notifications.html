@@ -1,0 +1,24 @@
+{#if notifications && notifications.length}
+<div class="notifications">
+    {#each notifications as note}
+    <Alert visible type="{note.type}" closeable="{note.closeable}">
+        {@html note.message}
+    </Alert>
+    {/each}
+</div>
+{/if}
+
+<script>
+    import Alert from '@datawrapper/controls/Alert.html';
+
+    export default {
+        components: {
+            Alert
+        },
+        data() {
+            return {
+                notifications: []
+            };
+        }
+    };
+</script>
