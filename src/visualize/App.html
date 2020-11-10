@@ -247,14 +247,14 @@
                             });
                         }
 
-                        for (var field in defaults) {
-                            if (typeof metadata.visualize[field] === 'undefined')
-                                metadata.visualize[field] = defaults[field];
-                        }
-
                         if (mod.migrate) {
                             mod.migrate(type, metadata, chart.dataset());
                             chart.set({ metadata });
+                        }
+
+                        for (var field in defaults) {
+                            if (typeof metadata.visualize[field] === 'undefined')
+                                metadata.visualize[field] = defaults[field];
                         }
 
                         chart.set({ visualization: vis });
