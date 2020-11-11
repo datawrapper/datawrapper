@@ -183,7 +183,7 @@ class User extends BaseUser {
     }
 
     public function isActivated() {
-        return $this->getActivateToken() == '';
+        return $this->getRole() != UserPeer::ROLE_PENDING && $this->getRole() != UserPeer::ROLE_GUEST;
     }
 
     /*

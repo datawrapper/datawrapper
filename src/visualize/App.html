@@ -239,16 +239,22 @@
 
                         if (metadata.axes === undefined || metadata.axes === null) {
                             metadata.axes = {};
-                        }
-
-                        for (var field in defaults) {
-                            if (typeof metadata.visualize[field] === 'undefined')
-                                metadata.visualize[field] = defaults[field];
+                        } else {
+                            Object.keys(metadata.axes).forEach(col => {
+                                if (!chart.dataset().hasColumn(metadata.axes[col])) {
+                                    delete metadata.axes[col];
+                                }
+                            });
                         }
 
                         if (mod.migrate) {
                             mod.migrate(type, metadata, chart.dataset());
                             chart.set({ metadata });
+                        }
+
+                        for (var field in defaults) {
+                            if (typeof metadata.visualize[field] === 'undefined')
+                                metadata.visualize[field] = defaults[field];
                         }
 
                         chart.set({ visualization: vis });

@@ -658,9 +658,13 @@ footer .version {
   margin-top: 5px;
   margin-bottom: 0;
 }
+html button {
+  font-family: 'Roboto', Helvetica, sans-serif;
+}
 html .btn {
   border-radius: 4px;
   background-image: none!important;
+  font-family: 'Roboto', Helvetica, sans-serif;
 }
 html .btn .fa {
   line-height: 19px;
@@ -3639,6 +3643,10 @@ h3 {
   color: #b94a48;
   margin-bottom: 1em;
 }
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+}
 ul.options {
   position: relative;
 }
@@ -3663,10 +3671,6 @@ form.well form {
   border: 1px solid #dddbdb;
   border-right-color: #efefef;
   border-bottom-color: #efefef;
-}
-.well hr {
-  border-top-color: #ccc;
-  border-bottom-color: #fff;
 }
 .btn-primary.loading:after {
   content: url('../img/btn-loading.gif');
