@@ -825,5 +825,7 @@
   "visualize / transpose-button": "Daten zu transponieren",
   "visualize / notifications / missing-column": "Das Diagramm benötigt mindestens eine Spalte vom Typ <b>[%s:type]</b>, um die Achse <b>[%s:axis]</b> zu füllen. ",
   "controls / annotations / mobile-key / help-chart": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf dem Diagramm selbst angezeigt. Der Text befindet sich dann unter dem Diagramm.",
-  "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte."
+  "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte.",
+  "controls / more-options": "Erweiterte Optionen anzeigen",
+  "controls / fewer-options": "Erweiterte Optionen ausblenden"
 }

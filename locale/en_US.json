@@ -825,5 +825,7 @@
   "visualize / transpose-button": "transpose the data",
   "visualize / notifications / missing-column": "The chart needs at least one column of the type <b>[%s:type]</b> to populate the axis <b>[%s:axis]</b>. ",
   "controls / annotations / mobile-key / help-chart": "When viewed on a mobile device, a number will be shown at the annotation location, referencing to the annotation text in a key underneath the chart",
-  "controls / annotations / mobile-key / help-map": "When viewed on a mobile device, a number will be shown at the annotation location, referencing to the annotation text in a key underneath the map."
+  "controls / annotations / mobile-key / help-map": "When viewed on a mobile device, a number will be shown at the annotation location, referencing to the annotation text in a key underneath the map.",
+  "controls / more-options": "Show advanced options",
+  "controls / fewer-options": "Hide advanced options"
 }
