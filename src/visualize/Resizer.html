@@ -209,7 +209,7 @@
                 const app = this;
 
                 clearTimeout(this.debounceUpdateSize);
-                this.debounceUpdateSize = setTimeout(function () {
+                this.debounceUpdateSize = setTimeout(function() {
                     app.set({
                         width: app.get().width_txt,
                         height: app.get().height_txt
@@ -268,7 +268,11 @@
                 const w = this.get().width_px;
                 const h = this.get().height_px;
 
-                const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
+                const maxW =
+                    $('#iframe-wrapper')
+                        .parent()
+                        .parent()
+                        .width() - 22;
 
                 this.store.setMetadata('publish.embed-width', w);
                 this.store.setMetadata('publish.embed-height', h);
@@ -281,7 +285,7 @@
                     },
                     {
                         duration: 200,
-                        step: function () {
+                        step: function() {
                             $(this).css('overflow', 'visible');
                         }
                     }
@@ -374,7 +378,7 @@
             registerTypeListener() {
                 const app = this;
 
-                dw.backend.on('type-changed', function (metas) {
+                dw.backend.on('type-changed', function(metas) {
                     // switch from fixed to fit
                     if (metas[0].height !== 'fixed' && metas[1].height === 'fixed') {
                         app.setHeight(Math.min(app.get().height_px, 500));
@@ -384,7 +388,7 @@
             registerChartHeightListener() {
                 const app = this;
 
-                window.addEventListener('message', function (e) {
+                window.addEventListener('message', function(e) {
                     var message = e.data;
 
                     if (app.get().loading) return;
@@ -446,10 +450,7 @@
                     app.updateSize();
                 } else {
                     this.set({
-                        width: dw.backend.currentChart.getMetadata(
-                            'publish.export-pdf.width',
-                            120
-                        ),
+                        width: dw.backend.currentChart.getMetadata('publish.export-pdf.width', 120),
                         height: dw.backend.currentChart.getMetadata(
                             'publish.export-pdf.height',
                             80
