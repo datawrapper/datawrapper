@@ -263,7 +263,7 @@
             },
             keywords({ metaColumns }) {
                 const keywords = [];
-                metaColumns.forEach(function(col) {
+                metaColumns.forEach(function (col) {
                     if (col.type === 'number' || col.type === 'computed') {
                         keywords.push(col.key + '__sum');
                         keywords.push(col.key + '__min');
@@ -281,7 +281,7 @@
             context({ metaColumns }) {
                 const res = { ROWNUMBER: 1 };
                 const keywords = ['sum', 'round', 'min', 'max', 'median', 'mean'];
-                metaColumns.forEach(function(col) {
+                metaColumns.forEach(function (col) {
                     res[col.key] =
                         col.type === 'number' ? 42 : col.type === 'text' ? 'answer' : new Date();
                     if (col.type === 'number' || col.type === 'computed') {
@@ -360,10 +360,7 @@
                 for (let i = 0; i < errors.length; i++) {
                     if (errors[i].startsWith('undefined variable:')) {
                         // let's see if we know this variable
-                        const name = errors[i]
-                            .split(': ')[1]
-                            .split('(row')[0]
-                            .trim();
+                        const name = errors[i].split(': ')[1].split('(row')[0].trim();
                         if (
                             Parser.keywords.includes(name.toUpperCase()) &&
                             !Parser.keywords.includes(name)
@@ -577,11 +574,11 @@
 
                 const { keywords } = app.get();
                 if (token.type === 'variable-x') {
-                    match = keywords.filter(function(chk) {
+                    match = keywords.filter(function (chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 } else if (token.type === 'keyword-x') {
-                    match = Parser.keywords.filter(function(chk) {
+                    match = Parser.keywords.filter(function (chk) {
                         return chk.toLowerCase().indexOf(token.string.toLowerCase()) === 0;
                     });
                 }

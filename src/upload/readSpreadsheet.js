@@ -5,12 +5,12 @@ import '/static/vendor/xlsx/xlsx.full.min.js';
 /**
  * parses an XLS spreadsheet file
  */
-export default function(file, callback) {
+export default function (file, callback) {
     const rABS =
         typeof FileReader !== 'undefined' && (FileReader.prototype || {}).readAsBinaryString;
     const reader = new FileReader();
 
-    reader.onload = function() {
+    reader.onload = function () {
         try {
             const data = !rABS ? new Uint8Array(reader.result) : reader.result;
             const wb = XLSX.read(data, { type: rABS ? 'binary' : 'array' });

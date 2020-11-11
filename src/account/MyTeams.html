@@ -179,9 +179,7 @@
                 const { user } = this.get();
                 const payload = { name };
                 if (user.isAdmin && slug) {
-                    payload.id = String(slug)
-                        .trim()
-                        .toLowerCase();
+                    payload.id = String(slug).trim().toLowerCase();
                 }
                 this.set({
                     awaitCreateTeam: httpReq(`/v3/teams`, {
@@ -202,7 +200,10 @@
                     httpReq(`/v3/teams/${team.id}/members/${user.id}`, { method: 'delete' })
                         .then(res => {
                             window.alert(__('account / my-teams / leave-team / done'));
-                            teams.splice(teams.findIndex(t => t.id === team.id), 1);
+                            teams.splice(
+                                teams.findIndex(t => t.id === team.id),
+                                1
+                            );
                             this.set({ teams });
                         })
                         .catch(error => {

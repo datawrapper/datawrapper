@@ -40,7 +40,7 @@ function init({
         chart.set({ lastEditStep: 3 });
     }
 
-    chart.compute('axes', ['visualization'], function(visualization) {
+    chart.compute('axes', ['visualization'], function (visualization) {
         if (!visualization) {
             return [];
         }
@@ -51,7 +51,7 @@ function init({
         // remove ignored columns
         var columnFormat = chart.getMetadata('data.column-format', {});
         var ignore = {};
-        _.each(columnFormat, function(format, key) {
+        _.each(columnFormat, function (format, key) {
             ignore[key] = !!format.ignore;
         });
         if (ds.filterColumns) ds.filterColumns(ignore);
@@ -59,7 +59,7 @@ function init({
         chart.set({ dataset: ds });
     }
 
-    chart.load(csv).then(function(ds) {
+    chart.load(csv).then(function (ds) {
         initializeDataset(ds);
 
         target.innerHTML = '';
@@ -87,7 +87,7 @@ function init({
         chart.load(csv).then(initializeDataset);
     });
 
-    chart.on('update', function({ changed, current, previous }) {
+    chart.on('update', function ({ changed, current, previous }) {
         // observe theme changes and load new theme data if needed
         if (changed.theme) {
             if (themeCache[current.theme]) {
@@ -97,7 +97,7 @@ function init({
                 // load new theme data
                 getJSON(
                     '//' + dw.backend.__api_domain + '/v3/themes/' + current.theme + '?extend=true',
-                    function(res) {
+                    function (res) {
                         themeCache[current.theme] = res.data;
                         dw.theme.register(current.theme, res.data);
                         chart.set({ themeData: res.data });
@@ -151,7 +151,7 @@ function init({
         }
     });
 
-    window.addEventListener('keypress', function(evt) {
+    window.addEventListener('keypress', function (evt) {
         if (evt.key === 'z' && evt.ctrlKey) {
             var oldPos = historyPos;
             historyPos += evt.altKey ? -1 : 1;

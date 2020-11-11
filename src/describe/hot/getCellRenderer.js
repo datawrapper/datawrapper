@@ -3,7 +3,7 @@ import purifyHtml from '@datawrapper/shared/purifyHtml';
 /**
  * getCellRenderer defines what classes are set on each HOT cell
  */
-export default function(app, chart, dataset, Handsontable) {
+export default function (app, chart, dataset, Handsontable) {
     const colTypeIcons = {
         date: 'fa fa-clock-o'
     };
@@ -11,7 +11,7 @@ export default function(app, chart, dataset, Handsontable) {
         var escaped = purifyHtml(Handsontable.helper.stringify(value));
         TD.innerHTML = escaped; // this is faster than innerHTML. See: https://github.com/warpech/jquery-handsontable/wiki/JavaScript-&-DOM-performance-tips
     }
-    return function(instance, td, row, col, prop, value, cellProperties) {
+    return function (instance, td, row, col, prop, value, cellProperties) {
         if (dataset.numColumns() <= col || !dataset.hasColumn(col)) return;
         const column = dataset.column(col);
         const { searchResults, currentResult, activeColumn } = app.get();

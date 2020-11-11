@@ -113,9 +113,7 @@
                 // const tickCnt = Math.min(_uniq(validValues).length, 14);
                 const dom = niceDomain;
                 // const classw = (s[1]-s[0]);
-                const bins = histogram()
-                    .domain(dom)
-                    .thresholds(thresholdSturges)(validValues);
+                const bins = histogram().domain(dom).thresholds(thresholdSturges)(validValues);
                 const binWidths = countBy(bins.map(b => b.x1 - b.x0));
                 if (bins.length > 2 && Object.keys(binWidths).length > 1) {
                     // check first and last bin
@@ -129,10 +127,7 @@
             },
 
             niceDomain({ validValues }) {
-                return scaleLinear()
-                    .domain(extent(validValues))
-                    .nice()
-                    .domain();
+                return scaleLinear().domain(extent(validValues)).nice().domain();
             },
 
             xScaleBand({ bins, innerWidth }) {
@@ -151,7 +146,7 @@
                 return yScale_
                     .domain([
                         0,
-                        max(bins, function(d) {
+                        max(bins, function (d) {
                             return d.length;
                         })
                     ])
@@ -192,7 +187,7 @@
             show(value) {
                 this.set({ highlight: value });
             },
-            resize: function() {
+            resize: function () {
                 var bcr = this.refs.svg.getBoundingClientRect();
 
                 this.set({
