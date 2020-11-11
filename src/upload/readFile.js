@@ -3,9 +3,9 @@
 // eslint-disable-next-line
 import jschardet from '/static/vendor/jschardet/jschardet.min.js';
 
-export default function (file, callback) {
+export default function(file, callback) {
     var reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = function() {
         try {
             var array = new Uint8Array(reader.result);
             var string = '';

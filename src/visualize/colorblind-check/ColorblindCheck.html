@@ -109,8 +109,12 @@
                 const { activeMode } = this.get();
                 this.initIframe(() => {
                     $('#iframe-vis').get(0).contentWindow.__dwColorMode = activeMode;
-                    $('#iframe-vis').get(0).contentWindow.__dw.render();
-                    $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
+                    $('#iframe-vis')
+                        .get(0)
+                        .contentWindow.__dw.render();
+                    $('#iframe-vis')
+                        .get(0)
+                        .contentWindow.dispatchEvent(new Event('resize'));
                 });
             },
             initIframe(callback) {
@@ -162,7 +166,7 @@
                 let sample;
                 if (colors.length > 30) {
                     colors = colors
-                        .map(function (c) {
+                        .map(function(c) {
                             var col = chroma(c);
                             return {
                                 raw: c,
@@ -170,10 +174,10 @@
                                 hue: col.get('lch.h')
                             };
                         })
-                        .sort(function (a, b) {
+                        .sort(function(a, b) {
                             return a.hue - b.hue;
                         })
-                        .map(function (c) {
+                        .map(function(c) {
                             return c.color;
                         });
                     // sample colors from hue gradient
@@ -227,7 +231,7 @@
                     if (chart.save) {
                         chart.setMetadata('colorblind', res);
                     } else {
-                        setTimeout(function () {
+                        setTimeout(function() {
                             chart.setMetadata('colorblind', res);
                         }, 3000);
                     }

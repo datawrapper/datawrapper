@@ -1,17 +1,17 @@
 /* eslint-disable */
-const blinder = (function () {
+const blinder = (function() {
     'use strict';
 
     function createCommonjsModule(fn, module) {
         return (module = { exports: {} }), fn(module, module.exports), module.exports;
     }
 
-    var oneColorAllDebug = createCommonjsModule(function (module, exports) {
+    var oneColorAllDebug = createCommonjsModule(function(module, exports) {
         /*jshint evil:true, onevar:false*/
         /*global define*/
         var installedColorSpaces = [],
             namedColors = {},
-            undef = function (obj) {
+            undef = function(obj) {
                 return typeof obj === 'undefined';
             },
             channelRegExp = /\s*(\.\d+|\d+(?:\.\d+)?)(%)?\s*/,
@@ -127,7 +127,7 @@ const blinder = (function () {
                     propertyNames[0] +
                     ") === '[object Array]') {" +
                     propertyNames
-                        .map(function (propertyName, i) {
+                        .map(function(propertyName, i) {
                             return propertyName + '=' + propertyNames[0] + '[' + i + '];';
                         })
                         .reverse()
@@ -135,10 +135,10 @@ const blinder = (function () {
                     '}' +
                     'if (' +
                     propertyNames
-                        .filter(function (propertyName) {
+                        .filter(function(propertyName) {
                             return propertyName !== 'alpha';
                         })
-                        .map(function (propertyName) {
+                        .map(function(propertyName) {
                             return 'isNaN(' + propertyName + ')';
                         })
                         .join('||') +
@@ -149,7 +149,7 @@ const blinder = (function () {
                     propertyNames.join('+","+') +
                     '+")");}' +
                     propertyNames
-                        .map(function (propertyName) {
+                        .map(function(propertyName) {
                             if (propertyName === 'hue') {
                                 return 'this._hue=hue<0?hue-Math.floor(hue):hue%1'; // Wrap
                             } else if (propertyName === 'alpha') {
@@ -175,7 +175,7 @@ const blinder = (function () {
 
             var prototype = ONECOLOR[colorSpaceName].prototype;
 
-            ['valueOf', 'hex', 'hexa', 'css', 'cssa'].forEach(function (methodName) {
+            ['valueOf', 'hex', 'hexa', 'css', 'cssa'].forEach(function(methodName) {
                 prototype[methodName] =
                     prototype[methodName] ||
                     (colorSpaceName === 'RGB'
@@ -185,7 +185,7 @@ const blinder = (function () {
 
             prototype.isColor = true;
 
-            prototype.equals = function (otherColor, epsilon) {
+            prototype.equals = function(otherColor, epsilon) {
                 if (undef(epsilon)) {
                     epsilon = 1e-10;
                 }
@@ -210,7 +210,7 @@ const blinder = (function () {
                     colorSpaceName +
                     "', " +
                     propertyNames
-                        .map(function (propertyName) {
+                        .map(function(propertyName) {
                             return 'this._' + propertyName;
                         }, this)
                         .join(', ') +
@@ -231,7 +231,7 @@ const blinder = (function () {
             }
 
             // It is pretty easy to implement the conversion to the same color space:
-            prototype[colorSpaceName.toLowerCase()] = function () {
+            prototype[colorSpaceName.toLowerCase()] = function() {
                 return this;
             };
             prototype.toString = new Function(
@@ -239,7 +239,7 @@ const blinder = (function () {
                     colorSpaceName +
                     ':"+' +
                     propertyNames
-                        .map(function (propertyName, i) {
+                        .map(function(propertyName, i) {
                             return '" ' + propertyNames[i] + '="+this._' + propertyName;
                         })
                         .join('+') +
@@ -247,7 +247,7 @@ const blinder = (function () {
             );
 
             // Generate getters and setters
-            propertyNames.forEach(function (propertyName, i) {
+            propertyNames.forEach(function(propertyName, i) {
                 prototype[propertyName] = prototype[
                     propertyName === 'black' ? 'k' : propertyName[0]
                 ] = new Function(
@@ -263,7 +263,7 @@ const blinder = (function () {
                         'if (isDelta) {' +
                         'return new this.constructor(' +
                         propertyNames
-                            .map(function (otherPropertyName, i) {
+                            .map(function(otherPropertyName, i) {
                                 return (
                                     'this._' +
                                     otherPropertyName +
@@ -276,7 +276,7 @@ const blinder = (function () {
                         // Setter: color.red(.2);
                         'return new this.constructor(' +
                         propertyNames
-                            .map(function (otherPropertyName, i) {
+                            .map(function(otherPropertyName, i) {
                                 return propertyName === otherPropertyName
                                     ? 'value'
                                     : 'this._' + otherPropertyName;
@@ -291,7 +291,7 @@ const blinder = (function () {
                 obj[sourceColorSpaceName.toLowerCase()] = new Function(
                     'return this.rgb().' + sourceColorSpaceName.toLowerCase() + '();'
                 ); // Fallback
-                ONECOLOR[sourceColorSpaceName].propertyNames.forEach(function (propertyName, i) {
+                ONECOLOR[sourceColorSpaceName].propertyNames.forEach(function(propertyName, i) {
                     obj[propertyName] = obj[
                         propertyName === 'black' ? 'k' : propertyName[0]
                     ] = new Function(
@@ -314,7 +314,7 @@ const blinder = (function () {
                 }
             }
 
-            installedColorSpaces.forEach(function (otherColorSpaceName) {
+            installedColorSpaces.forEach(function(otherColorSpaceName) {
                 installForeignMethods(colorSpaceName, otherColorSpaceName);
                 installForeignMethods(otherColorSpaceName, colorSpaceName);
             });
@@ -322,14 +322,14 @@ const blinder = (function () {
             installedColorSpaces.push(colorSpaceName);
         }
 
-        ONECOLOR.installMethod = function (name, fn) {
-            installedColorSpaces.forEach(function (colorSpace) {
+        ONECOLOR.installMethod = function(name, fn) {
+            installedColorSpaces.forEach(function(colorSpace) {
                 ONECOLOR[colorSpace].prototype[name] = fn;
             });
         };
 
         installColorSpace('RGB', ['red', 'green', 'blue', 'alpha'], {
-            hex: function () {
+            hex: function() {
                 var hexString = (
                     Math.round(255 * this._red) * 0x10000 +
                     Math.round(255 * this._green) * 0x100 +
@@ -338,7 +338,7 @@ const blinder = (function () {
                 return '#' + '00000'.substr(0, 6 - hexString.length) + hexString;
             },
 
-            hexa: function () {
+            hexa: function() {
                 var alphaString = Math.round(this._alpha * 255).toString(16);
                 return (
                     '#' +
@@ -348,7 +348,7 @@ const blinder = (function () {
                 );
             },
 
-            css: function () {
+            css: function() {
                 return (
                     'rgb(' +
                     Math.round(255 * this._red) +
@@ -360,7 +360,7 @@ const blinder = (function () {
                 );
             },
 
-            cssa: function () {
+            cssa: function() {
                 return (
                     'rgba(' +
                     Math.round(255 * this._red) +
@@ -375,7 +375,7 @@ const blinder = (function () {
             }
         });
         if (typeof undefined === 'function' && !undef(undefined.amd)) {
-            undefined(function () {
+            undefined(function() {
                 return ONECOLOR;
             });
         } else {
@@ -542,9 +542,9 @@ const blinder = (function () {
         /*global INCLUDE, installColorSpace, ONECOLOR*/
 
         installColorSpace('XYZ', ['x', 'y', 'z', 'alpha'], {
-            fromRgb: function () {
+            fromRgb: function() {
                 // http://www.easyrgb.com/index.php?X=MATH&H=02#text2
-                var convert = function (channel) {
+                var convert = function(channel) {
                         return channel > 0.04045
                             ? Math.pow((channel + 0.055) / 1.055, 2.4)
                             : channel / 12.92;
@@ -563,12 +563,12 @@ const blinder = (function () {
                 );
             },
 
-            rgb: function () {
+            rgb: function() {
                 // http://www.easyrgb.com/index.php?X=MATH&H=01#text1
                 var x = this._x,
                     y = this._y,
                     z = this._z,
-                    convert = function (channel) {
+                    convert = function(channel) {
                         return channel > 0.0031308
                             ? 1.055 * Math.pow(channel, 1 / 2.4) - 0.055
                             : 12.92 * channel;
@@ -584,9 +584,9 @@ const blinder = (function () {
                 );
             },
 
-            lab: function () {
+            lab: function() {
                 // http://www.easyrgb.com/index.php?X=MATH&H=07#text7
-                var convert = function (channel) {
+                var convert = function(channel) {
                         return channel > 0.008856
                             ? Math.pow(channel, 1 / 3)
                             : 7.787037 * channel + 4 / 29;
@@ -602,17 +602,17 @@ const blinder = (function () {
         /*global INCLUDE, installColorSpace, ONECOLOR*/
 
         installColorSpace('LAB', ['l', 'a', 'b', 'alpha'], {
-            fromRgb: function () {
+            fromRgb: function() {
                 return this.xyz().lab();
             },
 
-            rgb: function () {
+            rgb: function() {
                 return this.xyz().rgb();
             },
 
-            xyz: function () {
+            xyz: function() {
                 // http://www.easyrgb.com/index.php?X=MATH&H=08#text8
-                var convert = function (channel) {
+                var convert = function(channel) {
                         var pow = Math.pow(channel, 3);
                         return pow > 0.008856 ? pow : (channel - 16 / 116) / 7.87;
                     },
@@ -632,7 +632,7 @@ const blinder = (function () {
         /*global one*/
 
         installColorSpace('HSV', ['hue', 'saturation', 'value', 'alpha'], {
-            rgb: function () {
+            rgb: function() {
                 var hue = this._hue,
                     saturation = this._saturation,
                     value = this._value,
@@ -679,7 +679,7 @@ const blinder = (function () {
                 return new ONECOLOR.RGB(red, green, blue, this._alpha);
             },
 
-            hsl: function () {
+            hsl: function() {
                 var l = (2 - this._saturation) * this._value,
                     sv = this._saturation * this._value,
                     svDivisor = l <= 1 ? l : 2 - l,
@@ -694,7 +694,7 @@ const blinder = (function () {
                 return new ONECOLOR.HSL(this._hue, saturation, l / 2, this._alpha);
             },
 
-            fromRgb: function () {
+            fromRgb: function() {
                 // Becomes one.color.RGB.prototype.hsv
                 var red = this._red,
                     green = this._green,
@@ -727,7 +727,7 @@ const blinder = (function () {
         /*global one*/
 
         installColorSpace('HSL', ['hue', 'saturation', 'lightness', 'alpha'], {
-            hsv: function () {
+            hsv: function() {
                 // Algorithm adapted from http://wiki.secondlife.com/wiki/Color_conversion_scripts
                 var l = this._lightness * 2,
                     s = this._saturation * (l <= 1 ? l : 2 - l),
@@ -743,11 +743,11 @@ const blinder = (function () {
                 return new ONECOLOR.HSV(this._hue, saturation, (l + s) / 2, this._alpha);
             },
 
-            rgb: function () {
+            rgb: function() {
                 return this.hsv().rgb();
             },
 
-            fromRgb: function () {
+            fromRgb: function() {
                 // Becomes one.color.RGB.prototype.hsv
                 return this.hsv().hsl();
             }
@@ -756,7 +756,7 @@ const blinder = (function () {
         /*global one*/
 
         installColorSpace('CMYK', ['cyan', 'magenta', 'yellow', 'black', 'alpha'], {
-            rgb: function () {
+            rgb: function() {
                 return new ONECOLOR.RGB(
                     1 - this._cyan * (1 - this._black) - this._black,
                     1 - this._magenta * (1 - this._black) - this._black,
@@ -765,7 +765,7 @@ const blinder = (function () {
                 );
             },
 
-            fromRgb: function () {
+            fromRgb: function() {
                 // Becomes one.color.RGB.prototype.cmyk
                 // Adapted from http://www.javascripter.net/faq/rgb2cmyk.htm
                 var red = this._red,
@@ -787,15 +787,15 @@ const blinder = (function () {
             }
         });
 
-        ONECOLOR.installMethod('clearer', function (amount) {
+        ONECOLOR.installMethod('clearer', function(amount) {
             return this.alpha(isNaN(amount) ? -0.1 : -amount, true);
         });
 
-        ONECOLOR.installMethod('darken', function (amount) {
+        ONECOLOR.installMethod('darken', function(amount) {
             return this.lightness(isNaN(amount) ? -0.1 : -amount, true);
         });
 
-        ONECOLOR.installMethod('desaturate', function (amount) {
+        ONECOLOR.installMethod('desaturate', function(amount) {
             return this.saturation(isNaN(amount) ? -0.1 : -amount, true);
         });
 
@@ -809,11 +809,11 @@ const blinder = (function () {
         ONECOLOR.installMethod('greyscale', gs);
         ONECOLOR.installMethod('grayscale', gs);
 
-        ONECOLOR.installMethod('lighten', function (amount) {
+        ONECOLOR.installMethod('lighten', function(amount) {
             return this.lightness(isNaN(amount) ? 0.1 : amount, true);
         });
 
-        ONECOLOR.installMethod('mix', function (otherColor, weight) {
+        ONECOLOR.installMethod('mix', function(otherColor, weight) {
             otherColor = ONECOLOR(otherColor).rgb();
             weight = 1 - (isNaN(weight) ? 0.5 : weight);
 
@@ -831,20 +831,20 @@ const blinder = (function () {
             );
         });
 
-        ONECOLOR.installMethod('negate', function () {
+        ONECOLOR.installMethod('negate', function() {
             var rgb = this.rgb();
             return new ONECOLOR.RGB(1 - rgb._red, 1 - rgb._green, 1 - rgb._blue, this._alpha);
         });
 
-        ONECOLOR.installMethod('opaquer', function (amount) {
+        ONECOLOR.installMethod('opaquer', function(amount) {
             return this.alpha(isNaN(amount) ? 0.1 : amount, true);
         });
 
-        ONECOLOR.installMethod('rotate', function (degrees) {
+        ONECOLOR.installMethod('rotate', function(degrees) {
             return this.hue((degrees || 0) / 360, true);
         });
 
-        ONECOLOR.installMethod('saturate', function (amount) {
+        ONECOLOR.installMethod('saturate', function(amount) {
             return this.saturation(isNaN(amount) ? 0.1 : amount, true);
         });
 
@@ -852,14 +852,14 @@ const blinder = (function () {
         /*
     toAlpha returns a color where the values of the argument have been converted to alpha
 */
-        ONECOLOR.installMethod('toAlpha', function (color) {
+        ONECOLOR.installMethod('toAlpha', function(color) {
             var me = this.rgb(),
                 other = ONECOLOR(color).rgb(),
                 epsilon = 1e-10,
                 a = new ONECOLOR.RGB(0, 0, 0, me._alpha),
                 channels = ['_red', '_green', '_blue'];
 
-            channels.forEach(function (channel) {
+            channels.forEach(function(channel) {
                 if (me[channel] < epsilon) {
                     a[channel] = me[channel];
                 } else if (me[channel] > other[channel]) {
@@ -887,7 +887,7 @@ const blinder = (function () {
                 return me;
             }
 
-            channels.forEach(function (channel) {
+            channels.forEach(function(channel) {
                 me[channel] = (me[channel] - other[channel]) / me._alpha + other[channel];
             });
             me._alpha *= a._alpha;
@@ -1006,7 +1006,7 @@ const blinder = (function () {
         }
     };
 
-    var convertRgbToXyz = function (o) {
+    var convertRgbToXyz = function(o) {
         var M = matrixRgbXyz;
         var z = {};
         var R = o.R / 255;
@@ -1027,7 +1027,7 @@ const blinder = (function () {
         return z;
     };
 
-    var convertXyzToXyy = function (o) {
+    var convertXyzToXyy = function(o) {
         var n = o.X + o.Y + o.Z;
         if (n === 0) {
             return { x: 0, y: 0, Y: o.Y };
@@ -1035,7 +1035,7 @@ const blinder = (function () {
         return { x: o.X / n, y: o.Y / n, Y: o.Y };
     };
 
-    var Blind = function (rgb, type, anomalize) {
+    var Blind = function(rgb, type, anomalize) {
         var z,
             v,
             n,
@@ -1132,7 +1132,7 @@ const blinder = (function () {
         Blind: Blind
     };
 
-    var colorBlind = createCommonjsModule(function (module, exports) {
+    var colorBlind = createCommonjsModule(function(module, exports) {
         /*
          * color-blind
          * https://github.com/skratchdot/color-blind
@@ -1153,11 +1153,11 @@ const blinder = (function () {
             achromatomaly: { type: 'achroma', anomalize: true },
             achromatopsia: { type: 'achroma' }
         };
-        var denorm = function (ratio) {
+        var denorm = function(ratio) {
             return Math.round(ratio * 255);
         };
-        var createBlinder = function (key) {
-            return function (colorString, returnRgb) {
+        var createBlinder = function(key) {
+            return function(colorString, returnRgb) {
                 var color = oneColorAllDebug(colorString);
                 if (!color) {
                     return returnRgb ? { R: 0, G: 0, B: 0 } : '#000000';

@@ -302,7 +302,9 @@
             embedCode({ embed_type, chart }) {
                 if (!chart.metadata) return '';
                 if (chart.metadata.publish && !chart.metadata.publish['embed-codes'])
-                    return `<iframe src="${chart.publicUrl}" width="100%" height="${chart.metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
+                    return `<iframe src="${chart.publicUrl}" width="100%" height="${
+                        chart.metadata.publish['embed-height']
+                    }" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
 
                 if (chart.metadata.publish['embed-codes']['embed-method-' + embed_type]) {
                     return chart.metadata.publish['embed-codes']['embed-method-' + embed_type];
