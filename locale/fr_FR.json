@@ -823,5 +823,7 @@
   "controls / annotations / range-multi-select": "",
   "controls / annotations / range-delete-selected": "",
   "visualize / transpose-button": "transposer les données",
-  "visualize / notifications / missing-column": ""
+  "visualize / notifications / missing-column": "",
+  "controls / annotations / mobile-key / help-chart": "",
+  "controls / annotations / mobile-key / help-map": ""
 }

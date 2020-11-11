@@ -782,7 +782,7 @@
   "controls / annotations / connector-line / type": "Linienart",
   "controls / annotations / connector-line / width": "Breite",
   "controls / annotations / connector-line / line-end": "Linienspitze",
-  "controls / annotations / connector-line / inherit-color / help": "Die eingestellte Textfarbe wird für Linie und Kreis verwendet.",
+  "controls / annotations / connector-line / inherit-color / help": "Die eingestellte Textfarbe wird auch für Linie und Kreis verwendet.",
   "controls / annotations / connector-line / inherit-color": "Textfarbe verwenden",
   "controls / annotations / connector-line / circle": "Kreis am Ende der Linie zeichnen",
   "controls / annotations / connector-line / circle / disabled": "Der Kreis kann aktiviert werden, wenn eine Linie zur Textanmerkung gezeichnet wird",
@@ -816,12 +816,14 @@
   "controls / annotations / range / color": "Farbe",
   "controls / annotations / range / opacity": "Deckkraft",
   "controls / annotations / line / width": "Linienstärke",
-  "controls / annotations / line / dash": "Gestrichelte Linie",
+  "controls / annotations / line / dash": "Stil",
   "controls / annotations / range / delete": "Bereichshervorhebung löschen",
   "controls / annotations / type / range": "Bereich",
   "controls / annotations / type / line": "Linie",
   "controls / annotations / range-multi-select": "Du hast %s Bereiche selektiert.",
   "controls / annotations / range-delete-selected": "Ausgewählte Hervorhebungen löschen",
   "visualize / transpose-button": "Daten zu transponieren",
-  "visualize / notifications / missing-column": "Das Diagramm benötigt mindestens eine Spalte vom Typ <b>[%s:type]</b>, um die Achse <b>[%s:axis]</b> zu füllen. "
+  "visualize / notifications / missing-column": "Das Diagramm benötigt mindestens eine Spalte vom Typ <b>[%s:type]</b>, um die Achse <b>[%s:axis]</b> zu füllen. ",
+  "controls / annotations / mobile-key / help-chart": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf dem Diagramm selbst angezeigt. Der Text befindet sich dann unter dem Diagramm.",
+  "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte."
 }
