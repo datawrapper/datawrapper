@@ -47,7 +47,8 @@
                 });
                 window.location.href = 'describe';
             }
-            if (changed.selected) {
+
+            if (changed.selected && current.selected.csv) {
                 this.set({ chartData: current.selected.csv });
             }
         }
