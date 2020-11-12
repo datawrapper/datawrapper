@@ -825,5 +825,7 @@
   "visualize / transpose-button": "trasporre i dati",
   "visualize / notifications / missing-column": "",
   "controls / annotations / mobile-key / help-chart": "",
-  "controls / annotations / mobile-key / help-map": ""
+  "controls / annotations / mobile-key / help-map": "",
+  "controls / more-options": "",
+  "controls / fewer-options": ""
 }

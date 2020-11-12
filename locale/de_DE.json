@@ -349,7 +349,7 @@
   "teams / permissions / members": "Ein <b>Team-Mitglied</b> kann auf das Archiv des Teams zugreifen, sowie selbst neue Grafiken erstellen. Es kann nicht auf die Team-Einstellungen zugreifen, neue Mitglieder hinzufügen oder bestehende entfernen.",
   "teams / permissions / admins": "Ein <b>Team-Admin</b> kann auf das Archiv des Teams zugreifen, sowie die Team-Einstellungen verändern und Mitglieder hinzufügen oder entfernen.",
   "teams / permissions / owners": "Der <b>Account-Besitzer</b> kann auf das Archiv des Teams und die Team-Einstellungen zugreifen, sowie zudem die Rechnungen des Teams einsehen und das Abonnement verändern.",
-  "teams / defaults / h1": "Verwalte dein team",
+  "teams / defaults / h1": "Verwalte dein Team",
   "teams / defaults / p": "Verwalte die Anzeige deines Teams in Datawrapper und passe die Voreinstellungen für alle neu in deinem Team erstellten Grafiken an.",
   "teams / defaults / theme": "Layout-Voreinstellung",
   "teams / defaults / folder": "Ordner-Voreinstellung",
@@ -825,5 +825,7 @@
   "visualize / transpose-button": "Daten zu transponieren",
   "visualize / notifications / missing-column": "Das Diagramm benötigt mindestens eine Spalte vom Typ <b>[%s:type]</b>, um die Achse <b>[%s:axis]</b> zu füllen. ",
   "controls / annotations / mobile-key / help-chart": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf dem Diagramm selbst angezeigt. Der Text befindet sich dann unter dem Diagramm.",
-  "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte."
+  "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte.",
+  "controls / more-options": "Erweiterte Optionen anzeigen",
+  "controls / fewer-options": "Erweiterte Optionen ausblenden"
 }
