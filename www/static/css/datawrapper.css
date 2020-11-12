@@ -2515,6 +2515,7 @@ input[type='color'],
   border-radius: 0px;
   overflow: hidden;
   background: #fff;
+  transform-origin: top left;
 }
 .dw-create-publish p.lead {
   margin-top: 30px;

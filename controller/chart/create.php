@@ -77,9 +77,12 @@ $app->map('/(chart|table)/create', function() use ($app) {
                         $chart->setTitle($public_tpl->getTitle());
                         $chart->setType($public_tpl->getType());
 
-                        try {
-                            $chart->writeAsset($chart->getId() . ".map.json", $chart_tpl->loadAsset($chart_tpl->getId() . ".map.json"));
-                        } catch (Exception $ex) {}
+                        $user = DatawrapperSession::getUser();
+                        if ($user->isLoggedIn()) {
+                            try {
+                                $chart->writeAsset($chart->getId() . ".map.json", $chart_tpl->loadAsset($chart_tpl->getId() . ".map.json"));
+                            } catch (Exception $ex) {}
+                        }
 
                         // set last step to visualize
                     } else {
