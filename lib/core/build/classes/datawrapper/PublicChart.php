@@ -84,7 +84,7 @@ class PublicChart extends BasePublicChart {
             if ($status == "404") {
                 $this->assets[$filename] = "";
             } else {
-                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode_safe($body, 1);
+                $this->assets[$filename] = gettype($body) == "string" ? trim($body) : json_encode_safe($body, 1);
             }
         }
 
