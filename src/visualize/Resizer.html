@@ -329,48 +329,6 @@
                     }
                 }, 1000);
             },
-            registerDragAndDropListener() {
-                const app = this;
-                const iframe = $('#iframe-wrapper').addClass('resizable');
-                var startX, startY, startWidth, startHeight;
-
-                iframe.find('.resizer').remove();
-                iframe.append('<div class="resizer resizer-both icon-resize-horizontal"></div>');
-
-                $('.resizer', iframe).on('mousedown', dragStart);
-
-                function dragStart(e) {
-                    startX = e.clientX;
-                    startY = e.clientY;
-                    startWidth = iframe.width();
-                    startHeight = iframe.height();
-
-                    $(document).on('mousemove', doDrag);
-                    $(document).on('mouseup', stopDrag);
-                    $('#iframe-vis').addClass('resizing');
-                }
-
-                function doDrag(e) {
-                    iframe.height(startHeight + e.clientY - startY);
-                    iframe.width(startWidth + e.clientX - startX);
-                    iframe.css('pointer-events', 'none');
-                    e.preventDefault();
-                    return false;
-                }
-
-                function stopDrag(e) {
-                    $(document).unbind('mousemove', doDrag);
-                    $(document).unbind('mouseup', stopDrag);
-
-                    app.set({
-                        width: $('#iframe-vis').width(),
-                        height: $('#iframe-vis').height()
-                    });
-
-                    iframe.css('pointer-events', 'initial');
-                    $('#iframe-vis').removeClass('resizing');
-                }
-            },
             registerTypeListener() {
                 const app = this;
 
@@ -418,7 +376,6 @@
 
             if (changed.unit && !changed.width && !changed.height) {
                 // changed unit, let's recompute
-
                 const factor =
                     current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1 / DPI;
 
@@ -439,7 +396,6 @@
                         height_txt: this.store.getMetadata('publish.embed-height')
                     });
 
-                    this.registerDragAndDropListener();
                     this.registerTypeListener();
                     this.registerChartHeightListener();
 
