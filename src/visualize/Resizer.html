@@ -320,7 +320,7 @@
 
                         if (visRendered && chartBody && chartBody.getBoundingClientRect) {
                             var h = chartBody.getBoundingClientRect().height;
-                            if (h !== this.store.setMetadata('publish.chart-height')) {
+                            if (h !== this.store.getMetadata('publish.chart-height')) {
                                 this.store.setMetadata('publish.chart-height', h);
                                 if (this.store.save) this.store.save();
                             }
