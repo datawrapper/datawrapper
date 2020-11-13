@@ -827,5 +827,8 @@
   "controls / annotations / mobile-key / help-chart": "When viewed on a mobile device, a number will be shown at the annotation location, referencing to the annotation text in a key underneath the chart",
   "controls / annotations / mobile-key / help-map": "When viewed on a mobile device, a number will be shown at the annotation location, referencing to the annotation text in a key underneath the map.",
   "controls / more-options": "Show advanced options",
-  "controls / fewer-options": "Hide advanced options"
+  "controls / fewer-options": "Hide advanced options",
+  "describe / column-format / million": "1 million",
+  "describe / column-format / billion": "1 billion",
+  "describe / column-format / trillion": "1 trillion"
 }

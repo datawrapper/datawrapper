@@ -827,5 +827,8 @@
   "controls / annotations / mobile-key / help-chart": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf dem Diagramm selbst angezeigt. Der Text befindet sich dann unter dem Diagramm.",
   "controls / annotations / mobile-key / help-map": "Auf mobilen Geräten wird statt dem Anmerkungstext nur eine Zahl auf der Karte selbst angezeigt. Der Text befindet sich dann unter der Karte.",
   "controls / more-options": "Erweiterte Optionen anzeigen",
-  "controls / fewer-options": "Erweiterte Optionen ausblenden"
+  "controls / fewer-options": "Erweiterte Optionen ausblenden",
+  "describe / column-format / million": "1 Million",
+  "describe / column-format / billion": "1 Milliarde",
+  "describe / column-format / trillion": "1 Billion"
 }
