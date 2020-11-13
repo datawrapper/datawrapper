@@ -827,5 +827,8 @@
   "controls / annotations / mobile-key / help-chart": "",
   "controls / annotations / mobile-key / help-map": "",
   "controls / more-options": "",
-  "controls / fewer-options": ""
+  "controls / fewer-options": "",
+  "describe / column-format / million": "",
+  "describe / column-format / billion": "",
+  "describe / column-format / trillion": ""
 }
