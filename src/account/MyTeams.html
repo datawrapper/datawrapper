@@ -221,8 +221,7 @@
                 else if (current.currentTeam !== initialCurrentTeam) {
                     initialCurrentTeam = current.currentTeam;
                     this.set({
-                        awaitActiveTeam: httpReq(`/v3/me/settings`, {
-                            method: 'patch',
+                        awaitActiveTeam: httpReq.patch(`/v3/me/settings`, {
                             payload: {
                                 activeTeam: current.currentTeam || null
                             }
