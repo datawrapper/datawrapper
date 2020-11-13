@@ -315,19 +315,20 @@
                     const iframe = $('#iframe-vis').get(0).contentWindow;
 
                     if (iframe) {
+                        var visRendered = iframe.__dw && iframe.__dw.vis.__rendered;
                         var chartBody = iframe.document.querySelector('.dw-chart-body');
 
-                        if (chartBody && chartBody.getBoundingClientRect) {
+                        if (visRendered && chartBody && chartBody.getBoundingClientRect) {
                             var h = chartBody.getBoundingClientRect().height;
-                            if (h !== this.store.get('metadata.publish.chart-height')) {
+                            if (h !== this.store.setMetadata('publish.chart-height')) {
                                 this.store.setMetadata('publish.chart-height', h);
                                 if (this.store.save) this.store.save();
                             }
                         } else {
-                            setTimeout(() => this.measureChartHeight(), 1000);
+                            setTimeout(() => this.measureChartHeight(), 500);
                         }
                     }
-                }, 1000);
+                }, 500);
             },
             registerDragAndDropListener() {
                 const app = this;
