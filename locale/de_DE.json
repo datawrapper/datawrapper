@@ -830,5 +830,6 @@
   "controls / fewer-options": "Erweiterte Optionen ausblenden",
   "describe / column-format / million": "1 Million",
   "describe / column-format / billion": "1 Milliarde",
-  "describe / column-format / trillion": "1 Billion"
+  "describe / column-format / trillion": "1 Billion",
+  "controls / annotations / duplicate": "Anmerkung duplizieren"
 }
