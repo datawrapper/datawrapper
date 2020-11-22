@@ -830,5 +830,6 @@
   "controls / fewer-options": "",
   "describe / column-format / million": "",
   "describe / column-format / billion": "",
-  "describe / column-format / trillion": ""
+  "describe / column-format / trillion": "",
+  "controls / annotations / duplicate": ""
 }
