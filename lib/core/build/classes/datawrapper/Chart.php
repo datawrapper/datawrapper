@@ -183,7 +183,11 @@ class Chart extends BaseChart {
             if ($status == "404") {
                 $this->assets[$filename] = "";
             } else {
-                $this->assets[$filename] = gettype($body) == "string" ? $body : json_encode_safe($body, 1);
+                $this->assets[$filename] = (
+                    gettype($body) == "string"
+                    ? (preg_match('/^\s+$/', $body) ? '' : $body)
+                    : json_encode_safe($body, 1)
+                );
             }
         }
 
