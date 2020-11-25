@@ -199,7 +199,7 @@
                     stickyBottom: useSticky && bottom < canvasHeight
                 });
             },
-            loadVis(type, teamControlsOptions) {
+            loadVis(type) {
                 this.set({ visLoading: true });
                 this.store.set({ type });
                 this.loadControls(type);
