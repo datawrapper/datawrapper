@@ -148,6 +148,7 @@
                 Annotate: Empty,
                 visualizations: [],
                 visArchive: [],
+                teamControlsOptions: {},
                 loading: false,
                 visLoading: false,
                 defaultVisType: '',
@@ -198,7 +199,7 @@
                     stickyBottom: useSticky && bottom < canvasHeight
                 });
             },
-            loadVis(type) {
+            loadVis(type, teamControlsOptions) {
                 this.set({ visLoading: true });
                 this.store.set({ type });
                 this.loadControls(type);
@@ -207,6 +208,8 @@
                 const chart = this.store;
                 const { visArchive, visualizations } = this.get();
                 const vis = [...visArchive, ...visualizations].find(v => v.id === type);
+                const { teamControlsOptions } = this.get();
+
                 chart.set({ visualization: vis });
 
                 if (!vis.controls) {
@@ -257,7 +260,7 @@
                                 metadata.visualize[field] = defaults[field];
                         }
 
-                        chart.set({ visualization: vis });
+                        chart.set({ visualization: vis, teamControlsOptions });
 
                         chart.setMetadata('visualize.chart-type-set', true);
 

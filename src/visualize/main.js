@@ -18,7 +18,8 @@ function init({
     webToPrint,
     theme,
     themes,
-    themeData
+    themeData,
+    teamControlsOptions
 }) {
     const chart = new Chart(chartData);
     let app;
@@ -72,7 +73,8 @@ function init({
                 namespace,
                 visArchive,
                 defaultVisType,
-                webToPrint
+                webToPrint,
+                teamControlsOptions
             }
         });
     });

@@ -64,6 +64,8 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $res = Hooks::execute('enable_web_to_print');
         $webToPrint = !empty($res) && $res[0] === true;
+        $org = $chart->getOrganization();
+        if ($org) $teamControlsOptions = $org->getSettings("controls") ?? [];
 
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
@@ -78,6 +80,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
             'theme' => $theme,
             'webToPrint' => $webToPrint,
+            'teamControlsOptions' => $teamControlsOptions,
             'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),
