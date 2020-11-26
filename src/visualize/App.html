@@ -208,8 +208,8 @@
                 const chart = this.store;
                 const { visArchive, visualizations, teamControlsOptions } = this.get();
                 const vis = [...visArchive, ...visualizations].find(v => v.id === type);
-
                 chart.set({ visualization: vis });
+
                 if (!vis.controls) {
                     console.error('This visualization does not define new svelte controls');
                     return;
