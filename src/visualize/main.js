@@ -33,7 +33,7 @@ function init({
     chart.set({
         writable: true,
         themeData: themeData,
-        teamSettingsControls: teamSettingsControls,
+        teamSettingsControls,
         themes,
         visualization: visualizations[chartData.type]
     });
