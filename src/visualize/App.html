@@ -206,9 +206,8 @@
             },
             loadControls(type) {
                 const chart = this.store;
-                const { visArchive, visualizations } = this.get();
+                const { visArchive, visualizations, teamControlsOptions } = this.get();
                 const vis = [...visArchive, ...visualizations].find(v => v.id === type);
-                const { teamControlsOptions } = this.get();
 
                 chart.set({ visualization: vis });
 
