@@ -148,7 +148,6 @@
                 Annotate: Empty,
                 visualizations: [],
                 visArchive: [],
-                teamControlsOptions: {},
                 loading: false,
                 visLoading: false,
                 defaultVisType: '',
@@ -206,7 +205,7 @@
             },
             loadControls(type) {
                 const chart = this.store;
-                const { visArchive, visualizations, teamControlsOptions } = this.get();
+                const { visArchive, visualizations } = this.get();
                 const vis = [...visArchive, ...visualizations].find(v => v.id === type);
                 chart.set({ visualization: vis });
 
@@ -258,7 +257,7 @@
                                 metadata.visualize[field] = defaults[field];
                         }
 
-                        chart.set({ visualization: vis, teamControlsOptions });
+                        chart.set({ visualization: vis });
 
                         chart.setMetadata('visualize.chart-type-set', true);
 

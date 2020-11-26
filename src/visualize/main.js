@@ -19,7 +19,7 @@ function init({
     theme,
     themes,
     themeData,
-    teamControlsOptions
+    teamSettingsControls
 }) {
     const chart = new Chart(chartData);
     let app;
@@ -33,6 +33,7 @@ function init({
     chart.set({
         writable: true,
         themeData: themeData,
+        teamSettingsControls: teamSettingsControls,
         themes,
         visualization: visualizations[chartData.type]
     });
@@ -73,8 +74,7 @@ function init({
                 namespace,
                 visArchive,
                 defaultVisType,
-                webToPrint,
-                teamControlsOptions
+                webToPrint
             }
         });
     });
