@@ -29,6 +29,7 @@
         "healthier": "^3.3.0",
         "js-yaml": "^3.14.0",
         "less": "^3.11.3",
+        "qrcode-generator": "^1.4.4",
         "request": "^2.88.2",
         "underscore": "^1.10.2"
     },
