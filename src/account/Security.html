@@ -27,7 +27,23 @@
                 {/if} {/if}
             </td>
             <td width="50%">
-                {#if enableProvider === provider.id}
+                {#if enableProvider === provider.id} {#if provider.data.qrcode}
+                <p>Scan this QR Code with your Authenticator app and enter a code to confirm</p>
+                <img src="{qrcode(provider, user)}" width="200" />
+                <form on:submit|preventDefault="doEnable(provider)" class="my-0">
+                    <input
+                        placeholder="123456"
+                        class="input-xxlarge span2 my-0"
+                        autocomplete="off"
+                        type="text"
+                        style="font-family: 'Roboto Mono';"
+                        bind:value="otp"
+                        data-lpignore="true"
+                        autofocus
+                    />
+                    <input type="submit" class="btn btn-primary" value="Confirm" />
+                </form>
+                {:else}
                 <form on:submit|preventDefault="doEnable(provider)" class="my-0">
                     <input
                         placeholder="Enter a one-time password to activate device"
@@ -39,7 +55,7 @@
                         autofocus
                     />
                 </form>
-                {/if} {#if awaitEnable} {#await awaitEnable}
+                {/if} {/if} {#if awaitEnable} {#await awaitEnable}
                 <i class="fa fa-spinner fa-spin"></i>
                 {:then}
                 <div class="text-success">
@@ -73,6 +89,18 @@
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
+    import qrcodeGenerator from 'qrcode-generator';
+
+    function qrcode(provider, user) {
+        const code = qrcodeGenerator(0, 'M');
+        code.addData(
+            `otpauth://totp/${user.email || user.name}?issuer=${provider.data.issuer}&secret=${
+                provider.data.secret
+            }`
+        );
+        code.make();
+        return code.createDataURL(32);
+    }
 
     export default {
         components: {},
@@ -83,7 +111,7 @@
             };
         },
         computed: {},
-        helpers: { __ },
+        helpers: { __, qrcode },
         methods: {
             loadProviders(reset) {
                 this.set({
@@ -113,7 +141,9 @@
                         enableProvider: null,
                         awaitEnable: httpReq
                             .post(`/v3/me/otp/${provider.id}`, {
-                                payload: { otp }
+                                payload: provider.data.secret
+                                    ? { otp: `${provider.data.secret}:${otp}` }
+                                    : { otp }
                             })
                             .then(() => this.loadProviders(true))
                     });
