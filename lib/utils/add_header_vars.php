@@ -310,7 +310,13 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
     $page['headlinks'] = $headlinks;
     $page['favicon'] = $config['custom_favicon'] ?? (($config['debug'] ?? false) ? 'favicon-dev.png' : 'favicon.png');
     $page['user'] = $user;
-    $page['userData'] = $user->isLoggedIn() ? $user->getUserData() : false;
+    $userData = $user->isLoggedIn() ? $user->getUserData() : false;
+    if (is_array($userData)) {
+        // remove keys that start with "."
+        $f = array_filter(array_keys($userData), function($k) { return $k[0] != '.'; });
+        $userData = array_intersect_key($userData, array_flip($f));
+    }
+    $page['userData'] = $userData;
     $page['language'] = substr(DatawrapperSession::getLanguage(), 0, 2);
     $page['locale'] = DatawrapperSession::getLanguage();
     $page['DW_DOMAIN'] = $config['domain'];
