@@ -27,6 +27,7 @@
         "debounce-promise": "^3.1.2",
         "less": "^3.12.2",
         "lodash": "^4.17.20",
+        "qrcode-generator": "^1.4.4",
         "rollup": "^1.32.1",
         "rollup-plugin-svelte": "^5.2.3",
         "rollup-plugin-terser": "^5.3.1",
