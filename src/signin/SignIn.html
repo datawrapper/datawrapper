@@ -5,9 +5,9 @@
         <div class="span{noSignup ? 4 : 3} row-login">
             <h3>{@html __("login / login / headline")}</h3>
 
+            {#if !otpPrompt}
             <p>{@html __("login / login / intro")}</p>
-
-            {#if loginSuccess}
+            {/if} {#if loginSuccess}
             <div class="alert alert-success">
                 {@html loginSuccess}
             </div>
@@ -19,6 +19,7 @@
 
             <form class="login-form form-vertical">
                 <div>
+                    {#if !otpPrompt}
                     <div class="control-group" class:error="invalidLoginEmail">
                         <label>{__('email')}</label>
                         <input
@@ -38,6 +39,20 @@
                             bind:value="loginPassword"
                         />
                     </div>
+                    {/if} {:else}
+                    <!-- otp prompt -->
+                    <p>
+                        Please insert your OTP device and click its button, or enter a code from
+                        your configured OTP app.
+                    </p>
+                    <input
+                        class="login-pwd input-xxlarge span3"
+                        autocomplete="off"
+                        type="password"
+                        bind:value="loginOTP"
+                        data-lpignore="true"
+                        autofocus
+                    />
                     {/if}
                 </div>
                 {#if !forgotPassword}
@@ -245,6 +260,7 @@
             forgotPassword: false,
             loginEmail: '',
             loginPassword: '',
+            loginOTP: '',
             rememberLogin: true,
             loginEmailError: false,
             loginError: '',
@@ -260,7 +276,8 @@
             // progressIndicators
             requestingPassword: false,
             loggingIn: false,
-            signingUp: false
+            signingUp: false,
+            otpPrompt: false
         }),
         computed: {
             invalidLoginEmail({ loginEmail, forgotPassword }) {
@@ -290,9 +307,11 @@
         },
         methods: {
             async doLogIn() {
-                const { loginEmail, loginPassword, rememberLogin } = this.get();
+                const { loginEmail, loginPassword, rememberLogin, loginOTP } = this.get();
                 this.set({
                     loggingIn: true,
+                    otpPrompt: !!loginOTP,
+                    loginOTP: '',
                     loginError: '',
                     loginSuccess: ''
                 });
@@ -301,16 +320,24 @@
                         payload: {
                             email: loginEmail,
                             password: loginPassword,
-                            keepSession: rememberLogin
+                            keepSession: rememberLogin,
+                            ...(loginOTP ? { otp: loginOTP } : {})
                         }
                     });
-                    this.set({ loginSuccess: 'Login successful, reloading page' });
+                    this.set({
+                        loginSuccess: 'Login successful, reloading page',
+                        otpPrompt: false
+                    });
                     setTimeout(() => {
                         window.window.location.href = '/';
                     }, 2000);
                 } catch (error) {
                     if (error.name === 'HttpReqError') {
                         const body = await error.response.json();
+                        if (body.statusCode === 401 && body.message === 'Need OTP') {
+                            this.set({ otpPrompt: true, loginOTP: '', loggingIn: false });
+                            return;
+                        }
                         this.set({ loginError: body ? body.message : error.message });
                     } else {
                         this.set({ loginError: error });

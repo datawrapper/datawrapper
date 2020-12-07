@@ -26,6 +26,7 @@
     import EditProfile from './EditProfile.html';
     import NavTabs from '../shared/NavTabs.html';
     import MyTeams from './MyTeams.html';
+    import Security from './Security.html';
 
     /**
      * @see https://stackoverflow.com/a/22706073
@@ -47,6 +48,14 @@
         id: 'teams',
         icon: 'im im-users',
         ui: MyTeams,
+        data: {}
+    };
+
+    const SecurityTab = {
+        title: 'Security',
+        id: 'security',
+        icon: 'im im-shield',
+        ui: Security,
         data: {}
     };
 
@@ -121,6 +130,10 @@
                 this.set({ groups });
             }
 
+            if (user.isAdmin) {
+                groups[0].tabs.splice(1, 0, SecurityTab);
+            }
+
             groups[0].tabs.splice(1, 0, MyTeamsTab);
             this.set({ groups });
 
@@ -141,6 +154,7 @@
 
             EditProfileTab.data = { email, userId, user };
             MyTeamsTab.data = { teams, currentTeam, user };
+            SecurityTab.data = { user };
 
             this.setTab(initialTab);
 
