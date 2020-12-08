@@ -65,7 +65,10 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $res = Hooks::execute('enable_web_to_print');
         $webToPrint = !empty($res) && $res[0] === true;
         $org = $chart->getOrganization();
-        if ($org) $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+        $teamSettingsControls = new stdClass();
+        if ($org) {
+            $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+        }
 
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
