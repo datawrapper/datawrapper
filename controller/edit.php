@@ -132,13 +132,16 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             $embed_types = (array_values(array_filter($embed_codes, function($code) { return $code['preferred']; }) ?? [['id' => 'responsive']]));
             $embed_type = isset($embed_types[0]) ? $embed_types[0]['id'] : 'responsive';
 
+            [$status, $display_urls] = call_v3_api('GET', '/charts/'.$chart->getID().'/display-urls');
+            if ($status != 200) {
+                return $app->error('Something is wrong, the API might be down...');
+            }
 
             $publishData = (object) [
                 'embedTemplates' => $embed_codes,
                 'embedType' => $embed_type,
                 'shareurlType' => $user->getUserData()['shareurl_type'] ?? 'default',
-                'pluginShareurls' => Hooks::hookRegistered(Hooks::CHART_ADD_SHARE_URL) ?
-                    Hooks::execute(Hooks::CHART_ADD_SHARE_URL) : [],
+                'pluginShareurls' => $display_urls,
                 'afterEmbed' => Hooks::execute(Hooks::SVELTE_PUBLISH_AFTER_EMBED),
                 'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
                 'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)

@@ -199,9 +199,6 @@ class DatawrapperHooks {
     const IS_CHART_WRITABLE = 'is_chart_writable';
     const IS_CHART_READABLE = 'is_chart_readable';
 
-    // custom share urls
-    const CHART_ADD_SHARE_URL = 'chart_add_share_url';
-
     const CUSTOM_EXTERNAL_DATA = 'CUSTOM_EXTERNAL_DATA';
 
     const ADD_WORKFLOW = 'ADD_WORKFLOW';
