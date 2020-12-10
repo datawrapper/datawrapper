@@ -18,7 +18,8 @@ function init({
     webToPrint,
     theme,
     themes,
-    themeData
+    themeData,
+    teamSettings
 }) {
     const chart = new Chart(chartData);
     let app;
@@ -32,6 +33,7 @@ function init({
     chart.set({
         writable: true,
         themeData: themeData,
+        teamSettings,
         themes,
         visualization: visualizations[chartData.type]
     });
