@@ -512,6 +512,7 @@
                 const { active_action } = this.get();
                 if (action.id === active_action) {
                     // unselect current action
+                    this.refs.action.set({ show: false });
                     return this.set({ active_action: '', Action });
                 }
                 this.set({ active_action: action.id });
@@ -519,6 +520,7 @@
                     if (action.mod.App) {
                         this.refs.action.set({ show: false });
                         this.set({ Action: action.mod.App });
+                        if (action.mod.data) this.refs.action.set(action.mod.data);
                         this.refs.action.set({ show: true });
                     } else {
                         // todo: show loading indicator
