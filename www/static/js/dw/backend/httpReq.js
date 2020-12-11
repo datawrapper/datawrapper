@@ -51,7 +51,10 @@ define(function () {
                     contentType: options.formData ? false : headers['Content-Type'],
                     context: this,
                     crossDomain: !options.mode || options.mode === 'cors',
-                    data: options.formData || (options.payload && JSON.stringify(options.payload)),
+                    data:
+                        options.formData ||
+                        options.data ||
+                        (options.payload && JSON.stringify(options.payload)),
                     processData:
                         options.processData !== undefined ? options.processData : !options.formData,
                     xhrFields: {
