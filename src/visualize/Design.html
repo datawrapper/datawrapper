@@ -1,8 +1,8 @@
 <HookBlocks key="design-blocks" />
 
 {#if showLayoutGroup }
-<Group label="Layout">
-    {#if flags.layoutSelect }
+<Group label="Layout options">
+    {#if flags.layoutSelect || $organizationId === null }
     <SelectInput
         label="{__('Select layout:')}"
         options="{themeOptions}"
@@ -17,14 +17,14 @@
 </Group>
 {/if} {#if showDownloadGroup }
 <Group label="Download options">
-    {#if flags.getTheData }
+    {#if flags.getTheData || $organizationId === null }
     <Switch bind:value="getTheData" label="Enable data download link" />
     {/if}
     <HookBlocks bind:blocks="hookBlocks.download" key="design-blocks-download" />
 </Group>
 {/if} {#if showSharingGroup }
 <Group label="Sharing options">
-    {#if flags.embed }
+    {#if flags.embed || $organizationId === null}
     <Switch bind:value="embed" label="Enable embed link" />
     {/if }
     <HookBlocks bind:blocks="hookBlocks.sharing" key="design-blocks-sharing" />
@@ -55,14 +55,19 @@
                     return { value: t.id, label: t.title };
                 });
             },
-            showLayoutGroup({ hookBlocks, themeHasLogo, flags }) {
-                return hookBlocks.layout.length || themeHasLogo || flags.layoutSelect;
+            showLayoutGroup({ hookBlocks, themeHasLogo, flags, $organizationId }) {
+                return (
+                    hookBlocks.layout.length ||
+                    themeHasLogo ||
+                    flags.layoutSelect ||
+                    $organizationId === null
+                );
             },
-            showDownloadGroup({ hookBlocks, flags }) {
-                return hookBlocks.download.length || flags.getTheData;
+            showDownloadGroup({ hookBlocks, flags, $organizationId }) {
+                return hookBlocks.download.length || flags.getTheData || $organizationId === null;
             },
-            showSharingGroup({ hookBlocks, flags }) {
-                return hookBlocks.sharing.length || flags.embed;
+            showSharingGroup({ hookBlocks, flags, $organizationId }) {
+                return hookBlocks.sharing.length || flags.embed || $organizationId === null;
             },
             flags({ $teamSettings, themeHasLogo, flags }) {
                 const { embed, layout_selector, get_the_data } = $teamSettings.flags;
