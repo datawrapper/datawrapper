@@ -145,7 +145,29 @@ DatawrapperHooks::register(DatawrapperHooks::TEAM_FLAGS, function() {
             "id" => "byline",
             "default" => true,
             "type" => "switch",
-            "title" => __("visualize / annotate / byline")
+            "title" => __("visualize / annotate / byline"),
+            "group" => "annotate"
+        ],
+        [
+            "id" => "embed",
+            "default" => true,
+            "type" => "switch",
+            "title" => "Embed",
+            "group" => "sharing"
+        ],
+        [
+            "id" => "get_the_data",
+            "default" => true,
+            "type" => "switch",
+            "title" => "Get the data",
+            "group" => "download"
+        ],
+        [
+            "id" => "layout_selector",
+            "default" => true,
+            "type" => "switch",
+            "title" => "Layout selector",
+            "group" => "display"
         ]
     ];
 });

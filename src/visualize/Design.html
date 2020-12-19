@@ -1,27 +1,100 @@
-<SelectInput
-    label="{__('Select layout:')}"
-    options="{themeOptions}"
-    labelWidth="100px"
-    width="200px"
-    bind:value="$theme"
-/>
-
 <HookBlocks key="design-blocks" />
+
+{#if showLayoutGroup }
+<Group label="Layout">
+    {#if flags.layoutSelect }
+    <SelectInput
+        label="{__('Select layout:')}"
+        options="{themeOptions}"
+        labelWidth="90px"
+        width="180px"
+        bind:value="$theme"
+    />
+    {/if} {#if themeHasLogo }
+    <Switch bind:value="logo" label="Logo" />
+    {/if}
+    <HookBlocks bind:blocks="hookBlocks.layout" key="design-block-layout" />
+</Group>
+{/if} {#if showDownloadGroup }
+<Group label="Download options">
+    {#if flags.getTheData }
+    <Switch bind:value="getTheData" label="Enable data download link" />
+    {/if}
+    <HookBlocks bind:blocks="hookBlocks.download" key="design-blocks-download" />
+</Group>
+{/if} {#if showSharingGroup }
+<Group label="Sharing options">
+    {#if flags.embed }
+    <Switch bind:value="embed" label="Enable embed link" />
+    {/if }
+    <HookBlocks bind:blocks="hookBlocks.sharing" key="design-blocks-sharing" />
+</Group>
+{/if}
 
 <script>
     import SelectInput from '@datawrapper/controls/Select.html';
+    import { Switch, Group, Checkbox } from '@datawrapper/controls';
     import HookBlocks from './HookBlocks.html';
     import { __ } from '@datawrapper/shared/l10n';
+    import get from '@datawrapper/shared/get';
 
     export default {
-        components: { SelectInput, HookBlocks },
+        components: { SelectInput, HookBlocks, Switch, Group, Checkbox },
+        data() {
+            return {
+                hookBlocks: {
+                    sharing: [],
+                    download: [],
+                    layout: []
+                }
+            };
+        },
         computed: {
             themeOptions({ $themes }) {
                 return $themes.map(t => {
                     return { value: t.id, label: t.title };
                 });
+            },
+            showLayoutGroup({ hookBlocks, themeHasLogo, flags }) {
+                return hookBlocks.layout.length || themeHasLogo || flags.layoutSelect;
+            },
+            showDownloadGroup({ hookBlocks, flags }) {
+                return hookBlocks.download.length || flags.getTheData;
+            },
+            showSharingGroup({ hookBlocks, flags }) {
+                return hookBlocks.sharing.length || flags.embed;
+            },
+            flags({ $teamSettings, themeHasLogo, flags }) {
+                const { embed, layout_selector, get_the_data } = $teamSettings.flags;
+                return {
+                    getTheData: get_the_data,
+                    embed,
+                    layoutSelect: layout_selector
+                };
+            },
+            themeHasLogo({ $themeData }) {
+                return (
+                    get($themeData, 'options.footer.logo.url') ||
+                    get($themeData, 'options.footer.logo.text')
+                );
             }
         },
-        helpers: { __ }
+        helpers: { __ },
+        oncreate() {
+            if (this.store.getMetadata('publish.options') === null) {
+                this.store.setMetadata('publish.options', {});
+            }
+        },
+        onstate({ previous, current, changed }) {
+            if (changed.embed) {
+                this.store.setMetadata('publish.options.embed', current.embed);
+            }
+            if (changed.getTheData) {
+                this.store.setMetadata('publish.options.get-the-data', current.getTheData);
+            }
+            if (changed.logo) {
+                this.store.setMetadata('publish.options.logo', current.logo);
+            }
+        }
     };
 </script>

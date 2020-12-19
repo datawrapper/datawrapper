@@ -66,8 +66,10 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $webToPrint = !empty($res) && $res[0] === true;
         $org = $chart->getOrganization();
         $teamSettingsControls = new stdClass();
+        $teamSettingsFlags = new stdClass();
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+            $teamSettingsFlags = $org->getSettings("flags") ?? new stdClass();
         }
 
         $page = array(
@@ -84,7 +86,8 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'theme' => $theme,
             'webToPrint' => $webToPrint,
             'teamSettings' => [
-                'controls' => $teamSettingsControls
+                'controls' => $teamSettingsControls,
+                'flags' => $teamSettingsFlags
             ],
             'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
