@@ -437,12 +437,8 @@ html .navbar .navbar-inner .nav .dropdown a.group {
 html .navbar .navbar-inner .brand {
   color: #333;
   border: 2px solid #333;
-  border-top-color: #333333;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-right-color: #333333;
-  border-right-style: solid;
-  border-right-width: 2px;
+  border-top: 0;
+  border-right: 0;
   padding-left: 9px;
   padding-top: 4px;
   padding-bottom: 8px;
@@ -450,8 +446,6 @@ html .navbar .navbar-inner .brand {
   margin-top: 11px;
   margin-left: 1px;
   padding-right: 6px;
-  border-top: 0;
-  border-right: 0;
   box-sizing: border-box;
   line-height: 18px;
   font-weight: 500;
