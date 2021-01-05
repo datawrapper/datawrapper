@@ -449,6 +449,7 @@ html .navbar .navbar-inner .brand {
   box-sizing: border-box;
   line-height: 18px;
   font-weight: 500;
+  text-shadow: none;
   letter-spacing: -0.4px;
 }
 html .navbar .navbar-inner .mycharts_dd.dropdown {
