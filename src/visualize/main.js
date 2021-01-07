@@ -30,6 +30,8 @@ function init({
 
     dw.backend.currentChart = chart;
 
+    chart.locale(chart.get().language || 'en-US');
+
     chart.set({
         writable: true,
         themeData: themeData,
