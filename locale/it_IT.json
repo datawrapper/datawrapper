@@ -54,7 +54,7 @@
   "controls / color-scale / breaks / log": "Logaritmico",
   "controls / color-scale / breaks / custom": "Personalizzato",
   "controls / custom-format / info": "Scopri di più sui formati numerici personalizzati in quest'<a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">articolo della sezione Academy</a>.",
-  "controls / custom-format / custom / number": "Per ricevere supporto sui formati personalizzati, consulta la <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">documentazione numerals.js</a>.",
+  "controls / custom-format / custom / number": "Per ricevere supporto sui formati personalizzati, consulta la <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">documentazione</a>.",
   "controls / custom-format / custom / date": "Per ricevere supporto sui formati personalizzati, consulta la <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">documentazione moment.js</a>.",
   "controls / custom-format / custom": "(personalizzato)",
   "controls / custom-format / auto": "(automatico)",
@@ -831,5 +831,6 @@
   "describe / column-format / million": "",
   "describe / column-format / billion": "",
   "describe / column-format / trillion": "",
-  "controls / annotations / duplicate": ""
+  "controls / annotations / duplicate": "",
+  "standalone": ""
 }

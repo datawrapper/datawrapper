@@ -54,7 +54,7 @@
   "controls / color-scale / breaks / log": "Logarithmic",
   "controls / color-scale / breaks / custom": "Custom",
   "controls / custom-format / info": "Learn more about custom number formats in this <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy article</a>.",
-  "controls / custom-format / custom / number": "For help on custom formats, check the <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">numeral.js documentation</a>.",
+  "controls / custom-format / custom / number": "For help on custom formats, check <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">our documentation</a>.",
   "controls / custom-format / custom / date": "For help on custom formats, check the <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js documentation</a>.",
   "controls / custom-format / custom": "(custom)",
   "controls / custom-format / auto": "(automatic)",
@@ -831,5 +831,6 @@
   "describe / column-format / million": "1 million",
   "describe / column-format / billion": "1 billion",
   "describe / column-format / trillion": "1 trillion",
-  "controls / annotations / duplicate": "Duplicate annotation"
+  "controls / annotations / duplicate": "Duplicate annotation",
+  "standalone": "Normal size"
 }
