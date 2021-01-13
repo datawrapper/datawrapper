@@ -35,8 +35,13 @@
 </div>
 
 {% if user != chart.user and user.isAdmin() %}
-<div class="alert alert-warning" style="text-align:center;margin-top:10px;">
- {{ "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing, or <a id='duplicate-chart' href=''>copy the chart to your account</a> <i id='copying-chart' class='fa'></i>" | replace({"%email": chart.user.email, "%uid": chart.user.id }) | raw }}
+<div class="alert alert-warning mt-2">
+  {{ "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing"
+      | replace({ "%email": "<a href=\"/admin/charts/#{chart.user.id}\">#{chart.user.email}</a>" }) | raw }}
+  <ul class="mb-1">
+    <li><a href="javascript:void(0)" id="duplicate-chart">{{ "copy the chart to your account" }}</a></li>
+    <li><a href="http://app.datawrapper.local/admin/copy-to-local?chartIds={{ chart.id }}">{{ "copy the chart to local instance "}}</a></li>
+  </ul>
 </div>
 {% endif %}
 {{ hook('chart_editor_alert', chart, user) }}
