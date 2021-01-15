@@ -1,4 +1,4 @@
-<SelectInput
+<SelectControl
     label="{__('Select layout:')}"
     options="{themeOptions}"
     labelWidth="100px"
@@ -9,12 +9,12 @@
 <HookBlocks key="design-blocks" />
 
 <script>
-    import SelectInput from '@datawrapper/controls/Select.html';
+    import SelectControl from '@datawrapper/controls/SelectControl.html';
     import HookBlocks from './HookBlocks.html';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { SelectInput, HookBlocks },
+        components: { SelectControl, HookBlocks },
         computed: {
             themeOptions({ $themes }) {
                 return $themes.map(t => {

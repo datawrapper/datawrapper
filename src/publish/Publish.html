@@ -102,9 +102,9 @@
                     <a target="_blank" class="share-url" href="{shareUrl}">{shareUrl}</a>
                 </div>
             </div>
-            <Help>
+            <HelpDisplay>
                 <div>{@html __('publish / help / share-url') }</div>
-            </Help>
+            </HelpDisplay>
         </div>
 
         <div class="block">
@@ -137,13 +137,13 @@
                     </div>
                 </div>
             </div>
-            <Help>
+            <HelpDisplay>
                 <div>
                     {@html __('publish / embed / help') } {#each embed_templates.slice(2) as tpl}
                     <div><b>{tpl.title}:</b> {@html tpl.text}</div>
                     {/each}
                 </div>
-            </Help>
+            </HelpDisplay>
         </div>
     </div>
 
@@ -294,7 +294,7 @@
 
 <script>
     /* eslint camelcase: "off" */
-    import Help from '@datawrapper/controls/Help.html';
+    import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
 
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
@@ -307,7 +307,7 @@
     let initial_auto_publish = true;
 
     export default {
-        components: { Help },
+        components: { HelpDisplay },
         data() {
             return {
                 active_action: '',
