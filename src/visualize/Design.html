@@ -1,81 +1,95 @@
 <HookBlocks key="design-blocks" />
 
-{#if showLayoutGroup }
+{#if groups.layout.length }
 <Group label="Layout options">
-    {#if flags.layoutSelect || $organizationId === null }
-    <SelectInput
-        label="{__('Select layout:')}"
-        options="{themeOptions}"
-        labelWidth="90px"
-        width="180px"
-        bind:value="$theme"
-    />
-    {/if} {#if themeHasLogo }
-    <Switch bind:value="logo" label="Logo" />
-    {/if}
-    <HookBlocks bind:blocks="hookBlocks.layout" key="design-blocks-layout" />
+    <DesignBlocks bind:blocks="groups.layout" />
 </Group>
-{/if} {#if showDownloadGroup }
+{/if} {#if groups.download.length }
 <Group label="Download options">
-    {#if flags.getTheData || $organizationId === null }
-    <Switch bind:value="getTheData" label="Enable data download link" />
-    {/if}
-    <HookBlocks bind:blocks="hookBlocks.download" key="design-blocks-download" />
+    <DesignBlocks bind:blocks="groups.download" />
 </Group>
-{/if} {#if showSharingGroup }
+{/if} {#if groups.sharing.length }
 <Group label="Sharing options">
-    {#if flags.embed || $organizationId === null}
-    <Switch bind:value="embed" label="Enable embed link" />
-    {/if }
-    <HookBlocks bind:blocks="hookBlocks.sharing" key="design-blocks-sharing" />
+    <DesignBlocks bind:blocks="groups.sharing" />
 </Group>
 {/if}
 
 <script>
-    import SelectInput from '@datawrapper/controls/Select.html';
-    import { Switch, Group, Checkbox } from '@datawrapper/controls';
-    import HookBlocks from './HookBlocks.html';
+    /* globals dw */
     import { __ } from '@datawrapper/shared/l10n';
+    import { Group } from '@datawrapper/controls';
     import get from '@datawrapper/shared/get';
+    import HookBlocks from './HookBlocks.html';
+    import DesignBlocks from './DesignBlocks.html';
+    import GetTheData from './design-blocks/GetTheData.html';
+    import Embed from './design-blocks/Embed.html';
+    import LayoutSelect from './design-blocks/LayoutSelect.html';
+    import Logo from './design-blocks/Logo.html';
+
+    function getBlocks(allBlocks, group, props) {
+        return allBlocks
+            .filter(d => d.group === group)
+            .filter(d => (d.visible !== undefined ? d.visible : true))
+            .sort(byPriority);
+    }
+    function byPriority(a, b) {
+        return (
+            (a.priority !== undefined ? a.priority : 999) -
+            (b.priority !== undefined ? b.priority : 999)
+        );
+    }
 
     export default {
-        components: { SelectInput, HookBlocks, Switch, Group, Checkbox },
+        components: {
+            Group,
+            HookBlocks,
+            DesignBlocks
+        },
         data() {
             return {
-                hookBlocks: {
-                    sharing: [],
-                    download: [],
-                    layout: []
-                }
+                allBlocks: [],
+                hookBlocks: []
             };
         },
         computed: {
-            themeOptions({ $themes }) {
-                return $themes.map(t => {
-                    return { value: t.id, label: t.title };
-                });
-            },
-            showLayoutGroup({ hookBlocks, themeHasLogo, flags, $organizationId }) {
-                return (
-                    hookBlocks.layout.length ||
-                    themeHasLogo ||
-                    flags.layoutSelect ||
-                    $organizationId === null
-                );
-            },
-            showDownloadGroup({ hookBlocks, flags, $organizationId }) {
-                return hookBlocks.download.length || flags.getTheData || $organizationId === null;
-            },
-            showSharingGroup({ hookBlocks, flags, $organizationId }) {
-                return hookBlocks.sharing.length || flags.embed || $organizationId === null;
-            },
-            flags({ $teamSettings, themeHasLogo, flags }) {
-                const { embed, layout_selector, get_the_data } = $teamSettings.flags;
+            groups({ $organizationId, $teamSettings, allBlocks }) {
                 return {
-                    getTheData: get_the_data,
-                    embed,
-                    layoutSelect: layout_selector
+                    download: getBlocks(allBlocks, 'download'),
+                    layout: getBlocks(allBlocks, 'layout'),
+                    sharing: getBlocks(allBlocks, 'sharing')
                 };
+            },
+            coreBlocks({ $organizationId, $teamSettings, themeHasLogo, $theme }) {
+                const flags = $teamSettings.flags;
+                return [
+                    {
+                        ui: Embed,
+                        label: 'Enable embed',
+                        visible: flags.embed || !$organizationId,
+                        group: 'sharing',
+                        priority: 1
+                    },
+                    {
+                        ui: GetTheData,
+                        label: 'Enable data download',
+                        visible: flags.get_the_data || !$organizationId,
+                        group: 'download',
+                        priority: 1
+                    },
+                    {
+                        ui: Logo,
+                        label: 'Logo',
+                        visible: themeHasLogo,
+                        group: 'layout',
+                        priority: 1
+                    },
+                    {
+                        ui: LayoutSelect,
+                        visible: flags.layout_selector || !$organizationId,
+                        group: 'layout',
+                        priority: 0
+                    }
+                ];
             },
             themeHasLogo({ $themeData }) {
                 return (
@@ -86,19 +100,18 @@
         },
         helpers: { __ },
         oncreate() {
+            const chart = this.store;
+
             if (this.store.getMetadata('publish.options') === null) {
                 this.store.setMetadata('publish.options', {});
             }
+            const { results } = dw.backend.hooks.call(`design-blocks-grouped`, [chart]);
+            this.set({ hookBlocks: results });
         },
         onstate({ previous, current, changed }) {
-            if (changed.embed) {
-                this.store.setMetadata('publish.options.embed', current.embed);
-            }
-            if (changed.getTheData) {
-                this.store.setMetadata('publish.options.get-the-data', current.getTheData);
-            }
-            if (changed.logo) {
-                this.store.setMetadata('publish.options.logo', current.logo);
+            if (previous) {
+                const allBlocks = [...current.hookBlocks, ...(current.coreBlocks || [])];
+                this.set({ allBlocks });
             }
         }
     };

@@ -1,0 +1,23 @@
+<SelectInput
+    label="{__('Select layout:')}"
+    options="{themeOptions}"
+    labelWidth="90px"
+    width="180px"
+    bind:value="$theme"
+/>
+
+<script>
+    import SelectInput from '@datawrapper/controls/Select.html';
+    import { __ } from '@datawrapper/shared/l10n';
+    export default {
+        components: { SelectInput },
+        computed: {
+            themeOptions({ $themes }) {
+                return $themes.map(t => {
+                    return { value: t.id, label: t.title };
+                });
+            }
+        },
+        helpers: { __ }
+    };
+</script>

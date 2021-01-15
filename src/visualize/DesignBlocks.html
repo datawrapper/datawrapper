@@ -1,0 +1,13 @@
+{#each blocks as b }
+<svelte:component this="{b.ui}" name="{b.name}" data="{b.data || {}}" />
+{/each}
+
+<script>
+    export default {
+        data() {
+            return {
+                blocks: []
+            };
+        }
+    };
+</script>
