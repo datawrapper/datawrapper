@@ -372,12 +372,6 @@ html .navbar .navbar-inner {
 html .navbar .navbar-inner li {
   line-height: 26px;
 }
-html .navbar .navbar-inner img {
-  max-height: 18px;
-  float: left;
-  margin-top: 18px;
-  margin-right: 20px;
-}
 html .navbar .navbar-inner .nav > li.icon > a {
   padding: 10px 9px 10px;
   line-height: 26px;
@@ -433,6 +427,11 @@ html .navbar .navbar-inner .nav .dropdown a.group {
   text-transform: uppercase;
   pointer-events: none;
   margin-left: -2px;
+}
+html .navbar .navbar-inner img.logo {
+  width: 118px;
+  float: left;
+  margin-top: 11px;
 }
 html .navbar .navbar-inner .brand {
   color: #333;
