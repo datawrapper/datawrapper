@@ -19,6 +19,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import { Group } from '@datawrapper/controls';
     import get from '@datawrapper/shared/get';
+    import arrayToObject from '@datawrapper/shared/arrayToObject';
     import HookBlocks from './HookBlocks.html';
     import DesignBlocks from './DesignBlocks.html';
     import GetTheData from './design-blocks/GetTheData.html';
@@ -101,9 +102,10 @@
         helpers: { __ },
         oncreate() {
             const chart = this.store;
-
-            if (this.store.getMetadata('publish.options') === null) {
-                this.store.setMetadata('publish.options', {});
+            let options = this.store.getMetadata('publish.options', {});
+            options = arrayToObject(options);
+            if (!this.store.getMetadata('publish.options')) {
+                this.store.setMetadata('publish.options', options);
             }
             const { results } = dw.backend.hooks.call(`design-blocks-grouped`, [chart]);
             this.set({ hookBlocks: results });
