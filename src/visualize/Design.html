@@ -104,9 +104,7 @@
             const chart = this.store;
             let options = this.store.getMetadata('publish.options', {});
             options = arrayToObject(options);
-            if (!this.store.getMetadata('publish.options')) {
-                this.store.setMetadata('publish.options', options);
-            }
+            this.store.setMetadata('publish.options', options);
             const { results } = dw.backend.hooks.call(`design-blocks-grouped`, [chart]);
             this.set({ hookBlocks: results });
         },
