@@ -498,7 +498,7 @@
   "Please activate JavaScript to see the interactive chart.": "Please activate JavaScript to see the interactive chart.",
   "Source": "Source",
   "Your changes have been saved.": "Your changes have been saved.",
-  "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!",
+  "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!",
   "Make sure the data looks right": "Make sure the data looks right",
   "describe / data-looks-right": "Please make sure that Datawrapper interprets your data correctly. In the table <span class=\"type-hl\" style=\"color:#297EA8\">number</span> columns should be shown in blue, <span class=\"type-hl\" style=\"color:#39A832\">dates</span> in green and <span class=\"type-hl\" style=\"color:black\">text</span> in black. A  <span class=\"type-hl\" style=\"color:#c00; background-color:#fee\">red</span> cell indicates a problem in your dataset that needs to be fixed. <span class=\"type-hl\" style=\"color:#ccc; background-color:#fff; padding:0px 10px\">–</span> cells contain no data.",
   "First row as label": "First row as label",
