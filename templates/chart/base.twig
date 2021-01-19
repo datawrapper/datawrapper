@@ -36,11 +36,11 @@
 
 {% if user != chart.user and user.isAdmin() %}
 <div class="alert alert-warning mt-2">
-  {{ "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing"
-      | replace({ "%email": "<a href=\"/admin/charts/#{chart.user.id}\">#{chart.user.email}</a>" }) | raw }}
+  {{ "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!"
+      | trans | replace({ "%email": "<a href=\"/admin/charts/#{chart.user.id}\">#{chart.user.email}</a>" }) | raw }}
   <ul class="mb-1">
-    <li><a href="javascript:void(0)" id="duplicate-chart">{{ "copy the chart to your account" }}</a></li>
-    <li><a href="http://app.datawrapper.local/admin/copy-to-local?chartIds={{ chart.id }}">{{ "copy the chart to local instance "}}</a></li>
+    <li><a href="javascript:void(0)" id="duplicate-chart">{{ "copy the chart to your account" | trans }}</a></li>
+    <li><a href="http://app.datawrapper.local/admin/copy-to-local?chartIds={{ chart.id }}">{{ "copy the chart to local instance" | trans }}</a></li>
   </ul>
 </div>
 {% endif %}
