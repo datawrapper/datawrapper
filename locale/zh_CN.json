@@ -498,7 +498,7 @@
   "Please activate JavaScript to see the interactive chart.": "请激活JavaScript以查看交互式图表。",
   "Source": "源",
   "Your changes have been saved.": "已保存您的修改。",
-  "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "此图表属于<a href='/admin/charts/%uid'>%email</a>。强大的权利伴随着巨大的责任，因此做事要小心谨慎！",
+  "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!": "此图表属于%email。强大的权利伴随着巨大的责任，因此做事要小心谨慎！",
   "Make sure the data looks right": "确保数据看起来正确",
   "describe / data-looks-right": "请确保Datawrapper正确解释您的数据。在表格中，<span class =\"type-hl\" style=\"color:#297EA8\">数字</span>列应以蓝色显示，<span class =\"type-hl\" style=\"color:#39A832\">日期</span>应以绿色显示，<span class =\"type-hl\" style=\"color:black\">文本</span>应以黑色显示。<span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">红色</span>单元格表示数据丢失或数据集中的问题需要修复。",
   "First row as label": "第一行作为标签",
