@@ -11,7 +11,7 @@
             width="1px"
             placeholder="{__('teams / invite-user / eg' )}"
         />&nbsp;
-        <DropdownMenu
+        <DropdownListInput
             disabled="{!isValidEmail}"
             label="<i class='fa { currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope' }'></i>&nbsp; { __('teams / invite' ) }"
             items="{inviteOptions}"
@@ -21,13 +21,13 @@
 
 <script>
     /* globals teamSettingsInvite */
-    import DropdownMenu from '@datawrapper/controls/DropdownMenu.html';
+    import DropdownListInput from '@datawrapper/controls/DropdownListInput.html';
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import { post, get } from '@datawrapper/shared/httpReq';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { DropdownMenu, FormBlock },
+        components: { DropdownListInput, FormBlock },
         data() {
             return {
                 inviteeEmail: '',

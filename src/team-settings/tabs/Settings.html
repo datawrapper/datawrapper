@@ -12,7 +12,7 @@
             label="{ __('teams / defaults / folder-status' ) }"
             help="{ __('teams / defaults / folder-status / p' ) }"
         >
-            <Radio
+            <RadioControl
                 label=""
                 bind:value="settings.folders"
                 options="{[ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] }"
@@ -25,32 +25,32 @@
             label="{ __('teams / defaults / theme' ) }"
             help="{ __('teams / defaults / theme / p' ) }"
         >
-            <!-- prettier-ignore -->
-            <BaseSelect
-                bind:value="defaultTheme"
-                options="{themes}"
-            />
+            <SelectInput bind:value="defaultTheme" options="{themes}" />
         </FormBlock>
 
         <FormBlock
             label="{ __('teams / defaults / folder' ) }"
             help="{ __('teams / defaults / folder / p' ) }"
         >
-            <BaseSelect bind:value="settings.default.folder" options="{folders}" />
+            <SelectInput bind:value="settings.default.folder" options="{folders}" />
         </FormBlock>
 
         <FormBlock
             label="{ __('teams / defaults / locale' ) }"
             help="{ __('teams / defaults / locale / p' ) }"
         >
-            <BaseSelect bind:value="settings.default.locale" options="{localeOptions}" />
+            <SelectInput bind:value="settings.default.locale" options="{localeOptions}" />
         </FormBlock>
 
         <FormBlock
             label="{ __('teams / defaults / embedcode' ) }"
             help="{ __('teams / defaults / embedcode / p' ) }"
         >
-            <Radio label="" bind:value="settings.embed.preferred_embed" options="{embedCodes}" />
+            <RadioControl
+                label=""
+                bind:value="settings.embed.preferred_embed"
+                options="{embedCodes}"
+            />
         </FormBlock>
 
         {#if settings.embed.preferred_embed == "custom"}
@@ -82,18 +82,17 @@
             />
         </FormBlock>
         <hr />
-
         {/if}
     </div>
 </div>
 <script>
     import FormBlock from '@datawrapper/controls/FormBlock.html';
-    import BaseSelect from '@datawrapper/controls/BaseSelect.html';
-    import Radio from '@datawrapper/controls/Radio.html';
+    import SelectInput from '@datawrapper/controls/SelectInput.html';
+    import RadioControl from '@datawrapper/controls/RadioControl.html';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { BaseSelect, FormBlock, Radio },
+        components: { SelectInput, FormBlock, RadioControl },
         data() {
             return {
                 embedCodes: [

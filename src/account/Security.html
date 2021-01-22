@@ -29,7 +29,7 @@
             <td width="50%">
                 {#if enableProvider === provider.id} {#if provider.data.qrcode}
                 <p>Scan this QR Code with your Authenticator app and enter a code to confirm</p>
-                <img src="{qrcode(provider, user)}" width="200" />
+                <img src="{qrcode(provider, user)}" width="200" alt="" />
                 <form on:submit|preventDefault="doEnable(provider)" class="my-0">
                     <input
                         placeholder="123456"
@@ -87,7 +87,6 @@
 {/if}
 
 <script>
-    import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
     import qrcodeGenerator from 'qrcode-generator';
 
@@ -111,7 +110,7 @@
             };
         },
         computed: {},
-        helpers: { __, qrcode },
+        helpers: { qrcode },
         methods: {
             loadProviders(reset) {
                 this.set({
