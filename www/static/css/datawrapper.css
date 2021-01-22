@@ -2668,7 +2668,7 @@ input[type='color'],
   text-align: center;
   border-radius: 2px;
   min-height: 50px;
-  width: 21%;
+  width: 100px;
   margin: 0 10px 10px 0;
   padding: 15px 0 10px;
 }
