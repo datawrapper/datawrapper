@@ -32,19 +32,19 @@
     </div>
 </div>
 {/if} {#if needs_republish && !publishing}
-<div class="btn-aside alert">
+<div class="btn-aside alert publish-alert">
     {@html __('publish / republish-alert') }
 </div>
 {/if} {#if published && !needs_republish && progress && progress.includes('done') && !publishing}
-<div class="alert alert-success">
+<div class="alert alert-success publish-alert">
     {@html __('publish / publish-success') }
 </div>
 {/if} {#if publish_error}
-<div class="alert alert-error">
+<div class="alert alert-error publish-alert">
     {@html publish_error }
 </div>
 {/if} {#if publishing}
-<div class="alert alert-info publishing">
+<div class="alert alert-info publishing publish-alert">
     { __("publish / progress / please-wait") } {#if publishWait > 3000}
     <!-- show progress information after 3s -->
     <ul class="publish-progress unstyled">
@@ -199,13 +199,13 @@
     }
 
     @media (max-width: 979px) {
-        .btn-publish {
+        .btn-first-publish {
             width: 110px;
             padding: 5px 0px;
             padding: 8px 0px;
         }
         .btn-first-publish span.title {
-            padding: 5px 11px;
+            padding: 5px 11px 0px 11px;
             font-size: 14px;
         }
         .btn-first-publish i.fa {
@@ -234,9 +234,14 @@
     a.share-url {
         font-size: 18px;
     }
+    .btn-publish + .alert {
+        margin-top: 10px;
+    }
+    .publish-alert {
+        margin-top: 15px;
+    }
     .btn-aside.alert {
         margin-left: 0;
-        margin-top: 7px;
         max-width: 100%;
     }
 
