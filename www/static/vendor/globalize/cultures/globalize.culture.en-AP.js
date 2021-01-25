@@ -1,5 +1,5 @@
 /*
- * Globalize Culture en-US
+ * Globalize Culture en-AP
  *
  * http://github.com/jquery/globalize
  *
@@ -11,10 +11,14 @@
  * Translation: bugs found in this file need to be fixed in the generator
  */
 
-(function(window) {
+(function (window) {
     var Globalize;
 
-    if (typeof require !== 'undefined' && typeof exports !== 'undefined' && typeof module !== 'undefined') {
+    if (
+        typeof require !== 'undefined' &&
+        typeof exports !== 'undefined' &&
+        typeof module !== 'undefined'
+    ) {
         // Assume CommonJS
         Globalize = require('globalize');
     } else {
@@ -22,15 +26,29 @@
         Globalize = window.Globalize;
     }
 
-    Globalize.addCultureInfo('en-US', 'default', {
-        name: 'en-US',
+    Globalize.addCultureInfo('en-AP', 'default', {
+        name: 'en-AP',
         englishName: 'English (United States)',
         calendars: {
             standard: {
                 '/': '.',
                 firstDay: 1,
                 months: {
-                    namesAbbr: ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.', '']
+                    namesAbbr: [
+                        'Jan.',
+                        'Feb.',
+                        'March',
+                        'April',
+                        'May',
+                        'June',
+                        'July',
+                        'Aug.',
+                        'Sept.',
+                        'Oct.',
+                        'Nov.',
+                        'Dec.',
+                        ''
+                    ]
                 },
                 AM: 'a.m.',
                 PM: 'p.m.'
