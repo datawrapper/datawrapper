@@ -38,20 +38,20 @@
         </div>
     </div>
     {/if} {#if needs_republish && !publishing}
-    <div class="btn-aside alert publish-alert">
+    <div class="btn-aside alert">
         {@html __('publish / republish-alert') }
     </div>
     {/if} {#if published && !needs_republish && progress && progress.includes('done') &&
     !publishing}
-    <div class="alert alert-success publish-alert">
+    <div class="alert alert-success">
         {@html __('publish / publish-success') }
     </div>
     {/if} {#if publish_error}
-    <div class="alert alert-error publish-alert">
+    <div class="alert alert-error">
         {@html publish_error }
     </div>
     {/if} {#if publishing}
-    <div class="alert alert-info publishing publish-alert">
+    <div class="alert alert-info publishing">
         { __("publish / progress / please-wait") } {#if publishWait > 3000}
         <!-- show progress information after 3s -->
         <ul class="publish-progress unstyled">
