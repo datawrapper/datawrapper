@@ -166,7 +166,7 @@
         display: block;
         text-align: center;
         font-size: 18px;
-        line-height: 22px;
+        line-height: 1.2;
         padding: 5px 20px 0px 20px;
     }
     .publish-intro {
@@ -198,6 +198,32 @@
         }
     }
 
+    @media (max-width: 979px) {
+        .btn-first-publish {
+            width: 110px;
+            padding: 5px 0px;
+            padding: 8px 0px;
+        }
+        .btn-first-publish span.title {
+            padding: 5px 11px 0px 11px;
+            font-size: 14px;
+        }
+        .btn-first-publish i.fa {
+            font-size: 25px;
+        }
+        .publish-intro .arrow {
+            vertical-align: middle;
+            display: inline-block;
+            padding: 5px;
+        }
+        .publish-intro .arrow i.fa {
+            font-size: 14px;
+        }
+        .publish-intro .text {
+            font-size: 14px;
+        }
+    }
+
     div.progress {
         margin-top: 8px;
         margin-bottom: 4px;
@@ -208,9 +234,11 @@
     a.share-url {
         font-size: 18px;
     }
+    .btn-publish + .alert {
+        margin-top: 10px;
+    }
     .btn-aside.alert {
         margin-left: 0;
-        margin-top: 7px;
         max-width: 100%;
     }
 

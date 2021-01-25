@@ -2533,12 +2533,15 @@ input[type='color'],
 .dw-create-publish .chart-actions {
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 10px;
 }
 .dw-create-publish .chart-actions li {
   display: inline-block;
-  width: 30%;
+  flex: 0 0 100px;
   text-align: center;
-  margin: 0 2% 3% 0;
   border-radius: 6px;
   border: 1px solid #eee;
   background: #fff;
@@ -2668,14 +2671,13 @@ input[type='color'],
   text-align: center;
   border-radius: 2px;
   min-height: 50px;
-  width: 21%;
-  margin: 0 10px 10px 0;
+  flex: 0 0 100px;
   padding: 15px 0 10px;
 }
 .dw-create-publish .publish-step .chart-actions li i.fa {
   display: block;
   margin: 0 auto;
-  font-size: 32px!important;
+  font-size: 32px;
 }
 .dw-create-publish .publish-step .chart-actions li .title {
   font-size: 12px;
@@ -2683,6 +2685,15 @@ input[type='color'],
   line-height: 15px;
   display: block;
   padding: 4px 10px 0;
+}
+@media (max-width: 979px) {
+  .dw-create-publish .publish-step .chart-actions li {
+    flex: 0 0 83px;
+    padding: 12px 0 3px;
+  }
+  .dw-create-publish .publish-step .chart-actions li i.fa {
+    font-size: 24px;
+  }
 }
 .publish-chart-action-modal {
   width: 600px;
