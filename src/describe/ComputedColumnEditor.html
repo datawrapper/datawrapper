@@ -31,7 +31,7 @@
             style="color: #ccc;"
             class="fa fa-cog fa-spin"
         ></i
-        >{/if}<Help><span>{@html __('cc / formula / help')}</span></Help></label
+        >{/if}<HelpDisplay><span>{@html __('cc / formula / help')}</span></HelpDisplay></label
     >
     <textarea ref:code class="code" class:error="errDisplay"></textarea>
 
@@ -194,7 +194,7 @@
     import { Parser } from '@datawrapper/chart-core/lib/dw/utils/parser';
     import columnNameToVariable from '@datawrapper/shared/columnNameToVariable';
     import { getComputedColumns } from './shared';
-    import Help from '@datawrapper/controls/Help.html';
+    import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
     import { patch } from '@datawrapper/shared/httpReq';
 
     let updateTable = () => {};
@@ -223,7 +223,7 @@
     }
 
     export default {
-        components: { Help },
+        components: { HelpDisplay },
         data() {
             return {
                 name: '',

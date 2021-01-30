@@ -1,15 +1,15 @@
 <HookBlocks key="design-blocks" />
 
 {#if groups.layout.length }
-<Group label="Layout options">
+<Group label="{__('layout / group-layout')}">
     <DesignBlocks bind:blocks="groups.layout" />
 </Group>
-{/if} {#if groups.download.length }
-<Group label="Download options">
-    <DesignBlocks bind:blocks="groups.download" />
+{/if} {#if groups.footer.length }
+<Group label="{__('layout / group-footer')}">
+    <DesignBlocks bind:blocks="groups.footer" />
 </Group>
 {/if} {#if groups.sharing.length }
-<Group label="Sharing options">
+<Group label="{__('layout / group-sharing')}">
     <DesignBlocks bind:blocks="groups.sharing" />
 </Group>
 {/if}
@@ -55,7 +55,7 @@
         computed: {
             groups({ $organizationId, $teamSettings, allBlocks }) {
                 return {
-                    download: getBlocks(allBlocks, 'download'),
+                    footer: getBlocks(allBlocks, 'footer'),
                     layout: getBlocks(allBlocks, 'layout'),
                     sharing: getBlocks(allBlocks, 'sharing')
                 };
@@ -67,15 +67,15 @@
                         ui: Embed,
                         label: 'Enable embed',
                         visible: flags.embed || !$organizationId,
-                        group: 'sharing',
-                        priority: 1
+                        group: 'footer',
+                        priority: 10
                     },
                     {
                         ui: GetTheData,
                         label: 'Enable data download',
                         visible: flags.get_the_data || !$organizationId,
-                        group: 'download',
-                        priority: 1
+                        group: 'footer',
+                        priority: 0
                     },
                     {
                         ui: Logo,

@@ -46,7 +46,7 @@
 <div style="display: flex;">
     <div style="display: block;">
         <!-- prettier-ignore -->
-        <Select
+        <SelectControl
                     label="{ __('teams / products / add-product') }"
                     bind:value="addProduct"
                     options={addableProducts} />
@@ -64,13 +64,13 @@
 {/if} {/if} {/if}
 
 <script>
-    import Table from '@datawrapper/controls/Table.html';
-    import Select from '@datawrapper/controls/Select.html';
+    import TableDisplay from '@datawrapper/controls/TableDisplay.html';
+    import SelectControl from '@datawrapper/controls/SelectControl.html';
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
 
     export default {
-        components: { ProductTable: Table, Select },
+        components: { ProductTable: TableDisplay, SelectControl },
         data() {
             return {
                 productHeaders: [

@@ -65,7 +65,8 @@
 
                 <!-- Design -->
                 <div class:hide-smart="tab !== 'design'">
-                    <Design />
+                    <!-- <Design /> -->
+                    <ChartLayout />
                 </div>
 
                 <ButtonNav bind:tab {showChartPicker} />
@@ -117,6 +118,7 @@
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import { __ } from '@datawrapper/shared/l10n';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
+    import ChartLayout from '@datawrapper/controls/editor/ChartLayout.html';
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
@@ -134,6 +136,7 @@
             ButtonNav,
             Annotate,
             Design,
+            ChartLayout,
             ChartPicker,
             Loading,
             Resizer,

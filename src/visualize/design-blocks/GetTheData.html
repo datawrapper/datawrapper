@@ -1,8 +1,14 @@
-<Switch bind:value="$metadata.publish.options['get-the-data']" label="Enable data download link" />
+<SwitchControl
+    bind:value="$metadata.publish.options['get-the-data']"
+    label="{__('layout / get-the-data')}"
+/>
 
 <script>
-    import { Switch } from '@datawrapper/controls';
+    import SwitchControl from '@datawrapper/controls/SwitchControl.html';
+    import { __ } from '@datawrapper/shared/l10n';
+
     export default {
-        components: { Switch }
+        components: { SwitchControl },
+        helpers: { __ }
     };
 </script>

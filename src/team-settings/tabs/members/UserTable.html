@@ -22,7 +22,7 @@
         <td>
             {#if editId === user.id }
             <!-- prettier-ignore -->
-            <Select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            <SelectInput label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
             {:else} {@html role(user.role) } {#if user.token}
             <i>{ __('teams / invite-pending' ) } </i>
             {/if} {/if}
@@ -54,8 +54,8 @@
 {/if}
 
 <script>
-    import Table from '@datawrapper/controls/Table.html';
-    import Select from '@datawrapper/controls/Select.html';
+    import TableDisplay from '@datawrapper/controls/TableDisplay.html';
+    import SelectInput from '@datawrapper/controls/SelectInput.html';
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
 
@@ -66,7 +66,7 @@
     ];
 
     export default {
-        components: { MemberTable: Table, Select },
+        components: { MemberTable: TableDisplay, SelectInput },
         data() {
             return {
                 editId: false,

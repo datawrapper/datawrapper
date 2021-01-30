@@ -2,13 +2,13 @@
     { @html __('teams / delete / p') }
 </p>
 
-<Switch label="{ __('teams / delete / yes') }" bind:value="deleteTeam">
+<SwitchControl label="{ __('teams / delete / yes') }" bind:value="deleteTeam">
     {#if deleteTeam}
     <p>
         { @html __('teams / delete / really') }
     </p>
 
-    <Checkbox label="{ __('teams / delete / really-yes') }" bind:value="deleteTeam2" />
+    <CheckboxControl label="{ __('teams / delete / really-yes') }" bind:value="deleteTeam2" />
 
     {#if deleteTeam2}
     <button on:click="deleteTeam()" class="btn btn-danger">
@@ -16,18 +16,18 @@
         __('teams / delete / action') }
     </button>
     {/if} {/if}
-</Switch>
+</SwitchControl>
 
 <script>
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
-    import Switch from '@datawrapper/controls/Switch.html';
-    import Checkbox from '@datawrapper/controls/Checkbox.html';
+    import SwitchControl from '@datawrapper/controls/SwitchControl.html';
+    import CheckboxControl from '@datawrapper/controls/CheckboxControl.html';
 
     export default {
         components: {
-            Switch,
-            Checkbox
+            SwitchControl,
+            CheckboxControl
         },
         data() {
             return {

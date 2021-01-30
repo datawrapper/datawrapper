@@ -148,9 +148,13 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             ];
 
             $org = $chart->getOrganization();
+            $teamSettingsControls = new stdClass();
+            $teamSettingsFlags = new stdClass();
             $customFields = [];
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];
+                $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+                $teamSettingsFlags = $org->getSettings("flags") ?? new stdClass();
             }
 
             $page = ['locale'=>'en'];
@@ -179,7 +183,11 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 }, ThemeQuery::create()->allThemesForUser($chart)),
                 'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user),
                 'folders' => $page['folders'],
-                'visNamespace' => $page['visNamespace']
+                'visNamespace' => $page['visNamespace'],
+                'teamSettings' => [
+                    'controls' => $teamSettingsControls,
+                    'flags' => $teamSettingsFlags
+                ]
             ];
 
             // legacy stuff, need to move into ChartEditor some day

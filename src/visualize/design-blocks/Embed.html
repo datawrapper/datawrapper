@@ -1,8 +1,11 @@
-<Switch bind:value="$metadata.publish.options.embed" label="Enable embed link" />
+<SwitchControl bind:value="$metadata.publish.options.embed" label="{__('layout / embed')}" />
 
 <script>
-    import { Switch } from '@datawrapper/controls';
+    import SwitchControl from '@datawrapper/controls/SwitchControl.html';
+    import { __ } from '@datawrapper/shared/l10n';
+
     export default {
-        components: { Switch }
+        components: { SwitchControl },
+        helpers: { __ }
     };
 </script>

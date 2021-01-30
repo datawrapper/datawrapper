@@ -14,6 +14,7 @@
 {% endif %}
 
 {{ hook('before_editor_nav', chart) }}
+{{ hook('visualize_before_svelte_sidebar', chart) }}
 
 <div class="svelte-editor-base" id="svelte-workflow-{{ workflow.id }}"></div>
 
@@ -46,7 +47,8 @@ require(['{{workflow.module}}'], function(mod) {
         actions: {{chartActions|json|raw}},
         themes: {{userThemes|json|raw}},
         dataset: chartData ? JSON.parse(chartData) : {},
-        apiDomain: '{{apiDomain}}'
+        apiDomain: '{{apiDomain}}',
+        teamSettings: {{ teamSettings|json|raw }}
     });
 
     var publishData = {{ publishData | json | raw }};
