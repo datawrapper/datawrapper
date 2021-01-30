@@ -147,6 +147,9 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
             ];
 
+            $res = Hooks::execute('enable_custom_layouts');
+            $customLayouts = !empty($res) && $res[0] === true;
+
             $org = $chart->getOrganization();
             $teamSettingsControls = new stdClass();
             $teamSettingsFlags = new stdClass();
@@ -172,6 +175,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'userArray' => $userArray,
                 'vis' => $vis,
                 'customFields' => $customFields,
+                'customLayouts' => $customLayouts,
                 'apiDomain' => $GLOBALS['dw_config']['api_domain'],
                 'chartLocales' => array_map(function($s) {
                     $s = explode('|', $s);

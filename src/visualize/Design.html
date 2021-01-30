@@ -2,15 +2,15 @@
 
 {#if groups.layout.length }
 <Group label="{__('layout / group-layout')}">
-    <DesignBlocks bind:blocks="groups.layout" />
+    <LayoutBlocks bind:blocks="groups.layout" />
 </Group>
 {/if} {#if groups.footer.length }
 <Group label="{__('layout / group-footer')}">
-    <DesignBlocks bind:blocks="groups.footer" />
+    <LayoutBlocks bind:blocks="groups.footer" />
 </Group>
 {/if} {#if groups.sharing.length }
 <Group label="{__('layout / group-sharing')}">
-    <DesignBlocks bind:blocks="groups.sharing" />
+    <LayoutBlocks bind:blocks="groups.sharing" />
 </Group>
 {/if}
 
@@ -20,12 +20,12 @@
     import { Group } from '@datawrapper/controls';
     import get from '@datawrapper/shared/get';
     import arrayToObject from '@datawrapper/shared/arrayToObject';
-    import HookBlocks from './HookBlocks.html';
-    import DesignBlocks from './DesignBlocks.html';
-    import GetTheData from './design-blocks/GetTheData.html';
-    import Embed from './design-blocks/Embed.html';
-    import LayoutSelect from './design-blocks/LayoutSelect.html';
-    import Logo from './design-blocks/Logo.html';
+    import HookBlocks from '@datawrapper/controls/editor/HookBlocks.html';
+    import LayoutBlocks from '@datawrapper/controls/editor/LayoutBlocks.html';
+    import GetTheDataControl from '@datawrapper/controls/editor/GetTheDataControl.html';
+    import EmbedControl from '@datawrapper/controls/editor/EmbedControl.html';
+    import ThemeSelectControl from '@datawrapper/controls/editor/ThemeSelectControl.html';
+    import LogoControl from '@datawrapper/controls/editor/LogoControl.html';
 
     function getBlocks(allBlocks, group, props) {
         return allBlocks
@@ -44,7 +44,7 @@
         components: {
             Group,
             HookBlocks,
-            DesignBlocks
+            LayoutBlocks
         },
         data() {
             return {
@@ -64,28 +64,28 @@
                 const flags = $teamSettings.flags;
                 return [
                     {
-                        ui: Embed,
+                        ui: EmbedControl,
                         label: 'Enable embed',
                         visible: flags.embed || !$organizationId,
                         group: 'footer',
                         priority: 10
                     },
                     {
-                        ui: GetTheData,
+                        ui: GetTheDataControl,
                         label: 'Enable data download',
                         visible: flags.get_the_data || !$organizationId,
                         group: 'footer',
                         priority: 0
                     },
                     {
-                        ui: Logo,
+                        ui: LogoControl,
                         label: 'Logo',
-                        visible: themeHasLogo,
+                        visible: flags.logo || !$organizationId,
                         group: 'layout',
                         priority: 1
                     },
                     {
-                        ui: LayoutSelect,
+                        ui: ThemeSelectControl,
                         visible: flags.layout_selector || !$organizationId,
                         group: 'layout',
                         priority: 0

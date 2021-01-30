@@ -64,6 +64,10 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $res = Hooks::execute('enable_web_to_print');
         $webToPrint = !empty($res) && $res[0] === true;
+
+        $res = Hooks::execute('enable_custom_layouts');
+        $customLayouts = !empty($res) && $res[0] === true;
+
         $org = $chart->getOrganization();
         $teamSettingsControls = new stdClass();
         $teamSettingsFlags = new stdClass();
@@ -85,6 +89,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
             'theme' => $theme,
             'webToPrint' => $webToPrint,
+            'customLayouts' => $customLayouts,
             'teamSettings' => [
                 'controls' => $teamSettingsControls,
                 'flags' => $teamSettingsFlags

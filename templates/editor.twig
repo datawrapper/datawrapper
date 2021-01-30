@@ -48,7 +48,8 @@ require(['{{workflow.module}}'], function(mod) {
         themes: {{userThemes|json|raw}},
         dataset: chartData ? JSON.parse(chartData) : {},
         apiDomain: '{{apiDomain}}',
-        teamSettings: {{ teamSettings|json|raw }}
+        teamSettings: {{ teamSettings|json|raw }},
+        customLayouts: {{customLayouts|json}}
     });
 
     var publishData = {{ publishData | json | raw }};

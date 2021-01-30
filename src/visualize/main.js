@@ -19,7 +19,8 @@ function init({
     theme,
     themes,
     themeData,
-    teamSettings
+    teamSettings,
+    customLayouts
 }) {
     const chart = new Chart(chartData);
     let app;
@@ -35,6 +36,7 @@ function init({
         themeData: themeData,
         teamSettings,
         themes,
+        customLayouts,
         visualization: visualizations[chartData.type]
     });
 
