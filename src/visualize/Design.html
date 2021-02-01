@@ -53,40 +53,39 @@
             };
         },
         computed: {
-            groups({ $organizationId, $teamSettings, allBlocks }) {
+            groups({ allBlocks }) {
                 return {
                     footer: getBlocks(allBlocks, 'footer'),
                     layout: getBlocks(allBlocks, 'layout'),
                     sharing: getBlocks(allBlocks, 'sharing')
                 };
             },
-            coreBlocks({ $organizationId, $teamSettings, themeHasLogo, $theme }) {
-                const flags = $teamSettings.flags;
+            coreBlocks({ $flags }) {
                 return [
                     {
                         ui: EmbedControl,
                         label: 'Enable embed',
-                        visible: flags.embed || !$organizationId,
+                        visible: ($flags && $flags.embed) || !$flags,
                         group: 'footer',
                         priority: 10
                     },
                     {
                         ui: GetTheDataControl,
                         label: 'Enable data download',
-                        visible: flags.get_the_data || !$organizationId,
+                        visible: ($flags && $flags.get_the_data) || !$flags,
                         group: 'footer',
                         priority: 0
                     },
                     {
                         ui: LogoControl,
                         label: 'Logo',
-                        visible: flags.logo || !$organizationId,
+                        visible: ($flags && $flags.logo) || !$flags,
                         group: 'layout',
                         priority: 1
                     },
                     {
                         ui: ThemeSelectControl,
-                        visible: flags.layout_selector || !$organizationId,
+                        visible: ($flags && $flags.layout_selector) || !$flags,
                         group: 'layout',
                         priority: 0
                     }
@@ -102,17 +101,13 @@
         helpers: { __ },
         oncreate() {
             const chart = this.store;
-            let options = this.store.getMetadata('publish.options', {});
-            options = arrayToObject(options);
+            const options = arrayToObject(this.store.getMetadata('publish.options', {}));
             this.store.setMetadata('publish.options', options);
+
+            const { coreBlocks } = this.get();
             const { results } = dw.backend.hooks.call(`design-blocks-grouped`, [chart]);
-            this.set({ hookBlocks: results });
-        },
-        onstate({ previous, current, changed }) {
-            if (previous) {
-                const allBlocks = [...current.hookBlocks, ...(current.coreBlocks || [])];
-                this.set({ allBlocks });
-            }
+            const allBlocks = coreBlocks.concat(results);
+            this.set({ allBlocks });
         }
     };
 </script>

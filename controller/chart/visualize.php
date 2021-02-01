@@ -69,11 +69,14 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $customLayouts = !empty($res) && $res[0] === true;
 
         $org = $chart->getOrganization();
+
+        $team_restrictions_plugin = PluginQuery::create()->findPk('team-restrictions');
+        $allow_flags = $org ? $org->hasPlugin($team_restrictions_plugin) : false;
+        $flags = $allow_flags ? $org->getSettings("flags") ?? new stdClass() : false;
+
         $teamSettingsControls = new stdClass();
-        $teamSettingsFlags = new stdClass();
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-            $teamSettingsFlags = $org->getSettings("flags") ?? new stdClass();
         }
 
         $page = array(
@@ -91,9 +94,9 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'webToPrint' => $webToPrint,
             'customLayouts' => $customLayouts,
             'teamSettings' => [
-                'controls' => $teamSettingsControls,
-                'flags' => $teamSettingsFlags
+                'controls' => $teamSettingsControls
             ],
+            'flags' => $flags,
             'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),

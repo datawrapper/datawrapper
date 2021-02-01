@@ -152,13 +152,16 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
 
             $org = $chart->getOrganization();
             $teamSettingsControls = new stdClass();
-            $teamSettingsFlags = new stdClass();
             $customFields = [];
+
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-                $teamSettingsFlags = $org->getSettings("flags") ?? new stdClass();
             }
+
+            $team_restrictions_plugin = PluginQuery::create()->findPk('team-restrictions');
+            $allow_flags = $org ? $org->hasPlugin($team_restrictions_plugin) : false;
+            $flags = $allow_flags ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
@@ -189,9 +192,9 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace'],
                 'teamSettings' => [
-                    'controls' => $teamSettingsControls,
-                    'flags' => $teamSettingsFlags
-                ]
+                    'controls' => $teamSettingsControls
+                ],
+                'flags' => $flags
             ];
 
             // legacy stuff, need to move into ChartEditor some day
