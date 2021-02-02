@@ -33,14 +33,7 @@
             />
         </div>
 
-        {#if mode === "web"} {#each breakpoints as preset, i}
-        <div
-            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
-            on:click="setWidth(preset.width)"
-        >
-            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
-        </div>
-        {/each} {:elseif mode === "print"}
+        {#if isPrintTheme || mode === 'print' }
         <div
             class="button"
             on:click="togglePrintOptions()"
@@ -48,7 +41,14 @@
         >
             <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
         </div>
-        {/if}
+        {:else } {#each breakpoints as preset, i}
+        <div
+            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
+            on:click="setWidth(preset.width)"
+        >
+            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
+        </div>
+        {/each} {/if}
     </div>
 
     {#if printExpanded}
@@ -57,7 +57,7 @@
             <!-- prettier-ignore -->
             <RadioControl options="{units}" label="" bind:value="unit" />
 
-            {#if hasPresets}
+            {#if presets.length}
             <div class="control-group" style="margin-bottom: 6px;">
                 <div class="controls">
                     <select
@@ -103,6 +103,7 @@
     /*  global dw, $ */
     import RadioControl from '@datawrapper/controls/RadioControl.html';
     import httpReq from '@datawrapper/shared/httpReq';
+    import get from '@datawrapper/shared/get';
 
     const DPI = 96;
     const IN2MM = 25.4;
@@ -148,9 +149,7 @@
                     }
                 ],
                 preset: null,
-                hasPresets: false,
-                printExpanded: false,
-                theme: null
+                printExpanded: false
             };
         },
         computed: {
@@ -165,36 +164,28 @@
                     if (units[i].value === unit) return units[i];
                 }
             },
-            hasPresets({ theme }) {
-                return (
-                    theme &&
-                    theme &&
-                    theme.export &&
-                    theme.export.presets &&
-                    theme.export.presets.pdf &&
-                    theme.export.presets.pdf.length
-                );
+            isPrintTheme({ $themeData }) {
+                return get($themeData || {}, 'type', 'web') === 'print';
             },
-            presets({ hasPresets, theme }) {
-                if (!hasPresets) return [];
-                return theme.export.presets.pdf;
+            presets({ $themeData }) {
+                return get($themeData || {}, 'export.pdf.presets', []);
             },
-            presetOptions({ hasPresets, theme }) {
-                if (!hasPresets) return [];
+            presetOptions({ presets }) {
+                if (!presets.length) return [];
 
-                var presets = theme.export.presets.pdf.map((el, i) => {
+                const presetOptions = presets.map((el, i) => {
                     return {
                         value: i,
                         label: el.title
                     };
                 });
 
-                presets.unshift({
+                presetOptions.unshift({
                     value: '---',
                     label: 'Apply preset…'
                 });
 
-                return presets;
+                return presetOptions;
             }
         },
         methods: {
