@@ -164,9 +164,6 @@
                     if (units[i].value === unit) return units[i];
                 }
             },
-            isPrintTheme({ $themeData }) {
-                return get($themeData || {}, 'type', 'web') === 'print';
-            },
             presets({ $themeData }) {
                 return get($themeData || {}, 'export.pdf.presets', []);
             },
