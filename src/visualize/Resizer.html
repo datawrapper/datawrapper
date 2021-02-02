@@ -33,7 +33,14 @@
             />
         </div>
 
-        {#if isPrintTheme || mode === 'print' }
+        {#if mode === "web"} {#each breakpoints as preset, i}
+        <div
+            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
+            on:click="setWidth(preset.width)"
+        >
+            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
+        </div>
+        {/each} {:elseif mode === "print"}
         <div
             class="button"
             on:click="togglePrintOptions()"
@@ -41,14 +48,7 @@
         >
             <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
         </div>
-        {:else } {#each breakpoints as preset, i}
-        <div
-            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
-            on:click="setWidth(preset.width)"
-        >
-            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
-        </div>
-        {/each} {/if}
+        {/if}
     </div>
 
     {#if printExpanded}
