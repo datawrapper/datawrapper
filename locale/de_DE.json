@@ -54,7 +54,7 @@
   "controls / color-scale / breaks / log": "logarithmisch",
   "controls / color-scale / breaks / custom": "benutzerdef.",
   "controls / custom-format / info": "Lerne mehr über benutzerdefinierte Zahlenformate in unserem <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy-Artikel</a>.",
-  "controls / custom-format / custom / number": "Eine Erklärung zu Zahlenformaten findest du in der <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">numeral.js-Dokumentation</a>.",
+  "controls / custom-format / custom / number": "Eine Erklärung zu Zahlenformaten findest du in unserer <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">Dokumentation</a>.",
   "controls / custom-format / custom / date": "Eine Erklärung zu Datumsformaten findest du in der <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js-Dokumentation</a>.",
   "controls / custom-format / custom": "(anpassen)",
   "controls / custom-format / auto": "(automatisch)",
@@ -498,7 +498,7 @@
   "Please activate JavaScript to see the interactive chart.": "Please activate JavaScript to see the interactive chart.",
   "Source": "Quelle",
   "Your changes have been saved.": "Die Änderungen wurden gespeichert.",
-  "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!",
+  "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!": "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!",
   "Make sure the data looks right": "Überprüfe dass die Daten richtig aussehen",
   "describe / data-looks-right": "In der nebenstehenden Tabelle sollten <span class =\"type-hl\" style=\"color:#297EA8\">Zahlen</span> in Blau, Zeitangaben (z.B. ein <span class =\"type-hl\" style=\"color:#39A832\">Datum</span>) in grün und <span class =\"type-hl\" style=\"color:black\">Text</span> in schwarz angezeigt werden. Eine <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">rote</span> Zelle deutet darauf hin, dass es ein Problem mit deinen Daten gibt. <br><span class=\"type-hl\" style=\"color:#ccc; background-color:#fff; padding:0px 10px\">–</span> Zellen enthalten keine Daten.",
   "First row as label": "Erste Zeile als Beschriftung",
@@ -557,7 +557,7 @@
   "Create another graphic": "Neues Diagramm erstellen",
   "Return to visualise step": "Zurück zum Visualisieren",
   "publish / export-duplicate": "Diagramm exportieren oder duplizieren",
-  "publish / export-duplicate / intro": "Du kannst dein Diagramm <b>duplizieren</b> es, um eine neue Kopie zu bearbeiten. Oder exportiere das Diagramm in andere Formate.",
+  "publish / export-duplicate / intro": "Du kannst dein Diagramm <b>duplizieren</b>, um eine neue Kopie zu bearbeiten. Oder exportiere das Diagramm in andere Formate.",
   "publish / unactivated / h1": "Du hast Post!",
   "publish / unactivated / p": "Wir haben dir ein Link zu deinem Diagramm per E-Mail zugesandt. Schau in deinem Postfach und klicke auf den Link um dein Diagramm zu bekommen. Wenn du innerhalb von 15 Minuten keine E-Mail bekommen hast, melde dich bei uns via <a href=\"mailto:support@datawrapper.de\">support@datawrapper.de</a>.",
   "upload / try-beta": "<b>Neugierig auf Features?</b> Wir arbeiten an einer neuen Version dieser Seite. <a href='?beta=1'>Klicke hier</a> um zum aktivieren!",
@@ -831,5 +831,6 @@
   "describe / column-format / million": "1 Million",
   "describe / column-format / billion": "1 Milliarde",
   "describe / column-format / trillion": "1 Billion",
-  "controls / annotations / duplicate": "Anmerkung duplizieren"
+  "controls / annotations / duplicate": "Anmerkung duplizieren",
+  "standalone": "Normale Größe"
 }

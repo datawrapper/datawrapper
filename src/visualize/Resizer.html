@@ -55,7 +55,7 @@
     <div class="toolbar-container options" style="display: block; height: auto; z-index: 1;">
         <div style="padding: 12px 8px 0px 8px;">
             <!-- prettier-ignore -->
-            <Radio options="{units}" label="" bind:value="unit" />
+            <RadioControl options="{units}" label="" bind:value="unit" />
 
             {#if hasPresets}
             <div class="control-group" style="margin-bottom: 6px;">
@@ -101,14 +101,14 @@
 
 <script>
     /*  global dw, $ */
-    import Radio from '@datawrapper/controls/Radio.html';
+    import RadioControl from '@datawrapper/controls/RadioControl.html';
     import httpReq from '@datawrapper/shared/httpReq';
 
     const DPI = 96;
     const IN2MM = 25.4;
 
     export default {
-        components: { Radio },
+        components: { RadioControl },
         data() {
             return {
                 webToPrint: false,

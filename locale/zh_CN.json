@@ -54,7 +54,7 @@
   "controls / color-scale / breaks / log": "对数",
   "controls / color-scale / breaks / custom": "自定义",
   "controls / custom-format / info": "在此<a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy文章</a>中了解有关自定义数字格式的更多信息。",
-  "controls / custom-format / custom / number": "如需有关自定义格式的帮助，请查看<a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">numeral.js文档</a>。",
+  "controls / custom-format / custom / number": "如需有关自定义格式的帮助，请查看<a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">numeral.js文档</a>。",
   "controls / custom-format / custom / date": "如需有关自定义格式的帮助，请查看<a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js文档</a>。",
   "controls / custom-format / custom": "",
   "controls / custom-format / auto": "",
@@ -498,7 +498,7 @@
   "Please activate JavaScript to see the interactive chart.": "请激活JavaScript以查看交互式图表。",
   "Source": "源",
   "Your changes have been saved.": "已保存您的修改。",
-  "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "此图表属于<a href='/admin/charts/%uid'>%email</a>。强大的权利伴随着巨大的责任，因此做事要小心谨慎！",
+  "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!": "此图表属于%email。强大的权利伴随着巨大的责任，因此做事要小心谨慎！",
   "Make sure the data looks right": "确保数据看起来正确",
   "describe / data-looks-right": "请确保Datawrapper正确解释您的数据。在表格中，<span class =\"type-hl\" style=\"color:#297EA8\">数字</span>列应以蓝色显示，<span class =\"type-hl\" style=\"color:#39A832\">日期</span>应以绿色显示，<span class =\"type-hl\" style=\"color:black\">文本</span>应以黑色显示。<span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">红色</span>单元格表示数据丢失或数据集中的问题需要修复。",
   "First row as label": "第一行作为标签",
@@ -831,5 +831,6 @@
   "describe / column-format / million": "",
   "describe / column-format / billion": "",
   "describe / column-format / trillion": "",
-  "controls / annotations / duplicate": ""
+  "controls / annotations / duplicate": "",
+  "standalone": ""
 }

@@ -2,10 +2,14 @@
     <h3 class="first">{title}</h3>
 
     <div class="form-horizontal">
-        <!-- prettier-ignore -->
-        <Select label="{__('Column type')}" options="{colTypes}" bind:value="columnFormat.type" width="180px" />
+        <SelectControl
+            label="{__('Column type')}"
+            options="{colTypes}"
+            bind:value="columnFormat.type"
+            width="180px"
+        />
 
-        <Checkbox
+        <CheckboxControl
             label="{ __('Hide column from visualization') }"
             bind:value="columnFormat.ignore"
         />
@@ -13,8 +17,7 @@
         <hr />
 
         {#if column && column.type() == 'number'}
-        <!-- prettier-ignore -->
-        <Select
+        <SelectControl
             label="{__('Round numbers to')}"
             options="{roundOptions}"
             optgroups="{numberFormats}"
@@ -22,8 +25,7 @@
             width="180px"
         />
 
-        <!-- prettier-ignore -->
-        <Select
+        <SelectControl
             label="{__('Divide numbers by')}"
             options="{divisors_opts}"
             optgroups="{divisors}"
@@ -62,15 +64,15 @@
 
 <script>
     /* global dw */
-    import Checkbox from '@datawrapper/controls/Checkbox.html';
-    import Select from '@datawrapper/controls/Select.html';
+    import CheckboxControl from '@datawrapper/controls/CheckboxControl.html';
+    import SelectControl from '@datawrapper/controls/SelectControl.html';
     import throttle from 'lodash/throttle';
     import arrayToObject from '@datawrapper/shared/arrayToObject';
     import clone from '@datawrapper/shared/clone';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { Checkbox, Select },
+        components: { CheckboxControl, SelectControl },
         data() {
             return {
                 columnFormat: {
@@ -91,7 +93,7 @@
                         label: __('describe / column-format / divide-by'),
                         options: [
                             { value: 3, label: '1000' },
-                            { value: 6, label: __('describe / column-format / billion') },
+                            { value: 6, label: __('describe / column-format / million') },
                             { value: 9, label: __('describe / column-format / billion') }
                         ]
                     },

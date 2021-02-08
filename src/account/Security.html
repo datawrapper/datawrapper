@@ -1,0 +1,176 @@
+<h2>Two-factor authentication</h2>
+
+<p>
+    Secure your account by configuring two-factor authenticating using
+    <b>One-Time Password (OTP)</b> providers:
+</p>
+{#if awaitOtpProviders}{#await awaitOtpProviders}Loading <i class="fa fa-spinner fa-spin"></i>
+{/await}
+<div class="row">
+    <table class="table span7 mt-4">
+        {#each otpProviders as provider}
+        <tr>
+            <th>{provider.title || provider.id}</th>
+            <td>
+                {#if !provider.installed}
+                <div class="text-error">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i> not installed
+                </div>
+                {:else} {#if provider.enabled}
+                <div class="text-success">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i> enabled
+                </div>
+                {:else}
+                <div class="muted">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i> not enabled
+                </div>
+                {/if} {/if}
+            </td>
+            <td width="50%">
+                {#if enableProvider === provider.id} {#if provider.data.qrcode}
+                <p>Scan this QR Code with your Authenticator app and enter a code to confirm</p>
+                <img src="{qrcode(provider, user)}" width="200" alt="" />
+                <form on:submit|preventDefault="doEnable(provider)" class="my-0">
+                    <input
+                        placeholder="123456"
+                        class="input-xxlarge span2 my-0"
+                        autocomplete="off"
+                        type="text"
+                        style="font-family: 'Roboto Mono';"
+                        bind:value="otp"
+                        data-lpignore="true"
+                        autofocus
+                    />
+                    <input type="submit" class="btn btn-primary" value="Confirm" />
+                </form>
+                {:else}
+                <form on:submit|preventDefault="doEnable(provider)" class="my-0">
+                    <input
+                        placeholder="Enter a one-time password to activate device"
+                        class="input-xxlarge span4 my-0"
+                        autocomplete="off"
+                        type="password"
+                        bind:value="otp"
+                        data-lpignore="true"
+                        autofocus
+                    />
+                </form>
+                {/if} {/if} {#if awaitEnable} {#await awaitEnable}
+                <i class="fa fa-spinner fa-spin"></i>
+                {:then}
+                <div class="text-success">
+                    Success!
+                </div>
+                {:catch}
+                <div class="text-error">
+                    Error: could not enable provider. Did you enter a valid OTP?
+                </div>
+                {/await} {/if} {#if awaitDisable} {#await awaitDisable}
+                <i class="fa fa-spinner fa-spin"></i>
+                {:catch}
+                <div class="text-error">
+                    Error: could not disable provider
+                </div>
+                {/await} {/if}
+            </td>
+            <td>
+                {#if provider.enabled}
+                <button class="btn" on:click="disable(provider)">disable</button>
+                {:elseif enableProvider !== provider.id}
+                <button class="btn btn-primary" on:click="enable(provider)">enable</button>
+                {/if}
+            </td>
+        </tr>
+        {/each}
+    </table>
+</div>
+{/if}
+
+<script>
+    import httpReq from '@datawrapper/shared/httpReq';
+    import qrcodeGenerator from 'qrcode-generator';
+
+    function qrcode(provider, user) {
+        const code = qrcodeGenerator(0, 'M');
+        code.addData(
+            `otpauth://totp/${user.email || user.name}?issuer=${provider.data.issuer}&secret=${
+                provider.data.secret
+            }`
+        );
+        code.make();
+        return code.createDataURL(32);
+    }
+
+    export default {
+        components: {},
+        data() {
+            return {
+                otpProviders: [],
+                otp: ''
+            };
+        },
+        computed: {},
+        helpers: { qrcode },
+        methods: {
+            loadProviders(reset) {
+                this.set({
+                    otp: '',
+                    awaitOtpProviders: httpReq.get(`/v3/me/otp`).then(res => {
+                        this.set({ otpProviders: res });
+                    })
+                });
+                if (reset) {
+                    setTimeout(() => {
+                        this.set({ awaitEnable: false, awaitDisable: false });
+                    }, 3000);
+                }
+            },
+            enable(provider) {
+                this.set({
+                    enableProvider: provider.id,
+                    awaitEnable: false,
+                    awaitDisable: false,
+                    otp: ''
+                });
+            },
+            doEnable(provider) {
+                const { otp } = this.get();
+                if (otp) {
+                    this.set({
+                        enableProvider: null,
+                        awaitEnable: httpReq
+                            .post(`/v3/me/otp/${provider.id}`, {
+                                payload: provider.data.secret
+                                    ? { otp: `${provider.data.secret}:${otp}` }
+                                    : { otp }
+                            })
+                            .then(() => this.loadProviders(true))
+                    });
+                }
+            },
+            disable(provider) {
+                if (window.confirm(`Do you really want to disable ${provider.title}?`)) {
+                    this.set({
+                        awaitDisable: httpReq
+                            .delete(`/v3/me/otp/${provider.id}`)
+                            .then(() => this.loadProviders(true))
+                    });
+                }
+            }
+        },
+        oncreate() {
+            this.loadProviders();
+        }
+    };
+</script>
+
+<style type="text/css">
+    table th,
+    table td {
+        vertical-align: middle;
+    }
+    table tr:first-child th,
+    table tr:first-child td {
+        border-top: 0;
+    }
+</style>

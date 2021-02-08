@@ -54,7 +54,7 @@
   "controls / color-scale / breaks / log": "Logarítmico",
   "controls / color-scale / breaks / custom": "Personalizar",
   "controls / custom-format / info": "Aprende más sobre los formatos numéricos personalizados en este <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">artículo de Datawrapper Academy</a>.",
-  "controls / custom-format / custom / number": "Para obtener ayuda sobre formatos personalizados, consulta la <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">documentación numeral.js</a>.",
+  "controls / custom-format / custom / number": "Para obtener ayuda sobre formatos personalizados, consulta la <a href=\"http://numeraljs.com/#format\" target=\"_blank\" rel=\"noopener\">documentación</a>.",
   "controls / custom-format / custom / date": "Para obtener ayuda sobre formatos personalizados, consulta la <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">documentación moment.js</a>.",
   "controls / custom-format / custom": "",
   "controls / custom-format / auto": "",
@@ -498,7 +498,7 @@
   "Please activate JavaScript to see the interactive chart.": "Activa JavaScript para ver el gráfico interactivo.",
   "Source": "Fuente",
   "Your changes have been saved.": "Se han guardado los cambios.",
-  "This chart belongs to <a href='/admin/charts/%uid'>%email</a>. Great power comes with great responsibility, so be careful with what you're doing!": "Este gráfico pertenece a <a href='/admin/charts/%uid'>%email</a>. Un gran poder conlleva una gran responsabilidad, ¡así que ten cuidado con lo que haces!",
+  "This chart belongs to %email. Great power comes with great responsibility, so be careful with what you're doing!": "Este gráfico pertenece a %email. Un gran poder conlleva una gran responsabilidad, ¡así que ten cuidado con lo que haces!",
   "Make sure the data looks right": "Asegúrate de que los datos se vean bien",
   "describe / data-looks-right": "Asegúrate de que Datawrapper interpreta tus datos correctamente. En la tabla los <span class =\"type-hl\" style=\"color:#297EA8\">números</span> se muestran en azul, las <span class =\"type-hl\" style=\"color:#39A832\">fechas</span> en verde y el <span class =\"type-hl\" style=\"color:black\">texto</span> en negro. Una celda <span class =\"type-hl\" style=\"color:#c00; background-color:#fee\">roja</span> indica que faltan datos o que hay un problema en tu conjunto de datos que necesita ser reparado.",
   "First row as label": "Primera fila como etiqueta",
@@ -831,5 +831,6 @@
   "describe / column-format / million": "",
   "describe / column-format / billion": "",
   "describe / column-format / trillion": "",
-  "controls / annotations / duplicate": ""
+  "controls / annotations / duplicate": "",
+  "standalone": ""
 }

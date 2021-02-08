@@ -5,7 +5,7 @@
 </p>
 
 {#if sortedUsers.length}
-<MemberTable columnHeaders="{userHeaders}">
+<TableDisplay columnHeaders="{userHeaders}">
     {#each sortedUsers as user, i}
     <tr>
         <td>
@@ -21,8 +21,8 @@
         </td>
         <td>
             {#if editId === user.id }
-            <!-- prettier-ignore -->
-            <Select label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            <SelectInput bind:value="user.role" width="200px" options="{roles}" />
+            <p class="mini-help">{ __('teams / role / p' ) }</p>
             {:else} {@html role(user.role) } {#if user.token}
             <i>{ __('teams / invite-pending' ) } </i>
             {/if} {/if}
@@ -49,13 +49,13 @@
         </td>
     </tr>
     {/each}
-</MemberTable>
+</TableDisplay>
 
 {/if}
 
 <script>
-    import Table from '@datawrapper/controls/Table.html';
-    import Select from '@datawrapper/controls/Select.html';
+    import TableDisplay from '@datawrapper/controls/TableDisplay.html';
+    import SelectInput from '@datawrapper/controls/SelectInput.html';
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
 
@@ -66,7 +66,7 @@
     ];
 
     export default {
-        components: { MemberTable: Table, Select },
+        components: { TableDisplay, SelectInput },
         data() {
             return {
                 editId: false,
@@ -106,8 +106,8 @@
 
                 return userHeaders;
             },
-            numUsers({ users }) {
-                return users.length;
+            numUsers({ sortedUsers }) {
+                return sortedUsers.length;
             },
             numCharts({ users }) {
                 let total = 0;

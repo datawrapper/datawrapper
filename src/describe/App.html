@@ -55,8 +55,8 @@
 
                 <p>{@html __(`describe / data-looks-right`) }</p>
 
-                <Checkbox label="{ __("First row as label") }" bind:value="firstRowIsHeader" /> {#if
-                showLocale }
+                <CheckboxControl label="{ __("First row as label") }" bind:value="firstRowIsHeader"
+                /> {#if showLocale }
                 <h4>{__(`describe / locale-select / hed`)}</h4>
 
                 <p>{@html __(`describe / locale-select / body`)}</p>
@@ -193,14 +193,20 @@
     import CustomColumnFormat from './CustomColumnFormat.html';
     import Histogram from './Histogram.html';
     import Handsontable from './hot/Handsontable.html';
-    import Checkbox from '@datawrapper/controls/Checkbox.html';
+    import CheckboxControl from '@datawrapper/controls/CheckboxControl.html';
 
     import { __ } from '@datawrapper/shared/l10n';
     import clone from '@datawrapper/shared/clone';
     import { getComputedColumns } from './shared';
 
     export default {
-        components: { Handsontable, Checkbox, ComputedColumnEditor, CustomColumnFormat, Histogram },
+        components: {
+            Handsontable,
+            CheckboxControl,
+            ComputedColumnEditor,
+            CustomColumnFormat,
+            Histogram
+        },
         data() {
             return {
                 locale: 'en-US',

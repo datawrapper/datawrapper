@@ -19,7 +19,7 @@ Datawrapper has in the past received funding by [ABZV](http://www.abzv.de/).
 * Live service: <https://app.datawrapper.de/>
 * Blog: [blog.datawrapper.de](https://blog.datawrapper.de)
 * User documentation: <https://academy.datawrapper.de/> 
-* Developer documentation: <https://developers.datawrapper.de/> 
+* Developer documentation: <https://developer.datawrapper.de/> 
 
 ## Contact
 

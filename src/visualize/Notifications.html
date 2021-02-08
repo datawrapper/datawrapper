@@ -1,19 +1,19 @@
 {#if notifications && notifications.length}
 <div class="notifications">
     {#each notifications as note}
-    <Alert visible type="{note.type}" closeable="{note.closeable}">
+    <AlertDisplay visible type="{note.type}" closeable="{note.closeable}">
         {@html note.message}
-    </Alert>
+    </AlertDisplay>
     {/each}
 </div>
 {/if}
 
 <script>
-    import Alert from '@datawrapper/controls/Alert.html';
+    import AlertDisplay from '@datawrapper/controls/AlertDisplay.html';
 
     export default {
         components: {
-            Alert
+            AlertDisplay
         },
         data() {
             return {
