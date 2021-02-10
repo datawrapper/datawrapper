@@ -57,7 +57,7 @@
             <!-- prettier-ignore -->
             <RadioControl options="{units}" label="" bind:value="unit" />
 
-            {#if hasPresets}
+            {#if presets.length}
             <div class="control-group" style="margin-bottom: 6px;">
                 <div class="controls">
                     <select
@@ -103,6 +103,7 @@
     /*  global dw, $ */
     import RadioControl from '@datawrapper/controls/RadioControl.html';
     import httpReq from '@datawrapper/shared/httpReq';
+    import get from '@datawrapper/shared/get';
 
     const DPI = 96;
     const IN2MM = 25.4;
@@ -148,9 +149,7 @@
                     }
                 ],
                 preset: null,
-                hasPresets: false,
-                printExpanded: false,
-                theme: null
+                printExpanded: false
             };
         },
         computed: {
@@ -165,36 +164,25 @@
                     if (units[i].value === unit) return units[i];
                 }
             },
-            hasPresets({ theme }) {
-                return (
-                    theme &&
-                    theme &&
-                    theme.export &&
-                    theme.export.presets &&
-                    theme.export.presets.pdf &&
-                    theme.export.presets.pdf.length
-                );
+            presets({ $themeData }) {
+                return get($themeData || {}, 'export.pdf.presets', []);
             },
-            presets({ hasPresets, theme }) {
-                if (!hasPresets) return [];
-                return theme.export.presets.pdf;
-            },
-            presetOptions({ hasPresets, theme }) {
-                if (!hasPresets) return [];
+            presetOptions({ presets }) {
+                if (!presets.length) return [];
 
-                var presets = theme.export.presets.pdf.map((el, i) => {
+                const presetOptions = presets.map((el, i) => {
                     return {
                         value: i,
                         label: el.title
                     };
                 });
 
-                presets.unshift({
+                presetOptions.unshift({
                     value: '---',
                     label: 'Apply preset…'
                 });
 
-                return presets;
+                return presetOptions;
             }
         },
         methods: {
