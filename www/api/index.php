@@ -146,9 +146,7 @@ $app->get('/status', function() use ($app) {
 });
 
 require_once ROOT_PATH . 'lib/api/users.php';
-require_once ROOT_PATH . 'lib/api/auth.php';
 require_once ROOT_PATH . 'lib/api/charts.php';
-require_once ROOT_PATH . 'lib/api/visualizations.php';
 require_once ROOT_PATH . 'lib/api/plugins.php';
 require_once ROOT_PATH . 'lib/api/teams.php';
 require_once ROOT_PATH . 'lib/api/products.php';
