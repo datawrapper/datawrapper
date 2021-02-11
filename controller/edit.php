@@ -59,12 +59,13 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             // set type to default type of workflow
             $chart->setType($workflows[$wfid]['default_type']);
 
+            $chart->save();
+
             $vis = Visualization::get($workflows[$wfid]['default_type']);
             if ($vis && !empty($vis['default-data'])) {
                 $chart->writeData($vis['default-data']);
             }
 
-            $chart->save();
             // and redirect to /edit/:chart_id
             $app->redirect('/edit/'.$chart->getId());
         } else {
