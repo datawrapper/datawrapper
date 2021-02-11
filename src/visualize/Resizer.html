@@ -33,14 +33,7 @@
             />
         </div>
 
-        {#if mode === "web"} {#each breakpoints as preset, i}
-        <div
-            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
-            on:click="setWidth(preset.width)"
-        >
-            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
-        </div>
-        {/each} {:elseif mode === "print"}
+        {#if uiMode === "print"}
         <div
             class="button"
             on:click="togglePrintOptions()"
@@ -48,7 +41,14 @@
         >
             <i class="fa { printExpanded ? 'fa-chevron-up' : 'fa-ellipsis-h' }"></i>
         </div>
-        {/if}
+        {:else} {#each breakpoints as preset, i}
+        <div
+            class="button {width_px >= preset.minWidth && width_px <= preset.maxWidth ? 'active' : ''}"
+            on:click="setWidth(preset.width)"
+        >
+            <i style="font-size:{preset.iconSize}px" class="fa {preset.icon}"></i>
+        </div>
+        {/each} {/if}
     </div>
 
     {#if printExpanded}
@@ -73,10 +73,11 @@
             </div>
             {/if}
         </div>
-
+        {#if mode === 'print'}
         <div class="button" on:click="reset()">
             <i class="fa fa-undo"></i> &nbsp;Undo print changes
         </div>
+        {/if}
     </div>
     {/if}
 </div>
@@ -153,16 +154,29 @@
             };
         },
         computed: {
-            width_px({ width, unit }) {
-                return width * (unit === 'px' ? 1 : unit === 'mm' ? DPI / IN2MM : DPI);
+            width_px({ width, unit, printScale }) {
+                return (
+                    (width * (unit === 'px' ? 1 : unit === 'mm' ? DPI / IN2MM : DPI)) / printScale
+                );
             },
-            height_px({ height, unit }) {
-                return height * (unit === 'px' ? 1 : unit === 'mm' ? DPI / IN2MM : DPI);
+            height_px({ height, unit, printScale }) {
+                return (
+                    (height * (unit === 'px' ? 1 : unit === 'mm' ? DPI / IN2MM : DPI)) / printScale
+                );
             },
             theUnit({ unit, units }) {
                 for (let i = 0; i < units.length; i++) {
                     if (units[i].value === unit) return units[i];
                 }
+            },
+            isPrintTheme({ $themeData }) {
+                return get($themeData || {}, 'type', 'web') === 'print';
+            },
+            uiMode({ mode, isPrintTheme }) {
+                return mode === 'print' || isPrintTheme ? 'print' : 'web';
+            },
+            printScale({ $themeData }) {
+                return get($themeData || {}, 'export.pdf.scale', 1);
             },
             presets({ $themeData }) {
                 return get($themeData || {}, 'export.pdf.presets', []);
@@ -252,14 +266,16 @@
                     });
             },
             updateSize() {
-                const { width, height, unit } = this.get();
+                const { width, height, uiMode, unit } = this.get();
                 const w = this.get().width_px;
                 const h = this.get().height_px;
 
                 const maxW = $('#iframe-wrapper').parent().parent().width() - 22;
 
-                this.store.setMetadata('publish.embed-width', w);
-                this.store.setMetadata('publish.embed-height', h);
+                if (uiMode === 'web') {
+                    this.store.setMetadata('publish.embed-width', w);
+                    this.store.setMetadata('publish.embed-height', h);
+                }
 
                 $('#iframe-wrapper').animate(
                     {
@@ -284,8 +300,7 @@
                 dw.backend.fire('chart-resize');
 
                 this.set({ width_txt: width, height_txt: height });
-
-                if (this.get().mode === 'web') {
+                if (this.get().uiMode === 'web') {
                     this.store.setMetadata('publish.embed-width', Math.round(w));
                     this.store.setMetadata('publish.embed-height', Math.round(h));
                 } else {
@@ -407,7 +422,6 @@
 
             if (changed.unit && !changed.width && !changed.height) {
                 // changed unit, let's recompute
-
                 const factor =
                     current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1 / DPI;
 
@@ -419,35 +433,32 @@
                 });
             }
 
-            if (changed.mode) {
-                if (current.mode === 'web') {
+            if (changed.mode || changed.isPrintTheme) {
+                if (current.uiMode === 'web') {
                     this.set({
                         width: this.store.getMetadata('publish.embed-width'),
                         height: this.store.getMetadata('publish.embed-height'),
                         width_txt: this.store.getMetadata('publish.embed-width'),
-                        height_txt: this.store.getMetadata('publish.embed-height')
+                        height_txt: this.store.getMetadata('publish.embed-height'),
+                        unit: 'px'
                     });
-
                     this.registerDragAndDropListener();
                     this.registerTypeListener();
                     this.registerChartHeightListener();
 
                     app.updateSize();
                 } else {
+                    const scale = this.get().printScale;
+                    const { width, height } = this.get();
+                    const size = dw.backend.currentChart.getMetadata('publish.export-pdf', {});
+                    const factor = (IN2MM / DPI) * scale;
+                    const w = size.width || (scale !== 1 ? (factor * width).toFixed(0) : 120);
+                    const h = size.height || (scale !== 1 ? (factor * height).toFixed(0) : 80);
                     this.set({
-                        width: dw.backend.currentChart.getMetadata('publish.export-pdf.width', 120),
-                        height: dw.backend.currentChart.getMetadata(
-                            'publish.export-pdf.height',
-                            80
-                        ),
-                        width_txt: dw.backend.currentChart.getMetadata(
-                            'publish.export-pdf.width',
-                            120
-                        ),
-                        height_txt: dw.backend.currentChart.getMetadata(
-                            'publish.export-pdf.height',
-                            80
-                        ),
+                        width: w,
+                        height: h,
+                        width_txt: w,
+                        height_txt: h,
                         unit: this.store.getMetadata('publish.export-pdf.unit', 'mm')
                     });
 
