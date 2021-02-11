@@ -9,13 +9,14 @@
             <div class="container">
                 <div class="vis-canvas">
                     <ChartPreview
+                        resizable="{resizable}"
                         bind:loading
                         src="/preview/{ $id }"
                         on:resize="makePreviewSticky()"
                     />
 
                     <div class="toolbar">
-                        <Resizer bind:webToPrint bind:loading ref:resizer />
+                        <Resizer bind:webToPrint bind:loading ref:resizer bind:uiMode="mode" />
                         <ColorblindCheck />
                     </div>
                 </div>
@@ -159,6 +160,9 @@
             };
         },
         computed: {
+            resizable({ mode }) {
+                return mode !== 'print';
+            },
             showChartPicker({ namespace }) {
                 return namespace !== 'map';
             },
