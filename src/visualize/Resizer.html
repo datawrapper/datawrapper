@@ -73,7 +73,7 @@
             </div>
             {/if}
         </div>
-        {#if mode === 'print'}
+        {#if uiMode === 'print'}
         <div class="button" on:click="reset()">
             <i class="fa fa-undo"></i> &nbsp;Undo print changes
         </div>
@@ -106,6 +106,14 @@
     import httpReq from '@datawrapper/shared/httpReq';
     import get from '@datawrapper/shared/get';
 
+    function getUnit(unit, units) {
+        for (let i = 0; i < units.length; i++) {
+            if (units[i].value === unit) return units[i];
+        }
+    }
+    function getFactor(unit) {
+        return unit === 'px' ? 1 : unit === 'mm' ? IN2MM / DPI : 1 / DPI;
+    }
     const DPI = 96;
     const IN2MM = 25.4;
 
@@ -165,9 +173,7 @@
                 );
             },
             theUnit({ unit, units }) {
-                for (let i = 0; i < units.length; i++) {
-                    if (units[i].value === unit) return units[i];
-                }
+                return getUnit(unit, units);
             },
             isPrintTheme({ $themeData }) {
                 return get($themeData || {}, 'type', 'web') === 'print';
@@ -422,12 +428,14 @@
 
             if (changed.unit && !changed.width && !changed.height) {
                 // changed unit, let's recompute
-                const factor =
-                    current.unit === 'px' ? 1 : current.unit === 'mm' ? IN2MM / DPI : 1 / DPI;
+                const scale = current.printScale;
+                const factor = getFactor(current.unit);
 
                 this.set({
-                    width: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
-                    height: +(previous.height_px * factor).toFixed(current.theUnit.decimals),
+                    width: +(previous.width_px * factor * scale).toFixed(current.theUnit.decimals),
+                    height: +(previous.height_px * factor * scale).toFixed(
+                        current.theUnit.decimals
+                    ),
                     width_txt: +(previous.width_px * factor).toFixed(current.theUnit.decimals),
                     height_txt: +(previous.height_px * factor).toFixed(current.theUnit.decimals)
                 });
@@ -448,18 +456,25 @@
 
                     app.updateSize();
                 } else {
+                    const iframe = $('#iframe-wrapper').removeClass('resizable');
+                    iframe.find('.resizer').remove();
+
+                    const { width, height, units } = this.get();
                     const scale = this.get().printScale;
-                    const { width, height } = this.get();
-                    const size = dw.backend.currentChart.getMetadata('publish.export-pdf', {});
-                    const factor = (IN2MM / DPI) * scale;
-                    const w = size.width || (scale !== 1 ? (factor * width).toFixed(0) : 120);
-                    const h = size.height || (scale !== 1 ? (factor * height).toFixed(0) : 80);
+                    const pdf = dw.backend.currentChart.getMetadata('publish.export-pdf', {});
+                    const unit = pdf.unit || 'mm';
+                    const decimals = getUnit(unit, units).decimals;
+                    const factor = getFactor(unit) * scale;
+
+                    const w = pdf.width || (scale !== 1 ? (factor * width).toFixed(decimals) : 120);
+                    const h =
+                        pdf.height || (scale !== 1 ? (factor * height).toFixed(decimals) : 80);
                     this.set({
                         width: w,
                         height: h,
                         width_txt: w,
                         height_txt: h,
-                        unit: this.store.getMetadata('publish.export-pdf.unit', 'mm')
+                        unit
                     });
                     $('#iframe-wrapper').removeClass('resizable');
                     app.updateSize();
