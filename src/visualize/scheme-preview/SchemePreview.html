@@ -1,0 +1,86 @@
+<div class="toolbar-container scheme-preview">
+    <div class="toolbar-caption">Scheme preview</div>
+    {#each schemes as scheme}
+    <div on:click="applyScheme(scheme)" class="button {currentScheme === scheme ? 'active' : ''}">
+        {scheme}
+    </div>
+    {/each}
+</div>
+
+<style>
+    .toolbar {
+        display: flex;
+    }
+
+    .toolbar-container > div > *:last-child {
+        border-right: none !important;
+    }
+
+    .toolbar-container.options {
+        margin-left: 0px !important;
+        border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+        top: -1px;
+        left: -1px;
+        width: 100%;
+    }
+    .button {
+        text-transform: capitalize;
+    }
+</style>
+
+<script type="text/javascript">
+    /*  global $ */
+    import get from '@datawrapper/shared/get';
+
+    export default {
+        data() {
+            return {
+                currentScheme: 'default',
+                loadingScheme: false,
+                loading: false
+            };
+        },
+        computed: {
+            schemeData({ $themeData }) {
+                return get($themeData, 'colors.schemes', {});
+            },
+            schemes({ schemeData }) {
+                return ['default', ...Object.keys(schemeData)];
+            }
+        },
+        methods: {
+            applyScheme(scheme) {
+                const { currentScheme } = this.get();
+                if (scheme === currentScheme) return;
+
+                const { id } = this.store.get();
+                const iframe = $('#iframe-vis')[0];
+                iframe.src = `/preview/${id}${scheme === 'default' ? '' : '?scheme=' + scheme}`;
+                this.set({ currentScheme: scheme, loadingScheme: true, loading: true });
+            }
+        },
+        oncreate() {
+            const app = this;
+            $('#iframe-vis')[0].addEventListener('load', function (e) {
+                app.set({ loadingScheme: false, loading: false });
+            });
+        },
+        onstate({ current, previous, changed }) {
+            if (previous && changed.loadingScheme && !current.loadingScheme) {
+                const { currentScheme, schemeData } = current;
+                const { themeData } = this.store.get();
+                const iframeContainer = $('#iframe-wrapper')[0];
+                if (currentScheme !== 'default' && schemeData[currentScheme]['colors.background']) {
+                    iframeContainer.style.background =
+                        schemeData[currentScheme]['colors.background'];
+                } else if (currentScheme === 'default') {
+                    iframeContainer.style.background = get(
+                        themeData,
+                        'colors.background',
+                        '#ffffff'
+                    );
+                }
+            }
+        }
+    };
+</script>

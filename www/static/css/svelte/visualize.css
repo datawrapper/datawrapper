@@ -10,5 +10,6 @@ select[disabled].svelte-v0oq4b{cursor:default;color:#999}
 @media(min-width: 980px){.vis-wrapper.svelte-q5bgnd{position:relative}.vis-main.svelte-q5bgnd{position:relative;top:0;padding:15px}.vis-main.stickyBottom.svelte-q5bgnd{position:absolute;top:auto;bottom:0}.vis-main.stickyTop.svelte-q5bgnd{position:fixed;top:0;bottom:auto}.vis-main.svelte-q5bgnd{position:absolute}.vis-sidebar.svelte-q5bgnd{width:33%}.vis-canvas.svelte-q5bgnd{padding-left:33%}}
 .toolbar.svelte-163pzyx{display:flex}.toolbar-container.svelte-163pzyx>div.svelte-163pzyx>.svelte-163pzyx:last-child{border-right:none !important}.toolbar-container.options.svelte-163pzyx{margin-left:0px !important;border-right:1px solid rgba(0, 0, 0, 0.1) !important;top:-1px;left:-1px;width:100%}
 .colorblind-check.svelte-178rdj1{margin-left:20px !important}.colorblind-check.svelte-178rdj1 .button.svelte-178rdj1{transition:all 0.3s ease}.colorblind-check.svelte-178rdj1 .button i.warning.svelte-178rdj1{transition:opacity 0.3s ease}
+.toolbar.svelte-14nsmyc{display:flex}.toolbar-container>div.svelte-14nsmyc>.svelte-14nsmyc:last-child{border-right:none !important}.toolbar-container.options.svelte-14nsmyc{margin-left:0px !important;border-right:1px solid rgba(0, 0, 0, 0.1) !important;top:-1px;left:-1px;width:100%}.button.svelte-14nsmyc{text-transform:capitalize}
 
 /*# sourceMappingURL=visualize.css.map */
