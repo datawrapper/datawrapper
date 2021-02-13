@@ -14,15 +14,42 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
         'Content-Type: ' . $contentType
     ];
 
+    $CSRF_SAFE_METHODS = ['get', 'head', 'options', 'trace']; // according to RFC7231
+
     if (Session::getMethod() == 'token') {
         $h = getallheaders();
         $headers[] = 'Authorization: ' . $h['Authorization'];
     } else if (!empty($_COOKIE['DW-SESSION'])) {
         $headers[] = 'Cookie: DW-SESSION='.$_COOKIE['DW-SESSION'];
-        if (!empty($_COOKIE['crumb'])) {
-            $headers[] = 'Cookie: crumb='.$_COOKIE['crumb'];
-            $headers[] = 'X-CSRF-Token: '.$_COOKIE['crumb'];
-            $headers[] = sprintf('Referer: %s://%s', $protocol, $GLOBALS['dw_config']['domain']);
+
+        if (!in_array(strtolower($method), $CSRF_SAFE_METHODS)) {
+            if (!empty($_COOKIE['crumb'])) {
+                $headers[] = 'Cookie: crumb='.$_COOKIE['crumb'];
+                $headers[] = 'X-CSRF-Token: '.$_COOKIE['crumb'];
+                $headers[] = sprintf('Referer: %s://%s', $protocol, $GLOBALS['dw_config']['domain']);
+            } else {
+                $ch2 = curl_init("$protocol://$apiDomain/v3/me");
+
+                curl_setopt_array($ch2, [
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_HEADER => 1,
+                    CURLOPT_HTTPHEADER => $headers,
+                ]);
+
+                $result = curl_exec($ch2);
+
+                preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $result, $matches);
+                $cookies = array();
+                foreach($matches[1] as $item) {
+                    parse_str($item, $cookie);
+                    $cookies = array_merge($cookies, $cookie);
+                }
+
+                if (!empty($cookies['crumb'])) {
+                    $headers[] = 'Cookie: crumb='.$cookies['crumb'];
+                    $headers[] = 'X-CSRF-Token: '.$cookies['crumb'];
+                }
+            }
         }
     }
 
