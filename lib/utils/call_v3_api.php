@@ -48,6 +48,7 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
                 if (!empty($cookies['crumb'])) {
                     $headers[] = 'Cookie: crumb='.$cookies['crumb'];
                     $headers[] = 'X-CSRF-Token: '.$cookies['crumb'];
+                    $headers[] = sprintf('Referer: %s://%s', $protocol, $GLOBALS['dw_config']['domain']);
                 }
             }
         }
