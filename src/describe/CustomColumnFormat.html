@@ -2,8 +2,12 @@
     <h3 class="first">{title}</h3>
 
     <div class="form-horizontal">
-        <!-- prettier-ignore -->
-        <SelectControl label="{__('Column type')}" options="{colTypes}" bind:value="columnFormat.type" width="180px" />
+        <SelectControl
+            label="{__('Column type')}"
+            options="{colTypes}"
+            bind:value="columnFormat.type"
+            width="180px"
+        />
 
         <CheckboxControl
             label="{ __('Hide column from visualization') }"
@@ -13,7 +17,6 @@
         <hr />
 
         {#if column && column.type() == 'number'}
-        <!-- prettier-ignore -->
         <SelectControl
             label="{__('Round numbers to')}"
             options="{roundOptions}"
@@ -22,7 +25,6 @@
             width="180px"
         />
 
-        <!-- prettier-ignore -->
         <SelectControl
             label="{__('Divide numbers by')}"
             options="{divisors_opts}"

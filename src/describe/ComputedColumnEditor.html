@@ -26,36 +26,52 @@
     <label>{__('computed columns / modal / name')}</label>
     <input type="text" bind:value="name" />
 
-    <label
-        >{__('computed columns / modal / formula')} {#if checking && !error}<i
-            style="color: #ccc;"
-            class="fa fa-cog fa-spin"
-        ></i
-        >{/if}<HelpDisplay><span>{@html __('cc / formula / help')}</span></HelpDisplay></label
-    >
+    <label>
+        {__('computed columns / modal / formula')}
+
+        <!-- Spinner: -->
+        {#if checking && !error}
+        <i style="color: #ccc;" class="fa fa-cog fa-spin"></i>
+        {/if}
+
+        <HelpDisplay>
+            <span>{@html __('cc / formula / help')}</span>
+        </HelpDisplay>
+    </label>
     <textarea ref:code class="code" class:error="errDisplay"></textarea>
 
+    <!-- Errors: -->
     {#if errDisplay}
     <p class="mini-help errors">
         {@html errNiceDisplay}
     </p>
-    {/if} {#if formulaHint}
+    {/if}
+
+    <!-- Formula hint: -->
+    {#if formulaHint}
     <p class="mini-help formula-hint">
         <i class="hat-icon im im-graduation-hat"></i> {@html formulaHint}
     </p>
-    {/if} {#if looksLikeColumnData}
+    {/if}
+
+    <!-- Column data hint: -->
+    {#if looksLikeColumnData}
     <div class="mini-help formula-hint">
-        <i class="hat-icon im im-graduation-hat"></i> {__('cc / formula / hint / insert-data')}
+        <i class="hat-icon im im-graduation-hat"></i>
+        {__('cc / formula / hint / insert-data')}
         <a
             style="color: white; font-weight: bold;"
             on:click|preventDefault="copyFormulaToData()"
             href="/#apply"
-            >{__('cc / formula / hint / insert-data / action')}</a
         >
+            {__('cc / formula / hint / insert-data / action')}
+        </a>
     </div>
     {/if}
 
-    <p style="margin-top: 1em;">{__('computed columns / modal / available columns')}:</p>
+    <p style="margin-top: 1em;">
+        {__('computed columns / modal / available columns')}:
+    </p>
 
     <ul class="col-select">
         {#each metaColumns as col}

@@ -5,7 +5,7 @@
 </p>
 
 {#if sortedUsers.length}
-<MemberTable columnHeaders="{userHeaders}">
+<TableDisplay columnHeaders="{userHeaders}">
     {#each sortedUsers as user, i}
     <tr>
         <td>
@@ -21,8 +21,8 @@
         </td>
         <td>
             {#if editId === user.id }
-            <!-- prettier-ignore -->
-            <SelectInput label="" bind:value="user.role" width="200px" labelWidth="0px" help="{ __('teams / role / p' ) }" options="{roles}" />
+            <SelectInput bind:value="user.role" width="200px" options="{roles}" />
+            <p class="mini-help">{ __('teams / role / p' ) }</p>
             {:else} {@html role(user.role) } {#if user.token}
             <i>{ __('teams / invite-pending' ) } </i>
             {/if} {/if}
@@ -49,7 +49,7 @@
         </td>
     </tr>
     {/each}
-</MemberTable>
+</TableDisplay>
 
 {/if}
 
@@ -66,7 +66,7 @@
     ];
 
     export default {
-        components: { MemberTable: TableDisplay, SelectInput },
+        components: { TableDisplay, SelectInput },
         data() {
             return {
                 editId: false,

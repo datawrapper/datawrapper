@@ -78,12 +78,14 @@
 
                 <a href="/">
                     {% if custom_logo %}
-                        <img src="{{ custom_logo }}" />
-                    {% endif %}
-
+                        <img class="logo" src="{{ custom_logo }}" />
+                    {% elseif config.custom_title %}
                     <span class="brand">
-                        {% if config.custom_title %}{{ config.custom_title }}{% else %}{% trans "Datawrapper" %}{% endif %}<span class="beta">{{ config.custom_title_tag }}</span>
+                        {{ config.custom_title }}<span class="beta">{{ config.custom_title_tag }}</span>
                     </span>
+                    {% else %}
+                        <img class="logo" src="/static/img/dw-logo.svg" alt="Datawrapper" />
+                    {% endif %}
                 </a>
 
                 <div class="nav-collapse">

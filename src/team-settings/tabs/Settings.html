@@ -25,25 +25,21 @@
             label="{ __('teams / defaults / theme' ) }"
             help="{ __('teams / defaults / theme / p' ) }"
         >
-            <!-- prettier-ignore -->
-            <SelectControl
-                bind:value="defaultTheme"
-                options="{themes}"
-            />
+            <SelectInput bind:value="defaultTheme" options="{themes}" />
         </FormBlock>
 
         <FormBlock
             label="{ __('teams / defaults / folder' ) }"
             help="{ __('teams / defaults / folder / p' ) }"
         >
-            <SelectControl bind:value="settings.default.folder" options="{folders}" />
+            <SelectInput bind:value="settings.default.folder" options="{folders}" />
         </FormBlock>
 
         <FormBlock
             label="{ __('teams / defaults / locale' ) }"
             help="{ __('teams / defaults / locale / p' ) }"
         >
-            <SelectControl bind:value="settings.default.locale" options="{localeOptions}" />
+            <SelectInput bind:value="settings.default.locale" options="{localeOptions}" />
         </FormBlock>
 
         <FormBlock
@@ -86,18 +82,17 @@
             />
         </FormBlock>
         <hr />
-
         {/if}
     </div>
 </div>
 <script>
     import FormBlock from '@datawrapper/controls/FormBlock.html';
-    import SelectControl from '@datawrapper/controls/SelectControl.html';
+    import SelectInput from '@datawrapper/controls/SelectInput.html';
     import RadioControl from '@datawrapper/controls/RadioControl.html';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { SelectControl, FormBlock, RadioControl },
+        components: { SelectInput, FormBlock, RadioControl },
         data() {
             return {
                 embedCodes: [

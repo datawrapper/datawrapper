@@ -4,8 +4,11 @@
 
 {#if isAdmin} {#if loadingTeamProducts || loadingAllProducts}
 <p><i class="fa fa-spin fa-circle-o-notch"></i> &nbsp; {@html __('teams / products / loading') }</p>
-{:else} {#if products.length > 0}
-<ProductTable columnHeaders="{productHeaders}">
+{:else}
+
+<!-- List products: -->
+{#if products.length > 0}
+<TableDisplay columnHeaders="{productHeaders}">
     {#each products as product, i}
     <tr>
         <td>
@@ -40,16 +43,18 @@
         </td>
     </tr>
     {/each}
-</ProductTable>
+</TableDisplay>
+{/if}
 
-{/if} {#if addableProducts.length }
+<!-- Add products: -->
+{#if addableProducts.length }
 <div style="display: flex;">
     <div style="display: block;">
-        <!-- prettier-ignore -->
         <SelectControl
-                    label="{ __('teams / products / add-product') }"
-                    bind:value="addProduct"
-                    options={addableProducts} />
+            label="{ __('teams / products / add-product') }"
+            bind:value="addProduct"
+            options="{addableProducts}"
+        />
     </div>
 
     {#if addProduct}
@@ -70,7 +75,7 @@
     import httpReq from '@datawrapper/shared/httpReq';
 
     export default {
-        components: { ProductTable: TableDisplay, SelectControl },
+        components: { TableDisplay, SelectControl },
         data() {
             return {
                 productHeaders: [
