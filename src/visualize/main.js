@@ -20,11 +20,11 @@ function init({
     themes,
     themeData,
     teamSettings,
-    customLayouts
+    customLayouts,
+    flags
 }) {
     const chart = new Chart(chartData);
     let app;
-
     const themeCache = {};
     themeCache[theme] = themeData;
     dw.theme.register(theme, themeData);
@@ -39,6 +39,7 @@ function init({
         teamSettings,
         themes,
         customLayouts,
+        flags,
         visualization: visualizations[chartData.type]
     });
 
