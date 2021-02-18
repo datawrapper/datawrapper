@@ -838,5 +838,10 @@
   "controls / color-scale / interpolation / deciles": "deciles",
   "controls / color-scale / interpolation / natural": "natural",
   "footer / datawrapper-gmbh": "Datawrapper is developed by <b>Datawrapper GmbH</b>.",
-  "Language": "Language"
+  "Language": "Language",
+  "chart-size": "Size",
+  "apply-preset": "Apply preset…",
+  "describe / histogram / min": "Min",
+  "describe / histogram / max": "Max",
+  "teams / defaults / h3": "Default settings for new visualizations"
 }

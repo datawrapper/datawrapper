@@ -838,5 +838,10 @@
   "controls / color-scale / interpolation / deciles": "",
   "controls / color-scale / interpolation / natural": "",
   "footer / datawrapper-gmbh": "",
-  "Language": ""
+  "Language": "",
+  "chart-size": "",
+  "apply-preset": "",
+  "describe / histogram / min": "",
+  "describe / histogram / max": "",
+  "teams / defaults / h3": ""
 }

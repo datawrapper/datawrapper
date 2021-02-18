@@ -1,5 +1,5 @@
 {
-  "1000": "",
+  "1000": "1000",
   "key": "it-IT",
   "My account": "Impostazioni",
   "This activation token is invalid. Your email address is probably already activated.": "Il token di attivazione fornito non è valido. Il tuo indirizzo e-mail potrebbe già essere stato attivato.",
@@ -838,5 +838,10 @@
   "controls / color-scale / interpolation / deciles": "",
   "controls / color-scale / interpolation / natural": "",
   "footer / datawrapper-gmbh": "",
-  "Language": ""
+  "Language": "",
+  "chart-size": "",
+  "apply-preset": "",
+  "describe / histogram / min": "",
+  "describe / histogram / max": "",
+  "teams / defaults / h3": ""
 }

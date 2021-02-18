@@ -1,5 +1,5 @@
 {
-  "1000": "Tausend",
+  "1000": "1000",
   "key": "de-DE",
   "My account": "Einstellungen",
   "This activation token is invalid. Your email address is probably already activated.": "Dieser Aktivierungs-Token ist ungültig. Deine E-Mail-Adresse ist wahrscheinlich bereits aktiviert.",
@@ -838,5 +838,10 @@
   "controls / color-scale / interpolation / deciles": "Dezile",
   "controls / color-scale / interpolation / natural": "natürlich",
   "footer / datawrapper-gmbh": "Datawrapper wird von der <b>Datawrapper GmbH</b> entwickelt.",
-  "Language": "Sprache"
+  "Language": "Sprache",
+  "chart-size": "Größe",
+  "apply-preset": "Voreinstellung anwenden…",
+  "describe / histogram / min": "Min",
+  "describe / histogram / max": "Max",
+  "teams / defaults / h3": "Einstellungen für neue Visualisierungen"
 }

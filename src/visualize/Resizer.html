@@ -13,7 +13,7 @@
 
 <div class="toolbar-container" style="display: block;">
     <div style="display: flex;">
-        <div class="toolbar-caption">Chart size</div>
+        <div class="toolbar-caption">{ __('chart-size') }</div>
 
         <div style="padding-top: 4px;">
             <input
@@ -103,6 +103,7 @@
     /*  global dw, $ */
     import RadioControl from '@datawrapper/controls/RadioControl.html';
     import httpReq from '@datawrapper/shared/httpReq';
+    import { __ } from '@datawrapper/shared/l10n';
     import get from '@datawrapper/shared/get';
 
     const DPI = 96;
@@ -179,12 +180,13 @@
 
                 presetOptions.unshift({
                     value: '---',
-                    label: 'Apply preset…'
+                    label: __('apply-preset')
                 });
 
                 return presetOptions;
             }
         },
+        helpers: { __ },
         methods: {
             usePreset() {
                 const { preset, presets } = this.get();
