@@ -224,7 +224,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             $acc["dropdown"][] = array(
                 'url' => '#logout',
                 'id' => 'signout',
-                'title' => 'Logout',
+                'title' => __('Logout'),
                 'icon' => 'im im-sign-out',
                 'justicon' => true,
                 'tooltip' => __('Sign out')

@@ -192,10 +192,10 @@
             {# Sidebar #}
             <div class="chart-id">[[ chartID ]]</div>
 
-            <label>{% trans "Author" %}</label>
+            <label>{% trans "mycharts / Author" %}</label>
             <p>[[ author ]]</p>
 
-            <label>{% trans "Created" %}</label>
+            <label>{% trans "mycharts / Creation time" %}</label>
             <p>[[ createdAt ]]</p>
 
             <div class="forked">
@@ -204,7 +204,7 @@
             </div>
 
             <div class="published">
-                <label>{% trans "Published" %}</label>
+                <label>{% trans "mycharts / Publish time" %}</label>
                 <p>[[ publishedAt ]]</p>
 
                 <label>{% trans "Public Url" %}</label>
@@ -215,7 +215,7 @@
             <ul class="unstyled">
                 <li>
                     <a href="/[[ namespace ]]/[[ chartID ]]/edit" class="btn btn-edit hidden">
-                        <i class="icon-pencil"></i> {% trans "Edit this chart" %}
+                        <i class="icon-pencil"></i> {% trans "Edit" %}
                     </a>
                 </li>
                 <li class="action-duplicate">

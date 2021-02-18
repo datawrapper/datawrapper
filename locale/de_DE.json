@@ -7,7 +7,7 @@
   "The invitation token is invalid.": "Der Einladungs-Code ist ungültig.",
   "Delete account": "Konto löschen",
   "Check & Describe": "Prüfen & Beschreiben",
-  "Duplicate this chart": "Duplicate this chart",
+  "Duplicate this chart": "Diagramm duplizieren",
   "Publish": "Veröffentlichen",
   "Upload Data": "Daten hochladen",
   "Visualize": "Visualisieren",
@@ -44,7 +44,7 @@
   "controls / color-scale / please-select-column": "Bitte wähle zuerst eine Spalte aus",
   "controls / color-scale / interpolation": "Interpolation",
   "controls / color-scale / interpolation / help": "Die Interpolation steuert, wie den Werten Farben auf der kontinuierlichen Farbpalette zugeordnet werden.",
-  "controls / color-scale / interpolation / linear": "kontinuierlich",
+  "controls / color-scale / interpolation / linear": "linear",
   "controls / color-scale / interpolation / discrete": "abgestuft",
   "controls / color-scale / breaks / count": "Anzahl",
   "controls / color-scale / breaks / linear": "linear",
@@ -832,5 +832,11 @@
   "describe / column-format / billion": "1 Milliarde",
   "describe / column-format / trillion": "1 Billion",
   "controls / annotations / duplicate": "Anmerkung duplizieren",
-  "standalone": "Normale Größe"
+  "standalone": "Normale Größe",
+  "controls / color-scale / interpolation / quartiles": "Quartile",
+  "controls / color-scale / interpolation / quintiles": "Quintile",
+  "controls / color-scale / interpolation / deciles": "Dezile",
+  "controls / color-scale / interpolation / natural": "natürlich",
+  "footer / datawrapper-gmbh": "Datawrapper wird von der <b>Datawrapper GmbH</b> entwickelt.",
+  "Language": "Sprache"
 }
