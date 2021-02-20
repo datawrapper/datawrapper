@@ -16,8 +16,39 @@ if (DatawrapperHooks::hookRegistered(DatawrapperHooks::GET_ADMIN_PAGES)) {
         }
     });
 
-    foreach ($__dw_admin_pages as $admin_page) {
+    $app->get('/admin/web-components', function() use ($app) {
+        $user = DatawrapperSession::getUser();
+        if ($user->isAdmin()) {
+            global $dw_config;
 
+            $charts = explode(',', $app->request()->get('charts'));
+
+            $state = [
+                'api' => get_current_protocol() . '://' . $dw_config['api_domain'],
+                'q' => implode(',', $charts),
+                'charts' => []
+            ];
+
+            $i = 0;
+
+            foreach ($charts as $chart) {
+                if (ChartQuery::create()->findPk($chart)) {
+                    if ($i % 2 == 0) {
+                        $state['charts'][] = [$chart];
+                    } else {
+                        $state['charts'][sizeof($state['charts'])-1][] = $chart;
+                    }
+                    $i++;
+                }
+            }
+
+            $app->render('admin/web-components.twig', $state);
+        } else {
+            $app->notFound();
+        }
+    });
+
+    foreach ($__dw_admin_pages as $admin_page) {
         $app->map('/admin' . (isset($admin_page['route']) ? $admin_page['route'] : $admin_page['url']).'/?', function() use ($app, $admin_page, $__dw_admin_pages) {
             $args = func_get_args();
             disable_cache($app);

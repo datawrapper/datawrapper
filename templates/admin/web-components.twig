@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+    <head>
+        <title>Web Component Data Visualization</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/static/css/bulma.min.css">
+
+        <style type="text/css">
+            .column { padding: 20px; }
+        </style>
+    </head>
+
+    <body>
+        <section class="section">
+            <div class="container">
+                <h1 class="title">
+                    Web Component Preview
+                </h1>
+                <p class="subtitle">
+                    <form action="/admin/web-components" target="_self" method="GET">
+                        <label for="charts">Chart IDs:</label>
+                        <input type="text" name="charts" id="charts" value="{{ q }}" />
+                        <input type="submit" value="Go">
+                    </form>
+                </p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                {% for group in charts %}
+                    <div class="columns">
+                        {% for chart in group %}
+                            <div class="column">
+                                <div>
+                                    <script type="text/javascript" src="{{ api }}/v3/charts/{{ chart }}/publish/embed.js"></script>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </body>
+</html>
