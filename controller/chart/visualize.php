@@ -65,16 +65,16 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         $res = Hooks::execute('enable_web_to_print');
         $webToPrint = !empty($res) && $res[0] === true;
 
-        $res = Hooks::execute('enable_custom_layouts');
+        $res = Hooks::execute('enable_custom_layouts', $chart);
+
         $customLayouts = !empty($res) && $res[0] === true;
 
         $org = $chart->getOrganization();
 
-        $team_restrictions_plugin = PluginQuery::create()->findPk('team-restrictions');
-        $allow_flags = $org ? $org->hasPlugin($team_restrictions_plugin) : false;
-        $flags = $allow_flags ? $org->getSettings("flags") ?? new stdClass() : false;
+        $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
         $teamSettingsControls = new stdClass();
+
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
         }

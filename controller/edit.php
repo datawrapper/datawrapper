@@ -160,9 +160,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
             }
 
-            $team_restrictions_plugin = PluginQuery::create()->findPk('team-restrictions');
-            $allow_flags = $org ? $org->hasPlugin($team_restrictions_plugin) : false;
-            $flags = $allow_flags ? $org->getSettings("flags") ?? new stdClass() : false;
+            $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
