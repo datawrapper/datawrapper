@@ -204,6 +204,12 @@
                 });
 
                 return presetOptions;
+            },
+            defaultPreset({ presets }) {
+                for (const preset of presets) {
+                    if (preset.default) return preset;
+                }
+                return {};
             }
         },
         helpers: { __ },
@@ -461,16 +467,24 @@
                     const iframe = $('#iframe-wrapper').removeClass('resizable');
                     iframe.find('.resizer').remove();
 
-                    const { width, height, units } = this.get();
+                    const { width, height, units, defaultPreset } = this.get();
                     const scale = this.get().printScale;
                     const pdf = dw.backend.currentChart.getMetadata('publish.export-pdf', {});
-                    const unit = pdf.unit || 'mm';
+                    const unit = pdf.unit || defaultPreset.unit || 'mm';
                     const decimals = getUnit(unit, units).decimals;
                     const factor = getFactor(unit) * scale;
 
-                    const w = pdf.width || (scale !== 1 ? (factor * width).toFixed(decimals) : 120);
-                    const h =
-                        pdf.height || (scale !== 1 ? (factor * height).toFixed(decimals) : 80);
+                    const fallbackWidth =
+                        current.mode === 'web'
+                            ? (factor * width).toFixed(decimals) /* switched to print theme only */
+                            : 80; /* switched mode (legacy behaviour) */
+
+                    const fallbackHeight =
+                        current.mode === 'web' ? (factor * height).toFixed(decimals) : 120;
+
+                    const w = pdf.width || defaultPreset.width || fallbackWidth;
+                    const h = pdf.height || defaultPreset.height || fallbackHeight;
+
                     this.set({
                         width: w,
                         height: h,
