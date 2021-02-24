@@ -44,7 +44,7 @@
   "controls / color-scale / please-select-column": "Please select a column first",
   "controls / color-scale / interpolation": "Interpolation",
   "controls / color-scale / interpolation / help": "The interpolation controls how the values are being assigned to colors on the continuous palette (gradient).",
-  "controls / color-scale / interpolation / linear": "continuous",
+  "controls / color-scale / interpolation / linear": "linear",
   "controls / color-scale / interpolation / discrete": "steps",
   "controls / color-scale / breaks / count": "Count",
   "controls / color-scale / breaks / linear": "Linear",
@@ -832,5 +832,16 @@
   "describe / column-format / billion": "1 billion",
   "describe / column-format / trillion": "1 trillion",
   "controls / annotations / duplicate": "Duplicate annotation",
-  "standalone": "Normal size"
+  "standalone": "Normal size",
+  "controls / color-scale / interpolation / quartiles": "quartiles",
+  "controls / color-scale / interpolation / quintiles": "quintiles",
+  "controls / color-scale / interpolation / deciles": "deciles",
+  "controls / color-scale / interpolation / natural": "natural",
+  "footer / datawrapper-gmbh": "Datawrapper is developed by <b>Datawrapper GmbH</b>.",
+  "Language": "Language",
+  "chart-size": "Size",
+  "apply-preset": "Apply preset…",
+  "describe / histogram / min": "Min",
+  "describe / histogram / max": "Max",
+  "teams / defaults / h3": "Default settings for new visualizations"
 }
