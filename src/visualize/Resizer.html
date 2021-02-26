@@ -182,8 +182,8 @@
             uiMode({ mode, isPrintTheme }) {
                 return mode === 'print' || isPrintTheme ? 'print' : 'web';
             },
-            printScale({ $themeData }) {
-                return get($themeData || {}, 'export.pdf.scale', 1);
+            printScale({ $themeData, uiMode }) {
+                return uiMode === 'web' ? 1 : get($themeData || {}, 'export.pdf.scale', 1);
             },
             presets({ $themeData }) {
                 return get($themeData || {}, 'export.pdf.presets', []);
