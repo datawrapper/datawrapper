@@ -168,13 +168,6 @@ DatawrapperHooks::register(DatawrapperHooks::TEAM_FLAGS, function() {
             "type" => "switch",
             "title" => "Layout selector",
             "group" => "display"
-        ],
-        [
-            "id" => "logo",
-            "default" => true,
-            "type" => "switch",
-            "title" => "Logo",
-            "group" => "display"
         ]
     ];
 });
