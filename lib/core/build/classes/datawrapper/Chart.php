@@ -398,7 +398,7 @@ class Chart extends BaseChart {
     public function thumbUrl($forceLocal = false) {
         global $dw_config;
 
-        $path = $dw_config["screenshot_path"] ?? $this->getHash();
+        $path = $dw_config["screenshot_path"] ?? md5($this->getId() . "--" . time($this->getCreatedAt()));
 
         return get_current_protocol() . "://" . $dw_config["img_domain"] . "/"
             . $this->getID() . "/" . $path . "/plain.png";
