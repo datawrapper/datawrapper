@@ -148,7 +148,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
             ];
 
-            $res = Hooks::execute('enable_custom_layouts');
+            $res = Hooks::execute('enable_custom_layouts', $chart);
             $customLayouts = !empty($res) && $res[0] === true;
 
             $org = $chart->getOrganization();

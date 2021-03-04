@@ -839,5 +839,7 @@
   "layout / select-theme": "Select theme",
   "layout / logo": "Show logo",
   "layout / get-the-data": "Enable data download",
-  "layout / embed": "Enable embed link"
+  "layout / embed": "Enable embed link",
+  "layout / logo / upgrade-info": "If you'd like to set up a logo, take a look out our pricing plans",
+  "layout / logo / disabled": "Your current plan does not include the option for a custom logo"
 }

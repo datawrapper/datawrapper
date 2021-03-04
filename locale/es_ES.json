@@ -839,5 +839,7 @@
   "layout / select-theme": "",
   "layout / logo": "",
   "layout / get-the-data": "",
-  "layout / embed": ""
+  "layout / embed": "",
+  "layout / logo / upgrade-info": "",
+  "layout / logo / disabled": ""
 }
