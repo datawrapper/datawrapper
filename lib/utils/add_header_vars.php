@@ -138,8 +138,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
             'id' => 'lang',
             'icon' => 'im im-globe',
             'dropdown' => array(),
-            'title' => __('Language'), //strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2)),
-            'tooltip' => "&nbsp;" . __('Switch language')
+            'title' => __('Language'), //strtoupper(substr(DatawrapperSession::getLanguage(), 0, 2))
         );
         foreach ($config['languages'] as $lang) {
             $langDropdown['dropdown'][] = array(
