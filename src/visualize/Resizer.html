@@ -51,7 +51,7 @@
         {/each} {/if}
     </div>
 
-    {#if printExpanded}
+    {#if printExpanded && uiMode === 'print'}
     <div class="toolbar-container options" style="display: block; height: auto; z-index: 1;">
         <div style="padding: 12px 8px 0px 8px;">
             <!-- prettier-ignore -->
@@ -73,7 +73,7 @@
             </div>
             {/if}
         </div>
-        {#if uiMode === 'print'}
+        {#if mode === 'print'}
         <div class="button" on:click="reset()">
             <i class="fa fa-undo"></i> &nbsp;Undo print changes
         </div>
