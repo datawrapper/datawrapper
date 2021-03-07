@@ -841,5 +841,7 @@
   "layout / get-the-data": "",
   "layout / embed": "",
   "layout / logo / upgrade-info": "",
-  "layout / logo / disabled": ""
+  "layout / logo / disabled": "",
+  "upgrade-available": "",
+  "upgrade-info": ""
 }

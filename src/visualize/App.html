@@ -28,7 +28,7 @@
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
                 <!-- Chart Type -->
-                <div class:hide-smart="tab !== 'pick'">
+                <div class:hide-smart="tab !== 'pick'" class="ui-section" data-ui-section="pick">
                     <ChartPicker
                         {visualizations}
                         {visArchive}
@@ -39,7 +39,11 @@
                 {/if}
 
                 <!-- Refine -->
-                <div class:hide-smart="tab !== 'refine'">
+                <div
+                    class:hide-smart="tab !== 'refine'"
+                    class="ui-section"
+                    data-ui-section="refine"
+                >
                     {#if visLoading}
                     <Loading />
                     {:else}
@@ -54,7 +58,11 @@
                 </div>
 
                 <!-- Annotate -->
-                <div class:hide-smart="tab !== 'annotate'">
+                <div
+                    class:hide-smart="tab !== 'annotate'"
+                    class="ui-section"
+                    data-ui-section="annotate"
+                >
                     <Annotate />
                     {#if visLoading}
                     <Loading />
@@ -64,10 +72,15 @@
                 </div>
 
                 <!-- Design -->
-                <div class:hide-smart="tab !== 'design'">
+                <div
+                    class:hide-smart="tab !== 'design'"
+                    class="ui-section"
+                    data-ui-section="design"
+                >
                     <ChartLayout />
                 </div>
 
+                <AlertDisplay visible="{showUpgradeKeyOn[uiSection]}" type="upgrade-info" />
                 <ButtonNav bind:tab {showChartPicker} />
             </div>
         </div>
@@ -118,6 +131,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
     import ChartLayout from '@datawrapper/controls/editor/ChartLayout.html';
+    import AlertDisplay from '@datawrapper/controls/AlertDisplay.html';
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
@@ -139,7 +153,8 @@
             Resizer,
             ColorblindCheck,
             ChartPreview,
-            Notifications
+            Notifications,
+            AlertDisplay
         },
         data() {
             return {
@@ -155,7 +170,8 @@
                 stickyBottom: false,
                 namespace: 'chart',
                 notifications: [],
-                chartNotifications: []
+                chartNotifications: [],
+                showUpgradeKeyOn: {}
             };
         },
         computed: {
@@ -181,6 +197,9 @@
                         .replace('[%s:type]', type.join(' / '))
                         .replace('[%s:axis]', axis)
                 }));
+            },
+            uiSection({ tab }) {
+                return tab;
             }
         },
         methods: {

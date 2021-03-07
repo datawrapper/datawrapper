@@ -840,6 +840,8 @@
   "layout / logo": "Show logo",
   "layout / get-the-data": "Enable data download",
   "layout / embed": "Enable embed link",
-  "layout / logo / upgrade-info": "If you'd like to set up a logo, take a look out our pricing plans",
-  "layout / logo / disabled": "Your current plan does not include the option for a custom logo"
+  "layout / logo / upgrade-info": "A logo can be added as part of a <b>custom theme</b> that is available in some of our plans. See <a href=\"https://www.datawrapper.de/pricing/\">pricing options.</a>",
+  "layout / logo / disabled": "Your current plan does not include the option to add a logo",
+  "upgrade-available": "Upgrade available:",
+  "upgrade-info": "These features become available when you upgrade to a custom plan. See <a href=\"https://www.datawrapper.de/pricing/\">pricing options.</a>"
 }
