@@ -17,6 +17,7 @@
 
         <div style="padding-top: 4px;">
             <input
+                autocomplete="off"
                 id="resize-w"
                 class="input-resize input-large"
                 type="number"
@@ -27,6 +28,7 @@
             />
             ×
             <input
+                autocomplete="off"
                 id="resize-h"
                 class="input-resize input-large"
                 type="number"
@@ -302,7 +304,7 @@
                         'margin-left': (maxW - w) * 0.5
                     },
                     {
-                        duration: 200,
+                        duration: uiMode === 'web' ? 200 : 0,
                         step: function () {
                             $(this).css('overflow', 'visible');
                         }
