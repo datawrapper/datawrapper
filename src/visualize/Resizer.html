@@ -16,6 +16,29 @@
         <div class="toolbar-caption">{ __('chart-size') }</div>
 
         <div style="padding-top: 4px;">
+            {#if uiMode === 'print'}
+            <input
+                autocomplete="off"
+                id="resize-w"
+                class="input-resize input-large"
+                type="number"
+                min="0"
+                on:change="changed()"
+                bind:value="width_txt"
+                step="{theUnit.step}"
+            />
+            ×
+            <input
+                autocomplete="off"
+                id="resize-h"
+                class="input-resize input-large"
+                type="number"
+                min="0"
+                on:change="changed()"
+                bind:value="height_txt"
+                step="{theUnit.step}"
+            />
+            {:else }
             <input
                 id="resize-w"
                 class="input-resize input-large"
@@ -31,6 +54,7 @@
                 on:change="changed()"
                 bind:value="height_txt"
             />
+            {/if}
         </div>
 
         {#if uiMode === "print"}
@@ -298,7 +322,7 @@
                         'margin-left': (maxW - w) * 0.5
                     },
                     {
-                        duration: 200,
+                        duration: uiMode === 'web' ? 200 : 0,
                         step: function () {
                             $(this).css('overflow', 'visible');
                         }
@@ -391,7 +415,6 @@
             },
             registerTypeListener() {
                 const app = this;
-
                 dw.backend.on('type-changed', function (metas) {
                     // switch from fixed to fit
                     if (metas[0].height !== 'fixed' && metas[1].height === 'fixed') {
@@ -416,7 +439,8 @@
 
                         if (
                             !$('#iframe-vis').hasClass('resizing') &&
-                            $('#iframe-vis').is(':visible')
+                            $('#iframe-vis').is(':visible') &&
+                            app.get().uiMode !== 'print'
                         ) {
                             app.setHeight(h);
                         }
@@ -431,7 +455,6 @@
         },
         onstate({ changed, current, previous }) {
             const app = this;
-
             if (!previous) return;
 
             if (changed.unit && !changed.width && !changed.height) {
