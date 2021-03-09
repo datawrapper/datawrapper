@@ -28,7 +28,7 @@
             <div class="form-horizontal vis-options">
                 {#if showChartPicker}
                 <!-- Chart Type -->
-                <div class:hide-smart="tab !== 'pick'" class="ui-section" data-ui-section="pick">
+                <div class:hide-smart="tab !== 'pick'">
                     <ChartPicker
                         {visualizations}
                         {visArchive}
@@ -39,11 +39,7 @@
                 {/if}
 
                 <!-- Refine -->
-                <div
-                    class:hide-smart="tab !== 'refine'"
-                    class="ui-section"
-                    data-ui-section="refine"
-                >
+                <div class:hide-smart="tab !== 'refine'">
                     {#if visLoading}
                     <Loading />
                     {:else}
@@ -58,11 +54,7 @@
                 </div>
 
                 <!-- Annotate -->
-                <div
-                    class:hide-smart="tab !== 'annotate'"
-                    class="ui-section"
-                    data-ui-section="annotate"
-                >
+                <div class:hide-smart="tab !== 'annotate'">
                     <Annotate />
                     {#if visLoading}
                     <Loading />
@@ -72,16 +64,12 @@
                 </div>
 
                 <!-- Design -->
-                <div
-                    class:hide-smart="tab !== 'design'"
-                    class="ui-section"
-                    data-ui-section="design"
-                >
-                    <ChartLayout />
+                <div class:hide-smart="tab !== 'design'">
+                    <ChartLayout bind:requireUpgrade="showUpgradeKeyOn.layout" />
                 </div>
 
-                <AlertDisplay visible="{showUpgradeKeyOn[uiSection]}" type="upgrade-info" />
                 <ButtonNav bind:tab {showChartPicker} />
+                <AlertDisplay visible="{showUpgradeKeyOn[tab]}" type="upgrade-info" />
             </div>
         </div>
     </div>
@@ -197,9 +185,6 @@
                         .replace('[%s:type]', type.join(' / '))
                         .replace('[%s:axis]', axis)
                 }));
-            },
-            uiSection({ tab }) {
-                return tab;
             }
         },
         methods: {
