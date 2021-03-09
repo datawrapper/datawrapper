@@ -19,17 +19,21 @@
             <input
                 id="resize-w"
                 class="input-resize input-large"
-                type="text"
+                type="number"
+                min="0"
                 on:change="changed()"
                 bind:value="width_txt"
+                step="{theUnit.step}"
             />
             ×
             <input
                 id="resize-h"
                 class="input-resize input-large"
-                type="text"
+                type="number"
+                min="0"
                 on:change="changed()"
                 bind:value="height_txt"
+                step="{theUnit.step}"
             />
         </div>
 
