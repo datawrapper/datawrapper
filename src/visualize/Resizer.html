@@ -391,7 +391,6 @@
             },
             registerTypeListener() {
                 const app = this;
-
                 dw.backend.on('type-changed', function (metas) {
                     // switch from fixed to fit
                     if (metas[0].height !== 'fixed' && metas[1].height === 'fixed') {
@@ -416,7 +415,8 @@
 
                         if (
                             !$('#iframe-vis').hasClass('resizing') &&
-                            $('#iframe-vis').is(':visible')
+                            $('#iframe-vis').is(':visible') &&
+                            app.get().uiMode !== 'print'
                         ) {
                             app.setHeight(h);
                         }
@@ -431,7 +431,6 @@
         },
         onstate({ changed, current, previous }) {
             const app = this;
-
             if (!previous) return;
 
             if (changed.unit && !changed.width && !changed.height) {
