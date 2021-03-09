@@ -16,6 +16,7 @@
         <div class="toolbar-caption">{ __('chart-size') }</div>
 
         <div style="padding-top: 4px;">
+            {#if uiMode === 'print'}
             <input
                 autocomplete="off"
                 id="resize-w"
@@ -37,6 +38,23 @@
                 bind:value="height_txt"
                 step="{theUnit.step}"
             />
+            {:else }
+            <input
+                id="resize-w"
+                class="input-resize input-large"
+                type="text"
+                on:change="changed()"
+                bind:value="width_txt"
+            />
+            ×
+            <input
+                id="resize-h"
+                class="input-resize input-large"
+                type="text"
+                on:change="changed()"
+                bind:value="height_txt"
+            />
+            {/if}
         </div>
 
         {#if uiMode === "print"}
