@@ -33,6 +33,18 @@ class DatawrapperSession {
         } else {
             $domain = $GLOBALS['dw_config']['domain'];
         }
+
+        $cookieOpts = [
+            'lifetime' => $lifetime,
+            'path' => "/",
+            'domain' => $domain,
+            'secure' => get_current_protocol() === 'https',
+            'httponly' => true,
+            'SameSite' => 'None'
+        ];
+
+        session_set_cookie_params($cookieOpts);
+
         session_set_cookie_params($lifetime, '/', $domain);
         session_name($ses);
         session_cache_limiter('private_no_expire');
@@ -45,6 +57,10 @@ class DatawrapperSession {
         // Reset the expiration time upon page load
         if (isset($_COOKIE[$ses])) {
             setcookie($ses, $_COOKIE[$ses], time() + $lifetime, "/", $domain);
+            unset($cookieOpts['lifetime']);
+            $cookieOpts['expires'] = time() + $lifetime;
+            $cookieOpts['samesite'] = 'None';
+            setcookie($ses, $_COOKIE[$ses], $cookieOpts);
         }
     }
 
