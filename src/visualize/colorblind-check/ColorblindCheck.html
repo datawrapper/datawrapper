@@ -1,6 +1,11 @@
 <div class="toolbar-container web colorblind-check">
     <div class="toolbar-caption">
-        {__('colorblind / caption')} {#if testing}<i class="fa fa-cog fa-spin prog-ress"></i>{/if}
+        {__('colorblind / caption')} {#if testing}<i class="fa fa-cog fa-spin prog-ress"></i
+        >{:else}<i
+            class="im im-accessibility"
+            style="font-size: 11px; color: #999; vertical-align: middle;"
+        ></i
+        >{/if}
     </div>
     {#each modes as mode}
     <div
