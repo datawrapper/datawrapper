@@ -2,10 +2,24 @@ import App from './App.html';
 import Chart from '@datawrapper/chart-core/lib/dw/svelteChart';
 import { getJSON } from '@datawrapper/shared/fetch';
 import get from 'lodash/get';
+import assign from 'assign-deep';
 
 export default { init };
 
 /* globals dw,_ */
+
+const defaultChartMetadata = {
+    data: {},
+    describe: {
+        intro: '',
+        byline: '',
+        'aria-description': '',
+        'source-name': '',
+        'source-url': ''
+    },
+    visualize: {},
+    publish: {}
+};
 
 function init({
     target,
@@ -21,7 +35,10 @@ function init({
     themeData,
     teamSettings
 }) {
-    const chart = new Chart(chartData);
+    const chart = new Chart({
+        ...chartData,
+        metadata: assign(defaultChartMetadata, chartData.metadata)
+    });
     let app;
 
     const themeCache = {};

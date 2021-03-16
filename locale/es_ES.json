@@ -843,5 +843,8 @@
   "apply-preset": "",
   "describe / histogram / min": "",
   "describe / histogram / max": "",
-  "teams / defaults / h3": ""
+  "teams / defaults / h3": "",
+  "visualize / annotate / aria-description": "",
+  "visualize / annotate / aria-description / help": "",
+  "visualize / annotate / aria-description / placeholder": ""
 }
