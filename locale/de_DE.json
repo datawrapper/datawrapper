@@ -843,5 +843,8 @@
   "apply-preset": "Voreinstellung anwenden…",
   "describe / histogram / min": "Min",
   "describe / histogram / max": "Max",
-  "teams / defaults / h3": "Einstellungen für neue Visualisierungen"
+  "teams / defaults / h3": "Einstellungen für neue Visualisierungen",
+  "visualize / annotate / aria-description": "Alternative Beschreibung für Screenreader",
+  "visualize / annotate / aria-description / help": "Wenn gesetzt, wird dieser Text als textuelle Darstellung der Visualisierung für Screenreader verwendet. Dies ersetzt die von Datawrapper automatisch generierte Textbeschreibung.",
+  "visualize / annotate / aria-description / placeholder": "Beschreiben Sie die dargestellten Informationen für Leser, die die Visualisierung nicht sehen können"
 }
