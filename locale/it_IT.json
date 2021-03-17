@@ -844,7 +844,7 @@
   "describe / histogram / min": "",
   "describe / histogram / max": "",
   "teams / defaults / h3": "",
-  "visualize / annotate / aria-description": "",
-  "visualize / annotate / aria-description / help": "",
-  "visualize / annotate / aria-description / placeholder": ""
+  "visualize / annotate / aria-description": "Descrizione alternativa per lettori di schermo",
+  "visualize / annotate / aria-description / help": "Se impostato, questo testo viene utilizzato come rappresentazione testuale della visualizzazione per gli screen reader. Questo sostituirà la descrizione testuale automatica generata da Datawrapper.",
+  "visualize / annotate / aria-description / placeholder": "Descrivi le informazioni presentate per i lettori che non possono vedere la visualizzazione"
 }

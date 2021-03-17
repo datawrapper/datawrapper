@@ -844,7 +844,7 @@
   "describe / histogram / min": "",
   "describe / histogram / max": "",
   "teams / defaults / h3": "",
-  "visualize / annotate / aria-description": "",
-  "visualize / annotate / aria-description / help": "",
-  "visualize / annotate / aria-description / placeholder": ""
+  "visualize / annotate / aria-description": "屏幕阅读器的替代说明",
+  "visualize / annotate / aria-description / help": "如果设置，则此文本用作屏幕阅读器可视化的文本表示形式。这将替换由Datawrapper生成的自动文本描述。",
+  "visualize / annotate / aria-description / placeholder": "为看不见可视化内容的读者描述所呈现的信息"
 }
