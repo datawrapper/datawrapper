@@ -65,11 +65,13 @@
 
                 <!-- Design -->
                 <div class:hide-smart="tab !== 'design'">
-                    <ChartLayout bind:requireUpgrade="showUpgradeKeyOn.layout" />
+                    <ChartLayout bind:requireUpgrade="showUpgradeKeyOn.design" />
                 </div>
 
                 <ButtonNav bind:tab {showChartPicker} />
-                <AlertDisplay visible="{showUpgradeKeyOn[tab]}" type="upgrade-info" />
+                <div style="margin-top: 20px;">
+                    <AlertDisplay visible="{showUpgradeKeyOn[tab]}" type="upgrade-info" />
+                </div>
             </div>
         </div>
     </div>
