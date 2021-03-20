@@ -153,21 +153,21 @@ DatawrapperHooks::register(DatawrapperHooks::TEAM_FLAGS, function() {
             "default" => true,
             "type" => "switch",
             "title" => "Embed",
-            "group" => "sharing"
+            "group" => "footer"
         ],
         [
             "id" => "get_the_data",
             "default" => true,
             "type" => "switch",
             "title" => "Get the data",
-            "group" => "download"
+            "group" => "footer"
         ],
         [
             "id" => "layout_selector",
             "default" => true,
             "type" => "switch",
             "title" => "Layout selector",
-            "group" => "display"
+            "group" => "layout"
         ]
     ];
 });
