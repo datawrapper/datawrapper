@@ -44,7 +44,7 @@
   "controls / color-scale / please-select-column": "Please select a column first",
   "controls / color-scale / interpolation": "Interpolation",
   "controls / color-scale / interpolation / help": "The interpolation controls how the values are being assigned to colors on the continuous palette (gradient).",
-  "controls / color-scale / interpolation / linear": "continuous",
+  "controls / color-scale / interpolation / linear": "linear",
   "controls / color-scale / interpolation / discrete": "steps",
   "controls / color-scale / breaks / count": "Count",
   "controls / color-scale / breaks / linear": "Linear",
@@ -843,5 +843,16 @@
   "layout / logo / upgrade-info": "A logo can be added as part of a <b>custom theme</b> that is available in some of our plans. See <a href=\"https://www.datawrapper.de/pricing/\">pricing options.</a>",
   "layout / logo / disabled": "Your current plan does not include the option to add a logo",
   "upgrade-available": "Upgrade available:",
-  "upgrade-info": "These features become available when you upgrade to a custom plan. See <a href=\"https://www.datawrapper.de/pricing/\">pricing options.</a>"
+  "upgrade-info": "These features become available when you upgrade to a custom plan. See <a href=\"https://www.datawrapper.de/pricing/\">pricing options.</a>",
+  "controls / color-scale / interpolation / quartiles": "quartiles",
+  "controls / color-scale / interpolation / quintiles": "quintiles",
+  "controls / color-scale / interpolation / deciles": "deciles",
+  "controls / color-scale / interpolation / natural": "natural",
+  "footer / datawrapper-gmbh": "Datawrapper is developed by <b>Datawrapper GmbH</b>.",
+  "Language": "Language",
+  "chart-size": "Size",
+  "apply-preset": "Apply preset…",
+  "describe / histogram / min": "Min",
+  "describe / histogram / max": "Max",
+  "teams / defaults / h3": "Default settings for new visualizations"
 }

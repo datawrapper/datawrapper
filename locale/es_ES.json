@@ -671,7 +671,7 @@
   "Add": "Añadir",
   "Add subfolder": "Añadir subcarpeta",
   "default": "Predeterminado",
-  "Layout": "",
+  "Layout": "Diseño",
   "No charts here, yet": "Aquí todavía no hay ningún gráfico",
   "Why not <a href='/chart/create'>create a new chart now</a>?": "¿Por qué no <a href='/chart/create'>creas uno nuevo ahora</a>?",
   "copy-success": "¡Código de integración %embed-code-type% copiado en el portapapeles!",
@@ -843,5 +843,16 @@
   "layout / logo / upgrade-info": "",
   "layout / logo / disabled": "",
   "upgrade-available": "",
-  "upgrade-info": ""
+  "upgrade-info": "",
+  "controls / color-scale / interpolation / quartiles": "",
+  "controls / color-scale / interpolation / quintiles": "",
+  "controls / color-scale / interpolation / deciles": "",
+  "controls / color-scale / interpolation / natural": "",
+  "footer / datawrapper-gmbh": "",
+  "Language": "",
+  "chart-size": "",
+  "apply-preset": "",
+  "describe / histogram / min": "",
+  "describe / histogram / max": "",
+  "teams / defaults / h3": ""
 }

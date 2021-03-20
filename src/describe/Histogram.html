@@ -92,8 +92,8 @@
                 const xmean = mean(validValues);
                 const xmed = median(validValues);
                 return [
-                    { x: xmin, label: format(xmin), name: 'Min' },
-                    { x: xmax, label: format(xmax), name: 'Max' },
+                    { x: xmin, label: format(xmin), name: __('describe / histogram / min') },
+                    { x: xmax, label: format(xmax), name: __('describe / histogram / max') },
                     { x: xmean, label: format(xmean), name: __('describe / histogram / mean') },
                     { x: xmed, label: format(xmed), name: __('describe / histogram / median') }
                 ];

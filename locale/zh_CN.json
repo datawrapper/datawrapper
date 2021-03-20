@@ -671,7 +671,7 @@
   "Add": "添加",
   "Add subfolder": "添加子文件夹",
   "default": "默认",
-  "Layout": "",
+  "Layout": "布局",
   "No charts here, yet": "此处暂无图表",
   "Why not <a href='/chart/create'>create a new chart now</a>?": "为何<a href='/chart/create'>不现在创建一个新图表</a>？",
   "copy-success": "已将%embed-code-type%嵌入代码复制到剪贴板！",
@@ -843,5 +843,16 @@
   "layout / logo / upgrade-info": "",
   "layout / logo / disabled": "",
   "upgrade-available": "",
-  "upgrade-info": ""
+  "upgrade-info": "",
+  "controls / color-scale / interpolation / quartiles": "",
+  "controls / color-scale / interpolation / quintiles": "",
+  "controls / color-scale / interpolation / deciles": "",
+  "controls / color-scale / interpolation / natural": "",
+  "footer / datawrapper-gmbh": "",
+  "Language": "",
+  "chart-size": "",
+  "apply-preset": "",
+  "describe / histogram / min": "",
+  "describe / histogram / max": "",
+  "teams / defaults / h3": ""
 }
