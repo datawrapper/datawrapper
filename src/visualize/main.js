@@ -36,15 +36,21 @@ function init({
     themeData,
     teamSettings
 }) {
+    let externalTitle;
+
     try {
         externalMetadata = JSON.parse(externalMetadata);
+        if (externalMetadata.title) {
+            externalTitle = externalMetadata.title;
+            delete externalMetadata.title;
+        }
     } catch (ex) {
         externalMetadata = {};
     }
 
     const chart = new Chart({
         ...chartData,
-        title: externalMetadata.title || chartData.title,
+        title: externalTitle || chartData.title,
         metadata: assign(
             defaultChartMetadata,
             chartData.metadata,
