@@ -90,6 +90,17 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),
         );
+
+        try {
+            if ($chart->getMetadata('data.external-metadata')) {
+                $page['externalMetadata'] = $chart->loadAsset($chart->getId() . '.metadata.json');
+            } else {
+                $page['externalMetadata'] = '';
+            }
+        } catch (Exception $ex) {
+            $page['externalMetadata'] = '';
+        }
+
         add_header_vars($page, $chart->getNamespace());
         add_editor_nav($page, 3, $chart);
 
