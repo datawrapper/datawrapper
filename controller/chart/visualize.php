@@ -92,7 +92,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
         );
 
         try {
-            if ($chart->getMetadata('data.external-metadata')) {
+            if ($chart->getMetadata('data.upload-method') === 'external-data' && $chart->getMetadata('data.external-metadata')) {
                 $page['externalMetadata'] = $chart->loadAsset($chart->getId() . '.metadata.json');
             } else {
                 $page['externalMetadata'] = '';
