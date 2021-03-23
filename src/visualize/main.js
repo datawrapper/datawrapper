@@ -25,6 +25,7 @@ function init({
     target,
     csv,
     chartData,
+    externalMetadata,
     namespace,
     defaultVisType,
     visualizations,
@@ -35,9 +36,25 @@ function init({
     themeData,
     teamSettings
 }) {
+    let externalRawMetadata;
+
+    try {
+        externalRawMetadata = JSON.parse(externalMetadata);
+        externalMetadata = JSON.parse(externalMetadata);
+        delete externalRawMetadata.title;
+    } catch (ex) {
+        externalMetadata = {};
+        externalRawMetadata = {};
+    }
+
     const chart = new Chart({
         ...chartData,
-        metadata: assign(defaultChartMetadata, chartData.metadata)
+        title: externalMetadata.title || chartData.title,
+        metadata: assign(
+            defaultChartMetadata,
+            chartData.metadata,
+            typeof externalRawMetadata === 'object' ? externalRawMetadata : {}
+        )
     });
     let app;
 
@@ -53,6 +70,7 @@ function init({
         writable: true,
         themeData: themeData,
         teamSettings,
+        externalMetadata,
         themes,
         visualization: visualizations[chartData.type]
     });

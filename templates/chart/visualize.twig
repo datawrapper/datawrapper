@@ -20,6 +20,7 @@
 
             csv: {{chartData|json|raw}},
             chartData: {{chart.toStruct()|json|raw}},
+            externalMetadata: {{externalMetadata|json|raw}},
             namespace: {{chart.namespace|json|raw }},
             defaultVisType: '{{defaultVisType}}',
             webToPrint: {{webToPrint|json}},

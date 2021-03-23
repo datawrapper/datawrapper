@@ -1,1 +1,9790 @@
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define("svelte/team-settings",t):(e=e||self)["team-settings"]=t()}(this,(function(){"use strict";var e=function(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e};function t(e,t,n){return e(n={path:t,exports:{},require:function(e,t){return function(){throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs")}(null==t&&n.path)}},n.exports),n.exports}var n=t((function(e){function t(n){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?e.exports=t=function(e){return typeof e}:e.exports=t=function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},t(n)}e.exports=t}));var i=function(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,i=new Array(t);n<t;n++)i[n]=e[n];return i};var a=function(e){if(Array.isArray(e))return i(e)};var s=function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)};var r=function(e,t){if(e){if("string"==typeof e)return i(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?i(e,t):void 0}};var o=function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")};var l=function(e){return a(e)||s(e)||r(e)||o()};function c(){}function u(e,t){for(var n in t)e[n]=t[n];return e}function d(e,t){for(var n in t)e[n]=1;return e}function f(e){e()}function m(e,t){e.appendChild(t)}function p(e,t,n){e.insertBefore(t,n)}function h(e){e.parentNode.removeChild(e)}function v(e,t){for(;e.nextSibling&&e.nextSibling!==t;)e.parentNode.removeChild(e.nextSibling)}function g(e){for(;e.nextSibling;)e.parentNode.removeChild(e.nextSibling)}function b(e,t){for(;e.firstChild;)t.appendChild(e.firstChild)}function _(e,t){for(;e.nextSibling;)t.appendChild(e.nextSibling)}function y(e,t){for(var n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function w(){return document.createDocumentFragment()}function T(e){return document.createElement(e)}function N(e){return document.createTextNode(e)}function k(){return document.createComment("")}function x(e,t,n,i){e.addEventListener(t,n,i)}function H(e,t,n,i){e.removeEventListener(t,n,i)}function M(e,t,n){null==n?e.removeAttribute(t):e.setAttribute(t,n)}function O(e,t){e.data=""+t}function C(e,t,n){e.style.setProperty(t,n)}function A(e,t){for(var n=0;n<e.options.length;n+=1){var i=e.options[n];if(i.__value===t)return void(i.selected=!0)}}function L(e){var t=e.querySelector(":checked")||e.options[0];return t&&t.__value}function U(e,t,n){e.classList[n?"add":"remove"](t)}function P(e){return e}function j(e,t,n,i,a){var s,r,o,l=n.call(e,t,i),u=!1;return{t:a?0:1,running:!1,program:null,pending:null,run:function(e,t){var n=this;"function"==typeof l?I.wait().then((function(){l=l(),n._run(e,t)})):this._run(e,t)},_run:function(e,n){s=l.duration||300,r=l.easing||P;var i={start:window.performance.now()+(l.delay||0),b:e,callback:n||c};a&&!u&&(l.css&&l.delay&&(o=t.style.cssText,t.style.cssText+=l.css(0,1)),l.tick&&l.tick(0,1),u=!0),e||(i.group=E.current,E.current.remaining+=1),l.delay?this.pending=i:this.start(i),this.running||(this.running=!0,I.add(this))},start:function(n){if(e.fire("".concat(n.b?"intro":"outro",".start"),{node:t}),n.a=this.t,n.delta=n.b-n.a,n.duration=s*Math.abs(n.b-n.a),n.end=n.start+n.duration,l.css){l.delay&&(t.style.cssText=o);var i=function(e,t,n){for(var i=e.a,a=e.b,s=e.delta,r=16.666/e.duration,o="{\n",l=0;l<=1;l+=r){var c=i+s*t(l);o+=100*l+"%{".concat(n(c,1-c),"}\n")}return o+"100% {".concat(n(a,1-a),"}\n}")}(n,r,l.css);I.addRule(i,n.name="__svelte_"+function(e){for(var t=5381,n=e.length;n--;)t=(t<<5)-t^e.charCodeAt(n);return t>>>0}(i)),t.style.animation=(t.style.animation||"").split(", ").filter((function(e){return e&&(n.delta<0||!/__svelte/.test(e))})).concat("".concat(n.name," ").concat(n.duration,"ms linear 1 forwards")).join(", ")}this.program=n,this.pending=null},update:function(e){var t=this.program;if(t){var n=e-t.start;this.t=t.a+t.delta*r(n/t.duration),l.tick&&l.tick(this.t,1-this.t)}},done:function(){var n=this.program;this.t=n.b,l.tick&&l.tick(this.t,1-this.t),e.fire("".concat(n.b?"intro":"outro",".end"),{node:t}),n.b||n.invalidated?l.css&&I.deleteRule(t,n.name):(n.group.callbacks.push((function(){n.callback(),l.css&&I.deleteRule(t,n.name)})),0==--n.group.remaining&&n.group.callbacks.forEach(f)),this.running=!!this.pending},abort:function(e){this.program&&(e&&l.tick&&l.tick(1,0),l.css&&I.deleteRule(t,this.program.name),this.program=this.pending=null,this.running=!1)},invalidate:function(){this.program&&(this.program.invalidated=!0)}}}var E={};function S(){E.current={remaining:0,callbacks:[]}}var I={running:!1,transitions:[],bound:null,stylesheet:null,activeRules:{},promise:null,add:function(e){this.transitions.push(e),this.running||(this.running=!0,requestAnimationFrame(this.bound||(this.bound=this.next.bind(this))))},addRule:function(e,t){if(!this.stylesheet){var n=T("style");document.head.appendChild(n),I.stylesheet=n.sheet}this.activeRules[t]||(this.activeRules[t]=!0,this.stylesheet.insertRule("@keyframes ".concat(t," ").concat(e),this.stylesheet.cssRules.length))},next:function(){this.running=!1;for(var e=window.performance.now(),t=this.transitions.length;t--;){var n=this.transitions[t];n.program&&e>=n.program.end&&n.done(),n.pending&&e>=n.pending.start&&n.start(n.pending),n.running?(n.update(e),this.running=!0):n.pending||this.transitions.splice(t,1)}if(this.running)requestAnimationFrame(this.bound);else if(this.stylesheet){for(var i=this.stylesheet.cssRules.length;i--;)this.stylesheet.deleteRule(i);this.activeRules={}}},deleteRule:function(e,t){e.style.animation=e.style.animation.split(", ").filter((function(e){return e&&-1===e.indexOf(t)})).join(", ")},wait:function(){return I.promise||(I.promise=Promise.resolve(),I.promise.then((function(){I.promise=null}))),I.promise}};function D(t,n){var i,a=n.token={};function s(t,i,s,r){if(n.token===a){n.resolved=s&&e({},s,r);var o=u(u({},n.ctx),n.resolved),l=t&&(n.current=t)(n.component,o);n.block&&(n.blocks?n.blocks.forEach((function(e,t){t!==i&&e&&(S(),e.o((function(){e.d(1),n.blocks[t]=null})))})):n.block.d(1),l.c(),l[l.i?"i":"m"](n.mount(),n.anchor),n.component.root.set({})),n.block=l,n.blocks&&(n.blocks[i]=l)}}if((i=t)&&"function"==typeof i.then){if(t.then((function(e){s(n.then,1,n.value,e)}),(function(e){s(n.catch,2,n.error,e)})),n.current!==n.pending)return s(n.pending,0),!0}else{if(n.current!==n.then)return s(n.then,1,n.value,t),!0;n.resolved=e({},n.value,t)}}function q(){return Object.create(null)}function R(e,t){return e!=e?t==t:e!==t||e&&"object"===n(e)||"function"==typeof e}function W(e,t){return e!=e?t==t:e!==t}function z(e,t){var n=e in this._handlers&&this._handlers[e].slice();if(n)for(var i=0;i<n.length;i+=1){var a=n[i];if(!a.__calling)try{a.__calling=!0,a.call(this,t)}finally{a.__calling=!1}}}function B(e){e._lock=!0,G(e._beforecreate),G(e._oncreate),G(e._aftercreate),e._lock=!1}function F(){return this._state}function V(e,t){e._handlers=q(),e._slots=q(),e._bind=t._bind,e._staged={},e.options=t,e.root=t.root||e,e.store=t.store||e.root.store,t.root||(e._beforecreate=[],e._oncreate=[],e._aftercreate=[])}function $(e,t){var n=this._handlers[e]||(this._handlers[e]=[]);return n.push(t),{cancel:function(){var e=n.indexOf(t);~e&&n.splice(e,1)}}}function G(e){for(;e&&e.length;)e.shift()()}var J={destroy:function(e){this.destroy=c,this.fire("destroy"),this.set=c,this._fragment.d(!1!==e),this._fragment=null,this._state={}},get:F,fire:z,on:$,set:function(e){this._set(u({},e)),this.root._lock||B(this.root)},_recompute:c,_set:function(e){var t=this._state,n={},i=!1;for(var a in e=u(this._staged,e),this._staged={},e)this._differs(e[a],t[a])&&(n[a]=i=!0);i&&(this._state=u(u({},t),e),this._recompute(n,this._state),this._bind&&this._bind(n,this._state),this._fragment&&(this.fire("state",{changed:n,current:this._state,previous:t}),this._fragment.p(n,this._state),this.fire("update",{changed:n,current:this._state,previous:t})))},_stage:function(e){u(this._staged,e)},_mount:function(e,t){this._fragment[this._fragment.i?"i":"m"](e,t||null)},_differs:R},Z={};function K(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"core";"chart"===e?window.__dw&&window.__dw.vis&&window.__dw.vis.meta&&(Z[e]=window.__dw.vis.meta.locale||{}):Z[e]="core"===e?dw.backend.__messages.core:Object.assign({},dw.backend.__messages.core,dw.backend.__messages[e])}function X(e){var t=arguments,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"core";if(e=e.trim(),Z[n]||K(n),!Z[n][e])return"MISSING:"+e;var i=Z[n][e];return"string"==typeof i&&arguments.length>2&&(i=i.replace(/\$(\d)/g,(function(e,n){return n=2+Number(n),void 0===t[n]?e:t[n]}))),i}function Q(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:11,n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:7;return"string"!=typeof e||e.length<t+n+3?e:e.substr(0,t).trim()+"…"+e.substr(e.length-n).trim()}function Y(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return new Promise((function(n,i){var a=document.createElement("script");a.src=e,a.onload=function(){t&&t(),n()},a.onerror=i,document.body.appendChild(a)}))}function ee(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return new Promise((function(n,i){var a=document.createElement("link");a.rel="stylesheet",a.href=e,a.onload=function(){t&&t(),n()},a.onerror=i,document.head.appendChild(a)}))}var te={activateTab:function(e){var t=this,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(e.module)return n&&n.preventDefault(),void Promise.all([ee(e.css),Y(e.js||e.src)]).then((function(){require([e.module],(function(n){e.ui=n.App,e.module=null;var i=t.get().groups;t.set({groups:i,activeTab:e})}))}));e.ui&&(n&&n.preventDefault(),this.set({activeTab:e}))},onTabChange:function(e,t){e.onchange&&e.onchange(t,this.refs.currentTabUi)}};function ne(e){var t=this._svelte,n=t.component,i=t.ctx;n.activateTab(i.tab,e)}function ie(e,t,n){var i=Object.create(e);return i.tab=t[n],i}function ae(e,t,n){var i=Object.create(e);return i.group=t[n],i}function se(e,t){var n,i,a,s,r,o,l,c=t.tab.title;return{c:function(){n=T("li"),i=T("a"),a=T("i"),r=N("   "),o=N(c),a.className=s=t.tab.icon+" svelte-5we305",i._svelte={component:e,ctx:t},x(i,"click",ne),i.href=l=t.tab.url||"/".concat(t.basePath,"/").concat(t.tab.id),i.className="svelte-5we305",n.className="svelte-5we305",U(n,"active",t.activeTab&&t.activeTab.id===t.tab.id)},m:function(e,t){p(e,n,t),m(n,i),m(i,a),m(i,r),m(i,o)},p:function(e,r){t=r,e.groups&&s!==(s=t.tab.icon+" svelte-5we305")&&(a.className=s),e.groups&&c!==(c=t.tab.title)&&O(o,c),i._svelte.ctx=t,(e.groups||e.basePath)&&l!==(l=t.tab.url||"/".concat(t.basePath,"/").concat(t.tab.id))&&(i.href=l),(e.activeTab||e.groups)&&U(n,"active",t.activeTab&&t.activeTab.id===t.tab.id)},d:function(e){e&&h(n),H(i,"click",ne)}}}function re(e,t){for(var n,i,a,s,r=t.group.title,o=t.group.tabs,l=[],c=0;c<o.length;c+=1)l[c]=se(e,ie(t,o,c));return{c:function(){n=T("div"),i=N(r),a=N("\n\n        "),s=T("ul");for(var e=0;e<l.length;e+=1)l[e].c();n.className="group svelte-5we305",s.className="nav nav-stacked nav-tabs"},m:function(e,t){p(e,n,t),m(n,i),p(e,a,t),p(e,s,t);for(var r=0;r<l.length;r+=1)l[r].m(s,null)},p:function(t,n){if(t.groups&&r!==(r=n.group.title)&&O(i,r),t.activeTab||t.groups||t.basePath){o=n.group.tabs;for(var a=0;a<o.length;a+=1){var c=ie(n,o,a);l[a]?l[a].p(t,c):(l[a]=se(e,c),l[a].c(),l[a].m(s,null))}for(;a<l.length;a+=1)l[a].d(1);l.length=o.length}},d:function(e){e&&(h(n),h(a),h(s)),y(l,e)}}}function oe(e,t){var n,i,a,s,r,o,l=e._slotted.aboveContent,c=e._slotted.belowContent,d=[t.activeTab.data],f=t.activeTab.ui;function v(t){for(var n={},i=0;i<d.length;i+=1)n=u(n,d[i]);return{root:e.root,store:e.store,data:n}}if(f)var g=new f(v());function b(n){e.onTabChange(t.activeTab,n)}return g&&g.on("change",b),{c:function(){n=T("div"),a=N("\n        "),g&&g._fragment.c(),s=N("\n        "),n.className=o="span10 account-page-content tab-"+t.activeTab.id+" svelte-5we305"},m:function(t,o){p(t,n,o),l&&(m(n,l),m(n,i||(i=k()))),m(n,a),g&&(g._mount(n,null),e.refs.currentTabUi=g),m(n,s),c&&(m(n,r||(r=k())),m(n,c))},p:function(i,a){t=a;var r=i.activeTab?function(e,t){for(var n={},i={},a={},s=e.length;s--;){var r=e[s],o=t[s];if(o){for(var l in r)l in o||(i[l]=1);for(var l in o)a[l]||(n[l]=o[l],a[l]=1);e[s]=o}else for(var l in r)a[l]=1}for(var l in i)l in n||(n[l]=void 0);return n}(d,[t.activeTab.data]):{};f!==(f=t.activeTab.ui)?(g&&g.destroy(),f?((g=new f(v()))._fragment.c(),g._mount(n,s),g.on("change",b),e.refs.currentTabUi=g):(g=null,e.refs.currentTabUi===g&&(e.refs.currentTabUi=null))):f&&g._set(r),i.activeTab&&o!==(o="span10 account-page-content tab-"+t.activeTab.id+" svelte-5we305")&&(n.className=o)},d:function(e){e&&h(n),l&&function(e,t){for(var n=e.parentNode;n.firstChild!==e;)t.appendChild(n.firstChild)}(i,l),g&&g.destroy(),c&&_(r,c)}}}function le(e){V(this,e),this.refs={},this._state=u({groups:[],basePath:"",activeTab:null},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){for(var n,i,a,s,r,o=e._slotted.belowMenu,l=t.groups,c=[],u=0;u<l.length;u+=1)c[u]=re(e,ae(t,l,u));var d=t.activeTab&&oe(e,t);return{c:function(){n=T("div"),i=T("div");for(var e=0;e<c.length;e+=1)c[e].c();a=N("\n        "),r=N("\n    "),d&&d.c(),i.className="span2 svelte-5we305",n.className="row"},m:function(e,t){p(e,n,t),m(n,i);for(var l=0;l<c.length;l+=1)c[l].m(i,null);m(i,a),o&&(m(i,s||(s=k())),m(i,o)),m(n,r),d&&d.m(n,null)},p:function(t,s){if(t.groups||t.activeTab||t.basePath){l=s.groups;for(var r=0;r<l.length;r+=1){var o=ae(s,l,r);c[r]?c[r].p(t,o):(c[r]=re(e,o),c[r].c(),c[r].m(i,a))}for(;r<c.length;r+=1)c[r].d(1);c.length=l.length}s.activeTab?d?d.p(t,s):((d=oe(e,s)).c(),d.m(n,null)):d&&(d.d(1),d=null)},d:function(e){e&&h(n),y(c,e),o&&_(s,o),d&&d.d()}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(le.prototype,J),u(le.prototype,te);var ce={true:"ASC",false:"DESC"},ue=ce.true;var de={sort:function(e,t){e.preventDefault();var n,i=(n=this.get(),t===n.orderBy?ce[n.order!==ue]:ue);this.set({orderBy:t,order:i}),this.fire("sort",{orderBy:t,order:i})}};function fe(e){var t=this._svelte,n=t.component,i=t.ctx;n.sort(e,i.item.orderBy)}function me(e,t,n){var i=Object.create(e);return i.item=t[n],i}function pe(e,t,n){var i=Object.create(e);return i.item=t[n],i}function he(e,t){var n;return{c:function(){C(n=T("col"),"width",t.item.width)},m:function(e,t){p(e,n,t)},p:function(e,t){e.columnHeaders&&C(n,"width",t.item.width)},d:function(e){e&&h(n)}}}function ve(e,t){var n,i,a=t.item.title;return{c:function(){n=T("span"),i=N(a),n.className="col"},m:function(e,t){p(e,n,t),m(n,i)},p:function(e,t){e.columnHeaders&&a!==(a=t.item.title)&&O(i,a)},d:function(e){e&&h(n)}}}function ge(e,t){var n,i,a,s,r=t.item.title;return{c:function(){n=T("a"),i=N(r),n._svelte={component:e,ctx:t},x(n,"click",fe),n.className=a="sortable "+(t.isActive(t.item)?t.isAscending?"sortable-asc":"sortable-desc":"")+" svelte-l1s1ms",n.href=s="?orderBy=".concat(t.item.orderBy)},m:function(e,t){p(e,n,t),m(n,i)},p:function(e,o){t=o,e.columnHeaders&&r!==(r=t.item.title)&&O(i,r),n._svelte.ctx=t,(e.isActive||e.columnHeaders||e.isAscending)&&a!==(a="sortable "+(t.isActive(t.item)?t.isAscending?"sortable-asc":"sortable-desc":"")+" svelte-l1s1ms")&&(n.className=a),e.columnHeaders&&s!==(s="?orderBy=".concat(t.item.orderBy))&&(n.href=s)},d:function(e){e&&h(n),H(n,"click",fe)}}}function be(e,t){var n,i;function a(e){return e.item.orderBy?ge:ve}var s=a(t),r=s(e,t);return{c:function(){n=T("th"),r.c(),n.className=i=(t.item.className?t.item.className:"")+" svelte-l1s1ms"},m:function(e,t){p(e,n,t),r.m(n,null)},p:function(t,o){s===(s=a(o))&&r?r.p(t,o):(r.d(1),(r=s(e,o)).c(),r.m(n,null)),t.columnHeaders&&i!==(i=(o.item.className?o.item.className:"")+" svelte-l1s1ms")&&(n.className=i)},d:function(e){e&&h(n),r.d()}}}function _e(e){V(this,e),this._state=u({order:ue,orderBy:""},e.data),this._recompute({orderBy:1,order:1},this._state),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){for(var n,i,a,s,r,o,l,c,u=e._slotted.default,d=t.columnHeaders,f=[],v=0;v<d.length;v+=1)f[v]=he(e,pe(t,d,v));var g=t.columnHeaders,_=[];for(v=0;v<g.length;v+=1)_[v]=be(e,me(t,g,v));return{c:function(){n=T("div"),i=T("table"),a=T("colgroup");for(var e=0;e<f.length;e+=1)f[e].c();s=N("\n\n        "),r=T("thead"),o=T("tr");for(e=0;e<_.length;e+=1)_[e].c();l=N("\n\n        "),c=T("tbody"),i.className="table svelte-l1s1ms",n.className="table-container svelte-l1s1ms"},m:function(e,t){p(e,n,t),m(n,i),m(i,a);for(var d=0;d<f.length;d+=1)f[d].m(a,null);m(i,s),m(i,r),m(r,o);for(d=0;d<_.length;d+=1)_[d].m(o,null);m(i,l),m(i,c),u&&m(c,u)},p:function(t,n){if(t.columnHeaders){d=n.columnHeaders;for(var i=0;i<d.length;i+=1){var s=pe(n,d,i);f[i]?f[i].p(t,s):(f[i]=he(e,s),f[i].c(),f[i].m(a,null))}for(;i<f.length;i+=1)f[i].d(1);f.length=d.length}if(t.columnHeaders||t.isActive||t.isAscending){g=n.columnHeaders;for(i=0;i<g.length;i+=1){var r=me(n,g,i);_[i]?_[i].p(t,r):(_[i]=be(e,r),_[i].c(),_[i].m(o,null))}for(;i<_.length;i+=1)_[i].d(1);_.length=g.length}},d:function(e){e&&h(n),y(f,e),y(_,e),u&&b(c,u)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor))}function ye(e,t,n){var i=Object.create(e);return i.opt=t[n],i}function we(e,t,n){var i=Object.create(e);return i.optgroup=t[n],i}function Te(e,t,n){var i=Object.create(e);return i.opt=t[n],i}function Ne(e,t){for(var n,i=t.options,a=[],s=0;s<i.length;s+=1)a[s]=ke(e,Te(t,i,s));return{c:function(){for(var e=0;e<a.length;e+=1)a[e].c();n=k()},m:function(e,t){for(var i=0;i<a.length;i+=1)a[i].m(e,t);p(e,n,t)},p:function(t,s){if(t.options||t.value){i=s.options;for(var r=0;r<i.length;r+=1){var o=Te(s,i,r);a[r]?a[r].p(t,o):(a[r]=ke(e,o),a[r].c(),a[r].m(n.parentNode,n))}for(;r<a.length;r+=1)a[r].d(1);a.length=i.length}},d:function(e){y(a,e),e&&h(n)}}}function ke(e,t){var n,i,a,s,r=t.opt.label;return{c:function(){n=T("option"),i=N(r),n.__value=a=t.opt.value,n.value=n.__value,n.selected=s=t.opt.value===t.value},m:function(e,t){p(e,n,t),m(n,i)},p:function(e,t){e.options&&r!==(r=t.opt.label)&&O(i,r),e.options&&a!==(a=t.opt.value)&&(n.__value=a),n.value=n.__value,(e.options||e.value)&&s!==(s=t.opt.value===t.value)&&(n.selected=s)},d:function(e){e&&h(n)}}}function xe(e,t){for(var n,i=t.optgroups,a=[],s=0;s<i.length;s+=1)a[s]=Me(e,we(t,i,s));return{c:function(){for(var e=0;e<a.length;e+=1)a[e].c();n=k()},m:function(e,t){for(var i=0;i<a.length;i+=1)a[i].m(e,t);p(e,n,t)},p:function(t,s){if(t.optgroups||t.value){i=s.optgroups;for(var r=0;r<i.length;r+=1){var o=we(s,i,r);a[r]?a[r].p(t,o):(a[r]=Me(e,o),a[r].c(),a[r].m(n.parentNode,n))}for(;r<a.length;r+=1)a[r].d(1);a.length=i.length}},d:function(e){y(a,e),e&&h(n)}}}function He(e,t){var n,i,a,s,r=t.opt.label;return{c:function(){n=T("option"),i=N(r),n.__value=a=t.opt.value,n.value=n.__value,n.selected=s=t.opt.value===t.value},m:function(e,t){p(e,n,t),m(n,i)},p:function(e,t){e.optgroups&&r!==(r=t.opt.label)&&O(i,r),e.optgroups&&a!==(a=t.opt.value)&&(n.__value=a),n.value=n.__value,(e.optgroups||e.value)&&s!==(s=t.opt.value===t.value)&&(n.selected=s)},d:function(e){e&&h(n)}}}function Me(e,t){for(var n,i,a=t.optgroup.options,s=[],r=0;r<a.length;r+=1)s[r]=He(0,ye(t,a,r));return{c:function(){n=T("optgroup");for(var e=0;e<s.length;e+=1)s[e].c();M(n,"label",i=t.optgroup.label)},m:function(e,t){p(e,n,t);for(var i=0;i<s.length;i+=1)s[i].m(n,null)},p:function(e,t){if(e.optgroups||e.value){a=t.optgroup.options;for(var r=0;r<a.length;r+=1){var o=ye(t,a,r);s[r]?s[r].p(e,o):(s[r]=He(0,o),s[r].c(),s[r].m(n,null))}for(;r<s.length;r+=1)s[r].d(1);s.length=a.length}e.optgroups&&i!==(i=t.optgroup.label)&&M(n,"label",i)},d:function(e){e&&h(n),y(s,e)}}}function Oe(e){V(this,e),this._state=u({disabled:!1,width:"auto",labelWidth:"auto",options:[],optgroups:[],value:null,class:""},e.data),this._intro=!0,this._fragment=function(e,t){var n,i,a,s=!1,r=t.options.length&&Ne(e,t),o=t.optgroups.length&&xe(e,t);function l(){s=!0,e.set({value:L(n)}),s=!1}function c(t){e.fire("change",t)}return{c:function(){n=T("select"),r&&r.c(),i=k(),o&&o.c(),x(n,"change",l),"value"in t||e.root._beforecreate.push(l),x(n,"change",c),n.className=a="select-css "+t.class+" svelte-v0oq4b",n.disabled=t.disabled,C(n,"width",t.width)},m:function(e,a){p(e,n,a),r&&r.m(n,null),m(n,i),o&&o.m(n,null),A(n,t.value)},p:function(t,l){l.options.length?r?r.p(t,l):((r=Ne(e,l)).c(),r.m(n,i)):r&&(r.d(1),r=null),l.optgroups.length?o?o.p(t,l):((o=xe(e,l)).c(),o.m(n,null)):o&&(o.d(1),o=null),!s&&t.value&&A(n,l.value),t.class&&a!==(a="select-css "+l.class+" svelte-v0oq4b")&&(n.className=a),t.disabled&&(n.disabled=l.disabled),t.width&&C(n,"width",l.width)},d:function(e){e&&h(n),r&&r.d(),o&&o.d(),H(n,"change",l),H(n,"change",c)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(_e.prototype,J),u(_e.prototype,de),_e.prototype._recompute=function(e,t){var n;e.orderBy&&this._differs(t.isActive,t.isActive=(n=t.orderBy,function(e){return n===e.orderBy}))&&(e.isActive=!0),e.order&&this._differs(t.isAscending,t.isAscending=t.order===ue)&&(e.isAscending=!0)},u(Oe.prototype,J);var Ce=function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")},Ae=t((function(e){function t(n,i){return e.exports=t=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e},t(n,i)}e.exports=t}));var Le=function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Ae(e,t)};var Ue=function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e};var Pe=function(e,t){return!t||"object"!==n(t)&&"function"!=typeof t?Ue(e):t},je=t((function(e){function t(n){return e.exports=t=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)},t(n)}e.exports=t}));var Ee=function(e){return-1!==Function.toString.call(e).indexOf("[native code]")};var Se=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(e){return!1}},Ie=t((function(e){function t(n,i,a){return Se()?e.exports=t=Reflect.construct:e.exports=t=function(e,t,n){var i=[null];i.push.apply(i,t);var a=new(Function.bind.apply(e,i));return n&&Ae(a,n.prototype),a},t.apply(null,arguments)}e.exports=t})),De=t((function(e){function t(n){var i="function"==typeof Map?new Map:void 0;return e.exports=t=function(e){if(null===e||!Ee(e))return e;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if(void 0!==i){if(i.has(e))return i.get(e);i.set(e,t)}function t(){return Ie(e,arguments,je(this).constructor)}return t.prototype=Object.create(e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),Ae(t,e)},t(n)}e.exports=t}));var qe=function(e,t){if(null==e)return{};var n,i,a={},s=Object.keys(e);for(i=0;i<s.length;i++)n=s[i],t.indexOf(n)>=0||(a[n]=e[n]);return a};var Re=function(e,t){if(null==e)return{};var n,i,a=qe(e,t);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(e);for(i=0;i<s.length;i++)n=s[i],t.indexOf(n)>=0||Object.prototype.propertyIsEnumerable.call(e,n)&&(a[n]=e[n])}return a},We=t((function(e,t){var n;n=function(){function e(){for(var e=0,t={};e<arguments.length;e++){var n=arguments[e];for(var i in n)t[i]=n[i]}return t}function t(e){return e.replace(/(%[0-9A-Z]{2})+/g,decodeURIComponent)}return function n(i){function a(){}function s(t,n,s){if("undefined"!=typeof document){"number"==typeof(s=e({path:"/"},a.defaults,s)).expires&&(s.expires=new Date(1*new Date+864e5*s.expires)),s.expires=s.expires?s.expires.toUTCString():"";try{var r=JSON.stringify(n);/^[\{\[]/.test(r)&&(n=r)}catch(e){}n=i.write?i.write(n,t):encodeURIComponent(String(n)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent),t=encodeURIComponent(String(t)).replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent).replace(/[\(\)]/g,escape);var o="";for(var l in s)s[l]&&(o+="; "+l,!0!==s[l]&&(o+="="+s[l].split(";")[0]));return document.cookie=t+"="+n+o}}function r(e,n){if("undefined"!=typeof document){for(var a={},s=document.cookie?document.cookie.split("; "):[],r=0;r<s.length;r++){var o=s[r].split("="),l=o.slice(1).join("=");n||'"'!==l.charAt(0)||(l=l.slice(1,-1));try{var c=t(o[0]);if(l=(i.read||i)(l,c)||t(l),n)try{l=JSON.parse(l)}catch(e){}if(a[c]=l,e===c)break}catch(e){}}return e?a[e]:a}}return a.set=s,a.get=function(e){return r(e,!1)},a.getJSON=function(e){return r(e,!0)},a.remove=function(t,n){s(t,"",e(n,{expires:-1}))},a.defaults={},a.withConverter=n,a}((function(){}))},e.exports=n()}));function ze(e){var t=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],(function(){}))),!0}catch(e){return!1}}();return function(){var n,i=je(e);if(t){var a=je(this).constructor;n=Reflect.construct(i,arguments,a)}else n=i.apply(this,arguments);return Pe(this,n)}}function Be(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);t&&(i=i.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,i)}return n}function Fe(t){for(var n=1;n<arguments.length;n++){var i=null!=arguments[n]?arguments[n]:{};n%2?Be(Object(i),!0).forEach((function(n){e(t,n,i[n])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(i)):Be(Object(i)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(i,e))}))}return t}var Ve=new Set(["get","head","options","trace"]);function $e(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!t.fetch)try{t.fetch=window.fetch}catch(e){throw new Error("Neither options.fetch nor window.fetch is defined.")}if(!t.baseUrl)try{t.baseUrl="//".concat(window.dw.backend.__api_domain)}catch(e){throw new Error("Neither options.baseUrl nor window.dw is defined.")}var n,i=Fe(Fe({payload:null,raw:!1,method:"GET",mode:"cors",credentials:"include"},t),{},{headers:Fe({"Content-Type":"application/json"},t.headers)}),a=i.payload,s=i.baseUrl,r=i.fetch,o=i.raw,l=Re(i,["payload","baseUrl","fetch","raw"]),c="".concat(s.replace(/\/$/,""),"/").concat(e.replace(/^\//,""));if(a&&(l.body=JSON.stringify(a)),Ve.has(l.method.toLowerCase()))n=r(c,l);else{var u=We.get("crumb");u?(l.headers["X-CSRF-Token"]=u,n=r(c,l)):n=$e("/v3/me",{fetch:r,baseUrl:s}).then((function(){var e=We.get("crumb");e&&(l.headers["X-CSRF-Token"]=e)})).catch((function(){})).then((function(){return r(c,l)}))}return n.then((function(e){if(o)return e;if(!e.ok)throw new Xe(e);if(204===e.status||!e.headers.get("content-type"))return e;var t=e.headers.get("content-type").split(";")[0];return"application/json"===t?e.json():"image/png"===t||"application/pdf"===t?e.blob():e.text()}))}var Ge=$e.get=Ke("GET"),Je=$e.patch=Ke("PATCH"),Ze=($e.put=Ke("PUT"),$e.post=Ke("POST"));$e.head=Ke("HEAD");function Ke(e){return function(t,n){if(n&&n.method)throw new Error("Setting option.method is not allowed in httpReq.".concat(e.toLowerCase(),"()"));return $e(t,Fe(Fe({},n),{},{method:e}))}}$e.delete=Ke("DELETE");var Xe=function(e){Le(n,e);var t=ze(n);function n(e){var i;return Ce(this,n),(i=t.call(this)).name="HttpReqError",i.status=e.status,i.statusText=e.statusText,i.message="[".concat(e.status,"] ").concat(e.statusText),i.response=e,i}return n}(De(Error));function Qe(e,t,n){return n?t?t(e):e:(e&&e.then||(e=Promise.resolve(e)),t?e.then(t):e)}var Ye=[{value:"owner",label:X("teams / role / owner").replace("&shy;","")},{value:"admin",label:X("teams / role / admin").replace("&shy;","")},{value:"member",label:X("teams / role / member").replace("&shy;","")}];function et(e){return{member:X("teams / role / member"),admin:X("teams / role / admin"),owner:X("teams / role / owner")}[e]}var tt={toggleEdit:function(e){this.get().editId===e?(this.set({editId:!1}),this.updateRole(e)):this.set({editId:e})},removeUser:function(e){try{var t=this;if(!window.confirm(X("teams / remove / alert")))return;return Qe($e.delete("/v3/teams/".concat(t.get().team.id,"/members/").concat(e.id)),(function(){var n=t.get().users;n=n.filter((function(t){return t.id!==e.id})),t.set({users:n})}))}catch(e){return Promise.reject(e)}},updateRole:function(e){try{var t=this,n=t.get(),i=n.updating,a=n.users.filter((function(t){return t.id===e}))[0];return i[a.id]=!0,t.set({updating:i}),Qe($e.put("/v3/teams/".concat(t.get().team.id,"/members/").concat(a.id,"/status"),{payload:{status:a.role}}),(function(){(i=t.get().updating)[a.id]=!1,t.set({updating:i})}))}catch(e){return Promise.reject(e)}}};function nt(e){var t=this._svelte,n=t.component,i=t.ctx;n.removeUser(i.user)}function it(e){var t=this._svelte,n=t.component,i=t.ctx;n.toggleEdit(i.user.id)}function at(e){var t=this._svelte,n=t.component,i=t.ctx;n.toggleEdit(i.user.id)}function st(e,t,n){var i=Object.create(e);return i.user=t[n],i.each_value=t,i.i=n,i}function rt(e,t){var n,i=X("teams / total").replace("%i%",t.numUsers);return{c:function(){n=N(i)},m:function(e,t){p(e,n,t)},p:function(e,t){e.numUsers&&i!==(i=X("teams / total").replace("%i%",t.numUsers))&&O(n,i)},d:function(e){e&&h(n)}}}function ot(e,t){var n,i=X("teams / total / 1");return{c:function(){n=N(i)},m:function(e,t){p(e,n,t)},p:c,d:function(e){e&&h(n)}}}function lt(e,t){for(var n,i=t.sortedUsers,a=[],s=0;s<i.length;s+=1)a[s]=gt(e,st(t,i,s));var r={columnHeaders:t.userHeaders},o=new _e({root:e.root,store:e.store,slots:{default:w()},data:r});return{c:function(){for(var e=0;e<a.length;e+=1)a[e].c();n=k(),o._fragment.c()},m:function(e,t){for(var i=0;i<a.length;i+=1)a[i].m(o._slotted.default,null);m(o._slotted.default,n),o._mount(e,t)},p:function(t,s){if(t.isAdmin||t.isTeamOwner||t.sortedUsers||t.editId||t.updating||t.roles){i=s.sortedUsers;for(var r=0;r<i.length;r+=1){var l=st(s,i,r);a[r]?a[r].p(t,l):(a[r]=gt(e,l),a[r].c(),a[r].m(n.parentNode,n))}for(;r<a.length;r+=1)a[r].d(1);a.length=i.length}var c={};t.userHeaders&&(c.columnHeaders=s.userHeaders),o._set(c)},d:function(e){y(a,e),o.destroy(e)}}}function ct(e,t){var n,i,a,s,r=t.user.id;return{c:function(){n=T("td"),i=T("a"),a=N(r),i.href=s="/admin/users/"+t.user.id},m:function(e,t){p(e,n,t),m(n,i),m(i,a)},p:function(e,t){e.sortedUsers&&r!==(r=t.user.id)&&O(a,r),e.sortedUsers&&s!==(s="/admin/users/"+t.user.id)&&(i.href=s)},d:function(e){e&&h(n)}}}function ut(e,t){var n,i,a,s,r=et(t.user.role),o=t.user.token&&ft();return{c:function(){n=T("noscript"),i=T("noscript"),a=N(" "),o&&o.c(),s=k()},m:function(e,t){p(e,n,t),n.insertAdjacentHTML("afterend",r),p(e,i,t),p(e,a,t),o&&o.m(e,t),p(e,s,t)},p:function(e,t){e.sortedUsers&&r!==(r=et(t.user.role))&&(v(n,i),n.insertAdjacentHTML("afterend",r)),t.user.token?o||((o=ft()).c(),o.m(s.parentNode,s)):o&&(o.d(1),o=null)},d:function(e){e&&(v(n,i),h(n),h(i),h(a)),o&&o.d(e),e&&h(s)}}}function dt(e,t){var n,i,a,s={},r=X("teams / role / p"),o={width:"200px",options:t.roles};void 0!==t.user.role&&(o.value=t.user.role,s.value=!0);var l=new Oe({root:e.root,store:e.store,data:o,_bind:function(n,i){var a={};!s.value&&n.value&&(t.user.role=i.value,a.sortedUsers=t.sortedUsers),e._set(a),s={}}});return e.root._beforecreate.push((function(){l._bind({value:1},l.get())})),{c:function(){l._fragment.c(),n=N("\n            "),i=T("p"),a=N(r),i.className="mini-help"},m:function(e,t){l._mount(e,t),p(e,n,t),p(e,i,t),m(i,a)},p:function(e,n){t=n;var i={};e.roles&&(i.options=t.roles),!s.value&&e.sortedUsers&&(i.value=t.user.role,s.value=void 0!==t.user.role),l._set(i),s={}},d:function(e){l.destroy(e),e&&(h(n),h(i))}}}function ft(e,t){var n,i,a=X("teams / invite-pending");return{c:function(){n=T("i"),i=N(a)},m:function(e,t){p(e,n,t),m(n,i)},d:function(e){e&&h(n)}}}function mt(e,t){var n;function i(e){return e.editId===e.user.id?vt:e.updating[e.user.id]?ht:pt}var a=i(t),s=a(e,t);return{c:function(){s.c(),n=k()},m:function(e,t){s.m(e,t),p(e,n,t)},p:function(t,r){a===(a=i(r))&&s?s.p(t,r):(s.d(1),(s=a(e,r)).c(),s.m(n.parentNode,n))},d:function(e){s.d(e),e&&h(n)}}}function pt(e,t){var n,i,a,s,r,o,l,c,u,d=X("teams / edit"),f=X("teams / remove");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(d),r=N("\n\n            "),o=T("button"),l=T("i"),c=N("  "),u=N(f),i.className="fa fa-edit",n._svelte={component:e,ctx:t},x(n,"click",it),n.className="btn",l.className="fa fa-times",o._svelte={component:e,ctx:t},x(o,"click",nt),o.className="btn"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s),p(e,r,t),p(e,o,t),m(o,l),m(o,c),m(o,u)},p:function(e,i){t=i,n._svelte.ctx=t,o._svelte.ctx=t},d:function(e){e&&h(n),H(n,"click",it),e&&(h(r),h(o)),H(o,"click",nt)}}}function ht(e,t){var n,i,a,s,r=X("teams / save");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(r),i.className="fa fa-spin fa-circle-o-notch",n.disabled=!0,n.className="btn btn-primary"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s)},p:c,d:function(e){e&&h(n)}}}function vt(e,t){var n,i,a,s,r=X("teams / save");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(r),i.className="fa fa-check",n._svelte={component:e,ctx:t},x(n,"click",at),n.className="btn btn-primary"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s)},p:function(e,i){t=i,n._svelte.ctx=t},d:function(e){e&&h(n),H(n,"click",at)}}}function gt(e,t){var n,i,a,s,r,o,l,c,u,d,f,v,g=t.user.email,b=t.user.charts,_=t.isAdmin&&ct(0,t);function y(e){return e.editId===e.user.id?dt:ut}var w=y(t),k=w(e,t),x=(t.isAdmin||t.isTeamOwner||!t.isTeamOwner&&"owner"!=t.user.role)&&mt(e,t);return{c:function(){n=T("tr"),i=T("td"),a=N(g),s=N("\n        "),_&&_.c(),r=N("\n        "),o=T("td"),l=N(b),c=N("\n        "),u=T("td"),k.c(),d=N("\n        "),f=T("td"),x&&x.c(),v=N("\n    ")},m:function(e,t){p(e,n,t),m(n,i),m(i,a),m(n,s),_&&_.m(n,null),m(n,r),m(n,o),m(o,l),m(n,c),m(n,u),k.m(u,null),m(n,d),m(n,f),x&&x.m(f,null),m(n,v)},p:function(t,i){t.sortedUsers&&g!==(g=i.user.email)&&O(a,g),i.isAdmin?_?_.p(t,i):((_=ct(0,i)).c(),_.m(n,r)):_&&(_.d(1),_=null),t.sortedUsers&&b!==(b=i.user.charts)&&O(l,b),w===(w=y(i))&&k?k.p(t,i):(k.d(1),(k=w(e,i)).c(),k.m(u,null)),i.isAdmin||i.isTeamOwner||!i.isTeamOwner&&"owner"!=i.user.role?x?x.p(t,i):((x=mt(e,i)).c(),x.m(f,null)):x&&(x.d(1),x=null)},d:function(e){e&&h(n),_&&_.d(),k.d(),x&&x.d()}}}function bt(e){V(this,e),this._state=u({editId:!1,updating:{},users:[]},e.data),this._recompute({isAdmin:1,isTeamOwner:1,users:1,sortedUsers:1,numCharts:1,team:1},this._state),this._intro=!0,this._fragment=function(e,t){var n,i,a,s,r;function o(e){return 1===e.numUsers?ot:e.numUsers>1?rt:void 0}var l=o(t),c=l&&l(e,t),u=t.sortedUsers.length&&lt(e,t);return{c:function(){n=T("p"),c&&c.c(),i=N(" "),a=T("noscript"),s=N("\n\n"),u&&u.c(),r=k()},m:function(e,o){p(e,n,o),c&&c.m(n,null),m(n,i),m(n,a),a.insertAdjacentHTML("afterend",t.numChartsCaption),p(e,s,o),u&&u.m(e,o),p(e,r,o)},p:function(t,s){l===(l=o(s))&&c?c.p(t,s):(c&&c.d(1),(c=l&&l(e,s))&&c.c(),c&&c.m(n,i)),t.numChartsCaption&&(g(a),a.insertAdjacentHTML("afterend",s.numChartsCaption)),s.sortedUsers.length?u?u.p(t,s):((u=lt(e,s)).c(),u.m(r.parentNode,r)):u&&(u.d(1),u=null)},d:function(e){e&&h(n),c&&c.d(),e&&h(s),u&&u.d(e),e&&h(r)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(bt.prototype,J),u(bt.prototype,tt),bt.prototype._recompute=function(e,t){var n,i,a,s,r;(e.isAdmin||e.isTeamOwner)&&this._differs(t.roles,t.roles=(i=(n=t).isAdmin,a=n.isTeamOwner,i||a?Ye:Ye.slice(1)))&&(e.roles=!0),(e.users||e.isAdmin)&&this._differs(t.sortedUsers,t.sortedUsers=function(e){var t=e.users,n=e.isAdmin;return t.sort((function(e,t){var n=["owner","admin","member"];return n.indexOf(e.role)>n.indexOf(t.role)?1:n.indexOf(e.role)<n.indexOf(t.role)?-1:e.email>t.email?1:e.email<t.email?-1:0})).filter((function(e){return n||!e.isAdmin}))}(t))&&(e.sortedUsers=!0),e.isAdmin&&this._differs(t.userHeaders,t.userHeaders=function(e){var t=e.isAdmin,n=[{title:X("teams / user"),width:"25%"},{title:"ID",width:"10%"},{title:"Charts",width:"15%"},{title:X("teams / status"),width:"15%"},{title:X("teams / actions"),width:"30%"}];return t||n.splice(1,1),n}(t))&&(e.userHeaders=!0),e.sortedUsers&&this._differs(t.numUsers,t.numUsers=t.sortedUsers.length)&&(e.numUsers=!0),e.users&&this._differs(t.numCharts,t.numCharts=(s=t.users,r=0,s.forEach((function(e){r+=e.charts})),r))&&(e.numCharts=!0),(e.numCharts||e.isAdmin||e.team)&&this._differs(t.numChartsCaption,t.numChartsCaption=function(e){var t=e.numCharts,n=e.isAdmin,i=e.team;return 1===t?X("teams / charts-total / 1"):t>1?n?X("teams / charts-total-admin").replace("%i%",t).replace("%link%","/admin/chart/by/".concat(i.id)):X("teams / charts-total").replace("%i%",t):""}(t))&&(e.numChartsCaption=!0)};function _t(e,t){var n,i,a=e._slotted.content;return{c:function(){n=T("div"),a||((i=T("div")).textContent="DropdownControl content"),a||(i.className="base-dropdown-inner svelte-1jdtmzv"),C(n,"width",t.width),n.className="dropdown-menu base-dropdown-content svelte-1jdtmzv"},m:function(e,t){p(e,n,t),m(n,a||i)},p:function(e,t){e.width&&C(n,"width",t.width)},d:function(e){e&&h(n),a&&b(n,a)}}}function yt(e){V(this,e),this.refs={},this._state=u({visible:!1,disabled:!1,width:"auto"},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){var n,i,a,s,r,o,l=e._slotted.button;function c(t){e.windowClick(t)}function u(t){e.toggle(t)}window.addEventListener("click",c);var d=t.visible&&_t(e,t);return{c:function(){n=T("div"),i=T("a"),l||(a=T("button"),s=T("i")),o=N("\n    "),d&&d.c(),l||(s.className=r="fa fa-chevron-"+(t.visible?"up":"down")+" svelte-1jdtmzv",a.className="btn btn-small"),x(i,"click",u),i.href="#dropdown-btn",i.className="base-drop-btn svelte-1jdtmzv",C(n,"position","relative"),C(n,"display","inline-block")},m:function(t,r){p(t,n,r),m(n,i),l?m(i,l):(m(i,a),m(a,s)),e.refs.button=i,m(n,o),d&&d.m(n,null)},p:function(t,i){l||t.visible&&r!==(r="fa fa-chevron-"+(i.visible?"up":"down")+" svelte-1jdtmzv")&&(s.className=r),i.visible?d?d.p(t,i):((d=_t(e,i)).c(),d.m(n,null)):d&&(d.d(1),d=null)},d:function(t){window.removeEventListener("click",c),t&&h(n),l&&b(i,l),H(i,"click",u),e.refs.button===i&&(e.refs.button=null),d&&d.d()}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor))}u(yt.prototype,J),u(yt.prototype,{toggle:function(e){e.preventDefault();var t=this.get(),n=t.visible;t.disabled||this.set({visible:!n})},windowClick:function(e){!e.target||this.refs&&this.refs.button&&(e.target===this.refs.button||this.refs.button.contains(e.target))||e.target.classList.contains("hex")||this.set({visible:!1})}});function wt(e){e.preventDefault();var t=this._svelte,n=t.component,i=t.ctx;n.action(i.item)}function Tt(e,t,n){var i=Object.create(e);return i.item=t[n],i}function Nt(e,t){var n,i,a,s,r=t.icon&&kt(e,t);function o(t){t.preventDefault(),t.stopPropagation(),e.fireClick()}return{c:function(){n=T("button"),r&&r.c(),i=N(" "),a=T("noscript"),x(n,"click",o),n.disabled=t.disabled,n.className=s="split-button-label "+t.btnClass+" svelte-1qu0vk"},m:function(e,s){p(e,n,s),r&&r.m(n,null),m(n,i),m(n,a),a.insertAdjacentHTML("afterend",t.label)},p:function(t,o){o.icon?r?r.p(t,o):((r=kt(e,o)).c(),r.m(n,i)):r&&(r.d(1),r=null),t.label&&(g(a),a.insertAdjacentHTML("afterend",o.label)),t.disabled&&(n.disabled=o.disabled),t.btnClass&&s!==(s="split-button-label "+o.btnClass+" svelte-1qu0vk")&&(n.className=s)},d:function(e){e&&h(n),r&&r.d(),H(n,"click",o)}}}function kt(e,t){var n;return{c:function(){(n=T("i")).className=t.icon+" svelte-1qu0vk"},m:function(e,t){p(e,n,t)},p:function(e,t){e.icon&&(n.className=t.icon+" svelte-1qu0vk")},d:function(e){e&&h(n)}}}function xt(e,t){var n,i,a=t.icon&&Mt(e,t);function s(e){return e.label?Ct:Ot}var r=s(t),o=r(e,t);return{c:function(){a&&a.c(),n=N(" "),o.c(),i=k()},m:function(e,t){a&&a.m(e,t),p(e,n,t),o.m(e,t),p(e,i,t)},p:function(t,l){l.icon?a?a.p(t,l):((a=Mt(e,l)).c(),a.m(n.parentNode,n)):a&&(a.d(1),a=null),r===(r=s(l))&&o?o.p(t,l):(o.d(1),(o=r(e,l)).c(),o.m(i.parentNode,i))},d:function(e){a&&a.d(e),e&&h(n),o.d(e),e&&h(i)}}}function Ht(e,t){var n;return{c:function(){(n=T("span")).className="caret"},m:function(e,t){p(e,n,t)},p:c,d:function(e){e&&h(n)}}}function Mt(e,t){var n;return{c:function(){(n=T("i")).className=t.icon+" svelte-1qu0vk"},m:function(e,t){p(e,n,t)},p:function(e,t){e.icon&&(n.className=t.icon+" svelte-1qu0vk")},d:function(e){e&&h(n)}}}function Ot(e,t){var n;return{c:function(){(n=T("i")).className="im im-menu-dot-h svelte-1qu0vk"},m:function(e,t){p(e,n,t)},p:c,d:function(e){e&&h(n)}}}function Ct(e,t){var n,i,a,s;return{c:function(){n=T("noscript"),i=T("noscript"),a=N(" "),(s=T("span")).className="caret"},m:function(e,r){p(e,n,r),n.insertAdjacentHTML("afterend",t.label),p(e,i,r),p(e,a,r),p(e,s,r)},p:function(e,t){e.label&&(v(n,i),n.insertAdjacentHTML("afterend",t.label))},d:function(e){e&&(v(n,i),h(n),h(i),h(a),h(s))}}}function At(e,t){var n,i,a,s=t.item.label;return{c:function(){n=T("li"),i=T("a"),a=N("\n        "),i._svelte={component:e,ctx:t},x(i,"click",wt),i.href="#/action",i.className="svelte-1qu0vk",U(i,"disabled",t.item.disabled),n.className="svelte-1qu0vk"},m:function(e,t){p(e,n,t),m(n,i),i.innerHTML=s,m(n,a)},p:function(e,n){t=n,e.items&&s!==(s=t.item.label)&&(i.innerHTML=s),i._svelte.ctx=t,e.items&&U(i,"disabled",t.item.disabled)},d:function(e){e&&h(n),H(i,"click",wt)}}}function Lt(e){V(this,e),this._state=u({label:"",icon:!1,split:!1,items:[],btnClass:"btn"},e.data),this._intro=!0,this._fragment=function(e,t){var n,i,a,s,r,o=t.split&&Nt(e,t);function l(e){return e.split?Ht:xt}for(var c=l(t),u=c(e,t),d=t.items,f=[],p=0;p<d.length;p+=1)f[p]=At(e,Tt(t,d,p));var h={disabled:t.disabled},v=new yt({root:e.root,store:e.store,slots:{default:w(),content:w(),button:w()},data:h});return{c:function(){n=T("div"),o&&o.c(),i=N("\n        "),a=T("button"),u.c(),s=N("\n\n    "),r=T("ul");for(var e=0;e<f.length;e+=1)f[e].c();v._fragment.c(),a.disabled=t.disabled,a.className=t.btnClass+" svelte-1qu0vk",M(n,"slot","button"),n.className="btn-group",M(r,"slot","content"),r.className="svelte-1qu0vk"},m:function(e,t){m(v._slotted.button,n),o&&o.m(n,null),m(n,i),m(n,a),u.m(a,null),m(v._slotted.default,s),m(v._slotted.content,r);for(var l=0;l<f.length;l+=1)f[l].m(r,null);v._mount(e,t)},p:function(t,s){if(s.split?o?o.p(t,s):((o=Nt(e,s)).c(),o.m(n,i)):o&&(o.d(1),o=null),c===(c=l(s))&&u?u.p(t,s):(u.d(1),(u=c(e,s)).c(),u.m(a,null)),t.disabled&&(a.disabled=s.disabled),t.btnClass&&(a.className=s.btnClass+" svelte-1qu0vk"),t.items){d=s.items;for(var m=0;m<d.length;m+=1){var p=Tt(s,d,m);f[m]?f[m].p(t,p):(f[m]=At(e,p),f[m].c(),f[m].m(r,null))}for(;m<f.length;m+=1)f[m].d(1);f.length=d.length}var h={};t.disabled&&(h.disabled=s.disabled),v._set(h)},d:function(e){o&&o.d(),u.d(),y(f,e),v.destroy(e)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function Ut(e,t){var n;return{c:function(){(n=T("label")).className="control-label svelte-1nkiaxn"},m:function(e,i){p(e,n,i),n.innerHTML=t.label},p:function(e,t){e.label&&(n.innerHTML=t.label)},d:function(e){e&&h(n)}}}function Pt(e,t){var n;return{c:function(){(n=T("div")).className="help success svelte-1nkiaxn"},m:function(e,i){p(e,n,i),n.innerHTML=t.success},p:function(e,t){e.success&&(n.innerHTML=t.success)},d:function(e){e&&h(n)}}}function jt(e,t){var n;return{c:function(){(n=T("div")).className="help error svelte-1nkiaxn"},m:function(e,i){p(e,n,i),n.innerHTML=t.error},p:function(e,t){e.error&&(n.innerHTML=t.error)},d:function(e){e&&h(n)}}}function Et(e,t){var n;return{c:function(){(n=T("div")).className="help svelte-1nkiaxn"},m:function(e,i){p(e,n,i),n.innerHTML=t.help},p:function(e,t){e.help&&(n.innerHTML=t.help)},d:function(e){e&&h(n)}}}function St(e){var t,n,i,a,s,r,o,l,c,d,f,v,g;V(this,e),this._state=u({label:"",help:"",error:!1,success:!1,width:"auto"},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=(t=this,n=this._state,c=t._slotted.default,d=n.label&&Ut(0,n),f=n.success&&Pt(0,n),v=n.error&&jt(0,n),g=!n.success&&!n.error&&n.help&&Et(0,n),{c:function(){i=T("div"),d&&d.c(),a=N("\n    "),s=T("div"),r=N("\n    "),f&&f.c(),o=N(" "),v&&v.c(),l=N(" "),g&&g.c(),s.className="form-controls svelte-1nkiaxn",i.className="form-block svelte-1nkiaxn",C(i,"width",n.width),U(i,"success",n.success),U(i,"error",n.error)},m:function(e,t){p(e,i,t),d&&d.m(i,null),m(i,a),m(i,s),c&&m(s,c),m(i,r),f&&f.m(i,null),m(i,o),v&&v.m(i,null),m(i,l),g&&g.m(i,null)},p:function(e,t){t.label?d?d.p(e,t):((d=Ut(0,t)).c(),d.m(i,a)):d&&(d.d(1),d=null),t.success?f?f.p(e,t):((f=Pt(0,t)).c(),f.m(i,o)):f&&(f.d(1),f=null),t.error?v?v.p(e,t):((v=jt(0,t)).c(),v.m(i,l)):v&&(v.d(1),v=null),t.success||t.error||!t.help?g&&(g.d(1),g=null):g?g.p(e,t):((g=Et(0,t)).c(),g.m(i,null)),e.width&&C(i,"width",t.width),e.success&&U(i,"success",t.success),e.error&&U(i,"error",t.error)},d:function(e){e&&h(i),d&&d.d(),c&&b(s,c),f&&f.d(),v&&v.d(),g&&g.d()}}),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor))}function It(e,t,n){return n?t?t(e):e:(e&&e.then||(e=Promise.resolve(e)),t?e.then(t):e)}u(Lt.prototype,J),u(Lt.prototype,{fireClick:function(){this.fire("click")},action:function(e){e.disabled||e.action(this)}}),u(St.prototype,J);var Dt={addUser:function(e){try{var t=this,n=t.get(),i=n.inviteeExists,a=n.inviteeUserId;if(!i)return;return t.set({currentAction:{updatingUsers:!0,isComplete:!1}}),It(Ze("/v3/teams/".concat(t.get().team.id,"/members"),{raw:!0,payload:{userId:a,role:e}}),(function(n){var i=!n.ok;return It(i?n.json():null,(function(i){var a={updatingUsers:!1,isComplete:!0,isError:!n.ok,errorCode:n.ok?null:n.status,responseData:i&&i.data?i.data:null,type:"add",role:e};t.set({currentAction:a}),t.fire("updateUsers")}),!i)}))}catch(e){return Promise.reject(e)}},inviteUser:function(e){try{var t=this,n=t.get().inviteeEmail;return t.set({currentAction:{updatingUsers:!0,isComplete:!1}}),It(Ze("/v3/teams/".concat(t.get().team.id,"/invites"),{raw:!0,payload:{email:n,role:e}}),(function(n){var i=!n.ok;return It(i?n.json():null,(function(i){var a={updatingUsers:!1,isComplete:!0,isError:!n.ok,errorCode:n.ok?null:n.status,responseData:i&&i.data?i.data:null,type:"invite",role:e};t.set({currentAction:a}),t.fire("updateUsers")}),!i)}))}catch(e){return Promise.reject(e)}},debounceCheckUser:function(){try{var e=this;if(!e.get().isAdmin)return;return window.clearTimeout(window.checkUser),e.set({inviteeExistsLoading:!0}),window.checkUser=setTimeout((function(){e.checkUser()}),200),It()}catch(e){return Promise.reject(e)}},checkUser:function(){try{var e=this,t=e.get(),n=t.inviteeEmail;return t.isValidEmail?It(Ge("/v3/users?search=".concat(encodeURIComponent(n))),(function(t){e.set({inviteeExistsLoading:!1,inviteeExists:!1}),t.list.length>0&&(n=e.get().inviteeEmail,t.list.forEach((function(t){t.email.toLowerCase()===n.toLowerCase()&&e.set({inviteeExists:!0,inviteeUserId:t.id})})))})):void e.set({inviteeExistsLoading:!1})}catch(e){return Promise.reject(e)}}};function qt(){window.teamSettingsInvite=this}function Rt(e){var t=e.changed;e.current,e.previous;t.inviteeEmail&&(this.set({inviteeExists:!1}),this.debounceCheckUser())}function Wt(e){var t=this;V(this,e),this._state=u({inviteeEmail:"",currentAction:{updatingUsers:!1,isComplete:!1,isError:!1,errorCode:null,responseData:null,type:"",role:""}},e.data),this._recompute({inviteeEmail:1,currentAction:1,isAdmin:1,isTeamOwner:1,isValidEmail:1,inviteeExistsLoading:1,inviteeExists:1},this._state),this._intro=!0,this._handlers.state=[Rt],Rt.call(this,{changed:d({},this._state),current:this._state}),this._fragment=function(e,t){var n,i,a,s=!1;function r(){s=!0,e.set({inviteeEmail:i.value}),s=!1}var o={disabled:!t.isValidEmail,label:"<i class='fa "+(t.currentAction.updatingUsers?"fa-spin fa-circle-o-notch":"fa-envelope")+"'></i>  "+X("teams / invite"),items:t.inviteOptions},l=new Lt({root:e.root,store:e.store,data:o}),c={label:X("teams / invite-user"),help:X("teams / invite-user / help"),success:t.successMessage,error:t.errorMessage},u=new St({root:e.root,store:e.store,slots:{default:w()},data:c});return{c:function(){n=T("div"),i=T("input"),a=N(" \n        "),l._fragment.c(),u._fragment.c(),x(i,"input",r),M(i,"type","text"),i.width="1px",i.placeholder=X("teams / invite-user / eg"),i.className="svelte-m6ws61",n.className="flex svelte-m6ws61"},m:function(e,s){m(u._slotted.default,n),m(n,i),i.value=t.inviteeEmail,m(n,a),l._mount(n,null),u._mount(e,s)},p:function(e,t){!s&&e.inviteeEmail&&(i.value=t.inviteeEmail);var n={};e.isValidEmail&&(n.disabled=!t.isValidEmail),e.currentAction&&(n.label="<i class='fa "+(t.currentAction.updatingUsers?"fa-spin fa-circle-o-notch":"fa-envelope")+"'></i>  "+X("teams / invite")),e.inviteOptions&&(n.items=t.inviteOptions),l._set(n);var a={};e.successMessage&&(a.success=t.successMessage),e.errorMessage&&(a.error=t.errorMessage),u._set(a)},d:function(e){H(i,"input",r),l.destroy(),u.destroy(e)}}}(this,this._state),this.root._oncreate.push((function(){qt.call(t),t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(Wt.prototype,J),u(Wt.prototype,Dt),Wt.prototype._recompute=function(e,t){var n;(e.inviteeEmail||e.currentAction)&&(this._differs(t.successMessage,t.successMessage=function(e){var t=e.inviteeEmail,n=e.currentAction,i=n.isComplete,a=n.isError,s=n.type,r=n.role;if(i&&!a)return X("teams / invite-user / ".concat(s," / success")).replace("$1",t).replace("$2",X("teams / role / ".concat(r)))}(t))&&(e.successMessage=!0),this._differs(t.errorMessage,t.errorMessage=function(e){var t=e.inviteeEmail,n=e.currentAction,i=n.isComplete,a=n.isError,s=n.errorCode,r=n.responseData,o=n.type;if(i&&a){var l=[400,401,406].includes(s)?s:"other",c=406===s&&r&&r.maxTeamInvites?r.maxTeamInvites:null;return X("teams / invite-user / ".concat(o," / error / ").concat(l)).replace("$1",t).replace("$2",c)}}(t))&&(e.errorMessage=!0)),e.inviteeEmail&&this._differs(t.isValidEmail,t.isValidEmail=(n=t.inviteeEmail,/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(n)))&&(e.isValidEmail=!0),(e.isAdmin||e.isTeamOwner||e.inviteeEmail||e.isValidEmail||e.inviteeExistsLoading||e.inviteeExists)&&this._differs(t.inviteOptions,t.inviteOptions=function(e){var t=e.isAdmin,n=e.isTeamOwner,i=(e.inviteeEmail,e.isValidEmail),a=e.inviteeExistsLoading,s=e.inviteeExists,r=[{label:'<i class="fa fa-envelope"></i> &nbsp;...'.concat(X("teams / role / member")),disabled:!i,action:function(){teamSettingsInvite.inviteUser("member")}},{label:'<i class="fa fa-envelope"></i> &nbsp;...'.concat(X("teams / role / admin")),disabled:!i,action:function(){teamSettingsInvite.inviteUser("admin")}}];return(t||n)&&r.push({label:'<i class="fa fa-envelope"></i> &nbsp;...'.concat(X("teams / role / owner")),disabled:!i,action:function(){teamSettingsInvite.inviteUser("owner")}}),t&&r.push({label:'<span class="red"><i class="fa '.concat(a?"fa-spin fa-circle-o-notch":"fa-plus",'"></i> &nbsp;').concat(X("teams / add-as").replace("%s",X("teams / role / member")),"</span>"),disabled:!s,action:function(){teamSettingsInvite.addUser("member")}},{label:'<span class="red"><i class="fa '.concat(a?"fa-spin fa-circle-o-notch":"fa-plus",'"></i> &nbsp;').concat(X("teams / add-as").replace("%s",X("teams / role / admin")),"</span>"),disabled:!s,action:function(){teamSettingsInvite.addUser("admin")}},{label:'<span class="red"><i class="fa '.concat(a?"fa-spin fa-circle-o-notch":"fa-plus",'"></i> &nbsp;').concat(X("teams / add-as").replace("%s",X("teams / role / owner")),"</span>"),disabled:!s,action:function(){teamSettingsInvite.addUser("owner")}}),r}(t))&&(e.inviteOptions=!0)};var zt={updateUsers:function(){var e=this,t=this.get().team;this.set({awaitLoadingUsers:$e.get("/v3/teams/".concat(t.id,"/members?limit=1000")).then((function(t){e.set({users:t.list})}))})}};function Bt(){this.updateUsers()}function Ft(e,t){var n,i,a={component:e,ctx:t,current:null,pending:Gt,then:$t,catch:Vt,value:"null",error:"null"};return D(i=t.awaitLoadingUsers,a),{c:function(){n=k(),a.block.c()},m:function(e,t){p(e,n,t),a.block.m(e,a.anchor=t),a.mount=function(){return n.parentNode},a.anchor=n},p:function(e,n){t=n,a.ctx=t,"awaitLoadingUsers"in e&&i!==(i=t.awaitLoadingUsers)&&D(i,a)||a.block.p(e,u(u({},t),a.resolved))},d:function(e){e&&h(n),a.block.d(e),a=null}}}function Vt(e,t){var n;return{c:function(){n=N("error!")},m:function(e,t){p(e,n,t)},p:c,d:function(e){e&&h(n)}}}function $t(e,t){var n={},i={isAdmin:t.isAdmin,isTeamOwner:t.isTeamOwner,team:t.team};void 0!==t.users&&(i.users=t.users,n.users=!0),void 0!==t.editIndex&&(i.editIndex=t.editIndex,n.editIndex=!0),void 0!==t.updating&&(i.updating=t.updating,n.updating=!0);var a=new bt({root:e.root,store:e.store,data:i,_bind:function(t,i){var a={};!n.users&&t.users&&(a.users=i.users),!n.editIndex&&t.editIndex&&(a.editIndex=i.editIndex),!n.updating&&t.updating&&(a.updating=i.updating),e._set(a),n={}}});return e.root._beforecreate.push((function(){a._bind({users:1,editIndex:1,updating:1},a.get())})),{c:function(){a._fragment.c()},m:function(e,t){a._mount(e,t)},p:function(e,i){t=i;var s={};e.isAdmin&&(s.isAdmin=t.isAdmin),e.isTeamOwner&&(s.isTeamOwner=t.isTeamOwner),e.team&&(s.team=t.team),!n.users&&e.users&&(s.users=t.users,n.users=void 0!==t.users),!n.editIndex&&e.editIndex&&(s.editIndex=t.editIndex,n.editIndex=void 0!==t.editIndex),!n.updating&&e.updating&&(s.updating=t.updating,n.updating=void 0!==t.updating),a._set(s),n={}},d:function(e){a.destroy(e)}}}function Gt(e,t){var n,i,a,s,r=X("teams / loading");return{c:function(){n=T("p"),i=T("i"),a=N("   "),s=T("noscript"),i.className="fa fa-circle-o-notch fa-spin"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s),s.insertAdjacentHTML("afterend",r)},p:c,d:function(e){e&&h(n)}}}function Jt(e){var t=this;V(this,e),this._state=u({editIndex:0,updating:{},updatingUsers:!1,awaitLoadingUsers:!1},e.data),this._recompute({users:1,userId:1},this._state),this._intro=!0,this._fragment=function(e,t){var n,i,a,s,r,o,l,c,u,d,f,v,g,b,_,y,w,x,H,M,O,A,L,U,P,j,E,S,I,D,q,R,W,z,B,F,V,$,G,J,Z,K,Q,Y,ee,te,ne,ie,ae,se,re,oe,le,ce,ue,de,fe,me,pe,he,ve,ge,be,_e,ye,we,Te,Ne,ke,xe,He,Me,Oe,Ce=X("teams / p"),Ae={},Le=X("teams / role / member"),Ue=X("teams / role / admin"),Pe=X("teams / role / owner"),je=X("teams / roles / edit-charts"),Ee=X("teams / roles / edit-folders"),Se=X("teams / roles / access-settings"),Ie=X("teams / roles / invite-users"),De=X("teams / roles / subscription-options"),qe=X("teams / roles / remove-team"),Re={isTeamOwner:t.isTeamOwner,isAdmin:t.isAdmin};void 0!==t.team&&(Re.team=t.team,Ae.team=!0),void 0!==t.updatingUsers&&(Re.updatingUsers=t.updatingUsers,Ae.updatingUsers=!0);var We=new Wt({root:e.root,store:e.store,data:Re,_bind:function(t,n){var i={};!Ae.team&&t.team&&(i.team=n.team),!Ae.updatingUsers&&t.updatingUsers&&(i.updatingUsers=n.updatingUsers),e._set(i),Ae={}}});e.root._beforecreate.push((function(){We._bind({team:1,updatingUsers:1},We.get())})),We.on("updateUsers",(function(t){e.updateUsers()}));var ze=t.awaitLoadingUsers&&Ft(e,t);return{c:function(){n=T("p"),i=N("\n\n"),a=T("div"),s=T("div"),We._fragment.c(),r=N("\n    "),o=T("div"),l=T("table"),c=T("thead"),u=T("tr"),d=T("td"),f=N("\n                    "),v=T("th"),g=N("\n                    "),b=T("th"),_=N("\n                    "),y=T("th"),w=N("\n            "),x=T("tbody"),H=T("tr"),M=T("td"),O=N("\n                    "),(A=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',L=N("\n                    "),(U=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',P=N("\n                    "),(j=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',E=N("\n\n                "),S=T("tr"),I=T("td"),D=N("\n                    "),(q=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',R=N("\n                    "),(W=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',z=N("\n                    "),(B=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',F=N("\n\n                "),V=T("tr"),$=T("td"),G=N("\n                    "),(J=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',Z=N("\n                    "),(K=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',Q=N("\n                    "),(Y=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',ee=N("\n\n                "),te=T("tr"),ne=T("td"),ie=N("\n                    "),(ae=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',se=N("\n                    "),(re=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',oe=N("\n                    "),(le=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',ce=N("\n\n                "),ue=T("tr"),de=T("td"),fe=N("\n                    "),(me=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',pe=N("\n                    "),(he=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',ve=N("\n                    "),(ge=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',be=N("\n\n                "),_e=T("tr"),ye=T("td"),we=N("\n                    "),(Te=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',Ne=N("\n                    "),(ke=T("td")).innerHTML='<i class="im im-x-mark svelte-hgmegl"></i>',xe=N("\n                    "),(He=T("td")).innerHTML='<i class="im im-check-mark svelte-hgmegl"></i>',Me=N("\n\n"),ze&&ze.c(),Oe=k(),C(n,"margin-bottom","10px"),s.className="span4",d.className="svelte-hgmegl",v.className="svelte-hgmegl",b.className="svelte-hgmegl",y.className="svelte-hgmegl",M.className="svelte-hgmegl",A.className="svelte-hgmegl",U.className="svelte-hgmegl",j.className="svelte-hgmegl",I.className="svelte-hgmegl",q.className="svelte-hgmegl",W.className="svelte-hgmegl",B.className="svelte-hgmegl",$.className="svelte-hgmegl",J.className="svelte-hgmegl",K.className="svelte-hgmegl",Y.className="svelte-hgmegl",ne.className="svelte-hgmegl",ae.className="svelte-hgmegl",re.className="svelte-hgmegl",le.className="svelte-hgmegl",de.className="svelte-hgmegl",me.className="svelte-hgmegl",he.className="svelte-hgmegl",ge.className="svelte-hgmegl",ye.className="svelte-hgmegl",Te.className="svelte-hgmegl",ke.className="svelte-hgmegl",He.className="svelte-hgmegl",x.className="svelte-hgmegl",l.className="role-descriptions svelte-hgmegl",C(l,"margin-left","3em"),o.className="span6",a.className="row",C(a,"margin-bottom","2em")},m:function(e,t){p(e,n,t),n.innerHTML=Ce,p(e,i,t),p(e,a,t),m(a,s),We._mount(s,null),m(a,r),m(a,o),m(o,l),m(l,c),m(c,u),m(u,d),m(u,f),m(u,v),v.innerHTML=Le,m(u,g),m(u,b),b.innerHTML=Ue,m(u,_),m(u,y),y.innerHTML=Pe,m(l,w),m(l,x),m(x,H),m(H,M),M.innerHTML=je,m(H,O),m(H,A),m(H,L),m(H,U),m(H,P),m(H,j),m(x,E),m(x,S),m(S,I),I.innerHTML=Ee,m(S,D),m(S,q),m(S,R),m(S,W),m(S,z),m(S,B),m(x,F),m(x,V),m(V,$),$.innerHTML=Se,m(V,G),m(V,J),m(V,Z),m(V,K),m(V,Q),m(V,Y),m(x,ee),m(x,te),m(te,ne),ne.innerHTML=Ie,m(te,ie),m(te,ae),m(te,se),m(te,re),m(te,oe),m(te,le),m(x,ce),m(x,ue),m(ue,de),de.innerHTML=De,m(ue,fe),m(ue,me),m(ue,pe),m(ue,he),m(ue,ve),m(ue,ge),m(x,be),m(x,_e),m(_e,ye),ye.innerHTML=qe,m(_e,we),m(_e,Te),m(_e,Ne),m(_e,ke),m(_e,xe),m(_e,He),p(e,Me,t),ze&&ze.m(e,t),p(e,Oe,t)},p:function(n,i){t=i;var a={};n.isTeamOwner&&(a.isTeamOwner=t.isTeamOwner),n.isAdmin&&(a.isAdmin=t.isAdmin),!Ae.team&&n.team&&(a.team=t.team,Ae.team=void 0!==t.team),!Ae.updatingUsers&&n.updatingUsers&&(a.updatingUsers=t.updatingUsers,Ae.updatingUsers=void 0!==t.updatingUsers),We._set(a),Ae={},t.awaitLoadingUsers?ze?ze.p(n,t):((ze=Ft(e,t)).c(),ze.m(Oe.parentNode,Oe)):ze&&(ze.d(1),ze=null)},d:function(e){e&&(h(n),h(i),h(a)),We.destroy(),e&&h(Me),ze&&ze.d(e),e&&h(Oe)}}}(this,this._state),this.root._oncreate.push((function(){Bt.call(t),t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(Jt.prototype,J),u(Jt.prototype,zt),Jt.prototype._recompute=function(e,t){(e.users||e.userId)&&this._differs(t.role,t.role=function(e){var t=e.users,n=e.userId;if(!t||!t.length||!n)return!1;var i=t.find((function(e){return e.id===n}));return i?i.role:"admin"}(t))&&(e.role=!0)};var Zt={show:function(){var e=this,t=setTimeout((function(){e.set({visible:!0})}),400);this.set({t:t})},hide:function(){var e=this.get().t;clearTimeout(e),this.set({visible:!1})}};function Kt(){if("upgrade-info"===this.get().type){var e=this.refs.helpDisplay.closest("div.ui-section");if(e&&e.dataset&&e.dataset.uiSection){var t=this.root.get().showUpgradeKeyOn;t[e.dataset.uiSection]=!0,this.root.set({showUpgradeKeyOn:t})}}}function Xt(e,t){var n,i,a,s,r,o=e._slotted.default,l="help"===t.type&&Qt(),c="upgrade-info"===t.type&&Yt(e,t);return{c:function(){n=T("div"),l&&l.c(),i=N(" "),c&&c.c(),a=N("\n        "),n.className=r="content "+t.type+" svelte-1qzgns1"},m:function(e,t){p(e,n,t),l&&l.m(n,null),m(n,i),c&&c.m(n,null),m(n,a),o&&(m(n,s||(s=k())),m(n,o))},p:function(t,s){"help"===s.type?l||((l=Qt()).c(),l.m(n,i)):l&&(l.d(1),l=null),"upgrade-info"===s.type?c?c.p(t,s):((c=Yt(e,s)).c(),c.m(n,a)):c&&(c.d(1),c=null),t.type&&r!==(r="content "+s.type+" svelte-1qzgns1")&&(n.className=r)},d:function(e){e&&h(n),l&&l.d(),c&&c.d(),o&&_(s,o)}}}function Qt(e,t){var n;return{c:function(){(n=T("i")).className="hat-icon im im-graduation-hat svelte-1qzgns1"},m:function(e,t){p(e,n,t)},d:function(e){e&&h(n)}}}function Yt(e,t){var n,i,a=t.__("upgrade-available");return{c:function(){n=T("div"),i=N(a),n.className="content-header svelte-1qzgns1"},m:function(e,t){p(e,n,t),m(n,i)},p:function(e,t){e.__&&a!==(a=t.__("upgrade-available"))&&O(i,a)},d:function(e){e&&h(n)}}}function en(e){var t=this;V(this,e),this.refs={},this._state=u({visible:!1,class:"",type:"help"},e.data),this._recompute({type:1},this._state),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){var n,i,a,s,r,o=t.visible&&Xt(e,t);function l(t){e.show()}function c(t){e.hide()}return{c:function(){n=T("div"),i=T("span"),s=N("\n    "),o&&o.c(),i.className=a="help-icon "+t.type+" svelte-1qzgns1",U(i,"visible",t.visible),x(n,"mouseenter",l),x(n,"mouseleave",c),n.className=r="help "+t.class+" "+t.type+" svelte-1qzgns1"},m:function(a,r){p(a,n,r),m(n,i),i.innerHTML=t.helpIcon,m(n,s),o&&o.m(n,null),e.refs.helpDisplay=n},p:function(t,s){t.helpIcon&&(i.innerHTML=s.helpIcon),t.type&&a!==(a="help-icon "+s.type+" svelte-1qzgns1")&&(i.className=a),(t.type||t.visible)&&U(i,"visible",s.visible),s.visible?o?o.p(t,s):((o=Xt(e,s)).c(),o.m(n,null)):o&&(o.d(1),o=null),(t.class||t.type)&&r!==(r="help "+s.class+" "+s.type+" svelte-1qzgns1")&&(n.className=r)},d:function(t){t&&h(n),o&&o.d(),H(n,"mouseenter",l),H(n,"mouseleave",c),e.refs.helpDisplay===n&&(e.refs.helpDisplay=null)}}}(this,this._state),this.root._oncreate.push((function(){Kt.call(t),t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(en.prototype,J),u(en.prototype,Zt),en.prototype._recompute=function(e,t){e.type&&this._differs(t.helpIcon,t.helpIcon="upgrade-info"===t.type?'<svg width="18" height="18" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M15.035 1.963c-.256 0-.511.1-.707.295l-7.07 7.07a1 1 0 00.707 1.707h4.07v15a2 2 0 002 2h2a2 2 0 002-2v-15h4.07a.999.999 0 00.707-1.707l-7.07-7.07a.999.999 0 00-.707-.295z"/></svg>':"?")&&(e.helpIcon=!0)};var tn="100px";function nn(e,t){var n,i={class:t.helpClass},a=new en({root:e.root,store:e.store,slots:{default:w()},data:i});return{c:function(){n=T("div"),a._fragment.c()},m:function(e,i){m(a._slotted.default,n),n.innerHTML=t.help,a._mount(e,i)},p:function(e,t){e.help&&(n.innerHTML=t.help);var i={};e.helpClass&&(i.class=t.helpClass),a._set(i)},d:function(e){a.destroy(e)}}}function an(e,t){var n,i,a,s=t.labelHelp&&sn(e,t);return{c:function(){n=T("label"),i=T("noscript"),a=N(" "),s&&s.c(),C(n,"width",t.labelWidth||tn),n.className="control-label svelte-1ykzs2h",U(n,"disabled",t.disabled)},m:function(e,r){p(e,n,r),m(n,i),i.insertAdjacentHTML("beforebegin",t.label),m(n,a),s&&s.m(n,null)},p:function(t,a){t.label&&(!function(e){for(;e.previousSibling;)e.parentNode.removeChild(e.previousSibling)}(i),i.insertAdjacentHTML("beforebegin",a.label)),a.labelHelp?s?s.p(t,a):((s=sn(e,a)).c(),s.m(n,null)):s&&(s.d(1),s=null),t.labelWidth&&C(n,"width",a.labelWidth||tn),t.disabled&&U(n,"disabled",a.disabled)},d:function(e){e&&h(n),s&&s.d()}}}function sn(e,t){var n;return{c:function(){(n=T("p")).className="mini-help mt-1"},m:function(e,i){p(e,n,i),n.innerHTML=t.labelHelp},p:function(e,t){e.labelHelp&&(n.innerHTML=t.labelHelp)},d:function(e){e&&h(n)}}}function rn(e,t){var n,i;return{c:function(){C(n=T("p"),"padding-left",t.inline?0:t.labelWidth||tn),n.className=i="mt-1 mini-help "+t.type+" svelte-1ykzs2h",U(n,"mini-help-block",!t.inline)},m:function(e,i){p(e,n,i),n.innerHTML=t.miniHelp},p:function(e,t){e.miniHelp&&(n.innerHTML=t.miniHelp),(e.inline||e.labelWidth)&&C(n,"padding-left",t.inline?0:t.labelWidth||tn),e.type&&i!==(i="mt-1 mini-help "+t.type+" svelte-1ykzs2h")&&(n.className=i),(e.type||e.inline)&&U(n,"mini-help-block",!t.inline)},d:function(e){e&&h(n)}}}function on(e){var t,n,i,a,s,r,o,l,c,d,f,v;V(this,e),this._state=u({disabled:!1,help:!1,helpClass:!1,miniHelp:!1,label:!1,labelHelp:!1,inline:!1,labelWidth:!1,type:"default",valign:"baseline"},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=(t=this,n=this._state,c=t._slotted.default,d=n.help&&nn(t,n),f=n.label&&an(t,n),v=n.miniHelp&&rn(0,n),{c:function(){d&&d.c(),i=N("\n\n"),a=T("div"),f&&f.c(),s=N("\n    "),r=T("div"),o=N("\n    "),v&&v.c(),r.className="controls svelte-1ykzs2h",C(r,"width","calc(100% - "+(n.labelWidth||tn)+" - 32px)"),U(r,"form-inline",n.inline),a.className=l="control-group vis-option-group vis-option-group-"+n.type+" label-"+n.valign+" svelte-1ykzs2h"},m:function(e,t){d&&d.m(e,t),p(e,i,t),p(e,a,t),f&&f.m(a,null),m(a,s),m(a,r),c&&m(r,c),m(a,o),v&&v.m(a,null)},p:function(e,n){n.help?d?d.p(e,n):((d=nn(t,n)).c(),d.m(i.parentNode,i)):d&&(d.d(1),d=null),n.label?f?f.p(e,n):((f=an(t,n)).c(),f.m(a,s)):f&&(f.d(1),f=null),e.labelWidth&&C(r,"width","calc(100% - "+(n.labelWidth||tn)+" - 32px)"),e.inline&&U(r,"form-inline",n.inline),n.miniHelp?v?v.p(e,n):((v=rn(0,n)).c(),v.m(a,null)):v&&(v.d(1),v=null),(e.type||e.valign)&&l!==(l="control-group vis-option-group vis-option-group-"+n.type+" label-"+n.valign+" svelte-1ykzs2h")&&(a.className=l)},d:function(e){d&&d.d(e),e&&(h(i),h(a)),f&&f.d(),c&&b(r,c),v&&v.d()}}),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function ln(e){var t=e.changed;e.previous&&t.value&&this.set({indeterminate:!1})}function cn(e,t,n){var i=Object.create(e);return i.opt=t[n],i}function un(e,t){var n,i=t.opt.help;return{c:function(){(n=T("div")).className="help svelte-b3e9e4"},m:function(e,t){p(e,n,t),n.innerHTML=i},p:function(e,t){e.options&&i!==(i=t.opt.help)&&(n.innerHTML=i)},d:function(e){e&&h(n)}}}function dn(e,t){var n,i,a,s,r,o,l,c,u,d=t.opt.label;function f(){e.set({value:i.__value})}var v=t.opt.help&&un(0,t);return{c:function(){n=T("label"),i=T("input"),s=N("\n            "),r=T("span"),o=N(" "),l=T("span"),c=N("\n            "),v&&v.c(),e._bindingGroups[0].push(i),x(i,"change",f),M(i,"type","radio"),i.__value=a=t.opt.value,i.value=i.__value,i.disabled=t.disabled,i.className="svelte-b3e9e4",r.className="css-ui svelte-b3e9e4",l.className="inner-label svelte-b3e9e4",n.title=u=t.opt.tooltip||"",n.className="svelte-b3e9e4",U(n,"disabled",t.disabled),U(n,"has-help",t.opt.help)},m:function(e,a){p(e,n,a),m(n,i),i.checked=i.__value===t.value,m(n,s),m(n,r),m(n,o),m(n,l),l.innerHTML=d,m(n,c),v&&v.m(n,null)},p:function(e,t){e.value&&(i.checked=i.__value===t.value),e.options&&a!==(a=t.opt.value)&&(i.__value=a),i.value=i.__value,e.disabled&&(i.disabled=t.disabled),e.options&&d!==(d=t.opt.label)&&(l.innerHTML=d),t.opt.help?v?v.p(e,t):((v=un(0,t)).c(),v.m(n,null)):v&&(v.d(1),v=null),e.options&&u!==(u=t.opt.tooltip||"")&&(n.title=u),e.disabled&&U(n,"disabled",t.disabled),e.options&&U(n,"has-help",t.opt.help)},d:function(t){t&&h(n),e._bindingGroups[0].splice(e._bindingGroups[0].indexOf(i),1),H(i,"change",f),v&&v.d()}}}function fn(e,t){var n;return{c:function(){(n=T("div")).className="disabled-message svelte-b3e9e4"},m:function(e,i){p(e,n,i),n.innerHTML=t.disabledMessage},p:function(e,t){e.disabledMessage&&(n.innerHTML=t.disabledMessage)},d:function(e){e&&h(n)}}}function mn(e){var t=this;V(this,e),this._state=u({value:null,disabled:!1,disabledMessage:"",indeterminate:!1,label:"",labelWidth:"auto",help:null,miniHelp:null,valign:"top",inline:!0},e.data),this._bindingGroups=[[]],this._intro=!0,this._handlers.state=[ln],this._slotted=e.slots||{},ln.call(this,{changed:d({},this._state),current:this._state}),this._fragment=function(e,t){for(var n,i,a,s,r,o=e._slotted.default,l=t.options,c=[],u=0;u<l.length;u+=1)c[u]=dn(e,cn(t,l,u));var d={type:"radio",labelWidth:t.labelWidth,valign:t.valign,label:t.label,disabled:t.disabled,help:t.help,miniHelp:t.miniHelp},f=new on({root:e.root,store:e.store,slots:{default:w()},data:d}),v=t.disabled&&t.disabledMessage&&fn(e,t);return{c:function(){n=T("div");for(var e=0;e<c.length;e+=1)c[e].c();i=N("\n    "),f._fragment.c(),s=N("\n\n"),v&&v.c(),r=k(),n.className="svelte-b3e9e4",U(n,"inline",t.inline),U(n,"indeterminate",t.indeterminate)},m:function(e,t){m(f._slotted.default,n);for(var l=0;l<c.length;l+=1)c[l].m(n,null);m(f._slotted.default,i),o&&(m(f._slotted.default,a||(a=k())),m(f._slotted.default,o)),f._mount(e,t),p(e,s,t),v&&v.m(e,t),p(e,r,t)},p:function(t,i){if(t.options||t.disabled||t.value){l=i.options;for(var a=0;a<l.length;a+=1){var s=cn(i,l,a);c[a]?c[a].p(t,s):(c[a]=dn(e,s),c[a].c(),c[a].m(n,null))}for(;a<c.length;a+=1)c[a].d(1);c.length=l.length}t.inline&&U(n,"inline",i.inline),t.indeterminate&&U(n,"indeterminate",i.indeterminate);var o={};t.labelWidth&&(o.labelWidth=i.labelWidth),t.valign&&(o.valign=i.valign),t.label&&(o.label=i.label),t.disabled&&(o.disabled=i.disabled),t.help&&(o.help=i.help),t.miniHelp&&(o.miniHelp=i.miniHelp),f._set(o),i.disabled&&i.disabledMessage?v?v.p(t,i):((v=fn(e,i)).c(),v.m(r.parentNode,r)):v&&(v.d(1),v=null)},d:function(e){y(c,e),o&&_(a,o),f.destroy(e),e&&h(s),v&&v.d(e),e&&h(r)}}}(this,this._state),this.root._oncreate.push((function(){t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function pn(e){var t=e.changed,n=e.current;e.previous;n.settings&&(t.settings||t.team||t.defaultTheme)&&this.fire("change",{team:n.team,settings:n.settings,defaultTheme:n.defaultTheme})}function hn(e,t){var n,i,a,s,r,o,l,c,u,d=!1,f=!1,v=!1;function g(){d=!0,t.settings.embed.custom_embed.title=a.value,e.set({settings:t.settings}),d=!1}var b={label:X("teams / custom / title"),help:""},_=new St({root:e.root,store:e.store,slots:{default:w()},data:b});function y(){f=!0,t.settings.embed.custom_embed.text=r.value,e.set({settings:t.settings}),f=!1}var k={label:X("teams / custom / help"),help:""},O=new St({root:e.root,store:e.store,slots:{default:w()},data:k});function C(){v=!0,t.settings.embed.custom_embed.template=l.value,e.set({settings:t.settings}),v=!1}var A={label:X("teams / custom / embedcode"),help:X("teams / custom / embedcode / help")},L=new St({root:e.root,store:e.store,slots:{default:w()},data:A});return{c:function(){(n=T("h3")).textContent="Custom Embed Code",i=N("\n\n        "),a=T("input"),_._fragment.c(),s=N("\n\n        "),r=T("textarea"),O._fragment.c(),o=N("\n\n        "),l=T("textarea"),L._fragment.c(),c=N("\n        "),u=T("hr"),x(a,"input",g),M(a,"type","text"),a.placeholder="e.g. Custom CMS Embed",x(r,"input",y),r.placeholder="e.g. This is a custom embed code for our CMS",x(l,"input",C),l.className="embedcode svelte-rgtu7e",l.placeholder='<iframe src="%chart_url%" width="%chart_width%" widthheight="%chart_height%"></iframe>'},m:function(e,d){p(e,n,d),p(e,i,d),m(_._slotted.default,a),a.value=t.settings.embed.custom_embed.title,_._mount(e,d),p(e,s,d),m(O._slotted.default,r),r.value=t.settings.embed.custom_embed.text,O._mount(e,d),p(e,o,d),m(L._slotted.default,l),l.value=t.settings.embed.custom_embed.template,L._mount(e,d),p(e,c,d),p(e,u,d)},p:function(e,n){t=n,!d&&e.settings&&(a.value=t.settings.embed.custom_embed.title),!f&&e.settings&&(r.value=t.settings.embed.custom_embed.text),!v&&e.settings&&(l.value=t.settings.embed.custom_embed.template)},d:function(e){e&&(h(n),h(i)),H(a,"input",g),_.destroy(e),e&&h(s),H(r,"input",y),O.destroy(e),e&&h(o),H(l,"input",C),L.destroy(e),e&&(h(c),h(u))}}}function vn(e){var t=this;V(this,e),this._state=u({embedCodes:[{value:"responsive",label:X("teams / defaults / responsive-iframe")},{value:"iframe",label:X("teams / defaults / iframe")},{value:"custom",label:X("teams / defaults / custom")}],themes:[],folders:[],locales:[],defaultTheme:"",settings:{},team:{}},e.data),this._recompute({locales:1},this._state),this._intro=!0,this._handlers.state=[pn],pn.call(this,{changed:d({},this._state),current:this._state}),this._fragment=function(e,t){var n,i,a,s,r,o,l,c,u,d,f,v,g,b,_=X("teams / defaults / p"),y=!1,k={},O=X("teams / defaults / h3"),A={},L={},U={},P={};function j(){y=!0,t.team.name=r.value,e.set({team:t.team}),y=!1}var E={label:X("teams / name"),help:X("teams / name / help")},S=new St({root:e.root,store:e.store,slots:{default:w()},data:E}),I={label:"",options:[{label:X("teams / defaults / expanded"),value:"expanded"},{label:X("teams / defaults / collapsed"),value:"collapsed"}]};void 0!==t.settings.folders&&(I.value=t.settings.folders,k.value=!0);var D=new mn({root:e.root,store:e.store,data:I,_bind:function(n,i){var a={};!k.value&&n.value&&(t.settings.folders=i.value,a.settings=t.settings),e._set(a),k={}}});e.root._beforecreate.push((function(){D._bind({value:1},D.get())}));var q={label:X("teams / defaults / folder-status"),help:X("teams / defaults / folder-status / p")},R=new St({root:e.root,store:e.store,slots:{default:w()},data:q}),W={options:t.themes};void 0!==t.defaultTheme&&(W.value=t.defaultTheme,A.value=!0);var z=new Oe({root:e.root,store:e.store,data:W,_bind:function(t,n){var i={};!A.value&&t.value&&(i.defaultTheme=n.value),e._set(i),A={}}});e.root._beforecreate.push((function(){z._bind({value:1},z.get())}));var B={label:X("teams / defaults / theme"),help:X("teams / defaults / theme / p")},F=new St({root:e.root,store:e.store,slots:{default:w()},data:B}),V={options:t.folders};void 0!==t.settings.default.folder&&(V.value=t.settings.default.folder,L.value=!0);var $=new Oe({root:e.root,store:e.store,data:V,_bind:function(n,i){var a={};!L.value&&n.value&&(t.settings.default.folder=i.value,a.settings=t.settings),e._set(a),L={}}});e.root._beforecreate.push((function(){$._bind({value:1},$.get())}));var G={label:X("teams / defaults / folder"),help:X("teams / defaults / folder / p")},J=new St({root:e.root,store:e.store,slots:{default:w()},data:G}),Z={options:t.localeOptions};void 0!==t.settings.default.locale&&(Z.value=t.settings.default.locale,U.value=!0);var K=new Oe({root:e.root,store:e.store,data:Z,_bind:function(n,i){var a={};!U.value&&n.value&&(t.settings.default.locale=i.value,a.settings=t.settings),e._set(a),U={}}});e.root._beforecreate.push((function(){K._bind({value:1},K.get())}));var Q={label:X("teams / defaults / locale"),help:X("teams / defaults / locale / p")},Y=new St({root:e.root,store:e.store,slots:{default:w()},data:Q}),ee={label:"",options:t.embedCodes};void 0!==t.settings.embed.preferred_embed&&(ee.value=t.settings.embed.preferred_embed,P.value=!0);var te=new mn({root:e.root,store:e.store,data:ee,_bind:function(n,i){var a={};!P.value&&n.value&&(t.settings.embed.preferred_embed=i.value,a.settings=t.settings),e._set(a),P={}}});e.root._beforecreate.push((function(){te._bind({value:1},te.get())}));var ne={label:X("teams / defaults / embedcode"),help:X("teams / defaults / embedcode / p")},ie=new St({root:e.root,store:e.store,slots:{default:w()},data:ne}),ae="custom"==t.settings.embed.preferred_embed&&hn(e,t);return{c:function(){n=T("div"),i=T("div"),a=T("p"),s=N("\n\n        "),r=T("input"),S._fragment.c(),o=N("\n\n        "),D._fragment.c(),R._fragment.c(),l=N("\n\n        "),c=T("h3"),u=N(O),d=N("\n\n        "),z._fragment.c(),F._fragment.c(),f=N("\n\n        "),$._fragment.c(),J._fragment.c(),v=N("\n\n        "),K._fragment.c(),Y._fragment.c(),g=N("\n\n        "),te._fragment.c(),ie._fragment.c(),b=N("\n\n        "),ae&&ae.c(),C(a,"margin-bottom","10px"),x(r,"input",j),M(r,"type","text"),r.placeholder="",i.className="span6",n.className="row"},m:function(e,h){p(e,n,h),m(n,i),m(i,a),a.innerHTML=_,m(i,s),m(S._slotted.default,r),r.value=t.team.name,S._mount(i,null),m(i,o),D._mount(R._slotted.default,null),R._mount(i,null),m(i,l),m(i,c),m(c,u),m(i,d),z._mount(F._slotted.default,null),F._mount(i,null),m(i,f),$._mount(J._slotted.default,null),J._mount(i,null),m(i,v),K._mount(Y._slotted.default,null),Y._mount(i,null),m(i,g),te._mount(ie._slotted.default,null),ie._mount(i,null),m(i,b),ae&&ae.m(i,null)},p:function(n,a){t=a,!y&&n.team&&(r.value=t.team.name);var s={};!k.value&&n.settings&&(s.value=t.settings.folders,k.value=void 0!==t.settings.folders),D._set(s),k={};var o={};n.themes&&(o.options=t.themes),!A.value&&n.defaultTheme&&(o.value=t.defaultTheme,A.value=void 0!==t.defaultTheme),z._set(o),A={};var l={};n.folders&&(l.options=t.folders),!L.value&&n.settings&&(l.value=t.settings.default.folder,L.value=void 0!==t.settings.default.folder),$._set(l),L={};var c={};n.localeOptions&&(c.options=t.localeOptions),!U.value&&n.settings&&(c.value=t.settings.default.locale,U.value=void 0!==t.settings.default.locale),K._set(c),U={};var u={};n.embedCodes&&(u.options=t.embedCodes),!P.value&&n.settings&&(u.value=t.settings.embed.preferred_embed,P.value=void 0!==t.settings.embed.preferred_embed),te._set(u),P={},"custom"==t.settings.embed.preferred_embed?ae?ae.p(n,t):((ae=hn(e,t)).c(),ae.m(i,null)):ae&&(ae.d(1),ae=null)},d:function(e){e&&h(n),H(r,"input",j),S.destroy(),D.destroy(),R.destroy(),z.destroy(),F.destroy(),$.destroy(),J.destroy(),K.destroy(),Y.destroy(),te.destroy(),ie.destroy(),ae&&ae.d()}}}(this,this._state),this.root._oncreate.push((function(){t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function gn(e){var t=e-1;return t*t*t+1}function bn(e,t){var n=t.delay;void 0===n&&(n=0);var i=t.duration;void 0===i&&(i=400);var a=t.easing;void 0===a&&(a=gn);var s=getComputedStyle(e),r=+s.opacity,o=parseFloat(s.height),l=parseFloat(s.paddingTop),c=parseFloat(s.paddingBottom),u=parseFloat(s.marginTop),d=parseFloat(s.marginBottom),f=parseFloat(s.borderTopWidth),m=parseFloat(s.borderBottomWidth);return{delay:n,duration:i,easing:a,css:function(e){return"overflow: hidden;opacity: "+Math.min(20*e,1)*r+";height: "+e*o+"px;padding-top: "+e*l+"px;padding-bottom: "+e*c+"px;margin-top: "+e*u+"px;margin-bottom: "+e*d+"px;border-top-width: "+e*f+"px;border-bottom-width: "+e*m+"px;"}}}u(on.prototype,J),u(mn.prototype,J),u(vn.prototype,J),vn.prototype._recompute=function(e,t){var n;e.locales&&this._differs(t.localeOptions,t.localeOptions=(n=t.locales,[{value:null,label:X("teams / defaults / none","organizations")}].concat(l(n))))&&(e.localeOptions=!0)};function _n(){this.set({hasSlotContent:this.options.slots&&this.options.slots.default})}function yn(e,t){var n,i={type:t.helpType},a=new en({root:e.root,store:e.store,slots:{default:w()},data:i});return{c:function(){n=T("div"),a._fragment.c()},m:function(e,i){m(a._slotted.default,n),n.innerHTML=t.help,a._mount(e,i)},p:function(e,t){e.help&&(n.innerHTML=t.help);var i={};e.helpType&&(i.type=t.helpType),a._set(i)},d:function(e){a.destroy(e)}}}function wn(e,t){var n,i,a=t.hasSlotContent&&(!t.disabled||"on"==t.disabledState)&&t.value&&!t.indeterminate&&Nn(e);return{c:function(){a&&a.c(),n=k()},m:function(e,t){a&&a.i(e,t),p(e,n,t),i=!0},p:function(t,i){!i.hasSlotContent||i.disabled&&"on"!=i.disabledState||!i.value||i.indeterminate?a&&(S(),a.o((function(){a.d(1),a=null}))):(a||(a=Nn(e)).c(),a.i(n.parentNode,n))},i:function(e,t){i||this.m(e,t)},o:f,d:function(e){a&&a.d(e),e&&h(n)}}}function Tn(e,t){var n,i,a,s;return{c:function(){n=T("div"),(i=T("div")).className="disabled-msg svelte-1cqdlwk"},m:function(e,a){p(e,n,a),m(n,i),i.innerHTML=t.disabledMessage,s=!0},p:function(e,t){s&&!e.disabledMessage||(i.innerHTML=t.disabledMessage)},i:function(t,i){s||(e.root._intro&&(a&&a.invalidate(),e.root._aftercreate.push((function(){a||(a=j(e,n,bn,{},!0)),a.run(1)}))),this.m(t,i))},o:function(t){s&&(a||(a=j(e,n,bn,{},!1)),a.run(0,(function(){t(),a=null})),s=!1)},d:function(e){e&&(h(n),a&&a.abort())}}}function Nn(e,t){var n,i,a,s=e._slotted.default;return{c:function(){(n=T("div")).className="switch-content svelte-1cqdlwk"},m:function(e,t){p(e,n,t),s&&m(n,s),a=!0},i:function(t,s){a||(e.root._intro&&(i&&i.invalidate(),e.root._aftercreate.push((function(){i||(i=j(e,n,bn,{},!0)),i.run(1)}))),this.m(t,s))},o:function(t){a&&(i||(i=j(e,n,bn,{},!1)),i.run(0,(function(){t(),i=null})),a=!1)},d:function(e){e&&h(n),s&&b(n,s),e&&i&&i.abort()}}}function kn(e){var t=this;V(this,e),this._state=u({value:!1,help:"",helpType:!1,disabledMessage:"",disabledState:"auto",disabled:!1,highlight:!1,indeterminate:!1,hasSlotContent:!1},e.data),this._intro=!0,this._slotted=e.slots||{},this._fragment=function(e,t){var n,i,a,s,r,o,l,c,u,d,f,v,b,_,y=t.help&&yn(e,t);function w(){e.set({value:r.checked,indeterminate:r.indeterminate})}function k(t){e.toggle()}var O=[Tn,wn],C=[];function A(e){return e.disabled&&e.disabledMessage?0:1}return b=A(t),_=C[b]=O[b](e,t),{c:function(){n=T("div"),y&&y.c(),i=N("\n\n    "),a=T("label"),s=T("button"),r=T("input"),l=N("\n            "),c=T("span"),d=N("\n        "),f=T("noscript"),v=N("\n\n    "),_.c(),x(r,"change",w),"value"in t&&"indeterminate"in t||e.root._beforecreate.push(w),r.className=o=(t.disabled&&"on"==t.disabledState?"disabled-force-checked":t.disabled&&"off"==t.disabledState?"disabled-force-unchecked":"")+" svelte-1cqdlwk",r.disabled=t.disabled,M(r,"type","checkbox"),c.className=u="slider "+(t.disabled?t.disabledState:"")+" svelte-1cqdlwk",x(s,"click",k),s.className="switch svelte-1cqdlwk",a.className="switch-outer svelte-1cqdlwk",U(a,"disabled",t.disabled),n.className="vis-option-type-switch svelte-1cqdlwk"},m:function(e,o){p(e,n,o),y&&y.m(n,null),m(n,i),m(n,a),m(a,s),m(s,r),r.checked=t.value,r.indeterminate=t.indeterminate,m(s,l),m(s,c),m(a,d),m(a,f),f.insertAdjacentHTML("afterend",t.label),m(n,v),C[b].i(n,null)},p:function(t,s){s.help?y?y.p(t,s):((y=yn(e,s)).c(),y.m(n,i)):y&&(y.d(1),y=null),t.value&&(r.checked=s.value),t.indeterminate&&(r.indeterminate=s.indeterminate),(t.disabled||t.disabledState)&&o!==(o=(s.disabled&&"on"==s.disabledState?"disabled-force-checked":s.disabled&&"off"==s.disabledState?"disabled-force-unchecked":"")+" svelte-1cqdlwk")&&(r.className=o),t.disabled&&(r.disabled=s.disabled),(t.disabled||t.disabledState)&&u!==(u="slider "+(s.disabled?s.disabledState:"")+" svelte-1cqdlwk")&&(c.className=u),t.label&&(g(f),f.insertAdjacentHTML("afterend",s.label)),t.disabled&&U(a,"disabled",s.disabled);var l=b;(b=A(s))===l?C[b].p(t,s):(S(),_.o((function(){C[l].d(1),C[l]=null})),(_=C[b])||(_=C[b]=O[b](e,s)).c(),_.i(n,null))},d:function(e){e&&h(n),y&&y.d(),H(r,"change",w),H(s,"click",k),C[b].d()}}}(this,this._state),this.root._oncreate.push((function(){_n.call(t),t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function xn(e,t){var n,i=new en({root:e.root,store:e.store,slots:{default:w()}});return{c:function(){n=T("div"),i._fragment.c()},m:function(e,a){m(i._slotted.default,n),n.innerHTML=t.help,i._mount(e,a)},p:function(e,t){e.help&&(n.innerHTML=t.help)},d:function(e){i.destroy(e)}}}function Hn(e,t){var n,i,a,s;return{c:function(){n=T("div"),(i=T("div")).className="disabled-msg svelte-1rmafvf"},m:function(e,a){p(e,n,a),m(n,i),i.innerHTML=t.disabledMessage,s=!0},p:function(e,t){s&&!e.disabledMessage||(i.innerHTML=t.disabledMessage)},i:function(t,i){s||(e.root._intro&&(a&&a.invalidate(),e.root._aftercreate.push((function(){a||(a=j(e,n,bn,{},!0)),a.run(1)}))),this.m(t,i))},o:function(t){s&&(a||(a=j(e,n,bn,{},!1)),a.run(0,(function(){t(),a=null})),s=!1)},d:function(e){e&&(h(n),a&&a.abort())}}}function Mn(e){V(this,e),this._state=u({value:!1,disabled:!1,faded:!1,compact:!1,indeterminate:!1,disabledMessage:"",help:!1},e.data),this._intro=!0,this._fragment=function(e,t){var n,i,a,s,r,o,l,c,u,d=t.help&&xn(e,t);function f(){e.set({value:s.checked,indeterminate:s.indeterminate})}var v=t.disabled&&t.disabledMessage&&Hn(e,t);return{c:function(){d&&d.c(),n=N("\n"),i=T("div"),a=T("label"),s=T("input"),r=T("span"),o=N("\n        "),l=N(t.label),u=N("\n    "),v&&v.c(),x(s,"change",f),"value"in t&&"indeterminate"in t||e.root._beforecreate.push(f),M(s,"type","checkbox"),s.disabled=t.disabled,s.className="svelte-1rmafvf",r.className="css-ui svelte-1rmafvf",a.className=c="checkbox "+(t.disabled?"disabled":"")+" "+(t.faded?"faded":"")+" svelte-1rmafvf",i.className="control-group vis-option-group vis-option-type-checkbox svelte-1rmafvf",U(i,"is-compact",t.compact)},m:function(e,c){d&&d.m(e,c),p(e,n,c),p(e,i,c),m(i,a),m(a,s),s.checked=t.value,s.indeterminate=t.indeterminate,m(a,r),m(a,o),m(a,l),m(i,u),v&&v.i(i,null)},p:function(t,r){r.help?d?d.p(t,r):((d=xn(e,r)).c(),d.m(n.parentNode,n)):d&&(d.d(1),d=null),t.value&&(s.checked=r.value),t.indeterminate&&(s.indeterminate=r.indeterminate),t.disabled&&(s.disabled=r.disabled),t.label&&O(l,r.label),(t.disabled||t.faded)&&c!==(c="checkbox "+(r.disabled?"disabled":"")+" "+(r.faded?"faded":"")+" svelte-1rmafvf")&&(a.className=c),r.disabled&&r.disabledMessage?(v?v.p(t,r):(v=Hn(e,r))&&v.c(),v.i(i,null)):v&&(S(),v.o((function(){v.d(1),v=null}))),t.compact&&U(i,"is-compact",r.compact)},d:function(e){d&&d.d(e),e&&(h(n),h(i)),H(s,"change",f),v&&v.d()}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(kn.prototype,J),u(kn.prototype,{toggle:function(){var e=this.get(),t=e.disabled,n=e.indeterminate,i=e.value,a={value:!!n||!i,indeterminate:!1};t||(this.set(a),this.fire("change",a))}}),u(Mn.prototype,J);var On={deleteTeam:function(){try{return this.set({deleting:!0}),e=$e.delete("/v3/teams/".concat(this.get().team.id)),t=function(){window.location="/"},n?t?t(e):e:(e&&e.then||(e=Promise.resolve(e)),t?e.then(t):e)}catch(e){return Promise.reject(e)}var e,t,n}};function Cn(e,t){var n,i,a,s,r=X("teams / delete / really"),o={},l={label:X("teams / delete / really-yes")};void 0!==t.deleteTeam2&&(l.value=t.deleteTeam2,o.value=!0);var c=new Mn({root:e.root,store:e.store,data:l,_bind:function(t,n){var i={};!o.value&&t.value&&(i.deleteTeam2=n.value),e._set(i),o={}}});e.root._beforecreate.push((function(){c._bind({value:1},c.get())}));var u=t.deleteTeam2&&An(e,t);return{c:function(){n=T("p"),i=N("\n\n    "),c._fragment.c(),a=N("\n\n    "),u&&u.c(),s=k()},m:function(e,t){p(e,n,t),n.innerHTML=r,p(e,i,t),c._mount(e,t),p(e,a,t),u&&u.m(e,t),p(e,s,t)},p:function(n,i){t=i;var a={};!o.value&&n.deleteTeam2&&(a.value=t.deleteTeam2,o.value=void 0!==t.deleteTeam2),c._set(a),o={},t.deleteTeam2?u?u.p(n,t):((u=An(e,t)).c(),u.m(s.parentNode,s)):u&&(u.d(1),u=null)},d:function(e){e&&(h(n),h(i)),c.destroy(e),e&&h(a),u&&u.d(e),e&&h(s)}}}function An(e,t){var n,i,a,s,r,o=X("teams / delete / action");function l(t){e.deleteTeam()}return{c:function(){n=T("button"),i=T("i"),s=N("  "),r=T("noscript"),i.className=a="fa "+(t.deleting?"fa-spin fa-circle-o-notch":"fa-times"),x(n,"click",l),n.className="btn btn-danger"},m:function(e,t){p(e,n,t),m(n,i),m(n,s),m(n,r),r.insertAdjacentHTML("afterend",o)},p:function(e,t){e.deleting&&a!==(a="fa "+(t.deleting?"fa-spin fa-circle-o-notch":"fa-times"))&&(i.className=a)},d:function(e){e&&h(n),H(n,"click",l)}}}function Ln(e){V(this,e),this._state=u({deleteTeam:!1,deleteTeam2:!1,deleting:!1},e.data),this._intro=!0,this._fragment=function(e,t){var n,i,a,s=X("teams / delete / p"),r={},o=t.deleteTeam&&Cn(e,t),l={label:X("teams / delete / yes")};void 0!==t.deleteTeam&&(l.value=t.deleteTeam,r.value=!0);var c=new kn({root:e.root,store:e.store,slots:{default:w()},data:l,_bind:function(t,n){var i={};!r.value&&t.value&&(i.deleteTeam=n.value),e._set(i),r={}}});return e.root._beforecreate.push((function(){c._bind({value:1},c.get())})),{c:function(){n=T("p"),i=N("\n\n"),o&&o.c(),a=k(),c._fragment.c()},m:function(e,t){p(e,n,t),n.innerHTML=s,p(e,i,t),o&&o.m(c._slotted.default,null),m(c._slotted.default,a),c._mount(e,t)},p:function(n,i){(t=i).deleteTeam?o?o.p(n,t):((o=Cn(e,t)).c(),o.m(a.parentNode,a)):o&&(o.d(1),o=null);var s={};!r.value&&n.deleteTeam&&(s.value=t.deleteTeam,r.value=void 0!==t.deleteTeam),c._set(s),r={}},d:function(e){e&&(h(n),h(i)),o&&o.d(),c.destroy(e)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function Un(e){V(this,e),this._state=u({disabled:!1,width:null,labelWidth:null,options:[],optgroups:[],valign:"middle",inline:!1,help:null,miniHelp:null},e.data),this._recompute({inline:1,width:1,labelWidth:1},this._state),this._intro=!0,this._fragment=function(e,t){var n={},i={width:t.controlWidth,class:"mt-1"};void 0!==t.value&&(i.value=t.value,n.value=!0),void 0!==t.disabled&&(i.disabled=t.disabled,n.disabled=!0),void 0!==t.options&&(i.options=t.options,n.options=!0),void 0!==t.optgroups&&(i.optgroups=t.optgroups,n.optgroups=!0);var a=new Oe({root:e.root,store:e.store,data:i,_bind:function(t,i){var a={};!n.value&&t.value&&(a.value=i.value),!n.disabled&&t.disabled&&(a.disabled=i.disabled),!n.options&&t.options&&(a.options=i.options),!n.optgroups&&t.optgroups&&(a.optgroups=i.optgroups),e._set(a),n={}}});e.root._beforecreate.push((function(){a._bind({value:1,disabled:1,options:1,optgroups:1},a.get())})),a.on("change",(function(t){e.fire("change",t)}));var s={type:"select",label:t.label,labelWidth:t.labelWidth,valign:t.valign,disabled:t.disabled,inline:t.inline,miniHelp:t.miniHelp,help:t.help,helpClass:"mt-1"},r=new on({root:e.root,store:e.store,slots:{default:w()},data:s});return{c:function(){a._fragment.c(),r._fragment.c()},m:function(e,t){a._mount(r._slotted.default,null),r._mount(e,t)},p:function(e,i){t=i;var s={};e.controlWidth&&(s.width=t.controlWidth),!n.value&&e.value&&(s.value=t.value,n.value=void 0!==t.value),!n.disabled&&e.disabled&&(s.disabled=t.disabled,n.disabled=void 0!==t.disabled),!n.options&&e.options&&(s.options=t.options,n.options=void 0!==t.options),!n.optgroups&&e.optgroups&&(s.optgroups=t.optgroups,n.optgroups=void 0!==t.optgroups),a._set(s),n={};var o={};e.label&&(o.label=t.label),e.labelWidth&&(o.labelWidth=t.labelWidth),e.valign&&(o.valign=t.valign),e.disabled&&(o.disabled=t.disabled),e.inline&&(o.inline=t.inline),e.miniHelp&&(o.miniHelp=t.miniHelp),e.help&&(o.help=t.help),r._set(o)},d:function(e){a.destroy(),r.destroy(e)}}}(this,this._state),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function Pn(e,t,n){return n?t?t(e):e:(e&&e.then||(e=Promise.resolve(e)),t?e.then(t):e)}u(Ln.prototype,J),u(Ln.prototype,On),u(Un.prototype,J),Un.prototype._recompute=function(e,t){var n,i,a;(e.inline||e.width)&&this._differs(t.controlWidth,t.controlWidth=(i=(n=t).inline,a=n.width,i?a||"auto":a))&&(e.controlWidth=!0),(e.inline||e.labelWidth)&&this._differs(t.labelWidth,t.labelWidth=function(e){var t=e.inline,n=e.labelWidth;return t?n||"auto":n}(t))&&(e.labelWidth=!0)};var jn={edit:function(e){this.get().editId===e?(this.set({editId:!1}),this.update(e)):this.set({editId:e})},addProduct:function(){try{var e=this,t=e.get(),n=t.team,i=t.addProduct;return e.set({addingProduct:!0}),Pn($e("/v3/teams/".concat(n.id,"/products"),{method:"post",payload:{productId:i}}),(function(){return Pn($e("/v3/teams/".concat(n.id,"/products")),(function(t){e.set({products:t.list,addingProduct:!1})}))}))}catch(e){return Promise.reject(e)}},remove:function(e){try{var t=this;if(!window.confirm("Are you sure you want to remove this product?"))return;return Pn($e("/v3/teams/".concat(t.get().team.id,"/products/").concat(e.id),{method:"delete"}),(function(){var n=t.get().products;n=n.filter((function(t){return t.id!==e.id})),t.set({products:n})}))}catch(e){return Promise.reject(e)}},update:function(e){try{var t=this,n=t.get(),i=n.updating,a=n.products.filter((function(t){return t.id===e}))[0];return i[a.id]=!0,t.set({updating:i}),Pn($e("/v3/teams/".concat(t.get().team.id,"/products/").concat(a.id),{method:"put",payload:{expires:a.expires}}),(function(){(i=t.get().updating)[a.id]=!1,t.set({updating:i})}))}catch(e){return Promise.reject(e)}}};function En(){var e=this,t=this.get();$e("/v3/teams/".concat(t.team.id,"/products")).then((function(t){return e.set({loadingTeamProducts:!1,products:t.list})})),$e("/v3/products").then((function(t){return e.set({loadingAllProducts:!1,allProducts:t.list})}))}function Sn(e){var t=this._svelte,n=t.component,i=t.ctx;n.remove(i.product)}function In(e){var t=this._svelte,n=t.component,i=t.ctx;n.edit(i.product.id)}function Dn(e){var t=this._svelte,n=t.component,i=t.ctx;n.edit(i.product.id)}function qn(e,t,n){var i=Object.create(e);return i.product=t[n],i.each_value=t,i.i=n,i}function Rn(e,t){var n;function i(e){return e.loadingTeamProducts||e.loadingAllProducts?zn:Wn}var a=i(t),s=a(e,t);return{c:function(){s.c(),n=k()},m:function(e,t){s.m(e,t),p(e,n,t)},p:function(t,r){a===(a=i(r))&&s?s.p(t,r):(s.d(1),(s=a(e,r)).c(),s.m(n.parentNode,n))},d:function(e){s.d(e),e&&h(n)}}}function Wn(e,t){var n,i,a=t.products.length>0&&Bn(e,t),s=t.addableProducts.length&&Kn(e,t);return{c:function(){a&&a.c(),n=N("\n\n\n"),s&&s.c(),i=k()},m:function(e,t){a&&a.m(e,t),p(e,n,t),s&&s.m(e,t),p(e,i,t)},p:function(t,r){r.products.length>0?a?a.p(t,r):((a=Bn(e,r)).c(),a.m(n.parentNode,n)):a&&(a.d(1),a=null),r.addableProducts.length?s?s.p(t,r):((s=Kn(e,r)).c(),s.m(i.parentNode,i)):s&&(s.d(1),s=null)},d:function(e){a&&a.d(e),e&&h(n),s&&s.d(e),e&&h(i)}}}function zn(e,t){var n,i,a,s,r=X("teams / products / loading");return{c:function(){n=T("p"),i=T("i"),a=N("   "),s=T("noscript"),i.className="fa fa-spin fa-circle-o-notch"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s),s.insertAdjacentHTML("afterend",r)},p:c,d:function(e){e&&h(n)}}}function Bn(e,t){for(var n,i=t.products,a=[],s=0;s<i.length;s+=1)a[s]=Zn(e,qn(t,i,s));var r={columnHeaders:t.productHeaders},o=new _e({root:e.root,store:e.store,slots:{default:w()},data:r});return{c:function(){for(var e=0;e<a.length;e+=1)a[e].c();n=k(),o._fragment.c()},m:function(e,t){for(var i=0;i<a.length;i+=1)a[i].m(o._slotted.default,null);m(o._slotted.default,n),o._mount(e,t)},p:function(t,s){if(t.editId||t.products||t.updating){i=s.products;for(var r=0;r<i.length;r+=1){var l=qn(s,i,r);a[r]?a[r].p(t,l):(a[r]=Zn(e,l),a[r].c(),a[r].m(n.parentNode,n))}for(;r<a.length;r+=1)a[r].d(1);a.length=i.length}var c={};t.productHeaders&&(c.columnHeaders=s.productHeaders),o._set(c)},d:function(e){y(a,e),o.destroy(e)}}}function Fn(e,t){var n,i=t.product.expires||X("teams / products / never");return{c:function(){n=N(i)},m:function(e,t){p(e,n,t)},p:function(e,t){e.products&&i!==(i=t.product.expires||X("teams / products / never"))&&O(n,i)},d:function(e){e&&h(n)}}}function Vn(e,t){var n,i=!1;function a(){i=!0,t.each_value[t.i].expires=n.value,e.set({products:t.products}),i=!1}return{c:function(){x(n=T("input"),"input",a),M(n,"type","text")},m:function(e,i){p(e,n,i),n.value=t.product.expires},p:function(e,a){t=a,!i&&e.products&&(n.value=t.product.expires)},d:function(e){e&&h(n),H(n,"input",a)}}}function $n(e,t){var n,i,a,s,r,o,l,c,u,d=X("teams / edit"),f=X("teams / remove");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(d),r=N("\n\n            "),o=T("button"),l=T("i"),c=N("  "),u=N(f),i.className="fa fa-edit",n._svelte={component:e,ctx:t},x(n,"click",In),n.className="btn",l.className="fa fa-times",o._svelte={component:e,ctx:t},x(o,"click",Sn),o.className="btn"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s),p(e,r,t),p(e,o,t),m(o,l),m(o,c),m(o,u)},p:function(e,i){t=i,n._svelte.ctx=t,o._svelte.ctx=t},d:function(e){e&&h(n),H(n,"click",In),e&&(h(r),h(o)),H(o,"click",Sn)}}}function Gn(e,t){var n,i,a,s,r=X("teams / save");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(r),i.className="fa fa-spin fa-circle-o-notch",n.disabled=!0,n.className="btn btn-primary"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s)},p:c,d:function(e){e&&h(n)}}}function Jn(e,t){var n,i,a,s,r=X("teams / save");return{c:function(){n=T("button"),i=T("i"),a=N("  "),s=N(r),i.className="fa fa-check",n._svelte={component:e,ctx:t},x(n,"click",Dn),n.className="btn btn-primary"},m:function(e,t){p(e,n,t),m(n,i),m(n,a),m(n,s)},p:function(e,i){t=i,n._svelte.ctx=t},d:function(e){e&&h(n),H(n,"click",Dn)}}}function Zn(e,t){var n,i,a,s,r,o,l,c,u,d,f=t.product.id,v=t.product.name;function g(e){return e.editId===e.product.id?Vn:Fn}var b=g(t),_=b(e,t);function y(e){return e.editId===e.product.id?Jn:e.updating[e.product.id]?Gn:$n}var w=y(t),k=w(e,t);return{c:function(){n=T("tr"),i=T("td"),a=N(f),s=N("\n        "),r=T("td"),o=N(v),l=N("\n        "),c=T("td"),_.c(),u=N("\n        "),d=T("td"),k.c()},m:function(e,t){p(e,n,t),m(n,i),m(i,a),m(n,s),m(n,r),m(r,o),m(n,l),m(n,c),_.m(c,null),m(n,u),m(n,d),k.m(d,null)},p:function(t,n){t.products&&f!==(f=n.product.id)&&O(a,f),t.products&&v!==(v=n.product.name)&&O(o,v),b===(b=g(n))&&_?_.p(t,n):(_.d(1),(_=b(e,n)).c(),_.m(c,null)),w===(w=y(n))&&k?k.p(t,n):(k.d(1),(k=w(e,n)).c(),k.m(d,null))},d:function(e){e&&h(n),_.d(),k.d()}}}function Kn(e,t){var n,i,a,s={},r={label:X("teams / products / add-product"),options:t.addableProducts};void 0!==t.addProduct&&(r.value=t.addProduct,s.value=!0);var o=new Un({root:e.root,store:e.store,data:r,_bind:function(t,n){var i={};!s.value&&t.value&&(i.addProduct=n.value),e._set(i),s={}}});e.root._beforecreate.push((function(){o._bind({value:1},o.get())}));var l=t.addProduct&&Xn(e,t);return{c:function(){n=T("div"),i=T("div"),o._fragment.c(),a=N("\n\n    "),l&&l.c(),C(i,"display","block"),C(n,"display","flex")},m:function(e,t){p(e,n,t),m(n,i),o._mount(i,null),m(n,a),l&&l.m(n,null)},p:function(i,a){t=a;var r={};i.addableProducts&&(r.options=t.addableProducts),!s.value&&i.addProduct&&(r.value=t.addProduct,s.value=void 0!==t.addProduct),o._set(r),s={},t.addProduct?l?l.p(i,t):((l=Xn(e,t)).c(),l.m(n,null)):l&&(l.d(1),l=null)},d:function(e){e&&h(n),o.destroy(),l&&l.d()}}}function Xn(e,t){var n,i,a,s,r,o,l=X("teams / products / add");function c(t){e.addProduct()}return{c:function(){n=T("div"),i=T("button"),a=T("i"),r=N("\n            "),o=T("noscript"),a.className=s="fa "+(t.addingProduct?"fa fa-spin fa-circle-o-notch":"fa-plus"),x(i,"click",c),i.className="btn btn-primary",C(i,"margin-left","10px"),C(n,"display","block")},m:function(e,t){p(e,n,t),m(n,i),m(i,a),m(i,r),m(i,o),o.insertAdjacentHTML("afterend",l)},p:function(e,t){e.addingProduct&&s!==(s="fa "+(t.addingProduct?"fa fa-spin fa-circle-o-notch":"fa-plus"))&&(a.className=s)},d:function(e){e&&h(n),H(i,"click",c)}}}function Qn(e){var t,n,i,a,s,r,o,l=this;V(this,e),this._state=u({productHeaders:[{title:X("teams / products / id"),width:"10%"},{title:X("teams / products / name"),width:"30%"},{title:X("teams / products / expires"),width:"30%"},{title:X("teams / products / actions"),width:"30%"}],editId:!1,updating:{},loadingTeamProducts:!0,loadingAllProducts:!0},e.data),this._recompute({products:1,allProducts:1},this._state),this._intro=!0,this._fragment=(t=this,n=this._state,r=X("teams / products / p"),o=n.isAdmin&&Rn(t,n),{c:function(){i=T("p"),a=N("\n\n"),o&&o.c(),s=k(),C(i,"margin-bottom","10px")},m:function(e,t){p(e,i,t),i.innerHTML=r,p(e,a,t),o&&o.m(e,t),p(e,s,t)},p:function(e,n){n.isAdmin?o?o.p(e,n):((o=Rn(t,n)).c(),o.m(s.parentNode,s)):o&&(o.d(1),o=null)},d:function(e){e&&(h(i),h(a)),o&&o.d(e),e&&h(s)}}),this.root._oncreate.push((function(){En.call(l),l.fire("update",{changed:d({},l._state),current:l._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}u(Qn.prototype,J),u(Qn.prototype,jn),Qn.prototype._recompute=function(e,t){var n,i,a;(e.products||e.allProducts)&&this._differs(t.addableProducts,t.addableProducts=(i=(n=t).products,(a=n.allProducts)&&i?a.filter((function(e){return!i.filter((function(t){return t.id===e.id})).length})).map((function(e){return{value:e.id,label:e.name}})):[]))&&(e.addableProducts=!0)};function Yn(e){return"function"==typeof e?e():e}function ei(){var e={};return e.promise=new Promise((function(t,n){e.resolve=t,e.reject=n})),e}var ti={},ni=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=void 0,a=void 0,s=void 0,r=[];return function(){var l=Yn(t),c=(new Date).getTime(),u=!i||c-i>l;i=c;for(var d=arguments.length,f=Array(d),m=0;m<d;m++)f[m]=arguments[m];if(u&&n.leading)return n.accumulate?Promise.resolve(e.call(this,[f])).then((function(e){return e[0]})):Promise.resolve(e.call.apply(e,[this].concat(f)));if(a?clearTimeout(s):a=ei(),r.push(f),s=setTimeout(o.bind(this),l),n.accumulate){var p=r.length-1;return a.promise.then((function(e){return e[p]}))}return a.promise};function o(){var t=a;clearTimeout(s),Promise.resolve(n.accumulate?e.call(this,r):e.apply(this,r[r.length-1])).then(t.resolve,t.reject),r=[],a=null}}((function(e,t,n){var i=JSON.stringify({team:e,settings:t,defaultTheme:n});return ti[e.id]===i?(ti[e.id]=i,new Promise((function(e,t){e()}))):(ti[e.id]=i,Je("/v3/teams/".concat(e.id),{payload:{name:e.name,defaultTheme:n,settings:t}}))}),500);function ii(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);t&&(i=i.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,i)}return n}function ai(t){for(var n=1;n<arguments.length;n++){var i=null!=arguments[n]?arguments[n]:{};n%2?ii(Object(i),!0).forEach((function(n){e(t,n,i[n])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(i)):ii(Object(i)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(i,e))}))}return t}var si,ri={id:"settings",title:X("teams / tab / settings"),icon:"fa fa-gears",group:X("teams / group / users"),order:10,h1:X("teams / defaults / h1"),ui:vn,data:{}},oi={id:"members",title:X("teams / tab / members"),icon:"im im-users",group:X("teams / group / users"),order:20,h1:X("teams / h1"),ui:Jt},li=!1;var ci={onTabChange:function(e,t){var n=this,i=e.team,a=e.settings,s=e.defaultTheme;ni(i,a,s).then((function(){n.set({team:i,settings:a,defaultTheme:s}),t&&t.saved&&t.saved()}))},setTab:function(e){var t=this,n=this.get().groups,i=!1;n.forEach((function(n){n.tabs.forEach((function(n){n.id===e&&(t.refs.navTabs.activateTab(n),i=!0)}))})),i||this.set({activeTab:ri})}};function ui(){var e=this;si=this;var t=window.location.pathname.split("/").slice(-1)[0]||"settings";this.setTab(t),window.addEventListener("popstate",(function(t){var n=t.state;li=!0,setTimeout((function(){return li=!1}),100),e.setTab(n.id)}))}function di(e){var t=e.changed,n=e.current;e.previous;t.activeTab&&n.activeTab&&!li&&window.history.pushState({id:n.activeTab.id},"","/team/".concat(n.team.id,"/").concat(n.activeTab.id))}function fi(e,t){var n,i=t.activeTab.h1;return{c:function(){(n=T("h2")).className="svelte-kailtr"},m:function(e,t){p(e,n,t),n.innerHTML=i},p:function(e,t){e.activeTab&&i!==(i=t.activeTab.h1)&&(n.innerHTML=i)},d:function(e){e&&h(n)}}}function mi(e){var t=this;V(this,e),this.refs={},this._state=u({allTabs:[ri,oi,{id:"delete",title:X("teams / tab / deleteTeam"),icon:"fa fa-times",group:X("teams / group / advanced"),order:80,h1:X("teams / delete / h1"),ui:Ln,ownerOnly:!0},{id:"products",title:X("teams / tab / adminProducts"),icon:"fa fa-list-alt",group:X("teams / group / internal"),order:90,h1:X("teams / products / h1"),ui:Qn,adminOnly:!0}],pluginTabs:[],activeTab:null,ui:vn,team:{name:""},settings:{},users:[],userId:null,visualizations:[],visualizationsArchive:[]},e.data),this._recompute({team:1,activeTab:1,allTabs:1,pluginTabs:1,isAdmin:1,role:1,tabs:1,users:1,userId:1,settings:1,defaultTheme:1,themes:1,folders:1,locales:1,visualizations:1,visualizationsArchive:1},this._state),this._intro=!0,this._handlers.state=[di],di.call(this,{changed:d({},this._state),current:this._state}),this._fragment=function(e,t){var n,i,a,s,r,o,l,c,u,d,f,v,g,b,_,y,k,x,H,A,L,U,P,j,E,S,I,D=X("account / my-teams"),q=X("nav / team / charts"),R={};document.title=n=t.pageTitle+" | Datawrapper";var W=t.activeTab&&t.activeTab.h1&&fi(e,t),z={basePath:"team/"+t.team.id,groups:t.groups};void 0!==t.activeTab&&(z.activeTab=t.activeTab,R.activeTab=!0);var B=new le({root:e.root,store:e.store,slots:{default:w(),belowMenu:w(),aboveContent:w()},data:z,_bind:function(t,n){var i={};!R.activeTab&&t.activeTab&&(i.activeTab=n.activeTab),e._set(i),R={}}});return e.root._beforecreate.push((function(){B._bind({activeTab:1},B.get())})),e.refs.navTabs=B,{c:function(){i=N("\n\n"),a=T("div"),s=T("div"),r=T("h1"),o=N(t.title),l=N("\n\n"),c=T("div"),u=T("div"),d=T("div"),W&&W.c(),f=N("\n            "),v=T("div"),g=T("hr"),b=N("\n                "),_=T("ul"),y=T("li"),k=T("a"),x=T("i"),H=N(" "),A=N(D),L=N("\n                    "),U=T("li"),P=T("a"),j=T("i"),E=N(" "),S=N(q),B._fragment.c(),r.className="title",C(r,"margin-bottom","18px"),s.className="span12 admin svelte-kailtr",a.className="row",M(d,"slot","aboveContent"),x.className="fa fa-fw fa-arrow-left",k.href="/account/teams",y.className="svelte-kailtr",j.className="fa fa-fw fa-arrow-left",P.href=I="/team/"+t.team.id,U.className="svelte-kailtr",_.className="unstyled svelte-kailtr",M(v,"slot","belowMenu"),u.className="visconfig",c.className="settings-section dw-create-visualize chart-editor chart-editor-web admin svelte-kailtr"},m:function(e,t){p(e,i,t),p(e,a,t),m(a,s),m(s,r),m(r,o),p(e,l,t),p(e,c,t),m(c,u),m(B._slotted.aboveContent,d),W&&W.m(d,null),m(B._slotted.default,f),m(B._slotted.belowMenu,v),m(v,g),m(v,b),m(v,_),m(_,y),m(y,k),m(k,x),m(k,H),m(k,A),m(_,L),m(_,U),m(U,P),m(P,j),m(P,E),m(P,S),B._mount(u,null)},p:function(i,a){t=a,i.pageTitle&&n!==(n=t.pageTitle+" | Datawrapper")&&(document.title=n),i.title&&O(o,t.title),t.activeTab&&t.activeTab.h1?W?W.p(i,t):((W=fi(e,t)).c(),W.m(d,null)):W&&(W.d(1),W=null),i.team&&I!==(I="/team/"+t.team.id)&&(P.href=I);var s={};i.team&&(s.basePath="team/"+t.team.id),i.groups&&(s.groups=t.groups),!R.activeTab&&i.activeTab&&(s.activeTab=t.activeTab,R.activeTab=void 0!==t.activeTab),B._set(s),R={}},d:function(t){t&&(h(i),h(a),h(l),h(c)),W&&W.d(),B.destroy(),e.refs.navTabs===B&&(e.refs.navTabs=null)}}}(this,this._state),this.root._oncreate.push((function(){ui.call(t),t.fire("update",{changed:d({},t._state),current:t._state})})),e.target&&(this._fragment.c(),this._mount(e.target,e.anchor),B(this))}function pi(e,t){this._handlers={},this._dependents=[],this._computed=q(),this._sortedComputedProperties=[],this._state=u({},e),this._differs=t&&t.immutable?W:R}return u(mi.prototype,J),u(mi.prototype,ci),mi.prototype._recompute=function(e,t){var n,i,a;(e.team||e.activeTab)&&this._differs(t.pageTitle,t.pageTitle=(i=(n=t).team,a=n.activeTab,"".concat(a?a.h1:""," | ").concat(Q(i.name,17,8))))&&(e.pageTitle=!0),e.team&&this._differs(t.title,t.title=function(e){var t=e.team;return"".concat(Q(t.name,17,8)," » ").concat(X("nav / team / settings"))}(t))&&(e.title=!0),(e.allTabs||e.team||e.pluginTabs||e.isAdmin||e.role)&&this._differs(t.tabs,t.tabs=function(e){var t=e.allTabs,n=e.team,i=e.pluginTabs,a=e.isAdmin,s=e.role;return[].concat(t,i).filter((function(e){return!(e.adminOnly&&!a)&&!(e.ownerOnly&&!a&&"owner"!==s)})).map((function(e){return ai(ai({},e),{},{h1:e.h1.replace("%team%",n.name)})}))}(t))&&(e.tabs=!0),(e.tabs||e.isAdmin||e.role||e.team||e.users||e.userId||e.settings||e.defaultTheme||e.themes||e.folders||e.locales||e.visualizations||e.visualizationsArchive)&&this._differs(t.groups,t.groups=function(e){var t=e.tabs,n=e.isAdmin,i=e.role,a=e.team,s=e.users,r=e.userId,o=e.settings,l=e.defaultTheme,c=e.themes,u=e.folders,d=e.locales,f=e.visualizations,m=e.visualizationsArchive,p=[];return t.forEach((function(e){e.data=ai({isAdmin:n,isTeamOwner:"owner"===i,team:a,users:s,userId:r,settings:o,defaultTheme:l,themes:c,folders:u,locales:d,visualizations:f,visualizationsArchive:m},e.data),e.onchange=function(e,t){si.onTabChange(e,t)},function(e,t){var n=e.filter((function(e){return e.title===t}));return n.length?n[0]:(e.push({title:t,tabs:[]}),e[e.length-1])}(p,e.group).tabs.push(e)})),p.forEach((function(e){e.tabs.sort((function(e,t){return e.order-t.order}))})),p}(t))&&(e.groups=!0)},u(pi.prototype,{_add:function(e,t){this._dependents.push({component:e,props:t})},_init:function(e){for(var t={},n=0;n<e.length;n+=1){var i=e[n];t["$"+i]=this._state[i]}return t},_remove:function(e){for(var t=this._dependents.length;t--;)if(this._dependents[t].component===e)return void this._dependents.splice(t,1)},_set:function(e,t){var n=this,i=this._state;this._state=u(u({},i),e);for(var a=0;a<this._sortedComputedProperties.length;a+=1)this._sortedComputedProperties[a].update(this._state,t);this.fire("state",{changed:t,previous:i,current:this._state}),this._dependents.filter((function(e){for(var i={},a=!1,s=0;s<e.props.length;s+=1){var r=e.props[s];r in t&&(i["$"+r]=n._state[r],a=!0)}if(a)return e.component._stage(i),!0})).forEach((function(e){e.component.set({})})),this.fire("update",{changed:t,previous:i,current:this._state})},_sortComputedProperties:function(){var e,t=this._computed,n=this._sortedComputedProperties=[],i=q();function a(s){var r=t[s];r&&(r.deps.forEach((function(t){if(t===e)throw new Error("Cyclical dependency detected between ".concat(t," <-> ").concat(s));a(t)})),i[s]||(i[s]=!0,n.push(r)))}for(var s in this._computed)a(e=s)},compute:function(e,t,n){var i,a=this,s={deps:t,update:function(s,r,o){var l=t.map((function(e){return e in r&&(o=!0),s[e]}));if(o){var c=n.apply(null,l);a._differs(c,i)&&(i=c,r[e]=!0,s[e]=i)}}};this._computed[e]=s,this._sortComputedProperties();var r=u({},this._state),o={};s.update(r,o,!0),this._set(r,o)},fire:z,get:F,on:$,set:function(e){var t=this._state,n=this._changed={},i=!1;for(var a in e){if(this._computed[a])throw new Error("'".concat(a,"' is a read-only computed property"));this._differs(e[a],t[a])&&(n[a]=i=!0)}i&&this._set(e,n)}}),{App:mi,store:new pi({})}}));
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('svelte/team-settings', factory) :
+	(global = global || self, global['team-settings'] = factory());
+}(this, (function () { 'use strict';
+
+	function noop() {}
+
+	function assign(tar, src) {
+		for (var k in src) tar[k] = src[k];
+		return tar;
+	}
+
+	function assignTrue(tar, src) {
+		for (var k in src) tar[k] = 1;
+		return tar;
+	}
+
+	function isPromise(value) {
+		return value && typeof value.then === 'function';
+	}
+
+	function addLoc(element, file, line, column, char) {
+		element.__svelte_meta = {
+			loc: { file, line, column, char }
+		};
+	}
+
+	function run(fn) {
+		fn();
+	}
+
+	function append(target, node) {
+		target.appendChild(node);
+	}
+
+	function insert(target, node, anchor) {
+		target.insertBefore(node, anchor);
+	}
+
+	function detachNode(node) {
+		node.parentNode.removeChild(node);
+	}
+
+	function detachBetween(before, after) {
+		while (before.nextSibling && before.nextSibling !== after) {
+			before.parentNode.removeChild(before.nextSibling);
+		}
+	}
+
+	function detachBefore(after) {
+		while (after.previousSibling) {
+			after.parentNode.removeChild(after.previousSibling);
+		}
+	}
+
+	function detachAfter(before) {
+		while (before.nextSibling) {
+			before.parentNode.removeChild(before.nextSibling);
+		}
+	}
+
+	function reinsertChildren(parent, target) {
+		while (parent.firstChild) target.appendChild(parent.firstChild);
+	}
+
+	function reinsertAfter(before, target) {
+		while (before.nextSibling) target.appendChild(before.nextSibling);
+	}
+
+	function reinsertBefore(after, target) {
+		var parent = after.parentNode;
+		while (parent.firstChild !== after) target.appendChild(parent.firstChild);
+	}
+
+	function destroyEach(iterations, detach) {
+		for (var i = 0; i < iterations.length; i += 1) {
+			if (iterations[i]) iterations[i].d(detach);
+		}
+	}
+
+	function createFragment() {
+		return document.createDocumentFragment();
+	}
+
+	function createElement(name) {
+		return document.createElement(name);
+	}
+
+	function createText(data) {
+		return document.createTextNode(data);
+	}
+
+	function createComment() {
+		return document.createComment('');
+	}
+
+	function addListener(node, event, handler, options) {
+		node.addEventListener(event, handler, options);
+	}
+
+	function removeListener(node, event, handler, options) {
+		node.removeEventListener(event, handler, options);
+	}
+
+	function setAttribute(node, attribute, value) {
+		if (value == null) node.removeAttribute(attribute);
+		else node.setAttribute(attribute, value);
+	}
+
+	function setData(text, data) {
+		text.data = '' + data;
+	}
+
+	function setStyle(node, key, value) {
+		node.style.setProperty(key, value);
+	}
+
+	function selectOption(select, value) {
+		for (var i = 0; i < select.options.length; i += 1) {
+			var option = select.options[i];
+
+			if (option.__value === value) {
+				option.selected = true;
+				return;
+			}
+		}
+	}
+
+	function selectValue(select) {
+		var selectedOption = select.querySelector(':checked') || select.options[0];
+		return selectedOption && selectedOption.__value;
+	}
+
+	function toggleClass(element, name, toggle) {
+		element.classList[toggle ? 'add' : 'remove'](name);
+	}
+
+	function linear(t) {
+		return t;
+	}
+
+	function generateRule({ a, b, delta, duration }, ease, fn) {
+		const step = 16.666 / duration;
+		let keyframes = '{\n';
+
+		for (let p = 0; p <= 1; p += step) {
+			const t = a + delta * ease(p);
+			keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+		}
+
+		return keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+	}
+
+	// https://github.com/darkskyapp/string-hash/blob/master/index.js
+	function hash(str) {
+		let hash = 5381;
+		let i = str.length;
+
+		while (i--) hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+		return hash >>> 0;
+	}
+
+	function wrapTransition(component, node, fn, params, intro) {
+		let obj = fn.call(component, node, params);
+		let duration;
+		let ease;
+		let cssText;
+
+		let initialised = false;
+
+		return {
+			t: intro ? 0 : 1,
+			running: false,
+			program: null,
+			pending: null,
+
+			run(b, callback) {
+				if (typeof obj === 'function') {
+					transitionManager.wait().then(() => {
+						obj = obj();
+						this._run(b, callback);
+					});
+				} else {
+					this._run(b, callback);
+				}
+			},
+
+			_run(b, callback) {
+				duration = obj.duration || 300;
+				ease = obj.easing || linear;
+
+				const program = {
+					start: window.performance.now() + (obj.delay || 0),
+					b,
+					callback: callback || noop
+				};
+
+				if (intro && !initialised) {
+					if (obj.css && obj.delay) {
+						cssText = node.style.cssText;
+						node.style.cssText += obj.css(0, 1);
+					}
+
+					if (obj.tick) obj.tick(0, 1);
+					initialised = true;
+				}
+
+				if (!b) {
+					program.group = outros.current;
+					outros.current.remaining += 1;
+				}
+
+				if (obj.delay) {
+					this.pending = program;
+				} else {
+					this.start(program);
+				}
+
+				if (!this.running) {
+					this.running = true;
+					transitionManager.add(this);
+				}
+			},
+
+			start(program) {
+				component.fire(`${program.b ? 'intro' : 'outro'}.start`, { node });
+
+				program.a = this.t;
+				program.delta = program.b - program.a;
+				program.duration = duration * Math.abs(program.b - program.a);
+				program.end = program.start + program.duration;
+
+				if (obj.css) {
+					if (obj.delay) node.style.cssText = cssText;
+
+					const rule = generateRule(program, ease, obj.css);
+					transitionManager.addRule(rule, program.name = '__svelte_' + hash(rule));
+
+					node.style.animation = (node.style.animation || '')
+						.split(', ')
+						.filter(anim => anim && (program.delta < 0 || !/__svelte/.test(anim)))
+						.concat(`${program.name} ${program.duration}ms linear 1 forwards`)
+						.join(', ');
+				}
+
+				this.program = program;
+				this.pending = null;
+			},
+
+			update(now) {
+				const program = this.program;
+				if (!program) return;
+
+				const p = now - program.start;
+				this.t = program.a + program.delta * ease(p / program.duration);
+				if (obj.tick) obj.tick(this.t, 1 - this.t);
+			},
+
+			done() {
+				const program = this.program;
+				this.t = program.b;
+
+				if (obj.tick) obj.tick(this.t, 1 - this.t);
+
+				component.fire(`${program.b ? 'intro' : 'outro'}.end`, { node });
+
+				if (!program.b && !program.invalidated) {
+					program.group.callbacks.push(() => {
+						program.callback();
+						if (obj.css) transitionManager.deleteRule(node, program.name);
+					});
+
+					if (--program.group.remaining === 0) {
+						program.group.callbacks.forEach(run);
+					}
+				} else {
+					if (obj.css) transitionManager.deleteRule(node, program.name);
+				}
+
+				this.running = !!this.pending;
+			},
+
+			abort(reset) {
+				if (this.program) {
+					if (reset && obj.tick) obj.tick(1, 0);
+					if (obj.css) transitionManager.deleteRule(node, this.program.name);
+					this.program = this.pending = null;
+					this.running = false;
+				}
+			},
+
+			invalidate() {
+				if (this.program) {
+					this.program.invalidated = true;
+				}
+			}
+		};
+	}
+
+	let outros = {};
+
+	function groupOutros() {
+		outros.current = {
+			remaining: 0,
+			callbacks: []
+		};
+	}
+
+	var transitionManager = {
+		running: false,
+		transitions: [],
+		bound: null,
+		stylesheet: null,
+		activeRules: {},
+		promise: null,
+
+		add(transition) {
+			this.transitions.push(transition);
+
+			if (!this.running) {
+				this.running = true;
+				requestAnimationFrame(this.bound || (this.bound = this.next.bind(this)));
+			}
+		},
+
+		addRule(rule, name) {
+			if (!this.stylesheet) {
+				const style = createElement('style');
+				document.head.appendChild(style);
+				transitionManager.stylesheet = style.sheet;
+			}
+
+			if (!this.activeRules[name]) {
+				this.activeRules[name] = true;
+				this.stylesheet.insertRule(`@keyframes ${name} ${rule}`, this.stylesheet.cssRules.length);
+			}
+		},
+
+		next() {
+			this.running = false;
+
+			const now = window.performance.now();
+			let i = this.transitions.length;
+
+			while (i--) {
+				const transition = this.transitions[i];
+
+				if (transition.program && now >= transition.program.end) {
+					transition.done();
+				}
+
+				if (transition.pending && now >= transition.pending.start) {
+					transition.start(transition.pending);
+				}
+
+				if (transition.running) {
+					transition.update(now);
+					this.running = true;
+				} else if (!transition.pending) {
+					this.transitions.splice(i, 1);
+				}
+			}
+
+			if (this.running) {
+				requestAnimationFrame(this.bound);
+			} else if (this.stylesheet) {
+				let i = this.stylesheet.cssRules.length;
+				while (i--) this.stylesheet.deleteRule(i);
+				this.activeRules = {};
+			}
+		},
+
+		deleteRule(node, name) {
+			node.style.animation = node.style.animation
+				.split(', ')
+				.filter(anim => anim && anim.indexOf(name) === -1)
+				.join(', ');
+		},
+
+		wait() {
+			if (!transitionManager.promise) {
+				transitionManager.promise = Promise.resolve();
+				transitionManager.promise.then(() => {
+					transitionManager.promise = null;
+				});
+			}
+
+			return transitionManager.promise;
+		}
+	};
+
+	function handlePromise(promise, info) {
+		var token = info.token = {};
+
+		function update(type, index, key, value) {
+			if (info.token !== token) return;
+
+			info.resolved = key && { [key]: value };
+
+			const child_ctx = assign(assign({}, info.ctx), info.resolved);
+			const block = type && (info.current = type)(info.component, child_ctx);
+
+			if (info.block) {
+				if (info.blocks) {
+					info.blocks.forEach((block, i) => {
+						if (i !== index && block) {
+							groupOutros();
+							block.o(() => {
+								block.d(1);
+								info.blocks[i] = null;
+							});
+						}
+					});
+				} else {
+					info.block.d(1);
+				}
+
+				block.c();
+				block[block.i ? 'i' : 'm'](info.mount(), info.anchor);
+
+				info.component.root.set({}); // flush any handlers that were created
+			}
+
+			info.block = block;
+			if (info.blocks) info.blocks[index] = block;
+		}
+
+		if (isPromise(promise)) {
+			promise.then(value => {
+				update(info.then, 1, info.value, value);
+			}, error => {
+				update(info.catch, 2, info.error, error);
+			});
+
+			// if we previously had a then/catch block, destroy it
+			if (info.current !== info.pending) {
+				update(info.pending, 0);
+				return true;
+			}
+		} else {
+			if (info.current !== info.then) {
+				update(info.then, 1, info.value, promise);
+				return true;
+			}
+
+			info.resolved = { [info.value]: promise };
+		}
+	}
+
+	function getSpreadUpdate(levels, updates) {
+		var update = {};
+
+		var to_null_out = {};
+		var accounted_for = {};
+
+		var i = levels.length;
+		while (i--) {
+			var o = levels[i];
+			var n = updates[i];
+
+			if (n) {
+				for (var key in o) {
+					if (!(key in n)) to_null_out[key] = 1;
+				}
+
+				for (var key in n) {
+					if (!accounted_for[key]) {
+						update[key] = n[key];
+						accounted_for[key] = 1;
+					}
+				}
+
+				levels[i] = n;
+			} else {
+				for (var key in o) {
+					accounted_for[key] = 1;
+				}
+			}
+		}
+
+		for (var key in to_null_out) {
+			if (!(key in update)) update[key] = undefined;
+		}
+
+		return update;
+	}
+
+	function blankObject() {
+		return Object.create(null);
+	}
+
+	function destroy(detach) {
+		this.destroy = noop;
+		this.fire('destroy');
+		this.set = noop;
+
+		this._fragment.d(detach !== false);
+		this._fragment = null;
+		this._state = {};
+	}
+
+	function destroyDev(detach) {
+		destroy.call(this, detach);
+		this.destroy = function() {
+			console.warn('Component was already destroyed');
+		};
+	}
+
+	function _differs(a, b) {
+		return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+	}
+
+	function _differsImmutable(a, b) {
+		return a != a ? b == b : a !== b;
+	}
+
+	function fire(eventName, data) {
+		var handlers =
+			eventName in this._handlers && this._handlers[eventName].slice();
+		if (!handlers) return;
+
+		for (var i = 0; i < handlers.length; i += 1) {
+			var handler = handlers[i];
+
+			if (!handler.__calling) {
+				try {
+					handler.__calling = true;
+					handler.call(this, data);
+				} finally {
+					handler.__calling = false;
+				}
+			}
+		}
+	}
+
+	function flush(component) {
+		component._lock = true;
+		callAll(component._beforecreate);
+		callAll(component._oncreate);
+		callAll(component._aftercreate);
+		component._lock = false;
+	}
+
+	function get() {
+		return this._state;
+	}
+
+	function init(component, options) {
+		component._handlers = blankObject();
+		component._slots = blankObject();
+		component._bind = options._bind;
+		component._staged = {};
+
+		component.options = options;
+		component.root = options.root || component;
+		component.store = options.store || component.root.store;
+
+		if (!options.root) {
+			component._beforecreate = [];
+			component._oncreate = [];
+			component._aftercreate = [];
+		}
+	}
+
+	function on(eventName, handler) {
+		var handlers = this._handlers[eventName] || (this._handlers[eventName] = []);
+		handlers.push(handler);
+
+		return {
+			cancel: function() {
+				var index = handlers.indexOf(handler);
+				if (~index) handlers.splice(index, 1);
+			}
+		};
+	}
+
+	function set(newState) {
+		this._set(assign({}, newState));
+		if (this.root._lock) return;
+		flush(this.root);
+	}
+
+	function _set(newState) {
+		var oldState = this._state,
+			changed = {},
+			dirty = false;
+
+		newState = assign(this._staged, newState);
+		this._staged = {};
+
+		for (var key in newState) {
+			if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+		}
+		if (!dirty) return;
+
+		this._state = assign(assign({}, oldState), newState);
+		this._recompute(changed, this._state);
+		if (this._bind) this._bind(changed, this._state);
+
+		if (this._fragment) {
+			this.fire("state", { changed: changed, current: this._state, previous: oldState });
+			this._fragment.p(changed, this._state);
+			this.fire("update", { changed: changed, current: this._state, previous: oldState });
+		}
+	}
+
+	function _stage(newState) {
+		assign(this._staged, newState);
+	}
+
+	function setDev(newState) {
+		if (typeof newState !== 'object') {
+			throw new Error(
+				this._debugName + '.set was called without an object of data key-values to update.'
+			);
+		}
+
+		this._checkReadOnly(newState);
+		set.call(this, newState);
+	}
+
+	function callAll(fns) {
+		while (fns && fns.length) fns.shift()();
+	}
+
+	function _mount(target, anchor) {
+		this._fragment[this._fragment.i ? 'i' : 'm'](target, anchor || null);
+	}
+
+	var protoDev = {
+		destroy: destroyDev,
+		get,
+		fire,
+		on,
+		set: setDev,
+		_recompute: noop,
+		_set,
+		_stage,
+		_mount,
+		_differs
+	};
+
+	/* globals dw */
+
+	let __messages = {};
+
+	function initMessages(scope = 'core') {
+	    // let's check if we're in a chart
+	    if (scope === 'chart') {
+	        if (window.__dw && window.__dw.vis && window.__dw.vis.meta) {
+	            // use in-chart translations
+	            __messages[scope] = window.__dw.vis.meta.locale || {};
+	        }
+	    } else {
+	        // use backend translations
+	        __messages[scope] =
+	            scope === 'core'
+	                ? dw.backend.__messages.core
+	                : Object.assign({}, dw.backend.__messages.core, dw.backend.__messages[scope]);
+	    }
+	}
+
+	/**
+	 * translates a message key. translations are originally stored in a
+	 * Google spreadsheet that we're pulling into Datawrapper using the
+	 * `scripts/update-translations` script, which stores them as `:locale.json`
+	 * files in the /locale folders (both in core as well as inside plugin folders)
+	 *
+	 * for the client-side translation to work we are also storing the translations
+	 * in the global `window.dw.backend.__messages` object. plugins that need
+	 * client-side translations must set `"svelte": true` in their plugin.json
+	 *
+	 * @param {string} key -- the key to be translated, e.g. "signup / hed"
+	 * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
+	 * @returns {string} -- the translated text
+	 */
+	function __(key, scope = 'core') {
+	    key = key.trim();
+	    if (!__messages[scope]) initMessages(scope);
+	    if (!__messages[scope][key]) return 'MISSING:' + key;
+	    var translation = __messages[scope][key];
+
+	    if (typeof translation === 'string' && arguments.length > 2) {
+	        // replace $0, $1 etc with remaining arguments
+	        translation = translation.replace(/\$(\d)/g, (m, i) => {
+	            i = 2 + Number(i);
+	            if (arguments[i] === undefined) return m;
+	            return arguments[i];
+	        });
+	    }
+	    return translation;
+	}
+
+	/**
+	 * Shorten a string by removing characters from the middle
+	 *
+	 * @exports truncate
+	 * @kind function
+	 *
+	 * @example
+	 * import truncate from '@datawrapper/shared/truncate';
+	 * // returns 'This is a…tring'
+	 * truncate('This is a very very long string')
+	 *
+	 * @param {string} str
+	 * @param {number} start - characters to keep at start of string
+	 * @param {number} end - characters to keep at end off string
+	 * @returns {string}
+	 */
+	function truncate(str, start = 11, end = 7) {
+	    if (typeof str !== 'string') return str;
+	    if (str.length < start + end + 3) return str;
+	    return str.substr(0, start).trim() + '…' + str.substr(str.length - end).trim();
+	}
+
+	/**
+	 * Download and parse a remote JSON document. Use {@link httpReq} instead
+	 *
+	 * @deprecated
+	 *
+	 * @param {string} url
+	 * @param {string} method - HTTP method, either GET, POST or PUT
+	 * @param {string|undefined} credentials - set to "include" if cookies should be passed along CORS requests
+	 * @param {string} body
+	 * @param {function} callback
+	 *
+	 * @returns {Promise}
+	 *
+	 * @example
+	 * import { fetchJSON } from '@datawrapper/shared/fetch';
+	 * fetchJSON('http://api.example.org', 'GET', 'include');
+	 */
+
+	/**
+	 * injects a `<script>` element to the page to load a new JS script
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadScript } from '@datawrapper/shared/fetch';
+	 *
+	 * loadScript('/static/js/library.js', () => {
+	 *     console.log('library is loaded');
+	 * })
+	 */
+	function loadScript(src, callback = null) {
+	    return new Promise((resolve, reject) => {
+	        const script = document.createElement('script');
+	        script.src = src;
+	        script.onload = () => {
+	            if (callback) callback();
+	            resolve();
+	        };
+	        script.onerror = reject;
+	        document.body.appendChild(script);
+	    });
+	}
+
+	/**
+	 * injects a `<link>` element to the page to load a new stylesheet
+	 *
+	 * @param {string} src
+	 * @param {function} callback
+	 *
+	 * @example
+	 * import { loadStylesheet } from '@datawrapper/shared/fetch';
+	 *
+	 * loadStylesheet('/static/css/library.css', () => {
+	 *     console.log('library styles are loaded');
+	 * })
+	 */
+	function loadStylesheet(src, callback = null) {
+	    return new Promise((resolve, reject) => {
+	        const link = document.createElement('link');
+	        link.rel = 'stylesheet';
+	        link.href = src;
+	        link.onload = () => {
+	            if (callback) callback();
+	            resolve();
+	        };
+	        link.onerror = reject;
+	        document.head.appendChild(link);
+	    });
+	}
+
+	/* shared/NavTabs.html generated by Svelte v2.16.1 */
+
+	function data() {
+	    return {
+	        groups: [],
+	        basePath: '',
+	        activeTab: null
+	    };
+	}
+	var methods = {
+	    activateTab(tab, event = null) {
+	        if (tab.module) {
+	            if (event) event.preventDefault();
+	            Promise.all([loadStylesheet(tab.css), loadScript(tab.js || tab.src)]).then(
+	                () => {
+	                    require([tab.module], mod => {
+	                        tab.ui = mod.App;
+	                        tab.module = null;
+	                        const { groups } = this.get();
+	                        this.set({
+	                            groups,
+	                            activeTab: tab
+	                        });
+	                    });
+	                }
+	            );
+	            return;
+	        }
+	        if (tab.ui) {
+	            if (event) event.preventDefault();
+	            this.set({ activeTab: tab });
+	        }
+	    },
+	    onTabChange(tab, event) {
+	        if (tab.onchange) {
+	            tab.onchange(event, this.refs.currentTabUi);
+	        }
+	    }
+	};
+
+	const file = "shared/NavTabs.html";
+
+	function click_handler(event) {
+		const { component, ctx } = this._svelte;
+
+		component.activateTab(ctx.tab, event);
+	}
+
+	function get_each_context_1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.tab = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.group = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment(component, ctx) {
+		var div1, div0, text0, slot_content_belowMenu = component._slotted.belowMenu, slot_content_belowMenu_before, text1;
+
+		var each_value = ctx.groups;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block(component, get_each_context(ctx, each_value, i));
+		}
+
+		var if_block = (ctx.activeTab) && create_if_block(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				text0 = createText("\n        ");
+				text1 = createText("\n    ");
+				if (if_block) if_block.c();
+				div0.className = "span2 svelte-5we305";
+				addLoc(div0, file, 1, 4, 22);
+				div1.className = "row";
+				addLoc(div1, file, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div0, null);
+				}
+
+				append(div0, text0);
+
+				if (slot_content_belowMenu) {
+					append(div0, slot_content_belowMenu_before || (slot_content_belowMenu_before = createComment()));
+					append(div0, slot_content_belowMenu);
+				}
+
+				append(div1, text1);
+				if (if_block) if_block.m(div1, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.groups || changed.activeTab || changed.basePath) {
+					each_value = ctx.groups;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(div0, text0);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				if (ctx.activeTab) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				destroyEach(each_blocks, detach);
+
+				if (slot_content_belowMenu) {
+					reinsertAfter(slot_content_belowMenu_before, slot_content_belowMenu);
+				}
+
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (7:12) {#each group.tabs as tab}
+	function create_each_block_1(component, ctx) {
+		var li, a, i, i_class_value, text0, text1_value = ctx.tab.title, text1, a_href_value;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				a = createElement("a");
+				i = createElement("i");
+				text0 = createText("   ");
+				text1 = createText(text1_value);
+				i.className = i_class_value = "" + ctx.tab.icon + " svelte-5we305";
+				addLoc(i, file, 9, 21, 399);
+
+				a._svelte = { component, ctx };
+
+				addListener(a, "click", click_handler);
+				a.href = a_href_value = ctx.tab.url || `/${ctx.basePath}/${ctx.tab.id}`;
+				a.className = "svelte-5we305";
+				addLoc(a, file, 8, 16, 293);
+				li.className = "svelte-5we305";
+				toggleClass(li, "active", ctx.activeTab && ctx.activeTab.id === ctx.tab.id);
+				addLoc(li, file, 7, 12, 220);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, a);
+				append(a, i);
+				append(a, text0);
+				append(a, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.groups) && i_class_value !== (i_class_value = "" + ctx.tab.icon + " svelte-5we305")) {
+					i.className = i_class_value;
+				}
+
+				if ((changed.groups) && text1_value !== (text1_value = ctx.tab.title)) {
+					setData(text1, text1_value);
+				}
+
+				a._svelte.ctx = ctx;
+				if ((changed.groups || changed.basePath) && a_href_value !== (a_href_value = ctx.tab.url || `/${ctx.basePath}/${ctx.tab.id}`)) {
+					a.href = a_href_value;
+				}
+
+				if ((changed.activeTab || changed.groups)) {
+					toggleClass(li, "active", ctx.activeTab && ctx.activeTab.id === ctx.tab.id);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+
+				removeListener(a, "click", click_handler);
+			}
+		};
+	}
+
+	// (3:8) {#each groups as group}
+	function create_each_block(component, ctx) {
+		var div, text0_value = ctx.group.title, text0, text1, ul;
+
+		var each_value_1 = ctx.group.tabs;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block_1(component, get_each_context_1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText(text0_value);
+				text1 = createText("\n\n        ");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				div.className = "group svelte-5we305";
+				addLoc(div, file, 3, 8, 82);
+				ul.className = "nav nav-stacked nav-tabs";
+				addLoc(ul, file, 5, 8, 132);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, text0);
+				insert(target, text1, anchor);
+				insert(target, ul, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.groups) && text0_value !== (text0_value = ctx.group.title)) {
+					setData(text0, text0_value);
+				}
+
+				if (changed.activeTab || changed.groups || changed.basePath) {
+					each_value_1 = ctx.group.tabs;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+					detachNode(text1);
+					detachNode(ul);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	// (18:4) {#if activeTab}
+	function create_if_block(component, ctx) {
+		var div, slot_content_aboveContent = component._slotted.aboveContent, slot_content_aboveContent_after, text0, text1, slot_content_belowContent = component._slotted.belowContent, slot_content_belowContent_before, div_class_value;
+
+		var switch_instance_spread_levels = [
+			ctx.activeTab.data
+		];
+
+		var switch_value = ctx.activeTab.ui;
+
+		function switch_props(ctx) {
+			var switch_instance_initial_data = {};
+			for (var i = 0; i < switch_instance_spread_levels.length; i += 1) {
+				switch_instance_initial_data = assign(switch_instance_initial_data, switch_instance_spread_levels[i]);
+			}
+			return {
+				root: component.root,
+				store: component.store,
+				data: switch_instance_initial_data
+			};
+		}
+
+		if (switch_value) {
+			var switch_instance = new switch_value(switch_props());
+		}
+
+		function switch_instance_change(event) {
+			component.onTabChange(ctx.activeTab, event);
+		}
+
+		if (switch_instance) switch_instance.on("change", switch_instance_change);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				text0 = createText("\n        ");
+				if (switch_instance) switch_instance._fragment.c();
+				text1 = createText("\n        ");
+				div.className = div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-5we305";
+				addLoc(div, file, 18, 4, 607);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (slot_content_aboveContent) {
+					append(div, slot_content_aboveContent);
+					append(div, slot_content_aboveContent_after || (slot_content_aboveContent_after = createComment()));
+				}
+
+				append(div, text0);
+
+				if (switch_instance) {
+					switch_instance._mount(div, null);
+					component.refs.currentTabUi = switch_instance;
+				}
+
+				append(div, text1);
+
+				if (slot_content_belowContent) {
+					append(div, slot_content_belowContent_before || (slot_content_belowContent_before = createComment()));
+					append(div, slot_content_belowContent);
+				}
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var switch_instance_changes = changed.activeTab ? getSpreadUpdate(switch_instance_spread_levels, [
+					ctx.activeTab.data
+				]) : {};
+
+				if (switch_value !== (switch_value = ctx.activeTab.ui)) {
+					if (switch_instance) {
+						switch_instance.destroy();
+					}
+
+					if (switch_value) {
+						switch_instance = new switch_value(switch_props());
+						switch_instance._fragment.c();
+						switch_instance._mount(div, text1);
+
+						switch_instance.on("change", switch_instance_change);
+
+						component.refs.currentTabUi = switch_instance;
+					} else {
+						switch_instance = null;
+						if (component.refs.currentTabUi === switch_instance) {
+							component.refs.currentTabUi = null;
+						}
+					}
+				}
+
+				else if (switch_value) {
+					switch_instance._set(switch_instance_changes);
+				}
+
+				if ((changed.activeTab) && div_class_value !== (div_class_value = "span10 account-page-content tab-" + ctx.activeTab.id + " svelte-5we305")) {
+					div.className = div_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_aboveContent) {
+					reinsertBefore(slot_content_aboveContent_after, slot_content_aboveContent);
+				}
+
+				if (switch_instance) switch_instance.destroy();
+
+				if (slot_content_belowContent) {
+					reinsertAfter(slot_content_belowContent_before, slot_content_belowContent);
+				}
+			}
+		};
+	}
+
+	function NavTabs(options) {
+		this._debugName = '<NavTabs>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data(), options.data);
+		if (!('groups' in this._state)) console.warn("<NavTabs> was created without expected data property 'groups'");
+		if (!('activeTab' in this._state)) console.warn("<NavTabs> was created without expected data property 'activeTab'");
+		if (!('basePath' in this._state)) console.warn("<NavTabs> was created without expected data property 'basePath'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(NavTabs.prototype, protoDev);
+	assign(NavTabs.prototype, methods);
+
+	NavTabs.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/TableDisplay.html generated by Svelte v2.16.1 */
+
+	const ORDER = { true: 'ASC', false: 'DESC' };
+	const DEFAULT_ORDER = ORDER.true;
+
+	function isActive({ orderBy }) {
+		return item => orderBy === item.orderBy;
+	}
+
+	function isAscending({ order }) {
+		return order === DEFAULT_ORDER;
+	}
+
+	function data$1() {
+		return {
+	    order: DEFAULT_ORDER,
+	    orderBy: ''
+	};
+	}
+
+	var methods$1 = {
+	    sort(event, orderBy) {
+	        event.preventDefault();
+
+	        // if `orderBy` didn't change, invert sort order:
+	        const order = (current => {
+	            if (orderBy === current.orderBy) {
+	                return ORDER[current.order !== DEFAULT_ORDER];
+	            } else {
+	                return DEFAULT_ORDER;
+	            }
+	        })(this.get());
+
+	        this.set({ orderBy, order });
+	        this.fire('sort', { orderBy, order });
+	    }
+	};
+
+	const file$1 = "home/david/Projects/core/libs/controls/v2/TableDisplay.html";
+
+	function click_handler$1(event) {
+		const { component, ctx } = this._svelte;
+
+		component.sort(event, ctx.item.orderBy);
+	}
+
+	function get_each1_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.item = list[i];
+		return child_ctx;
+	}
+
+	function get_each0_context(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.item = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$1(component, ctx) {
+		var div, table, colgroup, text0, thead, tr, text1, tbody, slot_content_default = component._slotted.default;
+
+		var each0_value = ctx.columnHeaders;
+
+		var each0_blocks = [];
+
+		for (var i = 0; i < each0_value.length; i += 1) {
+			each0_blocks[i] = create_each_block_1$1(component, get_each0_context(ctx, each0_value, i));
+		}
+
+		var each1_value = ctx.columnHeaders;
+
+		var each1_blocks = [];
+
+		for (var i = 0; i < each1_value.length; i += 1) {
+			each1_blocks[i] = create_each_block$1(component, get_each1_context(ctx, each1_value, i));
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				table = createElement("table");
+				colgroup = createElement("colgroup");
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].c();
+				}
+
+				text0 = createText("\n\n        ");
+				thead = createElement("thead");
+				tr = createElement("tr");
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].c();
+				}
+
+				text1 = createText("\n\n        ");
+				tbody = createElement("tbody");
+				addLoc(colgroup, file$1, 2, 8, 64);
+				addLoc(tr, file$1, 9, 12, 234);
+				addLoc(thead, file$1, 8, 8, 214);
+				addLoc(tbody, file$1, 28, 8, 934);
+				table.className = "table svelte-1ef3poq";
+				addLoc(table, file$1, 1, 4, 34);
+				div.className = "table-container svelte-1ef3poq";
+				addLoc(div, file$1, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, table);
+				append(table, colgroup);
+
+				for (var i = 0; i < each0_blocks.length; i += 1) {
+					each0_blocks[i].m(colgroup, null);
+				}
+
+				append(table, text0);
+				append(table, thead);
+				append(thead, tr);
+
+				for (var i = 0; i < each1_blocks.length; i += 1) {
+					each1_blocks[i].m(tr, null);
+				}
+
+				append(table, text1);
+				append(table, tbody);
+
+				if (slot_content_default) {
+					append(tbody, slot_content_default);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.columnHeaders) {
+					each0_value = ctx.columnHeaders;
+
+					for (var i = 0; i < each0_value.length; i += 1) {
+						const child_ctx = get_each0_context(ctx, each0_value, i);
+
+						if (each0_blocks[i]) {
+							each0_blocks[i].p(changed, child_ctx);
+						} else {
+							each0_blocks[i] = create_each_block_1$1(component, child_ctx);
+							each0_blocks[i].c();
+							each0_blocks[i].m(colgroup, null);
+						}
+					}
+
+					for (; i < each0_blocks.length; i += 1) {
+						each0_blocks[i].d(1);
+					}
+					each0_blocks.length = each0_value.length;
+				}
+
+				if (changed.columnHeaders || changed.isActive || changed.isAscending) {
+					each1_value = ctx.columnHeaders;
+
+					for (var i = 0; i < each1_value.length; i += 1) {
+						const child_ctx = get_each1_context(ctx, each1_value, i);
+
+						if (each1_blocks[i]) {
+							each1_blocks[i].p(changed, child_ctx);
+						} else {
+							each1_blocks[i] = create_each_block$1(component, child_ctx);
+							each1_blocks[i].c();
+							each1_blocks[i].m(tr, null);
+						}
+					}
+
+					for (; i < each1_blocks.length; i += 1) {
+						each1_blocks[i].d(1);
+					}
+					each1_blocks.length = each1_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				destroyEach(each0_blocks, detach);
+
+				destroyEach(each1_blocks, detach);
+
+				if (slot_content_default) {
+					reinsertChildren(tbody, slot_content_default);
+				}
+			}
+		};
+	}
+
+	// (4:12) {#each columnHeaders as item}
+	function create_each_block_1$1(component, ctx) {
+		var col;
+
+		return {
+			c: function create() {
+				col = createElement("col");
+				setStyle(col, "width", ctx.item.width);
+				addLoc(col, file$1, 4, 12, 129);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, col, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.columnHeaders) {
+					setStyle(col, "width", ctx.item.width);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(col);
+				}
+			}
+		};
+	}
+
+	// (21:20) {:else}
+	function create_else_block(component, ctx) {
+		var span, text_value = ctx.item.title, text;
+
+		return {
+			c: function create() {
+				span = createElement("span");
+				text = createText(text_value);
+				span.className = "col";
+				addLoc(span, file$1, 21, 20, 780);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span, anchor);
+				append(span, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.columnHeaders) && text_value !== (text_value = ctx.item.title)) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span);
+				}
+			}
+		};
+	}
+
+	// (13:20) {#if item.orderBy}
+	function create_if_block$1(component, ctx) {
+		var a, text_value = ctx.item.title, text, a_class_value, a_href_value;
+
+		return {
+			c: function create() {
+				a = createElement("a");
+				text = createText(text_value);
+				a._svelte = { component, ctx };
+
+				addListener(a, "click", click_handler$1);
+				a.className = a_class_value = "sortable " + (ctx.isActive(ctx.item) ? ctx.isAscending ? 'sortable-asc' : 'sortable-desc' : '') + " svelte-1ef3poq";
+				a.href = a_href_value = `?orderBy=${ctx.item.orderBy}`;
+				addLoc(a, file$1, 13, 20, 412);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, a, anchor);
+				append(a, text);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.columnHeaders) && text_value !== (text_value = ctx.item.title)) {
+					setData(text, text_value);
+				}
+
+				a._svelte.ctx = ctx;
+				if ((changed.isActive || changed.columnHeaders || changed.isAscending) && a_class_value !== (a_class_value = "sortable " + (ctx.isActive(ctx.item) ? ctx.isAscending ? 'sortable-asc' : 'sortable-desc' : '') + " svelte-1ef3poq")) {
+					a.className = a_class_value;
+				}
+
+				if ((changed.columnHeaders) && a_href_value !== (a_href_value = `?orderBy=${ctx.item.orderBy}`)) {
+					a.href = a_href_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(a);
+				}
+
+				removeListener(a, "click", click_handler$1);
+			}
+		};
+	}
+
+	// (11:16) {#each columnHeaders as item}
+	function create_each_block$1(component, ctx) {
+		var th, th_class_value;
+
+		function select_block_type(ctx) {
+			if (ctx.item.orderBy) return create_if_block$1;
+			return create_else_block;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				th = createElement("th");
+				if_block.c();
+				th.className = th_class_value = "" + (ctx.item.className ? ctx.item.className : '') + " svelte-1ef3poq";
+				addLoc(th, file$1, 11, 16, 301);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, th, anchor);
+				if_block.m(th, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(th, null);
+				}
+
+				if ((changed.columnHeaders) && th_class_value !== (th_class_value = "" + (ctx.item.className ? ctx.item.className : '') + " svelte-1ef3poq")) {
+					th.className = th_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(th);
+				}
+
+				if_block.d();
+			}
+		};
+	}
+
+	function TableDisplay(options) {
+		this._debugName = '<TableDisplay>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$1(), options.data);
+
+		this._recompute({ orderBy: 1, order: 1 }, this._state);
+		if (!('orderBy' in this._state)) console.warn("<TableDisplay> was created without expected data property 'orderBy'");
+		if (!('order' in this._state)) console.warn("<TableDisplay> was created without expected data property 'order'");
+		if (!('columnHeaders' in this._state)) console.warn("<TableDisplay> was created without expected data property 'columnHeaders'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$1(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(TableDisplay.prototype, protoDev);
+	assign(TableDisplay.prototype, methods$1);
+
+	TableDisplay.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('isActive' in newState && !this._updatingReadonlyProperty) throw new Error("<TableDisplay>: Cannot set read-only property 'isActive'");
+		if ('isAscending' in newState && !this._updatingReadonlyProperty) throw new Error("<TableDisplay>: Cannot set read-only property 'isAscending'");
+	};
+
+	TableDisplay.prototype._recompute = function _recompute(changed, state) {
+		if (changed.orderBy) {
+			if (this._differs(state.isActive, (state.isActive = isActive(state)))) changed.isActive = true;
+		}
+
+		if (changed.order) {
+			if (this._differs(state.isAscending, (state.isAscending = isAscending(state)))) changed.isAscending = true;
+		}
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/SelectInput.html generated by Svelte v2.16.1 */
+
+	function data$2() {
+	    return {
+	        disabled: false,
+	        width: 'auto',
+	        labelWidth: 'auto',
+	        options: [],
+	        optgroups: [],
+	        value: null,
+	        class: ''
+	    };
+	}
+	const file$2 = "home/david/Projects/core/libs/controls/v2/SelectInput.html";
+
+	function get_each_context_2(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.opt = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context_1$1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.optgroup = list[i];
+		return child_ctx;
+	}
+
+	function get_each_context$1(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.opt = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$2(component, ctx) {
+		var select, if_block0_anchor, select_updating = false, select_class_value;
+
+		var if_block0 = (ctx.options.length) && create_if_block_1(component, ctx);
+
+		var if_block1 = (ctx.optgroups.length) && create_if_block$2(component, ctx);
+
+		function select_change_handler() {
+			select_updating = true;
+			component.set({ value: selectValue(select) });
+			select_updating = false;
+		}
+
+		function change_handler(event) {
+			component.fire('change', event);
+		}
+
+		return {
+			c: function create() {
+				select = createElement("select");
+				if (if_block0) if_block0.c();
+				if_block0_anchor = createComment();
+				if (if_block1) if_block1.c();
+				addListener(select, "change", select_change_handler);
+				if (!('value' in ctx)) component.root._beforecreate.push(select_change_handler);
+				addListener(select, "change", change_handler);
+				select.className = select_class_value = "select-css " + ctx.class + " svelte-v0oq4b";
+				select.disabled = ctx.disabled;
+				setStyle(select, "width", ctx.width);
+				addLoc(select, file$2, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, select, anchor);
+				if (if_block0) if_block0.m(select, null);
+				append(select, if_block0_anchor);
+				if (if_block1) if_block1.m(select, null);
+
+				selectOption(select, ctx.value);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.options.length) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_1(component, ctx);
+						if_block0.c();
+						if_block0.m(select, if_block0_anchor);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.optgroups.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$2(component, ctx);
+						if_block1.c();
+						if_block1.m(select, null);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (!select_updating && changed.value) selectOption(select, ctx.value);
+				if ((changed.class) && select_class_value !== (select_class_value = "select-css " + ctx.class + " svelte-v0oq4b")) {
+					select.className = select_class_value;
+				}
+
+				if (changed.disabled) {
+					select.disabled = ctx.disabled;
+				}
+
+				if (changed.width) {
+					setStyle(select, "width", ctx.width);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(select);
+				}
+
+				if (if_block0) if_block0.d();
+				if (if_block1) if_block1.d();
+				removeListener(select, "change", select_change_handler);
+				removeListener(select, "change", change_handler);
+			}
+		};
+	}
+
+	// (2:4) {#if options.length}
+	function create_if_block_1(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.options;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block_2(component, get_each_context$1(ctx, each_value, i));
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.options || changed.value) {
+					each_value = ctx.options;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$1(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(each_anchor);
+				}
+			}
+		};
+	}
+
+	// (2:25) {#each options as opt}
+	function create_each_block_2(component, ctx) {
+		var option, text_value = ctx.opt.label, text, option_value_value, option_selected_value;
+
+		return {
+			c: function create() {
+				option = createElement("option");
+				text = createText(text_value);
+				option.__value = option_value_value = ctx.opt.value;
+				option.value = option.__value;
+				option.selected = option_selected_value = ctx.opt.value === ctx.value;
+				addLoc(option, file$2, 2, 4, 187);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, option, anchor);
+				append(option, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.options) && text_value !== (text_value = ctx.opt.label)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.options) && option_value_value !== (option_value_value = ctx.opt.value)) {
+					option.__value = option_value_value;
+				}
+
+				option.value = option.__value;
+				if ((changed.options || changed.value) && option_selected_value !== (option_selected_value = ctx.opt.value === ctx.value)) {
+					option.selected = option_selected_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(option);
+				}
+			}
+		};
+	}
+
+	// (4:18) {#if optgroups.length}
+	function create_if_block$2(component, ctx) {
+		var each_anchor;
+
+		var each_value_1 = ctx.optgroups;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_1.length; i += 1) {
+			each_blocks[i] = create_each_block$2(component, get_each_context_1$1(ctx, each_value_1, i));
+		}
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(target, anchor);
+				}
+
+				insert(target, each_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.optgroups || changed.value) {
+					each_value_1 = ctx.optgroups;
+
+					for (var i = 0; i < each_value_1.length; i += 1) {
+						const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_1.length;
+				}
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (detach) {
+					detachNode(each_anchor);
+				}
+			}
+		};
+	}
+
+	// (6:8) {#each optgroup.options as opt}
+	function create_each_block_1$2(component, ctx) {
+		var option, text_value = ctx.opt.label, text, option_value_value, option_selected_value;
+
+		return {
+			c: function create() {
+				option = createElement("option");
+				text = createText(text_value);
+				option.__value = option_value_value = ctx.opt.value;
+				option.value = option.__value;
+				option.selected = option_selected_value = ctx.opt.value === ctx.value;
+				addLoc(option, file$2, 6, 8, 428);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, option, anchor);
+				append(option, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.optgroups) && text_value !== (text_value = ctx.opt.label)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.optgroups) && option_value_value !== (option_value_value = ctx.opt.value)) {
+					option.__value = option_value_value;
+				}
+
+				option.value = option.__value;
+				if ((changed.optgroups || changed.value) && option_selected_value !== (option_selected_value = ctx.opt.value === ctx.value)) {
+					option.selected = option_selected_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(option);
+				}
+			}
+		};
+	}
+
+	// (4:41) {#each optgroups as optgroup}
+	function create_each_block$2(component, ctx) {
+		var optgroup, optgroup_label_value;
+
+		var each_value_2 = ctx.optgroup.options;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value_2.length; i += 1) {
+			each_blocks[i] = create_each_block_1$2(component, get_each_context_2(ctx, each_value_2, i));
+		}
+
+		return {
+			c: function create() {
+				optgroup = createElement("optgroup");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+				setAttribute(optgroup, "label", optgroup_label_value = ctx.optgroup.label);
+				addLoc(optgroup, file$2, 4, 4, 344);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, optgroup, anchor);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(optgroup, null);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.optgroups || changed.value) {
+					each_value_2 = ctx.optgroup.options;
+
+					for (var i = 0; i < each_value_2.length; i += 1) {
+						const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block_1$2(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(optgroup, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value_2.length;
+				}
+
+				if ((changed.optgroups) && optgroup_label_value !== (optgroup_label_value = ctx.optgroup.label)) {
+					setAttribute(optgroup, "label", optgroup_label_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(optgroup);
+				}
+
+				destroyEach(each_blocks, detach);
+			}
+		};
+	}
+
+	function SelectInput(options) {
+		this._debugName = '<SelectInput>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$2(), options.data);
+		if (!('class' in this._state)) console.warn("<SelectInput> was created without expected data property 'class'");
+		if (!('disabled' in this._state)) console.warn("<SelectInput> was created without expected data property 'disabled'");
+		if (!('value' in this._state)) console.warn("<SelectInput> was created without expected data property 'value'");
+		if (!('width' in this._state)) console.warn("<SelectInput> was created without expected data property 'width'");
+		if (!('options' in this._state)) console.warn("<SelectInput> was created without expected data property 'options'");
+		if (!('optgroups' in this._state)) console.warn("<SelectInput> was created without expected data property 'optgroups'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$2(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(SelectInput.prototype, protoDev);
+
+	SelectInput.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	function createCommonjsModule(fn, basedir, module) {
+		return module = {
+		  path: basedir,
+		  exports: {},
+		  require: function (path, base) {
+	      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
+	    }
+		}, fn(module, module.exports), module.exports;
+	}
+
+	function commonjsRequire () {
+		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+	}
+
+	var js_cookie = createCommonjsModule(function (module, exports) {
+	(function (factory) {
+		var registeredInModuleLoader;
+		{
+			module.exports = factory();
+			registeredInModuleLoader = true;
+		}
+		if (!registeredInModuleLoader) {
+			var OldCookies = window.Cookies;
+			var api = window.Cookies = factory();
+			api.noConflict = function () {
+				window.Cookies = OldCookies;
+				return api;
+			};
+		}
+	}(function () {
+		function extend () {
+			var i = 0;
+			var result = {};
+			for (; i < arguments.length; i++) {
+				var attributes = arguments[ i ];
+				for (var key in attributes) {
+					result[key] = attributes[key];
+				}
+			}
+			return result;
+		}
+
+		function decode (s) {
+			return s.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+		}
+
+		function init (converter) {
+			function api() {}
+
+			function set (key, value, attributes) {
+				if (typeof document === 'undefined') {
+					return;
+				}
+
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					attributes.expires = new Date(new Date() * 1 + attributes.expires * 864e+5);
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					var result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				value = converter.write ?
+					converter.write(value, key) :
+					encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+
+				key = encodeURIComponent(String(key))
+					.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
+					.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+
+					// Considers RFC 6265 section 5.2:
+					// ...
+					// 3.  If the remaining unparsed-attributes contains a %x3B (";")
+					//     character:
+					// Consume the characters of the unparsed-attributes up to,
+					// not including, the first %x3B (";") character.
+					// ...
+					stringifiedAttributes += '=' + attributes[attributeName].split(';')[0];
+				}
+
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			function get (key, json) {
+				if (typeof document === 'undefined') {
+					return;
+				}
+
+				var jar = {};
+				// To prevent the for loop in the first place assign an empty array
+				// in case there are no cookies at all.
+				var cookies = document.cookie ? document.cookie.split('; ') : [];
+				var i = 0;
+
+				for (; i < cookies.length; i++) {
+					var parts = cookies[i].split('=');
+					var cookie = parts.slice(1).join('=');
+
+					if (!json && cookie.charAt(0) === '"') {
+						cookie = cookie.slice(1, -1);
+					}
+
+					try {
+						var name = decode(parts[0]);
+						cookie = (converter.read || converter)(cookie, name) ||
+							decode(cookie);
+
+						if (json) {
+							try {
+								cookie = JSON.parse(cookie);
+							} catch (e) {}
+						}
+
+						jar[name] = cookie;
+
+						if (key === name) {
+							break;
+						}
+					} catch (e) {}
+				}
+
+				return key ? jar[key] : jar;
+			}
+
+			api.set = set;
+			api.get = function (key) {
+				return get(key, false /* read as raw */);
+			};
+			api.getJSON = function (key) {
+				return get(key, true /* read as json */);
+			};
+			api.remove = function (key, attributes) {
+				set(key, '', extend(attributes, {
+					expires: -1
+				}));
+			};
+
+			api.defaults = {};
+
+			api.withConverter = init;
+
+			return api;
+		}
+
+		return init(function () {});
+	}));
+	});
+
+	const CSRF_COOKIE_NAME = 'crumb';
+	const CSRF_TOKEN_HEADER = 'X-CSRF-Token';
+	const CSRF_SAFE_METHODS = new Set(['get', 'head', 'options', 'trace']); // according to RFC7231
+
+	/**
+	 * The response body is automatically parsed according
+	 * to the response content type.
+	 *
+	 * @exports httpReq
+	 * @kind function
+	 *
+	 * @param {string} path               - the url path that gets appended to baseUrl
+	 * @param {object} options.payload    - payload to be send with req
+	 * @param {boolean} options.raw       - disable parsing of response body, returns raw response
+	 * @param {string} options.baseUrl    - base for url, defaults to dw api domain
+	 * @param {*} options                 - see documentation for window.fetch for additional options
+	 *
+	 * @returns {Promise} promise of parsed response body or raw response
+	 *
+	 * @example
+	 *  import httpReq from '@datawrapper/shared/httpReq';
+	 *  let res = await httpReq('/v3/charts', {
+	 *      method: 'post',
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 *  import { post } from '@datawrapper/shared/httpReq';
+	 *  res = await post('/v3/charts', {
+	 *      payload: {
+	 *          title: 'My new chart'
+	 *      }
+	 *  });
+	 */
+	function httpReq(path, options = {}) {
+	    if (!options.fetch) {
+	        try {
+	            options.fetch = window.fetch;
+	        } catch (e) {
+	            throw new Error('Neither options.fetch nor window.fetch is defined.');
+	        }
+	    }
+	    if (!options.baseUrl) {
+	        try {
+	            options.baseUrl = `//${window.dw.backend.__api_domain}`;
+	        } catch (e) {
+	            throw new Error('Neither options.baseUrl nor window.dw is defined.');
+	        }
+	    }
+	    const { payload, baseUrl, fetch, raw, ...opts } = {
+	        payload: null,
+	        raw: false,
+	        method: 'GET',
+	        mode: 'cors',
+	        credentials: 'include',
+	        ...options,
+	        headers: {
+	            'Content-Type': 'application/json',
+	            ...options.headers
+	        }
+	    };
+	    const url = `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+	    if (payload) {
+	        // overwrite body
+	        opts.body = JSON.stringify(payload);
+	    }
+
+	    let promise;
+	    if (!CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
+	        let csrfCookieValue = js_cookie.get(CSRF_COOKIE_NAME);
+	        if (csrfCookieValue) {
+	            opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+	            promise = fetch(url, opts);
+	        } else {
+	            promise = httpReq('/v3/me', { fetch, baseUrl })
+	                .then(() => {
+	                    const csrfCookieValue = js_cookie.get(CSRF_COOKIE_NAME);
+	                    if (csrfCookieValue) {
+	                        opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
+	                    }
+	                })
+	                .catch(() => {}) // Ignore errors from /v3/me. It probably means the user is not logged in.
+	                .then(() => fetch(url, opts));
+	        }
+	    } else {
+	        promise = fetch(url, opts);
+	    }
+	    // The variable `promise` and the repeated `fetch(url, opts)` could be replaced with `await
+	    // httpReq('/v3/me'...)`, but then we would need to configure babel to transform async/await for
+	    // all repositories that use @datawrapper/shared.
+
+	    return promise.then(res => {
+	        if (raw) return res;
+	        if (!res.ok) throw new HttpReqError(res);
+	        if (res.status === 204 || !res.headers.get('content-type')) return res; // no content
+	        // trim away the ;charset=utf-8 from content-type
+	        const contentType = res.headers.get('content-type').split(';')[0];
+	        if (contentType === 'application/json') {
+	            return res.json();
+	        }
+	        if (contentType === 'image/png' || contentType === 'application/pdf') {
+	            return res.blob();
+	        }
+	        // default to text for all other content types
+	        return res.text();
+	    });
+	}
+
+	/**
+	 * Like `httpReq` but with fixed http method GET
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.get
+	 * @kind function
+	 */
+	const get$1 = (httpReq.get = httpReqVerb('GET'));
+
+	/**
+	 * Like `httpReq` but with fixed http method PATCH
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.patch
+	 * @kind function
+	 */
+	const patch = (httpReq.patch = httpReqVerb('PATCH'));
+
+	/**
+	 * Like `httpReq` but with fixed http method PUT
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.put
+	 * @kind function
+	 */
+	const put = (httpReq.put = httpReqVerb('PUT'));
+
+	/**
+	 * Like `httpReq` but with fixed http method POST
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.post
+	 * @kind function
+	 */
+	const post = (httpReq.post = httpReqVerb('POST'));
+
+	/**
+	 * Like `httpReq` but with fixed http method HEAD
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.head
+	 * @kind function
+	 */
+	const head = (httpReq.head = httpReqVerb('HEAD'));
+
+	/**
+	 * Like `httpReq` but with fixed http method DELETE
+	 * @see {@link httpReq}
+	 *
+	 * @exports httpReq.delete
+	 * @kind function
+	 */
+	httpReq.delete = httpReqVerb('DELETE');
+
+	function httpReqVerb(method) {
+	    return (path, options) => {
+	        if (options && options.method) {
+	            throw new Error(
+	                `Setting option.method is not allowed in httpReq.${method.toLowerCase()}()`
+	            );
+	        }
+	        return httpReq(path, { ...options, method });
+	    };
+	}
+
+	class HttpReqError extends Error {
+	    constructor(res) {
+	        super();
+	        this.name = 'HttpReqError';
+	        this.status = res.status;
+	        this.statusText = res.statusText;
+	        this.message = `[${res.status}] ${res.statusText}`;
+	        this.response = res;
+	    }
+	}
+
+	/* team-settings/tabs/members/UserTable.html generated by Svelte v2.16.1 */
+
+
+
+	const teamRoleOptions = [
+	    { value: 'owner', label: __('teams / role / owner').replace('&shy;', '') },
+	    { value: 'admin', label: __('teams / role / admin').replace('&shy;', '') },
+	    { value: 'member', label: __('teams / role / member').replace('&shy;', '') }
+	];
+
+	function roles({ isAdmin, isTeamOwner }) {
+	    return isAdmin || isTeamOwner ? teamRoleOptions : teamRoleOptions.slice(1);
+	}
+	function sortedUsers({ users, isAdmin }) {
+	    return users
+	        .sort((a, b) => {
+	            const roles = ['owner', 'admin', 'member'];
+
+	            if (roles.indexOf(a.role) > roles.indexOf(b.role)) {
+	                return 1;
+	            } else if (roles.indexOf(a.role) < roles.indexOf(b.role)) {
+	                return -1;
+	            } else {
+	                return a.email > b.email ? 1 : a.email < b.email ? -1 : 0;
+	            }
+	        })
+	        .filter(user => isAdmin || !user.isAdmin);
+	}
+	function userHeaders({ isAdmin }) {
+	    const userHeaders = [
+	        { title: __('teams / user'), width: '25%' },
+	        { title: 'ID', width: '10%' },
+	        { title: 'Charts', width: '15%' },
+	        { title: __('teams / status'), width: '15%' },
+	        { title: __('teams / actions'), width: '30%' }
+	    ];
+
+	    if (!isAdmin) userHeaders.splice(1, 1);
+
+	    return userHeaders;
+	}
+	function numUsers({ sortedUsers }) {
+	    return sortedUsers.length;
+	}
+	function numCharts({ users }) {
+	    let total = 0;
+	    users.forEach(user => {
+	        total += user.charts;
+	    });
+	    return total;
+	}
+	function numChartsCaption({ numCharts, isAdmin, team }) {
+	    if (numCharts === 1) {
+	        return __('teams / charts-total / 1');
+	    } else if (numCharts > 1) {
+	        if (isAdmin) {
+	            return __('teams / charts-total-admin')
+	                .replace('%i%', numCharts)
+	                .replace('%link%', `/admin/chart/by/${team.id}`);
+	        } else {
+	            return __('teams / charts-total').replace('%i%', numCharts);
+	        }
+	    } else {
+	        return '';
+	    }
+	}
+	function data$3() {
+	    return {
+	        editId: false,
+	        updating: {},
+	        users: []
+	    };
+	}
+	function role(role) {
+	    return {
+	        member: __('teams / role / member'),
+	        admin: __('teams / role / admin'),
+	        owner: __('teams / role / owner')
+	    }[role];
+	}
+	var methods$2 = {
+	    toggleEdit(userId) {
+	        if (this.get().editId === userId) {
+	            this.set({ editId: false });
+	            this.updateRole(userId);
+	        } else {
+	            this.set({
+	                editId: userId
+	            });
+	        }
+	    },
+	    async removeUser(user) {
+	        if (!window.confirm(__('teams / remove / alert'))) return;
+
+	        await httpReq.delete(`/v3/teams/${this.get().team.id}/members/${user.id}`);
+
+	        var { users } = this.get();
+	        users = users.filter(el => el.id !== user.id);
+	        this.set({ users });
+	    },
+	    async updateRole(userId) {
+	        var { updating, users } = this.get();
+	        const user = users.filter(u => u.id === userId)[0];
+	        updating[user.id] = true;
+	        this.set({ updating });
+
+	        await httpReq.put(`/v3/teams/${this.get().team.id}/members/${user.id}/status`, {
+	            payload: {
+	                status: user.role
+	            }
+	        });
+
+	        updating = this.get().updating;
+	        updating[user.id] = false;
+	        this.set({ updating });
+	    }
+	};
+
+	const file$3 = "team-settings/tabs/members/UserTable.html";
+
+	function click_handler_2(event) {
+		const { component, ctx } = this._svelte;
+
+		component.removeUser(ctx.user);
+	}
+
+	function click_handler_1(event) {
+		const { component, ctx } = this._svelte;
+
+		component.toggleEdit(ctx.user.id);
+	}
+
+	function click_handler$2(event) {
+		const { component, ctx } = this._svelte;
+
+		component.toggleEdit(ctx.user.id);
+	}
+
+	function get_each_context$2(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.user = list[i];
+		child_ctx.each_value = list;
+		child_ctx.i = i;
+		return child_ctx;
+	}
+
+	function create_main_fragment$3(component, ctx) {
+		var p, text0, raw_before, text1, if_block1_anchor;
+
+		function select_block_type(ctx) {
+			if (ctx.numUsers === 1) return create_if_block_7;
+			if (ctx.numUsers > 1) return create_if_block_8;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block0 = current_block_type && current_block_type(component, ctx);
+
+		var if_block1 = (ctx.sortedUsers.length) && create_if_block$3(component, ctx);
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				if (if_block0) if_block0.c();
+				text0 = createText(" ");
+				raw_before = createElement('noscript');
+				text1 = createText("\n\n");
+				if (if_block1) if_block1.c();
+				if_block1_anchor = createComment();
+				addLoc(p, file$3, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				if (if_block0) if_block0.m(p, null);
+				append(p, text0);
+				append(p, raw_before);
+				raw_before.insertAdjacentHTML("afterend", ctx.numChartsCaption);
+				insert(target, text1, anchor);
+				if (if_block1) if_block1.m(target, anchor);
+				insert(target, if_block1_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+					if_block0.p(changed, ctx);
+				} else {
+					if (if_block0) if_block0.d(1);
+					if_block0 = current_block_type && current_block_type(component, ctx);
+					if (if_block0) if_block0.c();
+					if (if_block0) if_block0.m(p, text0);
+				}
+
+				if (changed.numChartsCaption) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", ctx.numChartsCaption);
+				}
+
+				if (ctx.sortedUsers.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$3(component, ctx);
+						if_block1.c();
+						if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+
+				if (if_block0) if_block0.d();
+				if (detach) {
+					detachNode(text1);
+				}
+
+				if (if_block1) if_block1.d(detach);
+				if (detach) {
+					detachNode(if_block1_anchor);
+				}
+			}
+		};
+	}
+
+	// (2:75) 
+	function create_if_block_8(component, ctx) {
+		var text_value = __('teams / total').replace('%i%', ctx.numUsers), text;
+
+		return {
+			c: function create() {
+				text = createText(text_value);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.numUsers) && text_value !== (text_value = __('teams / total').replace('%i%', ctx.numUsers))) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (2:4) {#if numUsers === 1}
+	function create_if_block_7(component, ctx) {
+		var text_value = __('teams / total / 1'), text;
+
+		return {
+			c: function create() {
+				text = createText(text_value);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (7:0) {#if sortedUsers.length}
+	function create_if_block$3(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.sortedUsers;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$3(component, get_each_context$2(ctx, each_value, i));
+		}
+
+		var tabledisplay_initial_data = { columnHeaders: ctx.userHeaders };
+		var tabledisplay = new TableDisplay({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: tabledisplay_initial_data
+		});
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+				tabledisplay._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(tabledisplay._slotted.default, null);
+				}
+
+				append(tabledisplay._slotted.default, each_anchor);
+				tabledisplay._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.isAdmin || changed.isTeamOwner || changed.sortedUsers || changed.editId || changed.updating || changed.roles) {
+					each_value = ctx.sortedUsers;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$2(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$3(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				var tabledisplay_changes = {};
+				if (changed.userHeaders) tabledisplay_changes.columnHeaders = ctx.userHeaders;
+				tabledisplay._set(tabledisplay_changes);
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				tabledisplay.destroy(detach);
+			}
+		};
+	}
+
+	// (14:8) {#if isAdmin}
+	function create_if_block_6(component, ctx) {
+		var td, a, text_value = ctx.user.id, text, a_href_value;
+
+		return {
+			c: function create() {
+				td = createElement("td");
+				a = createElement("a");
+				text = createText(text_value);
+				a.href = a_href_value = "/admin/users/" + ctx.user.id;
+				addLoc(a, file$3, 15, 12, 416);
+				addLoc(td, file$3, 14, 8, 399);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, td, anchor);
+				append(td, a);
+				append(a, text);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.sortedUsers) && text_value !== (text_value = ctx.user.id)) {
+					setData(text, text_value);
+				}
+
+				if ((changed.sortedUsers) && a_href_value !== (a_href_value = "/admin/users/" + ctx.user.id)) {
+					a.href = a_href_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(td);
+				}
+			}
+		};
+	}
+
+	// (26:12) {:else}
+	function create_else_block_1(component, ctx) {
+		var raw_value = role(ctx.user.role), raw_before, raw_after, text, if_block_anchor;
+
+		var if_block = (ctx.user.token) && create_if_block_5();
+
+		return {
+			c: function create() {
+				raw_before = createElement('noscript');
+				raw_after = createElement('noscript');
+				text = createText(" ");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, raw_before, anchor);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+				insert(target, raw_after, anchor);
+				insert(target, text, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.sortedUsers) && raw_value !== (raw_value = role(ctx.user.role))) {
+					detachBetween(raw_before, raw_after);
+					raw_before.insertAdjacentHTML("afterend", raw_value);
+				}
+
+				if (ctx.user.token) {
+					if (!if_block) {
+						if_block = create_if_block_5();
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachBetween(raw_before, raw_after);
+					detachNode(raw_before);
+					detachNode(raw_after);
+					detachNode(text);
+				}
+
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (23:12) {#if editId === user.id }
+	function create_if_block_4(component, ctx) {
+		var selectinput_updating = {}, text0, p, text1_value = __('teams / role / p' ), text1;
+
+		var selectinput_initial_data = { width: "200px", options: ctx.roles };
+		if (ctx.user.role !== void 0) {
+			selectinput_initial_data.value = ctx.user.role;
+			selectinput_updating.value = true;
+		}
+		var selectinput = new SelectInput({
+			root: component.root,
+			store: component.store,
+			data: selectinput_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectinput_updating.value && changed.value) {
+					ctx.user.role = childState.value;
+
+					newState.sortedUsers = ctx.sortedUsers;
+				}
+				component._set(newState);
+				selectinput_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectinput._bind({ value: 1 }, selectinput.get());
+		});
+
+		return {
+			c: function create() {
+				selectinput._fragment.c();
+				text0 = createText("\n            ");
+				p = createElement("p");
+				text1 = createText(text1_value);
+				p.className = "mini-help";
+				addLoc(p, file$3, 24, 12, 694);
+			},
+
+			m: function mount(target, anchor) {
+				selectinput._mount(target, anchor);
+				insert(target, text0, anchor);
+				insert(target, p, anchor);
+				append(p, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var selectinput_changes = {};
+				if (changed.roles) selectinput_changes.options = ctx.roles;
+				if (!selectinput_updating.value && changed.sortedUsers) {
+					selectinput_changes.value = ctx.user.role;
+					selectinput_updating.value = ctx.user.role !== void 0;
+				}
+				selectinput._set(selectinput_changes);
+				selectinput_updating = {};
+			},
+
+			d: function destroy(detach) {
+				selectinput.destroy(detach);
+				if (detach) {
+					detachNode(text0);
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (26:45) {#if user.token}
+	function create_if_block_5(component, ctx) {
+		var i, text_value = __('teams / invite-pending' ), text;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				text = createText(text_value);
+				addLoc(i, file$3, 26, 12, 821);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+				append(i, text);
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (31:12) {#if isAdmin || isTeamOwner || (!isTeamOwner && user.role != 'owner')}
+	function create_if_block_1$1(component, ctx) {
+		var if_block_anchor;
+
+		function select_block_type_2(ctx) {
+			if (ctx.editId ===
+	            ctx.user.id) return create_if_block_2;
+			if (ctx.updating[ctx.user.id]) return create_if_block_3;
+			return create_else_block$1;
+		}
+
+		var current_block_type = select_block_type_2(ctx);
+		var if_block = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type_2(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			},
+
+			d: function destroy(detach) {
+				if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (40:12) {:else}
+	function create_else_block$1(component, ctx) {
+		var button0, i0, text0, text1_value = __('teams / edit' ), text1, text2, button1, i1, text3, text4_value = __('teams / remove' ), text4;
+
+		return {
+			c: function create() {
+				button0 = createElement("button");
+				i0 = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				text2 = createText("\n\n            ");
+				button1 = createElement("button");
+				i1 = createElement("i");
+				text3 = createText("  ");
+				text4 = createText(text4_value);
+				i0.className = "fa fa-edit";
+				addLoc(i0, file$3, 41, 16, 1514);
+
+				button0._svelte = { component, ctx };
+
+				addListener(button0, "click", click_handler_1);
+				button0.className = "btn";
+				addLoc(button0, file$3, 40, 12, 1446);
+				i1.className = "fa fa-times";
+				addLoc(i1, file$3, 45, 16, 1671);
+
+				button1._svelte = { component, ctx };
+
+				addListener(button1, "click", click_handler_2);
+				button1.className = "btn";
+				addLoc(button1, file$3, 44, 12, 1606);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button0, anchor);
+				append(button0, i0);
+				append(button0, text0);
+				append(button0, text1);
+				insert(target, text2, anchor);
+				insert(target, button1, anchor);
+				append(button1, i1);
+				append(button1, text3);
+				append(button1, text4);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button0._svelte.ctx = ctx;
+				button1._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button0);
+				}
+
+				removeListener(button0, "click", click_handler_1);
+				if (detach) {
+					detachNode(text2);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_2);
+			}
+		};
+	}
+
+	// (36:39) 
+	function create_if_block_3(component, ctx) {
+		var button, i, text0, text1_value = __('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-spin fa-circle-o-notch";
+				addLoc(i, file$3, 37, 16, 1317);
+				button.disabled = true;
+				button.className = "btn btn-primary";
+				addLoc(button, file$3, 36, 12, 1259);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+			}
+		};
+	}
+
+	// (31:83) {#if editId ===             user.id }
+	function create_if_block_2(component, ctx) {
+		var button, i, text0, text1_value = __('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-check";
+				addLoc(i, file$3, 33, 16, 1127);
+
+				button._svelte = { component, ctx };
+
+				addListener(button, "click", click_handler$2);
+				button.className = "btn btn-primary";
+				addLoc(button, file$3, 32, 12, 1047);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler$2);
+			}
+		};
+	}
+
+	// (9:4) {#each sortedUsers as user, i}
+	function create_each_block$3(component, ctx) {
+		var tr, td0, text0_value = ctx.user.email, text0, text1, text2, td1, text3_value = ctx.user.charts, text3, text4, td2, text5, td3, text6;
+
+		var if_block0 = (ctx.isAdmin) && create_if_block_6(component, ctx);
+
+		function select_block_type_1(ctx) {
+			if (ctx.editId === ctx.user.id) return create_if_block_4;
+			return create_else_block_1;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block1 = current_block_type(component, ctx);
+
+		var if_block2 = (ctx.isAdmin || ctx.isTeamOwner || (!ctx.isTeamOwner && ctx.user.role != 'owner')) && create_if_block_1$1(component, ctx);
+
+		return {
+			c: function create() {
+				tr = createElement("tr");
+				td0 = createElement("td");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				if (if_block0) if_block0.c();
+				text2 = createText("\n        ");
+				td1 = createElement("td");
+				text3 = createText(text3_value);
+				text4 = createText("\n        ");
+				td2 = createElement("td");
+				if_block1.c();
+				text5 = createText("\n        ");
+				td3 = createElement("td");
+				if (if_block2) if_block2.c();
+				text6 = createText("\n    ");
+				addLoc(td0, file$3, 10, 8, 323);
+				addLoc(td1, file$3, 18, 8, 501);
+				addLoc(td2, file$3, 21, 8, 556);
+				addLoc(td3, file$3, 29, 8, 909);
+				addLoc(tr, file$3, 9, 4, 310);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, tr, anchor);
+				append(tr, td0);
+				append(td0, text0);
+				append(tr, text1);
+				if (if_block0) if_block0.m(tr, null);
+				append(tr, text2);
+				append(tr, td1);
+				append(td1, text3);
+				append(tr, text4);
+				append(tr, td2);
+				if_block1.m(td2, null);
+				append(tr, text5);
+				append(tr, td3);
+				if (if_block2) if_block2.m(td3, null);
+				append(tr, text6);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.sortedUsers) && text0_value !== (text0_value = ctx.user.email)) {
+					setData(text0, text0_value);
+				}
+
+				if (ctx.isAdmin) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_6(component, ctx);
+						if_block0.c();
+						if_block0.m(tr, text2);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if ((changed.sortedUsers) && text3_value !== (text3_value = ctx.user.charts)) {
+					setData(text3, text3_value);
+				}
+
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type(component, ctx);
+					if_block1.c();
+					if_block1.m(td2, null);
+				}
+
+				if (ctx.isAdmin || ctx.isTeamOwner || (!ctx.isTeamOwner && ctx.user.role != 'owner')) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block_1$1(component, ctx);
+						if_block2.c();
+						if_block2.m(td3, null);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(tr);
+				}
+
+				if (if_block0) if_block0.d();
+				if_block1.d();
+				if (if_block2) if_block2.d();
+			}
+		};
+	}
+
+	function UserTable(options) {
+		this._debugName = '<UserTable>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$3(), options.data);
+
+		this._recompute({ isAdmin: 1, isTeamOwner: 1, users: 1, sortedUsers: 1, numCharts: 1, team: 1 }, this._state);
+		if (!('isAdmin' in this._state)) console.warn("<UserTable> was created without expected data property 'isAdmin'");
+		if (!('isTeamOwner' in this._state)) console.warn("<UserTable> was created without expected data property 'isTeamOwner'");
+		if (!('users' in this._state)) console.warn("<UserTable> was created without expected data property 'users'");
+
+
+		if (!('team' in this._state)) console.warn("<UserTable> was created without expected data property 'team'");
+
+
+
+		if (!('editId' in this._state)) console.warn("<UserTable> was created without expected data property 'editId'");
+
+		if (!('updating' in this._state)) console.warn("<UserTable> was created without expected data property 'updating'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$3(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(UserTable.prototype, protoDev);
+	assign(UserTable.prototype, methods$2);
+
+	UserTable.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('roles' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'roles'");
+		if ('sortedUsers' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'sortedUsers'");
+		if ('userHeaders' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'userHeaders'");
+		if ('numUsers' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'numUsers'");
+		if ('numCharts' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'numCharts'");
+		if ('numChartsCaption' in newState && !this._updatingReadonlyProperty) throw new Error("<UserTable>: Cannot set read-only property 'numChartsCaption'");
+	};
+
+	UserTable.prototype._recompute = function _recompute(changed, state) {
+		if (changed.isAdmin || changed.isTeamOwner) {
+			if (this._differs(state.roles, (state.roles = roles(state)))) changed.roles = true;
+		}
+
+		if (changed.users || changed.isAdmin) {
+			if (this._differs(state.sortedUsers, (state.sortedUsers = sortedUsers(state)))) changed.sortedUsers = true;
+		}
+
+		if (changed.isAdmin) {
+			if (this._differs(state.userHeaders, (state.userHeaders = userHeaders(state)))) changed.userHeaders = true;
+		}
+
+		if (changed.sortedUsers) {
+			if (this._differs(state.numUsers, (state.numUsers = numUsers(state)))) changed.numUsers = true;
+		}
+
+		if (changed.users) {
+			if (this._differs(state.numCharts, (state.numCharts = numCharts(state)))) changed.numCharts = true;
+		}
+
+		if (changed.numCharts || changed.isAdmin || changed.team) {
+			if (this._differs(state.numChartsCaption, (state.numChartsCaption = numChartsCaption(state)))) changed.numChartsCaption = true;
+		}
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/DropdownInput.html generated by Svelte v2.16.1 */
+
+	function data$4() {
+	    return {
+	        visible: false,
+	        disabled: false,
+	        width: 'auto'
+	    };
+	}
+	var methods$3 = {
+	    toggle(event) {
+	        event.preventDefault();
+	        const { visible, disabled } = this.get();
+	        if (disabled) return;
+	        this.set({ visible: !visible });
+	    },
+	    windowClick(event) {
+	        if (
+	            !event.target ||
+	            (this.refs && this.refs.button && (event.target === this.refs.button || this.refs.button.contains(event.target)))
+	        )
+	            return;
+	        // this is a hack for the colorpicker, need to find out how to get rid of
+	        if (event.target.classList.contains('hex')) return;
+	        this.set({ visible: false });
+	    }
+	};
+
+	const file$4 = "home/david/Projects/core/libs/controls/v2/DropdownInput.html";
+
+	function create_main_fragment$4(component, ctx) {
+		var div, a, slot_content_button = component._slotted.button, button, i, i_class_value, text;
+
+		function onwindowclick(event) {
+			component.windowClick(event);	}
+		window.addEventListener("click", onwindowclick);
+
+		function click_handler(event) {
+			component.toggle(event);
+		}
+
+		var if_block = (ctx.visible) && create_if_block$4(component, ctx);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				a = createElement("a");
+				if (!slot_content_button) {
+					button = createElement("button");
+					i = createElement("i");
+				}
+				text = createText("\n    ");
+				if (if_block) if_block.c();
+				if (!slot_content_button) {
+					i.className = i_class_value = "fa fa-chevron-" + (ctx.visible ? 'up' : 'down') + " svelte-1jdtmzv";
+					addLoc(i, file$4, 5, 42, 264);
+					button.className = "btn btn-small";
+					addLoc(button, file$4, 5, 12, 234);
+				}
+				addListener(a, "click", click_handler);
+				a.href = "#dropdown-btn";
+				a.className = "base-drop-btn svelte-1jdtmzv";
+				addLoc(a, file$4, 3, 4, 110);
+				setStyle(div, "position", "relative");
+				setStyle(div, "display", "inline-block");
+				addLoc(div, file$4, 2, 0, 49);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, a);
+				if (!slot_content_button) {
+					append(a, button);
+					append(button, i);
+				}
+
+				else {
+					append(a, slot_content_button);
+				}
+
+				component.refs.button = a;
+				append(div, text);
+				if (if_block) if_block.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (!slot_content_button) {
+					if ((changed.visible) && i_class_value !== (i_class_value = "fa fa-chevron-" + (ctx.visible ? 'up' : 'down') + " svelte-1jdtmzv")) {
+						i.className = i_class_value;
+				}
+
+				}
+
+				if (ctx.visible) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$4(component, ctx);
+						if_block.c();
+						if_block.m(div, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				window.removeEventListener("click", onwindowclick);
+
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_button) {
+					reinsertChildren(a, slot_content_button);
+				}
+
+				removeListener(a, "click", click_handler);
+				if (component.refs.button === a) component.refs.button = null;
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (9:4) {#if visible}
+	function create_if_block$4(component, ctx) {
+		var div1, slot_content_content = component._slotted.content, div0;
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				if (!slot_content_content) {
+					div0 = createElement("div");
+					div0.textContent = "DropdownControl content";
+				}
+				if (!slot_content_content) {
+					div0.className = "base-dropdown-inner svelte-1jdtmzv";
+					addLoc(div0, file$4, 11, 12, 490);
+				}
+				setStyle(div1, "width", ctx.width);
+				div1.className = "dropdown-menu base-dropdown-content svelte-1jdtmzv";
+				addLoc(div1, file$4, 9, 4, 376);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				if (!slot_content_content) {
+					append(div1, div0);
+				}
+
+				else {
+					append(div1, slot_content_content);
+				}
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.width) {
+					setStyle(div1, "width", ctx.width);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				if (slot_content_content) {
+					reinsertChildren(div1, slot_content_content);
+				}
+			}
+		};
+	}
+
+	function DropdownInput(options) {
+		this._debugName = '<DropdownInput>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data$4(), options.data);
+		if (!('visible' in this._state)) console.warn("<DropdownInput> was created without expected data property 'visible'");
+		if (!('width' in this._state)) console.warn("<DropdownInput> was created without expected data property 'width'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$4(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(DropdownInput.prototype, protoDev);
+	assign(DropdownInput.prototype, methods$3);
+
+	DropdownInput.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/DropdownListInput.html generated by Svelte v2.16.1 */
+
+	function data$5() {
+	    return {
+	        label: '',
+	        icon: false,
+	        split: false,
+	        items: [],
+	        btnClass: 'btn'
+	    };
+	}
+	var methods$4 = {
+	    fireClick() {
+	        this.fire('click');
+	    },
+	    action(item) {
+	        if (!item.disabled) item.action(this);
+	    }
+	};
+
+	const file$5 = "home/david/Projects/core/libs/controls/v2/DropdownListInput.html";
+
+	function click_handler$3(event) {
+		event.preventDefault();
+		const { component, ctx } = this._svelte;
+
+		component.action(ctx.item);
+	}
+
+	function get_each_context$3(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.item = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$5(component, ctx) {
+		var div, text0, button, text1, ul;
+
+		var if_block0 = (ctx.split) && create_if_block_3$1(component, ctx);
+
+		function select_block_type(ctx) {
+			if (ctx.split) return create_if_block$5;
+			return create_else_block$2;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block1 = current_block_type(component, ctx);
+
+		var each_value = ctx.items;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$4(component, get_each_context$3(ctx, each_value, i));
+		}
+
+		var dropdowninput_initial_data = { disabled: ctx.disabled };
+		var dropdowninput = new DropdownInput({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment(), content: createFragment(), button: createFragment() },
+			data: dropdowninput_initial_data
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				if (if_block0) if_block0.c();
+				text0 = createText("\n        ");
+				button = createElement("button");
+				if_block1.c();
+				text1 = createText("\n\n    ");
+				ul = createElement("ul");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				dropdowninput._fragment.c();
+				button.disabled = ctx.disabled;
+				button.className = "" + ctx.btnClass + " svelte-1qu0vk";
+				addLoc(button, file$5, 67, 8, 1600);
+				setAttribute(div, "slot", "button");
+				div.className = "btn-group";
+				addLoc(div, file$5, 61, 4, 1307);
+				setAttribute(ul, "slot", "content");
+				ul.className = "svelte-1qu0vk";
+				addLoc(ul, file$5, 77, 4, 1944);
+			},
+
+			m: function mount(target, anchor) {
+				append(dropdowninput._slotted.button, div);
+				if (if_block0) if_block0.m(div, null);
+				append(div, text0);
+				append(div, button);
+				if_block1.m(button, null);
+				append(dropdowninput._slotted.default, text1);
+				append(dropdowninput._slotted.content, ul);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(ul, null);
+				}
+
+				dropdowninput._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.split) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_3$1(component, ctx);
+						if_block0.c();
+						if_block0.m(div, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type(component, ctx);
+					if_block1.c();
+					if_block1.m(button, null);
+				}
+
+				if (changed.disabled) {
+					button.disabled = ctx.disabled;
+				}
+
+				if (changed.btnClass) {
+					button.className = "" + ctx.btnClass + " svelte-1qu0vk";
+				}
+
+				if (changed.items) {
+					each_value = ctx.items;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$3(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$4(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(ul, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				var dropdowninput_changes = {};
+				if (changed.disabled) dropdowninput_changes.disabled = ctx.disabled;
+				dropdowninput._set(dropdowninput_changes);
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) if_block0.d();
+				if_block1.d();
+
+				destroyEach(each_blocks, detach);
+
+				dropdowninput.destroy(detach);
+			}
+		};
+	}
+
+	// (63:8) {#if split}
+	function create_if_block_3$1(component, ctx) {
+		var button, text, raw_before, button_class_value;
+
+		var if_block = (ctx.icon) && create_if_block_4$1(component, ctx);
+
+		function click_handler(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			component.fireClick();
+		}
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				if (if_block) if_block.c();
+				text = createText(" ");
+				raw_before = createElement('noscript');
+				addListener(button, "click", click_handler);
+				button.disabled = ctx.disabled;
+				button.className = button_class_value = "split-button-label " + ctx.btnClass + " svelte-1qu0vk";
+				addLoc(button, file$5, 63, 8, 1373);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				if (if_block) if_block.m(button, null);
+				append(button, text);
+				append(button, raw_before);
+				raw_before.insertAdjacentHTML("afterend", ctx.label);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.icon) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_4$1(component, ctx);
+						if_block.c();
+						if_block.m(button, text);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (changed.label) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", ctx.label);
+				}
+
+				if (changed.disabled) {
+					button.disabled = ctx.disabled;
+				}
+
+				if ((changed.btnClass) && button_class_value !== (button_class_value = "split-button-label " + ctx.btnClass + " svelte-1qu0vk")) {
+					button.className = button_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				if (if_block) if_block.d();
+				removeListener(button, "click", click_handler);
+			}
+		};
+	}
+
+	// (65:12) {#if icon}
+	function create_if_block_4$1(component, ctx) {
+		var i;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				i.className = "" + ctx.icon + " svelte-1qu0vk";
+				addLoc(i, file$5, 64, 22, 1518);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.icon) {
+					i.className = "" + ctx.icon + " svelte-1qu0vk";
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (71:12) {:else}
+	function create_else_block$2(component, ctx) {
+		var text, if_block1_anchor;
+
+		var if_block0 = (ctx.icon) && create_if_block_2$1(component, ctx);
+
+		function select_block_type_1(ctx) {
+			if (ctx.label) return create_if_block_1$2;
+			return create_else_block_1$1;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block1 = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block0) if_block0.c();
+				text = createText(" ");
+				if_block1.c();
+				if_block1_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, text, anchor);
+				if_block1.m(target, anchor);
+				insert(target, if_block1_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.icon) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_2$1(component, ctx);
+						if_block0.c();
+						if_block0.m(text.parentNode, text);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type(component, ctx);
+					if_block1.c();
+					if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) if_block0.d(detach);
+				if (detach) {
+					detachNode(text);
+				}
+
+				if_block1.d(detach);
+				if (detach) {
+					detachNode(if_block1_anchor);
+				}
+			}
+		};
+	}
+
+	// (69:12) {#if split}
+	function create_if_block$5(component, ctx) {
+		var span;
+
+		return {
+			c: function create() {
+				span = createElement("span");
+				span.className = "caret";
+				addLoc(span, file$5, 69, 12, 1686);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, span, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(span);
+				}
+			}
+		};
+	}
+
+	// (71:20) {#if icon}
+	function create_if_block_2$1(component, ctx) {
+		var i;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				i.className = "" + ctx.icon + " svelte-1qu0vk";
+				addLoc(i, file$5, 70, 30, 1744);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.icon) {
+					i.className = "" + ctx.icon + " svelte-1qu0vk";
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (72:12) {:else}
+	function create_else_block_1$1(component, ctx) {
+		var i;
+
+		return {
+			c: function create() {
+				i = createElement("i");
+				i.className = "im im-menu-dot-h svelte-1qu0vk";
+				addLoc(i, file$5, 72, 12, 1853);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, i, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(i);
+				}
+			}
+		};
+	}
+
+	// (71:58) {#if label}
+	function create_if_block_1$2(component, ctx) {
+		var raw_before, raw_after, text, span;
+
+		return {
+			c: function create() {
+				raw_before = createElement('noscript');
+				raw_after = createElement('noscript');
+				text = createText(" ");
+				span = createElement("span");
+				span.className = "caret";
+				addLoc(span, file$5, 70, 84, 1798);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, raw_before, anchor);
+				raw_before.insertAdjacentHTML("afterend", ctx.label);
+				insert(target, raw_after, anchor);
+				insert(target, text, anchor);
+				insert(target, span, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.label) {
+					detachBetween(raw_before, raw_after);
+					raw_before.insertAdjacentHTML("afterend", ctx.label);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachBetween(raw_before, raw_after);
+					detachNode(raw_before);
+					detachNode(raw_after);
+					detachNode(text);
+					detachNode(span);
+				}
+			}
+		};
+	}
+
+	// (79:8) {#each items as item}
+	function create_each_block$4(component, ctx) {
+		var li, a, raw_value = ctx.item.label, text;
+
+		return {
+			c: function create() {
+				li = createElement("li");
+				a = createElement("a");
+				text = createText("\n        ");
+				a._svelte = { component, ctx };
+
+				addListener(a, "click", click_handler$3);
+				a.href = "#/action";
+				a.className = "svelte-1qu0vk";
+				toggleClass(a, "disabled", ctx.item.disabled);
+				addLoc(a, file$5, 80, 12, 2019);
+				li.className = "svelte-1qu0vk";
+				addLoc(li, file$5, 79, 8, 2002);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, li, anchor);
+				append(li, a);
+				a.innerHTML = raw_value;
+				append(li, text);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.items) && raw_value !== (raw_value = ctx.item.label)) {
+					a.innerHTML = raw_value;
+				}
+
+				a._svelte.ctx = ctx;
+				if (changed.items) {
+					toggleClass(a, "disabled", ctx.item.disabled);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(li);
+				}
+
+				removeListener(a, "click", click_handler$3);
+			}
+		};
+	}
+
+	function DropdownListInput(options) {
+		this._debugName = '<DropdownListInput>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$5(), options.data);
+		if (!('disabled' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'disabled'");
+		if (!('split' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'split'");
+		if (!('btnClass' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'btnClass'");
+		if (!('icon' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'icon'");
+		if (!('label' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'label'");
+		if (!('items' in this._state)) console.warn("<DropdownListInput> was created without expected data property 'items'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$5(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(DropdownListInput.prototype, protoDev);
+	assign(DropdownListInput.prototype, methods$4);
+
+	DropdownListInput.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/FormBlock.html generated by Svelte v2.16.1 */
+
+	function data$6() {
+	    return {
+	        label: '',
+	        help: '',
+	        error: false,
+	        success: false,
+	        width: 'auto'
+	    };
+	}
+	const file$6 = "home/david/Projects/core/libs/controls/v2/FormBlock.html";
+
+	function create_main_fragment$6(component, ctx) {
+		var div1, text0, div0, slot_content_default = component._slotted.default, text1, text2, text3;
+
+		var if_block0 = (ctx.label) && create_if_block_3$2(component, ctx);
+
+		var if_block1 = (ctx.success) && create_if_block_2$2(component, ctx);
+
+		var if_block2 = (ctx.error) && create_if_block_1$3(component, ctx);
+
+		var if_block3 = (!ctx.success && !ctx.error && ctx.help) && create_if_block$6(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				if (if_block0) if_block0.c();
+				text0 = createText("\n    ");
+				div0 = createElement("div");
+				text1 = createText("\n    ");
+				if (if_block1) if_block1.c();
+				text2 = createText(" ");
+				if (if_block2) if_block2.c();
+				text3 = createText(" ");
+				if (if_block3) if_block3.c();
+				div0.className = "form-controls svelte-1nkiaxn";
+				addLoc(div0, file$6, 4, 4, 158);
+				div1.className = "form-block svelte-1nkiaxn";
+				setStyle(div1, "width", ctx.width);
+				toggleClass(div1, "success", ctx.success);
+				toggleClass(div1, "error", ctx.error);
+				addLoc(div1, file$6, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				if (if_block0) if_block0.m(div1, null);
+				append(div1, text0);
+				append(div1, div0);
+
+				if (slot_content_default) {
+					append(div0, slot_content_default);
+				}
+
+				append(div1, text1);
+				if (if_block1) if_block1.m(div1, null);
+				append(div1, text2);
+				if (if_block2) if_block2.m(div1, null);
+				append(div1, text3);
+				if (if_block3) if_block3.m(div1, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.label) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_3$2(component, ctx);
+						if_block0.c();
+						if_block0.m(div1, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.success) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_2$2(component, ctx);
+						if_block1.c();
+						if_block1.m(div1, text2);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (ctx.error) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block_1$3(component, ctx);
+						if_block2.c();
+						if_block2.m(div1, text3);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
+				}
+
+				if (!ctx.success && !ctx.error && ctx.help) {
+					if (if_block3) {
+						if_block3.p(changed, ctx);
+					} else {
+						if_block3 = create_if_block$6(component, ctx);
+						if_block3.c();
+						if_block3.m(div1, null);
+					}
+				} else if (if_block3) {
+					if_block3.d(1);
+					if_block3 = null;
+				}
+
+				if (changed.width) {
+					setStyle(div1, "width", ctx.width);
+				}
+
+				if (changed.success) {
+					toggleClass(div1, "success", ctx.success);
+				}
+
+				if (changed.error) {
+					toggleClass(div1, "error", ctx.error);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				if (if_block0) if_block0.d();
+
+				if (slot_content_default) {
+					reinsertChildren(div0, slot_content_default);
+				}
+
+				if (if_block1) if_block1.d();
+				if (if_block2) if_block2.d();
+				if (if_block3) if_block3.d();
+			}
+		};
+	}
+
+	// (2:4) {#if label}
+	function create_if_block_3$2(component, ctx) {
+		var label;
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				label.className = "control-label svelte-1nkiaxn";
+				addLoc(label, file$6, 2, 4, 93);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				label.innerHTML = ctx.label;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.label) {
+					label.innerHTML = ctx.label;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+			}
+		};
+	}
+
+	// (8:4) {#if success}
+	function create_if_block_2$2(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help success svelte-1nkiaxn";
+				addLoc(div, file$6, 8, 4, 236);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.success;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.success) {
+					div.innerHTML = ctx.success;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (10:10) {#if error}
+	function create_if_block_1$3(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help error svelte-1nkiaxn";
+				addLoc(div, file$6, 10, 4, 310);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.error;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.error) {
+					div.innerHTML = ctx.error;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (12:10) {#if !success && !error && help}
+	function create_if_block$6(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help svelte-1nkiaxn";
+				addLoc(div, file$6, 12, 4, 401);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.help;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					div.innerHTML = ctx.help;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	function FormBlock(options) {
+		this._debugName = '<FormBlock>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$6(), options.data);
+		if (!('width' in this._state)) console.warn("<FormBlock> was created without expected data property 'width'");
+		if (!('label' in this._state)) console.warn("<FormBlock> was created without expected data property 'label'");
+		if (!('success' in this._state)) console.warn("<FormBlock> was created without expected data property 'success'");
+		if (!('error' in this._state)) console.warn("<FormBlock> was created without expected data property 'error'");
+		if (!('help' in this._state)) console.warn("<FormBlock> was created without expected data property 'help'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$6(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(FormBlock.prototype, protoDev);
+
+	FormBlock.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* team-settings/tabs/members/InviteUser.html generated by Svelte v2.16.1 */
+
+
+
+	function successMessage({ inviteeEmail, currentAction }) {
+	    const { isComplete, isError, type, role } = currentAction;
+	    if (!isComplete || isError) return;
+
+	    const message = __(`teams / invite-user / ${type} / success`);
+	    return message
+	        .replace('$1', inviteeEmail)
+	        .replace('$2', __(`teams / role / ${role}`));
+	}
+	function errorMessage({ inviteeEmail, currentAction }) {
+	    const { isComplete, isError, errorCode, responseData, type } = currentAction;
+	    if (!isComplete || !isError) return;
+
+	    // we only want to show specific error messages
+	    // if an error code is known to us,
+	    // otherwise we show a generic 'server error' message
+	    const errorType = [400, 401, 406].includes(errorCode) ? errorCode : 'other';
+	    const maxTeamInvites =
+	        errorCode === 406 && responseData && responseData.maxTeamInvites
+	            ? responseData.maxTeamInvites
+	            : null;
+
+	    const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
+	    return message.replace('$1', inviteeEmail).replace('$2', maxTeamInvites);
+	}
+	function isValidEmail({ inviteeEmail }) {
+	    return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+	        inviteeEmail
+	    );
+	}
+	function inviteOptions({
+	    isAdmin,
+	    isTeamOwner,
+	    inviteeEmail,
+	    isValidEmail,
+	    inviteeExistsLoading,
+	    inviteeExists
+	}) {
+	    const options = [
+	        {
+	            label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                'teams / role / member'
+            )}`,
+	            disabled: !isValidEmail,
+	            action() {
+	                teamSettingsInvite.inviteUser('member');
+	            }
+	        },
+	        {
+	            label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                'teams / role / admin'
+            )}`,
+	            disabled: !isValidEmail,
+	            action() {
+	                teamSettingsInvite.inviteUser('admin');
+	            }
+	        }
+	    ];
+
+	    if (isAdmin || isTeamOwner) {
+	        options.push({
+	            label: `<i class="fa fa-envelope"></i> &nbsp;...${__(
+                'teams / role / owner'
+            )}`,
+	            disabled: !isValidEmail,
+	            action() {
+	                teamSettingsInvite.inviteUser('owner');
+	            }
+	        });
+	    }
+
+	    if (isAdmin) {
+	        options.push(
+	            {
+	                label: `<span class="red"><i class="fa ${
+                    inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                }"></i> &nbsp;${__('teams / add-as').replace(
+                    '%s',
+                    __('teams / role / member')
+                )}</span>`,
+	                disabled: !inviteeExists,
+	                action() {
+	                    teamSettingsInvite.addUser('member');
+	                }
+	            },
+	            {
+	                label: `<span class="red"><i class="fa ${
+                    inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                }"></i> &nbsp;${__('teams / add-as').replace(
+                    '%s',
+                    __('teams / role / admin')
+                )}</span>`,
+	                disabled: !inviteeExists,
+	                action() {
+	                    teamSettingsInvite.addUser('admin');
+	                }
+	            },
+	            {
+	                label: `<span class="red"><i class="fa ${
+                    inviteeExistsLoading ? 'fa-spin fa-circle-o-notch' : 'fa-plus'
+                }"></i> &nbsp;${__('teams / add-as').replace(
+                    '%s',
+                    __('teams / role / owner')
+                )}</span>`,
+	                disabled: !inviteeExists,
+	                action() {
+	                    teamSettingsInvite.addUser('owner');
+	                }
+	            }
+	        );
+	    }
+
+	    return options;
+	}
+	function data$7() {
+	    return {
+	        inviteeEmail: '',
+	        currentAction: {
+	            updatingUsers: false,
+	            isComplete: false,
+	            isError: false,
+	            errorCode: null,
+	            responseData: null,
+	            type: '',
+	            role: ''
+	        }
+	    };
+	}
+	var methods$5 = {
+	    async addUser(role) {
+	        const { inviteeExists, inviteeUserId } = this.get();
+	        if (!inviteeExists) return;
+
+	        this.set({ currentAction: { updatingUsers: true, isComplete: false } });
+
+	        const response = await post(`/v3/teams/${this.get().team.id}/members`, {
+	            raw: true,
+	            payload: {
+	                userId: inviteeUserId,
+	                role
+	            }
+	        });
+
+	        const responseJSON = !response.ok ? await response.json() : null;
+
+	        const currentAction = {
+	            updatingUsers: false,
+	            isComplete: true,
+	            isError: !response.ok,
+	            errorCode: !response.ok ? response.status : null,
+	            responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
+	            type: 'add',
+	            role
+	        };
+
+	        this.set({ currentAction });
+	        this.fire('updateUsers');
+	    },
+	    async inviteUser(role) {
+	        const { inviteeEmail } = this.get();
+
+	        this.set({ currentAction: { updatingUsers: true, isComplete: false } });
+
+	        const response = await post(`/v3/teams/${this.get().team.id}/invites`, {
+	            raw: true,
+	            payload: {
+	                email: inviteeEmail,
+	                role
+	            }
+	        });
+
+	        const responseJSON = !response.ok ? await response.json() : null;
+
+	        const currentAction = {
+	            updatingUsers: false,
+	            isComplete: true,
+	            isError: !response.ok,
+	            errorCode: !response.ok ? response.status : null,
+	            responseData: responseJSON && responseJSON.data ? responseJSON.data : null,
+	            type: 'invite',
+	            role
+	        };
+
+	        this.set({ currentAction });
+	        this.fire('updateUsers');
+	    },
+	    async debounceCheckUser() {
+	        if (!this.get().isAdmin) return;
+
+	        window.clearTimeout(window.checkUser);
+	        this.set({ inviteeExistsLoading: true });
+	        window.checkUser = setTimeout(() => {
+	            this.checkUser();
+	        }, 200);
+	    },
+	    async checkUser() {
+	        let { inviteeEmail, isValidEmail } = this.get();
+	        if (!isValidEmail) {
+	            this.set({ inviteeExistsLoading: false });
+	            return;
+	        }
+
+	        const json = await get$1(`/v3/users?search=${encodeURIComponent(inviteeEmail)}`);
+
+	        this.set({ inviteeExistsLoading: false, inviteeExists: false });
+
+	        if (json.list.length > 0) {
+	            inviteeEmail = this.get().inviteeEmail;
+	            json.list.forEach(el => {
+	                if (el.email.toLowerCase() === inviteeEmail.toLowerCase()) {
+	                    this.set({
+	                        inviteeExists: true,
+	                        inviteeUserId: el.id
+	                    });
+	                }
+	            });
+	        }
+	    }
+	};
+
+	function oncreate() {
+	    window.teamSettingsInvite = this;
+	}
+	function onstate({ changed, current, previous }) {
+	    if (changed.inviteeEmail) {
+	        this.set({ inviteeExists: false });
+	        this.debounceCheckUser();
+	    }
+	}
+	const file$7 = "team-settings/tabs/members/InviteUser.html";
+
+	function create_main_fragment$7(component, ctx) {
+		var div, input, input_updating = false, text;
+
+		function input_input_handler() {
+			input_updating = true;
+			component.set({ inviteeEmail: input.value });
+			input_updating = false;
+		}
+
+		var dropdownlistinput_initial_data = {
+		 	disabled: !ctx.isValidEmail,
+		 	label: "<i class='fa " + (ctx.currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope') + "'></i>  " + __('teams / invite' ),
+		 	items: ctx.inviteOptions
+		 };
+		var dropdownlistinput = new DropdownListInput({
+			root: component.root,
+			store: component.store,
+			data: dropdownlistinput_initial_data
+		});
+
+		var formblock_initial_data = {
+		 	label: __('teams / invite-user' ),
+		 	help: __('teams / invite-user / help' ),
+		 	success: ctx.successMessage,
+		 	error: ctx.errorMessage
+		 };
+		var formblock = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock_initial_data
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				input = createElement("input");
+				text = createText(" \n        ");
+				dropdownlistinput._fragment.c();
+				formblock._fragment.c();
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				input.width = "1px";
+				input.placeholder = __('teams / invite-user / eg' );
+				input.className = "svelte-m6ws61";
+				addLoc(input, file$7, 7, 8, 190);
+				div.className = "flex svelte-m6ws61";
+				addLoc(div, file$7, 6, 4, 163);
+			},
+
+			m: function mount(target, anchor) {
+				append(formblock._slotted.default, div);
+				append(div, input);
+
+				input.value = ctx.inviteeEmail;
+
+				append(div, text);
+				dropdownlistinput._mount(div, null);
+				formblock._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (!input_updating && changed.inviteeEmail) input.value = ctx.inviteeEmail;
+
+				var dropdownlistinput_changes = {};
+				if (changed.isValidEmail) dropdownlistinput_changes.disabled = !ctx.isValidEmail;
+				if (changed.currentAction) dropdownlistinput_changes.label = "<i class='fa " + (ctx.currentAction.updatingUsers ? 'fa-spin fa-circle-o-notch' : 'fa-envelope') + "'></i>  " + __('teams / invite' );
+				if (changed.inviteOptions) dropdownlistinput_changes.items = ctx.inviteOptions;
+				dropdownlistinput._set(dropdownlistinput_changes);
+
+				var formblock_changes = {};
+				if (changed.successMessage) formblock_changes.success = ctx.successMessage;
+				if (changed.errorMessage) formblock_changes.error = ctx.errorMessage;
+				formblock._set(formblock_changes);
+			},
+
+			d: function destroy(detach) {
+				removeListener(input, "input", input_input_handler);
+				dropdownlistinput.destroy();
+				formblock.destroy(detach);
+			}
+		};
+	}
+
+	function InviteUser(options) {
+		this._debugName = '<InviteUser>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$7(), options.data);
+
+		this._recompute({ inviteeEmail: 1, currentAction: 1, isAdmin: 1, isTeamOwner: 1, isValidEmail: 1, inviteeExistsLoading: 1, inviteeExists: 1 }, this._state);
+		if (!('inviteeEmail' in this._state)) console.warn("<InviteUser> was created without expected data property 'inviteeEmail'");
+		if (!('currentAction' in this._state)) console.warn("<InviteUser> was created without expected data property 'currentAction'");
+		if (!('isAdmin' in this._state)) console.warn("<InviteUser> was created without expected data property 'isAdmin'");
+		if (!('isTeamOwner' in this._state)) console.warn("<InviteUser> was created without expected data property 'isTeamOwner'");
+
+		if (!('inviteeExistsLoading' in this._state)) console.warn("<InviteUser> was created without expected data property 'inviteeExistsLoading'");
+		if (!('inviteeExists' in this._state)) console.warn("<InviteUser> was created without expected data property 'inviteeExists'");
+		this._intro = true;
+
+		this._handlers.state = [onstate];
+
+		onstate.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$7(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(InviteUser.prototype, protoDev);
+	assign(InviteUser.prototype, methods$5);
+
+	InviteUser.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('successMessage' in newState && !this._updatingReadonlyProperty) throw new Error("<InviteUser>: Cannot set read-only property 'successMessage'");
+		if ('errorMessage' in newState && !this._updatingReadonlyProperty) throw new Error("<InviteUser>: Cannot set read-only property 'errorMessage'");
+		if ('isValidEmail' in newState && !this._updatingReadonlyProperty) throw new Error("<InviteUser>: Cannot set read-only property 'isValidEmail'");
+		if ('inviteOptions' in newState && !this._updatingReadonlyProperty) throw new Error("<InviteUser>: Cannot set read-only property 'inviteOptions'");
+	};
+
+	InviteUser.prototype._recompute = function _recompute(changed, state) {
+		if (changed.inviteeEmail || changed.currentAction) {
+			if (this._differs(state.successMessage, (state.successMessage = successMessage(state)))) changed.successMessage = true;
+			if (this._differs(state.errorMessage, (state.errorMessage = errorMessage(state)))) changed.errorMessage = true;
+		}
+
+		if (changed.inviteeEmail) {
+			if (this._differs(state.isValidEmail, (state.isValidEmail = isValidEmail(state)))) changed.isValidEmail = true;
+		}
+
+		if (changed.isAdmin || changed.isTeamOwner || changed.inviteeEmail || changed.isValidEmail || changed.inviteeExistsLoading || changed.inviteeExists) {
+			if (this._differs(state.inviteOptions, (state.inviteOptions = inviteOptions(state)))) changed.inviteOptions = true;
+		}
+	};
+
+	/* team-settings/tabs/Members.html generated by Svelte v2.16.1 */
+
+
+
+	function role$1({ users, userId }) {
+	    if (!users || !users.length || !userId) return false;
+	    const user = users.find(el => el.id === userId);
+	    if (user) return user.role;
+	    else return 'admin';
+	}
+	function data$8() {
+	    return {
+	        editIndex: 0,
+	        updating: {},
+	        updatingUsers: false,
+	        awaitLoadingUsers: false
+	    };
+	}
+	var methods$6 = {
+	    updateUsers() {
+	        const { team } = this.get();
+	        this.set({
+	            awaitLoadingUsers: httpReq
+	                .get(`/v3/teams/${team.id}/members?limit=1000`)
+	                .then(res => {
+	                    this.set({ users: res.list });
+	                })
+	        });
+	    }
+	};
+
+	function oncreate$1() {
+	    this.updateUsers();
+	}
+	const file$8 = "team-settings/tabs/Members.html";
+
+	function create_main_fragment$8(component, ctx) {
+		var p, raw0_value = __('teams / p'), text0, div2, div0, inviteuser_updating = {}, text1, div1, table, thead, tr0, td0, text2, th0, raw1_value = __('teams / role / member'), text3, th1, raw2_value = __('teams / role / admin'), text4, th2, raw3_value = __('teams / role / owner'), text5, tbody, tr1, td1, raw4_value = __('teams / roles / edit-charts' ), text6, td2, i0, text7, td3, i1, text8, td4, i2, text9, tr2, td5, raw5_value = __('teams / roles / edit-folders' ), text10, td6, i3, text11, td7, i4, text12, td8, i5, text13, tr3, td9, raw6_value = __('teams / roles / access-settings' ), text14, td10, i6, text15, td11, i7, text16, td12, i8, text17, tr4, td13, raw7_value = __('teams / roles / invite-users' ), text18, td14, i9, text19, td15, i10, text20, td16, i11, text21, tr5, td17, raw8_value = __('teams / roles / subscription-options' ), text22, td18, i12, text23, td19, i13, text24, td20, i14, text25, tr6, td21, raw9_value = __('teams / roles / remove-team' ), text26, td22, i15, text27, td23, i16, text28, td24, i17, text29, if_block_anchor;
+
+		var inviteuser_initial_data = {
+		 	isTeamOwner: ctx.isTeamOwner,
+		 	isAdmin: ctx.isAdmin
+		 };
+		if (ctx.team
+	             !== void 0) {
+			inviteuser_initial_data.team = ctx.team
+	            ;
+			inviteuser_updating.team = true;
+		}
+		if (ctx.updatingUsers
+	             !== void 0) {
+			inviteuser_initial_data.updatingUsers = ctx.updatingUsers
+	            ;
+			inviteuser_updating.updatingUsers = true;
+		}
+		var inviteuser = new InviteUser({
+			root: component.root,
+			store: component.store,
+			data: inviteuser_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!inviteuser_updating.team && changed.team) {
+					newState.team = childState.team;
+				}
+
+				if (!inviteuser_updating.updatingUsers && changed.updatingUsers) {
+					newState.updatingUsers = childState.updatingUsers;
+				}
+				component._set(newState);
+				inviteuser_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			inviteuser._bind({ team: 1, updatingUsers: 1 }, inviteuser.get());
+		});
+
+		inviteuser.on("updateUsers", function(event) {
+			component.updateUsers();
+		});
+
+		var if_block = (ctx.awaitLoadingUsers) && create_if_block$7(component, ctx);
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				text0 = createText("\n\n");
+				div2 = createElement("div");
+				div0 = createElement("div");
+				inviteuser._fragment.c();
+				text1 = createText("\n    ");
+				div1 = createElement("div");
+				table = createElement("table");
+				thead = createElement("thead");
+				tr0 = createElement("tr");
+				td0 = createElement("td");
+				text2 = createText("\n                    ");
+				th0 = createElement("th");
+				text3 = createText("\n                    ");
+				th1 = createElement("th");
+				text4 = createText("\n                    ");
+				th2 = createElement("th");
+				text5 = createText("\n            ");
+				tbody = createElement("tbody");
+				tr1 = createElement("tr");
+				td1 = createElement("td");
+				text6 = createText("\n                    ");
+				td2 = createElement("td");
+				i0 = createElement("i");
+				text7 = createText("\n                    ");
+				td3 = createElement("td");
+				i1 = createElement("i");
+				text8 = createText("\n                    ");
+				td4 = createElement("td");
+				i2 = createElement("i");
+				text9 = createText("\n\n                ");
+				tr2 = createElement("tr");
+				td5 = createElement("td");
+				text10 = createText("\n                    ");
+				td6 = createElement("td");
+				i3 = createElement("i");
+				text11 = createText("\n                    ");
+				td7 = createElement("td");
+				i4 = createElement("i");
+				text12 = createText("\n                    ");
+				td8 = createElement("td");
+				i5 = createElement("i");
+				text13 = createText("\n\n                ");
+				tr3 = createElement("tr");
+				td9 = createElement("td");
+				text14 = createText("\n                    ");
+				td10 = createElement("td");
+				i6 = createElement("i");
+				text15 = createText("\n                    ");
+				td11 = createElement("td");
+				i7 = createElement("i");
+				text16 = createText("\n                    ");
+				td12 = createElement("td");
+				i8 = createElement("i");
+				text17 = createText("\n\n                ");
+				tr4 = createElement("tr");
+				td13 = createElement("td");
+				text18 = createText("\n                    ");
+				td14 = createElement("td");
+				i9 = createElement("i");
+				text19 = createText("\n                    ");
+				td15 = createElement("td");
+				i10 = createElement("i");
+				text20 = createText("\n                    ");
+				td16 = createElement("td");
+				i11 = createElement("i");
+				text21 = createText("\n\n                ");
+				tr5 = createElement("tr");
+				td17 = createElement("td");
+				text22 = createText("\n                    ");
+				td18 = createElement("td");
+				i12 = createElement("i");
+				text23 = createText("\n                    ");
+				td19 = createElement("td");
+				i13 = createElement("i");
+				text24 = createText("\n                    ");
+				td20 = createElement("td");
+				i14 = createElement("i");
+				text25 = createText("\n\n                ");
+				tr6 = createElement("tr");
+				td21 = createElement("td");
+				text26 = createText("\n                    ");
+				td22 = createElement("td");
+				i15 = createElement("i");
+				text27 = createText("\n                    ");
+				td23 = createElement("td");
+				i16 = createElement("i");
+				text28 = createText("\n                    ");
+				td24 = createElement("td");
+				i17 = createElement("i");
+				text29 = createText("\n\n");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+				setStyle(p, "margin-bottom", "10px");
+				addLoc(p, file$8, 0, 0, 0);
+				div0.className = "span4";
+				addLoc(div0, file$8, 5, 4, 118);
+				td0.className = "svelte-hgmegl";
+				addLoc(td0, file$8, 18, 20, 501);
+				th0.className = "svelte-hgmegl";
+				addLoc(th0, file$8, 19, 20, 528);
+				th1.className = "svelte-hgmegl";
+				addLoc(th1, file$8, 20, 20, 593);
+				th2.className = "svelte-hgmegl";
+				addLoc(th2, file$8, 21, 20, 657);
+				addLoc(tr0, file$8, 17, 16, 476);
+				addLoc(thead, file$8, 16, 12, 452);
+				td1.className = "svelte-hgmegl";
+				addLoc(td1, file$8, 26, 20, 805);
+				i0.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i0, file$8, 27, 24, 883);
+				td2.className = "svelte-hgmegl";
+				addLoc(td2, file$8, 27, 20, 879);
+				i1.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i1, file$8, 28, 24, 945);
+				td3.className = "svelte-hgmegl";
+				addLoc(td3, file$8, 28, 20, 941);
+				i2.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i2, file$8, 29, 24, 1007);
+				td4.className = "svelte-hgmegl";
+				addLoc(td4, file$8, 29, 20, 1003);
+				addLoc(tr1, file$8, 25, 16, 780);
+				td5.className = "svelte-hgmegl";
+				addLoc(td5, file$8, 33, 20, 1109);
+				i3.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i3, file$8, 34, 24, 1188);
+				td6.className = "svelte-hgmegl";
+				addLoc(td6, file$8, 34, 20, 1184);
+				i4.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i4, file$8, 35, 24, 1250);
+				td7.className = "svelte-hgmegl";
+				addLoc(td7, file$8, 35, 20, 1246);
+				i5.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i5, file$8, 36, 24, 1312);
+				td8.className = "svelte-hgmegl";
+				addLoc(td8, file$8, 36, 20, 1308);
+				addLoc(tr2, file$8, 32, 16, 1084);
+				td9.className = "svelte-hgmegl";
+				addLoc(td9, file$8, 40, 20, 1414);
+				i6.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i6, file$8, 41, 24, 1496);
+				td10.className = "svelte-hgmegl";
+				addLoc(td10, file$8, 41, 20, 1492);
+				i7.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i7, file$8, 42, 24, 1554);
+				td11.className = "svelte-hgmegl";
+				addLoc(td11, file$8, 42, 20, 1550);
+				i8.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i8, file$8, 43, 24, 1616);
+				td12.className = "svelte-hgmegl";
+				addLoc(td12, file$8, 43, 20, 1612);
+				addLoc(tr3, file$8, 39, 16, 1389);
+				td13.className = "svelte-hgmegl";
+				addLoc(td13, file$8, 47, 20, 1718);
+				i9.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i9, file$8, 48, 24, 1797);
+				td14.className = "svelte-hgmegl";
+				addLoc(td14, file$8, 48, 20, 1793);
+				i10.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i10, file$8, 49, 24, 1855);
+				td15.className = "svelte-hgmegl";
+				addLoc(td15, file$8, 49, 20, 1851);
+				i11.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i11, file$8, 50, 24, 1917);
+				td16.className = "svelte-hgmegl";
+				addLoc(td16, file$8, 50, 20, 1913);
+				addLoc(tr4, file$8, 46, 16, 1693);
+				td17.className = "svelte-hgmegl";
+				addLoc(td17, file$8, 54, 20, 2019);
+				i12.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i12, file$8, 55, 24, 2106);
+				td18.className = "svelte-hgmegl";
+				addLoc(td18, file$8, 55, 20, 2102);
+				i13.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i13, file$8, 56, 24, 2164);
+				td19.className = "svelte-hgmegl";
+				addLoc(td19, file$8, 56, 20, 2160);
+				i14.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i14, file$8, 57, 24, 2222);
+				td20.className = "svelte-hgmegl";
+				addLoc(td20, file$8, 57, 20, 2218);
+				addLoc(tr5, file$8, 53, 16, 1994);
+				td21.className = "svelte-hgmegl";
+				addLoc(td21, file$8, 61, 20, 2324);
+				i15.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i15, file$8, 62, 24, 2402);
+				td22.className = "svelte-hgmegl";
+				addLoc(td22, file$8, 62, 20, 2398);
+				i16.className = "im im-x-mark svelte-hgmegl";
+				addLoc(i16, file$8, 63, 24, 2460);
+				td23.className = "svelte-hgmegl";
+				addLoc(td23, file$8, 63, 20, 2456);
+				i17.className = "im im-check-mark svelte-hgmegl";
+				addLoc(i17, file$8, 64, 24, 2518);
+				td24.className = "svelte-hgmegl";
+				addLoc(td24, file$8, 64, 20, 2514);
+				addLoc(tr6, file$8, 60, 16, 2299);
+				tbody.className = "svelte-hgmegl";
+				addLoc(tbody, file$8, 24, 12, 756);
+				table.className = "role-descriptions svelte-hgmegl";
+				setStyle(table, "margin-left", "3em");
+				addLoc(table, file$8, 15, 8, 380);
+				div1.className = "span6";
+				addLoc(div1, file$8, 14, 4, 352);
+				div2.className = "row";
+				setStyle(div2, "margin-bottom", "2em");
+				addLoc(div2, file$8, 4, 0, 68);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw0_value;
+				insert(target, text0, anchor);
+				insert(target, div2, anchor);
+				append(div2, div0);
+				inviteuser._mount(div0, null);
+				append(div2, text1);
+				append(div2, div1);
+				append(div1, table);
+				append(table, thead);
+				append(thead, tr0);
+				append(tr0, td0);
+				append(tr0, text2);
+				append(tr0, th0);
+				th0.innerHTML = raw1_value;
+				append(tr0, text3);
+				append(tr0, th1);
+				th1.innerHTML = raw2_value;
+				append(tr0, text4);
+				append(tr0, th2);
+				th2.innerHTML = raw3_value;
+				append(table, text5);
+				append(table, tbody);
+				append(tbody, tr1);
+				append(tr1, td1);
+				td1.innerHTML = raw4_value;
+				append(tr1, text6);
+				append(tr1, td2);
+				append(td2, i0);
+				append(tr1, text7);
+				append(tr1, td3);
+				append(td3, i1);
+				append(tr1, text8);
+				append(tr1, td4);
+				append(td4, i2);
+				append(tbody, text9);
+				append(tbody, tr2);
+				append(tr2, td5);
+				td5.innerHTML = raw5_value;
+				append(tr2, text10);
+				append(tr2, td6);
+				append(td6, i3);
+				append(tr2, text11);
+				append(tr2, td7);
+				append(td7, i4);
+				append(tr2, text12);
+				append(tr2, td8);
+				append(td8, i5);
+				append(tbody, text13);
+				append(tbody, tr3);
+				append(tr3, td9);
+				td9.innerHTML = raw6_value;
+				append(tr3, text14);
+				append(tr3, td10);
+				append(td10, i6);
+				append(tr3, text15);
+				append(tr3, td11);
+				append(td11, i7);
+				append(tr3, text16);
+				append(tr3, td12);
+				append(td12, i8);
+				append(tbody, text17);
+				append(tbody, tr4);
+				append(tr4, td13);
+				td13.innerHTML = raw7_value;
+				append(tr4, text18);
+				append(tr4, td14);
+				append(td14, i9);
+				append(tr4, text19);
+				append(tr4, td15);
+				append(td15, i10);
+				append(tr4, text20);
+				append(tr4, td16);
+				append(td16, i11);
+				append(tbody, text21);
+				append(tbody, tr5);
+				append(tr5, td17);
+				td17.innerHTML = raw8_value;
+				append(tr5, text22);
+				append(tr5, td18);
+				append(td18, i12);
+				append(tr5, text23);
+				append(tr5, td19);
+				append(td19, i13);
+				append(tr5, text24);
+				append(tr5, td20);
+				append(td20, i14);
+				append(tbody, text25);
+				append(tbody, tr6);
+				append(tr6, td21);
+				td21.innerHTML = raw9_value;
+				append(tr6, text26);
+				append(tr6, td22);
+				append(td22, i15);
+				append(tr6, text27);
+				append(tr6, td23);
+				append(td23, i16);
+				append(tr6, text28);
+				append(tr6, td24);
+				append(td24, i17);
+				insert(target, text29, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var inviteuser_changes = {};
+				if (changed.isTeamOwner) inviteuser_changes.isTeamOwner = ctx.isTeamOwner;
+				if (changed.isAdmin) inviteuser_changes.isAdmin = ctx.isAdmin;
+				if (!inviteuser_updating.team && changed.team) {
+					inviteuser_changes.team = ctx.team
+	            ;
+					inviteuser_updating.team = ctx.team
+	             !== void 0;
+				}
+				if (!inviteuser_updating.updatingUsers && changed.updatingUsers) {
+					inviteuser_changes.updatingUsers = ctx.updatingUsers
+	            ;
+					inviteuser_updating.updatingUsers = ctx.updatingUsers
+	             !== void 0;
+				}
+				inviteuser._set(inviteuser_changes);
+				inviteuser_updating = {};
+
+				if (ctx.awaitLoadingUsers) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$7(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+					detachNode(text0);
+					detachNode(div2);
+				}
+
+				inviteuser.destroy();
+				if (detach) {
+					detachNode(text29);
+				}
+
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (72:0) {#if awaitLoadingUsers}
+	function create_if_block$7(component, ctx) {
+		var await_block_anchor, promise;
+
+		let info = {
+			component,
+			ctx,
+			current: null,
+			pending: create_pending_block,
+			then: create_then_block,
+			catch: create_catch_block,
+			value: 'null',
+			error: 'null'
+		};
+
+		handlePromise(promise = ctx.awaitLoadingUsers, info);
+
+		return {
+			c: function create() {
+				await_block_anchor = createComment();
+
+				info.block.c();
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, await_block_anchor, anchor);
+
+				info.block.m(target, info.anchor = anchor);
+				info.mount = () => await_block_anchor.parentNode;
+				info.anchor = await_block_anchor;
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				info.ctx = ctx;
+
+				if (('awaitLoadingUsers' in changed) && promise !== (promise = ctx.awaitLoadingUsers) && handlePromise(promise, info)) ; else {
+					info.block.p(changed, assign(assign({}, ctx), info.resolved));
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(await_block_anchor);
+				}
+
+				info.block.d(detach);
+				info = null;
+			}
+		};
+	}
+
+	// (83:0) {:catch}
+	function create_catch_block(component, ctx) {
+		var text;
+
+		return {
+			c: function create() {
+				text = createText("error!");
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (74:0) {:then}
+	function create_then_block(component, ctx) {
+		var usertable_updating = {};
+
+		var usertable_initial_data = {
+		 	isAdmin: ctx.isAdmin,
+		 	isTeamOwner: ctx.isTeamOwner,
+		 	team: ctx.team
+		 };
+		if (ctx.users
+	     !== void 0) {
+			usertable_initial_data.users = ctx.users
+	    ;
+			usertable_updating.users = true;
+		}
+		if (ctx.editIndex
+	     !== void 0) {
+			usertable_initial_data.editIndex = ctx.editIndex
+	    ;
+			usertable_updating.editIndex = true;
+		}
+		if (ctx.updating
+	 !== void 0) {
+			usertable_initial_data.updating = ctx.updating
+	;
+			usertable_updating.updating = true;
+		}
+		var usertable = new UserTable({
+			root: component.root,
+			store: component.store,
+			data: usertable_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!usertable_updating.users && changed.users) {
+					newState.users = childState.users;
+				}
+
+				if (!usertable_updating.editIndex && changed.editIndex) {
+					newState.editIndex = childState.editIndex;
+				}
+
+				if (!usertable_updating.updating && changed.updating) {
+					newState.updating = childState.updating;
+				}
+				component._set(newState);
+				usertable_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			usertable._bind({ users: 1, editIndex: 1, updating: 1 }, usertable.get());
+		});
+
+		return {
+			c: function create() {
+				usertable._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				usertable._mount(target, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var usertable_changes = {};
+				if (changed.isAdmin) usertable_changes.isAdmin = ctx.isAdmin;
+				if (changed.isTeamOwner) usertable_changes.isTeamOwner = ctx.isTeamOwner;
+				if (changed.team) usertable_changes.team = ctx.team;
+				if (!usertable_updating.users && changed.users) {
+					usertable_changes.users = ctx.users
+	    ;
+					usertable_updating.users = ctx.users
+	     !== void 0;
+				}
+				if (!usertable_updating.editIndex && changed.editIndex) {
+					usertable_changes.editIndex = ctx.editIndex
+	    ;
+					usertable_updating.editIndex = ctx.editIndex
+	     !== void 0;
+				}
+				if (!usertable_updating.updating && changed.updating) {
+					usertable_changes.updating = ctx.updating
+	;
+					usertable_updating.updating = ctx.updating
+	 !== void 0;
+				}
+				usertable._set(usertable_changes);
+				usertable_updating = {};
+			},
+
+			d: function destroy(detach) {
+				usertable.destroy(detach);
+			}
+		};
+	}
+
+	// (72:50)  <p><i class="fa fa-circle-o-notch fa-spin"></i> &nbsp; { @html __('teams / loading' ) }
+	function create_pending_block(component, ctx) {
+		var p, i, text, raw_value = __('teams / loading' ), raw_before;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				i = createElement("i");
+				text = createText("   ");
+				raw_before = createElement('noscript');
+				i.className = "fa fa-circle-o-notch fa-spin";
+				addLoc(i, file$8, 72, 3, 2689);
+				addLoc(p, file$8, 72, 0, 2686);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				append(p, i);
+				append(p, text);
+				append(p, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	function Members(options) {
+		this._debugName = '<Members>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$8(), options.data);
+
+		this._recompute({ users: 1, userId: 1 }, this._state);
+		if (!('users' in this._state)) console.warn("<Members> was created without expected data property 'users'");
+		if (!('userId' in this._state)) console.warn("<Members> was created without expected data property 'userId'");
+		if (!('team' in this._state)) console.warn("<Members> was created without expected data property 'team'");
+		if (!('isTeamOwner' in this._state)) console.warn("<Members> was created without expected data property 'isTeamOwner'");
+		if (!('isAdmin' in this._state)) console.warn("<Members> was created without expected data property 'isAdmin'");
+		if (!('updatingUsers' in this._state)) console.warn("<Members> was created without expected data property 'updatingUsers'");
+		if (!('awaitLoadingUsers' in this._state)) console.warn("<Members> was created without expected data property 'awaitLoadingUsers'");
+		if (!('editIndex' in this._state)) console.warn("<Members> was created without expected data property 'editIndex'");
+		if (!('updating' in this._state)) console.warn("<Members> was created without expected data property 'updating'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$8(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate$1.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(Members.prototype, protoDev);
+	assign(Members.prototype, methods$6);
+
+	Members.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('role' in newState && !this._updatingReadonlyProperty) throw new Error("<Members>: Cannot set read-only property 'role'");
+	};
+
+	Members.prototype._recompute = function _recompute(changed, state) {
+		if (changed.users || changed.userId) {
+			if (this._differs(state.role, (state.role = role$1(state)))) changed.role = true;
+		}
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/HelpDisplay.html generated by Svelte v2.16.1 */
+
+	function data$9() {
+	    return {
+	        visible: false,
+	        class: ''
+	    };
+	}
+	var methods$7 = {
+	    show() {
+	        const t = setTimeout(() => {
+	            this.set({ visible: true });
+	        }, 400);
+	        this.set({ t });
+	    },
+	    hide() {
+	        const { t } = this.get();
+	        clearTimeout(t);
+	        this.set({ visible: false });
+	    }
+	};
+
+	const file$9 = "home/david/Projects/core/libs/controls/v2/HelpDisplay.html";
+
+	function create_main_fragment$9(component, ctx) {
+		var div, span, text_1, div_class_value;
+
+		var if_block = (ctx.visible) && create_if_block$8(component);
+
+		function mouseenter_handler(event) {
+			component.show();
+		}
+
+		function mouseleave_handler(event) {
+			component.hide();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				span = createElement("span");
+				span.textContent = "?";
+				text_1 = createText("\n    ");
+				if (if_block) if_block.c();
+				span.className = "help-icon svelte-9o0fpa";
+				addLoc(span, file$9, 1, 4, 77);
+				addListener(div, "mouseenter", mouseenter_handler);
+				addListener(div, "mouseleave", mouseleave_handler);
+				div.className = div_class_value = "help " + ctx.class + " svelte-9o0fpa";
+				addLoc(div, file$9, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, span);
+				append(div, text_1);
+				if (if_block) if_block.m(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.visible) {
+					if (!if_block) {
+						if_block = create_if_block$8(component);
+						if_block.c();
+						if_block.m(div, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if ((changed.class) && div_class_value !== (div_class_value = "help " + ctx.class + " svelte-9o0fpa")) {
+					div.className = div_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (if_block) if_block.d();
+				removeListener(div, "mouseenter", mouseenter_handler);
+				removeListener(div, "mouseleave", mouseleave_handler);
+			}
+		};
+	}
+
+	// (3:4) {#if visible}
+	function create_if_block$8(component, ctx) {
+		var div, i, text, slot_content_default = component._slotted.default, slot_content_default_before;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				i = createElement("i");
+				text = createText("\n        ");
+				i.className = "hat-icon im im-graduation-hat svelte-9o0fpa";
+				addLoc(i, file$9, 4, 8, 162);
+				div.className = "content svelte-9o0fpa";
+				addLoc(div, file$9, 3, 4, 132);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, i);
+				append(div, text);
+
+				if (slot_content_default) {
+					append(div, slot_content_default_before || (slot_content_default_before = createComment()));
+					append(div, slot_content_default);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_default) {
+					reinsertAfter(slot_content_default_before, slot_content_default);
+				}
+			}
+		};
+	}
+
+	function HelpDisplay(options) {
+		this._debugName = '<HelpDisplay>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$9(), options.data);
+		if (!('class' in this._state)) console.warn("<HelpDisplay> was created without expected data property 'class'");
+		if (!('visible' in this._state)) console.warn("<HelpDisplay> was created without expected data property 'visible'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$9(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+		}
+	}
+
+	assign(HelpDisplay.prototype, protoDev);
+	assign(HelpDisplay.prototype, methods$7);
+
+	HelpDisplay.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/ControlGroup.html generated by Svelte v2.16.1 */
+
+	function data$a() {
+	    return {
+	        disabled: false,
+	        help: false,
+	        helpClass: false,
+	        miniHelp: false,
+	        label: false,
+	        labelHelp: false,
+	        inline: false,
+	        labelWidth: false,
+	        type: 'default',
+	        valign: 'baseline'
+	    };
+	}
+	var def = {
+	    labelWidth: '100px'
+	};
+
+	const file$a = "home/david/Projects/core/libs/controls/v2/ControlGroup.html";
+
+	function create_main_fragment$a(component, ctx) {
+		var text0, div1, text1, div0, slot_content_default = component._slotted.default, text2, div1_class_value;
+
+		var if_block0 = (ctx.help) && create_if_block_3$3(component, ctx);
+
+		var if_block1 = (ctx.label) && create_if_block_1$4(component, ctx);
+
+		var if_block2 = (ctx.miniHelp) && create_if_block$9(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block0) if_block0.c();
+				text0 = createText("\n\n");
+				div1 = createElement("div");
+				if (if_block1) if_block1.c();
+				text1 = createText("\n    ");
+				div0 = createElement("div");
+				text2 = createText("\n    ");
+				if (if_block2) if_block2.c();
+				div0.className = "controls svelte-1ykzs2h";
+				setStyle(div0, "width", "calc(100% - " + (ctx.labelWidth||def.labelWidth) + " - 32px)");
+				toggleClass(div0, "form-inline", ctx.inline);
+				addLoc(div0, file$a, 14, 4, 423);
+				div1.className = div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-1ykzs2h";
+				addLoc(div1, file$a, 6, 0, 95);
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, text0, anchor);
+				insert(target, div1, anchor);
+				if (if_block1) if_block1.m(div1, null);
+				append(div1, text1);
+				append(div1, div0);
+
+				if (slot_content_default) {
+					append(div0, slot_content_default);
+				}
+
+				append(div1, text2);
+				if (if_block2) if_block2.m(div1, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.help) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_3$3(component, ctx);
+						if_block0.c();
+						if_block0.m(text0.parentNode, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.label) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_1$4(component, ctx);
+						if_block1.c();
+						if_block1.m(div1, text1);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+
+				if (changed.labelWidth) {
+					setStyle(div0, "width", "calc(100% - " + (ctx.labelWidth||def.labelWidth) + " - 32px)");
+				}
+
+				if (changed.inline) {
+					toggleClass(div0, "form-inline", ctx.inline);
+				}
+
+				if (ctx.miniHelp) {
+					if (if_block2) {
+						if_block2.p(changed, ctx);
+					} else {
+						if_block2 = create_if_block$9(component, ctx);
+						if_block2.c();
+						if_block2.m(div1, null);
+					}
+				} else if (if_block2) {
+					if_block2.d(1);
+					if_block2 = null;
+				}
+
+				if ((changed.type || changed.valign) && div1_class_value !== (div1_class_value = "control-group vis-option-group vis-option-group-" + ctx.type + " label-" + ctx.valign + " svelte-1ykzs2h")) {
+					div1.className = div1_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) if_block0.d(detach);
+				if (detach) {
+					detachNode(text0);
+					detachNode(div1);
+				}
+
+				if (if_block1) if_block1.d();
+
+				if (slot_content_default) {
+					reinsertChildren(div0, slot_content_default);
+				}
+
+				if (if_block2) if_block2.d();
+			}
+		};
+	}
+
+	// (1:0) {#if help}
+	function create_if_block_3$3(component, ctx) {
+		var div;
+
+		var helpdisplay_initial_data = { class: ctx.helpClass };
+		var helpdisplay = new HelpDisplay({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: helpdisplay_initial_data
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				helpdisplay._fragment.c();
+				addLoc(div, file$a, 2, 4, 49);
+			},
+
+			m: function mount(target, anchor) {
+				append(helpdisplay._slotted.default, div);
+				div.innerHTML = ctx.help;
+				helpdisplay._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					div.innerHTML = ctx.help;
+				}
+
+				var helpdisplay_changes = {};
+				if (changed.helpClass) helpdisplay_changes.class = ctx.helpClass;
+				helpdisplay._set(helpdisplay_changes);
+			},
+
+			d: function destroy(detach) {
+				helpdisplay.destroy(detach);
+			}
+		};
+	}
+
+	// (8:4) {#if label}
+	function create_if_block_1$4(component, ctx) {
+		var label, raw_after, text;
+
+		var if_block = (ctx.labelHelp) && create_if_block_2$3(component, ctx);
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				raw_after = createElement('noscript');
+				text = createText(" ");
+				if (if_block) if_block.c();
+				setStyle(label, "width", (ctx.labelWidth||def.labelWidth));
+				label.className = "control-label svelte-1ykzs2h";
+				toggleClass(label, "disabled", ctx.disabled);
+				addLoc(label, file$a, 8, 4, 199);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, raw_after);
+				raw_after.insertAdjacentHTML("beforebegin", ctx.label);
+				append(label, text);
+				if (if_block) if_block.m(label, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.label) {
+					detachBefore(raw_after);
+					raw_after.insertAdjacentHTML("beforebegin", ctx.label);
+				}
+
+				if (ctx.labelHelp) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_2$3(component, ctx);
+						if_block.c();
+						if_block.m(label, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if (changed.labelWidth) {
+					setStyle(label, "width", (ctx.labelWidth||def.labelWidth));
+				}
+
+				if (changed.disabled) {
+					toggleClass(label, "disabled", ctx.disabled);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (10:24) {#if labelHelp}
+	function create_if_block_2$3(component, ctx) {
+		var p;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				p.className = "mini-help mt-1";
+				addLoc(p, file$a, 10, 8, 334);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = ctx.labelHelp;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.labelHelp) {
+					p.innerHTML = ctx.labelHelp;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (18:4) {#if miniHelp}
+	function create_if_block$9(component, ctx) {
+		var p, p_class_value;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				setStyle(p, "padding-left", (ctx.inline ? 0 : ctx.labelWidth||def.labelWidth));
+				p.className = p_class_value = "mt-1 mini-help " + ctx.type + " svelte-1ykzs2h";
+				toggleClass(p, "mini-help-block", !ctx.inline);
+				addLoc(p, file$a, 18, 4, 588);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = ctx.miniHelp;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.miniHelp) {
+					p.innerHTML = ctx.miniHelp;
+				}
+
+				if (changed.inline || changed.labelWidth) {
+					setStyle(p, "padding-left", (ctx.inline ? 0 : ctx.labelWidth||def.labelWidth));
+				}
+
+				if ((changed.type) && p_class_value !== (p_class_value = "mt-1 mini-help " + ctx.type + " svelte-1ykzs2h")) {
+					p.className = p_class_value;
+				}
+
+				if ((changed.type || changed.inline)) {
+					toggleClass(p, "mini-help-block", !ctx.inline);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	function ControlGroup(options) {
+		this._debugName = '<ControlGroup>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$a(), options.data);
+		if (!('help' in this._state)) console.warn("<ControlGroup> was created without expected data property 'help'");
+		if (!('helpClass' in this._state)) console.warn("<ControlGroup> was created without expected data property 'helpClass'");
+		if (!('type' in this._state)) console.warn("<ControlGroup> was created without expected data property 'type'");
+		if (!('valign' in this._state)) console.warn("<ControlGroup> was created without expected data property 'valign'");
+		if (!('label' in this._state)) console.warn("<ControlGroup> was created without expected data property 'label'");
+		if (!('labelWidth' in this._state)) console.warn("<ControlGroup> was created without expected data property 'labelWidth'");
+		if (!('labelHelp' in this._state)) console.warn("<ControlGroup> was created without expected data property 'labelHelp'");
+		if (!('inline' in this._state)) console.warn("<ControlGroup> was created without expected data property 'inline'");
+		if (!('miniHelp' in this._state)) console.warn("<ControlGroup> was created without expected data property 'miniHelp'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$a(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(ControlGroup.prototype, protoDev);
+
+	ControlGroup.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/RadioControl.html generated by Svelte v2.16.1 */
+
+	function data$b() {
+	    return {
+	        value: null,
+	        disabled: false,
+	        disabledMessage: '',
+	        indeterminate: false,
+	        label: '',
+	        labelWidth: 'auto',
+	        help: null,
+	        miniHelp: null,
+	        valign: 'top',
+	        inline: true
+	    };
+	}
+	function onstate$1({ changed, previous }) {
+	    if (previous && changed.value) {
+	        this.set({ indeterminate: false });
+	    }
+	}
+	const file$b = "home/david/Projects/core/libs/controls/v2/RadioControl.html";
+
+	function get_each_context$4(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.opt = list[i];
+		return child_ctx;
+	}
+
+	function create_main_fragment$b(component, ctx) {
+		var div, text0, slot_content_default = component._slotted.default, slot_content_default_before, text1, if_block_anchor;
+
+		var each_value = ctx.options;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$5(component, get_each_context$4(ctx, each_value, i));
+		}
+
+		var controlgroup_initial_data = {
+		 	type: "radio",
+		 	labelWidth: ctx.labelWidth,
+		 	valign: ctx.valign,
+		 	label: ctx.label,
+		 	disabled: ctx.disabled,
+		 	help: ctx.help,
+		 	miniHelp: ctx.miniHelp
+		 };
+		var controlgroup = new ControlGroup({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: controlgroup_initial_data
+		});
+
+		var if_block = (ctx.disabled && ctx.disabledMessage) && create_if_block$a(component, ctx);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				text0 = createText("\n    ");
+				controlgroup._fragment.c();
+				text1 = createText("\n\n");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+				div.className = "svelte-b3e9e4";
+				toggleClass(div, "inline", ctx.inline);
+				toggleClass(div, "indeterminate", ctx.indeterminate);
+				addLoc(div, file$b, 1, 4, 91);
+			},
+
+			m: function mount(target, anchor) {
+				append(controlgroup._slotted.default, div);
+
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(div, null);
+				}
+
+				append(controlgroup._slotted.default, text0);
+
+				if (slot_content_default) {
+					append(controlgroup._slotted.default, slot_content_default_before || (slot_content_default_before = createComment()));
+					append(controlgroup._slotted.default, slot_content_default);
+				}
+
+				controlgroup._mount(target, anchor);
+				insert(target, text1, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.options || changed.disabled || changed.value) {
+					each_value = ctx.options;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$4(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$5(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(div, null);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				if (changed.inline) {
+					toggleClass(div, "inline", ctx.inline);
+				}
+
+				if (changed.indeterminate) {
+					toggleClass(div, "indeterminate", ctx.indeterminate);
+				}
+
+				var controlgroup_changes = {};
+				if (changed.labelWidth) controlgroup_changes.labelWidth = ctx.labelWidth;
+				if (changed.valign) controlgroup_changes.valign = ctx.valign;
+				if (changed.label) controlgroup_changes.label = ctx.label;
+				if (changed.disabled) controlgroup_changes.disabled = ctx.disabled;
+				if (changed.help) controlgroup_changes.help = ctx.help;
+				if (changed.miniHelp) controlgroup_changes.miniHelp = ctx.miniHelp;
+				controlgroup._set(controlgroup_changes);
+
+				if (ctx.disabled && ctx.disabledMessage) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$a(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				if (slot_content_default) {
+					reinsertAfter(slot_content_default_before, slot_content_default);
+				}
+
+				controlgroup.destroy(detach);
+				if (detach) {
+					detachNode(text1);
+				}
+
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (9:12) {#if opt.help}
+	function create_if_block_1$5(component, ctx) {
+		var div, raw_value = ctx.opt.help;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "help svelte-b3e9e4";
+				addLoc(div, file$b, 9, 12, 498);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.options) && raw_value !== (raw_value = ctx.opt.help)) {
+					div.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	// (3:8) {#each options as opt}
+	function create_each_block$5(component, ctx) {
+		var label, input, input_value_value, text0, span0, text1, span1, raw_value = ctx.opt.label, text2, label_title_value;
+
+		function input_change_handler() {
+			component.set({ value: input.__value });
+		}
+
+		var if_block = (ctx.opt.help) && create_if_block_1$5(component, ctx);
+
+		return {
+			c: function create() {
+				label = createElement("label");
+				input = createElement("input");
+				text0 = createText("\n            ");
+				span0 = createElement("span");
+				text1 = createText(" ");
+				span1 = createElement("span");
+				text2 = createText("\n            ");
+				if (if_block) if_block.c();
+				component._bindingGroups[0].push(input);
+				addListener(input, "change", input_change_handler);
+				setAttribute(input, "type", "radio");
+				input.__value = input_value_value = ctx.opt.value;
+				input.value = input.__value;
+				input.disabled = ctx.disabled;
+				input.className = "svelte-b3e9e4";
+				addLoc(input, file$b, 4, 12, 256);
+				span0.className = "css-ui svelte-b3e9e4";
+				addLoc(span0, file$b, 5, 12, 343);
+				span1.className = "inner-label svelte-b3e9e4";
+				addLoc(span1, file$b, 5, 46, 377);
+				label.title = label_title_value = ctx.opt.tooltip||'';
+				label.className = "svelte-b3e9e4";
+				toggleClass(label, "disabled", ctx.disabled);
+				toggleClass(label, "has-help", ctx.opt.help);
+				addLoc(label, file$b, 3, 8, 169);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, label, anchor);
+				append(label, input);
+
+				input.checked = input.__value === ctx.value;
+
+				append(label, text0);
+				append(label, span0);
+				append(label, text1);
+				append(label, span1);
+				span1.innerHTML = raw_value;
+				append(label, text2);
+				if (if_block) if_block.m(label, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.value) input.checked = input.__value === ctx.value;
+				if ((changed.options) && input_value_value !== (input_value_value = ctx.opt.value)) {
+					input.__value = input_value_value;
+				}
+
+				input.value = input.__value;
+				if (changed.disabled) {
+					input.disabled = ctx.disabled;
+				}
+
+				if ((changed.options) && raw_value !== (raw_value = ctx.opt.label)) {
+					span1.innerHTML = raw_value;
+				}
+
+				if (ctx.opt.help) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_1$5(component, ctx);
+						if_block.c();
+						if_block.m(label, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if ((changed.options) && label_title_value !== (label_title_value = ctx.opt.tooltip||'')) {
+					label.title = label_title_value;
+				}
+
+				if (changed.disabled) {
+					toggleClass(label, "disabled", ctx.disabled);
+				}
+
+				if (changed.options) {
+					toggleClass(label, "has-help", ctx.opt.help);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(label);
+				}
+
+				component._bindingGroups[0].splice(component._bindingGroups[0].indexOf(input), 1);
+				removeListener(input, "change", input_change_handler);
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (20:0) {#if disabled && disabledMessage}
+	function create_if_block$a(component, ctx) {
+		var div;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "disabled-message svelte-b3e9e4";
+				addLoc(div, file$b, 20, 0, 695);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				div.innerHTML = ctx.disabledMessage;
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.disabledMessage) {
+					div.innerHTML = ctx.disabledMessage;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+			}
+		};
+	}
+
+	function RadioControl(options) {
+		this._debugName = '<RadioControl>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$b(), options.data);
+		if (!('labelWidth' in this._state)) console.warn("<RadioControl> was created without expected data property 'labelWidth'");
+		if (!('valign' in this._state)) console.warn("<RadioControl> was created without expected data property 'valign'");
+		if (!('label' in this._state)) console.warn("<RadioControl> was created without expected data property 'label'");
+		if (!('disabled' in this._state)) console.warn("<RadioControl> was created without expected data property 'disabled'");
+		if (!('help' in this._state)) console.warn("<RadioControl> was created without expected data property 'help'");
+		if (!('miniHelp' in this._state)) console.warn("<RadioControl> was created without expected data property 'miniHelp'");
+		if (!('options' in this._state)) console.warn("<RadioControl> was created without expected data property 'options'");
+		if (!('value' in this._state)) console.warn("<RadioControl> was created without expected data property 'value'");
+		if (!('disabledMessage' in this._state)) console.warn("<RadioControl> was created without expected data property 'disabledMessage'");
+		this._bindingGroups = [[]];
+		this._intro = true;
+
+		this._handlers.state = [onstate$1];
+
+		this._slotted = options.slots || {};
+
+		onstate$1.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$b(this, this._state);
+
+		this.root._oncreate.push(() => {
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(RadioControl.prototype, protoDev);
+
+	RadioControl.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* team-settings/tabs/Settings.html generated by Svelte v2.16.1 */
+
+
+
+	function localeOptions({ locales }) {
+	    return [
+	        {
+	            value: null,
+	            label: __('teams / defaults / none', 'organizations')
+	        },
+	        ...locales
+	    ];
+	}
+	function data$c() {
+	    return {
+	        embedCodes: [
+	            { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
+	            { value: 'iframe', label: __('teams / defaults / iframe') },
+	            { value: 'custom', label: __('teams / defaults / custom') }
+	        ],
+	        themes: [],
+	        folders: [],
+	        locales: [],
+	        defaultTheme: '',
+	        settings: {},
+	        team: {}
+	    };
+	}
+	function onstate$2({ changed, current, previous }) {
+	    if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
+	        this.fire('change', {
+	            team: current.team,
+	            settings: current.settings,
+	            defaultTheme: current.defaultTheme
+	        });
+	    }
+	}
+	const file$c = "team-settings/tabs/Settings.html";
+
+	function create_main_fragment$c(component, ctx) {
+		var div1, div0, p, raw_value = __('teams / defaults / p'), text0, input, input_updating = false, text1, radiocontrol0_updating = {}, text2, h3, text3_value = __('teams / defaults / h3'), text3, text4, selectinput0_updating = {}, text5, selectinput1_updating = {}, text6, selectinput2_updating = {}, text7, radiocontrol1_updating = {}, text8;
+
+		function input_input_handler() {
+			input_updating = true;
+			ctx.team.name = input.value;
+			component.set({ team: ctx.team });
+			input_updating = false;
+		}
+
+		var formblock0_initial_data = { label: __('teams / name' ), help: __('teams / name / help' ) };
+		var formblock0 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock0_initial_data
+		});
+
+		var radiocontrol0_initial_data = { label: "", options: [ {label: __('teams / defaults / expanded' ), value: 'expanded'}, {label: __('teams / defaults / collapsed' ), value: 'collapsed'}] };
+		if (ctx.settings.folders !== void 0) {
+			radiocontrol0_initial_data.value = ctx.settings.folders;
+			radiocontrol0_updating.value = true;
+		}
+		var radiocontrol0 = new RadioControl({
+			root: component.root,
+			store: component.store,
+			data: radiocontrol0_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!radiocontrol0_updating.value && changed.value) {
+					ctx.settings.folders = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				radiocontrol0_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			radiocontrol0._bind({ value: 1 }, radiocontrol0.get());
+		});
+
+		var formblock1_initial_data = { label: __('teams / defaults / folder-status' ), help: __('teams / defaults / folder-status / p' ) };
+		var formblock1 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock1_initial_data
+		});
+
+		var selectinput0_initial_data = { options: ctx.themes };
+		if (ctx.defaultTheme !== void 0) {
+			selectinput0_initial_data.value = ctx.defaultTheme;
+			selectinput0_updating.value = true;
+		}
+		var selectinput0 = new SelectInput({
+			root: component.root,
+			store: component.store,
+			data: selectinput0_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectinput0_updating.value && changed.value) {
+					newState.defaultTheme = childState.value;
+				}
+				component._set(newState);
+				selectinput0_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectinput0._bind({ value: 1 }, selectinput0.get());
+		});
+
+		var formblock2_initial_data = { label: __('teams / defaults / theme' ), help: __('teams / defaults / theme / p' ) };
+		var formblock2 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock2_initial_data
+		});
+
+		var selectinput1_initial_data = { options: ctx.folders };
+		if (ctx.settings.default.folder !== void 0) {
+			selectinput1_initial_data.value = ctx.settings.default.folder;
+			selectinput1_updating.value = true;
+		}
+		var selectinput1 = new SelectInput({
+			root: component.root,
+			store: component.store,
+			data: selectinput1_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectinput1_updating.value && changed.value) {
+					ctx.settings.default.folder = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				selectinput1_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectinput1._bind({ value: 1 }, selectinput1.get());
+		});
+
+		var formblock3_initial_data = {
+		 	label: __('teams / defaults / folder' ),
+		 	help: __('teams / defaults / folder / p' )
+		 };
+		var formblock3 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock3_initial_data
+		});
+
+		var selectinput2_initial_data = { options: ctx.localeOptions };
+		if (ctx.settings.default.locale !== void 0) {
+			selectinput2_initial_data.value = ctx.settings.default.locale;
+			selectinput2_updating.value = true;
+		}
+		var selectinput2 = new SelectInput({
+			root: component.root,
+			store: component.store,
+			data: selectinput2_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectinput2_updating.value && changed.value) {
+					ctx.settings.default.locale = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				selectinput2_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectinput2._bind({ value: 1 }, selectinput2.get());
+		});
+
+		var formblock4_initial_data = {
+		 	label: __('teams / defaults / locale' ),
+		 	help: __('teams / defaults / locale / p' )
+		 };
+		var formblock4 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock4_initial_data
+		});
+
+		var radiocontrol1_initial_data = { label: "", options: ctx.embedCodes };
+		if (ctx.settings.embed.preferred_embed !== void 0) {
+			radiocontrol1_initial_data.value = ctx.settings.embed.preferred_embed;
+			radiocontrol1_updating.value = true;
+		}
+		var radiocontrol1 = new RadioControl({
+			root: component.root,
+			store: component.store,
+			data: radiocontrol1_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!radiocontrol1_updating.value && changed.value) {
+					ctx.settings.embed.preferred_embed = childState.value;
+					newState.settings = ctx.settings;
+				}
+				component._set(newState);
+				radiocontrol1_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			radiocontrol1._bind({ value: 1 }, radiocontrol1.get());
+		});
+
+		var formblock5_initial_data = {
+		 	label: __('teams / defaults / embedcode' ),
+		 	help: __('teams / defaults / embedcode / p' )
+		 };
+		var formblock5 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock5_initial_data
+		});
+
+		var if_block = (ctx.settings.embed.preferred_embed == "custom") && create_if_block$b(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				p = createElement("p");
+				text0 = createText("\n\n        ");
+				input = createElement("input");
+				formblock0._fragment.c();
+				text1 = createText("\n\n        ");
+				radiocontrol0._fragment.c();
+				formblock1._fragment.c();
+				text2 = createText("\n\n        ");
+				h3 = createElement("h3");
+				text3 = createText(text3_value);
+				text4 = createText("\n\n        ");
+				selectinput0._fragment.c();
+				formblock2._fragment.c();
+				text5 = createText("\n\n        ");
+				selectinput1._fragment.c();
+				formblock3._fragment.c();
+				text6 = createText("\n\n        ");
+				selectinput2._fragment.c();
+				formblock4._fragment.c();
+				text7 = createText("\n\n        ");
+				radiocontrol1._fragment.c();
+				formblock5._fragment.c();
+				text8 = createText("\n\n        ");
+				if (if_block) if_block.c();
+				setStyle(p, "margin-bottom", "10px");
+				addLoc(p, file$c, 2, 8, 50);
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				input.placeholder = "";
+				addLoc(input, file$c, 7, 12, 243);
+				addLoc(h3, file$c, 21, 8, 788);
+				div0.className = "span6";
+				addLoc(div0, file$c, 1, 4, 22);
+				div1.className = "row";
+				addLoc(div1, file$c, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				append(div0, p);
+				p.innerHTML = raw_value;
+				append(div0, text0);
+				append(formblock0._slotted.default, input);
+
+				input.value = ctx.team.name;
+
+				formblock0._mount(div0, null);
+				append(div0, text1);
+				radiocontrol0._mount(formblock1._slotted.default, null);
+				formblock1._mount(div0, null);
+				append(div0, text2);
+				append(div0, h3);
+				append(h3, text3);
+				append(div0, text4);
+				selectinput0._mount(formblock2._slotted.default, null);
+				formblock2._mount(div0, null);
+				append(div0, text5);
+				selectinput1._mount(formblock3._slotted.default, null);
+				formblock3._mount(div0, null);
+				append(div0, text6);
+				selectinput2._mount(formblock4._slotted.default, null);
+				formblock4._mount(div0, null);
+				append(div0, text7);
+				radiocontrol1._mount(formblock5._slotted.default, null);
+				formblock5._mount(div0, null);
+				append(div0, text8);
+				if (if_block) if_block.m(div0, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (!input_updating && changed.team) input.value = ctx.team.name;
+
+				var radiocontrol0_changes = {};
+				if (!radiocontrol0_updating.value && changed.settings) {
+					radiocontrol0_changes.value = ctx.settings.folders;
+					radiocontrol0_updating.value = ctx.settings.folders !== void 0;
+				}
+				radiocontrol0._set(radiocontrol0_changes);
+				radiocontrol0_updating = {};
+
+				var selectinput0_changes = {};
+				if (changed.themes) selectinput0_changes.options = ctx.themes;
+				if (!selectinput0_updating.value && changed.defaultTheme) {
+					selectinput0_changes.value = ctx.defaultTheme;
+					selectinput0_updating.value = ctx.defaultTheme !== void 0;
+				}
+				selectinput0._set(selectinput0_changes);
+				selectinput0_updating = {};
+
+				var selectinput1_changes = {};
+				if (changed.folders) selectinput1_changes.options = ctx.folders;
+				if (!selectinput1_updating.value && changed.settings) {
+					selectinput1_changes.value = ctx.settings.default.folder;
+					selectinput1_updating.value = ctx.settings.default.folder !== void 0;
+				}
+				selectinput1._set(selectinput1_changes);
+				selectinput1_updating = {};
+
+				var selectinput2_changes = {};
+				if (changed.localeOptions) selectinput2_changes.options = ctx.localeOptions;
+				if (!selectinput2_updating.value && changed.settings) {
+					selectinput2_changes.value = ctx.settings.default.locale;
+					selectinput2_updating.value = ctx.settings.default.locale !== void 0;
+				}
+				selectinput2._set(selectinput2_changes);
+				selectinput2_updating = {};
+
+				var radiocontrol1_changes = {};
+				if (changed.embedCodes) radiocontrol1_changes.options = ctx.embedCodes;
+				if (!radiocontrol1_updating.value && changed.settings) {
+					radiocontrol1_changes.value = ctx.settings.embed.preferred_embed;
+					radiocontrol1_updating.value = ctx.settings.embed.preferred_embed !== void 0;
+				}
+				radiocontrol1._set(radiocontrol1_changes);
+				radiocontrol1_updating = {};
+
+				if (ctx.settings.embed.preferred_embed == "custom") {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$b(component, ctx);
+						if_block.c();
+						if_block.m(div0, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				removeListener(input, "input", input_input_handler);
+				formblock0.destroy();
+				radiocontrol0.destroy();
+				formblock1.destroy();
+				selectinput0.destroy();
+				formblock2.destroy();
+				selectinput1.destroy();
+				formblock3.destroy();
+				selectinput2.destroy();
+				formblock4.destroy();
+				radiocontrol1.destroy();
+				formblock5.destroy();
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (56:8) {#if settings.embed.preferred_embed == "custom"}
+	function create_if_block$b(component, ctx) {
+		var h3, text1, input, input_updating = false, text2, textarea0, textarea0_updating = false, text3, textarea1, textarea1_updating = false, text4, hr;
+
+		function input_input_handler() {
+			input_updating = true;
+			ctx.settings.embed.custom_embed.title = input.value;
+			component.set({ settings: ctx.settings });
+			input_updating = false;
+		}
+
+		var formblock0_initial_data = { label: __('teams / custom / title' ), help: "" };
+		var formblock0 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock0_initial_data
+		});
+
+		function textarea0_input_handler() {
+			textarea0_updating = true;
+			ctx.settings.embed.custom_embed.text = textarea0.value;
+			component.set({ settings: ctx.settings });
+			textarea0_updating = false;
+		}
+
+		var formblock1_initial_data = { label: __('teams / custom / help' ), help: "" };
+		var formblock1 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock1_initial_data
+		});
+
+		function textarea1_input_handler() {
+			textarea1_updating = true;
+			ctx.settings.embed.custom_embed.template = textarea1.value;
+			component.set({ settings: ctx.settings });
+			textarea1_updating = false;
+		}
+
+		var formblock2_initial_data = {
+		 	label: __('teams / custom / embedcode' ),
+		 	help: __('teams / custom / embedcode / help' )
+		 };
+		var formblock2 = new FormBlock({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: formblock2_initial_data
+		});
+
+		return {
+			c: function create() {
+				h3 = createElement("h3");
+				h3.textContent = "Custom Embed Code";
+				text1 = createText("\n\n        ");
+				input = createElement("input");
+				formblock0._fragment.c();
+				text2 = createText("\n\n        ");
+				textarea0 = createElement("textarea");
+				formblock1._fragment.c();
+				text3 = createText("\n\n        ");
+				textarea1 = createElement("textarea");
+				formblock2._fragment.c();
+				text4 = createText("\n        ");
+				hr = createElement("hr");
+				addLoc(h3, file$c, 56, 8, 1985);
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				input.placeholder = "e.g. Custom CMS Embed";
+				addLoc(input, file$c, 59, 12, 2095);
+				addListener(textarea0, "input", textarea0_input_handler);
+				textarea0.placeholder = "e.g. This is a custom embed code for our CMS";
+				addLoc(textarea0, file$c, 67, 12, 2363);
+				addListener(textarea1, "input", textarea1_input_handler);
+				textarea1.className = "embedcode svelte-rgtu7e";
+				textarea1.placeholder = "<iframe src=\"%chart_url%\" width=\"%chart_width%\" widthheight=\"%chart_height%\"></iframe>";
+				addLoc(textarea1, file$c, 77, 12, 2710);
+				addLoc(hr, file$c, 83, 8, 2981);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h3, anchor);
+				insert(target, text1, anchor);
+				append(formblock0._slotted.default, input);
+
+				input.value = ctx.settings.embed.custom_embed.title;
+
+				formblock0._mount(target, anchor);
+				insert(target, text2, anchor);
+				append(formblock1._slotted.default, textarea0);
+
+				textarea0.value = ctx.settings.embed.custom_embed.text;
+
+				formblock1._mount(target, anchor);
+				insert(target, text3, anchor);
+				append(formblock2._slotted.default, textarea1);
+
+				textarea1.value = ctx.settings.embed.custom_embed.template;
+
+				formblock2._mount(target, anchor);
+				insert(target, text4, anchor);
+				insert(target, hr, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (!input_updating && changed.settings) input.value = ctx.settings.embed.custom_embed.title;
+				if (!textarea0_updating && changed.settings) textarea0.value = ctx.settings.embed.custom_embed.text;
+				if (!textarea1_updating && changed.settings) textarea1.value = ctx.settings.embed.custom_embed.template;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h3);
+					detachNode(text1);
+				}
+
+				removeListener(input, "input", input_input_handler);
+				formblock0.destroy(detach);
+				if (detach) {
+					detachNode(text2);
+				}
+
+				removeListener(textarea0, "input", textarea0_input_handler);
+				formblock1.destroy(detach);
+				if (detach) {
+					detachNode(text3);
+				}
+
+				removeListener(textarea1, "input", textarea1_input_handler);
+				formblock2.destroy(detach);
+				if (detach) {
+					detachNode(text4);
+					detachNode(hr);
+				}
+			}
+		};
+	}
+
+	function Settings(options) {
+		this._debugName = '<Settings>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$c(), options.data);
+
+		this._recompute({ locales: 1 }, this._state);
+		if (!('locales' in this._state)) console.warn("<Settings> was created without expected data property 'locales'");
+		if (!('team' in this._state)) console.warn("<Settings> was created without expected data property 'team'");
+		if (!('settings' in this._state)) console.warn("<Settings> was created without expected data property 'settings'");
+		if (!('defaultTheme' in this._state)) console.warn("<Settings> was created without expected data property 'defaultTheme'");
+		if (!('themes' in this._state)) console.warn("<Settings> was created without expected data property 'themes'");
+		if (!('folders' in this._state)) console.warn("<Settings> was created without expected data property 'folders'");
+
+		if (!('embedCodes' in this._state)) console.warn("<Settings> was created without expected data property 'embedCodes'");
+		this._intro = true;
+
+		this._handlers.state = [onstate$2];
+
+		onstate$2.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$c(this, this._state);
+
+		this.root._oncreate.push(() => {
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(Settings.prototype, protoDev);
+
+	Settings.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('localeOptions' in newState && !this._updatingReadonlyProperty) throw new Error("<Settings>: Cannot set read-only property 'localeOptions'");
+	};
+
+	Settings.prototype._recompute = function _recompute(changed, state) {
+		if (changed.locales) {
+			if (this._differs(state.localeOptions, (state.localeOptions = localeOptions(state)))) changed.localeOptions = true;
+		}
+	};
+
+	function cubicOut(t) {
+	  var f = t - 1.0;
+	  return f * f * f + 1.0
+	}
+
+	function slide(
+		node,
+		ref
+	) {
+		var delay = ref.delay; if ( delay === void 0 ) delay = 0;
+		var duration = ref.duration; if ( duration === void 0 ) duration = 400;
+		var easing = ref.easing; if ( easing === void 0 ) easing = cubicOut;
+
+		var style = getComputedStyle(node);
+		var opacity = +style.opacity;
+		var height = parseFloat(style.height);
+		var paddingTop = parseFloat(style.paddingTop);
+		var paddingBottom = parseFloat(style.paddingBottom);
+		var marginTop = parseFloat(style.marginTop);
+		var marginBottom = parseFloat(style.marginBottom);
+		var borderTopWidth = parseFloat(style.borderTopWidth);
+		var borderBottomWidth = parseFloat(style.borderBottomWidth);
+
+		return {
+			delay: delay,
+			duration: duration,
+			easing: easing,
+			css: function (t) { return "overflow: hidden;" +
+				"opacity: " + (Math.min(t * 20, 1) * opacity) + ";" +
+				"height: " + (t * height) + "px;" +
+				"padding-top: " + (t * paddingTop) + "px;" +
+				"padding-bottom: " + (t * paddingBottom) + "px;" +
+				"margin-top: " + (t * marginTop) + "px;" +
+				"margin-bottom: " + (t * marginBottom) + "px;" +
+				"border-top-width: " + (t * borderTopWidth) + "px;" +
+				"border-bottom-width: " + (t * borderBottomWidth) + "px;"; }
+		};
+	}
+
+	/* home/david/Projects/core/libs/controls/v2/SwitchControl.html generated by Svelte v2.16.1 */
+
+
+
+	function data$d() {
+	    return {
+	        value: false,
+	        help: '',
+	        disabledMessage: '',
+	        disabledState: 'auto',
+	        disabled: false,
+	        highlight: false,
+	        indeterminate: false,
+	        hasSlotContent: false
+	    };
+	}
+	var methods$8 = {
+	    toggle() {
+	        const { disabled, indeterminate, value } = this.get();
+	        const updatedState = { value: indeterminate ? true : !value, indeterminate: false };
+	        if (disabled) return;
+	        this.set(updatedState);
+	        this.fire('change', updatedState);
+	    }
+	};
+
+	function oncreate$2() {
+	    this.set({
+	        hasSlotContent: this.options.slots && this.options.slots.default
+	    });
+	}
+	const file$d = "home/david/Projects/core/libs/controls/v2/SwitchControl.html";
+
+	function create_main_fragment$d(component, ctx) {
+		var div, text0, label, button, input, input_class_value, text1, span, text2, raw_before, text3, current_block_type_index, if_block1;
+
+		var if_block0 = (ctx.help) && create_if_block_2$4(component, ctx);
+
+		function input_change_handler() {
+			component.set({ value: input.checked, indeterminate: input.indeterminate });
+		}
+
+		function click_handler(event) {
+			component.toggle();
+		}
+
+		var if_block_creators = [
+			create_if_block$c,
+			create_else_block$3
+		];
+
+		var if_blocks = [];
+
+		function select_block_type(ctx) {
+			if (ctx.disabled && ctx.disabledMessage) return 0;
+			return 1;
+		}
+
+		current_block_type_index = select_block_type(ctx);
+		if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](component, ctx);
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				if (if_block0) if_block0.c();
+				text0 = createText("\n\n    ");
+				label = createElement("label");
+				button = createElement("button");
+				input = createElement("input");
+				text1 = createText("\n            ");
+				span = createElement("span");
+				text2 = createText("\n        ");
+				raw_before = createElement('noscript');
+				text3 = createText("\n\n    ");
+				if_block1.c();
+				addListener(input, "change", input_change_handler);
+				if (!('value' in ctx && 'indeterminate' in ctx)) component.root._beforecreate.push(input_change_handler);
+				input.className = input_class_value = "" + (ctx.disabled && ctx.disabledState == 'on' ? 'disabled-force-checked' : ctx.disabled && ctx.disabledState == 'off' ? 'disabled-force-unchecked' : '') + " svelte-o8wpwy";
+				input.disabled = ctx.disabled;
+				setAttribute(input, "type", "checkbox");
+				addLoc(input, file$d, 9, 12, 244);
+				span.className = "slider svelte-o8wpwy";
+				addLoc(span, file$d, 16, 12, 578);
+				addListener(button, "click", click_handler);
+				button.className = "switch svelte-o8wpwy";
+				addLoc(button, file$d, 8, 8, 188);
+				label.className = "switch-outer svelte-o8wpwy";
+				toggleClass(label, "disabled", ctx.disabled);
+				addLoc(label, file$d, 7, 4, 136);
+				div.className = "vis-option-type-switch svelte-o8wpwy";
+				addLoc(div, file$d, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				if (if_block0) if_block0.m(div, null);
+				append(div, text0);
+				append(div, label);
+				append(label, button);
+				append(button, input);
+
+				input.checked = ctx.value;
+				input.indeterminate = ctx.indeterminate
+	                ;
+
+				append(button, text1);
+				append(button, span);
+				append(label, text2);
+				append(label, raw_before);
+				raw_before.insertAdjacentHTML("afterend", ctx.label);
+				append(div, text3);
+				if_blocks[current_block_type_index].i(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.help) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_2$4(component, ctx);
+						if_block0.c();
+						if_block0.m(div, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (changed.value) input.checked = ctx.value;
+				if (changed.indeterminate) input.indeterminate = ctx.indeterminate
+	                ;
+				if ((changed.disabled || changed.disabledState) && input_class_value !== (input_class_value = "" + (ctx.disabled && ctx.disabledState == 'on' ? 'disabled-force-checked' : ctx.disabled && ctx.disabledState == 'off' ? 'disabled-force-unchecked' : '') + " svelte-o8wpwy")) {
+					input.className = input_class_value;
+				}
+
+				if (changed.disabled) {
+					input.disabled = ctx.disabled;
+				}
+
+				if (changed.label) {
+					detachAfter(raw_before);
+					raw_before.insertAdjacentHTML("afterend", ctx.label);
+				}
+
+				if (changed.disabled) {
+					toggleClass(label, "disabled", ctx.disabled);
+				}
+
+				var previous_block_index = current_block_type_index;
+				current_block_type_index = select_block_type(ctx);
+				if (current_block_type_index === previous_block_index) {
+					if_blocks[current_block_type_index].p(changed, ctx);
+				} else {
+					groupOutros();
+					if_block1.o(function() {
+						if_blocks[previous_block_index].d(1);
+						if_blocks[previous_block_index] = null;
+					});
+
+					if_block1 = if_blocks[current_block_type_index];
+					if (!if_block1) {
+						if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](component, ctx);
+						if_block1.c();
+					}
+					if_block1.i(div, null);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (if_block0) if_block0.d();
+				removeListener(input, "change", input_change_handler);
+				removeListener(button, "click", click_handler);
+				if_blocks[current_block_type_index].d();
+			}
+		};
+	}
+
+	// (2:4) {#if help}
+	function create_if_block_2$4(component, ctx) {
+		var div;
+
+		var helpdisplay = new HelpDisplay({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				helpdisplay._fragment.c();
+				addLoc(div, file$d, 3, 8, 78);
+			},
+
+			m: function mount(target, anchor) {
+				append(helpdisplay._slotted.default, div);
+				div.innerHTML = ctx.help;
+				helpdisplay._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					div.innerHTML = ctx.help;
+				}
+			},
+
+			d: function destroy(detach) {
+				helpdisplay.destroy(detach);
+			}
+		};
+	}
+
+	// (28:4) {:else}
+	function create_else_block$3(component, ctx) {
+		var if_block_anchor, current;
+
+		var if_block = (ctx.hasSlotContent && (!ctx.disabled || ctx.disabledState == 'on') && ctx.value && !ctx.indeterminate) && create_if_block_1$6(component);
+
+		return {
+			c: function create() {
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block) if_block.i(target, anchor);
+				insert(target, if_block_anchor, anchor);
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.hasSlotContent && (!ctx.disabled || ctx.disabledState == 'on') && ctx.value && !ctx.indeterminate) {
+					if (!if_block) {
+						if_block = create_if_block_1$6(component);
+						if_block.c();
+					}
+					if_block.i(if_block_anchor.parentNode, if_block_anchor);
+				} else if (if_block) {
+					groupOutros();
+					if_block.o(function() {
+						if_block.d(1);
+						if_block = null;
+					});
+				}
+			},
+
+			i: function intro(target, anchor) {
+				if (current) return;
+
+				this.m(target, anchor);
+			},
+
+			o: run,
+
+			d: function destroy(detach) {
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (22:4) {#if disabled && disabledMessage}
+	function create_if_block$c(component, ctx) {
+		var div1, div0, div1_transition, current;
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				div0.className = "disabled-msg svelte-o8wpwy";
+				addLoc(div0, file$d, 23, 8, 734);
+				addLoc(div1, file$d, 22, 4, 703);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				div0.innerHTML = ctx.disabledMessage;
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (!current || changed.disabledMessage) {
+					div0.innerHTML = ctx.disabledMessage;
+				}
+			},
+
+			i: function intro(target, anchor) {
+				if (current) return;
+				if (component.root._intro) {
+					if (div1_transition) div1_transition.invalidate();
+
+					component.root._aftercreate.push(() => {
+						if (!div1_transition) div1_transition = wrapTransition(component, div1, slide, {}, true);
+						div1_transition.run(1);
+					});
+				}
+				this.m(target, anchor);
+			},
+
+			o: function outro(outrocallback) {
+				if (!current) return;
+
+				if (!div1_transition) div1_transition = wrapTransition(component, div1, slide, {}, false);
+				div1_transition.run(0, () => {
+					outrocallback();
+					div1_transition = null;
+				});
+
+				current = false;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+					if (div1_transition) div1_transition.abort();
+				}
+			}
+		};
+	}
+
+	// (31:4) {#if hasSlotContent && (!disabled || disabledState == 'on') && value && !indeterminate}
+	function create_if_block_1$6(component, ctx) {
+		var div, slot_content_default = component._slotted.default, div_transition, current;
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				div.className = "switch-content svelte-o8wpwy";
+				addLoc(div, file$d, 31, 4, 1013);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+
+				if (slot_content_default) {
+					append(div, slot_content_default);
+				}
+
+				current = true;
+			},
+
+			i: function intro(target, anchor) {
+				if (current) return;
+				if (component.root._intro) {
+					if (div_transition) div_transition.invalidate();
+
+					component.root._aftercreate.push(() => {
+						if (!div_transition) div_transition = wrapTransition(component, div, slide, {}, true);
+						div_transition.run(1);
+					});
+				}
+				this.m(target, anchor);
+			},
+
+			o: function outro(outrocallback) {
+				if (!current) return;
+
+				if (!div_transition) div_transition = wrapTransition(component, div, slide, {}, false);
+				div_transition.run(0, () => {
+					outrocallback();
+					div_transition = null;
+				});
+
+				current = false;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				if (slot_content_default) {
+					reinsertChildren(div, slot_content_default);
+				}
+
+				if (detach) {
+					if (div_transition) div_transition.abort();
+				}
+			}
+		};
+	}
+
+	function SwitchControl(options) {
+		this._debugName = '<SwitchControl>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$d(), options.data);
+		if (!('help' in this._state)) console.warn("<SwitchControl> was created without expected data property 'help'");
+		if (!('disabled' in this._state)) console.warn("<SwitchControl> was created without expected data property 'disabled'");
+		if (!('disabledState' in this._state)) console.warn("<SwitchControl> was created without expected data property 'disabledState'");
+		if (!('value' in this._state)) console.warn("<SwitchControl> was created without expected data property 'value'");
+		if (!('indeterminate' in this._state)) console.warn("<SwitchControl> was created without expected data property 'indeterminate'");
+		if (!('label' in this._state)) console.warn("<SwitchControl> was created without expected data property 'label'");
+		if (!('disabledMessage' in this._state)) console.warn("<SwitchControl> was created without expected data property 'disabledMessage'");
+		if (!('hasSlotContent' in this._state)) console.warn("<SwitchControl> was created without expected data property 'hasSlotContent'");
+		this._intro = true;
+
+		this._slotted = options.slots || {};
+
+		this._fragment = create_main_fragment$d(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate$2.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(SwitchControl.prototype, protoDev);
+	assign(SwitchControl.prototype, methods$8);
+
+	SwitchControl.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/CheckboxControl.html generated by Svelte v2.16.1 */
+
+
+
+	function data$e() {
+	    return {
+	        value: false,
+	        disabled: false,
+	        faded: false,
+	        compact: false,
+	        indeterminate: false,
+	        disabledMessage: '',
+	        help: false
+	    };
+	}
+	const file$e = "home/david/Projects/core/libs/controls/v2/CheckboxControl.html";
+
+	function create_main_fragment$e(component, ctx) {
+		var text0, div, label, input, span, text1, text2, label_class_value, text3;
+
+		var if_block0 = (ctx.help) && create_if_block_1$7(component, ctx);
+
+		function input_change_handler() {
+			component.set({ value: input.checked, indeterminate: input.indeterminate });
+		}
+
+		var if_block1 = (ctx.disabled && ctx.disabledMessage) && create_if_block$d(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block0) if_block0.c();
+				text0 = createText("\n");
+				div = createElement("div");
+				label = createElement("label");
+				input = createElement("input");
+				span = createElement("span");
+				text1 = createText("\n        ");
+				text2 = createText(ctx.label);
+				text3 = createText("\n    ");
+				if (if_block1) if_block1.c();
+				addListener(input, "change", input_change_handler);
+				if (!('value' in ctx && 'indeterminate' in ctx)) component.root._beforecreate.push(input_change_handler);
+				setAttribute(input, "type", "checkbox");
+				input.disabled = ctx.disabled;
+				input.className = "svelte-1rmafvf";
+				addLoc(input, file$e, 7, 8, 256);
+				span.className = "css-ui svelte-1rmafvf";
+				addLoc(span, file$e, 7, 95, 343);
+				label.className = label_class_value = "checkbox " + (ctx.disabled? 'disabled' :'') + " " + (ctx.faded? 'faded' :'') + " svelte-1rmafvf";
+				addLoc(label, file$e, 6, 4, 175);
+				div.className = "control-group vis-option-group vis-option-type-checkbox svelte-1rmafvf";
+				toggleClass(div, "is-compact", ctx.compact);
+				addLoc(div, file$e, 5, 0, 74);
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, text0, anchor);
+				insert(target, div, anchor);
+				append(div, label);
+				append(label, input);
+
+				input.checked = ctx.value;
+				input.indeterminate = ctx.indeterminate ;
+
+				append(label, span);
+				append(label, text1);
+				append(label, text2);
+				append(div, text3);
+				if (if_block1) if_block1.i(div, null);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.help) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_1$7(component, ctx);
+						if_block0.c();
+						if_block0.m(text0.parentNode, text0);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (changed.value) input.checked = ctx.value;
+				if (changed.indeterminate) input.indeterminate = ctx.indeterminate ;
+				if (changed.disabled) {
+					input.disabled = ctx.disabled;
+				}
+
+				if (changed.label) {
+					setData(text2, ctx.label);
+				}
+
+				if ((changed.disabled || changed.faded) && label_class_value !== (label_class_value = "checkbox " + (ctx.disabled? 'disabled' :'') + " " + (ctx.faded? 'faded' :'') + " svelte-1rmafvf")) {
+					label.className = label_class_value;
+				}
+
+				if (ctx.disabled && ctx.disabledMessage) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block$d(component, ctx);
+						if (if_block1) if_block1.c();
+					}
+
+					if_block1.i(div, null);
+				} else if (if_block1) {
+					groupOutros();
+					if_block1.o(function() {
+						if_block1.d(1);
+						if_block1 = null;
+					});
+				}
+
+				if (changed.compact) {
+					toggleClass(div, "is-compact", ctx.compact);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) if_block0.d(detach);
+				if (detach) {
+					detachNode(text0);
+					detachNode(div);
+				}
+
+				removeListener(input, "change", input_change_handler);
+				if (if_block1) if_block1.d();
+			}
+		};
+	}
+
+	// (1:0) {#if help}
+	function create_if_block_1$7(component, ctx) {
+		var div;
+
+		var helpdisplay = new HelpDisplay({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() }
+		});
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				helpdisplay._fragment.c();
+				addLoc(div, file$e, 2, 4, 29);
+			},
+
+			m: function mount(target, anchor) {
+				append(helpdisplay._slotted.default, div);
+				div.innerHTML = ctx.help;
+				helpdisplay._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.help) {
+					div.innerHTML = ctx.help;
+				}
+			},
+
+			d: function destroy(detach) {
+				helpdisplay.destroy(detach);
+			}
+		};
+	}
+
+	// (11:4) {#if disabled && disabledMessage}
+	function create_if_block$d(component, ctx) {
+		var div1, div0, div1_transition, current;
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				div0.className = "disabled-msg svelte-1rmafvf";
+				addLoc(div0, file$e, 12, 8, 476);
+				addLoc(div1, file$e, 11, 4, 445);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				div0.innerHTML = ctx.disabledMessage;
+				current = true;
+			},
+
+			p: function update(changed, ctx) {
+				if (!current || changed.disabledMessage) {
+					div0.innerHTML = ctx.disabledMessage;
+				}
+			},
+
+			i: function intro(target, anchor) {
+				if (current) return;
+				if (component.root._intro) {
+					if (div1_transition) div1_transition.invalidate();
+
+					component.root._aftercreate.push(() => {
+						if (!div1_transition) div1_transition = wrapTransition(component, div1, slide, {}, true);
+						div1_transition.run(1);
+					});
+				}
+				this.m(target, anchor);
+			},
+
+			o: function outro(outrocallback) {
+				if (!current) return;
+
+				if (!div1_transition) div1_transition = wrapTransition(component, div1, slide, {}, false);
+				div1_transition.run(0, () => {
+					outrocallback();
+					div1_transition = null;
+				});
+
+				current = false;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+					if (div1_transition) div1_transition.abort();
+				}
+			}
+		};
+	}
+
+	function CheckboxControl(options) {
+		this._debugName = '<CheckboxControl>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$e(), options.data);
+		if (!('help' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'help'");
+		if (!('compact' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'compact'");
+		if (!('disabled' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'disabled'");
+		if (!('faded' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'faded'");
+		if (!('value' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'value'");
+		if (!('indeterminate' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'indeterminate'");
+		if (!('label' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'label'");
+		if (!('disabledMessage' in this._state)) console.warn("<CheckboxControl> was created without expected data property 'disabledMessage'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$e(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(CheckboxControl.prototype, protoDev);
+
+	CheckboxControl.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* team-settings/tabs/DeleteTeam.html generated by Svelte v2.16.1 */
+
+
+
+	function data$f() {
+	    return {
+	        deleteTeam: false,
+	        deleteTeam2: false,
+	        deleting: false
+	    };
+	}
+	var methods$9 = {
+	    async deleteTeam() {
+	        this.set({ deleting: true });
+	        await httpReq.delete(`/v3/teams/${this.get().team.id}`);
+	        window.location = '/';
+	    }
+	};
+
+	const file$f = "team-settings/tabs/DeleteTeam.html";
+
+	function create_main_fragment$f(component, ctx) {
+		var p, raw_value = __('teams / delete / p'), text, if_block_anchor, switchcontrol_updating = {};
+
+		var if_block = (ctx.deleteTeam) && create_if_block$e(component, ctx);
+
+		var switchcontrol_initial_data = { label: __('teams / delete / yes') };
+		if (ctx.deleteTeam !== void 0) {
+			switchcontrol_initial_data.value = ctx.deleteTeam;
+			switchcontrol_updating.value = true;
+		}
+		var switchcontrol = new SwitchControl({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: switchcontrol_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!switchcontrol_updating.value && changed.value) {
+					newState.deleteTeam = childState.value;
+				}
+				component._set(newState);
+				switchcontrol_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			switchcontrol._bind({ value: 1 }, switchcontrol.get());
+		});
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				text = createText("\n\n");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+				switchcontrol._fragment.c();
+				addLoc(p, file$f, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+				insert(target, text, anchor);
+				if (if_block) if_block.m(switchcontrol._slotted.default, null);
+				append(switchcontrol._slotted.default, if_block_anchor);
+				switchcontrol._mount(target, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (ctx.deleteTeam) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$e(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				var switchcontrol_changes = {};
+				if (!switchcontrol_updating.value && changed.deleteTeam) {
+					switchcontrol_changes.value = ctx.deleteTeam;
+					switchcontrol_updating.value = ctx.deleteTeam !== void 0;
+				}
+				switchcontrol._set(switchcontrol_changes);
+				switchcontrol_updating = {};
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+					detachNode(text);
+				}
+
+				if (if_block) if_block.d();
+				switchcontrol.destroy(detach);
+			}
+		};
+	}
+
+	// (6:4) {#if deleteTeam}
+	function create_if_block$e(component, ctx) {
+		var p, raw_value = __('teams / delete / really'), text0, checkboxcontrol_updating = {}, text1, if_block_anchor;
+
+		var checkboxcontrol_initial_data = { label: __('teams / delete / really-yes') };
+		if (ctx.deleteTeam2 !== void 0) {
+			checkboxcontrol_initial_data.value = ctx.deleteTeam2;
+			checkboxcontrol_updating.value = true;
+		}
+		var checkboxcontrol = new CheckboxControl({
+			root: component.root,
+			store: component.store,
+			data: checkboxcontrol_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!checkboxcontrol_updating.value && changed.value) {
+					newState.deleteTeam2 = childState.value;
+				}
+				component._set(newState);
+				checkboxcontrol_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			checkboxcontrol._bind({ value: 1 }, checkboxcontrol.get());
+		});
+
+		var if_block = (ctx.deleteTeam2) && create_if_block_1$8(component, ctx);
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				text0 = createText("\n\n    ");
+				checkboxcontrol._fragment.c();
+				text1 = createText("\n\n    ");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+				addLoc(p, file$f, 6, 4, 153);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+				insert(target, text0, anchor);
+				checkboxcontrol._mount(target, anchor);
+				insert(target, text1, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var checkboxcontrol_changes = {};
+				if (!checkboxcontrol_updating.value && changed.deleteTeam2) {
+					checkboxcontrol_changes.value = ctx.deleteTeam2;
+					checkboxcontrol_updating.value = ctx.deleteTeam2 !== void 0;
+				}
+				checkboxcontrol._set(checkboxcontrol_changes);
+				checkboxcontrol_updating = {};
+
+				if (ctx.deleteTeam2) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_1$8(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+					detachNode(text0);
+				}
+
+				checkboxcontrol.destroy(detach);
+				if (detach) {
+					detachNode(text1);
+				}
+
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (13:4) {#if deleteTeam2}
+	function create_if_block_1$8(component, ctx) {
+		var button, i, i_class_value, text, raw_value = __('teams / delete / action'), raw_before;
+
+		function click_handler(event) {
+			component.deleteTeam();
+		}
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text = createText("  ");
+				raw_before = createElement('noscript');
+				i.className = i_class_value = "fa " + (ctx.deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times');
+				addLoc(i, file$f, 14, 8, 401);
+				addListener(button, "click", click_handler);
+				button.className = "btn btn-danger";
+				addLoc(button, file$f, 13, 4, 337);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text);
+				append(button, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.deleting) && i_class_value !== (i_class_value = "fa " + (ctx.deleting ? 'fa-spin fa-circle-o-notch' : 'fa-times'))) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler);
+			}
+		};
+	}
+
+	function DeleteTeam(options) {
+		this._debugName = '<DeleteTeam>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$f(), options.data);
+		if (!('deleteTeam' in this._state)) console.warn("<DeleteTeam> was created without expected data property 'deleteTeam'");
+		if (!('deleteTeam2' in this._state)) console.warn("<DeleteTeam> was created without expected data property 'deleteTeam2'");
+		if (!('deleting' in this._state)) console.warn("<DeleteTeam> was created without expected data property 'deleting'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$f(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(DeleteTeam.prototype, protoDev);
+	assign(DeleteTeam.prototype, methods$9);
+
+	DeleteTeam.prototype._checkReadOnly = function _checkReadOnly(newState) {
+	};
+
+	/* home/david/Projects/core/libs/controls/v2/SelectControl.html generated by Svelte v2.16.1 */
+
+
+
+	function controlWidth({ inline, width }) {
+		return inline ? width || 'auto' : width;
+	}
+
+	function labelWidth({ inline, labelWidth }) {
+		return inline ? labelWidth || 'auto' : labelWidth;
+	}
+
+	function data$g() {
+	    return {
+	        disabled: false,
+	        width: null,
+	        labelWidth: null,
+	        options: [],
+	        optgroups: [],
+	        valign: 'middle',
+	        inline: false,
+	        help: null,
+	        miniHelp: null
+	    };
+	}
+	function create_main_fragment$g(component, ctx) {
+		var selectinput_updating = {};
+
+		var selectinput_initial_data = { width: ctx.controlWidth, class: "mt-1" };
+		if (ctx.value  !== void 0) {
+			selectinput_initial_data.value = ctx.value ;
+			selectinput_updating.value = true;
+		}
+		if (ctx.disabled  !== void 0) {
+			selectinput_initial_data.disabled = ctx.disabled ;
+			selectinput_updating.disabled = true;
+		}
+		if (ctx.options  !== void 0) {
+			selectinput_initial_data.options = ctx.options ;
+			selectinput_updating.options = true;
+		}
+		if (ctx.optgroups  !== void 0) {
+			selectinput_initial_data.optgroups = ctx.optgroups ;
+			selectinput_updating.optgroups = true;
+		}
+		var selectinput = new SelectInput({
+			root: component.root,
+			store: component.store,
+			data: selectinput_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectinput_updating.value && changed.value) {
+					newState.value = childState.value;
+				}
+
+				if (!selectinput_updating.disabled && changed.disabled) {
+					newState.disabled = childState.disabled;
+				}
+
+				if (!selectinput_updating.options && changed.options) {
+					newState.options = childState.options;
+				}
+
+				if (!selectinput_updating.optgroups && changed.optgroups) {
+					newState.optgroups = childState.optgroups;
+				}
+				component._set(newState);
+				selectinput_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectinput._bind({ value: 1, disabled: 1, options: 1, optgroups: 1 }, selectinput.get());
+		});
+
+		selectinput.on("change", function(event) {
+			component.fire('change', event);
+		});
+
+		var controlgroup_initial_data = {
+		 	type: "select",
+		 	label: ctx.label,
+		 	labelWidth: ctx.labelWidth,
+		 	valign: ctx.valign,
+		 	disabled: ctx.disabled,
+		 	inline: ctx.inline,
+		 	miniHelp: ctx.miniHelp,
+		 	help: ctx.help,
+		 	helpClass: "mt-1"
+		 };
+		var controlgroup = new ControlGroup({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: controlgroup_initial_data
+		});
+
+		return {
+			c: function create() {
+				selectinput._fragment.c();
+				controlgroup._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				selectinput._mount(controlgroup._slotted.default, null);
+				controlgroup._mount(target, anchor);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var selectinput_changes = {};
+				if (changed.controlWidth) selectinput_changes.width = ctx.controlWidth;
+				if (!selectinput_updating.value && changed.value) {
+					selectinput_changes.value = ctx.value ;
+					selectinput_updating.value = ctx.value  !== void 0;
+				}
+				if (!selectinput_updating.disabled && changed.disabled) {
+					selectinput_changes.disabled = ctx.disabled ;
+					selectinput_updating.disabled = ctx.disabled  !== void 0;
+				}
+				if (!selectinput_updating.options && changed.options) {
+					selectinput_changes.options = ctx.options ;
+					selectinput_updating.options = ctx.options  !== void 0;
+				}
+				if (!selectinput_updating.optgroups && changed.optgroups) {
+					selectinput_changes.optgroups = ctx.optgroups ;
+					selectinput_updating.optgroups = ctx.optgroups  !== void 0;
+				}
+				selectinput._set(selectinput_changes);
+				selectinput_updating = {};
+
+				var controlgroup_changes = {};
+				if (changed.label) controlgroup_changes.label = ctx.label;
+				if (changed.labelWidth) controlgroup_changes.labelWidth = ctx.labelWidth;
+				if (changed.valign) controlgroup_changes.valign = ctx.valign;
+				if (changed.disabled) controlgroup_changes.disabled = ctx.disabled;
+				if (changed.inline) controlgroup_changes.inline = ctx.inline;
+				if (changed.miniHelp) controlgroup_changes.miniHelp = ctx.miniHelp;
+				if (changed.help) controlgroup_changes.help = ctx.help;
+				controlgroup._set(controlgroup_changes);
+			},
+
+			d: function destroy(detach) {
+				selectinput.destroy();
+				controlgroup.destroy(detach);
+			}
+		};
+	}
+
+	function SelectControl(options) {
+		this._debugName = '<SelectControl>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$g(), options.data);
+
+		this._recompute({ inline: 1, width: 1, labelWidth: 1 }, this._state);
+		if (!('inline' in this._state)) console.warn("<SelectControl> was created without expected data property 'inline'");
+		if (!('width' in this._state)) console.warn("<SelectControl> was created without expected data property 'width'");
+
+		if (!('label' in this._state)) console.warn("<SelectControl> was created without expected data property 'label'");
+		if (!('valign' in this._state)) console.warn("<SelectControl> was created without expected data property 'valign'");
+		if (!('disabled' in this._state)) console.warn("<SelectControl> was created without expected data property 'disabled'");
+		if (!('miniHelp' in this._state)) console.warn("<SelectControl> was created without expected data property 'miniHelp'");
+		if (!('help' in this._state)) console.warn("<SelectControl> was created without expected data property 'help'");
+
+		if (!('value' in this._state)) console.warn("<SelectControl> was created without expected data property 'value'");
+		if (!('options' in this._state)) console.warn("<SelectControl> was created without expected data property 'options'");
+		if (!('optgroups' in this._state)) console.warn("<SelectControl> was created without expected data property 'optgroups'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$g(this, this._state);
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(SelectControl.prototype, protoDev);
+
+	SelectControl.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('controlWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<SelectControl>: Cannot set read-only property 'controlWidth'");
+		if ('labelWidth' in newState && !this._updatingReadonlyProperty) throw new Error("<SelectControl>: Cannot set read-only property 'labelWidth'");
+	};
+
+	SelectControl.prototype._recompute = function _recompute(changed, state) {
+		if (changed.inline || changed.width) {
+			if (this._differs(state.controlWidth, (state.controlWidth = controlWidth(state)))) changed.controlWidth = true;
+		}
+
+		if (changed.inline || changed.labelWidth) {
+			if (this._differs(state.labelWidth, (state.labelWidth = labelWidth(state)))) changed.labelWidth = true;
+		}
+	};
+
+	/* team-settings/tabs/ProductTable.html generated by Svelte v2.16.1 */
+
+
+
+	function addableProducts({ products, allProducts }) {
+	    if (!allProducts || !products) return [];
+
+	    return allProducts
+	        .filter(el => {
+	            return !products.filter(pr => pr.id === el.id).length;
+	        })
+	        .map(el => {
+	            return {
+	                value: el.id,
+	                label: el.name
+	            };
+	        });
+	}
+	function data$h() {
+	    return {
+	        productHeaders: [
+	            { title: __('teams / products / id'), width: '10%' },
+	            { title: __('teams / products / name'), width: '30%' },
+	            { title: __('teams / products / expires'), width: '30%' },
+	            { title: __('teams / products / actions'), width: '30%' }
+	        ],
+	        editId: false,
+	        updating: {},
+	        loadingTeamProducts: true,
+	        loadingAllProducts: true
+	    };
+	}
+	var methods$a = {
+	    edit(productId) {
+	        if (this.get().editId === productId) {
+	            this.set({ editId: false });
+	            this.update(productId);
+	        } else {
+	            this.set({
+	                editId: productId
+	            });
+	        }
+	    },
+	    async addProduct() {
+	        const { team, addProduct } = this.get();
+
+	        this.set({ addingProduct: true });
+
+	        await httpReq(`/v3/teams/${team.id}/products`, {
+	            method: 'post',
+	            payload: {
+	                productId: addProduct
+	            }
+	        });
+
+	        const products = await httpReq(`/v3/teams/${team.id}/products`);
+	        this.set({ products: products.list, addingProduct: false });
+	    },
+	    async remove(product) {
+	        if (!window.confirm('Are you sure you want to remove this product?')) return;
+
+	        await httpReq(`/v3/teams/${this.get().team.id}/products/${product.id}`, {
+	            method: 'delete'
+	        });
+
+	        var { products } = this.get();
+	        products = products.filter(el => el.id !== product.id);
+	        this.set({ products });
+	    },
+	    async update(productId) {
+	        var { updating, products } = this.get();
+	        const product = products.filter(u => u.id === productId)[0];
+	        updating[product.id] = true;
+	        this.set({ updating });
+
+	        await httpReq(`/v3/teams/${this.get().team.id}/products/${product.id}`, {
+	            method: 'put',
+	            payload: {
+	                expires: product.expires
+	            }
+	        });
+
+	        updating = this.get().updating;
+	        updating[product.id] = false;
+	        this.set({ updating });
+	    }
+	};
+
+	function oncreate$3() {
+	    const current = this.get();
+
+	    httpReq(`/v3/teams/${current.team.id}/products`).then(products =>
+	        this.set({ loadingTeamProducts: false, products: products.list })
+	    );
+
+	    httpReq(`/v3/products`).then(allProducts =>
+	        this.set({ loadingAllProducts: false, allProducts: allProducts.list })
+	    );
+	}
+	const file$g = "team-settings/tabs/ProductTable.html";
+
+	function click_handler_2$1(event) {
+		const { component, ctx } = this._svelte;
+
+		component.remove(ctx.product);
+	}
+
+	function click_handler_1$1(event) {
+		const { component, ctx } = this._svelte;
+
+		component.edit(ctx.product.id);
+	}
+
+	function click_handler$4(event) {
+		const { component, ctx } = this._svelte;
+
+		component.edit(ctx.product.id);
+	}
+
+	function get_each_context$5(ctx, list, i) {
+		const child_ctx = Object.create(ctx);
+		child_ctx.product = list[i];
+		child_ctx.each_value = list;
+		child_ctx.i = i;
+		return child_ctx;
+	}
+
+	function create_main_fragment$h(component, ctx) {
+		var p, raw_value = __('teams / products / p'), text, if_block_anchor;
+
+		var if_block = (ctx.isAdmin) && create_if_block$f(component, ctx);
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				text = createText("\n\n");
+				if (if_block) if_block.c();
+				if_block_anchor = createComment();
+				setStyle(p, "margin-bottom", "10px");
+				addLoc(p, file$g, 0, 0, 0);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				p.innerHTML = raw_value;
+				insert(target, text, anchor);
+				if (if_block) if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.isAdmin) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$f(component, ctx);
+						if_block.c();
+						if_block.m(if_block_anchor.parentNode, if_block_anchor);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+					detachNode(text);
+				}
+
+				if (if_block) if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (5:0) {#if isAdmin}
+	function create_if_block$f(component, ctx) {
+		var if_block_anchor;
+
+		function select_block_type(ctx) {
+			if (ctx.loadingTeamProducts || ctx.loadingAllProducts) return create_if_block_1$9;
+			return create_else_block$4;
+		}
+
+		var current_block_type = select_block_type(ctx);
+		var if_block = current_block_type(component, ctx);
+
+		return {
+			c: function create() {
+				if_block.c();
+				if_block_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if_block.m(target, anchor);
+				insert(target, if_block_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+					if_block.p(changed, ctx);
+				} else {
+					if_block.d(1);
+					if_block = current_block_type(component, ctx);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			},
+
+			d: function destroy(detach) {
+				if_block.d(detach);
+				if (detach) {
+					detachNode(if_block_anchor);
+				}
+			}
+		};
+	}
+
+	// (7:0) {:else}
+	function create_else_block$4(component, ctx) {
+		var text, if_block1_anchor;
+
+		var if_block0 = (ctx.products.length > 0) && create_if_block_4$2(component, ctx);
+
+		var if_block1 = (ctx.addableProducts.length) && create_if_block_2$5(component, ctx);
+
+		return {
+			c: function create() {
+				if (if_block0) if_block0.c();
+				text = createText("\n\n\n");
+				if (if_block1) if_block1.c();
+				if_block1_anchor = createComment();
+			},
+
+			m: function mount(target, anchor) {
+				if (if_block0) if_block0.m(target, anchor);
+				insert(target, text, anchor);
+				if (if_block1) if_block1.m(target, anchor);
+				insert(target, if_block1_anchor, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (ctx.products.length > 0) {
+					if (if_block0) {
+						if_block0.p(changed, ctx);
+					} else {
+						if_block0 = create_if_block_4$2(component, ctx);
+						if_block0.c();
+						if_block0.m(text.parentNode, text);
+					}
+				} else if (if_block0) {
+					if_block0.d(1);
+					if_block0 = null;
+				}
+
+				if (ctx.addableProducts.length) {
+					if (if_block1) {
+						if_block1.p(changed, ctx);
+					} else {
+						if_block1 = create_if_block_2$5(component, ctx);
+						if_block1.c();
+						if_block1.m(if_block1_anchor.parentNode, if_block1_anchor);
+					}
+				} else if (if_block1) {
+					if_block1.d(1);
+					if_block1 = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (if_block0) if_block0.d(detach);
+				if (detach) {
+					detachNode(text);
+				}
+
+				if (if_block1) if_block1.d(detach);
+				if (detach) {
+					detachNode(if_block1_anchor);
+				}
+			}
+		};
+	}
+
+	// (5:14) {#if loadingTeamProducts || loadingAllProducts}
+	function create_if_block_1$9(component, ctx) {
+		var p, i, text, raw_value = __('teams / products / loading'), raw_before;
+
+		return {
+			c: function create() {
+				p = createElement("p");
+				i = createElement("i");
+				text = createText("   ");
+				raw_before = createElement('noscript');
+				i.className = "fa fa-spin fa-circle-o-notch";
+				addLoc(i, file$g, 5, 3, 144);
+				addLoc(p, file$g, 5, 0, 141);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, p, anchor);
+				append(p, i);
+				append(p, text);
+				append(p, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(p);
+				}
+			}
+		};
+	}
+
+	// (10:0) {#if products.length > 0}
+	function create_if_block_4$2(component, ctx) {
+		var each_anchor;
+
+		var each_value = ctx.products;
+
+		var each_blocks = [];
+
+		for (var i = 0; i < each_value.length; i += 1) {
+			each_blocks[i] = create_each_block$6(component, get_each_context$5(ctx, each_value, i));
+		}
+
+		var tabledisplay_initial_data = { columnHeaders: ctx.productHeaders };
+		var tabledisplay = new TableDisplay({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment() },
+			data: tabledisplay_initial_data
+		});
+
+		return {
+			c: function create() {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].c();
+				}
+
+				each_anchor = createComment();
+				tabledisplay._fragment.c();
+			},
+
+			m: function mount(target, anchor) {
+				for (var i = 0; i < each_blocks.length; i += 1) {
+					each_blocks[i].m(tabledisplay._slotted.default, null);
+				}
+
+				append(tabledisplay._slotted.default, each_anchor);
+				tabledisplay._mount(target, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if (changed.editId || changed.products || changed.updating) {
+					each_value = ctx.products;
+
+					for (var i = 0; i < each_value.length; i += 1) {
+						const child_ctx = get_each_context$5(ctx, each_value, i);
+
+						if (each_blocks[i]) {
+							each_blocks[i].p(changed, child_ctx);
+						} else {
+							each_blocks[i] = create_each_block$6(component, child_ctx);
+							each_blocks[i].c();
+							each_blocks[i].m(each_anchor.parentNode, each_anchor);
+						}
+					}
+
+					for (; i < each_blocks.length; i += 1) {
+						each_blocks[i].d(1);
+					}
+					each_blocks.length = each_value.length;
+				}
+
+				var tabledisplay_changes = {};
+				if (changed.productHeaders) tabledisplay_changes.columnHeaders = ctx.productHeaders;
+				tabledisplay._set(tabledisplay_changes);
+			},
+
+			d: function destroy(detach) {
+				destroyEach(each_blocks, detach);
+
+				tabledisplay.destroy(detach);
+			}
+		};
+	}
+
+	// (23:12) {:else}
+	function create_else_block_2(component, ctx) {
+		var text_value = ctx.product.expires || __('teams / products / never'), text;
+
+		return {
+			c: function create() {
+				text = createText(text_value);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text, anchor);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.products) && text_value !== (text_value = ctx.product.expires || __('teams / products / never'))) {
+					setData(text, text_value);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text);
+				}
+			}
+		};
+	}
+
+	// (21:12) {#if editId === product.id }
+	function create_if_block_7$1(component, ctx) {
+		var input, input_updating = false;
+
+		function input_input_handler() {
+			input_updating = true;
+			ctx.each_value[ctx.i].expires = input.value;
+			component.set({ products: ctx.products });
+			input_updating = false;
+		}
+
+		return {
+			c: function create() {
+				input = createElement("input");
+				addListener(input, "input", input_input_handler);
+				setAttribute(input, "type", "text");
+				addLoc(input, file$g, 21, 12, 569);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, input, anchor);
+
+				input.value = ctx.product.expires;
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if (!input_updating && changed.products) input.value = ctx.product.expires;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(input);
+				}
+
+				removeListener(input, "input", input_input_handler);
+			}
+		};
+	}
+
+	// (34:12) {:else}
+	function create_else_block_1$2(component, ctx) {
+		var button0, i0, text0, text1_value = __('teams / edit' ), text1, text2, button1, i1, text3, text4_value = __('teams / remove' ), text4;
+
+		return {
+			c: function create() {
+				button0 = createElement("button");
+				i0 = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				text2 = createText("\n\n            ");
+				button1 = createElement("button");
+				i1 = createElement("i");
+				text3 = createText("  ");
+				text4 = createText(text4_value);
+				i0.className = "fa fa-edit";
+				addLoc(i0, file$g, 35, 16, 1244);
+
+				button0._svelte = { component, ctx };
+
+				addListener(button0, "click", click_handler_1$1);
+				button0.className = "btn";
+				addLoc(button0, file$g, 34, 12, 1179);
+				i1.className = "fa fa-times";
+				addLoc(i1, file$g, 39, 16, 1400);
+
+				button1._svelte = { component, ctx };
+
+				addListener(button1, "click", click_handler_2$1);
+				button1.className = "btn";
+				addLoc(button1, file$g, 38, 12, 1336);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button0, anchor);
+				append(button0, i0);
+				append(button0, text0);
+				append(button0, text1);
+				insert(target, text2, anchor);
+				insert(target, button1, anchor);
+				append(button1, i1);
+				append(button1, text3);
+				append(button1, text4);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button0._svelte.ctx = ctx;
+				button1._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button0);
+				}
+
+				removeListener(button0, "click", click_handler_1$1);
+				if (detach) {
+					detachNode(text2);
+					detachNode(button1);
+				}
+
+				removeListener(button1, "click", click_handler_2$1);
+			}
+		};
+	}
+
+	// (30:42) 
+	function create_if_block_6$1(component, ctx) {
+		var button, i, text0, text1_value = __('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-spin fa-circle-o-notch";
+				addLoc(i, file$g, 31, 16, 1050);
+				button.disabled = true;
+				button.className = "btn btn-primary";
+				addLoc(button, file$g, 30, 12, 992);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: noop,
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+			}
+		};
+	}
+
+	// (26:12) {#if editId === product.id }
+	function create_if_block_5$1(component, ctx) {
+		var button, i, text0, text1_value = __('teams / save' ), text1;
+
+		return {
+			c: function create() {
+				button = createElement("button");
+				i = createElement("i");
+				text0 = createText("  ");
+				text1 = createText(text1_value);
+				i.className = "fa fa-check";
+				addLoc(i, file$g, 27, 16, 857);
+
+				button._svelte = { component, ctx };
+
+				addListener(button, "click", click_handler$4);
+				button.className = "btn btn-primary";
+				addLoc(button, file$g, 26, 12, 780);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, button, anchor);
+				append(button, i);
+				append(button, text0);
+				append(button, text1);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				button._svelte.ctx = ctx;
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(button);
+				}
+
+				removeListener(button, "click", click_handler$4);
+			}
+		};
+	}
+
+	// (12:4) {#each products as product, i}
+	function create_each_block$6(component, ctx) {
+		var tr, td0, text0_value = ctx.product.id, text0, text1, td1, text2_value = ctx.product.name, text2, text3, td2, text4, td3;
+
+		function select_block_type_1(ctx) {
+			if (ctx.editId === ctx.product.id) return create_if_block_7$1;
+			return create_else_block_2;
+		}
+
+		var current_block_type = select_block_type_1(ctx);
+		var if_block0 = current_block_type(component, ctx);
+
+		function select_block_type_2(ctx) {
+			if (ctx.editId === ctx.product.id) return create_if_block_5$1;
+			if (ctx.updating[ctx.product.id]) return create_if_block_6$1;
+			return create_else_block_1$2;
+		}
+
+		var current_block_type_1 = select_block_type_2(ctx);
+		var if_block1 = current_block_type_1(component, ctx);
+
+		return {
+			c: function create() {
+				tr = createElement("tr");
+				td0 = createElement("td");
+				text0 = createText(text0_value);
+				text1 = createText("\n        ");
+				td1 = createElement("td");
+				text2 = createText(text2_value);
+				text3 = createText("\n        ");
+				td2 = createElement("td");
+				if_block0.c();
+				text4 = createText("\n        ");
+				td3 = createElement("td");
+				if_block1.c();
+				addLoc(td0, file$g, 13, 8, 401);
+				addLoc(td1, file$g, 16, 8, 455);
+				addLoc(td2, file$g, 19, 8, 511);
+				addLoc(td3, file$g, 24, 8, 722);
+				addLoc(tr, file$g, 12, 4, 388);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, tr, anchor);
+				append(tr, td0);
+				append(td0, text0);
+				append(tr, text1);
+				append(tr, td1);
+				append(td1, text2);
+				append(tr, text3);
+				append(tr, td2);
+				if_block0.m(td2, null);
+				append(tr, text4);
+				append(tr, td3);
+				if_block1.m(td3, null);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.products) && text0_value !== (text0_value = ctx.product.id)) {
+					setData(text0, text0_value);
+				}
+
+				if ((changed.products) && text2_value !== (text2_value = ctx.product.name)) {
+					setData(text2, text2_value);
+				}
+
+				if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block0) {
+					if_block0.p(changed, ctx);
+				} else {
+					if_block0.d(1);
+					if_block0 = current_block_type(component, ctx);
+					if_block0.c();
+					if_block0.m(td2, null);
+				}
+
+				if (current_block_type_1 === (current_block_type_1 = select_block_type_2(ctx)) && if_block1) {
+					if_block1.p(changed, ctx);
+				} else {
+					if_block1.d(1);
+					if_block1 = current_block_type_1(component, ctx);
+					if_block1.c();
+					if_block1.m(td3, null);
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(tr);
+				}
+
+				if_block0.d();
+				if_block1.d();
+			}
+		};
+	}
+
+	// (50:0) {#if addableProducts.length }
+	function create_if_block_2$5(component, ctx) {
+		var div1, div0, selectcontrol_updating = {}, text;
+
+		var selectcontrol_initial_data = {
+		 	label: __('teams / products / add-product'),
+		 	options: ctx.addableProducts
+		 };
+		if (ctx.addProduct !== void 0) {
+			selectcontrol_initial_data.value = ctx.addProduct;
+			selectcontrol_updating.value = true;
+		}
+		var selectcontrol = new SelectControl({
+			root: component.root,
+			store: component.store,
+			data: selectcontrol_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!selectcontrol_updating.value && changed.value) {
+					newState.addProduct = childState.value;
+				}
+				component._set(newState);
+				selectcontrol_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			selectcontrol._bind({ value: 1 }, selectcontrol.get());
+		});
+
+		var if_block = (ctx.addProduct) && create_if_block_3$4(component, ctx);
+
+		return {
+			c: function create() {
+				div1 = createElement("div");
+				div0 = createElement("div");
+				selectcontrol._fragment.c();
+				text = createText("\n\n    ");
+				if (if_block) if_block.c();
+				setStyle(div0, "display", "block");
+				addLoc(div0, file$g, 51, 4, 1645);
+				setStyle(div1, "display", "flex");
+				addLoc(div1, file$g, 50, 0, 1612);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div1, anchor);
+				append(div1, div0);
+				selectcontrol._mount(div0, null);
+				append(div1, text);
+				if (if_block) if_block.m(div1, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				var selectcontrol_changes = {};
+				if (changed.addableProducts) selectcontrol_changes.options = ctx.addableProducts;
+				if (!selectcontrol_updating.value && changed.addProduct) {
+					selectcontrol_changes.value = ctx.addProduct;
+					selectcontrol_updating.value = ctx.addProduct !== void 0;
+				}
+				selectcontrol._set(selectcontrol_changes);
+				selectcontrol_updating = {};
+
+				if (ctx.addProduct) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block_3$4(component, ctx);
+						if_block.c();
+						if_block.m(div1, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div1);
+				}
+
+				selectcontrol.destroy();
+				if (if_block) if_block.d();
+			}
+		};
+	}
+
+	// (60:4) {#if addProduct}
+	function create_if_block_3$4(component, ctx) {
+		var div, button, i, i_class_value, text, raw_value = __('teams / products / add'), raw_before;
+
+		function click_handler_3(event) {
+			component.addProduct();
+		}
+
+		return {
+			c: function create() {
+				div = createElement("div");
+				button = createElement("button");
+				i = createElement("i");
+				text = createText("\n            ");
+				raw_before = createElement('noscript');
+				i.className = i_class_value = "fa " + (ctx.addingProduct ? 'fa fa-spin fa-circle-o-notch' : 'fa-plus');
+				addLoc(i, file$g, 62, 12, 2017);
+				addListener(button, "click", click_handler_3);
+				button.className = "btn btn-primary";
+				setStyle(button, "margin-left", "10px");
+				addLoc(button, file$g, 61, 8, 1921);
+				setStyle(div, "display", "block");
+				addLoc(div, file$g, 60, 4, 1883);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, div, anchor);
+				append(div, button);
+				append(button, i);
+				append(button, text);
+				append(button, raw_before);
+				raw_before.insertAdjacentHTML("afterend", raw_value);
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.addingProduct) && i_class_value !== (i_class_value = "fa " + (ctx.addingProduct ? 'fa fa-spin fa-circle-o-notch' : 'fa-plus'))) {
+					i.className = i_class_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(div);
+				}
+
+				removeListener(button, "click", click_handler_3);
+			}
+		};
+	}
+
+	function ProductTable(options) {
+		this._debugName = '<ProductTable>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this._state = assign(data$h(), options.data);
+
+		this._recompute({ products: 1, allProducts: 1 }, this._state);
+		if (!('products' in this._state)) console.warn("<ProductTable> was created without expected data property 'products'");
+		if (!('allProducts' in this._state)) console.warn("<ProductTable> was created without expected data property 'allProducts'");
+		if (!('isAdmin' in this._state)) console.warn("<ProductTable> was created without expected data property 'isAdmin'");
+		if (!('loadingTeamProducts' in this._state)) console.warn("<ProductTable> was created without expected data property 'loadingTeamProducts'");
+		if (!('loadingAllProducts' in this._state)) console.warn("<ProductTable> was created without expected data property 'loadingAllProducts'");
+		if (!('productHeaders' in this._state)) console.warn("<ProductTable> was created without expected data property 'productHeaders'");
+		if (!('editId' in this._state)) console.warn("<ProductTable> was created without expected data property 'editId'");
+		if (!('updating' in this._state)) console.warn("<ProductTable> was created without expected data property 'updating'");
+
+		if (!('addProduct' in this._state)) console.warn("<ProductTable> was created without expected data property 'addProduct'");
+		if (!('addingProduct' in this._state)) console.warn("<ProductTable> was created without expected data property 'addingProduct'");
+		this._intro = true;
+
+		this._fragment = create_main_fragment$h(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate$3.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(ProductTable.prototype, protoDev);
+	assign(ProductTable.prototype, methods$a);
+
+	ProductTable.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('addableProducts' in newState && !this._updatingReadonlyProperty) throw new Error("<ProductTable>: Cannot set read-only property 'addableProducts'");
+	};
+
+	ProductTable.prototype._recompute = function _recompute(changed, state) {
+		if (changed.products || changed.allProducts) {
+			if (this._differs(state.addableProducts, (state.addableProducts = addableProducts(state)))) changed.addableProducts = true;
+		}
+	};
+
+	/* global setTimeout, clearTimeout */
+
+	var dist = function debounce(fn) {
+	  var wait = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+	  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	  var lastCallAt = void 0;
+	  var deferred = void 0;
+	  var timer = void 0;
+	  var pendingArgs = [];
+	  return function debounced() {
+	    var currentWait = getWait(wait);
+	    var currentTime = new Date().getTime();
+
+	    var isCold = !lastCallAt || currentTime - lastCallAt > currentWait;
+
+	    lastCallAt = currentTime;
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    if (isCold && options.leading) {
+	      return options.accumulate ? Promise.resolve(fn.call(this, [args])).then(function (result) {
+	        return result[0];
+	      }) : Promise.resolve(fn.call.apply(fn, [this].concat(args)));
+	    }
+
+	    if (deferred) {
+	      clearTimeout(timer);
+	    } else {
+	      deferred = defer();
+	    }
+
+	    pendingArgs.push(args);
+	    timer = setTimeout(flush.bind(this), currentWait);
+
+	    if (options.accumulate) {
+	      var argsIndex = pendingArgs.length - 1;
+	      return deferred.promise.then(function (results) {
+	        return results[argsIndex];
+	      });
+	    }
+
+	    return deferred.promise;
+	  };
+
+	  function flush() {
+	    var thisDeferred = deferred;
+	    clearTimeout(timer);
+
+	    Promise.resolve(options.accumulate ? fn.call(this, pendingArgs) : fn.apply(this, pendingArgs[pendingArgs.length - 1])).then(thisDeferred.resolve, thisDeferred.reject);
+
+	    pendingArgs = [];
+	    deferred = null;
+	  }
+	};
+
+	function getWait(wait) {
+	  return typeof wait === 'function' ? wait() : wait;
+	}
+
+	function defer() {
+	  var deferred = {};
+	  deferred.promise = new Promise(function (resolve, reject) {
+	    deferred.resolve = resolve;
+	    deferred.reject = reject;
+	  });
+	  return deferred;
+	}
+
+	const cache = {};
+
+	var storeTeamSettings = dist(function (team, settings, defaultTheme) {
+	    const hash = JSON.stringify({ team, settings, defaultTheme });
+	    if (cache[team.id] === hash) {
+	        cache[team.id] = hash;
+	        // nothing has changed since last call
+	        return new Promise((resolve, reject) => {
+	            resolve();
+	        });
+	    }
+	    cache[team.id] = hash;
+	    return patch(`/v3/teams/${team.id}`, {
+	        payload: {
+	            name: team.name,
+	            defaultTheme,
+	            settings: settings
+	        }
+	    });
+	}, 500);
+
+	/* team-settings/App.html generated by Svelte v2.16.1 */
+
+
+
+	const SettingsTab = {
+	    id: 'settings',
+	    title: __('teams / tab / settings'),
+	    icon: 'fa fa-gears',
+	    group: __('teams / group / users'),
+	    order: 10,
+	    h1: __('teams / defaults / h1'),
+	    ui: Settings,
+	    data: {}
+	};
+
+	const MembersTab = {
+	    id: 'members',
+	    title: __('teams / tab / members'),
+	    icon: 'im im-users',
+	    group: __('teams / group / users'),
+	    order: 20,
+	    h1: __('teams / h1'),
+	    ui: Members
+	};
+
+	let app;
+	let popstate = false;
+
+	function pageTitle({ team, activeTab }) {
+	    return `${activeTab ? activeTab.h1 : ''} | ${truncate(team.name, 17, 8)}`;
+	}
+	function title({ team }) {
+	    return `${truncate(team.name, 17, 8)} » ${__('nav / team / settings')}`;
+	}
+	function tabs({ allTabs, team, pluginTabs, isAdmin, role }) {
+	    const tabs = [].concat(allTabs, pluginTabs);
+
+	    return tabs
+	        .filter(tab => {
+	            if (tab.adminOnly && !isAdmin) return false;
+	            if (tab.ownerOnly && !(isAdmin || role === 'owner')) return false;
+	            return true;
+	        })
+	        .map(tab => ({ ...tab, h1: tab.h1.replace('%team%', team.name) }));
+	}
+	function groups({
+	    tabs,
+	    isAdmin,
+	    role,
+	    team,
+	    users,
+	    userId,
+	    settings,
+	    defaultTheme,
+	    themes,
+	    folders,
+	    locales,
+	    visualizations,
+	    visualizationsArchive
+	}) {
+	    const groups = [];
+
+	    function get(groups, groupId) {
+	        const g = groups.filter(el => el.title === groupId);
+	        if (g.length) return g[0];
+
+	        groups.push({
+	            title: groupId,
+	            tabs: []
+	        });
+
+	        return groups[groups.length - 1];
+	    }
+
+	    tabs.forEach(tab => {
+	        tab.data = {
+	            isAdmin,
+	            isTeamOwner: role === 'owner',
+	            team,
+	            users,
+	            userId,
+	            settings,
+	            defaultTheme,
+	            themes,
+	            folders,
+	            locales,
+	            visualizations,
+	            visualizationsArchive,
+	            ...tab.data
+	        };
+	        tab.onchange = (data, tabApp) => {
+	            app.onTabChange(data, tabApp);
+	        };
+	        get(groups, tab.group).tabs.push(tab);
+	    });
+
+	    groups.forEach(group => {
+	        group.tabs.sort((a, b) => a.order - b.order);
+	    });
+
+	    return groups;
+	}
+	function data$i() {
+	    return {
+	        allTabs: [
+	            SettingsTab,
+	            MembersTab,
+	            {
+	                id: 'delete',
+	                title: __('teams / tab / deleteTeam'),
+	                icon: 'fa fa-times',
+	                group: __('teams / group / advanced'),
+	                order: 80,
+	                h1: __('teams / delete / h1'),
+	                ui: DeleteTeam,
+	                ownerOnly: true
+	            },
+	            {
+	                id: 'products',
+	                title: __('teams / tab / adminProducts'),
+	                icon: 'fa fa-list-alt',
+	                group: __('teams / group / internal'),
+	                order: 90,
+	                h1: __('teams / products / h1'),
+	                ui: ProductTable,
+	                adminOnly: true
+	            }
+	        ],
+	        pluginTabs: [],
+	        activeTab: null,
+	        ui: Settings,
+	        team: {
+	            name: ''
+	        },
+	        settings: {},
+	        users: [],
+	        userId: null,
+	        visualizations: [],
+	        visualizationsArchive: []
+	    };
+	}
+	var methods$b = {
+	    onTabChange({ team, settings, defaultTheme }, tab) {
+	        storeTeamSettings(team, settings, defaultTheme).then(() => {
+	            this.set({
+	                team,
+	                settings,
+	                defaultTheme
+	            });
+	            if (tab && tab.saved) {
+	                tab.saved();
+	            }
+	        });
+	    },
+	    setTab(id) {
+	        const { groups } = this.get();
+	        let foundTab = false;
+	        groups.forEach(group => {
+	            group.tabs.forEach(tab => {
+	                if (tab.id === id) {
+	                    this.refs.navTabs.activateTab(tab);
+	                    foundTab = true;
+	                }
+	            });
+	        });
+
+	        if (!foundTab) {
+	            this.set({
+	                activeTab: SettingsTab
+	            });
+	        }
+	    }
+	};
+
+	function oncreate$4() {
+	    app = this;
+	    const path = window.location.pathname.split('/').slice(-1);
+	    const initialTab = path[0] || 'settings';
+	    this.setTab(initialTab);
+
+	    window.addEventListener('popstate', ({ state }) => {
+	        popstate = true;
+	        setTimeout(() => (popstate = false), 100);
+	        this.setTab(state.id);
+	    });
+	}
+	function onstate$3({ changed, current, previous }) {
+	    if (changed.activeTab && current.activeTab && !popstate) {
+	        window.history.pushState(
+	            { id: current.activeTab.id },
+	            '',
+	            `/team/${current.team.id}/${current.activeTab.id}`
+	        );
+	    }
+	}
+	const file$h = "team-settings/App.html";
+
+	function create_main_fragment$i(component, ctx) {
+		var title_value, text0, div1, div0, h1, text1, text2, div5, div4, div2, text3, div3, hr, text4, ul, li0, a0, i0, text5, text6_value = __('account / my-teams'), text6, text7, li1, a1, i1, text8, text9_value = __('nav / team / charts'), text9, a1_href_value, navtabs_updating = {};
+
+		document.title = title_value = "" + ctx.pageTitle + " | Datawrapper";
+
+		var if_block = (ctx.activeTab && ctx.activeTab.h1) && create_if_block$g(component, ctx);
+
+		var navtabs_initial_data = {
+		 	basePath: "team/" + ctx.team.id,
+		 	groups: ctx.groups
+		 };
+		if (ctx.activeTab !== void 0) {
+			navtabs_initial_data.activeTab = ctx.activeTab;
+			navtabs_updating.activeTab = true;
+		}
+		var navtabs = new NavTabs({
+			root: component.root,
+			store: component.store,
+			slots: { default: createFragment(), belowMenu: createFragment(), aboveContent: createFragment() },
+			data: navtabs_initial_data,
+			_bind(changed, childState) {
+				var newState = {};
+				if (!navtabs_updating.activeTab && changed.activeTab) {
+					newState.activeTab = childState.activeTab;
+				}
+				component._set(newState);
+				navtabs_updating = {};
+			}
+		});
+
+		component.root._beforecreate.push(() => {
+			navtabs._bind({ activeTab: 1 }, navtabs.get());
+		});
+
+		component.refs.navTabs = navtabs;
+
+		return {
+			c: function create() {
+				text0 = createText("\n\n");
+				div1 = createElement("div");
+				div0 = createElement("div");
+				h1 = createElement("h1");
+				text1 = createText(ctx.title);
+				text2 = createText("\n\n");
+				div5 = createElement("div");
+				div4 = createElement("div");
+				div2 = createElement("div");
+				if (if_block) if_block.c();
+				text3 = createText("\n            ");
+				div3 = createElement("div");
+				hr = createElement("hr");
+				text4 = createText("\n                ");
+				ul = createElement("ul");
+				li0 = createElement("li");
+				a0 = createElement("a");
+				i0 = createElement("i");
+				text5 = createText(" ");
+				text6 = createText(text6_value);
+				text7 = createText("\n                    ");
+				li1 = createElement("li");
+				a1 = createElement("a");
+				i1 = createElement("i");
+				text8 = createText(" ");
+				text9 = createText(text9_value);
+				navtabs._fragment.c();
+				h1.className = "title";
+				setStyle(h1, "margin-bottom", "18px");
+				addLoc(h1, file$h, 6, 8, 141);
+				div0.className = "span12 admin svelte-kailtr";
+				addLoc(div0, file$h, 5, 4, 106);
+				div1.className = "row";
+				addLoc(div1, file$h, 4, 0, 75);
+				setAttribute(div2, "slot", "aboveContent");
+				addLoc(div2, file$h, 13, 12, 436);
+				addLoc(hr, file$h, 19, 16, 651);
+				i0.className = "fa fa-fw fa-arrow-left";
+				addLoc(i0, file$h, 23, 29, 799);
+				a0.href = "/account/teams";
+				addLoc(a0, file$h, 22, 24, 745);
+				li0.className = "svelte-kailtr";
+				addLoc(li0, file$h, 21, 20, 716);
+				i1.className = "fa fa-fw fa-arrow-left";
+				addLoc(i1, file$h, 28, 29, 1024);
+				a1.href = a1_href_value = "/team/" + ctx.team.id;
+				addLoc(a1, file$h, 27, 24, 969);
+				li1.className = "svelte-kailtr";
+				addLoc(li1, file$h, 26, 20, 940);
+				ul.className = "unstyled svelte-kailtr";
+				addLoc(ul, file$h, 20, 16, 674);
+				setAttribute(div3, "slot", "belowMenu");
+				addLoc(div3, file$h, 18, 12, 612);
+				div4.className = "visconfig";
+				addLoc(div4, file$h, 11, 4, 311);
+				div5.className = "settings-section dw-create-visualize chart-editor chart-editor-web admin svelte-kailtr";
+				addLoc(div5, file$h, 10, 0, 220);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, text0, anchor);
+				insert(target, div1, anchor);
+				append(div1, div0);
+				append(div0, h1);
+				append(h1, text1);
+				insert(target, text2, anchor);
+				insert(target, div5, anchor);
+				append(div5, div4);
+				append(navtabs._slotted.aboveContent, div2);
+				if (if_block) if_block.m(div2, null);
+				append(navtabs._slotted.default, text3);
+				append(navtabs._slotted.belowMenu, div3);
+				append(div3, hr);
+				append(div3, text4);
+				append(div3, ul);
+				append(ul, li0);
+				append(li0, a0);
+				append(a0, i0);
+				append(a0, text5);
+				append(a0, text6);
+				append(ul, text7);
+				append(ul, li1);
+				append(li1, a1);
+				append(a1, i1);
+				append(a1, text8);
+				append(a1, text9);
+				navtabs._mount(div4, null);
+			},
+
+			p: function update(changed, _ctx) {
+				ctx = _ctx;
+				if ((changed.pageTitle) && title_value !== (title_value = "" + ctx.pageTitle + " | Datawrapper")) {
+					document.title = title_value;
+				}
+
+				if (changed.title) {
+					setData(text1, ctx.title);
+				}
+
+				if (ctx.activeTab && ctx.activeTab.h1) {
+					if (if_block) {
+						if_block.p(changed, ctx);
+					} else {
+						if_block = create_if_block$g(component, ctx);
+						if_block.c();
+						if_block.m(div2, null);
+					}
+				} else if (if_block) {
+					if_block.d(1);
+					if_block = null;
+				}
+
+				if ((changed.team) && a1_href_value !== (a1_href_value = "/team/" + ctx.team.id)) {
+					a1.href = a1_href_value;
+				}
+
+				var navtabs_changes = {};
+				if (changed.team) navtabs_changes.basePath = "team/" + ctx.team.id;
+				if (changed.groups) navtabs_changes.groups = ctx.groups;
+				if (!navtabs_updating.activeTab && changed.activeTab) {
+					navtabs_changes.activeTab = ctx.activeTab;
+					navtabs_updating.activeTab = ctx.activeTab !== void 0;
+				}
+				navtabs._set(navtabs_changes);
+				navtabs_updating = {};
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(text0);
+					detachNode(div1);
+					detachNode(text2);
+					detachNode(div5);
+				}
+
+				if (if_block) if_block.d();
+				navtabs.destroy();
+				if (component.refs.navTabs === navtabs) component.refs.navTabs = null;
+			}
+		};
+	}
+
+	// (15:16) {#if activeTab && activeTab.h1 }
+	function create_if_block$g(component, ctx) {
+		var h2, raw_value = ctx.activeTab.h1;
+
+		return {
+			c: function create() {
+				h2 = createElement("h2");
+				h2.className = "svelte-kailtr";
+				addLoc(h2, file$h, 15, 16, 527);
+			},
+
+			m: function mount(target, anchor) {
+				insert(target, h2, anchor);
+				h2.innerHTML = raw_value;
+			},
+
+			p: function update(changed, ctx) {
+				if ((changed.activeTab) && raw_value !== (raw_value = ctx.activeTab.h1)) {
+					h2.innerHTML = raw_value;
+				}
+			},
+
+			d: function destroy(detach) {
+				if (detach) {
+					detachNode(h2);
+				}
+			}
+		};
+	}
+
+	function App(options) {
+		this._debugName = '<App>';
+		if (!options || (!options.target && !options.root)) {
+			throw new Error("'target' is a required option");
+		}
+
+		init(this, options);
+		this.refs = {};
+		this._state = assign(data$i(), options.data);
+
+		this._recompute({ team: 1, activeTab: 1, allTabs: 1, pluginTabs: 1, isAdmin: 1, role: 1, tabs: 1, users: 1, userId: 1, settings: 1, defaultTheme: 1, themes: 1, folders: 1, locales: 1, visualizations: 1, visualizationsArchive: 1 }, this._state);
+		if (!('team' in this._state)) console.warn("<App> was created without expected data property 'team'");
+		if (!('activeTab' in this._state)) console.warn("<App> was created without expected data property 'activeTab'");
+		if (!('allTabs' in this._state)) console.warn("<App> was created without expected data property 'allTabs'");
+		if (!('pluginTabs' in this._state)) console.warn("<App> was created without expected data property 'pluginTabs'");
+		if (!('isAdmin' in this._state)) console.warn("<App> was created without expected data property 'isAdmin'");
+		if (!('role' in this._state)) console.warn("<App> was created without expected data property 'role'");
+
+		if (!('users' in this._state)) console.warn("<App> was created without expected data property 'users'");
+		if (!('userId' in this._state)) console.warn("<App> was created without expected data property 'userId'");
+		if (!('settings' in this._state)) console.warn("<App> was created without expected data property 'settings'");
+		if (!('defaultTheme' in this._state)) console.warn("<App> was created without expected data property 'defaultTheme'");
+		if (!('themes' in this._state)) console.warn("<App> was created without expected data property 'themes'");
+		if (!('folders' in this._state)) console.warn("<App> was created without expected data property 'folders'");
+		if (!('locales' in this._state)) console.warn("<App> was created without expected data property 'locales'");
+		if (!('visualizations' in this._state)) console.warn("<App> was created without expected data property 'visualizations'");
+		if (!('visualizationsArchive' in this._state)) console.warn("<App> was created without expected data property 'visualizationsArchive'");
+		this._intro = true;
+
+		this._handlers.state = [onstate$3];
+
+		onstate$3.call(this, { changed: assignTrue({}, this._state), current: this._state });
+
+		this._fragment = create_main_fragment$i(this, this._state);
+
+		this.root._oncreate.push(() => {
+			oncreate$4.call(this);
+			this.fire("update", { changed: assignTrue({}, this._state), current: this._state });
+		});
+
+		if (options.target) {
+			if (options.hydrate) throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			this._fragment.c();
+			this._mount(options.target, options.anchor);
+
+			flush(this);
+		}
+	}
+
+	assign(App.prototype, protoDev);
+	assign(App.prototype, methods$b);
+
+	App.prototype._checkReadOnly = function _checkReadOnly(newState) {
+		if ('pageTitle' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'pageTitle'");
+		if ('title' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'title'");
+		if ('tabs' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'tabs'");
+		if ('groups' in newState && !this._updatingReadonlyProperty) throw new Error("<App>: Cannot set read-only property 'groups'");
+	};
+
+	App.prototype._recompute = function _recompute(changed, state) {
+		if (changed.team || changed.activeTab) {
+			if (this._differs(state.pageTitle, (state.pageTitle = pageTitle(state)))) changed.pageTitle = true;
+		}
+
+		if (changed.team) {
+			if (this._differs(state.title, (state.title = title(state)))) changed.title = true;
+		}
+
+		if (changed.allTabs || changed.team || changed.pluginTabs || changed.isAdmin || changed.role) {
+			if (this._differs(state.tabs, (state.tabs = tabs(state)))) changed.tabs = true;
+		}
+
+		if (changed.tabs || changed.isAdmin || changed.role || changed.team || changed.users || changed.userId || changed.settings || changed.defaultTheme || changed.themes || changed.folders || changed.locales || changed.visualizations || changed.visualizationsArchive) {
+			if (this._differs(state.groups, (state.groups = groups(state)))) changed.groups = true;
+		}
+	};
+
+	function Store(state, options) {
+		this._handlers = {};
+		this._dependents = [];
+
+		this._computed = blankObject();
+		this._sortedComputedProperties = [];
+
+		this._state = assign({}, state);
+		this._differs = options && options.immutable ? _differsImmutable : _differs;
+	}
+
+	assign(Store.prototype, {
+		_add(component, props) {
+			this._dependents.push({
+				component: component,
+				props: props
+			});
+		},
+
+		_init(props) {
+			const state = {};
+			for (let i = 0; i < props.length; i += 1) {
+				const prop = props[i];
+				state['$' + prop] = this._state[prop];
+			}
+			return state;
+		},
+
+		_remove(component) {
+			let i = this._dependents.length;
+			while (i--) {
+				if (this._dependents[i].component === component) {
+					this._dependents.splice(i, 1);
+					return;
+				}
+			}
+		},
+
+		_set(newState, changed) {
+			const previous = this._state;
+			this._state = assign(assign({}, previous), newState);
+
+			for (let i = 0; i < this._sortedComputedProperties.length; i += 1) {
+				this._sortedComputedProperties[i].update(this._state, changed);
+			}
+
+			this.fire('state', {
+				changed,
+				previous,
+				current: this._state
+			});
+
+			this._dependents
+				.filter(dependent => {
+					const componentState = {};
+					let dirty = false;
+
+					for (let j = 0; j < dependent.props.length; j += 1) {
+						const prop = dependent.props[j];
+						if (prop in changed) {
+							componentState['$' + prop] = this._state[prop];
+							dirty = true;
+						}
+					}
+
+					if (dirty) {
+						dependent.component._stage(componentState);
+						return true;
+					}
+				})
+				.forEach(dependent => {
+					dependent.component.set({});
+				});
+
+			this.fire('update', {
+				changed,
+				previous,
+				current: this._state
+			});
+		},
+
+		_sortComputedProperties() {
+			const computed = this._computed;
+			const sorted = this._sortedComputedProperties = [];
+			const visited = blankObject();
+			let currentKey;
+
+			function visit(key) {
+				const c = computed[key];
+
+				if (c) {
+					c.deps.forEach(dep => {
+						if (dep === currentKey) {
+							throw new Error(`Cyclical dependency detected between ${dep} <-> ${key}`);
+						}
+
+						visit(dep);
+					});
+
+					if (!visited[key]) {
+						visited[key] = true;
+						sorted.push(c);
+					}
+				}
+			}
+
+			for (const key in this._computed) {
+				visit(currentKey = key);
+			}
+		},
+
+		compute(key, deps, fn) {
+			let value;
+
+			const c = {
+				deps,
+				update: (state, changed, dirty) => {
+					const values = deps.map(dep => {
+						if (dep in changed) dirty = true;
+						return state[dep];
+					});
+
+					if (dirty) {
+						const newValue = fn.apply(null, values);
+						if (this._differs(newValue, value)) {
+							value = newValue;
+							changed[key] = true;
+							state[key] = value;
+						}
+					}
+				}
+			};
+
+			this._computed[key] = c;
+			this._sortComputedProperties();
+
+			const state = assign({}, this._state);
+			const changed = {};
+			c.update(state, changed, true);
+			this._set(state, changed);
+		},
+
+		fire,
+
+		get,
+
+		on,
+
+		set(newState) {
+			const oldState = this._state;
+			const changed = this._changed = {};
+			let dirty = false;
+
+			for (const key in newState) {
+				if (this._computed[key]) throw new Error(`'${key}' is a read-only computed property`);
+				if (this._differs(newState[key], oldState[key])) changed[key] = dirty = true;
+			}
+			if (!dirty) return;
+
+			this._set(newState, changed);
+		}
+	});
+
+	const store = new Store({});
+
+	var main = { App, store };
+
+	return main;
+
+})));
+//# sourceMappingURL=team-settings.js.map
