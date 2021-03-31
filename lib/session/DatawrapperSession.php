@@ -62,6 +62,8 @@ class DatawrapperSession {
             $cookieOpts['samesite'] = (isset($_SESSION['type']) && $_SESSION['type']
                 == 'token') ? 'None' : $sameSite;
             setcookie($ses, $_COOKIE[$ses], $cookieOpts);
+        } else {
+            $_COOKIE[$ses] = session_id();
         }
     }
 
