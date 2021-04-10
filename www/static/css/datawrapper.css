@@ -568,10 +568,17 @@ footer .version {
 .footer-logo {
   text-align: right;
 }
-.footer-links a + a:before {
+ul.footer-links {
+  color: silver;
+  margin: 0;
+}
+ul.footer-links li {
+  display: inline-block;
+}
+ul.footer-links li + li:before {
   content: ' – ';
 }
-.footer-links a.highlight {
+ul.footer-links a.highlight {
   background: #18a1cd;
   color: white;
   padding: 4px 9px;

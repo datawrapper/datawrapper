@@ -22,13 +22,22 @@ footer .version {
     text-align: right;
 }
 
-.footer-links a + a:before {
-    content: ' – ';
+ul.footer-links {
+    color: silver;
+    margin: 0;
+
+    li {
+        display: inline-block;
+    }
+    li + li:before {
+        content: ' – ';
+    }
+    a.highlight {
+        background: @dw_blue;
+        color: white;
+        padding: 4px 9px;
+        font-weight: bold;
+    }
+
 }
 
-.footer-links a.highlight {
-    background: @dw_blue;
-    color: white;
-    padding: 4px 9px;
-    font-weight: bold;
-}
