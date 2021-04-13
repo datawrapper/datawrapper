@@ -255,18 +255,33 @@
                 return s.replace('%s', `"${name}"`);
             },
             metaColumns({ columns, column, computedColumns }) {
-                return columns
-                    ? columns
-                          .filter(col => col.name() !== column.name())
-                          .map(col => ({
-                              key: columnNameToVariable(
-                                  col.isComputed ? col.origName() : col.name()
-                              ),
-                              title: col.title(),
-                              type: col.isComputed ? 'computed' : col.type()
-                          }))
-                          .filter(metaColumn => !!metaColumn.key)
-                    : [];
+                const metaColumns = [];
+                if (!columns) return metaColumns;
+                const columnVarName = columnNameToVariable(column.origName());
+                for (const col of columns) {
+                    if (col.name() === column.name()) {
+                        // Skip this column.
+                        continue;
+                    }
+                    const colVarName = columnNameToVariable(
+                        col.isComputed ? col.origName() : col.name()
+                    );
+                    if (!colVarName) {
+                        // Skip a column with empty name to prevent Code Mirror crash.
+                        continue;
+                    }
+                    if (colVarName === columnVarName) {
+                        // Skip a reference to a normal column that thas the same name as the computed
+                        // column, because it's currently not supported by chart-core.
+                        continue;
+                    }
+                    metaColumns.push({
+                        key: colVarName,
+                        title: col.title(),
+                        type: col.isComputed ? 'computed' : col.type()
+                    });
+                }
+                return metaColumns;
             },
             keywords({ metaColumns }) {
                 const keywords = [];
