@@ -532,9 +532,15 @@
                     });
                     updateTable();
                 } else {
-                    (dw_chart.dataset().column(name).errors || []).forEach(err => {
-                        parserErrors.push(err);
-                    });
+                    let column;
+                    try {
+                        column = dw_chart.dataset().column(name);
+                    } catch (e) {
+                        console.error(`Failed to load column "${name}"`);
+                    }
+                    if (column && column.errors) {
+                        column.errors.forEach(err => parserErrors.push(err));
+                    }
                 }
 
                 this.set({ parserErrors });
