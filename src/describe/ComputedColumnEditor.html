@@ -265,6 +265,7 @@
                               title: col.title(),
                               type: col.isComputed ? 'computed' : col.type()
                           }))
+                          .filter(metaColumn => !!metaColumn.key)
                     : [];
             },
             keywords({ metaColumns }) {
