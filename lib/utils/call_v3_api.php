@@ -37,6 +37,11 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
                 ]);
 
                 $result = curl_exec($ch2);
+                $error = $curl_error($ch);
+                if ($error) {
+                    error_log('Error fetching from v3 API: ' . $error;
+                }
+
 
                 preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $result, $matches);
                 $cookies = array();
@@ -65,6 +70,10 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
         curl_setopt($ch, CURLOPT_POSTFIELDS, $contentType == 'application/json' ? json_encode_safe($payload) : $payload);
     }
     $response = curl_exec($ch);
+    $error = $curl_error($ch);
+    if ($error) {
+        error_log('Error fetching from v3 API: ' . $error;
+    }
     $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     $attempt = 1;
     // bad gateway, let's retry this request a few times
