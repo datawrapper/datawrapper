@@ -39,7 +39,7 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
                 $result = curl_exec($ch2);
                 $error = $curl_error($ch);
                 if ($error) {
-                    error_log('Error fetching from v3 API: ' . $error;
+                    error_log('Error fetching from v3 API: ' . $error);
                 }
 
 
@@ -72,7 +72,7 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
     $response = curl_exec($ch);
     $error = $curl_error($ch);
     if ($error) {
-        error_log('Error fetching from v3 API: ' . $error;
+        error_log('Error fetching from v3 API: ' . $error);
     }
     $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     $attempt = 1;
