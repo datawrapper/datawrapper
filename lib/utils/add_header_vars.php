@@ -52,7 +52,7 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
 
     if ($canCreateCharts) {
         $headlinks[] = array(
-            'url' => '/chart/create',
+            'url' => '/create/chart',
             'id' => 'chart',
             'title' => __('New Chart'),
             'icon' => 'fa fa-plus'
