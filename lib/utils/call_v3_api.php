@@ -34,6 +34,8 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
                     CURLOPT_RETURNTRANSFER => 1,
                     CURLOPT_HEADER => 1,
                     CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0
                 ]);
 
                 $result = curl_exec($ch2);
@@ -63,7 +65,9 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
         CURLOPT_CUSTOMREQUEST => $method,
         CURLOPT_RETURNTRANSFER => 1,
         CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS
+        CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
     ]);
     if (!empty($payload)) {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $contentType == 'application/json' ? json_encode_safe($payload) : $payload);
