@@ -694,7 +694,7 @@
   "mycharts / Author": "作者",
   "mycharts / add-subfolder": "添加子文件夹",
   "mycharts / create-chart-here": "在此文件夹中创建新图表",
-  "mycharts / empty-folder": "此处暂无图表。您要现在<a href=\"/chart/create?folder=%folder%\">创建图表</a>吗？",
+  "mycharts / empty-folder": "此处暂无图表。您要现在<a href=\"/chart/create%location%\">创建图表</a>吗？",
   "mycharts / new-feature": "新功能：图表文件夹！",
   "mycharts / welcome-folders": "现在，您可以在文件夹中组织图表。单击“创建子文件夹”开始。然后，您可以将图表拖入文件夹中。",
   "Team Charts": "团队图表",
