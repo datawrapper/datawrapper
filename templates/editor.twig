@@ -46,6 +46,7 @@ require(['{{workflow.module}}'], function(mod) {
         locales: {{chartLocales|json|raw}},
         actions: {{chartActions|json|raw}},
         themes: {{userThemes|json|raw}},
+        flags: {{flags|json|raw}},
         dataset: chartData ? JSON.parse(chartData) : {},
         apiDomain: '{{apiDomain}}',
         teamSettings: {{ teamSettings|json|raw }},
