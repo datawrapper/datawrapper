@@ -165,6 +165,14 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
 
+            $theme = ThemeQuery::create()->findPk($chart->getTheme());
+            if (!$chart->getMetadata('publish.blocks')) {
+                $themeDefaults = $theme->getThemeData('metadata.publish.blocks');
+                if ($themeDefaults)  {
+                    $chart->updateMetadata('publish.blocks', $themeDefaults);
+                }
+            }
+
             $page = [
                 'title' => '',
                 'pageClass' => 'editor',
@@ -183,7 +191,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                     $s = explode('|', $s);
                     return ['value'=>$s[0], 'label'=>$s[1]];
                  }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
-                'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
+                'theme' => $theme,
                 'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),

@@ -79,6 +79,13 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
         }
 
+        if (!$chart->getMetadata('publish.blocks')) {
+            $themeDefaults = $theme['data']['metadata']['publish']['blocks'] ?? false;
+            if ($themeDefaults)  {
+                $chart->updateMetadata('publish.blocks', $themeDefaults);
+            }
+        }
+
         $page = array(
             'title' => strip_tags($chart->getTitle()).' - '.$chart->getID() . ' - '.__('Visualize'),
 
