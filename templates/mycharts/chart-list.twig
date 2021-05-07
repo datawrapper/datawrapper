@@ -1,12 +1,24 @@
 {% use "utils.twig" %}
 
     {% if num_charts == 0 %}
-        <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%folder%':current.folder}) | raw }}</h3>
+        {% if current.folder %}
+            <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%location%':['?folder=',current.folder]|join }) | raw }}</h3>
+        {% elseif current.organization %}
+            <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%location%':['?team=',current.organization]|join }) | raw }}</h3>
+        {% else %}
+            <h3 class="no-charts">{{ "mycharts / empty-folder" | trans | replace({'%location%':'' }) | raw }}</h3>
+        {% endif %}
     {% else %}
         <div style="margin-bottom:10px; padding:10px;font-weight:300">
             <i style="color:#999" class="im im-plus-circle im-fw"></i>
             <span style="margin-left: 3px;">
-                {{ "mycharts / create-chart-here" | trans | replace({'%folder%':current.folder}) | raw }}
+            {% if current.folder %}
+                {{ "mycharts / create-chart-here" | trans | replace({'%location%':['?folder=',current.folder]|join }) | raw }}
+            {% elseif current.organization %}
+                {{ "mycharts / create-chart-here" | trans | replace({'%location%':['?team=',current.organization]|join }) | raw }}
+            {% else %}
+                {{ "mycharts / create-chart-here" | trans | replace({'%location%':'' }) | raw }}
+            {% endif %}
             </span>
         </div>
     {% endif %}
