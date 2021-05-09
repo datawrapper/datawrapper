@@ -30,9 +30,37 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $vis = DatawrapperVisualization::get($chart->getType());
 
-        [$status, $theme] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
+        $chartTheme = $chart->getTheme();
+        [$status, $theme] = call_v3_api('GET', '/themes/'.$chartTheme.'?extend=true');
         if ($status != 200) {
             [$status, $theme] = call_v3_api('GET', '/themes/default');
+        }
+
+        if (!$chart->getMetadata('publish.blocks')) {
+            if ($chart->getTheme() === 'datawrapper-data') {
+                $chart->setTheme('datawrapper');
+                $chart->updateMetadata('publish.blocks', [
+                    'get-the-data' => true
+                ]);
+            } else if ($chart->getTheme() === 'default-data') {
+                $chart->setTheme('default');
+                $chart->updateMetadata('publish.blocks', [
+                    'get-the-data' => true
+                ]);
+            } else {
+                $themeDefaults = $theme['data']['metadata']['publish']['blocks'] ?? false;
+                if ($themeDefaults)  {
+                    $chart->updateMetadata('publish.blocks', $themeDefaults);
+                }
+            }
+            $chart->save();
+        }
+
+        if ($chart->getTheme() !== $chartTheme) {
+            [$status, $theme] = call_v3_api('GET', '/themes/'.$chartTheme.'?extend=true');
+            if ($status != 200) {
+                [$status, $theme] = call_v3_api('GET', '/themes/default');
+            }
         }
 
         $userVisualizations = [];
@@ -77,13 +105,6 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-        }
-
-        if (!$chart->getMetadata('publish.blocks')) {
-            $themeDefaults = $theme['data']['metadata']['publish']['blocks'] ?? false;
-            if ($themeDefaults)  {
-                $chart->updateMetadata('publish.blocks', $themeDefaults);
-            }
         }
 
         $page = array(

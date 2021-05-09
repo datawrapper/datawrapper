@@ -167,10 +167,24 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
 
             $theme = ThemeQuery::create()->findPk($chart->getTheme());
             if (!$chart->getMetadata('publish.blocks')) {
-                $themeDefaults = $theme->getThemeData('metadata.publish.blocks');
-                if ($themeDefaults)  {
-                    $chart->updateMetadata('publish.blocks', $themeDefaults);
+                if ($chart->getTheme() === 'datawrapper-data') {
+                    $chart->setTheme('datawrapper');
+                    $chart->updateMetadata('publish.blocks', [
+                        'get-the-data' => true
+                    ]);
+                    $theme = ThemeQuery::create()->findPk('datawrapper');
+                } else if ($chart->getTheme() === 'default-data') {
+                    $chart->setTheme('default');
+                    $chart->updateMetadata('publish.blocks', [
+                        'get-the-data' => true
+                    ]);
+                } else {
+                    $themeDefaults = $theme->getThemeData('metadata.publish.blocks');
+                    if ($themeDefaults)  {
+                        $chart->updateMetadata('publish.blocks', $themeDefaults);
+                    }
                 }
+                $chart->save();
             }
 
             $page = [
