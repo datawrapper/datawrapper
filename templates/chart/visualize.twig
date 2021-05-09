@@ -24,14 +24,15 @@
             namespace: {{chart.namespace|json|raw }},
             defaultVisType: '{{defaultVisType}}',
             webToPrint: {{webToPrint|json}},
-
+            customLayouts: {{customLayouts|json}},
             visualizations: {{visualizations|json|raw}},
             visArchive: {{visArchive|json|raw}},
 
             theme: '{{theme.id}}',
             themes: {{userThemes|json|raw}},
             themeData: {{theme.data|json|raw}},
-            teamSettings: {{ teamSettings|json|raw }}
+            teamSettings: {{ teamSettings|json|raw }},
+            flags: {{ flags|json|raw }}
         })
     });
 </script>

@@ -30,9 +30,37 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $vis = DatawrapperVisualization::get($chart->getType());
 
-        [$status, $theme] = call_v3_api('GET', '/themes/'.$chart->getTheme().'?extend=true');
+        $chartTheme = $chart->getTheme();
+        [$status, $theme] = call_v3_api('GET', '/themes/'.$chartTheme.'?extend=true');
         if ($status != 200) {
             [$status, $theme] = call_v3_api('GET', '/themes/default');
+        }
+
+        if (!$chart->getMetadata('publish.blocks')) {
+            if ($chart->getTheme() === 'datawrapper-data') {
+                $chart->setTheme('datawrapper');
+                $chart->updateMetadata('publish.blocks', [
+                    'get-the-data' => true
+                ]);
+            } else if ($chart->getTheme() === 'default-data') {
+                $chart->setTheme('default');
+                $chart->updateMetadata('publish.blocks', [
+                    'get-the-data' => true
+                ]);
+            } else {
+                $themeDefaults = $theme['data']['metadata']['publish']['blocks'] ?? false;
+                if ($themeDefaults)  {
+                    $chart->updateMetadata('publish.blocks', $themeDefaults);
+                }
+            }
+            $chart->save();
+        }
+
+        if ($chart->getTheme() !== $chartTheme) {
+            [$status, $theme] = call_v3_api('GET', '/themes/'.$chartTheme.'?extend=true');
+            if ($status != 200) {
+                [$status, $theme] = call_v3_api('GET', '/themes/default');
+            }
         }
 
         $userVisualizations = [];
@@ -64,8 +92,17 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $res = Hooks::execute('enable_web_to_print');
         $webToPrint = !empty($res) && $res[0] === true;
+
+        $res = Hooks::execute('enable_custom_layouts', $chart);
+
+        $customLayouts = !empty($res) && $res[0] === true;
+
         $org = $chart->getOrganization();
+
+        $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
+
         $teamSettingsControls = new stdClass();
+
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
         }
@@ -83,9 +120,11 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
             'theme' => $theme,
             'webToPrint' => $webToPrint,
+            'customLayouts' => $customLayouts,
             'teamSettings' => [
                 'controls' => $teamSettingsControls
             ],
+            'flags' => $flags,
             'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),

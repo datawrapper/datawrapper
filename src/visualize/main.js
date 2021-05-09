@@ -34,7 +34,9 @@ function init({
     theme,
     themes,
     themeData,
-    teamSettings
+    teamSettings,
+    customLayouts,
+    flags
 }) {
     let externalRawMetadata;
 
@@ -57,7 +59,6 @@ function init({
         )
     });
     let app;
-
     const themeCache = {};
     themeCache[theme] = themeData;
     dw.theme.register(theme, themeData);
@@ -72,6 +73,8 @@ function init({
         teamSettings,
         externalMetadata,
         themes,
+        customLayouts,
+        flags,
         visualization: visualizations[chartData.type]
     });
 
