@@ -148,14 +148,44 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
             ];
 
+            $res = Hooks::execute('enable_custom_layouts', $chart);
+            $customLayouts = !empty($res) && $res[0] === true;
+
             $org = $chart->getOrganization();
+            $teamSettingsControls = new stdClass();
             $customFields = [];
+
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];
+                $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
             }
+
+            $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
+
+            $theme = ThemeQuery::create()->findPk($chart->getTheme());
+            if (!$chart->getMetadata('publish.blocks')) {
+                if ($chart->getTheme() === 'datawrapper-data') {
+                    $chart->setTheme('datawrapper');
+                    $chart->updateMetadata('publish.blocks', [
+                        'get-the-data' => true
+                    ]);
+                    $theme = ThemeQuery::create()->findPk('datawrapper');
+                } else if ($chart->getTheme() === 'default-data') {
+                    $chart->setTheme('default');
+                    $chart->updateMetadata('publish.blocks', [
+                        'get-the-data' => true
+                    ]);
+                } else {
+                    $themeDefaults = $theme->getThemeData('metadata.publish.blocks');
+                    if ($themeDefaults)  {
+                        $chart->updateMetadata('publish.blocks', $themeDefaults);
+                    }
+                }
+                $chart->save();
+            }
 
             $page = [
                 'title' => '',
@@ -169,18 +199,23 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'userArray' => $userArray,
                 'vis' => $vis,
                 'customFields' => $customFields,
+                'customLayouts' => $customLayouts,
                 'apiDomain' => $GLOBALS['dw_config']['api_domain'],
                 'chartLocales' => array_map(function($s) {
                     $s = explode('|', $s);
                     return ['value'=>$s[0], 'label'=>$s[1]];
                  }, explode(',', $GLOBALS['dw_config']['plugins']['chart-locale-select']['locales'] ?? 'en-US|english,de-DE|deutsch')),
-                'theme' => ThemeQuery::create()->findPk($chart->getTheme()),
+                'theme' => $theme,
                 'userThemes' => array_map(function($t) {
                     return ['id'=>$t->getId(), 'title'=>$t->getTitle()];
                 }, ThemeQuery::create()->allThemesForUser($chart)),
                 'chartActions' => Hooks::execute(Hooks::GET_CHART_ACTIONS, $chart, $user),
                 'folders' => $page['folders'],
-                'visNamespace' => $page['visNamespace']
+                'visNamespace' => $page['visNamespace'],
+                'teamSettings' => [
+                    'controls' => $teamSettingsControls
+                ],
+                'flags' => $flags
             ];
 
             // legacy stuff, need to move into ChartEditor some day

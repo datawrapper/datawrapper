@@ -15,7 +15,7 @@
                     />
 
                     <div class="toolbar">
-                        <Resizer bind:webToPrint bind:loading ref:resizer />
+                        <Resizer bind:webToPrint bind:loading ref:resizer bind:uiMode="mode" />
                         <ColorblindCheck />
                         {#if themeHasSchemes }
                         <SchemePreview bind:loading />
@@ -68,10 +68,13 @@
 
                 <!-- Design -->
                 <div class:hide-smart="tab !== 'design'">
-                    <Design />
+                    <ChartLayout bind:requireUpgrade="showUpgradeKeyOn.design" />
                 </div>
 
                 <ButtonNav bind:tab {showChartPicker} />
+                <div style="margin-top: 20px;">
+                    <AlertDisplay visible="{showUpgradeKeyOn[tab]}" type="upgrade-info" />
+                </div>
             </div>
         </div>
     </div>
@@ -121,11 +124,12 @@
     import { __ } from '@datawrapper/shared/l10n';
     import get from '@datawrapper/shared/get';
     import ChartPreview from '@datawrapper/controls/editor/ChartPreview.html';
+    import ChartLayout from '@datawrapper/controls/editor/ChartLayout.html';
+    import AlertDisplay from '@datawrapper/controls/AlertDisplay.html';
     import TabNav from './TabNav.html';
     import ButtonNav from './ButtonNav.html';
     import Empty from './Empty.html';
     import Annotate from './Annotate.html';
-    import Design from './Design.html';
     import ChartPicker from './ChartPicker.html';
     import Loading from './Loading.html';
     import Resizer from './Resizer.html';
@@ -138,14 +142,15 @@
             TabNav,
             ButtonNav,
             Annotate,
-            Design,
+            ChartLayout,
             ChartPicker,
             Loading,
             Resizer,
             ColorblindCheck,
             SchemePreview,
             ChartPreview,
-            Notifications
+            Notifications,
+            AlertDisplay
         },
         data() {
             return {
@@ -161,12 +166,16 @@
                 stickyBottom: false,
                 namespace: 'chart',
                 notifications: [],
-                chartNotifications: []
+                chartNotifications: [],
+                showUpgradeKeyOn: {}
             };
         },
         computed: {
             themeHasSchemes({ $themeData }) {
                 return Object.keys(get($themeData || {}, 'colors.schemes', {})).length;
+            },
+            resizable({ mode }) {
+                return mode !== 'print';
             },
             showChartPicker({ namespace }) {
                 return namespace !== 'map';
