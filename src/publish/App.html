@@ -138,6 +138,26 @@
     </div>
 </div>
 
+<div class="make-reusable">
+    <div>
+        <h2 class="pad-top">Allow reuse of this visualization</h2>
+        <div class="block">
+            <i class="icon fa fa-river" style="height: 30px;"></i>
+            <div class="ctrls">
+                <p class="mb-0">
+                    You can increase reach by allowing other users to adapt and reuse your
+                    visualization.
+                </p>
+                <SwitchControl label="Make visualization reusable" bind:value="$forkable">
+                    <CheckboxControl label="Show visualization in the Datawrapper River" />
+                    <CheckboxControl label="Show 'Edit in Datawrapper' link in footer" />
+                    <CheckboxControl label="Protect byline and dataset in derived visualizations" />
+                </SwitchControl>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .btn-publish {
         border-color: #1d81a2 !important;
@@ -273,6 +293,8 @@
 <script>
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import SwitchControl from '@datawrapper/controls/SwitchControl.html';
+    import CheckboxControl from '@datawrapper/controls/CheckboxControl.html';
 
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
@@ -282,7 +304,7 @@
     let initial_auto_publish = true;
 
     export default {
-        components: { HelpDisplay },
+        components: { HelpDisplay, SwitchControl, CheckboxControl },
         data() {
             return {
                 chart: {

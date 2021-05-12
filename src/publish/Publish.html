@@ -146,7 +146,15 @@
             </HelpDisplay>
         </div>
     </div>
-
+    ccc
+    <div class="make-reusable">
+        <div>
+            <h2 class="pad-top">Allow reuse of this visualization</h2>
+            <SwitchControl label="Make visualization reusable" bind:value="$forkable">
+            </SwitchControl>
+        </div>
+    </div>
+    xxx
     <!-- BEFORE EXPORT -->
     <svelte:component this="{beforeExport}" />
 
@@ -321,6 +329,7 @@
 <script>
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import SwitchControl from '@datawrapper/controls/SwitchControl.html';
 
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
@@ -333,7 +342,7 @@
     let initial_auto_publish = true;
 
     export default {
-        components: { HelpDisplay },
+        components: { HelpDisplay, SwitchControl },
         data() {
             return {
                 active_action: '',
