@@ -14,7 +14,7 @@ define(function (require) {
             chart_w = Math.max(350, Math.min(650, chart.metadata.publish['embed-width'])),
             date_fmt = function (d) {
                 d = new Date(d.split(' ')[0]);
-                return Globalize.format(d, 'ddd') + ', ' + Globalize.format(d, 'd');
+                return d.toLocaleDateString(dw.backend.__locale);
             },
             data = {
                 chartID: chart.id,

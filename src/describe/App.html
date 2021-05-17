@@ -198,6 +198,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import clone from '@datawrapper/shared/clone';
     import { getComputedColumns } from './shared';
+    import { columnFormatter } from '@datawrapper/shared/columnFormatter';
 
     export default {
         components: {
@@ -247,7 +248,9 @@
                 return activeColumn ? activeColumn.values() : [];
             },
             activeFormat({ activeColumn, $dw_chart }) {
-                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
+                return activeColumn
+                    ? columnFormatter(activeColumn, $dw_chart.get().metadata, activeColumn.name())
+                    : d => d;
             },
             columns({ activeColumn }) {
                 const ds = chart.dataset();

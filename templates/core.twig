@@ -60,8 +60,6 @@
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/underscore/underscore-min.js"></script>
     <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/cryptojs/hmac-sha256.js"></script>
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/globalize.js"></script>
-    <script type="text/javascript" charset="utf-8" src="{{ config.static_path }}/vendor/globalize/cultures/globalize.culture.{{ locale | replace({'_':'-'}) }}.js"></script>
     {% if dependencies.dayjs %}
     <script type="text/javascript">
     require([
@@ -121,10 +119,6 @@
                 dw.backend.__messages = JSON.parse(oldMessages);
             }
         }
-
-        $(function() {
-            Globalize.culture('{{ locale | replace({'_':'-'}) }}');
-        });
     </script>
 
     {% if page_css %}
