@@ -873,7 +873,7 @@
   "chart-notification / download / fail / image": "",
   "chart-notification / download / fail / pdf": "Beim PDF-Download ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt.",
   "error / support-help": "In jedem Fall kann Dir unser freundliches Support-Team weiterhelfen (und Du uns), wenn Du uns eine E-Mail an <b><a href=\"%s\">support@datawrapper.de</a></b> sendest.",
-  "template / hed": "Visualisierung in Datawrapper bearbeiten",
+  "template / hed": "Kopie einer Visualisierung im Datawrapper erstellen",
   "template / confirm": "Bitte bestätige, dass Du eine Kopie der unten gezeigten Visualisierung erstellen möchtest. Du kannst sie verändern und nach Belieben weiterverwenden (die Original-Visualisierung bleibt davon unverändert).",
   "layout / group-layout": "Layout",
   "layout / group-footer": "Fußzeile",
