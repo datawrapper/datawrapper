@@ -260,7 +260,7 @@
                 const columnVarName = columnNameToVariable(column.origName());
                 for (const col of columns) {
                     if (col.name() === column.name()) {
-                        // Skip this column.
+                        // Skip the current column.
                         continue;
                     }
                     const colVarName = columnNameToVariable(
@@ -271,8 +271,8 @@
                         continue;
                     }
                     if (colVarName === columnVarName) {
-                        // Skip a reference to a normal column that thas the same name as the computed
-                        // column, because it's currently not supported by chart-core.
+                        // Skip a normal column that has the same variable name as the current
+                        // column, because chart-core treats that as a circular dependency.
                         continue;
                     }
                     metaColumns.push({
@@ -662,6 +662,12 @@
                     if (!computedColumn) {
                         console.error(`Computed column "${column.origName()}" was not found`);
                         return;
+                    }
+                    const existingComputedColIndex = computedColumns.findIndex(
+                        d => d.name === newName
+                    );
+                    if (existingComputedColIndex !== -1) {
+                        computedColumns.splice(existingComputedColIndex, 1);
                     }
                     computedColumn.name = newName;
                     column.name(newName);
