@@ -260,6 +260,16 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         $query_terms = explode(' ', strtolower($q));
         $query_cond = [];
         $fields = ['title', 'type', 'id'];
+
+        $teams = $user->getOrganizations();
+        $customFields = [];
+        foreach ($teams as $team) {
+            $f = $team->getSettings('customFields') ?? [];
+            foreach ($f as $field) {
+                $customFields[] = $field['key'];
+            }
+        }
+
         foreach ($query_terms as $term) {
             $cond2 = [];
             foreach ($fields as $field) {
@@ -269,6 +279,10 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             // once chart.metadata is converted to JSON column
             $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.intro')) LIKE \"%$term%\")";
             $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.\"source-name\"')) LIKE \"%$term%\")";
+            foreach ($customFields as $field) {
+                if (strpos($field, '"') !== false) continue;
+                $cond2[] = "(LOWER(JSON_EXTRACT(metadata, " . $pdo->quote('$.custom."' . $field . '"') . ")) LIKE \"%$term%\")";
+            }
             $query_cond[] = '('.implode(' OR ', $cond2).')';
         }
         $sql .= ' AND ('.implode(' AND ', $query_cond).')';
