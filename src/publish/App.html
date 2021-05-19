@@ -138,6 +138,7 @@
     </div>
 </div>
 
+{#if published}
 <div class="make-reusable">
     <div>
         <h2 class="pad-top">Allow reuse of this visualization</h2>
@@ -148,15 +149,22 @@
                     You can increase reach by allowing other users to adapt and reuse your
                     visualization.
                 </p>
-                <SwitchControl label="Make visualization reusable" bind:value="$forkable">
+                <SwitchControl label="Make visualization reusable" bind:value="chart.forkable">
                     <CheckboxControl label="Show visualization in the Datawrapper River" />
-                    <CheckboxControl label="Show 'Edit in Datawrapper' link in footer" />
-                    <CheckboxControl label="Protect byline and dataset in derived visualizations" />
+                    <CheckboxControl
+                        label='Show "Create a copy" link in footer'
+                        bind:value="chart.metadata.publish.blocks['edit-in-datawrapper']"
+                    />
+                    <CheckboxControl
+                        label="Protect byline and dataset in derived visualizations"
+                        bind:value="chart.metadata.publish['protect-forks']"
+                    />
                 </SwitchControl>
             </div>
         </div>
     </div>
 </div>
+{/if}
 
 <style>
     .btn-publish {
@@ -308,7 +316,15 @@
         data() {
             return {
                 chart: {
-                    id: ''
+                    id: '',
+                    metadata: {
+                        publish: {
+                            blocks: {
+                                'edit-in-datawrapper': false
+                            },
+                            'protect-forks': false
+                        }
+                    }
                 },
                 embed_templates: [],
                 plugin_shareurls: [],
@@ -363,6 +379,16 @@
 
             publishWait({ publishStarted, now }) {
                 return publishStarted > 0 ? now - publishStarted : 0;
+            },
+
+            forkable({ chart }) {
+                return chart.forkable;
+            },
+            editInDatawrapper({ chart }) {
+                return get(chart, 'metadata.publish.blocks.edit-in-datawrapper');
+            },
+            protectForks({ chart }) {
+                return get(chart, 'metadata.publish.protect-forks');
             }
         },
         helpers: { __ },
@@ -501,6 +527,34 @@
                     this.publish();
                     initial_auto_publish = false;
                     window.history.replaceState('', '', window.location.pathname);
+                }
+            }
+            if (changed.forkable) {
+                if (
+                    current.forkable !== undefined &&
+                    current.forkable !== window.chart.get('forkable')
+                ) {
+                    window.chart.set('forkable', current.forkable);
+                }
+            }
+            if (changed.editInDatawrapper) {
+                if (
+                    current.editInDatawrapper !== undefined &&
+                    current.editInDatawrapper !==
+                        window.chart.get('metadata.publish.blocks.edit-in-datawrapper')
+                ) {
+                    window.chart.set(
+                        'metadata.publish.blocks.edit-in-datawrapper',
+                        current.editInDatawrapper
+                    );
+                }
+            }
+            if (changed.protectForks) {
+                if (
+                    current.protectForks !== undefined &&
+                    current.protectForks !== window.chart.get('metadata.publish.protect-forks')
+                ) {
+                    window.chart.set('metadata.publish.protect-forks', current.protectForks);
                 }
             }
         }
