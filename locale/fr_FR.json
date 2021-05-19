@@ -888,5 +888,6 @@
   "upgrade-info": "",
   "chart-notification / download / png": "",
   "chart-notification / download / svg": "",
-  "chart-notification / download / fail / png": ""
+  "chart-notification / download / fail / png": "",
+  "template / confirm-q / yes": "Oui, créer une nouvelle visualisation"
 }

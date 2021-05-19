@@ -888,5 +888,6 @@
   "upgrade-info": "",
   "chart-notification / download / png": "",
   "chart-notification / download / svg": "",
-  "chart-notification / download / fail / png": ""
+  "chart-notification / download / fail / png": "",
+  "template / confirm-q / yes": "是的，复制可视化"
 }

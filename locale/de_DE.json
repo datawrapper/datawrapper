@@ -852,7 +852,7 @@
   "create / confirm-q": "Möchtest Du jetzt eine Visualisierung mit diesen Daten erstellen?",
   "create / confirm-q / yes": "Ja, neue Visualisierung erstellen",
   "create / confirm-q / no": "Nein",
-  "create / footer": "Mit Datawrapper kannst Du kostenlos Diagramme, Karten und Tabellen erstellen und veröffentlichen. <a href=\"https://www.datawrapper.de/\" target=\"_blank\"><b>Erfahre mehr über Datawrapper.</b></a>",
+  "create / footer": "Mit Datawrapper kannst du deine Daten mit wenigen Klicks als schöne Diagramme, Karten oder Tabellen darstellen. Es ist kostenlos und keine Anmeldung erforderlich. <a href=\"https://www.datawrapper.de/\" target=\"_blank\"> <b> Erfahre mehr über Datawrapper. </b> </a>",
   "create / field / type": "Visualisierungstyp",
   "create / field / dataset columns": "Datensatzspalten",
   "create / field / dataset rows": "Datensatzzeilen",
@@ -873,7 +873,7 @@
   "chart-notification / download / fail / image": "",
   "chart-notification / download / fail / pdf": "Beim PDF-Download ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt.",
   "error / support-help": "In jedem Fall kann Dir unser freundliches Support-Team weiterhelfen (und Du uns), wenn Du uns eine E-Mail an <b><a href=\"%s\">support@datawrapper.de</a></b> sendest.",
-  "template / hed": "Visualisierung in Datawrapper bearbeiten",
+  "template / hed": "Kopie in Datawrapper erstellen",
   "template / confirm": "Bitte bestätige, dass Du eine Kopie der unten gezeigten Visualisierung erstellen möchtest. Du kannst sie verändern und nach Belieben weiterverwenden (die Original-Visualisierung bleibt davon unverändert).",
   "layout / group-layout": "Layout",
   "layout / group-footer": "Fußzeile",
@@ -888,5 +888,6 @@
   "upgrade-info": " Funktionen mit diesem Symbol werden nach einem Account-Upgrade verfügbar. <a target=\"_blank\" href=\"/account/subscription\"> Erfahre mehr über die Tarifoptionen. </a>",
   "chart-notification / download / png": "Bilddatei wird zum Download vorbereitet...",
   "chart-notification / download / svg": "SVG-Datei wird zum Download vorbereitet…",
-  "chart-notification / download / fail / png": "Beim Bilddownload ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt."
+  "chart-notification / download / fail / png": "Beim Bilddownload ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt.",
+  "template / confirm-q / yes": "Ja, neue Visualisierung erstellen"
 }
