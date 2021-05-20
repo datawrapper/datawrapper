@@ -287,7 +287,6 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
         }
         $sql .= ' AND ('.implode(' AND ', $query_cond).')';
     }
-    // var_dump($sql); die();
 
     $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
 
