@@ -106,8 +106,8 @@
                 <div class="embed-options">
                     {#each embed_templates as tpl}
                     <label class="radio"
-                        ><input type="radio" bind:group="embed_type" value="{tpl.id}" /> {@html
-                        tpl.title }</label
+                        ><input type="radio" bind:group="embed_type" value="{tpl.id}" /> { tpl.title
+                        }</label
                     >
                     {/each}
                 </div>
@@ -131,7 +131,7 @@
         <HelpDisplay>
             <div>
                 {@html __('publish / embed / help') } {#each embed_templates.slice(2) as tpl}
-                <div><b>{tpl.title}:</b> {@html tpl.text}</div>
+                <div><b>{tpl.title}:</b> {@html purifyHtml(tpl.text) }</div>
                 {/each}
             </div>
         </HelpDisplay>
@@ -273,6 +273,7 @@
 <script>
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import purifyHtml from '@datawrapper/shared/purifyHtml';
 
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
@@ -343,7 +344,7 @@
                 return publishStarted > 0 ? now - publishStarted : 0;
             }
         },
-        helpers: { __ },
+        helpers: { __, purifyHtml },
         methods: {
             publish() {
                 const me = this;
