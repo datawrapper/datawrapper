@@ -280,14 +280,14 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
             $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.intro')) LIKE \"%$term%\")";
             $cond2[] = "(LOWER(JSON_EXTRACT(metadata, '$.describe.\"source-name\"')) LIKE \"%$term%\")";
             foreach ($customFields as $field) {
-                if (strpos($field, '"') !== false) continue;
+                if (strpos($field, '"') !== false || $field === '') continue;
                 $cond2[] = "(LOWER(JSON_EXTRACT(metadata, " . $pdo->quote('$.custom."' . $field . '"') . ")) LIKE \"%$term%\")";
             }
             $query_cond[] = '('.implode(' OR ', $cond2).')';
         }
         $sql .= ' AND ('.implode(' AND ', $query_cond).')';
     }
-    // var_dump($sql);
+    // var_dump($sql); die();
 
     $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
 
