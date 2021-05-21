@@ -11,6 +11,7 @@
         "url": "https://github.com/datawrapper/datawrapper.git"
     },
     "dependencies": {
+        "@datawrapper/shared": "^0.32.8",
         "babel-eslint": "^10.1.0",
         "eslint-plugin-html": "^6.0.2",
         "husky": "^4.2.5",
