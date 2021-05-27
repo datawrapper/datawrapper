@@ -889,5 +889,8 @@
   "chart-notification / download / png": "Bilddatei wird zum Download vorbereitet...",
   "chart-notification / download / svg": "SVG-Datei wird zum Download vorbereitet…",
   "chart-notification / download / fail / png": "Beim Bilddownload ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt.",
-  "template / confirm-q / yes": "Ja, neue Visualisierung erstellen"
+  "template / confirm-q / yes": "Ja, neue Visualisierung erstellen",
+  "teams / editor / preview-widths": "",
+  "teams / editor / preview-widths / help": "",
+  "teams / editor / h1": ""
 }
