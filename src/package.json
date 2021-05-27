@@ -13,7 +13,7 @@
         "@babel/core": "^7.11.6",
         "@babel/plugin-transform-runtime": "^7.11.5",
         "@babel/preset-env": "^7.11.5",
-        "@datawrapper/chart-core": "^8.32.3",
+        "@datawrapper/chart-core": "^8.34.0",
         "@datawrapper/controls": "^2.35.2",
         "@datawrapper/shared": "^0.33.0",
         "@rollup/plugin-babel": "^5.2.1",
