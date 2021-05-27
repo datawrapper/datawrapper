@@ -1,0 +1,69 @@
+<div class="preview-widths" style="display: flex;">
+    {#each widthOptions as option, i}
+    <div class="width-input">
+        <input type="number" bind:value="inputWidths[i]" placeholder="{option.width}" />
+        <div class="size-icon">
+            <i class="fa {option.icon}" style="font-size:{option.size}px"></i>
+        </div>
+    </div>
+    {/each}
+</div>
+
+<script type="text/javascript">
+    export default {
+        data() {
+            return {
+                widthOptions: [
+                    {
+                        width: 320,
+                        icon: 'fa-mobile',
+                        size: 14
+                    },
+                    {
+                        width: 400,
+                        icon: 'fa-mobile',
+                        size: 17
+                    },
+                    {
+                        width: 600,
+                        icon: 'fa-desktop',
+                        size: 14
+                    }
+                ],
+                inputWidths: ['', '', '']
+            };
+        },
+        computed: {
+            value({ widthOptions, inputWidths }) {
+                return inputWidths.map((d, i) => d || widthOptions[i].width);
+            }
+        }
+    };
+</script>
+<style type="text/css">
+    .width-input {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .size-icon {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background: #ffffff;
+        height: 100%;
+        width: 33px;
+        border: 1px solid #ccc;
+        border-left: none;
+        box-sizing: border-box;
+    }
+    input {
+        width: 45px;
+    }
+    .width-input {
+        margin-right: 8px;
+    }
+    .width-input:last-child {
+        margin-right: 0px;
+    }
+</style>

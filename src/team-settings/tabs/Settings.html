@@ -83,16 +83,25 @@
         </FormBlock>
         <hr />
         {/if}
+        <h3>Visualization Preview</h3>
+
+        <FormBlock
+            label="Preview widths"
+            help="Configure the standard visualization preview widths for the editor"
+        >
+            <PreviewWidths bind:value="settings.previewWidths" />
+        </FormBlock>
     </div>
 </div>
 <script>
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import SelectInput from '@datawrapper/controls/SelectInput.html';
     import RadioControl from '@datawrapper/controls/RadioControl.html';
+    import PreviewWidths from './PreviewWidths.html';
     import { __ } from '@datawrapper/shared/l10n';
 
     export default {
-        components: { SelectInput, FormBlock, RadioControl },
+        components: { SelectInput, FormBlock, RadioControl, PreviewWidths },
         data() {
             return {
                 embedCodes: [
