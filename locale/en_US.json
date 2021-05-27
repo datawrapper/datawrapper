@@ -892,5 +892,7 @@
   "template / confirm-q / yes": "Yes, create new visualization",
   "teams / editor / preview-widths": "Preview widths",
   "teams / editor / preview-widths / help": "Configure custom visualization preview widths for the editor",
-  "teams / editor / h1": "Visualization editor"
+  "teams / editor / h1": "Visualization editor",
+  "teams / defaults / visualization-size": "Default visualization size",
+  "teams / defaults / visualization-size / help": "Configure a custom default size for new visualizations"
 }
