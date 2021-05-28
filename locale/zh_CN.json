@@ -892,5 +892,7 @@
   "template / confirm-q / yes": "是的，复制可视化",
   "teams / editor / preview-widths": "",
   "teams / editor / preview-widths / help": "",
-  "teams / editor / h1": ""
+  "teams / editor / h1": "",
+  "teams / defaults / visualization-size": "",
+  "teams / defaults / visualization-size / help": ""
 }
