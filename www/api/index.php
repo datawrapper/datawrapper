@@ -153,7 +153,7 @@ $app->get('/v3_reachability', function() use ($app) {
     if ($res[0] === 200) {
         ok($res[1]);
     } else {
-        error('API unreachable!', 'This needs to be fixed immediately.');
+        error('api-unreachable', 'The V3 API is unreachable.');
     }
 });
 
