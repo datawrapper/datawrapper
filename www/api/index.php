@@ -145,7 +145,7 @@ $app->get('/status', function() use ($app) {
     ok();
 });
 
-$app->get('/v3_reachability', function() use ($app) {
+$app->get('/status-v3', function() use ($app) {
     $res = call_v3_api('HEAD', '/');
 
     $app->response()->status($res[0]);
