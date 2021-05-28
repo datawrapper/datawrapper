@@ -145,6 +145,18 @@ $app->get('/status', function() use ($app) {
     ok();
 });
 
+$app->get('/v3_reachability', function() use ($app) {
+    $res = call_v3_api('HEAD', '/');
+
+    $app->response()->status($res[0]);
+
+    if ($res[0] === 200) {
+        ok($res[1]);
+    } else {
+        error('API unreachable!', 'This needs to be fixed immediately.');
+    }
+});
+
 require_once ROOT_PATH . 'lib/api/users.php';
 require_once ROOT_PATH . 'lib/api/charts.php';
 require_once ROOT_PATH . 'lib/api/plugins.php';
