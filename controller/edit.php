@@ -158,8 +158,8 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+                $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? new stdClass();
             }
-
             $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
@@ -213,7 +213,8 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace'],
                 'teamSettings' => [
-                    'controls' => $teamSettingsControls
+                    'controls' => $teamSettingsControls,
+                    'previewWidths' => $teamSettingsPreviewWidths
                 ],
                 'flags' => $flags
             ];

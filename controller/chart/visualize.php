@@ -105,7 +105,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-            $previewWidths = $org->getSettings("previewWidths") ?? new stdClass();
+            $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? new stdClass();
         }
 
         $page = array(
@@ -124,7 +124,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'customLayouts' => $customLayouts,
             'teamSettings' => [
                 'controls' => $teamSettingsControls,
-                'previewWidths' => $previewWidths
+                'previewWidths' => $teamSettingsPreviewWidths
             ],
             'flags' => $flags,
             'userThemes' => array_map(function($t) {
