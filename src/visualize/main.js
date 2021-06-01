@@ -2,15 +2,30 @@ import App from './App.html';
 import Chart from '@datawrapper/chart-core/lib/dw/svelteChart';
 import { getJSON } from '@datawrapper/shared/fetch';
 import get from 'lodash/get';
+import assign from 'assign-deep';
 
 export default { init };
 
 /* globals dw,_ */
 
+const defaultChartMetadata = {
+    data: {},
+    describe: {
+        intro: '',
+        byline: '',
+        'aria-description': '',
+        'source-name': '',
+        'source-url': ''
+    },
+    visualize: {},
+    publish: {}
+};
+
 function init({
     target,
     csv,
     chartData,
+    externalMetadata,
     namespace,
     defaultVisType,
     visualizations,
@@ -19,11 +34,31 @@ function init({
     theme,
     themes,
     themeData,
-    teamSettings
+    teamSettings,
+    customLayouts,
+    flags
 }) {
-    const chart = new Chart(chartData);
-    let app;
+    let externalRawMetadata;
 
+    try {
+        externalRawMetadata = JSON.parse(externalMetadata);
+        externalMetadata = JSON.parse(externalMetadata);
+        delete externalRawMetadata.title;
+    } catch (ex) {
+        externalMetadata = {};
+        externalRawMetadata = {};
+    }
+
+    const chart = new Chart({
+        ...chartData,
+        title: externalMetadata.title || chartData.title,
+        metadata: assign(
+            defaultChartMetadata,
+            chartData.metadata,
+            typeof externalRawMetadata === 'object' ? externalRawMetadata : {}
+        )
+    });
+    let app;
     const themeCache = {};
     themeCache[theme] = themeData;
     dw.theme.register(theme, themeData);
@@ -36,7 +71,10 @@ function init({
         writable: true,
         themeData: themeData,
         teamSettings,
+        externalMetadata,
         themes,
+        customLayouts,
+        flags,
         visualization: visualizations[chartData.type]
     });
 

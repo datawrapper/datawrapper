@@ -25,12 +25,14 @@
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import { post, get } from '@datawrapper/shared/httpReq';
     import { __ } from '@datawrapper/shared/l10n';
+    import escapeHtml from '@datawrapper/shared/escapeHtml';
 
     export default {
         components: { DropdownListInput, FormBlock },
         data() {
             return {
                 inviteeEmail: '',
+                invitedEmail: '',
                 currentAction: {
                     updatingUsers: false,
                     isComplete: false,
@@ -43,16 +45,16 @@
             };
         },
         computed: {
-            successMessage({ inviteeEmail, currentAction }) {
+            successMessage({ invitedEmail, currentAction }) {
                 const { isComplete, isError, type, role } = currentAction;
                 if (!isComplete || isError) return;
 
                 const message = __(`teams / invite-user / ${type} / success`);
                 return message
-                    .replace('$1', inviteeEmail)
+                    .replace('$1', escapeHtml(invitedEmail))
                     .replace('$2', __(`teams / role / ${role}`));
             },
-            errorMessage({ inviteeEmail, currentAction }) {
+            errorMessage({ invitedEmail, currentAction }) {
                 const { isComplete, isError, errorCode, responseData, type } = currentAction;
                 if (!isComplete || !isError) return;
 
@@ -66,7 +68,7 @@
                         : null;
 
                 const message = __(`teams / invite-user / ${type} / error / ${errorType}`);
-                return message.replace('$1', inviteeEmail).replace('$2', maxTeamInvites);
+                return message.replace('$1', invitedEmail).replace('$2', maxTeamInvites);
             },
             isValidEmail({ inviteeEmail }) {
                 return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -186,7 +188,7 @@
                     role
                 };
 
-                this.set({ currentAction });
+                this.set({ invitedEmail: this.get().inviteeEmail, currentAction });
                 this.fire('updateUsers');
             },
             async inviteUser(role) {
@@ -214,7 +216,7 @@
                     role
                 };
 
-                this.set({ currentAction });
+                this.set({ invitedEmail: this.get().inviteeEmail, currentAction });
                 this.fire('updateUsers');
             },
             async debounceCheckUser() {

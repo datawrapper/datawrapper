@@ -23,7 +23,7 @@
                     on:updateTable="refs.hot.update()"
                     on:renderTable="refs.hot.render()"
                     bind:column="columnFormat"
-                    bind:columns
+                    bind:columns="normalColumns"
                 />
 
                 {#if columnFormat.isComputed}
@@ -97,7 +97,7 @@
                                     >{@html __('describe / no-sorting')}</a
                                 >
                             </li>
-                            {#each columns as col}
+                            {#each normalColumns as col}
                             <li class="{col.name()==sortBy?'active':''}">
                                 <a on:click="sort(event, col.name(), true)" href="#/{col.name()}">
                                     <i
@@ -198,6 +198,7 @@
     import { __ } from '@datawrapper/shared/l10n';
     import clone from '@datawrapper/shared/clone';
     import { getComputedColumns } from './shared';
+    import { columnFormatter } from '@datawrapper/shared/columnFormatter';
 
     export default {
         components: {
@@ -247,16 +248,16 @@
                 return activeColumn ? activeColumn.values() : [];
             },
             activeFormat({ activeColumn, $dw_chart }) {
-                return activeColumn ? $dw_chart.columnFormatter(activeColumn) : d => d;
+                return activeColumn
+                    ? columnFormatter(activeColumn, $dw_chart.get().metadata, activeColumn.name())
+                    : d => d;
             },
             columns({ activeColumn }) {
                 const ds = chart.dataset();
-                if (!activeColumn) return ds ? ds.columns() : [];
-                try {
-                    return ds.columns().filter(col => !col.isComputed);
-                } catch (e) {
-                    return [];
-                }
+                return ds ? ds.columns() : [];
+            },
+            normalColumns({ columns }) {
+                return columns.filter(col => !col.isComputed);
             },
             sorting({ sortBy, sortDir }) {
                 return { sortBy, sortDir };
