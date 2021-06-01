@@ -61,6 +61,7 @@ function call_v3_api($method, $route, $payload = null, $contentType = 'applicati
     curl_setopt_array($ch, [
         CURLOPT_URL => "$protocol://$apiDomain/v3$route",
         CURLOPT_CUSTOMREQUEST => $method,
+        CURLOPT_NOBODY => $method === 'HEAD',
         CURLOPT_RETURNTRANSFER => 1,
         CURLOPT_HTTPHEADER => $headers,
         CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS
