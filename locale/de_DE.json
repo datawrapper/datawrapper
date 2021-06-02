@@ -890,9 +890,9 @@
   "chart-notification / download / svg": "SVG-Datei wird zum Download vorbereitet…",
   "chart-notification / download / fail / png": "Beim Bilddownload ist ein Problem aufgetreten. Bitte wende dich an support@datawrapper.de, wenn das Problem weiterhin auftritt.",
   "template / confirm-q / yes": "Ja, neue Visualisierung erstellen",
-  "teams / editor / preview-widths": "",
-  "teams / editor / preview-widths / help": "",
-  "teams / editor / h1": "",
-  "teams / defaults / visualization-size": "",
-  "teams / defaults / visualization-size / help": ""
+  "teams / editor / preview-widths": "Vorschaubreiten",
+  "teams / editor / preview-widths / help": "Konfiguriere, welche Breitenvorgaben für die Visualisierungsvorschau im Editor verwendet werden.",
+  "teams / editor / h1": "Visualisierungseditor",
+  "teams / defaults / visualization-size": "Voreinstellung der Visualisierungsgröße",
+  "teams / defaults / visualization-size / help": "Bestimme die Größe, die für neu erstellte Visualisierungen angewendet wird."
 }
