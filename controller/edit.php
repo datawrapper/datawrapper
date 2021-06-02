@@ -158,7 +158,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             if ($org) {
                 $customFields = $org->getSettings("customFields") ?? [];
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-                $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? new stdClass();
+                $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
             }
             $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 

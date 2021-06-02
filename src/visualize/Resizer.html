@@ -167,7 +167,7 @@
         computed: {
             breakpointWidths({ $teamSettings, defaultWidths }) {
                 const widths = $teamSettings.previewWidths;
-                if (!widths) return defaultWidths;
+                if (!widths || !widths.length) return defaultWidths;
                 return defaultWidths.map((d, i) =>
                     widths[i] && !isNaN(widths[i]) ? widths[i] : d
                 );

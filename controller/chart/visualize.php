@@ -105,7 +105,7 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         if ($org) {
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-            $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? new stdClass();
+            $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
         }
 
         $page = array(

@@ -82,18 +82,26 @@
             />
         </FormBlock>
         <hr />
-        {/if}
-
+        {/if} {#if initialized}
         <FormBlock
             label="{ __('teams / defaults / visualization-size' ) }"
             help="{ __('teams / defaults / visualization-size / help' ) }"
         >
             <div class="default-size">
-                <input type="number" bind:value="defaultSize['embed-width']" placeholder="600" />
+                <input
+                    type="number"
+                    bind:value="settings.default.metadata.publish['embed-width']"
+                    placeholder="600"
+                />
                 <span>×</span>
-                <input type="number" bind:value="defaultSize['embed-height']" placeholder="400" />
+                <input
+                    type="number"
+                    bind:value="settings.default.metadata.publish['embed-height']"
+                    placeholder="400"
+                />
             </div>
         </FormBlock>
+        {/if}
 
         <h3>{ __('teams / editor / h1' ) }</h3>
 
@@ -112,11 +120,14 @@
     import PreviewWidths from './PreviewWidths.html';
     import { __ } from '@datawrapper/shared/l10n';
     import set from '@datawrapper/shared/set';
+    import get from '@datawrapper/shared/get';
+    import arrayToObject from '@datawrapper/shared/arrayToObject';
 
     export default {
         components: { SelectInput, FormBlock, RadioControl, PreviewWidths },
         data() {
             return {
+                initialized: false,
                 embedCodes: [
                     { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
                     { value: 'iframe', label: __('teams / defaults / iframe') },
@@ -143,13 +154,13 @@
             }
         },
         helpers: { __ },
+        oncreate() {
+            const { settings } = this.get();
+            const publishMeta = arrayToObject(get(settings, 'default.metadata.publish', {}));
+            set(settings, 'default.metadata.publish', publishMeta);
+            this.set({ settings, initialized: true });
+        },
         onstate({ changed, current, previous }) {
-            if (changed.defaultSize) {
-                set(current.settings.default, 'metadata.publish', current.defaultSize);
-                this.fire('change', {
-                    settings: current.settings
-                });
-            }
             if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
                 this.fire('change', {
                     team: current.team,
