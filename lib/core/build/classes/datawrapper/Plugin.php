@@ -85,8 +85,13 @@ class Plugin extends BasePlugin {
                 if ($lm > $lastm) $lastm = $lm;
             }
         } else {
-            $lastm = file_exists($path . 'plugin.json') ? filemtime($path . 'plugin.json') : filemtime($path
-                . 'package.json');
+            if (file_exists($path . 'plugin.json')) {
+                $lastm = filemtime($path . 'plugin.json');
+            } elseif (file_exists($path . 'package.json')) {
+                $lastm = filemtime($path . 'package.json');
+            } else {
+                $lastm = 0;
+            }
         }
 
         $this->__lastModTime = strftime('%F %H:%M:%S', $lastm);
