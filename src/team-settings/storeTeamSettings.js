@@ -1,4 +1,4 @@
-import { patch } from '@datawrapper/shared/httpReq';
+import { put } from '@datawrapper/shared/httpReq';
 import debounce from 'debounce-promise';
 
 const cache = {};
@@ -13,7 +13,7 @@ export default debounce(function (team, settings, defaultTheme) {
         });
     }
     cache[team.id] = hash;
-    return patch(`/v3/teams/${team.id}`, {
+    return put(`/v3/teams/${team.id}`, {
         payload: {
             name: team.name,
             defaultTheme,
