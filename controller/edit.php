@@ -152,15 +152,18 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
             $customLayouts = !empty($res) && $res[0] === true;
 
             $org = $chart->getOrganization();
+
+            $flags = false;
             $teamSettingsControls = new stdClass();
+            $teamSettingsPreviewWidths = [];
             $customFields = [];
 
             if ($org) {
-                $customFields = $org->getSettings("customFields") ?? [];
+                $flags = $org->getSettings("flags") ?? new stdClass();
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+                $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
+                $customFields = $org->getSettings("customFields") ?? [];
             }
-
-            $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
@@ -213,7 +216,8 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace'],
                 'teamSettings' => [
-                    'controls' => $teamSettingsControls
+                    'controls' => $teamSettingsControls,
+                    'previewWidths' => $teamSettingsPreviewWidths
                 ],
                 'flags' => $flags
             ];

@@ -889,5 +889,10 @@
   "chart-notification / download / png": "",
   "chart-notification / download / svg": "",
   "chart-notification / download / fail / png": "",
-  "template / confirm-q / yes": "是的，复制可视化"
+  "template / confirm-q / yes": "是的，复制可视化",
+  "teams / editor / preview-widths": "",
+  "teams / editor / preview-widths / help": "",
+  "teams / editor / h1": "",
+  "teams / defaults / visualization-size": "",
+  "teams / defaults / visualization-size / help": ""
 }

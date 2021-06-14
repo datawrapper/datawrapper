@@ -82,19 +82,52 @@
             />
         </FormBlock>
         <hr />
+        {/if} {#if initialized}
+        <FormBlock
+            label="{ __('teams / defaults / visualization-size' ) }"
+            help="{ __('teams / defaults / visualization-size / help' ) }"
+        >
+            <div class="default-size">
+                <input
+                    type="number"
+                    bind:value="settings.default.metadata.publish['embed-width']"
+                    placeholder="600"
+                />
+                <span>×</span>
+                <input
+                    type="number"
+                    bind:value="settings.default.metadata.publish['embed-height']"
+                    placeholder="400"
+                />
+            </div>
+        </FormBlock>
         {/if}
+
+        <h3>{ __('teams / editor / h1' ) }</h3>
+
+        <FormBlock
+            label="{ __('teams / editor / preview-widths' ) }"
+            help="{ __('teams / editor / preview-widths / help' ) }"
+        >
+            <PreviewWidths bind:value="settings.previewWidths" />
+        </FormBlock>
     </div>
 </div>
 <script>
     import FormBlock from '@datawrapper/controls/FormBlock.html';
     import SelectInput from '@datawrapper/controls/SelectInput.html';
     import RadioControl from '@datawrapper/controls/RadioControl.html';
+    import PreviewWidths from './PreviewWidths.html';
     import { __ } from '@datawrapper/shared/l10n';
+    import set from '@datawrapper/shared/set';
+    import get from '@datawrapper/shared/get';
+    import arrayToObject from '@datawrapper/shared/arrayToObject';
 
     export default {
-        components: { SelectInput, FormBlock, RadioControl },
+        components: { SelectInput, FormBlock, RadioControl, PreviewWidths },
         data() {
             return {
+                initialized: false,
                 embedCodes: [
                     { value: 'responsive', label: __('teams / defaults / responsive-iframe') },
                     { value: 'iframe', label: __('teams / defaults / iframe') },
@@ -120,6 +153,12 @@
             }
         },
         helpers: { __ },
+        oncreate() {
+            const { settings } = this.get();
+            const publishMeta = arrayToObject(get(settings, 'default.metadata.publish', {}));
+            set(settings, 'default.metadata.publish', publishMeta);
+            this.set({ settings, initialized: true });
+        },
         onstate({ changed, current, previous }) {
             if (current.settings && (changed.settings || changed.team || changed.defaultTheme)) {
                 this.fire('change', {
@@ -138,5 +177,11 @@
         width: 400px;
         line-height: 20px;
         height: 150px;
+    }
+    .default-size input {
+        width: 45px;
+    }
+    .default-size span {
+        margin: 0px 5px;
     }
 </style>

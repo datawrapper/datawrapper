@@ -889,5 +889,10 @@
   "chart-notification / download / png": "Image file is being prepared for download…",
   "chart-notification / download / svg": "SVG file is being prepared for download…",
   "chart-notification / download / fail / png": "There was a problem with the image download. Please contact support@datawrapper.de if the issue persists.",
-  "template / confirm-q / yes": "Yes, create new visualization"
+  "template / confirm-q / yes": "Yes, create new visualization",
+  "teams / editor / preview-widths": "Preview widths",
+  "teams / editor / preview-widths / help": "Configure which width presets are available for the preview when editing a visualization.",
+  "teams / editor / h1": "Visualization editor",
+  "teams / defaults / visualization-size": "Default visualization size",
+  "teams / defaults / visualization-size / help": "Set the default size for newly created visualizations."
 }

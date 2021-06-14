@@ -97,14 +97,17 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
 
         $customLayouts = !empty($res) && $res[0] === true;
 
+        // get team settings
         $org = $chart->getOrganization();
 
-        $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
-
+        $flags = false;
         $teamSettingsControls = new stdClass();
+        $teamSettingsPreviewWidths = [];
 
         if ($org) {
+            $flags = $org->getSettings("flags") ?? new stdClass();
             $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+            $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
         }
 
         $page = array(
@@ -122,7 +125,8 @@ $app->get('/(chart|map|table)/:id/:step', function ($id, $step) use ($app) {
             'webToPrint' => $webToPrint,
             'customLayouts' => $customLayouts,
             'teamSettings' => [
-                'controls' => $teamSettingsControls
+                'controls' => $teamSettingsControls,
+                'previewWidths' => $teamSettingsPreviewWidths
             ],
             'flags' => $flags,
             'userThemes' => array_map(function($t) {
