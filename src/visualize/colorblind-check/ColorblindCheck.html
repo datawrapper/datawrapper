@@ -113,7 +113,7 @@
             forceRerender() {
                 const { activeMode } = this.get();
                 this.initIframe(() => {
-                    $('#iframe-vis').get(0).contentWindow.__dwColorMode = activeMode;
+                    $('#iframe-vis').get(0).contentWindow.__dw.vis.colorMode(activeMode);
                     $('#iframe-vis').get(0).contentWindow.__dw.render();
                     $('#iframe-vis').get(0).contentWindow.dispatchEvent(new Event('resize'));
                 });
@@ -126,10 +126,8 @@
 
                 __dw = iframeWin.__dw;
 
-                if (!__dw.colorMapInjected) {
-                    iframeWin.__dwColorMap = color => this.colorMap(color);
-                    __dw.colorMapInjected = true;
-                }
+                __dw.vis.colorMap(color => this.colorMap(color));
+
                 if (typeof callback === 'function') callback();
             },
             colorMap(color) {
