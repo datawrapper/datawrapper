@@ -894,5 +894,6 @@
   "teams / editor / preview-widths / help": "",
   "teams / editor / h1": "",
   "teams / defaults / visualization-size": "",
-  "teams / defaults / visualization-size / help": ""
+  "teams / defaults / visualization-size / help": "",
+  "teams / error": ""
 }

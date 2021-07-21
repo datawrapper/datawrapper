@@ -894,5 +894,6 @@
   "teams / editor / preview-widths / help": "Configure which width presets are available for the preview when editing a visualization.",
   "teams / editor / h1": "Visualization editor",
   "teams / defaults / visualization-size": "Default visualization size",
-  "teams / defaults / visualization-size / help": "Set the default size for newly created visualizations."
+  "teams / defaults / visualization-size / help": "Set the default size for newly created visualizations.",
+  "teams / error": "Failed to save team settings: $0"
 }

@@ -894,5 +894,6 @@
   "teams / editor / preview-widths / help": "Konfiguriere, welche Breitenvorgaben für die Visualisierungsvorschau im Editor verwendet werden.",
   "teams / editor / h1": "Visualisierungseditor",
   "teams / defaults / visualization-size": "Voreinstellung der Visualisierungsgröße",
-  "teams / defaults / visualization-size / help": "Bestimme die Größe, die für neu erstellte Visualisierungen angewendet wird."
+  "teams / defaults / visualization-size / help": "Bestimme die Größe, die für neu erstellte Visualisierungen angewendet wird.",
+  "teams / error": ""
 }
