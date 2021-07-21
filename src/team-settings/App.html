@@ -14,6 +14,8 @@
             <div slot="aboveContent">
                 {#if activeTab && activeTab.h1 }
                 <h2>{ @html activeTab.h1 }</h2>
+                {/if} {#if error}
+                <div class="alert alert-danger">{error}</div>
                 {/if}
             </div>
             <div slot="belowMenu">
@@ -109,7 +111,8 @@
                 users: [],
                 userId: null,
                 visualizations: [],
-                visualizationsArchive: []
+                visualizationsArchive: [],
+                error: null
             };
         },
         computed: {
@@ -191,16 +194,22 @@
         helpers: { __ },
         methods: {
             onTabChange({ team, settings, defaultTheme }, tab) {
-                storeTeamSettings(team, settings, defaultTheme).then(() => {
-                    this.set({
-                        team,
-                        settings,
-                        defaultTheme
+                this.set({ error: null });
+                storeTeamSettings(team, settings, defaultTheme)
+                    .then(() => {
+                        this.set({
+                            team,
+                            settings,
+                            defaultTheme
+                        });
+                        if (tab && tab.saved) {
+                            tab.saved();
+                        }
+                    })
+                    .catch(e => {
+                        this.set({ error: __('teams / error', 'core', e.message) });
+                        console.error(e);
                     });
-                    if (tab && tab.saved) {
-                        tab.saved();
-                    }
-                });
             },
             setTab(id) {
                 const { groups } = this.get();
