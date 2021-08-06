@@ -113,7 +113,8 @@ function build(appId, opts) {
             replace({
                 delimiters: ['', ''],
                 '_typeof2(Symbol.iterator)': 'typeof Symbol.iterator',
-                '_typeof2(obj);': 'typeof obj;'
+                '_typeof2(obj);': 'typeof obj;',
+                preventAssignment: true
             }),
             production && terser()
         ]
