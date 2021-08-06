@@ -41,12 +41,17 @@ function build(appId, opts) {
     if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
+        external: ['Handsontable', 'dayjs'],
         output: {
             sourcemap: !production,
             name: appId,
             file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
-            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` }
+            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
+            globals: {
+                Handsontable: 'HOT',
+                dayjs: 'dayjs'
+            }
         },
         plugins: [
             svelte({
