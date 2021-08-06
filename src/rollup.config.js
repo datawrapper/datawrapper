@@ -41,7 +41,12 @@ function build(appId, opts) {
     if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
-        external: ['Handsontable', 'dayjs'],
+        external: [
+            'Handsontable',
+            'dayjs',
+            /cm\/.*/, // ← CodeMirror + plugins
+            /\/static\/vendor\/.*/ // ← legacy vendor code
+        ],
         output: {
             sourcemap: !production,
             name: appId,
@@ -50,7 +55,9 @@ function build(appId, opts) {
             amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
             globals: {
                 Handsontable: 'HOT',
-                dayjs: 'dayjs'
+                dayjs: 'dayjs',
+                'cm/lib/codemirror': 'CodeMirror',
+                '/static/vendor/jschardet/jschardet.min.js': 'jschardet'
             }
         },
         plugins: [
