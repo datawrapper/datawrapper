@@ -1,4 +1,5 @@
 /* eslint-env node, es6 */
+import path from 'path';
 import less from 'less';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
@@ -130,11 +131,23 @@ function build(appId, opts) {
                 preventAssignment: true
             }),
             production && terser()
-        ]
+        ],
+        onwarn: handleWarnings
     });
 }
 
 function checkTarget(appId) {
     if (!process.env.ROLLUP_TGT_APP) return true;
     return process.env.ROLLUP_TGT_APP === appId;
+}
+
+function handleWarnings(warning) {
+    // Silence circular dependency warning for d3 packages
+    if (
+        warning.code === 'CIRCULAR_DEPENDENCY' &&
+        !warning.importer.indexOf(path.normalize('node_modules/d3'))
+    ) {
+        return;
+    }
+    console.warn(`(!) ${warning.message}`);
 }
