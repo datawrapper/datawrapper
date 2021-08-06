@@ -45,7 +45,7 @@ function build(appId, opts) {
             'Handsontable',
             'dayjs',
             /cm\/.*/, // ← CodeMirror + plugins
-            /\/static\/vendor\/.*/ // ← legacy vendor code
+            /\/static\.*/ // ← legacy vendor code and other static assets required at runtime
         ],
         output: {
             sourcemap: !production,
@@ -57,7 +57,8 @@ function build(appId, opts) {
                 Handsontable: 'HOT',
                 dayjs: 'dayjs',
                 'cm/lib/codemirror': 'CodeMirror',
-                '/static/vendor/jschardet/jschardet.min.js': 'jschardet'
+                '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
+                '/static/js/svelte/publish.js': 'Publish'
             }
         },
         plugins: [
