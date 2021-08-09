@@ -1,4 +1,5 @@
 /* eslint-env node, es6 */
+import path from 'path';
 import less from 'less';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
@@ -41,12 +42,25 @@ function build(appId, opts) {
     if (!checkTarget(appId)) return;
     targets.push({
         input: `${appId}/${entry}`,
+        external: [
+            'Handsontable',
+            'dayjs',
+            /cm\/.*/, // ← CodeMirror + plugins
+            /\/static\.*/ // ← legacy vendor code and other static assets required at runtime
+        ],
         output: {
             sourcemap: !production,
             name: appId,
             file: `../www/static/js/svelte/${appId}${append}.js`,
             format: 'umd',
-            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` }
+            amd: noAMD ? undefined : { id: `svelte/${appId}${append}` },
+            globals: {
+                Handsontable: 'HOT',
+                dayjs: 'dayjs',
+                'cm/lib/codemirror': 'CodeMirror',
+                '/static/vendor/jschardet/jschardet.min.js': 'jschardet',
+                '/static/js/svelte/publish.js': 'Publish'
+            }
         },
         plugins: [
             svelte({
@@ -113,14 +127,27 @@ function build(appId, opts) {
             replace({
                 delimiters: ['', ''],
                 '_typeof2(Symbol.iterator)': 'typeof Symbol.iterator',
-                '_typeof2(obj);': 'typeof obj;'
+                '_typeof2(obj);': 'typeof obj;',
+                preventAssignment: true
             }),
             production && terser()
-        ]
+        ],
+        onwarn: handleWarnings
     });
 }
 
 function checkTarget(appId) {
     if (!process.env.ROLLUP_TGT_APP) return true;
     return process.env.ROLLUP_TGT_APP === appId;
+}
+
+function handleWarnings(warning) {
+    // Silence circular dependency warning for d3 packages
+    if (
+        warning.code === 'CIRCULAR_DEPENDENCY' &&
+        !warning.importer.indexOf(path.normalize('node_modules/d3'))
+    ) {
+        return;
+    }
+    console.warn(`(!) ${warning.message}`);
 }
