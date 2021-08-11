@@ -179,7 +179,14 @@
             {/if} {/each}
         </ul>
 
-        <svelte:component ref:action this="{Action}" visible="{true}" show="{false}" />
+        <svelte:component
+            ref:action
+            this="{Action}"
+            visible="{true}"
+            show="{false}"
+            data="{actionData}"
+            {store}
+        />
     </div>
 </div>
 
@@ -351,6 +358,8 @@
                 embed_type: 'responsive',
                 copy_success: false,
                 Action,
+                actionData: null,
+                store: null,
                 chartActions: [
                     {
                         id: 'duplicate',
@@ -546,8 +555,12 @@
                 if (action.mod) {
                     if (action.mod.App) {
                         this.refs.action.set({ show: false });
-                        this.set({ Action: action.mod.App });
-                        if (action.mod.data) this.refs.action.set(action.mod.data);
+                        if (action.mod.data) this.refs.action.set(action.mod.data); // TODO Remove once all action plugins support the 'data' property.
+                        this.set({
+                            Action: action.mod.App,
+                            actionData: action.mod.data,
+                            store: this.store
+                        });
                         this.refs.action.set({ show: true });
                     } else {
                         // todo: show loading indicator
@@ -561,10 +574,14 @@
                                 require([action.mod.id], mod => {
                                     // todo: HIDE loading indicator
                                     Object.assign(action.mod, mod);
-                                    this.set({ Action: action.mod.App });
+                                    this.set({
+                                        Action: action.mod.App,
+                                        actionData: action.mod.data,
+                                        store: this.store
+                                    });
                                     this.refs.action.set({ show: true });
                                     if (mod.init) mod.init(this.refs.action);
-                                    if (action.mod.data) this.refs.action.set(action.mod.data);
+                                    if (action.mod.data) this.refs.action.set(action.mod.data); // TODO Remove once all action plugins support the 'data' property.
                                 });
                             }, 200);
                         });
