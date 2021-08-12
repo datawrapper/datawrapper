@@ -256,7 +256,7 @@ function mycharts_get_user_charts(&$page, $app, $user, $folder_id = false, $org_
     if (!empty($q)) {
         // remove double quotes
         $q = str_replace(['"', "'"], '', $q);
-        $sql .= "AND (id = \"$q\" OR `type` LIKE \"%$q%\" OR MATCH (title) AGAINST (\"$q\" IN BOOLEAN MODE))";
+        $sql .= "AND (id = \"$q\" OR `type` LIKE \"%$q%\" OR MATCH (title, keywords) AGAINST (\"$q\" IN BOOLEAN MODE))";
     }
 
     $chart_ids = $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN, 0);
