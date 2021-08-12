@@ -8,7 +8,7 @@ FOR EACH ROW SET NEW.keywords = LOWER(CONCAT(
   COALESCE(NEW.metadata->>"$.describe.\"source-name\"", ""),". ",
   COALESCE(NEW.metadata->>"$.describe.\"aria-description\"", ""), ". ",
   COALESCE(NEW.metadata->>"$.annotate.\"notes\"", ""), ". ",
-  REPLACE(REPLACE(NEW.metadata->>"$.custom.*", '[', ' '), ']', '')
+  COALESCE(REPLACE(REPLACE(NEW.metadata->>"$.custom.*", '[', ' '), ']', ''), "")
 ));
 
 CREATE TRIGGER update_keywords BEFORE UPDATE ON chart
@@ -17,7 +17,7 @@ FOR EACH ROW SET NEW.keywords = LOWER(CONCAT(
   COALESCE(NEW.metadata->>"$.describe.\"source-name\"", ""), ". ",
   COALESCE(NEW.metadata->>"$.describe.\"aria-description\"", ""), ". ",
   COALESCE(NEW.metadata->>"$.annotate.\"notes\"", ""), ". ",
-  REPLACE(REPLACE(NEW.metadata->>"$.custom.*", '[', ' '), ']', '')
+  COALESCE(REPLACE(REPLACE(NEW.metadata->>"$.custom.*", '[', ' '), ']', ''), "")
 ));
 
 
