@@ -898,5 +898,6 @@
   "teams / error": "Failed to save team settings: $0",
   "publish / published": "Your visualization is <b>published</b>.",
   "publish / unpublish-btn": "unpublish",
-  "publish / unpublish-intro": "You can always"
+  "publish / unpublish-intro": "You can always",
+  "publish / replace-embed": "If you already embedded the visualization in your website you need to <b>replace the embed code</b> with the <b>updated version</b> below to see the changes on your site."
 }

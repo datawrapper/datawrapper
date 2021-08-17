@@ -229,7 +229,7 @@
   "publish / publish-btn-intro": "Clicca qui per incorporare il grafico nel tuo <b>sito web</b> o <b>CMS</b>.",
   "publish / publish-btn": "Pubblica grafico",
   "publish / republish-btn": "Ripubblica grafico",
-  "publish / republish-alert": "Hai modificato il grafico dopo la sua ultima pubblicazione. Per rendere visibili queste modifiche dovrai <b>pubblicare nuovamente il grafico</b>.",
+  "publish / republish": "Hai modificato il grafico dopo la sua ultima pubblicazione. Per rendere visibili queste modifiche dovrai <b>pubblicare nuovamente il grafico</b>.",
   "publish / progress / please-wait": "Il tuo grafico è in corso di preparazione per essere pubblicato e sarà pronto tra pochi secondi.",
   "publish / publish-success": "Complimenti, il grafico può ora essere condiviso e incorporato sul tuo sito.",
   "publish / share-url": "Condividi via URL",
@@ -895,5 +895,9 @@
   "teams / editor / h1": "",
   "teams / defaults / visualization-size": "",
   "teams / defaults / visualization-size / help": "",
-  "teams / error": ""
+  "teams / error": "",
+  "publish / published": "",
+  "publish / unpublish-btn": "",
+  "publish / unpublish-intro": "",
+  "publish / replace-embed": ""
 }

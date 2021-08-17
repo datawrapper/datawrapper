@@ -229,7 +229,7 @@
   "publish / publish-btn-intro": "如欲将图表嵌入<b>网站</b>或<b>CMS</b>中，请单击此处。",
   "publish / publish-btn": "发布图表",
   "publish / republish-btn": "重新发布图表",
-  "publish / republish-alert": "您在上次发布后更改了图表。要显示这些更改，您将需要<b>再次发布图表</b>。",
+  "publish / republish": "您在上次发布后更改了图表。要显示这些更改，您将需要<b>再次发布图表</b>。",
   "publish / progress / please-wait": "您的图表现在正在准备发布，应该在几秒钟内准备就绪。",
   "publish / publish-success": "恭喜，您的图表现在可以共享并嵌入到您的网站中了。",
   "publish / share-url": "通过URL共享",
@@ -895,5 +895,9 @@
   "teams / editor / h1": "",
   "teams / defaults / visualization-size": "",
   "teams / defaults / visualization-size / help": "",
-  "teams / error": ""
+  "teams / error": "",
+  "publish / published": "",
+  "publish / unpublish-btn": "",
+  "publish / unpublish-intro": "",
+  "publish / replace-embed": ""
 }
