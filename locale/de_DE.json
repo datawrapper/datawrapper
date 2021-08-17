@@ -229,7 +229,7 @@
   "publish / publish-btn-intro": "Klicke hier wenn du dein Diagramm auf deiner <b>Website<b> oder <b>CMS</b> einbetten willst.",
   "publish / publish-btn": "Veröffentlichen",
   "publish / republish-btn": "Erneut veröffentlichen",
-  "publish / republish-alert": "Dein Diagramm wurde geändert nachdem es veröffentlicht wurde. Du musst es <b>erneut veröffentlichen</b> damit die Änderungen wirksam werden.",
+  "publish / republish": "Dein Diagramm wurde geändert nachdem es veröffentlicht wurde. Du musst es <b>erneut veröffentlichen</b> damit die Änderungen wirksam werden.",
   "publish / progress / please-wait": "Dein Diagramm wird jetzt für die Veröffentlichung vorbereitet. In wenigen Sekunden erhältst du einen Link für die Einbettung. ",
   "publish / publish-success": "Glückwunsch, das Diagramm kann jetzt geteilt und eingebettet werden.",
   "publish / share-url": "Diagramm per URL teilen",
@@ -895,5 +895,8 @@
   "teams / editor / h1": "Visualisierungseditor",
   "teams / defaults / visualization-size": "Voreinstellung der Visualisierungsgröße",
   "teams / defaults / visualization-size / help": "Bestimme die Größe, die für neu erstellte Visualisierungen angewendet wird.",
-  "teams / error": ""
+  "teams / error": "",
+  "publish / published": "",
+  "publish / unpublish-btn": "",
+  "publish / unpublish-intro": ""
 }

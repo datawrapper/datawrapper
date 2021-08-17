@@ -226,12 +226,12 @@
   "publish / share-embed": "Share & Embed",
   "publish / republish-intro": "This chart has been published! If you make changes to the chart you will need to re-publish them.",
   "publish / publish-intro": "To share or embed your chart you need to publish it. It will only be visible to people who know the chart URL.",
-  "publish / publish-btn-intro": "Click here if you want to embed your chart in your <b>website</b> or <b>CMS</b>.",
-  "publish / publish-btn": "Publish chart",
-  "publish / republish-btn": "Re-publish chart",
-  "publish / republish-alert": "You have changed the chart after its last publication. To make these changes show up you will need to <b>publish the chart again</b>.",
-  "publish / progress / please-wait": "Your chart is now being prepared for publication and should be ready in a few seconds.",
-  "publish / publish-success": "Congratulations, your chart can now be shared and embedded on your site.",
+  "publish / publish-btn-intro": "Your visualization is <b>not published</b>.",
+  "publish / publish-btn": "Publish",
+  "publish / republish-btn": "Re-Publish",
+  "publish / republish": "Your visualization is <b>published</b>, but it has been <b>changed</b> and needs to be <b>republished</b> to show those changes.",
+  "publish / progress / please-wait": "Your Chart is now being <b>prepared for publication</b> and should be ready in a few seconds.",
+  "publish / publish-success": "Congratulations, successfully <b>published</b>. Your visualization can now be shared and embedded on your site.",
   "publish / share-url": "Share via URL",
   "publish / share-url / standalone": "normal size",
   "publish / share-url / fullscreen": "fullscreen",
@@ -895,5 +895,8 @@
   "teams / editor / h1": "Visualization editor",
   "teams / defaults / visualization-size": "Default visualization size",
   "teams / defaults / visualization-size / help": "Set the default size for newly created visualizations.",
-  "teams / error": "Failed to save team settings: $0"
+  "teams / error": "Failed to save team settings: $0",
+  "publish / published": "Your visualization is <b>published</b>.",
+  "publish / unpublish-btn": "unpublish",
+  "publish / unpublish-intro": "You can always"
 }
