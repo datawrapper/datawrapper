@@ -2,7 +2,7 @@
     <div on:keyup|stopPropagation class="modal-body">
         <button type="button" class="close" data-dismiss="modal">×</button>
         <div class="modal-content">
-            <h1>Do you want to unpublish your visualization?</h1>
+            <h1 class="modal-title">Do you want to unpublish your visualization?</h1>
             <p>
                 All URLs and embed codes <b>will stop working</b>. Lorem Ipsum dolor sit amet
                 conseteur adipiscing dolor. Sed etam lorem sit amet consetetur.
@@ -19,6 +19,16 @@
 </div>
 
 <style>
+    .modal-title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .modal-content {
+        padding: 25px 30px;
+        color: #333333;
+    }
+
     .actions {
         border-top: 1px solid #ececec;
         display: flex;
