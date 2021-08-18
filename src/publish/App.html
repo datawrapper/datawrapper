@@ -5,6 +5,7 @@
     {now}
     {progress}
     needsRepublish="{needs_republish}"
+    publishError="{publish_error}"
     on:publish="publish()"
 />
 
@@ -246,6 +247,11 @@
                                 });
                             })
                             .catch(error => {
+                                this.set({
+                                    publish_error: error.message,
+                                    publishing: false,
+                                    progress: []
+                                });
                                 trackEvent('Chart Editor', 'publish-error', error.message);
                             });
                         setTimeout(() => {

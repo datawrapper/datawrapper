@@ -291,7 +291,9 @@
                         })
                         .catch(error => {
                             this.set({
-                                publish_error: error.message
+                                publish_error: error.message,
+                                publishing: false,
+                                progress: []
                             });
                             trackEvent('Chart Editor', 'publish-error', error.message);
                         });
