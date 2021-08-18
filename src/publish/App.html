@@ -270,10 +270,26 @@
             },
 
             unpublish() {
-                console.error('Implement unpublish!');
+                const { chart } = this.get();
+                httpReq
+                    .post(`/v3/charts/${chart.id}/unpublish`)
+                    .then(res => {
+                        this.set({
+                            progress: [],
+                            published: false,
+                            needs_republish: false
+                        });
+                    })
+                    .catch(error => {
+                        this.set({
+                            publish_error: error.message
+                        });
+                        trackEvent('Chart Editor', 'unpublish-error', error.message);
+                    });
             },
 
             requestUnpublishConfirmation() {
+                this.set({ publish_error: null });
                 $('#modalConfirmation').modal();
             },
 

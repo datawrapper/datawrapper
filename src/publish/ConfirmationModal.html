@@ -9,7 +9,11 @@
             </p>
             <div class="actions pt-4 mt-4">
                 <button class="button" data-dismiss="modal">Back</button>
-                <button class="button button-confirmation" on:click="fire('confirm')">
+                <button
+                    class="button button-confirmation"
+                    data-dismiss="modal"
+                    on:click="fire('confirm')"
+                >
                     <IconDisplay {assetURL} icon="undo" class="mr-1" size="1.3em" valign="-0.3em" />
                     Unpublish
                 </button>
