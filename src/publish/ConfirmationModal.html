@@ -1,0 +1,26 @@
+<div class="modal hide" {id}>
+    <div on:keyup|stopPropagation class="modal-body">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <div class="modal-content">
+            <h1>Do you want to unpublish your visualization?</h1>
+            <p>
+                All URLs and embed codes<b>will stop working</b>. Lorem Ipsum dolor sit amet
+                conseteur adipiscing dolor. Sed etam lorem sit amet consetetur.
+            </p>
+            <div class="actions">
+                <button data-dismiss="modal">Back</button>
+                <button on:click="fire('confirm')">Unpublish</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style></style>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+
+    export default {
+        helpers: { __ }
+    };
+</script>
