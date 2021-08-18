@@ -55,7 +55,7 @@
   "controls / color-scale / breaks / custom": "Custom",
   "controls / custom-format / info": "Learn more about custom number formats in this <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy article</a>.",
   "controls / custom-format / custom / number": "For help on custom formats, check <a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">our documentation</a>.",
-  "controls / custom-format / custom / date": "For help on custom formats, check the <a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js documentation</a>.",
+  "controls / custom-format / custom / date": "For help on custom formats, check the <a href=\"https://academy.datawrapper.de/article/199-custom-date-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">documentation</a>.",
   "controls / custom-format / custom": "(custom)",
   "controls / custom-format / auto": "(automatic)",
   "controls / gradient-editor / how-this-works": "How this works:",
