@@ -38,7 +38,7 @@
 	            "label" => $t->getTheme()->getTitle()
 	        ];
 	        if (!$hasThemeWithLogo) {
-	        	$logoData = $t->getTheme()->getThemeData('options.blocks.logo.data');
+	        	$logoData = $t->getTheme()->getThemeData('options.blocks.logo.data') ?? [];
 	        	$hasThemeWithLogo = $logoData && ($logoData['text'] || $logoData['imgSrc']);
 	        }
 	    }
