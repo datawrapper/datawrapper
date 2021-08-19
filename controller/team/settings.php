@@ -28,7 +28,6 @@
 	    $cfg = $GLOBALS['dw_config'];
 	    $themes = [];
 	    $hasThemeWithLogo = false;
-
 	    $orgThemes = OrganizationThemeQuery::create()->findByOrganization($org);
 	    $publicThemes = $cfg['default-themes'] ?? ['default'];
 
@@ -37,9 +36,11 @@
 	            "value" => $t->getThemeId(),
 	            "label" => $t->getTheme()->getTitle()
 	        ];
+
 	        if (!$hasThemeWithLogo) {
-	        	$logoData = $t->getTheme()->getThemeData('options.blocks.logo.data') ?? [];
-	        	$hasThemeWithLogo = $logoData && ($logoData['text'] || $logoData['imgSrc']);
+	        	$logoData = $t->getTheme()->getThemeData('options.blocks.logo.data');
+	        	$hasThemeWithLogo = $logoData &&
+	        	(array_key_exists('text', $logoData) || array_key_exists('imgSrc', $logoData));
 	        }
 	    }
 
