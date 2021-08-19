@@ -1,16 +1,23 @@
 <div class="modal hide" {id}>
     <div on:keyup|stopPropagation class="modal-body">
-        <button type="button" class="close" data-dismiss="modal">
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="{__('publish / unpublish-confirmation / close')}"
+        >
             <IconDisplay icon="close" size="20px" />
         </button>
         <div class="modal-content">
-            <h1 class="modal-title">Do you want to unpublish your visualization?</h1>
-            <p>All embed codes and links to this visualization <b>will stop working</b>.</p>
+            <h1 class="modal-title">{__('publish / unpublish-confirmation / title')}</h1>
+            <p>{@html __('publish / unpublish-confirmation / explanation')}</p>
             <div class="actions pt-4 mt-4">
-                <button class="btn back" data-dismiss="modal">Back</button>
+                <button class="btn back" data-dismiss="modal">
+                    {__('publish / unpublish-confirmation / back')}
+                </button>
                 <button class="btn btn-danger" data-dismiss="modal" on:click="fire('confirm')">
                     <IconDisplay icon="undo" class="mr-1" size="1.3em" valign="-0.3em" />
-                    Unpublish
+                    {__('publish / unpublish-confirmation / unpublish')}
                 </button>
             </div>
         </div>

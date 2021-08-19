@@ -899,5 +899,10 @@
   "publish / published": "",
   "publish / unpublish-btn": "",
   "publish / unpublish-intro": "",
-  "publish / replace-embed": ""
+  "publish / replace-embed": "",
+  "publish / unpublish-confirmation / title": "",
+  "publish / unpublish-confirmation / explanation": "",
+  "publish / unpublish-confirmation / close": "",
+  "publish / unpublish-confirmation / back": "",
+  "publish / unpublish-confirmation / unpublish": ""
 }
