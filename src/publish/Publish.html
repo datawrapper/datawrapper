@@ -8,6 +8,7 @@
         needsRepublish="{needs_republish}"
         publishError="{publish_error}"
         on:publish="publish()"
+        on:unpublish="requestUnpublishConfirmation()"
     />
 
     <div style="margin-top: 30px;" class="{published?'':'inactive'}">
@@ -132,6 +133,8 @@
     </div>
 </div>
 
+<ConfirmationModal id="modalConfirmation" on:confirm="unpublish()" />
+
 <style>
     input[type='radio'] {
         vertical-align: baseline !important;
@@ -163,6 +166,7 @@
 </style>
 
 <script>
+    /* globals $ */
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
     import PublishButton from '@datawrapper/controls/publish/PublishButtonControl.html';
@@ -173,6 +177,7 @@
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
     import get from '@datawrapper/shared/get';
 
+    import ConfirmationModal from './ConfirmationModal.html';
     import Action from './Action.html';
 
     let initial_auto_publish = true;
@@ -180,7 +185,8 @@
     export default {
         components: {
             HelpDisplay,
-            PublishButton
+            PublishButton,
+            ConfirmationModal
         },
         data() {
             return {
@@ -303,6 +309,30 @@
                         if (publishing) this.updateStatus();
                     }, 1000);
                 });
+            },
+
+            unpublish() {
+                const chartId = this.store.get().id;
+                httpReq
+                    .post(`/v3/charts/${chartId.id}/unpublish`)
+                    .then(res => {
+                        this.set({
+                            progress: [],
+                            published: false,
+                            needs_republish: false
+                        });
+                    })
+                    .catch(error => {
+                        this.set({
+                            publish_error: error.message
+                        });
+                        trackEvent('Chart Editor', 'unpublish-error', error.message);
+                    });
+            },
+
+            requestUnpublishConfirmation() {
+                this.set({ publish_error: null });
+                $('#modalConfirmation').modal();
             },
 
             updateStatus() {
