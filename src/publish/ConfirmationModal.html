@@ -5,18 +5,11 @@
         </button>
         <div class="modal-content">
             <h1 class="modal-title">Do you want to unpublish your visualization?</h1>
-            <p>
-                All URLs and embed codes <b>will stop working</b>. Lorem Ipsum dolor sit amet
-                conseteur adipiscing dolor. Sed etam lorem sit amet consetetur.
-            </p>
+            <p>All embed codes and links to this visualization <b>will stop working</b>.</p>
             <div class="actions pt-4 mt-4">
-                <button class="button" data-dismiss="modal">Back</button>
-                <button
-                    class="button button-confirmation"
-                    data-dismiss="modal"
-                    on:click="fire('confirm')"
-                >
-                    <IconDisplay {assetURL} icon="undo" class="mr-1" size="1.3em" valign="-0.3em" />
+                <button class="btn back" data-dismiss="modal">Back</button>
+                <button class="btn btn-danger" data-dismiss="modal" on:click="fire('confirm')">
+                    <IconDisplay icon="undo" class="mr-1" size="1.3em" valign="-0.3em" />
                     Unpublish
                 </button>
             </div>
@@ -41,20 +34,27 @@
         justify-content: space-between;
     }
 
-    .button {
-        padding: 5px 30px;
-        background: '#f5f5f5';
-        border: 0;
-        border-radius: 4px;
-        font-weight: 500;
-        box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px, rgba(0, 0, 0, 0.1) 0px 1px 0px 0px inset,
-            rgba(0, 0, 0, 0.1) 1px 0px 0px 0px inset, rgba(0, 0, 0, 0.1) -1px 0px 0px 0px inset,
-            rgba(0, 0, 0, 0.25) 0px -1px 0px 0px inset;
+    .close {
+        opacity: 0.4;
     }
 
-    .button-confirmation {
-        color: #ffffff;
-        background: #c71e1d;
+    .close:hover,
+    .close:focus,
+    .close:active {
+        opacity: 0.5;
+    }
+
+    .btn {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .back {
+        font-weight: bold;
+    }
+
+    .modal-content p {
+        font-weight: normal;
     }
 </style>
 
