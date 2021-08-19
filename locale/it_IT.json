@@ -904,5 +904,6 @@
   "publish / unpublish-confirmation / explanation": "",
   "publish / unpublish-confirmation / close": "",
   "publish / unpublish-confirmation / back": "",
-  "publish / unpublish-confirmation / unpublish": ""
+  "publish / unpublish-confirmation / unpublish": "",
+  "publish / update-embed": ""
 }
