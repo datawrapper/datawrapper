@@ -6,7 +6,9 @@
     {progress}
     needsRepublish="{needs_republish}"
     publishError="{publish_error}"
+    publicVersion="{chart.publicVersion}"
     on:publish="publish()"
+    on:unpublish="requestUnpublishConfirmation()"
 />
 
 <div style="margin-top: 20px;" class="{published?'':'inactive'}">
@@ -88,6 +90,8 @@
     </div>
 </div>
 
+<ConfirmationModal id="modalConfirmation" on:confirm="unpublish()" />
+
 <style>
     input[type='radio'] {
         vertical-align: baseline !important;
@@ -125,21 +129,26 @@
 </style>
 
 <script>
+    /* globals $ */
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
     import PublishButton from '@datawrapper/controls/publish/PublishButtonControl.html';
-
     import purifyHtml from '@datawrapper/shared/purifyHtml';
-
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import get from '@datawrapper/shared/get';
 
+    import ConfirmationModal from './ConfirmationModal.html';
+
     let initial_auto_publish = true;
 
     export default {
-        components: { HelpDisplay, PublishButton },
+        components: {
+            HelpDisplay,
+            PublishButton,
+            ConfirmationModal
+        },
         data() {
             return {
                 chart: {
@@ -259,6 +268,30 @@
                             if (publishing) me.updateStatus();
                         }, 1000);
                     });
+            },
+
+            unpublish() {
+                const { chart } = this.get();
+                httpReq
+                    .post(`/v3/charts/${chart.id}/unpublish`)
+                    .then(res => {
+                        this.set({
+                            progress: [],
+                            published: false,
+                            needs_republish: false
+                        });
+                    })
+                    .catch(error => {
+                        this.set({
+                            publish_error: error.message
+                        });
+                        trackEvent('Chart Editor', 'unpublish-error', error.message);
+                    });
+            },
+
+            requestUnpublishConfirmation() {
+                this.set({ publish_error: null });
+                $('#modalConfirmation').modal();
             },
 
             updateStatus() {

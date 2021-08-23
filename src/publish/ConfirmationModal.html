@@ -1,0 +1,76 @@
+<div class="modal hide" {id}>
+    <div on:keyup|stopPropagation class="modal-body">
+        <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="{__('publish / unpublish-confirmation / close')}"
+        >
+            <IconDisplay icon="close" size="20px" />
+        </button>
+        <div class="modal-content">
+            <h1 class="modal-title">{__('publish / unpublish-confirmation / title')}</h1>
+            <p>{@html __('publish / unpublish-confirmation / explanation')}</p>
+            <div class="actions pt-4 mt-4">
+                <button class="btn back" data-dismiss="modal">
+                    {__('publish / unpublish-confirmation / back')}
+                </button>
+                <button class="btn btn-danger" data-dismiss="modal" on:click="fire('confirm')">
+                    <IconDisplay icon="undo" class="mr-1" size="1.3em" valign="-0.3em" />
+                    {__('publish / unpublish-confirmation / unpublish')}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .modal-content {
+        padding: 25px 30px;
+        color: #333333;
+    }
+
+    .actions {
+        border-top: 1px solid #ececec;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .close {
+        opacity: 0.4;
+    }
+
+    .close:hover,
+    .close:focus,
+    .close:active {
+        opacity: 0.5;
+    }
+
+    .btn {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .back {
+        font-weight: bold;
+    }
+
+    .modal-content p {
+        font-weight: normal;
+    }
+</style>
+
+<script>
+    import { __ } from '@datawrapper/shared/l10n';
+    import IconDisplay from '@datawrapper/controls/IconDisplay.html';
+
+    export default {
+        components: { IconDisplay },
+        helpers: { __ }
+    };
+</script>
