@@ -287,11 +287,13 @@
                             unpublishing: false,
                             unpublished: true
                         });
+                        httpReq.get(`/v3/charts/${chart.id}`).then(chartUpdates => {
+                            this.set({ chart: chartUpdates });
+                            trackEvent('Chart Editor', 'unpublish-success');
+                        });
                     })
                     .catch(error => {
-                        this.set({
-                            publish_error: error.message
-                        });
+                        this.set({ publish_error: error.message });
                         trackEvent('Chart Editor', 'unpublish-error', error.message);
                     });
             },

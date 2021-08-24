@@ -5,6 +5,8 @@
         {publishStarted}
         {now}
         {progress}
+        {unpublished}
+        {unpublishing}
         needsRepublish="{needs_republish}"
         publishError="{publish_error}"
         publicVersion="{chart.publicVersion}"
@@ -197,6 +199,8 @@
                 published: false,
                 publishing: false,
                 publishStarted: 0,
+                unpublished: false,
+                unpublishing: false,
                 needs_republish: false,
                 publish_error: false,
                 auto_publish: false,
@@ -314,19 +318,28 @@
 
             unpublish() {
                 const chartId = this.store.get().id;
+
+                this.set({
+                    progress: [],
+                    unpublishing: true,
+                    needs_republish: false
+                });
+
                 httpReq
-                    .post(`/v3/charts/${chartId.id}/unpublish`)
+                    .post(`/v3/charts/${chartId}/unpublish`)
                     .then(res => {
                         this.set({
-                            progress: [],
                             published: false,
-                            needs_republish: false
+                            unpublishing: false,
+                            unpublished: true
+                        });
+                        httpReq.get(`/v3/charts/${chartId}`).then(chartInfo => {
+                            this.store.set(chartInfo);
+                            trackEvent('Chart Editor', 'unpublish-success');
                         });
                     })
                     .catch(error => {
-                        this.set({
-                            publish_error: error.message
-                        });
+                        this.set({ publish_error: error.message });
                         trackEvent('Chart Editor', 'unpublish-error', error.message);
                     });
             },
