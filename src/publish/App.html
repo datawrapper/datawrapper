@@ -250,10 +250,6 @@
                         httpReq
                             .post(`/v3/charts/${chart.id}/publish`)
                             .then(res => {
-                                this.set({
-                                    published: true,
-                                    progress: ['done']
-                                });
                                 httpReq.get(`/v3/charts/${chart.id}`).then(res => {
                                     trackEvent('Chart Editor', 'publish-success');
                                     me.publishFinished(res);
@@ -328,11 +324,10 @@
                     progress: ['done'],
                     published: true,
                     publishStarted: 0,
-                    needs_republish: false
+                    needs_republish: false,
+                    publishing: false,
+                    chart: chartInfo
                 });
-                // give user 1s to read the success message
-                setTimeout(() => this.set({ publishing: false }), 1000);
-                this.set({ chart: chartInfo });
 
                 window.parent.postMessage(
                     {
