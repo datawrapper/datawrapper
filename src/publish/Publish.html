@@ -271,6 +271,7 @@
                     publishStarted: new Date().getTime(),
                     now: new Date().getTime(),
                     progress: [],
+                    unpublished: false,
                     publish_error: false
                 });
 
@@ -320,8 +321,7 @@
 
                 this.set({
                     progress: [],
-                    unpublishing: true,
-                    needs_republish: false
+                    unpublishing: true
                 });
 
                 httpReq
@@ -338,7 +338,7 @@
                         });
                     })
                     .catch(error => {
-                        this.set({ publish_error: error.message });
+                        this.set({ publish_error: error.message, unpublishing: false });
                         trackEvent('Chart Editor', 'unpublish-error', error.message);
                     });
             },
