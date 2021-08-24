@@ -9,7 +9,6 @@
         {unpublishing}
         needsRepublish="{needs_republish}"
         publishError="{publish_error}"
-        publicVersion="{chart.publicVersion}"
         on:publish="publish()"
         on:unpublish="requestUnpublishConfirmation()"
     />
@@ -371,7 +370,8 @@
                     progress: ['done'],
                     published: true,
                     publishStarted: 0,
-                    needs_republish: false
+                    needs_republish: false,
+                    publishing: false
                 });
                 this.store.set({
                     lastEditStep: 5
@@ -385,9 +385,6 @@
                     },
                     '*'
                 );
-
-                // give user 1s to read the success message
-                setTimeout(() => this.set({ publishing: false }), 1000);
                 this.store.set(chartInfo);
             },
 
