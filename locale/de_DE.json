@@ -230,9 +230,9 @@
   "publish / publish-btn": "Veröffentlichen",
   "publish / republish-btn": "Erneut veröffentlichen",
   "publish / republish": "Dein Diagramm wurde geändert nachdem es veröffentlicht wurde. Du musst es <b>erneut veröffentlichen</b> damit die Änderungen wirksam werden.",
-  "publish / progress / please-wait": "Dein Diagramm wird jetzt für die Veröffentlichung vorbereitet. In wenigen Sekunden erhältst du einen Link für die Einbettung. ",
+  "publish / progress / publishing": "Deine Visualisierung wird jetzt für die Veröffentlichung vorbereitet. In wenigen Sekunden erhältst du einen Link für die Einbettung.",
   "publish / publish-success": "Glückwunsch, das Diagramm kann jetzt geteilt und eingebettet werden.",
-  "publish / share-url": "Diagramm per URL teilen",
+  "publish / share-url": "Visualisierung per URL teilen",
   "publish / share-url / standalone": "Normale Größe",
   "publish / share-url / fullscreen": "Vollbild",
   "publish / help / share-url": "Bei <b>normale Größe</b> wird das Diagramm genau so dargestellt, wie es erstellt wurde. Bei <b>Vollbild</b> füllt das Diagramm das komplette Browser-Fenser.",
@@ -905,5 +905,8 @@
   "publish / unpublish-confirmation / close": "Schließen",
   "publish / unpublish-confirmation / back": "Zurück",
   "publish / unpublish-confirmation / unpublish": "Veröffentlichung rückgängig machen",
-  "publish / update-embed": "Deine eingebettete Visualisierung wird in wenigen Augenblicken <b>automatisch aktualisiert</b>. Falls du eine längere Verzögerung bemerkst, kannst du den alten Einbett-Code durch den neuesten ersetzen."
+  "publish / update-embed": "Deine eingebettete Visualisierung wird in wenigen Augenblicken <b>automatisch aktualisiert</b>. Falls du eine längere Verzögerung bemerkst, kannst du den alten Einbett-Code durch den neuesten ersetzen.",
+  "publish / progress / unpublishing": "Die Veröffentlichung deiner Visualisierung wird jetzt <b>aufgehoben</b>. Das sollte in wenigen Sekunden abgeschlossen sein.",
+  "publish / progress / unpublished": "Die Veröffentlichung wurde <em>rückgängig gemacht</em>. Deine Visualisierung ist nicht mehr unter einem Link oder einem Einbett-Code sichtbar.",
+  "publish / unpublishing-btn": "Veröffentlichung aufheben"
 }

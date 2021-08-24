@@ -228,9 +228,9 @@
   "publish / publish-intro": "Para compartir o integrar tu gráfico, debes publicarlo. Solo será visible para las personas que conocen la URL del gráfico.",
   "publish / publish-btn-intro": "Haz clic aquí si deseas integrar tu gráfico en tu <b>sitio web</b> o <b>CMS</b>.",
   "publish / publish-btn": "Publicar gráfico",
-  "publish / republish-btn": "Volver a publicar gráfico",
+  "publish / republish-btn": "",
   "publish / republish": "Has cambiado el gráfico después de la última publicación. Para que se vean estos cambios tendrás que <b>volver a publicar el gráfico</b>.",
-  "publish / progress / please-wait": "Tu gráfico se está preparando para la publicación, estará listo en unos segundos.",
+  "publish / progress / publishing": "Tu gráfico se está preparando para la publicación, estará listo en unos segundos.",
   "publish / publish-success": "Enhorabuena, ya puedes compartir e integrar tu gráfico en tu sitio.",
   "publish / share-url": "Compartir por URL",
   "publish / share-url / standalone": "tamaño normal",
@@ -905,5 +905,8 @@
   "publish / unpublish-confirmation / close": "",
   "publish / unpublish-confirmation / back": "",
   "publish / unpublish-confirmation / unpublish": "",
-  "publish / update-embed": ""
+  "publish / update-embed": "",
+  "publish / progress / unpublishing": "",
+  "publish / progress / unpublished": "",
+  "publish / unpublishing-btn": ""
 }

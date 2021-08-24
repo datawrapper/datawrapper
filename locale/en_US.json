@@ -230,7 +230,7 @@
   "publish / publish-btn": "Publish",
   "publish / republish-btn": "Republish",
   "publish / republish": "Your visualization is <b>published</b>, but it has been <b>changed</b> and needs to be <b>republished</b> to show those changes.",
-  "publish / progress / please-wait": "Your Chart is now being <b>prepared for publication</b> and should be ready in a few seconds.",
+  "publish / progress / publishing": "Your visualization is now being <b>prepared for publication</b> and should be ready in a few seconds.",
   "publish / publish-success": "Congratulations, successfully <b>published</b>. Your visualization can now be shared and embedded on your site.",
   "publish / share-url": "Share via URL",
   "publish / share-url / standalone": "normal size",
@@ -905,5 +905,8 @@
   "publish / unpublish-confirmation / close": "Close",
   "publish / unpublish-confirmation / back": "Back",
   "publish / unpublish-confirmation / unpublish": "Unpublish",
-  "publish / update-embed": "Your embedded visualization will <b>automatically update</b> in a few moments. In case you're noticing a longer delay, you can replace the embed code with the latest one."
+  "publish / update-embed": "Your embedded visualization will <b>automatically update</b> in a few moments. In case you're noticing a longer delay, you can replace the embed code with the latest one.",
+  "publish / progress / unpublishing": "Your visualization is now being <b>unpublished</b>. This should be done in a few seconds.",
+  "publish / progress / unpublished": "Successfully <em>unpublished</em>. Your visualization is not visible anymore under any link or embed code.",
+  "publish / unpublishing-btn": "Unpublishing"
 }
