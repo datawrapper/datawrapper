@@ -4,6 +4,8 @@
     {publishStarted}
     {now}
     {progress}
+    {unpublished}
+    {unpublishing}
     needsRepublish="{needs_republish}"
     publishError="{publish_error}"
     publicVersion="{chart.publicVersion}"
@@ -159,6 +161,8 @@
                 published: false,
                 publishing: false,
                 publishStarted: 0,
+                unpublished: false,
+                unpublishing: false,
                 needs_republish: false,
                 publish_error: false,
                 auto_publish: false,
@@ -272,13 +276,20 @@
 
             unpublish() {
                 const { chart } = this.get();
+
+                this.set({
+                    progress: [],
+                    unpublishing: true,
+                    needs_republish: false
+                });
+
                 httpReq
                     .post(`/v3/charts/${chart.id}/unpublish`)
                     .then(res => {
                         this.set({
-                            progress: [],
                             published: false,
-                            needs_republish: false
+                            unpublishing: false,
+                            unpublished: true
                         });
                     })
                     .catch(error => {
