@@ -151,7 +151,7 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
                 $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
                 $customFields = $org->getSettings("customFields") ?? [];
-                $redirectDisabled = $org->getSettings('publish_target.disable_redirect') ?? false;
+                $redirectDisabled = $org->getSettings('publishTarget.disable_redirects') ?? false;
             }
 
             $publishData = (object) [

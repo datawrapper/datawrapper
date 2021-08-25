@@ -108,7 +108,7 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             'auto_publish' => !empty($app->request()->params('doit')),
             'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
             'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW),
-            'redirect_disabled' => $org && $org->getSettings('publish_target.disable_redirect')
+            'redirect_disabled' => $org && $org->getSettings('publishTarget.disable_redirects')
         ];
         $app->render('chart/publish.twig', $page);
     });
