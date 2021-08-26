@@ -908,5 +908,6 @@
   "publish / update-embed": "",
   "publish / progress / unpublishing": "",
   "publish / progress / unpublished": "",
-  "publish / unpublishing-btn": ""
+  "publish / unpublishing-btn": "",
+  "publish / title": ""
 }

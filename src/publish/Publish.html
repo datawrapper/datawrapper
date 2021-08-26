@@ -1,3 +1,5 @@
+<h2>{@html __('publish / title') }</h2>
+
 <div>
     <PublishButton
         {published}
@@ -331,14 +333,18 @@
                 httpReq
                     .post(`/v3/charts/${chartId}/unpublish`)
                     .then(res => {
-                        this.set({
-                            published: false,
-                            unpublishing: false,
-                            unpublished: true
-                        });
                         httpReq.get(`/v3/charts/${chartId}`).then(chartInfo => {
                             this.store.set(chartInfo);
                             trackEvent('Chart Editor', 'unpublish-success');
+
+                            // slow down visual response, reduces flickering:
+                            setTimeout(() => {
+                                this.set({
+                                    published: false,
+                                    unpublishing: false,
+                                    unpublished: true
+                                });
+                            }, 1000);
                         });
                     })
                     .catch(error => {
