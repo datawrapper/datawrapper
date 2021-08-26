@@ -165,7 +165,7 @@
                 class="action action-{action.id} {action.class||''} {action.id == active_action ? 'active':''}"
             >
                 <a
-                    on:click="select(action, event)"
+                    on:click|preventDefault="select(action)"
                     role="button"
                     href="{action.url ? action.url : '#'+action.id}"
                 >
@@ -179,7 +179,14 @@
             {/if} {/each}
         </ul>
 
-        <svelte:component ref:action this="{Action}" visible="{true}" show="{false}" />
+        <svelte:component
+            ref:action
+            this="{Action}"
+            visible="{true}"
+            show="{false}"
+            data="{actionData}"
+            {store}
+        />
     </div>
 </div>
 
@@ -351,6 +358,8 @@
                 embed_type: 'responsive',
                 copy_success: false,
                 Action,
+                actionData: null,
+                store: null,
                 chartActions: [
                     {
                         id: 'duplicate',
@@ -531,8 +540,7 @@
                 }
             },
 
-            select(action, event) {
-                event.preventDefault();
+            select(action) {
                 // set hash which is used to show the action module
                 window.location.hash = action.id;
 
@@ -546,8 +554,12 @@
                 if (action.mod) {
                     if (action.mod.App) {
                         this.refs.action.set({ show: false });
-                        this.set({ Action: action.mod.App });
-                        if (action.mod.data) this.refs.action.set(action.mod.data);
+                        if (action.mod.data) this.refs.action.set(action.mod.data); // TODO Remove once all action plugins support the 'data' property.
+                        this.set({
+                            Action: action.mod.App,
+                            actionData: action.mod.data,
+                            store: this.store
+                        });
                         this.refs.action.set({ show: true });
                     } else {
                         // todo: show loading indicator
@@ -561,10 +573,14 @@
                                 require([action.mod.id], mod => {
                                     // todo: HIDE loading indicator
                                     Object.assign(action.mod, mod);
-                                    this.set({ Action: action.mod.App });
+                                    this.set({
+                                        Action: action.mod.App,
+                                        actionData: action.mod.data,
+                                        store: this.store
+                                    });
                                     this.refs.action.set({ show: true });
                                     if (mod.init) mod.init(this.refs.action);
-                                    if (action.mod.data) this.refs.action.set(action.mod.data);
+                                    if (action.mod.data) this.refs.action.set(action.mod.data); // TODO Remove once all action plugins support the 'data' property.
                                 });
                             }, 200);
                         });
@@ -599,6 +615,18 @@
             chart.observeDeep('metadata.publish.embed-codes', () => this.setEmbedCode());
             chart.observeDeep('metadata.publish.embed-height', () => this.setEmbedCode());
             chart.observeDeep('publicUrl', () => this.setEmbedCode());
+
+            // Immediately select an action, when location hash is already set.
+            const activeActionId = window.location.hash.slice(1);
+            if (activeActionId) {
+                const { chartActions, $actions } = this.get();
+                const activeAction = chartActions
+                    .concat($actions)
+                    .find(action => action.id === activeActionId);
+                if (activeAction) {
+                    this.select(activeAction);
+                }
+            }
         },
 
         onstate({ changed, current }) {
