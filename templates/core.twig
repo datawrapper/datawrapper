@@ -23,13 +23,16 @@
     <link href="{{ config.static_path }}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="{{ config.static_path }}/vendor/iconicfont/css/iconmonstr-iconic-font.min.css" rel="stylesheet" type="text/css">
 
-
+    {# Polyfills for Internet Explorer #}
     <script type="text/javascript">
         if (navigator.userAgent.indexOf('MSIE') !== -1
             || navigator.appVersion.indexOf('Internet Explorer/') > -1
             || navigator.appVersion.indexOf('Trident/7.0') > -1) {
-
             document.write("<script src=\"/lib/polyfills/ie-11.js\"><\/script>");
+
+            // svg4everybody: Polyfill for SVG External Content (used in @datawrapper/icons)
+            document.write("<script src=\"{{ config.static_path }}/vendor/svg4everybody/svg4everybody.min.js\"><\/script>");
+            document.write("<script>svg4everybody();<\/script>");
         }
     </script>
 
