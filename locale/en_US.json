@@ -908,5 +908,6 @@
   "publish / update-embed": "Your embedded visualization will <b>automatically update</b> in a few moments. In case you're noticing a longer delay, you can replace the embed code with the latest one.",
   "publish / progress / unpublishing": "Your visualization is now being <b>unpublished</b>. This should be done in a few seconds.",
   "publish / progress / unpublished": "Successfully <em>unpublished</em>. Your visualization is not visible anymore under any link or embed code.",
-  "publish / unpublishing-btn": "Unpublishing"
+  "publish / unpublishing-btn": "Unpublishing",
+  "publish / title": "Publish visualization"
 }

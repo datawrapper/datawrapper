@@ -908,5 +908,6 @@
   "publish / update-embed": "Deine eingebettete Visualisierung wird in wenigen Augenblicken <b>automatisch aktualisiert</b>. Falls du eine längere Verzögerung bemerkst, kannst du den alten Einbett-Code durch den neuesten ersetzen.",
   "publish / progress / unpublishing": "Die Veröffentlichung deiner Visualisierung wird jetzt <b>aufgehoben</b>. Das sollte in wenigen Sekunden abgeschlossen sein.",
   "publish / progress / unpublished": "Die Veröffentlichung wurde <em>rückgängig gemacht</em>. Deine Visualisierung ist nicht mehr unter einem Link oder einem Einbett-Code sichtbar.",
-  "publish / unpublishing-btn": "Veröffentlichung aufheben"
+  "publish / unpublishing-btn": "Veröffentlichung aufheben",
+  "publish / title": "Visualisierung veröffentlichen"
 }
