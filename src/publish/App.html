@@ -1,63 +1,20 @@
-{#if published}
-<p>{@html __('publish / republish-intro') }</p>
-{:else}
-<p style="margin-bottom: 20px;">{@html __('publish / publish-intro') }</p>
-{/if}
+<h2>{@html __('publish / title') }</h2>
 
-<button
-    disabled="{ publishing }"
-    on:click="publish()"
-    class="btn-publish btn btn-primary btn-large {published?'':'btn-first-publish'}"
->
-    {#if published}
-    <span class="re-publish"
-        ><i class="fa fa-fw fa-refresh {publishing ? 'fa-spin' : ''}"></i>
-        <span class="title">{ __('publish / republish-btn') }</span></span
-    >
-    {:else}
-    <span class="publish"
-        ><i class="fa fa-fw {publishing ? 'fa-refresh fa-spin' : 'fa-cloud-upload'}"></i>
-        <span class="title">{ __('publish / publish-btn') }</span></span
-    >
-    {/if}
-</button>
-
-{#if !published}
-<div class="publish-intro">
-    <div class="arrow">
-        <i class="fa fa-chevron-left"></i>
-    </div>
-    <div class="text">
-        {@html __('publish / publish-btn-intro') }
-    </div>
-</div>
-{/if} {#if needs_republish && !publishing}
-<div class="btn-aside alert">
-    {@html __('publish / republish-alert') }
-</div>
-{/if} {#if published && !needs_republish && progress && progress.includes('done') && !publishing}
-<div class="alert alert-success">
-    {@html __('publish / publish-success') }
-</div>
-{/if} {#if publish_error}
-<div class="alert alert-error">
-    {@html publish_error }
-</div>
-{/if} {#if publishing}
-<div class="alert alert-info publishing">
-    { __("publish / progress / please-wait") } {#if publishWait > 3000}
-    <!-- show progress information after 3s -->
-    <ul class="publish-progress unstyled">
-        {#each progress as step,i}
-        <li class:done="i < progress.length-1">
-            <i class="fa fa-fw {i < progress.length-1 ? 'fa-check' : 'fa-spinner fa-pulse'}"></i>
-            {@html __('publish / status / '+step)}
-        </li>
-        {/each}
-    </ul>
-    {/if}
-</div>
-{/if}
+<PublishButton
+    {published}
+    {publishing}
+    {publishStarted}
+    {now}
+    {progress}
+    {unpublished}
+    {unpublishing}
+    redirectDisabled="{redirect_disabled}"
+    needsRepublish="{needs_republish}"
+    publishError="{publish_error}"
+    publicVersion="{chart.publicVersion}"
+    on:publish="publish()"
+    on:unpublish="requestUnpublishConfirmation()"
+/>
 
 <div style="margin-top: 20px;" class="{published?'':'inactive'}">
     <h2>{@html __('publish / share-embed') }</h2>
@@ -138,96 +95,9 @@
     </div>
 </div>
 
+<ConfirmationModal id="modalConfirmation" on:confirm="unpublish()" />
+
 <style>
-    .btn-publish {
-        border-color: #1d81a2 !important;
-        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
-        line-height: 20px;
-        padding: 15px;
-    }
-
-    .btn-first-publish {
-        text-align: center;
-        width: 150px;
-        vertical-align: middle;
-        padding: 15px 0 15px;
-    }
-
-    .btn-publish i.fa {
-        font-size: 20px;
-    }
-    .btn-first-publish i.fa {
-        font-size: 32px;
-        display: block;
-        margin: 5px auto;
-    }
-
-    .btn-first-publish .title {
-        display: block;
-        text-align: center;
-        font-size: 18px;
-        line-height: 1.2;
-        padding: 5px 20px 0px 20px;
-    }
-    .publish-intro {
-        display: inline-block;
-        font-size: 18px !important;
-        line-height: 22px;
-    }
-
-    .publish-intro .arrow {
-        vertical-align: middle;
-        display: inline-block;
-        padding: 15px;
-    }
-    .publish-intro .text {
-        vertical-align: middle;
-        display: inline-block;
-        width: 200px;
-    }
-    @media (max-width: 1200px) {
-        .publish-intro {
-            font-size: 15px;
-        }
-        .publish-intro .text {
-            vertical-align: middle;
-            display: inline-block;
-            width: 140px;
-            line-height: 18px;
-            font-size: 15px;
-        }
-    }
-
-    @media (max-width: 979px) {
-        .btn-first-publish {
-            width: 110px;
-            padding: 5px 0px;
-            padding: 8px 0px;
-        }
-        .btn-first-publish span.title {
-            padding: 5px 11px 0px 11px;
-            font-size: 14px;
-        }
-        .btn-first-publish i.fa {
-            font-size: 25px;
-        }
-        .publish-intro .arrow {
-            vertical-align: middle;
-            display: inline-block;
-            padding: 5px;
-        }
-        .publish-intro .arrow i.fa {
-            font-size: 14px;
-        }
-        .publish-intro .text {
-            font-size: 14px;
-        }
-    }
-
-    div.progress {
-        margin-top: 8px;
-        margin-bottom: 4px;
-    }
     input[type='radio'] {
         vertical-align: baseline !important;
     }
@@ -241,7 +111,6 @@
         margin-left: 0;
         max-width: 100%;
     }
-
     .copy-success {
         font-size: 11px;
         color: #9c9;
@@ -262,28 +131,29 @@
     .embed-code {
         height: 20px;
     }
-    .publish-progress {
-        margin-top: 5px;
-    }
-    .publish-progress li.done {
-        opacity: 0.6;
-    }
 </style>
 
 <script>
+    /* globals $ */
     /* eslint camelcase: "off" */
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import PublishButton from '@datawrapper/controls/publish/PublishButtonControl.html';
     import purifyHtml from '@datawrapper/shared/purifyHtml';
-
     import { __ } from '@datawrapper/shared/l10n';
     import httpReq from '@datawrapper/shared/httpReq';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import get from '@datawrapper/shared/get';
 
+    import ConfirmationModal from './ConfirmationModal.html';
+
     let initial_auto_publish = true;
 
     export default {
-        components: { HelpDisplay },
+        components: {
+            HelpDisplay,
+            PublishButton,
+            ConfirmationModal
+        },
         data() {
             return {
                 chart: {
@@ -294,6 +164,8 @@
                 published: false,
                 publishing: false,
                 publishStarted: 0,
+                unpublished: false,
+                unpublishing: false,
                 needs_republish: false,
                 publish_error: false,
                 auto_publish: false,
@@ -301,7 +173,8 @@
                 shareurl_type: 'default',
                 embed_type: 'responsive',
                 copy_success: false,
-                statusUrl: false
+                statusUrl: false,
+                redirect_disabled: false
             };
         },
 
@@ -362,6 +235,7 @@
                     publishStarted: new Date().getTime(),
                     now: new Date().getTime(),
                     progress: [],
+                    unpublished: false,
                     publish_error: false
                 });
 
@@ -381,16 +255,17 @@
                         httpReq
                             .post(`/v3/charts/${chart.id}/publish`)
                             .then(res => {
-                                this.set({
-                                    published: true,
-                                    progress: ['done']
-                                });
                                 httpReq.get(`/v3/charts/${chart.id}`).then(res => {
                                     trackEvent('Chart Editor', 'publish-success');
                                     me.publishFinished(res);
                                 });
                             })
                             .catch(error => {
+                                this.set({
+                                    publish_error: error.message,
+                                    publishing: false,
+                                    progress: []
+                                });
                                 trackEvent('Chart Editor', 'publish-error', error.message);
                             });
                         setTimeout(() => {
@@ -398,6 +273,43 @@
                             if (publishing) me.updateStatus();
                         }, 1000);
                     });
+            },
+
+            unpublish() {
+                const { chart } = this.get();
+
+                this.set({
+                    progress: [],
+                    unpublishing: true,
+                    needs_republish: false
+                });
+
+                httpReq
+                    .post(`/v3/charts/${chart.id}/unpublish`)
+                    .then(res => {
+                        httpReq.get(`/v3/charts/${chart.id}`).then(chartUpdates => {
+                            this.set({ chart: chartUpdates });
+                            trackEvent('Chart Editor', 'unpublish-success');
+
+                            // slow down visual response, reduces flickering:
+                            setTimeout(() => {
+                                this.set({
+                                    published: false,
+                                    unpublishing: false,
+                                    unpublished: true
+                                });
+                            }, 1000);
+                        });
+                    })
+                    .catch(error => {
+                        this.set({ publish_error: error.message, unpublishing: false });
+                        trackEvent('Chart Editor', 'unpublish-error', error.message);
+                    });
+            },
+
+            requestUnpublishConfirmation() {
+                this.set({ publish_error: null });
+                $('#modalConfirmation').modal();
             },
 
             updateStatus() {
@@ -423,11 +335,10 @@
                     progress: ['done'],
                     published: true,
                     publishStarted: 0,
-                    needs_republish: false
+                    needs_republish: false,
+                    publishing: false,
+                    chart: chartInfo
                 });
-                // give user 1s to read the success message
-                setTimeout(() => this.set({ publishing: false }), 1000);
-                this.set({ chart: chartInfo });
 
                 window.parent.postMessage(
                     {
