@@ -11,7 +11,8 @@
     <PendingActivation />
     {:else}
     <Publish
-        beforeExport="{beforeExport}"
+        {beforeExport}
+        {redirectDisabled}
         embed_templates="{embedTemplates}"
         embed_type="{embedType}"
         plugin_shareurls="{pluginShareurls}"
@@ -41,7 +42,8 @@
                 shareurlType: 'default',
                 beforeExport: null,
                 guest_text_above: '',
-                guest_text_below: ''
+                guest_text_below: '',
+                redirectDisabled: false
             };
         },
         onstate({ current, changed }) {
