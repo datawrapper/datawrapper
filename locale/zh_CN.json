@@ -55,7 +55,7 @@
   "controls / color-scale / breaks / custom": "自定义",
   "controls / custom-format / info": "在此<a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\">Academy文章</a>中了解有关自定义数字格式的更多信息。",
   "controls / custom-format / custom / number": "如需有关自定义格式的帮助，请查看<a href=\"https://academy.datawrapper.de/article/207-custom-number-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">numeral.js文档</a>。",
-  "controls / custom-format / custom / date": "如需有关自定义格式的帮助，请查看<a href=\"http://momentjs.com/docs/#/displaying/format/\" target=\"_blank\" rel=\"noopener\">moment.js文档</a>。",
+  "controls / custom-format / custom / date": "如需有关自定义格式的帮助，请查看<a href=\"https://academy.datawrapper.de/article/199-custom-date-formats-that-you-can-display-in-datawrapper\" target=\"_blank\" rel=\"noopener\">文档</a>。",
   "controls / custom-format / custom": "（自定义）",
   "controls / custom-format / auto": "（自动）",
   "controls / gradient-editor / how-this-works": "工作原理：",
