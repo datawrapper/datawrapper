@@ -896,6 +896,7 @@
   "teams / defaults / visualization-size": "",
   "teams / defaults / visualization-size / help": "",
   "teams / error": "",
+  "error / unauthorized / hed": "",
   "publish / published": "",
   "publish / unpublish-btn": "",
   "publish / unpublish-intro": "",
@@ -909,5 +910,7 @@
   "publish / progress / unpublishing": "",
   "publish / progress / unpublished": "",
   "publish / unpublishing-btn": "",
-  "publish / title": ""
+  "publish / title": "",
+  "publish / publish-info-1": "",
+  "publish / publish-info-2": ""
 }
