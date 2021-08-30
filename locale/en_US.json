@@ -912,5 +912,6 @@
   "publish / unpublishing-btn": "Unpublishing",
   "publish / title": "Publish visualization",
   "publish / publish-info-1": "You'll need to <b>publish</b> this visualization before <b>embedding</b> it on your website or <b>sharing</b> it on social media.",
-  "publish / publish-info-2": "Your published visualization will still only be visible to people who know its URL. <b>We won't share it publicly.</b>"
+  "publish / publish-info-2": "Your published visualization will still only be visible to people who know its URL. <b>We won't share it publicly.</b>",
+  "publish / publishing-btn": "Publishing"
 }

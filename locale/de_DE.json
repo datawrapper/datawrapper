@@ -912,5 +912,6 @@
   "publish / unpublishing-btn": "Veröffentlichung aufheben",
   "publish / title": "Visualisierung veröffentlichen",
   "publish / publish-info-1": "<b>Veröffentliche</b> deine Visualisierung, um sie auf einer Webseite <b>einzubetten</b> oder in sozialen Medien zu <b>teilen.</b>",
-  "publish / publish-info-2": "Deine Visualisierung kann man auch nach der Veröffentlichung nur sehen, wenn man die Visualisierungs-URL kennt. <b>Wir teilen sie nicht öffentlich.</b>"
+  "publish / publish-info-2": "Deine Visualisierung kann man auch nach der Veröffentlichung nur sehen, wenn man die Visualisierungs-URL kennt. <b>Wir teilen sie nicht öffentlich.</b>",
+  "publish / publishing-btn": "Veröffentlichen"
 }
