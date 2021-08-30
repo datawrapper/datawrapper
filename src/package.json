@@ -14,7 +14,7 @@
         "@babel/plugin-transform-runtime": "^7.11.5",
         "@babel/preset-env": "^7.11.5",
         "@datawrapper/chart-core": "^8.38.0",
-        "@datawrapper/controls": "^2.39.0",
+        "@datawrapper/controls": "^2.39.2",
         "@datawrapper/shared": "^0.35.0",
         "@rollup/plugin-babel": "^5.3.0",
         "@rollup/plugin-commonjs": "^20.0.0",
