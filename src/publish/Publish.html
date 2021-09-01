@@ -17,7 +17,16 @@
         on:unpublish="requestUnpublishConfirmation()"
     />
 
-    <ShareEmbed {plugin_shareurls} {embed_templates} {published} {shareurl_type} {embed_type} />
+    <ShareEmbed
+        {pluginShareurls}
+        {embedTemplates}
+        {published}
+        {shareurlType}
+        {embedType}
+        metadata="{$metadata}"
+        id="{$id}"
+        publicUrl="{$publicUrl}"
+    />
 
     <!-- BEFORE EXPORT -->
     <svelte:component this="{beforeExport}" />
@@ -109,8 +118,8 @@
         data() {
             return {
                 active_action: '',
-                embed_templates: [],
-                plugin_shareurls: [],
+                embedTemplates: [],
+                pluginShareurls: [],
                 published: false,
                 publishing: false,
                 publishStarted: 0,
@@ -121,9 +130,8 @@
                 auto_publish: false,
                 progress: [],
                 redirectDisabled: false,
-                shareurl_type: 'default',
-                embed_type: 'responsive',
-                copy_success: false,
+                shareurlType: 'default',
+                embedType: 'responsive',
                 Action,
                 actionData: null,
                 store: null,
@@ -146,13 +154,13 @@
             };
         },
         computed: {
-            shareUrl({ shareurl_type, $id, $publicUrl, $metadata, plugin_shareurls, published }) {
+            shareUrl({ shareurlType, $id, $publicUrl, $metadata, pluginShareurls, published }) {
                 if (!published) return 'https://www.datawrapper.de/...';
-                if (shareurl_type === 'default') return $publicUrl;
+                if (shareurlType === 'default') return $publicUrl;
                 let url = '';
 
-                plugin_shareurls.forEach(t => {
-                    if (t.id === shareurl_type) {
+                pluginShareurls.forEach(t => {
+                    if (t.id === shareurlType) {
                         url = t.url.replace(/%chart_id%/g, $id);
 
                         url = url.replace(/%(.*?)%/g, (match, path) => {
@@ -310,41 +318,6 @@
                 this.store.set(chartInfo);
             },
 
-            setEmbedCode() {
-                const chart = this.store;
-                const state = this.get();
-                if (!state) return;
-                const embedType = state.embed_type ? `embed-method-${state.embed_type}` : null;
-
-                const { publicUrl } = chart.get();
-                const embedCodes = chart.getMetadata('publish.embed-codes');
-                const embedHeight = chart.getMetadata('publish.embed-height');
-
-                this.set({
-                    embedCode:
-                        embedCodes && embedCodes[embedType]
-                            ? embedCodes[embedType]
-                            : embedType === 'custom'
-                            ? ''
-                            : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
-                });
-            },
-
-            copy() {
-                const me = this;
-                me.refs.embedInput.select();
-                try {
-                    var successful = document.execCommand('copy');
-                    if (successful) {
-                        trackEvent('Chart Editor', 'embedcode-copy');
-                        me.set({ copy_success: true });
-                        setTimeout(() => me.set({ copy_success: false }), 300);
-                    }
-                } catch (err) {
-                    // console.log('Oops, unable to copy');
-                }
-            },
-
             select(action) {
                 // set hash which is used to show the action module
                 window.location.hash = action.id;
@@ -430,19 +403,16 @@
 
         onstate({ changed, current }) {
             const userDataReady = window.dw && window.dw.backend && window.dw.backend.setUserData;
-            if (changed.embed_type && userDataReady) {
+            if (changed.embedType && userDataReady) {
                 const data = window.dw.backend.__userData;
-                if (!current.embed_type || !data) return;
-                data.embed_type = current.embed_type;
+                if (!current.embedType || !data) return;
+                data.embedType = current.embedType;
                 window.dw.backend.setUserData(data);
             }
-            if (changed.embed_type) {
-                this.setEmbedCode();
-            }
-            if (changed.shareurl_type && userDataReady) {
+            if (changed.shareurlType && userDataReady) {
                 const data = window.dw.backend.__userData;
-                if (!current.shareurl_type || !data) return;
-                data.shareurl_type = current.shareurl_type;
+                if (!current.shareurlType || !data) return;
+                data.shareurlType = current.shareurlType;
                 window.dw.backend.setUserData(data);
             }
             if (changed.published) {

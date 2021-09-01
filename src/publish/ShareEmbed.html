@@ -8,17 +8,17 @@
                 <div class="embed-options">
                     <label class="radio">
                         <input
-                            bind:group="shareurl_type"
+                            bind:group="shareurlType"
                             value="default"
                             type="radio"
                             name="url-type"
                         />
                         {@html __('publish / share-url / fullscreen') }
                     </label>
-                    {#each plugin_shareurls as tpl}
+                    {#each pluginShareurls as tpl}
                     <label class="radio"
                         ><input
-                            bind:group="shareurl_type"
+                            bind:group="shareurlType"
                             value="{tpl.id}"
                             type="radio"
                             name="url-type"
@@ -43,9 +43,9 @@
             <div class="h">
                 <b>{@html __('publish / embed') }</b>
                 <div class="embed-options">
-                    {#each embed_templates as tpl}
+                    {#each embedTemplates as tpl}
                     <label class="radio"
-                        ><input type="radio" bind:group="embed_type" value="{tpl.id}" /> { tpl.title
+                        ><input type="radio" bind:group="embedType" value="{tpl.id}" /> { tpl.title
                         }</label
                     >
                     {/each}
@@ -62,14 +62,14 @@
                 <button class="btn btn-copy" on:click="copy(embedCode)" title="copy">
                     <i class="fa fa-copy"></i> { __('publish / copy') }
                 </button>
-                <div class="copy-success {copy_success ? 'show':''}">
+                <div class="copy-success {copySuccess ? 'show':''}">
                     { __('publish / copy-success') }
                 </div>
             </div>
         </div>
         <HelpDisplay>
             <div>
-                {@html __('publish / embed / help') } {#each embed_templates.slice(2) as tpl}
+                {@html __('publish / embed / help') } {#each embedTemplates.slice(2) as tpl}
                 <div><b>{tpl.title}:</b> {@html purifyHtml(tpl.text) }</div>
                 {/each}
             </div>
@@ -120,37 +120,43 @@
         },
         data() {
             return {
-                embed_templates: [],
-                plugin_shareurls: [],
+                embedTemplates: [],
+                pluginShareurls: [],
                 published: false,
-                shareurl_type: 'default',
-                embed_type: 'responsive',
-                copy_success: false,
-                embedCode: ''
+                shareurlType: 'default',
+                embedType: 'responsive',
+                copySuccess: false,
+                embedMethod: 'embed-method-responsive'
             };
         },
         computed: {
-            shareUrl({ shareurl_type, $id, $publicUrl, $metadata, plugin_shareurls, published }) {
+            shareUrl({ shareurlType, id, publicUrl, metadata, pluginShareurls, published }) {
                 if (!published) return 'https://www.datawrapper.de/...';
-                if (shareurl_type === 'default') return $publicUrl;
+                if (shareurlType === 'default') return publicUrl;
                 let url = '';
 
-                plugin_shareurls.forEach(t => {
-                    if (t.id === shareurl_type) {
-                        url = t.url.replace(/%chart_id%/g, $id);
+                pluginShareurls.forEach(t => {
+                    if (t.id === shareurlType) {
+                        url = t.url.replace(/%chart_id%/g, id);
 
                         url = url.replace(/%(.*?)%/g, (match, path) => {
-                            return get(
-                                {
-                                    id: $id,
-                                    metadata: $metadata
-                                },
-                                path
-                            );
+                            return get({ id, metadata }, path);
                         });
                     }
                 });
                 return url;
+            },
+
+            embedCode({ embedType, publicUrl, metadata }) {
+                if (!metadata) return '';
+                if (metadata.publish && !metadata.publish['embed-codes'])
+                    return `<iframe src="${publicUrl}" width="100%" height="${metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
+
+                if (metadata.publish['embed-codes']['embed-method-' + embedType]) {
+                    return metadata.publish['embed-codes']['embed-method-' + embedType];
+                } else {
+                    return '';
+                }
             }
         },
         helpers: {
@@ -158,26 +164,6 @@
             purifyHtml
         },
         methods: {
-            setEmbedCode() {
-                const chart = this.store;
-                const state = this.get();
-                if (!state) return;
-                const embedType = state.embed_type ? `embed-method-${state.embed_type}` : null;
-
-                const { publicUrl } = chart.get();
-                const embedCodes = chart.getMetadata('publish.embed-codes');
-                const embedHeight = chart.getMetadata('publish.embed-height');
-
-                this.set({
-                    embedCode:
-                        embedCodes && embedCodes[embedType]
-                            ? embedCodes[embedType]
-                            : embedType === 'custom'
-                            ? ''
-                            : `<iframe src="${publicUrl}" width="100%" height="${embedHeight}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`
-                });
-            },
-
             copy() {
                 const me = this;
                 me.refs.embedInput.select();
@@ -185,22 +171,13 @@
                     var successful = document.execCommand('copy');
                     if (successful) {
                         trackEvent('Chart Editor', 'embedcode-copy');
-                        me.set({ copy_success: true });
-                        setTimeout(() => me.set({ copy_success: false }), 300);
+                        me.set({ copySuccess: true });
+                        setTimeout(() => me.set({ copySuccess: false }), 300);
                     }
                 } catch (err) {
                     // console.log('Oops, unable to copy');
                 }
             }
-        },
-
-        oncreate() {
-            // watch changes
-            this.setEmbedCode();
-            const chart = this.store;
-            chart.observeDeep('metadata.publish.embed-codes', () => this.setEmbedCode());
-            chart.observeDeep('metadata.publish.embed-height', () => this.setEmbedCode());
-            chart.observeDeep('publicUrl', () => this.setEmbedCode());
         }
     };
 </script>
