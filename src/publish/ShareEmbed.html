@@ -146,12 +146,11 @@
                 });
                 return url;
             },
-
             embedCode({ embedType, publicUrl, metadata }) {
                 if (!metadata) return '';
-                if (metadata.publish && !metadata.publish['embed-codes'])
+                if (metadata.publish && !metadata.publish['embed-codes']) {
                     return `<iframe src="${publicUrl}" width="100%" height="${metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
-
+                }
                 if (metadata.publish['embed-codes']['embed-method-' + embedType]) {
                     return metadata.publish['embed-codes']['embed-method-' + embedType];
                 } else {

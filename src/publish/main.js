@@ -8,17 +8,16 @@ const data = {
     chart: {
         id: ''
     },
-    embed_templates: [],
-    plugin_shareurls: [],
+    embedTemplates: [],
+    pluginShareurls: [],
     published: false,
     publishing: false,
     needs_republish: false,
     publish_error: false,
     auto_publish: false,
     progress: [],
-    shareurl_type: 'default',
-    embed_type: 'responsive',
-    copy_success: false
+    shareurlType: 'default',
+    embed_type: 'responsive'
 };
 
 export default { App, data, store };

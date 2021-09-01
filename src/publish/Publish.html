@@ -93,14 +93,11 @@
 <script>
     /* globals $ */
     /* eslint camelcase: "off" */
-    import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
     import PublishButton from '@datawrapper/controls/publish/PublishButtonControl.html';
-    import purifyHtml from '@datawrapper/shared/purifyHtml';
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import httpReq from '@datawrapper/shared/httpReq';
     import { loadScript, loadStylesheet } from '@datawrapper/shared/fetch';
-    import get from '@datawrapper/shared/get';
 
     import ConfirmationModal from './ConfirmationModal.html';
     import ShareEmbed from './ShareEmbed.html';
@@ -110,7 +107,6 @@
 
     export default {
         components: {
-            HelpDisplay,
             PublishButton,
             ConfirmationModal,
             ShareEmbed
@@ -154,29 +150,6 @@
             };
         },
         computed: {
-            shareUrl({ shareurlType, $id, $publicUrl, $metadata, pluginShareurls, published }) {
-                if (!published) return 'https://www.datawrapper.de/...';
-                if (shareurlType === 'default') return $publicUrl;
-                let url = '';
-
-                pluginShareurls.forEach(t => {
-                    if (t.id === shareurlType) {
-                        url = t.url.replace(/%chart_id%/g, $id);
-
-                        url = url.replace(/%(.*?)%/g, (match, path) => {
-                            return get(
-                                {
-                                    id: $id,
-                                    metadata: $metadata
-                                },
-                                path
-                            );
-                        });
-                    }
-                });
-                return url;
-            },
-
             sortedChartActions({ chartActions, $actions }) {
                 return chartActions
                     .concat($actions)
@@ -188,7 +161,7 @@
                 return publishStarted > 0 ? now - publishStarted : 0;
             }
         },
-        helpers: { __, purifyHtml },
+        helpers: { __ },
         methods: {
             publish() {
                 this.set({
