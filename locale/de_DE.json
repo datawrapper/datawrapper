@@ -914,8 +914,8 @@
   "upload / text / placeholder": "",
   "upload / text / help": "",
   "upload / file / read-failed": "",
-  "upload / text / before-button": "",
-  "upload / text / button": "",
+  "upload / text / random / before-button": "",
+  "upload / text / random / button": "",
   "publish / published": "Deine Visualisierung wurde <b>veröffentlicht</b>.",
   "publish / unpublish-btn": "rückgängig machen.",
   "publish / unpublish-intro": "Du kannst die Veröffentlichung jederzeit",
@@ -937,5 +937,6 @@
   "signin / no-account-yet": "",
   "signup / create-account": "Benutzerkonto anlegen",
   "signin / its-free": "Es ist kostenlos und schnell erledigt.",
-  "signin / enter-otp": "Bitte das OTP-Gerät (z.B. YubiKey) verbinden und aktivieren oder gib einen Code aus deiner konfigurierten OTP-App ein."
+  "signin / enter-otp": "Bitte das OTP-Gerät (z.B. YubiKey) verbinden und aktivieren oder gib einen Code aus deiner konfigurierten OTP-App ein.",
+  "upload / text / button": ""
 }

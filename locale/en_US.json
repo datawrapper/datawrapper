@@ -914,8 +914,8 @@
   "upload / text / placeholder": "Paste your data here",
   "upload / text / help": "You can also paste it <strong>directly into the table</strong> or upload a file from your computer by simply <strong>dragging it onto the table.</strong>",
   "upload / file / read-failed": "Failed to read the file.",
-  "upload / text / before-button": "Don’t have a dataset? Fill the table with",
-  "upload / text / button": "random data",
+  "upload / text / random / before-button": "Don’t have a dataset? Fill the table with",
+  "upload / text / random / button": "random data",
   "publish / published": "Your visualization is <b>published</b>.",
   "publish / unpublish-btn": "unpublish.",
   "publish / unpublish-intro": "You can always",
@@ -937,5 +937,6 @@
   "signin / no-account-yet": "Don't have an account, yet?",
   "signup / create-account": "Create a new account",
   "signin / its-free": "It's free and done quickly.",
-  "signin / enter-otp": "Please insert your OTP device and click its button, or enter a code from your configured OTP app."
+  "signin / enter-otp": "Please insert your OTP device and click its button, or enter a code from your configured OTP app.",
+  "upload / text / button": "Save pasted data to the table"
 }

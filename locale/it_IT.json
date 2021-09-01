@@ -914,8 +914,8 @@
   "upload / text / placeholder": "",
   "upload / text / help": "",
   "upload / file / read-failed": "",
-  "upload / text / before-button": "",
-  "upload / text / button": "",
+  "upload / text / random / before-button": "",
+  "upload / text / random / button": "",
   "publish / published": "",
   "publish / unpublish-btn": "",
   "publish / unpublish-intro": "",
@@ -937,5 +937,6 @@
   "signin / no-account-yet": "",
   "signup / create-account": "Crea un nuovo account",
   "signin / its-free": "",
-  "signin / enter-otp": ""
+  "signin / enter-otp": "",
+  "upload / text / button": ""
 }
