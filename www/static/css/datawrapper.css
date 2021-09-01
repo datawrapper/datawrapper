@@ -362,18 +362,19 @@ html .navbar.navbar-transparent .navbar-inner .nav li .divider-vertical {
 }
 html .navbar .navbar-inner {
   font-weight: 400;
-  background: #f9f9f9;
+  background: white;
   min-height: 55px;
-  padding-top: 10px;
-  border-bottom: 1px solid #f9f9f9;
+  border-top: solid #1d81a2;
+  border-bottom: 1px solid #eee;
   box-shadow: none;
-  height: 55px;
+  padding-top: 15px !important;
+  padding-bottom: 13px!important;
 }
 html .navbar .navbar-inner li {
   line-height: 26px;
 }
 html .navbar .navbar-inner .nav > li.icon > a {
-  padding: 10px 9px 10px;
+  padding: 20px 9px 20px;
   line-height: 26px;
 }
 html .navbar .navbar-inner .nav > li .fa,
@@ -393,22 +394,26 @@ html .navbar .navbar-inner .nav > li .no-icon {
   margin-right: 19px;
 }
 html .navbar .navbar-inner .nav > li > a {
-  padding-top: 11px;
-  padding-bottom: 10px;
-  font-size: 15px;
+  padding: 20px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #4a4a4a;
+}
+html .navbar .navbar-inner .nav > li > a#dw-header-link-mycharts {
+  padding-right: 5px;
+}
+html .navbar .navbar-inner .nav > li > a .fa {
+  color: #1d81a2;
 }
 html .navbar .navbar-inner .nav > li > a:hover {
   color: #000;
-}
-html .navbar .navbar-inner .nav > li > a:hover .fa {
-  color: #1d81a2;
 }
 html .navbar .navbar-inner .nav > li > a b {
   font-weight: 500;
 }
 html .navbar .navbar-inner .nav > li.divider-vertical {
   height: 45px;
-  margin: 0 0px;
+  margin: 10px 0px;
   border-left-color: #dedcdb;
 }
 html .navbar .navbar-inner .nav .active > a,
@@ -429,9 +434,9 @@ html .navbar .navbar-inner .nav .dropdown a.group {
   margin-left: -2px;
 }
 html .navbar .navbar-inner img.logo {
-  width: 118px;
+  width: 134px;
   float: left;
-  margin-top: 11px;
+  margin-top: 13px;
 }
 html .navbar .navbar-inner .brand {
   color: #333;

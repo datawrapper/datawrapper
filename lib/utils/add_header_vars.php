@@ -50,8 +50,16 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         }
     }
 
+    $createSubMenu = [
+        'title' => 'Create new …',
+        'id' => 'create',
+        'icon' => 'fa fa-plus',
+        'dropdown' => []
+    ];
+
+
     if ($canCreateCharts) {
-        $headlinks[] = array(
+        $createSubMenu['dropdown'][] = array(
             'url' => '/create/chart',
             'id' => 'chart',
             'title' => __('New Chart'),
@@ -59,7 +67,15 @@ function add_header_vars(&$page, $active = null, $page_css = null) {
         );
     }
 
-    header_nav_hook($headlinks, 'create');
+    header_nav_hook($createSubMenu['dropdown'], 'create');
+
+    $headlinks[] = [
+        'url' => '/',
+        'id' => 'dashboard',
+        'title' => 'Dashboard',
+        'icon' => 'fa fa-rocket'
+    ];
+    $headlinks[] = $createSubMenu;
 
     if (isset($config['navigation'])) foreach ($config['navigation'] as $item) {
         $link = array('url' => str_replace('%lang%', substr(DatawrapperSession::getLanguage(), 0, 2), $item['url']), 'id' => $item['id'], 'title' => __($item['title']));

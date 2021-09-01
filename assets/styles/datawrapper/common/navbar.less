@@ -8,12 +8,16 @@ html .navbar.navbar-transparent .navbar-inner {
 
 html .navbar .navbar-inner {
     font-weight: 400;
-    background: @dw_background;
+    background: white;
     min-height: 55px;
-    padding-top: 10px;
-    border-bottom: 1px solid @dw_background;
+
+    border-top: solid @dw_blue_medium;
+    border-bottom: 1px solid #eee;
     box-shadow: none;
-    height: 55px;
+
+    padding-top: 15px !important;
+    padding-bottom: 13px!important;
+
 
     li {
         line-height: 26px;
@@ -22,7 +26,7 @@ html .navbar .navbar-inner {
     .nav {
         & > li {
             &.icon > a {
-                padding: 10px 9px 10px;
+                padding: 20px 9px 20px;
                 line-height: 26px;
             }
 
@@ -44,20 +48,27 @@ html .navbar .navbar-inner {
             }
 
             & > a {
-                padding-top: 11px;
-                padding-bottom: 10px;
-                font-size: 15px;
+                padding: 20px 20px;
+                font-size: 16px;
+                font-weight: 500;
+                color: #4a4a4a;
+
+                &#dw-header-link-mycharts {
+                    padding-right: 5px;
+                }
+
+                .fa { color: @dw_blue_medium; }
 
                 &:hover {
                     color: #000;
-                    .fa { color: @dw_blue_medium; }
+
                 }
                 b { font-weight: 500; }
             }
 
             &.divider-vertical {
                 height: 45px;
-                margin: 0 0px;
+                margin: 10px 0px;
                 border-left-color: #dedcdb;
             }
         }
@@ -84,9 +95,9 @@ html .navbar .navbar-inner {
     } // end .nav
 
     img.logo {
-        width: 118px;
+        width: 134px;
         float: left;
-        margin-top: 11px;
+        margin-top: 13px;
     }
 
     .brand {
