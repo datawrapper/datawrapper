@@ -37,8 +37,9 @@
                     ref:embedInput
                     type="text"
                     class="passive-input"
-                    readonly
                     value="{embedCode}"
+                    on:click="copy('embedInput')"
+                    readonly
                 />
             </div>
 
@@ -115,6 +116,10 @@
         white-space: nowrap;
         display: inline-block;
         cursor: pointer;
+    }
+
+    .passive-input::selection {
+        background: #dadada;
     }
 
     .embed-code .passive-input {
