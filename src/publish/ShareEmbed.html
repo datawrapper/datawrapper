@@ -1,0 +1,182 @@
+<div style="margin-top: 30px;" class="{published?'':'inactive'}">
+    <h2>{@html __('publish / share-embed') }</h2>
+    <div class="block">
+        <i class="icon fa fa-link fa-fw"></i>
+        <div class="ctrls">
+            <div class="h">
+                <b>{@html __('publish / share-url') }</b>
+                <div class="embed-options">
+                    <label class="radio">
+                        <input
+                            bind:group="shareurlType"
+                            value="default"
+                            type="radio"
+                            name="url-type"
+                        />
+                        {@html __('publish / share-url / fullscreen') }
+                    </label>
+                    {#each pluginShareurls as tpl}
+                    <label class="radio"
+                        ><input
+                            bind:group="shareurlType"
+                            value="{tpl.id}"
+                            type="radio"
+                            name="url-type"
+                        />
+                        {@html tpl.name}</label
+                    >
+                    {/each}
+                </div>
+            </div>
+            <div class="inpt">
+                <a target="_blank" class="share-url" href="{shareUrl}">{shareUrl}</a>
+            </div>
+        </div>
+        <HelpDisplay>
+            <div>{@html __('publish / help / share-url') }</div>
+        </HelpDisplay>
+    </div>
+
+    <div class="block">
+        <i class="icon fa fa-code fa-fw"></i>
+        <div class="ctrls">
+            <div class="h">
+                <b>{@html __('publish / embed') }</b>
+                <div class="embed-options">
+                    {#each embedTemplates as tpl}
+                    <label class="radio"
+                        ><input type="radio" bind:group="embedType" value="{tpl.id}" /> { tpl.title
+                        }</label
+                    >
+                    {/each}
+                </div>
+            </div>
+            <div class="inpt">
+                <textarea
+                    ref:embedInput
+                    type="text"
+                    class="input embed-code"
+                    readonly
+                    value="{embedCode}"
+                ></textarea>
+                <button class="btn btn-copy" on:click="copy(embedCode)" title="copy">
+                    <i class="fa fa-copy"></i> { __('publish / copy') }
+                </button>
+                <div class="copy-success {copySuccess ? 'show':''}">
+                    { __('publish / copy-success') }
+                </div>
+            </div>
+        </div>
+        <HelpDisplay>
+            <div>
+                {@html __('publish / embed / help') } {#each embedTemplates.slice(2) as tpl}
+                <div><b>{tpl.title}:</b> {@html purifyHtml(tpl.text) }</div>
+                {/each}
+            </div>
+        </HelpDisplay>
+    </div>
+</div>
+
+<style>
+    input[type='radio'] {
+        vertical-align: baseline !important;
+        margin-left: -20px !important;
+    }
+    a.share-url {
+        font-size: 18px;
+    }
+    .copy-success {
+        font-size: 11px;
+        color: #9c9;
+        font-style: italic;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 5s ease-in;
+        margin-top: -10px;
+        position: absolute;
+    }
+    .copy-success.show {
+        opacity: 1;
+        transition: none;
+    }
+    .embed-options {
+        display: inline-block;
+    }
+    .embed-code {
+        height: 20px;
+    }
+</style>
+
+<script>
+    import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import purifyHtml from '@datawrapper/shared/purifyHtml';
+    import { __ } from '@datawrapper/shared/l10n';
+    import { trackEvent } from '@datawrapper/shared/analytics';
+    import get from '@datawrapper/shared/get';
+
+    export default {
+        components: {
+            HelpDisplay
+        },
+        data() {
+            return {
+                embedTemplates: [],
+                pluginShareurls: [],
+                published: false,
+                shareurlType: 'default',
+                embedType: 'responsive',
+                copySuccess: false,
+                embedMethod: 'embed-method-responsive'
+            };
+        },
+        computed: {
+            shareUrl({ shareurlType, id, publicUrl, metadata, pluginShareurls, published }) {
+                if (!published) return 'https://www.datawrapper.de/...';
+                if (shareurlType === 'default') return publicUrl;
+                let url = '';
+
+                pluginShareurls.forEach(t => {
+                    if (t.id === shareurlType) {
+                        url = t.url.replace(/%chart_id%/g, id);
+
+                        url = url.replace(/%(.*?)%/g, (match, path) => {
+                            return get({ id, metadata }, path);
+                        });
+                    }
+                });
+                return url;
+            },
+            embedCode({ embedType, publicUrl, metadata }) {
+                if (!metadata) return '';
+                if (metadata.publish && !metadata.publish['embed-codes']) {
+                    return `<iframe src="${publicUrl}" width="100%" height="${metadata.publish['embed-height']}" scrolling="no" frameborder="0" allowtransparency="true"></iframe>`;
+                }
+                if (metadata.publish['embed-codes']['embed-method-' + embedType]) {
+                    return metadata.publish['embed-codes']['embed-method-' + embedType];
+                } else {
+                    return '';
+                }
+            }
+        },
+        helpers: {
+            __,
+            purifyHtml
+        },
+        methods: {
+            copy() {
+                const me = this;
+                me.refs.embedInput.select();
+                try {
+                    var successful = document.execCommand('copy');
+                    if (successful) {
+                        trackEvent('Chart Editor', 'embedcode-copy');
+                        me.set({ copySuccess: true });
+                        setTimeout(() => me.set({ copySuccess: false }), 300);
+                    }
+                } catch (err) {
+                    // console.log('Oops, unable to copy');
+                }
+            }
+        }
+    };
+</script>
