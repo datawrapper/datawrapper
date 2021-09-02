@@ -4,8 +4,20 @@
         <div class="h">
             <b>{@html __('publish / share-url') }</b>
         </div>
-        <div class="inpt">
-            <a target="_blank" class="share-url" href="{shareUrl}">{shareUrl}</a>
+
+        <div class="copy-group">
+            <div class="copy-preview share-url">
+                <input ref:shareUrl type="text" class="passive-input" value="{shareUrl}" readonly />
+                <a target="_blank" class="share-url-link" href="{shareUrl}"></a>
+            </div>
+
+            <button
+                class="btn copy-button"
+                on:click="copy('shareUrl')"
+                title="{ __('publish / copy') }"
+            >
+                <i class="fa fa-copy"></i>
+            </button>
         </div>
 
         <RadioControl options="{shareOptions}" bind:value="shareurlType" label="" />
@@ -20,8 +32,14 @@
         </div>
 
         <div class="copy-group">
-            <div class="copy-preview">
-                <input ref:embedInput type="text" class="embed-code" readonly value="{embedCode}" />
+            <div class="copy-preview embed-code">
+                <input
+                    ref:embedInput
+                    type="text"
+                    class="passive-input"
+                    readonly
+                    value="{embedCode}"
+                />
             </div>
 
             <button
@@ -66,13 +84,16 @@
 
     .copy-group {
         display: flex;
+        padding: 5px 0;
     }
 
     .copy-preview {
+        position: relative;
         flex: 1;
         background: #f5f5f5;
         border: 1px solid #dddddd;
         border-radius: 4px;
+        overflow: hidden;
     }
 
     .copy-button {
@@ -80,17 +101,49 @@
         margin-left: 5px;
     }
 
-    .embed-code {
-        color: #4f4f4f;
-        background: transparent;
-        border: none;
-        font-size: 12px;
+    /* Preview holder for copying to clipboard */
+    .passive-input {
         margin: 0;
         width: calc(100% - 15px);
         overflow: hidden;
+        background: transparent;
+        border: none;
         text-overflow: ellipsis;
         white-space: nowrap;
         display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .embed-code .passive-input {
+        color: #4f4f4f;
+        font-size: 12px;
+    }
+
+    /* Faux link styling for input */
+    .share-url .passive-input {
+        color: #1d81a2;
+        font-size: 16px;
+        font-weight: 500;
+        padding-bottom: 0;
+    }
+
+    /* Faux link hover styling for input */
+    .share-url:hover .passive-input {
+        text-decoration: underline;
+        color: #15607a;
+    }
+
+    /* Invisible link element for share URL */
+    .share-url-link {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        outline: none;
     }
 </style>
 
