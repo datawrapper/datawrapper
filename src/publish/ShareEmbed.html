@@ -19,20 +19,21 @@
             <b>{@html __('publish / embed') }</b>
         </div>
 
-        <div class="inpt">
-            <textarea
-                ref:embedInput
-                type="text"
-                class="input embed-code"
-                readonly
-                value="{embedCode}"
-            ></textarea>
-            <button class="btn btn-copy" on:click="copy(embedCode)" title="copy">
-                <i class="fa fa-copy"></i> { __('publish / copy') }
-            </button>
-            <div class="copy-success {copySuccess ? 'show':''}">
-                { __('publish / copy-success') }
+        <div class="copy-group">
+            <div class="copy-preview">
+                <input ref:embedInput type="text" class="embed-code" readonly value="{embedCode}" />
             </div>
+
+            <button
+                class="btn copy-button"
+                on:click="copy('embedInput')"
+                title="{ __('publish / copy') }"
+            >
+                <i class="fa fa-copy"></i>
+            </button>
+        </div>
+        <div class="copy-success {copySuccess ? 'show':''}">
+            { __('publish / copy-success') }
         </div>
 
         <RadioControl options="{embedOptions}" bind:value="embedType" label="" />
@@ -57,9 +58,39 @@
         margin-top: -10px;
         position: absolute;
     }
+
     .copy-success.show {
         opacity: 1;
         transition: opacity 5s ease-in;
+    }
+
+    .copy-group {
+        display: flex;
+    }
+
+    .copy-preview {
+        flex: 1;
+        background: #f5f5f5;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+    }
+
+    .copy-button {
+        flex: 0 0 40px;
+        margin-left: 5px;
+    }
+
+    .embed-code {
+        color: #4f4f4f;
+        background: transparent;
+        border: none;
+        font-size: 12px;
+        margin: 0;
+        width: calc(100% - 15px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
     }
 </style>
 
@@ -114,24 +145,24 @@
                     return '';
                 }
             },
-            embedOptions({ embedTemplates }) {
-                return embedTemplates.map(({ name, id }) => ({
-                    label: name,
-                    value: id
-                }));
-            },
             shareOptions({ pluginShareurls }) {
                 const defaultOption = {
                     label: __('publish / share-url / fullscreen'),
                     value: 'default'
                 };
 
-                const pluginShareOptions = pluginShareurls.map(({ title, id }) => ({
-                    label: title,
+                const pluginShareOptions = pluginShareurls.map(({ name, id }) => ({
+                    label: name,
                     value: id
                 }));
 
                 return [defaultOption, ...pluginShareOptions];
+            },
+            embedOptions({ embedTemplates }) {
+                return embedTemplates.map(({ title, id }) => ({
+                    label: title,
+                    value: id
+                }));
             }
         },
         helpers: {
@@ -139,9 +170,9 @@
             purifyHtml
         },
         methods: {
-            copy() {
+            copy(targetRef) {
                 const me = this;
-                me.refs.embedInput.select();
+                me.refs[targetRef].select();
                 try {
                     var successful = document.execCommand('copy');
                     if (successful) {
