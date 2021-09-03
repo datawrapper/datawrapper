@@ -8,7 +8,7 @@
         <div class="copy-group">
             <div class="copy-preview share-url">
                 <input ref:shareUrl type="text" class="passive-input" value="{shareUrl}" readonly />
-                <a target="_blank" class="share-url-link" href="{shareUrl}"></a>
+                <a target="_blank" class="share-url-link" href="{shareUrl}"> </a>
             </div>
 
             <button
@@ -155,7 +155,6 @@
 <script>
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
     import RadioControl from '@datawrapper/controls/RadioControl.html';
-    import purifyHtml from '@datawrapper/shared/purifyHtml';
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
     import get from '@datawrapper/shared/get';
@@ -224,8 +223,7 @@
             }
         },
         helpers: {
-            __,
-            purifyHtml
+            __
         },
         methods: {
             copy(targetRef) {
