@@ -138,6 +138,22 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 return $app->error('Something is wrong, the API might be down...');
             }
 
+            $org = $chart->getOrganization();
+
+            $flags = false;
+            $teamSettingsControls = new stdClass();
+            $teamSettingsPreviewWidths = [];
+            $customFields = [];
+            $redirectDisabled = false;
+
+            if ($org) {
+                $flags = $org->getSettings("flags") ?? new stdClass();
+                $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
+                $teamSettingsPreviewWidths = $org->getSettings("previewWidths") ?? [];
+                $customFields = $org->getSettings("customFields") ?? [];
+                $redirectDisabled = $org->getSettings('publishTarget.disable_redirects') ?? false;
+            }
+
             $publishData = (object) [
                 'embedTemplates' => $embed_codes,
                 'embedType' => $embed_type,
@@ -145,22 +161,12 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'pluginShareurls' => $display_urls,
                 'afterEmbed' => Hooks::execute(Hooks::SVELTE_PUBLISH_AFTER_EMBED),
                 'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
-                'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
+                'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW),
+                'redirectDisabled' => $redirectDisabled,
             ];
 
             $res = Hooks::execute('enable_custom_layouts', $chart);
             $customLayouts = !empty($res) && $res[0] === true;
-
-            $org = $chart->getOrganization();
-            $teamSettingsControls = new stdClass();
-            $customFields = [];
-
-            if ($org) {
-                $customFields = $org->getSettings("customFields") ?? [];
-                $teamSettingsControls = $org->getSettings("controls") ?? new stdClass();
-            }
-
-            $flags = $org ? $org->getSettings("flags") ?? new stdClass() : false;
 
             $page = ['locale'=>'en'];
             add_editor_nav($page, 3, $chart);
@@ -213,7 +219,8 @@ require_once ROOT_PATH . 'lib/utils/call_v3_api.php';
                 'folders' => $page['folders'],
                 'visNamespace' => $page['visNamespace'],
                 'teamSettings' => [
-                    'controls' => $teamSettingsControls
+                    'controls' => $teamSettingsControls,
+                    'previewWidths' => $teamSettingsPreviewWidths
                 ],
                 'flags' => $flags
             ];

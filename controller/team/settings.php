@@ -24,10 +24,10 @@
 	    return $availableLocales;
 	};
 
-	$getThemes = function($org) {
+	$getThemeInfo = function($org) {
 	    $cfg = $GLOBALS['dw_config'];
 	    $themes = [];
-
+	    $hasThemeWithLogo = false;
 	    $orgThemes = OrganizationThemeQuery::create()->findByOrganization($org);
 	    $publicThemes = $cfg['default-themes'] ?? ['default'];
 
@@ -36,6 +36,12 @@
 	            "value" => $t->getThemeId(),
 	            "label" => $t->getTheme()->getTitle()
 	        ];
+
+	        if (!$hasThemeWithLogo) {
+	        	$logoData = $t->getTheme()->getThemeData('options.blocks.logo.data');
+	        	$hasThemeWithLogo = $logoData &&
+	        	(array_key_exists('text', $logoData) || array_key_exists('imgSrc', $logoData));
+	        }
 	    }
 
 	    foreach ($publicThemes as $tId) {
@@ -47,7 +53,10 @@
 	        ];
 	    }
 
-	    return $themes;
+	    return [
+	    	"themes" => $themes,
+	    	"hasThemeWithLogo" => $hasThemeWithLogo
+	    ];
 	};
 
 	$getFolders = function($org) {
@@ -99,7 +108,7 @@
 	});
 
 	$app->get('/team/:org_id/:tab', function ($org_id, $tab)
-	    use ($app, $getLocales, $getThemes, $getFolders, $getSystemDefaultTheme, $getVisArchive, $getVisualizations) {
+	    use ($app, $getLocales, $getThemeInfo, $getFolders, $getSystemDefaultTheme, $getVisArchive, $getVisualizations) {
 
 	    disable_cache($app);
 	    $org = OrganizationQuery::create()->findPk($org_id);
@@ -111,6 +120,7 @@
 	    $teamSettings = $org->getSettings();
 
         $tabs = [];
+        $themeInfo = $getThemeInfo($org);
 
         foreach($allTabs as $i => $page) {
             if (isset($page['checkVisibility']) && is_callable($page['checkVisibility'])) {
@@ -134,14 +144,15 @@
 	            'user' => $user->serialize(),
 	            'isAdmin' => $user->isAdmin(),
 	            'locales' => $getLocales(),
-	            'themes' => $getThemes($org),
+	            'themes' => $themeInfo["themes"],
 	            'folders' => $getFolders($org),
 	            'visualizations' => $getVisualizations(),
 	            'visualizationsArchive' => $getVisArchive(),
 	            'defaultTheme' => $org->getDefaultTheme() ? $org->getDefaultTheme() : $getSystemDefaultTheme(),
 	            'pluginTabs' => $tabs ? $tabs : [],
 	            'settings' => $teamSettings,
-	            'role' => $org->hasUser($user) ? $org->getRole($user) : ""
+	            'role' => $org->hasUser($user) ? $org->getRole($user) : "",
+	            'hasThemeWithLogo' => $themeInfo["hasThemeWithLogo"]
 	        ]
 	    ];
 

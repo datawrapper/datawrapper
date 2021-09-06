@@ -10,7 +10,7 @@
                 <div class="vis-canvas">
                     <ChartPreview
                         bind:loading
-                        src="/preview/{ $id }"
+                        src="/preview/{ $id }{mode === 'print' ? '?fitchart=1' : ''}"
                         on:resize="makePreviewSticky()"
                     />
 

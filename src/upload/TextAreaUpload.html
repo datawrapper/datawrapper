@@ -13,13 +13,13 @@
 <script>
     /* globals dw */
     import httpReq from '@datawrapper/shared/httpReq';
-    import _throttle from 'underscore-es/throttle';
+    import { throttle } from 'underscore';
     import { __ } from '@datawrapper/shared/l10n';
 
     let app;
     const chart = dw.backend.currentChart;
 
-    const updateData = _throttle(() => {
+    const updateData = throttle(() => {
         const { chartData } = app.get();
         httpReq.put(`/v3/charts/${chart.get('id')}/data`, {
             body: chartData,

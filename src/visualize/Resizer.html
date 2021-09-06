@@ -159,34 +159,44 @@
                     { value: 'in', label: 'in', step: 0.01, decimals: 2 },
                     { value: 'px', label: 'px', step: 1, decimals: 0 }
                 ],
-                breakpoints: [
-                    {
-                        icon: 'fa-mobile',
-                        iconSize: 14,
-                        minWidth: 0,
-                        maxWidth: 320,
-                        width: 320
-                    },
-                    {
-                        icon: 'fa-mobile',
-                        iconSize: 17,
-                        minWidth: 321,
-                        maxWidth: 400,
-                        width: 400
-                    },
-                    {
-                        icon: 'fa-desktop',
-                        iconSize: 14,
-                        minWidth: 401,
-                        maxWidth: Infinity,
-                        width: 600
-                    }
-                ],
+                defaultWidths: [320, 400, 600],
                 preset: null,
                 printExpanded: false
             };
         },
         computed: {
+            breakpointWidths({ $teamSettings, defaultWidths }) {
+                const widths = $teamSettings.previewWidths;
+                if (!widths || !widths.length) return defaultWidths;
+                return defaultWidths.map((d, i) =>
+                    widths[i] && !isNaN(widths[i]) ? widths[i] : d
+                );
+            },
+            breakpoints({ breakpointWidths }) {
+                return [
+                    {
+                        icon: 'fa-mobile',
+                        iconSize: 14,
+                        minWidth: 0,
+                        maxWidth: breakpointWidths[0],
+                        width: breakpointWidths[0]
+                    },
+                    {
+                        icon: 'fa-mobile',
+                        iconSize: 17,
+                        minWidth: breakpointWidths[0] + 1,
+                        maxWidth: breakpointWidths[1],
+                        width: breakpointWidths[1]
+                    },
+                    {
+                        icon: 'fa-desktop',
+                        iconSize: 14,
+                        minWidth: breakpointWidths[1] + 1,
+                        maxWidth: Infinity,
+                        width: breakpointWidths[2]
+                    }
+                ];
+            },
             width_px({ width, unit, printScale }) {
                 return (
                     (width * (unit === 'px' ? 1 : unit === 'mm' ? DPI / IN2MM : DPI)) / printScale

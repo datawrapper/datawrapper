@@ -93,19 +93,22 @@ $app->get('/(chart|map|table)/:id/publish(/:sub_page)?', function ($id) use ($ap
             return $app->error('Something is wrong, the API might be down...');
         }
 
+        $org = $chart->getOrganization();
+
         // new publish step
         $page['svelte_data'] = [
             'published' => $chart->getLastEditStep() > 4,
             'needs_republish' => $chart->getLastEditStep() > 4 &&
                 strtotime($chart->getLastModifiedAt()) - strtotime($chart->getPublishedAt()) > 20,
             'chart' => $chart->toStruct(),
-            'embed_templates' => $embed_codes,
-            'embed_type' => $embed_type,
-            'shareurl_type' => $user->getUserData()['shareurl_type'] ?? 'default',
-            'plugin_shareurls' => $display_urls,
+            'embedTemplates' => $embed_codes,
+            'embedType' => $embed_type,
+            'shareurlType' => $user->getUserData()['shareurl_type'] ?? 'default',
+            'pluginShareurls' => $display_urls,
             'auto_publish' => !empty($app->request()->params('doit')),
             'guest_text_above' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_ABOVE),
-            'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW)
+            'guest_text_below' => Hooks::execute(Hooks::PUBLISH_TEXT_GUEST_BELOW),
+            'redirect_disabled' => $org && $org->getSettings('publishTarget.disable_redirects')
         ];
         $app->render('chart/publish.twig', $page);
     });

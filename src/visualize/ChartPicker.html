@@ -9,6 +9,7 @@
             {/each}
         </div>
 
+        {#if archiveOpts && archiveOpts.length > 1}
         <div class="vis-archive-select">
             <SelectControl
                 width="180px"
@@ -17,6 +18,7 @@
                 on:change="loadVis(event.target.value)"
             />
         </div>
+        {/if}
 
         <p>
             <b>{ __("Hint") }:</b>
