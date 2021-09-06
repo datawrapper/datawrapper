@@ -25,8 +25,7 @@
         "test": "ava",
         "test:watch": "ava -w",
         "prepublishOnly": "npm test && npm run lint",
-        "docs": "jsdoc2md --template jsdoc2md/README.hbs --files *.js --files node/*.js  -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs",
-        "prepare": "husky install"
+        "docs": "jsdoc2md --template jsdoc2md/README.hbs --files *.js --files node/*.js  -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
     },
     "repository": {
         "type": "git",
@@ -41,7 +40,6 @@
         "dayjs": "^1.10.4",
         "esm": "3.2.25",
         "healthier": "^4.0.0",
-        "husky": "^6.0.0",
         "jsdoc-to-markdown": "^7.0.1",
         "lint-staged": "^11.0.0",
         "node-fetch": "^2.6.0",

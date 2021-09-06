@@ -1,4 +1,0 @@
-npx lint-staged
-npm test
-npm run docs
-git add README.md
