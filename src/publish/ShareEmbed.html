@@ -1,64 +1,76 @@
 <div style="margin-top: 30px;" class="{published?'':'inactive'}">
     <h2>{@html __('publish / share-embed') }</h2>
     <div class="block">
-        <label for="share-url">{@html __('publish / share-url') }</label>
-        <div class="copy-group">
-            <div class="copy-preview share-url">
-                <input
-                    ref:shareUrl
-                    type="text"
-                    id="share-url"
-                    class="passive-input"
-                    value="{shareUrl}"
-                    readonly
-                />
-                <a target="_blank" class="share-url-link" href="{shareUrl}"> </a>
+        <IconDisplay size="32px" icon="link" color="#333333" class="pt-5 pr-4" />
+        <div class="share-embed-item">
+            <label for="share-url">{@html __('publish / share-url') }</label>
+            <div class="copy-group">
+                <div class="copy-preview share-url">
+                    <input
+                        ref:shareUrl
+                        type="text"
+                        id="share-url"
+                        class="passive-input"
+                        value="{shareUrl}"
+                        readonly
+                    />
+                    <a target="_blank" class="share-url-link" href="{shareUrl}"> </a>
+                </div>
+
+                <button
+                    class="btn copy-button"
+                    on:click="copy('shareUrl')"
+                    title="{ __('publish / copy') }"
+                >
+                    <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
+                </button>
             </div>
 
-            <button
-                class="btn copy-button"
-                on:click="copy('shareUrl')"
-                title="{ __('publish / copy') }"
-            >
-                <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
-            </button>
+            <RadioControl options="{shareOptions}" bind:value="shareurlType" label="" />
+            <HelpDisplay>
+                <div>{@html __('publish / help / share-url') }</div>
+            </HelpDisplay>
         </div>
-
-        <RadioControl options="{shareOptions}" bind:value="shareurlType" label="" />
-        <HelpDisplay>
-            <div>{@html __('publish / help / share-url') }</div>
-        </HelpDisplay>
     </div>
 
     <div class="block">
-        <label for="embed-code">{@html __('publish / embed') }</label>
+        <IconDisplay
+            size="32px"
+            icon="source-code"
+            color="#333333"
+            class="pt-5 pr-4"
+            valign="bottom"
+        />
+        <div class="share-embed-item">
+            <label for="embed-code">{@html __('publish / embed') }</label>
+            <div class="copy-group">
+                <div class="copy-preview embed-code">
+                    <input
+                        ref:embedInput
+                        type="text"
+                        class="passive-input"
+                        value="{embedCode}"
+                        id="embed-code"
+                        on:click="copy('embedInput')"
+                        readonly
+                    />
+                </div>
 
-        <div class="copy-group">
-            <div class="copy-preview embed-code">
-                <input
-                    ref:embedInput
-                    type="text"
-                    class="passive-input"
-                    value="{embedCode}"
-                    id="embed-code"
+                <button
+                    class="btn copy-button"
                     on:click="copy('embedInput')"
-                    readonly
-                />
+                    title="{ __('publish / copy') }"
+                >
+                    <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
+                </button>
             </div>
 
-            <button
-                class="btn copy-button"
-                on:click="copy('embedInput')"
-                title="{ __('publish / copy') }"
-            >
-                <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
-            </button>
-        </div>
-        <div class="copy-success {copySuccess ? 'show':''}">
-            { __('publish / copy-success') }
-        </div>
+            <div class="copy-success {copySuccess ? 'show':''}">
+                { __('publish / copy-success') }
+            </div>
 
-        <RadioControl options="{embedOptions}" bind:value="embedType" label="" />
+            <RadioControl options="{embedOptions}" bind:value="embedType" label="" />
+        </div>
     </div>
     <HelpDisplay>
         <div>
@@ -70,6 +82,14 @@
 </div>
 
 <style>
+    .block {
+        display: flex;
+    }
+
+    .share-embed-item {
+        flex: 1;
+    }
+
     .copy-success {
         font-size: 11px;
         color: #9c9;
@@ -88,7 +108,7 @@
 
     .copy-group {
         display: flex;
-        padding: 5px 0;
+        padding: 6px 0;
     }
 
     .copy-preview {
