@@ -20,7 +20,7 @@
                 on:click="copy('shareUrl')"
                 title="{ __('publish / copy') }"
             >
-                <i class="fa fa-copy"></i>
+                <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
             </button>
         </div>
 
@@ -51,7 +51,7 @@
                 on:click="copy('embedInput')"
                 title="{ __('publish / copy') }"
             >
-                <i class="fa fa-copy"></i>
+                <IconDisplay size="18px" icon="copy-to-clipboard" class="pt-1" />
             </button>
         </div>
         <div class="copy-success {copySuccess ? 'show':''}">
@@ -103,6 +103,7 @@
     .copy-button {
         flex: 0 0 40px;
         margin-left: 5px;
+        padding: 0;
     }
 
     /* Preview holder for copying to clipboard */
@@ -157,6 +158,7 @@
 
 <script>
     import HelpDisplay from '@datawrapper/controls/HelpDisplay.html';
+    import IconDisplay from '@datawrapper/controls/IconDisplay.html';
     import RadioControl from '@datawrapper/controls/RadioControl.html';
     import { __ } from '@datawrapper/shared/l10n';
     import { trackEvent } from '@datawrapper/shared/analytics';
@@ -165,6 +167,7 @@
     export default {
         components: {
             HelpDisplay,
+            IconDisplay,
             RadioControl
         },
         data() {
