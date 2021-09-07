@@ -25,7 +25,7 @@
         "test": "ava",
         "test:watch": "ava -w",
         "prepublishOnly": "npm test && npm run lint",
-        "docs": "jsdoc2md --template jsdoc2md/README.hbs --files *.js --files node/*.js  -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
+        "docs": "jsdoc2md --template jsdoc2md/README.hbs --files *.js -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
     },
     "repository": {
         "type": "git",
