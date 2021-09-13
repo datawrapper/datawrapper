@@ -188,6 +188,9 @@ export default function(attributes) {
 
             const heightMode = chart.getHeightMode();
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlFitChart = !!urlParams.get('fitchart');
+
             // only render if iframe has valid dimensions
             if (heightMode === 'fixed' ? w <= 0 : w <= 0 || h <= 0) {
                 console.warn('Aborting chart rendering due to invalid container dimensions');
@@ -226,6 +229,8 @@ export default function(attributes) {
             }
 
             function postMessage() {
+                if (urlFitChart) return;
+
                 let desiredHeight;
 
                 if (chart.getHeightMode() === 'fit') {
