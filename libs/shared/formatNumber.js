@@ -50,10 +50,18 @@ export default function formatNumber(value, options) {
     }
     value *= multiply;
     const parenthesesFormat = format.indexOf('(') > -1;
+    const specialThousandsFormat = format.indexOf(';') > -1;
 
-    format = format.replace(/;/g, value < 10000 ? '' : ',');
+    format = format.replace(/;/g, ',');
+    let fmt = numeral(parenthesesFormat ? value : Math.abs(value)).format(format);
 
-    const fmt = numeral(parenthesesFormat ? value : Math.abs(value)).format(format);
+    if (specialThousandsFormat) {
+        const locale = numeral.options.currentLocale;
+        const separator = numeral.locales[locale].delimiters.thousands;
+        const val = format.includes('%') ? value / 0.01 : value;
+        fmt = Math.abs(val) < 10000 ? fmt.replace(separator, '') : fmt;
+    }
+
     if (
         prepend &&
         !parenthesesFormat &&
