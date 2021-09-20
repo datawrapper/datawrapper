@@ -54,3 +54,13 @@ test('percentages are not multiplied with 100', t => {
 test('allow multiplying numbers', t => {
     t.is(formatNumber(70000, { multiply: 0.001 }), '70');
 });
+
+test('special thousands format', t => {
+    t.is(formatNumber(7000, { multiply: 10, format: '0;0' }), '70,000');
+    t.is(formatNumber(7000, { format: '0;0' }), '7000');
+    t.is(formatNumber(70000, { format: '0;0%' }), '70,000%');
+    t.is(formatNumber(-70000.5, { format: '0;0' }), '−70,001');
+    t.is(formatNumber(70000.34, { format: '0;0.[0]%' }), '70,000.3%');
+    t.is(formatNumber(0, { format: '0;0' }), '0');
+    t.is(formatNumber(5, { format: '0;0' }), '5');
+});
