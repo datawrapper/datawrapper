@@ -41,7 +41,8 @@ export default function formatNumber(value, options) {
     if (value === undefined || isNaN(value) || value === '' || value === null) {
         return '';
     }
-    const { format, append, prepend, minusChar, plusMinusChar, multiply } = options;
+    const { append, prepend, minusChar, plusMinusChar, multiply } = options;
+    let { format } = options;
     if (format.includes('%') && Number.isFinite(value)) {
         // numeraljs will multiply percentages with 100
         // which we don't want to happen
@@ -49,6 +50,9 @@ export default function formatNumber(value, options) {
     }
     value *= multiply;
     const parenthesesFormat = format.indexOf('(') > -1;
+
+    format = format.replace(/;/g, value < 10000 ? '' : ',');
+
     const fmt = numeral(parenthesesFormat ? value : Math.abs(value)).format(format);
     if (
         prepend &&
