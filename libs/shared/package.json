@@ -23,6 +23,8 @@
         "test": "ava",
         "test:watch": "ava -w",
         "prepublishOnly": "npm test && npm run lint",
+        "lint": "(cd ../.. && scripts/lint libs/shared)",
+        "format": "(cd ../.. && scripts/format libs/shared)",
         "docs": "jsdoc2md --template jsdoc2md/README.hbs --files *.js -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
     },
     "repository": {
