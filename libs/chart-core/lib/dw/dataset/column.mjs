@@ -46,12 +46,12 @@ export default function Column(name, rows, type) {
         let type;
         const tolerance = 0.1 * rows.filter(notEmpty).length; // allowing 10% mis-parsed values
 
-        each(rows, function(val) {
-            each(types, function(t) {
+        each(rows, function (val) {
+            each(types, function (t) {
                 t.parse(val);
             });
         });
-        every(types, function(t) {
+        every(types, function (t) {
             if (t.errors() < tolerance) type = t;
             return !type;
         });
@@ -61,11 +61,11 @@ export default function Column(name, rows, type) {
 
     // we pick random 200 non-empty values for column type testing
     const sample = shuffle(range(rows.length))
-        .filter(function(i) {
+        .filter(function (i) {
             return notEmpty(rows[i]);
         })
         .slice(0, 200)
-        .map(function(i) {
+        .map(function (i) {
             return rows[i];
         });
 
@@ -128,7 +128,7 @@ export default function Column(name, rows, type) {
          */
         values(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = map(r, function(d) {
+            r = map(r, function (d) {
                 return isDate(d) || isNumber(d) ? d : purifyHtml(d);
             });
             return map(r, type.parse);
@@ -177,7 +177,7 @@ export default function Column(name, rows, type) {
             if (!type.toNum) return false;
             if (!valueRange) {
                 valueRange = [Number.MAX_VALUE, -Number.MAX_VALUE];
-                column.each(function(v) {
+                column.each(function (v) {
                     v = type.toNum(v);
                     if (!isNumber(v) || isNaN(v)) return;
                     if (v < valueRange[0]) valueRange[0] = v;
@@ -193,7 +193,7 @@ export default function Column(name, rows, type) {
             if (!type.toNum) return false;
             if (sum === undefined) {
                 sum = 0;
-                column.each(function(v) {
+                column.each(function (v) {
                     const n = type.toNum(v);
                     if (Number.isFinite(n)) {
                         sum += n;
@@ -209,7 +209,7 @@ export default function Column(name, rows, type) {
             if (mean === undefined) {
                 mean = 0;
                 let count = 0;
-                column.each(function(v) {
+                column.each(function (v) {
                     const n = type.toNum(v);
                     if (Number.isFinite(n)) {
                         mean += n;
@@ -235,7 +235,7 @@ export default function Column(name, rows, type) {
         filterRows(r) {
             rows = [];
             if (arguments.length) {
-                each(r, function(i) {
+                each(r, function (i) {
                     rows.push(origRows[i]);
                 });
             } else {
@@ -261,7 +261,7 @@ export default function Column(name, rows, type) {
         },
 
         indexOf(val) {
-            return find(range(rows.length), function(i) {
+            return find(range(rows.length), function (i) {
                 return column.val(i) === val;
             });
         },

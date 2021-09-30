@@ -56,8 +56,8 @@ export function getNonChartHeight() {
         'border-bottom-width'
     ];
 
-    selectors.forEach(function(sel) {
-        properties.forEach(function(prop) {
+    selectors.forEach(function (sel) {
+        properties.forEach(function (prop) {
             h += Number(getProp(sel, prop));
         });
     });

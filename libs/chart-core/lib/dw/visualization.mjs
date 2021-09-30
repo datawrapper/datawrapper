@@ -41,7 +41,7 @@ function visualization(id, target) {
     return vis;
 }
 
-visualization.register = function(id) {
+visualization.register = function (id) {
     let parentVis, init;
 
     if (arguments.length === 2) {
@@ -58,7 +58,7 @@ visualization.register = function(id) {
     };
 };
 
-visualization.has = function(id) {
+visualization.has = function (id) {
     return __vis[id] !== undefined;
 };
 

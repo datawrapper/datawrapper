@@ -2,7 +2,7 @@
  * simple event callbacks, mimicing the $.Callbacks API
  */
 
-export default function() {
+export default function () {
     const list = [];
 
     return {

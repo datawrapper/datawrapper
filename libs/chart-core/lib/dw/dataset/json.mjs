@@ -25,7 +25,7 @@ function json(opts) {
 
     return {
         dataset: loadAndParseJSON,
-        parse: function() {
+        parse: function () {
             return JSON.parse(opts.csv);
         }
     };

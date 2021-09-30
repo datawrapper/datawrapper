@@ -9,7 +9,7 @@ import { each, isNumber, isUndefined, isNull } from 'underscore';
  * var parse = dw.type.number(sampleData);
  * parse()
  */
-export default function(sample) {
+export default function (sample) {
     let format;
     let errors = 0;
     const knownFormats = {
@@ -48,8 +48,8 @@ export default function(sample) {
 
     sample = sample || [];
 
-    each(sample, function(n) {
-        each(knownFormats, function(regex, fmt) {
+    each(sample, function (n) {
+        each(knownFormats, function (regex, fmt) {
             if (matches[fmt] === undefined) matches[fmt] = 0;
             if (regex.test(n)) {
                 matches[fmt] += 1;
@@ -64,7 +64,7 @@ export default function(sample) {
 
     // public interface
     var type = {
-        parse: function(raw) {
+        parse: function (raw) {
             if (isNumber(raw) || isUndefined(raw) || isNull(raw)) return raw;
             // replace percent sign, n-dash & m-dash, remove weird spaces
             var number = raw
@@ -88,26 +88,26 @@ export default function(sample) {
             }
             return Number(number);
         },
-        toNum: function(i) {
+        toNum: function (i) {
             return i;
         },
-        fromNum: function(i) {
+        fromNum: function (i) {
             return i;
         },
-        errors: function() {
+        errors: function () {
             return errors;
         },
-        name: function() {
+        name: function () {
             return 'number';
         },
 
-        isValid: function(val) {
+        isValid: function (val) {
             return val === '' || naStrings[String(val).toLowerCase()] || isNumber(type.parse(val));
         },
 
-        ambiguousFormats: function() {
+        ambiguousFormats: function () {
             var candidates = [];
-            each(matches, function(cnt, fmt) {
+            each(matches, function (cnt, fmt) {
                 if (cnt === bestMatch[1]) {
                     candidates.push([fmt, formatLabels[fmt]]); // key, label
                 }
@@ -115,7 +115,7 @@ export default function(sample) {
             return candidates;
         },
 
-        format: function(fmt) {
+        format: function (fmt) {
             if (arguments.length) {
                 format = fmt;
                 return type;

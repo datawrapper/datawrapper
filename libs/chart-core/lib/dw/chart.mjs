@@ -17,7 +17,7 @@ let visualization;
  * Chart
  * @module dw.chart
  */
-export default function(attributes) {
+export default function (attributes) {
     // private methods and properties
     let dataset;
     let theme;

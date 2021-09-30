@@ -6,7 +6,7 @@ import $ from 'jquery';
  * @paran type    type of filter ui: buttons|select|timescale
  * @param format  a function for formatting the values
  */
-export default function(column, active, type) {
+export default function (column, active, type) {
     const callbacks = [];
 
     type = type || 'auto';
@@ -18,7 +18,7 @@ export default function(column, active, type) {
 
     const filter = {
         ui: getFilterUI(type),
-        change: function(callback) {
+        change: function (callback) {
             callbacks.push(callback);
         }
     };
@@ -40,15 +40,15 @@ export default function(column, active, type) {
         }
 
         if (column.length < 2)
-            return function() {
+            return function () {
                 return false;
             };
 
         if (type === 'select')
-            f = function() {
+            f = function () {
                 // use <select>
                 const select = $('<select />');
-                column.each(function(val, i) {
+                column.each(function (val, i) {
                     const lbl = column.raw()[i];
                     if (!lbl) return;
                     select.append(
@@ -59,7 +59,7 @@ export default function(column, active, type) {
                             '</option>'
                     );
                 });
-                select.change(function() {
+                select.change(function () {
                     update(select.val());
                 });
                 select.addClass('filter-ui filter-select');
@@ -67,11 +67,11 @@ export default function(column, active, type) {
             };
 
         if (type === 'buttons')
-            f = function(vis) {
+            f = function (vis) {
                 // use link buttons
                 const div = $('<div />');
                 div.addClass('filter-ui filter-links');
-                column.each(function(val, i) {
+                column.each(function (val, i) {
                     const lbl = column.raw()[i];
                     if (!lbl) return;
                     const a = $(
@@ -85,7 +85,7 @@ export default function(column, active, type) {
                     ).data('row', i);
                     div.append(a);
                 });
-                $('a', div).click(function(e) {
+                $('a', div).click(function (e) {
                     const a = $(e.target);
                     e.preventDefault();
                     if (a.hasClass('active')) return;
@@ -108,7 +108,7 @@ export default function(column, active, type) {
             };
 
         if (type === 'timescale')
-            f = function(vis) {
+            f = function (vis) {
                 const w = Math.min(vis.__w - 35);
                 const timesel = $('<div></div>')
                     .css({
@@ -151,7 +151,7 @@ export default function(column, active, type) {
                 timesel.append('<div class="line"></div>');
                 $('.line', timesel).width(offsetRight);
 
-                $('.point', timesel).click(function(e) {
+                $('.point', timesel).click(function (e) {
                     const a = $(e.target);
                     e.preventDefault();
                     if (a.hasClass('active')) return;

@@ -86,15 +86,15 @@ const MONTHS = {
 };
 const shortMonthKey = {};
 
-each(MONTHS, function(abbr, m) {
-    each(abbr, function(a) {
+each(MONTHS, function (abbr, m) {
+    each(abbr, function (a) {
         shortMonthKey[a] = m;
     });
 });
 
 rx.MMM = { parse: new RegExp('(' + flatten(values(MONTHS)).join('|') + ')') };
 
-each(rx, function(r) {
+each(rx, function (r) {
     r.parse = r.parse.source;
     if (isRegExp(r.test)) r.test = r.test.source;
     else r.test = r.parse;
@@ -251,7 +251,7 @@ var knownFormats = {
     },
     ISO8601: {
         test: /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d:[0-5]\d|Z)/,
-        parse: function(str) {
+        parse: function (str) {
             return str;
         },
         precision: 'day-seconds'
@@ -291,7 +291,7 @@ function hour(hr, amPm) {
     return amPm === 'am' ? 0 : 12;
 }
 
-export default function(sample) {
+export default function (sample) {
     let format;
     let errors = 0;
     const matches = {};
@@ -299,8 +299,8 @@ export default function(sample) {
 
     sample = sample || [];
 
-    each(knownFormats, function(format, key) {
-        each(sample, function(n) {
+    each(knownFormats, function (format, key) {
+        each(sample, function (n) {
             if (matches[key] === undefined) matches[key] = 0;
             if (test(n, key)) {
                 matches[key] += 1;
@@ -315,7 +315,7 @@ export default function(sample) {
 
     // public interface
     const type = {
-        parse: function(raw) {
+        parse: function (raw) {
             if (isDate(raw) || isUndefined(raw)) return raw;
             if (!format || !isString(raw)) {
                 errors++;
@@ -426,20 +426,20 @@ export default function(sample) {
             errors++;
             return raw;
         },
-        toNum: function(d) {
+        toNum: function (d) {
             return isDate(d) ? d.getTime() : Number.NaN;
         },
-        fromNum: function(i) {
+        fromNum: function (i) {
             return new Date(i);
         },
-        errors: function() {
+        errors: function () {
             return errors;
         },
-        name: function() {
+        name: function () {
             return 'date';
         },
 
-        format: function(fmt) {
+        format: function (fmt) {
             if (arguments.length) {
                 format = fmt;
                 return type;
@@ -447,17 +447,17 @@ export default function(sample) {
             return format;
         },
 
-        precision: function() {
+        precision: function () {
             return knownFormats[format].precision;
         },
 
-        isValid: function(val) {
+        isValid: function (val) {
             return isDate(type.parse(val));
         },
 
-        ambiguousFormats: function() {
+        ambiguousFormats: function () {
             var candidates = [];
-            each(matches, function(cnt, fmt) {
+            each(matches, function (cnt, fmt) {
                 if (cnt === bestMatch[1]) {
                     candidates.push([fmt, fmt]); // key, label
                 }
