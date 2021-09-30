@@ -38,10 +38,7 @@ export default function applyChanges(chart, dataset) {
             dataset.column(key).type(columnFormat.type);
         }
         if (columnFormat['input-format'] && dataset.hasColumn(key)) {
-            dataset
-                .column(key)
-                .type(true)
-                .format(columnFormat['input-format']);
+            dataset.column(key).type(true).format(columnFormat['input-format']);
         }
     });
     return dataset;

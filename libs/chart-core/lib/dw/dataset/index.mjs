@@ -137,7 +137,7 @@ export default function Dataset(columns) {
          * @returns {object[]}
          */
         list() {
-            return range(columns[0].length).map(function(r) {
+            return range(columns[0].length).map(function (r) {
                 var o = {};
                 columns.forEach(col => {
                     o[col.name()] = col.val(r);
@@ -257,12 +257,12 @@ export default function Dataset(columns) {
         columnOrder(sortOrder) {
             if (arguments.length) {
                 columns.length = 0;
-                sortOrder.forEach(function(i) {
+                sortOrder.forEach(function (i) {
                     columns.push(origColumns[i]);
                 });
                 return dataset;
             }
-            return columns.map(function(c) {
+            return columns.map(function (c) {
                 return origColumns.indexOf(c);
             });
         },

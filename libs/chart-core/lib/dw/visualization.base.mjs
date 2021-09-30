@@ -12,7 +12,7 @@ import clone from '@datawrapper/shared/clone.js';
 import column from './dataset/column.mjs';
 import { remove } from './utils/index.mjs';
 
-const base = function() {}.prototype;
+const base = function () {}.prototype;
 
 extend(base, {
     // called before rendering
@@ -76,7 +76,7 @@ extend(base, {
         me.__chart = chart;
         var columnFormat = get(chart.get(), 'metadata.data.column-format', {});
         var ignore = {};
-        each(columnFormat, function(format, key) {
+        each(columnFormat, function (format, key) {
             ignore[key] = !!format.ignore;
         });
         if (me.dataset.filterColumns) me.dataset.filterColumns(ignore);
@@ -108,7 +108,7 @@ extend(base, {
                     axes[key] = o.multiple && !isArray(columns) ? [columns] : columns;
                     // mark columns as used
                     if (!isArray(columns)) columns = [columns];
-                    each(columns, function(column) {
+                    each(columns, function (column) {
                         usedColumns[column] = true;
                     });
                 }
@@ -133,7 +133,7 @@ extend(base, {
                 }
 
                 let res = 0;
-                each(me.meta.axes, function(axisDef, key) {
+                each(me.meta.axes, function (axisDef, key) {
                     if (checked.indexOf(key) > -1) return;
                     if (!equalAccepts(axisDef.accepts, accepts)) return;
                     if (typeof res === 'string') return;
@@ -175,7 +175,7 @@ extend(base, {
                     if (axisDef.preferred) {
                         // axis defined a regex for testing column names
                         const regex = new RegExp(axisDef.preferred, 'i');
-                        firstMatch = find(accepted, function(col) {
+                        firstMatch = find(accepted, function (col) {
                             return (
                                 regex.test(col.name()) ||
                                 (col.title() !== col.name() && regex.test(col.title()))
@@ -191,7 +191,7 @@ extend(base, {
                         // try to auto-populate missing text column
                         if (indexOf(axisDef.accepts, 'text') >= 0) {
                             // try using the first text column in the dataset instead
-                            const acceptedAllowUsed = filter(dataset.columns(), function(col) {
+                            const acceptedAllowUsed = filter(dataset.columns(), function (col) {
                                 return indexOf(axisDef.accepts, col.type()) >= 0;
                             });
                             if (acceptedAllowUsed.length) {
@@ -200,7 +200,7 @@ extend(base, {
                                 // no other text column in dataset, so genetate one with A,B,C,D...
                                 const col = column(
                                     key,
-                                    map(range(dataset.numRows()), function(i) {
+                                    map(range(dataset.numRows()), function (i) {
                                         return (
                                             (i > 25 ? String.fromCharCode(64 + i / 26) : '') +
                                             String.fromCharCode(65 + (i % 26))
@@ -221,7 +221,7 @@ extend(base, {
 
                     // fill axis with all accepted columns
                     axes[key] = [];
-                    dataset.eachColumn(function(c) {
+                    dataset.eachColumn(function (c) {
                         if (required === 'multiple' && axes[key].length) return;
                         else if (available <= required) return;
 
@@ -242,7 +242,7 @@ extend(base, {
                 axesAsColumns[key] = columns !== false ? me.dataset.column(columns) : null;
             } else {
                 axesAsColumns[key] = [];
-                each(columns, function(column, i) {
+                each(columns, function (column, i) {
                     axesAsColumns[key][i] = column !== false ? me.dataset.column(column) : null;
                 });
             }
@@ -312,7 +312,7 @@ extend(base, {
 
     renderingComplete() {
         if (window.parent && window.parent.postMessage) {
-            setTimeout(function() {
+            setTimeout(function () {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
             }, 200);
         }
@@ -376,7 +376,7 @@ extend(base, {
      */
     fire(eventType, data) {
         if (this.__callbacks && this.__callbacks[eventType]) {
-            this.__callbacks[eventType].forEach(function(cb) {
+            this.__callbacks[eventType].forEach(function (cb) {
                 if (typeof cb === 'function') cb(data);
             });
         }

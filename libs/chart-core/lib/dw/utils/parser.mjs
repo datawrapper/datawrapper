@@ -62,12 +62,12 @@ function Expression(tokens, parser) {
     this.functions = parser.functions;
 }
 
-Expression.prototype.evaluate = function(values) {
+Expression.prototype.evaluate = function (values) {
     values = values || {};
     return evaluate(this.tokens, this, values);
 };
 
-Expression.prototype.variables = function() {
+Expression.prototype.variables = function () {
     return (this.tokens || []).filter(token => token.type === 'IVAR').map(token => token.value);
 };
 
@@ -1046,7 +1046,7 @@ export function Parser(options) {
     };
 }
 
-Parser.prototype.parse = function(expr) {
+Parser.prototype.parse = function (expr) {
     var instr = [];
     var parserState = new ParserState(this, new TokenStream(this, expr), {
         allowMemberAccess: true
@@ -1058,17 +1058,17 @@ Parser.prototype.parse = function(expr) {
     return new Expression(instr, this);
 };
 
-Parser.prototype.evaluate = function(expr, variables) {
+Parser.prototype.evaluate = function (expr, variables) {
     return this.parse(expr).evaluate(variables);
 };
 
 var sharedParser = new Parser();
 
-Parser.parse = function(expr) {
+Parser.parse = function (expr) {
     return sharedParser.parse(expr);
 };
 
-Parser.evaluate = function(expr, variables) {
+Parser.evaluate = function (expr, variables) {
     return sharedParser.parse(expr).evaluate(variables);
 };
 
@@ -1179,7 +1179,7 @@ function getOptionName(op) {
     return Object.prototype.hasOwnProperty.call(optionNameMap, op) ? optionNameMap[op] : op;
 }
 
-Parser.prototype.isOperatorEnabled = function(op) {
+Parser.prototype.isOperatorEnabled = function (op) {
     var optionName = getOptionName(op);
     var operators = this.options.operators || {};
 

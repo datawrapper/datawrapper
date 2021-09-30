@@ -23,7 +23,7 @@ export default function addComputedColumns(chart, dataset) {
     const colAggregates = {};
     const parser = new Parser();
 
-    dataset.eachColumn(function(col) {
+    dataset.eachColumn(function (col) {
         if (col.isComputed) return;
         columnNameToVar[col.name()] = columnNameToVariable(col.name());
         if (col.type() === 'number') {
@@ -180,11 +180,11 @@ export default function addComputedColumns(chart, dataset) {
                 return acc;
             }, new Map());
 
-        const values = data.map(function(row, index) {
+        const values = data.map(function (row, index) {
             const context = {
                 ROWNUMBER: index
             };
-            each(row, function(val, key) {
+            each(row, function (val, key) {
                 if (!columnNameToVar[key]) return;
                 context[columnNameToVar[key]] = val;
                 if (colAggregates[key]) {
@@ -220,7 +220,7 @@ export default function addComputedColumns(chart, dataset) {
         });
         var virtualColumn = column(
             name,
-            values.map(function(v) {
+            values.map(function (v) {
                 if (isBoolean(v)) return v ? 'yes' : 'no';
                 if (isDate(v)) return v.toISOString();
                 if (isNumber(v)) return String(v);

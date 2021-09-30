@@ -42,7 +42,7 @@ function delimited(opts) {
 
     return {
         dataset: loadAndParseCsv,
-        parse: function() {
+        parse: function () {
             return new DelimitedParser(opts).parse(opts.csv);
         }
     };

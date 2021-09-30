@@ -1,17 +1,17 @@
 import { identity } from 'underscore';
 
-export default function() {
+export default function () {
     return {
         parse: identity,
-        errors: function() {
+        errors: function () {
             return 0;
         },
-        name: function() {
+        name: function () {
             return 'text';
         },
-        isValid: function() {
+        isValid: function () {
             return true;
         },
-        format: function() {}
+        format: function () {}
     };
 }
