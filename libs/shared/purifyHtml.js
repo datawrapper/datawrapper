@@ -70,6 +70,7 @@ function stripTags(input, allowed) {
     var before = input;
     var after = input;
     // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         before = after;
         after = before.replace(COMMENTS_AND_PHP_TAGS, '').replace(TAGS, function ($0, $1) {

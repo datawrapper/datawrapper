@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.36.0",
+    "version": "0.37.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -46,6 +46,7 @@
         "d3-array": "^1.2.4",
         "fontfaceobserver": "^2.1.0",
         "js-cookie": "^2.2.1",
+        "lodash-es": "^4.17.21",
         "numeral": "^2.0.6",
         "sinon": "^11.1.1",
         "underscore": "^1.13.1"
