@@ -6,6 +6,7 @@ import round from '@datawrapper/shared/round.js';
 import smartRound from '@datawrapper/shared/smartRound.js';
 import equalish from '@datawrapper/shared/equalish.js';
 import clone from '@datawrapper/shared/clone.js';
+import delimited from './delimited.mjs';
 import { outerHeight, getNonChartHeight } from './getNonChartHeight.mjs';
 import htmlTemplate from './htmlTemplate.mjs';
 import { isFunction, isString, range } from 'underscore';
@@ -18,6 +19,7 @@ export {
     smartRound,
     equalish,
     clone,
+    delimited,
     getNonChartHeight,
     outerHeight,
     htmlTemplate
