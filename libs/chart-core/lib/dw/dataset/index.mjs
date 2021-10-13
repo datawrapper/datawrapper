@@ -1,3 +1,4 @@
+import { formatDelimited } from '../utils/delimited.mjs';
 import { isString, range, each } from 'underscore';
 
 /*
@@ -35,25 +36,6 @@ export default function Dataset(columns) {
         if (colName !== origColName) {
             col.name(colName, origColName);
         }
-    }
-
-    function escapeCSVValue(value, delimiter, quoteChar) {
-        const s = String(value);
-        if (s.indexOf(quoteChar) !== -1) {
-            // A double-quote appearing inside a field MUST be escaped by preceding it with another
-            // double quote, and the field itself MUST be enclosed in double quotes.
-            // See paragraph 8 at https://csv-spec.org/#csv-format-specification
-            return (
-                quoteChar + s.replace(new RegExp(quoteChar, 'g'), quoteChar + quoteChar) + quoteChar
-            );
-        }
-        if (new RegExp(`[\n\r${delimiter}]`).test(s)) {
-            // Fields containing line breaks (CRLF, LF, or CR), double quotes, or the delimiter
-            // character (normally a comma) MUST be enclosed in double-quotes.
-            // See paragraph 7 at https://csv-spec.org/#csv-format-specification
-            return quoteChar + s + quoteChar;
-        }
-        return s;
     }
 
     // public interface
@@ -153,13 +135,7 @@ export default function Dataset(columns) {
          * @param {boolean} [opt.includeHeader=true] -- include header row in the CSV
          * @returns {string}
          */
-        csv({
-            includeComputedColumns = true,
-            includeHeader = true,
-            delimiter = ',',
-            quoteChar = '"',
-            lineTerminator = '\n'
-        } = {}) {
+        csv({ includeComputedColumns = true, includeHeader = true, ...opts } = {}) {
             const numRows = dataset.numRows();
             const rows = [];
             const filteredColumns = includeComputedColumns
@@ -175,11 +151,7 @@ export default function Dataset(columns) {
                     )
                 );
             }
-            return rows
-                .map(row =>
-                    row.map(value => escapeCSVValue(value, delimiter, quoteChar)).join(delimiter)
-                )
-                .join(lineTerminator);
+            return formatDelimited(rows, opts);
         },
 
         /**
