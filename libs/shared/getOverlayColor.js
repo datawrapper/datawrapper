@@ -17,8 +17,9 @@ import get from 'lodash-es/get.js';
 import colorLightness from './colorLightness.js';
 
 export default function getOverlayColor(overlay, baseColor, theme) {
+    const palette = get(theme, 'colors.palette', []);
     function getColor(c) {
-        return typeof c === 'number' ? get(theme, 'colors.palette')[c] : c;
+        return typeof c === 'number' ? palette[c % palette.length] : c;
     }
 
     baseColor = getColor(baseColor).toLowerCase();
