@@ -87,19 +87,35 @@ extend(base, {
         const me = this;
         const userAxes = get(me.chart().get(), 'metadata.axes', {});
 
-        if (!noCache && me.__axisCache && isEqual(me.__axisCache.userAxes, userAxes)) {
+        if (
+            !noCache &&
+            me.__axisCache &&
+            isEqual(me.__axisCache.userAxes, userAxes) &&
+            isEqual(me.__axisCache.overrideKeys, getOverrideKeys()) &&
+            me.__axisCache.transpose === me.chart().getMetadata('data.transpose')
+        ) {
             return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
         }
 
+        const visAxes = clone(me.meta.axes);
         const dataset = me.dataset;
         const usedColumns = {};
         const axes = {};
         const axesAsColumns = {};
 
         // get user preference
-        each(me.meta.axes, (o, key) => {
+        each(visAxes, (o, key) => {
             if (userAxes[key]) {
                 let columns = userAxes[key];
+
+                if (
+                    o.optional &&
+                    o.overrideOptionalKey &&
+                    !get(me.chart().get(), 'metadata.' + o.overrideOptionalKey, false)
+                ) {
+                    return;
+                }
+
                 if (
                     columnExists(columns) &&
                     checkColumn(o, columns, true) &&
@@ -116,8 +132,22 @@ extend(base, {
         });
 
         var checked = [];
+
+        each(visAxes, axisDef => {
+            if (axisDef.optional) {
+                // chart settings may override this
+                if (
+                    axisDef.overrideOptionalKey &&
+                    get(me.chart().get(), 'metadata.' + axisDef.overrideOptionalKey, false)
+                ) {
+                    // now the axis is mandatory
+                    axisDef.optional = false;
+                }
+            }
+        });
+
         // auto-populate remaining axes
-        each(me.meta.axes, (axisDef, key) => {
+        each(visAxes, (axisDef, key) => {
             function remainingRequiredColumns(accepts) {
                 // returns how many required columns there are for the remaining axes
                 // either an integer or "multiple" if there's another multi-column axis coming up
@@ -133,7 +163,7 @@ extend(base, {
                 }
 
                 let res = 0;
-                each(me.meta.axes, function (axisDef, key) {
+                each(visAxes, function (axisDef, key) {
                     if (checked.indexOf(key) > -1) return;
                     if (!equalAccepts(axisDef.accepts, accepts)) return;
                     if (typeof res === 'string') return;
@@ -157,16 +187,6 @@ extend(base, {
             }
             checked.push(key);
             if (axes[key]) return; // user has defined this axis already
-            if (axisDef.optional) {
-                // chart settings may override this
-                if (
-                    axisDef.overrideOptionalKey &&
-                    get(me.chart().get(), 'metadata.' + axisDef.overrideOptionalKey, false)
-                ) {
-                    // now the axis is mandatory
-                    axisDef.optional = false;
-                }
-            }
             if (!axisDef.optional) {
                 // we only populate mandatory axes
                 if (!axisDef.multiple) {
@@ -251,8 +271,24 @@ extend(base, {
         me.__axisCache = {
             axes: axes,
             axesAsColumns: axesAsColumns,
-            userAxes: clone(userAxes)
+            userAxes: clone(userAxes),
+            overrideKeys: getOverrideKeys(),
+            transpose: me.chart().getMetadata('data.transpose')
         };
+
+        function getOverrideKeys() {
+            const overrideKeys = {};
+            each(me.meta.axes, o => {
+                if (o.optional && o.overrideOptionalKey) {
+                    overrideKeys[o.overrideOptionalKey] = get(
+                        me.chart().get(),
+                        'metadata.' + o.overrideOptionalKey,
+                        false
+                    );
+                }
+            });
+            return overrideKeys;
+        }
 
         function columnExists(columns) {
             if (!isArray(columns)) columns = [columns];
