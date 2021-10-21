@@ -273,14 +273,19 @@ export default function Dataset(columns) {
         },
 
         /**
-         * deletes a row from dataset
-         * @param {number} rowIndex
+         * deletes one or more rows from dataset
+         * @param {...number} rowIndex
          * @returns {dw.Dataset}
          */
-        deleteRow(rowIndex) {
-            columns.forEach(col => {
-                col.deleteRow(rowIndex);
-            });
+        deleteRow(...rowIndexes) {
+            rowIndexes.sort();
+            for (const column of columns) {
+                let numDeleted = 0;
+                rowIndexes.forEach(rowIndex => {
+                    const deletedRows = column.deleteRow(rowIndex - numDeleted);
+                    numDeleted += deletedRows.length;
+                });
+            }
             return dataset;
         }
     };

@@ -248,12 +248,12 @@ export default function Column(name, rows, type) {
         },
 
         deleteRow(i) {
-            rows.splice(i, 1);
+            const deletedRows = rows.splice(i, 1);
             origRows.splice(i, 1);
             column.length = rows.length;
             // invalidate valueRange and total
             valueRange = sum = mean = median = undefined;
-            return column;
+            return deletedRows;
         },
 
         toString() {

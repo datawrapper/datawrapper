@@ -121,3 +121,30 @@ spam,4,80`;
     t.context.dataset.deleteRow(1);
     t.is(t.context.dataset.csv(), expected);
 });
+
+test('Dataset.deleteRow() does nothing when row index does not exist', async t => {
+    const dataset = Dataset([Column('letter', ['A'], 'text'), Column('number', [0], 'number')]);
+    t.context.dataset.deleteRow(99);
+    t.deepEqual(dataset.column('letter').raw(), ['A']);
+    t.deepEqual(dataset.column('number').raw(), [0]);
+});
+
+test('Dataset.deleteRow() deletes several rows', async t => {
+    const dataset = Dataset([
+        Column('letter', ['A', 'B', 'C', 'D', 'E'], 'text'),
+        Column('number', [0, 1, 2, 3, 4], 'number')
+    ]);
+    dataset.deleteRow(4, 2, 0);
+    t.deepEqual(dataset.column('letter').raw(), ['B', 'D']);
+    t.deepEqual(dataset.column('number').raw(), [1, 3]);
+});
+
+test('Dataset.deleteRow() deletes several rows when columns have different lengths', async t => {
+    const dataset = Dataset([
+        Column('letter', ['A', 'B'], 'text'),
+        Column('number', [0, 1, 2, 3], 'number')
+    ]);
+    dataset.deleteRow(1, 3);
+    t.deepEqual(dataset.column('letter').raw(), ['A']);
+    t.deepEqual(dataset.column('number').raw(), [0, 2]);
+});
