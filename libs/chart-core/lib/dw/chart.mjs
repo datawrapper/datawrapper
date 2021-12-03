@@ -249,7 +249,7 @@ export default function (attributes) {
             }
 
             function postMessage() {
-                if (flags.fitchart) return;
+                if (flags && flags.fitchart) return;
 
                 let desiredHeight;
 
