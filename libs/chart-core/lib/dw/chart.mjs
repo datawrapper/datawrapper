@@ -33,7 +33,16 @@ export default function (attributes) {
     let _translations = {};
     let _ds;
 
-    const flagsBoolean = ['svgonly', 'plain', 'static', 'map2svg', 'transparent', 'fitchart'];
+    const flagsBoolean = [
+        'svgonly',
+        'plain',
+        'static',
+        'svgonly',
+        'map2svg',
+        'transparent',
+        'fitchart',
+        'fitheight'
+    ];
     const flagsString = ['theme', 'search'];
 
     // public interface
