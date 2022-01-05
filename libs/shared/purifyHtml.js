@@ -35,13 +35,15 @@ export default function purifyHTML(input, allowed) {
             // special treatment for <a> elements
             if (sel[i].getAttribute('target') !== '_self') sel[i].setAttribute('target', '_blank');
             sel[i].setAttribute('rel', 'nofollow noopener noreferrer');
+            const hrefNormalized = (sel[i].getAttribute('href') || '')
+                .toLowerCase()
+                // remove invalid uri characters
+                .replace(/[^a-z0-9 -/:?=]/g, '')
+                .trim();
             if (
-                sel[i].getAttribute('href') &&
-                sel[i]
-                    .getAttribute('href')
-                    .trim()
-                    .replace(/[^a-zA-Z0-9 -:]/g, '')
-                    .startsWith('javascript:')
+                hrefNormalized.startsWith('javascript:') ||
+                hrefNormalized.startsWith('vbscript:') ||
+                hrefNormalized.startsWith('data:')
             ) {
                 // remove entire href to be safe
                 sel[i].setAttribute('href', '');

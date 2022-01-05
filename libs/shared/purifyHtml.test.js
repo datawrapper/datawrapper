@@ -75,6 +75,24 @@ test('test if javascript urls are removed', t => {
     );
 });
 
+test('test if javascript urls with leading whitespace are removed', t => {
+    t.is(
+        purifyHtml('<a href="   javascript:alert(42)">click me!</a>'),
+        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+    );
+});
+
+test('test if vbscript and data urls are removed', t => {
+    t.is(
+        purifyHtml('<a href="vbscript:alert(42)">click me!</a>'),
+        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+    );
+    t.is(
+        purifyHtml('<a href="data:alert(42)">click me!</a>'),
+        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+    );
+});
+
 test('test if multiple on* handlers are removed', t => {
     t.is(
         purifyHtml('<span onmouseover="diversion" onclick="alert(document.domain)">span</span>'),
@@ -101,4 +119,11 @@ test('prevent unclosed tag exploit', t => {
     t.is(el.childNodes[0].childNodes[0].tagName, 'IMG');
     t.is(el.childNodes[0].childNodes[0].getAttribute('onerror'), null);
     t.is(el.childNodes[0].childNodes[0].getAttribute('onload'), null);
+});
+
+test('prevent hacky javascript links', t => {
+    t.is(
+        purifyHtml('<a href=javAscript:alert(1) target=_self>link</a>'),
+        '<a href="" target="_self" rel="nofollow noopener noreferrer">link</a>'
+    );
 });
