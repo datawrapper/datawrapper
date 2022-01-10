@@ -3,7 +3,7 @@ import { defaultColors } from './defaultColors.js';
 
 const tests = [
     {
-        testName: 'Dark background color defined in theme',
+        name: 'Dark background color defined in theme',
         theme: {
             colors: {
                 background: '#333333'
@@ -22,7 +22,7 @@ const tests = [
         }
     },
     {
-        testName: 'Custom chart element basecolor,background & blend ratios defined in theme',
+        name: 'Custom chart element basecolor,background & blend ratios defined in theme',
         theme: {
             colors: {
                 background: '#FCB716',
@@ -47,11 +47,26 @@ const tests = [
             gridline: '#fedeb5',
             fallbackBaseColor: '#ffffff'
         }
+    },
+    {
+        name: "No fail when theme doesn't have any data",
+        theme: {},
+        expectedResult: {
+            tickText: {
+                secondary: '#a6a6a6',
+                primary: '#7b7b7b'
+            },
+            series: '#333333',
+            value: '#7b7b7b',
+            axis: '#333333',
+            gridline: '#e8e8e8',
+            fallbackBaseColor: '#333333'
+        }
     }
 ];
 
-tests.forEach(function (testData) {
-    test(testData.testName, t => {
-        t.deepEqual(defaultColors(testData.theme), testData.expectedResult);
+tests.forEach(({ theme, name, expectedResult }) => {
+    test(name, t => {
+        t.deepEqual(defaultColors(theme), expectedResult);
     });
 });

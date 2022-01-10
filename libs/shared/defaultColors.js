@@ -21,11 +21,14 @@ import get from './get.js';
  */
 
 export function defaultColors(theme) {
-    const fallback =
-        theme.colors.chartContentBaseColor ||
-        (chroma.contrast(theme.colors.background, '#000000') < 5.5 ? '#f1f1f1' : '#333333');
+    const bg = get(theme, 'colors.background', '#ffffff');
+    const fallback = get(
+        theme,
+        'colors.chartContentBaseColor',
+        chroma.contrast(bg, '#000000') < 5.5 ? '#f1f1f1' : '#333333'
+    );
 
-    const darkBG = chroma(theme.colors.background).luminance() < 0.5;
+    const darkBG = chroma(bg).luminance() < 0.5;
     const bgBlendRatios = {
         tickText: {
             secondary: get(theme, 'colors.bgBlendRatios.tickText.secondary', darkBG ? 0.6 : 0.4),
@@ -39,21 +42,17 @@ export function defaultColors(theme) {
 
     return {
         tickText: {
-            secondary: chroma
-                .mix(fallback, theme.colors.background, bgBlendRatios.tickText.secondary)
-                .hex(),
-            primary: chroma
-                .mix(fallback, theme.colors.background, bgBlendRatios.tickText.primary)
-                .hex()
+            secondary: chroma.mix(fallback, bg, bgBlendRatios.tickText.secondary).hex(),
+            primary: chroma.mix(fallback, bg, bgBlendRatios.tickText.primary).hex()
         },
 
-        series: chroma.mix(fallback, theme.colors.background, bgBlendRatios.series).hex(),
+        series: chroma.mix(fallback, bg, bgBlendRatios.series).hex(),
 
-        value: chroma.mix(fallback, theme.colors.background, bgBlendRatios.value).hex(),
+        value: chroma.mix(fallback, bg, bgBlendRatios.value).hex(),
 
-        axis: chroma.mix(fallback, theme.colors.background, bgBlendRatios.axis).hex(),
+        axis: chroma.mix(fallback, bg, bgBlendRatios.axis).hex(),
 
-        gridline: chroma.mix(fallback, theme.colors.background, bgBlendRatios.gridline).hex(),
+        gridline: chroma.mix(fallback, bg, bgBlendRatios.gridline).hex(),
 
         fallbackBaseColor: fallback
     };
