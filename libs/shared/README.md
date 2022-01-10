@@ -29,7 +29,9 @@ shared.httpReq();
 * [columnNameToVariable(name)](#columnNameToVariable) ⇒ <code>string</code>
 * [combinations(input)](#combinations) ⇒ <code>Array.&lt;array&gt;</code>
 * [dateColumnFormatter(column)](#dateColumnFormatter) ⇒ <code>function</code>
+* [decodeHtml(input)](#decodeHtml) ⇒ <code>string</code>
 * [defaultColors(theme)](#defaultColors) ⇒ <code>\*</code>
+* [defaultOverlayTitle(vis, colName)](#defaultOverlayTitle) ⇒ <code>string</code>
 * ~~[deleteJSON(url, callback)](#deleteJSON) ⇒ <code>Promise</code>~~
 * [drawPattern(parameters)](#drawPattern)
 * [equalish(a, b)](#equalish) ⇒ <code>boolean</code>
@@ -52,6 +54,8 @@ shared.httpReq();
 * [kMeans(values, numCluster)](#kMeans) ⇒ <code>array.&lt;Array.&lt;number&gt;&gt;</code>
 * [loadScript(src, callback)](#loadScript)
 * [loadStylesheet(src, callback)](#loadStylesheet)
+* [normalizeAlphaNumKey(key)](#normalizeAlphaNumKey) ⇒ <code>string</code>
+* [normalizeNumKey(key)](#normalizeNumKey) ⇒ <code>number</code>
 * [numberColumnFormatter(config)](#numberColumnFormatter) ⇒ <code>function</code>
 * [observeFonts(fontsJSON, typographyJSON)](#observeFonts) ⇒ <code>Promise</code>
 * [opts](#opts) : <code>object</code>
@@ -309,6 +313,19 @@ hood.
 
 * * *
 
+<a name="decodeHtml"></a>
+
+### decodeHtml(input) ⇒ <code>string</code>
+Removes all html tags and decodes html entities like &nbsp;
+
+
+| Param | Type |
+| --- | --- |
+| input | <code>string</code> | 
+
+
+* * *
+
 <a name="defaultColors"></a>
 
 ### defaultColors(theme) ⇒ <code>\*</code>
@@ -331,6 +348,20 @@ defaultColors({"colors": {"background": "#333333"}});
 // returns {"tickText":{"secondary":"#ffffff","primary":"#ffffff"},"series":"#ffffff","value":"#fef2e4","axis":"#ffffff","gridline":"#fedeb5","fallbackBaseColor":"#ffffff"}
 defaultColors({"colors": {"bgBlendRatios": {"gridline": 0.5,"tickText": {"primary": 0,"secondary": 0}},"chartContentBaseColor": "#ffffff","background": "#FCB716"}});
 ```
+
+* * *
+
+<a name="defaultOverlayTitle"></a>
+
+### defaultOverlayTitle(vis, colName) ⇒ <code>string</code>
+returns the overlays column title
+
+
+| Param | Type |
+| --- | --- |
+| vis | <code>object</code> | 
+| colName | <code>string</code> | 
+
 
 * * *
 
@@ -778,6 +809,34 @@ loadStylesheet('/static/css/library.css', () => {
     console.log('library styles are loaded');
 })
 ```
+
+* * *
+
+<a name="normalizeAlphaNumKey"></a>
+
+### normalizeAlphaNumKey(key) ⇒ <code>string</code>
+normalize an alphanumerical key for less-strict matching (e.g. in maps)
+
+**Returns**: <code>string</code> - - normalized key  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string</code> | alphanumerical key |
+
+
+* * *
+
+<a name="normalizeNumKey"></a>
+
+### normalizeNumKey(key) ⇒ <code>number</code>
+normalize a numerical key for less-strict matching (e.g. in maps)
+
+**Returns**: <code>number</code> - - normalized key  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string</code> \| <code>number</code> | numerical key |
+
 
 * * *
 
