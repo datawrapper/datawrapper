@@ -9,6 +9,7 @@ export { default as combinations } from './combinations.js';
 export { default as equalish } from './equalish.js';
 export { default as estimateTextWidth } from './estimateTextWidth.js';
 export { default as fetch } from './fetch.js';
+export { default as findColorWithContrast } from './findColorWithContrast.cjs';
 export { default as get } from './get.js';
 export { default as isValidUrl } from './isValidUrl.js';
 export { default as httpReq } from './httpReq.js';
