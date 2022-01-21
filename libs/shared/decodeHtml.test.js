@@ -1,5 +1,5 @@
 import test from 'ava';
-import decodeHtml from './decodeHtml.js';
+import decodeHtml from './decodeHtml.ssr.js';
 
 test('decode html entities does nothing to strings without entities', t => {
     t.is('No entities', 'No entities');

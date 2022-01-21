@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.40.0",
+    "version": "0.41.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -39,16 +39,18 @@
         "esm": "3.2.25",
         "jsdoc-to-markdown": "^7.0.1",
         "node-fetch": "^2.6.0",
-        "raf": "^3.4.1"
+        "raf": "^3.4.1",
+        "sinon": "^11.1.1"
     },
     "dependencies": {
         "chroma-js": "^2.1.2",
         "d3-array": "^1.2.4",
+        "domutils": "^2.8.0",
         "fontfaceobserver": "^2.1.0",
+        "htmlparser2": "^7.2.0",
         "js-cookie": "^2.2.1",
         "lodash-es": "^4.17.21",
         "numeral": "^2.0.6",
-        "sinon": "^11.1.1",
         "underscore": "^1.13.1"
     },
     "ava": {
