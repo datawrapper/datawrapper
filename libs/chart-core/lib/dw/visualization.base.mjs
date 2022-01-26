@@ -382,15 +382,37 @@ extend(base, {
     colorMap(cm) {
         if (!arguments.length) {
             return color => {
+                const applyDarkModeMap = this.__darkMode && this.__darkModeColorMap;
                 this.__colors[color] = 1;
                 if (this.__colorMap) {
+                    if (applyDarkModeMap) color = this.__darkModeColorMap(color);
                     return this.__colorMap(color);
+                } else if (applyDarkModeMap) {
+                    color = this.__darkModeColorMap(color);
                 }
                 return color;
             };
         }
 
         this.__colorMap = cm;
+    },
+
+    initDarkMode(cb, cm) {
+        this.__onDarkModeChange = cb;
+        this.__darkModeColorMap = cm;
+    },
+
+    /**
+     * set or get dark mode state of vis
+     */
+    darkMode(dm) {
+        // can't initialize in __init because that sets it back to false on each render
+        if (this.__darkMode === undefined) this.__darkMode = false;
+        if (!arguments.length) return this.__darkMode;
+        if (!this.__onDarkModeChange) return;
+
+        this.__darkMode = dm;
+        this.__onDarkModeChange(dm);
     },
 
     colorsUsed() {
