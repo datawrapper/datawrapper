@@ -10,7 +10,7 @@
  * @param {string|Array|Object} baseColor - the color to be inverted
  * @param {string|Array|Object} darkBackgroundColor - the inverted background color
  * @param {string|Array|Object} lightBackgroundColor - the original background color
- * @param {number} multiplyContrast - a factor to increase contrast
+ * @param {number} gamma - gamma exponent for lightness correction
  *
  * @example
  * import invertColor from '@datawrapper/shared/invertColor.cjs';
@@ -30,7 +30,7 @@ module.exports = function invertColor(
     baseColor,
     darkBackgroundColor,
     lightBackgroundColor,
-    multiplyContrast = 1.4
+    gamma = 0.8
 ) {
     const color = chroma(baseColor);
     const prevL = color.lab()[0];
@@ -39,21 +39,16 @@ module.exports = function invertColor(
 
     const contrast = computeContrast(baseColor, lightBackgroundColor);
 
-    const cMin = 3;
-    const cMax = 5;
-    // gradually decrease contrast factor if original contrast > cMin
-    // and set it back to 1 if orig contrast > cMax
-    multiplyContrast =
-        1 +
-        (contrast < cMin ? 1 : contrast > cMax ? 0 : 1 - (contrast - cMin) / (cMax - cMin)) *
-            (multiplyContrast - 1);
-
     // contrast 1:1, return bg
     if (Math.abs(contrast - 1) < EPS) return darkBackgroundColor;
 
     const origIsDarker = bgLightL > prevL;
 
-    return origIsDarker ? test(bgDarkL, 100, MAX_ITER) : test(0, bgDarkL, MAX_ITER);
+    const result = origIsDarker ? test(bgDarkL, 100, MAX_ITER) : test(0, bgDarkL, MAX_ITER);
+    // gamma correction
+    const resL = result.lab()[0];
+    const correctedL = Math.pow(resL / 100, gamma) * 100;
+    return result.set('lab.l', correctedL).hex();
 
     function test(low, high, i) {
         const mid = (low + high) * 0.5;
@@ -61,15 +56,14 @@ module.exports = function invertColor(
         const col = chroma(baseColor).set('lab.l', mid);
 
         const colContrast = computeContrast(darkBackgroundColor, col);
-        if (Math.abs(colContrast - contrast * multiplyContrast) < EPS || !i) {
+        if (Math.abs(colContrast - contrast) < EPS || !i) {
             // close enough
-            return col.hex();
+            return col;
         }
 
         const colIsLighter = mid > bgDarkL;
         const goodSide = (colIsLighter && origIsDarker) || (!colIsLighter && origIsDarker);
-        return (goodSide && colContrast > contrast * multiplyContrast) ||
-            (!goodSide && colContrast < contrast * multiplyContrast)
+        return (goodSide && colContrast > contrast) || (!goodSide && colContrast < contrast)
             ? test(low, mid, i - 1)
             : test(mid, high, i - 1);
     }
