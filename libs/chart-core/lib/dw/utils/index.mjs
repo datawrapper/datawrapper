@@ -9,6 +9,7 @@ import clone from '@datawrapper/shared/clone.js';
 import delimited from './delimited.mjs';
 import { outerHeight, getNonChartHeight } from './getNonChartHeight.mjs';
 import htmlTemplate from './htmlTemplate.mjs';
+import templateParser from './templateParser.mjs';
 import { isFunction, isString, range } from 'underscore';
 
 export {
@@ -22,7 +23,8 @@ export {
     delimited,
     getNonChartHeight,
     outerHeight,
-    htmlTemplate
+    htmlTemplate,
+    templateParser
 };
 
 /*

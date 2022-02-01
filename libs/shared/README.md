@@ -25,7 +25,7 @@ shared.httpReq();
 * [autoTickFormatNumber(range)](#autoTickFormatNumber) ⇒ <code>string</code>
 * [clone(object)](#clone) ⇒ <code>\*</code>
 * [colorLightness(hexColor)](#colorLightness) ⇒ <code>number</code>
-* [columnFormatter(column, metadata, axis)](#columnFormatter) ⇒ <code>function</code>
+* [columnFormatter(numeral, column, metadata, axis)](#columnFormatter) ⇒ <code>function</code>
 * [columnNameToVariable(name)](#columnNameToVariable) ⇒ <code>string</code>
 * [combinations(input)](#combinations) ⇒ <code>Array.&lt;array&gt;</code>
 * [dateColumnFormatter(column)](#dateColumnFormatter) ⇒ <code>function</code>
@@ -38,7 +38,7 @@ shared.httpReq();
 * [escapeHtml(unsafe)](#escapeHtml) ⇒ <code>string</code>
 * [estimateTextWidth(text, fontSize)](#estimateTextWidth) ⇒ <code>number</code>
 * ~~[fetchJSON(url, method, credentials, body, callback)](#fetchJSON) ⇒ <code>Promise</code>~~
-* [formatNumber(value, options)](#formatNumber) ⇒ <code>string</code>
+* [formatNumber(numeral, value, options)](#formatNumber) ⇒ <code>string</code>
 * [get(object, key, _default)](#get) ⇒
 * ~~[getJSON(url, credentials, callback)](#getJSON) ⇒ <code>Promise</code>~~
 * [highlightTimer(action, delay)](#highlightTimer) ⇒ <code>object</code>
@@ -49,14 +49,13 @@ shared.httpReq();
     * [.patch()](#httpReq.patch)
     * [.post()](#httpReq.post)
     * [.put()](#httpReq.put)
-* [initNumeralLocale(locale)](#initNumeralLocale)
 * [isValidUrl(input)](#isValidUrl) ⇒ <code>boolean</code>
 * [kMeans(values, numCluster)](#kMeans) ⇒ <code>array.&lt;Array.&lt;number&gt;&gt;</code>
 * [loadScript(src, callback)](#loadScript)
 * [loadStylesheet(src, callback)](#loadStylesheet)
 * [normalizeAlphaNumKey(key)](#normalizeAlphaNumKey) ⇒ <code>string</code>
 * [normalizeNumKey(key)](#normalizeNumKey) ⇒ <code>number</code>
-* [numberColumnFormatter(config)](#numberColumnFormatter) ⇒ <code>function</code>
+* [numberColumnFormatter(numeral, config)](#numberColumnFormatter) ⇒ <code>function</code>
 * [observeFonts(fontsJSON, typographyJSON)](#observeFonts) ⇒ <code>Promise</code>
 * [opts](#opts) : <code>object</code>
 * ~~[patchJSON(url, body, callback)](#patchJSON) ⇒ <code>Promise</code>~~
@@ -237,13 +236,14 @@ colorLightness('#ff3399') // 57.9
 
 <a name="columnFormatter"></a>
 
-### columnFormatter(column, metadata, axis) ⇒ <code>function</code>
+### columnFormatter(numeral, column, metadata, axis) ⇒ <code>function</code>
 This function returns a formatting function based, given a column object,
 a metadata object and the axis column name.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
+| numeral | <code>object</code> | Numeral.js instance |
 | column | <code>object</code> | the date column object |
 | metadata | <code>object</code> | the full metadata object |
 | axis | <code>string</code> | the column name of the axis |
@@ -494,16 +494,15 @@ fetchJSON('http://api.example.org', 'GET', 'include');
 
 <a name="formatNumber"></a>
 
-### formatNumber(value, options) ⇒ <code>string</code>
+### formatNumber(numeral, value, options) ⇒ <code>string</code>
 special number formatting that can deal with microtypography
 and "prepend currencies" (e.g., −$1234.57)
-
-Use [initNumeralLocale](#initNumeralLocale) to set a custom locale.
 
 **Returns**: <code>string</code> - - the formatted number  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| numeral | <code>object</code> | Numeral.js instance |
 | value | <code>number</code> | the number to format |
 | options | <code>object</code> | options, see below |
 | options.format | <code>string</code> | numeral.js compatible number format |
@@ -515,12 +514,12 @@ Use [initNumeralLocale](#initNumeralLocale) to set a custom locale.
 **Example**  
 ```js
 // returns '1234.57'
-formatNumber(1234.567)
+formatNumber(numeral, 1234.567)
 ```
 **Example**  
 ```js
 // returns '−$1234.57'
-formatNumber(-1234.567, { prepend: '$' })
+formatNumber(numeral, -1234.567, { prepend: '$' })
 ```
 
 * * *
@@ -716,21 +715,6 @@ Like `httpReq` but with fixed http method PUT
 
 * * *
 
-<a name="initNumeralLocale"></a>
-
-### initNumeralLocale(locale)
-in order to use [formatValue](formatValue) with custom locales
-and to avoid version conflicts with `numeral`, this method
-allows setting a locale.
-
-
-| Param | Type |
-| --- | --- |
-| locale | <code>object</code> | 
-
-
-* * *
-
 <a name="isValidUrl"></a>
 
 ### isValidUrl(input) ⇒ <code>boolean</code>
@@ -842,7 +826,7 @@ normalize a numerical key for less-strict matching (e.g. in maps)
 
 <a name="numberColumnFormatter"></a>
 
-### numberColumnFormatter(config) ⇒ <code>function</code>
+### numberColumnFormatter(numeral, config) ⇒ <code>function</code>
 This function returns a number formatting function based on a
 column configuration object stored in metadata.data.column-format.
 The implementation is backwards-compatible with our old
@@ -851,6 +835,7 @@ Globalize-based number formatting, but uses numeral under the hood.
 
 | Param | Type | Description |
 | --- | --- | --- |
+| numeral | <code>object</code> | Numeral.js instance |
 | config | <code>object</code> | the column configuration from metadata |
 
 

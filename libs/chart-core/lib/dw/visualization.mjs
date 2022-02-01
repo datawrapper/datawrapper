@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import { clone } from 'underscore';
 import base from './visualization.base.mjs';
 
@@ -34,6 +35,8 @@ function visualization(id, target) {
         );
     });
 
+    vis.libraries(visualization.libraries);
+
     if (target) {
         vis.target(target);
     }
@@ -60,6 +63,10 @@ visualization.register = function (id) {
 
 visualization.has = function (id) {
     return __vis[id] !== undefined;
+};
+
+visualization.libraries = {
+    numeral
 };
 
 visualization.base = base;

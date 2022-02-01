@@ -1,8 +1,9 @@
 import test from 'ava';
+import numeral from 'numeral';
 import numberFormatter from './numberColumnFormatter.js';
 
 test('format number with empty config', t => {
-    const formatter = numberFormatter({});
+    const formatter = numberFormatter(numeral, {});
 
     t.is(formatter(3.14), '3.14');
     t.is(formatter(1), '1');
@@ -10,7 +11,7 @@ test('format number with empty config', t => {
 });
 
 test('format number with decimal places', t => {
-    const formatter = numberFormatter({
+    const formatter = numberFormatter(numeral, {
         'number-format': 'n2',
         'number-divisor': 0,
         'number-prepend': '',
@@ -23,7 +24,7 @@ test('format number with decimal places', t => {
 });
 
 test('format number with significant digits', t => {
-    const formatter = numberFormatter({
+    const formatter = numberFormatter(numeral, {
         'number-format': 's3',
         'number-divisor': 0,
         'number-prepend': '',
@@ -37,7 +38,7 @@ test('format number with significant digits', t => {
 });
 
 test('autoformat number with prepend & append', t => {
-    const formatter = numberFormatter({
+    const formatter = numberFormatter(numeral, {
         'number-format': '-',
         'number-divisor': 0,
         'number-prepend': 'ca. ',
@@ -51,7 +52,7 @@ test('autoformat number with prepend & append', t => {
 });
 
 test('autoformat number with division', t => {
-    const formatter = numberFormatter({
+    const formatter = numberFormatter(numeral, {
         'number-format': 'n3',
         'number-divisor': 3,
         'number-prepend': '',
@@ -65,7 +66,7 @@ test('autoformat number with division', t => {
 });
 
 test('autoformat number with multiplication', t => {
-    const formatter = numberFormatter({
+    const formatter = numberFormatter(numeral, {
         'number-format': '-',
         'number-divisor': -2,
         'number-prepend': '',

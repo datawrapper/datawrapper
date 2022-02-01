@@ -1,4 +1,4 @@
-import { formatDelimited } from '../utils/delimited.mjs';
+import { formatDelimited, guessDelimiterFromLocale } from '../utils/delimited.mjs';
 import { isString, range, each } from 'underscore';
 
 /*
@@ -133,23 +133,21 @@ export default function Dataset(columns) {
          * @param {Object} opt -- options
          * @param {boolean} [opt.includeComputedColumns=true] -- include computed columns in the CSV
          * @param {boolean} [opt.includeHeader=true] -- include header row in the CSV
+         * @param {string} [opt.numeral=null] -- format numbers using this Numeral.js instance
          * @returns {string}
          */
-        csv({ includeComputedColumns = true, includeHeader = true, ...opts } = {}) {
+        csv({ includeComputedColumns = true, includeHeader = true, numeral = null, ...opts } = {}) {
             const numRows = dataset.numRows();
-            const rows = [];
             const filteredColumns = includeComputedColumns
                 ? columns
                 : columns.filter(col => !col.isComputed);
-            if (includeHeader) {
-                rows.push(filteredColumns.map(col => col.title()));
-            }
-            for (var row = 0; row < numRows; row++) {
-                rows.push(
-                    filteredColumns.map(col =>
-                        col.type() === 'date' ? col.raw(row) : col.val(row)
-                    )
-                );
+            const table = filteredColumns.map(col => [
+                ...(includeHeader ? [col.title()] : []),
+                ...col.formatted(numeral)
+            ]);
+            const rows = table[0].map((_, i) => table.map(row => row[i])).slice(0, numRows + 1);
+            if (!opts.delimiter && numeral) {
+                opts.delimiter = guessDelimiterFromLocale(numeral);
             }
             return formatDelimited(rows, opts);
         },

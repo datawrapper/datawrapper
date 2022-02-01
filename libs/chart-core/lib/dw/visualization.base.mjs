@@ -44,6 +44,15 @@ extend(base, {
         return this;
     },
 
+    libraries(libraries) {
+        if (!arguments.length) {
+            return this.__libraries || {};
+        }
+
+        this.__libraries = libraries;
+        return this;
+    },
+
     target(target) {
         if (!arguments.length) {
             return this.__target;
@@ -80,6 +89,22 @@ extend(base, {
             ignore[key] = !!format.ignore;
         });
         if (me.dataset.filterColumns) me.dataset.filterColumns(ignore);
+
+        // set locale
+        const { numeral } = me.libraries();
+        if (numeral && chart.locales && chart.locales.numeral) {
+            try {
+                numeral.register('locale', 'dw', chart.locales.numeral);
+            } catch (e) {
+                if (e instanceof TypeError) {
+                    // already registered
+                } else {
+                    throw e;
+                }
+            }
+            numeral.locale('dw');
+        }
+
         return me;
     },
 

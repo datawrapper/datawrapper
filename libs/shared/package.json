@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.40.2",
+    "version": "0.41.1-numeral2",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -39,6 +39,7 @@
         "esm": "3.2.25",
         "jsdoc-to-markdown": "^7.0.1",
         "node-fetch": "^2.6.0",
+        "numeral": "^2.0.6",
         "raf": "^3.4.1",
         "sinon": "^11.1.1"
     },
@@ -50,7 +51,6 @@
         "htmlparser2": "^7.2.0",
         "js-cookie": "^2.2.1",
         "lodash-es": "^4.17.21",
-        "numeral": "^2.0.6",
         "underscore": "^1.13.1"
     },
     "ava": {
