@@ -13,11 +13,12 @@ import equalish from './equalish.js';
  * The implementation is backwards-compatible with our old
  * Globalize-based number formatting, but uses numeral under the hood.
  *
+ * @param {object} numeral - Numeral.js instance
  * @param {object} config - the column configuration from metadata
  * @returns {function}
  */
 
-export default function numberColumnFormatter(config) {
+export default function numberColumnFormatter(numeral, config) {
     const format = config['number-format'] || '-';
     const div = Number(config['number-divisor'] || 0);
     const append = (config['number-append'] || '').replace(/ /g, '\u00A0');
@@ -60,7 +61,7 @@ export default function numberColumnFormatter(config) {
             numeralFormat += '0';
         }
 
-        return formatNumber(val, {
+        return formatNumber(numeral, val, {
             format: numeralFormat,
             prepend: full ? prepend : '',
             append: full ? append : '',

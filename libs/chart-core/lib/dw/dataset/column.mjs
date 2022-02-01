@@ -123,7 +123,25 @@ export default function Column(name, rows, type) {
             return type.parse(isDate(r[i]) || isNumber(r[i]) ? r[i] : purifyHtml(r[i]));
         },
 
-        /*
+        /**
+         * returns an array of formatted values
+         *
+         * @param {string} [opt.numeral=null] -- format numbers using this Numeral.js instance
+         */
+        formatted(numeral = null) {
+            if (numeral && this.type() === 'number') {
+                return this.values().map(val => {
+                    if (Number.isFinite(val)) {
+                        return numeral(val).format('0.[00000000000000000000]');
+                    }
+                    // When the value is null, undefined, NaN, Infinity, or when parsing failed.
+                    return val;
+                });
+            }
+            return this.raw();
+        },
+
+        /**
          * returns an array of parsed values
          */
         values(unfiltered) {

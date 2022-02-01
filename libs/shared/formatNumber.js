@@ -1,14 +1,11 @@
-import numeral from 'numeral';
-
 /**
  * special number formatting that can deal with microtypography
  * and "prepend currencies" (e.g., −$1234.57)
  *
- * Use {@link initNumeralLocale} to set a custom locale.
- *
  * @exports formatNumber
  * @kind function
  *
+ * @param {object} numeral - Numeral.js instance
  * @param {number} value - the number to format
  * @param {object} options - options, see below
  * @param {string} options.format - numeral.js compatible number format
@@ -19,16 +16,16 @@ import numeral from 'numeral';
  *
  * @example
  * // returns '1234.57'
- * formatNumber(1234.567)
+ * formatNumber(numeral, 1234.567)
  *
  * @example
  * // returns '−$1234.57'
- * formatNumber(-1234.567, { prepend: '$' })
+ * formatNumber(numeral, -1234.567, { prepend: '$' })
  *
  * @export
  * @returns {string} - the formatted number
  */
-export default function formatNumber(value, options) {
+export default function formatNumber(numeral, value, options) {
     options = {
         format: '0.[00]',
         prepend: '',

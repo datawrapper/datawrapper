@@ -1,4 +1,22 @@
+export function guessDelimiterFromLocale(numeral) {
+    try {
+        if (numeral.localeData().delimiters.decimal === ',') {
+            return ';';
+        }
+    } catch (e) {
+        // invalid locale data
+    }
+    return ',';
+}
+
 function escapeDelimitedValue(value, delimiter, quoteChar) {
+    if (
+        value === null ||
+        value === undefined ||
+        (typeof value === 'number' && !Number.isFinite(value))
+    ) {
+        return '';
+    }
     const s = String(value);
     if (s.indexOf(quoteChar) !== -1) {
         // A double-quote appearing inside a field MUST be escaped by preceding it with another
@@ -27,5 +45,6 @@ export function formatDelimited(
 }
 
 export default {
-    formatDelimited
+    formatDelimited,
+    guessDelimiterFromLocale
 };

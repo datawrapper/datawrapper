@@ -2,6 +2,7 @@ import test from 'ava';
 import Column from './column.mjs';
 import Dataset from './index.mjs';
 import delimited from './delimited.mjs';
+import numeral from 'numeral';
 
 test.beforeEach(t => {
     const priceEUR = Column('price (EUR)', [24, 0, 80], 'number');
@@ -64,7 +65,7 @@ test('Dataset() handles both columns with empty names and columns with non-uniqu
 test('Dataset.csv() returns a CSV including computed columns and the header by default', async t => {
     const expected = `thing,price,price (EUR)
 foo,1.2,24
-bar,undefined,0
+bar,,0
 spam,4,80`;
     t.is(t.context.dataset.csv(), expected);
 });
@@ -72,14 +73,36 @@ spam,4,80`;
 test('Dataset.csv() returns a CSV without computed columns when an option is passed', async t => {
     const expected = `thing,price
 foo,1.2
-bar,undefined
+bar,
 spam,4`;
     t.is(t.context.dataset.csv({ includeComputedColumns: false }), expected);
 });
 
+test('Dataset.csv() returns a localized CSV when the numeral argument is passed', async t => {
+    const sourceDataset = Dataset([
+        Column('thing', ['foo', 'bar', 'spam'], 'text'),
+        Column('price', [3.141592653589793, 9000, undefined], 'number'),
+        Column('date', ['2022-01-13', '2022-01-14', undefined], 'date')
+    ]);
+    const expectedCSV = `thing;price;date
+foo;3,141592653589793;2022-01-13
+bar;9000;2022-01-14
+spam;;`;
+    const locale = String(Math.round(Math.random() * 100000));
+    numeral.register('locale', locale, {
+        delimiters: {
+            thousands: ' ', // ignored
+            decimal: ','
+        }
+    });
+    numeral.locale(locale);
+    const resultCSV = sourceDataset.csv({ numeral });
+    t.is(resultCSV, expectedCSV);
+});
+
 test('Dataset.csv() returns a CSV without the header row when an option is passed', async t => {
     const expected = `foo,1.2,24
-bar,undefined,0
+bar,,0
 spam,4,80`;
     t.is(t.context.dataset.csv({ includeHeader: false }), expected);
 });
