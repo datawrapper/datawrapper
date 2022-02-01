@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.40.2-darkmode.0",
+    "version": "0.40.2",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
