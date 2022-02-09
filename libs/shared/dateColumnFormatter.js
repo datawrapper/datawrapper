@@ -36,7 +36,7 @@ export default function dateColumnFormatter(column) {
             };
         case 'month':
             return function (d) {
-                return !isDate(d) ? d : dayjs(d).format('MMM YY');
+                return !isDate(d) ? d : formatDate(d, 'MMM YY');
             };
         case 'week':
             return function (d) {
@@ -44,19 +44,19 @@ export default function dateColumnFormatter(column) {
             };
         case 'day':
             return function (d, verbose) {
-                return !isDate(d) ? d : dayjs(d).format(verbose ? 'dddd, MMMM DD, YYYY' : 'l');
+                return !isDate(d) ? d : formatDate(d, verbose ? 'dddd, MMMM DD, YYYY' : 'l');
             };
         case 'day-minutes':
             return function (d) {
                 return !isDate(d)
                     ? d
-                    : dayjs(d).format('MMM DD').replace(' ', '&nbsp;') +
+                    : formatDate(d, 'MMM DD').replace(' ', '&nbsp;') +
                           ' - ' +
-                          dayjs(d).format('LT').replace(' ', '&nbsp;');
+                          formatDate(d, 'LT').replace(' ', '&nbsp;');
             };
         case 'day-seconds':
             return function (d) {
-                return !isDate(d) ? d : dayjs(d).format('LTS').replace(' ', '&nbsp;');
+                return !isDate(d) ? d : formatDate(d, 'LTS').replace(' ', '&nbsp;');
             };
     }
 }
@@ -68,4 +68,17 @@ function dateToIsoWeek(date) {
     const isoYear = t.getUTCFullYear();
     const w = Math.floor((t.getTime() - new Date(isoYear, 0, 1, -6)) / 864e5);
     return [isoYear, 1 + Math.floor(w / 7), d > 0 ? d : 7];
+}
+
+/*
+ * When using dayjs to format, normalize to 'en'
+ * to ensure consistency, as render context may have, or
+ * may at any point alter the locale of the dayjs instance
+ */
+function formatDate(d, fmt) {
+    const initialLocale = dayjs.locale();
+    dayjs.locale('en');
+    const formatted = dayjs(d).format(fmt);
+    dayjs.locale(initialLocale);
+    return formatted;
 }
