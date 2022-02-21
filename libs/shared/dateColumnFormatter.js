@@ -47,16 +47,20 @@ export default function dateColumnFormatter(column) {
                 return !isDate(d) ? d : formatDate(d, verbose ? 'dddd, MMMM DD, YYYY' : 'l');
             };
         case 'day-minutes':
-            return function (d) {
+            return function (d, verbose) {
                 return !isDate(d)
                     ? d
-                    : formatDate(d, 'MMM DD').replace(' ', '&nbsp;') +
+                    : formatDate(d, 'MMM DD' + (verbose ? ', YYYY' : '')).replace(/ /g, '&nbsp;') +
                           ' - ' +
                           formatDate(d, 'LT').replace(' ', '&nbsp;');
             };
         case 'day-seconds':
-            return function (d) {
-                return !isDate(d) ? d : formatDate(d, 'LTS').replace(' ', '&nbsp;');
+            return function (d, verbose) {
+                return !isDate(d)
+                    ? d
+                    : (verbose
+                          ? formatDate(d, 'MMM DD, YYYY').replace(/ /g, '&nbsp;') + ' - '
+                          : '') + formatDate(d, 'LTS').replace(' ', '&nbsp;');
             };
     }
 }

@@ -97,9 +97,13 @@ test('day-minutes', t => {
 
     const formatter = dateFormatter(column);
 
+    // non-verbose
+    t.is(formatter(dates[0]), 'Jan&nbsp;01 - 12:00&nbsp;AM');
+    t.is(formatter(dates[1]), 'Apr&nbsp;01 - 11:34&nbsp;AM');
+
     // verbose
-    t.is(formatter(dates[0], true), 'Jan&nbsp;01 - 12:00&nbsp;AM');
-    t.is(formatter(dates[1], true), 'Apr&nbsp;01 - 11:34&nbsp;AM');
+    t.is(formatter(dates[0], true), 'Jan&nbsp;01,&nbsp;2000 - 12:00&nbsp;AM');
+    t.is(formatter(dates[1], true), 'Apr&nbsp;01,&nbsp;2000 - 11:34&nbsp;AM');
 });
 
 test('day-seconds', t => {
@@ -110,7 +114,11 @@ test('day-seconds', t => {
 
     const formatter = dateFormatter(column);
 
+    // non-verbose
+    t.is(formatter(dates[0]), '12:00:00&nbsp;AM');
+    t.is(formatter(dates[1]), '11:34:05&nbsp;AM');
+
     // verbose
-    t.is(formatter(dates[0], true), '12:00:00&nbsp;AM');
-    t.is(formatter(dates[1], true), '11:34:05&nbsp;AM');
+    t.is(formatter(dates[0], true), 'Jan&nbsp;01,&nbsp;2000 - 12:00:00&nbsp;AM');
+    t.is(formatter(dates[1], true), 'Apr&nbsp;01,&nbsp;2000 - 11:34:05&nbsp;AM');
 });
