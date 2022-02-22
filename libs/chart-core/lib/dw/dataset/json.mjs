@@ -24,7 +24,12 @@ function json(opts) {
     }
 
     return {
-        dataset: loadAndParseJSON,
+        dataset: function () {
+            return loadAndParseJSON().catch(e => {
+                console.error('could not fetch datasource, returning an empty object', e);
+                return {};
+            });
+        },
         parse: function () {
             return JSON.parse(opts.csv);
         }

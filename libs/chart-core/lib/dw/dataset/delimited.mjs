@@ -41,7 +41,12 @@ function delimited(opts) {
     }
 
     return {
-        dataset: loadAndParseCsv,
+        dataset: function () {
+            return loadAndParseCsv().catch(e => {
+                console.error('could not fetch datasource, returning an empty dataset', e);
+                return dataset([]);
+            });
+        },
         parse: function () {
             return new DelimitedParser(opts).parse(opts.csv);
         }
