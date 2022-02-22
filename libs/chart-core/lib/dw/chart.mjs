@@ -95,16 +95,11 @@ export default function (attributes) {
 
             const datasource = chart.get('metadata.data.json') ? json(dsopts) : delimited(dsopts);
 
-            return datasource
-                .dataset()
-                .then(ds => {
-                    this.dataset(ds);
-                    datasetChangeCallbacks.fire(chart, ds);
-                    return ds;
-                })
-                .catch(e => {
-                    console.error('could not fetch datasource', e);
-                });
+            return datasource.dataset().then(ds => {
+                this.dataset(ds);
+                datasetChangeCallbacks.fire(chart, ds);
+                return ds;
+            });
         },
 
         // returns the dataset
