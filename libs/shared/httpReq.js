@@ -74,6 +74,11 @@ export default function httpReq(path, options = {}) {
         // overwrite body
         opts.body = JSON.stringify(payload);
     }
+    if (opts.headers['Content-Type'].startsWith('multipart/')) {
+        // removing 'Content-Type' will ensure that fetch
+        // sets the correct content type and boundary parameter
+        delete opts.headers['Content-Type'];
+    }
 
     let promise;
     if (!CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
