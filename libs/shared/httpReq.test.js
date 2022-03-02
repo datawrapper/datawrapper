@@ -2,6 +2,8 @@ import test from 'ava';
 import fetch from 'node-fetch';
 import httpReq from './httpReq.js';
 import sinon from 'sinon';
+import FormData from 'form-data';
+import { createReadStream } from 'fs';
 
 const baseUrl = 'https://httpbin.org';
 
@@ -61,6 +63,23 @@ test('post request with csv body', async t => {
     t.is(res.headers['Content-Type'], `text/csv`);
     t.is(res.data, body);
     t.falsy(res.json);
+});
+
+test('post request with file in multipart/form-data body', async t => {
+    document.cookie = 'crumb=abc';
+    const filePath = './test/helpers/test.png';
+
+    const formData = new FormData();
+    formData.append('file', createReadStream(filePath), 'test.png');
+    formData.append('bla', 'foo');
+
+    const body = formData;
+    const res = await httpReq.post('/anything', {
+        baseUrl,
+        body,
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    t.true(res.headers['Content-Type'].startsWith('multipart/form-data;boundary='));
 });
 
 test('no content in 204 requests', async t => {
