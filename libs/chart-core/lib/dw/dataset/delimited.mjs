@@ -217,7 +217,7 @@ class DelimitedParser {
         if (opts.transpose) {
             arrData = transpose(arrData);
         }
-        return makeDataset(arrData);
+        return makeDataset(trimArrayData(arrData));
     } // end parse
 
     guessDelimiter(strData) {
@@ -265,4 +265,13 @@ function getDelimiterPatterns(delimiter, quoteChar) {
             '\\r\\n]*))',
         'gi'
     );
+}
+
+function trimArrayData(arrData) {
+    for (let i = arrData.length - 1; i >= 0; i--) {
+        if (arrData[i].some(col => col !== '')) {
+            return arrData.slice(0, i + 1);
+        }
+    }
+    return arrData.slice(0, 1);
 }

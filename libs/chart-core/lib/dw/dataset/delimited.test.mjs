@@ -224,3 +224,50 @@ GRÜNE\t36\t32\t68
     const dataset = await delimited({ csv, skipRows: 99 }).dataset();
     t.is(dataset.numColumns(), 0);
 });
+
+test('Remove empty lines from dataset', async t => {
+    const csv = `Party\tWomen\tMen\tTotal
+CDU/CSU\t45\t192\t237
+SPD\t57\t89\t146
+FDP\t24\t69\t93
+LINKE\t42\t34\t76
+GRÜNE\t36\t32\t68
+
+
+
+
+`;
+    const dataset = await delimited({ csv }).dataset();
+    t.is(dataset.numRows(), 5);
+});
+
+test('Remove empty lines with tab characters from dataset', async t => {
+    const csv = `Party\tWomen\tMen\tTotal
+CDU/CSU\t45\t192\t237
+SPD\t57\t89\t146
+FDP\t24\t69\t93
+LINKE\t42\t34\t76
+GRÜNE\t36\t32\t68
+\t\t\t
+\t\t\t
+\t\t\t
+\t\t\t`;
+    const dataset = await delimited({ csv }).dataset();
+    t.is(dataset.numRows(), 5);
+});
+
+test("But don't remove empty lines within dataset", async t => {
+    const csv = `Party\tWomen\tMen\tTotal
+CDU/CSU\t45\t192\t237
+SPD\t57\t89\t146
+\t\t\t
+FDP\t24\t69\t93
+LINKE\t42\t34\t76
+GRÜNE\t36\t32\t68
+\t\t\t
+\t\t\t
+\t\t\t
+\t\t\t`;
+    const dataset = await delimited({ csv }).dataset();
+    t.is(dataset.numRows(), 6);
+});
