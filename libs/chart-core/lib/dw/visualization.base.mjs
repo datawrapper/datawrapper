@@ -83,6 +83,9 @@ extend(base, {
         me.dataset = chart.dataset();
         me.theme(chart.theme());
         me.__chart = chart;
+        // reset visualization cache to make sure
+        // auto-populated columns get re-created
+        me.__axisCache = undefined;
         var columnFormat = get(chart.get(), 'metadata.data.column-format', {});
         var ignore = {};
         each(columnFormat, function (format, key) {
