@@ -6,8 +6,8 @@ test('auto-tick format for number columns', t => {
     t.is(autoTickFormatNumber([0, 2]), '0,0.0[0]');
     t.is(autoTickFormatNumber([0, 20]), '0,0.[0]');
     t.is(autoTickFormatNumber([0, 10000]), '0,0');
-    t.is(autoTickFormatNumber([0, 2e6]), '0,0a');
-    t.is(autoTickFormatNumber([-2e6, -2.01e6]), '0,0a');
+    t.is(autoTickFormatNumber([0, 2e6]), '0,0.[0]a');
+    t.is(autoTickFormatNumber([-2e6, -2.01e6]), '0,0.[0]a');
 });
 
 function date(year, month = 1, day = 1, hour = 0, minute = 0) {

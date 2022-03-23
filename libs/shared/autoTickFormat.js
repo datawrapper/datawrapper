@@ -21,7 +21,7 @@ export function autoTickFormatNumber(range) {
     if (span < 1) return '0,0.00[0]';
     if (span < 3) return '0,0.0[0]';
     if (span < 1e4) return '0,0.[0]';
-    if (span > 1e6 || Math.abs(range[0]) > 1e5 || Math.abs(range[1]) > 1e5) return '0,0a';
+    if (span > 1e6 || Math.abs(range[0]) > 1e5 || Math.abs(range[1]) > 1e5) return '0,0.[0]a';
     return '0,0';
 }
 
