@@ -34,7 +34,6 @@ export default function (attributes) {
     let _ds;
 
     const flagsBoolean = [
-        'svgonly',
         'plain',
         'static',
         'svgonly',
@@ -226,7 +225,9 @@ export default function (attributes) {
             const flags = { isIframe };
             const urlParams = new URLSearchParams(window.location.search);
             if (isIframe) {
-                flagsBoolean.forEach(key => (flags[key] = !!urlParams.get(key)));
+                flagsBoolean.forEach(
+                    key => (flags[key] = JSON.parse(urlParams.get(key) || 'false'))
+                );
                 flagsString.forEach(key => (flags[key] = urlParams.get(key)));
             } else {
                 // @todo: read flags from script tag , e.g.
