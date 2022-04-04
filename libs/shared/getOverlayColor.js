@@ -13,7 +13,7 @@
  */
 
 import { lab, rgb } from 'd3-color';
-import get from 'lodash-es/get.js';
+import get from './get.js';
 import colorLightness from './colorLightness.js';
 
 export default function getOverlayColor(overlay, baseColor, theme) {

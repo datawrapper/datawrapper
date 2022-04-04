@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.43.2",
+    "version": "0.44.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -51,7 +51,7 @@
         "fontfaceobserver": "^2.1.0",
         "htmlparser2": "^7.2.0",
         "js-cookie": "^2.2.1",
-        "lodash-es": "^4.17.21",
+        "lodash": "^4.17.21",
         "underscore": "^1.13.1"
     },
     "ava": {
