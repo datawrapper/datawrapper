@@ -16,6 +16,7 @@ const CSRF_SAFE_METHODS = new Set(['get', 'head', 'options', 'trace']); // accor
  * @param {object} options.payload    - raw JSON payload to be send with req (will overwrite options.body)
  * @param {boolean} options.raw       - disable parsing of response body, returns raw response
  * @param {string} options.baseUrl    - base for url, defaults to dw api domain
+ * @param {string} options.disableCSFR    - set to true to disable CSFR cookies
  * @param {*} options                 - see documentation for window.fetch for additional options
  *
  * @returns {Promise} promise of parsed response body or raw response
@@ -52,7 +53,9 @@ export default function httpReq(path, options = {}) {
     }
     if (!options.baseUrl) {
         try {
-            options.baseUrl = `//${window.dw.backend.__api_domain}`;
+            options.baseUrl = window.dw.backend.__api_domain.startsWith('http')
+                ? window.dw.backend.__api_domain
+                : `//${window.dw.backend.__api_domain}`;
         } catch (e) {
             throw new Error('Neither options.baseUrl nor window.dw is defined.');
         }
@@ -81,7 +84,7 @@ export default function httpReq(path, options = {}) {
     }
 
     let promise;
-    if (!CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
+    if (!opts.disableCSFR && !CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
         const csrfCookieValue = Cookies.get(CSRF_COOKIE_NAME);
         if (csrfCookieValue) {
             opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
