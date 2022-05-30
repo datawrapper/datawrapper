@@ -119,13 +119,23 @@ export default function Dataset(columns) {
          * @returns {object[]}
          */
         list() {
-            return range(columns[0].length).map(function (r) {
-                var o = {};
-                columns.forEach(col => {
-                    o[col.name()] = col.val(r);
-                });
-                return o;
+            return range(columns[0].length).map(dataset.row);
+        },
+
+        /**
+         * returns an object containing the column values of the row
+         * @param {number} index the row index
+         * @returns {object}
+         */
+        row(index) {
+            if (index >= columns[0].length) {
+                return {};
+            }
+            const o = {};
+            columns.forEach(col => {
+                o[col.name()] = col.val(index);
             });
+            return o;
         },
 
         /**
