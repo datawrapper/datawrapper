@@ -171,3 +171,8 @@ test('Dataset.deleteRow() deletes several rows when columns have different lengt
     t.deepEqual(dataset.column('letter').raw(), ['A']);
     t.deepEqual(dataset.column('number').raw(), [0, 2]);
 });
+
+test('Dataset.row(index) returns a row object containing all column values', async t => {
+    const dataset = Dataset([Column('foo', ['foo1']), Column('bar', ['bar1'])]);
+    t.deepEqual(dataset.row(0), { foo: 'foo1', bar: 'bar1' });
+});
