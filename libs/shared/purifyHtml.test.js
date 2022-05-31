@@ -115,10 +115,17 @@ test('prevent unclosed tag exploit', t => {
     el.innerHTML = `<span>${purified}</span>`;
 
     t.is(el.childNodes[0].tagName, 'SPAN');
-    t.is(el.childNodes[0].innerHTML, '<img src="x" <="" span="">');
-    t.is(el.childNodes[0].childNodes[0].tagName, 'IMG');
-    t.is(el.childNodes[0].childNodes[0].getAttribute('onerror'), null);
-    t.is(el.childNodes[0].childNodes[0].getAttribute('onload'), null);
+    t.is(el.childNodes[0].innerHTML, '');
+    t.is(el.childNodes[0].childNodes.length, 0);
+});
+
+test('prevent unclosed iframe exploit ', t => {
+    const el = document.createElement('p');
+    const purified = purifyHtml('<iframe src=x y=');
+    el.innerHTML = `<span>${purified}</span>`;
+    t.is(el.childNodes[0].tagName, 'SPAN');
+    t.is(el.childNodes[0].innerHTML, '');
+    t.is(el.childNodes[0].childNodes.length, 0);
 });
 
 test('prevent hacky javascript links', t => {
