@@ -25,3 +25,4 @@ export { default as significantDimension } from './significantDimension.js';
 export { default as tailLength } from './tailLength.js';
 export { default as toFixed } from './toFixed.js';
 export { default as truncate } from './truncate.js';
+export { default as validation } from './validation.js';
