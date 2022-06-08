@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.47.0",
+    "version": "0.48.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -44,7 +44,7 @@
         "sinon": "^11.1.1"
     },
     "dependencies": {
-        "chroma-js": "^2.1.2",
+        "chroma-js": "^2.4.2",
         "d3-array": "^1.2.4",
         "domutils": "^2.8.0",
         "fontfaceobserver": "^2.1.0",

@@ -409,14 +409,15 @@ extend(base, {
 
     colorMap(cm) {
         if (!arguments.length) {
-            return color => {
+            return (...args) => {
+                let color = args[0];
                 const applyDarkModeMap = this.__darkMode && this.__darkModeColorMap;
                 this.__colors[color] = 1;
                 if (this.__colorMap) {
-                    if (applyDarkModeMap) color = this.__darkModeColorMap(color);
+                    if (applyDarkModeMap) color = this.__darkModeColorMap(...args);
                     return this.__colorMap(color);
                 } else if (applyDarkModeMap) {
-                    color = this.__darkModeColorMap(color);
+                    color = this.__darkModeColorMap(...args);
                 }
                 return color;
             };
