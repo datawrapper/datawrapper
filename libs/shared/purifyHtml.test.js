@@ -25,6 +25,11 @@ test('should return the input value if undefined or null', t => {
     t.is(purifyHtml(undefined), undefined);
 });
 
+test('should keep all tags that we allow explicitly', t => {
+    const htmlSample = '<h1>Headline with <span style="color:red">additional styling</span></h1>';
+    t.is(purifyHtml(htmlSample, '<h1><span>'), htmlSample);
+});
+
 test('should remove script tags', t => {
     t.is(purifyHtml('<script>alert("foo")</script>'), 'alert("foo")');
 });
