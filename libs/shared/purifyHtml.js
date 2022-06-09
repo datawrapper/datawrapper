@@ -34,7 +34,7 @@ export default function purifyHTML(input, allowed) {
     // creates new elements that might not be allowed
     d.innerHTML = stripTags(
         d.innerHTML,
-        allowed && !allowed.includes('<span>') ? allowed + '<span>' : undefined
+        allowed && !allowed.includes('<span>') ? allowed + '<span>' : allowed || undefined
     );
     var sel = d.childNodes[0].querySelectorAll('*');
     for (var i = 0; i < sel.length; i++) {
