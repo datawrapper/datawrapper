@@ -1,4 +1,4 @@
-import { FORMAT_DEFAULT } from 'dayjs/esm/constant';
+const FORMAT_DEFAULT = 'YYYY-MM-DDTHH:mm:ssZ';
 
 export default (o, c) => {
     // locale needed later
