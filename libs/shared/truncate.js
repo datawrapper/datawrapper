@@ -16,6 +16,6 @@
  */
 export default function truncate(str, start = 11, end = 7) {
     if (typeof str !== 'string') return str;
-    if (str.length < start + end + 3) return str;
-    return str.substr(0, start).trim() + '…' + str.substr(str.length - end).trim();
+    if (str.length < start + end + 3) return str; // Add 3 to make sure the truncated string is always visually shorter than the original.
+    return str.substring(0, start).trim() + '…' + str.substring(str.length - end).trim();
 }

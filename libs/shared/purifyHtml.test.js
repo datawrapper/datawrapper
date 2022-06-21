@@ -1,4 +1,5 @@
 import test from 'ava';
+import { testProp, fc } from 'ava-fast-check';
 import purifyHtml from './purifyHtml.js';
 
 test('purifyHtml return same string if no tags present', t => {
@@ -139,3 +140,25 @@ test('prevent hacky javascript links', t => {
         '<a href="" target="_self" rel="nofollow noopener noreferrer">link</a>'
     );
 });
+
+testProp(
+    'purify some random HTML',
+    [
+        fc.stringOf(
+            fc.oneof(
+                fc.lorem(),
+                fc
+                    .tuple(
+                        fc.oneof(...['b', 'i', 'h1', 'h2', 'h3'].map(t => fc.constant(t))),
+                        fc.lorem()
+                    )
+                    .map(([tagName, content]) => `<${tagName}>${content}</${tagName}>`)
+            ),
+            { minLength: 50 }
+        )
+    ],
+    (t, html) => {
+        t.not(purifyHtml(html, ''), html);
+        t.is(purifyHtml(html, '<b><i><h1><h2><h3>'), html);
+    }
+);

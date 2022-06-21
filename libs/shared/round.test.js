@@ -1,4 +1,5 @@
 import test from 'ava';
+import { testProp, fc } from 'ava-fast-check';
 import round from './round.js';
 
 test('round to zero decimals', t => {
@@ -20,3 +21,12 @@ test('round to negative decimals', t => {
     t.is(round(12345, -3), 12000);
     t.is(round(12345, -4), 10000);
 });
+
+testProp(
+    'round random numbers',
+    [fc.integer({ min: -10000, max: 10000 }), fc.integer({ min: 2, max: 100 })],
+    (t, a, b) => {
+        const num = a / b;
+        t.false(String(round(num)).includes('.'));
+    }
+);

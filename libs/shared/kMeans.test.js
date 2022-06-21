@@ -1,4 +1,5 @@
 import test from 'ava';
+import { testProp, fc } from 'ava-fast-check';
 import kMeans from './kMeans.js';
 
 const values = [1, 1.1, 1.2, 2.1, 3, 3.1, 3.2, 3.3, 7, 7.1, 10];
@@ -24,3 +25,16 @@ test('test clustering', t => {
 test('remove empty clusters from result', t => {
     t.deepEqual(kMeans(values, 6), cluster5);
 });
+
+testProp(
+    'compute some clusters',
+    [fc.uniqueArray(fc.double(), { minLength: 100 }), fc.integer({ min: 5, max: 20 })],
+    (t, values, count) => {
+        const cluster = kMeans(values, count);
+        t.true(Array.isArray(cluster));
+        t.true(Array.isArray(cluster[0]));
+        // number of clusters is count +/- 1
+        t.true(Math.abs(cluster.length - count) <= 1);
+        t.is(typeof cluster[0][0], 'number');
+    }
+);

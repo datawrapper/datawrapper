@@ -12,3 +12,18 @@ const allowedSourceUrlRegExp = /^(https?|ftp):\/\//i;
 export function isAllowedSourceUrl(sourceUrl) {
     return allowedSourceUrlRegExp.test(sourceUrl);
 }
+
+const validUrlRegExp =
+    /^(http|https):\/\/(([a-z0-9$\-_.+!*'(),;:&=]|%[0-9a-f]{2})+@)?(((25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9][0-9]|[1-9][0-9]|[0-9])){3})|localhost|([a-z0-9\-\u00C0-\u017F]+\.)+([a-zA-Z]{2,}))(:[0-9]+)?((\/(([a-z0-9$\-_.+!*'(),;:@&=~]|%[0-9a-f]{2})*(\/([a-z0-9$\-_.+!*'(),;:@&=]|%[0-9a-f]{2})*)*)|)?(\?([a-z0-9$\-_.+!*'(),;:@&=/?~]|%[0-9a-f]{2})*)?(#([a-z0-9$\-_.+!*'(),;:@&=/?~]|%[0-9a-f]{2})*)?)?$/i;
+
+/**
+ * checks if a given string is a valid URL
+ * @exports isValidUrl
+ * @kind function
+ *
+ * @param {string} input
+ * @returns {boolean}
+ */
+export function isValidUrl(input) {
+    return validUrlRegExp.test(input);
+}
