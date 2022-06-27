@@ -1,6 +1,7 @@
 import { isArray, isUndefined, indexOf } from 'underscore';
 import get from '@datawrapper/shared/get.js';
 import set from '@datawrapper/shared/set.js';
+import PostEvent from '@datawrapper/shared/postEvent.js';
 
 import json from './dataset/json.mjs';
 import delimited from './dataset/delimited.mjs';
@@ -23,6 +24,7 @@ export default function (attributes) {
     let theme;
     let metricPrefix;
     let locale;
+    let flags = {};
 
     // I believe these are no longer in use anywhere.
     // TODO: Clarify & remove
@@ -32,17 +34,6 @@ export default function (attributes) {
     const _assets = {};
     let _translations = {};
     let _ds;
-
-    const flagsBoolean = [
-        'plain',
-        'static',
-        'svgonly',
-        'map2svg',
-        'transparent',
-        'fitchart',
-        'fitheight'
-    ];
-    const flagsString = ['theme', 'search'];
 
     // public interface
     const chart = {
@@ -177,11 +168,27 @@ export default function (attributes) {
             }
         },
 
-        render(isIframe, outerContainer) {
+        createPostEvent() {
+            const chartId = chart.get('id');
+            const { isIframe } = flags;
+            return PostEvent(chartId, isIframe);
+        },
+
+        // sets or gets the flags
+        flags(_flags) {
+            if (arguments.length) {
+                flags = _flags;
+                return chart;
+            }
+            return flags;
+        },
+
+        render(outerContainer) {
             if (!visualization || !theme || !dataset) {
                 throw new Error('cannot render the chart!');
             }
 
+            const isIframe = flags.isIframe;
             const container = chart.vis().target();
 
             visualization.chart(chart);
@@ -222,21 +229,7 @@ export default function (attributes) {
             visualization.size(w, h);
             visualization.__init();
 
-            const flags = { isIframe };
-            const urlParams = new URLSearchParams(window.location.search);
-            if (isIframe) {
-                flagsBoolean.forEach(
-                    key => (flags[key] = JSON.parse(urlParams.get(key) || 'false'))
-                );
-                flagsString.forEach(key => (flags[key] = urlParams.get(key)));
-            } else {
-                // @todo: read flags from script tag , e.g.
-                // const script = document.currentScript;
-                // flagsBoolean.forEach(key => (flags[key] = !!script.getAttribute(`data-${key}`)));
-                // flagsString.forEach(key => (flags[key] = script.getAttribute(`data-${key}`)));
-            }
-
-            visualization.render(container, flags);
+            visualization.render(container);
 
             if (isIframe) {
                 window.clearInterval(this.__resizingInterval);
