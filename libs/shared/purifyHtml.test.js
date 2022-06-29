@@ -162,3 +162,25 @@ testProp(
         t.is(purifyHtml(html, '<b><i><h1><h2><h3>'), html);
     }
 );
+
+test('purifyHtml handles void tags', t => {
+    t.is(
+        purifyHtml(
+            `
+<p>
+  <img src="foo" />
+  <script>alert(1)</script>
+  <br />
+  foo
+</p>`,
+            '<img><br><p>'
+        ),
+        `
+<p>
+  <img src="foo">
+  alert(1)
+  <br>
+  foo
+</p>`
+    );
+});
