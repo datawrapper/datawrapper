@@ -92,7 +92,14 @@ export default function (attributes) {
             });
         },
 
-        // returns the dataset
+        /**
+         * Getter/setter for the dw.dataset class. This method
+         * can also be used to "reset" the current dataset by passing
+         * true as argument. This will re-apply changes, column sorting
+         * and computed columns to the existing dataset.
+         *
+         * @returns dataset
+         */
         dataset(ds) {
             if (arguments.length) {
                 if (ds !== true) _ds = ds;
