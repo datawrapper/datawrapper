@@ -1,7 +1,6 @@
 /* eslint-env node */
 import test from 'ava';
 import delimited from './delimited.mjs';
-import fetch from 'node-fetch';
 
 test('simple tsv', async t => {
     const csv = `Party\tWomen\tMen\tTotal
@@ -176,12 +175,16 @@ test('dataset with empty quotes', async t => {
     t.deepEqual(dataset.column(3).values(), [null, null, null, 10, 10, 10, null, null, null]);
 });
 
-test('load dataset from url', async t => {
-    global.window = { fetch };
-    const url = 'https://static.dwcdn.net/data-feed/coronavirus/germany-symbolmap-per-state.csv';
-    const dataset = await delimited({ url }).dataset();
-    t.is(dataset.numColumns(), 10);
-});
+/*
+ * the following test has been disabled due to problems
+ * with github actions weirdly trying to import node-fetch
+ */
+// test('load dataset from url', async t => {
+//     global.window = { fetch };
+//     const url = 'https://static.dwcdn.net/data-feed/coronavirus/germany-symbolmap-per-state.csv';
+//     const dataset = await delimited({ url }).dataset();
+//     t.is(dataset.numColumns(), 10);
+// });
 
 test('empty csv is parsed as a dataset with one column and no rows', async t => {
     const csv = `
