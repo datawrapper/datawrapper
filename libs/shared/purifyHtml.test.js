@@ -184,3 +184,23 @@ test('purifyHtml handles void tags', t => {
 </p>`
     );
 });
+
+test('purifyHtml strips tags from inside CSS', t => {
+    t.is(
+        purifyHtml(
+            `
+<style>
+.body:after {
+  content: '<b>foo</b>';
+}
+</style>`,
+            '<style>'
+        ),
+        `
+<style>
+.body:after {
+  content: 'foo';
+}
+</style>`
+    );
+});
