@@ -75,6 +75,8 @@ function trim(s) {
     return s.trim();
 }
 
+const RESTRICT_MEMBER_ACCESS = new Set(['__proto__', 'prototype', 'constructor']);
+
 // parser
 export function Parser(options) {
     this.options = options || {};
@@ -652,6 +654,7 @@ export function Parser(options) {
          * @returns {array}
          */
         SORT(arr, asc = true, key = null) {
+            if (RESTRICT_MEMBER_ACCESS.has(key)) throw new Error('Invalid key');
             if (!Array.isArray(arr)) {
                 throw new Error('First argument to SORT is not an array');
             }
@@ -748,6 +751,7 @@ export function Parser(options) {
          * PLUCK(countries, 'population')
          */
         PLUCK(arr, key) {
+            if (RESTRICT_MEMBER_ACCESS.has(key)) throw new Error('Invalid key');
             if (!Array.isArray(arr)) throw new Error('First argument to PLUCK is not an array');
             return arr.map(item =>
                 Object.prototype.hasOwnProperty.call(item, key) ? item[key] : null
@@ -1049,7 +1053,8 @@ export function Parser(options) {
 Parser.prototype.parse = function (expr) {
     var instr = [];
     var parserState = new ParserState(this, new TokenStream(this, expr), {
-        allowMemberAccess: true
+        allowMemberAccess: true,
+        restrictMemberAccess: RESTRICT_MEMBER_ACCESS
     });
 
     parserState.parseExpression(instr);

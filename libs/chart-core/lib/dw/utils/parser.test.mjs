@@ -3,6 +3,7 @@
  */
 import test from 'ava';
 import { Parser } from './parser.mjs';
+import sinon from 'sinon';
 
 const parser = new Parser();
 
@@ -266,7 +267,7 @@ test('PLUCK', t => {
     const ctx = { symbols };
     t.deepEqual(parser.evaluate('PLUCK(symbols, "value")', ctx), [1234, 876, 7390]);
     t.deepEqual(parser.evaluate('PLUCK(symbols, "ID")', ctx), ['USA', 'Canada', 'Mexico']);
-    t.deepEqual(parser.evaluate('PLUCK(symbols, "constructor")', ctx), [null, null, null]);
+    t.throws(() => parser.evaluate('PLUCK(symbols, "constructor")', ctx));
 });
 
 test('PLUCK + JOIN', t => {
@@ -390,4 +391,18 @@ test('SOME', t => {
     t.is(parser.evaluate(`SOME([1,2,3,4,5], f(x) = x>2)`), true);
     t.is(parser.evaluate(`SOME([1,2,3,4,5], f(x) = x>0)`), true);
     t.is(parser.evaluate(`SOME([1,2,3,4,5], f(x) = x>10)`), false);
+});
+
+test('PLUCK xss', t => {
+    global.alert = sinon.spy();
+    const expressions = [
+        `FOLD(f(e, z, i) = z, "z", PLUCK([ATAN2.__proto__], "constructor"))("alert(1)")()`,
+        `FOLD(f(e, z, i) = z, "z", PLUCK(["a".sub.__proto__], "constructor"))("alert(1)")()`
+    ];
+    expressions.forEach(expr => t.throws(() => parser.evaluate(expr)));
+    t.is(global.alert.notCalled, true);
+});
+
+test('Cannot access __proto__', t => {
+    t.throws(() => parser.evaluate('a.__proto__', { a: 'foo' }));
 });
