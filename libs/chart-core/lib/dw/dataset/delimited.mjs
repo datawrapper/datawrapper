@@ -37,7 +37,8 @@ function delimited(opts) {
             });
             return parsed;
         }
-        throw new Error('you need to provide either an URL or CSV data.');
+        const err = new Error('You need to provide either a URL or CSV data');
+        return Promise.reject(err);
     }
 
     return {
