@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "0.51.0",
+    "version": "0.52.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -16,7 +16,7 @@
     "main": "index.js",
     "type": "module",
     "engines": {
-        "node": ">=14.0.0",
+        "node": ">=18.0.0",
         "npm": ">=7.0.0"
     },
     "scripts": {
