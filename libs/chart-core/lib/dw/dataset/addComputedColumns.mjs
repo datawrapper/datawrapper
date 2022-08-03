@@ -1,7 +1,6 @@
 import { each, isBoolean, isDate, isNumber, isNull } from 'underscore';
 import column from './column.mjs';
 import columnNameToVariable from '@datawrapper/shared/columnNameToVariable.js';
-import get from '@datawrapper/shared/get.js';
 import applyChanges from './applyChanges.mjs';
 import { Parser } from '../utils/parser.mjs';
 
@@ -17,7 +16,7 @@ function toISOStringSafe(date) {
 }
 
 export default function addComputedColumns(chart, dataset) {
-    let virtualColumns = get(chart.get(), 'metadata.describe.computed-columns', {});
+    let virtualColumns = chart.getMetadata('describe.computed-columns', {});
     if (!Array.isArray(virtualColumns)) {
         // convert to array
         virtualColumns = Object.keys(virtualColumns).reduce((acc, cur) => {
@@ -179,7 +178,8 @@ export default function addComputedColumns(chart, dataset) {
         }
 
         // create a map of changes for this column
-        const changes = get(chart, 'metadata.data.changes', [])
+        const changes = chart
+            .getMetadata('data.changes', [])
             .filter(change => change.column === index && change.row > 0)
             .reduce((acc, cur) => {
                 const old = acc.get(cur.row - 1);
