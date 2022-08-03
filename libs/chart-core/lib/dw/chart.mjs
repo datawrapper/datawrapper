@@ -98,6 +98,8 @@ export default function (attributes) {
          * true as argument. This will re-apply changes, column sorting
          * and computed columns to the existing dataset.
          *
+         * @param {dw.dataset|true}
+         *
          * @returns dataset
          */
         dataset(ds) {
@@ -110,6 +112,17 @@ export default function (attributes) {
                 return chart;
             }
             return dataset;
+        },
+
+        /**
+         * This helper method is used by the chart editor to inject
+         * a dataset which has computed columns, changes and column
+         * ordering already applied.
+         *
+         * @param {dw.dataset} ds
+         */
+        setDataset(ds) {
+            dataset = ds;
         },
 
         // sets or gets the theme
