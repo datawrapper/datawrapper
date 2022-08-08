@@ -4,7 +4,6 @@ import { isFunction } from 'underscore';
 import { f } from 'd3-jetpack/essentials'; // eslint-disable-line no-unused-vars
 
 export default function (me, el, { axisType = 'columns', rtl = false } = {}) {
-    if (me.get('disable-tabs')) return;
     const column = dw.utils.columnNameColumn(me.axes(true)[axisType]);
     const filter = utilsFilter({ column, active: 0, rtl });
     const filterUI = filter.ui(me);
