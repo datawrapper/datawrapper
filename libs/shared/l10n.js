@@ -7,6 +7,7 @@ const ALLOWED_HTML =
     '<small><span><div><sup><sub><tt>'; // Additional tags to support advanced customization
 
 const __messages = {};
+
 function initMessages(scope = 'core') {
     /* globals dw */
 
@@ -34,7 +35,9 @@ function getText(key, scope, messages) {
     }
 }
 
-// replace named placeholders marked with %, such as %name% or %id
+/**
+ * Replaces named placeholders marked with %, such as %name% or %id.
+ */
 function replaceNamedPlaceholders(text, replacements = {}) {
     Object.entries(replacements).forEach(([k, v]) => {
         text = text.replace(new RegExp(`%${k}%|%${k}(?!\\w)`, 'g'), v);
@@ -42,7 +45,9 @@ function replaceNamedPlaceholders(text, replacements = {}) {
     return text;
 }
 
-// replace numbered placeholders marked with $, such as $0, $1 etc
+/**
+ * Replaces numbered placeholders marked with $, such as $0, $1 etc.
+ */
 function replaceNumberedPlaceholders(text, replacements = []) {
     return text.replace(/\$(\d)/g, (m, i) => {
         if (replacements[+i] === undefined) return m;
@@ -51,8 +56,8 @@ function replaceNumberedPlaceholders(text, replacements = []) {
 }
 
 /**
- * translates a message key, replaces placeholders within translated strings,
- * and sanitizes the result of the translation so that it can be safely used in HTML
+ * Translates a message key, replaces placeholders within translated strings, and sanitizes the
+ * result of the translation so that it can be safely used in HTML.
  *
  * @param {string} key -- the key to be translated, e.g. "signup / hed"
  * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
@@ -73,15 +78,15 @@ export function translate(key, scope = 'core', messages, ...replacements) {
 }
 
 /**
- * helper for finding a translation key based on a globally accessible dictionary
- * (to be used e.g. in visualization plugins and legacy Svelte 2 code)
+ * Helper for finding a translation key based on a globally accessible dictionary (to be used
+ * e.g. in visualization plugins and legacy Svelte 2 code).
  *
- * translates a message key, replaces placeholders within translated strings,
- * and sanitizes the result of the translation so that it can be safely used in HTML
+ * Translates a message key, replaces placeholders within translated strings, and sanitizes the
+ * result of the translation so that it can be safely used in HTML.
  *
- * for the client-side translation to work we are pulling the translations
- * from the global `window.dw.backend.__messages` object. plugins that need
- * client-side translations must set `"svelte": true` in their plugin.json
+ * For the client-side translation to work we are pulling the translations from the global
+ * `window.dw.backend.__messages` object. plugins that need client-side translations must set
+ * `"svelte": true` in their plugin.json.
  *
  * @param {string} key -- the key to be translated, e.g. "signup / hed"
  * @param {string} scope -- the translation scope, e.g. "core" or a plugin name

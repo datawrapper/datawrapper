@@ -1,5 +1,6 @@
 /**
- * returns escaped HTML that can be used to display untrusted content
+ * Returns escaped HTML that can be used to display untrusted content.
+ *
  * @exports escapeHtml
  * @kind function
  *
