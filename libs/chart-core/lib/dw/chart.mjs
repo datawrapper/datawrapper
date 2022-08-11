@@ -1,6 +1,8 @@
 import { isArray, isUndefined, indexOf } from 'underscore';
+import isPlainObject from 'lodash/isPlainObject.js';
 import get from '@datawrapper/shared/get.js';
 import set from '@datawrapper/shared/set.js';
+import objectDiff from '@datawrapper/shared/objectDiff.js';
 import PostEvent from '@datawrapper/shared/postEvent.js';
 
 import json from './dataset/json.mjs';
@@ -26,8 +28,6 @@ export default function (attributes) {
     let locale;
     let flags = {};
 
-    // I believe these are no longer in use anywhere.
-    // TODO: Clarify & remove
     const changeCallbacks = events();
     const datasetChangeCallbacks = events();
 
@@ -326,7 +326,12 @@ export default function (attributes) {
 
         attributes(attrs) {
             if (arguments.length) {
+                const diff = objectDiff(attributes, attrs);
                 attributes = attrs;
+                // fire onChange callbacks
+                getNestedObjectKeys(diff).forEach(key => {
+                    changeCallbacks.fire(chart, key, get(attrs, key));
+                });
                 return chart;
             }
             return attributes;
@@ -394,4 +399,24 @@ export default function (attributes) {
     };
 
     return chart;
+}
+
+/**
+ * returns list of keys defined in an object
+ *
+ * @param {object} object
+ * @returns {string[]} list of keys
+ */
+function getNestedObjectKeys(object) {
+    const candidates = Object.keys(object);
+    const keys = [];
+    candidates.forEach(key => {
+        if (!isPlainObject(object[key])) keys.push(key);
+        else {
+            getNestedObjectKeys(object[key]).forEach(subkey => {
+                keys.push(`${key}.${subkey}`);
+            });
+        }
+    });
+    return keys;
 }
