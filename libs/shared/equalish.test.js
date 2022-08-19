@@ -26,7 +26,7 @@ testProp('A number is equalish to itself', [fc.float()], (t, a) => {
 
 testProp(
     'A number is equalish to almost itself',
-    [fc.double(), fc.double({ min: 0, max: 1e-6 })],
+    [fc.double(), fc.double({ min: 0, max: 1e-7 })],
     (t, a, b) => {
         t.true(equalish(a, a + b));
     }
