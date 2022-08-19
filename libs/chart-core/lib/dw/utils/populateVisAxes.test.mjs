@@ -100,7 +100,7 @@ test('respect user preference for optional axis', t => {
     t.is(axes.groups, 'category');
 });
 
-test('override optional axis key', t => {
+test('make optional axis mandatory using overrideOptionalKey', t => {
     const ds = dataset([textColumn('name'), numberColumn('value'), textColumn('category')]);
     const visAxes = {
         labels: LABELS,
@@ -110,7 +110,7 @@ test('override optional axis key', t => {
     const { axes } = populateVisAxes({
         dataset: ds,
         visAxes,
-        overrideKeys: { 'visualize.my-groups': 'category' }
+        overrideKeys: { 'visualize.my-groups': true }
     });
     t.is(axes.labels, 'name');
     t.is(axes.bars, 'value');
