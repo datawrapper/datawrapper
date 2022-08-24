@@ -31,7 +31,7 @@ export function trackPageView(userId, teamId) {
 
         window._paq.push(['setCustomUrl', window.location.pathname]);
         window._paq.push(['setDocumentTitle', window.document.title]);
-        if (userId) window._paq.push(['setUserId', userId]);
+        if (userId && userId !== 'guest') window._paq.push(['setUserId', userId]);
         if (teamId) window._paq.push(['setCustomDimension', 1, teamId]);
         window._paq.push(['trackPageView']);
         previousPageUrl = window.location.pathname;
