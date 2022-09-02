@@ -6,12 +6,13 @@
  * and the visualization render code.
  */
 
-import { extend, each, isEqual } from 'underscore';
+import { extend, isEqual } from 'underscore';
 import get from '@datawrapper/shared/get.js';
 import clone from '@datawrapper/shared/clone.js';
 
 import { remove } from './utils/index.mjs';
 import populateVisAxes from './utils/populateVisAxes.mjs';
+import filterDatasetColumns from './utils/filterDatasetColumns.mjs';
 
 const base = function () {}.prototype;
 
@@ -87,12 +88,7 @@ extend(base, {
         // reset visualization cache to make sure
         // auto-populated columns get re-created
         me.__axisCache = undefined;
-        var columnFormat = get(chart.get(), 'metadata.data.column-format', {});
-        var ignore = {};
-        each(columnFormat, function (format, key) {
-            ignore[key] = !!format.ignore;
-        });
-        if (me.dataset.filterColumns) me.dataset.filterColumns(ignore);
+        filterDatasetColumns(chart, me.dataset);
 
         // set locale
         const { numeral } = me.libraries();
@@ -147,6 +143,8 @@ extend(base, {
 
         // update chart dataset to include "virtual" columns
         me.chart().dataset(dataset);
+        // filter hidden columns
+        filterDatasetColumns(me.chart(), dataset);
 
         me.__axisCache = {
             axes: axes,
