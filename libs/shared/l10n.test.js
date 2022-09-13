@@ -38,7 +38,7 @@ test('__ replaces numbered placeholders ($0, $1, etc.) with string attributes', 
 test('__ sanitizes potentially malicious HTML', t => {
     t.is(
         __('html-example', 'core', { user_name: '<a href="#" onclick="alert(this)">World</a>' }),
-        '<strong>Hello</strong> <a href="#" target="_blank" rel="nofollow noopener noreferrer">World</a>!'
+        '<strong>Hello</strong> <a rel="nofollow noopener noreferrer" target="_blank" href="#">World</a>!'
     );
 });
 
@@ -81,6 +81,6 @@ test('translate sanitizes potentially malicious HTML', t => {
     const replacements = { user_name: '<a href="#" onclick="alert(this)">World</a>' };
     t.is(
         translate('my-key', 'core', messages, replacements),
-        'Hello <a href="#" target="_blank" rel="nofollow noopener noreferrer">World</a>!'
+        'Hello <a rel="nofollow noopener noreferrer" target="_blank" href="#">World</a>!'
     );
 });

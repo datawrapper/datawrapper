@@ -20,13 +20,32 @@ test('not close enough', t => {
     t.false(equalish(42 - 1e-3, 42));
 });
 
-testProp('A number is equalish to itself', [fc.float()], (t, a) => {
-    t.true(equalish(a, a));
-});
+testProp(
+    'A number is equalish to itself',
+    [
+        fc.float({
+            noDefaultInfinity: true,
+            noNaN: true
+        })
+    ],
+    (t, a) => {
+        t.true(equalish(a, a));
+    }
+);
 
 testProp(
     'A number is equalish to almost itself',
-    [fc.double(), fc.double({ min: 0, max: 1e-7 })],
+    [
+        fc.double({
+            noDefaultInfinity: true,
+            noNaN: true
+        }),
+        fc.double({
+            min: 0,
+            max: 1e-7,
+            noNaN: true
+        })
+    ],
     (t, a, b) => {
         t.true(equalish(a, a + b));
     }
@@ -34,7 +53,20 @@ testProp(
 
 testProp(
     'A number is not equalish to almost itself',
-    [fc.double(), fc.double({ min: 1.1e-6, max: 2e-6 })],
+    [
+        fc.double({
+            // Limit min and max, because precision gets lost with large ones,
+            // e.g. `17179869184 + 0.0000012 === 17179869184`.
+            min: -10e5,
+            max: 10e5,
+            noNaN: true
+        }),
+        fc.double({
+            min: 1.1e-6,
+            max: 2e-6,
+            noNaN: true
+        })
+    ],
     (t, a, b) => {
         t.false(equalish(a, a + b));
     }
