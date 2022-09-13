@@ -28,7 +28,17 @@ test('remove empty clusters from result', t => {
 
 testProp(
     'compute some clusters',
-    [fc.uniqueArray(fc.double(), { minLength: 100 }), fc.integer({ min: 5, max: 20 })],
+    [
+        fc.uniqueArray(
+            fc.double({
+                min: -10e5,
+                max: 10e5,
+                noNaN: true
+            }),
+            { minLength: 80 }
+        ),
+        fc.integer({ min: 5, max: 20 })
+    ],
     (t, values, count) => {
         const cluster = kMeans(values, count);
         t.true(Array.isArray(cluster));

@@ -2,120 +2,125 @@ import test from 'ava';
 import { testProp, fc } from 'ava-fast-check';
 import purifyHtml from './purifyHtml.js';
 
-test('purifyHtml return same string if no tags present', t => {
+test('purifyHtml returns the string unchanged if no tags are present', t => {
     t.is(purifyHtml('Hello world'), 'Hello world');
 });
 
-test('return same string if no tags present', t => {
-    t.is(purifyHtml('Hello world'), 'Hello world');
-});
-
-test('should remove some tags, but keep others', t => {
+test('purifyHtml removes the H1 tag but keeps B tag by default', t => {
     t.is(purifyHtml('<h1><b>Hello</b> World</h1>'), '<b>Hello</b> World');
 });
 
-test('should not crash if input is not a string', t => {
+test('purifyHtml does not crash if input is not a string', t => {
     t.notThrows(() => purifyHtml(null));
     t.notThrows(() => purifyHtml(undefined));
     t.notThrows(() => purifyHtml(42));
     t.notThrows(() => purifyHtml({ foo: 'bar' }));
 });
 
-test('should return the input value if undefined or null', t => {
+test('purifyHtml returns the input value unchanged if it is undefined or null', t => {
     t.is(purifyHtml(null), null);
     t.is(purifyHtml(undefined), undefined);
 });
 
-test('should keep all tags that we allow explicitly', t => {
+test('purifyHtml keeps all tags that we allow explicitly', t => {
     const htmlSample = '<h1>Headline with <span style="color:red">additional styling</span></h1>';
     t.is(purifyHtml(htmlSample, '<h1><span>'), htmlSample);
 });
 
-test('should remove script tags', t => {
-    t.is(purifyHtml('<script>alert("foo")</script>'), 'alert("foo")');
+test('purifyHtml removes script tags including their content', t => {
+    t.is(purifyHtml('<script>alert("foo")</script>'), '');
 });
 
-test('should keep script tags if we explicitly allow it', t => {
+test('purifyHtml keeps script tags if we explicitly allow them', t => {
     t.is(purifyHtml('<script>alert("foo")</script>', '<script>'), '<script>alert("foo")</script>');
 });
 
-test('links get target="_blank" and rel="" set automatically', t => {
+test('purifyHtml sets default link target and rel', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com">this link</a>!'),
-        'check out <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">this link</a>!'
+        'check out <a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">this link</a>!'
     );
 });
 
-test('links with existing target != _self get overwritten', t => {
+test('purifyHtml overwrites existing link target if it is not _self', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com" target="_parent">this link</a>!'),
-        'check out <a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">this link</a>!'
+        'check out <a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">this link</a>!'
     );
 });
 
-test('links with existing target _self dont get overwritten', t => {
+test('purifyHtml does not overwrite existing link target if it is _self', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com" target="_self">this link</a>!'),
-        'check out <a href="https://example.com" target="_self" rel="nofollow noopener noreferrer">this link</a>!'
+        'check out <a rel="nofollow noopener noreferrer" target="_self" href="https://example.com">this link</a>!'
     );
 });
 
-test('test if styles are kept in', t => {
+test('purifyHtml overwrites existing link rel', t => {
+    t.is(
+        purifyHtml(
+            'check out <a href="https://example.com" target="_self" rel="nofollow">this link</a>!'
+        ),
+        'check out <a rel="nofollow noopener noreferrer" target="_self" href="https://example.com">this link</a>!'
+    );
+});
+
+test('purifyHtml keeps styles', t => {
     t.is(
         purifyHtml('this is <span style="color:red">red</span>!'),
         'this is <span style="color:red">red</span>!'
     );
 });
 
-test('test if onclick handlers are removed', t => {
+test('purifyHtml removes onclick handlers', t => {
     t.is(
         purifyHtml('<a href="https://example.com" onclick="alert(42)">click me!</a>'),
-        '<a href="https://example.com" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+        '<a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">click me!</a>'
     );
 });
 
-test('test if javascript urls are removed', t => {
+test('purifyHtml removes javascript urls', t => {
     t.is(
         purifyHtml('<a href="javascript:alert(42)">click me!</a>'),
-        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
     );
 });
 
-test('test if javascript urls with leading whitespace are removed', t => {
+test('purifyHtml removes javascript urls with leading whitespace', t => {
     t.is(
         purifyHtml('<a href="   javascript:alert(42)">click me!</a>'),
-        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
     );
 });
 
-test('test if vbscript and data urls are removed', t => {
+test('purifyHtml removes vbscript and data urls', t => {
     t.is(
         purifyHtml('<a href="vbscript:alert(42)">click me!</a>'),
-        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
     );
     t.is(
         purifyHtml('<a href="data:alert(42)">click me!</a>'),
-        '<a href="" target="_blank" rel="nofollow noopener noreferrer">click me!</a>'
+        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
     );
 });
 
-test('test if multiple on* handlers are removed', t => {
+test('purifyHtml removes multiple on* handlers', t => {
     t.is(
         purifyHtml('<span onmouseover="diversion" onclick="alert(document.domain)">span</span>'),
         '<span>span</span>'
     );
 });
 
-test('javascript link with special chars', t => {
+test('purifyHtml removes javascript links with special chars', t => {
     t.is(
         purifyHtml(
             '<a href="ja&Tab;va&NewLine;script&colon;alert&lpar;document.domain&rpar;" target="_self">link</a>'
         ),
-        '<a href="" target="_self" rel="nofollow noopener noreferrer">link</a>'
+        '<a rel="nofollow noopener noreferrer" target="_self">link</a>'
     );
 });
 
-test('prevent unclosed tag exploit', t => {
+test('purifyHtml prevents unclosed tag exploit', t => {
     const el = document.createElement('p');
     const purified = purifyHtml('<img src=x onerror=alert(1);"" onload="a="');
     el.innerHTML = `<span>${purified}</span>`;
@@ -125,7 +130,7 @@ test('prevent unclosed tag exploit', t => {
     t.is(el.childNodes[0].childNodes.length, 0);
 });
 
-test('prevent unclosed iframe exploit ', t => {
+test('purifyHtml prevents unclosed iframe exploit ', t => {
     const el = document.createElement('p');
     const purified = purifyHtml('<iframe src=x y=');
     el.innerHTML = `<span>${purified}</span>`;
@@ -134,15 +139,15 @@ test('prevent unclosed iframe exploit ', t => {
     t.is(el.childNodes[0].childNodes.length, 0);
 });
 
-test('prevent hacky javascript links', t => {
+test('purifyHtml prevents hacky javascript links', t => {
     t.is(
         purifyHtml('<a href=javAscript:alert(1) target=_self>link</a>'),
-        '<a href="" target="_self" rel="nofollow noopener noreferrer">link</a>'
+        '<a rel="nofollow noopener noreferrer" target="_self">link</a>'
     );
 });
 
 testProp(
-    'purify some random HTML',
+    'purifyHtml purifies some random HTML',
     [
         fc.stringOf(
             fc.oneof(
@@ -178,29 +183,17 @@ test('purifyHtml handles void tags', t => {
         `
 <p>
   <img src="foo">
-  alert(1)
-  <br>
+  \n  <br>
   foo
 </p>`
     );
 });
 
-test('purifyHtml strips tags from inside CSS', t => {
+test('purifyHtml removes styles if they contain something that resembles an HTML tag', t => {
+    // See https://github.com/cure53/DOMPurify/blob/abf62956a8ac86c74b1954274dd6b5b9813094ba/src/purify.js#L928-L939
     t.is(
-        purifyHtml(
-            `
-<style>
-.body:after {
-  content: '<b>foo</b>';
-}
-</style>`,
-            '<style>'
-        ),
-        `
-<style>
-.body:after {
-  content: 'foo';
-}
-</style>`
+        purifyHtml("<style>.body:after { content: 'without tags'; }</style>", '<style>'),
+        "<style>.body:after { content: 'without tags'; }</style>"
     );
+    t.is(purifyHtml("<style>.body:after { content: '<b>with tags</b>'; }</style>", '<style>'), '');
 });

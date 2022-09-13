@@ -1,93 +1,41 @@
-const TAGS = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-const COMMENTS_AND_PHP_TAGS = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-const defaultAllowed = '<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
+import DOMPurify from 'dompurify';
+
+const DEFAULT_ALLOWED = '<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
 
 /**
- * Remove all non-whitelisted html tags from the given string
+ * Set default TARGET and REL for A tags.
+ *
+ * Don't overwrite target="_self".
+ */
+DOMPurify.addHook('afterSanitizeElements', function (el) {
+    if (el.nodeName.toLowerCase() === 'a') {
+        if (el.getAttribute('target') !== '_self') {
+            el.setAttribute('target', '_blank');
+        }
+        el.setAttribute('rel', 'nofollow noopener noreferrer');
+    }
+});
+
+/**
+ * Remove all HTML tags from given `input` string, except `allowed` tags.
  *
  * @exports purifyHTML
  * @kind function
  *
- * @param {string} input - dirty html input
- * @param {string} allowed - list of allowed tags, defaults to `<a><b><br><br/><i><strong><sup><sub><strike><u><em><tt>`
- * @return {string} - the cleaned html output
+ * @param {string} input - dirty HTML input
+ * @param {string} [allowed=<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>] - list of allowed tags
+ * @return {string} - the cleaned HTML output
  */
-export default function purifyHTML(input, allowed) {
-    /*
-     * written by Kevin van Zonneveld et.al.
-     * taken from https://github.com/kvz/phpjs/blob/master/functions/strings/strip_tags.js
-     */
-    if (input === null) return null;
-    if (input === undefined) return undefined;
-    input = String(input);
-    // pass if neither < or > exist in string
-    if (input.indexOf('<') < 0 && input.indexOf('>') < 0) {
+export default function purifyHTML(input, allowed = DEFAULT_ALLOWED) {
+    if (!input) {
         return input;
     }
-    input = stripTags(input, allowed);
-    // remove all event attributes
-    if (typeof document === 'undefined') return input;
-    var d = document.createElement('div');
-
-    d.innerHTML = `<span>${input}</span>`;
-    // strip tags again, because `document.createElement()` closes unclosed tags and therefore
-    // creates new elements that might not be allowed
-    d.innerHTML = stripTags(
-        d.innerHTML,
-        allowed && !allowed.includes('<span>') ? allowed + '<span>' : allowed || undefined
+    const allowedTags = Array.from(allowed.toLowerCase().matchAll(/<([a-z][a-z0-9]*)>/g)).map(
+        m => m[1]
     );
-    var sel = d.childNodes[0].querySelectorAll('*');
-    for (var i = 0; i < sel.length; i++) {
-        if (sel[i].nodeName.toLowerCase() === 'a') {
-            // special treatment for <a> elements
-            if (sel[i].getAttribute('target') !== '_self') sel[i].setAttribute('target', '_blank');
-            sel[i].setAttribute('rel', 'nofollow noopener noreferrer');
-            const hrefNormalized = (sel[i].getAttribute('href') || '')
-                .toLowerCase()
-                // remove invalid uri characters
-                .replace(/[^a-z0-9 -/:?=]/g, '')
-                .trim();
-            if (
-                hrefNormalized.startsWith('javascript:') ||
-                hrefNormalized.startsWith('vbscript:') ||
-                hrefNormalized.startsWith('data:')
-            ) {
-                // remove entire href to be safe
-                sel[i].setAttribute('href', '');
-            }
-        }
-        const removeAttrs = [];
-        for (var j = 0; j < sel[i].attributes.length; j++) {
-            var attrib = sel[i].attributes[j];
-            if (attrib.specified) {
-                if (attrib.name.substr(0, 2) === 'on') removeAttrs.push(attrib.name);
-            }
-        }
-        removeAttrs.forEach(attr => sel[i].removeAttribute(attr));
-    }
-    return d.childNodes[0].innerHTML;
-}
-
-function stripTags(input, allowed) {
-    // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-    allowed = (
-        ((allowed !== undefined ? allowed || '' : defaultAllowed) + '')
-            .toLowerCase()
-            .match(/<[a-z][a-z0-9]*>/g) || []
-    ).join('');
-
-    var before = input;
-    var after = input;
-    // recursively remove tags to ensure that the returned string doesn't contain forbidden tags after previous passes (e.g. '<<bait/>switch/>')
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-        before = after;
-        after = before.replace(COMMENTS_AND_PHP_TAGS, '').replace(TAGS, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-        });
-        // return once no more tags are removed
-        if (before === after) {
-            return after;
-        }
-    }
+    return DOMPurify.sanitize(input, {
+        ALLOWED_TAGS: allowedTags,
+        ADD_ATTR: ['target'],
+        FORCE_BODY: true // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
+    });
 }
