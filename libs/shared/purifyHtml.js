@@ -1,6 +1,19 @@
 import DOMPurify from 'dompurify';
 
-const DEFAULT_ALLOWED = '<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>';
+const DEFAULT_ALLOWED = [
+    'a',
+    'span',
+    'b',
+    'br',
+    'i',
+    'strong',
+    'sup',
+    'sub',
+    'strike',
+    'u',
+    'em',
+    'tt'
+];
 
 /**
  * Set default TARGET and REL for A tags.
@@ -23,18 +36,18 @@ DOMPurify.addHook('afterSanitizeElements', function (el) {
  * @kind function
  *
  * @param {string} input - dirty HTML input
- * @param {string} [allowed=<a><span><b><br><br/><i><strong><sup><sub><strike><u><em><tt>] - list of allowed tags
+ * @param {string} [string[]] - list of allowed tags; see DEFAULT_ALLOWED for the default value
  * @return {string} - the cleaned HTML output
  */
 export default function purifyHTML(input, allowed = DEFAULT_ALLOWED) {
     if (!input) {
         return input;
     }
-    const allowedTags = Array.from(allowed.toLowerCase().matchAll(/<([a-z][a-z0-9]*)>/g)).map(
-        m => m[1]
-    );
+    if (typeof allowed === 'string') {
+        allowed = Array.from(allowed.toLowerCase().matchAll(/<([a-z][a-z0-9]*)>/g)).map(m => m[1]);
+    }
     return DOMPurify.sanitize(input, {
-        ALLOWED_TAGS: allowedTags,
+        ALLOWED_TAGS: allowed,
         ADD_ATTR: ['target'],
         FORCE_BODY: true // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
     });

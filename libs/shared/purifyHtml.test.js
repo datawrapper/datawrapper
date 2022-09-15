@@ -24,6 +24,11 @@ test('purifyHtml returns the input value unchanged if it is undefined or null', 
 
 test('purifyHtml keeps all tags that we allow explicitly', t => {
     const htmlSample = '<h1>Headline with <span style="color:red">additional styling</span></h1>';
+    t.is(purifyHtml(htmlSample, ['h1', 'span']), htmlSample);
+});
+
+test('purifyHtml supports a string type of the allowed tags argument', t => {
+    const htmlSample = '<h1>Headline with <span style="color:red">additional styling</span></h1>';
     t.is(purifyHtml(htmlSample, '<h1><span>'), htmlSample);
 });
 
@@ -32,7 +37,7 @@ test('purifyHtml removes script tags including their content', t => {
 });
 
 test('purifyHtml keeps script tags if we explicitly allow them', t => {
-    t.is(purifyHtml('<script>alert("foo")</script>', '<script>'), '<script>alert("foo")</script>');
+    t.is(purifyHtml('<script>alert("foo")</script>', ['script']), '<script>alert("foo")</script>');
 });
 
 test('purifyHtml sets default link target and rel', t => {
@@ -164,7 +169,7 @@ testProp(
     ],
     (t, html) => {
         t.not(purifyHtml(html, ''), html);
-        t.is(purifyHtml(html, '<b><i><h1><h2><h3>'), html);
+        t.is(purifyHtml(html, ['b', 'i', 'h1', 'h2', 'h3']), html);
     }
 );
 
@@ -178,7 +183,7 @@ test('purifyHtml handles void tags', t => {
   <br />
   foo
 </p>`,
-            '<img><br><p>'
+            ['img', 'br', 'p']
         ),
         `
 <p>

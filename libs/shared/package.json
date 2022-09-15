@@ -61,8 +61,7 @@
         "require": [
             "esm",
             "./test/helpers/setup-browser-env.cjs"
-        ],
-        "timeout": "20s"
+        ]
     },
     "publishConfig": {
         "access": "public"
