@@ -35,9 +35,9 @@ testProp(
                 max: 10e5,
                 noNaN: true
             }),
-            { minLength: 80 }
+            { minLength: 50 }
         ),
-        fc.integer({ min: 5, max: 20 })
+        fc.integer({ min: 5, max: 12 })
     ],
     (t, values, count) => {
         const cluster = kMeans(values, count);
