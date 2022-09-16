@@ -76,6 +76,7 @@ export default function (attributes) {
         // loads the dataset and returns a deferred
         load(csv, externalData) {
             const dsopts = {
+                chartId: chart.get('id'),
                 firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false)
             };

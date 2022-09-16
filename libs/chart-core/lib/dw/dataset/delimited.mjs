@@ -44,7 +44,10 @@ function delimited(opts) {
     return {
         dataset: function () {
             return loadAndParseCsv().catch(e => {
-                console.error('could not fetch datasource, returning an empty dataset', e);
+                console.error(
+                    `Could not fetch delimited data source for chart ${opts.chartId}, ` +
+                        `returning an empty dataset: ${e.message}`
+                );
                 return dataset([]);
             });
         },

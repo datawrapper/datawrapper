@@ -27,7 +27,10 @@ function json(opts) {
     return {
         dataset: function () {
             return loadAndParseJSON().catch(e => {
-                console.error('could not fetch datasource, returning an empty object', e);
+                console.error(
+                    `Could not fetch JSON data source for chart ${opts.chartId}, ` +
+                        `returning an empty object: ${e.message}`
+                );
                 return {};
             });
         },
