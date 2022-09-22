@@ -132,7 +132,7 @@ extend(base, {
             return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
         }
 
-        const dataset = me.dataset;
+        const dataset = me.chart().dataset();
 
         const { axes, axesAsColumns } = populateVisAxes({
             dataset,
