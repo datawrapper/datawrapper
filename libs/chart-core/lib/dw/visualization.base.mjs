@@ -141,11 +141,6 @@ extend(base, {
             overrideKeys
         });
 
-        // update chart dataset to include "virtual" columns
-        me.chart().dataset(dataset);
-        // filter hidden columns
-        filterDatasetColumns(me.chart(), dataset);
-
         me.__axisCache = {
             axes: axes,
             axesAsColumns: axesAsColumns,
