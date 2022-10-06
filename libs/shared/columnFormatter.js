@@ -20,9 +20,9 @@ const identity = d => d;
  * @param {string} axis - the column name of the axis
  * @returns {function}
  */
-export function columnFormatter(numeral, column, metadata, axis) {
+export function columnFormatter(numeral, column, metadata, axis, options = {}) {
     return column.type() === 'date'
-        ? dateColumnFormatter(column.type(true))
+        ? dateColumnFormatter(column.type(true), options)
         : column.type() === 'number'
         ? numberColumnFormatter(numeral, get(metadata, `data.column-format.${axis}`, {}))
         : identity;

@@ -17,9 +17,24 @@ import dayjs from 'dayjs';
  * @returns {function}
  */
 
-export default function dateColumnFormatter(column) {
+export default function dateColumnFormatter(column, { normalizeDatesToEn = true } = {}) {
     const format = column.format();
     if (!format) return identity;
+
+    /*
+     * When using dayjs to format, for chart rendering we need to normalize to 'en'
+     * to ensure consistency, as render context may have, or
+     * may at any point alter the locale of the dayjs instance (and formatted dates get used as keys in metadata, so they should be constant)
+     */
+    const formatDate = (d, fmt) => {
+        if (!normalizeDatesToEn) return dayjs(d).format(fmt);
+
+        const initialLocale = dayjs.locale();
+        dayjs.locale('en');
+        const formatted = dayjs(d).format(fmt);
+        dayjs.locale(initialLocale);
+        return formatted;
+    };
 
     switch (column.precision()) {
         case 'year':
@@ -72,17 +87,4 @@ function dateToIsoWeek(date) {
     const isoYear = t.getUTCFullYear();
     const w = Math.floor((t.getTime() - new Date(isoYear, 0, 1, -6)) / 864e5);
     return [isoYear, 1 + Math.floor(w / 7), d > 0 ? d : 7];
-}
-
-/*
- * When using dayjs to format, normalize to 'en'
- * to ensure consistency, as render context may have, or
- * may at any point alter the locale of the dayjs instance
- */
-function formatDate(d, fmt) {
-    const initialLocale = dayjs.locale();
-    dayjs.locale('en');
-    const formatted = dayjs(d).format(fmt);
-    dayjs.locale(initialLocale);
-    return formatted;
 }
