@@ -14,8 +14,6 @@ import applyChanges from './dataset/applyChanges.mjs';
 import addComputedColumns from './dataset/addComputedColumns.mjs';
 import { outerHeight, getNonChartHeight } from './utils/getNonChartHeight.mjs';
 
-let visualization;
-
 /**
  * Chart
  * @module dw.chart
@@ -27,6 +25,7 @@ export default function (attributes) {
     let metricPrefix;
     let locale;
     let flags = {};
+    let visualization;
 
     const changeCallbacks = events();
     const datasetChangeCallbacks = events();
