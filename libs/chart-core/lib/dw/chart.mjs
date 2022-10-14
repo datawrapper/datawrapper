@@ -274,11 +274,14 @@ export default function (attributes) {
                     return;
                 }
 
+                const { previewId } = flags;
+
                 // datawrapper responsive embed
                 window.parent.postMessage(
                     {
                         'datawrapper-height': {
-                            [chart.get().id]: desiredHeight
+                            [chart.get().id]: desiredHeight,
+                            ...(previewId ? { previewId } : {})
                         }
                     },
                     '*'
