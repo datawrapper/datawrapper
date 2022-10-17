@@ -82,6 +82,20 @@ test('nasty tsv with new lines in quoted values', async t => {
     );
 });
 
+test('tsv with values that contain double quotes', async t => {
+    const csv = `Category\tValue
+A\tsome text
+B\tmore "text" here
+C\t<span style="color: red;">red text</span>
+`;
+    const dataset = await delimited({ csv }).dataset();
+    const valueColumn = dataset.column(1);
+    const valueAtRow1 = valueColumn.val(1);
+    t.is(valueAtRow1, 'more "text" here');
+    const valueAtRow2 = valueColumn.val(2);
+    t.is(valueAtRow2, '<span style="color: red;">red text</span>');
+});
+
 test('german csv with quoted html umlauts', async t => {
     const csv = `Landkreis;SPD ;CDU;"Gr&uuml;ne";Die Linke;AfD;FDP;Sonstige
 Elbe-Elster;32;16,8;14,9;23,2;2,6;4,8;5,7
