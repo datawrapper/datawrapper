@@ -1,3 +1,6 @@
+import numeral from 'numeral';
+import { FormatNumberOptions } from './types.js';
+
 /**
  * special number formatting that can deal with microtypography
  * and "prepend currencies" (e.g., −$1234.57)
@@ -25,21 +28,20 @@
  * @export
  * @returns {string} - the formatted number
  */
-export default function formatNumber(numeral, value, options) {
-    options = {
-        format: '0.[00]',
-        prepend: '',
-        append: '',
-        minusChar: '−',
-        plusMinusChar: '±',
-        multiply: 1,
-        ...options
-    };
-    if (value === undefined || isNaN(value) || value === '' || value === null) {
+export default function formatNumber(
+    num: typeof numeral,
+    value: number,
+    options: FormatNumberOptions = {}
+): string {
+    if (value === undefined || isNaN(value) || value === null) {
         return '';
     }
-    const { append, prepend, minusChar, plusMinusChar, multiply } = options;
-    let { format } = options;
+    let format = options.format || '0.[00]';
+    const multiply = options.multiply || 1;
+    const prepend = options.prepend || '';
+    const append = options.append || '';
+    const minusChar = options.minusChar || '−';
+    const plusMinusChar = options.plusMinusChar || '±';
     if (format.includes('%') && Number.isFinite(value)) {
         // numeraljs will multiply percentages with 100
         // which we don't want to happen
@@ -50,11 +52,11 @@ export default function formatNumber(numeral, value, options) {
     const specialThousandsFormat = format.indexOf(';') > -1;
 
     format = format.replace(/;/g, ',');
-    let fmt = numeral(parenthesesFormat ? value : Math.abs(value)).format(format);
+    let fmt = num(parenthesesFormat ? value : Math.abs(value)).format(format);
 
     if (specialThousandsFormat) {
-        const locale = numeral.options.currentLocale;
-        const separator = numeral.locales[locale].delimiters.thousands;
+        const locale = num.options.currentLocale;
+        const separator = num.locales[locale].delimiters.thousands;
         const val = format.includes('%') ? value / 0.01 : value;
         fmt = Math.abs(val) < 10000 ? fmt.replace(separator, '') : fmt;
     }

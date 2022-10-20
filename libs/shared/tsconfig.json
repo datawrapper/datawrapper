@@ -1,0 +1,19 @@
+{
+  "include": [
+    "src/*"
+  ],
+  "exclude": [
+    "src/*.test.js",
+    "src/*.test.ts",
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "ES6",
+    "declaration": true,
+    "outDir": "dist/mjs",
+    "strict": true,
+    "module": "es2020",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true
+  },
+}

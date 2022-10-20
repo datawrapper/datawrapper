@@ -1,6 +1,6 @@
 import test from 'ava';
 import chroma from 'chroma-js';
-import invertColor from './invertColor.cjs';
+import invertColor from './invertColor.js';
 
 test('Finds a new color with the expected contrast ratio to the provided background', t => {
     const newColor = invertColor('hotpink', 'black', 'white', 1);

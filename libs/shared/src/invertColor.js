@@ -21,12 +21,12 @@
  * @returns {string} hex color
  */
 
-const chroma = require('chroma-js');
+import chroma from 'chroma-js';
 
 const MAX_ITER = 10;
 const EPS = 0.01;
 
-module.exports = function invertColor(
+export default function invertColor(
     baseColor,
     darkBackgroundColor,
     lightBackgroundColor,
@@ -81,7 +81,7 @@ module.exports = function invertColor(
             ? test(low, mid, i - 1)
             : test(mid, high, i - 1);
     }
-};
+}
 
 function computeContrast(colA, colB) {
     // TODO: maybe find a better contrast computation some day
