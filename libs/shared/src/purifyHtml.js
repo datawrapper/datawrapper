@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-
+//
 const DEFAULT_ALLOWED = [
     'a',
     'span',
