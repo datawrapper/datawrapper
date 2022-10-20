@@ -1,5 +1,4 @@
 import numeral from 'numeral';
-import { FormatNumberOptions } from './types.js';
 
 /**
  * special number formatting that can deal with microtypography
@@ -107,3 +106,12 @@ const currencies = new Set([
     'ca$',
     'can$'
 ]);
+
+export type FormatNumberOptions = {
+    format?: string;
+    prepend?: string;
+    append?: string;
+    minusChar?: string;
+    multiply?: number;
+    plusMinusChar?: string;
+};

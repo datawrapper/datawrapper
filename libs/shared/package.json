@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -285,10 +285,6 @@
         "./truncate.js": {
             "require": "./dist/cjs/truncate.cjs",
             "default": "./dist/mjs/truncate.js"
-        },
-        "./types.js": {
-            "require": "./dist/cjs/types.cjs",
-            "default": "./dist/mjs/types.js"
         },
         "./units.js": {
             "require": "./dist/cjs/units.cjs",
