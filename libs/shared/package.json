@@ -30,7 +30,7 @@
     "scripts": {
         "test": "ava",
         "test:watch": "ava -w",
-        "build": "rm -Rf dist/* && tsc && tsc --outDir dist/cjs --module commonjs && rename 's/\\.js/.cjs/' dist/cjs/*.js  -f",
+        "build": "rm -Rf dist/* && tsc && tsc --outDir dist/cjs --module commonjs && renamer --view one-line --find js --replace cjs dist/cjs/*.js",
         "prepublishOnly": "npm run lint && npm run build && npm test && ./scripts/declare-exports.cjs && cp dist/mjs/*.d.ts .",
         "postpublish": "rm *.d.ts",
         "lint": "(cd ../.. && scripts/lint libs/shared)",
@@ -54,6 +54,7 @@
         "jsdoc-to-markdown": "^7.1.1",
         "numeral": "^2.0.6",
         "raf": "^3.4.1",
+        "renamer": "^4.0.0",
         "sinon": "^14.0.0",
         "ts-node": "^10.9.1",
         "typescript": "^4.8.4"
