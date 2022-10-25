@@ -1,5 +1,5 @@
-import DOMPurify from 'dompurify';
-//
+import DOMPurify from 'isomorphic-dompurify';
+
 const DEFAULT_ALLOWED = [
     'a',
     'span',

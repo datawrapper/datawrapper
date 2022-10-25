@@ -42,12 +42,12 @@ test('evil expression 2', async t => {
 
 test('evil html', async t => {
     const tpl = htmlTemplate(`{{ title }} <script>alert('you are hacked')</script>`);
-    t.is(tpl({ title: 'foo' }), "foo alert('you are hacked')");
+    t.is(tpl({ title: 'foo' }), 'foo ');
 });
 
 test('evil expr + html', async t => {
     const tpl = htmlTemplate(`{{ col1 }} alert('you are hacked') {{col2}}`);
-    t.is(tpl({ col1: '<script>', col2: '</script>' }), " alert('you are hacked') ");
+    t.is(tpl({ col1: '<script>', col2: '</script>' }), '');
 });
 
 test('expressions in style attributes', async t => {
@@ -115,5 +115,5 @@ test('null expressions converted to empty strings', async t => {
 
 test('style tags are removed', async t => {
     const tpl = htmlTemplate(`hello <style>div { background: yellow }</style> {{ value }}`);
-    t.is(tpl({ value: 'world' }), 'hello div { background: yellow } world');
+    t.is(tpl({ value: 'world' }), 'hello  world');
 });

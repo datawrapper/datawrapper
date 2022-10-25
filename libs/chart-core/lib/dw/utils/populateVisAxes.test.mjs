@@ -1,7 +1,7 @@
 import test from 'ava';
 import populateVisAxes from './populateVisAxes.mjs';
 import column from '../dataset/column.mjs';
-import dataset from '../dataset';
+import dataset from '../dataset/index.mjs';
 
 const LABELS = { accepts: ['text', 'date'] };
 const X_AXIS = { accepts: ['number', 'date'] };

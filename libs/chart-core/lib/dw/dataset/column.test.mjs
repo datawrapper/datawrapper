@@ -50,7 +50,7 @@ test('Column.toString() returns column title', t => {
 
 test('Column.name() purifies HTML name', t => {
     const col = column('evil <script>alert(23)</script> text', []);
-    t.is(col.name(), 'evil alert(23) text');
+    t.is(col.name(), 'evil  text');
 });
 
 test('Column.formatted() formats a number column', t => {
