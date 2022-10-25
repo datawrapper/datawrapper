@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.0.1",
+    "version": "1.2.1",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -62,10 +62,10 @@
     "dependencies": {
         "chroma-js": "^2.4.2",
         "d3-array": "^1.2.4",
-        "dompurify": "^2.4.0",
         "domutils": "^2.8.0",
         "fontfaceobserver": "^2.1.0",
         "htmlparser2": "^7.2.0",
+        "isomorphic-dompurify": "^0.22.0",
         "js-cookie": "^2.2.1",
         "lodash": "^4.17.21",
         "node-fetch": "^2.6.0",
@@ -94,6 +94,10 @@
         ".": {
             "require": "./dist/cjs/index.js",
             "default": "./dist/mjs/index.js"
+        },
+        "./package.json": {
+            "require": "./package.json",
+            "default": "./package.json"
         },
         "./analytics.js": {
             "require": "./dist/cjs/analytics.cjs",

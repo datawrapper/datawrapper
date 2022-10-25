@@ -13,6 +13,12 @@ fs.readdir(join(__dirname, '../src'), function (err, files) {
         '.': {
             require: './dist/cjs/index.js',
             default: './dist/mjs/index.js'
+        },
+        // Exporting package.json is required by the old version of rollup-plugin-svelte that we use
+        // to bundle Svelte 2 code.
+        './package.json': {
+            require: './package.json',
+            default: './package.json'
         }
     };
     files.forEach(file => {
@@ -27,5 +33,5 @@ fs.readdir(join(__dirname, '../src'), function (err, files) {
     const pkgJsonFile = join(__dirname, '../package.json');
     const pkgJson = JSON.parse(fs.readFileSync(pkgJsonFile, 'utf-8'));
     pkgJson.exports = exports;
-    fs.writeFileSync(pkgJsonFile, JSON.stringify(pkgJson, null, 4));
+    fs.writeFileSync(pkgJsonFile, JSON.stringify(pkgJson, null, 4) + '\n');
 });
