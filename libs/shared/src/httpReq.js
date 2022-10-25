@@ -1,8 +1,11 @@
 import Cookies from 'js-cookie';
+import { keyExists } from './l10n.js';
 
 const CSRF_COOKIE_NAME = 'crumb';
 const CSRF_TOKEN_HEADER = 'X-CSRF-Token';
 const CSRF_SAFE_METHODS = new Set(['get', 'head', 'options', 'trace']); // according to RFC7231
+
+const TRANSLATION_KEY_SEPARATOR = ' / ';
 
 /**
  * The response body is automatically parsed according
@@ -108,9 +111,18 @@ export default function httpReq(path, options = {}) {
     // all repositories that use @datawrapper/shared.
 
     return promise.then(res => {
-        if (raw) return res;
-        if (!res.ok) throw new HttpReqError(res);
-        if (res.status === 204 || !res.headers.get('content-type')) return res; // no content
+        if (raw) {
+            return res;
+        }
+        if (!res.ok) {
+            return res.json().then(json => {
+                throw new HttpReqError(res, json);
+            });
+        }
+        if (res.status === 204 || !res.headers.get('content-type')) {
+            // no content
+            return res;
+        }
         // trim away the ;charset=utf-8 from content-type
         const contentType = res.headers.get('content-type').split(';')[0];
         if (contentType === 'application/json') {
@@ -190,12 +202,36 @@ function httpReqVerb(method) {
 }
 
 class HttpReqError extends Error {
-    constructor(res) {
+    constructor(res, json) {
         super();
         this.name = 'HttpReqError';
         this.status = res.status;
         this.statusText = res.statusText;
         this.message = `[${res.status}] ${res.statusText}`;
         this.response = res;
+
+        // Prevent "TypeError: body used already for" when calling `await this.response.json()`.
+        this.response.json = () => Promise.resolve(json);
+
+        // Parse response `json` into `this.type` and `this.details` and add translation keys.
+        if (json) {
+            this.type = json.type;
+            if (this.type && keyExists(this.type)) {
+                this.translationKey = this.type;
+            }
+            this.details = json.details;
+            if (Array.isArray(this.details)) {
+                this.details.forEach(detail => {
+                    if (detail && detail.type) {
+                        const translationKey = [this.type, detail.type].join(
+                            TRANSLATION_KEY_SEPARATOR
+                        );
+                        if (keyExists(translationKey)) {
+                            detail.translationKey = translationKey;
+                        }
+                    }
+                });
+            }
+        }
     }
 }

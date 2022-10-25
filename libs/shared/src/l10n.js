@@ -99,3 +99,8 @@ export function __(key, scope = 'core', ...replacements) {
     if (!__messages[scope][key]) return 'MISSING:' + key;
     return translate(key, scope, __messages, ...replacements);
 }
+
+export function keyExists(key, scope = 'core') {
+    if (!__messages[scope]) initMessages(scope);
+    return !!__messages[scope][key];
+}

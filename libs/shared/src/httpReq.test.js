@@ -1,6 +1,7 @@
 import test from 'ava';
 import fetch from 'node-fetch';
 import httpReq from './httpReq.js';
+import nock from 'nock';
 import sinon from 'sinon';
 import FormData from 'form-data';
 import { createReadStream } from 'fs';
@@ -9,7 +10,18 @@ const baseUrl = 'https://httpbin.org';
 
 test.before(() => {
     window.fetch = sinon.spy(fetch);
-    global.dw = { backend: { __api_domain: 'api.datawrapper.local' } };
+    global.dw = {
+        backend: {
+            __api_domain: 'api.datawrapper.local',
+            __messages: {
+                core: {
+                    'existing-foo': 'My error foo',
+                    'existing-bar / existing-one': 'My error detail one',
+                    'existing-bar / existing-two': 'My error detail two'
+                }
+            }
+        }
+    };
 });
 
 test('simple get request', async t => {
@@ -90,17 +102,101 @@ test('no content in 204 requests', async t => {
     t.is(res.headers.get('content-length'), null);
 });
 
-test('throws nice HttpReqError errors', async t => {
+test('throws HttpReqError', async t => {
+    nock('http://api.datawrapper.mock').get('/404').reply(404, { foo: 'bar' });
     try {
-        await httpReq.get('/status/404', {
-            baseUrl
-        });
+        await httpReq.get('/404', { baseUrl: 'http://api.datawrapper.mock' });
     } catch (err) {
         t.is(err.name, 'HttpReqError');
         t.is(err.status, 404);
-        t.is(err.statusText, 'NOT FOUND');
-        const body = await err.response.text();
-        t.is(body, '');
+        t.is(err.statusText, 'Not Found');
+        t.is(err.key, undefined);
+        t.is(err.details, undefined);
+        t.deepEqual(await err.response.json(), { foo: 'bar' });
+    }
+});
+
+test('throws HttpReqError with translation key if response contains type and its translation exists', async t => {
+    nock('http://api.datawrapper.mock').get('/404-with-type').reply(404, { type: 'existing-foo' });
+    try {
+        await httpReq.get('/404-with-type', { baseUrl: 'http://api.datawrapper.mock' });
+    } catch (err) {
+        t.is(err.translationKey, 'existing-foo');
+        t.is(err.details, undefined);
+    }
+});
+
+test('throws HttpReqError with undefined translation key if response contains type but its translation does not exit', async t => {
+    nock('http://api.datawrapper.mock').get('/404-with-unknown-type').reply(404, { type: 'foo' });
+    try {
+        await httpReq.get('/404-with-unknown-type', { baseUrl: 'http://api.datawrapper.mock' });
+    } catch (err) {
+        t.is(err.translationKey, undefined);
+        t.is(err.details, undefined);
+    }
+});
+
+test('throws HttpReqError with details with translation keys for response details whose translations exist', async t => {
+    nock('http://api.datawrapper.mock')
+        .get('/404-with-details')
+        .reply(404, {
+            type: 'existing-bar',
+            details: [
+                { type: 'existing-one', path: 'path-one' },
+                { type: 'existing-two' }, // Missing path is ok.
+                { type: 'unknown', path: 'path-three' },
+                { spam: 'missing-type' },
+                'not an object',
+                null
+            ]
+        });
+    try {
+        await httpReq.get('/404-with-details', { baseUrl: 'http://api.datawrapper.mock' });
+    } catch (err) {
+        t.is(err.translationKey, undefined);
+        t.deepEqual(err.details, [
+            {
+                type: 'existing-one',
+                path: 'path-one',
+                translationKey: 'existing-bar / existing-one'
+            },
+            { type: 'existing-two', translationKey: 'existing-bar / existing-two' },
+            { type: 'unknown', path: 'path-three' },
+            { spam: 'missing-type' },
+            'not an object',
+            null
+        ]);
+    }
+});
+
+test('throws HttpReqError with details with undefined translation keys for invalid response details', async t => {
+    nock('http://api.datawrapper.mock')
+        .get('/404-with-invalid-details')
+        .reply(404, {
+            type: 'bar',
+            details: [{ spam: 'invalid' }, 'not an object', null]
+        });
+    try {
+        await httpReq.get('/404-with-invalid-details', { baseUrl: 'http://api.datawrapper.mock' });
+    } catch (err) {
+        t.is(err.translationKey, undefined);
+        t.deepEqual(err.details, [{ spam: 'invalid' }, 'not an object', null]);
+    }
+});
+
+test('throws HttpReqError with details with undefined translation keys if there is no top-level type', async t => {
+    nock('http://api.datawrapper.mock')
+        .get('/404-with-details-without-type')
+        .reply(404, {
+            details: [{ type: 'existing-one', path: 'path-one' }]
+        });
+    try {
+        await httpReq.get('/404-with-details-without-type', {
+            baseUrl: 'http://api.datawrapper.mock'
+        });
+    } catch (err) {
+        t.is(err.translationKey, undefined);
+        t.deepEqual(err.details, [{ type: 'existing-one', path: 'path-one' }]);
     }
 });
 
