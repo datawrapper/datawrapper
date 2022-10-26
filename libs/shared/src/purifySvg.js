@@ -1,4 +1,4 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 
 export default function purifySvg(input) {
     return DOMPurify.sanitize(input, {
