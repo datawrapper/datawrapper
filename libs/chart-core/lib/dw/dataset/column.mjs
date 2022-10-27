@@ -32,7 +32,7 @@ import purifyHtml from '@datawrapper/shared/purifyHtml.js';
 /**
  * @class dw.Column
  */
-export default function Column(name, rows, type) {
+export default function Column(name_, rows, type) {
     function notEmpty(d) {
         return d !== null && d !== undefined && d !== '';
     }
@@ -71,6 +71,7 @@ export default function Column(name, rows, type) {
 
     type = type ? columnTypes[type](sample) : guessType(sample);
 
+    let name = purifyHtml(name_);
     let origName = name;
     let valueRange, sum, mean, median;
     const origRows = rows.slice(0);
@@ -81,28 +82,28 @@ export default function Column(name, rows, type) {
         // column name (used for reference in chart metadata)
         name() {
             if (arguments.length >= 1) {
-                name = arguments[0];
+                name = purifyHtml(arguments[0]);
                 if (arguments.length === 2) {
-                    origName = arguments[1];
+                    origName = purifyHtml(arguments[1]);
                 } else {
                     origName = name;
                 }
                 return column;
             }
-            return purifyHtml(name);
+            return name;
         },
 
         origName() {
-            return purifyHtml(origName);
+            return origName;
         },
 
         // column title (used for presentation)
         title() {
             if (arguments.length) {
-                title = arguments[0];
+                title = purifyHtml(arguments[0]);
                 return column;
             }
-            return purifyHtml(title || name);
+            return title || name;
         },
 
         /**
