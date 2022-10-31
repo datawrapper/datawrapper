@@ -27,10 +27,10 @@ import numeral from 'numeral';
  * @export
  * @returns {string} - the formatted number
  */
-export default function formatNumber(
+function formatNumber(
     num: typeof numeral,
     value: number,
-    options: FormatNumberOptions = {}
+    options: formatNumber.FormatNumberOptions = {}
 ): string {
     if (value === undefined || isNaN(value) || value === null) {
         return '';
@@ -107,11 +107,17 @@ const currencies = new Set([
     'can$'
 ]);
 
-export type FormatNumberOptions = {
-    format?: string;
-    prepend?: string;
-    append?: string;
-    minusChar?: string;
-    multiply?: number;
-    plusMinusChar?: string;
-};
+// To export a type in addition to CommonJS-compatible default export of a function
+// eslint-disable-next-line @typescript-eslint/no-namespace
+namespace formatNumber {
+    export type FormatNumberOptions = {
+        format?: string;
+        prepend?: string;
+        append?: string;
+        minusChar?: string;
+        multiply?: number;
+        plusMinusChar?: string;
+    };
+}
+
+export = formatNumber;

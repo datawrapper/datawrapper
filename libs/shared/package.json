@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.3.3",
+    "version": "1.4.0-cjs.8",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -13,26 +13,23 @@
     },
     "license": "MIT",
     "author": "Datawrapper GmbH",
-    "main": "dist/mjs/index.js",
+    "main": "index.js",
     "files": [
-        "*.d.ts",
-        "src/**/*.ts",
-        "src/**/*.js",
-        "dist/**/*.ts",
-        "dist/**/*.js",
-        "dist/**/*.cjs"
+        "*.js",
+        "*.d.ts"
     ],
-    "type": "module",
+    "type": "commonjs",
     "engines": {
         "node": ">=18.0.0",
         "npm": ">=7.0.0"
     },
     "scripts": {
-        "test": "ava",
+        "test": "ava --timeout '40s'",
         "test:watch": "ava -w",
-        "build": "rm -Rf dist/* && tsc && tsc --outDir dist/cjs --module commonjs && renamer --view one-line --find js --replace cjs dist/cjs/*.js",
-        "prepublishOnly": "npm run lint && npm run build && npm test && ./scripts/declare-exports.cjs && cp dist/mjs/*.d.ts .",
-        "postpublish": "rm *.d.ts",
+        "build": "rm -Rf dist/* && tsc",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run lint && npm run build && npm run test && cp dist/src/* . && rm *.test.*",
+        "postpublish": "rm *.d.ts && rm *.js",
         "lint": "(cd ../.. && scripts/lint libs/shared)",
         "format": "(cd ../.. && scripts/format libs/shared)",
         "docs": "jsdoc2md --template jsdoc2md/README.hbs --files ./*.[c]js -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
@@ -42,12 +39,20 @@
         "url": "git+ssh://git@github.com/datawrapper/shared.git"
     },
     "devDependencies": {
+        "@types/chroma-js": "^2.1.4",
+        "@types/d3-color": "^1.4.2",
+        "@types/fontfaceobserver": "^2.1.0",
+        "@types/form-data": "^2.5.0",
+        "@types/js-cookie": "^3.0.2",
+        "@types/lodash": "^4.14.186",
+        "@types/node-fetch": "^2.6.2",
         "@types/numeral": "^2.0.2",
+        "@types/raf": "^3.4.0",
+        "@types/sinon": "^10.0.13",
+        "@types/underscore": "^1.11.4",
         "ava": "^4.3.3",
         "ava-fast-check": "^6.0.0",
         "browser-env": "^3.2.6",
-        "d3-interpolate": "^1.3.2",
-        "dayjs": "^1.11.3",
         "esm": "3.2.25",
         "fast-check": "^3.1.2",
         "form-data": "^4.0.0",
@@ -55,14 +60,14 @@
         "nock": "^13.2.9",
         "numeral": "^2.0.6",
         "raf": "^3.4.1",
-        "renamer": "^4.0.0",
         "sinon": "^14.0.0",
         "ts-node": "^10.9.1",
         "typescript": "^4.8.4"
     },
     "dependencies": {
         "chroma-js": "^2.4.2",
-        "d3-array": "^1.2.4",
+        "d3-color": "^1.4.1",
+        "dayjs": "^1.11.3",
         "domutils": "^2.8.0",
         "fontfaceobserver": "^2.1.0",
         "htmlparser2": "^7.2.0",
@@ -73,232 +78,23 @@
         "underscore": "^1.13.1"
     },
     "ava": {
+        "extensions": [
+            "ts"
+        ],
         "files": [
             "src/**/*.test.js",
             "src/**/*.test.cjs",
             "src/**/*.test.ts"
         ],
         "require": [
-            "esm",
-            "./test/helpers/setup-browser-env.js"
+            "ts-node/register",
+            "./test/helpers/setup-browser-env.ts"
         ],
         "nodeArguments": [
-            "--experimental-loader=ts-node/esm",
-            "--experimental-specifier-resolution=node",
             "--no-warnings"
         ]
     },
     "publishConfig": {
         "access": "public"
-    },
-    "exports": {
-        ".": {
-            "require": "./dist/cjs/index.js",
-            "default": "./dist/mjs/index.js"
-        },
-        "./package.json": {
-            "require": "./package.json",
-            "default": "./package.json"
-        },
-        "./analytics.js": {
-            "require": "./dist/cjs/analytics.cjs",
-            "default": "./dist/mjs/analytics.js"
-        },
-        "./area.js": {
-            "require": "./dist/cjs/area.cjs",
-            "default": "./dist/mjs/area.js"
-        },
-        "./arrayToObject.js": {
-            "require": "./dist/cjs/arrayToObject.cjs",
-            "default": "./dist/mjs/arrayToObject.js"
-        },
-        "./autoTickFormat.js": {
-            "require": "./dist/cjs/autoTickFormat.cjs",
-            "default": "./dist/mjs/autoTickFormat.js"
-        },
-        "./checkPassword.js": {
-            "require": "./dist/cjs/checkPassword.cjs",
-            "default": "./dist/mjs/checkPassword.js"
-        },
-        "./clone.js": {
-            "require": "./dist/cjs/clone.cjs",
-            "default": "./dist/mjs/clone.js"
-        },
-        "./colorLightness.js": {
-            "require": "./dist/cjs/colorLightness.cjs",
-            "default": "./dist/mjs/colorLightness.js"
-        },
-        "./columnFormatter.js": {
-            "require": "./dist/cjs/columnFormatter.cjs",
-            "default": "./dist/mjs/columnFormatter.js"
-        },
-        "./columnNameToVariable.js": {
-            "require": "./dist/cjs/columnNameToVariable.cjs",
-            "default": "./dist/mjs/columnNameToVariable.js"
-        },
-        "./combinations.js": {
-            "require": "./dist/cjs/combinations.cjs",
-            "default": "./dist/mjs/combinations.js"
-        },
-        "./dateColumnFormatter.js": {
-            "require": "./dist/cjs/dateColumnFormatter.cjs",
-            "default": "./dist/mjs/dateColumnFormatter.js"
-        },
-        "./decodeHtml.js": {
-            "require": "./dist/cjs/decodeHtml.cjs",
-            "default": "./dist/mjs/decodeHtml.js"
-        },
-        "./decodeHtml.ssr.js": {
-            "require": "./dist/cjs/decodeHtml.ssr.cjs",
-            "default": "./dist/mjs/decodeHtml.ssr.js"
-        },
-        "./defaultColors.js": {
-            "require": "./dist/cjs/defaultColors.cjs",
-            "default": "./dist/mjs/defaultColors.js"
-        },
-        "./drawPattern.js": {
-            "require": "./dist/cjs/drawPattern.cjs",
-            "default": "./dist/mjs/drawPattern.js"
-        },
-        "./ensureColorContrast.js": {
-            "require": "./dist/cjs/ensureColorContrast.cjs",
-            "default": "./dist/mjs/ensureColorContrast.js"
-        },
-        "./equalish.js": {
-            "require": "./dist/cjs/equalish.cjs",
-            "default": "./dist/mjs/equalish.js"
-        },
-        "./escapeHtml.js": {
-            "require": "./dist/cjs/escapeHtml.cjs",
-            "default": "./dist/mjs/escapeHtml.js"
-        },
-        "./estimateTextWidth.js": {
-            "require": "./dist/cjs/estimateTextWidth.cjs",
-            "default": "./dist/mjs/estimateTextWidth.js"
-        },
-        "./fetch.js": {
-            "require": "./dist/cjs/fetch.cjs",
-            "default": "./dist/mjs/fetch.js"
-        },
-        "./formatNumber.js": {
-            "require": "./dist/cjs/formatNumber.cjs",
-            "default": "./dist/mjs/formatNumber.js"
-        },
-        "./get.js": {
-            "require": "./dist/cjs/get.cjs",
-            "default": "./dist/mjs/get.js"
-        },
-        "./getOverlayColor.js": {
-            "require": "./dist/cjs/getOverlayColor.cjs",
-            "default": "./dist/mjs/getOverlayColor.js"
-        },
-        "./getOverlayColumnTitle.js": {
-            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
-            "default": "./dist/mjs/getOverlayColumnTitle.js"
-        },
-        "./hideExtraZeros.js": {
-            "require": "./dist/cjs/hideExtraZeros.cjs",
-            "default": "./dist/mjs/hideExtraZeros.js"
-        },
-        "./highlightTimer.js": {
-            "require": "./dist/cjs/highlightTimer.cjs",
-            "default": "./dist/mjs/highlightTimer.js"
-        },
-        "./httpReq.js": {
-            "require": "./dist/cjs/httpReq.cjs",
-            "default": "./dist/mjs/httpReq.js"
-        },
-        "./httpReq.ssr.js": {
-            "require": "./dist/cjs/httpReq.ssr.cjs",
-            "default": "./dist/mjs/httpReq.ssr.js"
-        },
-        "./index.js": {
-            "require": "./dist/cjs/index.cjs",
-            "default": "./dist/mjs/index.js"
-        },
-        "./invertColor.js": {
-            "require": "./dist/cjs/invertColor.cjs",
-            "default": "./dist/mjs/invertColor.js"
-        },
-        "./isValidUrl.js": {
-            "require": "./dist/cjs/isValidUrl.cjs",
-            "default": "./dist/mjs/isValidUrl.js"
-        },
-        "./kMeans.js": {
-            "require": "./dist/cjs/kMeans.cjs",
-            "default": "./dist/mjs/kMeans.js"
-        },
-        "./l10n.js": {
-            "require": "./dist/cjs/l10n.cjs",
-            "default": "./dist/mjs/l10n.js"
-        },
-        "./normalize.js": {
-            "require": "./dist/cjs/normalize.cjs",
-            "default": "./dist/mjs/normalize.js"
-        },
-        "./numberColumnFormatter.js": {
-            "require": "./dist/cjs/numberColumnFormatter.cjs",
-            "default": "./dist/mjs/numberColumnFormatter.js"
-        },
-        "./objectDiff.js": {
-            "require": "./dist/cjs/objectDiff.cjs",
-            "default": "./dist/mjs/objectDiff.js"
-        },
-        "./observeFonts.js": {
-            "require": "./dist/cjs/observeFonts.cjs",
-            "default": "./dist/mjs/observeFonts.js"
-        },
-        "./postEvent.js": {
-            "require": "./dist/cjs/postEvent.cjs",
-            "default": "./dist/mjs/postEvent.js"
-        },
-        "./purifyHtml.js": {
-            "require": "./dist/cjs/purifyHtml.cjs",
-            "default": "./dist/mjs/purifyHtml.js"
-        },
-        "./purifySvg.js": {
-            "require": "./dist/cjs/purifySvg.cjs",
-            "default": "./dist/mjs/purifySvg.js"
-        },
-        "./round.js": {
-            "require": "./dist/cjs/round.cjs",
-            "default": "./dist/mjs/round.js"
-        },
-        "./set.js": {
-            "require": "./dist/cjs/set.cjs",
-            "default": "./dist/mjs/set.js"
-        },
-        "./significantDimension.js": {
-            "require": "./dist/cjs/significantDimension.cjs",
-            "default": "./dist/mjs/significantDimension.js"
-        },
-        "./smartRound.js": {
-            "require": "./dist/cjs/smartRound.cjs",
-            "default": "./dist/mjs/smartRound.js"
-        },
-        "./sportsSeasonFormat.js": {
-            "require": "./dist/cjs/sportsSeasonFormat.cjs",
-            "default": "./dist/mjs/sportsSeasonFormat.js"
-        },
-        "./tailLength.js": {
-            "require": "./dist/cjs/tailLength.cjs",
-            "default": "./dist/mjs/tailLength.js"
-        },
-        "./toFixed.js": {
-            "require": "./dist/cjs/toFixed.cjs",
-            "default": "./dist/mjs/toFixed.js"
-        },
-        "./truncate.js": {
-            "require": "./dist/cjs/truncate.cjs",
-            "default": "./dist/mjs/truncate.js"
-        },
-        "./units.js": {
-            "require": "./dist/cjs/units.cjs",
-            "default": "./dist/mjs/units.js"
-        },
-        "./validation.js": {
-            "require": "./dist/cjs/validation.cjs",
-            "default": "./dist/mjs/validation.js"
-        }
     }
 }

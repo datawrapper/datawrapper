@@ -1,19 +1,11 @@
 {
-  "include": [
-    "src/*"
-  ],
-  "exclude": [
-    "src/*.test.js",
-    "src/*.test.ts",
-  ],
   "compilerOptions": {
-    "allowJs": true,
     "target": "ES6",
     "declaration": true,
-    "outDir": "dist/mjs",
+    "outDir": "dist",
+    "module": "CommonJS",
     "strict": true,
-    "module": "es2020",
-    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
 }

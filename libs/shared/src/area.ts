@@ -6,7 +6,7 @@
  * @param {array[]} vertices -- polygon vertices as [[x,y], [x,y], ...] array
  * @returns {number} -- polygon area, might be negative
  */
-export default function area(vertices: [number, number][]): number {
+export = function area(vertices: [number, number][]): number {
     let total = 0;
 
     for (let i = 0, l = vertices.length; i < l; i++) {
@@ -20,4 +20,4 @@ export default function area(vertices: [number, number][]): number {
     }
 
     return total;
-}
+};
