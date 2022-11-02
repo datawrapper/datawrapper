@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { BrowserWindow } from './browserGlobals';
 import { getValueOrDefault } from './getValueOrDefault';
-import { HttpReqOptions, Response } from './httpReqOptions';
+import { HttpReqOptions, SimpleFetchResponse } from './httpReqOptions';
 import { keyExists } from './l10n';
 
 declare global {
@@ -24,13 +24,13 @@ const TRANSLATION_KEY_SEPARATOR = ' / ';
  * @exports httpReq
  * @kind function
  *
- * @param {string} path               - the url path that gets appended to baseUrl
- * @param {object} options.body       - raw body to be send with req
- * @param {object} options.payload    - raw JSON payload to be send with req (will overwrite options.body)
- * @param {boolean} options.raw       - disable parsing of response body, returns raw response
- * @param {string} options.baseUrl    - base for url, defaults to dw api domain
- * @param {string} options.disableCSFR    - set to true to disable CSFR cookies
- * @param {*} options                 - see documentation for window.fetch for additional options
+ * @param {string} path                - the url path that gets appended to baseUrl
+ * @param {object} options.body        - raw body to be send with req
+ * @param {object} options.payload     - raw JSON payload to be send with req (will overwrite options.body)
+ * @param {boolean} options.raw        - disable parsing of response body, returns raw response
+ * @param {string} options.baseUrl     - base for url, defaults to dw api domain
+ * @param {string} options.disableCSRF - set to true to disable CSRF cookies
+ * @param {*} options.*                - additional options for window.fetch or node-fetch
  *
  * @returns {Promise} promise of parsed response body or raw response
  *
@@ -110,8 +110,8 @@ function httpReq(
         delete opts.headers['Content-Type'];
     }
 
-    let promise: Promise<Response>;
-    if (!opts.disableCSFR && !CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
+    let promise: Promise<SimpleFetchResponse>;
+    if (!opts.disableCSRF && !CSRF_SAFE_METHODS.has(opts.method.toLowerCase())) {
         const csrfCookieValue = Cookies.get(CSRF_COOKIE_NAME);
         if (csrfCookieValue) {
             opts.headers[CSRF_TOKEN_HEADER] = csrfCookieValue;
@@ -240,7 +240,7 @@ class HttpReqError extends Error {
     status: number;
     statusText: string;
     message: string;
-    response: Response;
+    response: SimpleFetchResponse;
     type?: string;
     translationKey?: string;
     details?: {
@@ -249,7 +249,7 @@ class HttpReqError extends Error {
         translationKey?: string;
     }[];
 
-    constructor(res: Response, json?: ErrorInfo) {
+    constructor(res: SimpleFetchResponse, json?: ErrorInfo) {
         super();
         this.name = 'HttpReqError';
         this.status = res.status;

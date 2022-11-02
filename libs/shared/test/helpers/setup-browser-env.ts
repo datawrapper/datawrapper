@@ -1,7 +1,7 @@
-// We have to use `const ... = require` syntax here because there are no type definitions for this package
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const browserEnv = require('browser-env');
-import raf from 'raf';
+import { JSDOM } from 'jsdom';
 
-browserEnv();
-global.requestAnimationFrame = raf;
+const window = new JSDOM('', { pretendToBeVisual: true, url: 'http://localhost' }).window;
+
+global.window = window as unknown as Window & typeof globalThis;
+
+global.document = window.document;
