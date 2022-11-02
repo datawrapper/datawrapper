@@ -1,13 +1,10 @@
+import type JQuery from 'jquery';
+
 const patternRotation: Record<string, number> = {
     horizontal: 90,
     vertical: 0,
     'diagonal-up': 135,
     'diagonal-down': 45
-};
-
-type Drawing = {
-    append(type: string): Drawing;
-    attr(type: string, value: string | number): Drawing;
 };
 
 /**
@@ -29,7 +26,7 @@ export = function drawPattern({
     scale = 1,
     flipV = false
 }: {
-    defs: Drawing;
+    defs: JQuery;
     id: string;
     stroke: string;
     strokeWidth: number;

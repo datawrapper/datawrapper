@@ -2,7 +2,6 @@ export { trackEvent, trackPageView } from './analytics';
 export { default as area } from './area';
 export { default as arrayToObject } from './arrayToObject';
 export { autoTickFormat, autoTickFormatDate, autoTickFormatNumber } from './autoTickFormat';
-export { default as checkPassword } from './checkPassword';
 export { columnFormatter } from './columnFormatter';
 export { default as clone } from './clone';
 export { default as columnNameToVariable } from './columnNameToVariable';

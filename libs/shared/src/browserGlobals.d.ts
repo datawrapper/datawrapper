@@ -5,16 +5,6 @@ export type GlobalDw = {
     };
 };
 
-export type GlobalDw2 = {
-    backend: {
-        messages: {
-            provideCurPwd: string;
-            pwdMismatch: string;
-            pwdTooShort: string;
-        };
-    };
-};
-
 export type WindowDw2 = {
     vis?: {
         meta?: {

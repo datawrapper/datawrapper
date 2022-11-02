@@ -1,5 +1,5 @@
 import FontFaceObserver from 'fontfaceobserver';
-import { FontObject, Typography } from './chartTypes';
+import { FontObject, Typography } from './themeTypes';
 
 /**
  * Function that returns a promise, that resolves when all fonts,

@@ -1,7 +1,8 @@
 import { lab, rgb } from 'd3-color';
 import get from './get';
 import colorLightness from './colorLightness';
-import { Overlay, Theme } from './chartTypes';
+import { Overlay } from './chartTypes';
+import { Theme } from './themeTypes';
 
 /**
  * returns the color used by overlays

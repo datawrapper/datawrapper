@@ -1,19 +1,23 @@
 import nodeFetch, { RequestInit as NodeRequestInit } from 'node-fetch';
 
 type FetchType = typeof window.fetch | typeof nodeFetch;
-type FetchOptions = {
+
+export type SimpleFetchOptions = {
     headers?: Record<string, string>;
 } & Omit<globalThis.RequestInit & NodeRequestInit, 'headers'>;
 
-export type Response = Awaited<ReturnType<FetchType>>;
+export type SimpleFetchResponse = Awaited<ReturnType<FetchType>>;
 
-export type SimpleFetch = (url: string, opts: FetchOptions) => Promise<Response>;
+/**
+ * SimpleFetch is a union of window.fetch and node-fetch, because httpReq has to work with both.
+ */
+export type SimpleFetch = (url: string, opts: SimpleFetchOptions) => Promise<SimpleFetchResponse>;
 
 export type HttpReqOptions = {
     baseUrl?: string;
     credentials?: RequestCredentials;
-    disableCSFR?: boolean;
+    disableCSRF?: boolean;
     fetch?: SimpleFetch;
     payload?: unknown;
     raw?: boolean;
-} & FetchOptions;
+} & SimpleFetchOptions;

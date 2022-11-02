@@ -1,5 +1,5 @@
 import chroma from 'chroma-js';
-import { Theme } from './chartTypes';
+import { Theme } from './themeTypes';
 import get from './get';
 
 /**
@@ -20,7 +20,6 @@ import get from './get';
  * @param {*} theme -- theme data for a chart
  * @returns {*} -- object with color definitions
  */
-
 export function defaultColors(theme: Theme) {
     const bg = get(theme, 'colors.background', '#ffffff');
     const fallback = get(

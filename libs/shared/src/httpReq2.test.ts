@@ -3,7 +3,7 @@ import fetch, { Response } from 'node-fetch';
 import sinon from 'sinon';
 
 import httpReq from './httpReq';
-import { FetchOptions } from './httpReqOptions';
+import { SimpleFetchOptions } from './httpReqOptions';
 
 const baseUrl = 'https://httpbin.org';
 
@@ -20,7 +20,7 @@ test.before(() => {
 test('calls /v3/me when CSRF cookie is not set', async t => {
     document.cookie = '';
     let wasGETCalled = false;
-    let lastFetchOpts = undefined as FetchOptions | undefined;
+    let lastFetchOpts = undefined as SimpleFetchOptions | undefined;
     await httpReq.put('/put', {
         baseUrl,
         fetch: (url, opts) => {

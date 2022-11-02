@@ -92,7 +92,10 @@ test('post request with file in multipart/form-data body', async t => {
     formData.append('file', createReadStream(filePath), 'test.png');
     formData.append('bla', 'foo');
 
-    // TODO: Figure out the types here
+    // Cast form data to any, because our SimpleFetch type definition currently doesn't work with
+    // either DOM FormData or Node FormData from form-data, because those two types are
+    // incompatible.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const body = formData as any;
     const res = await httpReq.post('/anything', {
         baseUrl,

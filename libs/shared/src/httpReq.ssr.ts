@@ -2,11 +2,11 @@ import fetch from 'node-fetch';
 import httpReqClient from './httpReq';
 import { HttpReqOptions } from './httpReqOptions';
 
-function httpReq(path: string, options: Omit<HttpReqOptions, 'fetch' | 'disableCSFR'> = {}) {
+function httpReq(path: string, options: Omit<HttpReqOptions, 'fetch' | 'disableCSRF'> = {}) {
     return httpReqClient(path, {
         ...options,
         fetch,
-        disableCSFR: true
+        disableCSRF: true
     });
 }
 

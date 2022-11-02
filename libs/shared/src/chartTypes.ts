@@ -44,48 +44,11 @@ export type Overlay = {
     opacity: number | `${number}`;
 };
 
-type Visualization = {
+export type Visualization = {
     dataset: {
         hasColumn(colName: string): boolean;
         column(colName: string): {
             title(): string;
         };
-    };
-};
-
-type Typography = {
-    fontFamilies: Record<
-        string,
-        {
-            name: string;
-            weight: number;
-            style: string;
-        }[]
-    >;
-};
-
-type FontObject = {
-    family: string;
-    props: {
-        weight: number;
-        style: string;
-    };
-};
-
-export type Theme = {
-    colors?: {
-        background?: string;
-        bgBlendRatios?: {
-            axis?: number;
-            gridline?: number;
-            series?: number;
-            tickText?: {
-                primary?: number;
-                secondary?: number;
-            };
-            value?: number;
-        };
-        chartContentBaseColor?: string;
-        palette?: string[];
     };
 };
