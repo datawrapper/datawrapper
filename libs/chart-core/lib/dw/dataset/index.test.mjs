@@ -176,3 +176,8 @@ test('Dataset.row(index) returns a row object containing all column values', asy
     const dataset = Dataset([Column('foo', ['foo1']), Column('bar', ['bar1'])]);
     t.deepEqual(dataset.row(0), { foo: 'foo1', bar: 'bar1' });
 });
+
+test('Dataset.numRows() returns zero when the dataset has no columns', async t => {
+    const dataset = Dataset([]);
+    t.is(dataset.numRows(), 0);
+});
