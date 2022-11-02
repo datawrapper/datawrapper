@@ -83,7 +83,7 @@ export default function Dataset(columns) {
          * @returns {number}
          */
         numRows() {
-            return columns[0].length;
+            return columns.length ? columns[0].length : 0;
         },
 
         /** calls a function for each column of the dataset */
