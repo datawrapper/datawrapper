@@ -53,6 +53,22 @@ test('Column.name() purifies HTML name', t => {
     t.is(col.name(), 'evil  text');
 });
 
+test('Column.title() purifies non-default HTML tag in title', t => {
+    const col = column('Initial title', []);
+    col.title('Title with <img src="https://app.datawrapper.de/static/img/icon/favicon.png">tag');
+    t.is(col.title(), 'Title with tag');
+});
+
+test('Column.title() does not purify non-default HTML tag when tag is explicitly allowed', t => {
+    const allowedTags = ['img'];
+    const col = column('Initial title', [], undefined, allowedTags);
+    col.title('Title with <img src="https://app.datawrapper.de/static/img/icon/favicon.png">tag');
+    t.is(
+        col.title(),
+        'Title with <img src="https://app.datawrapper.de/static/img/icon/favicon.png">tag'
+    );
+});
+
 test('Column.formatted() formats a number column', t => {
     const col = column('my title', [0, 1, 9000, 3.141592653589793, NaN, null, undefined], 'number');
     t.deepEqual(col.formatted(), [0, 1, 9000, 3.141592653589793, NaN, null, undefined]);

@@ -32,7 +32,7 @@ import purifyHtml from '@datawrapper/shared/purifyHtml.js';
 /**
  * @class dw.Column
  */
-export default function Column(name_, rows, type) {
+export default function Column(name_, rows, type, allowedTags) {
     function notEmpty(d) {
         return d !== null && d !== undefined && d !== '';
     }
@@ -100,7 +100,7 @@ export default function Column(name_, rows, type) {
         // column title (used for presentation)
         title() {
             if (arguments.length) {
-                title = purifyHtml(arguments[0]);
+                title = purifyHtml(arguments[0], allowedTags);
                 return column;
             }
             return title || name;
@@ -121,7 +121,9 @@ export default function Column(name_, rows, type) {
             if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
-            return type.parse(isDate(r[i]) || isNumber(r[i]) ? r[i] : purifyHtml(r[i]));
+            return type.parse(
+                isDate(r[i]) || isNumber(r[i]) ? r[i] : purifyHtml(r[i], allowedTags)
+            );
         },
 
         /**
@@ -148,7 +150,7 @@ export default function Column(name_, rows, type) {
         values(unfiltered) {
             var r = unfiltered ? origRows : rows;
             r = map(r, function (d) {
-                return isDate(d) || isNumber(d) ? d : purifyHtml(d);
+                return isDate(d) || isNumber(d) ? d : purifyHtml(d, allowedTags);
             });
             return map(r, type.parse);
         },
@@ -165,12 +167,14 @@ export default function Column(name_, rows, type) {
         // access to raw values
         raw(i, val) {
             if (!arguments.length)
-                return rows.map(d => (isDate(d) || isNumber(d) ? d : purifyHtml(d)));
+                return rows.map(d => (isDate(d) || isNumber(d) ? d : purifyHtml(d, allowedTags)));
             if (arguments.length === 2) {
                 rows[i] = val;
                 return column;
             }
-            return isDate(rows[i]) || isNumber(rows[i]) ? rows[i] : purifyHtml(rows[i]);
+            return isDate(rows[i]) || isNumber(rows[i])
+                ? rows[i]
+                : purifyHtml(rows[i], allowedTags);
         },
 
         /**
