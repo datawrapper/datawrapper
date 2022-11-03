@@ -194,6 +194,11 @@ test('purifyHtml handles void tags', t => {
     );
 });
 
+test('purifyHtml supports allowed tag "br" but not "br/"', t => {
+    t.is(purifyHtml('<p>foo<br> bar<br/></p>', ['br']), 'foo<br> bar<br>');
+    t.is(purifyHtml('<p>foo<br> bar<br/></p>', ['br/']), 'foo bar');
+});
+
 test('purifyHtml removes styles if they contain something that resembles an HTML tag', t => {
     // See https://github.com/cure53/DOMPurify/blob/abf62956a8ac86c74b1954274dd6b5b9813094ba/src/purify.js#L928-L939
     t.is(
