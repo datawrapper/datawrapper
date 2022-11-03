@@ -1,11 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "declaration": true,
-    "outDir": "dist",
-    "module": "CommonJS",
-    "strict": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  },
+    "compilerOptions": {
+        "target": "ES6",
+        "declaration": true,
+        "outDir": "dist",
+        "module": "CommonJS",
+        "strict": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true
+    }
 }
