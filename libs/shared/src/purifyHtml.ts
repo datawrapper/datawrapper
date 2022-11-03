@@ -3,10 +3,7 @@ import { createPermanentMemoizer } from './memoizer';
 
 const allowedTagsMemoizer = createPermanentMemoizer(
     (key: string) => key,
-    allowedTagsString =>
-        Array.from(allowedTagsString.toLowerCase().matchAll(/<([a-z][a-z0-9]*)>/g))
-            .map(m => m[1])
-            .sort()
+    allowedTagsString => allowedTagsString.toLowerCase().slice(1, -1).split('><').sort()
 );
 
 const resultsMemoizer = createPermanentMemoizer(
