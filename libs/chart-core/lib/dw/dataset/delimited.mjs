@@ -15,6 +15,20 @@ import { isString } from 'underscore';
 import dataset from './index.mjs';
 import column from './column.mjs';
 
+/**
+ * Parses a separator-delimited string (e.g. CSV)
+ *
+ * @param {object} opts
+ * @param {string} opts.csv - the CSV string to be parsed
+ * @param {string} opts.delimiter - defaults to 'auto'
+ * @param {string} opts.quoteChar
+ * @param {number} opts.skipRows - number of initial rows to skip
+ * @param {*} opts.emptyValue
+ * @param {boolean} opts.transpose
+ * @param {boolean} opts.firstRowIsHeader
+ * @param {string} opts.allowedTags - list of HTML tags that will not get filtered out by purifyHTML
+ * @return {Dataset}
+ */
 function delimited(opts) {
     function loadAndParseCsv() {
         if (opts.url) {
@@ -208,7 +222,7 @@ class DelimitedParser {
                     suffix = suffix === '' ? 1 : suffix + 1;
                 }
                 columnNames[col + suffix] = true;
-                return column(col + suffix, data);
+                return column(col + suffix, data, undefined, opts.allowedTags);
             });
         }
 
