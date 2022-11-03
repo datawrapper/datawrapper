@@ -1,24 +1,6 @@
 import DOMPurify from 'isomorphic-dompurify';
 import { createPermanentMemoizer } from './memoizer';
 
-const allowedTagsMemoizer = createPermanentMemoizer(
-    (key: string) => key,
-    allowedTagsString => allowedTagsString.toLowerCase().slice(1, -1).split('><').sort()
-);
-
-const resultsMemoizer = createPermanentMemoizer(
-    (key: { input: unknown; allowedTags: string[] }) => JSON.stringify(key),
-    ({ input, allowedTags }) =>
-        // Implementation of DOMPurify accepts anything,
-        // and we need to accept anything too, according to tests
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        DOMPurify.sanitize(input as any, {
-            ALLOWED_TAGS: allowedTags,
-            ADD_ATTR: ['target'],
-            FORCE_BODY: true // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
-        })
-);
-
 const DEFAULT_ALLOWED = [
     'a',
     'span',
@@ -48,17 +30,32 @@ DOMPurify.addHook('afterSanitizeElements', function (el) {
     }
 });
 
-const getAllowedTags = (allowedTagsInput?: string | string[]) => {
-    if (typeof allowedTagsInput === 'string') {
-        return allowedTagsMemoizer.get(allowedTagsInput);
-    }
+const memoizer = createPermanentMemoizer(
+    (allowedTagsInput: string | string[] | undefined) => String(allowedTagsInput),
+    allowedTagsInput => {
+        const allowedTags =
+            allowedTagsInput === undefined
+                ? DEFAULT_ALLOWED
+                : typeof allowedTagsInput === 'string'
+                ? allowedTagsInput.toLowerCase().slice(1, -1).split('><')
+                : allowedTagsInput;
+        const config = {
+            ALLOWED_TAGS: allowedTags,
+            ADD_ATTR: ['target'],
+            FORCE_BODY: true // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
+        };
 
-    if (!allowedTagsInput) {
-        return DEFAULT_ALLOWED;
+        return createPermanentMemoizer(
+            (input: unknown) => input,
+            input => {
+                // Implementation of DOMPurify accepts anything,
+                // and we need to accept anything too, according to tests
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                return DOMPurify.sanitize(input as any, config);
+            }
+        );
     }
-
-    return [...allowedTagsInput].sort();
-};
+);
 
 /**
  * Remove all HTML tags from given `input` string, except `allowed` tags.
@@ -67,26 +64,23 @@ const getAllowedTags = (allowedTagsInput?: string | string[]) => {
  * @kind function
  *
  * @param {string} input - dirty HTML input
- * @param {string} [string[]] - list of allowed tags; see DEFAULT_ALLOWED for the default value
+ * @param {string[]} [allowedTagsInput] - list of allowed tags; see DEFAULT_ALLOWED for the default value
  * @return {string} - the cleaned HTML output
  */
-function purifyHTML(input: string, allowed?: string[]): string;
+function purifyHTML(input: string, allowedTagsInput?: string[]): string;
 /**
  * @deprecated
  */
-function purifyHTML(input: string, allowed: string): string;
+function purifyHTML(input: string, allowedTagsInput: string): string;
 /**
  * @deprecated
  */
 function purifyHTML(input: unknown): unknown;
-function purifyHTML(input: unknown, allowedInput?: string | string[]) {
+function purifyHTML(input: unknown, allowedTagsInput?: string | string[]) {
     if (!input) {
         return input;
     }
-
-    const allowedTags = getAllowedTags(allowedInput);
-
-    return resultsMemoizer.get({ allowedTags, input });
+    return memoizer.get(allowedTagsInput).get(input);
 }
 
 export = purifyHTML;

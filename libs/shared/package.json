@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -26,6 +26,7 @@
     "scripts": {
         "test": "ava --timeout '40s'",
         "test:watch": "ava -w",
+        "test:perf": "npm test -- --config ava-perf.config.cjs",
         "build": "rm -Rf dist/* && tsc",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run lint && npm run build && npm run test && cp dist/src/* . && rm *.test.*",
@@ -76,23 +77,6 @@
         "lodash": "^4.17.21",
         "node-fetch": "^2.6.0",
         "underscore": "^1.13.1"
-    },
-    "ava": {
-        "extensions": [
-            "ts"
-        ],
-        "files": [
-            "src/**/*.test.js",
-            "src/**/*.test.cjs",
-            "src/**/*.test.ts"
-        ],
-        "require": [
-            "ts-node/register",
-            "./test/helpers/setup-browser-env.ts"
-        ],
-        "nodeArguments": [
-            "--no-warnings"
-        ]
     },
     "publishConfig": {
         "access": "public"
