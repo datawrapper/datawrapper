@@ -231,15 +231,19 @@ export default function Dataset(columns) {
         },
 
         /**
-         * returns the columns in a given order
-         * @param {number[]} sortOrder -- array of indexes
+         * Sorts columns according to give `sortOrder`.
+         *
+         * Columns that don't appear in `sortOrder` will be put at the end.
+         *
+         * @param {number[]} sortOrder -- array of original column indexes in the desired order
          */
         columnOrder(sortOrder) {
             if (arguments.length) {
-                columns.length = 0;
-                sortOrder.forEach(function (i) {
-                    columns.push(origColumns[i]);
+                const columnsWithNewIndexes = columns.map((column, i) => {
+                    const newIndex = sortOrder.indexOf(i);
+                    return [column, newIndex !== -1 ? newIndex : columns.length];
                 });
+                columns = columnsWithNewIndexes.sort((a, b) => a[1] - b[1]).map(x => x[0]);
                 return dataset;
             }
             return columns.map(function (c) {
