@@ -16,6 +16,8 @@ const DEFAULT_ALLOWED = [
     'tt'
 ].sort();
 
+const MEMOIZER_MAXSIZE = 100_000;
+
 /**
  * Set default TARGET and REL for A tags.
  *
@@ -52,13 +54,15 @@ const memoizer = createPermanentMemoizer(
                 // and we need to accept anything too, according to tests
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 return DOMPurify.sanitize(input as any, config);
-            }
+            },
+            { maxsize: MEMOIZER_MAXSIZE }
         );
-    }
+    },
+    { maxsize: MEMOIZER_MAXSIZE }
 );
 
 /**
- * Remove all HTML tags from given `input` string, except `allowed` tags.
+ * Removes all HTML tags from given `input` string, except the ones in the `allowedTagsInput` list.
  *
  * @exports purifyHTML
  * @kind function
