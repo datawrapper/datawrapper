@@ -181,3 +181,25 @@ test('Dataset.numRows() returns zero when the dataset has no columns', async t =
     const dataset = Dataset([]);
     t.is(dataset.numRows(), 0);
 });
+
+test('Dataset.columnOrder() sorts columns according to given order', async t => {
+    const dataset = Dataset([Column('foo', []), Column('bar', []), Column('baz', [])]);
+    dataset.columnOrder([2, 0, 1]);
+    t.deepEqual(
+        dataset.columns().map(column => column.name()),
+        ['baz', 'foo', 'bar']
+    );
+});
+
+test('Dataset.columnOrder() puts columns that do not appear in the order array at the end', async t => {
+    const dataset = Dataset([Column('foo', []), Column('bar', []), Column('baz', [])]);
+    dataset.columnOrder([
+        3, // This is an invalid index, so column 2 doesn't appear here and will be put at the end.
+        1,
+        0
+    ]);
+    t.deepEqual(
+        dataset.columns().map(column => column.name()),
+        ['bar', 'foo', 'baz']
+    );
+});
