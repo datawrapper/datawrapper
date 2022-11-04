@@ -1,8 +1,9 @@
 export const createPermanentMemoizer = <TKey, TSerializedKey, TValue>(
     keySerializer: (key: TKey) => TSerializedKey,
-    valueCreator: (key: TKey) => TValue
+    valueCreator: (key: TKey) => TValue,
+    { maxsize }: { maxsize?: number } = {}
 ) => {
-    const map = new Map<TSerializedKey, TValue>();
+    let map = new Map<TSerializedKey, TValue>();
 
     return {
         get: (key: TKey): TValue => {
@@ -16,6 +17,9 @@ export const createPermanentMemoizer = <TKey, TSerializedKey, TValue>(
             }
 
             const value = valueCreator(key);
+            if (maxsize && map.size >= maxsize) {
+                map = new Map();
+            }
             map.set(serializedKey, value);
             return value;
         }
