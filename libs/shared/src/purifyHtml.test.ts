@@ -217,7 +217,7 @@ test('purifyHtml removes everything if `allowed` is an empty string', t => {
 
 test('purifyHtml removes everything if `allowed` is an empty array', t => {
     t.is(
-        purifyHtml('<a>link</a> <b>bold</b> <i>italic</i> <p>paragraph</p>', ''),
+        purifyHtml('<a>link</a> <b>bold</b> <i>italic</i> <p>paragraph</p>', []),
         'link bold italic paragraph'
     );
 });
