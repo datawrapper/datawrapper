@@ -165,6 +165,19 @@ test('add missing label column to dataset', t => {
     t.deepEqual(ds.column('labels').values(), ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
 });
 
+test('regression test for scatter charts', t => {
+    const ds = dataset([numberColumn('column1'), numberColumn('column2')]);
+    const visAxes = {
+        x: { accepts: ['number', 'date'], prefers: 'number' },
+        y: { accepts: ['number', 'date'], prefers: 'number' },
+        size: { accepts: ['number'], optional: true }
+    };
+    const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { size: 'column1' } });
+    t.truthy(axes.x, 'axis.x is undefined');
+    t.truthy(axes.y, 'axis.y is undefined');
+    t.truthy(axes.size, 'axis.size is undefined');
+});
+
 // some utility methods for constructing datasets below
 function textColumn(name) {
     return column(
