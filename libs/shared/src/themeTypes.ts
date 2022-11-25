@@ -31,6 +31,16 @@ export type Theme = {
             value?: number;
         };
         chartContentBaseColor?: string;
+        general?: {
+            background?: string;
+            padding?: number;
+        };
         palette?: string[];
+    };
+    easing?: string;
+    typography?: {
+        chart?: {
+            fontSize?: number;
+        };
     };
 };

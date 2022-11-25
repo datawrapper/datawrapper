@@ -34,8 +34,17 @@ export type Column = {
 };
 
 export type Metadata = {
+    custom?: {
+        webToPrint?: {
+            mode?: string;
+        };
+    };
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
+        transpose?: boolean;
+    };
+    publish?: {
+        'embed-width'?: number;
     };
 };
 
