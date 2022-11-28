@@ -38,6 +38,7 @@ export default function Column(name_, rows, type, allowedTags) {
     }
 
     function guessType(sample) {
+        if (rows.length === 0) return columnTypes.text(); // empty columns are type text by default
         if (every(rows, isNumber)) return columnTypes.number();
         if (every(rows, isDate)) return columnTypes.date();
         // guessing column type by counting parsing errors

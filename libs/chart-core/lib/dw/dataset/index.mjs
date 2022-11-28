@@ -146,11 +146,25 @@ export default function Dataset(columns) {
          * @param {string} [opt.numeral=null] -- format numbers using this Numeral.js instance
          * @returns {string}
          */
-        csv({ includeComputedColumns = true, includeHeader = true, numeral = null, ...opts } = {}) {
+        csv({
+            includeComputedColumns = true,
+            includeHeader = true,
+            includeOrder = true,
+            includeFiltered = false,
+            numeral = null,
+            ...opts
+        } = {}) {
             const numRows = dataset.numRows();
-            const filteredColumns = includeComputedColumns
-                ? columns
-                : columns.filter(col => !col.isComputed);
+            const cols = includeOrder ? columns : origColumns;
+            const filteredColumns = cols.filter(col => {
+                if (!includeComputedColumns && col.isComputed) {
+                    return false;
+                }
+                if (!includeFiltered && columns.indexOf(col) === -1) {
+                    return false;
+                }
+                return true;
+            });
             const table = filteredColumns.map(col => [
                 ...(includeHeader ? [col.title()] : []),
                 ...col.formatted(numeral)
