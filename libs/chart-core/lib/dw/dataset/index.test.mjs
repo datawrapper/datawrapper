@@ -203,3 +203,18 @@ test('Dataset.columnOrder() puts columns that do not appear in the order array a
         ['bar', 'foo', 'baz']
     );
 });
+
+test('Dataset.list() returns an empty list when the dataset has no columns', async t => {
+    const dataset = Dataset([]);
+    t.deepEqual(dataset.list(), []);
+});
+
+test('Dataset.row() returns an empty object when the dataset has no columns', async t => {
+    const dataset = Dataset([]);
+    t.deepEqual(dataset.row(0), {});
+});
+
+test('Dataset.csv() returns an empty string when the dataset has no columns', async t => {
+    const dataset = Dataset([]);
+    t.deepEqual(dataset.csv(), '');
+});
