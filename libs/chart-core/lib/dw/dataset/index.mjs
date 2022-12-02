@@ -119,6 +119,9 @@ export default function Dataset(columns) {
          * @returns {object[]}
          */
         list() {
+            if (!columns.length) {
+                return [];
+            }
             return range(columns[0].length).map(dataset.row);
         },
 
@@ -128,7 +131,7 @@ export default function Dataset(columns) {
          * @returns {object}
          */
         row(index) {
-            if (index >= columns[0].length) {
+            if (!columns.length || index >= columns[0].length) {
                 return {};
             }
             const o = {};
@@ -154,6 +157,9 @@ export default function Dataset(columns) {
             numeral = null,
             ...opts
         } = {}) {
+            if (!columns.length) {
+                return '';
+            }
             const numRows = dataset.numRows();
             const cols = includeOrder ? columns : origColumns;
             const filteredColumns = cols.filter(col => {
