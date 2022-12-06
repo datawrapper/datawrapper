@@ -28,6 +28,7 @@ export { default as postEvent } from './postEvent';
 export { default as round } from './round';
 export { default as set } from './set';
 export { default as significantDimension } from './significantDimension';
+export { default as slugify } from './slugify';
 export { default as smartRound } from './smartRound';
 export { default as tailLength } from './tailLength';
 export { default as toFixed } from './toFixed';
