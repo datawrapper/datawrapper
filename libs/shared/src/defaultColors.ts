@@ -17,13 +17,13 @@ import get from './get';
  * // returns {"tickText":{"secondary":"#ffffff","primary":"#ffffff"},"series":"#ffffff","value":"#fef2e4","axis":"#ffffff","gridline":"#fedeb5","fallbackBaseColor":"#ffffff"}
  * defaultColors({"colors": {"bgBlendRatios": {"gridline": 0.5,"tickText": {"primary": 0,"secondary": 0}},"chartContentBaseColor": "#ffffff","background": "#FCB716"}});
 
- * @param {*} theme -- theme data for a chart
- * @returns {*} -- object with color definitions
+ * @param {*} themeData -- theme data for a chart
+ * @returns {*} -- object with color definitions and blendColor function
  */
-export function defaultColors(theme: Theme) {
-    const bg = get(theme, 'colors.background', '#ffffff');
+export function defaultColors(themeData: Theme) {
+    const bg = get(themeData, 'colors.background', '#ffffff');
     const fallback = get(
-        theme,
+        themeData,
         'colors.chartContentBaseColor',
         chroma.contrast(bg, '#000000') < 5.5 ? '#f1f1f1' : '#333333'
     );
@@ -31,13 +31,17 @@ export function defaultColors(theme: Theme) {
     const darkBG = chroma(bg).luminance() < 0.5;
     const bgBlendRatios = {
         tickText: {
-            secondary: get(theme, 'colors.bgBlendRatios.tickText.secondary', darkBG ? 0.6 : 0.4),
-            primary: get(theme, 'colors.bgBlendRatios.tickText.primary', 0.2)
+            secondary: get(
+                themeData,
+                'colors.bgBlendRatios.tickText.secondary',
+                darkBG ? 0.6 : 0.4
+            ),
+            primary: get(themeData, 'colors.bgBlendRatios.tickText.primary', 0.2)
         },
-        series: get(theme, 'colors.bgBlendRatios.series', 0),
-        value: get(theme, 'colors.bgBlendRatios.value', 0.2),
-        axis: get(theme, 'colors.bgBlendRatios.axis', 0),
-        gridline: get(theme, 'colors.bgBlendRatios.gridline', 0.82)
+        series: get(themeData, 'colors.bgBlendRatios.series', 0),
+        value: get(themeData, 'colors.bgBlendRatios.value', 0.2),
+        axis: get(themeData, 'colors.bgBlendRatios.axis', 0),
+        gridline: get(themeData, 'colors.bgBlendRatios.gridline', 0.82)
     };
 
     return {
@@ -54,6 +58,10 @@ export function defaultColors(theme: Theme) {
 
         gridline: chroma.mix(fallback, bg, bgBlendRatios.gridline).hex(),
 
-        fallbackBaseColor: fallback
+        fallbackBaseColor: fallback,
+
+        blendColor(blendRatio: number) {
+            return chroma.mix(fallback, bg, blendRatio).hex();
+        }
     };
 }

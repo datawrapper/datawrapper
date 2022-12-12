@@ -1,5 +1,6 @@
 import test from 'ava';
 import { defaultColors } from './defaultColors';
+import { Theme } from './themeTypes';
 
 const tests = [
     {
@@ -65,8 +66,16 @@ const tests = [
     }
 ] as const;
 
-tests.forEach(({ theme, name, expectedResult }) => {
-    test(name, t => {
-        t.deepEqual(defaultColors(theme), expectedResult);
-    });
-});
+tests.forEach(
+    ({ theme, name, expectedResult }: { theme: Theme; name: string; expectedResult: any }) => {
+        test(name, t => {
+            const result: any = defaultColors(theme);
+            for (const key in result) {
+                // blendColor is a function and can't be easily compared
+                if (key !== 'blendColor') {
+                    t.deepEqual(result[key], expectedResult[key]);
+                }
+            }
+        });
+    }
+);
