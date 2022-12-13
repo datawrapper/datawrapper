@@ -38,12 +38,13 @@ export type Metadata = {
         webToPrint?: {
             mode?: string;
         };
-    };
+    } & Record<`exif-${string}`, string>;
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
         transpose?: boolean;
     };
     publish?: {
+        'embed-height'?: number;
         'embed-width'?: number;
     };
 };
