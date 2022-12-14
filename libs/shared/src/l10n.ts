@@ -10,11 +10,44 @@ declare global {
 
 declare const dw: GlobalDw;
 
-const ALLOWED_HTML =
-    '<p><h1><h2><h3><h4><h5><h6><blockquote><ol><ul><li><pre><hr><br>' + // Block elements (Markdown official)
-    '<a><em><i><strong><b><code><img>' + // Inline elements (Markdown official)
-    '<table><tr><th><td>' + // Tables
-    '<small><span><div><sup><sub><tt>'; // Additional tags to support advanced customization
+const ALLOWED_HTML = [
+    // Block elements (Markdown official)
+    'p',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'blockquote',
+    'ol',
+    'ul',
+    'li',
+    'pre',
+    'hr',
+    'br',
+    // Inline elements (Markdown official)
+    'a',
+    'em',
+    'i',
+    'strong',
+    'b',
+    'code',
+    'img',
+    // Tables
+    'table',
+    'tr',
+    'th',
+    'td',
+    // Additional tags to support advanced customization
+    'small',
+    'span',
+    'div',
+    'sup',
+    'sub',
+    'kbd',
+    'tt'
+];
 
 const __messages: Record<string, Record<string, string>> = {};
 
