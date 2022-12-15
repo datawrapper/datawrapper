@@ -4,8 +4,8 @@ function theme(id) {
     return __themes[id];
 }
 
-theme.register = function (id, props) {
-    __themes[id] = props;
+theme.register = function (id, themeData) {
+    __themes[id] = themeData;
 };
 
 export default theme;
