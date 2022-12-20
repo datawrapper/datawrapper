@@ -212,6 +212,7 @@ export default function (attributes) {
             const container = chart.vis().target();
 
             visualization.chart(chart);
+            visualization.container(container);
 
             // compute chart dimensions
             const w = width(container);
