@@ -3,14 +3,16 @@ import column from '../column.mjs';
 import { range } from 'underscore';
 
 const ymdhms = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) => new Date(y, m - 1, d, h, mm, s);
+const ymdhmsUTC = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) =>
+    new Date(Date.UTC(y, m - 1, d, h, mm, s));
 const ymd = (y, m = 1, d = 1) => new Date(y, m - 1, d);
 const ymdUTC = (y, m = 1, d = 1) => new Date(Date.UTC(y, m - 1, d));
 const yr = y => ymd(y);
 
 const curYear = new Date().getFullYear();
 
-const run = (name, { values, parsed, invalid }) => {
-    test(name, t => {
+const run = (name, { values, parsed, invalid, only }) => {
+    (only ? test.only : test)(name, t => {
         const col = column('', values);
         if (!invalid) {
             // first check if the column auto-detected dates
@@ -829,4 +831,54 @@ run('date with time and seconds (YYYY/MM/DD HH:MM:SS AM)', {
 run('date with abbreviated month (MMM-YY)', {
     values: ['ene-13', 'ene-14', 'ene-15', 'ene-16'],
     parsed: [ymd(2013), ymd(2014), ymd(2015), ymd(2016)]
+});
+
+run('ISO dates with seconds', {
+    values: [
+        '2023-01-03T14:00:00.000Z',
+        '2023-01-03T13:00:00.000Z',
+        '2023-01-03T12:00:00.000Z',
+        '2023-01-03T11:00:00.000Z'
+    ],
+    parsed: [
+        ymdhmsUTC(2023, 1, 3, 14, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 13, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 12, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
+    ]
+});
+
+run('ISO dates without seconds', {
+    values: ['2023-01-03T14:00Z', '2023-01-03T13:00Z', '2023-01-03T12:00Z', '2023-01-03T11:00Z'],
+    parsed: [
+        ymdhmsUTC(2023, 1, 3, 14, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 13, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 12, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
+    ]
+});
+
+run('ISO dates without separators', {
+    values: ['20230103T140000Z', '20230103T130000Z', '20230103T120000Z', '20230103T110000Z'],
+    parsed: [
+        ymdhmsUTC(2023, 1, 3, 14, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 13, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 12, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
+    ]
+});
+
+run('ISO dates with timezones', {
+    values: [
+        '2023-01-03T14:00Z',
+        '2023-01-03T14:00+01:00',
+        '2023-01-03T14:00-02:00',
+        '2023-01-03T14:00+02:30'
+    ],
+    parsed: [
+        ymdhmsUTC(2023, 1, 3, 14, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 13, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 16, 0, 0),
+        ymdhmsUTC(2023, 1, 3, 11, 30, 0)
+    ]
 });
