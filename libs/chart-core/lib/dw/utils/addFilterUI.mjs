@@ -115,6 +115,7 @@ function utilsFilter({ column, active, type = 'auto', rtl = false }) {
                     .append('a')
                     .attr('href', d => `#${d._i}`)
                     .classed('active', d => d._i === active)
+                    .classed('link-style-ignore', true)
                     .html(d => String(d.content).trim())
                     .on('click', handleClick);
 
