@@ -402,6 +402,10 @@ export default function (attributes) {
         }
     };
 
+    if (attributes.language) {
+        chart.locale(attributes.language);
+    }
+
     return chart;
 }
 
