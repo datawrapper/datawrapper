@@ -108,7 +108,17 @@ function utilsFilter({ column, active, type = 'auto', rtl = false }) {
                         return { content: column.raw()[i], _i: i };
                     });
                 if (rtl) options = options.slice(0).reverse();
-                const div = select('.dw-chart').append('div.filter-ui filter-links');
+
+                // filter-ui should be in .dw-chart-header so that the correct css gets applied
+                const header = select('.dw-chart .dw-chart-header');
+                const tempHeader = !header.node()
+                    ? select('.dw-chart .dw-chart-styles').append('div.dw-chart-header.fake')
+                    : false;
+
+                const div = select(header.node() || tempHeader.node()).append(
+                    'div.filter-ui.filter-links'
+                );
+
                 div.selectAll('a')
                     .data(options)
                     .enter()
@@ -119,17 +129,20 @@ function utilsFilter({ column, active, type = 'auto', rtl = false }) {
                     .html(d => String(d.content).trim())
                     .on('click', handleClick);
 
-                const af = div.select('a:first-child').node();
                 const al = div.select('a:last-child').node();
-                const fy = af.offsetTop + af.clientHeight;
-                const ly = al.offsetTop + af.clientHeight;
+                const lastTabBbox = vis.chart().getElementBounds(al);
+                const containerBbox = vis.chart().getElementBounds(al.parentElement);
 
-                // assume there's a line break
-                if (Math.abs(ly - fy) > 4) {
-                    div.remove();
-                    return getFilterUI('select')(vis); // fall back to select
-                }
-                return div.remove();
+                // now that we've measured, we can remove from the dom again
+                (tempHeader || div).remove();
+
+                // check if last tab overflows outside of container
+                const overflows = rtl
+                    ? lastTabBbox.left < containerBbox.left
+                    : lastTabBbox.right > containerBbox.right;
+
+                // fall back to select if tabs don't fit
+                return overflows ? getFilterUI('select')(vis) : div;
             };
         } else if (type === 'timescale') {
             return function (vis) {
