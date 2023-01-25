@@ -293,8 +293,8 @@ extend(base, {
      * @param {string} message
      */
     showError(message) {
-        const { isEditingAllowed } = this.chart().flags();
-        if (isEditingAllowed) {
+        const { allowEditing } = this.chart().flags();
+        if (allowEditing) {
             // inside editor we show the error to the user directly
             this.container().innerHTML = `<div class="error"><p>${message}</p></div>`;
         }
