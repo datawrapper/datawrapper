@@ -6,6 +6,7 @@ import round from '@datawrapper/shared/round.js';
 import smartRound from '@datawrapper/shared/smartRound.js';
 import equalish from '@datawrapper/shared/equalish.js';
 import clone from '@datawrapper/shared/clone.js';
+import get from '@datawrapper/shared/get.js';
 import delimited from './delimited.mjs';
 import { outerHeight, getNonChartHeight } from './getNonChartHeight.mjs';
 import htmlTemplate from './htmlTemplate.mjs';
@@ -131,4 +132,13 @@ export function domReady(callback) {
             callback();
         });
     }
+}
+
+export function getHeightMode({ themeData, visualizationMeta, renderFlags }) {
+    const D3_PIES_IDS = ['d3-pies', 'd3-donuts', 'd3-multiple-pies', 'd3-multiple-donuts'];
+    const themeFitChart =
+        get(themeData, 'vis.d3-pies.fitchart', false) && D3_PIES_IDS.includes(visualizationMeta.id);
+    return themeFitChart || renderFlags.fitchart || visualizationMeta.height !== 'fixed'
+        ? 'fit'
+        : 'fixed';
 }

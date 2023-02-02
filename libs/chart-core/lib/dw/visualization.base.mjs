@@ -118,6 +118,14 @@ extend(base, {
         this.__container = el;
     },
 
+    /**
+     * Get or set the vis's outer container element
+     */
+    outerContainer(el) {
+        if (!arguments.length) return this.__outerContainer;
+        this.__outerContainer = el;
+    },
+
     axes(returnAsColumns, noCache) {
         const me = this;
         const userAxes = get(me.chart().get(), 'metadata.axes', {});

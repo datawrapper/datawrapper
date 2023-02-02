@@ -12,15 +12,17 @@ export default function (me, el, { axisType = 'columns', rtl = false } = {}) {
 
     if (filterUI) {
         (function () {
-            const parent = select(el.parentElement);
-            let header = parent.selectAll('.dw-chart-header');
+            const outerContainer = select(me.outerContainer());
+            let header = outerContainer.selectAll('.dw-chart-header');
 
             if (header.nodes().length === 0) {
-                parent.insert('div.dw-chart-header.fake', ':first-child');
-                header = parent.selectAll('.dw-chart-header');
+                outerContainer
+                    .select('.dw-chart-styles')
+                    .insert('div.dw-chart-header.fake', ':first-child');
+                header = outerContainer.selectAll('.dw-chart-header');
             } else if (header.nodes().length > 1) {
-                parent.selectAll('.dw-chart-header.fake').remove();
-                header = parent.selectAll('.dw-chart-header');
+                outerContainer.selectAll('.dw-chart-header.fake').remove();
+                header = outerContainer.selectAll('.dw-chart-header');
             }
 
             const oldHeaderHeight = header.nodes()[0].clientHeight;
@@ -100,6 +102,7 @@ function utilsFilter({ column, active, type = 'auto', rtl = false }) {
             };
         } else if (type === 'buttons') {
             return function (vis) {
+                const outerContainer = select(vis.outerContainer());
                 // use link buttons
                 let options = column
                     .values()
@@ -110,9 +113,11 @@ function utilsFilter({ column, active, type = 'auto', rtl = false }) {
                 if (rtl) options = options.slice(0).reverse();
 
                 // filter-ui should be in .dw-chart-header so that the correct css gets applied
-                const header = select('.dw-chart .dw-chart-header');
+                const header = outerContainer.select('.dw-chart-header');
                 const tempHeader = !header.node()
-                    ? select('.dw-chart .dw-chart-styles').append('div.dw-chart-header.fake')
+                    ? outerContainer
+                          .select('.dw-chart-styles')
+                          .insert('div.dw-chart-header.fake', ':first-child')
                     : false;
 
                 const div = select(header.node() || tempHeader.node()).append(
