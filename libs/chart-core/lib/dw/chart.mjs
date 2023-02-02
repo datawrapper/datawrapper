@@ -13,6 +13,7 @@ import reorderColumns from './dataset/reorderColumns.mjs';
 import applyChanges from './dataset/applyChanges.mjs';
 import addComputedColumns from './dataset/addComputedColumns.mjs';
 import { outerHeight, getNonChartHeight } from './utils/getNonChartHeight.mjs';
+import { getHeightMode } from './utils/index.mjs';
 
 /**
  * Chart
@@ -213,6 +214,7 @@ export default function (attributes) {
 
             visualization.chart(chart);
             visualization.container(container);
+            visualization.outerContainer(outerContainer);
 
             // compute chart dimensions
             const w = width(container);
@@ -234,10 +236,8 @@ export default function (attributes) {
             }
 
             // set chart mode class
-            [container, outerContainer].forEach(el => {
-                el.classList.toggle('vis-height-fit', heightMode === 'fit');
-                el.classList.toggle('vis-height-fixed', heightMode === 'fixed');
-            });
+            outerContainer.classList.toggle('vis-height-fit', heightMode === 'fit');
+            outerContainer.classList.toggle('vis-height-fixed', heightMode === 'fixed');
 
             // set mobile class
             const breakpoint = get(theme, `vis.${chart.type}.mobileBreakpoint`, 450);
@@ -315,17 +315,11 @@ export default function (attributes) {
         },
 
         getHeightMode() {
-            const themeFitChart =
-                get(visualization.theme(), 'vis.d3-pies.fitchart', false) &&
-                ['d3-pies', 'd3-donuts', 'd3-multiple-pies', 'd3-multiple-donuts'].indexOf(
-                    visualization.meta.id
-                ) > -1;
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlFitChart = !!urlParams.get('fitchart');
-
-            return themeFitChart || urlFitChart || visualization.meta.height !== 'fixed'
-                ? 'fit'
-                : 'fixed';
+            return getHeightMode({
+                themeData: visualization.theme(),
+                visualizationMeta: visualization.meta,
+                renderFlags: flags
+            });
         },
 
         attributes(attrs) {
