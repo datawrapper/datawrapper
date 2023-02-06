@@ -254,7 +254,7 @@ export default function (attributes) {
 
             if (isIframe) {
                 window.clearInterval(this.__resizingInterval);
-                this.__resizingInterval = setInterval(postMessage, 1000);
+                this.__resizingInterval = setInterval(postMessage, chart.inEditor() ? 25 : 1000);
                 postMessage();
             }
 
