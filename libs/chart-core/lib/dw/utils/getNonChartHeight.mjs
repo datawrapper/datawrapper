@@ -11,6 +11,7 @@ export function getNonChartHeight() {
     let h = 0;
 
     const chart = document.querySelector('.dw-chart .dw-chart-styles');
+    if (!chart) return 0;
     for (let i = 0; i < chart.children.length; i++) {
         const el = chart.children[i];
         const tagName = el.tagName.toLowerCase();
