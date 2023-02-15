@@ -204,6 +204,12 @@ export default function (attributes) {
             return flags;
         },
 
+        /**
+         * renders the chart into the provided container element
+         *
+         * @param {DOMElement} outerContainer
+         * @returns {Promise} resolves when the chart is rendered
+         */
         render(outerContainer) {
             if (!visualization || !theme || !dataset) {
                 throw new Error('cannot render the chart!');
@@ -248,7 +254,7 @@ export default function (attributes) {
 
             visualization.reset(container);
             visualization.size(w, h);
-            visualization.__init();
+            visualization.__beforeRender();
 
             visualization.render(container);
 
@@ -312,6 +318,7 @@ export default function (attributes) {
                     window.datawrapperHeightCallback(desiredHeight);
                 }
             }
+            return visualization.rendered();
         },
 
         getHeightMode() {

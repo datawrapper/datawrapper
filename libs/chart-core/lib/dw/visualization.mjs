@@ -41,6 +41,8 @@ function visualization(id, target) {
         vis.target(target);
     }
 
+    vis.setup();
+
     return vis;
 }
 
