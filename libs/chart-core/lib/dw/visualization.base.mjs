@@ -6,10 +6,10 @@
  * and the visualization render code.
  */
 
-import { extend, isEqual } from 'underscore';
+import { extend, isEqual, debounce } from 'underscore';
 import get from '@datawrapper/shared/get.js';
 import clone from '@datawrapper/shared/clone.js';
-
+import events from './utils/events.mjs';
 import { remove } from './utils/index.mjs';
 import populateVisAxes from './utils/populateVisAxes.mjs';
 import filterDatasetColumns from './utils/filterDatasetColumns.mjs';
@@ -17,12 +17,26 @@ import filterDatasetColumns from './utils/filterDatasetColumns.mjs';
 const base = function () {}.prototype;
 
 extend(base, {
-    // called before rendering
-    __init() {
-        this.__renderedDfd = new Promise(resolve => {
-            this.__renderedResolve = resolve;
-        });
+    // visualizations can override these timeouts when it makes sense
+    __rejectRenderedAfter: 5000,
+    __resolveRenderedAfter: 300,
+
+    setup() {
+        this.__renderEvents = { resolve: events(), reject: events() };
+        this.renderingComplete = debounce(this.__renderingComplete, this.__resolveRenderedAfter);
+    },
+
+    __beforeRender() {
+        if (this.__rejectTimeout) clearTimeout(this.__rejectTimeout);
+        this.__rejectTimeout = setTimeout(() => {
+            // if the visualization didn't complete rendering within 5s
+            // we want to reject the rendered() Promise
+            this.__renderEvents.reject.fire(
+                new Error(`timeout after ${this.__rejectRenderedAfter}ms`)
+            );
+        }, this.__rejectRenderedAfter);
         this.__rendered = false;
+        // reset internal properties
         this.__colors = {};
         this.__callbacks = {};
 
@@ -201,21 +215,30 @@ extend(base, {
 
     clear() {},
 
-    renderingComplete() {
+    __renderingComplete() {
+        this.__renderEvents.resolve.fire();
         if (window.parent && window.parent.postMessage) {
             setTimeout(function () {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
             }, 200);
         }
-        this.__renderedResolve();
+        clearTimeout(this.__rejectTimeout);
         this.__rendered = true;
         this.postRendering();
     },
 
     postRendering() {},
 
+    /**
+     * Use this to wait until a visualization has finished rendering
+     *
+     * @returns {Promise} resolves when the rendering is completed
+     */
     rendered() {
-        return this.__renderedDfd;
+        return new Promise((resolve, reject) => {
+            this.__renderEvents.resolve.add(resolve);
+            this.__renderEvents.reject.add(reject);
+        });
     },
 
     /*
@@ -262,7 +285,7 @@ extend(base, {
      * set or get dark mode state of vis
      */
     darkMode(dm) {
-        // can't initialize in __init because that sets it back to false on each render
+        // can't initialize in __beforeRender because that sets it back to false on each render
         if (this.__darkMode === undefined) this.__darkMode = false;
         if (!arguments.length) return this.__darkMode;
         if (!this.__onDarkModeChange) return;

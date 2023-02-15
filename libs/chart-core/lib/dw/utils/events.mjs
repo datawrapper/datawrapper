@@ -1,5 +1,5 @@
 /*
- * simple event callbacks, mimicing the $.Callbacks API
+ * simple event callbacks, mimicking the $.Callbacks API
  */
 
 export default function () {
