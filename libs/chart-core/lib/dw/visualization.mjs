@@ -1,4 +1,5 @@
 import numeral from 'numeral';
+import chroma from 'chroma-js';
 import { clone } from 'underscore';
 import base from './visualization.base.mjs';
 
@@ -68,7 +69,8 @@ visualization.has = function (id) {
 };
 
 visualization.libraries = {
-    numeral
+    numeral,
+    chroma
 };
 
 visualization.base = base;
