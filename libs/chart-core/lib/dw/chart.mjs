@@ -247,7 +247,7 @@ export default function (attributes) {
 
             // set mobile class
             const breakpoint = get(theme, `vis.${chart.type}.mobileBreakpoint`, 450);
-            outerContainer.classList.toggle('is-mobile', outerContainer.clientWidth <= breakpoint);
+            outerContainer.classList.toggle('is-mobile', container.clientWidth <= breakpoint);
 
             // really needed?
             outerContainer.classList.add('vis-' + visualization.id);
