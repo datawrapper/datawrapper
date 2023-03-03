@@ -12,6 +12,8 @@ const rgb2lab = require('chroma-js/src/io/lab/rgb2lab.js');
  * To use this function, you have to manually install chroma-js using
  * `npm install chroma-js`.
  *
+ * @deprecated please use the shared chroma instance
+ *
  * @exports colorLightness
  * @kind function
  *
