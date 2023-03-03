@@ -16,3 +16,16 @@ test('test some more strings', t => {
     t.is(estimateTextWidth('1234.56'), 58);
     t.is(estimateTextWidth('1234.56 $'), 71);
 });
+
+test('test empty string', t => {
+    t.is(estimateTextWidth(''), 0);
+});
+
+test('test passing non-strings', t => {
+    // Violating type constraints to check handling of incorrect data
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    t.is(estimateTextWidth(undefined as any), 0);
+    t.is(estimateTextWidth(null as any), 0);
+    t.is(estimateTextWidth(false as any), 0);
+    /* eslint-enable */
+});
