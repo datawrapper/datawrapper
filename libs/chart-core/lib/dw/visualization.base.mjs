@@ -209,7 +209,6 @@ extend(base, {
         this.clear();
         const el = this.target();
         el.innerHTML = '';
-        remove('.chart .filter-ui');
         remove('.chart .legend');
     },
 
