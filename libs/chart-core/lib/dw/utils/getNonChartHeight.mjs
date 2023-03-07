@@ -26,7 +26,7 @@ export function getNonChartHeight() {
             !hasClass(el, 'qtip') &&
             !hasClass(el, 'container') &&
             !hasClass(el, 'noscript') &&
-            !hasClass(el, 'hidden') &&
+            !hasClass(el, 'invisible') &&
             !hasClass(el, 'dw-after-body') &&
             !hasClass(el, 'dw-chart-body')
         ) {
