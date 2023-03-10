@@ -34,6 +34,18 @@ export type Column = {
 };
 
 export type Metadata = {
+    // TODO Define the type of `axes`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    axes?: any;
+    // TODO Define the type of `describe`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    describe?: any;
+    // TODO Define the type of `visualize`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    visualize?: any;
+    // TODO Define the type of `annotate`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    annotate?: any;
     custom?: {
         webToPrint?: {
             mode?: string;
