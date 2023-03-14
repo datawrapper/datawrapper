@@ -7,6 +7,11 @@ function json(opts) {
     function loadAndParseJSON() {
         if (opts.url) {
             return fetch(opts.url)
+                .then(res =>
+                    res.ok
+                        ? res
+                        : Promise.reject(new Error(`Fetch failed with status ${res.status}`))
+                )
                 .then(res => res.text())
                 .then(raw => {
                     return JSON.parse(raw);
