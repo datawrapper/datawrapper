@@ -38,6 +38,10 @@ test('alphanum: normalize weird dashes', t => {
     t.is(normalizeAlphaNumKey('normal-dash'), 'normal-dash');
 });
 
+test('alphanum: normalize 0', t => {
+    t.is(normalizeAlphaNumKey(0 as any), '0');
+});
+
 test('num: convert string to number', t => {
     t.is(normalizeNumKey('1234'), 1234);
 });
