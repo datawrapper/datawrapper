@@ -38,6 +38,11 @@ function delimited(opts) {
             }`;
             return window
                 .fetch(url)
+                .then(res =>
+                    res.ok
+                        ? res
+                        : Promise.reject(new Error(`Fetch failed with status ${res.status}`))
+                )
                 .then(res => res.text())
                 .then(raw => {
                     return new DelimitedParser(opts).parse(raw);

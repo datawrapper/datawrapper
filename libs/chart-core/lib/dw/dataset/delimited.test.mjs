@@ -1,6 +1,18 @@
 /* eslint-env node */
 import test from 'ava';
 import delimited from './delimited.mjs';
+import sinon from 'sinon';
+
+test.before(() => {
+    global.window = {
+        fetch: () => {
+            throw new Error('unexpected fetch call');
+        }
+    };
+});
+test.after(() => {
+    delete global.window;
+});
 
 test('simple tsv', async t => {
     const csv = `Party\tWomen\tMen\tTotal
@@ -288,3 +300,49 @@ GRÜNE\t36\t32\t68
     const dataset = await delimited({ csv }).dataset();
     t.is(dataset.numRows(), 6);
 });
+
+function makeResponse(status, body = 'foo,bar') {
+    return Promise.resolve(
+        new Response(body, {
+            status,
+            headers: {
+                'Content-type': 'text/csv'
+            }
+        })
+    );
+}
+
+test.serial('With url: return parsed dataset if response is successful (HTTP 200-299)', async t => {
+    const csv = `Party\tWomen\tMen\tTotal
+CDU/CSU\t45\t192\t237
+SPD\t57\t89\t146
+FDP\t24\t69\t93
+LINKE\t42\t34\t76
+GRÜNE\t36\t32\t68
+`;
+
+    const stub = sinon.stub(window, 'fetch').callsFake(() => makeResponse(200, csv));
+
+    const dataset = await delimited({ url: 'http://example.com' }).dataset();
+    t.is(dataset.numColumns(), 4);
+    t.is(dataset.numRows(), 5);
+    t.deepEqual(
+        dataset.columns().map(c => c.type()),
+        ['text', 'number', 'number', 'number']
+    );
+
+    stub.restore();
+});
+
+test.serial(
+    'With url: return empty dataset if response is not successful (outside HTTP 200-299)',
+    async t => {
+        const stub = sinon.stub(window, 'fetch').callsFake(() => makeResponse(404));
+
+        const dataset = await delimited({ url: 'http://example.com' }).dataset();
+        t.is(dataset.numColumns(), 0);
+        t.is(dataset.numRows(), 0);
+
+        stub.restore();
+    }
+);
