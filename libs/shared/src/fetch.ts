@@ -247,6 +247,7 @@ export function loadScript(src: string, callback: (() => void) | null = null) {
     return new Promise<void>((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
+        script.charset = 'utf-8';
         script.onload = () => {
             if (callback) callback();
             resolve();
@@ -300,6 +301,7 @@ export function loadStylesheet(
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = opts.src;
+        link.charset = 'utf-8';
         link.onload = () => {
             if (callback) callback();
             resolve();
