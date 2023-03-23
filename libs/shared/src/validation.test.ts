@@ -74,3 +74,7 @@ testProp(
         t.false(isValidUrl(url));
     }
 );
+
+test('isValidUrl returns true for URL with a query param with brackets', t => {
+    t.true(isValidUrl('https://example.com/?filter[type]=2&filter[meldedatum][lte]=2022-12-01'));
+});
