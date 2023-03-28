@@ -96,6 +96,9 @@ rx.MMM = { parse: new RegExp('(' + flatten(values(MONTHS)).join('|') + ')') };
 
 const ISO8601_REG =
     /^(?:([1-9]\d{3})(-?)(?:(0\d|1[012]))\2(0\d|1\d|2\d|3[01]))T([01]\d|2[0-3])(:?)([0-5]\d)(?:\6([0-5]\d)(?:\.(\d{3}))?)?(Z|[+-][01]\d(?:\6[0-5]\d)?)$/;
+// see https://dev.socrata.com/docs/datatypes/floating_timestamp.html
+const FLOATING_TS =
+    /^(?:([1-9]\d{3})(-?)(?:(0\d|1[012]))\2(0\d|1\d|2\d|3[01]))T([01]\d|2[0-3])(:?)([0-5]\d)(?:\6([0-5]\d)(?:\.(\d{3})))$/;
 
 each(rx, function (r) {
     r.parse = r.parse.source;
@@ -255,6 +258,11 @@ var knownFormats = {
     ISO8601: {
         test: ISO8601_REG,
         parse: ISO8601_REG,
+        precision: 'day-seconds'
+    },
+    floatingts: {
+        test: FLOATING_TS,
+        parse: FLOATING_TS,
         precision: 'day-seconds'
     }
 };
@@ -423,6 +431,9 @@ export default function (sample) {
                             m[10] || ''
                         }`
                     );
+
+                case 'floatingts':
+                    return new Date(`${m[1]}-${m[3]}-${m[4]}T${m[5]}:${m[7]}:${m[8]}.${m[9]}`);
 
                 default:
                     console.warn('unknown format', format);
