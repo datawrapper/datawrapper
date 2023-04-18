@@ -10,8 +10,12 @@ export function outerHeight(element, withMargin = false) {
 export function getNonChartHeight() {
     let h = 0;
 
-    const chart = document.querySelector('.dw-chart .dw-chart-styles');
-    if (!chart) return 0;
+    let chart = document.querySelector('.dw-chart .dw-chart-styles');
+    if (!chart) {
+        // try if we're dealing with a v2 theme:
+        chart = document.querySelector('.dw-chart .container-body');
+        return chart ? getNonChartHeightV2(chart) : 0;
+    }
     for (let i = 0; i < chart.children.length; i++) {
         const el = chart.children[i];
         const tagName = el.tagName.toLowerCase();
@@ -64,4 +68,12 @@ export function getNonChartHeight() {
     });
 
     return h;
+}
+
+function getNonChartHeightV2(body) {
+    // TODO
+    // Here we're just assuming that the default footer container is underneath
+    // the chart body
+    const height = outerHeight(body, true) - outerHeight(body.querySelector('#chart'), true);
+    return height;
 }
