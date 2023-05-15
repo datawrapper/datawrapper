@@ -2,7 +2,7 @@ export const UNIT_IN = 'in';
 export const UNIT_MM = 'mm';
 export const UNIT_PX = 'px';
 
-type Unit = typeof UNIT_IN | typeof UNIT_MM | typeof UNIT_PX;
+export type Unit = typeof UNIT_IN | typeof UNIT_MM | typeof UNIT_PX;
 
 const DEFAULT_DPI = 96;
 
