@@ -1,5 +1,7 @@
 import { formatDelimited, guessDelimiterFromLocale } from '../utils/delimited.mjs';
-import { isString, range, each } from 'underscore';
+import isString from 'underscore/modules/isString.js';
+import range from 'underscore/modules/range.js';
+import each from 'underscore/modules/each.js';
 
 /*
  * Dataset class

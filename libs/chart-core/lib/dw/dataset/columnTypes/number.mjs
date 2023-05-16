@@ -1,6 +1,9 @@
 /* eslint no-irregular-whitespace: "off" */
 
-import { each, isNumber, isUndefined, isNull } from 'underscore';
+import each from 'underscore/modules/each.js';
+import isNumber from 'underscore/modules/isNumber.js';
+import isUndefined from 'underscore/modules/isUndefined.js';
+import isNull from 'underscore/modules/isNull.js';
 
 /*
  * A type for numbers:

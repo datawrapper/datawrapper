@@ -1,5 +1,7 @@
-import { isArray, isUndefined, indexOf } from 'underscore';
-import isPlainObject from 'lodash/isPlainObject.js';
+import isArray from 'underscore/modules/isArray.js';
+import isUndefined from 'underscore/modules/isUndefined.js';
+import indexOf from 'underscore/modules/indexOf.js';
+import isPlainObject from 'lodash.isplainobject';
 import get from '@datawrapper/shared/get.js';
 import set from '@datawrapper/shared/set.js';
 import objectDiff from '@datawrapper/shared/objectDiff.js';

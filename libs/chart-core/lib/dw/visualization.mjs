@@ -1,7 +1,15 @@
 import numeral from 'numeral';
 import chroma from 'chroma-js';
-import { clone } from 'underscore';
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat';
+import clone from 'underscore/modules/clone.js';
 import base from './visualization.base.mjs';
+
+dayjs.extend(advancedFormat);
+dayjs.extend(localizedFormat);
+dayjs.extend(sportsSeasonFormat);
 
 const __vis = {};
 
@@ -70,7 +78,8 @@ visualization.has = function (id) {
 
 visualization.libraries = {
     numeral,
-    chroma
+    chroma,
+    dayjs
 };
 
 visualization.base = base;

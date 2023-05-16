@@ -11,7 +11,7 @@
  *     delimiter : ","
  */
 
-import { isString } from 'underscore';
+import isString from 'underscore/modules/isString.js';
 import dataset from './index.mjs';
 import column from './column.mjs';
 
