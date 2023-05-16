@@ -1,4 +1,4 @@
-import { each } from 'underscore';
+import each from 'underscore/modules/each.js';
 
 export default function applyChanges(chart, dataset) {
     const changes = chart.getMetadata('data.changes', []);

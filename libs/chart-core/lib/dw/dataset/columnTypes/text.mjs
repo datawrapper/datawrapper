@@ -1,4 +1,4 @@
-import { identity } from 'underscore';
+import identity from 'underscore/modules/identity.js';
 
 export default function () {
     return {

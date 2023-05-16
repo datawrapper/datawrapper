@@ -1,6 +1,6 @@
 import test from 'ava';
 import column from '../column.mjs';
-import { range } from 'underscore';
+import range from 'underscore/modules/range.js';
 
 const ymdhms = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) => new Date(y, m - 1, d, h, mm, s);
 const ymdhmsUTC = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) =>

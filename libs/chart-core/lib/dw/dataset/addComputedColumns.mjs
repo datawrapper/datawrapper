@@ -1,4 +1,8 @@
-import { each, isBoolean, isDate, isNumber, isNull } from 'underscore';
+import each from 'underscore/modules/each.js';
+import isBoolean from 'underscore/modules/isBoolean.js';
+import isDate from 'underscore/modules/isDate.js';
+import isNumber from 'underscore/modules/isNumber.js';
+import isNull from 'underscore/modules/isNull.js';
 import column from './column.mjs';
 import columnNameToVariable from '@datawrapper/shared/columnNameToVariable.js';
 import applyChanges from './applyChanges.mjs';

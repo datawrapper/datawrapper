@@ -6,7 +6,9 @@
  * and the visualization render code.
  */
 
-import { extend, isEqual, debounce } from 'underscore';
+import extend from 'underscore/modules/extend.js';
+import isEqual from 'underscore/modules/isEqual.js';
+import debounce from 'underscore/modules/debounce.js';
 import get from '@datawrapper/shared/get.js';
 import clone from '@datawrapper/shared/clone.js';
 import events from './utils/events.mjs';

@@ -13,19 +13,17 @@
  *
  */
 
-import {
-    every,
-    isString,
-    isNumber,
-    isDate,
-    isNaN,
-    each,
-    isUndefined,
-    shuffle,
-    map,
-    find,
-    range
-} from 'underscore';
+import every from 'underscore/modules/every.js';
+import isString from 'underscore/modules/isString.js';
+import isNumber from 'underscore/modules/isNumber.js';
+import isDate from 'underscore/modules/isDate.js';
+import isNaN from 'underscore/modules/isNaN.js';
+import each from 'underscore/modules/each.js';
+import isUndefined from 'underscore/modules/isUndefined.js';
+import shuffle from 'underscore/modules/shuffle.js';
+import map from 'underscore/modules/map.js';
+import find from 'underscore/modules/find.js';
+import range from 'underscore/modules/range.js';
 import columnTypes from './columnTypes/index.mjs';
 import purifyHtml from '@datawrapper/shared/purifyHtml.js';
 

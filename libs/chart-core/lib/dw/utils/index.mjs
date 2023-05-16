@@ -11,7 +11,9 @@ import delimited from './delimited.mjs';
 import { outerHeight, getNonChartHeight } from './getNonChartHeight.mjs';
 import htmlTemplate from './htmlTemplate.mjs';
 import templateParser from './templateParser.mjs';
-import { isFunction, isString, range } from 'underscore';
+import isFunction from 'underscore/modules/isFunction.js';
+import isString from 'underscore/modules/isString.js';
+import range from 'underscore/modules/range.js';
 
 export {
     purifyHtml,

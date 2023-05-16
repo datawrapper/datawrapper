@@ -1,4 +1,10 @@
-import { each, flatten, values, isRegExp, isDate, isUndefined, isString } from 'underscore';
+import each from 'underscore/modules/each.js';
+import flatten from 'underscore/modules/flatten.js';
+import values from 'underscore/modules/values.js';
+import isRegExp from 'underscore/modules/isRegExp.js';
+import isDate from 'underscore/modules/isDate.js';
+import isUndefined from 'underscore/modules/isUndefined.js';
+import isString from 'underscore/modules/isString.js';
 
 const begin = /^ */.source;
 const end = /[*']* *$/.source;

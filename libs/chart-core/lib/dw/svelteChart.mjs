@@ -1,6 +1,10 @@
 import { Store } from 'svelte2/store.umd.js';
 import { observeDeep } from 'svelte-extras';
-import { throttle, some, isUndefined, isNull, isEqual } from 'underscore';
+import throttle from 'underscore/modules/throttle.js';
+import some from 'underscore/modules/some.js';
+import isUndefined from 'underscore/modules/isUndefined.js';
+import isNull from 'underscore/modules/isNull.js';
+import isEqual from 'underscore/modules/isEqual.js';
 import { put } from '@datawrapper/shared/httpReq.js';
 
 import delimited from './dataset/delimited.mjs';

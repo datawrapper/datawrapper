@@ -1,5 +1,12 @@
 import column from '../dataset/column.mjs';
-import { each, isArray, filter, find, indexOf, map, range } from 'underscore';
+
+import each from 'underscore/modules/each.js';
+import isArray from 'underscore/modules/isArray.js';
+import filter from 'underscore/modules/filter.js';
+import find from 'underscore/modules/find.js';
+import indexOf from 'underscore/modules/indexOf.js';
+import map from 'underscore/modules/map.js';
+import range from 'underscore/modules/range.js';
 
 /**
  * Assign dataset columns to visualization axes. Non-optional columns
