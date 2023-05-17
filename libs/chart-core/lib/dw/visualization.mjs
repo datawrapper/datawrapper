@@ -1,9 +1,9 @@
 import numeral from 'numeral';
 import chroma from 'chroma-js';
 import dayjs from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat.js';
+import localizedFormat from 'dayjs/plugin/localizedFormat.js';
+import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat.js';
 import clone from 'underscore/modules/clone.js';
 import base from './visualization.base.mjs';
 
