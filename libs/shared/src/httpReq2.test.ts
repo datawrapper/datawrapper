@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import httpReq from './httpReq';
 import { SimpleFetchOptions } from './httpReqOptions';
 
-const baseUrl = 'https://httpbin.org';
+const baseUrl = 'http://api.datawrapper.mock';
 
 test.before(() => {
     // We don't care about the incompatibilities between browser fetch and node-fetch here
@@ -30,7 +30,7 @@ test('calls /v3/me when CSRF cookie is not set', async t => {
                 return Promise.resolve(new Response());
             }
             lastFetchOpts = opts;
-            return window.fetch(url, opts);
+            return Promise.resolve(new Response());
         }
     });
     t.true(wasGETCalled);

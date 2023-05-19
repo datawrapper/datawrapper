@@ -1,16 +1,22 @@
 import anyTest, { TestFn } from 'ava';
-import fetch from 'node-fetch';
-import httpReq, { HttpReqError } from './httpReq';
-import nock from 'nock';
-import sinon, { SinonSpy } from 'sinon';
 import FormData from 'form-data';
 import { createReadStream } from 'fs';
+import type { ClientRequest } from 'http';
+import nock from 'nock';
+import fetch from 'node-fetch';
+import sinon, { SinonSpy } from 'sinon';
+import httpReq, { HttpReqError } from './httpReq';
 import { SimpleFetch } from './httpReqOptions';
 
 const test = anyTest as TestFn<{
     fakeFetch: SinonSpy<Parameters<SimpleFetch>, ReturnType<SimpleFetch>>;
 }>;
-const baseUrl = 'https://httpbin.org';
+const baseUrl = 'http://api.datawrapper.mock';
+
+const getHeader = (request: ClientRequest, name: string) => {
+    const value = request.getHeader(name);
+    return Array.isArray(value) ? value.join() : value;
+};
 
 test.before(t => {
     t.context.fakeFetch = sinon.spy(fetch as SimpleFetch);
@@ -31,7 +37,21 @@ test.before(t => {
     };
 });
 
-test('simple get request', async t => {
+test.afterEach(() => nock.cleanAll());
+
+test.serial('simple get request', async t => {
+    nock(baseUrl)
+        .get('/get')
+        .reply(function (uri, body) {
+            return [
+                200,
+                {
+                    url: `${baseUrl}${uri}`
+                }
+            ];
+        })
+        .persist();
+
     let res = await httpReq.get('/get', { baseUrl });
     t.is(res.url, `${baseUrl}/get`);
     // alternative syntax
@@ -39,7 +59,22 @@ test('simple get request', async t => {
     t.is(res.url, `${baseUrl}/get`);
 });
 
-test('simple put request', async t => {
+test.serial('simple put request', async t => {
+    nock(baseUrl)
+        .put('/put')
+        .reply(function (uri, body) {
+            return [
+                200,
+                {
+                    url: `${baseUrl}${uri}`,
+                    headers: {
+                        'Content-Type': getHeader(this.req, 'Content-Type')
+                    }
+                }
+            ];
+        })
+        .persist();
+
     document.cookie = 'crumb=abc';
     let res = await httpReq.put('/put', { baseUrl });
     t.is(res.url, `${baseUrl}/put`);
@@ -49,7 +84,22 @@ test('simple put request', async t => {
     t.is(res.url, `${baseUrl}/put`);
 });
 
-test('simple put request with json payload', async t => {
+test.serial('simple put request with json payload', async t => {
+    nock(baseUrl)
+        .put('/put')
+        .reply(function (uri, body) {
+            return [
+                200,
+                {
+                    headers: {
+                        'Content-Type': getHeader(this.req, 'Content-Type')
+                    },
+                    json: body
+                }
+            ];
+        })
+        .persist();
+
     document.cookie = 'crumb=abc';
     const payload = { answer: 42 };
     let res = await httpReq.put('/put', { baseUrl, payload });
@@ -60,7 +110,22 @@ test('simple put request with json payload', async t => {
     t.deepEqual(res.json, payload);
 });
 
-test('post request with csv body', async t => {
+test.serial('post request with csv body', async t => {
+    nock(baseUrl)
+        .put('/put')
+        .reply(function (uri, body) {
+            return [
+                200,
+                {
+                    headers: {
+                        'Content-Type': getHeader(this.req, 'Content-Type')
+                    },
+                    data: body
+                }
+            ];
+        })
+        .persist();
+
     document.cookie = 'crumb=abc';
     const body = 'foo, bar\n1, 2';
     // default content-type is application/json
@@ -71,7 +136,6 @@ test('post request with csv body', async t => {
     });
     t.is(res.headers['Content-Type'], `text/csv`);
     t.is(res.data, body);
-    t.falsy(res.json);
     // alternative syntax
     res = await httpReq('/put', {
         method: 'PUT',
@@ -81,10 +145,23 @@ test('post request with csv body', async t => {
     });
     t.is(res.headers['Content-Type'], `text/csv`);
     t.is(res.data, body);
-    t.falsy(res.json);
 });
 
-test('post request with file in multipart/form-data body', async t => {
+test.serial('post request with file in multipart/form-data body', async t => {
+    nock(baseUrl)
+        .post('/anything')
+        .reply(function (uri, body) {
+            return [
+                200,
+                {
+                    headers: {
+                        'Content-Type': getHeader(this.req, 'Content-Type')
+                    }
+                }
+            ];
+        })
+        .persist();
+
     document.cookie = 'crumb=abc';
     const filePath = './test/helpers/test.png';
 
@@ -105,7 +182,8 @@ test('post request with file in multipart/form-data body', async t => {
     t.true(res.headers['Content-Type'].startsWith('multipart/form-data;boundary='));
 });
 
-test('no content in 204 requests', async t => {
+test.serial('no content in 204 requests', async t => {
+    nock(baseUrl).get('/status/204').reply(204);
     const res = await httpReq.get('/status/204', {
         baseUrl
     });
@@ -113,10 +191,10 @@ test('no content in 204 requests', async t => {
     t.is(res.headers.get('content-length'), null);
 });
 
-test('throws HttpReqError', async t => {
-    nock('http://api.datawrapper.mock').get('/404').reply(404, { foo: 'bar' });
+test.serial('throws HttpReqError', async t => {
+    nock(baseUrl).get('/404').reply(404, { foo: 'bar' });
     try {
-        await httpReq.get('/404', { baseUrl: 'http://api.datawrapper.mock' });
+        await httpReq.get('/404', { baseUrl });
     } catch (err) {
         t.true(err instanceof HttpReqError);
         if (!(err instanceof HttpReqError)) throw err;
@@ -129,108 +207,127 @@ test('throws HttpReqError', async t => {
     }
 });
 
-test('throws HttpReqError with translation key if response contains type and its translation exists', async t => {
-    nock('http://api.datawrapper.mock').get('/404-with-type').reply(404, { type: 'existing-foo' });
-    try {
-        await httpReq.get('/404-with-type', { baseUrl: 'http://api.datawrapper.mock' });
-    } catch (err) {
-        t.true(err instanceof HttpReqError);
-        if (!(err instanceof HttpReqError)) throw err;
-        t.is(err.translationKey, 'existing-foo');
-        t.is(err.details, undefined);
+test.serial(
+    'throws HttpReqError with translation key if response contains type and its translation exists',
+    async t => {
+        nock(baseUrl).get('/404-with-type').reply(404, { type: 'existing-foo' });
+        try {
+            await httpReq.get('/404-with-type', { baseUrl });
+        } catch (err) {
+            t.true(err instanceof HttpReqError);
+            if (!(err instanceof HttpReqError)) throw err;
+            t.is(err.translationKey, 'existing-foo');
+            t.is(err.details, undefined);
+        }
     }
-});
+);
 
-test('throws HttpReqError with undefined translation key if response contains type but its translation does not exit', async t => {
-    nock('http://api.datawrapper.mock').get('/404-with-unknown-type').reply(404, { type: 'foo' });
-    try {
-        await httpReq.get('/404-with-unknown-type', { baseUrl: 'http://api.datawrapper.mock' });
-    } catch (err) {
-        t.true(err instanceof HttpReqError);
-        if (!(err instanceof HttpReqError)) throw err;
-        t.is(err.translationKey, undefined);
-        t.is(err.details, undefined);
+test.serial(
+    'throws HttpReqError with undefined translation key if response contains type but its translation does not exit',
+    async t => {
+        nock(baseUrl).get('/404-with-unknown-type').reply(404, { type: 'foo' });
+        try {
+            await httpReq.get('/404-with-unknown-type', { baseUrl });
+        } catch (err) {
+            t.true(err instanceof HttpReqError);
+            if (!(err instanceof HttpReqError)) throw err;
+            t.is(err.translationKey, undefined);
+            t.is(err.details, undefined);
+        }
     }
-});
+);
 
-test('throws HttpReqError with details with translation keys for response details whose translations exist', async t => {
-    nock('http://api.datawrapper.mock')
-        .get('/404-with-details')
-        .reply(404, {
-            type: 'existing-bar',
-            details: [
-                { type: 'existing-one', path: 'path-one' },
-                { type: 'existing-two' }, // Missing path is ok.
+test.serial(
+    'throws HttpReqError with details with translation keys for response details whose translations exist',
+    async t => {
+        nock(baseUrl)
+            .get('/404-with-details')
+            .reply(404, {
+                type: 'existing-bar',
+                details: [
+                    { type: 'existing-one', path: 'path-one' },
+                    { type: 'existing-two' }, // Missing path is ok.
+                    { type: 'unknown', path: 'path-three' },
+                    { spam: 'missing-type' },
+                    'not an object',
+                    null
+                ]
+            });
+        try {
+            await httpReq.get('/404-with-details', { baseUrl });
+        } catch (err) {
+            t.true(err instanceof HttpReqError);
+            if (!(err instanceof HttpReqError)) throw err;
+            t.is(err.translationKey, undefined);
+            t.deepEqual(err.details, [
+                {
+                    type: 'existing-one',
+                    path: 'path-one',
+                    translationKey: 'existing-bar / existing-one'
+                },
+                { type: 'existing-two', translationKey: 'existing-bar / existing-two' },
                 { type: 'unknown', path: 'path-three' },
                 { spam: 'missing-type' },
                 'not an object',
                 null
-            ]
-        });
-    try {
-        await httpReq.get('/404-with-details', { baseUrl: 'http://api.datawrapper.mock' });
-    } catch (err) {
-        t.true(err instanceof HttpReqError);
-        if (!(err instanceof HttpReqError)) throw err;
-        t.is(err.translationKey, undefined);
-        t.deepEqual(err.details, [
-            {
-                type: 'existing-one',
-                path: 'path-one',
-                translationKey: 'existing-bar / existing-one'
-            },
-            { type: 'existing-two', translationKey: 'existing-bar / existing-two' },
-            { type: 'unknown', path: 'path-three' },
-            { spam: 'missing-type' },
-            'not an object',
-            null
-        ]);
+            ]);
+        }
     }
-});
+);
 
-test('throws HttpReqError with details with undefined translation keys for invalid response details', async t => {
-    nock('http://api.datawrapper.mock')
-        .get('/404-with-invalid-details')
-        .reply(404, {
-            type: 'bar',
-            details: [{ spam: 'invalid' }, 'not an object', null]
-        });
-    try {
-        await httpReq.get('/404-with-invalid-details', { baseUrl: 'http://api.datawrapper.mock' });
-    } catch (err) {
-        t.true(err instanceof HttpReqError);
-        if (!(err instanceof HttpReqError)) throw err;
-        t.is(err.translationKey, undefined);
-        t.deepEqual(err.details, [{ spam: 'invalid' }, 'not an object', null]);
+test.serial(
+    'throws HttpReqError with details with undefined translation keys for invalid response details',
+    async t => {
+        nock(baseUrl)
+            .get('/404-with-invalid-details')
+            .reply(404, {
+                type: 'bar',
+                details: [{ spam: 'invalid' }, 'not an object', null]
+            });
+        try {
+            await httpReq.get('/404-with-invalid-details', { baseUrl });
+        } catch (err) {
+            t.true(err instanceof HttpReqError);
+            if (!(err instanceof HttpReqError)) throw err;
+            t.is(err.translationKey, undefined);
+            t.deepEqual(err.details, [{ spam: 'invalid' }, 'not an object', null]);
+        }
     }
-});
+);
 
-test('throws HttpReqError with details with undefined translation keys if there is no top-level type', async t => {
-    nock('http://api.datawrapper.mock')
-        .get('/404-with-details-without-type')
-        .reply(404, {
-            details: [{ type: 'existing-one', path: 'path-one' }]
-        });
-    try {
-        await httpReq.get('/404-with-details-without-type', {
-            baseUrl: 'http://api.datawrapper.mock'
-        });
-    } catch (err) {
-        t.true(err instanceof HttpReqError);
-        if (!(err instanceof HttpReqError)) throw err;
-        t.is(err.translationKey, undefined);
-        t.deepEqual(err.details, [{ type: 'existing-one', path: 'path-one' }]);
+test.serial(
+    'throws HttpReqError with details with undefined translation keys if there is no top-level type',
+    async t => {
+        nock(baseUrl)
+            .get('/404-with-details-without-type')
+            .reply(404, {
+                details: [{ type: 'existing-one', path: 'path-one' }]
+            });
+        try {
+            await httpReq.get('/404-with-details-without-type', {
+                baseUrl
+            });
+        } catch (err) {
+            t.true(err instanceof HttpReqError);
+            if (!(err instanceof HttpReqError)) throw err;
+            t.is(err.translationKey, undefined);
+            t.deepEqual(err.details, [{ type: 'existing-one', path: 'path-one' }]);
+        }
     }
-});
+);
 
-test('sends CSRF header with an "unsafe" HTTP method', async t => {
+test.serial('sends CSRF header with an "unsafe" HTTP method', async t => {
+    nock(baseUrl).put('/put').reply(200).persist();
+
     document.cookie = 'crumb=abc';
     const promise = httpReq.put('/put', { baseUrl });
     t.is(t.context.fakeFetch.lastCall.args[1]?.headers?.['X-CSRF-Token'], 'abc');
     return promise;
 });
 
-test('doesn\'t send CSRF header with a "safe" HTTP method', async t => {
+test.serial('doesn\'t send CSRF header with a "safe" HTTP method', async t => {
+    nock(baseUrl).get('/get').reply(200).persist();
+
     document.cookie = 'crumb=abc';
     const promise = httpReq.get('/get', { baseUrl });
     t.falsy(t.context.fakeFetch.lastCall.args[1]?.headers?.['X-CSRF-Token']);
