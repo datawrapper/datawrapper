@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -16,7 +16,9 @@
     "main": "index.js",
     "files": [
         "*.js",
-        "*.d.ts"
+        "*.d.ts",
+        "pure/*.js",
+        "pure/*.d.ts"
     ],
     "type": "commonjs",
     "engines": {
@@ -29,8 +31,8 @@
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "rm -Rf dist/* && tsc",
         "typecheck": "tsc --noEmit",
-        "prepublishOnly": "npm run lint && npm run build && npm run test && cp dist/src/* . && rm *.test.*",
-        "postpublish": "rm *.d.ts && rm *.js",
+        "prepublishOnly": "npm run lint && npm run build && npm run test && cp -r dist/src/* . && rm *.test.*",
+        "postpublish": "rm *.d.ts && rm *.js && rm -r pure/",
         "lint": "(cd ../.. && scripts/lint libs/shared)",
         "format": "(cd ../.. && scripts/format libs/shared)",
         "docs": "jsdoc2md --template jsdoc2md/README.hbs --files ./*.[c]js -g grouped --separators | sed '/\\*\\*Kind\\*\\*/d' | sed '/## $/d' | sed 's/## \\([a-z]\\)/### \\1/' > README.md && node jsdoc2md/fixSorting.cjs"
