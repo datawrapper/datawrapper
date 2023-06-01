@@ -39,8 +39,8 @@ function formatNumber(
     const multiply = options.multiply || 1;
     const prepend = options.prepend || '';
     const append = options.append || '';
-    const minusChar = options.minusChar || '−';
-    const plusMinusChar = options.plusMinusChar || '±';
+    const minusChar = options.minusChar ?? '−';
+    const plusMinusChar = options.plusMinusChar ?? '±';
     if (format.includes('%') && Number.isFinite(value)) {
         // numeraljs will multiply percentages with 100
         // which we don't want to happen
