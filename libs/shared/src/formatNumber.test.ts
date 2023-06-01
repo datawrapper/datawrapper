@@ -15,8 +15,16 @@ test('negative number, forced plus sign', t => {
     t.is(formatNumber(numeral, -1234.5678, { format: '+0.00' }), '−1234.57');
 });
 
-test('negative number, custom minus characte', t => {
+test('negative number, custom minus character', t => {
     t.is(formatNumber(numeral, -1234.5678, { minusChar: '&minus;' }), '&minus;1234.57');
+});
+
+test('custom ± character', t => {
+    t.is(formatNumber(numeral, 0, { plusMinusChar: '+/-', format: '+0.00' }), '+/-0.00');
+});
+
+test('empty string ± character', t => {
+    t.is(formatNumber(numeral, 0, { plusMinusChar: '', format: '+0.00' }), '0.00');
 });
 
 test('prepend/append', t => {
