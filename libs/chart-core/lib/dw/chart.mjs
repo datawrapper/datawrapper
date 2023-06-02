@@ -227,7 +227,7 @@ export default function (attributes) {
             // compute chart dimensions
             const w = width(container);
             const h = isIframe
-                ? getMaxChartHeight()
+                ? getMaxChartHeight(theme, flags)
                 : chart.getMetadata('publish.chart-height') || 400;
 
             const heightMode = chart.getHeightMode();

@@ -56,8 +56,8 @@ export function name(obj) {
 
 export function getMaxChartHeight() {
     if (window.innerHeight === 0) return 0;
-    var maxH = window.innerHeight - getNonChartHeight();
-    return Math.max(maxH, 0);
+    const maxHeight = window.innerHeight - getNonChartHeight();
+    return Math.max(maxHeight, 0);
 }
 
 export function nearest(array, value) {
