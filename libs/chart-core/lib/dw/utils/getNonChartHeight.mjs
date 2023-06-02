@@ -1,13 +1,15 @@
 export function outerHeight(element, withMargin = false) {
     if (!element) return null;
-    let height = element.offsetHeight;
+    const height = element.offsetHeight;
     if (!withMargin) return height;
-    var style = getComputedStyle(element);
-    height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-    return height;
+    const style = getComputedStyle(element);
+    const margin = parseInt(style.marginTop) + parseInt(style.marginBottom);
+    return height + (withMargin ? margin : 0);
 }
 
 export function getNonChartHeight() {
+    // TODO: replace this function with getNonChartHeightV2 as soon
+    // as all themes have been migrated to v2
     let h = 0;
 
     let chart = document.querySelector('.dw-chart .dw-chart-styles');
@@ -70,10 +72,17 @@ export function getNonChartHeight() {
     return h;
 }
 
-function getNonChartHeightV2(body) {
-    // TODO
-    // Here we're just assuming that the default footer container is underneath
-    // the chart body
-    const height = outerHeight(body, true) - outerHeight(body.querySelector('#chart'), true);
+function getNonChartHeightV2(container) {
+    // TODO: For now we're just assuming that the "non-chart" elements are all placed
+    // either above or below the chart container. In a theme where we'd have a multi
+    // column layout in which the chart container is just one column, this would not
+    // work and we'd need to find a different solution
+    const body = container.getRootNode().body;
+    const height =
+        outerHeight(container, true) -
+        outerHeight(container.querySelector('.dw-chart-body-content'), true) +
+        // inside the chart editor we sometimes have 10px padding bottom
+        // that we need to subtract from the chart height by adding it here
+        (body ? parseInt(getComputedStyle(body).paddingBottom) : 0);
     return height;
 }
