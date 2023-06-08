@@ -6,7 +6,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import weekOfYear from 'dayjs/plugin/weekOfYear.js';
 import weekYear from 'dayjs/plugin/weekYear.js';
-import isoWeek from 'dayjs/plugin/isoWeek';
+import isoWeek from 'dayjs/plugin/isoWeek.js';
 import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat.js';
 import clone from 'underscore/modules/clone.js';
 import base from './visualization.base.mjs';
