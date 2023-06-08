@@ -3,13 +3,21 @@ import chroma from 'chroma-js';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
+import timezone from 'dayjs/plugin/timezone.js';
+import weekOfYear from 'dayjs/plugin/weekOfYear.js';
+import weekYear from 'dayjs/plugin/weekYear.js';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat.js';
 import clone from 'underscore/modules/clone.js';
 import base from './visualization.base.mjs';
 
 dayjs.extend(advancedFormat);
+dayjs.extend(isoWeek); // Required by advancedFormat
 dayjs.extend(localizedFormat);
 dayjs.extend(sportsSeasonFormat);
+dayjs.extend(timezone); // Required by advancedFormat
+dayjs.extend(weekOfYear); // Required by advancedFormat
+dayjs.extend(weekYear); // Required by advancedFormat
 
 const __vis = {};
 
