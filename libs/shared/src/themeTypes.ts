@@ -17,7 +17,7 @@ export type FontObject = {
     };
 };
 
-export type Theme = {
+export type ThemeData = {
     colors?: {
         background?: string;
         bgBlendRatios?: {
@@ -44,3 +44,8 @@ export type Theme = {
         };
     };
 };
+
+/**
+ * @deprecated Please use ThemeData instead
+ */
+export type Theme = ThemeData;
