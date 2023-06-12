@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.7.3",
+    "version": "1.7.4-2",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -42,6 +42,7 @@
         "url": "git+ssh://git@github.com/datawrapper/shared.git"
     },
     "devDependencies": {
+        "@emotion/css": "^11.11.0",
         "@types/chroma-js": "^2.1.4",
         "@types/d3-color": "^1.4.2",
         "@types/fontfaceobserver": "^2.1.0",

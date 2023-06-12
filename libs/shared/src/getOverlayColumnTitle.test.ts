@@ -1,7 +1,20 @@
 import test from 'ava';
+import { Visualization } from './chartTypes';
 import getOverlayColumnTitle from './getOverlayColumnTitle';
 
-const visOne = {
+// This tests mocks some properties of Visualization but not all of them, therefor
+// we need to declare the type as <Partial<Visualization>>. However, we also only
+// partially mock some of the descendents of visualization (vis.dataset) so we need
+// to define this DeepPartial type
+//
+// TODO: Perhaps replace this with type-fest/PartialDeep some day
+type DeepPartial<T> = T extends object
+    ? {
+          [P in keyof T]?: DeepPartial<T[P]>;
+      }
+    : T;
+
+const visOne = (<DeepPartial<Visualization>>{
     dataset: {
         hasColumn() {
             return true;
@@ -14,9 +27,9 @@ const visOne = {
             };
         }
     }
-};
+}) as Visualization;
 
-const visTwo = {
+const visTwo = (<DeepPartial<Visualization>>{
     dataset: {
         hasColumn() {
             return false;
@@ -25,7 +38,7 @@ const visTwo = {
             throw new Error('should not be called');
         }
     }
-};
+}) as Visualization;
 
 const colName = 'a-super-col-name';
 const ZERO_BASELINE = '--zero-baseline--';

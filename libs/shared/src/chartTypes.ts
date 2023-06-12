@@ -1,3 +1,5 @@
+import type { ThemeData } from './themeTypes';
+
 export type DatePrecision =
     | 'year'
     | 'half'
@@ -29,7 +31,9 @@ export type Column = {
     // Declaring it as [any, any] is the simplest way.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     range(): [any, any];
-    type(): string;
+    name: () => string;
+    title: () => string;
+    type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
 };
 
@@ -66,11 +70,81 @@ export type Overlay = {
     opacity: number | `${number}`;
 };
 
+export type TextDirection = 'rtl' | 'ltr';
+
+export type Row = Record<string, string | number | boolean | null | Date>;
+
+export type Dataset = {
+    columns: () => Column[];
+    column: (name: string | number) => Column;
+    hasColumn: (name: string | number) => boolean;
+    list: () => Row[];
+    toCSV: () => string;
+};
+
+export type VisAxesColumns = Record<string, Column[]>;
+export type VisAxesNames = Record<string, string[]>;
+
+type AxesGetter = {
+    (asColumns?: false): VisAxesNames;
+    (asColumns: true): VisAxesColumns;
+};
+
+type SettingsGetter<TRoot> = {
+    (): TRoot;
+    <TDefault>(key: string, default_?: TDefault): TDefault;
+};
+
+export type RenderFlags = {
+    plain: boolean;
+    svgOnly: boolean;
+    fitChart: boolean;
+    fitHeight: boolean;
+    dark: boolean;
+};
+
+export type ChartLibraries = {
+    chroma: typeof import('chroma-js');
+    numeral: typeof import('numeral');
+    dayjs: typeof import('dayjs');
+};
+
+export type DwChart = {
+    get: SettingsGetter<Chart>;
+    flags: () => RenderFlags;
+    libraries: () => ChartLibraries;
+    emotion: typeof import('@emotion/css');
+};
+
+export type Chart = {
+    id: string;
+    publicId: string;
+    language: string;
+    theme: string;
+    type: string;
+    title: string;
+    lastEditStep: number;
+    publicUrl?: string;
+    publicVersion?: number;
+    metadata: Metadata;
+};
+
 export type Visualization = {
-    dataset: {
-        hasColumn(colName: string): boolean;
-        column(colName: string): {
-            title(): string;
-        };
-    };
+    dataset: Dataset;
+    get: SettingsGetter<object>;
+    theme: () => ThemeData;
+    chart: () => DwChart;
+    darkMode: () => boolean;
+    axes: AxesGetter;
+    libraries: () => ChartLibraries;
+    addFilterUI: (args: {
+        column: Column;
+        type: 'auto' | 'select' | 'buttons' | 'timescale';
+    }) => void;
+    renderingComplete: () => void;
+    size: () => [number, number];
+    colorMap: () => (color: string) => string;
+    colorMode: () => string;
+    __lastRow: number;
+    textDirection: TextDirection;
 };
