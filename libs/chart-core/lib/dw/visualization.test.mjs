@@ -7,12 +7,18 @@ test.beforeEach(t => {
 });
 
 test('register and instanciate a visualization', t => {
-    visualization.register(t.context.id, {
-        foo() {
-            return 42;
-        }
-    });
+    visualization.register(
+        t.context.id,
+        null,
+        {
+            foo() {
+                return 42;
+            }
+        },
+        'myhash'
+    );
     t.is(visualization.has(t.context.id), true);
+    t.is(visualization.hasVisHash(t.context.id, 'myhash'), true);
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
     t.is(vis.id, t.context.id);
@@ -22,7 +28,7 @@ test('register and instanciate a visualization', t => {
 });
 
 test('extend a visualization', t => {
-    visualization.register('parent', {
+    visualization.register('parent', null, {
         bar() {
             return 42;
         },
@@ -46,7 +52,7 @@ test('extend a visualization', t => {
 });
 
 test('visualization renders into container', t => {
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         render(el) {
             el.innerHTML = 'It <b>worked</b>';
             this.renderingComplete();
@@ -60,7 +66,7 @@ test('visualization renders into container', t => {
 });
 
 test('visualization rendered returns promise', async t => {
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         render(el) {
             this.__beforeRender();
             setTimeout(() => {
@@ -79,7 +85,7 @@ test('visualization rendered returns promise', async t => {
 });
 
 test('promise gets resolved even after re-rendering', async t => {
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         render(el) {
             this.__beforeRender();
             setTimeout(() => {
@@ -101,7 +107,7 @@ test('promise gets resolved even after re-rendering', async t => {
 
 test('visualization rendered multiple times', async t => {
     let cnt = 0;
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         render(el) {
             this.__beforeRender();
             setTimeout(() => {
@@ -128,7 +134,7 @@ test('visualization rendered multiple times', async t => {
 
 test('visualization can set custom resolve timeout', async t => {
     let cnt = 0;
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         __resolveRenderedAfter: 150,
         render(el) {
             this.__beforeRender();
@@ -157,7 +163,7 @@ test('visualization can set custom resolve timeout', async t => {
 
 test('visualization renderred promise is rejected after timeout', async t => {
     let cnt = 0;
-    visualization.register(t.context.id, {
+    visualization.register(t.context.id, null, {
         __resolveRenderedAfter: 50,
         __rejectRenderedAfter: 250,
         render(el) {

@@ -19,21 +19,25 @@ dayjs.extend(timezone); // Required by advancedFormat
 dayjs.extend(weekOfYear); // Required by advancedFormat
 dayjs.extend(weekYear); // Required by advancedFormat
 
-const __vis = {};
+const __vis = new Map();
 
-function visualization(id, target) {
-    if (!__vis[id]) {
+function visualization(id, target, hash) {
+    if (!__vis.has(id)) {
         console.warn('unknown visualization type: ' + id);
-        const known = Object.keys(__vis);
+        const known = Array.from(__vis.keys());
         if (known.length > 0) console.warn('try one of these instead: ' + known.join(', '));
         return false;
+    }
+    if (!hash || !__vis.get(id).has(hash)) {
+        // fall back to first registered hash
+        hash = Array.from(__vis.get(id).keys())[0];
     }
 
     function getParents(vis) {
         const parents = [];
 
-        while (vis.parentVis !== 'base') {
-            vis = __vis[vis.parentVis];
+        while (vis.parentVis && vis.parentVis !== 'base') {
+            vis = __vis.get(vis.parentVis).get(hash);
             parents.push({ id: vis.parentVis, vis });
         }
 
@@ -42,8 +46,8 @@ function visualization(id, target) {
 
     const vis = clone(base);
 
-    const parents = getParents(__vis[id]);
-    parents.push({ id, vis: __vis[id] });
+    const parents = getParents(__vis.get(id).get(hash));
+    parents.push({ id, vis: __vis.get(id).get(hash) });
     parents.forEach(el => {
         Object.assign(
             vis,
@@ -63,25 +67,28 @@ function visualization(id, target) {
     return vis;
 }
 
-visualization.register = function (id) {
-    let parentVis, init;
-
-    if (arguments.length === 2) {
-        parentVis = 'base';
-        init = arguments[1];
-    } else if (arguments.length === 3) {
-        parentVis = arguments[1];
-        init = arguments[2];
-    }
-
-    __vis[id] = {
-        parentVis,
-        init
-    };
+/**
+ * Register a new visualization, called by out vis render code
+ *
+ * @param {string} id visualization id, e.g. 'd3-bars-stacked'
+ * @param {string|null} parentVis parent visualization id, e.g. 'd3-bars' (optional)
+ * @param {function} init render method
+ * @param {string} hash for supporting multiple versions (optional)
+ */
+visualization.register = function (id, parentVis, initFunc, hash = 'nohash') {
+    if (!__vis.has(id)) __vis.set(id, new Map());
+    __vis.get(id).set(hash, {
+        parentVis: parentVis || 'base',
+        init: initFunc
+    });
 };
 
 visualization.has = function (id) {
-    return __vis[id] !== undefined;
+    return __vis.has(id);
+};
+
+visualization.hasVisHash = function (id, hash) {
+    return __vis.has(id) && __vis.get(id).has(hash);
 };
 
 visualization.libraries = {

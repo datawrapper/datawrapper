@@ -31,12 +31,18 @@ const dw = {
 };
 
 if (typeof exports !== 'undefined') {
+    // Node.js
     if (typeof module !== 'undefined' && module.exports) {
         exports = module.exports = dw;
     }
     exports.dw = dw;
 } else {
-    window.dw = dw;
+    // Browser, merge into existing window.dw scope, prioritizing
+    // pre-existing properties
+    window.dw = {
+        ...dw,
+        ...(window.dw || {})
+    };
 }
 
 export default dw;
