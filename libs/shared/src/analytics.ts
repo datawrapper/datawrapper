@@ -13,10 +13,15 @@ declare global {
  *
  * @param {string} category - the event category
  * @param {string} action - the event action
- * @param {string} name - the event name
- * @param {string|number} value - the event value, optional
+ * @param {string} [name] - the event name
+ * @param {string|number} [value] - the event value, optional
  */
-export function trackEvent(category: string, action: string, name: string, value: string | number) {
+export function trackEvent(
+    category: string,
+    action: string,
+    name?: string,
+    value?: string | number
+) {
     if (window._paq) {
         window._paq.push(['trackEvent', category, action, name, value]);
     }
