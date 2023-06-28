@@ -21,7 +21,7 @@ function json(opts) {
                 resolve(opts.csv);
             });
             const parsed = dfd.then(raw => {
-                return JSON.parse(raw);
+                return typeof raw === 'string' ? JSON.parse(raw) : raw;
             });
             return parsed;
         }
