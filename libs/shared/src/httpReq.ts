@@ -218,7 +218,7 @@ httpReq.head = httpReqVerb('HEAD');
 httpReq.delete = httpReqVerb('DELETE');
 
 function httpReqVerb(method: string) {
-    return (path: string, options: Omit<HttpReqOptions, 'method'>) => {
+    return (path: string, options: Omit<HttpReqOptions, 'method'> = {}) => {
         if (options && (options as HttpReqOptions).method) {
             throw new Error(
                 `Setting option.method is not allowed in httpReq.${method.toLowerCase()}()`
