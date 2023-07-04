@@ -1,4 +1,4 @@
-import { Theme } from '../themeTypes';
+import { ThemeData } from '../themeTypes';
 import get from '../get';
 
 /**
@@ -20,7 +20,7 @@ import get from '../get';
  * @param {*} chroma -- chroma instance
  * @returns {*} -- object with color definitions and blendColor function
  */
-export function defaultColors(themeData: Theme, chroma: typeof import('chroma-js')) {
+export function defaultColors(themeData: ThemeData, chroma: typeof import('chroma-js')) {
     const bg = get(themeData, 'colors.background', '#ffffff');
     const fallback = get(
         themeData,

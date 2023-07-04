@@ -1,5 +1,5 @@
 import chroma from 'chroma-js';
-import { Theme } from './themeTypes';
+import { ThemeData } from './themeTypes';
 import { defaultColors as defaultColorsPure } from './pure/defaultColors';
 
 /**
@@ -20,6 +20,6 @@ import { defaultColors as defaultColorsPure } from './pure/defaultColors';
  * @param {*} themeData -- theme data for a chart
  * @returns {*} -- object with color definitions and blendColor function
  */
-export function defaultColors(themeData: Theme) {
+export function defaultColors(themeData: ThemeData) {
     return defaultColorsPure(themeData, chroma);
 }
