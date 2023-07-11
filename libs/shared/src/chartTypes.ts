@@ -127,6 +127,12 @@ export type Chart = {
     publicUrl?: string;
     publicVersion?: number;
     metadata: Metadata;
+    thumbnails?: {
+        plain: string;
+    };
+    thumbnailHash: string;
+    folderId?: number | null;
+    organizationId: string | null;
 };
 
 export type Visualization = {
