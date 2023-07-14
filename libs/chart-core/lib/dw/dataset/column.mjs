@@ -120,9 +120,11 @@ export default function Column(name_, rows, type, allowedTags) {
             if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;
-            return type.parse(
-                isDate(r[i]) || isNumber(r[i]) ? r[i] : purifyHtml(r[i], allowedTags)
-            );
+            const unsafe = type.parse(r[i]);
+            if (typeof unsafe === 'string') {
+                return purifyHtml(unsafe, allowedTags);
+            }
+            return unsafe;
         },
 
         /**
@@ -148,10 +150,9 @@ export default function Column(name_, rows, type, allowedTags) {
          */
         values(unfiltered) {
             var r = unfiltered ? origRows : rows;
-            r = map(r, function (d) {
-                return isDate(d) || isNumber(d) ? d : purifyHtml(d, allowedTags);
-            });
-            return map(r, type.parse);
+            return map(r, type.parse).map(unsafe =>
+                typeof unsafe === 'string' ? purifyHtml(unsafe, allowedTags) : unsafe
+            );
         },
 
         /**
