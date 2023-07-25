@@ -14,8 +14,8 @@ module.exports = {
     create: function (context) {
         const filename = context.getFilename();
 
-        // Check if the filename starts with `+page` or `+layout` and ends with `.ts`
-        const fileRegex = /\/\+(page|layout).*\.ts$/;
+        // Check if the filename starts with `+page.server` or `+layout.server` and ends with `.ts` or `.js`
+        const fileRegex = /\/\+(page|layout).server.(ts|js)$/;
         const isPageOrLayout = fileRegex.test(filename);
 
         if (!isPageOrLayout) {
