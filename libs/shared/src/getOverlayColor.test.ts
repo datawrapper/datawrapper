@@ -9,7 +9,6 @@ const overlayTwo = {
     color: '#ff5e4b',
     opacity: 0.35
 };
-const baseColor = '#000000';
 const theme = {
     colors: {
         palette: [
@@ -29,9 +28,13 @@ const theme = {
 };
 
 test('check color from with color from palette', t => {
-    t.deepEqual(getOverlayColor(overlayOne, baseColor, theme), 'rgba(199,30,29, 0.35)');
+    t.deepEqual(getOverlayColor(overlayOne, theme), 'rgba(199,30,29, 0.35)');
 });
 
 test('check color without palette', t => {
-    t.deepEqual(getOverlayColor(overlayTwo, baseColor, theme), 'rgba(255,94,75, 0.35)');
+    t.deepEqual(getOverlayColor(overlayTwo, theme), 'rgba(255,94,75, 0.35)');
+});
+
+test('overlay color is allowed to be same as baseColor', t => {
+    t.deepEqual(getOverlayColor({ color: 0, opacity: 0.35 }, theme), 'rgba(24,161,205, 0.35)');
 });

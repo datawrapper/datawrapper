@@ -1,8 +1,7 @@
-import { lab, rgb } from 'd3-color';
+import { rgb } from 'd3-color';
 import get from './get';
-import colorLightness from './colorLightness';
 import { Overlay } from './chartTypes';
-import { Theme } from './themeTypes';
+import { ThemeData } from './themeTypes';
 
 /**
  * returns the color used by overlays
@@ -11,13 +10,12 @@ import { Theme } from './themeTypes';
  * @kind function
  *
  * @param {object} overlay
- * @param {string} baseColor
  * @param {object} theme -- theme data for a chart
  *
  * @export
  * @returns {string}
  */
-export = function getOverlayColor(overlay: Overlay, baseColor: string, theme: Theme): string {
+export = function getOverlayColor(overlay: Overlay, theme: ThemeData): string {
     const palette = get(theme, 'colors.palette', []);
     function getColor(c: number | string) {
         if (typeof c === 'number') {
@@ -26,16 +24,7 @@ export = function getOverlayColor(overlay: Overlay, baseColor: string, theme: Th
         return c;
     }
 
-    baseColor = getColor(baseColor).toLowerCase();
     let overlayColor = getColor(overlay.color).toLowerCase();
-
-    if (baseColor === overlayColor) {
-        const color = lab(baseColor);
-        overlayColor =
-            colorLightness(baseColor) < 60
-                ? lab(color.l * 1.5, color.a, color.b).hex()
-                : lab(color.l * 0.5, color.a, color.b).hex();
-    }
 
     overlayColor = `rgba(${rgb(overlayColor).r},${rgb(overlayColor).g},${
         rgb(overlayColor).b
