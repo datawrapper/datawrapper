@@ -7,6 +7,7 @@ export { default as clone } from './clone';
 export { default as columnNameToVariable } from './columnNameToVariable';
 export { default as combinations } from './combinations';
 export { default as decodeHtml } from './decodeHtml';
+export { formatDelimited } from './delimited';
 export { default as ensureColorContrast } from './ensureColorContrast';
 export { default as equalish } from './equalish';
 export { default as estimateTextWidth } from './estimateTextWidth';

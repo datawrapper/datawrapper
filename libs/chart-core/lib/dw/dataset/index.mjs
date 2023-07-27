@@ -1,4 +1,5 @@
-import { formatDelimited, guessDelimiterFromLocale } from '../utils/delimited.mjs';
+import { formatDelimited } from '@datawrapper/shared/delimited.js';
+import { guessDelimiterFromLocale } from '../utils/delimited.mjs';
 import isString from 'underscore/modules/isString.js';
 import range from 'underscore/modules/range.js';
 import each from 'underscore/modules/each.js';
