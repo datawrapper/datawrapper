@@ -1,4 +1,4 @@
-type AfterClone<T> = T extends undefined | null | number | string
+type AfterClone<T> = T extends undefined | null | number | string | boolean
     ? T
     : T extends Date
     ? string
