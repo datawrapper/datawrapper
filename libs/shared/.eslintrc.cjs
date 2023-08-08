@@ -3,6 +3,9 @@ module.exports = {
         browser: true,
         commonjs: true
     },
+    parserOptions: {
+        project: 'libs/shared/tsconfig.json'
+    },
     overrides: [
         {
             files: ['jsdoc2md/**'],
