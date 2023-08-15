@@ -80,7 +80,7 @@ dataset.delimited = delimited;
 
 export default delimited;
 
-class DelimitedParser {
+export class DelimitedParser {
     constructor(opts) {
         opts = Object.assign(
             {
