@@ -32,6 +32,8 @@ export type Column = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     range(): [any, any];
     name: () => string;
+    value: (index: number) => string | number | boolean | null;
+    values: () => (string | number | boolean | null)[];
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
