@@ -25,6 +25,7 @@ export type Block = { id?: string; type?: string; children?: { id?: string; type
 export type Container = Block & { type: 'container'; children: Block[] };
 
 export type ThemeData = {
+    type?: 'web' | 'print';
     blocks?: Record<string, { styles: any; options: any }>;
     regions?: {
         header?: Container;

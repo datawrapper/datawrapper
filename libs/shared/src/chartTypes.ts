@@ -60,6 +60,10 @@ export type Metadata = {
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
         transpose?: boolean;
+        'upload-method'?: 'external-data' | 'google-spreadsheet' | 'copy';
+        'google-spreadsheet-src'?: string;
+        'external-data'?: string;
+        'external-metadata'?: string;
     };
     publish?: {
         'embed-height'?: number;
