@@ -45,6 +45,11 @@ test('evil html', async t => {
     t.is(tpl({ title: 'foo' }), 'foo ');
 });
 
+test('evil html 2', async t => {
+    const tpl = htmlTemplate(`<audio src="{{ source }}" onplay="alert(42)"></audio>`);
+    t.is(tpl({ source: '/sound.mp3' }), '<audio src="/sound.mp3"></audio>');
+});
+
 test('evil expr + html', async t => {
     const tpl = htmlTemplate(`{{ col1 }} alert('you are hacked') {{col2}}`);
     t.is(tpl({ col1: '<script>', col2: '</script>' }), '');

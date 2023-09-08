@@ -2,6 +2,7 @@ import purifyHtml from '@datawrapper/shared/purifyHtml.js';
 import templateParser from './templateParser.mjs';
 
 const ALLOWED_TAGS = [
+    'audio',
     'a',
     'abbr',
     'address',
