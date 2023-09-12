@@ -6,7 +6,8 @@ module.exports = {
     meta: {
         type: 'problem',
         docs: {
-            description: 'ensure all load functions are wrapped in an auth guard'
+            description:
+                'ensure all load functions and request handlers are wrapped in an auth guard'
         },
         schema: [],
         fixable: null
@@ -14,59 +15,68 @@ module.exports = {
     create: function (context) {
         const filename = context.getFilename();
 
-        // Check if the filename starts with `+page.server` or `+layout.server` and ends with `.ts` or `.js`
-        const fileRegex = /\/\+(page|layout).server.(ts|js)$/;
-        const isPageOrLayout = fileRegex.test(filename);
+        // Check if the filename starts with `+page.server`, `+layout.server`, or `+server` and ends with `.ts` or `.js`
+        const fileRegex = /\/\+(page\.|layout\.)?server\.(ts|js)$/;
+        const isServerFile = fileRegex.test(filename);
 
-        if (!isPageOrLayout) {
+        if (!isServerFile) {
             return {};
         }
 
         return {
             ExportNamedDeclaration(node) {
-                const { declarations } = node.declaration;
+                let { declarations } = node.declaration;
+                declarations = declarations || [node.declaration];
+
                 if (!declarations) {
                     return;
                 }
 
-                const loadFunctionDeclaration = declarations.find(
-                    declaration => declaration.id.name === 'load'
-                );
-                if (!loadFunctionDeclaration) return;
-
-                const expression = loadFunctionDeclaration.init.expression;
-
                 const reportError = () =>
                     context.report({
                         node,
-                        message: `All load functions have to be wrapped by an auth guard (${AUTH_GUARDS.map(
+                        message: `All load functions and request handlers have to be wrapped by an auth guard (${AUTH_GUARDS.map(
                             x => `\`${x}\``
                         ).join(', ')})`
                     });
 
-                if (!expression || expression.type !== 'CallExpression') {
+                const requestHandlerDeclarations = declarations.filter(declaration =>
+                    ['load', 'GET', 'POST', 'PATCH', 'PUT', 'DELETE'].includes(declaration.id.name)
+                );
+                if (!requestHandlerDeclarations.length) return;
+
+                for (const declaration of requestHandlerDeclarations) {
+                    // Handle request handlers using the `function` keyword.
+                    // E.g. `export function load(...)`
+                    if (declaration.type === 'FunctionDeclaration') {
+                        reportError();
+                        return;
+                    }
+                    const expression = declaration.init.expression;
+                    if (!expression || expression.type !== 'CallExpression') {
+                        reportError();
+                        return;
+                    }
+
+                    // Handle normal auth guards.
+                    // E.g. `export const load = authPublic(...)`
+                    if (AUTH_GUARDS.includes(expression.callee.name)) return;
+
+                    // Handle conditional auth guards.
+                    // E.g. `export const load = (dev ? authPublic : authAdmin)(...)`
+                    // See routes/(app)/hello/+page.server.ts
+                    if (expression.callee.type === 'ConditionalExpression') {
+                        const possibleIdentifiers = [
+                            expression.callee.consequent,
+                            expression.callee.alternate
+                        ].map(({ name }) => name);
+
+                        // Make sure both possible identifiers are auth guards.
+                        if (possibleIdentifiers.every(name => AUTH_GUARDS.includes(name))) return;
+                    }
+
                     reportError();
-                    return;
                 }
-
-                // Handle normal auth guards.
-                // E.g. `export const load = authPublic(...)`
-                if (AUTH_GUARDS.includes(expression.callee.name)) return;
-
-                // Handle conditional auth guards.
-                // E.g. `export const load = (dev ? authPublic : authAdmin)(...)`
-                // See routes/(app)/hello/+page.server.ts
-                if (expression.callee.type === 'ConditionalExpression') {
-                    const possibleIdentifiers = [
-                        expression.callee.consequent,
-                        expression.callee.alternate
-                    ].map(({ name }) => name);
-
-                    // Make sure both possible identifiers are auth guards.
-                    if (possibleIdentifiers.every(name => AUTH_GUARDS.includes(name))) return;
-                }
-
-                reportError();
             }
         };
     }
