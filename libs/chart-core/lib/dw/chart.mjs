@@ -9,7 +9,7 @@ import PostEvent from '@datawrapper/shared/postEvent.js';
 
 import json from './dataset/json.mjs';
 import delimited from './dataset/delimited.mjs';
-import { name, width, getMaxChartHeight } from './utils/index.mjs';
+import { name, width } from './utils/index.mjs';
 import events from './utils/events.mjs';
 import reorderColumns from './dataset/reorderColumns.mjs';
 import applyChanges from './dataset/applyChanges.mjs';
@@ -226,9 +226,10 @@ export default function (attributes) {
 
             // compute chart dimensions
             const w = width(container);
-            const h = isIframe
-                ? getMaxChartHeight(theme, flags)
-                : chart.getMetadata('publish.chart-height') || 400;
+            const h =
+                isIframe || flags.fitchart
+                    ? chart.getMaxChartHeight()
+                    : chart.getMetadata('publish.chart-height') || 400;
 
             const heightMode = chart.getHeightMode();
 
@@ -329,6 +330,16 @@ export default function (attributes) {
                 visualizationMeta: visualization.meta,
                 renderFlags: flags
             });
+        },
+
+        getMaxChartHeight() {
+            const vis = chart.vis();
+            const containerHeight = flags.isIframe
+                ? window.innerHeight
+                : vis.outerContainer().clientHeight;
+            const rootContainer = chart.vis().container().getRootNode();
+            const maxHeight = containerHeight - getNonChartHeight(rootContainer);
+            return Math.max(maxHeight, 0);
         },
 
         attributes(attrs) {

@@ -54,12 +54,6 @@ export function name(obj) {
     return isFunction(obj.name) ? obj.name() : isString(obj.name) ? obj.name : obj;
 }
 
-export function getMaxChartHeight() {
-    if (window.innerHeight === 0) return 0;
-    const maxHeight = window.innerHeight - getNonChartHeight();
-    return Math.max(maxHeight, 0);
-}
-
 export function nearest(array, value) {
     let minDiff = Number.MAX_VALUE;
     let minDiffVal;
