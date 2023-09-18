@@ -102,11 +102,20 @@ type SettingsGetter<TRoot> = {
 };
 
 export type RenderFlags = {
-    plain: boolean;
-    svgOnly: boolean;
-    fitChart: boolean;
-    fitHeight: boolean;
-    dark: boolean;
+    allowEditing?: boolean;
+    dark?: boolean | 'auto';
+    dev?: boolean;
+    fitchart?: boolean;
+    logo?: string;
+    logoId?: string;
+    map2svg?: boolean;
+    plain?: boolean;
+    previewId?: string;
+    search?: string;
+    static?: boolean;
+    svgonly?: boolean;
+    theme?: string;
+    transparent?: boolean;
 };
 
 export type ChartLibraries = {

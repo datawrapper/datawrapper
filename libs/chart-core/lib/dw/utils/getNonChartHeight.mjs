@@ -7,15 +7,16 @@ export function outerHeight(element, withMargin = false) {
     return height + (withMargin ? margin : 0);
 }
 
-export function getNonChartHeight() {
+export function getNonChartHeight(rootNode = document) {
     // TODO: replace this function with getNonChartHeightV2 as soon
     // as all themes have been migrated to v2
+    const isWebComponent = rootNode.nodeName === '#document-fragment';
     let h = 0;
 
-    let chart = document.querySelector('.dw-chart .dw-chart-styles');
+    let chart = rootNode.querySelector('.dw-chart .dw-chart-styles');
     if (!chart) {
         // try if we're dealing with a v2 theme:
-        chart = document.querySelector('.dw-chart .container-body');
+        chart = rootNode.querySelector('.dw-chart .container-body');
         return chart ? getNonChartHeightV2(chart) : 0;
     }
     for (let i = 0; i < chart.children.length; i++) {
@@ -50,10 +51,15 @@ export function getNonChartHeight() {
     }
 
     function getProp(selector, property) {
-        return getComputedStyle(document.querySelector(selector))[property].replace('px', '');
+        return getComputedStyle(rootNode.querySelector(selector))[property].replace('px', '');
     }
 
-    const selectors = ['.dw-chart', '.dw-chart-styles', '.dw-chart-body', 'body'];
+    const selectors = [
+        '.dw-chart',
+        '.dw-chart-styles',
+        '.dw-chart-body',
+        isWebComponent ? '.web-component-body' : 'body'
+    ];
     const properties = [
         'padding-top',
         'padding-bottom',
