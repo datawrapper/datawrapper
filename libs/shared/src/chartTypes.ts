@@ -59,11 +59,19 @@ export type Metadata = {
     } & Record<`exif-${string}`, string>;
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
+        'column-order'?: number[];
         transpose?: boolean;
         'upload-method'?: 'external-data' | 'google-spreadsheet' | 'copy';
         'google-spreadsheet-src'?: string;
         'external-data'?: string;
         'external-metadata'?: string;
+        changes?: {
+            row: number;
+            column: number;
+            value: string | number;
+            time?: number; // Date.now()
+            previous?: string | number;
+        }[];
     };
     publish?: {
         'embed-height'?: number;
@@ -126,6 +134,8 @@ export type ChartLibraries = {
 
 export type DwChart = {
     get: SettingsGetter<Chart>;
+    set: (key: string, value: unknown) => void;
+    load: (data: string) => void;
     flags: () => RenderFlags;
     libraries: () => ChartLibraries;
     emotion: typeof import('@emotion/css');
