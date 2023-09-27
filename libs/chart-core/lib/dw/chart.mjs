@@ -214,7 +214,9 @@ export default function (attributes) {
          */
         render(outerContainer) {
             if (!visualization || !theme || !dataset) {
-                throw new Error('cannot render the chart!');
+                throw new Error(
+                    'Missing visualization, theme, or dataset. Chart cannot be rendered.'
+                );
             }
 
             const isIframe = flags.isIframe;
@@ -233,17 +235,6 @@ export default function (attributes) {
 
             const heightMode = chart.getHeightMode();
 
-            // only render if iframe has valid dimensions
-            if (heightMode === 'fixed' ? w <= 0 : w <= 0 || h <= 0) {
-                console.warn('Aborting chart rendering due to invalid container dimensions');
-
-                window.clearInterval(this.__resizingInterval);
-                this.__resizingInterval = setInterval(postMessage, 1000);
-                postMessage();
-
-                return;
-            }
-
             // set chart mode class
             outerContainer.classList.toggle('vis-height-fit', heightMode === 'fit');
             outerContainer.classList.toggle('vis-height-fixed', heightMode === 'fixed');
@@ -259,7 +250,15 @@ export default function (attributes) {
             visualization.size(w, h);
             visualization.__beforeRender();
 
-            visualization.render(container);
+            const invalidDimensions = heightMode === 'fixed' ? w <= 0 : w <= 0 || h <= 0;
+
+            // only attempt to render visualization if vis body dimensions are valid
+            if (invalidDimensions) {
+                console.warn('Aborting chart rendering due to invalid container dimensions');
+                visualization.renderingComplete();
+            } else {
+                visualization.render(container);
+            }
 
             if (isIframe) {
                 window.clearInterval(this.__resizingInterval);
