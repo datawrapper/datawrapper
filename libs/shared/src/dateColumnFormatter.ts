@@ -1,5 +1,10 @@
 import { isDate as isDate, identity } from 'underscore';
 import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import localizedFormat from 'dayjs/plugin/localizedFormat.js';
+dayjs.extend(advancedFormat);
+dayjs.extend(localizedFormat);
+
 import { ColumnTypeExpanded, DateColumnFormatterConfig } from './chartTypes';
 
 type Formatter = {
