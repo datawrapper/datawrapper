@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.10.3",
+    "version": "1.10.4",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -30,6 +30,7 @@
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "rm -Rf dist/* && tsc",
+        "dev": "rm -Rf dist/* && tsc --watch",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run lint && npm run build && npm run test && cp -r dist/src/* . && rm *.test.*",
         "postpublish": "rm *.d.ts && rm *.js && rm -r pure/",
