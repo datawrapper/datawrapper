@@ -1,5 +1,5 @@
 import test from 'ava';
-import { __, translate } from './l10n';
+import { __, keyExists, translate } from './l10n';
 
 test.before(() => {
     global.dw = {
@@ -17,9 +17,13 @@ test.before(() => {
     };
 });
 
-test('__ picks a translation string from a global `dw.backend.__messages` object', t => {
+test('__ picks a translation string from the global dw.backend.__messages object', t => {
     t.is(__('foo', 'core'), 'Fooo');
     t.is(__('bar', 'core'), 'Baaar');
+});
+
+test('__ returns the passed key with prefix MISSING when the key does not exist', t => {
+    t.is(__('non-existent-key'), 'MISSING:non-existent-key');
 });
 
 test('__ replaces named placeholders (e.g. %name%, %id%) with provided values', t => {
@@ -83,4 +87,16 @@ test('translate sanitizes potentially malicious HTML', t => {
         translate('my-key', 'core', messages, replacements),
         'Hello <a rel="nofollow noopener noreferrer" target="_blank" href="#">World</a>!'
     );
+});
+
+test('keyExists returns true if the key exists in the default scope', t => {
+    t.true(keyExists('foo'));
+});
+
+test('keyExists returns false if the key does not exist in the default scope', t => {
+    t.false(keyExists('non-existent-key'));
+});
+
+test('keyExists returns false if the passed scope does not exist', t => {
+    t.false(keyExists('non-existent-key', 'non-existent-scope'));
 });

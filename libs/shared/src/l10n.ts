@@ -58,7 +58,7 @@ function initMessages(scope = 'core') {
             // use in-chart translations
             __messages[scope] = window.__dw.vis.meta.locale || {};
         }
-    } else if (dw.backend.__messages) {
+    } else if (dw.backend?.__messages) {
         // use backend translations
         __messages[scope] =
             scope === 'core'
@@ -92,7 +92,7 @@ function replaceNamedPlaceholders(text: string, replacements: Record<string, unk
 function replaceNumberedPlaceholders(text: string, replacements: string[] = []) {
     return text.replace(/\$(\d)/g, (m, i) => {
         if (replacements[+i] === undefined) return m;
-        return purifyHtml(replacements[+i], '');
+        return purifyHtml(replacements[+i], []);
     });
 }
 
@@ -106,11 +106,11 @@ const isLegacyReplacements = (
  * Translates a message key, replaces placeholders within translated strings, and sanitizes the
  * result of the translation so that it can be safely used in HTML.
  *
- * @param {string} key -- the key to be translated, e.g. "signup / hed"
- * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
- * @param {object} messages -- translation strings in the format of { scope: { key: value }}
- * @param {string|object} replacements -- replacements for placeholders in the translations strings
- * @returns {string} -- the translated text
+ * @param key -- the key to be translated, e.g. "signup / hed"
+ * @param scope -- the translation scope, e.g. "core" or a plugin name
+ * @param messages -- translation strings in the format of { scope: { key: value }}
+ * @param replacements -- replacements for placeholders in the translations strings
+ * @returns -- the translated text
  */
 export function translate(
     key: string,
@@ -141,10 +141,10 @@ export function translate(
  * `window.dw.backend.__messages` object. plugins that need client-side translations must set
  * `"svelte": true` in their plugin.json.
  *
- * @param {string} key -- the key to be translated, e.g. "signup / hed"
- * @param {string} scope -- the translation scope, e.g. "core" or a plugin name
- * @param {string|object} replacements -- replacements for placeholders in the translations strings
- * @returns {string} -- the translated text
+ * @param key -- the key to be translated, e.g. "signup / hed"
+ * @param scope -- the translation scope, e.g. "core" or a plugin name
+ * @param replacements -- replacements for placeholders in the translations strings
+ * @returns -- the translated text
  */
 export function __(
     key: string,
@@ -153,11 +153,11 @@ export function __(
 ) {
     key = key.trim();
     if (!__messages[scope]) initMessages(scope);
-    if (!__messages[scope][key]) return 'MISSING:' + key;
+    if (!__messages[scope]?.[key]) return 'MISSING:' + key;
     return translate(key, scope, __messages, ...replacements);
 }
 
 export function keyExists(key: string, scope = 'core') {
     if (!__messages[scope]) initMessages(scope);
-    return !!__messages[scope][key];
+    return !!__messages[scope]?.[key];
 }
