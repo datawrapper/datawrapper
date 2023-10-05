@@ -16,9 +16,9 @@ import get from '../get';
  * // returns {"tickText":{"secondary":"#ffffff","primary":"#ffffff"},"series":"#ffffff","value":"#fef2e4","axis":"#ffffff","gridline":"#fedeb5","fallbackBaseColor":"#ffffff"}
  * defaultColors({"colors": {"bgBlendRatios": {"gridline": 0.5,"tickText": {"primary": 0,"secondary": 0}},"chartContentBaseColor": "#ffffff","background": "#FCB716"}});
 
- * @param {*} themeData -- theme data for a chart
- * @param {*} chroma -- chroma instance
- * @returns {*} -- object with color definitions and blendColor function
+ * @param themeData -- theme data for a chart
+ * @param chroma -- chroma instance
+ * @returns -- object with color definitions and blendColor function
  */
 export function defaultColors(themeData: ThemeData, chroma: typeof import('chroma-js')) {
     const bg = get(themeData, 'colors.background', '#ffffff');
