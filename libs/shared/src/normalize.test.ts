@@ -39,6 +39,7 @@ test('alphanum: normalize weird dashes', t => {
 });
 
 test('alphanum: normalize 0', t => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     t.is(normalizeAlphaNumKey(0 as any), '0');
 });
 

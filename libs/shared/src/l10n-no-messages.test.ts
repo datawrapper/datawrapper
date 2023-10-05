@@ -2,6 +2,7 @@ import test from 'ava';
 import { __, keyExists } from './l10n';
 
 test.before(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     global.dw = {} as any;
 });
 
