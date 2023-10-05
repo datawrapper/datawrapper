@@ -42,7 +42,7 @@ test.afterEach(() => nock.cleanAll());
 test.serial('simple get request', async t => {
     nock(baseUrl)
         .get('/get')
-        .reply(function (uri, body) {
+        .reply(function (uri) {
             return [
                 200,
                 {
@@ -62,7 +62,7 @@ test.serial('simple get request', async t => {
 test.serial('simple put request', async t => {
     nock(baseUrl)
         .put('/put')
-        .reply(function (uri, body) {
+        .reply(function (uri) {
             return [
                 200,
                 {
@@ -87,7 +87,7 @@ test.serial('simple put request', async t => {
 test.serial('simple put request with json payload', async t => {
     nock(baseUrl)
         .put('/put')
-        .reply(function (uri, body) {
+        .reply(function (_uri, body) {
             return [
                 200,
                 {
@@ -113,7 +113,7 @@ test.serial('simple put request with json payload', async t => {
 test.serial('post request with csv body', async t => {
     nock(baseUrl)
         .put('/put')
-        .reply(function (uri, body) {
+        .reply(function (_uri, body) {
             return [
                 200,
                 {
@@ -150,7 +150,7 @@ test.serial('post request with csv body', async t => {
 test.serial('post request with file in multipart/form-data body', async t => {
     nock(baseUrl)
         .post('/anything')
-        .reply(function (uri, body) {
+        .reply(function () {
             return [
                 200,
                 {
