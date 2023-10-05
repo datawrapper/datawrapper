@@ -12,12 +12,12 @@
  * // returns [[1,2,3], [1,2], [1,3], [1], [2,3], [2], [3]]
  * combinations([1,2,3])
 
- * @param {array[]} input -- array of input objects, could be numbers, strings, etc
- * @returns {array[]} -- array of combinations
+ * @param input -- array of input objects, could be numbers, strings, etc
+ * @returns -- array of combinations
  */
 export = function combinations<T>(input: T[]) {
     const fn = function (active: T[], rest: T[], a: T[][]) {
-        if (!active.length && !rest.length) return;
+        if (!active.length && !rest.length) return [];
         if (!rest.length) {
             a.push(active);
         } else {
