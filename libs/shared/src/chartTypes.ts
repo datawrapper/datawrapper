@@ -37,6 +37,7 @@ export type Column = {
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
+    raw(): string;
 };
 
 export type Metadata = {
@@ -94,6 +95,8 @@ export type Dataset = {
     hasColumn: (name: string | number) => boolean;
     list: () => Row[];
     toCSV: () => string;
+    numRows: () => number;
+    numColumns: () => number;
 };
 
 export type VisAxesColumns = Record<string, Column[]>;
