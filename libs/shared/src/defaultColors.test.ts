@@ -1,6 +1,7 @@
 import test from 'ava';
+import omit from 'lodash/omit';
 import { defaultColors } from './defaultColors';
-import { Theme } from './themeTypes';
+import { ThemeData } from './themeTypes';
 
 const tests = [
     {
@@ -67,15 +68,19 @@ const tests = [
 ] as const;
 
 tests.forEach(
-    ({ theme, name, expectedResult }: { theme: Theme; name: string; expectedResult: any }) => {
+    ({
+        theme,
+        name,
+        expectedResult
+    }: {
+        theme: ThemeData;
+        name: string;
+        expectedResult: Partial<ReturnType<typeof defaultColors>>;
+    }) => {
         test(name, t => {
-            const result: any = defaultColors(theme);
-            for (const key in result) {
-                // blendColor is a function and can't be easily compared
-                if (key !== 'blendColor') {
-                    t.deepEqual(result[key], expectedResult[key]);
-                }
-            }
+            // Omit blendColor, because it's a function and can't be easily compared.
+            const result = omit(defaultColors(theme), ['blendColor']);
+            t.deepEqual(result, expectedResult);
         });
     }
 );

@@ -17,8 +17,8 @@ import { defaultColors as defaultColorsPure } from './pure/defaultColors';
  * // returns {"tickText":{"secondary":"#ffffff","primary":"#ffffff"},"series":"#ffffff","value":"#fef2e4","axis":"#ffffff","gridline":"#fedeb5","fallbackBaseColor":"#ffffff"}
  * defaultColors({"colors": {"bgBlendRatios": {"gridline": 0.5,"tickText": {"primary": 0,"secondary": 0}},"chartContentBaseColor": "#ffffff","background": "#FCB716"}}, chroma);
 
- * @param {*} themeData -- theme data for a chart
- * @returns {*} -- object with color definitions and blendColor function
+ * @param themeData -- theme data for a chart
+ * @returns -- object with color definitions and blendColor function
  */
 export function defaultColors(themeData: ThemeData) {
     return defaultColorsPure(themeData, chroma);
