@@ -16,11 +16,11 @@ const identity = <T>(d: T) => d;
  * This function returns a formatting function based, given a column object,
  * a metadata object and the axis column name.
  *
- * @param {object} numeral - Numeral.js instance
- * @param {object} column - the date column object
- * @param {object} metadata - the full metadata object
- * @param {string} axis - the column name of the axis
- * @returns {function}
+ * @param numeral - Numeral.js instance
+ * @param column - the date column object
+ * @param metadata - the full metadata object
+ * @param axis - the column name of the axis
+ * @returns formatting function
  */
 export function columnFormatter(
     numeral: typeof n,
