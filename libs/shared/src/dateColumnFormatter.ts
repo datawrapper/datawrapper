@@ -38,7 +38,7 @@ const createFormatter =
 export = function dateColumnFormatter(
     column: ColumnTypeExpanded,
     { normalizeDatesToEn = true }: DateColumnFormatterConfig = {}
-): Formatter {
+): Formatter | undefined {
     const format = column.format();
     if (!format) return identity;
 
@@ -85,6 +85,8 @@ export = function dateColumnFormatter(
                     (verbose ? formatDate(d, 'MMM DD, YYYY').replace(/ /g, '&nbsp;') + ' - ' : '') +
                     formatDate(d, 'LTS').replace(' ', '&nbsp;')
             );
+        default:
+            return undefined;
     }
 };
 
