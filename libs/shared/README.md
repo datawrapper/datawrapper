@@ -62,7 +62,7 @@ shared.httpReq();
 -   ~~[patchJSON(url, body, callback)](#patchJSON) ⇒ <code>Promise</code>~~
 -   [postEvent(chartId)](#postEvent) ⇒ <code>function</code>
 -   ~~[postJSON(url, body, callback)](#postJSON) ⇒ <code>Promise</code>~~
--   [purifyHTML(input, allowed)](#purifyHTML) ⇒ <code>string</code>
+-   [purifyHtml(input, allowed)](#purifyHtml) ⇒ <code>string</code>
 -   ~~[putJSON(url, body, callback)](#putJSON) ⇒ <code>Promise</code>~~
 -   [round(value, decimals)](#round) ⇒ <code>number</code>
 -   [set(object, key, value)](#set) ⇒
@@ -988,9 +988,9 @@ postJSON(
 
 ---
 
-<a name="purifyHTML"></a>
+<a name="purifyHtml"></a>
 
-### purifyHTML(input, allowed) ⇒ <code>string</code>
+### purifyHtml(input, allowed) ⇒ <code>string</code>
 
 Remove all non-whitelisted html tags from the given string
 

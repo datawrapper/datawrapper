@@ -6,7 +6,11 @@ export const createPermanentMemoizer = <TKey, TSerializedKey, TValue>(
     let map = new Map<TSerializedKey, TValue>();
 
     return {
-        get: (key: TKey): TValue => {
+        /* Use skipCheck if only one value is possible. */
+        get: (key: TKey, skipCheck = false): TValue => {
+            if (skipCheck && map.size === 1) {
+                return map.values().next().value;
+            }
             const serializedKey = keySerializer(key);
             if (map.has(serializedKey)) {
                 // We can be certain that `map.get` does not return undefined
