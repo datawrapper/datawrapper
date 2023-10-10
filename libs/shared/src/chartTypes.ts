@@ -168,7 +168,7 @@ export type Visualization = {
     get: SettingsGetter<object>;
     theme: () => ThemeData;
     chart: () => DwChart;
-    darkMode: () => boolean;
+    darkMode: (darkMode: boolean) => boolean;
     axes: AxesGetter;
     libraries: () => ChartLibraries;
     addFilterUI: (args: {
@@ -179,6 +179,13 @@ export type Visualization = {
     size: () => [number, number];
     colorMap: () => (color: string) => string;
     colorMode: () => string;
+    /**
+     * Use this to wait until a visualization has finished rendering
+     *
+     * @returns {Promise} resolves when the rendering is completed
+     */
+    rendered: () => Promise<void>;
+    __rendered: boolean;
     __lastRow: number;
     textDirection: TextDirection;
 };
