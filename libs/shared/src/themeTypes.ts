@@ -60,6 +60,33 @@ type ThemeBlock = {
 export type Block = { id?: string; type?: string; children?: { id?: string; type?: string }[] };
 export type Container = Block & { type: 'container'; children: Block[] };
 
+type FontWeight =
+    | 'bold'
+    | 'bolder'
+    | 'light'
+    | 'lighter'
+    | 'normal'
+    | 'initial'
+    | 100
+    | 200
+    | 300
+    | 400
+    | 500
+    | 600
+    | 700
+    | 800
+    | 900;
+type TextTransform = 'uppercase' | 'capitalize' | 'lowercase' | 'full-width' | 'none';
+type TypographyObject = {
+    color?: string;
+    fontSize?: number;
+    fontWeight?: FontWeight;
+    typeface?: string;
+    lineHeight?: number;
+    textTransform?: TextTransform;
+    letterSpacing?: string;
+};
+
 export type ThemeData = {
     type?: 'web' | 'print';
     blocks?: Record<string, ThemeBlock>;
@@ -93,6 +120,13 @@ export type ThemeData = {
     typography?: {
         chart?: {
             fontSize?: number;
+        };
+    };
+    vis?: {
+        'multiple-lines'?: {
+            labels?: {
+                panelTitles?: TypographyObject;
+            };
         };
     };
 };
