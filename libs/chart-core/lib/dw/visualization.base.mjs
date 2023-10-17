@@ -24,6 +24,7 @@ extend(base, {
     __resolveRenderedAfter: 300,
 
     setup() {
+        this.__callbacks = {};
         this.__renderEvents = { resolve: events(), reject: events() };
         this.renderingComplete = debounce(this.__renderingComplete, this.__resolveRenderedAfter);
     },
@@ -40,7 +41,6 @@ extend(base, {
         this.__rendered = false;
         // reset internal properties
         this.__colors = {};
-        this.__callbacks = {};
 
         if (window.parent && window.parent.postMessage) {
             window.parent.postMessage('datawrapper:vis:init', '*');
