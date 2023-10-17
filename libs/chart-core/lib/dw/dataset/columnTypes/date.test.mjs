@@ -3,8 +3,8 @@ import column from '../column.mjs';
 import range from 'underscore/modules/range.js';
 
 const ymdhms = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) => new Date(y, m - 1, d, h, mm, s);
-const ymdhmsUTC = (y, m = 1, d = 1, h = 0, mm = 0, s = 0) =>
-    new Date(Date.UTC(y, m - 1, d, h, mm, s));
+const ymdhmsUTC = (y, m = 1, d = 1, h = 0, mm = 0, s = 0, ms = 0) =>
+    new Date(Date.UTC(y, m - 1, d, h, mm, s, ms));
 const ymd = (y, m = 1, d = 1) => new Date(y, m - 1, d);
 const ymdUTC = (y, m = 1, d = 1) => new Date(Date.UTC(y, m - 1, d));
 const yr = y => ymd(y);
@@ -845,6 +845,21 @@ run('ISO dates with seconds', {
         ymdhmsUTC(2023, 1, 3, 13, 0, 0),
         ymdhmsUTC(2023, 1, 3, 12, 0, 0),
         ymdhmsUTC(2023, 1, 3, 11, 0, 0)
+    ]
+});
+
+run('ISO dates with milliseconds', {
+    values: [
+        '2023-01-03T15:34:26.4460520+02:00',
+        '2023-01-03T15:34:26.446Z',
+        '2023-01-03T15:34:26.4Z',
+        '2023-01-03T15:00:00.44605208Z'
+    ],
+    parsed: [
+        ymdhmsUTC(2023, 1, 3, 13, 34, 26, 446.052),
+        ymdhmsUTC(2023, 1, 3, 15, 34, 26, 446),
+        ymdhmsUTC(2023, 1, 3, 15, 34, 26, 400),
+        ymdhmsUTC(2023, 1, 3, 15, 0, 0, 446.05208)
     ]
 });
 
