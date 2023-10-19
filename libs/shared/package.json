@@ -79,6 +79,9 @@
     "publishConfig": {
         "access": "public"
     },
+    "files": [
+        "dist"
+    ],
     "exports": {
         "./analytics.d.ts": "./dist/analytics.d.ts",
         "./analytics.js": "./dist/analytics.js",
