@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.11.1",
+    "version": "1.12.0",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -92,6 +92,9 @@
         "./arrayToObject.d.ts": "./dist/arrayToObject.d.ts",
         "./arrayToObject.js": "./dist/arrayToObject.js",
         "./arrayToObject": "./dist/arrayToObject.js",
+        "./assignWithEmptyObjects.d.ts": "./dist/assignWithEmptyObjects.d.ts",
+        "./assignWithEmptyObjects.js": "./dist/assignWithEmptyObjects.js",
+        "./assignWithEmptyObjects": "./dist/assignWithEmptyObjects.js",
         "./autoTickFormat.d.ts": "./dist/autoTickFormat.d.ts",
         "./autoTickFormat.js": "./dist/autoTickFormat.js",
         "./autoTickFormat": "./dist/autoTickFormat.js",
