@@ -36,3 +36,4 @@ export { default as tailLength } from './tailLength';
 export { default as toFixed } from './toFixed';
 export { default as truncate } from './truncate';
 export { isAllowedSourceUrl, isValidUrl } from './validation';
+export { default as assignWithEmptyObjects } from './assignWithEmptyObjects';
