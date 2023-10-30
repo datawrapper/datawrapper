@@ -5,7 +5,7 @@ import some from 'underscore/modules/some.js';
 import isUndefined from 'underscore/modules/isUndefined.js';
 import isNull from 'underscore/modules/isNull.js';
 import isEqual from 'underscore/modules/isEqual.js';
-import { put } from '@datawrapper/shared/httpReq.js';
+import httpReq from '@datawrapper/shared/httpReq.js';
 
 import delimited from './dataset/delimited.mjs';
 import json from './dataset/json.mjs';
@@ -16,7 +16,8 @@ import addComputedColumns from './dataset/addComputedColumns.mjs';
 const storeChanges = throttle((chart, callback) => {
     const state = chart.serialize();
 
-    put(`/v3/charts/${state.id}`, { payload: state })
+    httpReq
+        .put(`/v3/charts/${state.id}`, { payload: state })
         .then(attributes => {
             chart.fire('save', attributes);
             if (callback) callback();
@@ -29,12 +30,13 @@ const storeChanges = throttle((chart, callback) => {
 const storeData = throttle((chart, callback) => {
     const data = chart.getMetadata('data.json') ? JSON.stringify(chart.dataset()) : chart.rawData();
     // const data = chart.rawData();
-    put(`/v3/charts/${chart.get().id}/data`, {
-        body: data,
-        headers: {
-            'Content-Type': 'text/csv'
-        }
-    })
+    httpReq
+        .put(`/v3/charts/${chart.get().id}/data`, {
+            body: data,
+            headers: {
+                'Content-Type': 'text/csv'
+            }
+        })
         .then(() => {
             if (callback) callback();
         })
