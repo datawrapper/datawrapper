@@ -1,7 +1,7 @@
 **Column** is the base class for data columns (sometimes also called data series) in Datawrapper. A column has a *column type* and stores a list of values as *rows*. Also they support common computations such as calculating the sum and the range of the data it holds.
 
 ```js
-import Column from '@datawrapper/chart-core/lib/dw/dataset/column';
+import Column from '@datawrapper/chart-core/lib/dw/dataset/column.js;
 const col = Column('my column', values);
 ```
 

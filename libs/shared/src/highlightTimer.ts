@@ -22,7 +22,7 @@
  *		the highlight triggers (in milliseconds)
  * @returns {object}
  */
-export = function highlightTimer(action: (highlighted: boolean | null) => void, delay = 700) {
+export default function highlightTimer(action: (highlighted: boolean | null) => void, delay = 700) {
     let setTimer: ReturnType<typeof setTimeout>;
     let highlighted: boolean | null = false;
     let inactive = true;
@@ -50,4 +50,4 @@ export = function highlightTimer(action: (highlighted: boolean | null) => void, 
             return highlighted;
         }
     };
-};
+}

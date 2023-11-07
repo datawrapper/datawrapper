@@ -1,5 +1,5 @@
-import { BrowserWindow, GlobalDw } from './browserGlobals';
-import purifyHtml from './purifyHtml';
+import { BrowserWindow, GlobalDw } from './browserGlobals.js';
+import purifyHtml from './purifyHtml.js';
 
 declare global {
     // This is not a new meaningless interface;

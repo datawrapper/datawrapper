@@ -14,7 +14,7 @@
  * const postEvent = genPostEvent(chart.get('id'), true);
  * postEvent('bar.click', { value: 123 });
  */
-export = function postEvent(chartId: string, isIframe: boolean) {
+export default function postEvent(chartId: string, isIframe: boolean) {
     const host = isIframe ? window.parent : window;
     return function (event: string, data?: Record<string, unknown>) {
         if (host && host.postMessage) {
@@ -27,4 +27,4 @@ export = function postEvent(chartId: string, isIframe: boolean) {
             host.postMessage(evt, '*');
         }
     };
-};
+}

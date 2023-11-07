@@ -33,4 +33,4 @@ function clone(o: unknown) {
     }
 }
 
-export = clone;
+export default clone;

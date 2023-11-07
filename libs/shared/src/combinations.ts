@@ -15,7 +15,7 @@
  * @param input -- array of input objects, could be numbers, strings, etc
  * @returns -- array of combinations
  */
-export = function combinations<T>(input: T[]) {
+export default function combinations<T>(input: T[]) {
     const fn = function (active: T[], rest: T[], a: T[][]) {
         if (!active.length && !rest.length) return [];
         if (!rest.length) {
@@ -27,4 +27,4 @@ export = function combinations<T>(input: T[]) {
         return a;
     };
     return fn([], input, []);
-};
+}

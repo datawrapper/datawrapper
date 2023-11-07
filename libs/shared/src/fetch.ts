@@ -1,4 +1,4 @@
-import { getValueOrDefault } from './getValueOrDefault';
+import { getValueOrDefault } from './getValueOrDefault.js';
 
 // `any` is more appropriate than `unknown`, just like for JSON.parse
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

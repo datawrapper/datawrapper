@@ -15,7 +15,7 @@ const patternRotation: Record<string, number> = {
  *
  * @param {*} parameters -- style parameters for the pattern
  */
-export = function drawPattern({
+export default function drawPattern({
     defs,
     id,
     stroke = 'black',
@@ -54,4 +54,4 @@ export = function drawPattern({
         .attr('y2', patternWidth)
         .attr('stroke', stroke)
         .attr('stroke-width', strokeWidth * scale);
-};
+}

@@ -11,7 +11,7 @@
  * @param {string} text - input text
  * @returns {string} - slugified text
  */
-export = function slugify(text: string) {
+export default function slugify(text: string) {
     return text
         .toString()
         .toLowerCase()
@@ -20,4 +20,4 @@ export = function slugify(text: string) {
         .replace(/--+/g, '-') // Replace multiple - with single -
         .replace(/^-+/, '') // Trim - from start of text
         .replace(/-+$/, ''); // Trim - from end of text
-};
+}

@@ -1,4 +1,4 @@
-import { Column, DatePrecision } from './chartTypes';
+import { Column, DatePrecision } from './chartTypes.js';
 
 const MINUTE = 6e4;
 const HOUR = MINUTE * 60;

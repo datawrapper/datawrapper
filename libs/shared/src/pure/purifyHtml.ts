@@ -1,4 +1,4 @@
-import { createPermanentMemoizer } from '../memoizer';
+import { createPermanentMemoizer } from '../memoizer.js';
 
 const DEFAULT_ALLOWED = [
     'a',
@@ -92,4 +92,4 @@ function purifyHtmlFactory(DOMPurify: typeof import('isomorphic-dompurify')): Pu
     };
 }
 
-export = purifyHtmlFactory;
+export default purifyHtmlFactory;

@@ -21,13 +21,13 @@ import isPlainObject from 'lodash/isPlainObject.js';
  *
  * @returns {object} - the merge patch
  */
-export = function objectDiff<TSource, TTarget>(
+export default function objectDiff<TSource, TTarget>(
     source: TSource,
     target: TTarget,
     allowedKeys: ((keyof TSource | keyof TTarget) & string)[] | null = null
 ) {
     return diffKeys(source, target, allowedKeys ? new Set(allowedKeys) : null);
-};
+}
 
 /**
  * @param {object} source - the source object

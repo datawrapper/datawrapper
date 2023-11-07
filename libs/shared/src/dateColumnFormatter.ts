@@ -1,11 +1,11 @@
 import { isDate as isDate, identity } from 'underscore';
 import dayjs from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
+import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 dayjs.extend(advancedFormat);
 dayjs.extend(localizedFormat);
 
-import { ColumnTypeExpanded, DateColumnFormatterConfig } from './chartTypes';
+import { ColumnTypeExpanded, DateColumnFormatterConfig } from './chartTypes.js';
 
 type Formatter = {
     (d: Date, verbose?: boolean): Date | string | number;
@@ -35,7 +35,7 @@ const createFormatter =
  * @param {object} column - the date column object
  * @returns {function}
  */
-export = function dateColumnFormatter(
+export default function dateColumnFormatter(
     column: ColumnTypeExpanded,
     { normalizeDatesToEn = true }: DateColumnFormatterConfig = {}
 ): Formatter | undefined {
@@ -88,7 +88,7 @@ export = function dateColumnFormatter(
         default:
             return undefined;
     }
-};
+}
 
 function dateToIsoWeek(date: Date) {
     const d = date.getUTCDay();

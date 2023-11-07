@@ -1,5 +1,5 @@
-import significantDimension from './significantDimension';
-import round from './round';
+import significantDimension from './significantDimension.js';
+import round from './round.js';
 
 /**
  * rounds an array of numbers to the least number of decimals
@@ -18,8 +18,8 @@ import round from './round';
  * @param {number} tolerance - the percent of uniq input values that we can tolerate to lose after rounding
  * @returns the rounded values
  */
-export = function smartRound(values: number[], addPrecision = 0, tolerance = 0.1) {
+export default function smartRound(values: number[], addPrecision = 0, tolerance = 0.1) {
     let dim = significantDimension(values, tolerance);
     dim += addPrecision;
     return values.map(v => round(v, dim));
-};
+}

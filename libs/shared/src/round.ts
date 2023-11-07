@@ -14,7 +14,7 @@
  * @param {number} decimals - the number of decimals
  * @returns {number} - rounded value
  */
-export = function round(value: number, decimals = 0) {
+export default function round(value: number, decimals = 0) {
     const base = Math.pow(10, decimals);
     return Math.round(value * base) / base;
-};
+}

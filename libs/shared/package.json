@@ -1,6 +1,6 @@
 {
     "name": "@datawrapper/shared",
-    "version": "1.12.0",
+    "version": "1.13.0-1",
     "description": "shared functions used throughout datawrapper",
     "keywords": [
         "js",
@@ -14,17 +14,19 @@
     "license": "MIT",
     "author": "Datawrapper GmbH",
     "main": "index.js",
-    "type": "commonjs",
+    "type": "module",
     "engines": {
         "node": ">=18.0.0",
         "npm": ">=7.0.0"
     },
     "scripts": {
+        "build:full": "../../scripts/install.js --build-untracked-dependencies --include-sub-packages && npm run build",
         "test": "ava",
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
-        "build": "rm -Rf dist/* && tsc --project ./tsconfig.build.json",
-        "dev": "rm -Rf dist/* && tsc --watch --project ./tsconfig.build.json",
+        "build": "scripts/build.sh",
+        "dev": "echo \"Please use 'npm run dev:esm' and note that it's only possible to build the ESM version of the package this way.\"; exit 1",
+        "dev:esm": "rm -Rf dist/esm/* && tsc --watch --project ./tsconfig.build.esm.json",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run lint && npm run build && npm run test",
         "lint": "(cd ../.. && scripts/lint libs/shared)",
@@ -37,15 +39,15 @@
         "url": "git+ssh://git@github.com/datawrapper/shared.git"
     },
     "devDependencies": {
-        "@emotion/css": "^11.11.0",
-        "@types/chroma-js": "^2.1.4",
+        "@emotion/css": "^11.11.2",
+        "@types/chroma-js": "^2.4.2",
         "@types/d3-color": "^1.4.2",
         "@types/fontfaceobserver": "^2.1.0",
         "@types/jquery": "^3.5.14",
         "@types/js-cookie": "^3.0.2",
         "@types/jsdom": "^20.0.0",
         "@types/lodash": "^4.14.186",
-        "@types/node-fetch": "^2.6.2",
+        "@types/node-fetch": "^2.6.7",
         "@types/numeral": "^2.0.2",
         "@types/raf": "^3.4.0",
         "@types/sinon": "^10.0.13",
@@ -56,226 +58,1254 @@
         "fast-check": "^3.1.2",
         "form-data": "^4.0.0",
         "jsdoc-to-markdown": "^7.1.1",
-        "jsdom": "^20.0.2",
+        "jsdom": "^22.1.0",
         "nock": "^13.2.9",
         "numeral": "^2.0.6",
         "sinon": "^14.0.0",
-        "ts-node": "^10.9.1",
+        "tsx": "^3.14.0",
         "typescript": "^5.2.2"
     },
     "dependencies": {
         "chroma-js": "^2.4.2",
         "d3-color": "^1.4.1",
-        "dayjs": "^1.11.3",
+        "dayjs": "^1.11.10",
         "domutils": "^2.8.0",
         "fontfaceobserver": "^2.1.0",
         "htmlparser2": "^7.2.0",
-        "isomorphic-dompurify": "^0.22.0",
+        "isomorphic-dompurify": "^1.9.0",
         "js-cookie": "^2.2.1",
         "lodash": "^4.17.21",
-        "node-fetch": "^2.6.0",
-        "underscore": "^1.13.1"
+        "node-fetch": "^2.7.0",
+        "underscore": "^1.13.6"
     },
     "publishConfig": {
         "access": "public"
     },
     "files": [
-        "dist"
+        "dist",
+        "package.json"
     ],
     "exports": {
-        "./analytics.d.ts": "./dist/analytics.d.ts",
-        "./analytics.js": "./dist/analytics.js",
-        "./analytics": "./dist/analytics.js",
-        "./area.d.ts": "./dist/area.d.ts",
-        "./area.js": "./dist/area.js",
-        "./area": "./dist/area.js",
-        "./arrayToObject.d.ts": "./dist/arrayToObject.d.ts",
-        "./arrayToObject.js": "./dist/arrayToObject.js",
-        "./arrayToObject": "./dist/arrayToObject.js",
-        "./assignWithEmptyObjects.d.ts": "./dist/assignWithEmptyObjects.d.ts",
-        "./assignWithEmptyObjects.js": "./dist/assignWithEmptyObjects.js",
-        "./assignWithEmptyObjects": "./dist/assignWithEmptyObjects.js",
-        "./autoTickFormat.d.ts": "./dist/autoTickFormat.d.ts",
-        "./autoTickFormat.js": "./dist/autoTickFormat.js",
-        "./autoTickFormat": "./dist/autoTickFormat.js",
-        "./chartConstants.d.ts": "./dist/chartConstants.d.ts",
-        "./chartConstants.js": "./dist/chartConstants.js",
-        "./chartConstants": "./dist/chartConstants.js",
-        "./chartTypes.d.ts": "./dist/chartTypes.d.ts",
-        "./chartTypes.js": "./dist/chartTypes.js",
-        "./chartTypes": "./dist/chartTypes.js",
-        "./clone.d.ts": "./dist/clone.d.ts",
-        "./clone.js": "./dist/clone.js",
-        "./clone": "./dist/clone.js",
-        "./colorLightness.d.ts": "./dist/colorLightness.d.ts",
-        "./colorLightness.js": "./dist/colorLightness.js",
-        "./colorLightness": "./dist/colorLightness.js",
-        "./columnFormatter.d.ts": "./dist/columnFormatter.d.ts",
-        "./columnFormatter.js": "./dist/columnFormatter.js",
-        "./columnFormatter": "./dist/columnFormatter.js",
-        "./columnNameToVariable.d.ts": "./dist/columnNameToVariable.d.ts",
-        "./columnNameToVariable.js": "./dist/columnNameToVariable.js",
-        "./columnNameToVariable": "./dist/columnNameToVariable.js",
-        "./combinations.d.ts": "./dist/combinations.d.ts",
-        "./combinations.js": "./dist/combinations.js",
-        "./combinations": "./dist/combinations.js",
-        "./dateColumnFormatter.d.ts": "./dist/dateColumnFormatter.d.ts",
-        "./dateColumnFormatter.js": "./dist/dateColumnFormatter.js",
-        "./dateColumnFormatter": "./dist/dateColumnFormatter.js",
-        "./decodeHtml.d.ts": "./dist/decodeHtml.d.ts",
-        "./decodeHtml.js.ssr": "./dist/decodeHtml.ssr.js",
-        "./decodeHtml.js": "./dist/decodeHtml.js",
-        "./decodeHtml.ssr.d.ts": "./dist/decodeHtml.ssr.d.ts",
-        "./decodeHtml.ssr.js": "./dist/./decodeHtml.ssr.js",
-        "./decodeHtml.ssr": "./dist/decodeHtml.ssr.js",
-        "./decodeHtml": "./dist/decodeHtml.js",
-        "./defaultColors.d.ts": "./dist/defaultColors.d.ts",
-        "./defaultColors.js": "./dist/defaultColors.js",
-        "./defaultColors": "./dist/defaultColors.js",
-        "./delimited.d.ts": "./dist/delimited.d.ts",
-        "./delimited.js": "./dist/delimited.js",
-        "./delimited": "./dist/delimited.js",
-        "./drawPattern.d.ts": "./dist/drawPattern.d.ts",
-        "./drawPattern.js": "./dist/drawPattern.js",
-        "./drawPattern": "./dist/drawPattern.js",
-        "./ensureColorContrast.d.ts": "./dist/ensureColorContrast.d.ts",
-        "./ensureColorContrast.js": "./dist/ensureColorContrast.js",
-        "./ensureColorContrast": "./dist/ensureColorContrast.js",
-        "./equalish.d.ts": "./dist/equalish.d.ts",
-        "./equalish.js": "./dist/equalish.js",
-        "./equalish": "./dist/equalish.js",
-        "./escapeHtml.d.ts": "./dist/escapeHtml.d.ts",
-        "./escapeHtml.js": "./dist/escapeHtml.js",
-        "./escapeHtml": "./dist/escapeHtml.js",
-        "./estimateTextWidth.d.ts": "./dist/estimateTextWidth.d.ts",
-        "./estimateTextWidth.js": "./dist/estimateTextWidth.js",
-        "./estimateTextWidth": "./dist/estimateTextWidth.js",
-        "./exportPrintTypes.d.ts": "./dist/exportPrintTypes.d.ts",
-        "./exportPrintTypes.js": "./dist/exportPrintTypes.js",
-        "./exportPrintTypes": "./dist/exportPrintTypes.js",
-        "./fetch.d.ts": "./dist/fetch.d.ts",
-        "./fetch.js": "./dist/fetch.js",
-        "./fetch": "./dist/fetch.js",
-        "./formatNumber.d.ts": "./dist/formatNumber.d.ts",
-        "./formatNumber.js": "./dist/formatNumber.js",
-        "./formatNumber": "./dist/formatNumber.js",
-        "./get.d.ts": "./dist/get.d.ts",
-        "./get.js": "./dist/get.js",
-        "./get": "./dist/get.js",
-        "./getOverlayColor.d.ts": "./dist/getOverlayColor.d.ts",
-        "./getOverlayColor.js": "./dist/getOverlayColor.js",
-        "./getOverlayColor": "./dist/getOverlayColor.js",
-        "./getOverlayColumnTitle.d.ts": "./dist/getOverlayColumnTitle.d.ts",
-        "./getOverlayColumnTitle.js": "./dist/getOverlayColumnTitle.js",
-        "./getOverlayColumnTitle": "./dist/getOverlayColumnTitle.js",
-        "./getValueOrDefault.d.ts": "./dist/getValueOrDefault.d.ts",
-        "./getValueOrDefault.js": "./dist/getValueOrDefault.js",
-        "./getValueOrDefault": "./dist/getValueOrDefault.js",
-        "./hideExtraZeros.d.ts": "./dist/hideExtraZeros.d.ts",
-        "./hideExtraZeros.js": "./dist/hideExtraZeros.js",
-        "./hideExtraZeros": "./dist/hideExtraZeros.js",
-        "./highlightTimer.d.ts": "./dist/highlightTimer.d.ts",
-        "./highlightTimer.js": "./dist/highlightTimer.js",
-        "./highlightTimer": "./dist/highlightTimer.js",
-        "./httpReq.d.ts": "./dist/httpReq.d.ts",
-        "./httpReq.js": "./dist/httpReq.js",
-        "./httpReq.ssr.d.ts": "./dist/httpReq.ssr.d.ts",
-        "./httpReq.ssr.js": "./dist/httpReq.ssr.js",
-        "./httpReq.ssr": "./dist/httpReq.ssr.js",
-        "./httpReq": "./dist/httpReq.js",
-        "./httpReqOptions.d.ts": "./dist/httpReqOptions.d.ts",
-        "./httpReqOptions.js": "./dist/httpReqOptions.js",
-        "./httpReqOptions": "./dist/httpReqOptions.js",
-        "./index.d.ts": "./dist/index.d.ts",
-        "./index.js": "./dist/index.js",
-        "./index": "./dist/index.js",
-        "./invertColor.d.ts": "./dist/invertColor.d.ts",
-        "./invertColor.js": "./dist/invertColor.js",
-        "./invertColor": "./dist/invertColor.js",
-        "./isValidUrl.d.ts": "./dist/isValidUrl.d.ts",
-        "./isValidUrl.js": "./dist/isValidUrl.js",
-        "./isValidUrl": "./dist/isValidUrl.js",
-        "./kMeans.d.ts": "./dist/kMeans.d.ts",
-        "./kMeans.js": "./dist/kMeans.js",
-        "./kMeans": "./dist/kMeans.js",
-        "./l10n.d.ts": "./dist/l10n.d.ts",
-        "./l10n.js": "./dist/l10n.js",
-        "./l10n": "./dist/l10n.js",
-        "./makeUnique.d.ts": "./dist/makeUnique.d.ts",
-        "./makeUnique.js": "./dist/makeUnique.js",
-        "./makeUnique": "./dist/makeUnique.js",
-        "./memoizer.d.ts": "./dist/memoizer.d.ts",
-        "./memoizer.js": "./dist/memoizer.js",
-        "./memoizer": "./dist/memoizer.js",
-        "./normalize.d.ts": "./dist/normalize.d.ts",
-        "./normalize.js": "./dist/normalize.js",
-        "./normalize": "./dist/normalize.js",
-        "./numberColumnFormatter.d.ts": "./dist/numberColumnFormatter.d.ts",
-        "./numberColumnFormatter.js": "./dist/numberColumnFormatter.js",
-        "./numberColumnFormatter": "./dist/numberColumnFormatter.js",
-        "./objectDiff.d.ts": "./dist/objectDiff.d.ts",
-        "./objectDiff.js": "./dist/objectDiff.js",
-        "./objectDiff": "./dist/objectDiff.js",
-        "./objectPaths.d.ts": "./dist/objectPaths.d.ts",
-        "./objectPaths.js": "./dist/objectPaths.js",
-        "./objectPaths": "./dist/objectPaths.js",
-        "./observeFonts.d.ts": "./dist/observeFonts.d.ts",
-        "./observeFonts.js": "./dist/observeFonts.js",
-        "./observeFonts": "./dist/observeFonts.js",
-        "./postEvent.d.ts": "./dist/postEvent.d.ts",
-        "./postEvent.js": "./dist/postEvent.js",
-        "./postEvent": "./dist/postEvent.js",
-        "./pure/defaultColors.d.ts": "./dist/./pure/defaultColors.d.ts",
-        "./pure/defaultColors.js": "./dist/pure/defaultColors.js",
-        "./pure/defaultColors": "./dist/pure/defaultColors.js",
-        "./pure/ensureColorContrast.d.ts": "./dist/./pure/ensureColorContrast.d.ts",
-        "./pure/ensureColorContrast.js": "./dist/pure/ensureColorContrast.js",
-        "./pure/ensureColorContrast": "./dist/pure/ensureColorContrast.js",
-        "./pure/purifyHtml.d.ts": "./dist/purifyHtml.d.ts",
-        "./pure/purifyHtml.js": "./dist/purifyHtml.js",
-        "./pure/purifyHtml": "./dist/purifyHtml.js",
-        "./purifyHtml.d.ts": "./dist/purifyHtml.d.ts",
-        "./purifyHtml.js": "./dist/purifyHtml.js",
-        "./purifyHtml": "./dist/purifyHtml.js",
-        "./purifySvg.d.ts": "./dist/purifySvg.d.ts",
-        "./purifySvg.js": "./dist/purifySvg.js",
-        "./purifySvg": "./dist/purifySvg.js",
-        "./round.d.ts": "./dist/round.d.ts",
-        "./round.js": "./dist/round.js",
-        "./round": "./dist/round.js",
-        "./set.d.ts": "./dist/set.d.ts",
-        "./set.js": "./dist/set.js",
-        "./set": "./dist/set.js",
-        "./significantDimension.d.ts": "./dist/significantDimension.d.ts",
-        "./significantDimension.js": "./dist/significantDimension.js",
-        "./significantDimension": "./dist/significantDimension.js",
-        "./slugify.d.ts": "./dist/slugify.d.ts",
-        "./slugify.js": "./dist/slugify.js",
-        "./slugify": "./dist/slugify.js",
-        "./smartRound.d.ts": "./dist/smartRound.d.ts",
-        "./smartRound.js": "./dist/smartRound.js",
-        "./smartRound": "./dist/smartRound.js",
-        "./sportsSeasonFormat.d.ts": "./dist/sportsSeasonFormat.d.ts",
-        "./sportsSeasonFormat.js": "./dist/sportsSeasonFormat.js",
-        "./sportsSeasonFormat": "./dist/sportsSeasonFormat.js",
-        "./tailLength.d.ts": "./dist/tailLength.d.ts",
-        "./tailLength.js": "./dist/tailLength.js",
-        "./tailLength": "./dist/tailLength.js",
-        "./themeTypes.d.ts": "./dist/themeTypes.d.ts",
-        "./themeTypes.js": "./dist/themeTypes.js",
-        "./themeTypes": "./dist/themeTypes.js",
-        "./toFixed.d.ts": "./dist/toFixed.d.ts",
-        "./toFixed.js": "./dist/toFixed.js",
-        "./toFixed": "./dist/toFixed.js",
-        "./truncate.d.ts": "./dist/truncate.d.ts",
-        "./truncate.js": "./dist/truncate.js",
-        "./truncate": "./dist/truncate.js",
-        "./units.d.ts": "./dist/units.d.ts",
-        "./units.js": "./dist/units.js",
-        "./units": "./dist/units.js",
-        "./validation.d.ts": "./dist/validation.d.ts",
-        "./validation.js": "./dist/validation.js",
-        "./validation": "./dist/validation.js",
-        ".": "./dist/index.js"
+        "./analytics.d.ts": {
+            "require": "./dist/cjs/analytics.d.cts",
+            "default": "./dist/esm/analytics.d.ts"
+        },
+        "./analytics.js": {
+            "require": "./dist/cjs/analytics.cjs",
+            "types": "./dist/cjs/analytics.d.cts",
+            "default": "./dist/esm/analytics.js"
+        },
+        "./analytics": {
+            "require": "./dist/cjs/analytics.cjs",
+            "types": "./dist/cjs/analytics.d.cts",
+            "default": "./dist/esm/analytics.js"
+        },
+        "./dist/cjs/analytics.cjs": {
+            "require": "./dist/cjs/analytics.cjs",
+            "types": "./dist/cjs/analytics.d.cts",
+            "default": "./dist/esm/analytics.js"
+        },
+        "./area.d.ts": {
+            "require": "./dist/cjs/area.d.cts",
+            "default": "./dist/esm/area.d.ts"
+        },
+        "./area.js": {
+            "require": "./dist/cjs/area.cjs",
+            "types": "./dist/cjs/area.d.cts",
+            "default": "./dist/esm/area.js"
+        },
+        "./area": {
+            "require": "./dist/cjs/area.cjs",
+            "types": "./dist/cjs/area.d.cts",
+            "default": "./dist/esm/area.js"
+        },
+        "./dist/cjs/area.cjs": {
+            "require": "./dist/cjs/area.cjs",
+            "types": "./dist/cjs/area.d.cts",
+            "default": "./dist/esm/area.js"
+        },
+        "./arrayToObject.d.ts": {
+            "require": "./dist/cjs/arrayToObject.d.cts",
+            "default": "./dist/esm/arrayToObject.d.ts"
+        },
+        "./arrayToObject.js": {
+            "require": "./dist/cjs/arrayToObject.cjs",
+            "types": "./dist/cjs/arrayToObject.d.cts",
+            "default": "./dist/esm/arrayToObject.js"
+        },
+        "./arrayToObject": {
+            "require": "./dist/cjs/arrayToObject.cjs",
+            "types": "./dist/cjs/arrayToObject.d.cts",
+            "default": "./dist/esm/arrayToObject.js"
+        },
+        "./dist/cjs/arrayToObject.cjs": {
+            "require": "./dist/cjs/arrayToObject.cjs",
+            "types": "./dist/cjs/arrayToObject.d.cts",
+            "default": "./dist/esm/arrayToObject.js"
+        },
+        "./assignWithEmptyObjects.d.ts": {
+            "require": "./dist/cjs/assignWithEmptyObjects.d.cts",
+            "default": "./dist/esm/assignWithEmptyObjects.d.ts"
+        },
+        "./assignWithEmptyObjects.js": {
+            "require": "./dist/cjs/assignWithEmptyObjects.cjs",
+            "types": "./dist/cjs/assignWithEmptyObjects.d.cts",
+            "default": "./dist/esm/assignWithEmptyObjects.js"
+        },
+        "./assignWithEmptyObjects": {
+            "require": "./dist/cjs/assignWithEmptyObjects.cjs",
+            "types": "./dist/cjs/assignWithEmptyObjects.d.cts",
+            "default": "./dist/esm/assignWithEmptyObjects.js"
+        },
+        "./dist/cjs/assignWithEmptyObjects.cjs": {
+            "require": "./dist/cjs/assignWithEmptyObjects.cjs",
+            "types": "./dist/cjs/assignWithEmptyObjects.d.cts",
+            "default": "./dist/esm/assignWithEmptyObjects.js"
+        },
+        "./autoTickFormat.d.ts": {
+            "require": "./dist/cjs/autoTickFormat.d.cts",
+            "default": "./dist/esm/autoTickFormat.d.ts"
+        },
+        "./autoTickFormat.js": {
+            "require": "./dist/cjs/autoTickFormat.cjs",
+            "types": "./dist/cjs/autoTickFormat.d.cts",
+            "default": "./dist/esm/autoTickFormat.js"
+        },
+        "./autoTickFormat": {
+            "require": "./dist/cjs/autoTickFormat.cjs",
+            "types": "./dist/cjs/autoTickFormat.d.cts",
+            "default": "./dist/esm/autoTickFormat.js"
+        },
+        "./dist/cjs/autoTickFormat.cjs": {
+            "require": "./dist/cjs/autoTickFormat.cjs",
+            "types": "./dist/cjs/autoTickFormat.d.cts",
+            "default": "./dist/esm/autoTickFormat.js"
+        },
+        "./chartConstants.d.ts": {
+            "require": "./dist/cjs/chartConstants.d.cts",
+            "default": "./dist/esm/chartConstants.d.ts"
+        },
+        "./chartConstants.js": {
+            "require": "./dist/cjs/chartConstants.cjs",
+            "types": "./dist/cjs/chartConstants.d.cts",
+            "default": "./dist/esm/chartConstants.js"
+        },
+        "./chartConstants": {
+            "require": "./dist/cjs/chartConstants.cjs",
+            "types": "./dist/cjs/chartConstants.d.cts",
+            "default": "./dist/esm/chartConstants.js"
+        },
+        "./dist/cjs/chartConstants.cjs": {
+            "require": "./dist/cjs/chartConstants.cjs",
+            "types": "./dist/cjs/chartConstants.d.cts",
+            "default": "./dist/esm/chartConstants.js"
+        },
+        "./chartTypes.d.ts": {
+            "require": "./dist/cjs/chartTypes.d.cts",
+            "default": "./dist/esm/chartTypes.d.ts"
+        },
+        "./chartTypes.js": {
+            "require": "./dist/cjs/chartTypes.cjs",
+            "types": "./dist/cjs/chartTypes.d.cts",
+            "default": "./dist/esm/chartTypes.js"
+        },
+        "./chartTypes": {
+            "require": "./dist/cjs/chartTypes.cjs",
+            "types": "./dist/cjs/chartTypes.d.cts",
+            "default": "./dist/esm/chartTypes.js"
+        },
+        "./dist/cjs/chartTypes.cjs": {
+            "require": "./dist/cjs/chartTypes.cjs",
+            "types": "./dist/cjs/chartTypes.d.cts",
+            "default": "./dist/esm/chartTypes.js"
+        },
+        "./clone.d.ts": {
+            "require": "./dist/cjs/clone.d.cts",
+            "default": "./dist/esm/clone.d.ts"
+        },
+        "./clone.js": {
+            "require": "./dist/cjs/clone.cjs",
+            "types": "./dist/cjs/clone.d.cts",
+            "default": "./dist/esm/clone.js"
+        },
+        "./clone": {
+            "require": "./dist/cjs/clone.cjs",
+            "types": "./dist/cjs/clone.d.cts",
+            "default": "./dist/esm/clone.js"
+        },
+        "./dist/cjs/clone.cjs": {
+            "require": "./dist/cjs/clone.cjs",
+            "types": "./dist/cjs/clone.d.cts",
+            "default": "./dist/esm/clone.js"
+        },
+        "./colorLightness.d.ts": {
+            "require": "./dist/cjs/colorLightness.d.cts",
+            "default": "./dist/esm/colorLightness.d.ts"
+        },
+        "./colorLightness.js": {
+            "require": "./dist/cjs/colorLightness.cjs",
+            "types": "./dist/cjs/colorLightness.d.cts",
+            "default": "./dist/esm/colorLightness.js"
+        },
+        "./colorLightness": {
+            "require": "./dist/cjs/colorLightness.cjs",
+            "types": "./dist/cjs/colorLightness.d.cts",
+            "default": "./dist/esm/colorLightness.js"
+        },
+        "./dist/cjs/colorLightness.cjs": {
+            "require": "./dist/cjs/colorLightness.cjs",
+            "types": "./dist/cjs/colorLightness.d.cts",
+            "default": "./dist/esm/colorLightness.js"
+        },
+        "./columnFormatter.d.ts": {
+            "require": "./dist/cjs/columnFormatter.d.cts",
+            "default": "./dist/esm/columnFormatter.d.ts"
+        },
+        "./columnFormatter.js": {
+            "require": "./dist/cjs/columnFormatter.cjs",
+            "types": "./dist/cjs/columnFormatter.d.cts",
+            "default": "./dist/esm/columnFormatter.js"
+        },
+        "./columnFormatter": {
+            "require": "./dist/cjs/columnFormatter.cjs",
+            "types": "./dist/cjs/columnFormatter.d.cts",
+            "default": "./dist/esm/columnFormatter.js"
+        },
+        "./dist/cjs/columnFormatter.cjs": {
+            "require": "./dist/cjs/columnFormatter.cjs",
+            "types": "./dist/cjs/columnFormatter.d.cts",
+            "default": "./dist/esm/columnFormatter.js"
+        },
+        "./columnNameToVariable.d.ts": {
+            "require": "./dist/cjs/columnNameToVariable.d.cts",
+            "default": "./dist/esm/columnNameToVariable.d.ts"
+        },
+        "./columnNameToVariable.js": {
+            "require": "./dist/cjs/columnNameToVariable.cjs",
+            "types": "./dist/cjs/columnNameToVariable.d.cts",
+            "default": "./dist/esm/columnNameToVariable.js"
+        },
+        "./columnNameToVariable": {
+            "require": "./dist/cjs/columnNameToVariable.cjs",
+            "types": "./dist/cjs/columnNameToVariable.d.cts",
+            "default": "./dist/esm/columnNameToVariable.js"
+        },
+        "./dist/cjs/columnNameToVariable.cjs": {
+            "require": "./dist/cjs/columnNameToVariable.cjs",
+            "types": "./dist/cjs/columnNameToVariable.d.cts",
+            "default": "./dist/esm/columnNameToVariable.js"
+        },
+        "./combinations.d.ts": {
+            "require": "./dist/cjs/combinations.d.cts",
+            "default": "./dist/esm/combinations.d.ts"
+        },
+        "./combinations.js": {
+            "require": "./dist/cjs/combinations.cjs",
+            "types": "./dist/cjs/combinations.d.cts",
+            "default": "./dist/esm/combinations.js"
+        },
+        "./combinations": {
+            "require": "./dist/cjs/combinations.cjs",
+            "types": "./dist/cjs/combinations.d.cts",
+            "default": "./dist/esm/combinations.js"
+        },
+        "./dist/cjs/combinations.cjs": {
+            "require": "./dist/cjs/combinations.cjs",
+            "types": "./dist/cjs/combinations.d.cts",
+            "default": "./dist/esm/combinations.js"
+        },
+        "./dateColumnFormatter.d.ts": {
+            "require": "./dist/cjs/dateColumnFormatter.d.cts",
+            "default": "./dist/esm/dateColumnFormatter.d.ts"
+        },
+        "./dateColumnFormatter.js": {
+            "require": "./dist/cjs/dateColumnFormatter.cjs",
+            "types": "./dist/cjs/dateColumnFormatter.d.cts",
+            "default": "./dist/esm/dateColumnFormatter.js"
+        },
+        "./dateColumnFormatter": {
+            "require": "./dist/cjs/dateColumnFormatter.cjs",
+            "types": "./dist/cjs/dateColumnFormatter.d.cts",
+            "default": "./dist/esm/dateColumnFormatter.js"
+        },
+        "./dist/cjs/dateColumnFormatter.cjs": {
+            "require": "./dist/cjs/dateColumnFormatter.cjs",
+            "types": "./dist/cjs/dateColumnFormatter.d.cts",
+            "default": "./dist/esm/dateColumnFormatter.js"
+        },
+        "./decodeHtml.d.ts": {
+            "require": "./dist/cjs/decodeHtml.d.cts",
+            "default": "./dist/esm/decodeHtml.d.ts"
+        },
+        "./decodeHtml.js": {
+            "require": "./dist/cjs/decodeHtml.cjs",
+            "types": "./dist/cjs/decodeHtml.d.cts",
+            "default": "./dist/esm/decodeHtml.js"
+        },
+        "./decodeHtml": {
+            "require": "./dist/cjs/decodeHtml.cjs",
+            "types": "./dist/cjs/decodeHtml.d.cts",
+            "default": "./dist/esm/decodeHtml.js"
+        },
+        "./dist/cjs/decodeHtml.cjs": {
+            "require": "./dist/cjs/decodeHtml.cjs",
+            "types": "./dist/cjs/decodeHtml.d.cts",
+            "default": "./dist/esm/decodeHtml.js"
+        },
+        "./decodeHtml.ssr.d.ts": {
+            "require": "./dist/cjs/decodeHtml.ssr.d.cts",
+            "default": "./dist/esm/decodeHtml.ssr.d.ts"
+        },
+        "./decodeHtml.ssr.js": {
+            "require": "./dist/cjs/decodeHtml.ssr.cjs",
+            "types": "./dist/cjs/decodeHtml.ssr.d.cts",
+            "default": "./dist/esm/decodeHtml.ssr.js"
+        },
+        "./decodeHtml.ssr": {
+            "require": "./dist/cjs/decodeHtml.ssr.cjs",
+            "types": "./dist/cjs/decodeHtml.ssr.d.cts",
+            "default": "./dist/esm/decodeHtml.ssr.js"
+        },
+        "./dist/cjs/decodeHtml.ssr.cjs": {
+            "require": "./dist/cjs/decodeHtml.ssr.cjs",
+            "types": "./dist/cjs/decodeHtml.ssr.d.cts",
+            "default": "./dist/esm/decodeHtml.ssr.js"
+        },
+        "./defaultColors.d.ts": {
+            "require": "./dist/cjs/defaultColors.d.cts",
+            "default": "./dist/esm/defaultColors.d.ts"
+        },
+        "./defaultColors.js": {
+            "require": "./dist/cjs/defaultColors.cjs",
+            "types": "./dist/cjs/defaultColors.d.cts",
+            "default": "./dist/esm/defaultColors.js"
+        },
+        "./defaultColors": {
+            "require": "./dist/cjs/defaultColors.cjs",
+            "types": "./dist/cjs/defaultColors.d.cts",
+            "default": "./dist/esm/defaultColors.js"
+        },
+        "./dist/cjs/defaultColors.cjs": {
+            "require": "./dist/cjs/defaultColors.cjs",
+            "types": "./dist/cjs/defaultColors.d.cts",
+            "default": "./dist/esm/defaultColors.js"
+        },
+        "./delimited.d.ts": {
+            "require": "./dist/cjs/delimited.d.cts",
+            "default": "./dist/esm/delimited.d.ts"
+        },
+        "./delimited.js": {
+            "require": "./dist/cjs/delimited.cjs",
+            "types": "./dist/cjs/delimited.d.cts",
+            "default": "./dist/esm/delimited.js"
+        },
+        "./delimited": {
+            "require": "./dist/cjs/delimited.cjs",
+            "types": "./dist/cjs/delimited.d.cts",
+            "default": "./dist/esm/delimited.js"
+        },
+        "./dist/cjs/delimited.cjs": {
+            "require": "./dist/cjs/delimited.cjs",
+            "types": "./dist/cjs/delimited.d.cts",
+            "default": "./dist/esm/delimited.js"
+        },
+        "./drawPattern.d.ts": {
+            "require": "./dist/cjs/drawPattern.d.cts",
+            "default": "./dist/esm/drawPattern.d.ts"
+        },
+        "./drawPattern.js": {
+            "require": "./dist/cjs/drawPattern.cjs",
+            "types": "./dist/cjs/drawPattern.d.cts",
+            "default": "./dist/esm/drawPattern.js"
+        },
+        "./drawPattern": {
+            "require": "./dist/cjs/drawPattern.cjs",
+            "types": "./dist/cjs/drawPattern.d.cts",
+            "default": "./dist/esm/drawPattern.js"
+        },
+        "./dist/cjs/drawPattern.cjs": {
+            "require": "./dist/cjs/drawPattern.cjs",
+            "types": "./dist/cjs/drawPattern.d.cts",
+            "default": "./dist/esm/drawPattern.js"
+        },
+        "./ensureColorContrast.d.ts": {
+            "require": "./dist/cjs/ensureColorContrast.d.cts",
+            "default": "./dist/esm/ensureColorContrast.d.ts"
+        },
+        "./ensureColorContrast.js": {
+            "require": "./dist/cjs/ensureColorContrast.cjs",
+            "types": "./dist/cjs/ensureColorContrast.d.cts",
+            "default": "./dist/esm/ensureColorContrast.js"
+        },
+        "./ensureColorContrast": {
+            "require": "./dist/cjs/ensureColorContrast.cjs",
+            "types": "./dist/cjs/ensureColorContrast.d.cts",
+            "default": "./dist/esm/ensureColorContrast.js"
+        },
+        "./dist/cjs/ensureColorContrast.cjs": {
+            "require": "./dist/cjs/ensureColorContrast.cjs",
+            "types": "./dist/cjs/ensureColorContrast.d.cts",
+            "default": "./dist/esm/ensureColorContrast.js"
+        },
+        "./equalish.d.ts": {
+            "require": "./dist/cjs/equalish.d.cts",
+            "default": "./dist/esm/equalish.d.ts"
+        },
+        "./equalish.js": {
+            "require": "./dist/cjs/equalish.cjs",
+            "types": "./dist/cjs/equalish.d.cts",
+            "default": "./dist/esm/equalish.js"
+        },
+        "./equalish": {
+            "require": "./dist/cjs/equalish.cjs",
+            "types": "./dist/cjs/equalish.d.cts",
+            "default": "./dist/esm/equalish.js"
+        },
+        "./dist/cjs/equalish.cjs": {
+            "require": "./dist/cjs/equalish.cjs",
+            "types": "./dist/cjs/equalish.d.cts",
+            "default": "./dist/esm/equalish.js"
+        },
+        "./escapeHtml.d.ts": {
+            "require": "./dist/cjs/escapeHtml.d.cts",
+            "default": "./dist/esm/escapeHtml.d.ts"
+        },
+        "./escapeHtml.js": {
+            "require": "./dist/cjs/escapeHtml.cjs",
+            "types": "./dist/cjs/escapeHtml.d.cts",
+            "default": "./dist/esm/escapeHtml.js"
+        },
+        "./escapeHtml": {
+            "require": "./dist/cjs/escapeHtml.cjs",
+            "types": "./dist/cjs/escapeHtml.d.cts",
+            "default": "./dist/esm/escapeHtml.js"
+        },
+        "./dist/cjs/escapeHtml.cjs": {
+            "require": "./dist/cjs/escapeHtml.cjs",
+            "types": "./dist/cjs/escapeHtml.d.cts",
+            "default": "./dist/esm/escapeHtml.js"
+        },
+        "./estimateTextWidth.d.ts": {
+            "require": "./dist/cjs/estimateTextWidth.d.cts",
+            "default": "./dist/esm/estimateTextWidth.d.ts"
+        },
+        "./estimateTextWidth.js": {
+            "require": "./dist/cjs/estimateTextWidth.cjs",
+            "types": "./dist/cjs/estimateTextWidth.d.cts",
+            "default": "./dist/esm/estimateTextWidth.js"
+        },
+        "./estimateTextWidth": {
+            "require": "./dist/cjs/estimateTextWidth.cjs",
+            "types": "./dist/cjs/estimateTextWidth.d.cts",
+            "default": "./dist/esm/estimateTextWidth.js"
+        },
+        "./dist/cjs/estimateTextWidth.cjs": {
+            "require": "./dist/cjs/estimateTextWidth.cjs",
+            "types": "./dist/cjs/estimateTextWidth.d.cts",
+            "default": "./dist/esm/estimateTextWidth.js"
+        },
+        "./exportPrintTypes.d.ts": {
+            "require": "./dist/cjs/exportPrintTypes.d.cts",
+            "default": "./dist/esm/exportPrintTypes.d.ts"
+        },
+        "./exportPrintTypes.js": {
+            "require": "./dist/cjs/exportPrintTypes.cjs",
+            "types": "./dist/cjs/exportPrintTypes.d.cts",
+            "default": "./dist/esm/exportPrintTypes.js"
+        },
+        "./exportPrintTypes": {
+            "require": "./dist/cjs/exportPrintTypes.cjs",
+            "types": "./dist/cjs/exportPrintTypes.d.cts",
+            "default": "./dist/esm/exportPrintTypes.js"
+        },
+        "./dist/cjs/exportPrintTypes.cjs": {
+            "require": "./dist/cjs/exportPrintTypes.cjs",
+            "types": "./dist/cjs/exportPrintTypes.d.cts",
+            "default": "./dist/esm/exportPrintTypes.js"
+        },
+        "./fetch.d.ts": {
+            "require": "./dist/cjs/fetch.d.cts",
+            "default": "./dist/esm/fetch.d.ts"
+        },
+        "./fetch.js": {
+            "require": "./dist/cjs/fetch.cjs",
+            "types": "./dist/cjs/fetch.d.cts",
+            "default": "./dist/esm/fetch.js"
+        },
+        "./fetch": {
+            "require": "./dist/cjs/fetch.cjs",
+            "types": "./dist/cjs/fetch.d.cts",
+            "default": "./dist/esm/fetch.js"
+        },
+        "./dist/cjs/fetch.cjs": {
+            "require": "./dist/cjs/fetch.cjs",
+            "types": "./dist/cjs/fetch.d.cts",
+            "default": "./dist/esm/fetch.js"
+        },
+        "./formatNumber.d.ts": {
+            "require": "./dist/cjs/formatNumber.d.cts",
+            "default": "./dist/esm/formatNumber.d.ts"
+        },
+        "./formatNumber.js": {
+            "require": "./dist/cjs/formatNumber.cjs",
+            "types": "./dist/cjs/formatNumber.d.cts",
+            "default": "./dist/esm/formatNumber.js"
+        },
+        "./formatNumber": {
+            "require": "./dist/cjs/formatNumber.cjs",
+            "types": "./dist/cjs/formatNumber.d.cts",
+            "default": "./dist/esm/formatNumber.js"
+        },
+        "./dist/cjs/formatNumber.cjs": {
+            "require": "./dist/cjs/formatNumber.cjs",
+            "types": "./dist/cjs/formatNumber.d.cts",
+            "default": "./dist/esm/formatNumber.js"
+        },
+        "./get.d.ts": {
+            "require": "./dist/cjs/get.d.cts",
+            "default": "./dist/esm/get.d.ts"
+        },
+        "./get.js": {
+            "require": "./dist/cjs/get.cjs",
+            "types": "./dist/cjs/get.d.cts",
+            "default": "./dist/esm/get.js"
+        },
+        "./get": {
+            "require": "./dist/cjs/get.cjs",
+            "types": "./dist/cjs/get.d.cts",
+            "default": "./dist/esm/get.js"
+        },
+        "./dist/cjs/get.cjs": {
+            "require": "./dist/cjs/get.cjs",
+            "types": "./dist/cjs/get.d.cts",
+            "default": "./dist/esm/get.js"
+        },
+        "./getOverlayColor.d.ts": {
+            "require": "./dist/cjs/getOverlayColor.d.cts",
+            "default": "./dist/esm/getOverlayColor.d.ts"
+        },
+        "./getOverlayColor.js": {
+            "require": "./dist/cjs/getOverlayColor.cjs",
+            "types": "./dist/cjs/getOverlayColor.d.cts",
+            "default": "./dist/esm/getOverlayColor.js"
+        },
+        "./getOverlayColor": {
+            "require": "./dist/cjs/getOverlayColor.cjs",
+            "types": "./dist/cjs/getOverlayColor.d.cts",
+            "default": "./dist/esm/getOverlayColor.js"
+        },
+        "./dist/cjs/getOverlayColor.cjs": {
+            "require": "./dist/cjs/getOverlayColor.cjs",
+            "types": "./dist/cjs/getOverlayColor.d.cts",
+            "default": "./dist/esm/getOverlayColor.js"
+        },
+        "./getOverlayColumnTitle.d.ts": {
+            "require": "./dist/cjs/getOverlayColumnTitle.d.cts",
+            "default": "./dist/esm/getOverlayColumnTitle.d.ts"
+        },
+        "./getOverlayColumnTitle.js": {
+            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
+            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
+            "default": "./dist/esm/getOverlayColumnTitle.js"
+        },
+        "./getOverlayColumnTitle": {
+            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
+            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
+            "default": "./dist/esm/getOverlayColumnTitle.js"
+        },
+        "./dist/cjs/getOverlayColumnTitle.cjs": {
+            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
+            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
+            "default": "./dist/esm/getOverlayColumnTitle.js"
+        },
+        "./getValueOrDefault.d.ts": {
+            "require": "./dist/cjs/getValueOrDefault.d.cts",
+            "default": "./dist/esm/getValueOrDefault.d.ts"
+        },
+        "./getValueOrDefault.js": {
+            "require": "./dist/cjs/getValueOrDefault.cjs",
+            "types": "./dist/cjs/getValueOrDefault.d.cts",
+            "default": "./dist/esm/getValueOrDefault.js"
+        },
+        "./getValueOrDefault": {
+            "require": "./dist/cjs/getValueOrDefault.cjs",
+            "types": "./dist/cjs/getValueOrDefault.d.cts",
+            "default": "./dist/esm/getValueOrDefault.js"
+        },
+        "./dist/cjs/getValueOrDefault.cjs": {
+            "require": "./dist/cjs/getValueOrDefault.cjs",
+            "types": "./dist/cjs/getValueOrDefault.d.cts",
+            "default": "./dist/esm/getValueOrDefault.js"
+        },
+        "./hideExtraZeros.d.ts": {
+            "require": "./dist/cjs/hideExtraZeros.d.cts",
+            "default": "./dist/esm/hideExtraZeros.d.ts"
+        },
+        "./hideExtraZeros.js": {
+            "require": "./dist/cjs/hideExtraZeros.cjs",
+            "types": "./dist/cjs/hideExtraZeros.d.cts",
+            "default": "./dist/esm/hideExtraZeros.js"
+        },
+        "./hideExtraZeros": {
+            "require": "./dist/cjs/hideExtraZeros.cjs",
+            "types": "./dist/cjs/hideExtraZeros.d.cts",
+            "default": "./dist/esm/hideExtraZeros.js"
+        },
+        "./dist/cjs/hideExtraZeros.cjs": {
+            "require": "./dist/cjs/hideExtraZeros.cjs",
+            "types": "./dist/cjs/hideExtraZeros.d.cts",
+            "default": "./dist/esm/hideExtraZeros.js"
+        },
+        "./highlightTimer.d.ts": {
+            "require": "./dist/cjs/highlightTimer.d.cts",
+            "default": "./dist/esm/highlightTimer.d.ts"
+        },
+        "./highlightTimer.js": {
+            "require": "./dist/cjs/highlightTimer.cjs",
+            "types": "./dist/cjs/highlightTimer.d.cts",
+            "default": "./dist/esm/highlightTimer.js"
+        },
+        "./highlightTimer": {
+            "require": "./dist/cjs/highlightTimer.cjs",
+            "types": "./dist/cjs/highlightTimer.d.cts",
+            "default": "./dist/esm/highlightTimer.js"
+        },
+        "./dist/cjs/highlightTimer.cjs": {
+            "require": "./dist/cjs/highlightTimer.cjs",
+            "types": "./dist/cjs/highlightTimer.d.cts",
+            "default": "./dist/esm/highlightTimer.js"
+        },
+        "./httpReq.d.ts": {
+            "require": "./dist/cjs/httpReq.d.cts",
+            "default": "./dist/esm/httpReq.d.ts"
+        },
+        "./httpReq.js": {
+            "require": "./dist/cjs/httpReq.cjs",
+            "types": "./dist/cjs/httpReq.d.cts",
+            "default": "./dist/esm/httpReq.js"
+        },
+        "./httpReq": {
+            "require": "./dist/cjs/httpReq.cjs",
+            "types": "./dist/cjs/httpReq.d.cts",
+            "default": "./dist/esm/httpReq.js"
+        },
+        "./dist/cjs/httpReq.cjs": {
+            "require": "./dist/cjs/httpReq.cjs",
+            "types": "./dist/cjs/httpReq.d.cts",
+            "default": "./dist/esm/httpReq.js"
+        },
+        "./httpReq.ssr.d.ts": {
+            "require": "./dist/cjs/httpReq.ssr.d.cts",
+            "default": "./dist/esm/httpReq.ssr.d.ts"
+        },
+        "./httpReq.ssr.js": {
+            "require": "./dist/cjs/httpReq.ssr.cjs",
+            "types": "./dist/cjs/httpReq.ssr.d.cts",
+            "default": "./dist/esm/httpReq.ssr.js"
+        },
+        "./httpReq.ssr": {
+            "require": "./dist/cjs/httpReq.ssr.cjs",
+            "types": "./dist/cjs/httpReq.ssr.d.cts",
+            "default": "./dist/esm/httpReq.ssr.js"
+        },
+        "./dist/cjs/httpReq.ssr.cjs": {
+            "require": "./dist/cjs/httpReq.ssr.cjs",
+            "types": "./dist/cjs/httpReq.ssr.d.cts",
+            "default": "./dist/esm/httpReq.ssr.js"
+        },
+        "./httpReqOptions.d.ts": {
+            "require": "./dist/cjs/httpReqOptions.d.cts",
+            "default": "./dist/esm/httpReqOptions.d.ts"
+        },
+        "./httpReqOptions.js": {
+            "require": "./dist/cjs/httpReqOptions.cjs",
+            "types": "./dist/cjs/httpReqOptions.d.cts",
+            "default": "./dist/esm/httpReqOptions.js"
+        },
+        "./httpReqOptions": {
+            "require": "./dist/cjs/httpReqOptions.cjs",
+            "types": "./dist/cjs/httpReqOptions.d.cts",
+            "default": "./dist/esm/httpReqOptions.js"
+        },
+        "./dist/cjs/httpReqOptions.cjs": {
+            "require": "./dist/cjs/httpReqOptions.cjs",
+            "types": "./dist/cjs/httpReqOptions.d.cts",
+            "default": "./dist/esm/httpReqOptions.js"
+        },
+        "./index.d.ts": {
+            "require": "./dist/cjs/index.d.cts",
+            "default": "./dist/esm/index.d.ts"
+        },
+        "./index.js": {
+            "require": "./dist/cjs/index.cjs",
+            "types": "./dist/cjs/index.d.cts",
+            "default": "./dist/esm/index.js"
+        },
+        "./index": {
+            "require": "./dist/cjs/index.cjs",
+            "types": "./dist/cjs/index.d.cts",
+            "default": "./dist/esm/index.js"
+        },
+        "./dist/cjs/index.cjs": {
+            "require": "./dist/cjs/index.cjs",
+            "types": "./dist/cjs/index.d.cts",
+            "default": "./dist/esm/index.js"
+        },
+        "./invertColor.d.ts": {
+            "require": "./dist/cjs/invertColor.d.cts",
+            "default": "./dist/esm/invertColor.d.ts"
+        },
+        "./invertColor.js": {
+            "require": "./dist/cjs/invertColor.cjs",
+            "types": "./dist/cjs/invertColor.d.cts",
+            "default": "./dist/esm/invertColor.js"
+        },
+        "./invertColor": {
+            "require": "./dist/cjs/invertColor.cjs",
+            "types": "./dist/cjs/invertColor.d.cts",
+            "default": "./dist/esm/invertColor.js"
+        },
+        "./dist/cjs/invertColor.cjs": {
+            "require": "./dist/cjs/invertColor.cjs",
+            "types": "./dist/cjs/invertColor.d.cts",
+            "default": "./dist/esm/invertColor.js"
+        },
+        "./isValidUrl.d.ts": {
+            "require": "./dist/cjs/isValidUrl.d.cts",
+            "default": "./dist/esm/isValidUrl.d.ts"
+        },
+        "./isValidUrl.js": {
+            "require": "./dist/cjs/isValidUrl.cjs",
+            "types": "./dist/cjs/isValidUrl.d.cts",
+            "default": "./dist/esm/isValidUrl.js"
+        },
+        "./isValidUrl": {
+            "require": "./dist/cjs/isValidUrl.cjs",
+            "types": "./dist/cjs/isValidUrl.d.cts",
+            "default": "./dist/esm/isValidUrl.js"
+        },
+        "./dist/cjs/isValidUrl.cjs": {
+            "require": "./dist/cjs/isValidUrl.cjs",
+            "types": "./dist/cjs/isValidUrl.d.cts",
+            "default": "./dist/esm/isValidUrl.js"
+        },
+        "./kMeans.d.ts": {
+            "require": "./dist/cjs/kMeans.d.cts",
+            "default": "./dist/esm/kMeans.d.ts"
+        },
+        "./kMeans.js": {
+            "require": "./dist/cjs/kMeans.cjs",
+            "types": "./dist/cjs/kMeans.d.cts",
+            "default": "./dist/esm/kMeans.js"
+        },
+        "./kMeans": {
+            "require": "./dist/cjs/kMeans.cjs",
+            "types": "./dist/cjs/kMeans.d.cts",
+            "default": "./dist/esm/kMeans.js"
+        },
+        "./dist/cjs/kMeans.cjs": {
+            "require": "./dist/cjs/kMeans.cjs",
+            "types": "./dist/cjs/kMeans.d.cts",
+            "default": "./dist/esm/kMeans.js"
+        },
+        "./l10n.d.ts": {
+            "require": "./dist/cjs/l10n.d.cts",
+            "default": "./dist/esm/l10n.d.ts"
+        },
+        "./l10n.js": {
+            "require": "./dist/cjs/l10n.cjs",
+            "types": "./dist/cjs/l10n.d.cts",
+            "default": "./dist/esm/l10n.js"
+        },
+        "./l10n": {
+            "require": "./dist/cjs/l10n.cjs",
+            "types": "./dist/cjs/l10n.d.cts",
+            "default": "./dist/esm/l10n.js"
+        },
+        "./dist/cjs/l10n.cjs": {
+            "require": "./dist/cjs/l10n.cjs",
+            "types": "./dist/cjs/l10n.d.cts",
+            "default": "./dist/esm/l10n.js"
+        },
+        "./makeUnique.d.ts": {
+            "require": "./dist/cjs/makeUnique.d.cts",
+            "default": "./dist/esm/makeUnique.d.ts"
+        },
+        "./makeUnique.js": {
+            "require": "./dist/cjs/makeUnique.cjs",
+            "types": "./dist/cjs/makeUnique.d.cts",
+            "default": "./dist/esm/makeUnique.js"
+        },
+        "./makeUnique": {
+            "require": "./dist/cjs/makeUnique.cjs",
+            "types": "./dist/cjs/makeUnique.d.cts",
+            "default": "./dist/esm/makeUnique.js"
+        },
+        "./dist/cjs/makeUnique.cjs": {
+            "require": "./dist/cjs/makeUnique.cjs",
+            "types": "./dist/cjs/makeUnique.d.cts",
+            "default": "./dist/esm/makeUnique.js"
+        },
+        "./memoizer.d.ts": {
+            "require": "./dist/cjs/memoizer.d.cts",
+            "default": "./dist/esm/memoizer.d.ts"
+        },
+        "./memoizer.js": {
+            "require": "./dist/cjs/memoizer.cjs",
+            "types": "./dist/cjs/memoizer.d.cts",
+            "default": "./dist/esm/memoizer.js"
+        },
+        "./memoizer": {
+            "require": "./dist/cjs/memoizer.cjs",
+            "types": "./dist/cjs/memoizer.d.cts",
+            "default": "./dist/esm/memoizer.js"
+        },
+        "./dist/cjs/memoizer.cjs": {
+            "require": "./dist/cjs/memoizer.cjs",
+            "types": "./dist/cjs/memoizer.d.cts",
+            "default": "./dist/esm/memoizer.js"
+        },
+        "./normalize.d.ts": {
+            "require": "./dist/cjs/normalize.d.cts",
+            "default": "./dist/esm/normalize.d.ts"
+        },
+        "./normalize.js": {
+            "require": "./dist/cjs/normalize.cjs",
+            "types": "./dist/cjs/normalize.d.cts",
+            "default": "./dist/esm/normalize.js"
+        },
+        "./normalize": {
+            "require": "./dist/cjs/normalize.cjs",
+            "types": "./dist/cjs/normalize.d.cts",
+            "default": "./dist/esm/normalize.js"
+        },
+        "./dist/cjs/normalize.cjs": {
+            "require": "./dist/cjs/normalize.cjs",
+            "types": "./dist/cjs/normalize.d.cts",
+            "default": "./dist/esm/normalize.js"
+        },
+        "./numberColumnFormatter.d.ts": {
+            "require": "./dist/cjs/numberColumnFormatter.d.cts",
+            "default": "./dist/esm/numberColumnFormatter.d.ts"
+        },
+        "./numberColumnFormatter.js": {
+            "require": "./dist/cjs/numberColumnFormatter.cjs",
+            "types": "./dist/cjs/numberColumnFormatter.d.cts",
+            "default": "./dist/esm/numberColumnFormatter.js"
+        },
+        "./numberColumnFormatter": {
+            "require": "./dist/cjs/numberColumnFormatter.cjs",
+            "types": "./dist/cjs/numberColumnFormatter.d.cts",
+            "default": "./dist/esm/numberColumnFormatter.js"
+        },
+        "./dist/cjs/numberColumnFormatter.cjs": {
+            "require": "./dist/cjs/numberColumnFormatter.cjs",
+            "types": "./dist/cjs/numberColumnFormatter.d.cts",
+            "default": "./dist/esm/numberColumnFormatter.js"
+        },
+        "./objectDiff.d.ts": {
+            "require": "./dist/cjs/objectDiff.d.cts",
+            "default": "./dist/esm/objectDiff.d.ts"
+        },
+        "./objectDiff.js": {
+            "require": "./dist/cjs/objectDiff.cjs",
+            "types": "./dist/cjs/objectDiff.d.cts",
+            "default": "./dist/esm/objectDiff.js"
+        },
+        "./objectDiff": {
+            "require": "./dist/cjs/objectDiff.cjs",
+            "types": "./dist/cjs/objectDiff.d.cts",
+            "default": "./dist/esm/objectDiff.js"
+        },
+        "./dist/cjs/objectDiff.cjs": {
+            "require": "./dist/cjs/objectDiff.cjs",
+            "types": "./dist/cjs/objectDiff.d.cts",
+            "default": "./dist/esm/objectDiff.js"
+        },
+        "./objectPaths.d.ts": {
+            "require": "./dist/cjs/objectPaths.d.cts",
+            "default": "./dist/esm/objectPaths.d.ts"
+        },
+        "./objectPaths.js": {
+            "require": "./dist/cjs/objectPaths.cjs",
+            "types": "./dist/cjs/objectPaths.d.cts",
+            "default": "./dist/esm/objectPaths.js"
+        },
+        "./objectPaths": {
+            "require": "./dist/cjs/objectPaths.cjs",
+            "types": "./dist/cjs/objectPaths.d.cts",
+            "default": "./dist/esm/objectPaths.js"
+        },
+        "./dist/cjs/objectPaths.cjs": {
+            "require": "./dist/cjs/objectPaths.cjs",
+            "types": "./dist/cjs/objectPaths.d.cts",
+            "default": "./dist/esm/objectPaths.js"
+        },
+        "./observeFonts.d.ts": {
+            "require": "./dist/cjs/observeFonts.d.cts",
+            "default": "./dist/esm/observeFonts.d.ts"
+        },
+        "./observeFonts.js": {
+            "require": "./dist/cjs/observeFonts.cjs",
+            "types": "./dist/cjs/observeFonts.d.cts",
+            "default": "./dist/esm/observeFonts.js"
+        },
+        "./observeFonts": {
+            "require": "./dist/cjs/observeFonts.cjs",
+            "types": "./dist/cjs/observeFonts.d.cts",
+            "default": "./dist/esm/observeFonts.js"
+        },
+        "./dist/cjs/observeFonts.cjs": {
+            "require": "./dist/cjs/observeFonts.cjs",
+            "types": "./dist/cjs/observeFonts.d.cts",
+            "default": "./dist/esm/observeFonts.js"
+        },
+        "./postEvent.d.ts": {
+            "require": "./dist/cjs/postEvent.d.cts",
+            "default": "./dist/esm/postEvent.d.ts"
+        },
+        "./postEvent.js": {
+            "require": "./dist/cjs/postEvent.cjs",
+            "types": "./dist/cjs/postEvent.d.cts",
+            "default": "./dist/esm/postEvent.js"
+        },
+        "./postEvent": {
+            "require": "./dist/cjs/postEvent.cjs",
+            "types": "./dist/cjs/postEvent.d.cts",
+            "default": "./dist/esm/postEvent.js"
+        },
+        "./dist/cjs/postEvent.cjs": {
+            "require": "./dist/cjs/postEvent.cjs",
+            "types": "./dist/cjs/postEvent.d.cts",
+            "default": "./dist/esm/postEvent.js"
+        },
+        "./pure/defaultColors.d.ts": {
+            "require": "./dist/cjs/pure/defaultColors.d.cts",
+            "default": "./dist/esm/pure/defaultColors.d.ts"
+        },
+        "./pure/defaultColors.js": {
+            "require": "./dist/cjs/pure/defaultColors.cjs",
+            "types": "./dist/cjs/pure/defaultColors.d.cts",
+            "default": "./dist/esm/pure/defaultColors.js"
+        },
+        "./pure/defaultColors": {
+            "require": "./dist/cjs/pure/defaultColors.cjs",
+            "types": "./dist/cjs/pure/defaultColors.d.cts",
+            "default": "./dist/esm/pure/defaultColors.js"
+        },
+        "./dist/cjs/pure/defaultColors.cjs": {
+            "require": "./dist/cjs/pure/defaultColors.cjs",
+            "types": "./dist/cjs/pure/defaultColors.d.cts",
+            "default": "./dist/esm/pure/defaultColors.js"
+        },
+        "./pure/ensureColorContrast.d.ts": {
+            "require": "./dist/cjs/pure/ensureColorContrast.d.cts",
+            "default": "./dist/esm/pure/ensureColorContrast.d.ts"
+        },
+        "./pure/ensureColorContrast.js": {
+            "require": "./dist/cjs/pure/ensureColorContrast.cjs",
+            "types": "./dist/cjs/pure/ensureColorContrast.d.cts",
+            "default": "./dist/esm/pure/ensureColorContrast.js"
+        },
+        "./pure/ensureColorContrast": {
+            "require": "./dist/cjs/pure/ensureColorContrast.cjs",
+            "types": "./dist/cjs/pure/ensureColorContrast.d.cts",
+            "default": "./dist/esm/pure/ensureColorContrast.js"
+        },
+        "./dist/cjs/pure/ensureColorContrast.cjs": {
+            "require": "./dist/cjs/pure/ensureColorContrast.cjs",
+            "types": "./dist/cjs/pure/ensureColorContrast.d.cts",
+            "default": "./dist/esm/pure/ensureColorContrast.js"
+        },
+        "./pure/purifyHtml.d.ts": {
+            "require": "./dist/cjs/pure/purifyHtml.d.cts",
+            "default": "./dist/esm/pure/purifyHtml.d.ts"
+        },
+        "./pure/purifyHtml.js": {
+            "require": "./dist/cjs/pure/purifyHtml.cjs",
+            "types": "./dist/cjs/pure/purifyHtml.d.cts",
+            "default": "./dist/esm/pure/purifyHtml.js"
+        },
+        "./pure/purifyHtml": {
+            "require": "./dist/cjs/pure/purifyHtml.cjs",
+            "types": "./dist/cjs/pure/purifyHtml.d.cts",
+            "default": "./dist/esm/pure/purifyHtml.js"
+        },
+        "./dist/cjs/pure/purifyHtml.cjs": {
+            "require": "./dist/cjs/pure/purifyHtml.cjs",
+            "types": "./dist/cjs/pure/purifyHtml.d.cts",
+            "default": "./dist/esm/pure/purifyHtml.js"
+        },
+        "./purifyHtml.d.ts": {
+            "require": "./dist/cjs/purifyHtml.d.cts",
+            "default": "./dist/esm/purifyHtml.d.ts"
+        },
+        "./purifyHtml.js": {
+            "require": "./dist/cjs/purifyHtml.cjs",
+            "types": "./dist/cjs/purifyHtml.d.cts",
+            "default": "./dist/esm/purifyHtml.js"
+        },
+        "./purifyHtml": {
+            "require": "./dist/cjs/purifyHtml.cjs",
+            "types": "./dist/cjs/purifyHtml.d.cts",
+            "default": "./dist/esm/purifyHtml.js"
+        },
+        "./dist/cjs/purifyHtml.cjs": {
+            "require": "./dist/cjs/purifyHtml.cjs",
+            "types": "./dist/cjs/purifyHtml.d.cts",
+            "default": "./dist/esm/purifyHtml.js"
+        },
+        "./purifySvg.d.ts": {
+            "require": "./dist/cjs/purifySvg.d.cts",
+            "default": "./dist/esm/purifySvg.d.ts"
+        },
+        "./purifySvg.js": {
+            "require": "./dist/cjs/purifySvg.cjs",
+            "types": "./dist/cjs/purifySvg.d.cts",
+            "default": "./dist/esm/purifySvg.js"
+        },
+        "./purifySvg": {
+            "require": "./dist/cjs/purifySvg.cjs",
+            "types": "./dist/cjs/purifySvg.d.cts",
+            "default": "./dist/esm/purifySvg.js"
+        },
+        "./dist/cjs/purifySvg.cjs": {
+            "require": "./dist/cjs/purifySvg.cjs",
+            "types": "./dist/cjs/purifySvg.d.cts",
+            "default": "./dist/esm/purifySvg.js"
+        },
+        "./round.d.ts": {
+            "require": "./dist/cjs/round.d.cts",
+            "default": "./dist/esm/round.d.ts"
+        },
+        "./round.js": {
+            "require": "./dist/cjs/round.cjs",
+            "types": "./dist/cjs/round.d.cts",
+            "default": "./dist/esm/round.js"
+        },
+        "./round": {
+            "require": "./dist/cjs/round.cjs",
+            "types": "./dist/cjs/round.d.cts",
+            "default": "./dist/esm/round.js"
+        },
+        "./dist/cjs/round.cjs": {
+            "require": "./dist/cjs/round.cjs",
+            "types": "./dist/cjs/round.d.cts",
+            "default": "./dist/esm/round.js"
+        },
+        "./set.d.ts": {
+            "require": "./dist/cjs/set.d.cts",
+            "default": "./dist/esm/set.d.ts"
+        },
+        "./set.js": {
+            "require": "./dist/cjs/set.cjs",
+            "types": "./dist/cjs/set.d.cts",
+            "default": "./dist/esm/set.js"
+        },
+        "./set": {
+            "require": "./dist/cjs/set.cjs",
+            "types": "./dist/cjs/set.d.cts",
+            "default": "./dist/esm/set.js"
+        },
+        "./dist/cjs/set.cjs": {
+            "require": "./dist/cjs/set.cjs",
+            "types": "./dist/cjs/set.d.cts",
+            "default": "./dist/esm/set.js"
+        },
+        "./significantDimension.d.ts": {
+            "require": "./dist/cjs/significantDimension.d.cts",
+            "default": "./dist/esm/significantDimension.d.ts"
+        },
+        "./significantDimension.js": {
+            "require": "./dist/cjs/significantDimension.cjs",
+            "types": "./dist/cjs/significantDimension.d.cts",
+            "default": "./dist/esm/significantDimension.js"
+        },
+        "./significantDimension": {
+            "require": "./dist/cjs/significantDimension.cjs",
+            "types": "./dist/cjs/significantDimension.d.cts",
+            "default": "./dist/esm/significantDimension.js"
+        },
+        "./dist/cjs/significantDimension.cjs": {
+            "require": "./dist/cjs/significantDimension.cjs",
+            "types": "./dist/cjs/significantDimension.d.cts",
+            "default": "./dist/esm/significantDimension.js"
+        },
+        "./slugify.d.ts": {
+            "require": "./dist/cjs/slugify.d.cts",
+            "default": "./dist/esm/slugify.d.ts"
+        },
+        "./slugify.js": {
+            "require": "./dist/cjs/slugify.cjs",
+            "types": "./dist/cjs/slugify.d.cts",
+            "default": "./dist/esm/slugify.js"
+        },
+        "./slugify": {
+            "require": "./dist/cjs/slugify.cjs",
+            "types": "./dist/cjs/slugify.d.cts",
+            "default": "./dist/esm/slugify.js"
+        },
+        "./dist/cjs/slugify.cjs": {
+            "require": "./dist/cjs/slugify.cjs",
+            "types": "./dist/cjs/slugify.d.cts",
+            "default": "./dist/esm/slugify.js"
+        },
+        "./smartRound.d.ts": {
+            "require": "./dist/cjs/smartRound.d.cts",
+            "default": "./dist/esm/smartRound.d.ts"
+        },
+        "./smartRound.js": {
+            "require": "./dist/cjs/smartRound.cjs",
+            "types": "./dist/cjs/smartRound.d.cts",
+            "default": "./dist/esm/smartRound.js"
+        },
+        "./smartRound": {
+            "require": "./dist/cjs/smartRound.cjs",
+            "types": "./dist/cjs/smartRound.d.cts",
+            "default": "./dist/esm/smartRound.js"
+        },
+        "./dist/cjs/smartRound.cjs": {
+            "require": "./dist/cjs/smartRound.cjs",
+            "types": "./dist/cjs/smartRound.d.cts",
+            "default": "./dist/esm/smartRound.js"
+        },
+        "./sportsSeasonFormat.d.ts": {
+            "require": "./dist/cjs/sportsSeasonFormat.d.cts",
+            "default": "./dist/esm/sportsSeasonFormat.d.ts"
+        },
+        "./sportsSeasonFormat.js": {
+            "require": "./dist/cjs/sportsSeasonFormat.cjs",
+            "types": "./dist/cjs/sportsSeasonFormat.d.cts",
+            "default": "./dist/esm/sportsSeasonFormat.js"
+        },
+        "./sportsSeasonFormat": {
+            "require": "./dist/cjs/sportsSeasonFormat.cjs",
+            "types": "./dist/cjs/sportsSeasonFormat.d.cts",
+            "default": "./dist/esm/sportsSeasonFormat.js"
+        },
+        "./dist/cjs/sportsSeasonFormat.cjs": {
+            "require": "./dist/cjs/sportsSeasonFormat.cjs",
+            "types": "./dist/cjs/sportsSeasonFormat.d.cts",
+            "default": "./dist/esm/sportsSeasonFormat.js"
+        },
+        "./tailLength.d.ts": {
+            "require": "./dist/cjs/tailLength.d.cts",
+            "default": "./dist/esm/tailLength.d.ts"
+        },
+        "./tailLength.js": {
+            "require": "./dist/cjs/tailLength.cjs",
+            "types": "./dist/cjs/tailLength.d.cts",
+            "default": "./dist/esm/tailLength.js"
+        },
+        "./tailLength": {
+            "require": "./dist/cjs/tailLength.cjs",
+            "types": "./dist/cjs/tailLength.d.cts",
+            "default": "./dist/esm/tailLength.js"
+        },
+        "./dist/cjs/tailLength.cjs": {
+            "require": "./dist/cjs/tailLength.cjs",
+            "types": "./dist/cjs/tailLength.d.cts",
+            "default": "./dist/esm/tailLength.js"
+        },
+        "./themeTypes.d.ts": {
+            "require": "./dist/cjs/themeTypes.d.cts",
+            "default": "./dist/esm/themeTypes.d.ts"
+        },
+        "./themeTypes.js": {
+            "require": "./dist/cjs/themeTypes.cjs",
+            "types": "./dist/cjs/themeTypes.d.cts",
+            "default": "./dist/esm/themeTypes.js"
+        },
+        "./themeTypes": {
+            "require": "./dist/cjs/themeTypes.cjs",
+            "types": "./dist/cjs/themeTypes.d.cts",
+            "default": "./dist/esm/themeTypes.js"
+        },
+        "./dist/cjs/themeTypes.cjs": {
+            "require": "./dist/cjs/themeTypes.cjs",
+            "types": "./dist/cjs/themeTypes.d.cts",
+            "default": "./dist/esm/themeTypes.js"
+        },
+        "./toFixed.d.ts": {
+            "require": "./dist/cjs/toFixed.d.cts",
+            "default": "./dist/esm/toFixed.d.ts"
+        },
+        "./toFixed.js": {
+            "require": "./dist/cjs/toFixed.cjs",
+            "types": "./dist/cjs/toFixed.d.cts",
+            "default": "./dist/esm/toFixed.js"
+        },
+        "./toFixed": {
+            "require": "./dist/cjs/toFixed.cjs",
+            "types": "./dist/cjs/toFixed.d.cts",
+            "default": "./dist/esm/toFixed.js"
+        },
+        "./dist/cjs/toFixed.cjs": {
+            "require": "./dist/cjs/toFixed.cjs",
+            "types": "./dist/cjs/toFixed.d.cts",
+            "default": "./dist/esm/toFixed.js"
+        },
+        "./truncate.d.ts": {
+            "require": "./dist/cjs/truncate.d.cts",
+            "default": "./dist/esm/truncate.d.ts"
+        },
+        "./truncate.js": {
+            "require": "./dist/cjs/truncate.cjs",
+            "types": "./dist/cjs/truncate.d.cts",
+            "default": "./dist/esm/truncate.js"
+        },
+        "./truncate": {
+            "require": "./dist/cjs/truncate.cjs",
+            "types": "./dist/cjs/truncate.d.cts",
+            "default": "./dist/esm/truncate.js"
+        },
+        "./dist/cjs/truncate.cjs": {
+            "require": "./dist/cjs/truncate.cjs",
+            "types": "./dist/cjs/truncate.d.cts",
+            "default": "./dist/esm/truncate.js"
+        },
+        "./units.d.ts": {
+            "require": "./dist/cjs/units.d.cts",
+            "default": "./dist/esm/units.d.ts"
+        },
+        "./units.js": {
+            "require": "./dist/cjs/units.cjs",
+            "types": "./dist/cjs/units.d.cts",
+            "default": "./dist/esm/units.js"
+        },
+        "./units": {
+            "require": "./dist/cjs/units.cjs",
+            "types": "./dist/cjs/units.d.cts",
+            "default": "./dist/esm/units.js"
+        },
+        "./dist/cjs/units.cjs": {
+            "require": "./dist/cjs/units.cjs",
+            "types": "./dist/cjs/units.d.cts",
+            "default": "./dist/esm/units.js"
+        },
+        "./validation.d.ts": {
+            "require": "./dist/cjs/validation.d.cts",
+            "default": "./dist/esm/validation.d.ts"
+        },
+        "./validation.js": {
+            "require": "./dist/cjs/validation.cjs",
+            "types": "./dist/cjs/validation.d.cts",
+            "default": "./dist/esm/validation.js"
+        },
+        "./validation": {
+            "require": "./dist/cjs/validation.cjs",
+            "types": "./dist/cjs/validation.d.cts",
+            "default": "./dist/esm/validation.js"
+        },
+        "./dist/cjs/validation.cjs": {
+            "require": "./dist/cjs/validation.cjs",
+            "types": "./dist/cjs/validation.d.cts",
+            "default": "./dist/esm/validation.js"
+        },
+        "./package.json": "./package.json",
+        ".": {
+            "require": "./dist/cjs/index.cjs",
+            "default": "./dist/esm/index.js"
+        }
     }
 }

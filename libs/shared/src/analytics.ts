@@ -1,4 +1,4 @@
-import { BrowserWindow } from './browserGlobals';
+import { BrowserWindow } from './browserGlobals.js';
 
 declare global {
     // This is not a new meaningless interface;

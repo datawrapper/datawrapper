@@ -1,5 +1,5 @@
-import { ThemeData } from '../themeTypes';
-import get from '../get';
+import { ThemeData } from '../themeTypes.js';
+import get from '../get.js';
 
 /**
  * defines colors for the various chart elements like axis text, gridlines,

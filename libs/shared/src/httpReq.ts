@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
-import { BrowserWindow } from './browserGlobals';
-import { getValueOrDefault } from './getValueOrDefault';
-import { HttpReqOptions, SimpleFetchResponse } from './httpReqOptions';
-import { keyExists } from './l10n';
+import { BrowserWindow } from './browserGlobals.js';
+import { getValueOrDefault } from './getValueOrDefault.js';
+import { HttpReqOptions, SimpleFetchResponse } from './httpReqOptions.js';
+import { keyExists } from './l10n.js';
 
 declare global {
     // This is not a new meaningless interface;
@@ -142,8 +142,8 @@ function httpReq(
             return res;
         }
         if (!res.ok) {
-            return res.json().then(json => {
-                throw new HttpReqError(res, json);
+            return res.json().then((json: unknown) => {
+                throw new HttpReqError(res, json as ErrorInfo);
             });
         }
         if (res.status === 204 || !res.headers.get('content-type')) {
@@ -170,7 +170,8 @@ function httpReq(
  * @exports httpReq.get
  * @kind function
  */
-httpReq.get = httpReqVerb('GET');
+export const get = httpReqVerb('GET');
+httpReq.get = get;
 
 /**
  * Like `httpReq` but with fixed http method PATCH
@@ -179,7 +180,8 @@ httpReq.get = httpReqVerb('GET');
  * @exports httpReq.patch
  * @kind function
  */
-httpReq.patch = httpReqVerb('PATCH');
+export const patch = httpReqVerb('PATCH');
+httpReq.patch = patch;
 
 /**
  * Like `httpReq` but with fixed http method PUT
@@ -188,7 +190,8 @@ httpReq.patch = httpReqVerb('PATCH');
  * @exports httpReq.put
  * @kind function
  */
-httpReq.put = httpReqVerb('PUT');
+export const put = httpReqVerb('PUT');
+httpReq.put = put;
 
 /**
  * Like `httpReq` but with fixed http method POST
@@ -197,7 +200,8 @@ httpReq.put = httpReqVerb('PUT');
  * @exports httpReq.post
  * @kind function
  */
-httpReq.post = httpReqVerb('POST');
+export const post = httpReqVerb('POST');
+httpReq.post = post;
 
 /**
  * Like `httpReq` but with fixed http method HEAD
@@ -206,7 +210,8 @@ httpReq.post = httpReqVerb('POST');
  * @exports httpReq.head
  * @kind function
  */
-httpReq.head = httpReqVerb('HEAD');
+export const head = httpReqVerb('HEAD');
+httpReq.head = head;
 
 /**
  * Like `httpReq` but with fixed http method DELETE
@@ -215,7 +220,9 @@ httpReq.head = httpReqVerb('HEAD');
  * @exports httpReq.delete
  * @kind function
  */
-httpReq.delete = httpReqVerb('DELETE');
+const delete_ = httpReqVerb('DELETE');
+export { delete_ as delete };
+httpReq.delete = delete_;
 
 function httpReqVerb(method: string) {
     return (path: string, options: Omit<HttpReqOptions, 'method'> = {}) => {
@@ -236,7 +243,7 @@ type ErrorInfo = {
     }[];
 };
 
-class HttpReqError extends Error {
+export class HttpReqError extends Error {
     status: number;
     statusText: string;
     message: string;
@@ -285,4 +292,4 @@ class HttpReqError extends Error {
 
 httpReq.HttpReqError = HttpReqError;
 
-export = httpReq;
+export default httpReq;

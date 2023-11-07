@@ -1,3 +1,3 @@
-import { isValidUrl } from './validation';
+import { isValidUrl } from './validation.js';
 
-export = isValidUrl;
+export default isValidUrl;

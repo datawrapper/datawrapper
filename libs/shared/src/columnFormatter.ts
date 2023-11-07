@@ -1,8 +1,8 @@
 import n from 'numeral';
-import dateColumnFormatter from './dateColumnFormatter';
-import numberColumnFormatter from './numberColumnFormatter';
-import get from './get';
-import { Column, DateColumnFormatterConfig, Metadata } from './chartTypes';
+import dateColumnFormatter from './dateColumnFormatter.js';
+import numberColumnFormatter from './numberColumnFormatter.js';
+import get from './get.js';
+import { Column, DateColumnFormatterConfig, Metadata } from './chartTypes.js';
 
 const identity = <T>(d: T) => d;
 

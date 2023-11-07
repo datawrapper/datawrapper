@@ -1,17 +1,12 @@
 /**
- *
- * Deeply assign the values of all enumerable-own-properties
- * from one or more source objects to a target object. Returns the target object.
+ * Deeply assigns the values of all enumerable-own-properties from one or more source objects to a
+ * target object. Returns the target object.
  *
  * Almost identical to `services/api/src/utils/assignWithEmptyObjects.js`,
  * which in turn is based on assign-deep (https://github.com/jonschlinkert/assign-deep/)
  *
- * Only difference to `services/api` version is that we delete keys if the value in the source object is `undefined` instead of `null`
- *
- * @param {Object} target object
- * @param {...Object} args - source object(s)
- *
- * @returns {Object}
+ * Only difference to `services/api` version is that we delete keys if the value in the source
+ * object is `undefined` instead of `null`
  */
 function assignWithEmptyObjects<TObject>(target: TObject): TObject;
 function assignWithEmptyObjects<TObject, TSource>(

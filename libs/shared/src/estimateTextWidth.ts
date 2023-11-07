@@ -22,11 +22,11 @@
  * @export
  * @returns {number}
  */
-export = function estimateTextWidth(text: string, fontSize = 14) {
+export default function estimateTextWidth(text: string, fontSize = 14) {
     if (!text) return 0;
     const f = fontSize / 14;
     return text.split('').reduce((w, char) => w + (CHAR_W[char] || CHAR_W.a), 0) * f;
-};
+}
 
 const CHAR_W: Record<string, number> = {
     a: 9,

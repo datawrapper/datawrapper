@@ -1,6 +1,6 @@
 import chroma from 'chroma-js';
-import { ThemeData } from './themeTypes';
-import { defaultColors as defaultColorsPure } from './pure/defaultColors';
+import { ThemeData } from './themeTypes.js';
+import { defaultColors as defaultColorsPure } from './pure/defaultColors.js';
 
 /**
  * defines colors for the various chart elements like axis text, gridlines,

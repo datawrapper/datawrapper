@@ -1,5 +1,5 @@
 import FontFaceObserver from 'fontfaceobserver';
-import { FontObject, Typography } from './themeTypes';
+import { FontObject, Typography } from './themeTypes.js';
 
 /**
  * Function that returns a promise, that resolves when all fonts,
@@ -12,7 +12,7 @@ import { FontObject, Typography } from './themeTypes';
  * @param {Object} typographyJSON
  * @returns {Promise}
  */
-export = function observeFonts(
+export default function observeFonts(
     fontsJSON: Record<string, { type?: string }> | string[],
     typographyJSON: Typography
 ) {
@@ -52,4 +52,4 @@ export = function observeFonts(
     });
 
     return Promise.all(observers);
-};
+}

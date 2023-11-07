@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
-import httpReqClient from './httpReq';
-import { HttpReqOptions } from './httpReqOptions';
+import httpReqClient from './httpReq.js';
+import { HttpReqOptions, SimpleFetch } from './httpReqOptions.js';
 
 function httpReq(path: string, options: Omit<HttpReqOptions, 'fetch' | 'disableCSRF'> = {}) {
     return httpReqClient(path, {
         ...options,
-        fetch,
+        fetch: fetch as unknown as SimpleFetch, // TODO Fix the types instead of casting.
         disableCSRF: true
     });
 }
@@ -28,4 +28,4 @@ function httpReqVerb(method: string) {
     };
 }
 
-export = httpReq;
+export default httpReq;

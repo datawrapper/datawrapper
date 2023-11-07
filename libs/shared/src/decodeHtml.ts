@@ -7,6 +7,6 @@
  * @param {string} input
  * @returns {string}
  */
-export = function decodeHtml(input: string) {
+export default function decodeHtml(input: string) {
     return new DOMParser().parseFromString(input, 'text/html').documentElement.textContent;
-};
+}
