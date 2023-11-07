@@ -1,7 +1,7 @@
 import { rgb } from 'd3-color';
-import get from './get';
-import { Overlay } from './chartTypes';
-import { ThemeData } from './themeTypes';
+import get from './get.js';
+import { Overlay } from './chartTypes.js';
+import { ThemeData } from './themeTypes.js';
 
 /**
  * returns the color used by overlays
@@ -15,7 +15,7 @@ import { ThemeData } from './themeTypes';
  * @export
  * @returns {string}
  */
-export = function getOverlayColor(overlay: Overlay, theme: ThemeData): string {
+export default function getOverlayColor(overlay: Overlay, theme: ThemeData): string {
     const palette = get(theme, 'colors.palette', []);
     function getColor(c: number | string) {
         if (typeof c === 'number') {
@@ -31,4 +31,4 @@ export = function getOverlayColor(overlay: Overlay, theme: ThemeData): string {
     }, ${Number(overlay.opacity)})`;
 
     return overlayColor;
-};
+}

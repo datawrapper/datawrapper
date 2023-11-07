@@ -19,7 +19,8 @@ const getHeader = (request: ClientRequest, name: string) => {
 };
 
 test.before(t => {
-    t.context.fakeFetch = sinon.spy(fetch as SimpleFetch);
+    // TODO Fix the SimpleFetch type and then stop casting to unknown.
+    t.context.fakeFetch = sinon.spy(fetch as unknown as SimpleFetch);
     // We don't care about the incompatibilities between browser fetch and node-fetch here.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.fetch = t.context.fakeFetch as any;

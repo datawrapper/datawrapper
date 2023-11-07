@@ -38,4 +38,4 @@ const sportSeasonFormat: PluginFunc = (_o, c) => {
     };
 };
 
-export = sportSeasonFormat;
+export default sportSeasonFormat;

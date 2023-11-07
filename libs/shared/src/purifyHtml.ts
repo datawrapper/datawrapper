@@ -1,5 +1,5 @@
 import DOMPurify from 'isomorphic-dompurify';
-import purifyHtmlFactory from './pure/purifyHtml';
+import purifyHtmlFactory from './pure/purifyHtml.js';
 
 /**
  * Removes all HTML tags from given `input` string, except the ones in the `allowedTagsInput` list.
@@ -24,4 +24,6 @@ function purifyHtml(input: unknown, allowedTagsInput?: string | string[]) {
     return purifyHtmlFactory(DOMPurify)(input as string, allowedTagsInput as string[]);
 }
 
-export = purifyHtml;
+export type PurifyHtml = typeof purifyHtml;
+
+export default purifyHtml;

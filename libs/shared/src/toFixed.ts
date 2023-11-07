@@ -1,4 +1,4 @@
-import tailLength from './tailLength';
+import tailLength from './tailLength.js';
 
 /**
  * Automatically converts a numeric value to a string. this is better
@@ -16,6 +16,6 @@ import tailLength from './tailLength';
  * @param {number} value
  * @returns {string}
  */
-export = function toFixed(value: number) {
+export default function toFixed(value: number) {
     return (+value).toFixed(tailLength(value));
-};
+}

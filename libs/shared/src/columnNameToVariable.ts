@@ -14,7 +14,7 @@
  * @param {string} name -- name of the column
  * @returns {string} -- variable name
  */
-export = function columnNameToVariable(name: string) {
+export default function columnNameToVariable(name: string) {
     return name
         .toString()
         .toLowerCase()
@@ -26,4 +26,4 @@ export = function columnNameToVariable(name: string) {
         .replace(/_+$/, '') // Trim - from end of text
         .replace(/^(\d)/, '_$1') // If first char is a number, prefix with _
         .replace(/^(and|or|in|true|false)$/, '$1_'); // avoid reserved keywords
-};
+}

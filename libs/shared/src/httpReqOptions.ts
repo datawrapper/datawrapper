@@ -1,6 +1,9 @@
-import nodeFetch, { RequestInit as NodeRequestInit } from 'node-fetch';
+import { RequestInit as NodeRequestInit } from 'node-fetch';
+type FetchType = typeof window.fetch;
 
-type FetchType = typeof window.fetch | typeof nodeFetch;
+// TODO Fix the types and do this:
+// import nodeFetch, { RequestInit as NodeRequestInit } from 'node-fetch';
+// type FetchType = typeof window.fetch | typeof nodeFetch;
 
 export type SimpleFetchOptions = {
     headers?: Record<string, string>;

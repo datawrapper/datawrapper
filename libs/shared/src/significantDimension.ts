@@ -1,5 +1,5 @@
-import tailLength from './tailLength';
-import round from './round';
+import tailLength from './tailLength.js';
+import round from './round.js';
 import { uniq, isFinite } from 'underscore';
 
 /**
@@ -18,7 +18,7 @@ import { uniq, isFinite } from 'underscore';
  * @param {number} tolerance - percent of input values that we allow to "collide"
  * @returns {number} - number of significant dimensions (= the number of decimals)
  */
-export = function significantDimension(values: number[], tolerance = 0.1) {
+export default function significantDimension(values: number[], tolerance = 0.1) {
     let result: number[] = [];
     let decimals = 0;
     const uniqValues = uniq(values.filter(isFinite));
@@ -73,4 +73,4 @@ export = function significantDimension(values: number[], tolerance = 0.1) {
         return round(v, decimals);
     }
     return decimals;
-};
+}

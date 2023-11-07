@@ -25,7 +25,7 @@
  * @param {array} o - the input
  * @returns {object}
  */
-export = function arrayToObject(o: []) {
+export default function arrayToObject(o: []) {
     if (Array.isArray(o)) {
         const obj: Record<string, unknown> = {};
         // The purpose of this method is to commit type crimes
@@ -34,4 +34,4 @@ export = function arrayToObject(o: []) {
         return obj;
     }
     return o;
-};
+}

@@ -1,4 +1,4 @@
-import { Visualization } from './chartTypes';
+import { Visualization } from './chartTypes.js';
 
 /**
  * returns the overlays column title
@@ -12,7 +12,7 @@ import { Visualization } from './chartTypes';
  * @export
  * @returns {string}
  */
-export = function defaultOverlayTitle(
+export default function defaultOverlayTitle(
     vis: Visualization,
     colName: string,
     ZERO_BASELINE: string
@@ -23,4 +23,4 @@ export = function defaultOverlayTitle(
         if (!vis.dataset.hasColumn(colName)) return '';
         return vis.dataset.column(colName).title();
     }
-};
+}

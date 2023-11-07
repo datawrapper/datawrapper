@@ -1,4 +1,4 @@
-import { GetValueByPath, Paths } from './objectPaths';
+import { GetValueByPath, Paths } from './objectPaths.js';
 
 const isArray = (value: unknown): value is unknown[] | Readonly<unknown[]> => Array.isArray(value);
 
@@ -16,7 +16,7 @@ const isArray = (value: unknown): value is unknown[] | Readonly<unknown[]> => Ar
  *
  * @returns the value
  */
-export = function set<TObj, TPath extends Paths<TObj>>(
+export default function set<TObj, TPath extends Paths<TObj>>(
     object: TObj,
     key: TPath,
     value: GetValueByPath<TObj, TPath>
@@ -52,4 +52,4 @@ export = function set<TObj, TPath extends Paths<TObj>>(
         return true;
     }
     return false;
-};
+}

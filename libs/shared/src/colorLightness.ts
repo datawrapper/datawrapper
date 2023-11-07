@@ -1,8 +1,10 @@
-// We have to use `const ... = require` syntax here because there are no type definitions for this path
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const hex2rgb = require('chroma-js/src/io/hex/hex2rgb.js');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const rgb2lab = require('chroma-js/src/io/lab/rgb2lab.js');
+// There are no type definitions for these modules.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import hex2rgb from 'chroma-js/src/io/hex/hex2rgb.js';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import rgb2lab from 'chroma-js/src/io/lab/rgb2lab.js';
 
 /**
  * Returns the Lab lightness value of a given hexidecimal
@@ -24,6 +26,6 @@ const rgb2lab = require('chroma-js/src/io/lab/rgb2lab.js');
  * import colorLightness from '@datawrapper/shared/colorLightness';
  * colorLightness('#ff3399') // 57.9
  */
-export = function colorLightness(hexColor: string): number {
+export default function colorLightness(hexColor: string): number {
     return rgb2lab(hex2rgb(hexColor))[0];
-};
+}

@@ -1,0 +1,7 @@
+{
+    "extends": "./tsconfig.json",
+    "exclude": ["src/**/*.test.*", "!src/**/*.perf.test.*", "test"],
+    "compilerOptions": {
+        "outDir": "dist/cjs"
+    }
+}

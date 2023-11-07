@@ -16,7 +16,7 @@
  * @param {number} value
  * @returns {number}
  */
-export = function tailLength(value: number) {
+export default function tailLength(value: number) {
     return Math.max(
         0,
         String(value - Math.floor(value))
@@ -24,4 +24,4 @@ export = function tailLength(value: number) {
             .replace(/33333*[0-9]+$/, '')
             .replace(/99999*[0-9]+$/, '').length - 2
     );
-};
+}

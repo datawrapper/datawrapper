@@ -22,4 +22,4 @@ function truncate(str: string, start = 11, end = 7) {
     return str.substring(0, start).trim() + '…' + str.substring(str.length - end).trim();
 }
 
-export = truncate;
+export default truncate;

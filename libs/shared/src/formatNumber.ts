@@ -120,4 +120,4 @@ namespace formatNumber {
     };
 }
 
-export = formatNumber;
+export default formatNumber;

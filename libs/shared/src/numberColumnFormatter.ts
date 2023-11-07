@@ -1,8 +1,8 @@
 import n from 'numeral';
 
-import formatNumber from './formatNumber';
-import equalish from './equalish';
-import { NumberColumnFormatterConfig } from './chartTypes';
+import formatNumber from './formatNumber.js';
+import equalish from './equalish.js';
+import { NumberColumnFormatterConfig } from './chartTypes.js';
 
 /**
  * Creates a number formatter based on a number column configuration
@@ -20,7 +20,10 @@ import { NumberColumnFormatterConfig } from './chartTypes';
  * @param {object} config - the column configuration from metadata
  * @returns {function}
  */
-export = function numberColumnFormatter(numeral: typeof n, config: NumberColumnFormatterConfig) {
+export default function numberColumnFormatter(
+    numeral: typeof n,
+    config: NumberColumnFormatterConfig
+) {
     const format = config['number-format'] || '-';
     const div = Number(config['number-divisor'] || 0);
     const append = (config['number-append'] || '').replace(/ /g, '\u00A0');
@@ -70,7 +73,7 @@ export = function numberColumnFormatter(numeral: typeof n, config: NumberColumnF
             multiply: Math.pow(10, div * -1)
         });
     };
-};
+}
 
 function signDigitsDecimalPlaces(num: number, sig: number) {
     if (num === 0) return 0;

@@ -90,7 +90,7 @@ function invertColor(
     }
 }
 
-export = invertColor;
+export default invertColor;
 
 function computeContrast(colA: InputColor, colB: InputColor) {
     // TODO: maybe find a better contrast computation some day

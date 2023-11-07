@@ -1,4 +1,4 @@
-import equalish from './equalish';
+import equalish from './equalish.js';
 
 /**
  * Performs one-dimensional k-means clustering on an array of
@@ -18,7 +18,7 @@ import equalish from './equalish';
  * @param {number} numCluster - the desired cluster count
  * @returns {array.<number[]>} - array of clusters
  */
-export = function kMeans(values: number[], numClusters: number) {
+export default function kMeans(values: number[], numClusters: number) {
     const clusters: number[][] = [];
     const centroids: number[] = [];
     let oldCentroids: number[] = [];
@@ -82,4 +82,4 @@ export = function kMeans(values: number[], numClusters: number) {
         }
     } while (changed && maxIterations-- > 0);
     return clusters.filter(c => c.length);
-};
+}

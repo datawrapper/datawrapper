@@ -1,4 +1,4 @@
-export = function (
+export default function (
     color: string,
     bg: string,
     minContrastRatio: number,
@@ -33,4 +33,4 @@ export = function (
             (curC < minContrastRatio && darken) || (curC > minContrastRatio && !darken);
         return evenDarker ? test(low, mid, i - 1) : test(mid, high, i - 1);
     }
-};
+}

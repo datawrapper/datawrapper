@@ -18,6 +18,6 @@
  * @export
  * @returns {boolean}
  */
-export = function equalish(a: number, b: number) {
+export default function equalish(a: number, b: number) {
     return Math.abs(a - b) < 1e-6;
-};
+}

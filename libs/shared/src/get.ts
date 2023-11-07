@@ -1,4 +1,4 @@
-import { GetValueByPath, Paths } from './objectPaths';
+import { GetValueByPath, Paths } from './objectPaths.js';
 
 /**
  * Safely access object properties without throwing nasty
@@ -43,4 +43,4 @@ function get(object: unknown, key: string | string[] | null = null, _default: un
     return pt === undefined || pt === null ? _default : pt;
 }
 
-export = get;
+export default get;

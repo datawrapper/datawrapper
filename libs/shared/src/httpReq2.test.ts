@@ -3,7 +3,7 @@ import fetch, { Response } from 'node-fetch';
 import sinon from 'sinon';
 
 import httpReq from './httpReq';
-import { SimpleFetchOptions } from './httpReqOptions';
+import { SimpleFetch, SimpleFetchOptions } from './httpReqOptions';
 
 const baseUrl = 'http://api.datawrapper.mock';
 
@@ -23,7 +23,7 @@ test('calls /v3/me when CSRF cookie is not set', async t => {
     let lastFetchOpts = undefined as SimpleFetchOptions | undefined;
     await httpReq.put('/put', {
         baseUrl,
-        fetch: (url, opts) => {
+        fetch: (url: string, opts: SimpleFetchOptions) => {
             if (url === baseUrl + '/v3/me') {
                 wasGETCalled = true;
                 document.cookie = 'crumb=abc';
@@ -32,6 +32,10 @@ test('calls /v3/me when CSRF cookie is not set', async t => {
             lastFetchOpts = opts;
             return Promise.resolve(new Response());
         }
+    } as unknown as {
+        // TODO Fix the SimpleFetch type and then remove this casting.
+        baseUrl: string;
+        fetch: SimpleFetch;
     });
     t.true(wasGETCalled);
     t.is(lastFetchOpts?.headers?.['X-CSRF-Token'], 'abc');

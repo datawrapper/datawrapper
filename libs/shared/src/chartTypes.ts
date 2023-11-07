@@ -1,4 +1,4 @@
-import type { ThemeData } from './themeTypes';
+import type { ThemeData } from './themeTypes.js';
 
 export type DatePrecision =
     | 'year'
