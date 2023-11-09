@@ -124,9 +124,14 @@ export type ThemeData = {
     };
     vis?: {
         'multiple-lines'?: {
-            labels?: {
-                panelTitles?: TypographyObject;
+            panels?: {
+                title?: TypographyObject;
+                titleSpace?: number;
+                columnGap?: number;
+                rowGap?: number;
             };
+            extendGrid?: boolean;
+            mobileBreakpoint?: number;
         };
     };
 };
