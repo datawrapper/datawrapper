@@ -56,6 +56,7 @@ export type Metadata = {
     custom?: {
         webToPrint?: {
             mode?: string;
+            printChartId?: string;
         };
     } & Record<`exif-${string}`, string>;
     data?: {
