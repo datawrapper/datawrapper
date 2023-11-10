@@ -76,6 +76,22 @@ function Chart(attributes) {
             };
         },
 
+        /**
+         * Returns the relative mouse position within a given node. If no node is specified,
+         * returns position based on event.target of the mouse event.
+         *
+         * @param {MouseEvent} event
+         * @param {HTMLElement} node
+         *
+         * @returns {number[]} [x, y] - the relative mouse position
+         */
+        getRelativeMousePosition(event, node) {
+            const rect = (node || event.target).getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            return [x, y];
+        },
+
         // loads the dataset and returns a deferred
         load(csv, externalData) {
             const dsopts = {
