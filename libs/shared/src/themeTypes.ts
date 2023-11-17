@@ -86,6 +86,8 @@ type TypographyObject = {
     textTransform?: TextTransform;
     letterSpacing?: string;
 };
+type StrokeLineCap = 'butt' | 'round' | 'square';
+type LineWidthStyle = 'style0' | 'style1' | 'style2' | 'style3';
 
 export type ThemeData = {
     type?: 'web' | 'print';
@@ -132,6 +134,22 @@ export type ThemeData = {
             };
             extendGrid?: boolean;
             mobileBreakpoint?: number;
+            lines?: {
+                defaultWidthStyle?: {
+                    main?: LineWidthStyle;
+                    repeat?: LineWidthStyle;
+                };
+                linecap?: {
+                    normal?: StrokeLineCap;
+                    dashed?: StrokeLineCap;
+                };
+                widths?: {
+                    style0?: number;
+                    style1?: number;
+                    style2?: number;
+                    style3?: number;
+                };
+            };
         };
     };
 };
