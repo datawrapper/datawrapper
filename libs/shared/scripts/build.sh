@@ -16,7 +16,7 @@ node_modules/.bin/tsc --project ./tsconfig.build.cjs.json --outDir dist.new/cjs
 find dist.new/cjs -name '*.js' -exec sh -c 'mv -v "$1" "${1%.js}.cjs"' _ {} \;
 find dist.new/cjs -name '*.js.map' -exec sh -c 'mv -v "$1" "${1%.js.map}.cjs.map"' _ {} \;
 find dist.new/cjs -name '*.ts' -exec sh -c 'mv -v "$1" "${1%.ts}.cts"' _ {} \;
-if sed --help | grep -q 'GNU sed'; then
+if sed --help 2>&1 | grep -E 'GNU sed|BusyBox'; then
     find dist.new/cjs -name '*.cjs' -exec sed -i -E 's|require\("(\.{1,2}/.+)\.js"\)|require("\1.cjs")|' {} \;
 else
     find dist.new/cjs -name '*.cjs' -exec sed -i '' -E 's|require\("(\.{1,2}/.+)\.js"\)|require("\1.cjs")|' {} \;
