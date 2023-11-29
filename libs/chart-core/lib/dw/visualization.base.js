@@ -235,6 +235,9 @@ extend(base, {
      * @returns {Promise} resolves when the rendering is completed
      */
     rendered() {
+        if (this.__rendered) {
+            return Promise.resolve();
+        }
         return new Promise((resolve, reject) => {
             this.__renderEvents.resolve.add(resolve);
             this.__renderEvents.reject.add(reject);
