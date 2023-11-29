@@ -321,6 +321,13 @@ function Column(name_, rows, type, allowedTags) {
         clear() {
             rows.splice(0);
             column.length = rows.length;
+        },
+
+        /**
+         * return raw rows
+         **/
+        rows() {
+            return rows;
         }
     };
     // backwards compatibility
