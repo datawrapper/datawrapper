@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 # Notice that this script must have /bin/sh hashbang not /bin/bash, because we call it from the
 # worker Dockerfile, which doesn't have bash.
