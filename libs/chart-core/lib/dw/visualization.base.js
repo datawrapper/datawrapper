@@ -24,20 +24,13 @@ extend(base, {
 
     setup() {
         this.__callbacks = {};
-        this.__renderEvents = { resolve: events(), reject: events() };
+        this.__renderedCallbacks = events();
         this.renderingComplete = debounce(this.__renderingComplete, this.__resolveRenderedAfter);
     },
 
     __beforeRender() {
-        if (this.__rejectTimeout) clearTimeout(this.__rejectTimeout);
-        this.__rejectTimeout = setTimeout(() => {
-            // if the visualization didn't complete rendering within 5s
-            // we want to reject the rendered() Promise
-            this.__renderEvents.reject.fire(
-                new Error(`timeout after ${this.__rejectRenderedAfter}ms`)
-            );
-        }, this.__rejectRenderedAfter);
         this.__rendered = false;
+
         // reset internal properties
         this.__colors = {};
 
@@ -216,7 +209,7 @@ extend(base, {
     clear() {},
 
     __renderingComplete() {
-        this.__renderEvents.resolve.fire();
+        this.__renderedCallbacks.fire();
         if (window.parent && window.parent.postMessage) {
             setTimeout(function () {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
@@ -230,18 +223,26 @@ extend(base, {
     postRendering() {},
 
     /**
-     * Use this to wait until a visualization has finished rendering
+     * Use this to wait until a visualization has finished rendering.
      *
-     * @returns {Promise} resolves when the rendering is completed
+     * @param {Object} opts
+     * @param {number} [opts.rejectRenderedAfter] override `this.__rejectRenderedAfter`
+     * @returns {Promise} resolves when the rendering is completed, rejects if `rejectRenderedAfter` passes first
      */
-    rendered() {
+    rendered({ rejectRenderedAfter } = {}) {
         if (this.__rendered) {
             return Promise.resolve();
         }
-        return new Promise((resolve, reject) => {
-            this.__renderEvents.resolve.add(resolve);
-            this.__renderEvents.reject.add(reject);
-        });
+        rejectRenderedAfter = rejectRenderedAfter ?? this.__rejectRenderedAfter;
+        return Promise.race([
+            new Promise(resolve => this.__renderedCallbacks.add(resolve)),
+            new Promise((_, reject) =>
+                setTimeout(
+                    () => reject(new Error(`timeout after ${rejectRenderedAfter}ms`)),
+                    rejectRenderedAfter
+                )
+            )
+        ]);
     },
 
     /*
@@ -258,6 +259,7 @@ extend(base, {
         }
 
         this.__colorMode = cm;
+        return undefined;
     },
 
     colorMap(cm) {
@@ -277,6 +279,7 @@ extend(base, {
         }
 
         this.__colorMap = cm;
+        return undefined;
     },
 
     initDarkMode(cb, cm) {
@@ -291,10 +294,11 @@ extend(base, {
         // can't initialize in __beforeRender because that sets it back to false on each render
         if (this.__darkMode === undefined) this.__darkMode = false;
         if (!arguments.length) return this.__darkMode;
-        if (!this.__onDarkModeChange) return;
+        if (!this.__onDarkModeChange) return undefined;
 
         this.__darkMode = dm;
         this.__onDarkModeChange(dm);
+        return undefined;
     },
 
     colorsUsed() {
