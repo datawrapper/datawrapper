@@ -161,7 +161,7 @@ test('visualization can set custom resolve timeout', async t => {
     t.is(vis.__rendered, true);
 });
 
-test('visualization renderred promise is rejected after timeout', async t => {
+test('visualization rendered promise is rejected after timeout', async t => {
     let cnt = 0;
     visualization.register(t.context.id, null, {
         __resolveRenderedAfter: 50,
