@@ -38,6 +38,7 @@ export type Column = {
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
     raw(): string;
+    val(index: number): unknown;
 };
 
 export type Metadata = {
