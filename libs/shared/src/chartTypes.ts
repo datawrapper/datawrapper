@@ -180,7 +180,7 @@ export type Visualization = {
     renderingComplete: () => void;
     size: () => [number, number];
     colorMap: () => (color: string) => string;
-    colorMode: () => string;
+    colorMode: (mode?: string) => string;
     /**
      * Use this to wait until a visualization has finished rendering
      *
