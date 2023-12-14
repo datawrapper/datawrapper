@@ -215,7 +215,6 @@ extend(base, {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
             }, 200);
         }
-        clearTimeout(this.__rejectTimeout);
         this.__rendered = true;
         this.postRendering();
     },
