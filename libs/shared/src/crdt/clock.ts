@@ -1,5 +1,4 @@
 export type Timestamp = `${number}-${number}`;
-import Joi from 'joi';
 
 /**\
  * Initialize a timestamp
@@ -22,9 +21,7 @@ export const incrementTimestamp = (timestamp: Timestamp): Timestamp => {
  * @returns {boolean} True if the timestamp is valid, false otherwise
  */
 export const validateTimestamp = (timestamp: Timestamp): boolean => {
-    const schema = Joi.string().regex(/^\d+-\d+$/);
-    const { error } = schema.validate(timestamp);
-    return error === undefined;
+    return /^\d+-\d+$/.test(timestamp);
 };
 
 /**
