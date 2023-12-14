@@ -22,6 +22,7 @@
     "scripts": {
         "build:full": "../../scripts/install.js --build-untracked-dependencies --include-sub-packages && npm run build",
         "test": "ava",
+        "test:crdt": "ava **/crdt/*.test.*",
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "scripts/build.sh",
