@@ -1,5 +1,5 @@
 import test from 'ava';
-import { CRDTWithClock } from './internalClockCrdt.js';
+import { CRDTWithClock } from './crdtWithClock.js';
 import { cloneDeep } from 'lodash';
 
 test(`crdt internals are immuatable`, t => {

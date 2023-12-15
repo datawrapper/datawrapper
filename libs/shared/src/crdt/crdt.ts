@@ -1,4 +1,6 @@
-import { set as setNestedValue, get as getNestedValue, cloneDeep } from 'lodash';
+import setNestedValue from 'lodash/set.js';
+import getNestedValue from 'lodash/get.js';
+import cloneDeep from 'lodash/cloneDeep.js';
 import { compareTimestamps, initTimestamp, Timestamp } from './clock.js';
 
 /** Has the same shape as `O` but with `timestamps`s as values */
