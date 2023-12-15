@@ -47,7 +47,7 @@
         "@types/jquery": "^3.5.14",
         "@types/js-cookie": "^3.0.2",
         "@types/jsdom": "^20.0.0",
-        "@types/lodash": "^4.14.186",
+        "@types/lodash": "^4.14.202",
         "@types/node-fetch": "^2.6.7",
         "@types/numeral": "^2.0.2",
         "@types/raf": "^3.4.0",
@@ -1307,6 +1307,25 @@
         ".": {
             "require": "./dist/cjs/index.cjs",
             "default": "./dist/esm/index.js"
+        },
+        "./crdt.d.ts": {
+            "require": "./dist/cjs/crdt/index.d.cts",
+            "default": "./dist/esm/crdt/index.d.ts"
+        },
+        "./crdt.js": {
+            "require": "./dist/cjs/crdt/index.cjs",
+            "types": "./dist/cjs/crdt/index.d.cts",
+            "default": "./dist/esm/crdt/index.js"
+        },
+        "./crdt": {
+            "require": "./dist/cjs/crdt/index.cjs",
+            "types": "./dist/cjs/crdt/index.d.cts",
+            "default": "./dist/esm/crdt/index.js"
+        },
+        "./dist/cjs/crdt.cjs": {
+            "require": "./dist/cjs/crdt/index.cjs",
+            "types": "./dist/cjs/crdt/index.d.cts",
+            "default": "./dist/esm/crdt/index.js"
         }
     }
 }
