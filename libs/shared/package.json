@@ -1303,6 +1303,25 @@
             "types": "./dist/cjs/validation.d.cts",
             "default": "./dist/esm/validation.js"
         },
+        "./getVersionlessURL.d.ts": {
+            "require": "./dist/cjs/getVersionlessURL.d.cts",
+            "default": "./dist/esm/getVersionlessURL.d.ts"
+        },
+        "./getVersionlessURL.js": {
+            "require": "./dist/cjs/getVersionlessURL.cjs",
+            "types": "./dist/cjs/getVersionlessURL.d.cts",
+            "default": "./dist/esm/getVersionlessURL.js"
+        },
+        "./getVersionlessURL": {
+            "require": "./dist/cjs/getVersionlessURL.cjs",
+            "types": "./dist/cjs/getVersionlessURL.d.cts",
+            "default": "./dist/esm/getVersionlessURL.js"
+        },
+        "./dist/cjs/getVersionlessURL.cjs": {
+            "require": "./dist/cjs/getVersionlessURL.cjs",
+            "types": "./dist/cjs/getVersionlessURL.d.cts",
+            "default": "./dist/esm/getVersionlessURL.js"
+        },
         "./package.json": "./package.json",
         ".": {
             "require": "./dist/cjs/index.cjs",
