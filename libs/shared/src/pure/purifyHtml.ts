@@ -1,6 +1,6 @@
 import { createPermanentMemoizer } from '../memoizer.js';
 
-const DEFAULT_ALLOWED = [
+export const DEFAULT_ALLOWED = [
     'a',
     'span',
     'b',
