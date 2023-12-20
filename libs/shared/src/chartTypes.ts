@@ -76,9 +76,28 @@ export type Metadata = {
             previous?: string | number;
         }[];
     };
+    print?: boolean;
     publish?: {
         'embed-height'?: number;
         'embed-width'?: number;
+        /** enable/disable the automatic dark mode switching based on browser preferences */
+        autoDarkMode?: boolean;
+        blocks?: {
+            'download-image'?: boolean;
+            'download-pdf'?: boolean;
+            'download-svg'?: boolean;
+            embed?: boolean;
+            logo?: {
+                /** show the logo in footer (if available) */
+                enabled: boolean;
+                /** id of logo to show, if multiple logos are available */
+                id: string;
+            };
+            'get-the-data'?: boolean;
+        };
+        'force-attribution'?: boolean;
+    } & {
+        [key in `export-${'svg' | 'pdf'}`]?: Record<string, unknown>;
     };
 };
 
@@ -143,6 +162,8 @@ export type DwChart = {
     load: (data: string) => void;
     flags: () => RenderFlags;
     libraries: () => ChartLibraries;
+    attributes: (chart?: any) => any;
+    onChange: (callback: (chart: Chart) => void) => void;
     emotion: typeof import('@emotion/css');
 };
 
@@ -163,6 +184,11 @@ export type Chart = {
     thumbnailHash: string;
     folderId?: number | null;
     organizationId: string | null;
+};
+
+type FullVectorOpts = {
+    noPitch: boolean;
+    noBuilding3d: boolean;
 };
 
 export type Visualization = {
@@ -187,7 +213,11 @@ export type Visualization = {
      * @returns {Promise} resolves when the rendering is completed
      */
     rendered: () => Promise<void>;
+    setLocatorMapView: (height: boolean) => void;
     __rendered: boolean;
     __lastRow: number;
+    _firstRenderComplete: boolean;
+    _SVGExport: FullVectorOpts;
     textDirection: TextDirection;
+    meta: any;
 };

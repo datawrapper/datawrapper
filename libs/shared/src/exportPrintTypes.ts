@@ -1,35 +1,50 @@
+type Unit = 'in' | 'mm' | 'px';
+
 type GenericExportParams = {
     width: number;
+    disableExif?: boolean;
     height: number | 'auto';
-    plain: boolean;
-    logo: string | undefined;
-    logoId: string | undefined;
-    fullVector: boolean;
+    plain?: boolean;
+    include?: 'full' | 'plain';
+    logo?: 'on' | 'off' | 'auto' | undefined;
+    logoId?: string | undefined;
+    fullVector?: boolean;
     delay?: number;
-    dark: boolean;
-    transparent: boolean;
+    dark?: boolean;
+    transparent?: boolean;
+    default?: boolean;
+    border?: { color?: string; width: number };
 };
 
-type PdfExportParams = GenericExportParams & {
-    border: { width: number };
-    colorMode: string;
-    ligatures: boolean;
-    unit: string;
-    scale: number;
+export type PdfExportParams = GenericExportParams & {
+    colorMode?: 'rgb' | 'cmyk';
+    ligatures?: boolean;
+    unit?: Unit;
+    scale?: number;
 };
 
-type PdfExportResult = {
+export type PdfExportResult = {
     dataURI: string;
     json: unknown;
     warnings: unknown;
 };
 
-type SvgExportParams = GenericExportParams & {
-    unit?: string;
+export type PngExportParams = GenericExportParams & {
+    zoom?: number;
+};
+
+export type PngExportResult = {
+    dataURI: string;
+    json: unknown;
+    warnings: unknown;
+};
+
+export type SvgExportParams = GenericExportParams & {
+    unit?: Unit;
     scale?: number;
 };
 
-type SvgExportResult = {
+export type SvgExportResult = {
     json: unknown;
     warnings: unknown;
     xml: string;
