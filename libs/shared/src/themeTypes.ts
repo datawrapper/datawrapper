@@ -152,6 +152,9 @@ export type ThemeData = {
             };
         };
     };
+    export?: {
+        [key in 'pdf' | 'svg']?: Record<string, unknown>;
+    };
 };
 
 /**
