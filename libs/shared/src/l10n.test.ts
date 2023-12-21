@@ -1,5 +1,5 @@
 import test from 'ava';
-import { __, keyExists, translate } from './l10n';
+import { ApiError, __, keyExists, translate, translateError } from './l10n';
 
 test.before(() => {
     global.dw = {
@@ -8,9 +8,11 @@ test.before(() => {
                 core: {
                     foo: 'Fooo',
                     bar: 'Baaar',
+                    baz: 'Baaaz',
                     'html-example': '<strong>Hello</strong> %user_name%!',
                     'named-example': '%a %a% %ab %ab% %abc %abc%',
-                    'numbered-example': 'Hi! $0. What? $0. Who? $0 $1!'
+                    'numbered-example': 'Hi! $0. What? $0. Who? $0 $1!',
+                    'Unknown error': 'Unknown error'
                 }
             }
         }
@@ -99,4 +101,50 @@ test('keyExists returns false if the key does not exist in the default scope', t
 
 test('keyExists returns false if the passed scope does not exist', t => {
     t.false(keyExists('non-existent-key', 'non-existent-scope'));
+});
+
+test('translateError translates an API error object', t => {
+    let error: ApiError;
+    error = {
+        statusCode: 404
+    };
+    t.is(translateError(error), 'Unknown error');
+
+    error = {
+        statusCode: 404,
+        message: 'foo'
+    };
+    t.is(translateError(error), 'Fooo');
+
+    error = {
+        statusCode: 404,
+        message: 'foo'
+    };
+    t.is(translateError(error, 'baz'), 'Baaaz');
+
+    error = {
+        statusCode: 404,
+        message: 'foo',
+        translationKey: 'bar'
+    };
+    t.is(translateError(error), 'Baaar');
+
+    error = {
+        statusCode: 404,
+        message: 'foo',
+        translationKey: 'bar',
+        details: [{ type: 'baz', path: 'baz', translationKey: 'baz' }]
+    };
+    t.is(translateError(error), 'Baaaz');
+
+    error = {
+        statusCode: 404,
+        message: 'foo',
+        translationKey: 'bar',
+        details: [
+            { type: 'baz', path: 'baz', translationKey: 'baz' },
+            { type: 'foo', path: 'foo', translationKey: 'foo' }
+        ]
+    };
+    t.is(translateError(error), 'Baaaz. Fooo');
 });

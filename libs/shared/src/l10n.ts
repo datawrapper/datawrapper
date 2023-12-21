@@ -130,6 +130,34 @@ export function translate(
     return purifyHtml(text, ALLOWED_HTML);
 }
 
+export type ApiError = {
+    statusCode: number;
+    translationKey?: string;
+    message?: string;
+    type?: string;
+    details?: {
+        path: string;
+        type: string;
+        translationKey: string;
+    }[];
+};
+
+/**
+ * Helper for turning an error object into an error message that can be displayed in the app.
+ */
+export function translateError(error: ApiError, fallbackTranslationKey?: string): string {
+    if (error?.details?.length) {
+        const detailMessages = error.details
+            .map(({ translationKey }) => (translationKey ? __(translationKey) : ''))
+            .filter(detail => detail !== '');
+        return detailMessages.join('. ');
+    } else if (error?.translationKey) {
+        return __(error.translationKey);
+    } else {
+        return __(fallbackTranslationKey || error?.message || 'Unknown error');
+    }
+}
+
 /**
  * Helper for finding a translation key based on a globally accessible dictionary (to be used
  * e.g. in visualization plugins and legacy Svelte 2 code).
