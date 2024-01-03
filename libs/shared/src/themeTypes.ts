@@ -17,6 +17,47 @@ export type FontObject = {
     };
 };
 
+export type V1TextBlockConfig = V1BlockConfig & {
+    data?: CustomBlockData;
+};
+
+export type V1HTMLRuleBlockData = {
+    border?: string;
+    margin?: string;
+};
+
+export type V1HTMLRuleBlockConfig = V1BlockConfig & {
+    data?: V1HTMLRuleBlockData;
+};
+
+export type V2Margin =
+    | {
+          top?: number;
+          right?: number;
+          bottom?: number;
+          left?: number;
+      }
+    | string;
+
+export type HTMLRuleStyles = {
+    width?: number;
+    color?: string;
+    style?: string;
+    margin?: V2Margin;
+};
+
+export type V1SVGRuleBlockConfig = V1BlockConfig & {
+    data?: unknown;
+};
+
+export type V1RectangleBlockConfig = V1BlockConfig & {
+    data?: {
+        width?: number;
+        height?: number;
+        fill?: string;
+    };
+};
+
 // TODO Some properties arae for sure missing in the `BlockStyles` type. Fill them.
 type ThemeBlockStyles = {
     gap?: number;
@@ -40,24 +81,31 @@ type ThemeBlockStyles = {
     };
 };
 
-type ThemeBlockData = {
-    options?: {
-        id?: string;
-        title?: string;
-        height?: number;
-        imgSrc?: string;
-    }[];
-};
-
-type ThemeBlock = {
+export type ThemeBlock = {
     styles?: ThemeBlockStyles & {
         links?: ThemeBlockStyles;
     };
-    data?: ThemeBlockData;
+    options?: Record<string, unknown>;
 };
 
 // TODO The `type` property should be `children?: Block[]`, but our type implementation in shared/get doesn't support recursive types yet.
-export type Block = { id?: string; type?: string; children?: { id?: string; type?: string }[] };
+export type Block = {
+    type: string;
+    id?: string;
+    children?: {
+        id?: string;
+        type: string;
+        children?: {
+            id?: string;
+            type: string;
+            children?: {
+                id?: string;
+                type: string;
+                children?: { id?: string; type: string }[];
+            }[];
+        }[];
+    }[];
+};
 export type Container = Block & { type: 'container'; children: Block[] };
 
 type FontWeight =
@@ -89,9 +137,109 @@ type TypographyObject = {
 type StrokeLineCap = 'butt' | 'round' | 'square';
 type LineWidthStyle = 'style0' | 'style1' | 'style2' | 'style3';
 
+export type ThemeBlockType =
+    | 'text'
+    | 'ruleHTML'
+    | 'ruleSVG'
+    | 'logo'
+    | 'container'
+    | 'rectangle'
+    | 'headline'
+    | 'description'
+    | 'notes'
+    | 'byline'
+    | 'source'
+    | 'mapAttribution'
+    | 'getTheData'
+    | 'edit'
+    | 'embed'
+    | 'downloadImage'
+    | 'downloadPdf'
+    | 'downloadSvg'
+    | 'attribution'
+    | 'shareTools'
+    | 'watermark';
+
+export type V1BlockConfig = {
+    region?:
+        | 'header'
+        | 'belowHeader'
+        | 'headerRight'
+        | 'footerLeft'
+        | 'footerCenter'
+        | 'footerRight'
+        | 'aboveFooter'
+        | 'belowFooter'
+        | 'afterBody'
+        | 'menu';
+    priority?: number;
+    prepend?: string;
+    append?: string;
+    data?: Record<string, unknown>;
+};
+
+export type V1BlockType =
+    | 'hr'
+    | 'hr1'
+    | 'hr2'
+    | 'svg-rule'
+    | 'svg-rule1'
+    | 'svg-rule2'
+    | 'rectangle'
+    | 'figure'
+    | 'headline'
+    | 'description'
+    | 'subhed'
+    | 'logo'
+    | 'figure'
+    | 'subhed'
+    | 'caption'
+    | 'copyright'
+    | 'timestamp'
+    | 'custom'
+    | 'custom1'
+    | 'custom2'
+    | 'custom3'
+    | 'notes'
+    | 'map-attribution'
+    | 'byline'
+    | 'source'
+    | 'get-the-data'
+    | 'edit'
+    | 'embed'
+    | 'download-image'
+    | 'download-pdf'
+    | 'download-svg'
+    | 'attribution'
+    | 'social-sharing'
+    | 'watermark';
+
+type CustomBlockData = {
+    'custom-field'?: string;
+};
+
+type StyleObject = {
+    border?: { top?: string; bottom?: string; left?: string; right?: string };
+    background?: string;
+    margin?: string;
+    padding?: string;
+    textAlign?: string;
+};
+type FooterRegionOptions = {
+    gap?: number;
+    layout?: 'flex-row' | 'flex-column' | 'inline';
+};
+
+export type Override = {
+    type?: 'darkMode';
+    condition?: any[];
+    settings: Record<string, string>;
+};
+
 export type ThemeData = {
     type?: 'web' | 'print';
     blocks?: Record<string, ThemeBlock>;
+    overrides?: Override[];
     regions?: {
         header?: Container;
         footer?: Container;
@@ -120,9 +268,11 @@ export type ThemeData = {
     };
     easing?: string;
     typography?: {
-        chart?: {
-            fontSize?: number;
-        };
+        chart?: TypographyObject;
+        notes?: TypographyObject;
+        footer?: TypographyObject;
+        headline?: TypographyObject;
+        description?: TypographyObject;
     };
     vis?: {
         'multiple-lines'?: {
@@ -152,9 +302,36 @@ export type ThemeData = {
             };
         };
     };
+    style?: {
+        header?: StyleObject & {
+            title?: StyleObject;
+            description?: StyleObject;
+        };
+        footer?: StyleObject;
+        notes?: StyleObject;
+        aboveFooter?: StyleObject;
+        belowFooter?: StyleObject;
+        filter?: unknown;
+    };
+    options?: {
+        blocks?: Record<string, V1BlockConfig>;
+        footer?: {
+            left?: FooterRegionOptions;
+            center?: FooterRegionOptions;
+            right?: FooterRegionOptions;
+            gap?: number;
+            separator?: {
+                margin?: string;
+                text?: string;
+            };
+        };
+    };
     export?: {
         [key in 'pdf' | 'svg']?: Record<string, unknown>;
     };
+    locales?: Record<string, Record<string, string>>;
+    defaultFooterRegion?: string;
+    defaultHeaderRegion?: string;
 };
 
 /**
