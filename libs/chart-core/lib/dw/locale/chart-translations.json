@@ -68,7 +68,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Поиск",
         "total": "Всего",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "zh-CN": {
         "accessibility / annotations / multiple": "和%count%批注。",
@@ -139,7 +147,15 @@
         "symbol-labels-more-than-7": "一些符号已标记，包括%labels%和%others%。",
         "table-search-placeholder": "在表格中搜索",
         "total": "总计",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "es-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -210,7 +226,15 @@
         "symbol-labels-more-than-7": "Algunos símbolos están etiquetados, incluyendo %labels% y %others% más.",
         "table-search-placeholder": "Buscar",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "de-CH": {
         "accessibility / annotations / multiple": "und %count% Anmerkungen.",
@@ -281,7 +305,15 @@
         "symbol-labels-more-than-7": "Einige Symbole sind beschriftet, darunter %labels%, und %others% andere.",
         "table-search-placeholder": "Suche in Tabelle",
         "total": "Gesamt",
-        "truncated-rows": "Weitere $0 Zeilen werden nicht angezeigt."
+        "truncated-rows": "Weitere $0 Zeilen werden nicht angezeigt.",
+        "accessibility / multiple-line-chart / chart-single": "Ein einzelnes Liniendiagramm.",
+        "accessibility / multiple-line-chart / chart-multiple": "Ein Raster von %count% Liniendiagrammen.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "Eine Gruppe von %count% Linien.",
+        "accessibility / multiple-line-chart / line": "Die Linie zeigt %count% Werte für „%title%“."
     },
     "de-DE": {
         "accessibility / annotations / multiple": "und %count% Anmerkungen.",
@@ -352,7 +384,15 @@
         "symbol-labels-more-than-7": "Einige Symbole sind beschriftet, darunter %labels%, und %others% andere.",
         "table-search-placeholder": "Suche in Tabelle",
         "total": "Gesamt",
-        "truncated-rows": "Weitere $0 Zeilen werden nicht angezeigt."
+        "truncated-rows": "Weitere $0 Zeilen werden nicht angezeigt.",
+        "accessibility / multiple-line-chart / chart-single": "Ein einzelnes Liniendiagramm.",
+        "accessibility / multiple-line-chart / chart-multiple": "Ein Raster von %count% Liniendiagrammen.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "Eine Gruppe von %count% Linien.",
+        "accessibility / multiple-line-chart / line": "Die Linie zeigt %count% Werte für „%title%“."
     },
     "fr": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -423,7 +463,15 @@
         "symbol-labels-more-than-7": "Certains symboles sont étiquetés, y compris %labels%, et %others% autres.",
         "table-search-placeholder": "Rechercher dans le tableau",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "Un groupe de %count% lignes.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fr-CA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -494,7 +542,15 @@
         "symbol-labels-more-than-7": "Certains symboles sont étiquetés, y compris %labels%, et %others% autres.",
         "table-search-placeholder": "Rechercher",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "Un groupe de %count% lignes.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fr-FR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -565,7 +621,15 @@
         "symbol-labels-more-than-7": "Certains symboles sont étiquetés, y compris %labels%, et %others% autres.",
         "table-search-placeholder": "Rechercher",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "Un groupe de %count% lignes.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "pt-PT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -636,7 +700,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Procurar",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "pt-BR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -707,7 +779,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Pesquisar na tabela",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ar-DZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -778,7 +858,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "ابحث",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "it": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -849,7 +937,15 @@
         "symbol-labels-more-than-7": "Alcuni simboli sono stati etichettati, fra cui %labels% e altri %others%.",
         "table-search-placeholder": "Cerca nella tabella",
         "total": "Totale",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "it-IT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -920,7 +1016,15 @@
         "symbol-labels-more-than-7": "Alcuni simboli sono stati etichettati, fra cui %labels% e altri %others%.",
         "table-search-placeholder": "Cerca",
         "total": "Totale",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "nl-NL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -991,7 +1095,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Zoeken",
         "total": "Totaal",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fa-IR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1062,7 +1174,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "جستجو در جدول",
         "total": "جمع",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "sv-SE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1133,7 +1253,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Sök",
         "total": "Totalt",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "el-GR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1204,7 +1332,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Αναζήτηση",
         "total": "Σύνολο",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ca-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1275,7 +1411,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Buscar",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "uk": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1346,7 +1490,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Пошук у таблиці",
         "total": "Загалом",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ro-RO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1417,7 +1569,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Caută",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "bg-BG": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1488,7 +1648,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Търсене",
         "total": "Общо",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "sr-RS": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1559,7 +1727,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Pretraži tabelu",
         "total": "Ukupno",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "az-AZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1630,7 +1806,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Cədvəldə axtar",
         "total": "Ümumi",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "lt-LT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1701,7 +1885,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Ieškoti",
         "total": "Iš viso",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "lv-LV": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1772,7 +1964,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Meklēt",
         "total": "Kopā",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "et-EE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1843,7 +2043,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Otsi kõikide tulemuste seast",
         "total": "Kokku",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "bs-BA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1914,7 +2122,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Search in table",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "mk-MK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1985,7 +2201,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Пребарување во табелата",
         "total": "Вкупно",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ka-GE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2056,7 +2280,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "მოძებნე ცხრილში",
         "total": "ჯამი",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "is-IS": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2127,7 +2359,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Leita í töflu",
         "total": "Samtals",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "hy-AM": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2198,7 +2438,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Որոնել աղյուսակում",
         "total": "Ընդամենը",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fo-FO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2269,7 +2517,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Leita",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "kk-KZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2340,7 +2596,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Кестеден іздеу",
         "total": "Барлығы",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ky-KG": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2411,7 +2675,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Таблицадан издөө",
         "total": "Бардыгы",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "mt-MT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2482,7 +2754,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Fittex",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ps-AF": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2553,7 +2833,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "په جدول کې لټول",
         "total": "مجموعاً",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "be-BY": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2624,7 +2912,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Шукаць у табліцы",
         "total": "Агулам",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "eu-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2695,7 +2991,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Bilatu",
         "total": "Guztira",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "sl-SI": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2766,7 +3070,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Išči",
         "total": "Skupaj",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "tg-TJ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2837,7 +3149,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Дар ҷадвал ҷустуҷӯ кунед",
         "total": "Ҳамагӣ",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "tk-TM": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2908,7 +3228,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Tablisada gözle",
         "total": "Jemi",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ga-IE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2979,7 +3307,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Cuardaigh",
         "total": "Iomlán",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "gl-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3050,7 +3386,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Buscar na táboa",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "en-US": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3121,7 +3465,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Search in table",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "es": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3192,7 +3544,15 @@
         "symbol-labels-more-than-7": "Algunos símbolos están etiquetados, incluyendo %labels% y %others% más.",
         "table-search-placeholder": "Buscar en la tabla",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fi-FI": {
         "accessibility / annotations / multiple": "Kuviossa on %count% huomautusta.",
@@ -3263,7 +3623,15 @@
         "symbol-labels-more-than-7": "Osa symboleista on nimetty, mukaan lukien %labels% ja %others% muuta.",
         "table-search-placeholder": "Etsi",
         "total": "Yhteensä",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "pl-PL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3334,7 +3702,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Szukaj",
         "total": "Łącznie",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "fa-AF": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3405,7 +3781,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "جستجو در جدول",
         "total": "مجموعاً",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ja-JP": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3476,7 +3860,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "検索",
         "total": "合計",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "cs-CZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3547,7 +3939,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Hledat",
         "total": "Celkem",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "da-DK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3618,7 +4018,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Søg",
         "total": "I alt",
-        "truncated-rows": "Yderligere $0 rækker er ikke vist."
+        "truncated-rows": "Yderligere $0 rækker er ikke vist.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "he-IL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3689,7 +4097,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "לחפש",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "hr-HR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3760,7 +4176,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Pretraži tablicu",
         "total": "Ukupno",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "hu-HU": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3831,7 +4255,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Keresés",
         "total": "Összesen",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "ko-KR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3902,7 +4334,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "찾아보기",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "nb-NO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3973,7 +4413,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Søk",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "nn-NO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4044,7 +4492,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Søk",
         "total": "Total",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "sk-SK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4115,7 +4571,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Hľadať",
         "total": "Celkom",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "sq-AL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4186,7 +4650,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Kërko në tabelë",
         "total": "Gjithsej",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "tr-TR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4257,7 +4729,15 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Tabloda ara",
         "total": "Toplam",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     },
     "uk-UA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4328,6 +4808,14 @@
         "symbol-labels-more-than-7": "Some symbols are labelled, including %labels%, and %others% others.",
         "table-search-placeholder": "Пошук у таблиці",
         "total": "Загалом",
-        "truncated-rows": "Additional $0 rows not shown."
+        "truncated-rows": "Additional $0 rows not shown.",
+        "accessibility / multiple-line-chart / chart-single": "A single line chart.",
+        "accessibility / multiple-line-chart / chart-multiple": "A grid of %count% line charts.",
+        "accessibility / multiple-line-chart / panel-group-multiple": "A group of %count% panels.",
+        "accessibility / multiple-line-chart / panel-group-single": "A group with a single panel.",
+        "accessibility / multiple-line-chart / panel-single": "Chart panel with title \"%title%\" containing one line.",
+        "accessibility / multiple-line-chart / panel-multiple": "Chart panel with title \"%title%\" containing %count% lines.",
+        "accessibility / multiple-line-chart / lines-multiple": "A group of %count% lines.",
+        "accessibility / multiple-line-chart / line": "Line showing %count% values for \"%title%\"."
     }
 }
