@@ -63,6 +63,7 @@
         "nock": "^13.2.9",
         "numeral": "^2.0.6",
         "sinon": "^14.0.0",
+        "svelte": "^4.2.0",
         "tsx": "^3.14.0",
         "typescript": "^5.2.2"
     },
@@ -960,6 +961,25 @@
             "require": "./dist/cjs/observeFonts.cjs",
             "types": "./dist/cjs/observeFonts.d.cts",
             "default": "./dist/esm/observeFonts.js"
+        },
+        "./presenceNotifier.d.ts": {
+            "require": "./dist/cjs/presenceNotifier.d.cts",
+            "default": "./dist/esm/presenceNotifier.d.ts"
+        },
+        "./presenceNotifier.js": {
+            "require": "./dist/cjs/presenceNotifier.cjs",
+            "types": "./dist/cjs/presenceNotifier.d.cts",
+            "default": "./dist/esm/presenceNotifier.js"
+        },
+        "./presenceNotifier": {
+            "require": "./dist/cjs/presenceNotifier.cjs",
+            "types": "./dist/cjs/presenceNotifier.d.cts",
+            "default": "./dist/esm/presenceNotifier.js"
+        },
+        "./dist/cjs/presenceNotifier.cjs": {
+            "require": "./dist/cjs/presenceNotifier.cjs",
+            "types": "./dist/cjs/presenceNotifier.d.cts",
+            "default": "./dist/esm/presenceNotifier.js"
         },
         "./postEvent.d.ts": {
             "require": "./dist/cjs/postEvent.d.cts",
