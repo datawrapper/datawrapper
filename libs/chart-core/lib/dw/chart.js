@@ -415,9 +415,17 @@ function Chart(attributes) {
             return this;
         },
 
-        translate(key) {
-            if (!_translations[key]) return 'MISSING: ' + key;
-            var translation = _translations[key];
+        translate(key, useEditorLocale) {
+            const translations =
+                useEditorLocale &&
+                this.inEditor() &&
+                window.parent.dw.backend.__messages?.chart?.[key]
+                    ? window.parent.dw.backend.__messages.chart
+                    : _translations;
+
+            if (!translations[key]) return 'MISSING: ' + key;
+
+            let translation = translations[key];
 
             if (typeof translation === 'string' && arguments.length > 1) {
                 // replace $0, $1 etc with remaining arguments
