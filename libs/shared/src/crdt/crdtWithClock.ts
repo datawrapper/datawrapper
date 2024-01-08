@@ -1,5 +1,12 @@
-import { Clock } from './clock.js';
-import { CRDT, Patch, Timestamps } from './crdt.js';
+import {
+    Clock,
+    Timestamp,
+    Timestamps,
+    getHighestTimestamp,
+    counterFromTimestamp
+} from './clock.js';
+import { CRDT, Patch } from './crdt.js';
+import isEmpty from 'lodash/isEmpty.js';
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -12,7 +19,10 @@ export class CRDTWithClock<O extends object, T extends Timestamps<O>> {
 
     constructor(nodeId: number, data: O, timestamps?: T) {
         this.crdt = new CRDT(data, timestamps);
-        this.clock = new Clock(nodeId);
+        const counter = isEmpty(timestamps)
+            ? 0
+            : counterFromTimestamp(getHighestTimestamp(timestamps));
+        this.clock = new Clock(nodeId, counter);
     }
 
     /**
@@ -26,7 +36,7 @@ export class CRDTWithClock<O extends object, T extends Timestamps<O>> {
         this.crdt.update(data, timestamp);
     }
 
-    /** 
+    /**
     Increments the counter and updates the internal CRDT with the given data.
     @param data The data patch to apply
     @returns A patch object that contains the applied data patch and the assosicated timestamp
@@ -43,5 +53,17 @@ export class CRDTWithClock<O extends object, T extends Timestamps<O>> {
 
     timestamps(): T {
         return this.crdt.timestamps();
+    }
+
+    timestamp(): Timestamp {
+        return this.clock.timestamp();
+    }
+
+    counter(): number {
+        return this.clock.counter();
+    }
+
+    logs() {
+        return this.crdt.logs();
     }
 }
