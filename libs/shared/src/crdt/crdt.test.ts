@@ -1,5 +1,6 @@
 import test from 'ava';
-import { CRDT, Timestamps } from './crdt.js';
+import { Timestamps } from './clock.js';
+import { CRDT } from './crdt.js';
 import { cloneDeep } from 'lodash';
 
 test(`getters return immutable objects`, t => {
@@ -13,6 +14,7 @@ test(`getters return immutable objects`, t => {
     timestamps.a = '99-99';
     t.deepEqual(crdt.timestamps(), { a: '0-0', b: '0-0', c: '0-0' });
 });
+
 test(`init`, t => {
     // flat object
     const crdt1 = new CRDT({ a: 'some value', b: 2, c: 3 });
@@ -97,5 +99,65 @@ test(`non-conflicting updates get merged`, t => {
         a: 2,
         b: 3,
         c: { key: 'new value' }
+    });
+});
+
+test(`arrays are treated as atomic values`, t => {
+    // Note: Right now, arrays behave just as other atomic-objects like strings or numbers, i.e., each update overwrites the array.
+    // TODO: Theses tests should be updated to reflect the merging behavior of arrays once this functionality gets implemented.
+
+    // basic update
+    const crdt = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    crdt.update({ a: [1, 2, 3, 4] }, '1-1');
+    crdt.update({ b: [4, 5, 6, 7] }, '2-1');
+    t.deepEqual(crdt.data(), {
+        a: [1, 2, 3, 4],
+        b: [4, 5, 6, 7]
+    });
+
+    // overwriting update
+    const crdt2 = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    crdt2.update({ a: [1, 2, 3, 4] }, '1-1');
+    crdt2.update({ b: [4, 5, 6, 7] }, '2-1');
+    crdt2.update({ a: [1, 2, 3, 4, 5, 6, 7] }, '3-1');
+    t.deepEqual(crdt2.data(), {
+        a: [1, 2, 3, 4, 5, 6, 7],
+        b: [4, 5, 6, 7]
+    });
+
+    // nested arrays
+    const crdt3 = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    crdt3.update({ a: [1, [2, 3], 4] }, '1-1');
+    crdt3.update({ b: [4, 5, [6, 7]] }, '2-1');
+    t.deepEqual(crdt3.data(), {
+        a: [1, [2, 3], 4],
+        b: [4, 5, [6, 7]]
+    });
+
+    // arrays with objects
+    const crdt4 = new CRDT({ a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] });
+    crdt4.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
+    crdt4.update({ b: [{ c: 3 }, { d: 4 }, { e: 5 }] }, '2-1');
+    t.deepEqual(crdt4.data(), {
+        a: [{ a: 1 }, { b: 2 }, { c: 3 }],
+        b: [{ c: 3 }, { d: 4 }, { e: 5 }]
+    });
+});
+
+test(`updates with empty data`, t => {
+    const crdt = new CRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    crdt.update({}, '1-1');
+    t.deepEqual(crdt.data(), { a: 'some value', b: 2, c: { key: 'value' } });
+});
+
+test(`adding new keys`, t => {
+    const crdt = new CRDT({ a: 'some value', b: { key: 'value' } });
+
+    crdt.update({ c: 'new key' }, '1-1');
+
+    t.deepEqual(crdt.data(), {
+        a: 'some value',
+        b: { key: 'value' },
+        c: 'new key'
     });
 });

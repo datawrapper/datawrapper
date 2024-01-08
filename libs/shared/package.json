@@ -1347,10 +1347,6 @@
             "require": "./dist/cjs/index.cjs",
             "default": "./dist/esm/index.js"
         },
-        "./crdt.d.ts": {
-            "require": "./dist/cjs/crdt/index.d.cts",
-            "default": "./dist/esm/crdt/index.d.ts"
-        },
         "./crdt.js": {
             "require": "./dist/cjs/crdt/index.cjs",
             "types": "./dist/cjs/crdt/index.d.cts",

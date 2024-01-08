@@ -1,3 +1,4 @@
-export * from './crdt.js';
-export * from './clock.js';
-export * from './crdtWithClock.js';
+export { CRDT } from './crdt.js';
+export { CRDTWithClock } from './crdtWithClock.js';
+export { nodeIdFromTimestamp, validateTimestamp } from './clock.js';
+export type { Patch } from './crdt.js';
