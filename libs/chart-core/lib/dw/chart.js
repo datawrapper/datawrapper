@@ -418,7 +418,7 @@ function Chart(attributes) {
         translate(key, useEditorLocale) {
             const translations =
                 useEditorLocale &&
-                this.inEditor() &&
+                chart.inEditor() &&
                 window.parent.dw.backend.__messages?.chart?.[key]
                     ? window.parent.dw.backend.__messages.chart
                     : _translations;
