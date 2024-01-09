@@ -96,6 +96,7 @@ export type Metadata = {
             'get-the-data'?: boolean;
         };
         'force-attribution'?: boolean;
+        'chart-height'?: number;
     } & {
         [key in `export-${'svg' | 'pdf'}`]?: Record<string, unknown>;
     };
