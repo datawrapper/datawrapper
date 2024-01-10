@@ -1,5 +1,5 @@
-import set from 'lodash/set.js';
 import get from 'lodash/get.js';
+import setWith from 'lodash/setWith.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import { compareTimestamps, initTimestamp, Timestamp, Timestamps } from './clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
@@ -47,8 +47,8 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
             const patchValue = get(data, path);
             this.log.receivedUpdates += 1;
             if (compareTimestamps(timestamp, currentTimestamp)) {
-                set(this.dataObj, path, patchValue);
-                set(this.timestampObj, path, timestamp);
+                setWith(this.dataObj, path, patchValue, Object);
+                setWith(this.timestampObj, path, timestamp, Object);
                 this.log.appliedUpdates += 1;
             }
         });
@@ -58,7 +58,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     private initTimestamps(): T {
         const timestamps = {};
         iterateObjectPaths(this.dataObj, path => {
-            set(timestamps, path, initTimestamp());
+            setWith(timestamps, path, initTimestamp(), Object);
         });
         return timestamps as T;
     }
