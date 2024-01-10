@@ -84,7 +84,7 @@ export const getHighestTimestamp = (timestamps: Timestamps<object>): Timestamp =
     iterateObjectPaths(timestamps, (path: string[]) => {
         const timestamp = get(timestamps, path);
         if (typeof timestamp !== 'string') {
-            throw new Error('Timestamps must be strings');
+            throw new Error(`Timestamps must be strings but is ${typeof timestamp}`);
         }
         if (!validateTimestamp(timestamp as Timestamp)) {
             throw new Error(`Invalid timestamp: ${timestamp}`);
