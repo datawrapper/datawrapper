@@ -8,7 +8,7 @@ export type CollaborationRoom = Writable<{
     sendPresenceMessage: (path: string, isFocus?: boolean) => void;
 };
 
-type Options = { room: CollaborationRoom; path: string; offset?: { x: number; y: number } };
+type Options = { room: CollaborationRoom; path: string | null; offset?: { x: number; y: number } };
 
 /**
  *  Svelte Action enabling the control level presence indicator placement.
@@ -24,21 +24,24 @@ export const presenceNotifier = ((element: HTMLElement, options: Options) => {
         return {};
     }
 
-    if (!path?.trim()) {
+    if (!path || !path?.trim()) {
         console.warn('[presenceNotifier] invalid control path: ' + path, element);
         return {};
     }
 
     function registerAnchor() {
         room.update($room => {
-            $room.pinAnchors.set(path, { element, offset });
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            $room.pinAnchors.set(path!, { element, offset });
             return $room;
         });
     }
     registerAnchor();
 
-    const handleFocusIn = () => room.sendPresenceMessage(path, true);
-    const handleFocusOut = () => room.sendPresenceMessage(path, false);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const handleFocusIn = () => room.sendPresenceMessage(path!, true);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const handleFocusOut = () => room.sendPresenceMessage(path!, false);
     element.addEventListener('focusin', handleFocusIn);
     element.addEventListener('focusout', handleFocusOut);
 
@@ -54,7 +57,8 @@ export const presenceNotifier = ((element: HTMLElement, options: Options) => {
 
             // unregister anchor
             room.update($room => {
-                $room.pinAnchors.delete(path);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $room.pinAnchors.delete(path!);
                 return $room;
             });
 
