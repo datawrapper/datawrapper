@@ -39,6 +39,7 @@ export type Column = {
     type(expand: true): ColumnTypeExpanded;
     raw(): string;
     val(index: number): unknown;
+    each(callback: (value: string | number | boolean | null, index: number) => void): void;
 };
 
 export type Metadata = {
@@ -63,6 +64,8 @@ export type Metadata = {
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
         'column-order'?: number[];
+        'vertical-header'?: boolean;
+        'horizontal-header'?: boolean;
         transpose?: boolean;
         'upload-method'?: 'external-data' | 'google-spreadsheet' | 'copy';
         'google-spreadsheet-src'?: string;
@@ -98,7 +101,7 @@ export type Metadata = {
         'force-attribution'?: boolean;
         'chart-height'?: number;
     } & {
-        [key in `export-${'svg' | 'pdf'}`]?: Record<string, unknown>;
+        [key in `export-${'svg' | 'pdf'}`]?: Record<string, any>;
     };
 };
 
@@ -119,6 +122,7 @@ export type Dataset = {
     toCSV: () => string;
     numRows: () => number;
     numColumns: () => number;
+    indexOf: (column: string | null) => number;
 };
 
 export type VisAxesColumns = Record<string, Column[]>;
@@ -160,11 +164,18 @@ export type ChartLibraries = {
 export type DwChart = {
     get: SettingsGetter<Chart>;
     set: (key: string, value: unknown) => void;
+    save(): void;
+    saveSoon(): void;
+    onNextSave(callback: () => void): void;
+    serialize(): PreparedChart;
+    isPassive(): boolean;
+    setDataset(dataset: Dataset): void;
+    translations(messages: Record<string, string>): void;
     load: (data: string) => void;
     flags: () => RenderFlags;
     libraries: () => ChartLibraries;
-    attributes: (chart?: any) => any;
-    onChange: (callback: (chart: Chart) => void) => void;
+    attributes: (chart?: PreparedChart) => PreparedChart;
+    onChange: (callback: (chart: PreparedChart) => void) => void;
     emotion: typeof import('@emotion/css');
 };
 
@@ -185,6 +196,50 @@ export type Chart = {
     thumbnailHash: string;
     folderId?: number | null;
     organizationId: string | null;
+};
+
+export type PreparedChart = {
+    id?: string;
+    type?: string;
+    title?: string;
+    theme?: string;
+
+    guestSession?: undefined;
+
+    lastEditStep?: number;
+
+    publishedAt?: Date;
+    publicUrl?: string;
+    publicVersion?: number;
+
+    deleted?: boolean;
+    deletedAt?: Date;
+
+    forkable?: boolean;
+    isFork?: boolean;
+    forkedFrom?: string | null;
+
+    metadata?: Metadata;
+    language?: string;
+    externalData?: string;
+
+    customFields?: Record<string, number | boolean | string>;
+    keywords?: string;
+    utf8?: boolean;
+
+    createdAt?: Date | string;
+    lastModifiedAt?: Date | string;
+
+    publicId?: string | undefined;
+    folderId?: number | null;
+    authorId?: number | undefined;
+    author?:
+        | {
+              name?: string | null;
+              email?: string | null;
+          }
+        | undefined;
+    organizationId?: string | null;
 };
 
 type FullVectorOpts = {
