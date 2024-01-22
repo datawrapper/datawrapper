@@ -90,7 +90,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "zh-CN": {
         "accessibility / annotations / multiple": "和%count%批注。",
@@ -183,7 +189,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "es-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -276,7 +288,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "de-CH": {
         "accessibility / annotations / multiple": "und %count% Anmerkungen.",
@@ -369,7 +387,13 @@
         "accessibility / color-legend / category-many-title": "Kategorie-Legende mit %count% Einträgen, betitelt mit \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Kategorie-Legende mit %count% Einträgen. %items_description%",
         "accessibility / color-legend / category-items-few": "Die Einträge sind %items%.",
-        "accessibility / color-legend / category-items-many": "Die ersten 3 Einträge sind %items%. Der letzte ist %last%."
+        "accessibility / color-legend / category-items-many": "Die ersten 3 Einträge sind %items%. Der letzte ist %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Diagramm-Panel mit dem Titel „%title%“ und einer Zeile.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Diagramm-Panel mit dem Titel „%title%“ und %count% Zeilen.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Diagramm-Panel mit dem Titel „%title%“ und %count% Zeilen.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Diagramm-Panel mit dem Titel „%title%“ und einer Zeile.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "de-DE": {
         "accessibility / annotations / multiple": "und %count% Anmerkungen.",
@@ -462,7 +486,13 @@
         "accessibility / color-legend / category-many-title": "Kategorie-Legende mit %count% Einträgen, betitelt mit \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Kategorie-Legende mit %count% Einträgen. %items_description%",
         "accessibility / color-legend / category-items-few": "Die Einträge sind %items%.",
-        "accessibility / color-legend / category-items-many": "Die ersten 3 Einträge sind %items%. Der letzte ist %last%."
+        "accessibility / color-legend / category-items-many": "Die ersten 3 Einträge sind %items%. Der letzte ist %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Diagramm-Panel mit dem Titel „%title%“ und einer Zeile.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Diagramm-Panel mit dem Titel „%title%“ und %count% Zeilen.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Diagramm-Panel mit dem Titel „%title%“ und %count% Zeilen.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Diagramm-Panel mit dem Titel „%title%“ und einer Zeile.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fr": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -555,7 +585,13 @@
         "accessibility / color-legend / category-many-title": "Légende des catégories avec %count% éléments, ayant pour titre \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Légende des catégories avec %count% éléments. %items_description%",
         "accessibility / color-legend / category-items-few": "Les éléments sont les suivants: %items%.",
-        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%."
+        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fr-CA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -648,7 +684,13 @@
         "accessibility / color-legend / category-many-title": "Légende des catégories avec %count% éléments, ayant pour titre \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Légende des catégories avec %count% éléments. %items_description%",
         "accessibility / color-legend / category-items-few": "Les éléments sont les suivants: %items%.",
-        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%."
+        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fr-FR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -741,7 +783,13 @@
         "accessibility / color-legend / category-many-title": "Légende des catégories avec %count% éléments, ayant pour titre \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Légende des catégories avec %count% éléments. %items_description%",
         "accessibility / color-legend / category-items-few": "Les éléments sont les suivants: %items%.",
-        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%."
+        "accessibility / color-legend / category-items-many": "Les trois premiers éléments sont %items%. Le dernier est %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant %count% lignes.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Facette du graphique avec pour titre \"%title%\" et contenant une ligne.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "pt-PT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -834,7 +882,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "pt-BR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -927,7 +981,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ar-DZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1020,7 +1080,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "it": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1113,7 +1179,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "it-IT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1206,7 +1278,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "nl-NL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1299,7 +1377,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fa-IR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1392,7 +1476,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "sv-SE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1485,7 +1575,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "el-GR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1578,7 +1674,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ca-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1671,7 +1773,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "uk": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1764,7 +1872,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ro-RO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1857,7 +1971,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "bg-BG": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -1950,7 +2070,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "sr-RS": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2043,7 +2169,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "az-AZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2136,7 +2268,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "lt-LT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2229,7 +2367,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "lv-LV": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2322,7 +2466,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "et-EE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2415,7 +2565,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "bs-BA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2508,7 +2664,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "mk-MK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2601,7 +2763,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ka-GE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2694,7 +2862,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "is-IS": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2787,7 +2961,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "hy-AM": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2880,7 +3060,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fo-FO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -2973,7 +3159,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "kk-KZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3066,7 +3258,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ky-KG": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3159,7 +3357,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "mt-MT": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3252,7 +3456,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ps-AF": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3345,7 +3555,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "be-BY": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3438,7 +3654,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "eu-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3531,7 +3753,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "sl-SI": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3624,7 +3852,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "tg-TJ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3717,7 +3951,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "tk-TM": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3810,7 +4050,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ga-IE": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3903,7 +4149,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "gl-ES": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -3996,7 +4248,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "en-US": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4089,7 +4347,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "es": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4182,7 +4446,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fi-FI": {
         "accessibility / annotations / multiple": "Kuviossa on %count% huomautusta.",
@@ -4275,7 +4545,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "pl-PL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4368,7 +4644,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "fa-AF": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4461,7 +4743,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ja-JP": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4554,7 +4842,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "cs-CZ": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4647,7 +4941,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "da-DK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4740,7 +5040,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "he-IL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4833,7 +5139,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "hr-HR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -4926,7 +5238,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "hu-HU": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5019,7 +5337,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "ko-KR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5112,7 +5436,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "nb-NO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5205,7 +5535,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "nn-NO": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5298,7 +5634,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "sk-SK": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5391,7 +5733,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "sq-AL": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5484,7 +5832,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "tr-TR": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5577,7 +5931,13 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     },
     "uk-UA": {
         "accessibility / annotations / multiple": "The chart has %count% annotations.",
@@ -5670,6 +6030,12 @@
         "accessibility / color-legend / category-many-title": "Category legend with %count% items, titled \"%title%\". %items_description%",
         "accessibility / color-legend / category-many": "Category legend with %count% items. %items_description%",
         "accessibility / color-legend / category-items-few": "The items are %items%.",
-        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%."
+        "accessibility / color-legend / category-items-many": "The first 3 items are %items%. The last one is %last%.",
+        "accessibility / multiple-line-chart / panel-single-annotation-single": "Chart panel with title \"%title%\" containing one line and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-single": "Chart panel with title \"%title%\" containing %count% lines and one annotation.",
+        "accessibility / multiple-line-chart / panel-multiple-annotation-multiple": "Chart panel with title \"%title%\" containing %count% lines and %annotations% annotations.",
+        "accessibility / multiple-line-chart / panel-single-annotation-multiple": "Chart panel with title \"%title%\" containing one line and %annotations% annotations.",
+        "accessibility / multiple-line-chart / annotation-single": "The panel has one annotation.",
+        "accessibility / multiple-line-chart / annotation-multiple": "The panel has %count% annotations."
     }
 }
