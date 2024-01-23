@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "exclude": ["src/**/*.test.*", "!src/**/*.perf.test.*", "test"],
+    "exclude": ["src/**/*.test.*", "!src/**/*.perf.test.*", "test", "src/**/*.benchmark.*"],
     "compilerOptions": {
         "outDir": "dist/esm",
         "module": "nodenext",
