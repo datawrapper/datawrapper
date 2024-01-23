@@ -23,6 +23,7 @@
         "build:full": "../../scripts/install.js --build-untracked-dependencies --include-sub-packages && npm run build",
         "test": "ava",
         "test:crdt": "ava **/crdt/*.test.*",
+        "benchmark": "vitest bench",
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "scripts/build.sh",
@@ -65,7 +66,8 @@
         "sinon": "^14.0.0",
         "svelte": "^4.2.0",
         "tsx": "^3.14.0",
-        "typescript": "^5.2.2"
+        "typescript": "^5.2.2",
+        "vitest": "1.2.1"
     },
     "dependencies": {
         "chroma-js": "^2.4.2",
