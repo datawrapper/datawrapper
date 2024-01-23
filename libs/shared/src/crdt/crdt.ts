@@ -58,38 +58,6 @@ function objectToItemArray(obj: ItemArrayObject) {
     return array;
 }
 
-/**
- * Get all paths to item arrays in a provided patch
- * @param patch the patch object
- * @returns a list of paths to item arrays
- */
-function getItemArrayPathsFromPatch(patch: object) {
-    const pathToItemArrays: string[][] = [];
-    iterateObjectPaths(patch, path => {
-        const value = get(patch, path);
-        if (Array.isArray(value) && value.length !== 0 && value[0].id !== undefined) {
-            pathToItemArrays.push(path);
-        }
-    });
-    return pathToItemArrays;
-}
-
-/**
- * Get all paths to item arrays in a provided data object
- * @param data the data object
- * @returns a list of paths to item arrays
- */
-function getItemArrayPathsFromData(data: object) {
-    const pathToItemArrays: string[][] = [];
-    iterateObjectPaths(data, path => {
-        const lastPathElement = path.pop();
-        if (lastPathElement === '_order') {
-            pathToItemArrays.push(path);
-        }
-    });
-    return pathToItemArrays;
-}
-
 export type Patch = {
     timestamp: Timestamp;
     data: object;
@@ -103,6 +71,7 @@ The user has to keep track of the counter themselves, outside of this class.
 export class CRDT<O extends object, T extends Timestamps<O>> {
     private dataObj: O;
     private timestampObj: T;
+    private pathToItemArrays: Set<string>;
     private log: {
         receivedUpdates: number;
         appliedUpdates: number;
@@ -116,6 +85,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     constructor(data: O, timestamps?: T) {
         this.dataObj = this.initData(data);
         this.timestampObj = timestamps ?? this.initTimestamps();
+        this.pathToItemArrays = this.initPathToItemArrays();
         this.log = {
             receivedUpdates: 0,
             appliedUpdates: 0
@@ -148,6 +118,35 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     }
 
     /**
+     * Get all paths to item arrays in the internal data object
+     * @returns a list of paths to item arrays
+     */
+    private initPathToItemArrays() {
+        const pathToItemArrays = new Set<string>();
+        iterateObjectPaths(this.dataObj, path => {
+            const lastPathElement = path.pop();
+            if (lastPathElement === '_order') {
+                pathToItemArrays.add(path.join('.'));
+            }
+        });
+        return pathToItemArrays;
+    }
+
+    /** Get the timestamp for a given path.
+     * If the path does not have a timestamp, traverse up the path until a timestamp/object is found.
+     * If during path traversal an object is found or there is no parent value with a path, return the minimum timestamp.
+     */
+    private getTimestamp(path: string[]) {
+        const searchPath = [...path];
+        let timestamp = undefined;
+        while (searchPath.length > 0 && timestamp === undefined) {
+            timestamp = get(this.timestampObj, searchPath);
+            searchPath.pop();
+        }
+        return timestamp && typeof timestamp !== 'object' ? timestamp : initTimestamp();
+    }
+
+    /**
      * Upserts a value in the data object if the timestamp is higher than the current timestamp.
      * @param path path to the value in the data object
      * @param value the value to upsert
@@ -155,7 +154,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
      */
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
         this.log.receivedUpdates += 1;
-        const currentTimestamp = get(this.timestampObj, path) ?? initTimestamp();
+        const currentTimestamp = this.getTimestamp(path);
         if (compareTimestamps(timestamp, currentTimestamp)) {
             setWith(this.dataObj, path, value, Object);
             setWith(this.timestampObj, path, timestamp, Object);
@@ -164,48 +163,65 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     }
 
     /**
+     * Upserts an item array in the data object if the timestamp is higher than the current timestamp.
+     * @param path path to the item array in the data object
+     * @param itemArray the item array to upsert
+     * @param timestamp the timestamp assosciated with the item array
+     */
+    private upsertItemArray(path: string[], itemArray: ItemArray, timestamp: Timestamp) {
+        const itemArrayObject = itemArrayToObject(itemArray);
+
+        const pathString = path.join('.');
+
+        // check if the item array is not in list of item arrays (=new item array)
+        if (!this.pathToItemArrays.has(pathString)) {
+            const currentTimestamp = this.getTimestamp(path);
+            // we only convert if the patch timestamp is higher than the current timestamp
+            if (compareTimestamps(currentTimestamp, timestamp)) return;
+
+            const itemArrayObjectTimestamps = {};
+            iterateObjectPaths(itemArrayObject, internalPath => {
+                setWith(itemArrayObjectTimestamps, internalPath, timestamp, Object);
+            });
+            setWith(this.timestampObj, path, itemArrayObjectTimestamps, Object);
+            setWith(this.dataObj, path, itemArrayObject, Object);
+            this.pathToItemArrays.add(path.join('.'));
+            return;
+        }
+        // iterate over the item array patch and update each item
+        iterateObjectPaths(itemArrayObject, internalPath => {
+            this.upsertValue(
+                [...path, ...internalPath],
+                get(itemArrayObject, internalPath),
+                timestamp
+            );
+        });
+    }
+
+    /**
      * Updates the CRDT with the given data patch and timestamp patch.
      * @param rawData The data patch to apply
      * @param timestamp The timestamp assosicated with the data patch
      */
-    update(data: object, timestamp: Timestamp) {
-        // handle conversion of item arrays
-        const updatedItemArrayPaths = getItemArrayPathsFromPatch(data);
-        const currentItemArrayPaths = getItemArrayPathsFromData(this.dataObj);
-        const newItemArrayPaths = updatedItemArrayPaths.filter(
-            path => !currentItemArrayPaths.some(p => p.join('.') === path.join('.'))
-        );
-
-        for (const newPathItemArrayPath of newItemArrayPaths) {
-            // we can only convert if the timestamp is higher than the current timestamp
-            const currentTimestamp =
-                get(this.timestampObj, newPathItemArrayPath) ?? initTimestamp();
-            if (compareTimestamps(currentTimestamp, timestamp)) {
-                continue;
+    update(patch: object, timestamp: Timestamp) {
+        iterateObjectPaths(patch, path => {
+            const patchValue = get(patch, path);
+            const pathString = path.join('.');
+            if (
+                isItemArray(patchValue) || // is an item array
+                this.pathToItemArrays.has(pathString) // is in list of item arrays
+                // we need this second check because an empty item array "[]" is not an item array accroding to isItemArray
+            ) {
+                this.upsertItemArray(path, patchValue, timestamp);
+            } else {
+                this.upsertValue(path, patchValue, timestamp);
             }
-            const itemArrayPatch = itemArrayToObject(get(data, newPathItemArrayPath));
-            setWith(this.timestampObj, newPathItemArrayPath, { _order: timestamp }, Object);
-            setWith(this.dataObj, newPathItemArrayPath, { _order: itemArrayPatch._order }, Object);
-        }
-
-        // translate item array patch to internal representation
-        for (const itemArrayPath of updatedItemArrayPaths) {
-            // convert to internal representation
-            const itemArrayPatch = get(data, itemArrayPath);
-            const itemArrayObject = itemArrayToObject(itemArrayPatch);
-            setWith(data, itemArrayPath, itemArrayObject, Object);
-        }
-
-        iterateObjectPaths(data, path => {
-            const value = get(data, path);
-            this.upsertValue(path, value, timestamp);
         });
     }
 
     data(): O {
-        const pathToItemArrays = getItemArrayPathsFromData(this.dataObj);
         const data = cloneDeep(this.dataObj);
-        for (const path of pathToItemArrays) {
+        for (const path of this.pathToItemArrays) {
             const value = objectToItemArray(get(data, path));
             setWith(data, path, value, Object);
         }
