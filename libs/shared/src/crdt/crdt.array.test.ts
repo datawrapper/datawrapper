@@ -129,12 +129,7 @@ test(`inserting item with id converts existing empty array into item array`, t =
     // insert item with id
     crdt.update(
         {
-            arr: [
-                {
-                    id: 'id1',
-                    val: 1
-                }
-            ]
+            arr: [{ id: 'id1', val: 1 }]
         },
         '1-1'
     );
@@ -152,6 +147,103 @@ test(`inserting item with id converts existing empty array into item array`, t =
             { id: 'id1', val: 1 },
             { id: 'id2', val: 2 }
         ]
+    });
+});
+
+test(`item array can be cleared of all items`, t => {
+    const crdt = new CRDT({ arr: [{ id: 'id1', val: 1 }] });
+
+    // clear all elements
+    crdt.update(
+        {
+            arr: []
+        },
+        '1-2'
+    );
+
+    t.deepEqual(crdt.data(), {
+        arr: []
+    });
+});
+
+test(`item array can be cleared of all items and filled with new items again`, t => {
+    const crdt = new CRDT({ arr: [{ id: 'id1', val: 1 }] });
+
+    // clear all elements
+    crdt.update(
+        {
+            arr: []
+        },
+        '1-2'
+    );
+
+    // add new items
+    crdt.update(
+        {
+            arr: [{ id: 'id2', val: 2 }]
+        },
+        '1-3'
+    );
+    crdt.update(
+        {
+            arr: [{ id: 'id2' }, { id: 'id3', val: 3 }]
+        },
+        '1-4'
+    );
+
+    t.deepEqual(crdt.data(), {
+        arr: [
+            { id: 'id2', val: 2 },
+            { id: 'id3', val: 3 }
+        ]
+    });
+});
+
+test('normal value can be replaced with item array', t => {
+    const crdt = new CRDT({
+        arr: 'not an array yet'
+    });
+
+    // convert to item array
+    crdt.update(
+        {
+            arr: [{ id: 'id1', val: 1 }]
+        },
+        '1-1'
+    );
+
+    // item array can be updated normally
+    crdt.update(
+        {
+            arr: [{ id: 'id1' }, { id: 'id2', val: 2 }]
+        },
+        '1-2'
+    );
+
+    t.deepEqual(crdt.data(), {
+        arr: [
+            { id: 'id1', val: 1 },
+            { id: 'id2', val: 2 }
+        ]
+    });
+});
+
+test('nested value in converted item array can not be updated with outdated timestamp', t => {
+    const crdt = new CRDT({
+        arr: 'not an array yet'
+    });
+
+    // convert to item array
+    crdt.update({ arr: [{ id: 'id1', nested: { val: 1, otherVal: 'one' } }] }, '1-1');
+
+    // update nested value
+    crdt.update({ arr: [{ id: 'id1', nested: { val: 2 } }] }, '1-2');
+
+    // update nested value with outdated timestamp
+    crdt.update({ arr: [{ id: 'id1', nested: { val: 3, otherVal: 'invalid value' } }] }, '1-1');
+
+    t.deepEqual(crdt.data(), {
+        arr: [{ id: 'id1', nested: { val: 2, otherVal: 'one' } }]
     });
 });
 
@@ -318,34 +410,6 @@ test(`sorting works without updates`, t => {
     });
 });
 
-test(`init item array as empty`, t => {
-    const crdt = new CRDT({
-        arr: []
-    });
-
-    crdt.update(
-        {
-            arr: [{ id: 'id1', val: 1 }]
-        },
-        '1-1'
-    );
-
-    crdt.update(
-        {
-            arr: [{ id: 'id1' }, { id: 'id2', val: 2 }]
-        },
-        '2-1'
-    );
-
-    // both updates are kept
-    t.deepEqual(crdt.data(), {
-        arr: [
-            { id: 'id1', val: 1 },
-            { id: 'id2', val: 2 }
-        ]
-    });
-});
-
 test(`empty array is treated as atomic array when inserted item is not item array item`, t => {
     const crdt = new CRDT({
         arr: []
@@ -429,5 +493,41 @@ test(`data in item array with nested objects is merged`, t => {
 
     t.deepEqual(crdt.data(), {
         arr: [{ id: 'id1', val: 10, other: 'value', nested: { data: 'updated', untouched: 1 } }]
+    });
+});
+
+test('crdt with array can be initialized with existing timestamp object', t => {
+    const crdt = new CRDT(
+        {
+            arr: [
+                { id: 'id1', val: 1 },
+                { id: 'id2', val: 2 }
+            ]
+        },
+        {
+            arr: {
+                _order: '1-1',
+                id1: { val: '5-5' },
+                id2: { val: '5-5' }
+            }
+        }
+    );
+
+    // update with new data and order but timestamp is only high enough for order
+    crdt.update(
+        {
+            arr: [
+                { id: 'id2', val: 'outdate' },
+                { id: 'id1', val: 'outdate' }
+            ]
+        },
+        '1-2'
+    );
+
+    t.deepEqual(crdt.data(), {
+        arr: [
+            { id: 'id2', val: 2 },
+            { id: 'id1', val: 1 }
+        ]
     });
 });

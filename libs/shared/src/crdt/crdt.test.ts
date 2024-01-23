@@ -161,3 +161,32 @@ test(`adding new keys`, t => {
         c: 'new key'
     });
 });
+
+test('crdt can be initialized with existing timestamp object', t => {
+    const crdt = new CRDT(
+        {
+            a: 'some value',
+            b: { key: 'value' }
+        },
+        {
+            a: '1-1',
+            b: {
+                key: '1-5'
+            }
+        }
+    );
+
+    // update with new data but only some is valid according to timestamps
+    crdt.update(
+        {
+            a: 'new value',
+            b: { key: 'outdated update' }
+        },
+        '1-2'
+    );
+
+    t.deepEqual(crdt.data(), {
+        a: 'new value',
+        b: { key: 'value' }
+    });
+});
