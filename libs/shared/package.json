@@ -1363,6 +1363,25 @@
             "require": "./dist/cjs/crdt/index.cjs",
             "types": "./dist/cjs/crdt/index.d.cts",
             "default": "./dist/esm/crdt/index.js"
+        },
+        "./generateAnnotationId.d.ts": {
+            "require": "./dist/cjs/generateAnnotationId.d.cts",
+            "default": "./dist/esm/generateAnnotationId.d.ts"
+        },
+        "./generateAnnotationId.js": {
+            "require": "./dist/cjs/generateAnnotationId.cjs",
+            "types": "./dist/cjs/generateAnnotationId.d.cts",
+            "default": "./dist/esm/generateAnnotationId.js"
+        },
+        "./generateAnnotationId": {
+            "require": "./dist/cjs/generateAnnotationId.cjs",
+            "types": "./dist/cjs/generateAnnotationId.d.cts",
+            "default": "./dist/esm/generateAnnotationId.js"
+        },
+        "./dist/cjs/generateAnnotationId.cjs": {
+            "require": "./dist/cjs/generateAnnotationId.cjs",
+            "types": "./dist/cjs/generateAnnotationId.d.cts",
+            "default": "./dist/esm/generateAnnotationId.js"
         }
     }
 }
