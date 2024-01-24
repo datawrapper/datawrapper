@@ -84,7 +84,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
      */
     constructor(data: O, timestamps?: T) {
         this.dataObj = this.initData(data);
-        this.timestampObj = timestamps ?? this.initTimestamps();
+        this.timestampObj = timestamps ?? ({} as T);
         this.pathToItemArrays = this.initPathToItemArrays();
         this.log = {
             receivedUpdates: 0,
@@ -106,15 +106,6 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
             setWith(data, path, patchValue, Object);
         });
         return data;
-    }
-
-    /** Creates a timestamps with the same shape as data but with new timestamps as values */
-    private initTimestamps(): T {
-        const timestamps = {};
-        iterateObjectPaths(this.dataObj, path => {
-            setWith(timestamps, path, initTimestamp(), Object);
-        });
-        return timestamps as T;
     }
 
     /**

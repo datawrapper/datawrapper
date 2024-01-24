@@ -10,10 +10,16 @@ test(`crdt internals are immuatable`, t => {
     data.key.data.json.d.e.f = 'not str';
     t.deepEqual(crdt.data(), { key: { data: { json: { d: { e: { f: 'str' } } } } } });
 
+    // perform update to be sure there are timestamps
+    crdt.foreignUpdate({
+        data: { key: { data: { json: { d: { e: { f: 'new str' } } } } } },
+        timestamp: '1-1'
+    });
+
     // timestamps are immutable
     const timestamps = crdt.timestamps();
     timestamps.key.data.json.d.e.f = '4-9';
-    t.deepEqual(crdt.timestamps(), { key: { data: { json: { d: { e: { f: '0-0' } } } } } });
+    t.deepEqual(crdt.timestamps(), { key: { data: { json: { d: { e: { f: '1-1' } } } } } });
 });
 
 test(`crdt basic init`, t => {
