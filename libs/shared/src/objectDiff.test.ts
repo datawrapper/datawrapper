@@ -26,7 +26,24 @@ const testData = {
                 Apple: '#ff0000',
                 Banana: '#ffff00',
                 Orange: '#cc0044'
-            }
+            },
+            listWithIds: [
+                { id: 1, name: 'A' },
+                { id: 2, name: 'B' },
+                {
+                    id: 3,
+                    nestedListWithIds: [
+                        { id: 1, name: 'A' },
+                        { id: 2, name: 'B' }
+                    ]
+                }
+            ],
+            mixedList: [
+                { id: 1, name: 'A' },
+                { name: 'B' }, // no `id` property
+                { id: 3, name: 'C' },
+                { id: 4, name: 'D' }
+            ]
         }
     }
 };
@@ -117,5 +134,227 @@ test('multiple keys are compared', t => {
     t.deepEqual(objectDiff(source, target), {
         title: 'New title!',
         metadata: { annotate: { notes: 'New notes!' } }
+    });
+});
+
+test('arrays of objects containing IDs are compared (property updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.listWithIds[0].name = 'New name';
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: { listWithIds: [{ id: 1, name: 'New name' }, { id: 2 }, { id: 3 }] }
+        }
+    });
+});
+
+test('arrays of objects containing IDs are compared (property deletion)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    delete target.metadata.visualize.listWithIds[0].name;
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: { listWithIds: [{ id: 1, name: null }, { id: 2 }, { id: 3 }] }
+        }
+    });
+});
+
+test('arrays of objects containing IDs are compared (insertion of new elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.listWithIds.push({ id: 4, name: 'New element' });
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4, name: 'New element' }]
+            }
+        }
+    });
+});
+
+test('arrays of objects containing IDs are compared (deletion of elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.listWithIds = target.metadata.visualize.listWithIds.slice(1); // remove first
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [{ id: 2 }, { id: 3 }]
+            }
+        }
+    });
+});
+
+test('arrays of objects containing IDs are compared (order updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.listWithIds = target.metadata.visualize.listWithIds.sort(
+        (a, b) => b.id - a.id
+    ); // revert order
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [{ id: 3 }, { id: 2 }, { id: 1 }]
+            }
+        }
+    });
+});
+
+test('nested arrays of objects containing IDs are compared (property updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    target.metadata.visualize.listWithIds[2].nestedListWithIds![0].name = 'New name';
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [
+                    { id: 1 },
+                    { id: 2 },
+                    {
+                        id: 3,
+                        nestedListWithIds: [{ id: 1, name: 'New name' }, { id: 2 }]
+                    }
+                ]
+            }
+        }
+    });
+});
+
+test('nested arrays of objects containing IDs are compared (insertion of new elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    target.metadata.visualize.listWithIds[2].nestedListWithIds!.push({
+        id: 3,
+        name: 'New element'
+    });
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [
+                    { id: 1 },
+                    { id: 2 },
+                    {
+                        id: 3,
+                        nestedListWithIds: [{ id: 1 }, { id: 2 }, { id: 3, name: 'New element' }]
+                    }
+                ]
+            }
+        }
+    });
+});
+
+test('nested arrays of objects containing IDs are compared (deletion of elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    target.metadata.visualize.listWithIds[2].nestedListWithIds =
+        target.metadata.visualize.listWithIds[2].nestedListWithIds!.slice(1); // remove first
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [
+                    { id: 1 },
+                    { id: 2 },
+                    {
+                        id: 3,
+                        nestedListWithIds: [{ id: 2 }]
+                    }
+                ]
+            }
+        }
+    });
+});
+
+test('nested arrays of objects containing IDs are compared (order updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    target.metadata.visualize.listWithIds[2].nestedListWithIds =
+        target.metadata.visualize.listWithIds[2].nestedListWithIds!.sort((a, b) => b.id - a.id); // revert order
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                listWithIds: [
+                    { id: 1 },
+                    { id: 2 },
+                    {
+                        id: 3,
+                        nestedListWithIds: [{ id: 2 }, { id: 1 }]
+                    }
+                ]
+            }
+        }
+    });
+});
+
+test('arrays of mixed objects (with and without IDs) are compared (property updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.mixedList[0].name = 'New name';
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                mixedList: [{ id: 1, name: 'New name' }, { name: 'B' }, { id: 3 }, { id: 4 }]
+            }
+        }
+    });
+});
+
+test('arrays of mixed objects (with and without IDs) are compared (removal of id property)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    delete target.metadata.visualize.mixedList[3].id;
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { name: 'D' }]
+            }
+        }
+    });
+});
+
+test('arrays of mixed objects (with and without IDs) are compared (insertion of new elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.mixedList.push({ name: 'New element' });
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { id: 4 }, { name: 'New element' }]
+            }
+        }
+    });
+});
+
+test('arrays of mixed objects (with and without IDs) are compared (deletion of elements)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.mixedList = target.metadata.visualize.mixedList.slice(1); // remove first
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                mixedList: [{ name: 'B' }, { id: 3 }, { id: 4 }]
+            }
+        }
+    });
+});
+
+test('arrays of mixed objects (with and without IDs) are compared (order updates)', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.mixedList = target.metadata.visualize.mixedList.sort(
+        (a, b) =>
+            target.metadata.visualize.mixedList.indexOf(b) -
+            target.metadata.visualize.mixedList.indexOf(a)
+    ); // revert order
+
+    t.deepEqual(objectDiff(source, target), {
+        metadata: {
+            visualize: {
+                mixedList: [{ id: 4 }, { id: 3 }, { name: 'B' }, { id: 1 }]
+            }
+        }
     });
 });

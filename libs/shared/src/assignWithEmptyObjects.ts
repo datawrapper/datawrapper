@@ -49,6 +49,11 @@ function assignWithEmptyObjects<TObject, TSource>(
                 assignWithEmptyObjects(target[key] as object, args[i]?.[key] as object);
             } else if (args[i]?.[key] === undefined) {
                 delete target[key];
+            } else if (isArray(target[key]) && isArray(args[i]?.[key])) {
+                target[key] = assignWithEmptyObjectsInArray(
+                    target[key] as Array<unknown>,
+                    args[i]?.[key] as Array<unknown>
+                ) as (TObject & TSource)[keyof TObject & keyof TSource & string];
             } else {
                 target[key] = args[i]?.[key] as (TObject & TSource)[keyof TObject &
                     keyof TSource &
@@ -60,6 +65,10 @@ function assignWithEmptyObjects<TObject, TSource>(
 }
 
 export default assignWithEmptyObjects;
+
+function isArray(val: unknown): val is Array<unknown> {
+    return Array.isArray(val);
+}
 
 function isObject(val: unknown): val is object {
     return typeof val === 'function' || Object.prototype.toString.call(val) === '[object Object]';
@@ -78,4 +87,30 @@ function isValidKey(
     key: unknown
 ): key is Exclude<string, '__proto__' | 'constructor' | 'prototype'> | number | symbol {
     return key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+}
+
+function assignWithEmptyObjectsInArray(target: unknown[], source: unknown[]): unknown[] {
+    const targetItems = new Map(target.filter(hasId).map(item => [item.id, item]));
+    const newArray = [];
+    for (let i = 0; i < source.length; i++) {
+        const sourceItem = source[i];
+        if (!hasId(sourceItem)) {
+            // array item has no id, so we can only assign all of it
+            newArray[i] = sourceItem;
+            continue;
+        }
+        if (!targetItems.has(sourceItem.id)) {
+            // array item is new
+            newArray[i] = sourceItem;
+            continue;
+        }
+        newArray[i] = assignWithEmptyObjects(targetItems.get(sourceItem.id), sourceItem);
+    }
+    return newArray;
+}
+
+type HasId = { id: unknown };
+
+function hasId(item: unknown): item is HasId {
+    return isObject(item) && 'id' in item;
 }
