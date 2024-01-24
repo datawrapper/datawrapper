@@ -10,9 +10,12 @@ test(`getters return immutable objects`, t => {
     data.a = 99;
     t.deepEqual(crdt.data(), { a: 1, b: 2, c: 3 });
 
+    // perform update to be sure there are timestamps
+    crdt.update({ a: 2, b: 3, c: 4 }, '1-1');
+
     const timestamps = crdt.timestamps();
     timestamps.a = '99-99';
-    t.deepEqual(crdt.timestamps(), { a: '0-0', b: '0-0', c: '0-0' });
+    t.deepEqual(crdt.timestamps(), { a: '1-1', b: '1-1', c: '1-1' });
 });
 
 test(`init`, t => {
