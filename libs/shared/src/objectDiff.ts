@@ -19,16 +19,21 @@ import isPlainObject from 'lodash/isPlainObject.js';
  * @param {object} target - the changed object
  * @param {array} allowedKeys - if given, the diff will
  *     ignore any first-level keys not in this array
+ * @param {object} options - options to configure the behaviour of the objectDiff calculation
+ *     Useful if you want to e.g. modify the behaviour of how array diffs are calculated.
  *
  * @returns {object} - the merge patch
  */
 export default function objectDiff<TSource, TTarget>(
     source: TSource,
     target: TTarget,
-    allowedKeys: ((keyof TSource | keyof TTarget) & string)[] | null = null
+    allowedKeys: ((keyof TSource | keyof TTarget) & string)[] | null = null,
+    options: { diffArray?: DiffArrayFn } | null = null
 ) {
-    return diffKeys(source, target, allowedKeys ? new Set(allowedKeys) : null);
+    return diffKeys(source, target, allowedKeys ? new Set(allowedKeys) : null, options);
 }
+
+type DiffArrayFn = (source: unknown[], target: unknown[]) => any;
 
 /**
  * @param {object} source - the source object
@@ -39,19 +44,25 @@ export default function objectDiff<TSource, TTarget>(
  */
 // It is impractical to try to replicate signature types in implementation
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function diffKeys(source: any, target: any, allowedKeys: Set<string> | null = null) {
+function diffKeys(
+    source: any,
+    target: any,
+    allowedKeys: Set<string> | null = null,
+    options: { diffArray?: DiffArrayFn } | null = null
+) {
     const patch: Record<string, unknown> = {};
     for (const targetKey of Object.keys(target)) {
         if (!isEqual(target[targetKey], source[targetKey])) {
             if (allowedKeys && !allowedKeys.has(targetKey)) continue;
             if (isPlainObject(target[targetKey]) && isPlainObject(source[targetKey])) {
-                // iterate one level down
-                const childPatch = diffKeys(source[targetKey], target[targetKey]);
+                // iterate one level down - allowedKeys are ignored, options are passed down
+                const childPatch = diffKeys(source[targetKey], target[targetKey], null, options);
                 if (childPatch && Object.keys(childPatch).length) {
                     patch[targetKey] = childPatch;
                 }
             } else if (Array.isArray(target[targetKey]) && Array.isArray(source[targetKey])) {
-                patch[targetKey] = diffArrays(source[targetKey], target[targetKey]);
+                const diffArrayFn = options?.diffArray || diffArrays;
+                patch[targetKey] = diffArrayFn(source[targetKey], target[targetKey]);
             } else {
                 patch[targetKey] = target[targetKey];
             }
