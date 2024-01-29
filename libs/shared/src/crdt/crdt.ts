@@ -80,15 +80,20 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
             }
         ])
     );
-    if (!sourceItems.size) {
-        // no source item has an ID, just return the target array
-        return targetArray;
-    }
+
+    // some items in source array don't contain an ID
+    const sourceIsAtomicArray = sourceArray.length && sourceArray.length !== sourceItems.size;
+
     const patch: Record<string, unknown> = {};
     for (let i = 0; i < targetArray.length; i++) {
         const targetItemOrig = targetArray[i];
         if (!hasId(targetItemOrig)) {
-            // just ignore target items without ID
+            if (sourceArray.length === 0 || sourceIsAtomicArray) {
+                // the source is either empty or an atomic array and at least one item does not contain an ID
+                // --> so we just return the target array as patch
+                return targetArray;
+            }
+            // if the source is an item array, we ignore target items without ID.
             continue;
         }
         const targetItem = {
@@ -112,6 +117,14 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
             patch[targetItem.id] = itemPatch;
         }
     }
+    if (sourceIsAtomicArray) {
+        // @todo: As long as we don't support converting types in our CRDT we have to throw an error here.
+        // Otherwise, subsequent patches calculations will interpret the source array as item array,
+        // but our CRDT cannot handle this case, yet.
+        throw Error(
+            'Atomic arrays cannot be converted to item arrays (all items in update contain an ID)'
+        );
+    }
     // all items remaining in source items can be seen as deleted
     for (const [id, _] of sourceItems) {
         // items are deleted by setting _index to null
@@ -128,8 +141,15 @@ It only has one update method which takes a data patch and a timestamp patch.
 The user has to keep track of the counter themselves, outside of this class.
 */
 export class CRDT<O extends object, T extends Timestamps<O>> {
-    static calculatePatch(oldData: object, newData: object): Record<string, unknown> {
-        return objectDiff(oldData, newData, null, { diffArray: calculateItemArrayPatch });
+    static calculatePatch(
+        oldData: object,
+        newData: object,
+        options?: {
+            allowedKeys: null | (keyof object)[];
+        }
+    ): Record<string, unknown> {
+        const allowedKeys = options?.allowedKeys ?? null;
+        return objectDiff(oldData, newData, allowedKeys, { diffArray: calculateItemArrayPatch });
     }
 
     private dataObj: O;
