@@ -358,3 +358,32 @@ test('arrays of mixed objects (with and without IDs) are compared (order updates
         }
     });
 });
+
+test('custom diffArray function', t => {
+    const source = cloneDeep(testData);
+    const target = cloneDeep(testData);
+    target.metadata.visualize.list = ['A', 'B', 'C']; // delete D
+
+    const diffArray = (sourceArr: unknown[], targetArr: unknown[]) => {
+        const diff: Record<string, null> = {};
+        for (const item of sourceArr) {
+            if (typeof item !== 'string') {
+                // if items are not strings just return the target array
+                return targetArr;
+            }
+            if (!targetArr.includes(item)) {
+                // mark deleted items with null
+                diff[item] = null;
+            }
+        }
+        return diff;
+    };
+
+    t.deepEqual(objectDiff(source, target, null, { diffArray }), {
+        metadata: {
+            visualize: {
+                list: { D: null }
+            }
+        }
+    });
+});

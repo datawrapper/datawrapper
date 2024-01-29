@@ -3,6 +3,9 @@ import setWith from 'lodash/setWith.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import { compareTimestamps, initTimestamp, Timestamp, Timestamps } from './clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
+import objectDiff from '../objectDiff.js';
+import isObject from 'lodash/isObject.js';
+import { isEmpty } from 'underscore';
 
 type ArrayItem = {
     id: string;
@@ -63,12 +66,72 @@ export type Patch = {
     data: object;
 };
 
+type HasId = { id: string };
+function hasId(item: unknown): item is HasId {
+    return isObject(item) && 'id' in item && typeof item.id === 'string';
+}
+function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[]) {
+    const sourceItems = new Map(
+        sourceArray.filter(hasId).map((item, index) => [
+            item.id,
+            {
+                ...item,
+                _index: index // calculate index so that we can compare whether or not the position has changed
+            }
+        ])
+    );
+    if (!sourceItems.size) {
+        // no source item has an ID, just return the target array
+        return targetArray;
+    }
+    const patch: Record<string, unknown> = {};
+    for (let i = 0; i < targetArray.length; i++) {
+        const targetItemOrig = targetArray[i];
+        if (!hasId(targetItemOrig)) {
+            // just ignore target items without ID
+            continue;
+        }
+        const targetItem = {
+            ...targetItemOrig,
+            _index: i // already create updated _index so that updates are calculated as part of objectDiff
+        };
+        if (!sourceItems.has(targetItem.id)) {
+            // array item is new
+            patch[targetItem.id] = {
+                ...targetItem,
+                _index: i
+            };
+            continue;
+        }
+        const sourceItem = sourceItems.get(targetItem.id);
+        sourceItems.delete(targetItem.id); // remove from source items so that we can check for deleted items later
+        const itemPatch = objectDiff(sourceItem, targetItem, null, {
+            diffArray: calculateItemArrayPatch
+        });
+        if (!isEmpty(itemPatch)) {
+            patch[targetItem.id] = itemPatch;
+        }
+    }
+    // all items remaining in source items can be seen as deleted
+    for (const [id, _] of sourceItems) {
+        // items are deleted by setting _index to null
+        patch[id] = {
+            _index: null
+        };
+    }
+    return patch;
+}
+
 /**
 CRDT implementation using a single counter to track updates.
 It only has one update method which takes a data patch and a timestamp patch.
 The user has to keep track of the counter themselves, outside of this class.
 */
 export class CRDT<O extends object, T extends Timestamps<O>> {
+    static calculatePatch(oldData: object, newData: object): Record<string, unknown> {
+        return objectDiff(oldData, newData, null, { diffArray: calculateItemArrayPatch });
+    }
+
     private dataObj: O;
     private timestampObj: T;
     private pathToItemArrays: Set<string>;

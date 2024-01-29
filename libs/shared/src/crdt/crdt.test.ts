@@ -193,3 +193,345 @@ test('crdt can be initialized with existing timestamp object', t => {
         b: { key: 'value' }
     });
 });
+
+test('CRDT.calculatePatch calculates the correct patch (simple updates)', t => {
+    const oldData = { a: 'some value', b: { key: 'value' } };
+
+    const newData = { a: 'new value', b: { key: 'value' } };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value'
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    const crdt = new CRDT(oldData);
+    crdt.update(patch, '1-1');
+    t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (simple arrays)', t => {
+    const oldData = { a: 'some value', b: ['A', 'B', 'C'] };
+
+    const newData = { a: 'some value', b: ['D', 'C', 'E'] };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: ['D', 'C', 'E']
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    const crdt = new CRDT(oldData);
+    crdt.update(patch, '1-1');
+    t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - simple updates)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 99 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: { C: { value: 99 } }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - insertion at end)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 },
+            { id: 'D', value: 4 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: { D: { id: 'D', value: 4, _index: 3 } }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - insertion at start)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'D', value: 4 },
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            D: { id: 'D', value: 4, _index: 0 },
+            A: { _index: 1 },
+            B: { _index: 2 },
+            C: { _index: 3 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - insertion in middle)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'D', value: 4 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            D: { id: 'D', value: 4, _index: 2 },
+            C: { _index: 3 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - deletion at end)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            C: { _index: null }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - deletion at beginning)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            A: { _index: null },
+            B: { _index: 0 },
+            C: { _index: 1 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - deletion in the middle)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'C', value: 3 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            B: { _index: null },
+            C: { _index: 1 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array - re-ordering two elements)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 },
+            { id: 'D', value: 4 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'B', value: 2 },
+            { id: 'A', value: 1 },
+            { id: 'C', value: 3 },
+            { id: 'D', value: 4 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            A: { _index: 1 },
+            B: { _index: 0 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (item array -  re-ordering multiple elements)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 },
+            { id: 'C', value: 3 },
+            { id: 'D', value: 4 }
+        ]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'D', value: 4 },
+            { id: 'C', value: 3 },
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            A: { _index: 2 },
+            B: { _index: 3 },
+            C: { _index: 1 },
+            D: { _index: 0 }
+        }
+    });
+
+    // make sure that the patch applied again as update to the CRDT yields the same object
+    // const crdt = new CRDT(oldData);
+    // crdt.update(patch, '1-1');
+    // t.deepEqual(crdt.data(), newData);
+});
