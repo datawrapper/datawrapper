@@ -535,3 +535,113 @@ test('CRDT.calculatePatch calculates the correct patch (item array -  re-orderin
     // crdt.update(patch, '1-1');
     // t.deepEqual(crdt.data(), newData);
 });
+
+test('CRDT.calculatePatch calculates the correct patch (empty array - converted to item array)', t => {
+    const oldData = {
+        a: 'some value',
+        b: []
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: {
+            A: { id: 'A', value: 1, _index: 0 },
+            B: { id: 'B', value: 2, _index: 1 }
+        }
+    });
+});
+
+test('CRDT.calculatePatch calculates the correct patch (empty array - treated as atomic array if not all items have an id)', t => {
+    const oldData = {
+        a: 'some value',
+        b: []
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { value: 1 }, //missing id
+            { id: 'B', value: 2 }
+        ]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: [
+            { value: 1 }, //missing id
+            { id: 'B', value: 2 }
+        ]
+    });
+});
+
+test('CRDT.calculatePatch calculates the correct patch (atomic array remains an atomic array even if some items contain an ID)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [1, 2, 3]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [1, { id: 'B', value: 2 }]
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        b: [1, { id: 'B', value: 2 }]
+    });
+});
+
+test('CRDT.calculatePatch throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
+    const oldData = {
+        a: 'some value',
+        b: [1, 2, 3]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [{ id: 'B', value: 2 }]
+    };
+
+    t.throws(() => CRDT.calculatePatch(oldData, newData));
+});
+
+test('CRDT.calculatePatch properly filters for allowedKeys', t => {
+    const oldData = {
+        a: 'some value',
+        b: []
+    };
+
+    const newData = {
+        a: 'some value',
+        b: [
+            { id: 'A', value: 1 },
+            { id: 'B', value: 2 }
+        ],
+        no: 'some disallowed value',
+        invalid: {
+            field: 'disallowed nested value'
+        }
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData, {
+        allowedKeys: ['a', 'b'] as (keyof object)[]
+    });
+
+    t.deepEqual(patch, {
+        b: {
+            A: { id: 'A', value: 1, _index: 0 },
+            B: { id: 'B', value: 2, _index: 1 }
+        }
+    });
+});
