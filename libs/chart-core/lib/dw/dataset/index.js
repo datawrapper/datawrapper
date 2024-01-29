@@ -295,7 +295,20 @@ function Dataset(columns) {
          * @returns {dw.Dataset}
          */
         clone() {
-            return Dataset(columns.map(column => column.clone()));
+            const cloned = Dataset(
+                origColumns.map(column => {
+                    const cloned = column.clone();
+                    if (column.isComputed) {
+                        // a cloned column doesn't contain the information that it was cloned from a computed column,
+                        // so we need to add that information here
+                        cloned.isComputed = true;
+                        cloned.formula = column.formula;
+                    }
+                    return cloned;
+                })
+            );
+            cloned.columnOrder(this.columnOrder()); // make sure we also clone the column order
+            return cloned;
         },
 
         /**
