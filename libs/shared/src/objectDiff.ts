@@ -88,10 +88,12 @@ function diffKeys(
  * @returns {array} - the merge patch
  */
 function diffArrays(sourceArray: any[], targetArray: any[]) {
-    const sourceItems = new Map(sourceArray.filter(item => !!item.id).map(item => [item.id, item]));
+    const sourceItems = new Map(
+        sourceArray.filter(item => !!item?.id).map(item => [item.id, item])
+    );
     let patch = [];
     for (const targetItem of targetArray) {
-        if (!sourceItems.has(targetItem.id)) {
+        if (!sourceItems.has(targetItem?.id)) {
             // array item is new
             patch.push(targetItem);
             continue;
