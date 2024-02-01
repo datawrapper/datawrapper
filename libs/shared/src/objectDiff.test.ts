@@ -42,7 +42,8 @@ const testData = {
                 { id: 1, name: 'A' },
                 { name: 'B' }, // no `id` property
                 { id: 3, name: 'C' },
-                { id: 4, name: 'D' }
+                { id: 4, name: 'D' },
+                null
             ]
         }
     }
@@ -292,11 +293,11 @@ test('nested arrays of objects containing IDs are compared (order updates)', t =
 test('arrays of mixed objects (with and without IDs) are compared (property updates)', t => {
     const source = cloneDeep(testData);
     const target = cloneDeep(testData);
-    target.metadata.visualize.mixedList[0].name = 'New name';
+    target.metadata.visualize.mixedList[0]!.name = 'New name';
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 1, name: 'New name' }, { name: 'B' }, { id: 3 }, { id: 4 }]
+                mixedList: [{ id: 1, name: 'New name' }, { name: 'B' }, { id: 3 }, { id: 4 }, null]
             }
         }
     });
@@ -305,11 +306,11 @@ test('arrays of mixed objects (with and without IDs) are compared (property upda
 test('arrays of mixed objects (with and without IDs) are compared (removal of id property)', t => {
     const source = cloneDeep(testData);
     const target = cloneDeep(testData);
-    delete target.metadata.visualize.mixedList[3].id;
+    delete target.metadata.visualize.mixedList[3]!.id;
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { name: 'D' }]
+                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { name: 'D' }, null]
             }
         }
     });
@@ -322,7 +323,14 @@ test('arrays of mixed objects (with and without IDs) are compared (insertion of 
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { id: 4 }, { name: 'New element' }]
+                mixedList: [
+                    { id: 1 },
+                    { name: 'B' },
+                    { id: 3 },
+                    { id: 4 },
+                    null,
+                    { name: 'New element' }
+                ]
             }
         }
     });
@@ -335,7 +343,7 @@ test('arrays of mixed objects (with and without IDs) are compared (deletion of e
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ name: 'B' }, { id: 3 }, { id: 4 }]
+                mixedList: [{ name: 'B' }, { id: 3 }, { id: 4 }, null]
             }
         }
     });
@@ -353,7 +361,7 @@ test('arrays of mixed objects (with and without IDs) are compared (order updates
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 4 }, { id: 3 }, { name: 'B' }, { id: 1 }]
+                mixedList: [null, { id: 4 }, { id: 3 }, { name: 'B' }, { id: 1 }]
             }
         }
     });
