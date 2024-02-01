@@ -1,36 +1,29 @@
 import test from 'ava';
-import {
-    Clock,
-    incrementTimestamp,
-    getHighestTimestamp,
-    validateTimestamp,
-    counterFromTimestamp,
-    compareTimestamps
-} from './clock.js';
+import { Clock } from './clock.js';
 
 test(`init clock`, t => {
     // basic clock
     const clock = new Clock(0);
-    t.deepEqual(clock.timestamp(), '0-0');
+    t.deepEqual(clock.timestamp, '0-0');
 
     // with nodeId
     const clock2 = new Clock(2354645321);
-    t.deepEqual(clock2.timestamp(), '2354645321-0');
+    t.deepEqual(clock2.timestamp, '2354645321-0');
 
     // with count
     const clock3 = new Clock(0, 100);
-    t.deepEqual(clock3.timestamp(), '0-100');
+    t.deepEqual(clock3.timestamp, '0-100');
 
     // invalid nodeIds
     const error1 = t.throws(() => {
         new Clock(0.4, 9);
     });
-    t.is(error1?.message, 'nodeId must be a positive integer');
+    t.is(error1?.message, 'nodeId must be a positive integer but is: "0.4"');
 
     const error2 = t.throws(() => {
         new Clock(-1);
     });
-    t.is(error2?.message, 'nodeId must be a positive integer');
+    t.is(error2?.message, 'nodeId must be a positive integer but is: "-1"');
 });
 
 test(`clock tick `, t => {
@@ -57,7 +50,7 @@ test(`clock update `, t => {
     // basic update
     const clock = new Clock(0);
     clock.update('0-100');
-    t.deepEqual(clock.timestamp(), '0-100');
+    t.deepEqual(clock.timestamp, '0-100');
 
     // update with lower count is ignored
     const clock2 = new Clock(0);
@@ -66,82 +59,86 @@ test(`clock update `, t => {
     clock2.update('0-99');
     // with prefered nodeId
     clock2.update('99-99');
-    t.deepEqual(clock2.timestamp(), '0-100');
+    t.deepEqual(clock2.timestamp, '0-100');
 
     // update with higher count
     const clock3 = new Clock(0);
     clock3.update('0-100');
     clock3.update('0-101');
-    t.deepEqual(clock3.timestamp(), '0-101');
+    t.deepEqual(clock3.timestamp, '0-101');
 
     // update with different nodeId
     const clock4 = new Clock(99);
     clock4.update('1234-100');
-    t.deepEqual(clock4.timestamp(), '99-100');
+    t.deepEqual(clock4.timestamp, '99-100');
 });
 
 test(`clock string conversion`, t => {
     // clock to string
     const clock = new Clock(0);
-    const str = clock.toString();
+    const str = clock.timestamp;
     t.deepEqual(str, '0-0');
+    t.deepEqual(`${clock}`, '0-0');
+    t.deepEqual(JSON.stringify(clock), '"0-0"');
 
     // after update
     clock.tick();
-    const str2 = clock.toString();
+    const str2 = clock.timestamp;
     t.deepEqual(str2, '0-1');
+    t.deepEqual(`${clock}`, '0-1');
+    t.deepEqual(JSON.stringify(clock), '"0-1"');
 
-    // string to clock
-    const clock2 = Clock.fromString(str2);
-    t.deepEqual(clock2.timestamp(), '0-1');
+    // string to timestamp
+    const clock2 = new Clock(str2);
+    t.deepEqual(clock2.timestamp, '0-1');
 });
 
-test(`increment timestamp`, t => {
+test(`increment clock`, t => {
     // basic increment
-    const timestamp = '0-0';
-    const timestamp2 = incrementTimestamp(timestamp);
-    t.deepEqual(timestamp2, '0-1');
+    const clock = new Clock('0-0');
+    clock.tick();
+    t.deepEqual(clock.timestamp, '0-1');
 
     // increment with nodeId
-    const timestamp3 = '1234-0';
-    const timestamp4 = incrementTimestamp(timestamp3);
-    t.deepEqual(timestamp4, '1234-1');
+    const clock2 = new Clock('1234-0');
+    clock2.tick();
+    t.deepEqual(clock2.timestamp, '1234-1');
 
     // increment with count
-    const timestamp5 = '0-1234';
-    const timestamp6 = incrementTimestamp(timestamp5);
-    t.deepEqual(timestamp6, '0-1235');
+    const clock3 = new Clock('0-1234');
+    clock3.tick();
+    t.deepEqual(clock3.timestamp, '0-1235');
 });
 
 test(`validate timestamp`, t => {
     // valid
-    t.true(validateTimestamp('0-0'));
-    t.true(validateTimestamp('0-1'));
-    t.true(validateTimestamp('1-0'));
-    t.true(validateTimestamp('1-1'));
-    t.true(validateTimestamp('1234123-5434654'));
+    t.true(Clock.validate('0-0'));
+    t.true(Clock.validate('0-1'));
+    t.true(Clock.validate('1-0'));
+    t.true(Clock.validate('1-1'));
+    t.true(Clock.validate('1234123-5434654'));
 
     // invalid
-    t.false(validateTimestamp('0-0-0'));
-    t.false(validateTimestamp('0'));
-    t.false(validateTimestamp('0-'));
-    t.false(validateTimestamp('-0'));
-    t.false(validateTimestamp('0-a'));
-    t.false(validateTimestamp('a-0'));
-    t.false(validateTimestamp('a-a'));
-    t.false(validateTimestamp('a'));
+    t.false(Clock.validate('0-0-0'));
+    t.false(Clock.validate('0'));
+    t.false(Clock.validate('0-'));
+    t.false(Clock.validate('-0'));
+    t.false(Clock.validate('0-a'));
+    t.false(Clock.validate('a-0'));
+    t.false(Clock.validate('a-a'));
+    t.false(Clock.validate('a'));
 });
 
-test(`counter from timestamp`, t => {
+test(`counter from clock`, t => {
     // basic
-    t.deepEqual(counterFromTimestamp('0-0'), 0);
-    t.deepEqual(counterFromTimestamp('0-1'), 1);
-    t.deepEqual(counterFromTimestamp('1-0'), 0);
-    t.deepEqual(counterFromTimestamp('1-1'), 1);
-    t.deepEqual(counterFromTimestamp('1234123-5434654'), 5434654);
+    t.deepEqual(new Clock('0-0').count, 0);
+    t.deepEqual(new Clock('0-1').count, 1);
+    t.deepEqual(new Clock('1-0').count, 0);
+    t.deepEqual(new Clock('1-1').count, 1);
+    t.deepEqual(new Clock('1234123-5434654').count, 5434654);
 });
 
-test(`getHighestTimestamp`, t => {
+test(`Clock.max`, t => {
     // basic
     const timestamps = {
         a: '0-0',
@@ -150,10 +147,10 @@ test(`getHighestTimestamp`, t => {
         d: '1-1',
         e: '0-5434654'
     };
-    t.deepEqual(getHighestTimestamp(timestamps), '0-5434654');
+    t.deepEqual(Clock.max(timestamps).timestamp, '0-5434654');
 
     // with empty object
-    t.deepEqual(getHighestTimestamp({}), '0-0');
+    t.deepEqual(Clock.max({}).timestamp, '0-0');
 
     // with nested object
     const timestamps2 = {
@@ -167,7 +164,7 @@ test(`getHighestTimestamp`, t => {
             }
         }
     };
-    t.deepEqual(getHighestTimestamp(timestamps2), '1234123-5434654');
+    t.deepEqual(Clock.max(timestamps2).timestamp, '1234123-5434654');
 
     // with invalid timestamps
     const timestamps3 = {
@@ -175,22 +172,33 @@ test(`getHighestTimestamp`, t => {
         b: '0-1',
         c: 'foo-bar'
     };
-    t.throws(() => getHighestTimestamp(timestamps3));
+    t.throws(() => Clock.max(timestamps3));
     const timestamps4 = {
         a: '0-0',
         b: 42,
         c: '0-1'
     };
-    t.throws(() => getHighestTimestamp(timestamps4));
+    t.throws(() => Clock.max(timestamps4));
 });
 
-test(`compare timestamps`, t => {
-    // bigger
-    t.true(compareTimestamps('0-2', '0-1'));
-    t.true(compareTimestamps('0-1', '1-0'));
+test(`compare clocks`, t => {
+    // newer
+    t.true(new Clock('0-2').isNewerThan('0-1'));
+    t.true(new Clock('0-1').isNewerThan('1-0'));
+    t.true(new Clock('0-1').isNewerThan(new Clock('1-0')));
 
-    // not bigger
-    t.false(compareTimestamps('0-0', '0-1'));
-    t.false(compareTimestamps('0-0', '1-0'));
-    t.false(compareTimestamps('0-1', '0-1'));
+    // not newer
+    t.false(new Clock('0-0').isNewerThan('0-1'));
+    t.false(new Clock('0-0').isNewerThan('1-0'));
+    t.false(new Clock('0-1').isNewerThan('0-1'));
+
+    // older
+    t.true(new Clock('0-0').isOlderThan('0-1'));
+    t.true(new Clock('0-0').isOlderThan('1-0'));
+    t.true(new Clock('0-0').isOlderThan(new Clock('1-0')));
+
+    // not older
+    t.false(new Clock('0-2').isOlderThan('0-1'));
+    t.false(new Clock('0-1').isOlderThan('1-0'));
+    t.false(new Clock('0-1').isOlderThan('0-1'));
 });

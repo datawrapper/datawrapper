@@ -1,17 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
 import setWith from 'lodash/setWith.js';
+import { ItemArray, Clock, Timestamp, Timestamps } from './clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import objectDiff from '../objectDiff.js';
 import isObject from 'lodash/isObject.js';
 import { isEmpty } from 'underscore';
-import { compareTimestamps, initTimestamp, Timestamp, Timestamps } from './clock.js';
-
-export type ArrayItem = {
-    id: string;
-} & Record<string, unknown>;
-
-export type ItemArray = ArrayItem[];
 
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
 
@@ -20,7 +14,7 @@ type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
  * @param value
  * @returns
  */
-export const isItemArray = (value: unknown) => {
+export const isItemArray = (value: unknown): value is ItemArray => {
     return (
         Array.isArray(value) && // is an array
         value.length !== 0 && // is not empty
@@ -54,7 +48,7 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
 }
 
 export type Patch = {
-    timestamp: Timestamp;
+    timestamp: Timestamp | Clock;
     data: object;
 };
 
@@ -133,7 +127,7 @@ CRDT implementation using a single counter to track updates.
 It only has one update method which takes a data patch and a timestamp patch.
 The user has to keep track of the counter themselves, outside of this class.
 */
-export class CRDT<O extends object, T extends Timestamps<O>> {
+export class CRDT<O extends object = object> {
     static calculatePatch(
         oldData: object,
         newData: object,
@@ -146,7 +140,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     }
 
     private dataObj: O;
-    private timestampObj: T;
+    private timestampObj: Timestamps<O>;
     private pathToItemArrays = new Set<string>();
     private log: {
         receivedUpdates: number;
@@ -158,9 +152,9 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
      * @param timestamps The initial timestamp object, if not provided it will be inferred from the data
      * @returns A new CRDT instance
      */
-    constructor(data: O, timestamps?: T) {
+    constructor(data: O, timestamps?: Timestamps<O>) {
         this.dataObj = this.initData(cloneDeep(data));
-        this.timestampObj = timestamps ?? ({} as T);
+        this.timestampObj = timestamps ?? ({} as Timestamps<O>);
         this.log = {
             receivedUpdates: 0,
             appliedUpdates: 0
@@ -202,7 +196,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
                     // use timestamps as tie-breaker for when two items were inserted in the same index
                     const aTimestamp = this.getTimestamp([...path.split('.'), a.id, '_index']);
                     const bTimestamp = this.getTimestamp([...path.split('.'), b.id, '_index']);
-                    return compareTimestamps(aTimestamp, bTimestamp) ? -1 : 1;
+                    return aTimestamp.isNewerThan(bTimestamp) ? -1 : 1;
                 })
                 .map(item => {
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -224,12 +218,12 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
             searchPath.pop();
         }
         if (!timestamp || (typeof timestamp === 'object' && path.length != searchPath.length - 1)) {
-            return initTimestamp();
+            return new Clock();
         }
         if (typeof timestamp === 'object') {
             throw new Error('Updating object with primitive value is currently not supported.');
         }
-        return timestamp;
+        return new Clock(timestamp);
     }
 
     /**
@@ -241,11 +235,11 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
         this.log.receivedUpdates += 1;
         const currentTimestamp = this.getTimestamp(path);
-        if (compareTimestamps(timestamp, currentTimestamp)) {
-            setWith(this.dataObj, path, value, Object);
-            setWith(this.timestampObj, path, timestamp, Object);
-            this.log.appliedUpdates += 1;
-        }
+        if (!currentTimestamp.isOlderThan(timestamp)) return;
+
+        setWith(this.dataObj, path, value, Object);
+        setWith(this.timestampObj, path, timestamp, Object);
+        this.log.appliedUpdates += 1;
     }
 
     /**
@@ -253,7 +247,11 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
      * @param rawData The data patch to apply
      * @param timestamp The timestamp assosicated with the data patch
      */
-    update(patch: object, timestamp: Timestamp) {
+    update(patch: object, timestamp: Clock | Timestamp) {
+        if (timestamp instanceof Clock) {
+            timestamp = timestamp.timestamp;
+        }
+        const timestampStr = timestamp;
         iterateObjectPaths(patch, path => {
             const searchPath = [...path];
             if (searchPath.pop() === '_index') {
@@ -270,7 +268,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
         });
         iterateObjectPaths(patch, path => {
             const patchValue = get(patch, path);
-            this.upsertValue(path, patchValue, timestamp);
+            this.upsertValue(path, patchValue, timestampStr);
         });
     }
 
@@ -283,7 +281,7 @@ export class CRDT<O extends object, T extends Timestamps<O>> {
         return data;
     }
 
-    timestamps(): T {
+    timestamps(): Timestamps<O> {
         return cloneDeep(this.timestampObj);
     }
 
