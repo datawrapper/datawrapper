@@ -1,10 +1,4 @@
-import {
-    Clock,
-    Timestamp,
-    Timestamps,
-    getHighestTimestamp,
-    counterFromTimestamp
-} from './clock.js';
+import { Clock, Timestamp, Timestamps } from './clock.js';
 import { CRDT, Patch } from './crdt.js';
 import isEmpty from 'lodash/isEmpty.js';
 
@@ -13,15 +7,13 @@ CRDT implementation using a single counter to track updates.
 This version has two methods, `foreignUpdate` and `selfUpdate`, which are used to update the data.
 The counter is part of the class and is incremented on every self update.
 */
-export class CRDTWithClock<O extends object, T extends Timestamps<O>> {
+export class CRDTWithClock<O extends object> {
     private clock: Clock;
-    private crdt: CRDT<O, T>;
+    private crdt: CRDT<O>;
 
-    constructor(nodeId: number, data: O, timestamps?: T) {
+    constructor(nodeId: number, data: O, timestamps?: Timestamps<O>) {
         this.crdt = new CRDT(data, timestamps);
-        const counter = isEmpty(timestamps)
-            ? 0
-            : counterFromTimestamp(getHighestTimestamp(timestamps));
+        const counter = isEmpty(timestamps) ? 0 : Clock.max(timestamps).count;
         this.clock = new Clock(nodeId, counter);
     }
 
@@ -51,16 +43,16 @@ export class CRDTWithClock<O extends object, T extends Timestamps<O>> {
         return this.crdt.data();
     }
 
-    timestamps(): T {
+    timestamps(): Timestamps<O> {
         return this.crdt.timestamps();
     }
 
     timestamp(): Timestamp {
-        return this.clock.timestamp();
+        return this.clock.timestamp;
     }
 
     counter(): number {
-        return this.clock.counter();
+        return this.clock.count;
     }
 
     logs() {

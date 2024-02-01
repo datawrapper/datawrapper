@@ -3,139 +3,213 @@ import get from 'lodash/get.js';
 
 export type Timestamp = `${number}-${number}`;
 
-export type DeepPartial<O extends object> = {
-    [K in keyof O]?: O[K] extends object ? DeepPartial<O[K]> : O[K];
-};
+type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
 
-export type ReplaceValue<O extends object, V> = {
-    [K in keyof O]: O[K] extends object ? ReplaceValue<O[K], V> : V;
-};
-
-/** Has the same shape as `O` but with `timestamps`s as values */
-export type Timestamps<O extends object> = ReplaceValue<O, Timestamp>;
+export type ItemArray = AnyArray<{ id: string | number } & Record<string, unknown>>;
 
 /**
- * Initialize a timestamp
- * @param nodeId The node id to use, defaults to 0
- * @returns {Timestamp} A timestamp initialized to 0
+ * Constructs array representation of CRDT Arrays
+ * @example
+ * const arr = [
+ *     { id: 'a', c: 'foo', d: 'bar' },
+ *     { id: 'b', c: 'baz', d: 'qux' }
+ * ];
+ *
+ * const timestamps: TimestampsArray<typeof arr> = {
+ *     a: {
+ *         c: '1-1',
+ *         d: '1-1'
+ *     },
+ *     b: {
+ *         c: '1-1',
+ *         d: '1-1'
+ *     }
+ * };
  */
-export const initTimestamp = (nodeId = 0): Timestamp => `${nodeId}-0`;
-/**
- * Increment a timestamp
- * @param {Timestamp} timestamp The timestamp to increment
- * @returns {Timestamp} The incremented timestamp
- */
-export const incrementTimestamp = (timestamp: Timestamp): Timestamp => {
-    const [nodeId, time] = timestamp.split('-');
-    return `${parseInt(nodeId)}-${parseInt(time) + 1}`;
-};
-/**
- * Validate a string as a timestamp
- * @param {Timestamp} timestamp The timestamp to validate
- * @returns {boolean} True if the timestamp is valid, false otherwise
- */
-export const validateTimestamp = (timestamp: Timestamp): boolean => {
-    return /^\d+-\d+$/.test(timestamp);
-};
-
-/**
- * Get the counter from a timestamp
- * @param {Timestamp} timestamp Timestamp to get the counter from
- * @returns {number} Counter of the timestamp
- */
-export const counterFromTimestamp = (timestamp: Timestamp): number => {
-    return parseInt(timestamp.split('-')[1]);
+type TimestampsArray<A extends ItemArray> = {
+    [Key in A[number]['id']]: Timestamps<Omit<A[number], 'id'>>;
 };
 
-/**
- * Get the nodeId from a timestamp
- * @param {Timestamp} timestamp Timestamp to get the nodeId from
- * @returns {number} nodeId of the timestamp
- */
-export const nodeIdFromTimestamp = (timestamp: Timestamp): number => {
-    return parseInt(timestamp.split('-')[0]);
+/** Has the same shape as `O` but with `Timestamp`s or `Clock`s as values */
+export type Timestamps<O extends object> = {
+    [K in keyof O]: O[K] extends ItemArray
+        ? // if the value is an array of objects with an id property
+          TimestampsArray<O[K]>
+        : O[K] extends AnyArray<unknown>
+        ? // if the value is a simple array, treat it as a primitive
+          Clock | Timestamp
+        : O[K] extends object
+        ? // if the value is an object, recursively timestampify it
+          Timestamps<O[K]>
+        : // otherwise, treat it as a primitive
+          Clock | Timestamp;
 };
 
-/**
- * Compare two timestamps
- * @param {Timestamp} timestamp1 first timestamp
- * @param {Timestamp} timestamp2 second timestamp
- * @returns true if timestamp1 > timestamp2, false otherwise
- */
-export const compareTimestamps = (timestamp1: Timestamp, timestamp2: Timestamp): boolean => {
-    if (!validateTimestamp(timestamp1) || !validateTimestamp(timestamp2)) {
-        throw new Error(`Invalid timestamp in ${timestamp1} or ${timestamp2}`);
-    }
-    const [nodeId1, time1] = timestamp1.split('-').map(x => parseInt(x));
-    const [nodeId2, time2] = timestamp2.split('-').map(x => parseInt(x));
-    return time1 > time2 || (time1 === time2 && nodeId1 > nodeId2);
-};
-
-/**
- * Get the highest timestamp from an object with timestamps as values
- * @param timestamps timestamp object to get the highest timestamp from
- * @returns
- */
-export const getHighestTimestamp = (timestamps: Timestamps<object>): Timestamp => {
-    if (typeof timestamps !== 'object') {
-        throw new Error('Timestamps must be object');
-    }
-    let maxTimestamp: Timestamp = initTimestamp();
-    iterateObjectPaths(timestamps, (path: string[]) => {
-        const timestamp = get(timestamps, path);
-        if (typeof timestamp !== 'string') {
-            throw new Error(`Timestamps must be strings but is ${typeof timestamp}`);
-        }
-        if (!validateTimestamp(timestamp as Timestamp)) {
-            throw new Error(`Invalid timestamp: ${timestamp}`);
-        }
-        if (compareTimestamps(timestamp as Timestamp, maxTimestamp)) {
-            maxTimestamp = timestamp as Timestamp;
-        }
-    });
-    return maxTimestamp;
-};
-
-/**
- * A simple clock that keeps track of the current timestamp.
- * It additionally uses the nodeId to break ties between counters with the same timestamp.
- */
 export class Clock {
-    nodeId: number;
+    /**
+     * Split a timestamp into its nodeId and count
+     * @param {Timestamp} timestamp The timestamp to split
+     * @returns {[number, number]} The nodeId and count of the timestamp
+     */
+    static split(timestamp: Clock | Timestamp): [number, number] {
+        if (timestamp instanceof Clock) {
+            return [timestamp.nodeId, timestamp.count];
+        }
+
+        const [nodeId, count] = timestamp.split('-').map(x => parseInt(x));
+        return [nodeId, count];
+    }
+
+    /**
+     * Get the nodeId from a timestamp
+     * @param {Timestamp} timestamp The timestamp to get the nodeId from
+     * @returns {number} The nodeId of the timestamp
+     */
+    static getNodeId(timestamp: Clock | Timestamp): number {
+        if (timestamp instanceof Clock) {
+            return timestamp.nodeId;
+        }
+        return parseInt(timestamp.split('-')[0]);
+    }
+
+    /**
+     * Get the count from a timestamp
+     * @param {Timestamp} timestamp The timestamp to get the count from
+     * @returns {number} The count of the timestamp
+     */
+    static getCount(timestamp: Clock | Timestamp): number {
+        if (timestamp instanceof Clock) {
+            return timestamp.count;
+        }
+        return parseInt(timestamp.split('-')[1]);
+    }
+
+    /**
+     * Validate a string as a timestamp
+     * @param {Timestamp} timestamp The timestamp to validate
+     * @returns {boolean} True if the timestamp is valid, false otherwise
+     */
+    static validate(timestamp: string): timestamp is Timestamp {
+        return /^\d+-\d+$/.test(timestamp);
+    }
+
+    /**
+     * Get the highest timestamp from an object with timestamps as values
+     * @param timestamps timestamp object to get the highest timestamp from
+     * @returns
+     */
+    static max(timestamps: Timestamps<object>): Clock {
+        if (typeof timestamps !== 'object') {
+            throw new Error('Timestamps must be object');
+        }
+        let maxTimestamp = new Clock();
+        iterateObjectPaths(timestamps, (path: string[]) => {
+            const value = get(timestamps, path);
+            if (typeof value !== 'string') {
+                throw new Error(`Timestamps must be strings but is ${typeof value}`);
+            }
+
+            const timestamp = new Clock(value);
+            if (timestamp.isNewerThan(maxTimestamp)) {
+                maxTimestamp = timestamp;
+            }
+        });
+        return maxTimestamp;
+    }
+
+    readonly nodeId: number;
     count: number;
 
-    constructor(nodeId: number, count = 0) {
-        if (nodeId < 0 || !Number.isInteger(nodeId)) {
-            throw new Error('nodeId must be a positive integer');
+    /**
+     * Initialize a timestamp
+     * @param nodeId The node id to use, defaults to 0
+     */
+    constructor(timestamp: Clock);
+    constructor(timestamp: string);
+    constructor(nodeId?: number, count?: number);
+    constructor(nodeIdOrTimestamp: string | number | Clock = 0, count = 0) {
+        if (typeof nodeIdOrTimestamp === 'number') {
+            if (nodeIdOrTimestamp < 0 || !Number.isInteger(nodeIdOrTimestamp)) {
+                throw new Error(`nodeId must be a positive integer but is: "${nodeIdOrTimestamp}"`);
+            }
+            this.nodeId = nodeIdOrTimestamp;
+            this.count = count;
+            return;
         }
-        this.nodeId = nodeId;
-        this.count = count;
+        if (nodeIdOrTimestamp instanceof Clock) {
+            this.nodeId = nodeIdOrTimestamp.nodeId;
+            this.count = nodeIdOrTimestamp.count;
+            return;
+        }
+
+        if (!Clock.validate(nodeIdOrTimestamp)) {
+            throw new Error(
+                `Timestamps must be a string or an instance of Timestamp but is: "${nodeIdOrTimestamp}"`
+            );
+        }
+        [this.nodeId, this.count] = Clock.split(nodeIdOrTimestamp);
     }
 
+    /**
+     * Increment a timestamp
+     * @returns {Timestamp} The incremented timestamp
+     */
     tick() {
         this.count++;
-        return this.timestamp();
+        return this.timestamp;
     }
 
-    update(timestamp: Timestamp) {
-        const counter = counterFromTimestamp(timestamp);
-        this.count = Math.max(this.count, counter);
+    /**
+     * Update the timestamp to the highest value
+     * @param {Clock} timestamp The timestamp to update to
+     * @returns {Timestamp} The updated timestamp
+     */
+    update(timestamp: Clock | Timestamp) {
+        const count = Clock.getCount(timestamp);
+        this.count = Math.max(this.count, count);
     }
 
-    timestamp(): Timestamp {
+    /**
+     * Compare timestamps
+     * @param {Clock} timestamp timestamp to compare to
+     * @returns true if this > timestamp, false otherwise
+     */
+    isNewerThan(timestamp: Clock | Timestamp): boolean {
+        const [nodeId, count] = Clock.split(timestamp);
+        const hasNewerCount = this.count > count;
+        const hasSameCount = this.count === count;
+        const hasHigherNodeId = this.nodeId > nodeId;
+
+        return hasNewerCount || (hasSameCount && hasHigherNodeId);
+    }
+
+    /**
+     * Compare timestamps
+     * @param {Clock} timestamp timestamp to compare to
+     * @returns true if this < timestamp, false otherwise
+     */
+    isOlderThan(timestamp: Clock | Timestamp): boolean {
+        const [nodeId, count] = Clock.split(timestamp);
+        const hasOlderCount = this.count < count;
+        const hasSameCount = this.count === count;
+        const hasLowerNodeId = this.nodeId < nodeId;
+
+        return hasOlderCount || (hasSameCount && hasLowerNodeId);
+    }
+
+    /**
+     * Get the timestamp as a string
+     * @returns {Timestamp} The timestamp as a string
+     */
+    get timestamp(): Timestamp {
         return `${this.nodeId}-${this.count}`;
     }
 
-    toString() {
-        return this.timestamp();
+    toString(): string {
+        return this.timestamp;
     }
 
-    counter() {
-        return this.count;
-    }
-
-    static fromString(timestamp: Timestamp) {
-        const [nodeId, count] = timestamp.split('-').map(x => parseInt(x));
-        return new Clock(nodeId, count);
+    toJSON(): string {
+        return this.timestamp;
     }
 }

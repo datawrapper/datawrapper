@@ -78,7 +78,7 @@ test(`updates get denied for outdated timestamps`, t => {
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
 });
 
-test(`updates with same clock value only get applied for higher nodeIds `, t => {
+test(`updates with same timestamp value only get applied for higher nodeIds `, t => {
     const crdt = new CRDT({ a: 'some value', b: 2, c: { key: 'value' } });
     crdt.update({ a: 2 }, '1-1');
     crdt.update({ a: 'update value that does not get applied' }, '1-1');
