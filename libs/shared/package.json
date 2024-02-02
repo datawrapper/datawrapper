@@ -24,6 +24,7 @@
         "test": "ava",
         "test:crdt": "ava **/crdt/*.test.*",
         "benchmark": "vitest bench",
+        "fuzz": "ava **/crdt/*.fuzz.* --timeout=300s",
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "scripts/build.sh",
