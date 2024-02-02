@@ -5,7 +5,8 @@ export type Timestamp = `${number}-${number}`;
 
 type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
 
-export type ItemArray = AnyArray<{ id: string | number } & Record<string, unknown>>;
+export type ArrayItem = { id: string | number } & Record<string, unknown>;
+export type ItemArray = AnyArray<ArrayItem>;
 
 /**
  * Constructs array representation of CRDT Arrays

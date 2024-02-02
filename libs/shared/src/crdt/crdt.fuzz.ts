@@ -1,6 +1,6 @@
 import test from 'ava';
-import { isItemArray, type ItemArray, ArrayItem, CRDT, Patch } from './crdt.js';
-import { Timestamp, Timestamps } from './clock.js';
+import { isItemArray, CRDT, Patch } from './crdt.js';
+import { Timestamp, Timestamps, type ItemArray, ArrayItem } from './clock.js';
 import { CRDTWithClock } from './crdtWithClock.js';
 import isEmpty from 'lodash/isEmpty.js';
 import cloneDeep from 'lodash/cloneDeep.js';
@@ -16,7 +16,7 @@ This version has two methods, `foreignUpdate` and `selfUpdate`, which are used t
 The counter is part of the class and is incremented on every self update.
 */
 export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
-    private crdt: CRDTWithClock<O, T>;
+    private crdt: CRDTWithClock<O>;
 
     constructor(nodeId: number, data: O, timestamps?: T) {
         this.crdt = new CRDTWithClock(nodeId, data, timestamps);
@@ -46,10 +46,6 @@ export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
 
     data(): O {
         return this.crdt.data();
-    }
-
-    timestamps(): T {
-        return this.crdt.timestamps();
     }
 
     timestamp(): Timestamp {
@@ -229,7 +225,7 @@ class Mutate {
         };
         const shuffleItems = (): ItemArray => {
             this.mutations.itemArray.shuffle += 1;
-            return itemArr.sort(() => Math.random() - 0.5);
+            return (cloneDeep(itemArr) as Array<ArrayItem>).sort(() => Math.random() - 0.5);
         };
         return oneOf(
             () => deleteItem(),
