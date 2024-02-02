@@ -70,6 +70,12 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
     // some items in source array don't contain an ID
     const sourceIsAtomicArray = sourceArray.length && sourceArray.length !== sourceItems.size;
 
+    if (sourceIsAtomicArray && targetArray.length === 0) {
+        // the source is an atomic array and the target is empty
+        // --> so we just return the target array as patch
+        return targetArray;
+    }
+
     const patch: Record<string, unknown> = {};
     for (let i = 0; i < targetArray.length; i++) {
         const targetItemOrig = targetArray[i];
