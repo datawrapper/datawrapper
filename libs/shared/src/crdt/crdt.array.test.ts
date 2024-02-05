@@ -76,7 +76,11 @@ test(`add new items to item array`, t => {
 
     crdt.update(
         {
-            arr: { A: { id: 'A' }, B: { id: 'B' }, C: { id: 'C', val: 3, _index: 2 } }
+            arr: {
+                A: { id: 'A', _index: 0 },
+                B: { id: 'B', _index: 1 },
+                C: { id: 'C', val: 3, _index: 2 }
+            }
         },
         '1-1'
     );
@@ -332,9 +336,7 @@ test(`outdated re-create is denied`, t => {
     });
 });
 
-test(`newer re-create is accepted`, t => {
-    // This behaviour is probably not desired, but it is the current implementation.
-    // TODO: When we update the implementation with permanent deletion, this test needs to get adapted.
+test(`newer re-create is denied`, t => {
     const crdt = new CRDT({
         normalField: 'some value',
         arr: [
@@ -345,7 +347,7 @@ test(`newer re-create is accepted`, t => {
     });
     crdt.update(
         {
-            arr: { A: { id: 'A', _index: null }, B: { id: 'B', _index: null }, C: { id: 'C' } }
+            arr: { C: { id: 'C', _index: null } }
         },
         '1-1'
     );
@@ -353,15 +355,14 @@ test(`newer re-create is accepted`, t => {
         {
             arr: { A: { id: 'A', _index: 0 }, B: { id: 'B', _index: 1 }, C: { id: 'C', _index: 2 } }
         },
-        '1-1000'
+        '1-2'
     );
 
     t.deepEqual(crdt.data(), {
         normalField: 'some value',
         arr: [
             { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
+            { id: 'B', val: 2 }
         ]
     });
 });
