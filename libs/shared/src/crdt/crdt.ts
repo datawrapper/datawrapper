@@ -37,7 +37,6 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
             [item.id],
             {
                 ...item,
-                // mark deleted items by using index null
                 _index: index
             },
             Object
@@ -241,6 +240,16 @@ export class CRDT<O extends object = object> {
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
         this.log.receivedUpdates += 1;
         const currentTimestamp = this.getTimestamp(path);
+        if (path[path.length - 1] === '_index') {
+            if (get(this.dataObj, path) === null) {
+                // do not update if the current value is null
+                return;
+            }
+            if (value === null) {
+                // deletes over everything
+                setWith(this.dataObj, path, null, Object);
+            }
+        }
         if (!currentTimestamp.isOlderThan(timestamp)) return;
 
         setWith(this.dataObj, path, value, Object);
@@ -268,8 +277,8 @@ export class CRDT<O extends object = object> {
                     setWith(this.dataObj, pathString, {}, Object);
                     const currentTimestamp = this.getTimestamp(searchPath);
                     setWith(this.timestampObj, pathString, currentTimestamp, Object);
+                    this.pathToItemArrays.add(pathString);
                 }
-                this.pathToItemArrays.add(pathString);
             }
         });
         iterateObjectPaths(patch, path => {
