@@ -194,6 +194,56 @@ test('crdt can be initialized with existing timestamp object', t => {
     });
 });
 
+test('deleting keys', t => {
+    const crdt = new CRDT({ a: 'some value', b: { key: 'value' } });
+
+    crdt.update({ a: null }, '1-1');
+    t.deepEqual(crdt.data(), { b: { key: 'value' } });
+
+    crdt.update({ b: { key: null } }, '1-2');
+    t.deepEqual(crdt.data(), { b: {} });
+});
+
+test('deleted keys can be added back in', t => {
+    const crdt = new CRDT({ a: 'some value', b: 'value' });
+
+    crdt.update({ a: null }, '1-1');
+    t.deepEqual(crdt.data(), { b: 'value' });
+
+    crdt.update({ a: 'new value' }, '1-2');
+    t.deepEqual(crdt.data(), { a: 'new value', b: 'value' });
+});
+
+test('reinsertions with outdated timestamps get denied', t => {
+    const crdt = new CRDT({ a: 'some value', b: 'value' });
+
+    crdt.update({ a: null }, '1-2');
+    t.deepEqual(crdt.data(), { b: 'value' });
+
+    crdt.update({ a: 'outdated value' }, '1-1');
+    t.deepEqual(crdt.data(), { b: 'value' });
+});
+
+test("non-primitive fields can't be deleted", t => {
+    const data = {
+        nested: { key: 'value' },
+        arr: [
+            { id: '1', val: 'val1' },
+            { id: '2', val: 'val2' }
+        ]
+    };
+    const crdt = new CRDT(data);
+
+    // delete item array
+    t.throws(() => crdt.update({ arr: null }, '1-2'));
+
+    t.deepEqual(crdt.data(), data);
+
+    // delete object
+    t.throws(() => crdt.update({ nested: null }, '1-3'));
+    t.deepEqual(crdt.data(), data);
+});
+
 test('CRDT.calculatePatch calculates the correct patch (simple updates)', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
@@ -257,6 +307,21 @@ test('CRDT.calculatePatch calculates the correct patch (item array - simple upda
     // const crdt = new CRDT(oldData);
     // crdt.update(patch, '1-1');
     // t.deepEqual(crdt.data(), newData);
+});
+
+test('CRDT.calculatePatch calculates the correct patch (key deletion)', t => {
+    const oldData = {
+        a: 'some value',
+        b: { key: 'value' }
+    };
+
+    const newData = {
+        b: {}
+    };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, { a: null, b: { key: null } });
 });
 
 test('CRDT.calculatePatch calculates the correct patch (item array - insertion at end)', t => {

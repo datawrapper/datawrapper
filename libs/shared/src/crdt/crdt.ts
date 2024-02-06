@@ -1,11 +1,13 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
 import setWith from 'lodash/setWith.js';
+import omit from 'lodash/omit.js';
+import isObject from 'lodash/isObject.js';
+import isEmpty from 'lodash/isEmpty.js';
 import { ItemArray, Clock, Timestamp, Timestamps } from './clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import objectDiff from '../objectDiff.js';
-import isObject from 'lodash/isObject.js';
-import { isEmpty } from 'underscore';
+import isPrimitive from '../isPrimitive.js';
 
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
 
@@ -240,7 +242,8 @@ export class CRDT<O extends object = object> {
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
         this.log.receivedUpdates += 1;
         const currentTimestamp = this.getTimestamp(path);
-        if (path[path.length - 1] === '_index') {
+        const isArrayIndex = path[path.length - 1] === '_index';
+        if (isArrayIndex) {
             if (get(this.dataObj, path) === null) {
                 // do not update if the current value is null
                 return;
@@ -248,11 +251,19 @@ export class CRDT<O extends object = object> {
             if (value === null) {
                 // deletes over everything
                 setWith(this.dataObj, path, null, Object);
+                return;
             }
         }
         if (!currentTimestamp.isOlderThan(timestamp)) return;
 
-        setWith(this.dataObj, path, value, Object);
+        if (value === null) {
+            if (!isPrimitive(get(this.dataObj, path))) {
+                throw new Error('Updating object with primitive value is currently not supported.');
+            }
+            this.dataObj = omit(this.dataObj, path.join('.')) as O;
+        } else {
+            setWith(this.dataObj, path, value, Object);
+        }
         setWith(this.timestampObj, path, timestamp, Object);
         this.log.appliedUpdates += 1;
     }

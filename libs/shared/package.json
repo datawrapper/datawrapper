@@ -775,6 +775,25 @@
             "types": "./dist/cjs/invertColor.d.cts",
             "default": "./dist/esm/invertColor.js"
         },
+        "./isPrimitive.d.ts": {
+            "require": "./dist/cjs/isPrimitive.d.cts",
+            "default": "./dist/esm/isPrimitive.d.ts"
+        },
+        "./isPrimitive.js": {
+            "require": "./dist/cjs/isPrimitive.cjs",
+            "types": "./dist/cjs/isPrimitive.d.cts",
+            "default": "./dist/esm/isPrimitive.js"
+        },
+        "./isPrimitive": {
+            "require": "./dist/cjs/isPrimitive.cjs",
+            "types": "./dist/cjs/isPrimitive.d.cts",
+            "default": "./dist/esm/isPrimitive.js"
+        },
+        "./dist/cjs/isPrimitive.cjs": {
+            "require": "./dist/cjs/isPrimitive.cjs",
+            "types": "./dist/cjs/isPrimitive.d.cts",
+            "default": "./dist/esm/isPrimitive.js"
+        },
         "./isValidUrl.d.ts": {
             "require": "./dist/cjs/isValidUrl.d.cts",
             "default": "./dist/esm/isValidUrl.d.ts"

@@ -206,7 +206,7 @@ export class Clock {
         return `${this.nodeId}-${this.count}`;
     }
 
-    toString(): string {
+    toString(): Timestamp {
         return this.timestamp;
     }
 

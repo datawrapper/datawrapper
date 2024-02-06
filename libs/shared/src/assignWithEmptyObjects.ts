@@ -1,3 +1,5 @@
+import isPrimitive from './isPrimitive.js';
+
 /**
  * Deeply assigns the values of all enumerable-own-properties from one or more source objects to a
  * target object. Returns the target object.
@@ -72,11 +74,6 @@ function isArray(val: unknown): val is Array<unknown> {
 
 function isObject(val: unknown): val is object {
     return typeof val === 'function' || Object.prototype.toString.call(val) === '[object Object]';
-}
-
-type Primitive = string | number | boolean | symbol | bigint;
-function isPrimitive(val: unknown): val is Primitive {
-    return typeof val === 'object' ? val === null : typeof val !== 'function';
 }
 
 function isEmpty(val: unknown): val is Record<string, never> {
