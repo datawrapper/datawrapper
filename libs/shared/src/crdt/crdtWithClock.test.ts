@@ -134,6 +134,22 @@ test(`flat non-conflicting updates from multiple users get merged`, t => {
     t.deepEqual(crdt2.data(), crdt3.data());
 });
 
+test('outdated edits and deletions are ignored', t => {
+    const crdt = new CRDTWithClock(1, { key: 'str' });
+
+    // outdated edit
+    crdt.selfUpdate({ key: null });
+    crdt.foreignUpdate({ data: { key: 'value' }, timestamp: '1-1' });
+
+    t.deepEqual(crdt.data(), {});
+
+    // outdated deletion
+    crdt.selfUpdate({ key: 'str' });
+    crdt.foreignUpdate({ data: { key: null }, timestamp: '1-1' });
+
+    t.deepEqual(crdt.data(), { key: 'str' });
+});
+
 test(`flat conflicting updates from multiple users get merged`, t => {
     const initObj = { key: 0, data: 0, json: 0 };
 

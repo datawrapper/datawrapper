@@ -6,10 +6,12 @@ import isEmpty from 'lodash/isEmpty.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
 import get from 'lodash/get.js';
+import omit from 'lodash/omit.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import { nanoid } from 'nanoid';
 import util from 'util';
 import { ExecutionContext } from 'ava';
+import isPrimitive from '../isPrimitive.js';
 /*
 CRDT implementation using a single counter to track updates.
 This version has two methods, `foreignUpdate` and `selfUpdate`, which are used to update the data.
@@ -159,7 +161,11 @@ class Mutate {
             shuffle: 0,
             delete: 0
         },
-        primitive: 0
+        primitive: {
+            insert: 0,
+            delete: 0,
+            mutate: 0
+        }
     };
 
     value(value: any): any {
@@ -168,6 +174,9 @@ class Mutate {
         }
         if (isAtomicArray(value)) {
             return this.atomicArray(value);
+        }
+        if (Array.isArray(value)) {
+            return value;
         }
         if (typeof value === 'object' && value !== null) {
             return this.object(value);
@@ -199,11 +208,7 @@ class Mutate {
             return setWith(item, key, undefined, Object);
         };
 
-        return oneOf(
-            () => mutateValue(),
-            () => addValue(),
-            () => removeValue()
-        );
+        return oneOf(mutateValue, addValue, removeValue);
     }
 
     itemArray(itemArr: ItemArray): ItemArray {
@@ -227,23 +232,18 @@ class Mutate {
             this.mutations.itemArray.shuffle += 1;
             return (cloneDeep(itemArr) as Array<ArrayItem>).sort(() => Math.random() - 0.5);
         };
-        return oneOf(
-            () => deleteItem(),
-            () => addItem(),
-            () => mutateItem(),
-            () => shuffleItems()
-        );
+        return oneOf(deleteItem, addItem, mutateItem, shuffleItems);
     }
 
     primitiveValue(value: any): any {
-        this.mutations.primitive += 1;
+        this.mutations.primitive.mutate += 1;
         return Generate.anyPrimitiveValue();
     }
 
     atomicArray(arr: any[]): any[] {
         const swap = () => {
             this.mutations.atomicArray.swap += 1;
-            return Generate.array;
+            return Generate.array();
         };
         const append = () => {
             this.mutations.atomicArray.append += 1;
@@ -261,11 +261,33 @@ class Mutate {
     }
 
     object(obj: object): object {
+        const insert = () => {
+            this.mutations.primitive.insert += 1;
+            return setWith(obj, Generate.string(), Generate.anyPrimitiveValue(), Object);
+        };
+
         const keys = Object.keys(obj);
+        if (keys.length === 0) {
+            return insert();
+        }
+
         const key = keys[Math.floor(Math.random() * keys.length)];
         const value = get(obj, key);
-        const newValue = this.value(value);
-        return setWith(obj, key, newValue, Object);
+
+        const deleteKey = () => {
+            this.mutations.primitive.delete += 1;
+            return omit(obj, key);
+        };
+
+        const mutateValue = () => {
+            const newValue = this.value(value);
+            return setWith(obj, key, newValue, Object);
+        };
+
+        if (isPrimitive(value)) {
+            return oneOf(deleteKey, mutateValue, insert);
+        }
+        return oneOf(mutateValue, insert);
     }
 }
 
@@ -299,7 +321,11 @@ class Fuzz {
                 shuffle: 0,
                 delete: 0
             },
-            primitive: 0
+            primitive: {
+                insert: 0,
+                delete: 0,
+                mutate: 0
+            }
         }
     };
 
