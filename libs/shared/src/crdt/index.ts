@@ -1,4 +1,3 @@
-export { CRDT } from './crdt.js';
 export { JsonCRDT } from './JsonCRDT.js';
-export { Clock, Timestamp, Timestamps } from './clock.js';
-export type { Diff, Update } from './crdt.js';
+export { Clock, Timestamp, Timestamps } from './Clock.js';
+export type { CRDT, Diff, Update } from './CRDT.js';

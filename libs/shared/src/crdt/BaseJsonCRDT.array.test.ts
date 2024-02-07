@@ -1,9 +1,9 @@
 import test from 'ava';
-import { CRDT } from './crdt.js';
+import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import cloneDeep from 'lodash/cloneDeep';
 
 test(`value arrays are treated as atomic arrays in basic updates`, t => {
-    const crdt = new CRDT({ a: [1, 2, 3] });
+    const crdt = new BaseJsonCRDT({ a: [1, 2, 3] });
     crdt.update({ a: [3, 4] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [3, 4]
@@ -11,7 +11,7 @@ test(`value arrays are treated as atomic arrays in basic updates`, t => {
 });
 
 test(`value arrays are treated as atomic arrays for nested arrays`, t => {
-    const crdt = new CRDT({ a: [1, 2, [4, 6]] });
+    const crdt = new BaseJsonCRDT({ a: [1, 2, [4, 6]] });
     crdt.update({ a: [1, [2, 3], 4] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [1, [2, 3], 4]
@@ -19,7 +19,7 @@ test(`value arrays are treated as atomic arrays for nested arrays`, t => {
 });
 
 test(`object arrays without ID are treated as atomic arrays`, t => {
-    const crdt = new CRDT({ a: [{ a: 1 }, { b: 2 }] });
+    const crdt = new BaseJsonCRDT({ a: [{ a: 1 }, { b: 2 }] });
     crdt.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [{ a: 1 }, { b: 2 }, { c: 3 }]
@@ -27,7 +27,7 @@ test(`object arrays without ID are treated as atomic arrays`, t => {
 });
 
 test(`item array initalization`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -42,7 +42,7 @@ test(`item array initalization`, t => {
 });
 
 test(`update existing items of item array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -67,7 +67,7 @@ test(`update existing items of item array`, t => {
 });
 
 test(`add new items to item array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -95,7 +95,7 @@ test(`add new items to item array`, t => {
 });
 
 test(`item array can be created at empty path`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         normalField: 'some value'
     });
 
@@ -136,7 +136,7 @@ test(`item array can be created at empty path`, t => {
 });
 
 test(`inserting item with id converts existing empty array into item array`, t => {
-    const crdt = new CRDT({ arr: [] });
+    const crdt = new BaseJsonCRDT({ arr: [] });
 
     // insert item with id
     crdt.update(
@@ -163,7 +163,7 @@ test(`inserting item with id converts existing empty array into item array`, t =
 });
 
 test(`item array can be cleared of all items`, t => {
-    const crdt = new CRDT({ arr: [{ id: 'A', val: 1 }] });
+    const crdt = new BaseJsonCRDT({ arr: [{ id: 'A', val: 1 }] });
 
     // clear all elements
     crdt.update(
@@ -179,7 +179,7 @@ test(`item array can be cleared of all items`, t => {
 });
 
 test(`item array can be cleared of all items and filled with new items again`, t => {
-    const crdt = new CRDT({ arr: [{ id: 'A', val: 1 }] });
+    const crdt = new BaseJsonCRDT({ arr: [{ id: 'A', val: 1 }] });
 
     // clear all elements
     crdt.update(
@@ -212,7 +212,7 @@ test(`item array can be cleared of all items and filled with new items again`, t
 });
 
 test.failing('primitive value can be replaced with item array', t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: 'not an array yet'
     });
 
@@ -241,7 +241,7 @@ test.failing('primitive value can be replaced with item array', t => {
 });
 
 test.failing('primitive value can not replace existing item array', t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -266,7 +266,7 @@ test.failing('primitive value can not replace existing item array', t => {
 test.failing(
     'nested value in converted item array can not be updated with outdated timestamp',
     t => {
-        const crdt = new CRDT({
+        const crdt = new BaseJsonCRDT({
             arr: 'not an array yet'
         });
 
@@ -286,7 +286,7 @@ test.failing(
 );
 
 test(`delete item from item array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         normalField: 'some value',
         arr: [
             { id: 'A', val: 1 },
@@ -309,7 +309,7 @@ test(`delete item from item array`, t => {
 });
 
 test(`outdated re-create is denied`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         normalField: 'some value',
         arr: [
             { id: 'A', val: 1 },
@@ -337,7 +337,7 @@ test(`outdated re-create is denied`, t => {
 });
 
 test(`newer re-create is denied`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         normalField: 'some value',
         arr: [
             { id: 'A', val: 1 },
@@ -368,7 +368,7 @@ test(`newer re-create is denied`, t => {
 });
 
 test(`re-order only`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 },
@@ -393,7 +393,7 @@ test(`re-order only`, t => {
 });
 
 test(`re-order and add item`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 },
@@ -424,7 +424,7 @@ test(`re-order and add item`, t => {
 });
 
 test(`sorting works without updates`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 },
@@ -456,7 +456,7 @@ test(`sorting works without updates`, t => {
 });
 
 test(`empty array is treated as atomic array when inserted item is not item array item`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: []
     });
 
@@ -481,7 +481,7 @@ test(`empty array is treated as atomic array when inserted item is not item arra
 });
 
 test(`data of the same item is merged`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [{ id: 'A', val: 1, other: 'value' }]
     });
 
@@ -511,7 +511,7 @@ test(`data of the same item is merged`, t => {
 });
 
 test(`data in item array with nested objects is merged`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [{ id: 'A', val: 1, other: 'value' }]
     });
 
@@ -542,7 +542,7 @@ test(`data in item array with nested objects is merged`, t => {
 });
 
 test('crdt with array can be initialized with existing timestamp object', t => {
-    const crdt = new CRDT(
+    const crdt = new BaseJsonCRDT(
         {
             arr: [
                 { id: 'A', val: 1 },
@@ -577,7 +577,7 @@ test('crdt with array can be initialized with existing timestamp object', t => {
 });
 
 test(`support concurrent inserts in item arrays at end`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -617,7 +617,7 @@ test(`support concurrent inserts in item arrays at end`, t => {
 });
 
 test(`support concurrent inserts in item arrays in the middle of the array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -657,7 +657,7 @@ test(`support concurrent inserts in item arrays in the middle of the array`, t =
 });
 
 test(`support concurrent inserts in nested item arrays in the middle of the array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         foo: {
             arr: [
                 { id: 'A', val: 1 },
@@ -705,7 +705,7 @@ test(`support concurrent inserts in nested item arrays in the middle of the arra
 });
 
 test(`support concurrent inserts and deletes in item arrays in the middle of the array`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 1 },
             { id: 'B', val: 2 }
@@ -739,7 +739,7 @@ test(`support concurrent inserts and deletes in item arrays in the middle of the
 });
 
 test(`support concurrent sorting in item arrays`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         arr: [
             { id: 'A', val: 'A' },
             { id: 'B', val: 'B' },
@@ -779,7 +779,7 @@ test(`support concurrent sorting in item arrays`, t => {
 });
 
 test(`won't re-insert deleted item with late insert`, t => {
-    const crdt = new CRDT({
+    const crdt = new BaseJsonCRDT({
         normalField: 'some value',
         arr: [
             { id: 'B', val: 2 },
@@ -840,8 +840,8 @@ test(`diffs with array inserts and deletions applied in different order result i
         '1-2'
     ] as const;
 
-    const crdtA = new CRDT(cloneDeep(initData));
-    const crdtB = new CRDT(cloneDeep(initData));
+    const crdtA = new BaseJsonCRDT(cloneDeep(initData));
+    const crdtB = new BaseJsonCRDT(cloneDeep(initData));
 
     crdtA.update(...diffX);
     crdtA.update(...diffY);

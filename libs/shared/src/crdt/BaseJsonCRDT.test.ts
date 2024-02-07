@@ -1,10 +1,10 @@
 import test from 'ava';
-import { Timestamps } from './clock.js';
-import { CRDT } from './crdt.js';
+import { Timestamps } from './Clock.js';
+import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import { cloneDeep } from 'lodash';
 
 test(`getters return immutable objects`, t => {
-    const crdt = new CRDT({ a: 1, b: 2, c: 3 });
+    const crdt = new BaseJsonCRDT({ a: 1, b: 2, c: 3 });
 
     const data = crdt.data();
     data.a = 99;
@@ -20,15 +20,15 @@ test(`getters return immutable objects`, t => {
 
 test(`init`, t => {
     // flat object
-    const crdt1 = new CRDT({ a: 'some value', b: 2, c: 3 });
+    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
     t.deepEqual(crdt1.data(), { a: 'some value', b: 2, c: 3 });
 
     // deeply nested object
-    const crdt2 = new CRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 1 } } } } } });
 
     // object with arrays
-    const crdt3 = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
     t.deepEqual(crdt3.data(), { a: [1, 2, 3], b: [4, 5, 6] });
 
     // with timestamps
@@ -39,7 +39,7 @@ test(`init`, t => {
         b: '1-100',
         c: '1-1000'
     };
-    const crdt = new CRDT(cloneDeep(data), cloneDeep(timestamps));
+    const crdt = new BaseJsonCRDT(cloneDeep(data), cloneDeep(timestamps));
     t.deepEqual(crdt.data(), data);
     t.deepEqual(crdt.timestamps(), timestamps);
 });
@@ -47,13 +47,13 @@ test(`init`, t => {
 test(`basic updates work`, t => {
     // flat object
 
-    const crdt1 = new CRDT({ a: 'some value', b: 2, c: 3 });
+    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
     crdt1.update({ a: 2, b: 3 }, '1-1');
     t.deepEqual(crdt1.data(), { a: 2, b: 3, c: 3 });
 
     // deeply nested object
 
-    const crdt2 = new CRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
     crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
 });
@@ -61,7 +61,7 @@ test(`basic updates work`, t => {
 test(`updates get denied for outdated timestamps`, t => {
     // flat object
 
-    const crdt1 = new CRDT({ a: 'some value', b: 2, c: 3 });
+    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
     crdt1.update({ a: 2, b: 3 }, '1-1');
     crdt1.update({ b: 1000 }, '1-0');
     crdt1.update({ b: 1231232 }, '1-0');
@@ -72,14 +72,14 @@ test(`updates get denied for outdated timestamps`, t => {
 
     // deeply nested object
 
-    const crdt2 = new CRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
     crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
     crdt2.update({ a: { b: { c: { d: { e: { f: 1000 } } } } } }, '2-0');
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
 });
 
 test(`updates with same timestamp value only get applied for higher nodeIds `, t => {
-    const crdt = new CRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
     crdt.update({ a: 2 }, '1-1');
     crdt.update({ a: 'update value that does not get applied' }, '1-1');
     t.deepEqual(crdt.data(), { a: 2, b: 2, c: { key: 'value' } });
@@ -94,7 +94,7 @@ test(`updates with same timestamp value only get applied for higher nodeIds `, t
 });
 
 test(`non-conflicting updates get merged`, t => {
-    const crdt = new CRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
     crdt.update({ a: 2 }, '1-1');
     crdt.update({ b: 3 }, '2-1');
     crdt.update({ c: { key: 'new value' } }, '3-1');
@@ -110,7 +110,7 @@ test(`arrays are treated as atomic values`, t => {
     // TODO: Theses tests should be updated to reflect the merging behavior of arrays once this functionality gets implemented.
 
     // basic update
-    const crdt = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
     crdt.update({ a: [1, 2, 3, 4] }, '1-1');
     crdt.update({ b: [4, 5, 6, 7] }, '2-1');
     t.deepEqual(crdt.data(), {
@@ -119,7 +119,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // overwriting update
-    const crdt2 = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt2 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
     crdt2.update({ a: [1, 2, 3, 4] }, '1-1');
     crdt2.update({ b: [4, 5, 6, 7] }, '2-1');
     crdt2.update({ a: [1, 2, 3, 4, 5, 6, 7] }, '3-1');
@@ -129,7 +129,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // nested arrays
-    const crdt3 = new CRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
     crdt3.update({ a: [1, [2, 3], 4] }, '1-1');
     crdt3.update({ b: [4, 5, [6, 7]] }, '2-1');
     t.deepEqual(crdt3.data(), {
@@ -138,7 +138,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // arrays with objects
-    const crdt4 = new CRDT({ a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] });
+    const crdt4 = new BaseJsonCRDT({ a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] });
     crdt4.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
     crdt4.update({ b: [{ c: 3 }, { d: 4 }, { e: 5 }] }, '2-1');
     t.deepEqual(crdt4.data(), {
@@ -148,13 +148,13 @@ test(`arrays are treated as atomic values`, t => {
 });
 
 test(`updates with empty data`, t => {
-    const crdt = new CRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
     crdt.update({}, '1-1');
     t.deepEqual(crdt.data(), { a: 'some value', b: 2, c: { key: 'value' } });
 });
 
 test(`adding new keys`, t => {
-    const crdt = new CRDT({ a: 'some value', b: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: { key: 'value' } });
 
     crdt.update({ c: 'new key' }, '1-1');
 
@@ -166,7 +166,7 @@ test(`adding new keys`, t => {
 });
 
 test('crdt can be initialized with existing timestamp object', t => {
-    const crdt = new CRDT(
+    const crdt = new BaseJsonCRDT(
         {
             a: 'some value',
             b: { key: 'value' }
@@ -195,7 +195,7 @@ test('crdt can be initialized with existing timestamp object', t => {
 });
 
 test('deleting keys', t => {
-    const crdt = new CRDT({ a: 'some value', b: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: { key: 'value' } });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { b: { key: 'value' } });
@@ -205,7 +205,7 @@ test('deleting keys', t => {
 });
 
 test('deleted keys can be added back in', t => {
-    const crdt = new CRDT({ a: 'some value', b: 'value' });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { b: 'value' });
@@ -215,7 +215,7 @@ test('deleted keys can be added back in', t => {
 });
 
 test('reinsertions with outdated timestamps get denied', t => {
-    const crdt = new CRDT({ a: 'some value', b: 'value' });
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
 
     crdt.update({ a: null }, '1-2');
     t.deepEqual(crdt.data(), { b: 'value' });
@@ -232,7 +232,7 @@ test("non-primitive fields can't be deleted", t => {
             { id: '2', val: 'val2' }
         ]
     };
-    const crdt = new CRDT(data);
+    const crdt = new BaseJsonCRDT(data);
 
     // delete item array
     t.throws(() => crdt.update({ arr: null }, '1-2'));
@@ -244,41 +244,41 @@ test("non-primitive fields can't be deleted", t => {
     t.deepEqual(crdt.data(), data);
 });
 
-test('CRDT.calculateDiff calculates the correct patch (simple updates)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct patch (simple updates)', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' } };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         a: 'new value'
     });
 
     // make sure that the diff applied again as update to the CRDT yields the same object
-    const crdt = new CRDT(oldData);
+    const crdt = new BaseJsonCRDT(oldData);
     crdt.update(diff, '1-1');
     t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (simple arrays)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (simple arrays)', t => {
     const oldData = { a: 'some value', b: ['A', 'B', 'C'] };
 
     const newData = { a: 'some value', b: ['D', 'C', 'E'] };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: ['D', 'C', 'E']
     });
 
     // make sure that the diff applied again as update to the CRDT yields the same object
-    const crdt = new CRDT(oldData);
+    const crdt = new BaseJsonCRDT(oldData);
     crdt.update(diff, '1-1');
     t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - simple updates)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - simple updates)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -297,7 +297,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - simple update
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: { C: { value: 99 } }
@@ -309,7 +309,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - simple update
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct patch (key deletion)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct patch (key deletion)', t => {
     const oldData = {
         a: 'some value',
         b: { key: 'value' }
@@ -319,12 +319,12 @@ test('CRDT.calculateDiff calculates the correct patch (key deletion)', t => {
         b: {}
     };
 
-    const patch = CRDT.calculateDiff(oldData, newData);
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, { a: null, b: { key: null } });
 });
 
-test('CRDT.calculateDiff calculates the correct patch (item array - insertion at end)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct patch (item array - insertion at end)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -344,7 +344,7 @@ test('CRDT.calculateDiff calculates the correct patch (item array - insertion at
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: { D: { id: 'D', value: 4, _index: 3 } }
@@ -356,7 +356,7 @@ test('CRDT.calculateDiff calculates the correct patch (item array - insertion at
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - insertion at start)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - insertion at start)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -376,7 +376,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - insertion at 
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -393,7 +393,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - insertion at 
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - insertion in middle)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - insertion in middle)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -413,7 +413,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - insertion in 
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -428,7 +428,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - insertion in 
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - deletion at end)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion at end)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -446,7 +446,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion at e
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -460,7 +460,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion at e
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - deletion at beginning)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion at beginning)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -478,7 +478,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion at b
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -494,7 +494,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion at b
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - deletion in the middle)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion in the middle)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -512,7 +512,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion in t
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -527,7 +527,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - deletion in t
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array - re-ordering two elements)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - re-ordering two elements)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -548,7 +548,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - re-ordering t
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -563,7 +563,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array - re-ordering t
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (item array -  re-ordering multiple elements)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array -  re-ordering multiple elements)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -584,7 +584,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array -  re-ordering 
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -601,7 +601,7 @@ test('CRDT.calculateDiff calculates the correct diff (item array -  re-ordering 
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('CRDT.calculateDiff calculates the correct diff (empty array - converted to item array)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - converted to item array)', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -615,7 +615,7 @@ test('CRDT.calculateDiff calculates the correct diff (empty array - converted to
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: {
@@ -625,7 +625,7 @@ test('CRDT.calculateDiff calculates the correct diff (empty array - converted to
     });
 });
 
-test('CRDT.calculateDiff calculates the correct diff (empty array - treated as atomic array if not all items have an id)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - treated as atomic array if not all items have an id)', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -639,7 +639,7 @@ test('CRDT.calculateDiff calculates the correct diff (empty array - treated as a
         ]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: [
@@ -649,7 +649,7 @@ test('CRDT.calculateDiff calculates the correct diff (empty array - treated as a
     });
 });
 
-test('CRDT.calculateDiff calculates the correct diff (atomic array remains an atomic array even if some items contain an ID)', t => {
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (atomic array remains an atomic array even if some items contain an ID)', t => {
     const oldData = {
         a: 'some value',
         b: [1, 2, 3]
@@ -660,14 +660,14 @@ test('CRDT.calculateDiff calculates the correct diff (atomic array remains an at
         b: [1, { id: 'B', value: 2 }]
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(diff, {
         b: [1, { id: 'B', value: 2 }]
     });
 });
 
-test('CRDT.calculateDiff throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
+test('BaseJsonCRDT.calculateDiff throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
     const oldData = {
         a: 'some value',
         b: [1, 2, 3]
@@ -678,10 +678,10 @@ test('CRDT.calculateDiff throws an error if an atomic array is turned into an it
         b: [{ id: 'B', value: 2 }]
     };
 
-    t.throws(() => CRDT.calculateDiff(oldData, newData));
+    t.throws(() => BaseJsonCRDT.calculateDiff(oldData, newData));
 });
 
-test('CRDT.calculateDiff properly filters for allowedKeys', t => {
+test('BaseJsonCRDT.calculateDiff properly filters for allowedKeys', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -699,7 +699,7 @@ test('CRDT.calculateDiff properly filters for allowedKeys', t => {
         }
     };
 
-    const diff = CRDT.calculateDiff(oldData, newData, {
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, {
         allowedKeys: ['a', 'b'] as (keyof object)[]
     });
 
@@ -711,36 +711,36 @@ test('CRDT.calculateDiff properly filters for allowedKeys', t => {
     });
 });
 
-test('CRDT.calculateDiff calculates patch without empty objects', t => {
+test('BaseJsonCRDT.calculateDiff calculates patch without empty objects', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: {} } };
 
-    const patch = CRDT.calculateDiff(oldData, newData);
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, {
         a: 'new value'
     });
 });
 
-test('CRDT.calculateDiff calculates patch without unnecessary delete', t => {
+test('BaseJsonCRDT.calculateDiff calculates patch without unnecessary delete', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
 
-    const patch = CRDT.calculateDiff(oldData, newData);
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, {
         a: 'new value'
     });
 });
 
-test('CRDT.calculateDiff calculates patch for deletion of explicitly undefined value', t => {
+test('BaseJsonCRDT.calculateDiff calculates patch for deletion of explicitly undefined value', t => {
     const oldData = { a: 'some value', b: { key: 'value' }, c: { d: undefined } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
 
-    const patch = CRDT.calculateDiff(oldData, newData);
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, {
         a: 'new value',
