@@ -1,5 +1,6 @@
-import { Clock, Timestamp, Timestamps } from './clock.js';
-import { CRDT, Diff, Update } from './crdt.js';
+import { Clock, Timestamp, Timestamps } from './Clock.js';
+import { BaseJsonCRDT } from './BaseJsonCRDT.js';
+import type { CRDT, Diff, Update } from './CRDT.js';
 import isEmpty from 'lodash/isEmpty.js';
 
 /*
@@ -7,12 +8,12 @@ CRDT implementation using a single counter to track updates.
 This version has two methods, `applyUpdate` and `createUpdate`, which are used to update the data.
 The counter is part of the class and is incremented everytime we create or apply an update.
 */
-export class JsonCRDT<O extends object> {
+export class JsonCRDT<O extends object> implements CRDT<O> {
     private clock: Clock;
-    private crdt: CRDT<O>;
+    private crdt: BaseJsonCRDT<O>;
 
     constructor(nodeId: number, data: O, timestamps?: Timestamps<O>) {
-        this.crdt = new CRDT(data, timestamps);
+        this.crdt = new BaseJsonCRDT(data, timestamps);
         const counter = isEmpty(timestamps) ? 0 : Clock.max(timestamps).count;
         this.clock = new Clock(nodeId, counter);
     }
@@ -38,6 +39,15 @@ export class JsonCRDT<O extends object> {
         const timestamp = this.clock.tick();
         this.crdt.update(diff, timestamp);
         return { diff, timestamp };
+    }
+
+    calculateDiff(
+        newData: O,
+        options?: {
+            allowedKeys: null | (keyof object)[];
+        }
+    ): Diff {
+        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, options);
     }
 
     data(): O {

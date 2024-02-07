@@ -1,6 +1,7 @@
 import test from 'ava';
-import { isItemArray, CRDT, Update } from './crdt.js';
-import { Timestamp, Timestamps, type ItemArray, ArrayItem } from './clock.js';
+import { isItemArray } from './BaseJsonCRDT.js';
+import { Update } from './CRDT.js';
+import { Timestamp, Timestamps, type ItemArray, ArrayItem } from './Clock.js';
 import { JsonCRDT } from './JsonCRDT.js';
 import isEmpty from 'lodash/isEmpty.js';
 import cloneDeep from 'lodash/cloneDeep.js';
@@ -39,7 +40,7 @@ export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
     @returns A patch object that contains the applied data patch and the assosicated timestamp
     */
     selfUpdate(newData: object): Update | false {
-        const diff = CRDT.calculateDiff(this.data(), newData);
+        const diff = this.crdt.calculateDiff(newData as O);
         if (isEmpty(diff)) {
             return false;
         }

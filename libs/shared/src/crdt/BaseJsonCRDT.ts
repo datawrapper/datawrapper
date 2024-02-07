@@ -4,10 +4,11 @@ import setWith from 'lodash/setWith.js';
 import omit from 'lodash/omit.js';
 import isObject from 'lodash/isObject.js';
 import isEmpty from 'lodash/isEmpty.js';
-import { ItemArray, Clock, Timestamp, Timestamps } from './clock.js';
+import { ItemArray, Clock, Timestamp, Timestamps } from './Clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import objectDiff from '../objectDiff.js';
 import isPrimitive from '../isPrimitive.js';
+import { Diff } from './CRDT.js';
 
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
 
@@ -47,13 +48,6 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     }
     return obj as ItemArrayObject;
 }
-
-export type Diff = object;
-
-export type Update = {
-    timestamp: Timestamp | Clock;
-    diff: Diff;
-};
 
 type HasId = { id: string };
 function hasId(item: unknown): item is HasId {
@@ -136,7 +130,7 @@ CRDT implementation using a single counter to track updates.
 It only has one update method which takes a data diff and an associated timestamp.
 The user has to keep track of the counter themselves, outside of this class.
 */
-export class CRDT<O extends object = object> {
+export class BaseJsonCRDT<O extends object = object> {
     static calculateDiff(
         oldData: object,
         newData: object,

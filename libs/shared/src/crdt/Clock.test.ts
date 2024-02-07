@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Clock } from './clock.js';
+import { Clock } from './Clock.js';
 
 test(`init clock`, t => {
     // basic clock

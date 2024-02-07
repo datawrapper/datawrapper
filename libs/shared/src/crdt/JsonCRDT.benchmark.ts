@@ -1,5 +1,5 @@
 import { bench, describe } from 'vitest';
-import { CRDT } from './crdt';
+import { BaseJsonCRDT } from './BaseJsonCRDT';
 import { nanoid } from 'nanoid';
 import type { PreparedChart } from '../chartTypes';
 import cloneDeep from 'lodash/cloneDeep';
@@ -295,7 +295,7 @@ function generateRandomUpdte() {
     return data;
 }
 
-let crdt: CRDT;
+let crdt: BaseJsonCRDT;
 const update = generateRandomUpdte();
 
 describe.each([
@@ -307,7 +307,7 @@ describe.each([
         'init',
         () => {
             // No change needed here, as 'init' benchmark creates a new CRDT instance each time
-            new CRDT(chartData);
+            new BaseJsonCRDT(chartData);
         },
         { time: 500 }
     );
@@ -320,7 +320,7 @@ describe.each([
         {
             time: 500,
             setup: () => {
-                crdt = new CRDT(chartData);
+                crdt = new BaseJsonCRDT(chartData);
             }
         }
     );
@@ -333,7 +333,7 @@ describe.each([
         {
             time: 500,
             setup: () => {
-                crdt = new CRDT(chartData);
+                crdt = new BaseJsonCRDT(chartData);
             }
         }
     );
