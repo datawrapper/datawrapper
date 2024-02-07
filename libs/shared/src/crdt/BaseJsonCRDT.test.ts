@@ -723,6 +723,19 @@ test('BaseJsonCRDT.calculateDiff calculates patch without empty objects', t => {
     });
 });
 
+test('BaseJsonCRDT.calculateDiff calculates patch with empty arrays', t => {
+    const oldData = { a: 'some value', b: { key: 'value' } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: [] } };
+
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value',
+        c: { d: [] }
+    });
+});
+
 test('BaseJsonCRDT.calculateDiff calculates patch without unnecessary delete', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 

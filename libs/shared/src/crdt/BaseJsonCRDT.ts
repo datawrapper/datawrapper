@@ -3,6 +3,7 @@ import get from 'lodash/get.js';
 import setWith from 'lodash/setWith.js';
 import omit from 'lodash/omit.js';
 import isObject from 'lodash/isObject.js';
+import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
 import { ItemArray, Clock, Timestamp, Timestamps } from './Clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
@@ -138,12 +139,43 @@ export class BaseJsonCRDT<O extends object = object> {
             allowedKeys: null | (keyof object)[];
         }
     ): Record<string, unknown> {
-        const allowedKeys = options?.allowedKeys ?? null;
-        return objectDiff(oldData, newData, allowedKeys, {
-            diffArray: calculateItemArrayDiff,
-            ignoreEmptyObjects: true,
-            ignoreNullUpdatesForUndefined: true
+        const allowedKeys = (options?.allowedKeys as string[]) ?? null;
+        const diff = {};
+        iterateObjectPaths(newData, path => {
+            let newValue = get(newData, path);
+            const oldValue = get(oldData, path);
+            const isNewInsert = !has(oldData, path);
+            if (newValue === oldValue) {
+                // no change
+                return;
+            }
+            if (allowedKeys && !allowedKeys.includes(path[0])) {
+                // key not allowed
+                return;
+            }
+            if (newValue === null && isNewInsert) {
+                // delete order on non-existing value is redundant
+                return;
+            }
+            if (Array.isArray(newValue) && Array.isArray(oldValue)) {
+                // handle arrays
+                newValue = calculateItemArrayDiff(oldValue, newValue);
+                // if array diff is empty don't set anything
+                if (isObject(newValue) && !Array.isArray(newValue) && isEmpty(newValue)) {
+                    return;
+                }
+            }
+
+            setWith(diff, path, newValue, Object);
         });
+
+        // handle deletes
+        iterateObjectPaths(oldData, path => {
+            if (!has(newData, path)) {
+                setWith(diff, path, null, Object);
+            }
+        });
+        return diff;
     }
 
     private dataObj: O;

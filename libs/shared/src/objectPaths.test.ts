@@ -55,3 +55,14 @@ test(`iterateObjectPaths - with complex arrays`, t => {
     // [['a', '0', 'b', 'c'], ['a', '1', 'd']]
     t.deepEqual(actual, [['a']]);
 });
+
+test(`iterateObjectPaths - with nested empty objects`, t => {
+    const obj = { a: { b: {} } };
+
+    const actual: string[][] = [];
+    iterateObjectPaths(obj, path => {
+        actual.push(path);
+    });
+
+    t.deepEqual(actual, []);
+});
