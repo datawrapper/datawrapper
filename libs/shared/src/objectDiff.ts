@@ -1,6 +1,7 @@
 import pick from 'lodash/pick.js';
 import isEqual from 'lodash/isEqual.js';
 import isPlainObject from 'lodash/isPlainObject.js';
+import isObject from 'lodash/isObject.js';
 
 /**
  * Recursively compares two objects and returns the
@@ -28,7 +29,11 @@ export default function objectDiff<TSource, TTarget>(
     source: TSource,
     target: TTarget,
     allowedKeys: ((keyof TSource | keyof TTarget) & string)[] | null = null,
-    options: { diffArray?: DiffArrayFn } | null = null
+    options: {
+        diffArray?: DiffArrayFn;
+        ignoreEmptyObjects?: boolean;
+        ignoreNullUpdatesForUndefined?: boolean;
+    } | null = null
 ) {
     return diffKeys(source, target, allowedKeys ? new Set(allowedKeys) : null, options);
 }
@@ -48,7 +53,11 @@ function diffKeys(
     source: any,
     target: any,
     allowedKeys: Set<string> | null = null,
-    options: { diffArray?: DiffArrayFn } | null = null
+    options: {
+        diffArray?: DiffArrayFn;
+        ignoreEmptyObjects?: boolean;
+        ignoreNullUpdatesForUndefined?: boolean;
+    } | null = null
 ) {
     const patch: Record<string, unknown> = {};
     for (const targetKey of Object.keys(target)) {
@@ -63,6 +72,20 @@ function diffKeys(
             } else if (Array.isArray(target[targetKey]) && Array.isArray(source[targetKey])) {
                 const diffArrayFn = options?.diffArray || diffArrays;
                 patch[targetKey] = diffArrayFn(source[targetKey], target[targetKey]);
+            } else if (
+                // non-empty objects have already been handeled above so this just filters out {}
+                options?.ignoreEmptyObjects &&
+                isObject(target[targetKey]) &&
+                target[targetKey] !== null
+            ) {
+                continue;
+            } else if (
+                // ignore updates setting an undefined value to null
+                options?.ignoreNullUpdatesForUndefined &&
+                target[targetKey] === null &&
+                !(targetKey in source)
+            ) {
+                continue;
             } else {
                 patch[targetKey] = target[targetKey];
             }
