@@ -1,7 +1,7 @@
 import test from 'ava';
-import { isItemArray, CRDT, Patch } from './crdt.js';
+import { isItemArray, CRDT, Update } from './crdt.js';
 import { Timestamp, Timestamps, type ItemArray, ArrayItem } from './clock.js';
-import { CRDTWithClock } from './crdtWithClock.js';
+import { JsonCRDT } from './JsonCRDT.js';
 import isEmpty from 'lodash/isEmpty.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
@@ -18,10 +18,10 @@ This version has two methods, `foreignUpdate` and `selfUpdate`, which are used t
 The counter is part of the class and is incremented on every self update.
 */
 export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
-    private crdt: CRDTWithClock<O>;
+    private crdt: JsonCRDT<O>;
 
     constructor(nodeId: number, data: O, timestamps?: T) {
-        this.crdt = new CRDTWithClock(nodeId, data, timestamps);
+        this.crdt = new JsonCRDT(nodeId, data, timestamps);
     }
 
     /**
@@ -29,8 +29,8 @@ export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
      * @param patch.data The data patch to apply
      * @param patch.timestamp The timestamp assosicated with the data patch
      */
-    foreignUpdate(patch: Patch) {
-        this.crdt.foreignUpdate(patch);
+    foreignUpdate(patch: Update) {
+        this.crdt.applyUpdate(patch);
     }
 
     /**
@@ -38,12 +38,12 @@ export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
     @param data The data patch to apply
     @returns A patch object that contains the applied data patch and the assosicated timestamp
     */
-    selfUpdate(newData: object): Patch | false {
-        const diff = CRDT.calculatePatch(this.data(), newData);
+    selfUpdate(newData: object): Update | false {
+        const diff = CRDT.calculateDiff(this.data(), newData);
         if (isEmpty(diff)) {
             return false;
         }
-        return this.crdt.selfUpdate(diff);
+        return this.crdt.createUpdate(diff);
     }
 
     data(): O {
@@ -393,7 +393,7 @@ function multipleInstances(
         () => new CRDTWrapper(Generate.integer(99999999), fuzz.get())
     );
 
-    const patches: Patch[] = [];
+    const patches: Update[] = [];
     for (let _ = 0; _ < numPatches; _++) {
         crdts.forEach(crdt => {
             for (let __ = 0; __ < numMutations; __++) {
