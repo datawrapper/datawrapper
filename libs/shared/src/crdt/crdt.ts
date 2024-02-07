@@ -143,7 +143,11 @@ export class CRDT<O extends object = object> {
         }
     ): Record<string, unknown> {
         const allowedKeys = options?.allowedKeys ?? null;
-        return objectDiff(oldData, newData, allowedKeys, { diffArray: calculateItemArrayPatch });
+        return objectDiff(oldData, newData, allowedKeys, {
+            diffArray: calculateItemArrayPatch,
+            ignoreEmptyObjects: true,
+            ignoreNullUpdatesForUndefined: true
+        });
     }
 
     private dataObj: O;

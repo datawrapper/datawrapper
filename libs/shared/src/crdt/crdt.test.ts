@@ -710,3 +710,40 @@ test('CRDT.calculatePatch properly filters for allowedKeys', t => {
         }
     });
 });
+
+test('CRDT.calculatePatch calculates patch without empty objects', t => {
+    const oldData = { a: 'some value', b: { key: 'value' } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: {} } };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value'
+    });
+});
+
+test('CRDT.calculatePatch calculates patch without unnecessary delete', t => {
+    const oldData = { a: 'some value', b: { key: 'value' } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value'
+    });
+});
+
+test('CRDT.calculatePatch calculates patch for deletion of explicitly undefined value', t => {
+    const oldData = { a: 'some value', b: { key: 'value' }, c: { d: undefined } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
+
+    const patch = CRDT.calculatePatch(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value',
+        c: { d: null }
+    });
+});
