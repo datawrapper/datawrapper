@@ -10,6 +10,7 @@ import { iterateObjectPaths } from '../objectPaths.js';
 import objectDiff from '../objectDiff.js';
 import isPrimitive from '../isPrimitive.js';
 import { Diff } from './CRDT.js';
+import isEqual from 'lodash/isEqual.js';
 
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
 
@@ -145,7 +146,7 @@ export class BaseJsonCRDT<O extends object = object> {
             let newValue = get(newData, path);
             const oldValue = get(oldData, path);
             const isNewInsert = !has(oldData, path);
-            if (newValue === oldValue) {
+            if (isEqual(newValue, oldValue)) {
                 // no change
                 return;
             }

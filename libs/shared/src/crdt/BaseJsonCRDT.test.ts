@@ -736,6 +736,51 @@ test('BaseJsonCRDT.calculateDiff calculates patch with empty arrays', t => {
     });
 });
 
+test('BaseJsonCRDT.calculateDiff calculates patch with new arrays', t => {
+    const oldData = { a: 'some value', b: { key: 'value' } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: ['', ''] } };
+
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value',
+        c: { d: ['', ''] }
+    });
+});
+
+test('BaseJsonCRDT.calculateDiff calculates patch with unchanged basic arrays', t => {
+    const oldData = { a: 'some value', b: { key: 'value' }, c: { d: ['first', 'second'] } };
+
+    const newData = { a: 'new value', b: { key: 'value' }, c: { d: ['first', 'second'] } };
+
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value'
+    });
+});
+
+test('BaseJsonCRDT.calculateDiff calculates patch with unchanged object arrays', t => {
+    const oldData = {
+        a: 'some value',
+        b: { key: 'value' },
+        c: { d: [{ a: 'first' }, { b: 'second', key: 'value' }] }
+    };
+
+    const newData = {
+        a: 'new value',
+        b: { key: 'value' },
+        c: { d: [{ a: 'first' }, { b: 'second', key: 'value' }] }
+    };
+
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(patch, {
+        a: 'new value'
+    });
+});
+
 test('BaseJsonCRDT.calculateDiff calculates patch without unnecessary delete', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
