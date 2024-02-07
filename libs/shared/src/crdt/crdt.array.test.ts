@@ -810,7 +810,7 @@ test(`won't re-insert deleted item with late insert`, t => {
     });
 });
 
-test(`patches with array inserts and deletions applied in different order result in same state`, t => {
+test(`diffs with array inserts and deletions applied in different order result in same state`, t => {
     const initData = {
         arr: [
             { id: 'A', val: 1 },
@@ -818,7 +818,7 @@ test(`patches with array inserts and deletions applied in different order result
         ]
     };
 
-    const patchX = [
+    const diffX = [
         {
             arr: [
                 { id: 'A', _index: null },
@@ -827,13 +827,13 @@ test(`patches with array inserts and deletions applied in different order result
         },
         '1-1'
     ] as const;
-    const patchY = [
+    const diffY = [
         {
             arr: [{ id: 'A' }, { id: 'B' }, { id: 'C', val: 3 }]
         },
         '2-3'
     ] as const;
-    const patchZ = [
+    const diffZ = [
         {
             arr: [{ id: 'A', _index: null }, { id: 'D', val: 4 }, { id: 'B' }]
         },
@@ -843,13 +843,13 @@ test(`patches with array inserts and deletions applied in different order result
     const crdtA = new CRDT(cloneDeep(initData));
     const crdtB = new CRDT(cloneDeep(initData));
 
-    crdtA.update(...patchX);
-    crdtA.update(...patchY);
-    crdtA.update(...patchZ);
+    crdtA.update(...diffX);
+    crdtA.update(...diffY);
+    crdtA.update(...diffZ);
 
-    crdtB.update(...patchZ);
-    crdtB.update(...patchX);
-    crdtB.update(...patchY);
+    crdtB.update(...diffZ);
+    crdtB.update(...diffX);
+    crdtB.update(...diffY);
 
     t.deepEqual(crdtA.data(), crdtB.data());
 });

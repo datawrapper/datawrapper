@@ -48,16 +48,18 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     return obj as ItemArrayObject;
 }
 
-export type Patch = {
+export type Diff = object;
+
+export type Update = {
     timestamp: Timestamp | Clock;
-    data: object;
+    diff: Diff;
 };
 
 type HasId = { id: string };
 function hasId(item: unknown): item is HasId {
     return isObject(item) && 'id' in item && typeof item.id === 'string';
 }
-function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[]) {
+function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) {
     const sourceItems = new Map(
         sourceArray.filter(hasId).map((item, index) => [
             item.id,
@@ -73,17 +75,17 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
 
     if (sourceIsAtomicArray && targetArray.length === 0) {
         // the source is an atomic array and the target is empty
-        // --> so we just return the target array as patch
+        // --> so we just return the target array as diff
         return targetArray;
     }
 
-    const patch: Record<string, unknown> = {};
+    const diff: Record<string, unknown> = {};
     for (let i = 0; i < targetArray.length; i++) {
         const targetItemOrig = targetArray[i];
         if (!hasId(targetItemOrig)) {
             if (sourceArray.length === 0 || sourceIsAtomicArray) {
                 // the source is either empty or an atomic array and at least one item does not contain an ID
-                // --> so we just return the target array as patch
+                // --> so we just return the target array as diff
                 return targetArray;
             }
             // if the source is an item array, we ignore target items without ID.
@@ -95,7 +97,7 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
         };
         if (!sourceItems.has(targetItem.id)) {
             // array item is new
-            patch[targetItem.id] = {
+            diff[targetItem.id] = {
                 ...targetItem,
                 _index: i
             };
@@ -103,16 +105,16 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
         }
         const sourceItem = sourceItems.get(targetItem.id);
         sourceItems.delete(targetItem.id); // remove from source items so that we can check for deleted items later
-        const itemPatch = objectDiff(sourceItem, targetItem, null, {
-            diffArray: calculateItemArrayPatch
+        const itemDiff = objectDiff(sourceItem, targetItem, null, {
+            diffArray: calculateItemArrayDiff
         });
-        if (!isEmpty(itemPatch)) {
-            patch[targetItem.id] = itemPatch;
+        if (!isEmpty(itemDiff)) {
+            diff[targetItem.id] = itemDiff;
         }
     }
     if (sourceIsAtomicArray) {
         // @todo: As long as we don't support converting types in our CRDT we have to throw an error here.
-        // Otherwise, subsequent patches calculations will interpret the source array as item array,
+        // Otherwise, subsequent diff calculations will interpret the source array as item array,
         // but our CRDT cannot handle this case, yet.
         throw Error(
             'Atomic arrays cannot be converted to item arrays (all items in update contain an ID)'
@@ -122,20 +124,20 @@ function calculateItemArrayPatch(sourceArray: unknown[], targetArray: unknown[])
     // @typescript-eslint/no-unused-vars
     for (const [id, _] of sourceItems) {
         // items are deleted by setting _index to null
-        patch[id] = {
+        diff[id] = {
             _index: null
         };
     }
-    return patch;
+    return diff;
 }
 
 /**
 CRDT implementation using a single counter to track updates.
-It only has one update method which takes a data patch and a timestamp patch.
+It only has one update method which takes a data diff and an associated timestamp.
 The user has to keep track of the counter themselves, outside of this class.
 */
 export class CRDT<O extends object = object> {
-    static calculatePatch(
+    static calculateDiff(
         oldData: object,
         newData: object,
         options?: {
@@ -144,7 +146,7 @@ export class CRDT<O extends object = object> {
     ): Record<string, unknown> {
         const allowedKeys = options?.allowedKeys ?? null;
         return objectDiff(oldData, newData, allowedKeys, {
-            diffArray: calculateItemArrayPatch,
+            diffArray: calculateItemArrayDiff,
             ignoreEmptyObjects: true,
             ignoreNullUpdatesForUndefined: true
         });
@@ -179,12 +181,12 @@ export class CRDT<O extends object = object> {
      */
     private initData(data: O) {
         iterateObjectPaths(data, path => {
-            let patchValue = get(data, path);
-            if (isItemArray(patchValue)) {
-                patchValue = itemArrayToObject(patchValue);
+            let value = get(data, path);
+            if (isItemArray(value)) {
+                value = itemArrayToObject(value);
                 this.pathToItemArrays.add(path.join('.'));
             }
-            setWith(data, path, patchValue, Object);
+            setWith(data, path, value, Object);
         });
         return data;
     }
@@ -273,16 +275,16 @@ export class CRDT<O extends object = object> {
     }
 
     /**
-     * Updates the CRDT with the given data patch and timestamp patch.
-     * @param rawData The data patch to apply
-     * @param timestamp The timestamp assosicated with the data patch
+     * Updates the CRDT with the given data diff and timestamp.
+     * @param diff The data diff to apply
+     * @param timestamp The timestamp assosicated with the data diff
      */
-    update(patch: object, timestamp: Clock | Timestamp) {
+    update(diff: Diff, timestamp: Clock | Timestamp) {
         if (timestamp instanceof Clock) {
             timestamp = timestamp.timestamp;
         }
         const timestampStr = timestamp;
-        iterateObjectPaths(patch, path => {
+        iterateObjectPaths(diff, path => {
             const searchPath = [...path];
             if (searchPath.pop() === '_index') {
                 searchPath.pop();
@@ -296,9 +298,9 @@ export class CRDT<O extends object = object> {
                 }
             }
         });
-        iterateObjectPaths(patch, path => {
-            const patchValue = get(patch, path);
-            this.upsertValue(path, patchValue, timestampStr);
+        iterateObjectPaths(diff, path => {
+            const updatedValue = get(diff, path);
+            this.upsertValue(path, updatedValue, timestampStr);
         });
     }
 
