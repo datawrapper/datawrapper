@@ -137,12 +137,18 @@ export class BaseJsonCRDT<O extends object = object> {
         oldData: object,
         newData: object,
         options?: {
-            allowedKeys: null | (keyof object)[];
+            allowedKeys?: null | Set<string>;
+            ignorePaths?: null | Set<string>;
         }
     ): Record<string, unknown> {
-        const allowedKeys = (options?.allowedKeys as string[]) ?? null;
+        const allowedKeys = options?.allowedKeys ?? null;
+        const ignorePaths = options?.ignorePaths ?? null;
         const diff = {};
         iterateObjectPaths(newData, path => {
+            const pathString = path.join('.');
+            if (ignorePaths && ignorePaths.has(pathString)) {
+                return;
+            }
             let newValue = get(newData, path);
             const oldValue = get(oldData, path);
             const isNewInsert = !has(oldData, path);
@@ -150,7 +156,7 @@ export class BaseJsonCRDT<O extends object = object> {
                 // no change
                 return;
             }
-            if (allowedKeys && !allowedKeys.includes(path[0])) {
+            if (allowedKeys && !allowedKeys.has(path[0])) {
                 // key not allowed
                 return;
             }
