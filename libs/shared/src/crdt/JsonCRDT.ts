@@ -44,7 +44,8 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
     calculateDiff(
         newData: O,
         options?: {
-            allowedKeys: null | (keyof object)[];
+            allowedKeys?: Set<string> | null;
+            ignorePaths?: Set<string> | null;
         }
     ): Diff {
         return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, options);

@@ -700,13 +700,51 @@ test('BaseJsonCRDT.calculateDiff properly filters for allowedKeys', t => {
     };
 
     const diff = BaseJsonCRDT.calculateDiff(oldData, newData, {
-        allowedKeys: ['a', 'b'] as (keyof object)[]
+        allowedKeys: new Set(['a', 'b'])
     });
 
     t.deepEqual(diff, {
         b: {
             A: { id: 'A', value: 1, _index: 0 },
             B: { id: 'B', value: 2, _index: 1 }
+        }
+    });
+});
+
+test('BaseJsonCRDT.calculateDiff properly filters for ignorePaths', t => {
+    const oldData = {
+        a: {
+            b: {
+                c: 'xyz'
+            }
+        }
+    };
+
+    const newData = {
+        a: {
+            b: {
+                c: 'this update will be ignored',
+                d: 'but this will be applied'
+            }
+        },
+        x: 'also ignored',
+        y: {
+            nested: 'value is not ignored because the path is y.nested'
+        }
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, {
+        ignorePaths: new Set(['a.b.c', 'x', 'y'])
+    });
+
+    t.deepEqual(diff, {
+        a: {
+            b: {
+                d: 'but this will be applied'
+            }
+        },
+        y: {
+            nested: 'value is not ignored because the path is y.nested'
         }
     });
 });
