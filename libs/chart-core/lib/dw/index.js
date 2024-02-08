@@ -43,6 +43,9 @@ if (typeof exports !== 'undefined') {
         ...dw,
         ...(window.dw || {})
     };
+    if (!window.dw.versions) window.dw.versions = {};
+    // %%HASH%% will get replaced with the current hash when the bundle is built
+    window.dw.versions['%%HASH%%'] = dw;
 }
 
 export default dw;
