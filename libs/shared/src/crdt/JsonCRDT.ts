@@ -23,7 +23,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
      * @param update.diff The data diff to apply
      * @param update.timestamp The timestamp associated with the data diff
      */
-    applyUpdate(update: Update) {
+    applyUpdate(update: Update<O>) {
         const { diff, timestamp } = update;
         this.clock.update(timestamp);
         this.crdt.update(diff, timestamp);
@@ -35,7 +35,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
      * @param data The data diff to apply
      * @returns An update object that contains the applied data diff and the associated timestamp
      */
-    createUpdate(diff: Diff): Update {
+    createUpdate(diff: Diff<O>): Update<O> {
         const timestamp = this.clock.tick();
         this.crdt.update(diff, timestamp);
         return { diff, timestamp };
@@ -47,8 +47,8 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
             allowedKeys?: Set<string> | null;
             ignorePaths?: Set<string> | null;
         }
-    ): Diff {
-        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, options);
+    ): Diff<O> {
+        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, options) as O;
     }
 
     data(): O {
