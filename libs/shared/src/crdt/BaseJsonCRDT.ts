@@ -312,7 +312,7 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param diff The data diff to apply
      * @param timestamp The timestamp assosicated with the data diff
      */
-    update(diff: Diff, timestamp: Clock | Timestamp) {
+    update(diff: Diff<O>, timestamp: Clock | Timestamp) {
         if (timestamp instanceof Clock) {
             timestamp = timestamp.timestamp;
         }
