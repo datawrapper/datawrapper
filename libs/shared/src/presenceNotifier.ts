@@ -21,6 +21,7 @@ type PinAnchor = {
 export type CollaborationRoom = Writable<{
     pinAnchors: Map<string, PinAnchor>;
     users: CollaborationUser[];
+    disconnected: boolean;
 }> & {
     /** Used to send focus and blur messages to other users in the same collaboration room. */
     sendPresenceMessage: (path: string, isFocus?: boolean) => void;

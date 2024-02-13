@@ -1,4 +1,4 @@
-import { Clock, Timestamp } from './Clock.js';
+import { Clock, type Timestamp } from './Clock.js';
 
 export type Diff<O extends object | string | number> = O;
 
