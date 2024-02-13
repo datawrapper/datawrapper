@@ -950,3 +950,24 @@ test('inserting empty object is rejected: path is item array', t => {
 
     t.deepEqual(crdt.data(), { a: 'some value', b: 8 });
 });
+
+test('re-initialization with timestamps after item array deletion', t => {
+    const crdt = new BaseJsonCRDT({
+        a: 'some value',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    });
+
+    // delete one item
+    crdt.update({ b: { '1': { id: '1', _index: null } } }, '1-1');
+
+    // re-initialize with timestamps
+    const crdt2 = new BaseJsonCRDT(crdt.data(), crdt.timestamps());
+    t.deepEqual(crdt2.data(), { a: 'some value', b: [{ id: '2', value: 2 }] });
+
+    // re inserted item is ignored
+    crdt2.update({ b: { '1': { value: 9, _index: 0 } } }, '1-2');
+    t.deepEqual(crdt2.data(), { a: 'some value', b: [{ id: '2', value: 2 }] });
+});
