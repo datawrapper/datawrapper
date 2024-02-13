@@ -292,7 +292,11 @@ export class BaseJsonCRDT<O extends object = object> {
             return new Clock();
         }
         if (typeof timestamp === 'object') {
-            throw new Error('Updating object with primitive value is currently not supported.');
+            throw new Error(
+                `Updating object with primitive value is currently not supported. Updating path: ${path.join(
+                    '.'
+                )}`
+            );
         }
         return new Clock(timestamp);
     }
@@ -343,7 +347,11 @@ export class BaseJsonCRDT<O extends object = object> {
 
         if (value === null) {
             if (!isPrimitive(get(this.dataObj, path))) {
-                throw new Error('Updating object with primitive value is currently not supported.');
+                throw new Error(
+                    `Updating object with primitive value is currently not supported. Updating path: ${path.join(
+                        '.'
+                    )}`
+                );
             }
             this.dataObj = omit(this.dataObj, path.join('.')) as O;
             // if we deleted the only nested key of an object, keep the parent object
