@@ -45,7 +45,7 @@ export const isItemArray = (value: unknown): value is ItemArray => {
  * @param arr the item array to convert
  * @returns object representation
  */
-function itemArrayToObject(arr: ItemArray): ItemArrayObject {
+function itemArrayToObject(arr: ItemArray, arrTimestamps: object): ItemArrayObject {
     const obj = {};
     let index = 0;
     for (const item of arr) {
@@ -59,6 +59,13 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
             Object
         );
         index++;
+    }
+    if (arrTimestamps) {
+        iterateObjectPaths(arrTimestamps, path => {
+            if (path[path.length - 1] === '_index' && get(obj, path) === undefined) {
+                setWith(obj, path, null, Object);
+            }
+        });
     }
     return obj as ItemArrayObject;
 }
@@ -217,8 +224,8 @@ export class BaseJsonCRDT<O extends object = object> {
      * @returns A new CRDT instance
      */
     constructor(data: O, timestamps?: Timestamps<O>) {
-        this.dataObj = this.initData(cloneDeep(data));
         this.timestampObj = timestamps ?? ({} as Timestamps<O>);
+        this.dataObj = this.initData(cloneDeep(data));
         this.log = {
             receivedUpdates: 0,
             appliedUpdates: 0
@@ -234,7 +241,7 @@ export class BaseJsonCRDT<O extends object = object> {
         iterateObjectPaths(data, path => {
             let value = get(data, path);
             if (isItemArray(value)) {
-                value = itemArrayToObject(value);
+                value = itemArrayToObject(value, get(this.timestampObj, path));
                 this.pathToItemArrays.add(path.join('.'));
             }
             setWith(data, path, value, Object);
@@ -320,13 +327,15 @@ export class BaseJsonCRDT<O extends object = object> {
         const currentTimestamp = this.getTimestamp(path);
         const isArrayIndex = path[path.length - 1] === '_index';
         if (isArrayIndex) {
-            if (get(this.dataObj, path) === null) {
-                // do not update if the current value is null
-                return;
-            }
             if (value === null) {
                 // deletes over everything
                 setWith(this.dataObj, path, null, Object);
+                // we need to set the timestamp so we know this item was deleted at re-initialization
+                setWith(this.timestampObj, path, timestamp, Object);
+                return;
+            }
+            if (get(this.dataObj, path) === null) {
+                // do not update if the item has been deleted
                 return;
             }
         }
