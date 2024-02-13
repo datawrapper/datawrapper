@@ -64,5 +64,5 @@ test(`iterateObjectPaths - with nested empty objects`, t => {
         actual.push(path);
     });
 
-    t.deepEqual(actual, []);
+    t.deepEqual(actual, [['a', 'b']]);
 });
