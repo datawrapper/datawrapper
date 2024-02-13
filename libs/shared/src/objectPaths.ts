@@ -140,7 +140,12 @@ export function iterateObjectPaths<O extends object, Fn extends (path: string[])
     for (const key in obj) {
         const value = obj[key];
         const currentPath = [...path, key];
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        if (
+            typeof value === 'object' &&
+            value !== null &&
+            !Array.isArray(value) &&
+            Object.keys(value).length > 0
+        ) {
             iterateObjectPaths(value, fn, currentPath);
         } else {
             fn(currentPath);

@@ -12,6 +12,18 @@ import isPrimitive from '../isPrimitive.js';
 import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
 
+function isActualObject(value: unknown) {
+    return isObject(value) && !Array.isArray(value) && value !== null;
+}
+
+function isEmptyObject(value: unknown) {
+    return isActualObject(value) && Object.keys(value as object).length === 0;
+}
+
+function isNonEmptyObject(value: unknown) {
+    return isActualObject(value) && Object.keys(value as object).length > 0;
+}
+
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
 
 /**
@@ -178,10 +190,16 @@ export class BaseJsonCRDT<O extends object = object> {
 
         // handle deletes
         iterateObjectPaths(oldData, path => {
+            const oldValue = get(oldData, path);
+            if (isEmptyObject(oldValue)) {
+                // we do not delete empty objects
+                return;
+            }
             if (!has(newData, path)) {
                 setWith(diff, path, null, Object);
             }
         });
+
         return diff;
     }
 
@@ -272,6 +290,19 @@ export class BaseJsonCRDT<O extends object = object> {
         return new Clock(timestamp);
     }
 
+    private insertEmptyObject(path: string[]) {
+        const currentValue = get(this.dataObj, path);
+        if (currentValue !== undefined && isNonEmptyObject(currentValue)) {
+            // path already leads to an existing object, no need to do anything
+            return;
+        }
+        if (currentValue !== undefined && isPrimitive(currentValue)) {
+            throw new Error('Updating a primitive value with an object is not supported.');
+        }
+        setWith(this.dataObj, path, {}, Object);
+        this.log.appliedUpdates += 1;
+    }
+
     /**
      * Upserts a value in the data object if the timestamp is higher than the current timestamp.
      * @param path path to the value in the data object
@@ -280,6 +311,12 @@ export class BaseJsonCRDT<O extends object = object> {
      */
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
         this.log.receivedUpdates += 1;
+
+        if (isEmptyObject(value)) {
+            this.insertEmptyObject(path);
+            return;
+        }
+
         const currentTimestamp = this.getTimestamp(path);
         const isArrayIndex = path[path.length - 1] === '_index';
         if (isArrayIndex) {
@@ -300,6 +337,12 @@ export class BaseJsonCRDT<O extends object = object> {
                 throw new Error('Updating object with primitive value is currently not supported.');
             }
             this.dataObj = omit(this.dataObj, path.join('.')) as O;
+            // if we deleted the only nested key of an object, keep the parent object
+            const parentPath = [...path].slice(0, path.length - 1);
+            const parentValue = get(this.dataObj, parentPath);
+            if (parentValue === undefined) {
+                setWith(this.dataObj, parentPath, {}, Object);
+            }
         } else {
             setWith(this.dataObj, path, value, Object);
         }
@@ -312,11 +355,10 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param diff The data diff to apply
      * @param timestamp The timestamp assosicated with the data diff
      */
-    update(diff: Diff<O>, timestamp: Clock | Timestamp) {
-        if (timestamp instanceof Clock) {
-            timestamp = timestamp.timestamp;
-        }
-        const timestampStr = timestamp;
+    update(diff: Diff<O>, timestampOrClock: Clock | Timestamp) {
+        const timestamp =
+            timestampOrClock instanceof Clock ? timestampOrClock.timestamp : timestampOrClock;
+
         iterateObjectPaths(diff, path => {
             const searchPath = [...path];
             if (searchPath.pop() === '_index') {
@@ -324,16 +366,25 @@ export class BaseJsonCRDT<O extends object = object> {
                 const pathString = searchPath.join('.');
                 if (!this.pathToItemArrays.has(pathString)) {
                     // new item array
+
+                    const currentValue = get(this.dataObj, pathString);
+                    if (currentValue !== undefined && !isEqual(currentValue, [])) {
+                        throw new Error('Item array created at existing path');
+                    }
                     setWith(this.dataObj, pathString, {}, Object);
-                    const currentTimestamp = this.getTimestamp(searchPath);
-                    setWith(this.timestampObj, pathString, currentTimestamp, Object);
                     this.pathToItemArrays.add(pathString);
                 }
             }
         });
+
         iterateObjectPaths(diff, path => {
             const updatedValue = get(diff, path);
-            this.upsertValue(path, updatedValue, timestampStr);
+            try {
+                this.upsertValue(path, updatedValue, timestamp);
+            } catch (e) {
+                console.error('Error while updating CRDT', { updatedValue, path, timestamp });
+                throw e;
+            }
         });
     }
 
@@ -341,7 +392,8 @@ export class BaseJsonCRDT<O extends object = object> {
         const data = cloneDeep(this.dataObj);
         for (const path of this.pathToItemArrays) {
             const itemArrayObject: ItemArrayObject = get(data, path);
-            setWith(data, path, this.objectToItemArray(itemArrayObject, path), Object);
+            const itemArray = this.objectToItemArray(itemArrayObject, path);
+            setWith(data, path, itemArray, Object);
         }
         return data;
     }

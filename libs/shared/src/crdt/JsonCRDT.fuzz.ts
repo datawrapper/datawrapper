@@ -1,9 +1,8 @@
 import test from 'ava';
 import { isItemArray } from './BaseJsonCRDT.js';
 import { Update } from './CRDT.js';
-import { Timestamp, Timestamps, type ItemArray, ArrayItem } from './Clock.js';
+import { type ItemArray, ArrayItem } from './Clock.js';
 import { JsonCRDT } from './JsonCRDT.js';
-import isEmpty from 'lodash/isEmpty.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
 import get from 'lodash/get.js';
@@ -13,56 +12,6 @@ import { nanoid } from 'nanoid';
 import util from 'util';
 import { ExecutionContext } from 'ava';
 import isPrimitive from '../isPrimitive.js';
-/*
-CRDT implementation using a single counter to track updates.
-This version has two methods, `foreignUpdate` and `selfUpdate`, which are used to update the data.
-The counter is part of the class and is incremented on every self update.
-*/
-export class CRDTWrapper<O extends object, T extends Timestamps<O>> {
-    private crdt: JsonCRDT<O>;
-
-    constructor(nodeId: number, data: O, timestamps?: T) {
-        this.crdt = new JsonCRDT(nodeId, data, timestamps);
-    }
-
-    /**
-     * Update the CRDT with foreign data and timestamp
-     * @param patch.data The data patch to apply
-     * @param patch.timestamp The timestamp assosicated with the data patch
-     */
-    foreignUpdate(patch: Update) {
-        this.crdt.applyUpdate(patch);
-    }
-
-    /**
-    Increments the counter and updates the internal CRDT with the given data.
-    @param data The data patch to apply
-    @returns A patch object that contains the applied data patch and the assosicated timestamp
-    */
-    selfUpdate(newData: object): Update | false {
-        const diff = this.crdt.calculateDiff(newData as O);
-        if (isEmpty(diff)) {
-            return false;
-        }
-        return this.crdt.createUpdate(diff);
-    }
-
-    data(): O {
-        return this.crdt.data();
-    }
-
-    timestamp(): Timestamp {
-        return this.crdt.timestamp();
-    }
-
-    counter(): number {
-        return this.crdt.counter();
-    }
-
-    logs() {
-        return this.crdt.logs();
-    }
-}
 
 function oneOf(...fns: (() => any)[]) {
     const fn = fns[Math.floor(Math.random() * fns.length)];
@@ -126,19 +75,24 @@ class Generate {
         }, {}) as object;
     }
 
-    static arrayGenerators = [this.array, this.itemArray];
-
-    static anyNonObjectValue(): any {
-        return oneOf(...Generate.primitiveValueGenerators, ...Generate.arrayGenerators);
+    static emptyObject(): object {
+        return {};
     }
 
-    static nestedObject(size?: number, maxDepth?: number): object {
+    static arrayGenerators = [this.array, this.itemArray];
+
+    static anyValueExceptNestedObject(): any {
+        return oneOf(...Generate.primitiveValueGenerators, Generate.emptyObject);
+    }
+
+    static nestedObject(size?: number, maxDepth?: number): object | unknown {
         const depth = maxDepth ?? 3;
-        if (depth === 0) return Generate.anyNonObjectValue();
+        if (depth === 0) return Generate.anyPrimitiveValue();
         return Generate.flatObject(size, () =>
             oneOf(
-                () => Generate.nestedObject(size, depth - 1),
-                () => Generate.anyNonObjectValue()
+                ...Generate.primitiveValueGenerators,
+                ...Generate.arrayGenerators,
+                Generate.emptyObject
             )
         );
     }
@@ -162,11 +116,12 @@ class Mutate {
             shuffle: 0,
             delete: 0
         },
-        primitive: {
-            insert: 0,
-            delete: 0,
-            mutate: 0
-        }
+        objectProperties: {
+            mutate: 0,
+            add: 0,
+            delete: 0
+        },
+        primitive: 0
     };
 
     value(value: any): any {
@@ -237,7 +192,7 @@ class Mutate {
     }
 
     primitiveValue(value: any): any {
-        this.mutations.primitive.mutate += 1;
+        this.mutations.primitive += 1;
         return Generate.anyPrimitiveValue();
     }
 
@@ -261,10 +216,11 @@ class Mutate {
         return oneOf(swap, append, remove, shuffle);
     }
 
-    object(obj: object): object {
+    object(o: object): object {
+        const obj = cloneDeep(o);
         const insert = () => {
-            this.mutations.primitive.insert += 1;
-            return setWith(obj, Generate.string(), Generate.anyPrimitiveValue(), Object);
+            this.mutations.objectProperties.add += 1;
+            return setWith(obj, Generate.string(), Generate.anyValueExceptNestedObject(), Object);
         };
 
         const keys = Object.keys(obj);
@@ -276,11 +232,12 @@ class Mutate {
         const value = get(obj, key);
 
         const deleteKey = () => {
-            this.mutations.primitive.delete += 1;
+            this.mutations.objectProperties.delete += 1;
             return omit(obj, key);
         };
 
         const mutateValue = () => {
+            this.mutations.objectProperties.mutate += 1;
             const newValue = this.value(value);
             return setWith(obj, key, newValue, Object);
         };
@@ -322,11 +279,12 @@ class Fuzz {
                 shuffle: 0,
                 delete: 0
             },
-            primitive: {
-                insert: 0,
+            objectProperties: {
+                add: 0,
                 delete: 0,
                 mutate: 0
-            }
+            },
+            primitive: 0
         }
     };
 
@@ -384,30 +342,30 @@ function multipleInstances(
     const maxDepth = options?.maxDepth ?? Generate.integer(5, 2);
     const numPatches = options?.numPatches ?? Generate.integer(100, 10);
     const numMutations = options?.numMutations ?? Generate.integer(10, 1);
-    const numCRDTs = options?.numCRDTs ?? Generate.integer(7, 3);
+    const numCRDTs = options?.numCRDTs ?? Generate.integer(10, 3);
     const log = options?.log ?? false;
 
     const fuzz = new Fuzz(size, maxDepth);
 
+    const initData = fuzz.get();
     const crdts = Generate.array(
         numCRDTs,
-        () => new CRDTWrapper(Generate.integer(99999999), fuzz.get())
+        () => new JsonCRDT(Generate.integer(99999999), initData)
     );
 
-    const patches: Update[] = [];
+    const patches: Update<any>[] = [];
     for (let _ = 0; _ < numPatches; _++) {
         crdts.forEach(crdt => {
-            for (let __ = 0; __ < numMutations; __++) {
-                const patch = crdt.selfUpdate(fuzz.mutate(crdt.data()));
-                if (patch) patches.push(patch);
-            }
+            const diff = crdt.calculateDiff(fuzz.mutate(crdt.data(), numMutations));
+            const patch = crdt.createUpdate(diff);
+            if (patch) patches.push(patch);
         });
     }
 
     crdts.forEach(crdt => {
         const shuffledPatches = patches.sort(() => Math.random() - 0.5);
         shuffledPatches.forEach(patch => {
-            crdt.foreignUpdate(patch);
+            crdt.applyUpdate(patch);
         });
     });
 
@@ -421,7 +379,7 @@ function multipleInstances(
 }
 
 test(`fuzzing (multiple instances)`, t => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
         multipleInstances(t);
     }
 });
