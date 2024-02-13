@@ -78,6 +78,7 @@ export type Metadata = {
             time?: number; // Date.now()
             previous?: string | number;
         }[];
+        json?: boolean;
     };
     print?: boolean;
     publish?: {
@@ -277,3 +278,8 @@ export type Visualization = {
     textDirection: TextDirection;
     meta: any;
 };
+
+/**
+ * Chart data can be a string (e.g. CSV data) or JSON (e.g. for locator maps)
+ */
+export type ChartData = string | Record<string, unknown>;

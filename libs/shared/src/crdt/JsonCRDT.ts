@@ -60,7 +60,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
     }
 
     timestamp(): Timestamp {
-        return this.clock.timestamp;
+        return Clock.max(this.crdt.timestamps()).timestamp;
     }
 
     counter(): number {
