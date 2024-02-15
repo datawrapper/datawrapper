@@ -971,3 +971,34 @@ test('re-initialization with timestamps after item array deletion', t => {
     crdt2.update({ b: { '1': { value: 9, _index: 0 } } }, '1-2');
     t.deepEqual(crdt2.data(), { a: 'some value', b: [{ id: '2', value: 2 }] });
 });
+
+test('a Date inserted at initialization or with update is a Date in the data', t => {
+    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z') });
+
+    crdt.update({ b: new Date('2024-02-13T09:10:23.956Z') }, '1-1');
+    t.deepEqual(crdt.data(), {
+        a: new Date('2024-02-14T09:10:23.956Z'),
+        b: new Date('2024-02-13T09:10:23.956Z')
+    });
+});
+
+test('a Date can be deleted with null', t => {
+    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
+
+    crdt.update({ a: null }, '1-1');
+    t.deepEqual(crdt.data(), { b: 'stays' });
+});
+
+test('null can be replaced with a Date', t => {
+    const crdt = new BaseJsonCRDT<any>({ a: null });
+
+    crdt.update({ a: new Date('2024-02-14T09:10:23.956Z') }, '1-1');
+    t.deepEqual(crdt.data(), { a: new Date('2024-02-14T09:10:23.956Z') });
+});
+
+test('a Date can be explicitly set to undefined', t => {
+    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
+
+    crdt.update({ a: undefined }, '1-1');
+    t.deepEqual(crdt.data(), { a: undefined, b: 'stays' });
+});

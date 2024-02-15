@@ -144,6 +144,7 @@ export function iterateObjectPaths<O extends object, Fn extends (path: string[])
             typeof value === 'object' &&
             value !== null &&
             !Array.isArray(value) &&
+            !(value instanceof Date) &&
             Object.keys(value).length > 0
         ) {
             iterateObjectPaths(value, fn, currentPath);
