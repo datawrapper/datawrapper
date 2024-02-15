@@ -117,6 +117,18 @@ extend(base, {
     },
 
     /**
+     * Gets or sets the chart store.
+     * This is used in the editor to provide
+     * the render code access to the writable chart store
+     */
+    chartStore(chartStore) {
+        const me = this;
+        if (!arguments.length) return me.__chartStore;
+        me.__chartStore = chartStore;
+        return me.__chartStore;
+    },
+
+    /**
      * Get or set the container element the vis was last rendered in
      * @param {HTMLElement} el
      * @returns {HTMLElement|void}

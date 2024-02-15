@@ -1,3 +1,4 @@
+import type { Writable } from 'svelte/store';
 import type { ThemeData } from './themeTypes.js';
 
 export type DatePrecision =
@@ -269,6 +270,7 @@ export type Visualization = {
     size: () => [number, number];
     colorMap: () => (color: string) => string;
     colorMode: (mode?: string) => string;
+    chartStore: (chartStore?: Writable<PreparedChart>) => Writable<PreparedChart>;
     /**
      * Use this to wait until a visualization has finished rendering
      *
