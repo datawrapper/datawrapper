@@ -243,6 +243,11 @@ export type PreparedChart = {
     organizationId?: string | null;
 };
 
+/**
+ * Paths to known values that should be Date objects
+ */
+export const PREPARED_CHART_DATE_PATHS = ['publishedAt', 'deletedAt'] as const;
+
 type FullVectorOpts = {
     noPitch: boolean;
     noBuilding3d: boolean;

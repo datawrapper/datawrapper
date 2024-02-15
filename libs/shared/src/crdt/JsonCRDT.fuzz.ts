@@ -39,12 +39,20 @@ class Generate {
         return undefined;
     }
 
+    static date(
+        from = new Date('2024-02-14T12:43:43.014Z'),
+        to = new Date('2024-02-21T12:43:43.014Z')
+    ): Date {
+        return new Date(from.getTime() + Math.random() * (to.getTime() - from.getTime()));
+    }
+
     static primitiveValueGenerators = [
         this.integer,
         this.boolean,
         this.string,
         this.null,
-        this.undefined
+        this.undefined,
+        this.date
     ];
 
     static anyPrimitiveValue(): unknown {
@@ -134,7 +142,7 @@ class Mutate {
         if (Array.isArray(value)) {
             return value;
         }
-        if (typeof value === 'object' && value !== null) {
+        if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
             return this.object(value);
         }
         return this.primitiveValue(value);

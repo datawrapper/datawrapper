@@ -13,7 +13,7 @@ import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
 
 function isActualObject(value: unknown) {
-    return isObject(value) && !Array.isArray(value) && value !== null;
+    return isObject(value) && !Array.isArray(value) && value !== null && !(value instanceof Date);
 }
 
 function isEmptyObject(value: unknown) {
@@ -346,7 +346,8 @@ export class BaseJsonCRDT<O extends object = object> {
         if (!currentTimestamp.isOlderThan(timestamp)) return;
 
         if (value === null) {
-            if (!isPrimitive(get(this.dataObj, path))) {
+            const currentValue = get(this.dataObj, path);
+            if (isActualObject(currentValue)) {
                 throw new Error(
                     `Updating object with primitive value is currently not supported. Updating path: ${path.join(
                         '.'
@@ -399,7 +400,13 @@ export class BaseJsonCRDT<O extends object = object> {
             try {
                 this.upsertValue(path, updatedValue, timestamp);
             } catch (e) {
-                console.error('Error while updating CRDT', { updatedValue, path, timestamp });
+                const currentValue = get(this.dataObj, path);
+                console.error('Error while updating CRDT', {
+                    updatedValue,
+                    path,
+                    timestamp,
+                    currentValue
+                });
                 throw e;
             }
         });
