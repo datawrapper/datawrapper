@@ -1,7 +1,11 @@
-import { Clock, Timestamp, Timestamps } from './Clock.js';
-import { BaseJsonCRDT } from './BaseJsonCRDT.js';
+import { Clock, Timestamp } from './Clock.js';
+import { BaseJsonCRDT, SerializedBaseJsonCRDT } from './BaseJsonCRDT.js';
 import type { CRDT, Diff, Update } from './CRDT.js';
-import isEmpty from 'lodash/isEmpty.js';
+
+export type SerializedJsonCRDT<O extends object> = {
+    crdt: SerializedBaseJsonCRDT<O>;
+    clock: Timestamp;
+};
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -12,10 +16,38 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
     private clock: Clock;
     private crdt: BaseJsonCRDT<O>;
 
-    constructor(nodeId: number, data: O, timestamps?: Timestamps<O>) {
-        this.crdt = new BaseJsonCRDT(data, timestamps);
-        const counter = isEmpty(timestamps) ? 0 : Clock.max(timestamps).count;
-        this.clock = new Clock(nodeId, counter);
+    static fromSerialized<O extends object>(
+        serialized: SerializedJsonCRDT<O>,
+        nodeId?: number
+    ): JsonCRDT<O> {
+        const { crdt } = serialized;
+        let { clock } = serialized;
+        if (nodeId !== undefined) {
+            clock = `${nodeId}-${Clock.getCount(clock)}`;
+        }
+        return new JsonCRDT(clock, crdt);
+    }
+
+    constructor(nodeId: number, data: O);
+    constructor(timestamp: Timestamp, data: SerializedBaseJsonCRDT<O>);
+    constructor(nodeIdOrTimestamp: number | Timestamp, data: O | SerializedBaseJsonCRDT<O>) {
+        if (typeof nodeIdOrTimestamp === 'number' && typeof data === 'object') {
+            // normal constructor
+            this.crdt = new BaseJsonCRDT(data as O);
+            this.clock = new Clock(nodeIdOrTimestamp, 0);
+            return;
+        } else if (
+            typeof nodeIdOrTimestamp === 'string' &&
+            Clock.validate(nodeIdOrTimestamp) &&
+            'data' in data &&
+            'timestamps' in data
+        ) {
+            // fromSerialized constructor
+            this.crdt = BaseJsonCRDT.fromSerialized(data);
+            this.clock = new Clock(nodeIdOrTimestamp);
+            return;
+        }
+        throw new Error('JsonCRDT constructor called with invalid arguments');
     }
 
     /**
@@ -55,8 +87,15 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         return this.crdt.data();
     }
 
-    timestamps(): Timestamps<O> {
-        return this.crdt.timestamps();
+    serialize(): SerializedJsonCRDT<O> {
+        return {
+            crdt: this.crdt.serialize(),
+            clock: this.clock.timestamp
+        };
+    }
+
+    nodeId(): number {
+        return this.clock.nodeId;
     }
 
     timestamp(): Timestamp {
@@ -65,9 +104,5 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
 
     counter(): number {
         return this.clock.count;
-    }
-
-    logs() {
-        return this.crdt.logs();
     }
 }

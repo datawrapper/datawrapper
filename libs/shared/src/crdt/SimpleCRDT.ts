@@ -6,11 +6,17 @@ import { JsonCRDT } from './JsonCRDT.js';
 export class SimpleCRDT implements CRDT<string> {
     private crdt: JsonCRDT<{ value: string }>;
     constructor(nodeId: number, value: string, timestamp?: Timestamp) {
-        this.crdt = new JsonCRDT<{ value: string }>(
-            nodeId,
-            { value },
-            timestamp ? ({ value: timestamp } as Timestamps<{ value: string }>) : undefined
-        );
+        if (timestamp) {
+            // fromSerialized constructor
+            this.crdt = new JsonCRDT<{ value: string }>(timestamp, {
+                data: { value },
+                pathToItemArrays: [],
+                timestamps: { value: timestamp } as Timestamps<{ value: string }>
+            });
+            return;
+        }
+        // normal constructor
+        this.crdt = new JsonCRDT<{ value: string }>(nodeId, { value });
     }
 
     createUpdate(diff: string): Update<string> {

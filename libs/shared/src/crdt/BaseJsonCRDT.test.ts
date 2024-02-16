@@ -30,18 +30,6 @@ test(`init`, t => {
     // object with arrays
     const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
     t.deepEqual(crdt3.data(), { a: [1, 2, 3], b: [4, 5, 6] });
-
-    // with timestamps
-    type D = { a: string; b: number; c: number };
-    const data = { a: 'some value', b: 2, c: 3 };
-    const timestamps: Timestamps<D> = {
-        a: '1-1',
-        b: '1-100',
-        c: '1-1000'
-    };
-    const crdt = new BaseJsonCRDT(cloneDeep(data), cloneDeep(timestamps));
-    t.deepEqual(crdt.data(), data);
-    t.deepEqual(crdt.timestamps(), timestamps);
 });
 
 test(`basic updates work`, t => {
@@ -162,35 +150,6 @@ test(`adding new keys`, t => {
         a: 'some value',
         b: { key: 'value' },
         c: 'new key'
-    });
-});
-
-test('crdt can be initialized with existing timestamp object', t => {
-    const crdt = new BaseJsonCRDT(
-        {
-            a: 'some value',
-            b: { key: 'value' }
-        },
-        {
-            a: '1-1',
-            b: {
-                key: '1-5'
-            }
-        }
-    );
-
-    // update with new data but only some is valid according to timestamps
-    crdt.update(
-        {
-            a: 'new value',
-            b: { key: 'outdated update' }
-        },
-        '1-2'
-    );
-
-    t.deepEqual(crdt.data(), {
-        a: 'new value',
-        b: { key: 'value' }
     });
 });
 
@@ -951,7 +910,7 @@ test('inserting empty object is rejected: path is item array', t => {
     t.deepEqual(crdt.data(), { a: 'some value', b: 8 });
 });
 
-test('re-initialization with timestamps after item array deletion', t => {
+test('re-initialization after item array deletion', t => {
     const crdt = new BaseJsonCRDT({
         a: 'some value',
         b: [
@@ -964,7 +923,7 @@ test('re-initialization with timestamps after item array deletion', t => {
     crdt.update({ b: { '1': { id: '1', _index: null } } }, '1-1');
 
     // re-initialize with timestamps
-    const crdt2 = new BaseJsonCRDT(crdt.data(), crdt.timestamps());
+    const crdt2 = BaseJsonCRDT.fromSerialized(crdt.serialize());
     t.deepEqual(crdt2.data(), { a: 'some value', b: [{ id: '2', value: 2 }] });
 
     // re inserted item is ignored
@@ -1001,4 +960,38 @@ test('a Date can be explicitly set to undefined', t => {
 
     crdt.update({ a: undefined }, '1-1');
     t.deepEqual(crdt.data(), { a: undefined, b: 'stays' });
+});
+
+test('re-initialization after item array insert', t => {
+    const crdt = new BaseJsonCRDT({
+        a: 'some value',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    });
+
+    // add one item
+    crdt.update({ b: { '3': { id: '3', _index: 2 } } }, '1-1');
+
+    const crdt2 = BaseJsonCRDT.fromSerialized(crdt.serialize());
+    t.deepEqual(crdt2.data(), {
+        a: 'some value',
+        b: [{ id: '1', value: 1 }, { id: '2', value: 2 }, { id: '3' }]
+    });
+});
+
+test('basic serialization and re-initialization', t => {
+    const crdt = new BaseJsonCRDT({
+        a: 'some value',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    });
+
+    const serialized = crdt.serialize();
+    const crdt2 = BaseJsonCRDT.fromSerialized(serialized);
+
+    t.deepEqual(crdt, crdt2);
 });
