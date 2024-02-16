@@ -34,12 +34,10 @@ type Options = {
     hideEvent?: string | null;
 } & (
     | {
-          registerElement?: false;
           offset?: { x: number; y: number };
           class?: string;
       }
     | {
-          registerElement: true;
           offset?: never;
           class?: never;
       }
@@ -63,9 +61,6 @@ type Options = {
  *
  * @param options.class - class or classes to add to the element when focused, `--user-color`
  *  css variable will be set on the element to the user's color in `FloatingUserAvatars.svelte`.
- *
- * @param options.registerElement - defaults to `true`. If `false`, the element will not be registered as an anchor point,
- *  allowing the use of a shared path for multiple elements.
  */
 export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Options) => {
     let {
@@ -73,7 +68,6 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         path,
         offset,
         class: className = '',
-        registerElement = true,
         showEvent = 'focusin',
         hideEvent = 'focusout'
     } = options;
@@ -90,7 +84,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     }
 
     room.update($room => {
-        if (path && registerElement) $room.pinAnchors.set(path, { element, offset, classList });
+        if (path) $room.pinAnchors.set(path, { element, offset, classList });
         return $room;
     });
 
@@ -107,15 +101,14 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         update(options: Options) {
             // make options reactive
             const oldPath = path;
-            const oldRegisterElement = registerElement;
             const oldShowEvent = showEvent;
             const oldHideEvent = hideEvent;
+
             ({
                 room,
                 path,
                 offset,
                 class: className = '',
-                registerElement = true,
                 showEvent = 'focusin',
                 hideEvent = 'focusout'
             } = options);
@@ -132,10 +125,10 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
 
             // re-register anchor
             room.update($room => {
-                if (oldPath && !oldRegisterElement) {
+                if (oldPath && oldPath !== path) {
                     $room.pinAnchors.delete(oldPath);
                 }
-                if (path && registerElement) {
+                if (path) {
                     $room.pinAnchors.set(path, { element, offset, classList });
                 }
                 return $room;
@@ -147,7 +140,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
 
             // unregister anchor
             room.update($room => {
-                if (path && registerElement) $room.pinAnchors.delete(path);
+                if (path) $room.pinAnchors.delete(path);
                 return $room;
             });
 
