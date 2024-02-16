@@ -30,8 +30,8 @@ export type CollaborationRoom = Writable<{
 type Options = {
     room: CollaborationRoom;
     path: string | null;
-    showEvent?: string;
-    hideEvent?: string;
+    showEvent?: string | null;
+    hideEvent?: string | null;
 } & (
     | {
           registerElement?: false;
@@ -55,9 +55,9 @@ type Options = {
  *
  * @param options.path - path to the control, used to identify the anchor point.
  *
- * @param options.showEvent - event to listen for to show pin, defaults to `'focusin'`.
+ * @param options.showEvent - event to listen for to show pin, defaults to `'focusin'`. use `null` to skip evenlistener.
  *
- * @param options.hideEvent - event to listen for to hide pin, defaults to `'focusout'`.
+ * @param options.hideEvent - event to listen for to hide pin, defaults to `'focusout'`. use `null` to skip evenlistener.
  *
  * @param options.offset - offset from the anchor point, defaults to `{ x: 0, y: 0 }`.
  *
@@ -79,12 +79,12 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     } = options;
     let classList = className.split(' ').filter(Boolean);
 
-    if (!room) {
-        // without a collaboration room we do nothing
+    if (!room || path === null) {
+        // without a collaboration room, or with a null path, we do nothing
         return {};
     }
 
-    if (!path?.trim()) {
+    if (!path?.trim() || path.trim().startsWith('.')) {
         console.warn('[presenceNotifier] invalid control path: ' + path, element);
         return {};
     }
@@ -100,8 +100,8 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     const handleFocusOut = () => {
         if (path) room.sendPresenceMessage(path, false);
     };
-    element.addEventListener(showEvent, handleFocusIn);
-    element.addEventListener(hideEvent, handleFocusOut);
+    if (showEvent) element.addEventListener(showEvent, handleFocusIn);
+    if (hideEvent) element.addEventListener(hideEvent, handleFocusOut);
 
     return {
         update(options: Options) {
@@ -122,12 +122,12 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             classList = className.split(' ').filter(Boolean);
 
             if (oldShowEvent !== showEvent) {
-                element.removeEventListener(oldShowEvent, handleFocusIn);
-                element.addEventListener(showEvent, handleFocusIn);
+                if (oldShowEvent) element.removeEventListener(oldShowEvent, handleFocusIn);
+                if (showEvent) element.addEventListener(showEvent, handleFocusIn);
             }
             if (oldHideEvent !== hideEvent) {
-                element.removeEventListener(oldHideEvent, handleFocusOut);
-                element.addEventListener(hideEvent, handleFocusOut);
+                if (oldHideEvent) element.removeEventListener(oldHideEvent, handleFocusOut);
+                if (hideEvent) element.addEventListener(hideEvent, handleFocusOut);
             }
 
             // re-register anchor
@@ -151,8 +151,8 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 return $room;
             });
 
-            element.removeEventListener(showEvent, handleFocusIn);
-            element.removeEventListener(hideEvent, handleFocusOut);
+            if (showEvent) element.removeEventListener(showEvent, handleFocusIn);
+            if (hideEvent) element.removeEventListener(hideEvent, handleFocusOut);
         }
     };
 }) satisfies Action<HTMLElement | SVGElement, Options>;
