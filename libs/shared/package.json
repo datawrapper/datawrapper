@@ -1384,24 +1384,24 @@
             "types": "./dist/cjs/crdt/index.d.cts",
             "default": "./dist/esm/crdt/index.js"
         },
-        "./generateAnnotationId.d.ts": {
-            "require": "./dist/cjs/generateAnnotationId.d.cts",
-            "default": "./dist/esm/generateAnnotationId.d.ts"
+        "./generateRandomId.d.ts": {
+            "require": "./dist/cjs/generateRandomId.d.cts",
+            "default": "./dist/esm/generateRandomId.d.ts"
         },
-        "./generateAnnotationId.js": {
-            "require": "./dist/cjs/generateAnnotationId.cjs",
-            "types": "./dist/cjs/generateAnnotationId.d.cts",
-            "default": "./dist/esm/generateAnnotationId.js"
+        "./generateRandomId.js": {
+            "require": "./dist/cjs/generateRandomId.cjs",
+            "types": "./dist/cjs/generateRandomId.d.cts",
+            "default": "./dist/esm/generateRandomId.js"
         },
-        "./generateAnnotationId": {
-            "require": "./dist/cjs/generateAnnotationId.cjs",
-            "types": "./dist/cjs/generateAnnotationId.d.cts",
-            "default": "./dist/esm/generateAnnotationId.js"
+        "./generateRandomId": {
+            "require": "./dist/cjs/generateRandomId.cjs",
+            "types": "./dist/cjs/generateRandomId.d.cts",
+            "default": "./dist/esm/generateRandomId.js"
         },
-        "./dist/cjs/generateAnnotationId.cjs": {
-            "require": "./dist/cjs/generateAnnotationId.cjs",
-            "types": "./dist/cjs/generateAnnotationId.d.cts",
-            "default": "./dist/esm/generateAnnotationId.js"
+        "./dist/cjs/generateRandomId.cjs": {
+            "require": "./dist/cjs/generateRandomId.cjs",
+            "types": "./dist/cjs/generateRandomId.d.cts",
+            "default": "./dist/esm/generateRandomId.js"
         }
     }
 }
