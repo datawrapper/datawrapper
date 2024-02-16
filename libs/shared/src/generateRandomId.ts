@@ -6,6 +6,6 @@ import { nanoid } from 'nanoid';
  * It's part of shared because it's used by old and new controls.
  * @returns a random string of length 10
  */
-export function generateAnnotationId() {
+export function generateRandomId() {
     return nanoid(10);
 }
