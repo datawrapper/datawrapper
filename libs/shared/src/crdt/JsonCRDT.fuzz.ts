@@ -10,7 +10,6 @@ import omit from 'lodash/omit.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import { nanoid } from 'nanoid';
 import util from 'util';
-import { ExecutionContext } from 'ava';
 import isPrimitive from '../isPrimitive.js';
 
 function oneOf(...fns: (() => any)[]) {
@@ -171,7 +170,6 @@ class Mutate {
             this.mutations.itemArray.items.delete += 1;
             return setWith(item, key, undefined, Object);
         };
-
         return oneOf(mutateValue, addValue, removeValue);
     }
 
@@ -336,58 +334,81 @@ class Fuzz {
 }
 
 function multipleInstances(
-    t: ExecutionContext,
+    iteration = 0,
     options?: {
         size?: number;
         maxDepth?: number;
-        numPatches?: number;
+        numUpdates?: number;
         numMutations?: number;
         numCRDTs?: number;
         log: boolean;
     }
 ) {
-    const size = options?.size ?? Generate.integer(10, 5);
-    const maxDepth = options?.maxDepth ?? Generate.integer(5, 2);
-    const numPatches = options?.numPatches ?? Generate.integer(100, 10);
-    const numMutations = options?.numMutations ?? Generate.integer(10, 1);
-    const numCRDTs = options?.numCRDTs ?? Generate.integer(10, 3);
-    const log = options?.log ?? false;
+    return () => {
+        test(`fuzzing: ${iteration}. iteration`, t => {
+            const size = options?.size ?? Generate.integer(10, 5);
+            const maxDepth = options?.maxDepth ?? Generate.integer(5, 2);
+            const numUpdates = options?.numUpdates ?? Generate.integer(100, 10);
+            const numMutations = options?.numMutations ?? Generate.integer(10, 1);
+            const numCRDTs = options?.numCRDTs ?? Generate.integer(10, 3);
+            const log = options?.log ?? false;
 
-    const fuzz = new Fuzz(size, maxDepth);
+            const fuzz = new Fuzz(size, maxDepth);
 
-    const initData = fuzz.get();
-    const crdts = Generate.array(
-        numCRDTs,
-        () => new JsonCRDT(Generate.integer(99999999), initData)
-    );
+            const initData = fuzz.get();
+            const crdts = Generate.array(
+                numCRDTs,
+                () => new JsonCRDT(Generate.integer(99999999), initData)
+            );
 
-    const patches: Update<any>[] = [];
-    for (let _ = 0; _ < numPatches; _++) {
-        crdts.forEach(crdt => {
-            const diff = crdt.calculateDiff(fuzz.mutate(crdt.data(), numMutations));
-            const patch = crdt.createUpdate(diff);
-            if (patch) patches.push(patch);
+            const updates: Update<any>[] = [];
+            for (let _ = 0; _ < numUpdates; _++) {
+                crdts.forEach(crdt => {
+                    const diff = crdt.calculateDiff(fuzz.mutate(crdt.data(), numMutations));
+                    const update = crdt.createUpdate(diff);
+                    if (update) updates.push(update);
+                });
+            }
+
+            // apply updates to all crdts in different order
+            crdts.forEach(crdt => {
+                const shuffledupdates = updates.sort(() => Math.random() - 0.5);
+                shuffledupdates.forEach(update => {
+                    crdt.applyUpdate(update);
+
+                    // confirm that the crdt can be re-initialized from the serialized data
+                    const newCrdt = JsonCRDT.fromSerialized(crdt.serialize());
+                    t.deepEqual(crdt, newCrdt);
+                });
+            });
+
+            // confirm that re-initializing the crdt with data and timestamps results in the final crdt state
+            let backendCrdt = new JsonCRDT(0, initData);
+
+            const shuffledupdates = updates.sort(() => Math.random() - 0.5);
+            shuffledupdates.forEach(update => {
+                // re-initialize the backend crdt with the same data and timestamps
+                //console.log(backendCrdt)
+                const newBackendCrdt = JsonCRDT.fromSerialized(backendCrdt.serialize());
+                t.deepEqual(backendCrdt, newBackendCrdt);
+                backendCrdt = newBackendCrdt;
+
+                // apply the update to the backend crdt
+                backendCrdt.applyUpdate(update);
+            });
+
+            // all crdt instances have the same data
+            if (log) fuzz.describe();
+            // all crdt instances have the same data
+            crdts.forEach(crdt => {
+                t.deepEqual(crdt.data(), crdts[0].data());
+            });
+
+            t.deepEqual(crdts[0].data(), backendCrdt.data());
         });
-    }
-
-    crdts.forEach(crdt => {
-        const shuffledPatches = patches.sort(() => Math.random() - 0.5);
-        shuffledPatches.forEach(patch => {
-            crdt.applyUpdate(patch);
-        });
-    });
-
-    if (log) fuzz.describe();
-    // all crdt instances have the same data
-    crdts.forEach(crdt => {
-        t.deepEqual(crdt.data(), crdts[0].data());
-        // eslint-disable-next-line no-console
-        if (log) console.log(crdt.logs());
-    });
+    };
 }
 
-test(`fuzzing (multiple instances)`, t => {
-    for (let i = 0; i < 10; i++) {
-        multipleInstances(t);
-    }
+Array.from({ length: 10 }).forEach((_, i) => {
+    multipleInstances(i + 1)();
 });

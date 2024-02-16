@@ -541,41 +541,6 @@ test(`data in item array with nested objects is merged`, t => {
     });
 });
 
-test('crdt with array can be initialized with existing timestamp object', t => {
-    const crdt = new BaseJsonCRDT(
-        {
-            arr: [
-                { id: 'A', val: 1 },
-                { id: 'B', val: 2 }
-            ]
-        },
-        {
-            arr: {
-                A: { val: '5-5' },
-                B: { val: '5-5' }
-            }
-        }
-    );
-
-    // update with new data and order but timestamp is only high enough for order
-    crdt.update(
-        {
-            arr: {
-                B: { id: 'B', val: 'outdate', _index: 0 },
-                A: { id: 'A', val: 'outdate', _index: 1 }
-            }
-        },
-        '1-2'
-    );
-
-    t.deepEqual(crdt.data(), {
-        arr: [
-            { id: 'B', val: 2 },
-            { id: 'A', val: 1 }
-        ]
-    });
-});
-
 test(`support concurrent inserts in item arrays at end`, t => {
     const crdt = new BaseJsonCRDT({
         arr: [

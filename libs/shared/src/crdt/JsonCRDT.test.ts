@@ -15,11 +15,6 @@ test(`crdt internals are immuatable`, t => {
         diff: { key: { data: { json: { d: { e: { f: 'new str' } } } } } },
         timestamp: '1-1'
     });
-
-    // timestamps are immutable
-    const timestamps = crdt.timestamps();
-    timestamps.key.data.json.d.e.f = '4-9';
-    t.deepEqual(crdt.timestamps(), { key: { data: { json: { d: { e: { f: '1-1' } } } } } });
 });
 
 test(`crdt basic init`, t => {
@@ -36,15 +31,6 @@ test(`crdt basic init`, t => {
     // empty object
     const crdt3 = new JsonCRDT(3, {});
     t.deepEqual(crdt3.data(), {});
-
-    // with existing TimestampObj
-    const TimestampObj = crdt2.timestamps();
-    const crdt4 = new JsonCRDT(
-        4,
-        { key: { data: { json: { 'another key': { e: { f: 'str' } } } } } },
-        TimestampObj
-    );
-    t.deepEqual(crdt4.data(), { key: { data: { json: { 'another key': { e: { f: 'str' } } } } } });
 });
 
 test(`init crdt with array fields`, t => {

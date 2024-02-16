@@ -7,10 +7,15 @@ import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
 import { ItemArray, Clock, Timestamp, Timestamps } from './Clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
-import objectDiff from '../objectDiff.js';
 import isPrimitive from '../isPrimitive.js';
 import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
+
+export type SerializedBaseJsonCRDT<O extends object> = {
+    data: O;
+    timestamps: Timestamps<O>;
+    pathToItemArrays: string[];
+};
 
 function isActualObject(value: unknown) {
     return isObject(value) && !Array.isArray(value) && value !== null && !(value instanceof Date);
@@ -45,7 +50,7 @@ export const isItemArray = (value: unknown): value is ItemArray => {
  * @param arr the item array to convert
  * @returns object representation
  */
-function itemArrayToObject(arr: ItemArray, arrTimestamps: object): ItemArrayObject {
+function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     const obj = {};
     let index = 0;
     for (const item of arr) {
@@ -59,13 +64,6 @@ function itemArrayToObject(arr: ItemArray, arrTimestamps: object): ItemArrayObje
             Object
         );
         index++;
-    }
-    if (arrTimestamps) {
-        iterateObjectPaths(arrTimestamps, path => {
-            if (path[path.length - 1] === '_index' && get(obj, path) === undefined) {
-                setWith(obj, path, null, Object);
-            }
-        });
     }
     return obj as ItemArrayObject;
 }
@@ -120,9 +118,8 @@ function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) 
         }
         const sourceItem = sourceItems.get(targetItem.id);
         sourceItems.delete(targetItem.id); // remove from source items so that we can check for deleted items later
-        const itemDiff = objectDiff(sourceItem, targetItem, null, {
-            diffArray: calculateItemArrayDiff
-        });
+
+        const itemDiff = BaseJsonCRDT.calculateDiff(sourceItem as object, targetItem);
         if (!isEmpty(itemDiff)) {
             diff[targetItem.id] = itemDiff;
         }
@@ -213,23 +210,38 @@ export class BaseJsonCRDT<O extends object = object> {
     private dataObj: O;
     private timestampObj: Timestamps<O>;
     private pathToItemArrays = new Set<string>();
-    private log: {
-        receivedUpdates: number;
-        appliedUpdates: number;
-    };
+
+    static fromSerialized<T extends object>(
+        serialized: SerializedBaseJsonCRDT<T>
+    ): BaseJsonCRDT<T> {
+        return new BaseJsonCRDT(
+            serialized.data,
+            serialized.timestamps,
+            serialized.pathToItemArrays
+        );
+    }
+
     /**
      * Constructs a new CRDT instance with the given data and optional timestamps.
      * @param data The initial data object
      * @param timestamps The initial timestamp object, if not provided it will be inferred from the data
      * @returns A new CRDT instance
      */
-    constructor(data: O, timestamps?: Timestamps<O>) {
-        this.timestampObj = timestamps ?? ({} as Timestamps<O>);
-        this.dataObj = this.initData(cloneDeep(data));
-        this.log = {
-            receivedUpdates: 0,
-            appliedUpdates: 0
-        };
+    constructor(data: O, timestamps?: Timestamps<O>, pathToItemArrays?: string[]) {
+        if (!timestamps && !pathToItemArrays) {
+            // case where we are initializing from scratch
+            this.timestampObj = {} as Timestamps<O>;
+            this.dataObj = this.initData(cloneDeep(data));
+            return;
+        }
+        if (!timestamps || !pathToItemArrays) {
+            throw new Error(
+                'Both timestamps and pathToItemArrays must be provided for re-initialization'
+            );
+        }
+        this.timestampObj = timestamps;
+        this.dataObj = data; // data is already in the correct format in this case
+        this.pathToItemArrays = new Set(pathToItemArrays);
     }
 
     /**
@@ -241,9 +253,10 @@ export class BaseJsonCRDT<O extends object = object> {
         iterateObjectPaths(data, path => {
             let value = get(data, path);
             if (isItemArray(value)) {
-                value = itemArrayToObject(value, get(this.timestampObj, path));
+                value = itemArrayToObject(value);
                 this.pathToItemArrays.add(path.join('.'));
             }
+
             setWith(data, path, value, Object);
         });
         return data;
@@ -251,7 +264,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
     /**
      * Converts internal object representation of an item array back to an item array
-     * Opposite function to objectToItemArray
+     * Opposite function to itemArrayToObject
      * @param obj the object to convert
      * @returns item array
      */
@@ -259,8 +272,7 @@ export class BaseJsonCRDT<O extends object = object> {
         return (
             Object.values(obj)
                 // remove "deleted" items
-                .filter(item => item._index !== null && item._index !== undefined)
-                // TODO: remove the undefined check once the API properly sets null values
+                .filter(item => item._index !== null)
                 .sort((a, b) => {
                     const comparison = a._index - b._index;
                     if (comparison !== 0) return comparison;
@@ -311,7 +323,6 @@ export class BaseJsonCRDT<O extends object = object> {
             throw new Error('Updating a primitive value with an object is not supported.');
         }
         setWith(this.dataObj, path, {}, Object);
-        this.log.appliedUpdates += 1;
     }
 
     /**
@@ -321,8 +332,6 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param timestamp the timestamp assosciated with the value
      */
     private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
-        this.log.receivedUpdates += 1;
-
         if (isEmptyObject(value)) {
             this.insertEmptyObject(path);
             return;
@@ -334,8 +343,6 @@ export class BaseJsonCRDT<O extends object = object> {
             if (value === null) {
                 // deletes over everything
                 setWith(this.dataObj, path, null, Object);
-                // we need to set the timestamp so we know this item was deleted at re-initialization
-                setWith(this.timestampObj, path, timestamp, Object);
                 return;
             }
             if (get(this.dataObj, path) === null) {
@@ -365,7 +372,6 @@ export class BaseJsonCRDT<O extends object = object> {
             setWith(this.dataObj, path, value, Object);
         }
         setWith(this.timestampObj, path, timestamp, Object);
-        this.log.appliedUpdates += 1;
     }
 
     /**
@@ -384,7 +390,6 @@ export class BaseJsonCRDT<O extends object = object> {
                 const pathString = searchPath.join('.');
                 if (!this.pathToItemArrays.has(pathString)) {
                     // new item array
-
                     const currentValue = get(this.dataObj, pathString);
                     if (currentValue !== undefined && !isEqual(currentValue, [])) {
                         throw new Error('Item array created at existing path');
@@ -422,11 +427,15 @@ export class BaseJsonCRDT<O extends object = object> {
         return data;
     }
 
-    timestamps(): Timestamps<O> {
-        return cloneDeep(this.timestampObj);
+    serialize(): SerializedBaseJsonCRDT<O> {
+        return {
+            data: cloneDeep(this.dataObj),
+            timestamps: this.timestamps(),
+            pathToItemArrays: Array.from(this.pathToItemArrays)
+        };
     }
 
-    logs() {
-        return { ...this.log, successRate: this.log.appliedUpdates / this.log.receivedUpdates };
+    timestamps(): Timestamps<O> {
+        return cloneDeep(this.timestampObj);
     }
 }
