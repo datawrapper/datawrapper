@@ -4,7 +4,7 @@ import { Writable } from 'svelte/store';
 export type CollaborationUser = {
     id: string;
     name: string;
-    showPresence: boolean;
+    showPresence?: boolean;
     color?: string;
     path?: string | null;
     step?: string;
