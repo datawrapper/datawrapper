@@ -30,16 +30,18 @@ export type CollaborationRoom = Writable<{
 type Options = {
     room: CollaborationRoom;
     path: string | null;
-    showEvent?: string | null;
-    hideEvent?: string | null;
+    offset?: { x: number; y: number };
+    class?: string;
 } & (
     | {
-          offset?: { x: number; y: number };
-          class?: string;
+          showEvent?: string;
+          hideEvent?: string;
+          show?: never;
       }
     | {
-          offset?: never;
-          class?: never;
+          show: boolean;
+          showEvent?: never;
+          hideEvent?: never;
       }
 );
 
@@ -48,19 +50,26 @@ type Options = {
  *
  *  Handles the registering of anchor points and commuinicating
  *  when users are focusing and bluring inputs over web sockets.
- *
+ * ---
  * @param options.room - the collaboration room to use for communication.
- *
+ * ---
  * @param options.path - path to the control, used to identify the anchor point.
- *
- * @param options.showEvent - event to listen for to show pin, defaults to `'focusin'`. use `null` to skip evenlistener.
- *
- * @param options.hideEvent - event to listen for to hide pin, defaults to `'focusout'`. use `null` to skip evenlistener.
- *
- * @param options.offset - offset from the anchor point, defaults to `{ x: 0, y: 0 }`.
- *
+ * ---
+ * @param options.showEvent - event to listen for to show pin. use `null` to skip eventlistener.
+ * @default 'focusin'
+ * ---
+ * @param options.hideEvent - event to listen for to hide pin. use `null` to skip eventlistener.
+ * @default 'focusout'
+ * ---
+ * @param options.show - if set, overrides the event handlers and sets the pin visibility.
+ * @default undefined
+ * ---
+ * @param options.offset - offset from the anchor point.
+ * @default { x: 0, y: 0 }
+ * ---
  * @param options.class - class or classes to add to the element when focused, `--user-color`
  *  css variable will be set on the element to the user's color in `FloatingUserAvatars.svelte`.
+ * @default ''
  */
 export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Options) => {
     let {
@@ -69,7 +78,8 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         offset,
         class: className = '',
         showEvent = 'focusin',
-        hideEvent = 'focusout'
+        hideEvent = 'focusout',
+        show
     } = options;
     let classList = className.split(' ').filter(Boolean);
 
@@ -94,8 +104,15 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     const handleFocusOut = () => {
         if (path) room.sendPresenceMessage(path, false);
     };
-    if (showEvent) element.addEventListener(showEvent, handleFocusIn);
-    if (hideEvent) element.addEventListener(hideEvent, handleFocusOut);
+
+    // if show is undefined, the pin will be shown/hidden based on the showEvent/hideEvent
+    // if show is a boolean, the pin will be shown/hidden based on the value of show
+    if (typeof show === 'undefined') {
+        if (showEvent) element.addEventListener(showEvent, handleFocusIn);
+        if (hideEvent) element.addEventListener(hideEvent, handleFocusOut);
+    } else if (show) {
+        handleFocusIn();
+    }
 
     return {
         update(options: Options) {
@@ -103,6 +120,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             const oldPath = path;
             const oldShowEvent = showEvent;
             const oldHideEvent = hideEvent;
+            const oldShow = show;
 
             ({
                 room,
@@ -110,17 +128,34 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 offset,
                 class: className = '',
                 showEvent = 'focusin',
-                hideEvent = 'focusout'
+                hideEvent = 'focusout',
+                show
             } = options);
             classList = className.split(' ').filter(Boolean);
 
-            if (oldShowEvent !== showEvent) {
-                if (oldShowEvent) element.removeEventListener(oldShowEvent, handleFocusIn);
-                if (showEvent) element.addEventListener(showEvent, handleFocusIn);
+            if (typeof show === 'boolean' && oldShow !== show) {
+                if (show) {
+                    handleFocusIn();
+                } else {
+                    handleFocusOut();
+                }
             }
-            if (oldHideEvent !== hideEvent) {
-                if (oldHideEvent) element.removeEventListener(oldHideEvent, handleFocusOut);
-                if (hideEvent) element.addEventListener(hideEvent, handleFocusOut);
+
+            if (oldShowEvent !== showEvent || typeof oldShow !== typeof show) {
+                if (typeof oldShow === 'undefined') {
+                    element.removeEventListener(oldShowEvent, handleFocusIn);
+                }
+                if (typeof show === 'undefined') {
+                    element.addEventListener(showEvent, handleFocusIn);
+                }
+            }
+            if (oldHideEvent !== hideEvent || typeof oldShow !== typeof show) {
+                if (typeof oldShow === 'undefined') {
+                    element.removeEventListener(oldHideEvent, handleFocusOut);
+                }
+                if (typeof show === 'undefined') {
+                    element.addEventListener(hideEvent, handleFocusOut);
+                }
             }
 
             // re-register anchor
@@ -144,8 +179,10 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 return $room;
             });
 
-            if (showEvent) element.removeEventListener(showEvent, handleFocusIn);
-            if (hideEvent) element.removeEventListener(hideEvent, handleFocusOut);
+            if (typeof show === 'undefined') {
+                if (showEvent) element.removeEventListener(showEvent, handleFocusIn);
+                if (hideEvent) element.removeEventListener(hideEvent, handleFocusOut);
+            }
         }
     };
 }) satisfies Action<HTMLElement | SVGElement, Options>;
