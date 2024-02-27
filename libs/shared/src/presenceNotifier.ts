@@ -1,5 +1,8 @@
 import type { Action } from 'svelte/action';
 import { Writable } from 'svelte/store';
+import _debounce from 'lodash/debounce.js';
+
+const PIN_HIDE_TIMEOUT = 3000;
 
 export type CollaborationUser = {
     id: string;
@@ -30,12 +33,10 @@ export type CollaborationRoom = Writable<{
 type Options = {
     room: CollaborationRoom;
     path: string | null;
-    offset?: { x: number; y: number };
-    class?: string;
 } & (
     | {
-          showEvent?: string;
-          hideEvent?: string;
+          showEvent?: string | null;
+          hideEvent?: string | null;
           show?: never;
       }
     | {
@@ -43,7 +44,19 @@ type Options = {
           showEvent?: never;
           hideEvent?: never;
       }
-);
+) &
+    (
+        | {
+              registerElement?: false;
+              offset?: { x: number; y: number };
+              class?: string;
+          }
+        | {
+              registerElement: true;
+              offset?: never;
+              class?: never;
+          }
+    );
 
 /**
  *  Svelte Action enabling the control level presence indicator placement.
@@ -58,11 +71,16 @@ type Options = {
  * @param options.showEvent - event to listen for to show pin. use `null` to skip eventlistener.
  * @default 'focusin'
  * ---
- * @param options.hideEvent - event to listen for to hide pin. use `null` to skip eventlistener.
+ * @param options.hideEvent - event to listen for to hide pin. use `null` to skip eventlistener,
+ *                            and to automatically hide the pin again after the showEvent after delay.
  * @default 'focusout'
  * ---
  * @param options.show - if set, overrides the event handlers and sets the pin visibility.
  * @default undefined
+ * ---
+ * @param options.registerElement - If `false`, the element will not be registered as an anchor point,
+ *  allowing the use of a shared path for multiple elements.
+ * @default true
  * ---
  * @param options.offset - offset from the anchor point.
  * @default { x: 0, y: 0 }
@@ -75,11 +93,12 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     let {
         room,
         path,
-        offset,
-        class: className = '',
+        show,
         showEvent = 'focusin',
         hideEvent = 'focusout',
-        show
+        registerElement = true,
+        offset,
+        class: className = ''
     } = options;
     let classList = className.split(' ').filter(Boolean);
 
@@ -94,16 +113,20 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     }
 
     room.update($room => {
-        if (path) $room.pinAnchors.set(path, { element, offset, classList });
+        if (path && registerElement) $room.pinAnchors.set(path, { element, offset, classList });
         return $room;
     });
 
     const handleFocusIn = () => {
         if (path) room.sendPresenceMessage(path, true);
+        if (!hideEvent) handleFocusOut();
     };
-    const handleFocusOut = () => {
+
+    const hidePin = () => {
         if (path) room.sendPresenceMessage(path, false);
     };
+
+    const handleFocusOut = _debounce(hidePin, PIN_HIDE_TIMEOUT);
 
     // if show is undefined, the pin will be shown/hidden based on the showEvent/hideEvent
     // if show is a boolean, the pin will be shown/hidden based on the value of show
@@ -118,6 +141,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         update(options: Options) {
             // make options reactive
             const oldPath = path;
+            const oldRegisterElement = registerElement;
             const oldShowEvent = showEvent;
             const oldHideEvent = hideEvent;
             const oldShow = show;
@@ -125,11 +149,12 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             ({
                 room,
                 path,
-                offset,
-                class: className = '',
+                show,
                 showEvent = 'focusin',
                 hideEvent = 'focusout',
-                show
+                offset,
+                class: className = '',
+                registerElement = true
             } = options);
             classList = className.split(' ').filter(Boolean);
 
@@ -142,28 +167,28 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             }
 
             if (oldShowEvent !== showEvent || typeof oldShow !== typeof show) {
-                if (typeof oldShow === 'undefined') {
+                if (typeof oldShow === 'undefined' && oldShowEvent) {
                     element.removeEventListener(oldShowEvent, handleFocusIn);
                 }
-                if (typeof show === 'undefined') {
+                if (typeof show === 'undefined' && showEvent) {
                     element.addEventListener(showEvent, handleFocusIn);
                 }
             }
             if (oldHideEvent !== hideEvent || typeof oldShow !== typeof show) {
-                if (typeof oldShow === 'undefined') {
+                if (typeof oldShow === 'undefined' && oldHideEvent) {
                     element.removeEventListener(oldHideEvent, handleFocusOut);
                 }
-                if (typeof show === 'undefined') {
+                if (typeof show === 'undefined' && hideEvent) {
                     element.addEventListener(hideEvent, handleFocusOut);
                 }
             }
 
             // re-register anchor
             room.update($room => {
-                if (oldPath && oldPath !== path) {
+                if (oldPath && oldRegisterElement && oldPath !== path) {
                     $room.pinAnchors.delete(oldPath);
                 }
-                if (path) {
+                if (path && registerElement) {
                     $room.pinAnchors.set(path, { element, offset, classList });
                 }
                 return $room;
@@ -175,7 +200,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
 
             // unregister anchor
             room.update($room => {
-                if (path) $room.pinAnchors.delete(path);
+                if (path && registerElement) $room.pinAnchors.delete(path);
                 return $room;
             });
 
