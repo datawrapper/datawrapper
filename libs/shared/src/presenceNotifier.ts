@@ -29,6 +29,8 @@ export type CollaborationRoom = Writable<{
     /** Used to send focus and blur messages to other users in the same collaboration room. */
     sendPresenceMessage: (path: string, isFocus?: boolean) => void;
     publishUserState: () => void;
+    reconnect: () => void;
+    disconnect: () => void;
 };
 
 type Options = {
