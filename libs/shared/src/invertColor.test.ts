@@ -29,3 +29,9 @@ test('blues', t => {
     const expected = ['#94cbfa', '#50a7d3', '#2584af', '#1f628b', '#144a54'];
     t.deepEqual(invertedColors, expected);
 });
+
+test('transparency is maintained for colours with low contrast to background', t => {
+    const colorLowOpacity = invertColor('rgba(255,255,252, 0.16)', '#252525', '#ffffff', 0.85);
+    const colorFullOpacity = invertColor('rgba(254,255,255, 1)', '#252525', '#ffffff', 0.85);
+    t.not(colorLowOpacity, colorFullOpacity);
+});
