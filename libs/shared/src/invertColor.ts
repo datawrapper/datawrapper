@@ -50,7 +50,9 @@ function invertColor(
     const contrast = computeContrast(baseColor, lightBackgroundColor);
 
     // contrast 1:1, return bg
-    if (Math.abs(contrast - 1) < EPS) return darkBackgroundColor;
+    if (Math.abs(contrast - 1) < EPS) {
+        return chroma(darkBackgroundColor).alpha(alpha).hex();
+    }
 
     const origIsDarker = bgLightL > prevL;
 
