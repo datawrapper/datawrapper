@@ -984,6 +984,25 @@
             "types": "./dist/cjs/observeFonts.d.cts",
             "default": "./dist/esm/observeFonts.js"
         },
+        "./presenceColors.d.ts": {
+            "require": "./dist/cjs/presenceColors.d.cts",
+            "default": "./dist/esm/presenceColors.d.ts"
+        },
+        "./presenceColors.js": {
+            "require": "./dist/cjs/presenceColors.cjs",
+            "types": "./dist/cjs/presenceColors.d.cts",
+            "default": "./dist/esm/presenceColors.js"
+        },
+        "./presenceColors": {
+            "require": "./dist/cjs/presenceColors.cjs",
+            "types": "./dist/cjs/presenceColors.d.cts",
+            "default": "./dist/esm/presenceColors.js"
+        },
+        "./dist/cjs/presenceColors.cjs": {
+            "require": "./dist/cjs/presenceColors.cjs",
+            "types": "./dist/cjs/presenceColors.d.cts",
+            "default": "./dist/esm/presenceColors.js"
+        },
         "./presenceNotifier.d.ts": {
             "require": "./dist/cjs/presenceNotifier.d.cts",
             "default": "./dist/esm/presenceNotifier.d.ts"
