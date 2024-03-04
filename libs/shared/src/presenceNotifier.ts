@@ -1,6 +1,12 @@
 import type { Action } from 'svelte/action';
 import { Writable } from 'svelte/store';
-import _debounce from 'lodash/debounce.js';
+import debounce from 'lodash/debounce.js';
+
+/**
+ * Debug presence paths.
+ * Will add a `data-path` attribute containing the path to all elements that use the action.
+ */
+const DEBUG_PATHS = false;
 
 const PIN_HIDE_TIMEOUT = 3000;
 
@@ -10,6 +16,7 @@ export type CollaborationUser = {
     showPresence?: boolean;
     color?: string;
     path?: string | null;
+    selectedPaths?: string[];
     step?: string;
     tab?: string;
     img?: string;
@@ -28,6 +35,10 @@ export type CollaborationRoom = Writable<{
 }> & {
     /** Used to send focus and blur messages to other users in the same collaboration room. */
     sendPresenceMessage: (path: string, isFocus?: boolean) => void;
+
+    /** Used to send selection changed messages to other users in the same collaboration room. */
+    sendSelectionChangedMessage: (paths: string[]) => void;
+
     publishUserState: () => void;
     reconnect: () => void;
     disconnect: () => void;
@@ -115,6 +126,10 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         return {};
     }
 
+    if (DEBUG_PATHS) {
+        element.dataset.path = path;
+    }
+
     room.update($room => {
         if (path && registerElement) $room.pinAnchors.set(path, { element, offset, classList });
         return $room;
@@ -129,7 +144,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         if (path) room.sendPresenceMessage(path, false);
     };
 
-    const handleFocusOut = _debounce(hidePin, PIN_HIDE_TIMEOUT);
+    const handleFocusOut = debounce(hidePin, PIN_HIDE_TIMEOUT);
 
     // if show is undefined, the pin will be shown/hidden based on the showEvent/hideEvent
     // if show is a boolean, the pin will be shown/hidden based on the value of show
@@ -194,6 +209,11 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 if (path && registerElement) {
                     $room.pinAnchors.set(path, { element, offset, classList });
                 }
+
+                if (DEBUG_PATHS) {
+                    element.dataset.path = path ?? '';
+                }
+
                 return $room;
             });
         },
