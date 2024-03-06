@@ -355,6 +355,15 @@ export class BaseJsonCRDT<O extends object = object> {
         if (value === null) {
             const currentValue = get(this.dataObj, path);
             if (isActualObject(currentValue)) {
+                if (this.pathToItemArrays.has(path.join('.'))) {
+                    // we are trying to delete an item array, that's not allowed
+                    // instead we set the item array to an empty array
+                    Object.keys(currentValue).forEach(key => {
+                        const itemKeyPaths = [...path, key, '_index'];
+                        this.upsertValue(itemKeyPaths, null, timestamp);
+                    });
+                    return;
+                }
                 throw new Error(
                     `Updating object with primitive value is currently not supported. Updating path: ${path.join(
                         '.'
