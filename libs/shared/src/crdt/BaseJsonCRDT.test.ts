@@ -1,7 +1,5 @@
 import test from 'ava';
-import { Timestamps } from './Clock.js';
 import { BaseJsonCRDT } from './BaseJsonCRDT.js';
-import { cloneDeep } from 'lodash';
 
 test(`getters return immutable objects`, t => {
     const crdt = new BaseJsonCRDT({ a: 1, b: 2, c: 3 });
@@ -215,10 +213,6 @@ test("non-primitive fields can't be deleted", t => {
     };
     const crdt = new BaseJsonCRDT(data);
 
-    // delete item array
-    t.throws(() => crdt.update({ arr: null }, '1-2'));
-    t.deepEqual(crdt.data(), data);
-
     // delete object
     t.throws(() => crdt.update({ nested: null }, '1-3'));
     t.deepEqual(crdt.data(), data);
@@ -226,6 +220,24 @@ test("non-primitive fields can't be deleted", t => {
     // delete empty object
     t.throws(() => crdt.update({ emptyObj: null }, '1-4'));
     t.deepEqual(crdt.data(), data);
+});
+
+test('deleting an item array deletes all items instead', t => {
+    const data = {
+        arr: [
+            { id: '1', val: 'val1' },
+            { id: '2', val: 'val2' }
+        ]
+    };
+    const crdt = new BaseJsonCRDT(data);
+
+    // delete item array
+    crdt.update({ arr: null }, '1-2');
+
+    // re-inserting deleted item should not work
+    crdt.update({ arr: { 1: { _index: 1 } } }, '1-10');
+
+    t.deepEqual(crdt.data(), { arr: [] });
 });
 
 test('BaseJsonCRDT.calculateDiff calculates the correct patch (simple updates)', t => {
