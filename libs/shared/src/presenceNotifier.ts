@@ -1,6 +1,6 @@
-import type { Action } from 'svelte/action';
-import { Writable } from 'svelte/store';
 import debounce from 'lodash/debounce.js';
+import type { Action } from 'svelte/action';
+import type { Writable } from 'svelte/store';
 
 /**
  * Debug presence paths.
@@ -8,7 +8,7 @@ import debounce from 'lodash/debounce.js';
  */
 const DEBUG_PATHS = false;
 
-const PIN_HIDE_TIMEOUT = 3000;
+const PIN_HIDE_TIMEOUT = 6000;
 
 export type CollaborationUser = {
     id: string;
