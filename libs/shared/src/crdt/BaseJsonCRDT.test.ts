@@ -858,6 +858,44 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (new deeply nested 
     t.deepEqual(crdt.data(), newData);
 });
 
+test('BaseJsonCRDT.calculateDiff ignores date <-> string conversion if the underlying value is the same', t => {
+    // String -> Date
+    let diff = BaseJsonCRDT.calculateDiff(
+        { a: '2024-02-07T15:26:37.123Z' },
+        { a: new Date('2024-02-07T15:26:37.123Z') }
+    );
+
+    t.deepEqual(diff, {});
+    t.true(diff.a === undefined);
+
+    // Date -> String
+    diff = BaseJsonCRDT.calculateDiff(
+        { a: new Date('2024-02-07T15:26:37.123Z') },
+        { a: '2024-02-07T15:26:37.123Z' }
+    );
+
+    t.deepEqual(diff, {});
+    t.true(diff.a === undefined);
+});
+
+test('BaseJsonCRDT.calculateDiff includes date <-> string conversion if the underlying value is not the same', t => {
+    // String -> Date                                                                                            ⌄ different milliseconds
+    let diff = BaseJsonCRDT.calculateDiff(
+        { a: '2024-02-07T15:26:37.123Z' },
+        { a: new Date('2024-02-07T15:26:37.456Z') }
+    );
+
+    t.deepEqual(diff, { a: new Date('2024-02-07T15:26:37.456Z') });
+
+    // Date -> String
+    diff = BaseJsonCRDT.calculateDiff(
+        { a: new Date('2024-02-07T15:26:37.123Z') },
+        { a: '2024-02-07T15:26:37.456Z' }
+    );
+
+    t.deepEqual(diff, { a: '2024-02-07T15:26:37.456Z' });
+});
+
 test('inserting empty object: new path', t => {
     const crdt = new BaseJsonCRDT({ a: 'some value' });
 

@@ -188,6 +188,12 @@ export class BaseJsonCRDT<O extends object = object> {
                     return;
                 }
             }
+            if (oldValue instanceof Date !== newValue instanceof Date) {
+                // We don't care about Date <-> string conversion if their values are the same.
+                if (new Date(oldValue).getTime() === new Date(newValue).getTime()) {
+                    return;
+                }
+            }
 
             setWith(diff, path, newValue, Object);
         });
