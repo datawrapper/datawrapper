@@ -30,6 +30,11 @@ test(`init`, t => {
     t.deepEqual(crdt3.data(), { a: [1, 2, 3], b: [4, 5, 6] });
 });
 
+test('null values should be filtered out on init', t => {
+    const crdt = new BaseJsonCRDT({ a: null, b: { c: 'some value', d: null } });
+    t.deepEqual(crdt.data(), { b: { c: 'some value' } });
+});
+
 test(`basic updates work`, t => {
     // flat object
 

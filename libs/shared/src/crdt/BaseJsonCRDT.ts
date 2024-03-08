@@ -233,6 +233,8 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param timestamps The initial timestamp object, if not provided it will be inferred from the data
      * @returns A new CRDT instance
      */
+    constructor(data: O);
+    constructor(data: O, timestamps: Timestamps<O>, pathToItemArrays: string[]);
     constructor(data: O, timestamps?: Timestamps<O>, pathToItemArrays?: string[]) {
         if (!timestamps && !pathToItemArrays) {
             // case where we are initializing from scratch
@@ -258,6 +260,13 @@ export class BaseJsonCRDT<O extends object = object> {
     private initData(data: O) {
         iterateObjectPaths(data, path => {
             let value = get(data, path);
+
+            if (value === null) {
+                // filter out null values
+                data = omit(data, path.join('.')) as O;
+                return;
+            }
+
             if (isItemArray(value)) {
                 value = itemArrayToObject(value);
                 this.pathToItemArrays.add(path.join('.'));
