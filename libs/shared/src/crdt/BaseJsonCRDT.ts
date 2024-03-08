@@ -335,7 +335,11 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
         if (currentValue !== undefined && isPrimitive(currentValue)) {
-            throw new Error('Updating a primitive value with an object is not supported.');
+            throw new Error(
+                `Updating a primitive value (${currentValue?.toString()}) with an object at ${path.join(
+                    ''
+                )} is not supported.`
+            );
         }
         setWith(this.dataObj, path, {}, Object);
     }
@@ -444,7 +448,7 @@ export class BaseJsonCRDT<O extends object = object> {
     data(): O {
         const data = cloneDeep(this.dataObj);
         for (const path of this.pathToItemArrays) {
-            const itemArrayObject: ItemArrayObject = get(data, path);
+            const itemArrayObject: ItemArrayObject = get(data, path) ?? {}; // handle case where the item array is not present due to corrupted data
             const itemArray = this.objectToItemArray(itemArrayObject, path);
             setWith(data, path, itemArray, Object);
         }
