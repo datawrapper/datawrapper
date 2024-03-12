@@ -26,6 +26,12 @@ test('get third level', t => {
     t.is(get(thing, 'nested.nested.foo'), 12);
 });
 
+test('get a key that does not exist is null by default', t => {
+    // Violating type constraints to check handling of incorrect data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    t.is(get(thing as any, 'unknown'), null);
+});
+
 test('get simple fallback', t => {
     // Violating type constraints to check handling of incorrect data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

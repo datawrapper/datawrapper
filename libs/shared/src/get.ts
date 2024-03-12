@@ -19,7 +19,7 @@ import { GetValueByPath, Paths } from './objectPaths.js';
  * import get from '@datawrapper/shared/get';
  * const someObject = { key: { list: ['a', 'b', 'c']}};
  * get(someObject, 'key.list[2]') // returns 'c'
- * get(someObject, 'missing.key') // returns undefined
+ * get(someObject, 'missing.key') // returns null
  * get(someObject, 'missing.key', false) // returns false
  */
 function get<TObj, TPath extends Paths<TObj>, TDefault extends GetValueByPath<TObj, TPath>>(
