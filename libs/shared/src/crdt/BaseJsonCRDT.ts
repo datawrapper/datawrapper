@@ -320,9 +320,9 @@ export class BaseJsonCRDT<O extends object = object> {
         }
         if (typeof timestamp === 'object') {
             throw new Error(
-                `Updating object with primitive value is currently not supported. Updating path: ${path.join(
-                    '.'
-                )}`
+                `Trying to access timestamp of object.
+                Acccessing path: '${path.join('.')}'
+                Value: ${JSON.stringify(timestamp)}`
             );
         }
         return new Clock(timestamp);
@@ -335,11 +335,10 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
         if (currentValue !== undefined && isPrimitive(currentValue)) {
-            throw new Error(
-                `Updating a primitive value (${currentValue?.toString()}) with an object at ${path.join(
-                    ''
-                )} is not supported.`
-            );
+            throw new Error(`Updating a primitive value with an object is not supported.
+
+            Path: '${path.join('.')}'
+            Current value: ${JSON.stringify(currentValue)}`);
         }
         setWith(this.dataObj, path, {}, Object);
     }
@@ -384,9 +383,10 @@ export class BaseJsonCRDT<O extends object = object> {
                     return;
                 }
                 throw new Error(
-                    `Updating object with primitive value is currently not supported. Updating path: ${path.join(
-                        '.'
-                    )}`
+                    `Deleting objects is currently not supported.
+
+                    Deleting path: ${path.join('.')}
+                    Old value: ${JSON.stringify(currentValue)}`
                 );
             }
             this.dataObj = omit(this.dataObj, path.join('.')) as O;
@@ -420,7 +420,10 @@ export class BaseJsonCRDT<O extends object = object> {
                     // new item array
                     const currentValue = get(this.dataObj, pathString);
                     if (currentValue !== undefined && !isEqual(currentValue, [])) {
-                        throw new Error('Item array created at existing path');
+                        throw new Error(`Item array created at existing path.
+
+                        Path: '${pathString}'
+                        Current value: ${JSON.stringify(currentValue)}`);
                     }
                     setWith(this.dataObj, pathString, {}, Object);
                     this.pathToItemArrays.add(pathString);
