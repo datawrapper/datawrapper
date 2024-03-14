@@ -1,6 +1,12 @@
 import test from 'ava';
 import { JsonCRDT } from './JsonCRDT.js';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, sample } from 'lodash';
+import util from 'util';
+
+function print(obj: any) {
+    // eslint-disable-next-line no-console
+    console.log(util.inspect(obj, { depth: Infinity }));
+}
 
 test(`crdt internals are immuatable`, t => {
     const crdt = new JsonCRDT(2, { key: { data: { json: { d: { e: { f: 'str' } } } } } });
@@ -221,34 +227,34 @@ test(`nested update`, t => {
 
 test(`nested updates get denied for outdated timestamps`, t => {
     const crdt = new JsonCRDT(2, {
-        key: { data: { json: { 'another key': { e: { f: 'str', g: 0 } } } } }
+        e: { f: 'str', g: 0 }
     });
     crdt.applyUpdate({
-        diff: { key: { data: { json: { 'another key': { e: { f: 2 } } } } } },
+        diff: { e: { f: 2 } },
         timestamp: '1-1000'
     });
 
     crdt.applyUpdate({
-        diff: { key: { data: { json: { 'another key': { e: { f: 1000 } } } } } },
+        diff: { e: { f: 1000 } },
         timestamp: '1-5'
     });
     crdt.applyUpdate({
-        diff: { key: { data: { json: { 'another key': { e: { f: 123123, g: true } } } } } },
+        diff: { e: { f: 123123, g: true } },
         timestamp: '1-100'
     });
     t.deepEqual(crdt.data(), {
-        key: { data: { json: { 'another key': { e: { f: 2, g: true } } } } }
+        e: { f: 2, g: true }
     });
     crdt.applyUpdate({
-        diff: { key: { data: { json: { 'another key': { e: { f: 20 } } } } } },
+        diff: { e: { f: 20 } },
         timestamp: '1-2000'
     });
     crdt.applyUpdate({
-        diff: { key: { data: { json: { 'another key': { e: { f: -1 } } } } } },
+        diff: { e: { f: -1 } },
         timestamp: '1-1500'
     });
     t.deepEqual(crdt.data(), {
-        key: { data: { json: { 'another key': { e: { f: 20, g: true } } } } }
+        e: { f: 20, g: true }
     });
 });
 
@@ -436,5 +442,161 @@ test(`add new fields multi client`, t => {
 
     // user 2 wins because of higher user id
     t.deepEqual(crdt1.data(), { key: 'str', data: 2, json: 3 });
+    t.deepEqual(crdt1.data(), crdt2.data());
+});
+
+// primitive value <-> object conversion
+
+test(`convert object to string and back`, t => {
+    const crdt1 = new JsonCRDT(1, { key: { y: 1, z: 2 } });
+    const crdt2 = new JsonCRDT(2, { key: { y: 1, z: 2 } });
+    const crdt3 = new JsonCRDT(3, { key: { y: 1, z: 2 } });
+
+    const update1 = crdt2.createUpdate({ key: 'hi' });
+    const update2 = crdt1.createUpdate({ key: { y: 5 } });
+    const update3 = crdt3.createUpdate({ key: { z: 9 } });
+
+    const updates1 = [update1, update2, update3];
+    const updates2 = [update2, update3, update1];
+
+    const testCRDT1 = new JsonCRDT(1, { key: { y: 1, z: 2 } });
+    const testCRDT2 = new JsonCRDT(1, { key: { y: 1, z: 2 } });
+
+    testCRDT1.applyUpdates(updates1);
+    testCRDT2.applyUpdates(updates2);
+
+    t.deepEqual(testCRDT1.data(), {
+        key: { z: 9 }
+    });
+    t.deepEqual(testCRDT1.data(), testCRDT2.data());
+});
+
+function generateRandomChar() {
+    const possible = 'abcdef';
+    return possible.charAt(Math.floor(Math.random() * possible.length));
+}
+
+function generateRandomValue() {
+    return sample([{}, 0, 1, ...'abcdef', null, new Date()]);
+}
+
+function generateRandomObject(lvl = 0) {
+    const obj = {} as any;
+    // for (let i = 0; i < 1; i++) {
+    //     obj[generateRandomChar() + lvl] = generateRandomValue();
+    // }
+    for (let i = 0; i < 1; i++) {
+        obj[generateRandomChar() + lvl] = generateRandomValue();
+    }
+    if (lvl < 10) {
+        for (let i = 0; i < 1; i++) {
+            obj[generateRandomChar() + lvl] = generateRandomObject(lvl + 1);
+        }
+    }
+    return obj;
+}
+
+test(`mini fuzz: combine two objects`, t => {
+    const obj = generateRandomObject();
+    const crdt1 = new JsonCRDT(1, obj);
+    const crdt2 = new JsonCRDT(2, obj);
+
+    const updates1 = [];
+    const updates2 = [];
+
+    try {
+        for (let i = 0; i < 100; i++) {
+            const newValue1 = generateRandomObject();
+            const diff1 = crdt1.calculateDiff(newValue1);
+            const update1 = crdt1.createUpdate(diff1);
+
+            const newValue2 = generateRandomObject();
+            const diff2 = crdt2.calculateDiff(newValue2);
+            const update2 = crdt2.createUpdate(diff2);
+
+            updates1.push(update1);
+            updates2.push(update2);
+        }
+
+        crdt1.applyUpdates(updates2);
+        crdt2.applyUpdates(updates1);
+    } catch (e) {
+        print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
+        crdt1.printLogs('CRDT 1');
+        crdt2.printLogs('CRDT 2');
+        throw e;
+    }
+
+    if (!t.deepEqual(crdt1.data(), crdt2.data())) {
+        print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
+        crdt1.printLogs('CRDT 1');
+        crdt2.printLogs('CRDT 2');
+    }
+});
+
+// below tests are generated from the fuzz test above
+test.skip(`todo1`, t => {
+    const crdt1 = new JsonCRDT(1, { e0: { a1: 'c', b1: 'd', f1: { f2: 'b', b2: 'c' } }, a0: 'd' });
+    const crdt2 = new JsonCRDT(2, { e0: { a1: 'c', b1: 'd', f1: { f2: 'b', b2: 'c' } }, a0: 'd' });
+
+    const newValue1 = {
+        // b0: 'b',
+        // f0: 'b',
+        // d0: { d1: 'c', c1: 'e', f1: { b2: 'e', d2: 'd' } }
+    };
+    const newValue2 = {
+        e0: 'b'
+        // c0: { c1: 'c', b1: 'e', d1: { c2: 'c', e2: 'f' } }
+    };
+
+    const diff1 = crdt1.calculateDiff(newValue1);
+    const update1 = crdt1.createUpdate(diff1);
+
+    const diff2 = crdt2.calculateDiff(newValue2);
+    const update2 = crdt2.createUpdate(diff2);
+
+    t.deepEqual(crdt2.data(), { e0: 'b' });
+
+    crdt1.applyUpdate(update2);
+    crdt2.applyUpdate(update1);
+
+    t.deepEqual(crdt1.data(), crdt2.data());
+
+    const newValue3 = { b0: 'd', f0: 'b', c0: { a1: 'f', e1: { d2: 'c', e2: 'f' } } };
+    const newValue4 = {
+        f0: 'a',
+        a0: 'c',
+        e0: { c1: 'd', d1: 'f', b1: { f2: 'f', a2: 'd' } }
+    };
+
+    const diff3 = crdt1.calculateDiff(newValue3);
+    const update3 = crdt1.createUpdate(diff3);
+
+    const diff4 = crdt2.calculateDiff(newValue4);
+    const update4 = crdt2.createUpdate(diff4);
+
+    crdt1.applyUpdate(update4);
+    crdt2.applyUpdate(update3);
+
+    t.deepEqual(crdt1.data(), crdt2.data());
+});
+
+test.skip('todo object', t => {
+    const crdt1 = new JsonCRDT(1, { a: { b: 1, c: 2 }, x: 3, y: 4 });
+    const crdt2 = new JsonCRDT(2, { a: { b: 1, c: 2 }, x: 3, y: 4 });
+
+    const newValue1 = { a: { b: 1, c: 2, d: 3 }, x: 3, y: 4 };
+    const newValue2 = { x: { b: 2 }, y: 4 };
+    const newValue3 = { x: 3, y: 4 };
+
+    const update1 = crdt1.createUpdate(crdt1.calculateDiff(newValue1));
+    const update2 = crdt1.createUpdate(crdt1.calculateDiff(newValue2));
+    const update3 = crdt1.createUpdate(crdt1.calculateDiff(newValue3));
+
+    crdt2.applyUpdate(update3);
+    crdt2.applyUpdate(update2);
+    crdt2.applyUpdate(update1);
+
+    print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
     t.deepEqual(crdt1.data(), crdt2.data());
 });

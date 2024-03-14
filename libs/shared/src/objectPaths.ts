@@ -132,11 +132,10 @@ export type GetValueByPath<
  * @param fn Function to apply for each property path
  * @param path Path to the current value: Must be empty when calling this function externally and is used internally for recursion
  */
-export function iterateObjectPaths<O extends object, Fn extends (path: string[]) => unknown>(
-    obj: O,
-    fn: Fn,
-    path = [] as string[]
-): void {
+export function iterateObjectPaths<
+    O extends object,
+    Fn extends (path: string[], value: unknown) => unknown
+>(obj: O, fn: Fn, path = [] as string[]): void {
     for (const key in obj) {
         const value = obj[key];
         const currentPath = [...path, key];
@@ -149,7 +148,7 @@ export function iterateObjectPaths<O extends object, Fn extends (path: string[])
         ) {
             iterateObjectPaths(value, fn, currentPath);
         } else {
-            fn(currentPath);
+            fn(currentPath, value);
         }
     }
 }

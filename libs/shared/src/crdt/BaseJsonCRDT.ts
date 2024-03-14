@@ -1,21 +1,41 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
-import setWith from 'lodash/setWith.js';
-import omit from 'lodash/omit.js';
+import lodashSet from 'lodash/set.js';
 import isObject from 'lodash/isObject.js';
 import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
 import { ItemArray, Clock, Timestamp, Timestamps } from './Clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
-import isPrimitive from '../isPrimitive.js';
 import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
+import unset from 'lodash/unset.js';
+import merge from 'lodash/merge.js';
+
+/**
+ * Logs applied and rejected updates/modifications of the CRDT.
+ * These logs can then be used via `getLogs()` or logged via `printLogs()`.
+ *
+ * Enabling this results in a performance hit, so it should only be used for debugging purposes.
+ * Should also be disabled during fuzzing, as it will result in a test timeout.
+ */
+const DEBUG = false;
+
+function set(obj: object, path: string[] | string, value: any) {
+    // we convert path to string to avoid creating arrays for a.0.b
+    path = Array.isArray(path) ? path.join('.') : path;
+    if (path === '') return; // filter out joined empty arrays
+    lodashSet(obj, path, value);
+}
 
 export type SerializedBaseJsonCRDT<O extends object> = {
     data: O;
     timestamps: Timestamps<O>;
     pathToItemArrays: string[];
 };
+
+function isDeleteOperator(value: unknown) {
+    return value === null || value === undefined;
+}
 
 function isActualObject(value: unknown) {
     return isObject(value) && !Array.isArray(value) && value !== null && !(value instanceof Date);
@@ -27,6 +47,18 @@ function isEmptyObject(value: unknown) {
 
 function isNonEmptyObject(value: unknown) {
     return isActualObject(value) && Object.keys(value as object).length > 0;
+}
+
+function isAtomic(value: unknown) {
+    return !isActualObject(value);
+}
+
+function isExistingAtomicValue(value: unknown) {
+    return isAtomic(value) && value !== undefined;
+}
+
+function isPathToItemArrayIndex(path: string[]) {
+    return path[path.length - 1] === '_index';
 }
 
 type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
@@ -54,15 +86,10 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     const obj = {};
     let index = 0;
     for (const item of arr) {
-        setWith(
-            obj,
-            [item.id],
-            {
-                ...item,
-                _index: index
-            },
-            Object
-        );
+        set(obj, [item.id.toString()], {
+            ...item,
+            _index: index
+        });
         index++;
     }
     return obj as ItemArrayObject;
@@ -143,11 +170,27 @@ function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) 
     return diff;
 }
 
+type Log = {
+    action: 'delete' | 'update';
+    rejected: boolean;
+    method: string;
+    path: string[];
+    values: { current: unknown; update: unknown };
+    timestamps: { current: Timestamp | Clock; update: Timestamp | Clock };
+};
+
+type UpdateValueProps = {
+    path: string[];
+    currentValue: unknown;
+    newValue: unknown;
+    newTimestamp: Timestamp;
+};
+
 /**
-CRDT implementation using a single counter to track updates.
-It only has one update method which takes a data diff and an associated timestamp.
-The user has to keep track of the counter themselves, outside of this class.
-*/
+ * CRDT implementation using a single counter to track updates.
+ * It only has one update method which takes a data diff and an associated timestamp.
+ * The user has to keep track of the counter themselves, outside of this class.
+ */
 export class BaseJsonCRDT<O extends object = object> {
     static calculateDiff(
         oldData: object,
@@ -160,12 +203,15 @@ export class BaseJsonCRDT<O extends object = object> {
         const allowedKeys = options?.allowedKeys ?? null;
         const ignorePaths = options?.ignorePaths ?? null;
         const diff = {};
-        iterateObjectPaths(newData, path => {
+
+        // Handle updates from the new data.
+        iterateObjectPaths(newData, (path, newValue) => {
             const pathString = path.join('.');
+
             if (ignorePaths && ignorePaths.has(pathString)) {
                 return;
             }
-            let newValue = get(newData, path);
+            // let newValue = get(newData, path);
             const oldValue = get(oldData, path);
             const isNewInsert = !has(oldData, path);
             if (isEqual(newValue, oldValue)) {
@@ -190,23 +236,43 @@ export class BaseJsonCRDT<O extends object = object> {
             }
             if (oldValue instanceof Date !== newValue instanceof Date) {
                 // We don't care about Date <-> string conversion if their values are the same.
-                if (new Date(oldValue).getTime() === new Date(newValue).getTime()) {
+                if (new Date(oldValue).getTime() === new Date(newValue as any).getTime()) {
                     return;
                 }
             }
 
-            setWith(diff, path, newValue, Object);
+            set(diff, path, newValue);
         });
 
-        // handle deletes
+        // Handle deletes of old data that are not present in the new data.
         iterateObjectPaths(oldData, path => {
-            const oldValue = get(oldData, path);
-            if (isEmptyObject(oldValue)) {
-                // we do not delete empty objects
-                return;
+            let closestValue = null;
+            let ancestorPath = [...path];
+            const poppedParts: string[] = [];
+
+            // Find the closest ancestor with a value in the new data.
+            while (ancestorPath.length > 0 && !closestValue) {
+                closestValue = get(newData, ancestorPath);
+                poppedParts.unshift(ancestorPath.pop()!);
             }
+
+            // Ensure the path is not empty.
+            if (!ancestorPath.length) {
+                ancestorPath = [poppedParts[0]];
+            }
+
+            const ancestorWasDeleted = closestValue === undefined;
+
+            // Path is not present in the new data, so we delete it.
             if (!has(newData, path)) {
-                setWith(diff, path, null, Object);
+                // Delete the ancestor if it was deleted in the new data.
+                if (ancestorWasDeleted) {
+                    set(diff, ancestorPath, null);
+                }
+                // Simply delete the path if the ancestor was not deleted.
+                else if (isActualObject(closestValue)) {
+                    set(diff, path, null);
+                }
             }
         });
 
@@ -215,6 +281,12 @@ export class BaseJsonCRDT<O extends object = object> {
 
     private dataObj: O;
     private timestampObj: Timestamps<O>;
+
+    /**
+     * Temporary timestamp object used to store timestamp modifications during the update process,
+     * so individual property/path updates don't interfere with each other.
+     */
+    private tempTimestampObj: Partial<Timestamps<O>>;
     private pathToItemArrays = new Set<string>();
 
     static fromSerialized<T extends object>(
@@ -236,10 +308,12 @@ export class BaseJsonCRDT<O extends object = object> {
     constructor(data: O);
     constructor(data: O, timestamps: Timestamps<O>, pathToItemArrays: string[]);
     constructor(data: O, timestamps?: Timestamps<O>, pathToItemArrays?: string[]) {
+        this.tempTimestampObj = {};
+
         if (!timestamps && !pathToItemArrays) {
             // case where we are initializing from scratch
             this.timestampObj = {} as Timestamps<O>;
-            this.dataObj = this.initData(cloneDeep(data));
+            this.dataObj = this._initData(cloneDeep(data));
             return;
         }
         if (!timestamps || !pathToItemArrays) {
@@ -257,13 +331,11 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param obj the object to convert
      * @returns data: data with item array representation objects
      */
-    private initData(data: O) {
-        iterateObjectPaths(data, path => {
-            let value = get(data, path);
-
+    _initData(data: O) {
+        iterateObjectPaths(data, (path, value) => {
             if (value === null) {
                 // filter out null values
-                data = omit(data, path.join('.')) as O;
+                unset(data, path);
                 return;
             }
 
@@ -272,7 +344,7 @@ export class BaseJsonCRDT<O extends object = object> {
                 this.pathToItemArrays.add(path.join('.'));
             }
 
-            setWith(data, path, value, Object);
+            set(data, path, value);
         });
         return data;
     }
@@ -304,7 +376,8 @@ export class BaseJsonCRDT<O extends object = object> {
         );
     }
 
-    /** Get the timestamp for a given path.
+    /**
+     * Get the timestamp for a given path.
      * If the path does not have a timestamp, traverse up the path until a timestamp/object is found.
      * If during path traversal an object is found or there is no parent value with a path, return the minimum timestamp.
      */
@@ -328,19 +401,528 @@ export class BaseJsonCRDT<O extends object = object> {
         return new Clock(timestamp);
     }
 
-    private insertEmptyObject(path: string[]) {
-        const currentValue = get(this.dataObj, path);
-        if (currentValue !== undefined && isNonEmptyObject(currentValue)) {
-            // path already leads to an existing object, no need to do anything
+    private setTimestamp(path: string[], timestamp: Timestamp) {
+        set(this.tempTimestampObj, path, timestamp);
+    }
+
+    /**
+     * Get the timestamp and value for a given path.
+     * If the path does not have a timestamp, traverse up the path until a timestamp/object is found.
+     * If during path traversal an object is found or there is no parent value with a path, return the minimum timestamp.
+     */
+    _getClosestAncestorWithTimestamp(
+        path: string[],
+        ignoreChildren = false
+    ): {
+        timestamp: Clock;
+        value: unknown;
+        path: string[];
+    } {
+        let searchPath = [...path];
+        let timestamp = get(this.timestampObj, searchPath);
+        let value = get(this.dataObj, searchPath);
+
+        // Find the closest ancestor with a timestamp or a timestamps object.
+        while (searchPath.length > 0 && timestamp === undefined) {
+            searchPath.pop();
+            timestamp = get(this.timestampObj, searchPath);
+            value = get(this.dataObj, searchPath);
+        }
+
+        // Ensure the path is not empty.
+        if (!searchPath.length) {
+            searchPath = path.slice(0, 1);
+        }
+
+        // If we can't find a timestamp, we're likely trying with a root insert,
+        // so we can just return the minimum timestamp.
+        if (!timestamp) {
+            return {
+                path: searchPath,
+                timestamp: new Clock(),
+                value
+            };
+        }
+
+        // During nested inserts we don't care about the children,
+        // just the timestamp of the object itself.
+        if (ignoreChildren && typeof timestamp === 'object') {
+            timestamp = timestamp._self;
+        }
+
+        // If the ancestor has child timestamps, we return the maximum of those.
+        if (typeof timestamp === 'object') {
+            const maxChildTimestamp = Clock.max(timestamp);
+
+            return {
+                path: searchPath,
+                timestamp: maxChildTimestamp,
+                value
+            };
+        }
+
+        return {
+            path: searchPath,
+            timestamp: new Clock(timestamp),
+            value
+        };
+    }
+
+    _hasObjectAncestor(path: string[]) {
+        const searchPath = [...path];
+        searchPath.pop();
+
+        while (searchPath.length > 0) {
+            const value = get(this.dataObj, searchPath);
+            if (value !== undefined && !isActualObject(value)) {
+                return false;
+            }
+            searchPath.pop();
+        }
+
+        return true;
+    }
+
+    /**
+     * Logs of all applied and rejected updates/modifications of the CRDT.
+     */
+    private logs: Log[] = [];
+
+    public getLogs() {
+        return this.logs;
+    }
+
+    /* eslint-disable no-console */
+    public printLogs(title?: string) {
+        if (title) {
+            console.log(title);
+        }
+
+        console.log('---------------------------------');
+        console.log('LOGS:');
+        console.log('---------------------------------');
+
+        const logs = this.getLogs().map(log => {
+            return {
+                ...log,
+                valuesString: `${JSON.stringify(log.values.current)} -> ${JSON.stringify(
+                    log.values.update
+                )}`
+            };
+        });
+
+        const maxPathLength = logs.reduce((max, { path }) => {
+            return Math.max(max, path.join('.').length);
+        }, 0);
+
+        const maxValueLength = logs.reduce((max, { valuesString }) => {
+            return Math.max(max, valuesString.length);
+        }, 0);
+
+        logs.forEach(({ rejected, action, timestamps, path, method, valuesString }) => {
+            const msg = `${rejected ? '❌' : '✅'} ${action.toUpperCase()} ${
+                timestamps.update
+            } | ${path.join('.').padEnd(maxPathLength)} | ${valuesString.padEnd(
+                maxValueLength
+            )} | ${timestamps.current} | ${method}`;
+
+            console.log(rejected ? `\x1b[31m${msg}\x1b[0m` : `\x1b[32m${msg}\x1b[0m`);
+        });
+        console.log('---------------------------------');
+        console.log('STATE - DATA:');
+        console.log('---------------------------------');
+        console.log(JSON.stringify(this.dataObj, null, 2));
+        console.log('---------------------------------');
+        console.log('STATE - TIMESTAMPS:');
+        console.log('---------------------------------');
+        console.log(JSON.stringify(this.timestampObj, null, 2));
+        console.log('---------------------------------');
+    }
+    /* eslint-enable no-console */
+
+    /**
+     * Add a log entry. Only has an effect if DEBUG is enabled.
+     */
+    private debugLog(log: Log) {
+        DEBUG && this.logs.push(log);
+    }
+
+    private updateExistingAtomicValue({
+        path,
+        newValue,
+        currentValue,
+        newTimestamp
+    }: UpdateValueProps) {
+        if (!isExistingAtomicValue(currentValue)) {
+            throw new Error('currentValue is not atomic!');
+        }
+
+        const currentTimestamp = new Clock(get(this.timestampObj, path));
+        const reject = !currentTimestamp.isOlderThan(newTimestamp);
+
+        // Delete
+        if (isDeleteOperator(newValue)) {
+            this.debugLog({
+                action: 'delete',
+                rejected: reject,
+                method: 'updateExistingAtomicValue',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: currentTimestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            unset(this.dataObj, path);
+            this.setTimestamp(path, newTimestamp);
             return;
         }
-        if (currentValue !== undefined && isPrimitive(currentValue)) {
-            throw new Error(`Updating a primitive value with an object is not supported.
 
-            Path: '${path.join('.')}'
-            Current value: ${JSON.stringify(currentValue)}`);
+        // Update with atomic value
+        if (isAtomic(newValue)) {
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'updateExistingAtomicValue:atomic',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: currentTimestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+            return;
         }
-        setWith(this.dataObj, path, {}, Object);
+
+        // Update with object
+        if (isActualObject(newValue)) {
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'updateExistingAtomicValue:object',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: currentTimestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        throw new Error('Unhandled newValue type!');
+    }
+
+    private updateItemArrayIndex({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+        if (!isPathToItemArrayIndex(path)) {
+            throw new Error('updateItemArrayIndex called with non-item-array-index path');
+        }
+
+        const currentClock = new Clock(get(this.timestampObj, path) ?? 0);
+
+        // Delete item
+        if (isDeleteOperator(newValue)) {
+            this.debugLog({
+                action: 'delete',
+                rejected: false,
+                method: 'updateItemArrayIndex',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: currentClock, update: newTimestamp }
+            });
+
+            set(this.dataObj, path, null);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        // Never change a deleted _index value
+        if (currentValue === null) {
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        // Check timestamp
+        const reject = !currentClock.isOlderThan(newTimestamp);
+
+        // Upsert
+        if (typeof newValue === 'number') {
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'updateItemArrayIndex',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: currentClock, update: newTimestamp }
+            });
+            if (reject) return;
+
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        throw new Error('Unhandled newValue type!');
+    }
+
+    private insertNewValue({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+        if (currentValue !== undefined) {
+            throw new Error(
+                'currentValue is not undefined!' + JSON.stringify({ path, currentValue })
+            );
+        }
+
+        const ancestor = this._getClosestAncestorWithTimestamp(path, true);
+        const reject = !ancestor.timestamp.isOlderThan(newTimestamp);
+
+        // Delete
+        if (isDeleteOperator(newValue)) {
+            this.debugLog({
+                action: 'delete',
+                rejected: reject,
+                method: 'insertNewValue',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: ancestor.timestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            // Even though the value does not exist, we need to create the ancestor objects.
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+
+            // Update timestamp of the nearest ancestor.
+            // this.setTimestamp([...path.slice(0, -1), '_self'], newTimestamp);
+
+            unset(this.dataObj, path);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        // Insert new atomic value or nested object.
+        if (isAtomic(newValue) || isActualObject(newValue)) {
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'insertNewValue',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: ancestor.timestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+
+            // Store previous timestamp of ancestor when setting/inserting a nested value.
+            if (ancestor.path.length !== path.length) {
+                this.setTimestamp([...ancestor.path, '_self'], ancestor.timestamp.toString());
+            }
+
+            return;
+        }
+
+        throw new Error('Unhandled newValue type!');
+    }
+    private insertNestedValueReplacingAtomicAncestor({
+        path,
+        newValue,
+        newTimestamp
+    }: UpdateValueProps) {
+        // The atomic value/ancestor that is being replaced.
+        const ancestor = this._getClosestAncestorWithTimestamp(path);
+        const ancestorClock = ancestor.timestamp;
+
+        const reject = !ancestorClock.isOlderThan(newTimestamp);
+
+        if (isDeleteOperator(newValue)) {
+            this.debugLog({
+                action: 'delete',
+                rejected: reject,
+                method: 'insertNestedValueReplacingAtomicAncestor',
+                path,
+                values: { current: ancestor.value, update: newValue },
+                timestamps: { current: ancestorClock, update: newTimestamp }
+            });
+            if (reject) return;
+
+            unset(this.dataObj, path);
+        } else {
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'insertNestedValueReplacingAtomicAncestor',
+                path,
+                values: { current: ancestor.value, update: newValue },
+                timestamps: { current: ancestorClock, update: newTimestamp }
+            });
+            if (reject) return;
+
+            // Replace atomic value with empty object.
+            // Otherwise the new value would get set into the atomic object (`String`, `Number`, etc.).
+            set(this.dataObj, ancestor.path, {});
+            // this.setTimestamp(ancestor.path, timestamp);
+
+            // Insert the new value.
+            set(this.dataObj, path, newValue);
+        }
+
+        this.setTimestamp(path, newTimestamp);
+    }
+
+    /**
+     * Deletes all children of the given path that are older than the new timestamp.
+     * Keeps the children that are newer than the new timestamp.
+     * @returns The maximum timestamp of all children.
+     */
+    _partialDelete({
+        path,
+        currentTimestamps,
+        newTimestamp
+    }: {
+        path: string[];
+        currentTimestamps: object;
+        newTimestamp: Timestamp;
+    }): { maxTimestamp: Clock } {
+        let maxTimestamp = new Clock(0);
+        const deletedChildren: string[][] = [];
+
+        iterateObjectPaths(currentTimestamps, childPath => {
+            const fullPath = [...path, ...childPath];
+            const childTimestamp = new Clock(get(this.timestampObj, fullPath));
+
+            if (childTimestamp.isNewerThan(maxTimestamp)) {
+                maxTimestamp = childTimestamp;
+            }
+
+            // delete all children that are older than the new timestamp
+            if (childTimestamp.isOlderThan(newTimestamp)) {
+                deletedChildren.push(fullPath);
+
+                unset(this.dataObj, fullPath);
+                this.setTimestamp(fullPath, newTimestamp);
+            }
+        });
+
+        const deletedPaths = new Set<string>();
+
+        // Delete possibly empty ancestor objects of deleted children.
+        Array.from(deletedChildren)
+            // Sort paths from deepest to shallowest.
+            // That way we delete the deepest children first,
+            // so we can then possibly delete their ancestors.
+            .sort((a, b) => b.length - a.length)
+            .forEach(fullPath => {
+                const path = fullPath.slice(0, -1);
+                while (path.length > 0) {
+                    const stringPath = path.join('.');
+
+                    // If we already deleted this path, we don't need to check it again.
+                    if (deletedPaths.has(stringPath)) {
+                        break;
+                    }
+
+                    // Delete the path if it's an empty object.
+                    const currentValue = get(this.dataObj, path);
+                    if (isEmptyObject(currentValue)) {
+                        deletedPaths.add(stringPath);
+                        unset(this.dataObj, path);
+                        this.setTimestamp(path, newTimestamp);
+                    } else {
+                        // If the path is not an empty object, we don't need to check any higher paths.
+                        break;
+                    }
+                    path.pop();
+                }
+            });
+
+        return {
+            maxTimestamp
+        };
+    }
+
+    private updateObject({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+        if (!isActualObject(currentValue)) {
+            throw new Error('currentValue is not an object!');
+        }
+
+        // Don't overwrite existing objects with empty object
+        if (isEmptyObject(newValue)) {
+            // TODO: Do we need to set the `_self` timestamp here?
+            return;
+        }
+
+        const currentTimestamp = get(this.timestampObj, path);
+
+        // Delete object
+        if (isDeleteOperator(newValue)) {
+            let maxTimestamp: Clock;
+
+            // Perform a partial delete when object has tracked children.
+            if (typeof currentTimestamp === 'object') {
+                ({ maxTimestamp } = this._partialDelete({
+                    path,
+                    currentTimestamps: currentTimestamp,
+                    newTimestamp
+                }));
+            } else {
+                maxTimestamp = new Clock(currentTimestamp);
+            }
+
+            // If the object has no children with newer timestamps, we overwrite the whole object.
+            // TODO: We could do this earlier, so we don't have to perform a partial delete if we're going to delete the whole object anyway.
+            const reject = !maxTimestamp.isOlderThan(newTimestamp);
+
+            this.debugLog({
+                action: 'delete',
+                rejected: reject,
+                method: 'updateObject',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: maxTimestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            unset(this.dataObj, path);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        // Replace object with atomic value
+        if (isAtomic(newValue)) {
+            let maxTimestamp: Clock;
+
+            // Perform a partial delete when object has tracked children.
+            if (typeof currentTimestamp === 'object') {
+                ({ maxTimestamp } = this._partialDelete({
+                    path,
+                    currentTimestamps: currentTimestamp,
+                    newTimestamp
+                }));
+            } else {
+                maxTimestamp = new Clock(currentTimestamp);
+            }
+
+            // Overwrite the object with the atomic value, if no children have newer timestamps.
+            const reject = !maxTimestamp.isOlderThan(newTimestamp);
+
+            this.debugLog({
+                action: 'update',
+                rejected: reject,
+                method: 'updateObject',
+                path,
+                values: { current: currentValue, update: newValue },
+                timestamps: { current: maxTimestamp, update: newTimestamp }
+            });
+            if (reject) return;
+
+            set(this.dataObj, path, newValue);
+            this.setTimestamp(path, newTimestamp);
+            return;
+        }
+
+        throw new Error('Unhandled newValue type!');
     }
 
     /**
@@ -349,57 +931,45 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param value the value to upsert
      * @param timestamp the timestamp assosciated with the value
      */
-    private upsertValue(path: string[], value: unknown, timestamp: Timestamp) {
-        if (isEmptyObject(value)) {
-            this.insertEmptyObject(path);
+    private updateValue(path: string[], newValue: unknown, newTimestamp: Timestamp) {
+        const currentValue = get(this.dataObj, path);
+
+        const props = { path, newValue, newTimestamp, currentValue };
+
+        // Current path leads to an item array index (e.g. 'a.b._index')
+        if (isPathToItemArrayIndex(path)) {
+            this.updateItemArrayIndex(props);
             return;
         }
 
-        const currentTimestamp = this.getTimestamp(path);
-        const isArrayIndex = path[path.length - 1] === '_index';
-        if (isArrayIndex) {
-            if (value === null) {
-                // deletes over everything
-                setWith(this.dataObj, path, null, Object);
-                return;
-            }
-            if (get(this.dataObj, path) === null) {
-                // do not update if the item has been deleted
-                return;
-            }
+        // Current path has an atomic value.
+        if (isExistingAtomicValue(currentValue)) {
+            this.updateExistingAtomicValue(props);
+            return;
         }
-        if (!currentTimestamp.isOlderThan(timestamp)) return;
 
-        if (value === null) {
-            const currentValue = get(this.dataObj, path);
-            if (isActualObject(currentValue)) {
-                if (this.pathToItemArrays.has(path.join('.'))) {
-                    // we are trying to delete an item array, that's not allowed
-                    // instead we set the item array to an empty array
-                    Object.keys(currentValue).forEach(key => {
-                        const itemKeyPaths = [...path, key, '_index'];
-                        this.upsertValue(itemKeyPaths, null, timestamp);
-                    });
-                    return;
-                }
-                throw new Error(
-                    `Deleting objects is currently not supported.
-
-                    Deleting path: ${path.join('.')}
-                    Old value: ${JSON.stringify(currentValue)}`
-                );
+        // Current path does not have a value/does not exist.
+        // Could either be an insert or a nested replacement of an atomic value.
+        if (!currentValue) {
+            if (this._hasObjectAncestor(path)) {
+                // ...in existing object
+                this.insertNewValue(props);
+            } else {
+                // ...replacing existing atomic value
+                this.insertNestedValueReplacingAtomicAncestor(props);
             }
-            this.dataObj = omit(this.dataObj, path.join('.')) as O;
-            // if we deleted the only nested key of an object, keep the parent object
-            const parentPath = [...path].slice(0, path.length - 1);
-            const parentValue = get(this.dataObj, parentPath);
-            if (parentValue === undefined) {
-                setWith(this.dataObj, parentPath, {}, Object);
-            }
-        } else {
-            setWith(this.dataObj, path, value, Object);
+            return;
         }
-        setWith(this.timestampObj, path, timestamp, Object);
+
+        // Current path leads to an object.
+        if (isActualObject(currentValue)) {
+            this.updateObject(props);
+            return;
+        }
+
+        throw new Error(
+            'Unhandled update case!' + JSON.stringify({ path, currentValue, newValue })
+        );
     }
 
     /**
@@ -407,9 +977,11 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param diff The data diff to apply
      * @param timestamp The timestamp assosicated with the data diff
      */
-    update(diff: Diff<O>, timestampOrClock: Clock | Timestamp) {
+    update(diff: Diff<any>, timestampOrClock: Clock | Timestamp) {
         const timestamp =
             timestampOrClock instanceof Clock ? timestampOrClock.timestamp : timestampOrClock;
+
+        this.tempTimestampObj = {};
 
         iterateObjectPaths(diff, path => {
             const searchPath = [...path];
@@ -425,20 +997,19 @@ export class BaseJsonCRDT<O extends object = object> {
                         Path: '${pathString}'
                         Current value: ${JSON.stringify(currentValue)}`);
                     }
-                    setWith(this.dataObj, pathString, {}, Object);
+                    set(this.dataObj, pathString, {});
                     this.pathToItemArrays.add(pathString);
                 }
             }
         });
 
-        iterateObjectPaths(diff, path => {
-            const updatedValue = get(diff, path);
+        iterateObjectPaths(diff, (path, newValue) => {
             try {
-                this.upsertValue(path, updatedValue, timestamp);
+                this.updateValue(path, newValue, timestamp);
             } catch (e) {
                 const currentValue = get(this.dataObj, path);
                 console.error('Error while updating CRDT', {
-                    updatedValue,
+                    newValue,
                     path,
                     timestamp,
                     currentValue
@@ -446,6 +1017,10 @@ export class BaseJsonCRDT<O extends object = object> {
                 throw e;
             }
         });
+
+        // Recursively merge the temporary timestamp object into the main timestamp object.
+        merge(this.timestampObj, this.tempTimestampObj);
+        this.tempTimestampObj = {};
     }
 
     data(): O {
@@ -453,7 +1028,7 @@ export class BaseJsonCRDT<O extends object = object> {
         for (const path of this.pathToItemArrays) {
             const itemArrayObject: ItemArrayObject = get(data, path) ?? {}; // handle case where the item array is not present due to corrupted data
             const itemArray = this.objectToItemArray(itemArrayObject, path);
-            setWith(data, path, itemArray, Object);
+            set(data, path, itemArray);
         }
         return data;
     }

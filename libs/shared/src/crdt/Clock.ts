@@ -61,6 +61,11 @@ export class Clock {
         return [nodeId, count];
     }
 
+    static parts(timestamp: Clock | Timestamp): { nodeId: number; count: number } {
+        const [nodeId, count] = Clock.split(timestamp);
+        return { nodeId, count };
+    }
+
     /**
      * Get the nodeId from a timestamp
      * @param {Timestamp} timestamp The timestamp to get the nodeId from
@@ -145,7 +150,9 @@ export class Clock {
 
         if (!Clock.validate(nodeIdOrTimestamp)) {
             throw new Error(
-                `Timestamps must be a string or an instance of Timestamp but is: "${nodeIdOrTimestamp}"`
+                `Timestamps must be a string or an instance of Timestamp but is: "${JSON.stringify(
+                    nodeIdOrTimestamp
+                )}"`
             );
         }
         [this.nodeId, this.count] = Clock.split(nodeIdOrTimestamp);
