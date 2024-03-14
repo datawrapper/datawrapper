@@ -6,6 +6,7 @@ import get from '@datawrapper/shared/get';
 import set from '@datawrapper/shared/set';
 import objectDiff from '@datawrapper/shared/objectDiff';
 import PostEvent from '@datawrapper/shared/postEvent';
+import migrate from '../migrate/index.js';
 
 import json from './dataset/json.js';
 import delimited from './dataset/delimited.js';
@@ -439,6 +440,10 @@ function Chart(attributes) {
             return translation;
         }
     };
+
+    if (attributes.metadata) {
+        migrate(attributes.metadata);
+    }
 
     if (attributes.language) {
         chart.locale(attributes.language);
