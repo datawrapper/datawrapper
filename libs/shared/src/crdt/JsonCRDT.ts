@@ -57,8 +57,22 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
      */
     applyUpdate(update: Update<O>) {
         const { diff, timestamp } = update;
+        // if (this.clock.nodeId === 1) {
+        //     debugger;
+        // }
         this.clock.update(timestamp);
         this.crdt.update(diff, timestamp);
+    }
+
+    /**
+     * Apply an update to the CRDT. An update consists of a data diff and a timestamp.
+     * @param update.diff The data diff to apply
+     * @param update.timestamp The timestamp associated with the data diff
+     */
+    applyUpdates(updates: Update<O>[]) {
+        for (const update of updates) {
+            this.applyUpdate(update);
+        }
     }
 
     /**
@@ -87,6 +101,10 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         return this.crdt.data();
     }
 
+    // timestamps(): O {
+    //     return this.crdt.timestamps();
+    // }
+
     serialize(): SerializedJsonCRDT<O> {
         return {
             crdt: this.crdt.serialize(),
@@ -104,5 +122,13 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
 
     counter(): number {
         return this.clock.count;
+    }
+
+    getLogs() {
+        return this.crdt.getLogs();
+    }
+
+    printLogs(title?: string) {
+        return this.crdt.printLogs(title);
     }
 }
