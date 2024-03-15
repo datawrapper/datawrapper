@@ -21,8 +21,12 @@ import merge from 'lodash/merge.js';
  */
 const DEBUG = false;
 
-function set(obj: object, path: string[] | string, value: any) {
+function set(obj: object, path: string[], value: any) {
     if (path.length === 0) return;
+
+    if (typeof path === 'string') {
+        throw new Error('Path must be an array of strings');
+    }
 
     lodashSetWith(obj, path, value, value => {
         // Emulate the behaviour if the regular `lodash.set`, but don't create arrays for numeric keys.
@@ -1058,7 +1062,8 @@ export class BaseJsonCRDT<O extends object = object> {
                         Path: '${pathString}'
                         Current value: ${JSON.stringify(currentValue)}`);
                     }
-                    set(this.dataObj, pathString, {});
+                    // Individual keys of item array paths will never contain dots, so we can safely split by dots.
+                    set(this.dataObj, pathString.split('.'), {});
                     this.pathToItemArrays.add(pathString);
                 }
             }
@@ -1091,7 +1096,8 @@ export class BaseJsonCRDT<O extends object = object> {
         for (const path of this.pathToItemArrays) {
             const itemArrayObject: ItemArrayObject = get(data, path) ?? {}; // handle case where the item array is not present due to corrupted data
             const itemArray = this.objectToItemArray(itemArrayObject, path);
-            set(data, path, itemArray);
+            // Individual keys of item array paths will never contain dots, so we can safely split by dots.
+            set(data, path.split('.'), itemArray);
         }
         return data;
     }
