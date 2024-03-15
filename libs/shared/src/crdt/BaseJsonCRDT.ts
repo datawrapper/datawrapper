@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
-import lodashSet from 'lodash/set.js';
+import lodashSetWith from 'lodash/setWith.js';
 import isObject from 'lodash/isObject.js';
 import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
@@ -10,6 +10,7 @@ import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
 import unset from 'lodash/unset.js';
 import merge from 'lodash/merge.js';
+// import isPlainObject from 'lodash/isPlainObject.js';
 
 /**
  * Logs applied and rejected updates/modifications of the CRDT.
@@ -21,10 +22,19 @@ import merge from 'lodash/merge.js';
 const DEBUG = false;
 
 function set(obj: object, path: string[] | string, value: any) {
-    // we convert path to string to avoid creating arrays for a.0.b
-    path = Array.isArray(path) ? path.join('.') : path;
-    if (path === '') return; // filter out joined empty arrays
-    lodashSet(obj, path, value);
+    if (path.length === 0) return;
+
+    lodashSetWith(obj, path, value, value => {
+        // Emulate the behaviour if the regular `lodash.set`, but don't create arrays for numeric keys.
+        // Just using `Object` as the the customizer does not work as strings seem to get merged with objects
+        // and result in `String` instances for some reason.
+        // Lodash implementation: https://github.com/lodash/lodash/blob/c7c70a7da5172111b99bb45e45532ed034d7b5b9/src/.internal/baseSet.ts#L36-L40
+        if (isObject(value)) {
+            return value;
+        }
+
+        return {};
+    });
 }
 
 export type SerializedBaseJsonCRDT<O extends object> = {
@@ -364,8 +374,16 @@ export class BaseJsonCRDT<O extends object = object> {
                     const comparison = a._index - b._index;
                     if (comparison !== 0) return comparison;
                     // use timestamps as tie-breaker for when two items were inserted in the same index
-                    const aTimestamp = this.getTimestamp([...path.split('.'), a.id, '_index']);
-                    const bTimestamp = this.getTimestamp([...path.split('.'), b.id, '_index']);
+                    const aTimestamp = this.getClosestTimestamp([
+                        ...path.split('.'),
+                        a.id,
+                        '_index'
+                    ]);
+                    const bTimestamp = this.getClosestTimestamp([
+                        ...path.split('.'),
+                        b.id,
+                        '_index'
+                    ]);
                     return aTimestamp.isNewerThan(bTimestamp) ? -1 : 1;
                 })
                 .map(item => {
@@ -381,11 +399,11 @@ export class BaseJsonCRDT<O extends object = object> {
      * If the path does not have a timestamp, traverse up the path until a timestamp/object is found.
      * If during path traversal an object is found or there is no parent value with a path, return the minimum timestamp.
      */
-    private getTimestamp(path: string[]) {
+    private getClosestTimestamp(path: string[]) {
         const searchPath = [...path];
         let timestamp = undefined;
         while (searchPath.length > 0 && timestamp === undefined) {
-            timestamp = get(this.timestampObj, searchPath);
+            timestamp = this._getTimestamp(searchPath);
             searchPath.pop();
         }
         if (!timestamp || (typeof timestamp === 'object' && path.length != searchPath.length - 1)) {
@@ -401,8 +419,54 @@ export class BaseJsonCRDT<O extends object = object> {
         return new Clock(timestamp);
     }
 
-    private setTimestamp(path: string[], timestamp: Timestamp) {
+    _setTimestamp(path: string[], timestamp: Timestamp) {
         set(this.tempTimestampObj, path, timestamp);
+    }
+
+    _getTimestamp(path: string[] | string): any {
+        // Custom implementation based on our specific requirements for getting timestamps.
+        // TODO: Check if we actually need this or the naive approach is fine.
+        // path = [...(Array.isArray(path) ? path : path.split('.'))];
+
+        // if (!path.length) {
+        //     return undefined;
+        // }
+
+        // let object = this.timestampObj;
+        // while (path.length) {
+        //     if (!object) {
+        //         return undefined;
+        //     }
+
+        //     // Get the next key and value.
+        //     const nextKey = path.shift()!;
+        //     const nextValue = (object as any)[nextKey];
+
+        //     // If the next value is an object, we continue traversing the path.
+        //     if (isPlainObject(nextValue)) {
+        //         object = nextValue;
+        //     }
+        //     // If the next value is a string (i.e. a timestamp '2-3'),
+        //     // we return it if it's the last key in the path.
+        //     else if (!path.length && typeof nextValue === 'string') {
+        //         return nextValue;
+        //     }
+        //     // If we end up with a string that's not the last key in the path,
+        //     // or a non-object, we return undefined.
+        //     else {
+        //         return undefined;
+        //     }
+        // }
+
+        // Naive method based on lodash.
+        const object = get(this.timestampObj, path);
+        if (typeof object === 'string' && object.length < 3) {
+            // We're indexing into a string (timestamp '1-2'), which is not allowed.
+            // This can happen when the path contains numbers.
+            return undefined;
+        }
+
+        return object;
     }
 
     /**
@@ -419,13 +483,13 @@ export class BaseJsonCRDT<O extends object = object> {
         path: string[];
     } {
         let searchPath = [...path];
-        let timestamp = get(this.timestampObj, searchPath);
+        let timestamp = this._getTimestamp(searchPath);
         let value = get(this.dataObj, searchPath);
 
         // Find the closest ancestor with a timestamp or a timestamps object.
         while (searchPath.length > 0 && timestamp === undefined) {
             searchPath.pop();
-            timestamp = get(this.timestampObj, searchPath);
+            timestamp = this._getTimestamp(searchPath);
             value = get(this.dataObj, searchPath);
         }
 
@@ -463,7 +527,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
         return {
             path: searchPath,
-            timestamp: new Clock(timestamp),
+            timestamp: timestamp ? new Clock(timestamp) : new Clock(),
             value
         };
     }
@@ -557,7 +621,7 @@ export class BaseJsonCRDT<O extends object = object> {
             throw new Error('currentValue is not atomic!');
         }
 
-        const currentTimestamp = new Clock(get(this.timestampObj, path));
+        const currentTimestamp = new Clock(this._getTimestamp(path));
         const reject = !currentTimestamp.isOlderThan(newTimestamp);
 
         // Delete
@@ -573,7 +637,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             unset(this.dataObj, path);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -590,7 +654,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -607,7 +671,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -619,7 +683,7 @@ export class BaseJsonCRDT<O extends object = object> {
             throw new Error('updateItemArrayIndex called with non-item-array-index path');
         }
 
-        const currentClock = new Clock(get(this.timestampObj, path) ?? 0);
+        const currentClock = new Clock(this._getTimestamp(path) ?? 0);
 
         // Delete item
         if (isDeleteOperator(newValue)) {
@@ -633,13 +697,13 @@ export class BaseJsonCRDT<O extends object = object> {
             });
 
             set(this.dataObj, path, null);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
         // Never change a deleted _index value
         if (currentValue === null) {
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -659,7 +723,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -690,13 +754,12 @@ export class BaseJsonCRDT<O extends object = object> {
 
             // Even though the value does not exist, we need to create the ancestor objects.
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
 
             // Update timestamp of the nearest ancestor.
             // this.setTimestamp([...path.slice(0, -1), '_self'], newTimestamp);
 
             unset(this.dataObj, path);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -713,11 +776,11 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
 
             // Store previous timestamp of ancestor when setting/inserting a nested value.
             if (ancestor.path.length !== path.length) {
-                this.setTimestamp([...ancestor.path, '_self'], ancestor.timestamp.toString());
+                this._setTimestamp([...ancestor.path, '_self'], ancestor.timestamp.toString());
             }
 
             return;
@@ -768,7 +831,7 @@ export class BaseJsonCRDT<O extends object = object> {
             set(this.dataObj, path, newValue);
         }
 
-        this.setTimestamp(path, newTimestamp);
+        this._setTimestamp(path, newTimestamp);
     }
 
     /**
@@ -790,7 +853,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
         iterateObjectPaths(currentTimestamps, childPath => {
             const fullPath = [...path, ...childPath];
-            const childTimestamp = new Clock(get(this.timestampObj, fullPath));
+            const childTimestamp = new Clock(this._getTimestamp(fullPath));
 
             if (childTimestamp.isNewerThan(maxTimestamp)) {
                 maxTimestamp = childTimestamp;
@@ -801,7 +864,7 @@ export class BaseJsonCRDT<O extends object = object> {
                 deletedChildren.push(fullPath);
 
                 unset(this.dataObj, fullPath);
-                this.setTimestamp(fullPath, newTimestamp);
+                this._setTimestamp(fullPath, newTimestamp);
             }
         });
 
@@ -828,7 +891,7 @@ export class BaseJsonCRDT<O extends object = object> {
                     if (isEmptyObject(currentValue)) {
                         deletedPaths.add(stringPath);
                         unset(this.dataObj, path);
-                        this.setTimestamp(path, newTimestamp);
+                        this._setTimestamp(path, newTimestamp);
                     } else {
                         // If the path is not an empty object, we don't need to check any higher paths.
                         break;
@@ -853,7 +916,7 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
 
-        const currentTimestamp = get(this.timestampObj, path);
+        const currentTimestamp = this._getTimestamp(path);
 
         // Delete object
         if (isDeleteOperator(newValue)) {
@@ -885,7 +948,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             unset(this.dataObj, path);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -918,7 +981,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (reject) return;
 
             set(this.dataObj, path, newValue);
-            this.setTimestamp(path, newTimestamp);
+            this._setTimestamp(path, newTimestamp);
             return;
         }
 
@@ -967,9 +1030,7 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
 
-        throw new Error(
-            'Unhandled update case!' + JSON.stringify({ path, currentValue, newValue })
-        );
+        throw new Error('Unhandled update case!');
     }
 
     /**
@@ -978,7 +1039,7 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param timestamp The timestamp assosicated with the data diff
      */
     update(diff: Diff<any>, timestampOrClock: Clock | Timestamp) {
-        const timestamp =
+        const newTimestamp =
             timestampOrClock instanceof Clock ? timestampOrClock.timestamp : timestampOrClock;
 
         this.tempTimestampObj = {};
@@ -1005,14 +1066,16 @@ export class BaseJsonCRDT<O extends object = object> {
 
         iterateObjectPaths(diff, (path, newValue) => {
             try {
-                this.updateValue(path, newValue, timestamp);
+                this.updateValue(path, newValue, newTimestamp);
             } catch (e) {
                 const currentValue = get(this.dataObj, path);
+                const currentTimestamp = this._getTimestamp(path);
                 console.error('Error while updating CRDT', {
-                    newValue,
                     path,
-                    timestamp,
-                    currentValue
+                    currentValue,
+                    newValue,
+                    currentTimestamp,
+                    newTimestamp
                 });
                 throw e;
             }

@@ -471,13 +471,37 @@ test(`convert object to string and back`, t => {
     t.deepEqual(testCRDT1.data(), testCRDT2.data());
 });
 
-function generateRandomChar() {
-    const possible = 'abcdef';
-    return possible.charAt(Math.floor(Math.random() * possible.length));
+function generateRandomKey(level: number) {
+    const value = sample([...'abcdef', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0])!;
+
+    if (typeof value === 'string' && level) {
+        return `${value}${level}`;
+    }
+
+    return value;
 }
 
 function generateRandomValue() {
-    return sample([{}, 0, 1, ...'abcdef', null, new Date()]);
+    return sample([
+        {},
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        0,
+        ...'abcdef',
+        null,
+        new Date()
+        // TODO: Look into arrays.
+        // [],
+        // [1, 2, 3],
+        // ['4', '5', '6']
+    ]);
 }
 
 function generateRandomObject(lvl = 0) {
@@ -486,11 +510,11 @@ function generateRandomObject(lvl = 0) {
     //     obj[generateRandomChar() + lvl] = generateRandomValue();
     // }
     for (let i = 0; i < 1; i++) {
-        obj[generateRandomChar() + lvl] = generateRandomValue();
+        obj[generateRandomKey(lvl)] = generateRandomValue();
     }
     if (lvl < 10) {
         for (let i = 0; i < 1; i++) {
-            obj[generateRandomChar() + lvl] = generateRandomObject(lvl + 1);
+            obj[generateRandomKey(lvl)] = generateRandomObject(lvl + 1);
         }
     }
     return obj;

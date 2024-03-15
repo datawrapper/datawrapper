@@ -1446,6 +1446,26 @@ test('nested empty objects get deleted on partial deletes', t => {
     });
 });
 
+test('inserting nested numeric keys does not create arrays but regular objects', t => {
+    const crdt = new BaseJsonCRDT(
+        { a: { b: 1 } },
+        {
+            a: { b: '1-4' }
+        },
+        []
+    );
+
+    crdt.update({ a: { 0: 2 } }, '1-1');
+    t.deepEqual(crdt.data(), {
+        a: { b: 1, 0: 2 }
+    });
+
+    crdt.update({ a: { c: { 0: 'foo' } } }, '1-2');
+    t.deepEqual(crdt.data(), {
+        a: { b: 1, 0: 2, c: { 0: 'foo' } }
+    });
+});
+
 // ---------------------------------------------------------------------
 // _getClosestAncestorWithTimestamp
 // ---------------------------------------------------------------------
@@ -1499,8 +1519,20 @@ test('_getClosestAncestorWithTimestamp returns minimum timestamp when no timesta
     });
 });
 
+test('_getClosestAncestorWithTimestamp returns minimum clock when ignoring children and object has no _self timestamp', t => {
+    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-1' } } }, []);
+
+    t.deepEqual(crdt._getClosestAncestorWithTimestamp(['a'], true), {
+        path: ['a'],
+        timestamp: new Clock('0-0'),
+        value: {
+            b: { c: 1 }
+        }
+    });
+});
+
 test('_hasObjectAncestor', t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } }, x: 9 });
+    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 }, arr: ['1'] }, x: 9 });
 
     // True for existing properties.
     t.true(crdt._hasObjectAncestor(['a']));
@@ -1518,6 +1550,9 @@ test('_hasObjectAncestor', t => {
     // False for properties nested in an atomic value.
     t.false(crdt._hasObjectAncestor(['a', 'b', 'c', 'd']));
     t.false(crdt._hasObjectAncestor(['a', 'b', 'c', 'd', 'e']));
+
+    // False for properties nested in an array.
+    t.false(crdt._hasObjectAncestor(['a', 'arr', '0']));
 });
 
 test('_initData filters out null values', t => {
@@ -1530,20 +1565,28 @@ test('_initData filters out null values', t => {
     });
 });
 
-// test('_propagateTimestamp', t => {
-//     let timestamps = { a: { b: { c: '2-5' } } } as any;
-//     const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, timestamps, []);
+test('_getTimestamp', t => {
+    const crdt = new BaseJsonCRDT(
+        { a: { b: { c: 1 } }, 0: { 1: '1-1' } },
+        { a: { b: { c: '1-1' } }, 0: { 1: '1-3' } },
+        []
+    );
 
-//     crdt._propagateTimestamp(timestamps, ['a', 'b', 'c'], '2-5');
+    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c']), '1-1');
+    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c', 'd']), undefined);
+    t.deepEqual(crdt._getTimestamp(['a', 'b', 'd']), undefined);
+    t.deepEqual(crdt._getTimestamp(['a', 'b']), {
+        c: '1-1'
+    });
+    t.deepEqual(crdt._getTimestamp(['a']), {
+        b: { c: '1-1' }
+    });
 
-//     t.deepEqual(timestamps, {
-//         _self: '2-5',
-//         a: {
-//             _self: '2-5',
-//             b: {
-//                 _self: '2-5',
-//                 c: '2-5'
-//             }
-//         }
-//     });
-// });
+    t.deepEqual(crdt._getTimestamp(['0', '1']), '1-3');
+    t.deepEqual(crdt._getTimestamp(['0', '1', '1']), undefined);
+    t.deepEqual(crdt._getTimestamp(['0']), {
+        1: '1-3'
+    });
+
+    t.deepEqual(crdt._getTimestamp(['x']), undefined);
+});
