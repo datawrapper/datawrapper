@@ -1466,6 +1466,27 @@ test('inserting nested numeric keys does not create arrays but regular objects',
     });
 });
 
+test('setting nested keys containing dots does not result in more nested objects', t => {
+    const crdt = new BaseJsonCRDT(
+        { a: {} },
+        {
+            a: '0-0'
+        },
+        []
+    );
+
+    crdt.update({ a: { 'this.has.dots': 3 } }, '1-1');
+    t.deepEqual(crdt.data(), {
+        a: { 'this.has.dots': 3 }
+    });
+
+    crdt.update({ x: { a: { 'this.has.dots': { b: { c: 'test.123' } } } } }, '1-1');
+    t.deepEqual(crdt.data(), {
+        a: { 'this.has.dots': 3 },
+        x: { a: { 'this.has.dots': { b: { c: 'test.123' } } } }
+    });
+});
+
 // ---------------------------------------------------------------------
 // _getClosestAncestorWithTimestamp
 // ---------------------------------------------------------------------
