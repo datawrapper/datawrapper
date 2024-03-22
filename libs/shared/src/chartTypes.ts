@@ -290,3 +290,146 @@ export type Visualization = {
  * Chart data can be a string (e.g. CSV data) or JSON (e.g. for locator maps)
  */
 export type ChartData = string | Record<string, unknown>;
+
+type AnnotationId = string;
+type AnnotationPlot = string;
+type AnnotationShowInAllPlots = boolean;
+
+export type TextAnnotationAnchor = 'tc' | 'tr' | 'mr' | 'br' | 'bc' | 'bl' | 'ml' | 'tl' | 'mc';
+export type TextAnnotationConnectorLineType = 'straight' | 'curveRight' | 'curveLeft';
+export type TextAnnotationArrowHead = 'lines' | 'triangle' | false;
+export type TextAnnotationCircleStyle = 'solid' | 'dashed';
+export type TextAnnotationConnectorLine = {
+    enabled: boolean;
+    type: TextAnnotationConnectorLineType;
+    circle: boolean;
+    stroke: number;
+    arrowHead: TextAnnotationArrowHead;
+    circleStyle: TextAnnotationCircleStyle;
+    circleRadius: number;
+    inheritColor: boolean;
+    targetPadding: number;
+};
+
+export type TextAnnotation = {
+    id: AnnotationId;
+    plot?: AnnotationPlot;
+    showInAllPlots?: AnnotationShowInAllPlots;
+    x: number | string;
+    y: number | string;
+    dx: number;
+    dy: number;
+    bg: boolean;
+    width: number;
+    text: string;
+    align: TextAnnotationAnchor;
+    bold: boolean;
+    italic: boolean;
+    underline: boolean;
+    color: string | false;
+    size: number;
+    showMobile: boolean;
+    showDesktop: boolean;
+    connectorLine: TextAnnotationConnectorLine;
+    mobileFallback: boolean;
+};
+
+export type RangeAnnotationStrokeType = 'solid' | 'dotted' | 'dashed';
+export type RangeAnnotationDisplay = 'range' | 'line';
+export type RangeAnnotationType = 'x' | 'y';
+export type RangeAnnotationStrokeWidth = 1 | 2 | 3;
+
+export type RangeAnnotation = {
+    id: AnnotationId;
+    plot?: AnnotationPlot;
+    showInAllPlots?: AnnotationShowInAllPlots;
+    display: RangeAnnotationDisplay;
+    type: RangeAnnotationType;
+    x0: number | string;
+    x1: number | string;
+    y0: number | string;
+    y1: number | string;
+    color: string;
+    opacity: number;
+    strokeWidth: RangeAnnotationStrokeWidth;
+    strokeType: RangeAnnotationStrokeType;
+};
+
+/**
+ * @param x - A `null` value reflects an indeterminate state
+ * @param y - A `null` value reflects an indeterminate state
+ * @param plot - If multiple plots, name of relevant plot
+ * @param noPlotOffset - If true, returns x/y values independent of plot position
+ */
+export type DataToPx = (
+    x: number | string | null,
+    y: number | string | null,
+    plot?: string,
+    noPlotOffset?: boolean
+) => [number, number];
+/**
+ * @param plotName - if specified, forces using coordinate system
+ * of provided plot instead of looking for closest matching plot.
+ * @param clamped - if true, returned values are clamped to plot bounds
+ */
+export type PxToData = (
+    x: number | string,
+    y: number | string,
+    plot?: string,
+    clamped?: boolean
+) => {
+    x: number | string;
+    y: number | string;
+    plot?: string | null;
+    validPosition?: boolean;
+};
+
+export type SelectedAnnotationProps = {
+    id: null | string;
+    plot: null | string;
+    // Text annotations.
+    x: null | number;
+    y: null | number;
+    dx: null | number;
+    dy: null | number;
+    invalidX: boolean;
+    invalidY: boolean;
+    width: null | number;
+    height: null | number;
+    mobileFallback: boolean;
+    text: null | string;
+    // Range annotations.
+    start: null | number;
+    end: null | number;
+    invalidStart: boolean;
+    invalidEnd: boolean;
+    bounds:
+        | Record<string, never>
+        | {
+              x: number;
+              y: number;
+              width: number;
+              height: number;
+          };
+};
+
+export type EditorState = {
+    defaults: { text?: TextAnnotation; range?: RangeAnnotation; line?: RangeAnnotation };
+    selectedTextAnnotations: string[];
+    selectedRangeAnnotations: string[];
+    createMode: false | 'text' | 'range';
+    disableControls: boolean;
+    hideConnectorLine: boolean;
+    forceOffsetDrag: boolean;
+    width: null | number;
+    height: null | number;
+    dataToPx: null | DataToPx;
+    pxToData: null | PxToData;
+    plotHasUpdated: boolean;
+    draggingOutOfBounds: boolean;
+    activeRepeatedAnnotationIndex: null | number;
+    messages: {
+        disableControls: string;
+    };
+    selectedAnnotationProps: SelectedAnnotationProps;
+};
