@@ -8,7 +8,7 @@ import type { Writable } from 'svelte/store';
  */
 const DEBUG_PATHS = false;
 
-const PIN_HIDE_TIMEOUT = 6000;
+export const PIN_HIDE_DELAY = 6000;
 
 export type CollaborationUser = {
     id: string;
@@ -137,14 +137,20 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
 
     const handleFocusIn = () => {
         if (path) room.sendPresenceMessage(path, true);
-        if (!hideEvent) handleFocusOut();
+        // Cancel pending hide event, otherwise this creates an issue with manually controlled presence (`show` prop)
+        // where the presence would be removed even though the user started interacting with the element again.
+        handleFocusOut.cancel();
+
+        // Automatically hide the pin after a delay when no hide event is provided.
+        // Should not apply when the pin is manually controlled with the `show` prop.
+        if (!hideEvent && typeof show === 'undefined') handleFocusOut();
     };
 
     const hidePin = () => {
         if (path) room.sendPresenceMessage(path, false);
     };
 
-    const handleFocusOut = debounce(hidePin, PIN_HIDE_TIMEOUT);
+    const handleFocusOut = debounce(hidePin, PIN_HIDE_DELAY);
 
     // if show is undefined, the pin will be shown/hidden based on the showEvent/hideEvent
     // if show is a boolean, the pin will be shown/hidden based on the value of show
