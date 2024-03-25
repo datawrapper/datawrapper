@@ -44,8 +44,8 @@ export type CollaborationRoom = Writable<{
     disconnect: () => void;
 };
 
-type Options = {
-    room: CollaborationRoom;
+export type Options = {
+    room?: CollaborationRoom;
     path: string | null;
 } & (
     | {
@@ -136,7 +136,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     });
 
     const handleFocusIn = () => {
-        if (path) room.sendPresenceMessage(path, true);
+        if (path) room?.sendPresenceMessage(path, true);
         // Cancel pending hide event, otherwise this creates an issue with manually controlled presence (`show` prop)
         // where the presence would be removed even though the user started interacting with the element again.
         handleFocusOut.cancel();
@@ -147,7 +147,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
     };
 
     const hidePin = () => {
-        if (path) room.sendPresenceMessage(path, false);
+        if (path) room?.sendPresenceMessage(path, false);
     };
 
     const handleFocusOut = debounce(hidePin, PIN_HIDE_DELAY);
@@ -208,8 +208,8 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             }
 
             // re-register anchor
-            room.update($room => {
-                if (oldPath && oldRegisterElement && oldPath !== path) {
+            room?.update($room => {
+                if (oldPath && oldRegisterElement && (oldPath !== path || !registerElement)) {
                     $room.pinAnchors.delete(oldPath);
                 }
                 if (path && registerElement) {
@@ -226,9 +226,10 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         destroy() {
             // send blur, to remove pin for others
             handleFocusOut();
+            handleFocusOut.flush();
 
             // unregister anchor
-            room.update($room => {
+            room?.update($room => {
                 if (path && registerElement) $room.pinAnchors.delete(path);
                 return $room;
             });
@@ -237,6 +238,8 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 if (showEvent) element.removeEventListener(showEvent, handleFocusIn);
                 if (hideEvent) element.removeEventListener(hideEvent, handleFocusOut);
             }
-        }
+        },
+        // for testing
+        flushDebounce: handleFocusOut.flush
     };
 }) satisfies Action<HTMLElement | SVGElement, Options>;
