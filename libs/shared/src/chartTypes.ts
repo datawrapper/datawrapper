@@ -247,7 +247,7 @@ export type PreparedChart = {
 /**
  * Paths to known values that should be Date objects
  */
-export const PREPARED_CHART_DATE_PATHS = ['publishedAt', 'deletedAt'] as const;
+export const PREPARED_CHART_DATE_PATHS = ['publishedAt', 'lastModifiedAt', 'deletedAt'] as const;
 
 type FullVectorOpts = {
     noPitch: boolean;
