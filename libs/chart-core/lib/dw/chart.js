@@ -238,6 +238,7 @@ function Chart(attributes) {
             }
 
             const isIframe = flags.isIframe;
+            const fitchartMode = flags.fitchart && visualization.meta.supportsFitHeight;
             const container = chart.vis().target();
 
             visualization.chart(chart);
@@ -247,7 +248,7 @@ function Chart(attributes) {
             // compute chart dimensions
             const w = width(container);
             const h =
-                isIframe || flags.fitchart
+                isIframe || fitchartMode
                     ? chart.getMaxChartHeight()
                     : chart.getMetadata('publish.chart-height') || 400;
 
@@ -285,7 +286,7 @@ function Chart(attributes) {
             }
 
             function postMessage() {
-                if (flags && flags.fitchart) return;
+                if (fitchartMode) return;
 
                 let desiredHeight;
 
