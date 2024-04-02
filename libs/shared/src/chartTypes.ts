@@ -73,6 +73,7 @@ export type Metadata = {
         'external-data'?: string;
         'external-metadata'?: string;
         changes?: {
+            id: string;
             row: number;
             column: number;
             value: string | number;
