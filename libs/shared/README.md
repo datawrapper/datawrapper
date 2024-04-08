@@ -1,6 +1,6 @@
-# @datawrapper/shared
+# [libs](/libs/) / shared
 
-a set of shared methods that can be used throughout Datawrapper
+A set of shared TypeScript methods that can be used throughout Datawrapper, but mostly in client-side code that is compiled through rollup.
 
 Import single functions:
 
@@ -74,9 +74,9 @@ shared.httpReq();
 -   [trackPageView(loadTime)](#trackPageView)
 -   [truncate(str, start, end)](#truncate) ⇒ <code>string</code>
 
-<a name="__"></a>
+<a name="__" id="__"></a>
 
-## \_\_(key, scope) ⇒ <code>string</code>
+### \_\_(key, scope) ⇒ <code>string</code>
 
 translates a message key. translations are originally stored in a
 Google spreadsheet that we're pulling into Datawrapper using the
@@ -96,7 +96,7 @@ client-side translations must set `"svelte": true` in their plugin.json
 
 ---
 
-<a name="area"></a>
+<a name="area" id="area"></a>
 
 ### area(vertices) ⇒ <code>number</code>
 
@@ -110,7 +110,7 @@ Computes the area of a polygon
 
 ---
 
-<a name="arrayToObject"></a>
+<a name="arrayToObject" id="arrayToObject"></a>
 
 ### arrayToObject(o) ⇒ <code>object</code>
 
@@ -140,7 +140,7 @@ Object { foo: "bar" }
 
 ---
 
-<a name="autoTickFormat"></a>
+<a name="autoTickFormat" id="autoTickFormat"></a>
 
 ### autoTickFormat(column) ⇒ <code>string</code>
 
@@ -155,7 +155,7 @@ Returns either a numeral.js or day.js format, depending on the column type.
 
 ---
 
-<a name="autoTickFormatDate"></a>
+<a name="autoTickFormatDate" id="autoTickFormatDate"></a>
 
 ### autoTickFormatDate(range, precision) ⇒ <code>string</code>
 
@@ -178,7 +178,7 @@ autoTickFormatDate([new Date(2000, 0, 1), new Date(2002, 0, 1)], 'quarter'); // 
 
 ---
 
-<a name="autoTickFormatNumber"></a>
+<a name="autoTickFormatNumber" id="autoTickFormatNumber"></a>
 
 ### autoTickFormatNumber(range) ⇒ <code>string</code>
 
@@ -201,7 +201,7 @@ autoTickFormatNumber([0.2, 0.7]); // '0,0.00[00]'
 
 ---
 
-<a name="clone"></a>
+<a name="clone" id="clone"></a>
 
 ### clone(object) ⇒ <code>\*</code>
 
@@ -215,7 +215,7 @@ Clones an object
 
 ---
 
-<a name="colorLightness"></a>
+<a name="colorLightness" id="colorLightness"></a>
 
 ### colorLightness(hexColor) ⇒ <code>number</code>
 
@@ -241,7 +241,7 @@ colorLightness('#ff3399'); // 57.9
 
 ---
 
-<a name="columnFormatter"></a>
+<a name="columnFormatter" id="columnFormatter"></a>
 
 ### columnFormatter(numeral, column, metadata, axis) ⇒ <code>function</code>
 
@@ -257,7 +257,7 @@ a metadata object and the axis column name.
 
 ---
 
-<a name="columnNameToVariable"></a>
+<a name="columnNameToVariable" id="columnNameToVariable"></a>
 
 ### columnNameToVariable(name) ⇒ <code>string</code>
 
@@ -281,7 +281,7 @@ columnNameToVariable('GDP (per cap.)'); // gdp_per_cap
 
 ---
 
-<a name="combinations"></a>
+<a name="combinations" id="combinations"></a>
 
 ### combinations(input) ⇒ <code>Array.&lt;array&gt;</code>
 
@@ -309,7 +309,7 @@ combinations([1, 2, 3]);
 
 ---
 
-<a name="dateColumnFormatter"></a>
+<a name="dateColumnFormatter" id="dateColumnFormatter"></a>
 
 ### dateColumnFormatter(column) ⇒ <code>function</code>
 
@@ -324,7 +324,7 @@ hood.
 
 ---
 
-<a name="decodeHtml"></a>
+<a name="decodeHtml" id="decodeHtml"></a>
 
 ### decodeHtml(input) ⇒ <code>string</code>
 
@@ -336,7 +336,7 @@ Removes all html tags and decodes html entities like &nbsp;
 
 ---
 
-<a name="defaultColors"></a>
+<a name="defaultColors" id="defaultColors"></a>
 
 ### defaultColors(theme) ⇒ <code>\*</code>
 
@@ -371,7 +371,7 @@ defaultColors({
 
 ---
 
-<a name="defaultOverlayTitle"></a>
+<a name="defaultOverlayTitle" id="defaultOverlayTitle"></a>
 
 ### defaultOverlayTitle(vis, colName) ⇒ <code>string</code>
 
@@ -384,9 +384,9 @@ returns the overlays column title
 
 ---
 
-<a name="deleteJSON"></a>
+<a name="deleteJSON" id="deleteJSON"></a>
 
-## ~~deleteJSON(url, callback) ⇒ <code>Promise</code>~~
+### ~~deleteJSON(url, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -411,7 +411,7 @@ deleteJSON('http://api.example.org/chart/123').then(() => {
 
 ---
 
-<a name="drawPattern"></a>
+<a name="drawPattern" id="drawPattern"></a>
 
 ### drawPattern(parameters)
 
@@ -423,7 +423,7 @@ draws a configurable pattern into an svg pattern def, so that it can be used as 
 
 ---
 
-<a name="equalish"></a>
+<a name="equalish" id="equalish"></a>
 
 ### equalish(a, b) ⇒ <code>boolean</code>
 
@@ -450,7 +450,7 @@ equalish(0.333, 1 / 3);
 
 ---
 
-<a name="escapeHtml"></a>
+<a name="escapeHtml" id="escapeHtml"></a>
 
 ### escapeHtml(unsafe) ⇒ <code>string</code>
 
@@ -462,7 +462,7 @@ returns escaped HTML that can be used to display untrusted content
 
 ---
 
-<a name="estimateTextWidth"></a>
+<a name="estimateTextWidth" id="estimateTextWidth"></a>
 
 ### estimateTextWidth(text, fontSize) ⇒ <code>number</code>
 
@@ -490,9 +490,9 @@ const width = estimateTextWidth('my text', 12);
 
 ---
 
-<a name="fetchJSON"></a>
+<a name="fetchJSON" id="fetchJSON"></a>
 
-## ~~fetchJSON(url, method, credentials, body, callback) ⇒ <code>Promise</code>~~
+### ~~fetchJSON(url, method, credentials, body, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -515,7 +515,7 @@ fetchJSON('http://api.example.org', 'GET', 'include');
 
 ---
 
-<a name="formatNumber"></a>
+<a name="formatNumber" id="formatNumber"></a>
 
 ### formatNumber(numeral, value, options) ⇒ <code>string</code>
 
@@ -551,7 +551,7 @@ formatNumber(numeral, -1234.567, { prepend: '$' });
 
 ---
 
-<a name="get"></a>
+<a name="get" id="get"></a>
 
 ### get(object, key, \_default) ⇒
 
@@ -579,9 +579,9 @@ get(someObject, 'missing.key', false); // returns false
 
 ---
 
-<a name="getJSON"></a>
+<a name="getJSON" id="getJSON"></a>
 
-## ~~getJSON(url, credentials, callback) ⇒ <code>Promise</code>~~
+### ~~getJSON(url, credentials, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -610,7 +610,7 @@ getJSON('http://api.example.org').then(data => {
 
 ---
 
-<a name="highlightTimer"></a>
+<a name="highlightTimer" id="highlightTimer"></a>
 
 ### highlightTimer(action, delay) ⇒ <code>object</code>
 
@@ -639,7 +639,7 @@ chart.on('mouseleave', myTimer.clear);
 
 ---
 
-<a name="httpReq"></a>
+<a name="httpReq" id="httpReq"></a>
 
 ### httpReq(path, options) ⇒ <code>Promise</code>
 
@@ -692,7 +692,7 @@ await httpReq.put(`/v3/charts/${chartId}/data`, {
 
 ---
 
-<a name="httpReq.delete"></a>
+<a name="httpReq.delete" id="httpReq.delete"></a>
 
 #### httpReq.delete()
 
@@ -702,7 +702,7 @@ Like `httpReq` but with fixed http method DELETE
 
 ---
 
-<a name="httpReq.get"></a>
+<a name="httpReq.get" id="httpReq.get"></a>
 
 #### httpReq.get()
 
@@ -712,7 +712,7 @@ Like `httpReq` but with fixed http method GET
 
 ---
 
-<a name="httpReq.head"></a>
+<a name="httpReq.head" id="httpReq.head"></a>
 
 #### httpReq.head()
 
@@ -722,7 +722,7 @@ Like `httpReq` but with fixed http method HEAD
 
 ---
 
-<a name="httpReq.patch"></a>
+<a name="httpReq.patch" id="httpReq.patch"></a>
 
 #### httpReq.patch()
 
@@ -732,7 +732,7 @@ Like `httpReq` but with fixed http method PATCH
 
 ---
 
-<a name="httpReq.post"></a>
+<a name="httpReq.post" id="httpReq.post"></a>
 
 #### httpReq.post()
 
@@ -742,7 +742,7 @@ Like `httpReq` but with fixed http method POST
 
 ---
 
-<a name="httpReq.put"></a>
+<a name="httpReq.put" id="httpReq.put"></a>
 
 #### httpReq.put()
 
@@ -752,7 +752,7 @@ Like `httpReq` but with fixed http method PUT
 
 ---
 
-<a name="isValidUrl"></a>
+<a name="isValidUrl" id="isValidUrl"></a>
 
 ### isValidUrl(input) ⇒ <code>boolean</code>
 
@@ -764,7 +764,7 @@ checks if a given string is a valid URL
 
 ---
 
-<a name="kMeans"></a>
+<a name="kMeans" id="kMeans"></a>
 
 ### kMeans(values, numCluster) ⇒ <code>array.&lt;Array.&lt;number&gt;&gt;</code>
 
@@ -790,7 +790,7 @@ kMeans(values, 3);
 
 ---
 
-<a name="loadScript"></a>
+<a name="loadScript" id="loadScript"></a>
 
 ### loadScript(src, callback)
 
@@ -813,7 +813,7 @@ loadScript('/static/js/library.js', () => {
 
 ---
 
-<a name="loadStylesheet"></a>
+<a name="loadStylesheet" id="loadStylesheet"></a>
 
 ### loadStylesheet(src, callback)
 
@@ -836,7 +836,7 @@ loadStylesheet('/static/css/library.css', () => {
 
 ---
 
-<a name="normalizeAlphaNumKey"></a>
+<a name="normalizeAlphaNumKey" id="normalizeAlphaNumKey"></a>
 
 ### normalizeAlphaNumKey(key) ⇒ <code>string</code>
 
@@ -850,7 +850,7 @@ normalize an alphanumerical key for less-strict matching (e.g. in maps)
 
 ---
 
-<a name="normalizeNumKey"></a>
+<a name="normalizeNumKey" id="normalizeNumKey"></a>
 
 ### normalizeNumKey(key) ⇒ <code>number</code>
 
@@ -864,7 +864,7 @@ normalize a numerical key for less-strict matching (e.g. in maps)
 
 ---
 
-<a name="numberColumnFormatter"></a>
+<a name="numberColumnFormatter" id="numberColumnFormatter"></a>
 
 ### numberColumnFormatter(numeral, config) ⇒ <code>function</code>
 
@@ -880,7 +880,7 @@ Globalize-based number formatting, but uses numeral under the hood.
 
 ---
 
-<a name="observeFonts"></a>
+<a name="observeFonts" id="observeFonts"></a>
 
 ### observeFonts(fontsJSON, typographyJSON) ⇒ <code>Promise</code>
 
@@ -894,7 +894,7 @@ specified in fontsJSON and typographyJSON have been loaded.
 
 ---
 
-<a name="opts"></a>
+<a name="opts" id="opts"></a>
 
 ### opts : <code>object</code>
 
@@ -907,9 +907,9 @@ specified in fontsJSON and typographyJSON have been loaded.
 
 ---
 
-<a name="patchJSON"></a>
+<a name="patchJSON" id="patchJSON"></a>
 
-## ~~patchJSON(url, body, callback) ⇒ <code>Promise</code>~~
+### ~~patchJSON(url, body, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -935,7 +935,7 @@ patchJSON(
 
 ---
 
-<a name="postEvent"></a>
+<a name="postEvent" id="postEvent"></a>
 
 ### postEvent(chartId) ⇒ <code>function</code>
 
@@ -956,9 +956,9 @@ postEvent('bar:hover', { value: 123 });
 
 ---
 
-<a name="postJSON"></a>
+<a name="postJSON" id="postJSON"></a>
 
-## ~~postJSON(url, body, callback) ⇒ <code>Promise</code>~~
+### ~~postJSON(url, body, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -988,7 +988,7 @@ postJSON(
 
 ---
 
-<a name="purifyHtml"></a>
+<a name="purifyHtml" id="purifyHtml"></a>
 
 ### purifyHtml(input, allowed) ⇒ <code>string</code>
 
@@ -1003,9 +1003,9 @@ Remove all non-whitelisted html tags from the given string
 
 ---
 
-<a name="putJSON"></a>
+<a name="putJSON" id="putJSON"></a>
 
-## ~~putJSON(url, body, callback) ⇒ <code>Promise</code>~~
+### ~~putJSON(url, body, callback) ⇒ <code>Promise</code>~~
 
 **_Deprecated_**
 
@@ -1035,7 +1035,7 @@ putJSON(
 
 ---
 
-<a name="round"></a>
+<a name="round" id="round"></a>
 
 ### round(value, decimals) ⇒ <code>number</code>
 
@@ -1059,7 +1059,7 @@ round(12345, -2); // 12300
 
 ---
 
-<a name="set"></a>
+<a name="set" id="set"></a>
 
 ### set(object, key, value) ⇒
 
@@ -1077,7 +1077,7 @@ way doesn't exist.
 
 ---
 
-<a name="significantDimension"></a>
+<a name="significantDimension" id="significantDimension"></a>
 
 ### significantDimension(values, tolerance) ⇒ <code>number</code>
 
@@ -1101,7 +1101,7 @@ significantDimension([0, 10, 20, 30]); // -1
 
 ---
 
-<a name="smartRound"></a>
+<a name="smartRound" id="smartRound"></a>
 
 ### smartRound(values, addPrecision, tolerance) ⇒
 
@@ -1126,7 +1126,7 @@ smartRound([9, 10.5714, 12.1428, 12.4142]); // [9, 10.6, 12.1, 12.4]
 
 ---
 
-<a name="tailLength"></a>
+<a name="tailLength" id="tailLength"></a>
 
 ### tailLength(value) ⇒ <code>number</code>
 
@@ -1153,7 +1153,7 @@ tailLength(3.12999999);
 
 ---
 
-<a name="toFixed"></a>
+<a name="toFixed" id="toFixed"></a>
 
 ### toFixed(value) ⇒ <code>string</code>
 
@@ -1175,7 +1175,7 @@ toFixed(3.100001);
 
 ---
 
-<a name="trackEvent"></a>
+<a name="trackEvent" id="trackEvent"></a>
 
 ### trackEvent(category, category, category, category)
 
@@ -1190,7 +1190,7 @@ tracks a custom event in Matomo
 
 ---
 
-<a name="trackPageView"></a>
+<a name="trackPageView" id="trackPageView"></a>
 
 ### trackPageView(loadTime)
 
@@ -1204,7 +1204,7 @@ and URL are automatically detected using the window object.
 
 ---
 
-<a name="truncate"></a>
+<a name="truncate" id="truncate"></a>
 
 ### truncate(str, start, end) ⇒ <code>string</code>
 
