@@ -16,8 +16,8 @@
     "main": "index.js",
     "type": "module",
     "engines": {
-        "node": ">=18.0.0",
-        "npm": ">=7.0.0"
+        "node": ">=18.19.0",
+        "npm": ">=8.0.0"
     },
     "scripts": {
         "build:full": "../../scripts/install.js --build-untracked-dependencies --include-sub-packages && npm run build",
@@ -43,6 +43,7 @@
     },
     "devDependencies": {
         "@emotion/css": "^11.11.2",
+        "@tsconfig/strictest": "^2.0.5",
         "@types/chroma-js": "^2.4.2",
         "@types/d3-color": "^1.4.2",
         "@types/fontfaceobserver": "^2.1.0",
@@ -80,6 +81,7 @@
         "isomorphic-dompurify": "^1.9.0",
         "js-cookie": "^2.2.1",
         "lodash": "^4.17.21",
+        "nanoid": "^5.0.7",
         "node-fetch": "^2.7.0",
         "underscore": "^1.13.6"
     },
