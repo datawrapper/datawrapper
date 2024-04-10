@@ -1,5 +1,5 @@
 import type { Writable } from 'svelte/store';
-import type { ThemeData } from './themeTypes.js';
+import type { ThemeData } from './themeTypes.ts';
 
 export type DatePrecision =
     | 'year'

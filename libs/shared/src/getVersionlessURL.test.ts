@@ -1,4 +1,4 @@
-import getVersionlessURL from './getVersionlessURL.ts';
+import getVersionlessURL from './getVersionlessURL.js';
 import test from 'ava';
 
 test('getVersionlessURL removes version from a public URL without path prefix or index.html', t => {
