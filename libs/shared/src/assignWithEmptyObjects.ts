@@ -80,6 +80,7 @@ function isEmpty(val: unknown): val is Record<string, never> {
     return !val || Object.keys(val).length === 0;
 }
 
+/** to prevent prototype pollution */
 function isValidKey(
     key: unknown
 ): key is Exclude<string, '__proto__' | 'constructor' | 'prototype'> | number | symbol {

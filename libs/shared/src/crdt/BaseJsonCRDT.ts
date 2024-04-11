@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
-import lodashSetWith from 'lodash/setWith.js';
 import isObject from 'lodash/isObject.js';
 import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
@@ -10,7 +9,7 @@ import { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
 import unset from 'lodash/unset.js';
 import merge from 'lodash/merge.js';
-// import isPlainObject from 'lodash/isPlainObject.js';
+import set from '../set.js';
 
 /**
  * Logs applied and rejected updates/modifications of the CRDT.
@@ -20,26 +19,6 @@ import merge from 'lodash/merge.js';
  * Should also be disabled during fuzzing, as it will result in a test timeout.
  */
 const DEBUG = false;
-
-function set(obj: object, path: string[], value: any) {
-    if (path.length === 0) return;
-
-    if (typeof path === 'string') {
-        throw new Error('Path must be an array of strings');
-    }
-
-    lodashSetWith(obj, path, value, value => {
-        // Emulate the behaviour if the regular `lodash.set`, but don't create arrays for numeric keys.
-        // Just using `Object` as the the customizer does not work as strings seem to get merged with objects
-        // and result in `String` instances for some reason.
-        // Lodash implementation: https://github.com/lodash/lodash/blob/c7c70a7da5172111b99bb45e45532ed034d7b5b9/src/.internal/baseSet.ts#L36-L40
-        if (isObject(value)) {
-            return value;
-        }
-
-        return {};
-    });
-}
 
 export type SerializedBaseJsonCRDT<O extends object> = {
     data: O;

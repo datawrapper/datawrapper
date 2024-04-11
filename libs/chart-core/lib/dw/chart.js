@@ -53,7 +53,10 @@ function Chart(attributes) {
         },
 
         set(key, value) {
-            if (set(attributes, key, value)) {
+            const previousValue = get(attributes, key);
+            // only fire change event if value has actually changed
+            if (JSON.stringify(previousValue) !== JSON.stringify(value)) {
+                set(attributes, key, value);
                 changeCallbacks.fire(chart, key, value);
             }
             return this;
