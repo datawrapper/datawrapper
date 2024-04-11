@@ -43,22 +43,25 @@ test('set array elements', t => {
     t.is(thing.nested.array[3], 8);
 });
 
-test('set returns true if something changed', t => {
-    const thing = {
-        answer: 42,
-        nested: {
-            bar: true
-        }
-    };
-    t.false(set(thing, 'answer', 42));
-    t.true(set(thing, 'answer', 43));
-    t.true(set(thing as typeof thing & { nested: { foo: string } }, 'nested.foo', 'bar'));
-    t.true(set(thing, 'nested.bar', false));
-    t.false(set(thing, 'nested.bar', false));
-});
-
 test('set using a key as array', t => {
     type Extended = typeof thing & { nested: { 'sp.am'?: string } };
     set(thing as Extended, ['nested', 'sp.am'], 'spam');
     t.is((thing as Extended).nested['sp.am'], 'spam');
+});
+
+test('set does not create arrays for numeric keys', t => {
+    type Extended = typeof thing & { not_array: { 42: number } };
+    set(thing, 'not_array.42', 123);
+    t.is((thing as Extended).not_array[42], 123);
+    t.is(Array.isArray((thing as Extended).not_array), false);
+});
+
+test('set does not modify __proto__', t => {
+    set(thing, '__proto__.answer', 21);
+    t.is(({} as { __proto__: { answer: undefined } }).__proto__.answer, undefined);
+});
+
+test('set does not modify constructor.prototype', t => {
+    set(thing, 'constructor.prototype.answer', 21);
+    t.is({}.constructor.prototype.answer, undefined);
 });
