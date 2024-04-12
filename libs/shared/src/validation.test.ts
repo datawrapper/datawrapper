@@ -1,6 +1,6 @@
 import test from 'ava';
 import { testProp, fc } from 'ava-fast-check';
-import { isAllowedSourceUrl, isValidUrl } from './validation';
+import { isAllowedSourceUrl, isValidMySQLJSON, isValidUrl } from './validation';
 
 test('isAllowedSourceUrl', t => {
     t.true(isAllowedSourceUrl('http://www.datawrapper.de'));
@@ -77,4 +77,58 @@ testProp(
 
 test('isValidUrl returns true for URL with a query param with brackets', t => {
     t.true(isValidUrl('https://example.com/?filter[type]=2&filter[meldedatum][lte]=2022-12-01'));
+});
+
+test('isValidMySQLJSON returns true for a valid JSON', t => {
+    t.true(
+        isValidMySQLJSON({
+            null: null,
+            boolean: true,
+            number: 1,
+            string: 'a',
+            object: {
+                0: 'number',
+                string: 'a',
+                nested: {
+                    string: 'a'
+                }
+            },
+            arrays: {
+                empty: [],
+                numbers: [1, 2],
+                strings: ['a', 'b'],
+                objects: [{ string: 'a' }, { string: 'a' }]
+            }
+        })
+    );
+});
+
+test('isValidMySQLJSON returns false for a JSON with too large object key', t => {
+    t.false(isValidMySQLJSON({ ['a'.repeat(2 ** 16)]: 'value' }));
+    t.false(
+        isValidMySQLJSON({
+            nested: { ['a'.repeat(2 ** 16)]: 'value' }
+        })
+    );
+    t.false(
+        isValidMySQLJSON({
+            array: [{ ['a'.repeat(2 ** 16)]: 'value' }]
+        })
+    );
+});
+
+test('isValidMySQLJSON returns false for a JSON with an invalid UTF-16 string', t => {
+    // This testing string is invalid UTF-16, because it misses the tail surrogate.
+    // See https://mnaoumov.wordpress.com/2014/06/14/stripping-invalid-characters-from-utf-16-strings/
+    t.false(isValidMySQLJSON('\ud800b'));
+    t.false(
+        isValidMySQLJSON({
+            nested: '\ud800b'
+        })
+    );
+    t.false(
+        isValidMySQLJSON({
+            array: ['\ud800b']
+        })
+    );
 });

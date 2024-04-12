@@ -1423,6 +1423,22 @@
             "require": "./dist/cjs/generateRandomId.cjs",
             "types": "./dist/cjs/generateRandomId.d.cts",
             "default": "./dist/esm/generateRandomId.js"
+        },
+        "./schemas.js": {
+            "require": "./dist/cjs/schemas/index.cjs",
+            "types": "./dist/cjs/schemas/index.d.cts",
+            "default": "./dist/esm/schemas/index.js"
+        },
+        "./schemas": {
+            "require": "./dist/cjs/schemas/index.cjs",
+            "types": "./dist/cjs/schemas/index.d.cts",
+            "default": "./dist/esm/schemas/index.js"
+        },
+        "./dist/cjs/schemas.cjs": {
+            "require": "./dist/cjs/schemas/index.cjs",
+            "types": "./dist/cjs/schemas/index.d.cts",
+            "default": "./dist/esm/schemas/index.js"
         }
+
     }
 }
