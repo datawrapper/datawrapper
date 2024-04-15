@@ -221,14 +221,20 @@ extend(base, {
     clear() {},
 
     __renderingComplete() {
-        this.__renderedCallbacks.fire();
+        const vis = this;
+        vis.__renderedCallbacks.fire();
         if (window.parent && window.parent.postMessage) {
             setTimeout(function () {
                 window.parent.postMessage('datawrapper:vis:rendered', '*');
+                const chart = vis.chart();
+                if (chart) {
+                    const postEvent = chart.createPostEvent();
+                    postEvent('vis.rendered');
+                }
             }, 200);
         }
-        this.__rendered = true;
-        this.postRendering();
+        vis.__rendered = true;
+        vis.postRendering();
     },
 
     postRendering() {},
