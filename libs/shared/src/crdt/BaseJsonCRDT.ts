@@ -1019,7 +1019,7 @@ export class BaseJsonCRDT<O extends object = object> {
     /**
      * Updates the CRDT with the given data diff and timestamp.
      * @param diff The data diff to apply
-     * @param timestamp The timestamp assosicated with the data diff
+     * @param timestamp The timestamp associated with the data diff
      */
     update(diff: Diff<any>, timestampOrClock: Clock | Timestamp) {
         const newTimestamp =
