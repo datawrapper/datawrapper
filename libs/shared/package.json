@@ -56,7 +56,7 @@
         "@types/raf": "^3.4.0",
         "@types/sinon": "^10.0.13",
         "@types/underscore": "^1.11.4",
-        "ava": "^4.3.3",
+        "ava": "^5.3.1",
         "ava-fast-check": "^6.0.0",
         "esm": "3.2.25",
         "fast-check": "^3.1.2",
@@ -67,9 +67,9 @@
         "numeral": "^2.0.6",
         "sinon": "^14.0.0",
         "svelte": "^4.2.0",
-        "tsx": "^3.14.0",
+        "tsx": "^4.7.2",
         "typescript": "^5.2.2",
-        "vitest": "1.2.1"
+        "vitest": "^1.2.1"
     },
     "dependencies": {
         "chroma-js": "^2.4.2",
@@ -79,11 +79,15 @@
         "fontfaceobserver": "^2.1.0",
         "htmlparser2": "^7.2.0",
         "isomorphic-dompurify": "^1.9.0",
+        "joi": "17.7.0",
         "js-cookie": "^2.2.1",
         "lodash": "^4.17.21",
         "nanoid": "^5.0.7",
         "node-fetch": "^2.7.0",
         "underscore": "^1.13.6"
+    },
+    "overrides": {
+        "esbuild": "^0.20.1"
     },
     "publishConfig": {
         "access": "public"
@@ -1439,6 +1443,5 @@
             "types": "./dist/cjs/schemas/index.d.cts",
             "default": "./dist/esm/schemas/index.js"
         }
-
     }
 }
