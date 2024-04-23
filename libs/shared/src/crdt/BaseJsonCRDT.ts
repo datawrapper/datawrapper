@@ -237,6 +237,16 @@ export class BaseJsonCRDT<O extends object = object> {
             set(diff, path, newValue);
         });
 
+        // This map keeps track of ancestors that were deleted in the new data.
+        // We want to delete these ancestors in the diff by setting them to null.
+        // However, in case the ancestor contains a nested item array,
+        // we cannot just set it to null, because that would delete the item array.
+        // And we don't want to delete item arrays, so that we keep track of which item array elements have been deleted before.
+        // Therefore, we only set the ancestor to null if it does not contain nested item arrays.
+        // If it does, we explicitly delete each child of the ancestor and each element of the item array instead.
+        // Note: we use a Map and not a Set to ensure that we use the correct path if a path element contains '.' characters.
+        const ancestorPaths = new Map<string, string[]>();
+
         // Handle deletes of old data that are not present in the new data.
         iterateObjectPaths(oldData, path => {
             let closestValue = null;
@@ -258,15 +268,44 @@ export class BaseJsonCRDT<O extends object = object> {
 
             // Path is not present in the new data, so we delete it.
             if (!has(newData, path)) {
-                // Delete the ancestor if it was deleted in the new data.
-                if (ancestorWasDeleted) {
-                    set(diff, ancestorPath, null);
+                const oldValue = get(oldData, path);
+                if (Array.isArray(oldValue)) {
+                    const arrayDiff = calculateItemArrayDiff(oldValue, []);
+                    if (isObject(arrayDiff) && !isEmpty(arrayDiff)) {
+                        // `oldValue` is an item array which has been deleted.
+                        // Since item arrays cannot be deleted, we update the diff to contain explicit deletes of each item
+                        // contained in the item array at that point (i.e. `arrayDiff`).
+                        set(diff, path, arrayDiff);
+
+                        // Since the item array cannot be fully deleted, we update `newData` to reflect that:
+                        // After applying the diff, the item array would be empty.
+                        // Hence, we set the path at `newData` to an empty array.
+                        set(newData, path, []);
+
+                        // We now know that the ancestor possibly marked for deletion cannot be deleted
+                        // because it contains an item array. We therefore remove it from the `ancestorPaths` map.
+                        ancestorPaths.delete(ancestorPath.join('.'));
+                    } else {
+                        // Simple arrays can simply be deleted
+                        set(diff, path, null);
+                    }
+                }
+                // Mark the ancestor for deletion if it was deleted in the new data and set the child to null.
+                // The ancestor will only be fully deleted if it does not contain a nested item array.
+                else if (ancestorWasDeleted) {
+                    set(diff, path, null);
+                    ancestorPaths.set(ancestorPath.join('.'), ancestorPath);
                 }
                 // Simply delete the path if the ancestor was not deleted.
                 else if (isActualObject(closestValue)) {
                     set(diff, path, null);
                 }
             }
+        });
+
+        // Delete ancestors that were deleted in the new data and do not contain nested item arrays.
+        ancestorPaths.forEach(path => {
+            set(diff, path, null);
         });
 
         return diff;

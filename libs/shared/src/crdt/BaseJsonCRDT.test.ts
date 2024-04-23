@@ -327,6 +327,19 @@ test('BaseJsonCRDT.calculateDiff calculates the correct patch (key deletion)', t
     t.deepEqual(patch, { a: null, b: { key: null } });
 });
 
+test('BaseJsonCRDT.calculateDiff calculates the correct patch (parent deletion)', t => {
+    const oldData = {
+        a: 'some value',
+        b: { key: 'value' }
+    };
+
+    const newData = {};
+
+    const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(patch, { a: null, b: null });
+});
+
 test('BaseJsonCRDT.calculateDiff calculates the correct patch (item array - insertion at end)', t => {
     const oldData = {
         a: 'some value',
@@ -528,6 +541,62 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - delet
     // const crdt = new CRDT(oldData);
     // crdt.update(diff, '1-1');
     // t.deepEqual(crdt.data(), newData);
+});
+
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array deletion)', t => {
+    const oldData = {
+        a: 'some value',
+        b: {
+            c: 'foo',
+            d: [
+                { id: 'A', value: 1 },
+                { id: 'B', value: 2 },
+                { id: 'C', value: 3 }
+            ],
+            e: 'bar',
+            h: [1, 2, 3]
+        },
+        'c.2': {
+            f: 'baz',
+            g: [1, 2, 3]
+        },
+        d: [1, 2, 3]
+    };
+
+    // Note that we are deleting the entire 'b' and 'c.2' objects plus the 'd' array here.
+    // 'c' is a simple object, so the diff should simply delete the entire object.
+    // Likewise 'd' is a simple array, so the diff should simply delete the entire array.
+    // However, 'b' contains an item array. So the diff should not simply delete the entire object,
+    // but instead explicitly delete the keys of 'b' plus explicitly set all items in the item array
+    // for deletion.
+    //
+    // We don't allow the deletion of item arrays as a whole so that we can keep track of which
+    // items have been deleted.
+    //
+    // Keeping track of which items have been deleted helps us prevent these items from being recreated
+    // by subsequent updates.
+    // This way we prioritize deletion of items, making sure conflicting updates don't lead to UI quirkiness
+    // of deleted items suddenly reappearing.
+    const newData = {
+        a: 'some value'
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        b: {
+            c: null,
+            d: {
+                A: { _index: null },
+                B: { _index: null },
+                C: { _index: null }
+            },
+            e: null,
+            h: null
+        },
+        'c.2': null,
+        d: null
+    });
 });
 
 test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - re-ordering two elements)', t => {
