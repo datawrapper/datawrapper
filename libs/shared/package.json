@@ -1442,6 +1442,25 @@
             "require": "./dist/cjs/schemas/index.cjs",
             "types": "./dist/cjs/schemas/index.d.cts",
             "default": "./dist/esm/schemas/index.js"
+        },
+        "./waitFor.d.ts": {
+            "require": "./dist/cjs/waitFor.d.cts",
+            "default": "./dist/esm/waitFor.d.ts"
+        },
+        "./waitFor.js": {
+            "require": "./dist/cjs/waitFor.cjs",
+            "types": "./dist/cjs/waitFor.d.cts",
+            "default": "./dist/esm/waitFor.js"
+        },
+        "./waitFor": {
+            "require": "./dist/cjs/waitFor.cjs",
+            "types": "./dist/cjs/waitFor.d.cts",
+            "default": "./dist/esm/waitFor.js"
+        },
+        "./dist/cjs/waitFor.cjs": {
+            "require": "./dist/cjs/waitFor.cjs",
+            "types": "./dist/cjs/waitFor.d.cts",
+            "default": "./dist/esm/waitFor.js"
         }
     }
 }
