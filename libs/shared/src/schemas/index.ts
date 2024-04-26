@@ -1,2 +1,2 @@
-export { getPartialChartSchema, themeIdSchema } from './chart.js';
+export { getPartialChartSchema, themeIdSchema, preparedChartSchema } from './chart.js';
 export { userSchema } from './user.js';

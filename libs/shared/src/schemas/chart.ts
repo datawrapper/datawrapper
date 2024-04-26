@@ -9,7 +9,7 @@ export const themeIdSchema = Joi.string()
     .min(2)
     .example('datawrapper');
 
-const preparedChartSchema: Record<string, Joi.Schema> = {
+export const preparedChartSchema: Record<string, Joi.Schema> = {
     id: Joi.string().pattern(CHART_ID_REGEXP),
     type: Joi.string()
         .pattern(/^[a-z0-9]+(?:-{0,2}[a-z0-9]+)*$/)
