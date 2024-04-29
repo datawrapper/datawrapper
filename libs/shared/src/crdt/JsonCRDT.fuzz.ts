@@ -11,10 +11,29 @@ import { iterateObjectPaths } from '../objectPaths.js';
 import { nanoid } from 'nanoid';
 import util from 'util';
 import isPrimitive from '../isPrimitive.js';
+import { parseArgs } from 'node:util';
+
+const FLAGS = {
+    primitiveToObject: false,
+    objectToPrimitive: false
+};
 
 function oneOf(...fns: (() => any)[]) {
     const fn = fns[Math.floor(Math.random() * fns.length)];
     return fn();
+}
+
+/*
+ * Execute the function with a certain chance provided as percentage.
+ * @param chance - The chance in percentage that the function should be executed.
+ * @param fn - The function to be executed.
+ * @returns - A tuple with the first value being a boolean indicating if the function was executed and the second value being the result of the function.
+ */
+function withChance(chance: number, fn: () => any) {
+    if (Math.random() < chance) {
+        return [true, fn()];
+    }
+    return [false, undefined];
 }
 
 class Generate {
@@ -92,13 +111,17 @@ class Generate {
         return oneOf(...Generate.primitiveValueGenerators, Generate.emptyObject);
     }
 
-    static nestedObject(size?: number, maxDepth?: number): object | unknown {
+    static nestedObject(
+        size?: number,
+        maxDepth?: number,
+        allowItemArrays = true
+    ): object | unknown {
         const depth = maxDepth ?? 3;
         if (depth === 0) return Generate.anyPrimitiveValue();
         return Generate.flatObject(size, () =>
             oneOf(
                 ...Generate.primitiveValueGenerators,
-                ...Generate.arrayGenerators,
+                ...(allowItemArrays ? Generate.arrayGenerators : [Generate.array]),
                 Generate.emptyObject
             )
         );
@@ -198,6 +221,12 @@ class Mutate {
     }
 
     primitiveValue(value: any): any {
+        if (FLAGS.primitiveToObject) {
+            const [done, newValue] = withChance(0.1, () => {
+                return Generate.nestedObject(5, 2, false);
+            });
+            if (done) return newValue;
+        }
         this.mutations.primitive += 1;
         return Generate.anyPrimitiveValue();
     }
@@ -248,8 +277,27 @@ class Mutate {
             return setWith(obj, key, newValue, Object);
         };
 
+        const convertToPrimitive = () => {
+            let containtsPotentialItemArray = false;
+            iterateObjectPaths(obj, path => {
+                const value = get(obj, path);
+                // Empty arrays could be item arrays too
+                if (Array.isArray(value) && (value.length === 0 || isItemArray(value))) {
+                    containtsPotentialItemArray = true;
+                }
+            });
+            if (containtsPotentialItemArray) {
+                // The CRDT does not support deletion of item arrays
+                return mutateValue();
+            }
+            return setWith(obj, key, Generate.anyPrimitiveValue(), Object);
+        };
+
         if (isPrimitive(value)) {
             return oneOf(deleteKey, mutateValue, insert);
+        }
+        if (FLAGS.objectToPrimitive) {
+            return oneOf(mutateValue, insert, convertToPrimitive);
         }
         return oneOf(mutateValue, insert);
     }
@@ -409,6 +457,22 @@ function multipleInstances(
     };
 }
 
-Array.from({ length: 10 }).forEach((_, i) => {
+// invoke with `npm run fuzz -- -- --runs=3 --primitiveToObject`
+
+const { values } = parseArgs({
+    args: process.argv.slice(2),
+    options: {
+        primitiveToObject: { type: 'boolean', default: false },
+        objectToPrimitive: { type: 'boolean', default: false },
+        runs: { type: 'string', default: '10' }
+    }
+});
+
+const { runs, primitiveToObject, objectToPrimitive } = values;
+
+FLAGS.primitiveToObject = primitiveToObject ?? false;
+FLAGS.objectToPrimitive = objectToPrimitive ?? false;
+
+Array.from({ length: Number(runs) }).forEach((_, i) => {
     multipleInstances(i + 1)();
 });
