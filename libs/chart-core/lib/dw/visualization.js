@@ -74,13 +74,19 @@ function visualization(id, target, hash) {
  * @param {string|null} parentVis parent visualization id, e.g. 'd3-bars' (optional)
  * @param {function} init render method
  * @param {string} hash for supporting multiple versions (optional)
+ * @param {string} hash for supporting multiple versions of the global dw object (optional)
  */
-visualization.register = function (id, parentVis, initFunc, hash = 'nohash') {
+visualization.register = function (id, parentVis, initFunc, hash = 'nohash', dwJsHash) {
     if (!__vis.has(id)) __vis.set(id, new Map());
     __vis.get(id).set(hash, {
         parentVis: parentVis || 'base',
         init: initFunc
     });
+
+    // also register on the versioned dw instance
+    if (dwJsHash) {
+        window.dw?.versions?.[dwJsHash]?.visualization?.register(id, parentVis, initFunc, hash);
+    }
 };
 
 visualization.has = function (id) {
