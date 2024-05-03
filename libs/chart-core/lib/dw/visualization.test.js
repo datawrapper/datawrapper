@@ -1,6 +1,11 @@
 import test from 'ava';
 import visualization from './visualization.js';
 import '../../tests/helpers/setup-browser-env.js';
+import fs from 'fs';
+
+import '../../dist/dw-2.0.min.js';
+import dwJsHash from '../../dist/dw-2.0.min.hash.cjs';
+const dwScript = fs.readFileSync('./dist/dw-2.0.min.js', 'utf8');
 
 test.beforeEach(t => {
     t.context.id = `vis-${Math.floor(Math.random() * 1000).toString(36)}`;
@@ -25,6 +30,45 @@ test('register and instanciate a visualization', t => {
     t.is(typeof vis.render, 'function');
     t.is(typeof vis.foo, 'function');
     t.is(vis.foo(), 42);
+});
+
+test('visualization is registered on both global and versioned window.dw object', async t => {
+    const newDwJsHash = 'abcdef';
+    eval(dwScript.replace(dwJsHash, newDwJsHash));
+
+    t.true(dwJsHash in window.dw.versions);
+    t.true(newDwJsHash in window.dw.versions);
+    t.false(window.dw === window.dw.versions[dwJsHash]);
+    t.false(window.dw.visualization === window.dw.versions[newDwJsHash].visualization);
+    t.false(
+        window.dw.versions[dwJsHash].visualization === window.dw.versions[newDwJsHash].visualization
+    );
+
+    const globalVisualization = window.dw.visualization;
+
+    globalVisualization.register(
+        t.context.id,
+        null,
+        {
+            foo() {
+                return 42;
+            }
+        },
+        'myhash',
+        newDwJsHash
+    );
+    t.is(globalVisualization.has(t.context.id), true);
+    t.is(globalVisualization.hasVisHash(t.context.id, 'myhash'), true);
+    const element = document.createElement('div');
+    const vis = globalVisualization(t.context.id, element);
+    t.is(vis.id, t.context.id);
+    t.is(typeof vis.render, 'function');
+    t.is(typeof vis.foo, 'function');
+    t.is(vis.foo(), 42);
+
+    t.true(window.dw.versions[dwJsHash].visualization.has(t.context.id));
+    t.true(window.dw.versions[newDwJsHash].visualization.has(t.context.id));
+    t.true(window.dw.versions[newDwJsHash].visualization.hasVisHash(t.context.id, 'myhash'));
 });
 
 test('extend a visualization', t => {
