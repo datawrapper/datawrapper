@@ -8,7 +8,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear.js';
 import weekYear from 'dayjs/plugin/weekYear.js';
 import isoWeek from 'dayjs/plugin/isoWeek.js';
 import sportsSeasonFormat from '@datawrapper/shared/sportsSeasonFormat';
-import clone from 'underscore/modules/clone.js';
+import clone from 'lodash/clone.js';
 import base from './visualization.base.js';
 
 dayjs.extend(advancedFormat);

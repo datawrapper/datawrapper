@@ -1,6 +1,7 @@
 import tailLength from './tailLength.js';
 import round from './round.js';
-import { uniq, isFinite } from 'underscore';
+import uniq from 'lodash/uniq.js';
+import isFiniteNumeral from './isFiniteNumeral.js';
 
 /**
  * computes the significant dimension for a list of numbers
@@ -21,7 +22,7 @@ import { uniq, isFinite } from 'underscore';
 export default function significantDimension(values: number[], tolerance = 0.1) {
     let result: number[] = [];
     let decimals = 0;
-    const uniqValues = uniq(values.filter(isFinite));
+    const uniqValues = uniq(values.filter(isFiniteNumeral));
     const totalUniq = uniqValues.length;
     let check: () => boolean;
     let diff: number;

@@ -50,12 +50,11 @@
         "@types/jquery": "^3.5.14",
         "@types/js-cookie": "^3.0.2",
         "@types/jsdom": "^20.0.0",
-        "@types/lodash": "^4.14.202",
+        "@types/lodash": "^4.17.1",
         "@types/node-fetch": "^2.6.7",
         "@types/numeral": "^2.0.2",
         "@types/raf": "^3.4.0",
         "@types/sinon": "^10.0.13",
-        "@types/underscore": "^1.11.4",
         "ava": "^5.3.1",
         "ava-fast-check": "^6.0.0",
         "esm": "3.2.25",
@@ -81,10 +80,8 @@
         "isomorphic-dompurify": "^1.9.0",
         "joi": "17.7.0",
         "js-cookie": "^2.2.1",
-        "lodash": "^4.17.21",
         "nanoid": "^5.0.7",
-        "node-fetch": "^2.7.0",
-        "underscore": "^1.13.6"
+        "node-fetch": "^2.7.0"
     },
     "overrides": {
         "esbuild": "^0.20.1"
@@ -780,6 +777,25 @@
             "require": "./dist/cjs/invertColor.cjs",
             "types": "./dist/cjs/invertColor.d.cts",
             "default": "./dist/esm/invertColor.js"
+        },
+        "./isFiniteNumeral.d.ts": {
+            "require": "./dist/cjs/isFiniteNumeral.d.cts",
+            "default": "./dist/esm/isFiniteNumeral.d.ts"
+        },
+        "./isFiniteNumeral.js": {
+            "require": "./dist/cjs/isFiniteNumeral.cjs",
+            "types": "./dist/cjs/isFiniteNumeral.d.cts",
+            "default": "./dist/esm/isFiniteNumeral.js"
+        },
+        "./isFiniteNumeral": {
+            "require": "./dist/cjs/isFiniteNumeral.cjs",
+            "types": "./dist/cjs/isFiniteNumeral.d.cts",
+            "default": "./dist/esm/isFiniteNumeral.js"
+        },
+        "./dist/cjs/isFiniteNumeral.cjs": {
+            "require": "./dist/cjs/isFiniteNumeral.cjs",
+            "types": "./dist/cjs/isFiniteNumeral.d.cts",
+            "default": "./dist/esm/isFiniteNumeral.js"
         },
         "./isPrimitive.d.ts": {
             "require": "./dist/cjs/isPrimitive.d.cts",

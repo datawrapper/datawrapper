@@ -1,4 +1,4 @@
-import each from 'underscore/modules/each.js';
+import each from 'lodash/each.js';
 
 function applyChanges(chart, dataset) {
     const changes = chart.getMetadata('data.changes', []);

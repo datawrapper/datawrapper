@@ -1,4 +1,5 @@
-import { isDate as isDate, identity } from 'underscore';
+import identity from 'lodash/identity.js';
+import isDate from 'lodash/isDate.js';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';

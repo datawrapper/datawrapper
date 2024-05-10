@@ -1,10 +1,10 @@
-import each from 'underscore/modules/each.js';
-import flatten from 'underscore/modules/flatten.js';
-import values from 'underscore/modules/values.js';
-import isRegExp from 'underscore/modules/isRegExp.js';
-import isDate from 'underscore/modules/isDate.js';
-import isUndefined from 'underscore/modules/isUndefined.js';
-import isString from 'underscore/modules/isString.js';
+import each from 'lodash/each.js';
+import flatten from 'lodash/flatten.js';
+import values from 'lodash/values.js';
+import isRegExp from 'lodash/isRegExp.js';
+import isDate from 'lodash/isDate.js';
+import isUndefined from 'lodash/isUndefined.js';
+import isString from 'lodash/isString.js';
 
 const begin = /^ */.source;
 const end = /[*']* *$/.source;

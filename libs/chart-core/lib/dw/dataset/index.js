@@ -1,8 +1,8 @@
 import { formatDelimited } from '@datawrapper/shared/delimited';
 import { guessDelimiterFromLocale } from '../utils/delimited.js';
-import isString from 'underscore/modules/isString.js';
-import range from 'underscore/modules/range.js';
-import each from 'underscore/modules/each.js';
+import isString from 'lodash/isString.js';
+import range from 'lodash/range.js';
+import each from 'lodash/each.js';
 
 /*
  * Dataset class

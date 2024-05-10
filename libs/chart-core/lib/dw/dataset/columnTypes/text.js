@@ -1,4 +1,4 @@
-import identity from 'underscore/modules/identity.js';
+import identity from 'lodash/identity.js';
 
 function text() {
     return {

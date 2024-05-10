@@ -1,5 +1,6 @@
 import test from 'ava';
-import { range, uniq } from 'underscore';
+import range from 'lodash/range.js';
+import uniq from 'lodash/uniq.js';
 import round from './round';
 import significantDimension from './significantDimension';
 
