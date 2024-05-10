@@ -1,7 +1,7 @@
-import each from 'underscore/modules/each.js';
-import isNumber from 'underscore/modules/isNumber.js';
-import isUndefined from 'underscore/modules/isUndefined.js';
-import isNull from 'underscore/modules/isNull.js';
+import each from 'lodash/each.js';
+import isNumber from 'lodash/isNumber.js';
+import isUndefined from 'lodash/isUndefined.js';
+import isNull from 'lodash/isNull.js';
 
 /**
  * A type for numbers:

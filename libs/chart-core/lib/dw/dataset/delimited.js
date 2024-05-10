@@ -11,7 +11,7 @@
  *     delimiter : ","
  */
 
-import isString from 'underscore/modules/isString.js';
+import isString from 'lodash/isString.js';
 import dataset from './index.js';
 import column from './column.js';
 

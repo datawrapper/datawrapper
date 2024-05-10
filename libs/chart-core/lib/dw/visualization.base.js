@@ -5,9 +5,9 @@
  * the visualization render code.
  */
 
-import extend from 'underscore/modules/extend.js';
-import isEqual from 'underscore/modules/isEqual.js';
-import debounce from 'underscore/modules/debounce.js';
+import extend from 'lodash/extend.js';
+import isEqual from 'lodash/isEqual.js';
+import debounce from 'lodash/debounce.js';
 import get from '@datawrapper/shared/get';
 import clone from '@datawrapper/shared/clone';
 import events from './utils/events.js';

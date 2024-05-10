@@ -1,12 +1,12 @@
 import column from '../dataset/column.js';
 
-import each from 'underscore/modules/each.js';
-import isArray from 'underscore/modules/isArray.js';
-import filter from 'underscore/modules/filter.js';
-import find from 'underscore/modules/find.js';
-import indexOf from 'underscore/modules/indexOf.js';
-import map from 'underscore/modules/map.js';
-import range from 'underscore/modules/range.js';
+import each from 'lodash/each.js';
+import isArray from 'lodash/isArray.js';
+import filter from 'lodash/filter.js';
+import find from 'lodash/find.js';
+import indexOf from 'lodash/indexOf.js';
+import map from 'lodash/map.js';
+import range from 'lodash/range.js';
 
 /**
  * Assigns dataset columns to visualization axes. Non-optional columns will automatically be

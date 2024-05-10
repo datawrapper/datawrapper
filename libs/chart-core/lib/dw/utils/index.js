@@ -11,9 +11,9 @@ import delimited from './delimited.js';
 import { outerHeight, getNonChartHeight } from './getNonChartHeight.js';
 import htmlTemplate from './htmlTemplate.js';
 import templateParser from './templateParser.js';
-import isFunction from 'underscore/modules/isFunction.js';
-import isString from 'underscore/modules/isString.js';
-import range from 'underscore/modules/range.js';
+import isFunction from 'lodash/isFunction.js';
+import isString from 'lodash/isString.js';
+import range from 'lodash/range.js';
 
 export {
     purifyHtml,

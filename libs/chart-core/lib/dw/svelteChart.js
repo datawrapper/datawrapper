@@ -1,10 +1,10 @@
 import { Store } from 'svelte2/store.umd.js';
 import { observeDeep } from 'svelte-extras';
-import throttle from 'underscore/modules/throttle.js';
-import some from 'underscore/modules/some.js';
-import isUndefined from 'underscore/modules/isUndefined.js';
-import isNull from 'underscore/modules/isNull.js';
-import isEqual from 'underscore/modules/isEqual.js';
+import throttle from 'lodash/throttle.js';
+import some from 'lodash/some.js';
+import isUndefined from 'lodash/isUndefined.js';
+import isNull from 'lodash/isNull.js';
+import isEqual from 'lodash/isEqual.js';
 import { put } from '@datawrapper/shared/httpReq';
 
 import delimited from './dataset/delimited.js';
