@@ -420,7 +420,16 @@ function Chart(attributes) {
             return this;
         },
 
-        translate(key, useEditorLocale) {
+        translate(key) {
+            let useEditorLocale = false;
+            const additionalArgs = Array.from(arguments).slice(1);
+            const replacements = additionalArgs;
+
+            if (typeof additionalArgs[0] === 'boolean') {
+                useEditorLocale = additionalArgs[0];
+                additionalArgs.shift();
+            }
+
             const translations =
                 useEditorLocale &&
                 chart.inEditor() &&
@@ -432,12 +441,12 @@ function Chart(attributes) {
 
             let translation = translations[key];
 
-            if (typeof translation === 'string' && arguments.length > 1) {
+            if (typeof translation === 'string' && replacements.length) {
                 // replace $0, $1 etc with remaining arguments
                 translation = translation.replace(/\$(\d)/g, (m, i) => {
-                    i = 1 + Number(i);
-                    if (arguments[i] === undefined) return m;
-                    return arguments[i];
+                    i = Number(i);
+                    if (replacements[i] === undefined) return m;
+                    return replacements[i];
                 });
             }
 
