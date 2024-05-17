@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export const userSchema: Record<string, Joi.Schema> = {
-    id: Joi.string().regex(/^\d+$/),
+    id: Joi.string().regex(/^\d+$/).allow('guest'),
     name: Joi.string()
         .allow(null)
         .allow('')
