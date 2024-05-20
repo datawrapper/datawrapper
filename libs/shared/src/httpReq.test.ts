@@ -11,7 +11,7 @@ import { SimpleFetch } from './httpReqOptions';
 const test = anyTest as TestFn<{
     fakeFetch: SinonSpy<Parameters<SimpleFetch>, ReturnType<SimpleFetch>>;
 }>;
-const baseUrl = 'http://api.datawrapper.mock';
+const baseUrl = 'http://app.datawrapper.mock';
 
 const getHeader = (request: ClientRequest, name: string) => {
     const value = request.getHeader(name);
@@ -26,7 +26,7 @@ test.before(t => {
     window.fetch = t.context.fakeFetch as any;
     global.dw = {
         backend: {
-            __api_domain: 'api.datawrapper.local',
+            __api_base: 'app.datawrapper.local/api',
             __messages: {
                 core: {
                     'existing-foo': 'My error foo',
