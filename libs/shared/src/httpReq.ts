@@ -78,7 +78,7 @@ function httpReq(
         inputBaseUrl,
         () => true,
         () => {
-            const apiDomain = window.dw.backend.__api_domain;
+            const apiDomain = window.dw.backend.__api_base;
             if (!apiDomain) {
                 throw new Error('Neither options.baseUrl nor window.dw is defined.');
             }

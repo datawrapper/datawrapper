@@ -1,7 +1,7 @@
 export type GlobalDw = {
     backend: {
         __messages?: Record<string, Record<string, string>>;
-        __api_domain?: string;
+        __api_base?: string;
     };
 };
 

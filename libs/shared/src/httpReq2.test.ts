@@ -11,7 +11,7 @@ test.before(() => {
     // We don't care about the incompatibilities between browser fetch and node-fetch here
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.fetch = sinon.spy(fetch) as any;
-    global.dw = { backend: { __api_domain: 'api.datawrapper.local' } };
+    global.dw = { backend: { __api_base: 'app.datawrapper.local/api' } };
 });
 
 /**
