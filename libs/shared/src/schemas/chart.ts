@@ -5,14 +5,14 @@ import { isValidMySQLJSON } from '../validation.js';
 
 export const themeIdSchema = Joi.string()
     .lowercase()
-    .pattern(/^[a-z0-9]+(?:-{0,2}[a-z0-9]+)*$/)
+    .pattern(/^[a-z0-9]+(?:-{1,2}[a-z0-9]+)*$/)
     .min(2)
     .example('datawrapper');
 
 export const preparedChartSchema: Record<string, Joi.Schema> = {
     id: Joi.string().pattern(CHART_ID_REGEXP),
     type: Joi.string()
-        .pattern(/^[a-z0-9]+(?:-{0,2}[a-z0-9]+)*$/)
+        .pattern(/^[a-z0-9]+(?:-{1,2}[a-z0-9]+)*$/)
         .example('d3-lines')
         .description(
             'Type of the chart ([Reference](https://developer.datawrapper.de/v3.0/docs/chart-types))'

@@ -12,7 +12,7 @@ test('getPartialChartSchema returns the correct schema, and only the given keys'
             .allow('')
             .description('Title of your chart. This will be the chart headline.'),
         type: Joi.string()
-            .pattern(/^[a-z0-9]+(?:-{0,2}[a-z0-9]+)*$/)
+            .pattern(/^[a-z0-9]+(?:-{1,2}[a-z0-9]+)*$/)
             .example('d3-lines')
             .description(
                 'Type of the chart ([Reference](https://developer.datawrapper.de/v3.0/docs/chart-types))'
