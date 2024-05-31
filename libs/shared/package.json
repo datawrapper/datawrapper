@@ -1477,6 +1477,25 @@
             "require": "./dist/cjs/waitFor.cjs",
             "types": "./dist/cjs/waitFor.d.cts",
             "default": "./dist/esm/waitFor.js"
+        },
+        "./contentEditableChecks.d.ts": {
+            "require": "./dist/cjs/contentEditableChecks.d.cts",
+            "default": "./dist/esm/contentEditableChecks.d.ts"
+        },
+        "./contentEditableChecks.js": {
+            "require": "./dist/cjs/contentEditableChecks.cjs",
+            "types": "./dist/cjs/contentEditableChecks.d.cts",
+            "default": "./dist/esm/contentEditableChecks.js"
+        },
+        "./contentEditableChecks": {
+            "require": "./dist/cjs/contentEditableChecks.cjs",
+            "types": "./dist/cjs/contentEditableChecks.d.cts",
+            "default": "./dist/esm/contentEditableChecks.js"
+        },
+        "./dist/cjs/contentEditableChecks.cjs": {
+            "require": "./dist/cjs/contentEditableChecks.cjs",
+            "types": "./dist/cjs/contentEditableChecks.d.cts",
+            "default": "./dist/esm/contentEditableChecks.js"
         }
     }
 }
