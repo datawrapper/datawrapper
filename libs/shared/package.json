@@ -1496,6 +1496,25 @@
             "require": "./dist/cjs/contentEditableChecks.cjs",
             "types": "./dist/cjs/contentEditableChecks.d.cts",
             "default": "./dist/esm/contentEditableChecks.js"
+        },
+        "./nameFromEmail.d.ts": {
+            "require": "./dist/cjs/nameFromEmail.d.cts",
+            "default": "./dist/esm/nameFromEmail.d.ts"
+        },
+        "./nameFromEmail.js": {
+            "require": "./dist/cjs/nameFromEmail.cjs",
+            "types": "./dist/cjs/nameFromEmail.d.cts",
+            "default": "./dist/esm/nameFromEmail.js"
+        },
+        "./nameFromEmail": {
+            "require": "./dist/cjs/nameFromEmail.cjs",
+            "types": "./dist/cjs/nameFromEmail.d.cts",
+            "default": "./dist/esm/nameFromEmail.js"
+        },
+        "./dist/cjs/nameFromEmail.cjs": {
+            "require": "./dist/cjs/nameFromEmail.cjs",
+            "types": "./dist/cjs/nameFromEmail.d.cts",
+            "default": "./dist/esm/nameFromEmail.js"
         }
     }
 }
