@@ -87,7 +87,7 @@ function Chart(attributes) {
          * @param {MouseEvent} event
          * @param {HTMLElement} node
          *
-         * @returns {number[]} [x, y] - the relative mouse position
+         * @returns {[number, number]} [x, y] - the relative mouse position
          */
         getRelativeMousePosition(event, node) {
             const rect = (node || event.target).getBoundingClientRect();

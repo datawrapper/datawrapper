@@ -1,5 +1,6 @@
 import type { Writable } from 'svelte/store';
-import type { ThemeData } from './themeTypes.ts';
+import type { ThemeData } from './themeTypes.js';
+import type { PostEvent } from './postEvent.js';
 
 export type DatePrecision =
     | 'year'
@@ -172,14 +173,24 @@ export type DwChart = {
     onNextSave(callback: () => void): void;
     serialize(): PreparedChart;
     isPassive(): boolean;
-    setDataset(dataset: Dataset): void;
+    setDataset(dataset: Record<string, unknown> | Dataset): void;
     translations(messages: Record<string, string>): void;
-    load: (data: string) => void;
+    load: (data: ChartData) => void;
     flags: () => RenderFlags;
-    libraries: () => ChartLibraries;
     attributes: (chart?: PreparedChart) => PreparedChart;
     onChange: (callback: (chart: PreparedChart) => void) => void;
+    locales: {
+        dayjs: globalThis.ILocale;
+        numeral: globalThis.ILocale;
+    };
     emotion: typeof import('@emotion/css');
+    createPostEvent(): PostEvent;
+    translate(key: string, useEditorLocale?: boolean, ...args: string[]): string;
+    locale(): string;
+    inEditor(): boolean;
+    getElementBounds: (element: Element) => Omit<DOMRectReadOnly, 'x' | 'y' | 'toJSON'>;
+    getMaxChartHeight: () => number;
+    getRelativeMousePosition: (event: MouseEvent, element: HTMLElement) => [number, number];
 };
 
 export type Chart = {
@@ -260,7 +271,7 @@ export type Visualization = {
     get: SettingsGetter<object>;
     theme: () => ThemeData;
     chart: () => DwChart;
-    darkMode: (darkMode: boolean) => boolean;
+    darkMode: (darkMode?: boolean) => boolean;
     axes: AxesGetter;
     libraries: () => ChartLibraries;
     addFilterUI: (args: {
