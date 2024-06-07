@@ -28,3 +28,5 @@ export default function postEvent(chartId: string, isIframe: boolean) {
         }
     };
 }
+
+export type PostEvent = ReturnType<typeof postEvent>;
