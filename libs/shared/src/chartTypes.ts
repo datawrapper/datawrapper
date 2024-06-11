@@ -206,6 +206,7 @@ export type Chart = {
     metadata: Metadata;
     thumbnails?: {
         plain: string;
+        full: string;
     };
     thumbnailHash: string;
     folderId?: number | null;
@@ -251,6 +252,8 @@ export type PreparedChart = {
         | {
               name?: string | null;
               email?: string | null;
+              avatar?: string | null;
+              color?: string | null;
           }
         | undefined;
     organizationId?: string | null;
