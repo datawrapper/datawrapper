@@ -193,12 +193,38 @@ export type DwChart = {
     getRelativeMousePosition: (event: MouseEvent, element: HTMLElement) => [number, number];
 };
 
+export type VisualizationType =
+    | 'column-chart'
+    | 'd3-area'
+    | 'd3-arrow-plot'
+    | 'd3-bars-bullet'
+    | 'd3-bars-grouped'
+    | 'd3-bars-split'
+    | 'd3-bars-stacked'
+    | 'd3-bars'
+    | 'd3-donuts'
+    | 'd3-dot-plot'
+    | 'd3-lines'
+    | 'd3-maps-choropleth'
+    | 'd3-maps-symbols'
+    | 'd3-multiple-donuts'
+    | 'd3-multiple-pies'
+    | 'd3-pies'
+    | 'd3-range-plot'
+    | 'd3-scatter-plot'
+    | 'election-donut'
+    | 'grouped-column-chart'
+    | 'locator-map'
+    | 'multiple-lines'
+    | 'stacked-column-chart'
+    | 'tables';
+
 export type Chart = {
     id: string;
     publicId: string;
     language: string;
     theme: string;
-    type: string;
+    type: VisualizationType;
     title: string;
     lastEditStep: number;
     publicUrl?: string;
@@ -215,7 +241,7 @@ export type Chart = {
 
 export type PreparedChart = {
     id?: string;
-    type?: string;
+    type?: VisualizationType;
     title?: string;
     theme?: string;
 
