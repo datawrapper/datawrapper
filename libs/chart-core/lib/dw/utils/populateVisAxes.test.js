@@ -57,6 +57,17 @@ test('assign all number columns to axis with multiple = true, except if already 
     t.deepEqual(axes.lines, ['line1', 'line2', 'line3']);
 });
 
+test('if there are no unused columns available for axis with multiple = true, reuse user-assigned axis', t => {
+    const ds = dataset([dateColumn('month'), numberColumn('value')]);
+    const visAxes = {
+        x: X_AXIS,
+        lines: VALUES_MULTIPLE
+    };
+    const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { x: 'value' } });
+    t.is(axes.x, 'value');
+    t.deepEqual(axes.lines, ['value']);
+});
+
 test("don't assign columns twice", t => {
     const ds = dataset([textColumn('name'), numberColumn('value1'), numberColumn('value2')]);
     const visAxes = {

@@ -97,13 +97,18 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
             return res;
         }
         function remainingAvailableColumns(dataset) {
-            let count = 0;
+            const usedUserAxes = Object.values(userAxes).filter(axis => axis in usedColumns);
+            let countUnused = 0;
+            const reusable = [];
             dataset.eachColumn(c => {
-                if (checkColumn(axisDef, c)) {
-                    count++;
+                const unused = checkColumn(axisDef, c);
+                if (unused) {
+                    countUnused++;
+                } else if (usedUserAxes.includes(c.name()) && checkColumn(axisDef, c, true)) {
+                    reusable.push(c.name());
                 }
             });
-            return count;
+            return { available: countUnused, reusable };
         }
         checked.push(key);
         if (axes[key]) return; // user has defined this axis already
@@ -164,15 +169,20 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
                 }
             } else {
                 const required = remainingRequiredColumns(axisDef.accepts);
-                let available = remainingAvailableColumns(dataset);
+                const availableColumnsResult = remainingAvailableColumns(dataset);
+                let { available } = availableColumnsResult;
+                const { reusable } = availableColumnsResult;
 
                 // fill axis with all accepted columns
                 axes[key] = [];
                 dataset.eachColumn(function (c) {
+                    // if we haven't found any columns for this axis
+                    // and no unused columns are available, allow reusing a user-assigned axis
+                    const allowReuseAxis =
+                        !available && !axes[key].length && reusable.includes(c.name());
                     if (required === 'multiple' && axes[key].length) return;
-                    else if (available <= required) return;
-
-                    if (checkColumn(axisDef, c)) {
+                    else if (available <= required && !allowReuseAxis) return;
+                    if (checkColumn(axisDef, c, allowReuseAxis)) {
                         usedColumns[c.name()] = true;
                         axes[key].push(c.name());
                         available--;
@@ -205,6 +215,10 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
         return true;
     }
 
+    /**
+     * Determines whether or not a particular column can be assigned to a given axis
+     * Depending on whether it is accepted by the axis type, and isn't already used
+     */
     function checkColumn(axisDef, columns, allowMultipleUse) {
         if (!isArray(columns)) columns = [columns];
         columns = columns.map(el => (typeof el === 'string' ? dataset.column(el) : el));
