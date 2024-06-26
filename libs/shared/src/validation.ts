@@ -30,10 +30,6 @@ function isValidMySQLJSONObjectKey(s: string) {
     return !s || s.length < 2 ** 16;
 }
 
-const INVALID_UTF16_REGEXP = new RegExp(
-    '([\ud800-\udbff](?![\udc00-\udfff]))|((?<![\ud800-\udbff])[\udc00-\udfff])'
-);
-
 /**
  * Check that the passed string is a valid UTF-16 string.
  *
@@ -42,6 +38,10 @@ const INVALID_UTF16_REGEXP = new RegExp(
  * @see https://mnaoumov.wordpress.com/2014/06/14/stripping-invalid-characters-from-utf-16-strings/
  */
 function isValidUTF16(s: string) {
+    // We need to construct this regex at runtime, because the lookbehind is not supported in older Safari versions, and we only actually use it server side.
+    const INVALID_UTF16_REGEXP = new RegExp(
+        '([\ud800-\udbff](?![\udc00-\udfff]))|((?<![\ud800-\udbff])[\udc00-\udfff])'
+    );
     return !INVALID_UTF16_REGEXP.test(s);
 }
 
