@@ -237,6 +237,7 @@ export type Override = {
 };
 
 export type ThemeData = {
+    version?: number;
     type?: 'web' | 'print';
     blocks?: Record<string, ThemeBlock>;
     overrides?: Override[];
