@@ -11,8 +11,8 @@ const yr = y => ymd(y);
 
 const curYear = new Date().getFullYear();
 
-const run = (name, { values, parsed, invalid, only }) => {
-    (only ? test.only : test)(name, t => {
+const run = (name, { values, parsed, invalid }) => {
+    test(name, t => {
         const col = column('', values);
         if (!invalid) {
             // first check if the column auto-detected dates
