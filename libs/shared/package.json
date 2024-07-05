@@ -43,6 +43,7 @@
     },
     "devDependencies": {
         "@emotion/css": "^11.11.2",
+        "@tiptap/core": "^2.4.0",
         "@tsconfig/strictest": "^2.0.5",
         "@types/chroma-js": "^2.4.2",
         "@types/d3-color": "^1.4.2",
@@ -1515,6 +1516,25 @@
             "require": "./dist/cjs/nameFromEmail.cjs",
             "types": "./dist/cjs/nameFromEmail.d.cts",
             "default": "./dist/esm/nameFromEmail.js"
+        },
+        "./getMentionsFromTipTapJson.d.ts": {
+            "require": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
+            "default": "./dist/esm/getMentionsFromTipTapJson.d.ts"
+        },
+        "./getMentionsFromTipTapJson.js": {
+            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
+            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
+            "default": "./dist/esm/getMentionsFromTipTapJson.js"
+        },
+        "./getMentionsFromTipTapJson": {
+            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
+            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
+            "default": "./dist/esm/getMentionsFromTipTapJson.js"
+        },
+        "./dist/cjs/getMentionsFromTipTapJson.cjs": {
+            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
+            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
+            "default": "./dist/esm/getMentionsFromTipTapJson.js"
         }
     }
 }
