@@ -237,6 +237,7 @@ export type Chart = {
     thumbnailHash: string;
     folderId?: number | null;
     organizationId: string | null;
+    authorId: number | null;
 };
 
 export type PreparedChart = {
