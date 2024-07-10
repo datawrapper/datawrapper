@@ -150,7 +150,9 @@ export function translateError(error: ApiError, fallbackTranslationKey?: string)
         const detailMessages = error.details
             .map(({ translationKey }) => (translationKey ? __(translationKey) : ''))
             .filter(detail => detail !== '');
-        return detailMessages.join('. ');
+        return detailMessages.length
+            ? detailMessages.join('. ')
+            : __(fallbackTranslationKey || error?.message || 'Unknown error');
     } else if (error?.translationKey) {
         return __(error.translationKey);
     } else {
