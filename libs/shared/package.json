@@ -69,7 +69,7 @@
         "svelte": "^4.2.0",
         "tsx": "^4.7.2",
         "typescript": "^5.2.2",
-        "vitest": "^1.2.1"
+        "vitest": "^2.0.1"
     },
     "dependencies": {
         "chroma-js": "^2.4.2",
