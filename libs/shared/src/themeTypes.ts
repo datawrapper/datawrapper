@@ -250,6 +250,8 @@ export type ThemeData = {
     };
     colors?: {
         background?: string;
+        positive?: string;
+        negative?: string;
         bgBlendRatios?: {
             axis?: number;
             gridline?: number;
