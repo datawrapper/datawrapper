@@ -216,6 +216,7 @@ export type VisualizationType =
     | 'grouped-column-chart'
     | 'locator-map'
     | 'multiple-lines'
+    | 'multiple-columns'
     | 'stacked-column-chart'
     | 'tables';
 
