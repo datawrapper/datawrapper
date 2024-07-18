@@ -20,13 +20,13 @@ import column from './column.js';
  *
  * @param {object} opts
  * @param {string} opts.csv - the CSV string to be parsed
- * @param {string} opts.delimiter - defaults to 'auto'
- * @param {string} opts.quoteChar
- * @param {number} opts.skipRows - number of initial rows to skip
- * @param {*} opts.emptyValue
- * @param {boolean} opts.transpose
- * @param {boolean} opts.firstRowIsHeader
- * @param {string} opts.allowedTags - list of HTML tags that will not get filtered out by purifyHTML
+ * @param {string} [opts.delimiter] - defaults to 'auto'
+ * @param {string} [opts.quoteChar]
+ * @param {number} [opts.skipRows] - number of initial rows to skip
+ * @param {*} [opts.emptyValue]
+ * @param {boolean} [opts.transpose]
+ * @param {boolean} [opts.firstRowIsHeader]
+ * @param {string} [opts.allowedTags] - list of HTML tags that will not get filtered out by purifyHTML
  * @return {Dataset}
  */
 export default function delimited(opts) {
