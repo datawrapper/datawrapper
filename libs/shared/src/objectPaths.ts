@@ -56,7 +56,9 @@ type ArrayPaths<TObj> = TObj extends Record<string | number | symbol, unknown>
         : [`${number}`] | ConcatArray<`${number}`, ArrayPaths<TObj[number]>>
     : undefined;
 
-export type Paths<TObj> = (StringPaths<TObj> & string) | (ArrayPaths<TObj> & Readonly<string[]>);
+export type Paths<TObj> =
+    | (StringPaths<TObj> & string)
+    | ((ArrayPaths<TObj> & Readonly<string[]>) & (string | string[]));
 
 export type NullablePaths<TObj> = Paths<TObj> | null;
 

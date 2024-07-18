@@ -39,7 +39,7 @@ export type Column = {
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
-    raw(): string;
+    raw(index?: number, value?: unknown): string;
     val(index: number): unknown;
     each(callback: (value: string | number | boolean | null, index: number) => void): void;
 };
@@ -62,7 +62,7 @@ export type Metadata = {
             mode?: string;
             printChartId?: string;
         };
-    } & Record<`exif-${string}`, string>;
+    } & Record<string, string | boolean>;
     data?: {
         'column-format'?: Record<string, Record<string, unknown>>;
         'column-order'?: number[];
@@ -127,6 +127,8 @@ export type Dataset = {
     numRows: () => number;
     numColumns: () => number;
     indexOf: (column: string | null) => number;
+    // in the case of JSON data:
+    [key: string]: unknown;
 };
 
 export type VisAxesColumns = Record<string, Column[]>;
@@ -173,7 +175,7 @@ export type DwChart = {
     onNextSave(callback: () => void): void;
     serialize(): PreparedChart;
     isPassive(): boolean;
-    setDataset(dataset: Record<string, unknown> | Dataset): void;
+    setDataset(dataset: Dataset): void;
     translations(messages: Record<string, string>): void;
     load: (data: ChartData) => void;
     flags: () => RenderFlags;
