@@ -42,6 +42,8 @@ export type Column = {
     raw(index?: number, value?: unknown): string;
     val(index: number): unknown;
     each(callback: (value: string | number | boolean | null, index: number) => void): void;
+    rows: () => (string | number | boolean | null)[];
+    clone: () => Column;
 };
 
 export type Metadata = {
@@ -127,6 +129,8 @@ export type Dataset = {
     numRows: () => number;
     numColumns: () => number;
     indexOf: (column: string | null) => number;
+    clone: () => Dataset;
+    eachColumn: (arg0: (column: Column, index: number, array: Column[]) => any) => void;
     // in the case of JSON data:
     [key: string]: unknown;
 };
