@@ -268,6 +268,7 @@ export type ThemeData = {
             padding?: number;
         };
         palette?: string[];
+        categories?: string[][];
     };
     easing?: string;
     typography?: {
