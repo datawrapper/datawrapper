@@ -162,7 +162,7 @@ export class Clock {
      * Increment a timestamp
      * @returns {Timestamp} The incremented timestamp
      */
-    tick() {
+    tick(): Timestamp {
         this.count++;
         return this.timestamp;
     }
@@ -170,7 +170,6 @@ export class Clock {
     /**
      * Update the timestamp to the highest value
      * @param {Clock} timestamp The timestamp to update to
-     * @returns {Timestamp} The updated timestamp
      */
     update(timestamp: Clock | Timestamp) {
         const count = Clock.getCount(timestamp);
@@ -182,6 +181,7 @@ export class Clock {
      * @param {Clock} timestamp timestamp to compare to
      * @returns true if this > timestamp, false otherwise
      */
+    // region compare
     isNewerThan(timestamp: Clock | Timestamp): boolean {
         const [nodeId, count] = Clock.split(timestamp);
         const hasNewerCount = this.count > count;
@@ -190,6 +190,7 @@ export class Clock {
 
         return hasNewerCount || (hasSameCount && hasHigherNodeId);
     }
+    // endregion compare
 
     /**
      * Compare timestamps

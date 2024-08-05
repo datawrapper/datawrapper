@@ -6,7 +6,7 @@ export type Update<O extends object | string | number> = {
     timestamp: Timestamp | Clock;
     diff: Diff<O>;
 };
-
+// #region CRDT
 export interface CRDT<O extends object | string | number> {
     applyUpdate(update: Update<O>): void;
     createUpdate(diff: Diff<O>): Update<O>;
@@ -16,3 +16,4 @@ export interface CRDT<O extends object | string | number> {
     ): Diff<O>;
     data(): O;
 }
+// #endregion CRDT
