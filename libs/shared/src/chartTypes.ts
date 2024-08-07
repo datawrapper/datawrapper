@@ -360,8 +360,7 @@ export type TextAnnotationConnectorLine = {
     targetPadding: number;
 };
 
-export type TextAnnotation = {
-    id: AnnotationId;
+export type TextAnnotationProps = {
     plot?: AnnotationPlot;
     showInAllPlots?: AnnotationShowInAllPlots;
     x: number | string;
@@ -382,6 +381,8 @@ export type TextAnnotation = {
     connectorLine: TextAnnotationConnectorLine;
     mobileFallback: boolean;
 };
+
+export type TextAnnotation = TextAnnotationProps & { id: AnnotationId };
 
 export type RangeAnnotationStrokeType = 'solid' | 'dotted' | 'dashed';
 export type RangeAnnotationDisplay = 'range' | 'line';
