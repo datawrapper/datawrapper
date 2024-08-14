@@ -269,6 +269,7 @@ export type ThemeData = {
         };
         palette?: string[];
         categories?: string[][];
+        gradients?: string[][];
     };
     easing?: string;
     typography?: {
