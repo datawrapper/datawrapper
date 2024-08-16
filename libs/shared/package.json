@@ -1517,24 +1517,24 @@
             "types": "./dist/cjs/nameFromEmail.d.cts",
             "default": "./dist/esm/nameFromEmail.js"
         },
-        "./getMentionsFromTipTapJson.d.ts": {
-            "require": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
-            "default": "./dist/esm/getMentionsFromTipTapJson.d.ts"
+        "./mentions.d.ts": {
+            "require": "./dist/cjs/mentions.d.cts",
+            "default": "./dist/esm/mentions.d.ts"
         },
-        "./getMentionsFromTipTapJson.js": {
-            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
-            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
-            "default": "./dist/esm/getMentionsFromTipTapJson.js"
+        "./mentions.js": {
+            "require": "./dist/cjs/mentions.cjs",
+            "types": "./dist/cjs/mentions.d.cts",
+            "default": "./dist/esm/mentions.js"
         },
-        "./getMentionsFromTipTapJson": {
-            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
-            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
-            "default": "./dist/esm/getMentionsFromTipTapJson.js"
+        "./mentions": {
+            "require": "./dist/cjs/mentions.cjs",
+            "types": "./dist/cjs/mentions.d.cts",
+            "default": "./dist/esm/mentions.js"
         },
-        "./dist/cjs/getMentionsFromTipTapJson.cjs": {
-            "require": "./dist/cjs/getMentionsFromTipTapJson.cjs",
-            "types": "./dist/cjs/getMentionsFromTipTapJson.d.cts",
-            "default": "./dist/esm/getMentionsFromTipTapJson.js"
+        "./dist/cjs/mentions.cjs": {
+            "require": "./dist/cjs/mentions.cjs",
+            "types": "./dist/cjs/mentions.d.cts",
+            "default": "./dist/esm/mentions.js"
         }
     }
 }
