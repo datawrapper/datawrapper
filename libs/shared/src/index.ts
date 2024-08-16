@@ -38,4 +38,4 @@ export { default as toFixed } from './toFixed.js';
 export { default as truncate } from './truncate.js';
 export { default as getVersionlessUrl } from './getVersionlessURL.js';
 export { isAllowedSourceUrl, isValidUrl } from './validation.js';
-export { getMentionsFromTipTapJson } from './getMentionsFromTipTapJson.js';
+export { getMentionsFromTipTapJson, getUserIdFromMention } from './mentions.js';
