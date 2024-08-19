@@ -328,6 +328,26 @@ function Column(name_, rows, type, allowedTags) {
          **/
         rows() {
             return rows;
+        },
+
+        /**
+         * return the specified row formatted for use as a key
+         */
+        key(rowIndex) {
+            if (column.type() !== 'text') {
+                return purifyHtml(column.raw(rowIndex), []);
+            }
+            const unsafeString = String(column.val(rowIndex, true) || column.val(rowIndex) || '');
+            return purifyHtml(unsafeString, []);
+        },
+
+        /**
+         * return all row values formatted for use as keys
+         */
+        keys() {
+            return column.values().map((val, i) => {
+                return column.key(i);
+            });
         }
     };
     // backwards compatibility
