@@ -5,6 +5,11 @@ import numeral from 'numeral';
 const testData = '5.4\t4.2\t4\t3.6\t3.4\t4.5'.split('\t');
 const col = column('my title', testData);
 const col2 = column('my title', ['18661', '18683', '17103', '16401', '16208', '15025']);
+const col3 = column(
+    'my title',
+    ['10/8/2024', '11/8/2024', '12/8/2024', '13/8/2024', '14/8/2024', '15/8/2024', '16/8/2024'],
+    'date'
+);
 
 test('Column.name() returns the name', t => {
     t.is(col.name(), 'my title');
@@ -161,4 +166,20 @@ test('Column.formatted() does not format a date column', t => {
         null,
         undefined
     ]);
+});
+
+test('Column.key() returns the specified row as a formatted key', t => {
+    t.is(col.key(0), '5.4');
+    t.is(col.key(2), '4');
+    t.is(col3.key(0), '10/8/2024');
+    t.is(col3.key(2), '12/8/2024');
+});
+
+test('Column.keys() returns all row values as formatted keys', t => {
+    t.is(col.keys().join(', '), '5.4, 4.2, 4, 3.6, 3.4, 4.5');
+    t.is(col2.keys().join(', '), '18661, 18683, 17103, 16401, 16208, 15025');
+    t.is(
+        col3.keys().join(', '),
+        '10/8/2024, 11/8/2024, 12/8/2024, 13/8/2024, 14/8/2024, 15/8/2024, 16/8/2024'
+    );
 });

@@ -40,10 +40,23 @@ export type Column = {
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
     raw(index?: number, value?: unknown): string;
-    val(index: number): unknown;
+    /**
+     * @param index - row index
+     * @param unchanged - if true, returns the data without the changes made in 'check & describe'
+     */
+    val(index: number, unchanged?: boolean): unknown;
     each(callback: (value: string | number | boolean | null, index: number) => void): void;
     rows: () => (string | number | boolean | null)[];
     clone: () => Column;
+    /**
+     * @param index - row index
+     * @returns the specified row formatted for use as a key
+     */
+    key(index: number): string;
+    /**
+     * @returns all values formatted for use as keys
+     */
+    keys(): string[];
 };
 
 export type Metadata = {
