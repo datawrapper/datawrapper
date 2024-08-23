@@ -357,7 +357,7 @@ function Chart(attributes) {
             const vis = chart.vis();
             const containerHeight = flags.isIframe
                 ? window.innerHeight
-                : vis.outerContainer().clientHeight;
+                : vis.outerContainer().clientHeight || vis.outerContainer().offsetHeight;
             const rootContainer = chart.vis().container().getRootNode();
             const maxHeight = containerHeight - getNonChartHeight(rootContainer);
             return Math.max(maxHeight, 0);
