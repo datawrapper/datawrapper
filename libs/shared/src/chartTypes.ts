@@ -209,7 +209,7 @@ export type DwChart = {
     inEditor(): boolean;
     getElementBounds: (element: Element) => Omit<DOMRectReadOnly, 'x' | 'y' | 'toJSON'>;
     getMaxChartHeight: () => number;
-    getRelativeMousePosition: (event: MouseEvent, element: HTMLElement) => [number, number];
+    getRelativeMousePosition: (event: MouseEvent, element: HTMLOrSVGElement) => [number, number];
 };
 
 export type VisualizationType =
