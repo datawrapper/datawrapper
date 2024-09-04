@@ -818,3 +818,29 @@ test(`diffs with array inserts and deletions applied in different order result i
 
     t.deepEqual(crdtA.data(), crdtB.data());
 });
+
+test(`update and delete operations on numeric ids`, t => {
+    const crdt = new BaseJsonCRDT({
+        normalField: 'some value',
+        arr: [
+            { id: 1, val: 1 },
+            { id: 2, val: 2 },
+            { id: 'C', val: 3 }
+        ]
+    });
+
+    crdt.update(
+        {
+            arr: { 1: { id: 1, _index: null }, 2: { id: 2, val: 'B' }, C: { id: 'C' } }
+        },
+        '1-100'
+    );
+
+    t.deepEqual(crdt.data(), {
+        normalField: 'some value',
+        arr: [
+            { id: 2, val: 'B' },
+            { id: 'C', val: 3 }
+        ]
+    });
+});
