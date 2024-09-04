@@ -88,9 +88,13 @@ function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     return obj as ItemArrayObject;
 }
 
-type HasId = { id: string };
+type HasId = { id: string | number };
 function hasId(item: unknown): item is HasId {
-    return isObject(item) && 'id' in item && typeof item.id === 'string';
+    return (
+        isObject(item) &&
+        'id' in item &&
+        (typeof item.id === 'string' || typeof item.id === 'number')
+    );
 }
 function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) {
     const sourceItems = new Map(

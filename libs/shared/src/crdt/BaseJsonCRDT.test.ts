@@ -673,6 +673,54 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array -  re-o
     // t.deepEqual(crdt.data(), newData);
 });
 
+test('BaseJsonCRDT.calculateDiff calculates the correct diff (for numeric ids in item array)', t => {
+    const oldData = {
+        a: 'some value',
+        b: {
+            c: 'foo',
+            d: [
+                { id: 1, value: 1 },
+                { id: 2, value: 2 },
+                { id: 'C', value: 3 }
+            ],
+            e: 'bar',
+            h: [1, 2, 3]
+        },
+        'c.2': {
+            f: 'baz',
+            g: [1, 2, 3]
+        },
+        d: [1, 2, 3]
+    };
+
+    const newData = {
+        a: 'some value',
+        b: {
+            d: [
+                { id: 'C', value: 5 },
+                { id: 2, value: 'a new value' }
+            ]
+        }
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        b: {
+            c: null,
+            d: {
+                1: { _index: null },
+                C: { _index: 0, value: 5 },
+                2: { value: 'a new value' }
+            },
+            e: null,
+            h: null
+        },
+        'c.2': null,
+        d: null
+    });
+});
+
 test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - converted to item array)', t => {
     const oldData = {
         a: 'some value',
