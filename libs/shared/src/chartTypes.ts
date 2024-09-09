@@ -282,6 +282,11 @@ export type PreparedChart = {
     forkedFrom?: string | null;
 
     metadata?: Metadata;
+    /**
+     * hash representing the current state of all metadata fields that affect the published chart
+     * used in `Publish.svelte` to detect if the chart needs republishing
+     */
+    chartHash?: string | null;
     language?: string;
     externalData?: string;
 
