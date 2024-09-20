@@ -344,6 +344,15 @@ extend(base, {
     },
 
     /**
+     * deregister an event listener for custom vis events
+     */
+    off(eventType, callback) {
+        if (this.__callbacks[eventType]) {
+            this.__callbacks[eventType] = this.__callbacks[eventType].filter(cb => cb !== callback);
+        }
+    },
+
+    /**
      * log error message
      * @param {string} message
      */

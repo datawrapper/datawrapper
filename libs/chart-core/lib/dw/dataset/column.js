@@ -331,7 +331,7 @@ function Column(name_, rows, type, allowedTags) {
         },
 
         /**
-         * return the specified row formatted for use as a key
+         * return the specified row formatted for use as a key.
          */
         key(rowIndex) {
             if (column.type() !== 'text') {
@@ -345,9 +345,13 @@ function Column(name_, rows, type, allowedTags) {
          * return all row values formatted for use as keys
          */
         keys() {
-            return column.values().map((val, i) => {
-                return column.key(i);
-            });
+            return Array.from(
+                new Set(
+                    column.values().map((val, i) => {
+                        return column.key(i);
+                    })
+                )
+            );
         }
     };
     // backwards compatibility
