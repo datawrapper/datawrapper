@@ -225,3 +225,22 @@ test('visualization rendered promise is rejected after timeout', async t => {
     t.is(element.innerHTML, '');
     t.is(vis.__rendered, false);
 });
+
+test('register, fire and deregister events', async t => {
+    t.plan(1);
+
+    visualization.register(t.context.id, null, {}, 'myhash');
+    const element = document.createElement('div');
+    const vis = visualization(t.context.id, element);
+
+    const callback = function (detail) {
+        t.is(detail, 42);
+    };
+
+    vis.on('test-event', callback);
+    vis.fire('test-event', 42);
+
+    vis.off('test-event', callback);
+    // should not trigger event
+    vis.fire('test-event', 42);
+});

@@ -10,6 +10,7 @@ const col3 = column(
     ['10/8/2024', '11/8/2024', '12/8/2024', '13/8/2024', '14/8/2024', '15/8/2024', '16/8/2024'],
     'date'
 );
+const col4 = column('my title', ['A', 'B', 'A', 'C', 'B', 'A']);
 
 test('Column.name() returns the name', t => {
     t.is(col.name(), 'my title');
@@ -182,4 +183,5 @@ test('Column.keys() returns all row values as formatted keys', t => {
         col3.keys().join(', '),
         '10/8/2024, 11/8/2024, 12/8/2024, 13/8/2024, 14/8/2024, 15/8/2024, 16/8/2024'
     );
+    t.is(col4.keys().join(', '), 'A, B, C');
 });
