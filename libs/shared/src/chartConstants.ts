@@ -13,3 +13,5 @@ function escapeRegExpChars(chars: string): string {
 export const CHART_ID_PATTERN = `[${escapeRegExpChars(CHART_ID_ALLOWED_CHARS)}]{5}`;
 
 export const CHART_ID_REGEXP = new RegExp(`^${CHART_ID_PATTERN}$`);
+
+export const CUSTOM_FIELD_ORDERBY_PREFIX = 'custom_' as const;

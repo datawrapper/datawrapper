@@ -3,7 +3,12 @@ export { default as area } from './area.js';
 export { default as arrayToObject } from './arrayToObject.js';
 export { default as assignWithEmptyObjects } from './assignWithEmptyObjects.js';
 export { autoTickFormat, autoTickFormatDate, autoTickFormatNumber } from './autoTickFormat.js';
-export { CHART_ID_ALLOWED_CHARS, CHART_ID_PATTERN, CHART_ID_REGEXP } from './chartConstants.js';
+export {
+    CHART_ID_ALLOWED_CHARS,
+    CHART_ID_PATTERN,
+    CHART_ID_REGEXP,
+    CUSTOM_FIELD_ORDERBY_PREFIX
+} from './chartConstants.js';
 export { columnFormatter } from './columnFormatter.js';
 export { default as clone } from './clone.js';
 export { default as columnNameToVariable } from './columnNameToVariable.js';
