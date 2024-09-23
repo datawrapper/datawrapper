@@ -22,6 +22,7 @@ export default function drawPattern({
     strokeWidth = 1,
     lineGap = 10,
     patternType = 'horizontal',
+    opacity = 1,
     rotation = 0,
     scale = 1,
     flipV = false
@@ -32,6 +33,7 @@ export default function drawPattern({
     strokeWidth: number;
     lineGap: number;
     patternType: string;
+    opacity: number;
     rotation: number;
     scale: number;
     flipV: boolean;
@@ -53,5 +55,6 @@ export default function drawPattern({
         .attr('x2', patternWidth / 2)
         .attr('y2', patternWidth)
         .attr('stroke', stroke)
-        .attr('stroke-width', strokeWidth * scale);
+        .attr('stroke-width', strokeWidth * scale)
+        .attr('opacity', opacity);
 }
