@@ -1,5 +1,5 @@
 import test from 'ava';
-import { iterateObjectPaths } from './objectPaths';
+import { getObjectPaths, iterateObjectPaths } from './objectPaths';
 
 test(`iterateObjectPaths - basic nested object`, t => {
     // basic nested object
@@ -65,4 +65,29 @@ test(`iterateObjectPaths - with nested empty objects`, t => {
     });
 
     t.deepEqual(actual, [['a', 'b']]);
+});
+
+test('getObjectPaths - returns correct keys', t => {
+    const keys = getObjectPaths({
+        answer: 42,
+        metadata: {
+            transpose: false,
+            'null-key': null,
+            describe: {
+                intro: 'Intro',
+                enabled: false
+            }
+        },
+        today: new Date()
+    });
+    [
+        'answer',
+        'today',
+        'metadata.transpose',
+        'metadata.null-key',
+        'metadata.describe.intro',
+        'metadata.describe.enabled'
+    ].forEach(key => {
+        t.is(keys.includes(key), true);
+    });
 });
