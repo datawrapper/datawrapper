@@ -154,3 +154,17 @@ export function iterateObjectPaths<
         }
     }
 }
+
+/**
+ * Returns list of key paths defined in an object
+ *
+ * @param {object} object
+ * @returns {string[]} list of key paths
+ */
+export function getObjectPaths<O extends object>(obj: O): string[] {
+    const keys: string[] = [];
+    iterateObjectPaths(obj, path => {
+        keys.push(path.join('.'));
+    });
+    return keys;
+}

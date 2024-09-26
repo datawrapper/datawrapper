@@ -1,10 +1,10 @@
 import isArray from 'lodash/isArray.js';
 import isUndefined from 'lodash/isUndefined.js';
 import indexOf from 'lodash/indexOf.js';
-import isPlainObject from 'lodash/isPlainObject.js';
 import get from '@datawrapper/shared/get';
 import set from '@datawrapper/shared/set';
 import objectDiff from '@datawrapper/shared/objectDiff';
+import { getObjectPaths } from '@datawrapper/shared/objectPaths';
 import PostEvent from '@datawrapper/shared/postEvent';
 import migrate from '../migrate/index.js';
 
@@ -368,7 +368,7 @@ function Chart(attributes) {
                 const diff = objectDiff(attributes, attrs);
                 attributes = attrs;
                 // fire onChange callbacks
-                getNestedObjectKeys(diff).forEach(key => {
+                getObjectPaths(diff).forEach(key => {
                     changeCallbacks.fire(chart, key, get(attrs, key));
                 });
                 return chart;
@@ -463,26 +463,6 @@ function Chart(attributes) {
     }
 
     return chart;
-}
-
-/**
- * Returns list of keys defined in an object.
- *
- * @param {object} object
- * @returns {string[]} list of keys
- */
-function getNestedObjectKeys(object) {
-    const candidates = Object.keys(object);
-    const keys = [];
-    candidates.forEach(key => {
-        if (!isPlainObject(object[key])) keys.push(key);
-        else {
-            getNestedObjectKeys(object[key]).forEach(subkey => {
-                keys.push(`${key}.${subkey}`);
-            });
-        }
-    });
-    return keys;
 }
 
 export default Chart;
