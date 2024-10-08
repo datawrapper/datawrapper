@@ -297,6 +297,7 @@ export type PreparedChart = {
     createdAt?: Date | string;
     lastModifiedAt?: Date | string;
 
+    workspace?: string | undefined;
     publicId?: string | undefined;
     folderId?: number | null;
     authorId?: number | undefined;
