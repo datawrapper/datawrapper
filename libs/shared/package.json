@@ -1517,24 +1517,24 @@
             "types": "./dist/cjs/nameFromEmail.d.cts",
             "default": "./dist/esm/nameFromEmail.js"
         },
-        "./mentions.d.ts": {
-            "require": "./dist/cjs/mentions.d.cts",
-            "default": "./dist/esm/mentions.d.ts"
+        "./mentionsAndChartLinks.d.ts": {
+            "require": "./dist/cjs/mentionsAndChartLinks.d.cts",
+            "default": "./dist/esm/mentionsAndChartLinks.d.ts"
         },
-        "./mentions.js": {
-            "require": "./dist/cjs/mentions.cjs",
-            "types": "./dist/cjs/mentions.d.cts",
-            "default": "./dist/esm/mentions.js"
+        "./mentionsAndChartLinks.js": {
+            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
+            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
+            "default": "./dist/esm/mentionsAndChartLinks.js"
         },
-        "./mentions": {
-            "require": "./dist/cjs/mentions.cjs",
-            "types": "./dist/cjs/mentions.d.cts",
-            "default": "./dist/esm/mentions.js"
+        "./mentionsAndChartLinks": {
+            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
+            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
+            "default": "./dist/esm/mentionsAndChartLinks.js"
         },
-        "./dist/cjs/mentions.cjs": {
-            "require": "./dist/cjs/mentions.cjs",
-            "types": "./dist/cjs/mentions.d.cts",
-            "default": "./dist/esm/mentions.js"
+        "./dist/cjs/mentionsAndChartLinks.cjs": {
+            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
+            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
+            "default": "./dist/esm/mentionsAndChartLinks.js"
         }
     }
 }
