@@ -2,6 +2,7 @@ import isEqual from 'lodash/isEqual.js';
 import { CRDT, Update } from './CRDT.js';
 import { Timestamp, NewTimestamps } from './types.js';
 import { JsonCRDT } from './JsonCRDT.js';
+import { TIMESTAMP_KEY } from './constants.js';
 
 export class SimpleCRDT implements CRDT<string> {
     private crdt: JsonCRDT<{ value: string }>;
@@ -11,7 +12,9 @@ export class SimpleCRDT implements CRDT<string> {
             this.crdt = new JsonCRDT<{ value: string }>(timestamp, {
                 data: { value },
                 pathToItemArrays: [],
-                timestamps: { value: { _timestamp: timestamp } } as NewTimestamps<{ value: string }>
+                timestamps: { value: { [TIMESTAMP_KEY]: timestamp } } as NewTimestamps<{
+                    value: string;
+                }>
             });
             return;
         }

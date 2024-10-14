@@ -2,6 +2,7 @@ import setWith from 'lodash/setWith.js';
 import isObject from 'lodash/isObject.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import { ItemArray, ItemArrayObject, Timestamps, NewTimestamps, HasId } from './types.js';
+import { TIMESTAMP_KEY } from './constants.js';
 
 export function isDeleteOperator(value: unknown) {
     return value === null || value === undefined;
@@ -49,12 +50,12 @@ export function migrateTimestamps<O extends object>(
 ): NewTimestamps<O> {
     // Convert old structure to new structure
     // old: { a: '1-3', b: { _self: '1-3', c: '1-3' } }
-    // new { a: { _timestamp: '1-3' }, b: { _timestamp: '1-3', c: { _timestamp: '1-3' } } }
+    // new { a: { [TIMESTAMP_KEY]: '1-3' }, b: { [TIMESTAMP_KEY]: '1-3', c: { [TIMESTAMP_KEY]: '1-3' } } }
 
     const newTimestamps: NewTimestamps<O> | Record<string, never> = {};
 
     iterateObjectPaths(timestamps, (path, value) => {
-        const isMigrated = path[path.length - 1] === '_timestamp';
+        const isMigrated = path[path.length - 1] === TIMESTAMP_KEY;
         if (isMigrated) {
             set(newTimestamps, path, value);
             return;
@@ -63,9 +64,9 @@ export function migrateTimestamps<O extends object>(
         const isSelf = path[path.length - 1] === '_self';
 
         if (isSelf) {
-            set(newTimestamps, path.slice(0, -1).concat('_timestamp'), value);
+            set(newTimestamps, path.slice(0, -1).concat(TIMESTAMP_KEY), value);
         } else {
-            set(newTimestamps, path.concat('_timestamp'), value);
+            set(newTimestamps, path.concat(TIMESTAMP_KEY), value);
         }
     });
 

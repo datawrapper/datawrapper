@@ -1,4 +1,5 @@
 import { Clock } from './Clock.js';
+import { TIMESTAMP_KEY } from './constants.js';
 
 export type Timestamp = `${number}-${number}`;
 
@@ -45,13 +46,13 @@ export type Timestamps<O extends object> = {
           Clock | Timestamp;
 };
 
-type TimestampObject = { _timestamp: Timestamp | Clock };
+type TimestampObject = { [TIMESTAMP_KEY]: Timestamp | Clock };
 
 type NewTimestampsArray<A extends ItemArray> = {
     [Key in A[number]['id']]: NewTimestamps<Omit<A[number], 'id'>>;
 };
 
-/** Has the same shape as `O` but with additional `_timestamp` keys and `Timestamp`s or `Clock`s as values */
+/** Has the same shape as `O` but with additional `[TIMESTAMP_KEY]` keys and `Timestamp`s or `Clock`s as values */
 export type NewTimestamps<O extends object> = {
     [K in keyof O]: O[K] extends ItemArray
         ? // if the value is an array of objects with an id property

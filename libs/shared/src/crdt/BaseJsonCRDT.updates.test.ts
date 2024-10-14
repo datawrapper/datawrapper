@@ -3,6 +3,7 @@ import { BaseJsonCRDT } from './BaseJsonCRDT';
 import anyTest, { TestFn } from 'ava';
 import { cloneDeep } from 'lodash';
 import { replaySnapshot } from '../../test/helpers/crdt';
+import { TIMESTAMP_KEY } from './constants';
 
 const test = anyTest as TestFn<{ sandbox: SinonSandbox }>;
 
@@ -1363,9 +1364,9 @@ test('cannot insert new value into deleted object that has higher timestamp', t 
         {},
         {
             a: {
-                _timestamp: '2-2',
+                [TIMESTAMP_KEY]: '2-2',
                 b: {
-                    _timestamp: '1-1'
+                    [TIMESTAMP_KEY]: '1-1'
                 }
             }
         },
