@@ -1,253 +1,90 @@
-import test from 'ava';
+import anyTest, { TestFn } from 'ava';
 import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import { Clock } from './Clock.js';
+import sinon, { type SinonSandbox } from 'sinon';
 
-test(`getters return immutable objects`, t => {
+const test = anyTest as TestFn<{ sandbox: SinonSandbox }>;
+
+test.beforeEach(t => {
+    t.context.sandbox = sinon.createSandbox();
+});
+
+test.afterEach.always(t => {
+    t.context.sandbox.restore();
+});
+
+test(`constructor - works with flat object`, t => {
+    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
+    t.deepEqual(crdt.data(), { a: 'some value', b: 2, c: 3 });
+});
+
+test(`constructor - works with nested object`, t => {
+    const crdt = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    t.deepEqual(crdt.data(), { a: { b: { c: { d: { e: { f: 1 } } } } } });
+});
+
+test(`constructor - works with arrays`, t => {
+    const crdt = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    t.deepEqual(crdt.data(), { a: [1, 2, 3], b: [4, 5, 6] });
+});
+
+test('_initData - filters out null values', t => {
+    const crdt = new BaseJsonCRDT({ a: null, b: { c: 'some value', d: null } });
+    t.deepEqual(crdt.data(), { b: { c: 'some value' } });
+});
+
+test(`data - returns immutable object`, t => {
     const crdt = new BaseJsonCRDT({ a: 1, b: 2, c: 3 });
 
     const data = crdt.data();
+    t.not(data, crdt.data());
+
     data.a = 99;
     t.deepEqual(crdt.data(), { a: 1, b: 2, c: 3 });
+});
+
+test('data - returns data without null values', t => {
+    const crdt = new BaseJsonCRDT({
+        a: 1,
+        b: null,
+        c: {
+            d: null,
+            e: 2
+        },
+        f: false,
+        g: 0,
+        h: ''
+    });
+
+    t.deepEqual(crdt.data(), {
+        a: 1,
+        c: {
+            e: 2
+        },
+        f: false,
+        g: 0,
+        h: ''
+    });
+});
+
+test(`timestamps - returns immutable object`, t => {
+    const crdt = new BaseJsonCRDT({ a: 1, b: 2, c: 3 });
 
     // perform update to be sure there are timestamps
     crdt.update({ a: 2, b: 3, c: 4 }, '1-1');
 
     const timestamps = crdt.timestamps();
-    timestamps.a = '99-99';
-    t.deepEqual(crdt.timestamps(), { a: '1-1', b: '1-1', c: '1-1' });
-});
+    t.not(timestamps, crdt.timestamps());
 
-test(`init`, t => {
-    // flat object
-    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
-    t.deepEqual(crdt1.data(), { a: 'some value', b: 2, c: 3 });
-
-    // deeply nested object
-    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
-    t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 1 } } } } } });
-
-    // object with arrays
-    const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
-    t.deepEqual(crdt3.data(), { a: [1, 2, 3], b: [4, 5, 6] });
-});
-
-test('null values should be filtered out on init', t => {
-    const crdt = new BaseJsonCRDT({ a: null, b: { c: 'some value', d: null } });
-    t.deepEqual(crdt.data(), { b: { c: 'some value' } });
-});
-
-test(`basic updates work`, t => {
-    // flat object
-
-    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
-    crdt1.update({ a: 2, b: 3 }, '1-1');
-    t.deepEqual(crdt1.data(), { a: 2, b: 3, c: 3 });
-
-    // deeply nested object
-
-    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
-    crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
-    t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
-});
-
-test(`updates get denied for outdated timestamps`, t => {
-    // flat object
-
-    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
-    crdt1.update({ a: 2, b: 3 }, '1-1');
-    crdt1.update({ b: 1000 }, '1-0');
-    crdt1.update({ b: 1231232 }, '1-0');
-    t.deepEqual(crdt1.data(), { a: 2, b: 3, c: 3 });
-    crdt1.update({ a: 20 }, '1-2');
-    crdt1.update({ a: -1 }, '1-1');
-    t.deepEqual(crdt1.data(), { a: 20, b: 3, c: 3 });
-
-    // deeply nested object
-
-    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
-    crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
-    crdt2.update({ a: { b: { c: { d: { e: { f: 1000 } } } } } }, '2-0');
-    t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
-});
-
-test(`updates with same timestamp value only get applied for higher nodeIds `, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
-    crdt.update({ a: 2 }, '1-1');
-    crdt.update({ a: 'update value that does not get applied' }, '1-1');
-    t.deepEqual(crdt.data(), { a: 2, b: 2, c: { key: 'value' } });
-
-    crdt.update({ a: 'my creator had a higher node id so it works' }, '2-1');
-    // latest update has been applied
-    t.deepEqual(crdt.data(), {
-        a: 'my creator had a higher node id so it works',
-        b: 2,
-        c: { key: 'value' }
+    timestamps.a = { _timestamp: '99-99' };
+    t.deepEqual(crdt.timestamps(), {
+        a: { _timestamp: '1-1' },
+        b: { _timestamp: '1-1' },
+        c: { _timestamp: '1-1' }
     });
 });
 
-test(`non-conflicting updates get merged`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
-    crdt.update({ a: 2 }, '1-1');
-    crdt.update({ b: 3 }, '2-1');
-    crdt.update({ c: { key: 'new value' } }, '3-1');
-    t.deepEqual(crdt.data(), {
-        a: 2,
-        b: 3,
-        c: { key: 'new value' }
-    });
-});
-
-test(`arrays are treated as atomic values`, t => {
-    // Note: Right now, arrays behave just as other atomic-objects like strings or numbers, i.e., each update overwrites the array.
-    // TODO: Theses tests should be updated to reflect the merging behavior of arrays once this functionality gets implemented.
-
-    // basic update
-    const crdt = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
-    crdt.update({ a: [1, 2, 3, 4] }, '1-1');
-    crdt.update({ b: [4, 5, 6, 7] }, '2-1');
-    t.deepEqual(crdt.data(), {
-        a: [1, 2, 3, 4],
-        b: [4, 5, 6, 7]
-    });
-
-    // overwriting update
-    const crdt2 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
-    crdt2.update({ a: [1, 2, 3, 4] }, '1-1');
-    crdt2.update({ b: [4, 5, 6, 7] }, '2-1');
-    crdt2.update({ a: [1, 2, 3, 4, 5, 6, 7] }, '3-1');
-    t.deepEqual(crdt2.data(), {
-        a: [1, 2, 3, 4, 5, 6, 7],
-        b: [4, 5, 6, 7]
-    });
-
-    // nested arrays
-    const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
-    crdt3.update({ a: [1, [2, 3], 4] }, '1-1');
-    crdt3.update({ b: [4, 5, [6, 7]] }, '2-1');
-    t.deepEqual(crdt3.data(), {
-        a: [1, [2, 3], 4],
-        b: [4, 5, [6, 7]]
-    });
-
-    // arrays with objects
-    const crdt4 = new BaseJsonCRDT({ a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] });
-    crdt4.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
-    crdt4.update({ b: [{ c: 3 }, { d: 4 }, { e: 5 }] }, '2-1');
-    t.deepEqual(crdt4.data(), {
-        a: [{ a: 1 }, { b: 2 }, { c: 3 }],
-        b: [{ c: 3 }, { d: 4 }, { e: 5 }]
-    });
-});
-
-test(`updates with empty data`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
-    crdt.update({}, '1-1');
-    t.deepEqual(crdt.data(), { a: 'some value', b: 2, c: { key: 'value' } });
-});
-
-test(`adding new keys`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: { key: 'value' } });
-
-    crdt.update({ c: 'new key' }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: 'some value',
-        b: { key: 'value' },
-        c: 'new key'
-    });
-});
-
-test('deleting basic non-nested key', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
-
-    crdt.update({ a: null }, '1-1');
-    t.deepEqual(crdt.data(), { b: 'value' });
-
-    crdt.update({ b: null }, '1-2');
-    t.deepEqual(crdt.data(), {});
-});
-
-test('inserting a new array', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ b: [] }, '1-1');
-    t.deepEqual(crdt.data(), { a: 'some value', b: [] });
-});
-
-test('deleted keys can be added back in', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
-
-    crdt.update({ a: null }, '1-1');
-    t.deepEqual(crdt.data(), { b: 'value' });
-
-    crdt.update({ a: 'new value' }, '1-2');
-    t.deepEqual(crdt.data(), { a: 'new value', b: 'value' });
-});
-
-test('deleting a nested value keeps the parent object', t => {
-    const crdt = new BaseJsonCRDT({
-        a: 'some value',
-        b: { c: { d: { e: { f: { g: 'soon gone' } } } } }
-    });
-
-    crdt.update({ b: { c: { d: { e: { f: { g: null } } } } } }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: 'some value',
-        b: { c: { d: { e: { f: {} } } } }
-    });
-});
-
-test('reinsertions with outdated timestamps get denied', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
-
-    crdt.update({ a: null }, '1-2');
-    t.deepEqual(crdt.data(), { b: 'value' });
-
-    crdt.update({ a: 'outdated value' }, '1-1');
-    t.deepEqual(crdt.data(), { b: 'value' });
-});
-
-test.failing("non-atomic fields can't be deleted", t => {
-    const data = {
-        emptyObj: {},
-        nested: { key: 'value' },
-        arr: [
-            { id: '1', val: 'val1' },
-            { id: '2', val: 'val2' }
-        ]
-    };
-    const crdt = new BaseJsonCRDT(data);
-
-    // delete object
-    t.throws(() => crdt.update({ nested: null }, '1-3'));
-    t.deepEqual(crdt.data(), data);
-
-    // delete empty object
-    t.throws(() => crdt.update({ emptyObj: null }, '1-4'));
-    t.deepEqual(crdt.data(), data);
-});
-
-test.failing('deleting an item array deletes all items instead', t => {
-    // this is not a safe operation, the conversion of the deletion should be handled in the calculateDiff
-    const data = {
-        arr: [
-            { id: '1', val: 'val1' },
-            { id: '2', val: 'val2' }
-        ]
-    };
-    const crdt = new BaseJsonCRDT(data);
-
-    // delete item array
-    crdt.update({ arr: null }, '1-2');
-
-    // re-inserting deleted item should not work
-    crdt.update({ arr: { 1: { _index: 1 } } }, '1-10');
-
-    t.deepEqual(crdt.data(), { arr: [] });
-});
-
-test('BaseJsonCRDT.calculateDiff calculates the correct patch (simple updates)', t => {
+test('calculateDiff - calculates the correct patch (simple updates)', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' } };
@@ -264,7 +101,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct patch (simple updates)',
     t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (simple arrays)', t => {
+test('calculateDiff - calculates the correct diff (simple arrays)', t => {
     const oldData = { a: 'some value', b: ['A', 'B', 'C'] };
 
     const newData = { a: 'some value', b: ['D', 'C', 'E'] };
@@ -281,7 +118,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (simple arrays)', t
     t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - simple updates)', t => {
+test('calculateDiff - calculates the correct diff (item array - simple updates)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -305,14 +142,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - simpl
     t.deepEqual(diff, {
         b: { C: { value: 99 } }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct patch (key deletion)', t => {
+test('calculateDiff - calculates the correct patch (key deletion)', t => {
     const oldData = {
         a: 'some value',
         b: { key: 'value' }
@@ -327,7 +159,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct patch (key deletion)', t
     t.deepEqual(patch, { a: null, b: { key: null } });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct patch (parent deletion)', t => {
+test('calculateDiff - calculates the correct patch (parent deletion)', t => {
     const oldData = {
         a: 'some value',
         b: { key: 'value' }
@@ -340,7 +172,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct patch (parent deletion)'
     t.deepEqual(patch, { a: null, b: null });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct patch (item array - insertion at end)', t => {
+test('calculateDiff - calculates the correct patch (item array - insertion at end)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -365,14 +197,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct patch (item array - inse
     t.deepEqual(diff, {
         b: { D: { id: 'D', value: 4, _index: 3 } }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - insertion at start)', t => {
+test('calculateDiff - calculates the correct diff (item array - insertion at start)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -402,14 +229,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - inser
             C: { _index: 3 }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - insertion in middle)', t => {
+test('calculateDiff - calculates the correct diff (item array - insertion in middle)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -437,14 +259,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - inser
             C: { _index: 3 }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion at end)', t => {
+test('calculateDiff - calculates the correct diff (item array - deletion at end)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -469,14 +286,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - delet
             C: { _index: null }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion at beginning)', t => {
+test('calculateDiff - calculates the correct diff (item array - deletion at beginning)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -503,14 +315,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - delet
             C: { _index: 1 }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - deletion in the middle)', t => {
+test('calculateDiff - calculates the correct diff (item array - deletion in the middle)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -536,14 +343,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - delet
             C: { _index: 1 }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array deletion)', t => {
+test('calculateDiff - calculates the correct diff (item array deletion)', t => {
     const oldData = {
         a: 'some value',
         b: {
@@ -599,7 +401,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array deletio
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - re-ordering two elements)', t => {
+test('calculateDiff - calculates the correct diff (item array - re-ordering two elements)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -635,7 +437,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array - re-or
     // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array -  re-ordering multiple elements)', t => {
+test('calculateDiff - calculates the correct diff (item array -  re-ordering multiple elements)', t => {
     const oldData = {
         a: 'some value',
         b: [
@@ -666,14 +468,9 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (item array -  re-o
             D: { _index: 0 }
         }
     });
-
-    // make sure that the diff applied again as update to the CRDT yields the same object
-    // const crdt = new CRDT(oldData);
-    // crdt.update(diff, '1-1');
-    // t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (for numeric ids in item array)', t => {
+test('calculateDiff - calculates the correct diff (for numeric ids in item array)', t => {
     const oldData = {
         a: 'some value',
         b: {
@@ -721,7 +518,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (for numeric ids in
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - converted to item array)', t => {
+test('calculateDiff - calculates the correct diff (empty array - converted to item array)', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -745,7 +542,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - conv
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - treated as atomic array if not all items have an id)', t => {
+test('calculateDiff - calculates the correct diff (empty array - treated as atomic array if not all items have an id)', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -769,7 +566,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (empty array - trea
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (atomic array remains an atomic array even if some items contain an ID)', t => {
+test('calculateDiff - calculates the correct diff (atomic array remains an atomic array even if some items contain an ID)', t => {
     const oldData = {
         a: 'some value',
         b: [1, 2, 3]
@@ -787,7 +584,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (atomic array remai
     });
 });
 
-test('BaseJsonCRDT.calculateDiff throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
+test('calculateDiff - throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
     const oldData = {
         a: 'some value',
         b: [1, 2, 3]
@@ -801,7 +598,7 @@ test('BaseJsonCRDT.calculateDiff throws an error if an atomic array is turned in
     t.throws(() => BaseJsonCRDT.calculateDiff(oldData, newData));
 });
 
-test('BaseJsonCRDT.calculateDiff properly filters for allowedKeys', t => {
+test('calculateDiff - properly filters for allowedKeys', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -831,7 +628,7 @@ test('BaseJsonCRDT.calculateDiff properly filters for allowedKeys', t => {
     });
 });
 
-test('BaseJsonCRDT.calculateDiff properly filters for ignorePaths', t => {
+test('calculateDiff - properly filters for ignorePaths', t => {
     const oldData = {
         a: {
             b: {
@@ -869,7 +666,7 @@ test('BaseJsonCRDT.calculateDiff properly filters for ignorePaths', t => {
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch with empty objects', t => {
+test('calculateDiff - calculates patch with empty objects', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: {} } };
@@ -882,7 +679,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch with empty objects', t => {
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch with empty arrays', t => {
+test('calculateDiff - calculates patch with empty arrays', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: [] } };
@@ -895,7 +692,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch with empty arrays', t => {
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch with new arrays', t => {
+test('calculateDiff - calculates patch with new arrays', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: ['', ''] } };
@@ -908,7 +705,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch with new arrays', t => {
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch with unchanged basic arrays', t => {
+test('calculateDiff - calculates patch with unchanged basic arrays', t => {
     const oldData = { a: 'some value', b: { key: 'value' }, c: { d: ['first', 'second'] } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: ['first', 'second'] } };
@@ -920,7 +717,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch with unchanged basic arrays', 
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch with unchanged object arrays', t => {
+test('calculateDiff - calculates patch with unchanged object arrays', t => {
     const oldData = {
         a: 'some value',
         b: { key: 'value' },
@@ -940,7 +737,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch with unchanged object arrays',
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch without unnecessary delete', t => {
+test('calculateDiff - calculates patch including unnecessary delete', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
@@ -948,11 +745,12 @@ test('BaseJsonCRDT.calculateDiff calculates patch without unnecessary delete', t
     const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, {
-        a: 'new value'
+        a: 'new value',
+        c: { d: null }
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates patch for deletion of explicitly undefined value', t => {
+test('calculateDiff - calculates patch for deletion of explicitly undefined value', t => {
     const oldData = { a: 'some value', b: { key: 'value' }, c: { d: undefined } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
@@ -965,7 +763,7 @@ test('BaseJsonCRDT.calculateDiff calculates patch for deletion of explicitly und
     });
 });
 
-test('BaseJsonCRDT.calculateDiff calculates the correct diff (new deeply nested object)', t => {
+test('calculateDiff - calculates the correct diff (new deeply nested object)', t => {
     const oldData = { a: 'some value' };
 
     const newData = { a: 'some value', b: { c: { d: { e: {} } } } };
@@ -982,7 +780,7 @@ test('BaseJsonCRDT.calculateDiff calculates the correct diff (new deeply nested 
     t.deepEqual(crdt.data(), newData);
 });
 
-test('BaseJsonCRDT.calculateDiff ignores date <-> string conversion if the underlying value is the same', t => {
+test('calculateDiff - ignores date <-> string conversion if the underlying value is the same', t => {
     // String -> Date
     let diff = BaseJsonCRDT.calculateDiff(
         { a: '2024-02-07T15:26:37.123Z' },
@@ -1002,7 +800,7 @@ test('BaseJsonCRDT.calculateDiff ignores date <-> string conversion if the under
     t.true(diff.a === undefined);
 });
 
-test('BaseJsonCRDT.calculateDiff includes date <-> string conversion if the underlying value is not the same', t => {
+test('calculateDiff - includes date <-> string conversion if the underlying value is not the same', t => {
     // String -> Date                                                                                            ⌄ different milliseconds
     let diff = BaseJsonCRDT.calculateDiff(
         { a: '2024-02-07T15:26:37.123Z' },
@@ -1020,89 +818,52 @@ test('BaseJsonCRDT.calculateDiff includes date <-> string conversion if the unde
     t.deepEqual(diff, { a: '2024-02-07T15:26:37.456Z' });
 });
 
-test('BaseJsonCRDT.calculateDiff handles atomic value to nested object conversion', t => {
+test('calculateDiff - handles atomic value to nested object conversion', t => {
     const diff = BaseJsonCRDT.calculateDiff({ a: 'string' }, { a: { b: { c: 1 } } });
 
     t.deepEqual(diff, { a: { b: { c: 1 } } });
 });
 
-test('BaseJsonCRDT.calculateDiff handles nested object to atomic value conversion', t => {
+test('calculateDiff - handles nested object to atomic value conversion', t => {
     const diff = BaseJsonCRDT.calculateDiff({ a: { b: { c: 1 } } }, { a: 'string' });
 
     t.deepEqual(diff, { a: 'string' });
 });
 
-test('BaseJsonCRDT.calculateDiff handles deletion of nested object', t => {
+test('calculateDiff - handles deletion of nested object', t => {
     const diff = BaseJsonCRDT.calculateDiff({ a: { b: { c: 1 } } }, {});
 
     t.deepEqual(diff, { a: null });
 });
 
-test('inserting empty object: new path', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ b: {} }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: {} });
+test('calculateDiff: override existing object with empty object explicitly deletes object content', t => {
+    const oldData = { obj: { value: 'something' } };
+    const newData = { obj: {} };
+    t.deepEqual(BaseJsonCRDT.calculateDiff(oldData, newData), { obj: { value: null } });
 });
 
-test('inserting empty object: nested new path', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ b: { c: { d: { e: {} } } } }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: { c: { d: { e: {} } } } });
+test('calculateDiff: creating empty object creates empty object diff', t => {
+    const oldData = {};
+    const newData = { obj: {} };
+    t.deepEqual(BaseJsonCRDT.calculateDiff(oldData, newData), { obj: {} });
 });
 
-test('inserting empty object: already empty object', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: {} });
+test('basic serialization and re-initialization', t => {
+    const crdt = new BaseJsonCRDT({
+        a: 'some value',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    });
 
-    crdt.update({ b: {} }, '1-1');
+    const serialized = crdt.serialize();
+    const crdt2 = BaseJsonCRDT.fromSerialized(serialized);
 
-    t.deepEqual(crdt.data(), { a: 'some value', b: {} });
+    t.deepEqual(crdt, crdt2);
 });
 
-test('inserting value into empty object', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: {} });
-
-    crdt.update({ b: {} }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: {} });
-});
-
-test('inserting empty object is ignored: path is existing object', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: { x: 0 } });
-
-    crdt.update({ b: {} }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: { x: 0 } });
-});
-
-test.failing('inserting empty object is rejected: path is atomic value', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 8 });
-
-    t.throws(() => crdt.update({ b: {} }, '1-1'));
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: 8 });
-});
-
-test.failing('inserting empty object is rejected: path is array', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 8 });
-
-    t.throws(() => crdt.update({ b: {} }, '1-1'));
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: 8 });
-});
-
-test.failing('inserting empty object is rejected: path is item array', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 8 });
-
-    t.throws(() => crdt.update({ b: {} }, '1-1'));
-
-    t.deepEqual(crdt.data(), { a: 'some value', b: 8 });
-});
-
-test('re-initialization after item array deletion', t => {
+test('fromSerialized - works after item array deletion', t => {
     const crdt = new BaseJsonCRDT({
         a: 'some value',
         b: [
@@ -1123,38 +884,7 @@ test('re-initialization after item array deletion', t => {
     t.deepEqual(crdt2.data(), { a: 'some value', b: [{ id: '2', value: 2 }] });
 });
 
-test('a Date inserted at initialization or with update is a Date in the data', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z') });
-
-    crdt.update({ b: new Date('2024-02-13T09:10:23.956Z') }, '1-1');
-    t.deepEqual(crdt.data(), {
-        a: new Date('2024-02-14T09:10:23.956Z'),
-        b: new Date('2024-02-13T09:10:23.956Z')
-    });
-});
-
-test('a Date can be deleted with null', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
-
-    crdt.update({ a: null }, '1-1');
-    t.deepEqual(crdt.data(), { b: 'stays' });
-});
-
-test('null can be replaced with a Date', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: null });
-
-    crdt.update({ a: new Date('2024-02-14T09:10:23.956Z') }, '1-1');
-    t.deepEqual(crdt.data(), { a: new Date('2024-02-14T09:10:23.956Z') });
-});
-
-test('a Date can be explicitly set to undefined', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
-
-    crdt.update({ a: undefined }, '1-1');
-    t.deepEqual(crdt.data(), { b: 'stays' });
-});
-
-test('re-initialization after item array insert', t => {
+test('fromSerialized - works after item array insert', t => {
     const crdt = new BaseJsonCRDT({
         a: 'some value',
         b: [
@@ -1173,558 +903,484 @@ test('re-initialization after item array insert', t => {
     });
 });
 
-test('basic serialization and re-initialization', t => {
+test('_getTimestamp returns timestamp at exact path', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: 1
+                }
+            },
+            x: 3
+        },
+        {
+            a: {
+                _timestamp: '1-1',
+                b: {
+                    c: {
+                        _timestamp: '1-2'
+                    }
+                }
+            },
+            x: {
+                _timestamp: '1-3'
+            }
+        },
+        []
+    );
+
+    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c']), '1-2');
+    t.deepEqual(crdt._getTimestamp(['a', 'b']), undefined);
+    t.deepEqual(crdt._getTimestamp(['a']), '1-1');
+    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c', 'd']), undefined);
+    t.deepEqual(crdt._getTimestamp(['x']), '1-3');
+    t.deepEqual(crdt._getTimestamp(['y']), undefined);
+    t.deepEqual(crdt._getTimestamp(['x', 'y']), undefined);
+    t.deepEqual(crdt._getTimestamp([]), undefined);
+});
+
+test('_getTimestamps returns timestamps object at path (including children)', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: 1
+                }
+            },
+            x: 3
+        },
+        {
+            a: {
+                _timestamp: '1-1',
+                b: {
+                    c: {
+                        _timestamp: '1-2'
+                    }
+                }
+            },
+            x: {
+                _timestamp: '1-3'
+            }
+        },
+        []
+    );
+
+    t.deepEqual(crdt._getTimestamps(['a', 'b', 'c']), {
+        _timestamp: '1-2'
+    });
+    t.deepEqual(crdt._getTimestamps(['a', 'b']), {
+        c: {
+            _timestamp: '1-2'
+        }
+    });
+    t.deepEqual(crdt._getTimestamps(['a']), {
+        _timestamp: '1-1',
+        b: {
+            c: {
+                _timestamp: '1-2'
+            }
+        }
+    });
+    t.deepEqual(crdt._getTimestamps(['a', 'b', 'c', 'd']), undefined);
+    t.deepEqual(crdt._getTimestamps(['x']), {
+        _timestamp: '1-3'
+    });
+    t.deepEqual(crdt._getTimestamps(['y']), undefined);
+    t.deepEqual(crdt._getTimestamps(['x', 'y']), undefined);
+    t.deepEqual(crdt._getTimestamps([]), undefined);
+});
+
+test('_getClock always returns clock instance at exact path or minimum clock', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: 1
+                }
+            },
+            x: 3
+        },
+        {
+            a: {
+                _timestamp: '1-1',
+                b: {
+                    c: {
+                        _timestamp: '1-2'
+                    }
+                }
+            },
+            x: {
+                _timestamp: '1-3'
+            }
+        },
+        []
+    );
+
+    t.deepEqual(crdt._getClock(['a', 'b', 'c']), new Clock('1-2'));
+    t.deepEqual(crdt._getClock(['a', 'b']), new Clock());
+    t.deepEqual(crdt._getClock(['a']), new Clock('1-1'));
+    t.deepEqual(crdt._getClock(['a', 'b', 'c', 'd']), new Clock());
+    t.deepEqual(crdt._getClock(['x']), new Clock('1-3'));
+    t.deepEqual(crdt._getClock(['y']), new Clock());
+    t.deepEqual(crdt._getClock(['x', 'y']), new Clock());
+    t.deepEqual(crdt._getClock([]), new Clock());
+});
+
+test('_updateValue - updates existing atomic value', t => {
+    const { sandbox } = t.context;
+
     const crdt = new BaseJsonCRDT({
-        a: 'some value',
-        b: [
-            { id: '1', value: 1 },
-            { id: '2', value: 2 }
-        ]
+        a: 1,
+        b: {
+            c: {
+                d: [],
+                e: 'test'
+            },
+            f: false
+        }
     });
 
-    const serialized = crdt.serialize();
-    const crdt2 = BaseJsonCRDT.fromSerialized(serialized);
+    const stub = sandbox.spy(crdt);
 
-    t.deepEqual(crdt, crdt2);
+    crdt._updateValue(['a'], 2, '1-1');
+    t.is(stub._updateExistingAtomicValue.callCount, 1);
+    t.deepEqual(crdt.data(), { a: 2, b: { c: { d: [], e: 'test' }, f: false } });
+
+    crdt._updateValue(['b', 'c', 'd'], [1, 2, 3], '1-2');
+    t.is(stub._updateExistingAtomicValue.callCount, 2);
+    t.deepEqual(crdt.data(), { a: 2, b: { c: { d: [1, 2, 3], e: 'test' }, f: false } });
+
+    crdt._updateValue(['b', 'c', 'e'], 'new', '1-3');
+    t.is(stub._updateExistingAtomicValue.callCount, 3);
+    t.deepEqual(crdt.data(), { a: 2, b: { c: { d: [1, 2, 3], e: 'new' }, f: false } });
+
+    crdt._updateValue(['b', 'f'], true, '1-4');
+    t.is(stub._updateExistingAtomicValue.callCount, 4);
+    t.deepEqual(crdt.data(), { a: 2, b: { c: { d: [1, 2, 3], e: 'new' }, f: true } });
 });
 
-// object <-> atomic value conversion
+test('_updateValue - updates item array index', t => {
+    const { sandbox } = t.context;
 
-test(`deny converting atomic value to object if atomic value timestamp higher`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({
+        a: 1,
+        b: {
+            c: {
+                _index: 0,
+                d: [],
+                e: 'test'
+            },
+            d: {
+                _index: 1,
+                d: [],
+                e: 'test123'
+            }
+        }
+    });
 
-    crdt.update({ a: 'another value' }, '2-2');
+    const stub = sandbox.spy(crdt);
 
-    crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
+    crdt._updateValue(['b', 'c', '_index'], 1, '1-1');
+    t.is(stub._updateItemArrayIndex.callCount, 1);
+    t.is(crdt.data().b.c._index, 1);
 
+    crdt._updateValue(['b', 'd', '_index'], 2, '1-2');
+    t.is(stub._updateItemArrayIndex.callCount, 2);
+    t.is(crdt.data().b.d._index, 2);
+});
+
+test('_updateValue - updates an object', t => {
+    const { sandbox } = t.context;
+
+    const crdt = new BaseJsonCRDT({
+        a: 1,
+        b: {
+            c: {
+                d: 1
+            }
+        }
+    });
+
+    const stub = sandbox.spy(crdt);
+
+    crdt._updateValue(['b', 'c'], 'test', '1-1');
+    t.is(stub._updateObject.callCount, 1);
+    t.deepEqual(crdt.data(), { a: 1, b: { c: 'test' } });
+
+    crdt._updateValue(['b'], [], '1-2');
+    t.is(stub._updateObject.callCount, 2);
+    t.deepEqual(crdt.data(), { a: 1, b: [] });
+});
+
+test('_updateValue - inserts a new value into existing object', t => {
+    const { sandbox } = t.context;
+
+    const crdt = new BaseJsonCRDT({
+        a: 1,
+        b: {
+            b1: {
+                b2: 1
+            }
+        }
+    });
+
+    const stub = sandbox.spy(crdt);
+
+    // Root insert
+    crdt._updateValue(['c'], 'test', '1-1');
+    t.is(stub._insertNewValue.callCount, 1);
+    t.deepEqual(crdt.data(), { a: 1, b: { b1: { b2: 1 } }, c: 'test' });
+
+    // Insert into existing object
+    crdt._updateValue(['b', 'b1', 'b1a'], 123, '1-2');
+    t.is(stub._insertNewValue.callCount, 2);
+    t.deepEqual(crdt.data(), { a: 1, b: { b1: { b2: 1, b1a: 123 } }, c: 'test' });
+
+    // Deeply nested insert
+    crdt._updateValue(['b', 'b1', 'c1', 'c2', 'c3'], [1, 2, 3], '1-3');
+    t.is(stub._insertNewValue.callCount, 3);
     t.deepEqual(crdt.data(), {
-        a: 'another value'
+        a: 1,
+        b: { b1: { b2: 1, b1a: 123, c1: { c2: { c3: [1, 2, 3] } } } },
+        c: 'test'
     });
 });
 
-test(`convert atomic value (string) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: { b: { c: 'nested' } }
-    });
-});
-
-test(`outdated conversion of atomic value (string) to object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ a: { b: { c: 'nested' } } }, '0-0');
-
-    t.deepEqual(crdt.data(), {
-        a: 'some value'
-    });
-});
-
-test(`convert atomic value (int) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 9 });
-
-    crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: { b: { c: 'nested' } }
-    });
-});
-
-test(`convert atomic value (array) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
-
-    crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: { b: { c: 'nested' } }
-    });
-});
-
-test(`convert atomic value (string) to empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ a: {} }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: {}
-    });
-});
-
-test(`outdated conversion of atomic value (string) to empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
-
-    crdt.update({ a: {} }, '0-0');
-
-    t.deepEqual(crdt.data(), {
-        a: 'some value'
-    });
-});
-
-test(`convert atomic value (array) to empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
-
-    crdt.update({ a: {} }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: {}
-    });
-});
-
-test(`outdated conversion of atomic value (array) to empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
-
-    crdt.update({ a: {} }, '0-0');
-
-    t.deepEqual(crdt.data(), {
-        a: []
-    });
-});
-
-test(`convert empty object to atomic value`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
-
-    crdt.update({ a: 'string' }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: 'string'
-    });
-});
-
-test(`outdated conversion of empty object to atomic value is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
-
-    crdt.update({ a: 'string' }, '0-0');
-
-    t.deepEqual(crdt.data(), { a: {} });
-});
-
-test(`convert nested object to atomic value`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
-
-    crdt.update({ a: 'string' }, '1-1');
-
-    t.deepEqual(crdt.data(), {
-        a: 'string'
-    });
-});
-
-test(`outdated conversion of atomic value to object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'string' }, { a: '1-2' }, []);
-
-    crdt.update({ a: { b: 1 } }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: 'string' });
-});
-
-test(`outdated conversion of nested object to atomic value is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-2' } } }, []);
-
-    crdt.update({ a: 'string' }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: { b: { c: 1 } } });
-});
-
-test(`delete nested object`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
-
-    crdt.update({ a: null }, '1-1');
-
-    t.deepEqual(crdt.data(), {});
-});
-
-test(`oudated delete nested object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
-
-    crdt.update({ a: null }, '0-0');
-
-    t.deepEqual(crdt.data(), { a: { b: { c: 1 } } });
-});
-
-test(`delete empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
-
-    crdt.update({ a: null }, '1-1');
-
-    t.deepEqual(crdt.data(), {});
-});
-
-test(`outdated delete empty object is rejected without initialized timestamp`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
-
-    crdt.update({ a: null }, '0-0');
-
-    t.deepEqual(crdt.data(), { a: {} });
-});
-
-test(`outdated delete empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} }, { a: '1-1' }, []);
-
-    crdt.update({ a: null }, '1-1');
-
-    t.deepEqual(crdt.data(), { a: {} });
-});
-
-// test(`less nested updates with same clock count have priority`, t => {
-//     const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-1' } } }, []);
-
-//     crdt.update({ a: null }, '1-1');
-
-//     t.deepEqual(crdt.data(), {});
-// });
-
-// test(`more nested updates with same clock count are rejected`, t => {
-//     const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
-
-//     crdt.update({ a: { b: 1 } }, '3-1');
-
-//     t.deepEqual(crdt.data(), {
-//         a: 1
-//     });
-// });
-
-test(`inserting new nested value in previous but now deleted atomic value is rejected when outdated`, t => {
-    // Start with atomic value.
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
-
-    // Delete atomic value.
-    crdt.update({ a: null }, '1-2');
-
-    t.deepEqual(crdt.data(), {});
-
-    // Insert nested value in previous atomic value.
-    // Rejected because count is same/lower.
-    crdt.update({ a: { b: 2 } }, '1-1');
-    t.deepEqual(crdt.data(), {});
-
-    crdt.update({ a: { b: 2 } }, '2-2');
-    t.deepEqual(crdt.data(), { a: { b: 2 } });
-
-    // Allowed because count is higher.
-    crdt.update({ a: { b: 3 } }, '2-3');
-    t.deepEqual(crdt.data(), { a: { b: 3 } });
-});
-
-test(`insert nested new value into existing object`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { id: 1 } } }, { a: { b: { id: '1-1' } } }, []);
-
-    crdt.update({ a: { c: { id: 3 } } }, '2-1');
-    t.deepEqual(crdt.data(), { a: { b: { id: 1 }, c: { id: 3 } } });
-});
-
-test(`insert new value should resolve same level via node ID`, t => {
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
-
-    crdt.update({ a: 2 }, '2-1');
-    t.deepEqual(crdt.data(), { a: 2 });
-
-    crdt.update({ a: { b: 3 } }, '3-1');
-    t.deepEqual(crdt.data(), { a: { b: 3 } });
-
-    crdt.update({ a: { b: 3 } }, '3-2');
-    t.deepEqual(crdt.data(), { a: { b: 3 } });
-});
-
-test(`nested insertion does respect timestamp of ancestor change`, t => {
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
-
-    crdt.update({ a: null }, '1-2');
-    t.deepEqual(crdt.data(), {});
-
-    crdt.update({ a: { b: 2 } }, '1-3');
-    t.deepEqual(crdt.data(), { a: { b: 2 } });
-
-    crdt.update({ a: { c: 3 } }, '1-1');
-    t.deepEqual(crdt.data(), { a: { b: 2 } });
-});
-
-test(`deleting nested object results in partial deletes`, t => {
-    const crdt1 = new BaseJsonCRDT({});
-
-    crdt1.update({ a0: { a1: 'd' } }, '1-5');
-    t.deepEqual(crdt1.data(), {
-        a0: { a1: 'd' }
+test('_updateValue - inserts new value replacing atomic ancestor', t => {
+    const { sandbox } = t.context;
+
+    const crdt = new BaseJsonCRDT({
+        a: 1,
+        b: {
+            b1: {
+                b2: 1
+            }
+        }
     });
 
-    crdt1.update({ a0: { d1: 'b' } }, '2-1');
-    t.deepEqual(crdt1.data(), {
-        a0: { a1: 'd', d1: 'b' }
-    });
+    const stub = sandbox.spy(crdt);
 
-    crdt1.update({ a0: null }, '2-2');
-    t.deepEqual(crdt1.data(), { a0: { a1: 'd' } });
+    crdt._updateValue(['b', 'b1', 'b2', 'b3'], 'test', '1-1');
+    t.is(stub._insertNewValue.callCount, 1);
+    t.deepEqual(crdt.data(), { a: 1, b: { b1: { b2: { b3: 'test' } } } });
 
-    // --------------------------------------------
-
-    const crdt2 = new BaseJsonCRDT({});
-
-    crdt2.update({ a0: { d1: 'b' } }, '2-1');
-    t.deepEqual(crdt2.data(), {
-        a0: { d1: 'b' }
-    });
-
-    crdt2.update({ a0: null }, '2-2');
-    t.deepEqual(crdt2.data(), {});
-
-    crdt2.update({ a0: { a1: 'd' } }, '1-5');
-    t.deepEqual(crdt2.data(), { a0: { a1: 'd' } });
+    crdt._updateValue(['a', 'a1', 'a2'], 123, '1-2');
+    t.is(stub._insertNewValue.callCount, 2);
+    t.deepEqual(crdt.data(), { a: { a1: { a2: 123 } }, b: { b1: { b2: { b3: 'test' } } } });
 });
 
-test(`overwriting nested object with atomic value results in partial deletes`, t => {
-    const crdt1 = new BaseJsonCRDT({});
+test('_updateValue - multiple calls replacing atomic ancestor only modifies it once', t => {
+    const { sandbox } = t.context;
 
-    crdt1.update({ a0: { a1: 'd' } }, '1-5');
-    t.deepEqual(crdt1.data(), {
-        a0: { a1: 'd' }
+    const crdt = new BaseJsonCRDT({
+        a: 1
     });
 
-    crdt1.update({ a0: { d1: 'b' } }, '2-1');
-    t.deepEqual(crdt1.data(), {
-        a0: { a1: 'd', d1: 'b' }
-    });
+    const stub = sandbox.spy(crdt);
 
-    crdt1.update({ a0: 'string' }, '2-2');
-    t.deepEqual(crdt1.data(), { a0: { a1: 'd' } });
+    crdt._updateValue(['a', 'b', 'c'], 'test', '1-1');
+    crdt._updateValue(['a', 'b', 'e'], 'test', '1-1');
 
-    // --------------------------------------------
-
-    const crdt2 = new BaseJsonCRDT({});
-
-    crdt2.update({ a0: { d1: 'b' } }, '2-1');
-    t.deepEqual(crdt2.data(), {
-        a0: { d1: 'b' }
-    });
-
-    crdt2.update({ a0: 'string' }, '2-2');
-    t.deepEqual(crdt2.data(), { a0: 'string' });
-
-    crdt2.update({ a0: { a1: 'd' } }, '1-5');
-    t.deepEqual(crdt2.data(), { a0: { a1: 'd' } });
+    t.is(stub._insertNewValue.callCount, 2);
 });
 
-test(`Nested inserts only take ancestor timestamp into account`, t => {
-    const crdt1 = new BaseJsonCRDT({});
-
-    crdt1.update({ c0: 'f' }, '1-1');
-    t.deepEqual(crdt1.data(), {
-        c0: 'f'
-    });
-
-    crdt1.update({ c0: null }, '1-2');
-    t.deepEqual(crdt1.data(), {});
-
-    crdt1.update({ c0: { c1: 'f' } }, '2-2');
-    t.deepEqual(crdt1.data(), { c0: { c1: 'f' } });
-
-    // --------------------------------------------
-
-    const crdt2 = new BaseJsonCRDT({});
-
-    crdt2.update({ c0: { c1: 'f' } }, '2-5');
-    t.deepEqual(crdt2.data(), {
-        c0: { c1: 'f' }
-    });
-
-    crdt2.update({ c0: null }, '1-5');
-    t.deepEqual(crdt2.data(), { c0: { c1: 'f' } });
-});
-
-test('deleting deleting non-existing nested values create nested objects', t => {
-    const crdt1 = new BaseJsonCRDT({});
-
-    crdt1.update({ a: { b: { c: 1, d: { e: 2 } } } }, '1-1');
-    t.deepEqual(crdt1.data(), { a: { b: { c: 1, d: { e: 2 } } } });
-
-    crdt1.update({ a: null }, '1-2');
-    t.deepEqual(crdt1.data(), {});
-
-    crdt1.update({ a: { b: { c: null } } }, '1-3');
-    t.deepEqual(crdt1.data(), { a: { b: {} } });
-});
-
-test('nested empty objects get deleted on partial deletes', t => {
-    const crdt1 = new BaseJsonCRDT(
-        { a: { b: { c: 1 }, d: 3 } },
+test('_partialDelete - deletes outdated child values and keeps newer ones', t => {
+    const crdt = new BaseJsonCRDT<object>(
         {
-            a: { b: { c: '1-1' }, d: '1-4' }
+            a: {
+                b: {
+                    c: {
+                        d: 1
+                    },
+                    e: 2
+                },
+                f: 3
+            }
+        },
+        {
+            a: {
+                b: {
+                    c: {
+                        _timestamp: '1-1',
+                        d: {
+                            _timestamp: '1-2'
+                        }
+                    },
+                    e: {
+                        _timestamp: '1-5'
+                    }
+                },
+                f: {
+                    _timestamp: '1-3'
+                }
+            }
         },
         []
     );
 
-    crdt1.update({ a: { b: { c: null } } }, '1-2');
-    t.deepEqual(crdt1.data(), {
-        a: { b: {}, d: 3 }
-    });
+    crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-4' });
 
-    crdt1.update({ a: null }, '1-3');
-    t.deepEqual(crdt1.data(), {
-        a: { d: 3 }
-    });
-});
-
-test('inserting nested numeric keys does not create arrays but regular objects', t => {
-    const crdt = new BaseJsonCRDT(
-        { a: { b: 1 } },
-        {
-            a: { b: '1-4' }
-        },
-        []
-    );
-
-    crdt.update({ a: { 0: 2 } }, '1-1');
     t.deepEqual(crdt.data(), {
-        a: { b: 1, 0: 2 }
-    });
-
-    crdt.update({ a: { c: { 0: 'foo' } } }, '1-2');
-    t.deepEqual(crdt.data(), {
-        a: { b: 1, 0: 2, c: { 0: 'foo' } }
-    });
-});
-
-test('setting nested keys containing dots does not result in more nested objects', t => {
-    const crdt = new BaseJsonCRDT(
-        { a: {} },
-        {
-            a: '0-0'
-        },
-        []
-    );
-
-    crdt.update({ a: { 'this.has.dots': 3 } }, '1-1');
-    t.deepEqual(crdt.data(), {
-        a: { 'this.has.dots': 3 }
-    });
-
-    crdt.update({ x: { a: { 'this.has.dots': { b: { c: 'test.123' } } } } }, '1-1');
-    t.deepEqual(crdt.data(), {
-        a: { 'this.has.dots': 3 },
-        x: { a: { 'this.has.dots': { b: { c: 'test.123' } } } }
-    });
-});
-
-// ---------------------------------------------------------------------
-// _getClosestAncestorWithTimestamp
-// ---------------------------------------------------------------------
-
-test('_getClosestAncestorWithTimestamp returns closest ancestor with timestamp', t => {
-    const crdt1 = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-1' } } }, []);
-
-    t.deepEqual(crdt1._getClosestAncestorWithTimestamp(['a', 'b', 'c']), {
-        path: ['a', 'b', 'c'],
-        timestamp: new Clock('1-1'),
-        value: 1
-    });
-    t.deepEqual(crdt1._getClosestAncestorWithTimestamp(['a', 'b', 'c', 'd']), {
-        path: ['a', 'b', 'c'],
-        timestamp: new Clock('1-1'),
-        value: 1
-    });
-    t.deepEqual(crdt1._getClosestAncestorWithTimestamp(['a', 'b', 'c', 'd', 'e']), {
-        path: ['a', 'b', 'c'],
-        timestamp: new Clock('1-1'),
-        value: 1
-    });
-
-    const crdt2 = new BaseJsonCRDT({ a: 1, b: 2 }, { a: '1-1', b: '1-2' }, []);
-
-    t.deepEqual(crdt2._getClosestAncestorWithTimestamp(['a']), {
-        path: ['a'],
-        timestamp: new Clock('1-1'),
-        value: 1
-    });
-
-    t.deepEqual(crdt2._getClosestAncestorWithTimestamp(['b']), {
-        path: ['b'],
-        timestamp: new Clock('1-2'),
-        value: 2
-    });
-});
-
-test('_getClosestAncestorWithTimestamp returns minimum timestamp when no timestamp is found', t => {
-    const crdt1 = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-1' } } }, []);
-
-    t.deepEqual(crdt1._getClosestAncestorWithTimestamp(['x']), {
-        path: ['x'],
-        timestamp: new Clock('0-0'),
-        value: undefined
-    });
-    t.deepEqual(crdt1._getClosestAncestorWithTimestamp(['x', 'y']), {
-        path: ['x'],
-        timestamp: new Clock('0-0'),
-        value: undefined
-    });
-});
-
-test('_getClosestAncestorWithTimestamp returns minimum clock when ignoring children and object has no _self timestamp', t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-1' } } }, []);
-
-    t.deepEqual(crdt._getClosestAncestorWithTimestamp(['a'], true), {
-        path: ['a'],
-        timestamp: new Clock('0-0'),
-        value: {
-            b: { c: 1 }
+        a: {
+            b: {
+                e: 2
+            },
+            f: 3
         }
     });
 });
 
-test('_hasObjectAncestor', t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 }, arr: ['1'] }, x: 9 });
-
-    // True for existing properties.
-    t.true(crdt._hasObjectAncestor(['a']));
-    t.true(crdt._hasObjectAncestor(['x']));
-
-    // True for non-existing properties, because the root is an object.
-    t.true(crdt._hasObjectAncestor(['y']));
-    t.true(crdt._hasObjectAncestor(['y', 'z']));
-
-    // True for nested existing and non-existing properties.
-    t.true(crdt._hasObjectAncestor(['a', 'd']));
-    t.true(crdt._hasObjectAncestor(['a', 'b']));
-    t.true(crdt._hasObjectAncestor(['a', 'b', 'c']));
-
-    // False for properties nested in an atomic value.
-    t.false(crdt._hasObjectAncestor(['a', 'b', 'c', 'd']));
-    t.false(crdt._hasObjectAncestor(['a', 'b', 'c', 'd', 'e']));
-
-    // False for properties nested in an array.
-    t.false(crdt._hasObjectAncestor(['a', 'arr', '0']));
-});
-
-test('_initData filters out null values', t => {
-    const crdt = new BaseJsonCRDT({ a: null, b: { c: null, d: 1 }, x: 'string', y: 'null' });
-
-    t.deepEqual(crdt.data(), {
-        b: { d: 1 },
-        x: 'string',
-        y: 'null'
-    });
-});
-
-test('_getTimestamp', t => {
-    const crdt = new BaseJsonCRDT(
-        { a: { b: { c: 1 } }, 0: { 1: '1-1' } },
-        { a: { b: { c: '1-1' } }, 0: { 1: '1-3' } },
+test('_partialDelete - updates timestamps of deleted values', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: {
+                        d: 1
+                    },
+                    e: 2
+                },
+                f: 3
+            }
+        },
+        {
+            a: {
+                b: {
+                    c: {
+                        _timestamp: '1-1',
+                        d: {
+                            _timestamp: '1-2'
+                        }
+                    },
+                    e: {
+                        _timestamp: '1-5'
+                    }
+                },
+                f: {
+                    _timestamp: '1-3'
+                }
+            }
+        },
         []
     );
 
-    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c']), '1-1');
-    t.deepEqual(crdt._getTimestamp(['a', 'b', 'c', 'd']), undefined);
-    t.deepEqual(crdt._getTimestamp(['a', 'b', 'd']), undefined);
-    t.deepEqual(crdt._getTimestamp(['a', 'b']), {
-        c: '1-1'
-    });
-    t.deepEqual(crdt._getTimestamp(['a']), {
-        b: { c: '1-1' }
-    });
+    crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-4' });
 
-    t.deepEqual(crdt._getTimestamp(['0', '1']), '1-3');
-    t.deepEqual(crdt._getTimestamp(['0', '1', '1']), undefined);
-    t.deepEqual(crdt._getTimestamp(['0']), {
-        1: '1-3'
+    t.deepEqual(crdt.timestamps(), {
+        a: {
+            b: {
+                c: {
+                    _timestamp: '1-4',
+                    d: {
+                        _timestamp: '1-4'
+                    }
+                },
+                e: {
+                    _timestamp: '1-5'
+                }
+            },
+            f: {
+                _timestamp: '1-3'
+            }
+        }
     });
+});
 
-    t.deepEqual(crdt._getTimestamp(['x']), undefined);
+test('_partialDelete - removes empty parent objects of deleted children', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: {
+                        d: 1
+                    },
+                    e: 2,
+                    f: {
+                        g: {
+                            h: 3
+                        },
+                        i: 4
+                    },
+                    j: 5
+                }
+            }
+        },
+        {
+            a: {
+                b: {
+                    c: {
+                        _timestamp: '1-1',
+                        d: {
+                            _timestamp: '1-2'
+                        }
+                    },
+                    e: {
+                        _timestamp: '1-5'
+                    },
+                    f: {
+                        g: {
+                            _timestamp: '1-2',
+                            h: {
+                                _timestamp: '1-3'
+                            }
+                        },
+                        i: {
+                            _timestamp: '1-4'
+                        }
+                    },
+                    j: {
+                        _timestamp: '1-12'
+                    }
+                }
+            }
+        },
+        []
+    );
+
+    crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-9' });
+
+    t.deepEqual(crdt.data(), {
+        a: {
+            b: {
+                j: 5
+            }
+        }
+    });
+});
+
+test('_partialDelete - removes empty parent objects of deleted children only up to the path it was called on', t => {
+    const crdt = new BaseJsonCRDT<object>(
+        {
+            a: {
+                b: {
+                    c: {
+                        d: 1
+                    }
+                }
+            }
+        },
+        {
+            a: {
+                b: {
+                    c: {
+                        _timestamp: '1-1',
+                        d: {
+                            _timestamp: '1-2'
+                        }
+                    }
+                }
+            }
+        },
+        []
+    );
+
+    crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-9' });
+
+    t.deepEqual(crdt.data(), {
+        a: {
+            // Even though `b` is empty, it is not removed,
+            //  because the partial deletion was called on `b`
+            b: {}
+        }
+    });
 });

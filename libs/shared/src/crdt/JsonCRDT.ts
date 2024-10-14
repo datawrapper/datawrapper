@@ -1,11 +1,7 @@
-import { Clock, Timestamp } from './Clock.js';
-import { BaseJsonCRDT, SerializedBaseJsonCRDT } from './BaseJsonCRDT.js';
+import { Clock } from './Clock.js';
+import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import type { CRDT, Diff, Update } from './CRDT.js';
-
-export type SerializedJsonCRDT<O extends object> = {
-    crdt: SerializedBaseJsonCRDT<O>;
-    clock: Timestamp;
-};
+import type { Timestamp, SerializedBaseJsonCRDT, SerializedJsonCRDT } from './types.js';
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -126,6 +122,9 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
 
     getLogs() {
         return this.crdt.getLogs();
+    }
+    getUpdates() {
+        return this.crdt.getUpdates();
     }
 
     printLogs(title?: string) {

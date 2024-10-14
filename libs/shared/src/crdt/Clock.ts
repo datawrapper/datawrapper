@@ -1,50 +1,6 @@
 import { iterateObjectPaths } from '../objectPaths.js';
 import get from 'lodash/get.js';
-
-export type Timestamp = `${number}-${number}`;
-
-type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
-
-export type ArrayItem = { id: string | number } & Record<string, unknown>;
-export type ItemArray = AnyArray<ArrayItem>;
-
-/**
- * Constructs array representation of CRDT Arrays
- * @example
- * const arr = [
- *     { id: 'a', c: 'foo', d: 'bar' },
- *     { id: 'b', c: 'baz', d: 'qux' }
- * ];
- *
- * const timestamps: TimestampsArray<typeof arr> = {
- *     a: {
- *         c: '1-1',
- *         d: '1-1'
- *     },
- *     b: {
- *         c: '1-1',
- *         d: '1-1'
- *     }
- * };
- */
-type TimestampsArray<A extends ItemArray> = {
-    [Key in A[number]['id']]: Timestamps<Omit<A[number], 'id'>>;
-};
-
-/** Has the same shape as `O` but with `Timestamp`s or `Clock`s as values */
-export type Timestamps<O extends object> = {
-    [K in keyof O]: O[K] extends ItemArray
-        ? // if the value is an array of objects with an id property
-          TimestampsArray<O[K]>
-        : O[K] extends AnyArray<unknown>
-        ? // if the value is a simple array, treat it as a primitive
-          Clock | Timestamp
-        : O[K] extends object
-        ? // if the value is an object, recursively timestampify it
-          Timestamps<O[K]>
-        : // otherwise, treat it as a primitive
-          Clock | Timestamp;
-};
+import { Timestamp, Timestamps } from './types.js';
 
 export class Clock {
     /**
@@ -104,7 +60,18 @@ export class Clock {
      * @param timestamps timestamp object to get the highest timestamp from
      * @returns
      */
-    static max(timestamps: Timestamps<object>): Clock {
+    static max(timestamps: Timestamps<object> | Timestamp[]): Clock {
+        if (Array.isArray(timestamps)) {
+            let maxTimestamp = new Clock();
+            timestamps.forEach(timestamp => {
+                const value = timestamp instanceof Clock ? timestamp : new Clock(timestamp);
+                if (value.isNewerThan(maxTimestamp)) {
+                    maxTimestamp = value;
+                }
+            });
+            return maxTimestamp;
+        }
+
         if (typeof timestamps !== 'object') {
             throw new Error('Timestamps must be object');
         }
@@ -134,6 +101,11 @@ export class Clock {
     constructor(timestamp: string);
     constructor(nodeId?: number, count?: number);
     constructor(nodeIdOrTimestamp: string | number | Clock = 0, count = 0) {
+        if (typeof nodeIdOrTimestamp === 'undefined') {
+            this.nodeId = 0;
+            this.count = 0;
+            return;
+        }
         if (typeof nodeIdOrTimestamp === 'number') {
             if (nodeIdOrTimestamp < 0 || !Number.isInteger(nodeIdOrTimestamp)) {
                 throw new Error(`nodeId must be a positive integer but is: "${nodeIdOrTimestamp}"`);
@@ -214,6 +186,10 @@ export class Clock {
         return `${this.nodeId}-${this.count}`;
     }
 
+    /**
+     * Get the timestamp as a string, e.g. for printing
+     * @returns {string} The timestamp as a string
+     */
     toString(): Timestamp {
         return this.timestamp;
     }
