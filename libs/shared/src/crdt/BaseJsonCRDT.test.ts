@@ -2,6 +2,7 @@ import anyTest, { TestFn } from 'ava';
 import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import { Clock } from './Clock.js';
 import sinon, { type SinonSandbox } from 'sinon';
+import { TIMESTAMP_KEY } from './constants.js';
 
 const test = anyTest as TestFn<{ sandbox: SinonSandbox }>;
 
@@ -76,11 +77,11 @@ test(`timestamps - returns immutable object`, t => {
     const timestamps = crdt.timestamps();
     t.not(timestamps, crdt.timestamps());
 
-    timestamps.a = { _timestamp: '99-99' };
+    timestamps.a = { [TIMESTAMP_KEY]: '99-99' };
     t.deepEqual(crdt.timestamps(), {
-        a: { _timestamp: '1-1' },
-        b: { _timestamp: '1-1' },
-        c: { _timestamp: '1-1' }
+        a: { [TIMESTAMP_KEY]: '1-1' },
+        b: { [TIMESTAMP_KEY]: '1-1' },
+        c: { [TIMESTAMP_KEY]: '1-1' }
     });
 });
 
@@ -915,15 +916,15 @@ test('_getTimestamp returns timestamp at exact path', t => {
         },
         {
             a: {
-                _timestamp: '1-1',
+                [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        _timestamp: '1-2'
+                        [TIMESTAMP_KEY]: '1-2'
                     }
                 }
             },
             x: {
-                _timestamp: '1-3'
+                [TIMESTAMP_KEY]: '1-3'
             }
         },
         []
@@ -951,39 +952,39 @@ test('_getTimestamps returns timestamps object at path (including children)', t 
         },
         {
             a: {
-                _timestamp: '1-1',
+                [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        _timestamp: '1-2'
+                        [TIMESTAMP_KEY]: '1-2'
                     }
                 }
             },
             x: {
-                _timestamp: '1-3'
+                [TIMESTAMP_KEY]: '1-3'
             }
         },
         []
     );
 
     t.deepEqual(crdt._getTimestamps(['a', 'b', 'c']), {
-        _timestamp: '1-2'
+        [TIMESTAMP_KEY]: '1-2'
     });
     t.deepEqual(crdt._getTimestamps(['a', 'b']), {
         c: {
-            _timestamp: '1-2'
+            [TIMESTAMP_KEY]: '1-2'
         }
     });
     t.deepEqual(crdt._getTimestamps(['a']), {
-        _timestamp: '1-1',
+        [TIMESTAMP_KEY]: '1-1',
         b: {
             c: {
-                _timestamp: '1-2'
+                [TIMESTAMP_KEY]: '1-2'
             }
         }
     });
     t.deepEqual(crdt._getTimestamps(['a', 'b', 'c', 'd']), undefined);
     t.deepEqual(crdt._getTimestamps(['x']), {
-        _timestamp: '1-3'
+        [TIMESTAMP_KEY]: '1-3'
     });
     t.deepEqual(crdt._getTimestamps(['y']), undefined);
     t.deepEqual(crdt._getTimestamps(['x', 'y']), undefined);
@@ -1002,15 +1003,15 @@ test('_getClock always returns clock instance at exact path or minimum clock', t
         },
         {
             a: {
-                _timestamp: '1-1',
+                [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        _timestamp: '1-2'
+                        [TIMESTAMP_KEY]: '1-2'
                     }
                 }
             },
             x: {
-                _timestamp: '1-3'
+                [TIMESTAMP_KEY]: '1-3'
             }
         },
         []
@@ -1201,17 +1202,17 @@ test('_partialDelete - deletes outdated child values and keeps newer ones', t =>
             a: {
                 b: {
                     c: {
-                        _timestamp: '1-1',
+                        [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            _timestamp: '1-2'
+                            [TIMESTAMP_KEY]: '1-2'
                         }
                     },
                     e: {
-                        _timestamp: '1-5'
+                        [TIMESTAMP_KEY]: '1-5'
                     }
                 },
                 f: {
-                    _timestamp: '1-3'
+                    [TIMESTAMP_KEY]: '1-3'
                 }
             }
         },
@@ -1247,17 +1248,17 @@ test('_partialDelete - updates timestamps of deleted values', t => {
             a: {
                 b: {
                     c: {
-                        _timestamp: '1-1',
+                        [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            _timestamp: '1-2'
+                            [TIMESTAMP_KEY]: '1-2'
                         }
                     },
                     e: {
-                        _timestamp: '1-5'
+                        [TIMESTAMP_KEY]: '1-5'
                     }
                 },
                 f: {
-                    _timestamp: '1-3'
+                    [TIMESTAMP_KEY]: '1-3'
                 }
             }
         },
@@ -1270,17 +1271,17 @@ test('_partialDelete - updates timestamps of deleted values', t => {
         a: {
             b: {
                 c: {
-                    _timestamp: '1-4',
+                    [TIMESTAMP_KEY]: '1-4',
                     d: {
-                        _timestamp: '1-4'
+                        [TIMESTAMP_KEY]: '1-4'
                     }
                 },
                 e: {
-                    _timestamp: '1-5'
+                    [TIMESTAMP_KEY]: '1-5'
                 }
             },
             f: {
-                _timestamp: '1-3'
+                [TIMESTAMP_KEY]: '1-3'
             }
         }
     });
@@ -1309,27 +1310,27 @@ test('_partialDelete - removes empty parent objects of deleted children', t => {
             a: {
                 b: {
                     c: {
-                        _timestamp: '1-1',
+                        [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            _timestamp: '1-2'
+                            [TIMESTAMP_KEY]: '1-2'
                         }
                     },
                     e: {
-                        _timestamp: '1-5'
+                        [TIMESTAMP_KEY]: '1-5'
                     },
                     f: {
                         g: {
-                            _timestamp: '1-2',
+                            [TIMESTAMP_KEY]: '1-2',
                             h: {
-                                _timestamp: '1-3'
+                                [TIMESTAMP_KEY]: '1-3'
                             }
                         },
                         i: {
-                            _timestamp: '1-4'
+                            [TIMESTAMP_KEY]: '1-4'
                         }
                     },
                     j: {
-                        _timestamp: '1-12'
+                        [TIMESTAMP_KEY]: '1-12'
                     }
                 }
             }
@@ -1363,9 +1364,9 @@ test('_partialDelete - removes empty parent objects of deleted children only up 
             a: {
                 b: {
                     c: {
-                        _timestamp: '1-1',
+                        [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            _timestamp: '1-2'
+                            [TIMESTAMP_KEY]: '1-2'
                         }
                     }
                 }

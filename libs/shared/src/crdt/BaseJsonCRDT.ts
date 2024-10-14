@@ -31,6 +31,7 @@ import {
     SerializedBaseJsonCRDT,
     ItemArrayObject
 } from './types.js';
+import { TIMESTAMP_KEY } from './constants.js';
 
 /**
  * Logs applied and rejected updates/modifications of the CRDT.
@@ -345,7 +346,7 @@ export class BaseJsonCRDT<O extends object = object> {
     }
 
     _setTimestamp(path: string[], timestamp: Timestamp) {
-        set(this.timestampObj, [...path, '_timestamp'], timestamp);
+        set(this.timestampObj, [...path, TIMESTAMP_KEY], timestamp);
     }
 
     _getTimestamps(path: string[] | string) {
@@ -353,7 +354,7 @@ export class BaseJsonCRDT<O extends object = object> {
     }
 
     _getTimestamp(path: string[] | string): Timestamp {
-        return this._getTimestamps(path)?._timestamp;
+        return this._getTimestamps(path)?.[TIMESTAMP_KEY];
     }
 
     _getClock(path: string[] | string): Clock {

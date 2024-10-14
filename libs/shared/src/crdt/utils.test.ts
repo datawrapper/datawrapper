@@ -14,6 +14,7 @@ import {
     migrateTimestamps,
     set
 } from './utils.js';
+import { TIMESTAMP_KEY } from './constants.js';
 
 test('migrateTimestamps - migrates legacy timestamps', t => {
     t.deepEqual(
@@ -36,27 +37,27 @@ test('migrateTimestamps - migrates legacy timestamps', t => {
         }),
         {
             c: {
-                _timestamp: '2-5',
+                [TIMESTAMP_KEY]: '2-5',
                 d: {
-                    _timestamp: '3-1'
+                    [TIMESTAMP_KEY]: '3-1'
                 },
                 f: {
-                    _timestamp: '4-2',
+                    [TIMESTAMP_KEY]: '4-2',
                     g: {
-                        _timestamp: '5-1'
+                        [TIMESTAMP_KEY]: '5-1'
                     }
                 },
                 i: {
                     j: {
-                        _timestamp: '6-1'
+                        [TIMESTAMP_KEY]: '6-1'
                     }
                 }
             },
             e: {
-                _timestamp: '5-1'
+                [TIMESTAMP_KEY]: '5-1'
             },
             h: {
-                _timestamp: '6-1'
+                [TIMESTAMP_KEY]: '6-1'
             }
         }
     );
@@ -79,12 +80,12 @@ test('migrateTimestamps - migrates legacy timestamps for item array', t => {
         {
             itemArr: {
                 a: {
-                    someValue: { _timestamp: '1-1' },
-                    _index: { _timestamp: '1-2' }
+                    someValue: { [TIMESTAMP_KEY]: '1-1' },
+                    _index: { [TIMESTAMP_KEY]: '1-2' }
                 },
                 b: {
-                    someValue: { _timestamp: '1-3' },
-                    _index: { _timestamp: '1-4' }
+                    someValue: { [TIMESTAMP_KEY]: '1-3' },
+                    _index: { [TIMESTAMP_KEY]: '1-4' }
                 }
             }
         }
@@ -95,24 +96,24 @@ test('migrateTimestamps - keeps new timestamps', t => {
     t.deepEqual(
         migrateTimestamps<object>({
             a: {
-                _timestamp: '1-1',
+                [TIMESTAMP_KEY]: '1-1',
                 b: {
-                    _timestamp: '1-2'
+                    [TIMESTAMP_KEY]: '1-2'
                 }
             },
             c: {
-                _timestamp: '2-1'
+                [TIMESTAMP_KEY]: '2-1'
             }
         }),
         {
             a: {
-                _timestamp: '1-1',
+                [TIMESTAMP_KEY]: '1-1',
                 b: {
-                    _timestamp: '1-2'
+                    [TIMESTAMP_KEY]: '1-2'
                 }
             },
             c: {
-                _timestamp: '2-1'
+                [TIMESTAMP_KEY]: '2-1'
             }
         }
     );
@@ -123,24 +124,24 @@ test('migrateTimestamps - keeps new timestamps for item array', t => {
         migrateTimestamps<object>({
             itemArr: {
                 a: {
-                    someValue: { _timestamp: '1-1' },
-                    _index: { _timestamp: '1-2' }
+                    someValue: { [TIMESTAMP_KEY]: '1-1' },
+                    _index: { [TIMESTAMP_KEY]: '1-2' }
                 },
                 b: {
-                    someValue: { _timestamp: '1-3' },
-                    _index: { _timestamp: '1-4' }
+                    someValue: { [TIMESTAMP_KEY]: '1-3' },
+                    _index: { [TIMESTAMP_KEY]: '1-4' }
                 }
             }
         }),
         {
             itemArr: {
                 a: {
-                    someValue: { _timestamp: '1-1' },
-                    _index: { _timestamp: '1-2' }
+                    someValue: { [TIMESTAMP_KEY]: '1-1' },
+                    _index: { [TIMESTAMP_KEY]: '1-2' }
                 },
                 b: {
-                    someValue: { _timestamp: '1-3' },
-                    _index: { _timestamp: '1-4' }
+                    someValue: { [TIMESTAMP_KEY]: '1-3' },
+                    _index: { [TIMESTAMP_KEY]: '1-4' }
                 }
             }
         }
@@ -242,7 +243,7 @@ test('isExistingAtomicValue', t => {
 test('isPathToItemArrayIndex', t => {
     t.true(isPathToItemArrayIndex(['a', 'b', '_index']));
 
-    t.false(isPathToItemArrayIndex(['a', 'b', '_timestamp']));
+    t.false(isPathToItemArrayIndex(['a', 'b', TIMESTAMP_KEY]));
     t.false(isPathToItemArrayIndex(['a', 'b']));
     t.false(isPathToItemArrayIndex(['a']));
     t.false(isPathToItemArrayIndex([]));
