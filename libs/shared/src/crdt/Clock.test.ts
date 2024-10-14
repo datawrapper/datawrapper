@@ -14,6 +14,10 @@ test(`init clock`, t => {
     const clock3 = new Clock(0, 100);
     t.deepEqual(clock3.timestamp, '0-100');
 
+    // with undefined timestamp
+    const clock4 = new Clock(undefined);
+    t.deepEqual(clock4.timestamp, '0-0');
+
     // invalid nodeIds
     const error1 = t.throws(() => {
         new Clock(0.4, 9);

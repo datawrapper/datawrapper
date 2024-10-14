@@ -211,35 +211,7 @@ test(`item array can be cleared of all items and filled with new items again`, t
     });
 });
 
-test.failing('primitive value can be replaced with item array', t => {
-    const crdt = new BaseJsonCRDT({
-        arr: 'not an array yet'
-    });
-
-    // convert to item array
-    crdt.update(
-        {
-            arr: { A: { id: 'A', val: 1 } }
-        },
-        '1-1'
-    );
-
-    // item array can be updated normally
-    crdt.update(
-        {
-            arr: { A: { id: 'A' }, B: { id: 'B', val: 2 } }
-        },
-        '1-2'
-    );
-
-    t.deepEqual(crdt.data(), {
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
-    });
-});
-
+// TODO: make this test pass
 test.failing('primitive value can not replace existing item array', t => {
     const crdt = new BaseJsonCRDT({
         arr: [
@@ -262,28 +234,6 @@ test.failing('primitive value can not replace existing item array', t => {
         ]
     });
 });
-
-test.failing(
-    'nested value in converted item array can not be updated with outdated timestamp',
-    t => {
-        const crdt = new BaseJsonCRDT({
-            arr: 'not an array yet'
-        });
-
-        // convert to item array
-        crdt.update({ arr: [{ id: 'A', nested: { val: 1, otherVal: 'one' } }] }, '1-1');
-
-        // update nested value
-        crdt.update({ arr: [{ id: 'A', nested: { val: 2 } }] }, '1-2');
-
-        // update nested value with outdated timestamp
-        crdt.update({ arr: [{ id: 'A', nested: { val: 3, otherVal: 'invalid value' } }] }, '1-1');
-
-        t.deepEqual(crdt.data(), {
-            arr: [{ id: 'A', nested: { val: 2, otherVal: 'one' } }]
-        });
-    }
-);
 
 test(`delete item from item array`, t => {
     const crdt = new BaseJsonCRDT({

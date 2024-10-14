@@ -1,8 +1,4 @@
 import test from 'ava';
-import { isItemArray } from './BaseJsonCRDT.js';
-import { Update } from './CRDT.js';
-import { type ItemArray, ArrayItem } from './Clock.js';
-import { JsonCRDT } from './JsonCRDT.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
 import get from 'lodash/get.js';
@@ -12,6 +8,11 @@ import { nanoid } from 'nanoid';
 import util from 'util';
 import isPrimitive from '../isPrimitive.js';
 import { parseArgs } from 'node:util';
+
+import { type ItemArray, ArrayItem } from './types.js';
+import { isItemArray } from './utils.js';
+import { Update } from './CRDT.js';
+import { JsonCRDT } from './JsonCRDT.js';
 
 const FLAGS = {
     primitiveToObject: false,
@@ -343,7 +344,7 @@ class Fuzz {
     };
 
     constructor(size?: number, maxDepth?: number) {
-        this.data = Generate.nestedObject(size, maxDepth);
+        this.data = Generate.nestedObject(size, maxDepth) as object;
         this.mutator = new Mutate();
     }
 
@@ -389,7 +390,7 @@ function multipleInstances(
         numUpdates?: number;
         numMutations?: number;
         numCRDTs?: number;
-        log: boolean;
+        log?: boolean;
     }
 ) {
     return () => {
@@ -438,6 +439,7 @@ function multipleInstances(
                 // re-initialize the backend crdt with the same data and timestamps
                 //console.log(backendCrdt)
                 const newBackendCrdt = JsonCRDT.fromSerialized(backendCrdt.serialize());
+
                 t.deepEqual(backendCrdt, newBackendCrdt);
                 backendCrdt = newBackendCrdt;
 
@@ -451,6 +453,8 @@ function multipleInstances(
             crdts.forEach(crdt => {
                 t.deepEqual(crdt.data(), crdts[0].data());
             });
+
+            // crdts.forEach((c, i) => c.printLogs(`CRDT ${i}`));
 
             t.deepEqual(crdts[0].data(), backendCrdt.data());
         });
@@ -474,5 +478,9 @@ FLAGS.primitiveToObject = primitiveToObject ?? false;
 FLAGS.objectToPrimitive = objectToPrimitive ?? false;
 
 Array.from({ length: Number(runs) }).forEach((_, i) => {
-    multipleInstances(i + 1)();
+    multipleInstances(i + 1, {
+        // size: 3,
+        // numCRDTs: 4,
+        // numUpdates: 50
+    })();
 });

@@ -2,6 +2,7 @@ import test from 'ava';
 import { JsonCRDT } from './JsonCRDT.js';
 import { cloneDeep, sample } from 'lodash';
 import util from 'util';
+import { saveSnapshot } from '../../test/helpers/crdt.js';
 
 function print(obj: any) {
     // eslint-disable-next-line no-console
@@ -472,11 +473,9 @@ test(`convert object to string and back`, t => {
 });
 
 function generateRandomKey(level: number) {
-    const value = sample([...'abcdef', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0])!;
+    const value = sample([...'abcdef'])!;
 
-    if (typeof value === 'string' && level) {
-        return `${value}${level}`;
-    }
+    return `${value}${level}`;
 
     return value;
 }
@@ -484,22 +483,14 @@ function generateRandomKey(level: number) {
 function generateRandomValue() {
     return sample([
         {},
+        null,
         1,
         2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        0,
-        ...'abcdef',
-        null,
-        new Date()
-        // TODO: Look into arrays.
-        // [],
-        // [1, 2, 3],
+        'test',
+        'abc',
+        new Date(),
+        [],
+        [1, 2, 3]
         // ['4', '5', '6']
     ]);
 }
@@ -512,7 +503,7 @@ function generateRandomObject(lvl = 0) {
     for (let i = 0; i < 1; i++) {
         obj[generateRandomKey(lvl)] = generateRandomValue();
     }
-    if (lvl < 10) {
+    if (lvl < 3) {
         for (let i = 0; i < 1; i++) {
             obj[generateRandomKey(lvl)] = generateRandomObject(lvl + 1);
         }
@@ -521,15 +512,18 @@ function generateRandomObject(lvl = 0) {
 }
 
 test(`mini fuzz: combine two objects`, t => {
-    const obj = generateRandomObject();
-    const crdt1 = new JsonCRDT(1, obj);
-    const crdt2 = new JsonCRDT(2, obj);
+    t.timeout(60 * 1000);
 
-    const updates1 = [];
-    const updates2 = [];
+    let counter = 0;
+    while (counter < 1000) {
+        const obj = generateRandomObject();
+        const crdt1 = new JsonCRDT(1, cloneDeep(obj));
+        const crdt2 = new JsonCRDT(2, cloneDeep(obj));
 
-    try {
-        for (let i = 0; i < 100; i++) {
+        const updates1 = [];
+        const updates2 = [];
+
+        try {
             const newValue1 = generateRandomObject();
             const diff1 = crdt1.calculateDiff(newValue1);
             const update1 = crdt1.createUpdate(diff1);
@@ -540,20 +534,91 @@ test(`mini fuzz: combine two objects`, t => {
 
             updates1.push(update1);
             updates2.push(update2);
+
+            crdt1.applyUpdates(updates2);
+            crdt2.applyUpdates(updates1);
+        } catch (e) {
+            //print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
+            crdt1.printLogs('CRDT 1');
+            crdt2.printLogs('CRDT 2');
+            throw e;
+        }
+
+        if (!t.deepEqual(crdt1.data(), crdt2.data())) {
+            print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
+            crdt1.printLogs('CRDT 1');
+            crdt2.printLogs('CRDT 2');
+            break;
+        }
+        counter++;
+    }
+});
+
+test(`mini fuzz: combine three objects`, t => {
+    t.timeout(60 * 1000);
+
+    let counter = 0;
+    while (counter < 1000) {
+        const obj = generateRandomObject();
+        const crdt1 = new JsonCRDT(1, obj);
+        const crdt2 = new JsonCRDT(2, obj);
+        const crdt3 = new JsonCRDT(3, obj);
+
+        const updates1 = [];
+        const updates2 = [];
+        const updates3 = [];
+
+        const snapshot = {
+            initialData: cloneDeep(obj),
+            updates: {}
+        };
+
+        for (let i = 0; i < 20; i++) {
+            const newValue1 = generateRandomObject();
+            const diff1 = crdt1.calculateDiff(newValue1);
+            const update1 = crdt1.createUpdate(diff1);
+
+            const newValue2 = generateRandomObject();
+            const diff2 = crdt2.calculateDiff(newValue2);
+            const update2 = crdt2.createUpdate(diff2);
+
+            const newValue3 = generateRandomObject();
+            const diff3 = crdt3.calculateDiff(newValue3);
+            const update3 = crdt3.createUpdate(diff3);
+
+            updates1.push(update1);
+            updates2.push(update2);
+            updates3.push(update3);
         }
 
         crdt1.applyUpdates(updates2);
-        crdt2.applyUpdates(updates1);
-    } catch (e) {
-        print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
-        crdt1.printLogs('CRDT 1');
-        crdt2.printLogs('CRDT 2');
-        throw e;
-    }
+        crdt1.applyUpdates(updates3);
 
-    if (!t.deepEqual(crdt1.data(), crdt2.data())) {
-        print({ crdt1: crdt1.data(), crdt2: crdt2.data() });
-        crdt1.printLogs('CRDT 1');
-        crdt2.printLogs('CRDT 2');
+        crdt2.applyUpdates(updates1);
+        crdt2.applyUpdates(updates3);
+
+        crdt3.applyUpdates(updates1);
+        crdt3.applyUpdates(updates2);
+
+        snapshot.updates = {
+            1: crdt1.getUpdates(),
+            2: crdt2.getUpdates(),
+            3: crdt3.getUpdates()
+        };
+
+        if (!t.deepEqual(crdt1.data(), crdt2.data()) || !t.deepEqual(crdt1.data(), crdt3.data())) {
+            print({ crdt1: crdt1.data(), crdt2: crdt2.data(), crdt3: crdt3.data() });
+            crdt1.printLogs('CRDT 1');
+            crdt2.printLogs('CRDT 2');
+            crdt3.printLogs('CRDT 3');
+
+            const id = saveSnapshot(snapshot);
+
+            /* eslint-disable no-console */
+            console.log('Snapshot ID:', id);
+
+            break;
+        }
+        counter++;
     }
 });

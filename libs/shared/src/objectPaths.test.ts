@@ -67,6 +67,61 @@ test(`iterateObjectPaths - with nested empty objects`, t => {
     t.deepEqual(actual, [['a', 'b']]);
 });
 
+test(`iterateObjectPaths - complex object`, t => {
+    const obj = {
+        a0: {
+            a1: '2024-10-02T09:44:00.495Z',
+            c1: {
+                f2: [],
+                c2: {
+                    a3: 2
+                }
+            },
+            d1: {
+                a2: {
+                    e3: null
+                }
+            },
+            e1: {
+                b2: [1, 2, 3],
+                f2: {
+                    f3: {}
+                }
+            },
+            b1: null
+        },
+        b0: {
+            b1: 2,
+            f1: {
+                a2: [],
+                b2: {
+                    a3: 'abc'
+                }
+            }
+        },
+        e0: null
+    };
+
+    const actual: string[][] = [];
+    iterateObjectPaths(obj, path => {
+        actual.push(path);
+    });
+
+    t.deepEqual(actual, [
+        ['a0', 'a1'],
+        ['a0', 'c1', 'f2'],
+        ['a0', 'c1', 'c2', 'a3'],
+        ['a0', 'd1', 'a2', 'e3'],
+        ['a0', 'e1', 'b2'],
+        ['a0', 'e1', 'f2', 'f3'],
+        ['a0', 'b1'],
+        ['b0', 'b1'],
+        ['b0', 'f1', 'a2'],
+        ['b0', 'f1', 'b2', 'a3'],
+        ['e0']
+    ]);
+});
+
 test('getObjectPaths - returns correct keys', t => {
     const keys = getObjectPaths({
         answer: 42,
