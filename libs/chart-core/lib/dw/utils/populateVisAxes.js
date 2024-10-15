@@ -1,4 +1,5 @@
 import column from '../dataset/column.js';
+import resolveVisAxesDefinitions from './resolveVisAxesDefinitions.js';
 
 import each from 'lodash/each.js';
 import isArray from 'lodash/isArray.js';
@@ -7,7 +8,6 @@ import find from 'lodash/find.js';
 import indexOf from 'lodash/indexOf.js';
 import map from 'lodash/map.js';
 import range from 'lodash/range.js';
-
 /**
  * Assigns dataset columns to visualization axes. Non-optional columns will automatically be
  * assigned based on a matching column type and column name (if the vis axis defined a regex).
@@ -24,6 +24,7 @@ import range from 'lodash/range.js';
  * @returns {object}
  */
 export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKeys }) {
+    visAxes = resolveVisAxesDefinitions(visAxes, overrideKeys);
     userAxes = userAxes || {};
     overrideKeys = overrideKeys || {};
     const usedColumns = {};
@@ -31,20 +32,15 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
     const axesAsColumns = {};
 
     // get user preference
-    each(visAxes, (o, key) => {
+    each(visAxes, (axisDef, key) => {
         if (userAxes[key]) {
             let columns = userAxes[key];
-
-            if (o.optional && o.overrideOptionalKey && !overrideKeys[o.overrideOptionalKey]) {
-                return;
-            }
-
             if (
                 columnExists(columns) &&
-                checkColumn(o, columns, true) &&
-                !!o.multiple === isArray(columns)
+                checkColumn(axisDef, columns, true) &&
+                !!axisDef.multiple === isArray(columns)
             ) {
-                axes[key] = o.multiple && !isArray(columns) ? [columns] : columns;
+                axes[key] = axisDef.multiple && !isArray(columns) ? [columns] : columns;
                 // mark columns as used
                 if (!isArray(columns)) columns = [columns];
                 each(columns, function (column) {
@@ -55,16 +51,6 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
     });
 
     var checked = [];
-
-    each(visAxes, axisDef => {
-        if (axisDef.optional) {
-            // chart settings may override this
-            if (axisDef.overrideOptionalKey && overrideKeys[axisDef.overrideOptionalKey]) {
-                // now the axis is mandatory
-                axisDef.optional = false;
-            }
-        }
-    });
 
     // auto-populate remaining axes
     each(visAxes, (axisDef, key) => {
