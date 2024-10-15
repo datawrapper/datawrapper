@@ -128,6 +128,26 @@ test('make optional axis mandatory using overrideOptionalKey', t => {
     t.is(axes.groups, 'category');
 });
 
+test('make optional axis mandatory using overrideOptionalKey, with specific overrideOptionalValue', t => {
+    const ds = dataset([textColumn('name'), numberColumn('value'), textColumn('category')]);
+    const visAxes = {
+        labels: LABELS,
+        area: {
+            optional: true,
+            accepts: ['number'],
+            overrideOptionalKey: 'visualize.symbol-shape',
+            overrideOptionalKeyValue: 'arrow'
+        }
+    };
+    const { axes } = populateVisAxes({
+        dataset: ds,
+        visAxes,
+        overrideKeys: { 'visualize.symbol-shape': 'arrow' }
+    });
+    t.is(axes.labels, 'name');
+    t.is(axes.area, 'value');
+});
+
 test('prefer columns based on name', t => {
     const ds = dataset([
         textColumn('name'),
