@@ -1,6 +1,7 @@
 import test from 'ava';
 import numeral from 'numeral';
 import formatNumber from './formatNumber';
+import { formatNumberSplitParts } from './formatNumberSplitParts';
 
 test('simple number', t => {
     t.is(formatNumber(numeral, 1234.5678), '1234.57');
@@ -72,4 +73,59 @@ test('special thousands format', t => {
     t.is(formatNumber(numeral, 70000.34, { format: '0;0.[0]%' }), '70,000.3%');
     t.is(formatNumber(numeral, 0, { format: '0;0' }), '0');
     t.is(formatNumber(numeral, 5, { format: '0;0' }), '5');
+});
+
+test('isolated prefix: simple number', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, 1234.5678), { prefix: '', number: '1234.57' });
+    t.deepEqual(formatNumberSplitParts(numeral, 0), { prefix: '', number: '0' });
+});
+
+test('isolated prefix: negative number', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, -1234.5678), { prefix: '−', number: '1234.57' });
+});
+
+test('isolated prefix: forced plus sign', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, -1234.5678, { format: '+0.00' }), {
+        prefix: '−',
+        number: '1234.57'
+    });
+    t.deepEqual(formatNumberSplitParts(numeral, 1234.5678, { format: '+0.00' }), {
+        prefix: '+',
+        number: '1234.57'
+    });
+});
+
+test('isolated prefix: negative number, custom minus character', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, -1234.5678, { minusChar: '&minus;' }), {
+        prefix: '&minus;',
+        number: '1234.57'
+    });
+});
+
+test('isolated prefix: custom ± character', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, 0, { plusMinusChar: '+/-', format: '+0.00' }), {
+        prefix: '+/-',
+        number: '0.00'
+    });
+});
+
+test('isolated prefix: empty string ± character', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, 0, { plusMinusChar: '', format: '+0.00' }), {
+        prefix: '',
+        number: '0.00'
+    });
+});
+
+test('isolated prefix: prepend/append', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, 1234.5678, { prepend: '[ ', append: ' ]' }), {
+        prefix: '',
+        number: '[ 1234.57 ]'
+    });
+});
+
+test('isolated prefix: minus sign and prepend currencies', t => {
+    t.deepEqual(formatNumberSplitParts(numeral, -1234.5678, { prepend: '$' }), {
+        prefix: '−',
+        number: '$1234.57'
+    });
 });

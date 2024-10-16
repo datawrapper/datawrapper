@@ -57,6 +57,11 @@ export type Column = {
      * @returns all values formatted for use as keys
      */
     keys(): string[];
+    /**
+     * @param value to search for
+     * @returns first index of value in column, if present
+     */
+    indexOf: (value: any) => number | undefined;
 };
 
 export type Metadata = {
