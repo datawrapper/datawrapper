@@ -167,7 +167,7 @@ export class BaseJsonCRDT<O extends object = object> {
             if (ignorePaths && ignorePaths.has(pathString)) {
                 return;
             }
-            // let newValue = get(newData, path);
+
             const oldValue = get(oldData, path);
 
             if (isEqual(newValue, oldValue)) {
@@ -177,6 +177,12 @@ export class BaseJsonCRDT<O extends object = object> {
 
             if (allowedKeys && !allowedKeys.has(path[0])) {
                 // key not allowed
+                return;
+            }
+
+            const isNewInsert = !has(oldData, path);
+            if (isDeleteOperator(newValue) && isNewInsert) {
+                // delete order on non-existing value is redundant
                 return;
             }
 
