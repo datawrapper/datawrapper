@@ -738,7 +738,7 @@ test('calculateDiff - calculates patch with unchanged object arrays', t => {
     });
 });
 
-test('calculateDiff - calculates patch including unnecessary delete', t => {
+test('calculateDiff - calculates patch does not incldue unnecessary delete', t => {
     const oldData = { a: 'some value', b: { key: 'value' } };
 
     const newData = { a: 'new value', b: { key: 'value' }, c: { d: null } };
@@ -746,8 +746,7 @@ test('calculateDiff - calculates patch including unnecessary delete', t => {
     const patch = BaseJsonCRDT.calculateDiff(oldData, newData);
 
     t.deepEqual(patch, {
-        a: 'new value',
-        c: { d: null }
+        a: 'new value'
     });
 });
 
