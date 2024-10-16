@@ -285,6 +285,9 @@ function Column(name_, rows, type, allowedTags) {
 
         indexOf(val) {
             return find(range(rows.length), function (i) {
+                if (type.name() === 'date') {
+                    return +column.val(i) === +val;
+                }
                 return column.val(i) === val;
             });
         },

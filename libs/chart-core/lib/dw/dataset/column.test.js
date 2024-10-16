@@ -185,3 +185,10 @@ test('Column.keys() returns all row values as formatted keys', t => {
     );
     t.is(col4.keys().join(', '), 'A, B, C');
 });
+
+test('Column.indexOf() returns the index of the value', t => {
+    t.is(col.indexOf(5.4), 0);
+    t.is(col3.indexOf(new Date(2024, 7, 12)), 2);
+    t.is(col4.indexOf('B'), 1);
+    t.falsy(col.indexOf(-77));
+});

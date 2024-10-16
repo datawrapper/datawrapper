@@ -570,6 +570,25 @@
             "types": "./dist/cjs/formatNumber.d.cts",
             "default": "./dist/esm/formatNumber.js"
         },
+        "./formatNumberSplitParts.d.ts": {
+            "require": "./dist/cjs/formatNumberSplitParts.d.cts",
+            "default": "./dist/esm/formatNumberSplitParts.d.ts"
+        },
+        "./formatNumberSplitParts.js": {
+            "require": "./dist/cjs/formatNumberSplitParts.cjs",
+            "types": "./dist/cjs/formatNumberSplitParts.d.cts",
+            "default": "./dist/esm/formatNumberSplitParts.js"
+        },
+        "./formatNumberSplitParts": {
+            "require": "./dist/cjs/formatNumberSplitParts.cjs",
+            "types": "./dist/cjs/formatNumberSplitParts.d.cts",
+            "default": "./dist/esm/formatNumberSplitParts.js"
+        },
+        "./dist/cjs/formatNumberSplitParts.cjs": {
+            "require": "./dist/cjs/formatNumberSplitParts.cjs",
+            "types": "./dist/cjs/formatNumberSplitParts.d.cts",
+            "default": "./dist/esm/formatNumberSplitParts.js"
+        },
         "./get.d.ts": {
             "require": "./dist/cjs/get.d.cts",
             "default": "./dist/esm/get.d.ts"
