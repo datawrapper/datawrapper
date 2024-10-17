@@ -136,6 +136,34 @@ standard
     t.deepEqual(parsedDataset.column(0).raw(), sourceValues);
 });
 
+test('Dataset.csv() returns a CSV that does not escape less/greater-than signs', async t => {
+    const dataset = Dataset([
+        Column('text', ['<10', '10', '>10'], 'text'),
+        Column('numbers', [0, 1, 2], 'number')
+    ]);
+
+    const expectedCSV = `text,numbers
+<10,0
+10,1
+>10,2`;
+
+    t.is(dataset.csv({ includeHeader: true }), expectedCSV);
+});
+
+test('Dataset.csv() does not contain html-escaped values', async t => {
+    const dataset = Dataset([
+        Column('text', ['Amp &amp; Ersand', '&quot;Double&quot;', '&#39;Single&#39;'], 'text'),
+        Column('numbers', [0, 1, 2], 'number')
+    ]);
+
+    const expectedCSV = `text,numbers
+Amp & Ersand,0
+"""Double""",1
+'Single',2`;
+
+    t.is(dataset.csv({ includeHeader: true }), expectedCSV);
+});
+
 test('Dataset.deleteRow() deletes correct row', async t => {
     const expected = `thing,price,price (EUR)
 foo,1.2,24
