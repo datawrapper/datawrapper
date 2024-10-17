@@ -3,6 +3,7 @@ import { guessDelimiterFromLocale } from '../utils/delimited.js';
 import isString from 'lodash/isString.js';
 import range from 'lodash/range.js';
 import each from 'lodash/each.js';
+import unescape from 'lodash/unescape.js';
 
 /*
  * Dataset class
@@ -176,7 +177,7 @@ function Dataset(columns) {
             });
             const table = filteredColumns.map(col => [
                 ...(includeHeader ? [col.title()] : []),
-                ...col.formatted(numeral)
+                ...col.formatted(numeral).map(unescape)
             ]);
             const rows = table[0].map((_, i) => table.map(row => row[i])).slice(0, numRows + 1);
             if (!opts.delimiter && numeral) {
