@@ -43,21 +43,21 @@ test('purifyHtml keeps script tags if we explicitly allow them', t => {
 test('purifyHtml sets default link target and rel', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com">this link</a>!'),
-        'check out <a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">this link</a>!'
+        'check out <a rel="nofollow noopener" target="_blank" href="https://example.com">this link</a>!'
     );
 });
 
 test('purifyHtml overwrites existing link target if it is not _self', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com" target="_parent">this link</a>!'),
-        'check out <a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">this link</a>!'
+        'check out <a rel="nofollow noopener" target="_blank" href="https://example.com">this link</a>!'
     );
 });
 
 test('purifyHtml does not overwrite existing link target if it is _self', t => {
     t.is(
         purifyHtml('check out <a href="https://example.com" target="_self">this link</a>!'),
-        'check out <a rel="nofollow noopener noreferrer" target="_self" href="https://example.com">this link</a>!'
+        'check out <a rel="nofollow noopener" target="_self" href="https://example.com">this link</a>!'
     );
 });
 
@@ -66,7 +66,14 @@ test('purifyHtml overwrites existing link rel', t => {
         purifyHtml(
             'check out <a href="https://example.com" target="_self" rel="nofollow">this link</a>!'
         ),
-        'check out <a rel="nofollow noopener noreferrer" target="_self" href="https://example.com">this link</a>!'
+        'check out <a rel="nofollow noopener" target="_self" href="https://example.com">this link</a>!'
+    );
+});
+
+test('purifyHtml preserves `noreferrer` rel attribute in links', t => {
+    t.is(
+        purifyHtml('<a href="https://example.com" rel="noreferrer">link</a>'),
+        '<a target="_blank" rel="nofollow noopener noreferrer" href="https://example.com">link</a>'
     );
 });
 
@@ -80,32 +87,32 @@ test('purifyHtml keeps styles', t => {
 test('purifyHtml removes onclick handlers', t => {
     t.is(
         purifyHtml('<a href="https://example.com" onclick="alert(42)">click me!</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank" href="https://example.com">click me!</a>'
+        '<a rel="nofollow noopener" target="_blank" href="https://example.com">click me!</a>'
     );
 });
 
 test('purifyHtml removes javascript urls', t => {
     t.is(
         purifyHtml('<a href="javascript:alert(42)">click me!</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
+        '<a rel="nofollow noopener" target="_blank">click me!</a>'
     );
 });
 
 test('purifyHtml removes javascript urls with leading whitespace', t => {
     t.is(
         purifyHtml('<a href="   javascript:alert(42)">click me!</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
+        '<a rel="nofollow noopener" target="_blank">click me!</a>'
     );
 });
 
 test('purifyHtml removes vbscript and data urls', t => {
     t.is(
         purifyHtml('<a href="vbscript:alert(42)">click me!</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
+        '<a rel="nofollow noopener" target="_blank">click me!</a>'
     );
     t.is(
         purifyHtml('<a href="data:alert(42)">click me!</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank">click me!</a>'
+        '<a rel="nofollow noopener" target="_blank">click me!</a>'
     );
 });
 
@@ -121,7 +128,7 @@ test('purifyHtml removes javascript links with special chars', t => {
         purifyHtml(
             '<a href="ja&Tab;va&NewLine;script&colon;alert&lpar;document.domain&rpar;" target="_self">link</a>'
         ),
-        '<a rel="nofollow noopener noreferrer" target="_self">link</a>'
+        '<a rel="nofollow noopener" target="_self">link</a>'
     );
 });
 
@@ -147,7 +154,7 @@ test('purifyHtml prevents unclosed iframe exploit ', t => {
 test('purifyHtml prevents hacky javascript links', t => {
     t.is(
         purifyHtml('<a href=javAscript:alert(1) target=_self>link</a>'),
-        '<a rel="nofollow noopener noreferrer" target="_self">link</a>'
+        '<a rel="nofollow noopener" target="_self">link</a>'
     );
 });
 
@@ -225,6 +232,6 @@ test('purifyHtml removes everything if `allowed` is an empty array', t => {
 test('purifyHtml preserves DEFAULT_ALLOWED tags if `allowed` is not passed', t => {
     t.is(
         purifyHtml('<a>link</a> <b>bold</b> <i>italic</i> <p>paragraph</p>'),
-        '<a rel="nofollow noopener noreferrer" target="_blank">link</a> <b>bold</b> <i>italic</i> paragraph'
+        '<a rel="nofollow noopener" target="_blank">link</a> <b>bold</b> <i>italic</i> paragraph'
     );
 });
