@@ -30,7 +30,8 @@ const memoizer = createPermanentMemoizer(
                 if (el.getAttribute('target') !== '_self') {
                     el.setAttribute('target', '_blank');
                 }
-                el.setAttribute('rel', 'nofollow noopener noreferrer');
+                const noreferrer = el.getAttribute('rel')?.includes('noreferrer');
+                el.setAttribute('rel', 'nofollow noopener' + (noreferrer ? ' noreferrer' : ''));
             }
         });
         return createPermanentMemoizer(
