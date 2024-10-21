@@ -22,9 +22,10 @@ export function formatNumberSplitParts(
     }
     value *= multiply;
     const parenthesesFormat = format.indexOf('(') > -1;
+    const absoluteFormat = !parenthesesFormat && format.indexOf('|') > -1;
     const specialThousandsFormat = format.indexOf(';') > -1;
 
-    format = format.replace(/;/g, ',');
+    format = format.replace(/;/g, ',').replace(/\|/g, '');
     let fmt = num(parenthesesFormat ? value : Math.abs(value)).format(format);
 
     if (specialThousandsFormat) {
@@ -37,6 +38,7 @@ export function formatNumberSplitParts(
     if (
         prepend &&
         !parenthesesFormat &&
+        !absoluteFormat &&
         value < 0 &&
         currencies.has(prepend.trim().toLowerCase())
     ) {
@@ -44,7 +46,7 @@ export function formatNumberSplitParts(
         return { prefix: minusChar, number: `${prepend}${fmt.replace('+', '')}${append}` };
     } else if (
         prepend &&
-        value >= 0 &&
+        (value >= 0 || absoluteFormat) &&
         currencies.has(prepend.trim().toLowerCase()) &&
         format.includes('+')
     ) {
@@ -62,7 +64,7 @@ export function formatNumberSplitParts(
         }
         return { prefix: `${prepend}${plusMinusChar}`, number: `${fmt.replace('+', '')}${append}` };
     }
-    if (value < 0 && !parenthesesFormat) {
+    if (value < 0 && !parenthesesFormat && !absoluteFormat) {
         return { prefix: `${prepend}${minusChar}`, number: `${fmt.replace('+', '')}${append}` };
     }
     if (format.includes('+')) {

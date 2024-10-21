@@ -129,3 +129,14 @@ test('isolated prefix: minus sign and prepend currencies', t => {
         number: '$1234.57'
     });
 });
+
+test('absolute format', t => {
+    t.is(formatNumber(numeral, 0, { format: '|0.00|' }), '0.00');
+    t.is(formatNumber(numeral, -1234.5678, { format: '|0.00|' }), '1234.57');
+    t.is(formatNumber(numeral, -1234.5678, { format: '|0.[0]|' }), '1234.6');
+    t.is(formatNumber(numeral, -1234.5678, { format: '|+0.00|' }), '+1234.57');
+    t.is(formatNumber(numeral, 1234.5678, { format: '|+0.00|' }), '+1234.57');
+    t.is(formatNumber(numeral, -1234.5678, { format: '|0.0a|' }), '1.2k');
+    t.is(formatNumber(numeral, 1234.5678, { format: '|+0.00|', prepend: '$' }), '+$1234.57');
+    t.is(formatNumber(numeral, -1234.5678, { format: '|+0.00|', prepend: '$' }), '+$1234.57');
+});
