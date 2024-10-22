@@ -1349,6 +1349,25 @@
             "types": "./dist/cjs/toFixed.d.cts",
             "default": "./dist/esm/toFixed.js"
         },
+        "./transformObjectValues.d.ts": {
+            "require": "./dist/cjs/transformObjectValues.d.cts",
+            "default": "./dist/esm/transformObjectValues.d.ts"
+        },
+        "./transformObjectValues.js": {
+            "require": "./dist/cjs/transformObjectValues.cjs",
+            "types": "./dist/cjs/transformObjectValues.d.cts",
+            "default": "./dist/esm/transformObjectValues.js"
+        },
+        "./transformObjectValues": {
+            "require": "./dist/cjs/transformObjectValues.cjs",
+            "types": "./dist/cjs/transformObjectValues.d.cts",
+            "default": "./dist/esm/transformObjectValues.js"
+        },
+        "./dist/cjs/transformObjectValues.cjs": {
+            "require": "./dist/cjs/transformObjectValues.cjs",
+            "types": "./dist/cjs/transformObjectValues.d.cts",
+            "default": "./dist/esm/transformObjectValues.js"
+        },
         "./truncate.d.ts": {
             "require": "./dist/cjs/truncate.d.cts",
             "default": "./dist/esm/truncate.d.ts"
