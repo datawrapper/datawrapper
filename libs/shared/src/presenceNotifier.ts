@@ -33,6 +33,12 @@ export type CollaborationRoom = Writable<{
     users: CollaborationUser[];
     disconnected: boolean;
 }> & {
+    /**
+     * Is set to true after the CRDTs have been fetched
+     * and the CollaborativeChart has been initialized.
+     */
+    chartInitialized: Writable<boolean>;
+
     /** Used to send focus and blur messages to other users in the same collaboration room. */
     sendPresenceMessage: (path: string, isFocus?: boolean) => void;
 
