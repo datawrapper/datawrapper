@@ -31,6 +31,17 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
     const axes = {};
     const axesAsColumns = {};
 
+    // pull axes that may not be reused to the front, so they get assigned first
+    visAxes = Object.fromEntries(
+        Object.entries(visAxes).sort(([, a], [, b]) => {
+            return a.preventMultipleUse && !b.preventMultipleUse
+                ? -1
+                : !a.preventMultipleUse && b.preventMultipleUse
+                ? 1
+                : 0;
+        })
+    );
+
     // get user preference
     each(visAxes, (axisDef, key) => {
         if (userAxes[key]) {
@@ -119,37 +130,58 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
                     usedColumns[firstMatch.name()] = true; // mark column as used
                     axes[key] = firstMatch.name();
                 } else {
-                    // try to auto-populate missing text column
-                    if (indexOf(axisDef.accepts, 'text') >= 0) {
-                        // try using the first text column in the dataset instead
+                    // no unused column found for this axis! We have to resort to reusing one,
+                    // or if there are no available columns, to generate one (text columns only)
+
+                    // Note: unclear why this logic historically hasn't been applied for date columns
+                    // @todo: maybe revisit this
+                    if (['text', 'number'].some(type => axisDef.accepts.includes(type))) {
+                        const usedColumnsMap = getColumnAxisMap(axes);
+
+                        // only allow reusing columns that may be reused, and match the allowed types for this axis
                         const acceptedAllowUsed = filter(dataset.columns(), function (col) {
-                            return indexOf(axisDef.accepts, col.type()) >= 0;
+                            if (!axisDef.accepts.includes(col.type())) return false;
+                            const usedFor = usedColumnsMap[col.name()];
+                            if (usedFor && visAxes[usedFor].preventMultipleUse) {
+                                return false;
+                            }
+                            return true;
                         });
+
                         if (acceptedAllowUsed.length) {
-                            axes[key] = acceptedAllowUsed[0].name();
+                            // reuse first available assigned column
+                            const column = acceptedAllowUsed[0].name();
+                            // if this axis column may not be reused
+                            // we need to unassign it from the previous assignment
+                            if (axisDef.preventMultipleUse) {
+                                const usedForAxis = usedColumnsMap[column];
+                                // undo previous assignment, in favour of assigning to this non-reusable axis
+                                if (usedForAxis && userAxes[usedForAxis]) {
+                                    axes[usedForAxis] = false;
+                                }
+                            }
+                            axes[key] = column;
                         } else {
-                            // no other text column in dataset, so genetate one with A,B,C,D...
-                            const col = column(
-                                key,
-                                map(range(dataset.numRows()), function (i) {
-                                    return (
-                                        (i > 25 ? String.fromCharCode(64 + i / 26) : '') +
-                                        String.fromCharCode(65 + (i % 26))
-                                    );
-                                }),
-                                'text'
-                            );
-                            dataset.add(col);
-                            usedColumns[col.name()] = true;
-                            axes[key] = col.name();
-                        }
-                    } else if (indexOf(axisDef.accepts, 'number') >= 0) {
-                        // try to auto-populate missing number column
-                        const acceptedAllowUsed = filter(dataset.columns(), function (col) {
-                            return indexOf(axisDef.accepts, col.type()) >= 0;
-                        });
-                        if (acceptedAllowUsed.length) {
-                            axes[key] = acceptedAllowUsed[0].name();
+                            // axis accepts text column, but there is no other text column in dataset,
+                            // lets genetate one with A,B,C,D...
+                            if (axisDef.accepts.includes('text')) {
+                                const col = column(
+                                    key,
+                                    map(range(dataset.numRows()), function (i) {
+                                        return (
+                                            (i > 25 ? String.fromCharCode(64 + i / 26) : '') +
+                                            String.fromCharCode(65 + (i % 26))
+                                        );
+                                    }),
+                                    'text'
+                                );
+                                dataset.add(col);
+                                usedColumns[col.name()] = true;
+                                axes[key] = col.name();
+                            } else {
+                                // no useable column found for this axis
+                                axes[key] = false;
+                            }
                         }
                     }
                 }
@@ -209,13 +241,31 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
         if (!isArray(columns)) columns = [columns];
         columns = columns.map(el => (typeof el === 'string' ? dataset.column(el) : el));
         for (var i = 0; i < columns.length; i++) {
+            const columnName = columns[i].name();
+            const usedForAxis = getColumnAxisMap(axes)[columnName];
+            if (usedForAxis && visAxes[usedForAxis].preventMultipleUse) {
+                allowMultipleUse = false;
+            }
             if (
-                (!allowMultipleUse && usedColumns[columns[i].name()]) ||
+                (!allowMultipleUse && usedColumns[columnName]) ||
                 indexOf(axisDef.accepts, columns[i].type()) === -1
             ) {
                 return false;
             }
         }
         return true;
+    }
+
+    function getColumnAxisMap(axes) {
+        return Object.entries(axes).reduce((usedColumns, [key, column]) => {
+            if (column) {
+                if (isArray(column)) {
+                    column.forEach(column => (usedColumns[column] = key));
+                } else {
+                    usedColumns[column] = key;
+                }
+            }
+            return usedColumns;
+        }, {});
     }
 }
