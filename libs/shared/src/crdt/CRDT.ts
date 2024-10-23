@@ -1,5 +1,5 @@
 import { Clock } from './Clock.js';
-import { type Timestamp } from './types.js';
+import type { DebugFlagOrLevel, DebugHistoryEntry, DebugSnapshot, Timestamp } from './types.js';
 
 export type Diff<O extends object | string | number> = O;
 
@@ -24,5 +24,12 @@ export interface CRDT<O extends object | string | number> {
         options?: { allowedKeys?: Set<string>; ignorePaths?: Set<string> | null }
     ): Diff<O>;
     data(): O;
+
+    setDebug(debug: DebugFlagOrLevel): void;
+    getDebugInfo(): {
+        history: DebugHistoryEntry[];
+        getSnapshot: () => DebugSnapshot;
+        printHistory: (name?: string) => void;
+    };
 }
 // #endregion CRDT

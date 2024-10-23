@@ -12,7 +12,11 @@ import {
     isPathToItemArrayIndex,
     itemArrayToObject,
     migrateTimestamps,
-    set
+    set,
+    removeNullsFromObject,
+    itemArrayPathFromIndexPath,
+    isPathToItemArrayAncestor,
+    isPathToItemArray
 } from './utils.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -342,4 +346,69 @@ test('set - inserts properties into existing objects', t => {
     set(obj, ['a', 'c'], 2);
     set(obj, ['a', 'd', 'e', 'f'], 3);
     t.deepEqual(obj, { a: { b: 1, c: 2, d: { e: { f: 3 } } } });
+});
+
+test('removeNullsFromObject - removes null values everywhere in nested object', t => {
+    const obj = { a: { b: { d: 1, e: { null: null, not_null: 'not_null' } } }, x: null };
+    t.deepEqual(removeNullsFromObject(obj), { a: { b: { d: 1, e: { not_null: 'not_null' } } } });
+});
+
+test('removeNullsFromObject - does not remove null values for _index keys', t => {
+    const obj = {
+        a: { b: { d: 1, _index: null, e: { _index: null, not_null: 'not_null' } } },
+        x: null
+    };
+    t.deepEqual(removeNullsFromObject(obj), {
+        a: { b: { d: 1, _index: null, e: { _index: null, not_null: 'not_null' } } }
+    });
+});
+
+test('itemArrayPathFromIndexPath - returns the correct path for item array index', t => {
+    t.deepEqual(itemArrayPathFromIndexPath(['a', 'id', '_index']), ['a']);
+    t.deepEqual(itemArrayPathFromIndexPath(['a', 'b', 'c', 'id', '_index']), ['a', 'b', 'c']);
+});
+
+test('itemArrayPathFromIndexPath - throws error if path is not to item array index', t => {
+    t.throws(() => itemArrayPathFromIndexPath(['a', 'id', TIMESTAMP_KEY]));
+    t.throws(() => itemArrayPathFromIndexPath(['a', 'id']));
+    t.throws(() => itemArrayPathFromIndexPath(['a']));
+    t.throws(() => itemArrayPathFromIndexPath([]));
+});
+
+test('isPathToItemArrayAncestor - correctly identifies paths to item array ancestors', t => {
+    const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
+
+    // path to item array ancestors
+    t.true(isPathToItemArrayAncestor(pathsToItemArrays, ['a']));
+    t.true(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2', '4']));
+    t.true(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2']));
+
+    // path to item arrays
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['arr']));
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'b']));
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2', '4', 'r']));
+
+    // path into item arrays
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'b', 'c']));
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
+    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'false']));
+});
+
+test('isPathToItemArray - correctly identifies paths to item arrays', t => {
+    const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
+
+    // path to item array ancestors
+    t.false(isPathToItemArray(pathsToItemArrays, ['a']));
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', '2', '4']));
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', '2']));
+
+    // path to item arrays
+    t.true(isPathToItemArray(pathsToItemArrays, ['arr']));
+    t.true(isPathToItemArray(pathsToItemArrays, ['a', 'b']));
+    t.true(isPathToItemArray(pathsToItemArrays, ['a', '2', '4', 'r']));
+
+    // path into item arrays
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', 'b', 'c']));
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', 'false']));
 });

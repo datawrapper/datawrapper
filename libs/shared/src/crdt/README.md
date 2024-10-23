@@ -46,7 +46,7 @@ The `BaseJsonCRDT` implements the core functionality of the CRDT for JSON object
 
 The most important method is the `update(diff, timestamp)` method which updates the CRDT with the given data `diff` and `timestamp`. Besides this and the `data()` method, it mainly consists of methods that handle different kinds of update operations, e.g., `updateObject(...)`, `updateValue(...)`. Another important method is the `calculateDiff` method which calculates the diff between two states of data.
 
-Via a `DEBUG` flag the class can be configured to log _applied_ and _rejected_ updates of the CRDT. These logs can then be accessed via `getLogs()` or logged via `printLogs()`. Note that this functionality comes with performance overhead and should only be used for debugging purposes.
+Via a `setDebug(true)` the class can be configured to log updates and individual _applied_ and _rejected_ mutations of the CRDT. These logs can then be accessed via `getDebugHistory()` or logged via `printDebugHistory()`. It's also possible to specifiy a debug level (`'updates', 'mutations', 'all'`) to limit or extend the amount of data captured. Note that this functionality comes with performance overhead and should only be used for debugging purposes.
 
 #### JsonCRDT
 

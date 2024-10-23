@@ -2,26 +2,26 @@ import { SinonSandbox } from 'sinon';
 import { BaseJsonCRDT } from './BaseJsonCRDT';
 import anyTest, { TestFn } from 'ava';
 import { cloneDeep } from 'lodash';
-import { replaySnapshot } from '../../test/helpers/crdt';
+import { forEachOther, replaySnapshot } from '../../test/helpers/crdt';
 import { TIMESTAMP_KEY } from './constants';
 
 const test = anyTest as TestFn<{ sandbox: SinonSandbox }>;
 
 test(`basic updates work`, t => {
     // flat object
-    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
+    const crdt1 = new BaseJsonCRDT({ data: { a: 'some value', b: 2, c: 3 } });
     crdt1.update({ a: 2, b: 3 }, '1-1');
     t.deepEqual(crdt1.data(), { a: 2, b: 3, c: 3 });
 
     // deeply nested object
-    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    const crdt2 = new BaseJsonCRDT({ data: { a: { b: { c: { d: { e: { f: 1 } } } } } } });
     crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
 });
 
 test(`updates get denied for outdated timestamps`, t => {
     // flat object
-    const crdt1 = new BaseJsonCRDT({ a: 'some value', b: 2, c: 3 });
+    const crdt1 = new BaseJsonCRDT({ data: { a: 'some value', b: 2, c: 3 } });
     crdt1.update({ a: 2, b: 3 }, '1-1');
     crdt1.update({ b: 1000 }, '1-0');
     crdt1.update({ b: 1231232 }, '1-0');
@@ -31,14 +31,14 @@ test(`updates get denied for outdated timestamps`, t => {
     t.deepEqual(crdt1.data(), { a: 20, b: 3, c: 3 });
 
     // deeply nested object
-    const crdt2 = new BaseJsonCRDT({ a: { b: { c: { d: { e: { f: 1 } } } } } });
+    const crdt2 = new BaseJsonCRDT({ data: { a: { b: { c: { d: { e: { f: 1 } } } } } } });
     crdt2.update({ a: { b: { c: { d: { e: { f: 2 } } } } } }, '1-1');
     crdt2.update({ a: { b: { c: { d: { e: { f: 1000 } } } } } }, '2-0');
     t.deepEqual(crdt2.data(), { a: { b: { c: { d: { e: { f: 2 } } } } } });
 });
 
 test(`updates with same timestamp value only get applied for higher nodeIds `, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 2, c: { key: 'value' } } });
     crdt.update({ a: 2 }, '1-1');
     crdt.update({ a: 'update value that does not get applied' }, '1-1');
     t.deepEqual(crdt.data(), { a: 2, b: 2, c: { key: 'value' } });
@@ -53,7 +53,7 @@ test(`updates with same timestamp value only get applied for higher nodeIds `, t
 });
 
 test(`non-conflicting updates get merged`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 2, c: { key: 'value' } } });
     crdt.update({ a: 2 }, '1-1');
     crdt.update({ b: 3 }, '2-1');
     crdt.update({ c: { key: 'new value' } }, '3-1');
@@ -69,7 +69,7 @@ test(`arrays are treated as atomic values`, t => {
     // TODO: Theses tests should be updated to reflect the merging behavior of arrays once this functionality gets implemented.
 
     // basic update
-    const crdt = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt = new BaseJsonCRDT({ data: { a: [1, 2, 3], b: [4, 5, 6] } });
     crdt.update({ a: [1, 2, 3, 4] }, '1-1');
     crdt.update({ b: [4, 5, 6, 7] }, '2-1');
     t.deepEqual(crdt.data(), {
@@ -78,7 +78,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // overwriting update
-    const crdt2 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt2 = new BaseJsonCRDT({ data: { a: [1, 2, 3], b: [4, 5, 6] } });
     crdt2.update({ a: [1, 2, 3, 4] }, '1-1');
     crdt2.update({ b: [4, 5, 6, 7] }, '2-1');
     crdt2.update({ a: [1, 2, 3, 4, 5, 6, 7] }, '3-1');
@@ -88,7 +88,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // nested arrays
-    const crdt3 = new BaseJsonCRDT({ a: [1, 2, 3], b: [4, 5, 6] });
+    const crdt3 = new BaseJsonCRDT({ data: { a: [1, 2, 3], b: [4, 5, 6] } });
     crdt3.update({ a: [1, [2, 3], 4] }, '1-1');
     crdt3.update({ b: [4, 5, [6, 7]] }, '2-1');
     t.deepEqual(crdt3.data(), {
@@ -97,7 +97,7 @@ test(`arrays are treated as atomic values`, t => {
     });
 
     // arrays with objects
-    const crdt4 = new BaseJsonCRDT({ a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] });
+    const crdt4 = new BaseJsonCRDT({ data: { a: [{ a: 1 }, { b: 2 }], b: [{ c: 3 }, { d: 4 }] } });
     crdt4.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
     crdt4.update({ b: [{ c: 3 }, { d: 4 }, { e: 5 }] }, '2-1');
     t.deepEqual(crdt4.data(), {
@@ -107,13 +107,13 @@ test(`arrays are treated as atomic values`, t => {
 });
 
 test(`updates with empty data`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 2, c: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 2, c: { key: 'value' } } });
     crdt.update({}, '1-1');
     t.deepEqual(crdt.data(), { a: 'some value', b: 2, c: { key: 'value' } });
 });
 
 test(`adding new keys`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: { key: 'value' } });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: { key: 'value' } } });
 
     crdt.update({ c: 'new key' }, '1-1');
 
@@ -125,7 +125,7 @@ test(`adding new keys`, t => {
 });
 
 test('deleting basic non-nested key', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 'value' } });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { b: 'value' });
@@ -135,14 +135,14 @@ test('deleting basic non-nested key', t => {
 });
 
 test('inserting a new array', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ b: [] }, '1-1');
     t.deepEqual(crdt.data(), { a: 'some value', b: [] });
 });
 
 test('deleted keys can be added back in', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 'value' } });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { b: 'value' });
@@ -153,8 +153,10 @@ test('deleted keys can be added back in', t => {
 
 test('deleting a nested value keeps the parent object', t => {
     const crdt = new BaseJsonCRDT({
-        a: 'some value',
-        b: { c: { d: { e: { f: { g: 'soon gone' } } } } }
+        data: {
+            a: 'some value',
+            b: { c: { d: { e: { f: { g: 'soon gone' } } } } }
+        }
     });
 
     crdt.update({ b: { c: { d: { e: { f: { g: null } } } } } }, '1-1');
@@ -166,7 +168,7 @@ test('deleting a nested value keeps the parent object', t => {
 });
 
 test('reinsertions with outdated timestamps get denied', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 'value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 'value' } });
 
     crdt.update({ a: null }, '1-2');
     t.deepEqual(crdt.data(), { b: 'value' });
@@ -183,7 +185,7 @@ test.failing('deleting an item array deletes all items instead', t => {
             { id: '2', val: 'val2' }
         ]
     };
-    const crdt = new BaseJsonCRDT(data);
+    const crdt = new BaseJsonCRDT({ data });
 
     // delete item array
     crdt.update({ arr: null }, '1-2');
@@ -195,7 +197,7 @@ test.failing('deleting an item array deletes all items instead', t => {
 });
 
 test('inserting empty object: new path', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ b: {} }, '1-1');
 
@@ -203,7 +205,7 @@ test('inserting empty object: new path', t => {
 });
 
 test('inserting empty object: nested new path', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ b: { c: { d: { e: {} } } } }, '1-1');
 
@@ -211,7 +213,7 @@ test('inserting empty object: nested new path', t => {
 });
 
 test('inserting empty object: already empty object', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: {} } });
 
     crdt.update({ b: {} }, '1-1');
 
@@ -219,7 +221,7 @@ test('inserting empty object: already empty object', t => {
 });
 
 test('inserting value into empty object', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: {} } });
 
     crdt.update({ b: {} }, '1-1');
 
@@ -233,11 +235,11 @@ test('object conversion', t => {
     const opA = { newObj: { a: 1 } };
     const opB = { newObj: {} };
 
-    const crdtX = new BaseJsonCRDT({});
+    const crdtX = new BaseJsonCRDT({ data: {} });
     crdtX.update(opA, t1);
     crdtX.update(opB, t2);
 
-    const crdtY = new BaseJsonCRDT({});
+    const crdtY = new BaseJsonCRDT({ data: {} });
     crdtY.update(opB, t2);
     crdtY.update(opA, t1);
 
@@ -245,7 +247,7 @@ test('object conversion', t => {
 });
 
 test('override with empty object deletes object content', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: { value: 'something' } }, '1-1');
     crdt.update({ obj: {} }, '1-2');
@@ -254,7 +256,7 @@ test('override with empty object deletes object content', t => {
 });
 
 test('override with empty object partially deletes object content', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: { value: 'something' } }, '1-1');
     crdt.update({ obj: { keepThisValue: 'kept' } }, '1-3');
@@ -264,7 +266,7 @@ test('override with empty object partially deletes object content', t => {
 });
 
 test('override with empty object deletes nested object content', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: { deeply: { nested: { object: { value: 1 } } } } }, '1-1');
     crdt.update({ obj: {} }, '1-2');
@@ -273,7 +275,7 @@ test('override with empty object deletes nested object content', t => {
 });
 
 test('override with empty object partially deletes nested object content', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: { deeply: { nested: { object: { value: 1 } } } } }, '1-1');
     crdt.update({ obj: { deeply: { nested: { object: { keepThisValue: 'kept' } } } } }, '1-3');
@@ -285,7 +287,7 @@ test('override with empty object partially deletes nested object content', t => 
 });
 
 test('override with empty object partially deletes nested object content for empty object', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: { deeply: { nested: { object: { keepThisValue: {} } } } } }, '1-3');
     crdt.update({ obj: {} }, '1-2');
@@ -296,7 +298,7 @@ test('override with empty object partially deletes nested object content for emp
 });
 
 test('override with empty object partially deletes nested object content for empty object if it was a date before', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ obj: new Date() }, '1-1');
     crdt.update({ obj: { deeply: { nested: { object: { keepThisValue: {} } } } } }, '1-3');
@@ -309,12 +311,14 @@ test('override with empty object partially deletes nested object content for emp
 
 test('test', t => {
     const crdt = new BaseJsonCRDT({
-        m0: {
-            f1: 1,
-            h1: {
-                j2: 1,
-                l2: {
-                    n3: 1
+        data: {
+            m0: {
+                f1: 1,
+                h1: {
+                    j2: 1,
+                    l2: {
+                        n3: 1
+                    }
                 }
             }
         }
@@ -342,7 +346,7 @@ test('test', t => {
 });
 
 test('inserting empty object over atomic value', t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value', b: 8 });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value', b: 8 } });
 
     crdt.update({ b: {} }, '1-1');
 
@@ -350,7 +354,7 @@ test('inserting empty object over atomic value', t => {
 });
 
 test('a Date inserted at initialization or with update is a Date in the data', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z') });
+    const crdt = new BaseJsonCRDT<any>({ data: { a: new Date('2024-02-14T09:10:23.956Z') } });
 
     crdt.update({ b: new Date('2024-02-13T09:10:23.956Z') }, '1-1');
     t.deepEqual(crdt.data(), {
@@ -360,21 +364,25 @@ test('a Date inserted at initialization or with update is a Date in the data', t
 });
 
 test('a Date can be deleted with null', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
+    const crdt = new BaseJsonCRDT<any>({
+        data: { a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' }
+    });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { b: 'stays' });
 });
 
 test('null can be replaced with a Date', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: null });
+    const crdt = new BaseJsonCRDT<any>({ data: { a: null } });
 
     crdt.update({ a: new Date('2024-02-14T09:10:23.956Z') }, '1-1');
     t.deepEqual(crdt.data(), { a: new Date('2024-02-14T09:10:23.956Z') });
 });
 
 test('a Date can be explicitly set to undefined', t => {
-    const crdt = new BaseJsonCRDT<any>({ a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' });
+    const crdt = new BaseJsonCRDT<any>({
+        data: { a: new Date('2024-02-14T09:10:23.956Z'), b: 'stays' }
+    });
 
     crdt.update({ a: undefined }, '1-1');
     t.deepEqual(crdt.data(), { b: 'stays' });
@@ -383,7 +391,7 @@ test('a Date can be explicitly set to undefined', t => {
 // object <-> atomic value conversion
 
 test(`deny converting atomic value to object if atomic value timestamp higher`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ a: 'another value' }, '2-2');
 
@@ -395,7 +403,7 @@ test(`deny converting atomic value to object if atomic value timestamp higher`, 
 });
 
 test(`convert atomic value (string) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
 
@@ -405,7 +413,7 @@ test(`convert atomic value (string) to object`, t => {
 });
 
 test(`outdated conversion of atomic value (string) to object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ a: { b: { c: 'nested' } } }, '0-0');
 
@@ -415,7 +423,7 @@ test(`outdated conversion of atomic value (string) to object is rejected`, t => 
 });
 
 test(`convert atomic value (int) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 9 });
+    const crdt = new BaseJsonCRDT({ data: { a: 9 } });
 
     crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
 
@@ -425,7 +433,7 @@ test(`convert atomic value (int) to object`, t => {
 });
 
 test(`convert atomic value (array) to object`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
+    const crdt = new BaseJsonCRDT({ data: { a: [] } });
 
     crdt.update({ a: { b: { c: 'nested' } } }, '1-1');
 
@@ -435,7 +443,7 @@ test(`convert atomic value (array) to object`, t => {
 });
 
 test(`convert atomic value (string) to empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ a: {} }, '1-1');
 
@@ -445,7 +453,7 @@ test(`convert atomic value (string) to empty object`, t => {
 });
 
 test(`outdated conversion of atomic value (string) to empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'some value' });
+    const crdt = new BaseJsonCRDT({ data: { a: 'some value' } });
 
     crdt.update({ a: {} }, '0-0');
 
@@ -455,7 +463,7 @@ test(`outdated conversion of atomic value (string) to empty object is rejected`,
 });
 
 test(`convert atomic value (array) to empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
+    const crdt = new BaseJsonCRDT({ data: { a: [] } });
 
     crdt.update({ a: {} }, '1-1');
 
@@ -465,7 +473,7 @@ test(`convert atomic value (array) to empty object`, t => {
 });
 
 test(`outdated conversion of atomic value (array) to empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: [] });
+    const crdt = new BaseJsonCRDT({ data: { a: [] } });
 
     crdt.update({ a: {} }, '0-0');
 
@@ -475,7 +483,7 @@ test(`outdated conversion of atomic value (array) to empty object is rejected`, 
 });
 
 test(`convert empty object to atomic value`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: {} } });
 
     crdt.update({ a: 'string' }, '1-1');
 
@@ -485,7 +493,7 @@ test(`convert empty object to atomic value`, t => {
 });
 
 test(`outdated conversion of empty object to atomic value is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: {} } });
 
     crdt.update({ a: 'string' }, '0-0');
 
@@ -493,7 +501,7 @@ test(`outdated conversion of empty object to atomic value is rejected`, t => {
 });
 
 test(`convert nested object to atomic value`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
+    const crdt = new BaseJsonCRDT({ data: { a: { b: { c: 1 } } } });
 
     crdt.update({ a: 'string' }, '1-1');
 
@@ -503,7 +511,11 @@ test(`convert nested object to atomic value`, t => {
 });
 
 test(`outdated conversion of atomic value to object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: 'string' }, { a: '1-2' }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: 'string' },
+        timestamps: { a: { [TIMESTAMP_KEY]: '1-2' } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: { b: 1 } }, '1-1');
 
@@ -511,7 +523,11 @@ test(`outdated conversion of atomic value to object is rejected`, t => {
 });
 
 test(`outdated conversion of nested object to atomic value is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } }, { a: { b: { c: '1-2' } } }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: { b: { c: 1 } } },
+        timestamps: { a: { b: { c: { [TIMESTAMP_KEY]: '1-2' } } } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: 'string' }, '1-1');
 
@@ -519,7 +535,7 @@ test(`outdated conversion of nested object to atomic value is rejected`, t => {
 });
 
 test(`delete nested object`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
+    const crdt = new BaseJsonCRDT({ data: { a: { b: { c: 1 } } } });
 
     crdt.update({ a: null }, '1-1');
 
@@ -528,12 +544,14 @@ test(`delete nested object`, t => {
 
 test(`delete nested empty object`, t => {
     const crdt = new BaseJsonCRDT({
-        a: {},
-        b: {
-            x: {},
-            y: {
-                n: {
-                    m: 2
+        data: {
+            a: {},
+            b: {
+                x: {},
+                y: {
+                    n: {
+                        m: 2
+                    }
                 }
             }
         }
@@ -546,7 +564,7 @@ test(`delete nested empty object`, t => {
 });
 
 test(`oudated delete nested object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { c: 1 } } });
+    const crdt = new BaseJsonCRDT({ data: { a: { b: { c: 1 } } } });
 
     crdt.update({ a: null }, '0-0');
 
@@ -554,7 +572,7 @@ test(`oudated delete nested object is rejected`, t => {
 });
 
 test(`delete empty object`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: {} } });
 
     crdt.update({ a: null }, '1-1');
 
@@ -562,7 +580,7 @@ test(`delete empty object`, t => {
 });
 
 test(`outdated delete empty object is rejected without initialized timestamp`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} });
+    const crdt = new BaseJsonCRDT({ data: { a: {} } });
 
     crdt.update({ a: null }, '0-0');
 
@@ -570,7 +588,11 @@ test(`outdated delete empty object is rejected without initialized timestamp`, t
 });
 
 test(`outdated delete empty object is rejected`, t => {
-    const crdt = new BaseJsonCRDT({ a: {} }, { a: '1-1' }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: {} },
+        timestamps: { a: { [TIMESTAMP_KEY]: '1-1' } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: null }, '1-1');
 
@@ -579,7 +601,11 @@ test(`outdated delete empty object is rejected`, t => {
 
 test(`inserting new nested value in previous but now deleted atomic value is rejected when outdated`, t => {
     // Start with atomic value.
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: 1 },
+        timestamps: { a: { [TIMESTAMP_KEY]: '1-1' } },
+        pathsToItemArrays: []
+    });
 
     // Delete atomic value.
     crdt.update({ a: null }, '1-2');
@@ -600,14 +626,22 @@ test(`inserting new nested value in previous but now deleted atomic value is rej
 });
 
 test(`insert nested new value into existing object`, t => {
-    const crdt = new BaseJsonCRDT({ a: { b: { id: 1 } } }, { a: { b: { id: '1-1' } } }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: { b: { id: 1 } } },
+        timestamps: { a: { b: { id: { [TIMESTAMP_KEY]: '1-1' } } } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: { c: { id: 3 } } }, '2-1');
     t.deepEqual(crdt.data(), { a: { b: { id: 1 }, c: { id: 3 } } });
 });
 
 test(`insert new value should resolve same level via node ID`, t => {
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: 1 },
+        timestamps: { a: { [TIMESTAMP_KEY]: '1-1' } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: 2 }, '2-1');
     t.deepEqual(crdt.data(), { a: 2 });
@@ -620,7 +654,11 @@ test(`insert new value should resolve same level via node ID`, t => {
 });
 
 test(`nested insertion does respect timestamp of ancestor change`, t => {
-    const crdt = new BaseJsonCRDT({ a: 1 }, { a: '1-1' }, []);
+    const crdt = new BaseJsonCRDT({
+        data: { a: 1 },
+        timestamps: { a: { [TIMESTAMP_KEY]: '1-1' } },
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: null }, '1-2');
     t.deepEqual(crdt.data(), {});
@@ -633,7 +671,7 @@ test(`nested insertion does respect timestamp of ancestor change`, t => {
 });
 
 test(`deleting nested object results in partial deletes`, t => {
-    const crdt1 = new BaseJsonCRDT({});
+    const crdt1 = new BaseJsonCRDT({ data: {} });
 
     crdt1.update({ a0: { a1: 'd' } }, '1-5');
     t.deepEqual(crdt1.data(), {
@@ -650,7 +688,7 @@ test(`deleting nested object results in partial deletes`, t => {
 
     // --------------------------------------------
 
-    const crdt2 = new BaseJsonCRDT({});
+    const crdt2 = new BaseJsonCRDT({ data: {} });
 
     crdt2.update({ a0: { d1: 'b' } }, '2-1');
     t.deepEqual(crdt2.data(), {
@@ -665,7 +703,7 @@ test(`deleting nested object results in partial deletes`, t => {
 });
 
 test(`overwriting nested object with atomic value results in partial deletes`, t => {
-    const crdt1 = new BaseJsonCRDT({});
+    const crdt1 = new BaseJsonCRDT({ data: {} });
 
     crdt1.update({ a0: { a1: 'd' } }, '1-5');
     t.deepEqual(crdt1.data(), {
@@ -682,7 +720,7 @@ test(`overwriting nested object with atomic value results in partial deletes`, t
 
     // --------------------------------------------
 
-    const crdt2 = new BaseJsonCRDT({});
+    const crdt2 = new BaseJsonCRDT({ data: {} });
 
     crdt2.update({ a0: { d1: 'b' } }, '2-1');
     t.deepEqual(crdt2.data(), {
@@ -697,7 +735,7 @@ test(`overwriting nested object with atomic value results in partial deletes`, t
 });
 
 test(`Nested inserts only take ancestor timestamp into account`, t => {
-    const crdt1 = new BaseJsonCRDT({});
+    const crdt1 = new BaseJsonCRDT({ data: {} });
 
     crdt1.update({ c0: 'f' }, '1-1');
     t.deepEqual(crdt1.data(), {
@@ -712,7 +750,7 @@ test(`Nested inserts only take ancestor timestamp into account`, t => {
 
     // --------------------------------------------
 
-    const crdt2 = new BaseJsonCRDT({});
+    const crdt2 = new BaseJsonCRDT({ data: {} });
 
     crdt2.update({ c0: { c1: 'f' } }, '2-5');
     t.deepEqual(crdt2.data(), {
@@ -725,7 +763,7 @@ test(`Nested inserts only take ancestor timestamp into account`, t => {
 
 // TODO: verify we really don't need this
 test('deleting non-existing nested values create nested objects', t => {
-    const crdt1 = new BaseJsonCRDT({});
+    const crdt1 = new BaseJsonCRDT({ data: {} });
 
     crdt1.update({ a: { b: { c: 1, d: { e: 2 } } } }, '1-1');
     t.deepEqual(crdt1.data(), { a: { b: { c: 1, d: { e: 2 } } } });
@@ -738,8 +776,8 @@ test('deleting non-existing nested values create nested objects', t => {
 });
 
 test('nested empty objects get deleted on partial deletes', t => {
-    const crdt1 = new BaseJsonCRDT(
-        {
+    const crdt1 = new BaseJsonCRDT({
+        data: {
             a: {
                 b: {
                     c: 1
@@ -747,16 +785,16 @@ test('nested empty objects get deleted on partial deletes', t => {
                 d: 3
             }
         },
-        {
+        timestamps: {
             a: {
                 b: {
-                    c: '1-1'
+                    c: { [TIMESTAMP_KEY]: '1-1' }
                 },
-                d: '1-4'
+                d: { [TIMESTAMP_KEY]: '1-4' }
             }
         },
-        []
-    );
+        pathsToItemArrays: []
+    });
 
     crdt1.update(
         {
@@ -790,10 +828,14 @@ test('nested empty objects get deleted on partial deletes', t => {
 
 test('keeps empty object after delete regardless of order', t => {
     const crdt1 = new BaseJsonCRDT({
-        a: { b: { c: 1 } }
+        data: {
+            a: { b: { c: 1 } }
+        }
     });
     const crdt2 = new BaseJsonCRDT({
-        a: { b: { c: 1 } }
+        data: {
+            a: { b: { c: 1 } }
+        }
     });
 
     crdt1.update({ a: null }, '1-1');
@@ -810,7 +852,9 @@ test('keeps empty object after delete regardless of order', t => {
 
 test('deletes work regardless of order 2', t => {
     const crdt1 = new BaseJsonCRDT({
-        a: { b: { c: 1 } }
+        data: {
+            a: { b: { c: 1 } }
+        }
     });
 
     crdt1.update({ a: null }, '1-1');
@@ -825,7 +869,7 @@ test('deletes work regardless of order 2', t => {
 });
 
 test('properly deletes empty ancestor even if a descendant has been deleted with higher timestamp', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update(
         {
@@ -846,15 +890,15 @@ test('properly deletes empty ancestor even if a descendant has been deleted with
 });
 
 test('does not delete ancestor if a descendant with a value with higher timestamp exists', t => {
-    const crdt = new BaseJsonCRDT(
-        {
+    const crdt = new BaseJsonCRDT({
+        data: {
             a: { b: { c: { d: 1 } } }
         },
-        {
-            a: { b: { c: { d: '9-9' } } }
+        timestamps: {
+            a: { b: { c: { d: { [TIMESTAMP_KEY]: '9-9' } } } }
         },
-        []
-    );
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: null }, '1-1');
     t.deepEqual(crdt.data(), { a: { b: { c: { d: 1 } } } });
@@ -862,9 +906,11 @@ test('does not delete ancestor if a descendant with a value with higher timestam
 
 test('keeps empty parent after nested delete', t => {
     const crdt = new BaseJsonCRDT({
-        a: {
-            d: {
-                g: {}
+        data: {
+            a: {
+                d: {
+                    g: {}
+                }
             }
         }
     });
@@ -905,7 +951,9 @@ test('keeps empty parent after nested delete', t => {
 
 test('deleting a nested object with a nested value with higher timestamp than the delete deletes everything in that object except for the value with higher timestamp', t => {
     const crdt1 = new BaseJsonCRDT({
-        a: { b: { c: 1 } }
+        data: {
+            a: { b: { c: 1 } }
+        }
     });
 
     crdt1.update({ a: { y: { z: 2 } } }, '1-1');
@@ -916,13 +964,13 @@ test('deleting a nested object with a nested value with higher timestamp than th
 });
 
 test('inserting nested numeric keys does not create arrays but regular objects', t => {
-    const crdt = new BaseJsonCRDT(
-        { a: { b: 1 } },
-        {
-            a: { b: '1-4' }
+    const crdt = new BaseJsonCRDT({
+        data: { a: { b: 1 } },
+        timestamps: {
+            a: { b: { [TIMESTAMP_KEY]: '1-4' } }
         },
-        []
-    );
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: { 0: 2 } }, '1-1');
     t.deepEqual(crdt.data(), {
@@ -936,13 +984,13 @@ test('inserting nested numeric keys does not create arrays but regular objects',
 });
 
 test('setting nested keys containing dots does not result in more nested objects', t => {
-    const crdt = new BaseJsonCRDT(
-        { a: {} },
-        {
-            a: '0-0'
+    const crdt = new BaseJsonCRDT({
+        data: { a: {} },
+        timestamps: {
+            a: { [TIMESTAMP_KEY]: '0-0' }
         },
-        []
-    );
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: { 'this.has.dots': 3 } }, '1-1');
     t.deepEqual(crdt.data(), {
@@ -959,13 +1007,13 @@ test('setting nested keys containing dots does not result in more nested objects
 test('overwriting an existing object updates its timestamp when the updating timestamp is higher than that of the object, even if the update is rejected due to newer child timestamps', t => {
     const crdts = replaySnapshot('9a022');
 
-    t.deepEqual(crdts[0].data(), crdts[1].data());
-
-    t.deepEqual(crdts[1].data(), crdts[2].data());
+    forEachOther(crdts, ([, crdtA], [, crdtB]) => {
+        t.deepEqual(crdtA.data(), crdtB.data());
+    });
 });
 
 test('update existing nesteed object with empty object', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update(
         {
@@ -991,7 +1039,7 @@ test('update existing nesteed object with empty object', t => {
 });
 
 test('cannot insert into empty object if object timestamp is higher', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update(
         {
@@ -1016,7 +1064,9 @@ test('cannot insert into empty object if object timestamp is higher', t => {
 
 test('deleting a non-existant nested value does not delete ancestors without timestamp', t => {
     const crdt = new BaseJsonCRDT({
-        a0: {}
+        data: {
+            a0: {}
+        }
     });
 
     crdt.update(
@@ -1047,7 +1097,7 @@ test('deleting a non-existant nested value does not delete ancestors without tim
 });
 
 test('cannot insert new nested value if some deleted ancestor has higher timestamp', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update(
         {
@@ -1085,7 +1135,9 @@ test('cannot insert new nested value if some deleted ancestor has higher timesta
 
 test('update issue #2', t => {
     const crdt1 = new BaseJsonCRDT({
-        b0: 'abc'
+        data: {
+            b0: 'abc'
+        }
     });
 
     crdt1.update(
@@ -1125,7 +1177,9 @@ test('update issue #2', t => {
     // ----------------
 
     const crdt2 = new BaseJsonCRDT({
-        b0: 'abc'
+        data: {
+            b0: 'abc'
+        }
     });
 
     crdt2.update(
@@ -1164,8 +1218,8 @@ test('update issue #2', t => {
 test('partial delete sets timestamps', t => {
     const data = {};
 
-    const crdt1 = new BaseJsonCRDT(cloneDeep(data));
-    const crdt3 = new BaseJsonCRDT(cloneDeep(data));
+    const crdt1 = new BaseJsonCRDT({ data: cloneDeep(data) });
+    const crdt2 = new BaseJsonCRDT({ data: cloneDeep(data) });
 
     const updates1 = [
         {
@@ -1237,7 +1291,7 @@ test('partial delete sets timestamps', t => {
         }
     ] as const;
 
-    const updates3 = [
+    const updates2 = [
         {
             diff: {
                 e0: {
@@ -1311,11 +1365,11 @@ test('partial delete sets timestamps', t => {
         crdt1.update(update.diff, update.timestamp);
     }
 
-    for (const update of updates3) {
-        crdt3.update(update.diff, update.timestamp);
+    for (const update of updates2) {
+        crdt2.update(update.diff, update.timestamp);
     }
 
-    t.deepEqual(crdt3.data(), {
+    t.deepEqual(crdt2.data(), {
         e0: {
             a1: {
                 c2: {}
@@ -1327,11 +1381,11 @@ test('partial delete sets timestamps', t => {
             }
         }
     });
-    t.deepEqual(crdt3.data(), crdt1.data());
+    t.deepEqual(crdt2.data(), crdt1.data());
 });
 
 test('empty objects are not deleted when their _self timestamp is present and not older', t => {
-    const crdt = new BaseJsonCRDT({ o0: 2 });
+    const crdt = new BaseJsonCRDT({ data: { o0: 2 } });
 
     crdt.update({ o0: {} }, '2-1');
     crdt.update({ o0: null }, '1-1');
@@ -1341,11 +1395,13 @@ test('empty objects are not deleted when their _self timestamp is present and no
 
 test('deleting a value does not delete non-empty ancestors', t => {
     const crdt = new BaseJsonCRDT({
-        a: {
-            b: {
-                c: 1
-            },
-            d: 2
+        data: {
+            a: {
+                b: {
+                    c: 1
+                },
+                d: 2
+            }
         }
     });
 
@@ -1360,9 +1416,9 @@ test('deleting a value does not delete non-empty ancestors', t => {
 });
 
 test('cannot insert new value into deleted object that has higher timestamp', t => {
-    const crdt = new BaseJsonCRDT(
-        {},
-        {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        timestamps: {
             a: {
                 [TIMESTAMP_KEY]: '2-2',
                 b: {
@@ -1370,8 +1426,8 @@ test('cannot insert new value into deleted object that has higher timestamp', t 
                 }
             }
         },
-        []
-    );
+        pathsToItemArrays: []
+    });
 
     crdt.update({ a: { c: 1 } }, '1-2');
 
@@ -1379,7 +1435,7 @@ test('cannot insert new value into deleted object that has higher timestamp', t 
 });
 
 test('can insert empty object', t => {
-    const crdt = new BaseJsonCRDT({});
+    const crdt = new BaseJsonCRDT({ data: {} });
 
     crdt.update({ a: {} }, '1-1');
 
@@ -1387,7 +1443,7 @@ test('can insert empty object', t => {
 });
 
 test('cannot overwrite object with atomic value if any child has higher timestamp', t => {
-    const crdt = new BaseJsonCRDT({}, {}, []);
+    const crdt = new BaseJsonCRDT({ data: {}, timestamps: {}, pathsToItemArrays: [] });
 
     crdt.update({ a: {} }, '1-1');
     crdt.update({ a: { b: 3 } }, '1-2');

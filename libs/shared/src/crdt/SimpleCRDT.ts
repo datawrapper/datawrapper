@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual.js';
 import { CRDT, Update } from './CRDT.js';
-import { Timestamp, NewTimestamps } from './types.js';
+import { Timestamp, NewTimestamps, DebugFlagOrLevel } from './types.js';
 import { JsonCRDT } from './JsonCRDT.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -9,17 +9,20 @@ export class SimpleCRDT implements CRDT<string> {
     constructor(nodeId: number, value: string, timestamp?: Timestamp) {
         if (timestamp) {
             // fromSerialized constructor
-            this.crdt = new JsonCRDT<{ value: string }>(timestamp, {
-                data: { value },
-                pathToItemArrays: [],
-                timestamps: { value: { [TIMESTAMP_KEY]: timestamp } } as NewTimestamps<{
-                    value: string;
-                }>
+            this.crdt = new JsonCRDT<{ value: string }>({
+                timestamp,
+                serialized: {
+                    data: { value },
+                    pathsToItemArrays: [],
+                    timestamps: { value: { [TIMESTAMP_KEY]: timestamp } } as NewTimestamps<{
+                        value: string;
+                    }>
+                }
             });
             return;
         }
         // normal constructor
-        this.crdt = new JsonCRDT<{ value: string }>(nodeId, { value });
+        this.crdt = new JsonCRDT<{ value: string }>({ nodeId, data: { value } });
     }
 
     createUpdate(diff: string): Update<string> {
@@ -42,5 +45,13 @@ export class SimpleCRDT implements CRDT<string> {
 
     timestamp(): Timestamp {
         return this.crdt.timestamp();
+    }
+
+    setDebug(debug: DebugFlagOrLevel): void {
+        this.crdt.setDebug(debug);
+    }
+
+    getDebugInfo() {
+        return this.crdt.getDebugInfo();
     }
 }

@@ -277,7 +277,7 @@ function mockAnnotation() {
     };
 }
 
-// add more data to the basic opbject to make it more realistic
+// add more data to the basic object to make it more realistic
 function addMoreData(chartData: PreparedChart, items: number) {
     const data = cloneDeep(chartData);
     for (let i = 0; i < items; i++) {
@@ -307,7 +307,7 @@ describe.each([
         'init',
         () => {
             // No change needed here, as 'init' benchmark creates a new CRDT instance each time
-            new BaseJsonCRDT(chartData);
+            new BaseJsonCRDT({ data: chartData });
         },
         { time: 500 }
     );
@@ -320,7 +320,7 @@ describe.each([
         {
             time: 500,
             setup: () => {
-                crdt = new BaseJsonCRDT(chartData);
+                crdt = new BaseJsonCRDT({ data: chartData });
             }
         }
     );
@@ -333,7 +333,7 @@ describe.each([
         {
             time: 500,
             setup: () => {
-                crdt = new BaseJsonCRDT(chartData);
+                crdt = new BaseJsonCRDT({ data: chartData });
             }
         }
     );
