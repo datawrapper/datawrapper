@@ -263,6 +263,7 @@ export type Chart = {
     folderId?: number | null;
     organizationId: string | null;
     authorId: number | null;
+    deleted?: boolean;
 };
 
 export type PreparedChart = {
@@ -280,7 +281,15 @@ export type PreparedChart = {
     publicVersion?: number;
 
     deleted?: boolean;
-    deletedAt?: Date;
+    deletedAt?: Date | null;
+    deletedBy?:
+        | {
+              name?: string | null;
+              email?: string | null;
+              avatar?: string | null;
+              color?: string | null;
+          }
+        | undefined;
 
     forkable?: boolean;
     isFork?: boolean;
