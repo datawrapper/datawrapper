@@ -1,4 +1,5 @@
 import setWith from 'lodash/setWith.js';
+import unset from 'lodash/unset.js';
 import isObject from 'lodash/isObject.js';
 import { iterateObjectPaths } from '../objectPaths.js';
 import { ItemArray, ItemArrayObject, Timestamps, NewTimestamps, HasId } from './types.js';
@@ -22,6 +23,10 @@ export function isNonEmptyObject(value: unknown) {
 
 export function isAtomic(value: unknown) {
     return !isActualObject(value);
+}
+
+export function isEmptyArray(value: unknown) {
+    return Array.isArray(value) && value.length === 0;
 }
 
 export function isExistingAtomicValue(value: unknown) {
@@ -141,4 +146,60 @@ export function assertOneOf<T>(value: T, typeCheckers: ((value: T) => boolean)[]
     if (typeCheckers.every(typeChecker => !typeChecker(value))) {
         throw new Error(`Unhandled value type: ${typeof value}!`);
     }
+}
+
+export function removeNullsFromObject<T extends object>(obj: T): T {
+    iterateObjectPaths(obj, (path, value) => {
+        const lastPathElement = path[path.length - 1];
+        if (isDeleteOperator(value) && !(lastPathElement === '_index')) {
+            unset(obj, path);
+        }
+    });
+    return obj;
+}
+
+export function itemArrayPathFromIndexPath(path: string[]) {
+    if (!isPathToItemArrayIndex(path)) throw new Error('Path is not an index path');
+    return path.slice(0, -2);
+}
+
+export function isPathToItemArray(pathsToItemArrays: string[] | Set<string>, path: string[]) {
+    const pathString = pathArrayToString(path);
+    if (Array.isArray(pathsToItemArrays)) {
+        return pathsToItemArrays.includes(pathString);
+    }
+    return pathsToItemArrays.has(pathString);
+}
+
+export function isPathToItemArrayAncestor(
+    pathsToItemArrays: string[] | Set<string>,
+    path: string[]
+) {
+    const pathString = pathArrayToString(path);
+    return Array.from(pathsToItemArrays).some(itemArrayPath => {
+        return itemArrayPath.startsWith(pathString) && !isPathToItemArray(pathsToItemArrays, path);
+    });
+}
+
+/**
+ * Assigns unique random ids to all elements of an object array. If an element already has a unique id, it is kept.
+ * @param arr The array of objects to assign IDs to.
+ * @returns The array with unique IDs assigned.
+ */
+export function setIdToArrayItems(arr: { [key: string]: unknown }[]) {
+    const usedIds = new Set();
+    return arr.map(item => {
+        if (!hasId(item) || usedIds.has(item?.id)) {
+            item.id = Math.random().toString(36);
+        }
+        usedIds.add(item.id);
+        return item;
+    }) as ItemArray;
+}
+
+export function pathStringToArray(path: string): string[] {
+    return path.split('.');
+}
+export function pathArrayToString(path: string[]): string {
+    return path.join('.');
 }

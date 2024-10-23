@@ -5,13 +5,12 @@ import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
 import { Clock } from './Clock.js';
 import { iterateObjectPaths } from '../objectPaths.js';
-import { Diff } from './CRDT.js';
+import type { Diff } from './CRDT.js';
 import isEqual from 'lodash/isEqual.js';
 import unset from 'lodash/unset.js';
 import {
     set,
     hasId,
-    isItemArray,
     isPathToItemArrayIndex,
     isExistingAtomicValue,
     isDeleteOperator,
@@ -19,28 +18,29 @@ import {
     getUpdateType,
     isActualObject,
     isEmptyObject,
+    isEmptyArray,
     migrateTimestamps,
     itemArrayToObject,
-    assertOneOf
+    assertOneOf,
+    removeNullsFromObject,
+    setIdToArrayItems,
+    itemArrayPathFromIndexPath,
+    isPathToItemArrayAncestor,
+    isPathToItemArray
 } from './utils.js';
 import {
     ItemArray,
     Timestamp,
-    Timestamps,
     NewTimestamps,
     SerializedBaseJsonCRDT,
-    ItemArrayObject
+    ItemArrayObject,
+    UpdateValueProps,
+    DebugHistoryEntry,
+    DebugHistoryMutation,
+    DebugSnapshot,
+    DebugLevel
 } from './types.js';
 import { TIMESTAMP_KEY } from './constants.js';
-
-/**
- * Logs applied and rejected updates/modifications of the CRDT.
- * These logs can then be used via `getLogs()` or logged via `printLogs()`.
- *
- * Enabling this results in a performance hit, so it should only be used for debugging purposes.
- * Should also be disabled during fuzzing, as it will result in a test timeout.
- */
-const DEBUG = false;
 
 /**
  * Calculate the diff between two item arrays. Item Arrays are arrays of objects with a unique ID property.
@@ -119,28 +119,6 @@ function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) 
     }
     return diff;
 }
-
-type Log = {
-    /**
-     * @deprecated Use `method` instead.
-     */
-    action?: 'delete' | 'update';
-    rejected: boolean;
-    method: string;
-    path: string[];
-    values: { current: unknown; update: unknown };
-    timestamps: { current: Timestamp | Clock; update: Timestamp | Clock };
-    data?: object;
-    ancestor?: object;
-    timestampsObj?: object;
-};
-
-type UpdateValueProps = {
-    path: string[];
-    currentValue: unknown;
-    newValue: unknown;
-    newTimestamp: Timestamp;
-};
 
 /**
  * CRDT implementation using a single counter to track updates.
@@ -284,16 +262,12 @@ export class BaseJsonCRDT<O extends object = object> {
 
     private dataObj: O;
     private timestampObj: NewTimestamps<O>;
-    private pathToItemArrays = new Set<string>();
+    private pathsToItemArrays = new Set<string>();
 
     static fromSerialized<T extends object>(
         serialized: SerializedBaseJsonCRDT<T>
     ): BaseJsonCRDT<T> {
-        return new BaseJsonCRDT(
-            serialized.data,
-            serialized.timestamps,
-            serialized.pathToItemArrays
-        );
+        return new BaseJsonCRDT(serialized);
     }
 
     /**
@@ -302,22 +276,27 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param timestamps The initial timestamp object, if not provided it will be inferred from the data
      * @returns A new CRDT instance
      */
-    constructor(data: O);
-    constructor(data: O, timestamps: Timestamps<O> | NewTimestamps<O>, pathToItemArrays: string[]);
-    constructor(
-        data: O,
-        timestamps?: Timestamps<O> | NewTimestamps<O>,
-        pathToItemArrays?: string[]
-    ) {
-        if (!timestamps && !pathToItemArrays) {
+    constructor({
+        data,
+        timestamps,
+        pathsToItemArrays
+    }: {
+        data: O;
+        timestamps?: NewTimestamps<O>;
+        pathsToItemArrays?: string[];
+    }) {
+        if (!timestamps) {
             // case where we are initializing from scratch
             this.timestampObj = {} as NewTimestamps<O>;
-            this.dataObj = this._initData(cloneDeep(data));
+            if (pathsToItemArrays) {
+                this.pathsToItemArrays = new Set(pathsToItemArrays);
+            }
+            this.dataObj = this._initData(data);
             return;
         }
-        if (!timestamps || !pathToItemArrays) {
+        if (!pathsToItemArrays) {
             throw new Error(
-                'Both timestamps and pathToItemArrays must be provided for re-initialization'
+                'Both timestamps and pathsToItemArrays must be provided for re-initialization'
             );
         }
 
@@ -325,7 +304,7 @@ export class BaseJsonCRDT<O extends object = object> {
         // This will be 1 month (CRDT_STORAGE_DURATION) after this code has gone live.
         this.timestampObj = migrateTimestamps(timestamps);
         this.dataObj = data; // data is already in the correct format in this case
-        this.pathToItemArrays = new Set(pathToItemArrays);
+        this.pathsToItemArrays = new Set(pathsToItemArrays);
     }
 
     /**
@@ -334,19 +313,13 @@ export class BaseJsonCRDT<O extends object = object> {
      * @returns data: data with item array representation objects
      */
     _initData(data: O) {
-        iterateObjectPaths(data, (path, value) => {
-            if (value === null) {
-                // filter out null values
-                unset(data, path);
-                return;
-            }
+        data = removeNullsFromObject(cloneDeep(data));
 
-            if (isItemArray(value)) {
-                value = itemArrayToObject(value);
-                this.pathToItemArrays.add(path.join('.'));
+        this.pathsToItemArrays.forEach(path => {
+            const arr = get(data, path);
+            if (arr && Array.isArray(arr)) {
+                set(data, path.split('.'), itemArrayToObject(setIdToArrayItems(arr)));
             }
-
-            set(data, path, value);
         });
         return data;
     }
@@ -367,131 +340,65 @@ export class BaseJsonCRDT<O extends object = object> {
         return new Clock(this._getTimestamp(path));
     }
 
-    /**
-     * Logs of all applied and rejected updates/modifications of the CRDT.
-     */
-    #logs: Log[] = [];
-    #updates: { diff: object; timestamp: Timestamp }[] = [];
-
-    public getLogs() {
-        return this.#logs;
-    }
-    public getUpdates() {
-        return this.#updates;
+    _isPathToItemArray(path: string[]) {
+        return this.pathsToItemArrays.has(path.join('.'));
     }
 
-    /* eslint-disable no-console */
-    public printLogs(title?: string) {
-        if (title) {
-            console.log(title);
-        }
-
-        console.log('---------------------------------');
-        console.log('LOGS:');
-        console.log('---------------------------------');
-
-        const logs = this.getLogs().map(log => {
-            return {
-                ...log,
-                valuesString: `${JSON.stringify(log.values.current)} -> ${JSON.stringify(
-                    log.values.update
-                )}`
-            };
-        });
-
-        logs.forEach(
-            ({
-                rejected,
-                timestamps,
-                path,
-                method,
-                valuesString,
-                data,
-                timestampsObj,
-                ancestor
-            }) => {
-                const msg = `[${title}] ${rejected ? '❌' : '✅'} ${
-                    timestamps.update
-                } @ ${path.join('.')} | ${valuesString} | ${timestamps.current} [${method}]`;
-                console.log(JSON.stringify(data, null, 2));
-                console.log(JSON.stringify(timestampsObj, null, 2));
-                console.log(rejected ? `\x1b[31m${msg}\x1b[0m` : `\x1b[32m${msg}\x1b[0m`);
-                if (ancestor) {
-                    console.log(`Ancestor: ${JSON.stringify(ancestor)}`);
-                }
-                console.log('');
-            }
-        );
-        console.log('---------------------------------');
-        console.log(`${title}: UPDATES:`);
-        console.log('---------------------------------');
-        this.#updates.forEach(update => {
-            console.log(JSON.stringify(update, null, 2));
-        });
-        console.log('---------------------------------');
-        console.log(`${title}: STATE - DATA:`);
-        console.log('---------------------------------');
-        console.log(JSON.stringify(this.dataObj, null, 2));
-        console.log('---------------------------------');
-        console.log(`${title}: STATE - TIMESTAMPS:`);
-        console.log('---------------------------------');
-        console.log(JSON.stringify(this.timestampObj, null, 2));
-        console.log('---------------------------------');
-    }
-    /* eslint-enable no-console */
-
-    /**
-     * Add a log entry. Only has an effect if DEBUG is enabled.
-     */
-    private debugLog(log: Log) {
-        DEBUG &&
-            this.#logs.push({
-                ...cloneDeep(log),
-                data: this.data(),
-                timestampsObj: this.timestamps()
-            });
+    _setInternalDataValue(path: string[], value: unknown, timestamp: Timestamp) {
+        set(this.dataObj, path, value);
+        // Right now, we need to keep null values in the internal CRDT data object to prevent issues with partial deletes.
+        // if (isDeleteOperator(value)) {
+        //     unset(this.dataObj, path);
+        // }
+        this._setTimestamp(path, timestamp);
     }
 
-    _updateExistingAtomicValue({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+    _updateExistingAtomicValue({
+        path,
+        newValue,
+        currentValue,
+        newTimestamp,
+        debugHistoryEntry
+    }: UpdateValueProps) {
         assertOneOf(currentValue, [isExistingAtomicValue]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
 
         const currentTimestamp = this._getClock(path);
         const reject = !currentTimestamp.isOlderThan(newTimestamp);
 
-        this.debugLog({
-            action: 'update',
+        this.#debugLogMutation(debugHistoryEntry, {
             rejected: reject,
             method: `updateExistingAtomicValue:${getUpdateType(newValue)}`,
             path,
             values: { current: currentValue, update: newValue },
-            timestamps: { current: currentTimestamp, update: newTimestamp }
+            timestamps: { current: currentTimestamp.timestamp, update: newTimestamp }
         });
         if (reject) return;
 
-        set(this.dataObj, path, newValue);
-        this._setTimestamp(path, newTimestamp);
-
-        return;
+        this._setInternalDataValue(path, newValue, newTimestamp);
     }
 
-    _updateItemArrayIndex({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+    _updateItemArrayIndex({
+        path,
+        newValue,
+        currentValue,
+        newTimestamp,
+        debugHistoryEntry
+    }: UpdateValueProps) {
         assertOneOf(path, [isPathToItemArrayIndex]);
 
         const currentClock = this._getClock(path);
 
         // Delete item
         if (isDeleteOperator(newValue)) {
-            this.debugLog({
-                action: 'delete',
+            this.#debugLogMutation(debugHistoryEntry, {
                 rejected: false,
                 method: 'updateItemArrayIndex',
                 path,
                 values: { current: currentValue, update: newValue },
-                timestamps: { current: currentClock, update: newTimestamp }
+                timestamps: { current: currentClock.timestamp, update: newTimestamp }
             });
-
-            set(this.dataObj, path, null);
+            set(this.dataObj, path, null); // we don't delete the item in this case but keep the null value, so we can't use _setInternalDataValue
             this._setTimestamp(path, newTimestamp);
             return;
         }
@@ -510,25 +417,29 @@ export class BaseJsonCRDT<O extends object = object> {
 
         // Upsert
         if (typeof newValue === 'number') {
-            this.debugLog({
-                action: 'update',
+            this.#debugLogMutation(debugHistoryEntry, {
                 rejected: reject,
                 method: 'updateItemArrayIndex',
                 path,
                 values: { current: currentValue, update: newValue },
-                timestamps: { current: currentClock, update: newTimestamp }
+                timestamps: { current: currentClock.timestamp, update: newTimestamp }
             });
             if (reject) return;
 
-            set(this.dataObj, path, newValue);
-            this._setTimestamp(path, newTimestamp);
+            this._setInternalDataValue(path, newValue, newTimestamp);
             return;
         }
 
         throw new Error('Unhandled newValue type!');
     }
 
-    _insertNewValue({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+    _insertNewValue({
+        path,
+        newValue,
+        currentValue,
+        newTimestamp,
+        debugHistoryEntry
+    }: UpdateValueProps) {
         assertOneOf(currentValue, [(value: unknown) => value === undefined]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
 
@@ -546,20 +457,19 @@ export class BaseJsonCRDT<O extends object = object> {
 
         const reject = !clock.isOlderThan(newTimestamp);
 
-        this.debugLog({
+        this.#debugLogMutation(debugHistoryEntry, {
             rejected: reject,
             method: `insertNewValue:${getUpdateType(newValue)}`,
             path,
             values: { current: currentValue, update: newValue },
             timestamps: {
-                current: clock,
+                current: clock.timestamp,
                 update: newTimestamp
             }
         });
         if (reject) return;
 
-        set(this.dataObj, path, newValue);
-        this._setTimestamp(path, newTimestamp);
+        this._setInternalDataValue(path, newValue, newTimestamp);
     }
 
     /**
@@ -578,7 +488,7 @@ export class BaseJsonCRDT<O extends object = object> {
         iterateObjectPaths(currentValues, childPath => {
             const fullPath = [...path, ...childPath];
 
-            const childTimestamp = this._getClock(fullPath);
+            const childTimestamp = Clock.max(this._getTimestamps(fullPath) ?? {});
 
             if (childTimestamp.isNewerThan(maxTimestamp)) {
                 maxTimestamp = childTimestamp;
@@ -587,14 +497,12 @@ export class BaseJsonCRDT<O extends object = object> {
             // delete all children that are older than the new timestamp
             if (childTimestamp.isOlderThan(newTimestamp)) {
                 descendantPathsToDelete.push(fullPath);
-
                 unset(this.dataObj, fullPath);
                 this._setTimestamp(fullPath, newTimestamp);
             }
         });
 
         const deletedPaths = new Set<string>();
-
         Array.from(descendantPathsToDelete).forEach(fullPath => {
             const tempPath = fullPath.slice(0, -1);
             while (tempPath.length > path.length) {
@@ -626,23 +534,28 @@ export class BaseJsonCRDT<O extends object = object> {
         };
     }
 
-    _updateObject({ path, newValue, currentValue, newTimestamp }: UpdateValueProps) {
+    _updateObject({
+        path,
+        newValue,
+        currentValue,
+        newTimestamp,
+        debugHistoryEntry
+    }: UpdateValueProps) {
         assertOneOf(currentValue, [isActualObject]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
 
         const timestampsObject = this._getTimestamps(path);
         const selfTimestamp = this._getClock(path);
-        const maxTimestamp = Clock.max(timestampsObject ?? {});
+        const maxClock = Clock.max(timestampsObject ?? {});
 
-        const reject = !maxTimestamp.isOlderThan(newTimestamp);
+        const reject = !maxClock.isOlderThan(newTimestamp);
 
-        this.debugLog({
-            action: 'update',
+        this.#debugLogMutation(debugHistoryEntry, {
             rejected: reject,
             method: `updateObject:${getUpdateType(newValue)}`,
             path,
             values: { current: currentValue, update: newValue },
-            timestamps: { current: maxTimestamp, update: newTimestamp }
+            timestamps: { current: maxClock.timestamp, update: newTimestamp }
         });
 
         // We always need to perform the partial delete, even if we are going to reject the update.
@@ -659,8 +572,7 @@ export class BaseJsonCRDT<O extends object = object> {
         }
 
         if (reject) return;
-
-        set(this.dataObj, path, newValue);
+        this._setInternalDataValue(path, newValue, newTimestamp);
     }
 
     /**
@@ -669,13 +581,44 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param value the value to upsert
      * @param timestamp the timestamp assosciated with the value
      */
-    _updateValue(path: string[], newValue: unknown, newTimestamp: Timestamp) {
+    _updateValue(
+        path: string[],
+        newValue: unknown,
+        newTimestamp: Timestamp,
+        debugHistoryEntry: DebugHistoryEntry | null = null
+    ) {
         const currentValue = get(this.dataObj, path);
 
-        const props = { path, newValue, newTimestamp, currentValue };
+        const props = { path, newValue, newTimestamp, currentValue, debugHistoryEntry };
+
+        if (isPathToItemArrayAncestor(this.pathsToItemArrays, path)) {
+            throw new Error(
+                `Path ${path.join(
+                    '.'
+                )} is an ancestor of an item array and cannot be updated directly`
+            );
+        }
+        if (isPathToItemArray(this.pathsToItemArrays, path)) {
+            if (!isEmptyArray(newValue)) {
+                throw new Error(
+                    `Path ${path.join(
+                        '.'
+                    )} is an item array and cannot be updated directly with ${newValue}`
+                );
+            }
+            if (currentValue === undefined) {
+                // Item array does not exist in the data yet, so we create it
+                this._setInternalDataValue(path, {}, newTimestamp);
+            }
+            return;
+        }
 
         // Current path leads to an item array index (e.g. 'a.b._index')
         if (isPathToItemArrayIndex(path)) {
+            const itemArrayPath = itemArrayPathFromIndexPath(path);
+            if (!this._isPathToItemArray(itemArrayPath)) {
+                throw new Error(`Item array created at illegal path: '${itemArrayPath}'`);
+            }
             this._updateItemArrayIndex(props);
             return;
         }
@@ -707,38 +650,17 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param diff The data diff to apply
      * @param timestampOrClock The timestamp or clock associated with the data diff
      */
-    public update(diff: Diff<any>, timestampOrClock: Clock | Timestamp) {
+    public update(diff: Diff<object>, timestampOrClock: Clock | Timestamp) {
         const newTimestamp =
             timestampOrClock instanceof Clock ? timestampOrClock.timestamp : timestampOrClock;
 
-        if (DEBUG) {
-            this.#updates.push(cloneDeep({ diff, timestamp: newTimestamp }));
-        }
-
-        iterateObjectPaths(diff, path => {
-            const searchPath = [...path];
-            if (searchPath.pop() === '_index') {
-                searchPath.pop();
-                const pathString = searchPath.join('.');
-                if (!this.pathToItemArrays.has(pathString)) {
-                    // new item array
-                    const currentValue = get(this.dataObj, pathString);
-                    if (currentValue !== undefined && !isEqual(currentValue, [])) {
-                        throw new Error(`Item array created at existing path.
-
-                        Path: '${pathString}'
-                        Current value: ${JSON.stringify(currentValue)}`);
-                    }
-                    // Individual keys of item array paths will never contain dots, so we can safely split by dots.
-                    set(this.dataObj, pathString.split('.'), {});
-                    this.pathToItemArrays.add(pathString);
-                }
-            }
-        });
+        const debugHistoryEntry = this.#debugMakeHistoryEntry(diff, newTimestamp);
 
         iterateObjectPaths(diff, (path, newValue) => {
             try {
-                this._updateValue(path, cloneDeep(newValue), newTimestamp);
+                this._updateValue(path, cloneDeep(newValue), newTimestamp, debugHistoryEntry);
+
+                this.#debugAddMutationState(debugHistoryEntry);
             } catch (e) {
                 const currentValue = get(this.dataObj, path);
                 console.error('Error while updating CRDT', {
@@ -746,11 +668,14 @@ export class BaseJsonCRDT<O extends object = object> {
                     currentValue,
                     newValue,
                     currentTimestamp: this._getTimestamp(path),
-                    newTimestamp
+                    newTimestamp,
+                    pathsToItemArrays: this.pathsToItemArrays
                 });
                 throw e;
             }
         });
+
+        this.#debugLogHistoryEntry(debugHistoryEntry);
     }
 
     /**
@@ -778,20 +703,17 @@ export class BaseJsonCRDT<O extends object = object> {
     }
 
     public data(): O {
-        const data = cloneDeep(this.dataObj);
-        for (const path of this.pathToItemArrays) {
-            const itemArrayObject: ItemArrayObject = get(data, path) ?? {}; // handle case where the item array is not present due to corrupted data
+        const data = removeNullsFromObject(cloneDeep(this.dataObj));
+        for (const path of this.pathsToItemArrays) {
+            const itemArrayObject: ItemArrayObject | undefined = get(data, path);
+            // handle case where the item array is not present
+            if (!itemArrayObject) {
+                continue;
+            }
             const itemArray = this._objectToItemArray(itemArrayObject, path);
             // Individual keys of item array paths will never contain dots, so we can safely split by dots.
             set(data, path.split('.'), itemArray);
         }
-
-        iterateObjectPaths(data, (path, value) => {
-            // filter out null values
-            if (isDeleteOperator(value)) {
-                unset(data, path);
-            }
-        });
 
         return data;
     }
@@ -800,11 +722,263 @@ export class BaseJsonCRDT<O extends object = object> {
         return {
             data: cloneDeep(this.dataObj),
             timestamps: this.timestamps(),
-            pathToItemArrays: Array.from(this.pathToItemArrays)
+            pathsToItemArrays: Array.from(this.pathsToItemArrays)
         };
     }
 
     public timestamps(): NewTimestamps<O> {
         return cloneDeep(this.timestampObj);
     }
+
+    /**
+     * When set to `true` the CRDT logs applied and rejected updates/modifications of the CRDT.
+     * These logs can then be used via `getDebugHistory()` or logged via `printDebugHistory()`.
+     *
+     * Enabling this results in a performance hit, so it should only be used for debugging purposes.
+     * Should also be disabled during fuzzing, as it will result in a test timeout.
+     */
+    #debug = false;
+
+    /**
+     * The level of detail to log when debug mode is enabled.
+     *
+     * - `updates`: Logs only the updates that are applied to the CRDT.
+     * - `mutations`: Logs all updates and individual applied/rejected modifications of the CRDT.
+     * - `all`: Logs all updates, modifications, and the state of the CRDT after each mutation.
+     *          WARNING: This results in a lot of data, which will severely impact performance and memory usage.
+     */
+    #debugLevel: DebugLevel = 'mutations';
+
+    public setDebug(value: boolean | DebugLevel) {
+        this.#debug = Boolean(value);
+
+        if (typeof value === 'string') {
+            this.#debugLevel = value;
+        }
+
+        if (value) {
+            // Store the state of the CRDT when debug mode is enabled.
+            this.#stateOnDebugStart = {
+                data: this.data(),
+                timestamps: this.timestamps()
+            };
+        } else {
+            this.#stateOnDebugStart = {
+                data: {},
+                timestamps: {}
+            };
+        }
+    }
+
+    #stateOnDebugStart = {
+        data: {},
+        timestamps: {}
+    };
+
+    /**
+     * Logs of all handled updates and applied/rejected modifications of the CRDT.
+     */
+    #debugHistory: DebugHistoryEntry[] = [];
+
+    public getDebugHistory() {
+        return this.#debugHistory;
+    }
+
+    #debugMakeHistoryEntry(diff: Diff<object>, timestamp: Timestamp): DebugHistoryEntry | null {
+        if (!this.#debug) return null;
+
+        return {
+            update: { diff, timestamp },
+            mutations: []
+        };
+    }
+
+    #debugLogHistoryEntry(entry: DebugHistoryEntry | null) {
+        if (!this.#debug) return;
+        if (!entry) return;
+
+        this.#debugHistory.push(entry);
+    }
+
+    #debugLogMutation(entry: DebugHistoryEntry | null, mutation: DebugHistoryMutation) {
+        if (!this.#debug) return;
+        if (this.#debugLevel === 'updates') return;
+        if (!entry || !mutation) return;
+
+        entry.mutations.push({
+            ...mutation
+        });
+    }
+
+    #debugAddMutationState(entry: DebugHistoryEntry | null) {
+        if (!this.#debug) return;
+        if (this.#debugLevel !== 'all') return;
+        if (!entry) return;
+
+        const lastMutation = entry.mutations[entry.mutations.length - 1];
+        if (!lastMutation) return;
+
+        lastMutation.state = {
+            data: this.data(),
+            timestamps: this.timestamps()
+        };
+    }
+
+    public printDebugHistory(name?: string, options?: { nodeId?: number }) {
+        const { log, group, groupCollapsed, groupEnd } = console;
+        const isBrowserDevtools = typeof process === 'undefined';
+
+        const makeLoggable = (obj?: object) => {
+            return isBrowserDevtools ? obj : JSON.stringify(obj, null, 2);
+        };
+
+        const logGroup = (
+            title: string,
+            callback: () => void,
+            options?: { collapsed?: boolean; css?: string }
+        ) => {
+            (options?.collapsed !== false ? groupCollapsed : group)(title, options?.css || '');
+
+            callback();
+
+            groupEnd();
+        };
+
+        const getClientId = (timestamp: Timestamp | Clock) => {
+            return Number(timestamp.toString().split('-')[0]);
+        };
+
+        const getStatusEmoji = (rejected: boolean) => (rejected ? '❌' : '✅');
+
+        const clientCount = new Set([
+            ...this.#debugHistory.map(entry => getClientId(entry.update.timestamp))
+        ]).size;
+
+        const logEntireStateAfterEachMutation = this.#debugLevel === 'all';
+
+        logGroup(name ?? 'CRDT', () => {
+            logGroup(`History (${clientCount} client${clientCount === 1 ? '' : 's'})`, () => {
+                const entries = this.#debugHistory;
+
+                if (!entries.length) {
+                    log('No history entries. Enable debug mode and make changes to see history.');
+                    return;
+                }
+
+                for (const entry of entries) {
+                    const allMutationsRejected = entry.mutations.every(
+                        mutation => mutation.rejected
+                    );
+
+                    const clientId = getClientId(entry.update.timestamp);
+                    const clientColor = getColorForSeed(clientId);
+
+                    const clientIsSelf = clientId === (options?.nodeId ?? 0);
+
+                    const updateMessage = [
+                        getStatusEmoji(allMutationsRejected),
+                        `%c${entry.update.timestamp}`,
+                        isBrowserDevtools ? (clientIsSelf ? '(You)' : '') : `(${name})`
+                    ].join(' ');
+
+                    logGroup(
+                        updateMessage,
+                        () => {
+                            logGroup('Diff', () => log(makeLoggable(entry.update.diff)), {
+                                collapsed: false
+                            });
+                            logGroup(
+                                `Mutations (${entry.mutations.length})`,
+                                () => {
+                                    entry.mutations.forEach(mutation => {
+                                        const valuesString = `${JSON.stringify(
+                                            mutation.values.current
+                                        )} -> ${JSON.stringify(mutation.values.update)}`;
+
+                                        const mutationMessage = [
+                                            getStatusEmoji(mutation.rejected),
+                                            mutation.path.join('.') + ':',
+                                            valuesString,
+                                            '@',
+                                            `${mutation.timestamps.current.toString()} -> ${mutation.timestamps.update.toString()}`,
+                                            `[${mutation.method}]`
+                                        ].join(' ');
+
+                                        logGroup(mutationMessage, () => {
+                                            if (!logEntireStateAfterEachMutation) return;
+                                            log('Data', makeLoggable(mutation.state?.data));
+                                            log(
+                                                'Timestamps',
+                                                makeLoggable(mutation.state?.timestamps)
+                                            );
+                                        });
+                                    });
+                                },
+                                { collapsed: false }
+                            );
+
+                            if (logEntireStateAfterEachMutation) {
+                                logGroup('State after update', () => {
+                                    const lastMutation =
+                                        entry.mutations[entry.mutations.length - 1];
+                                    logGroup('Data', () =>
+                                        log(makeLoggable(lastMutation?.state?.data))
+                                    );
+                                    logGroup('Timestamps', () =>
+                                        log(makeLoggable(lastMutation?.state?.timestamps))
+                                    );
+                                });
+                            }
+                        },
+                        { css: `color: ${clientColor}` }
+                    );
+                }
+            });
+
+            logGroup('State', () => {
+                logGroup('Before', () => {
+                    logGroup('Data', () => log(makeLoggable(this.#stateOnDebugStart.data)));
+                    logGroup('Timestamps', () =>
+                        log(makeLoggable(this.#stateOnDebugStart.timestamps))
+                    );
+                });
+                logGroup('After', () => {
+                    logGroup('Data', () => log(makeLoggable(this.data())));
+                    logGroup('Timestamps', () => log(makeLoggable(this.timestamps())));
+                });
+            });
+        });
+    }
+
+    public getDebugSnapshot(): DebugSnapshot {
+        return {
+            data: this.#stateOnDebugStart.data,
+            updates: this.#debugHistory.map(entry => entry.update)
+        };
+    }
+}
+
+function getColorForSeed(value: number) {
+    function stringToNumber(str: string): number {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return hash;
+    }
+
+    function mapToRange(value: number, min: number, max: number) {
+        return Math.floor((value % (max - min)) + min);
+    }
+
+    function numberToColor(hash: number) {
+        const hue = Math.abs(hash) % 360; // Ensure hue is within 0-360 range
+        const saturation = mapToRange(Math.abs(hash >> 8), 50, 100); // Saturation between 50% and 100%
+        const lightness = mapToRange(Math.abs(hash >> 16), 50, 100); // Lightness between 50% and 100%
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+
+    const hash = stringToNumber(value.toString());
+    const color = numberToColor(hash);
+    return color;
 }

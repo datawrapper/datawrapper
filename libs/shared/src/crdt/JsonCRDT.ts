@@ -1,7 +1,12 @@
 import { Clock } from './Clock.js';
 import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import type { CRDT, Diff, Update } from './CRDT.js';
-import type { Timestamp, SerializedBaseJsonCRDT, SerializedJsonCRDT } from './types.js';
+import type {
+    Timestamp,
+    SerializedBaseJsonCRDT,
+    SerializedJsonCRDT,
+    DebugFlagOrLevel
+} from './types.js';
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -21,29 +26,69 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         if (nodeId !== undefined) {
             clock = `${nodeId}-${Clock.getCount(clock)}`;
         }
-        return new JsonCRDT(clock, crdt);
+        return new JsonCRDT({ timestamp: clock, serialized: crdt });
     }
 
-    constructor(nodeId: number, data: O);
-    constructor(timestamp: Timestamp, data: SerializedBaseJsonCRDT<O>);
-    constructor(nodeIdOrTimestamp: number | Timestamp, data: O | SerializedBaseJsonCRDT<O>) {
-        if (typeof nodeIdOrTimestamp === 'number' && typeof data === 'object') {
+    constructor({
+        nodeId,
+        data,
+        pathsToItemArrays
+    }: {
+        nodeId: number;
+        data: O;
+        pathsToItemArrays?: string[];
+    });
+    constructor({
+        timestamp,
+        serialized
+    }: {
+        timestamp: Timestamp;
+        serialized: SerializedBaseJsonCRDT<O>;
+    });
+
+    constructor({
+        nodeId,
+        timestamp,
+        data,
+        serialized,
+        pathsToItemArrays
+    }: {
+        nodeId?: number;
+        timestamp?: Timestamp;
+        data?: O;
+        serialized?: SerializedBaseJsonCRDT<O>;
+        pathsToItemArrays?: string[];
+    }) {
+        if (
+            !timestamp &&
+            !serialized &&
+            data &&
+            typeof nodeId === 'number' &&
+            typeof data === 'object'
+        ) {
             // normal constructor
-            this.crdt = new BaseJsonCRDT(data as O);
-            this.clock = new Clock(nodeIdOrTimestamp, 0);
-            return;
+            this.crdt = new BaseJsonCRDT({ data: data as O, pathsToItemArrays });
+            this.clock = new Clock(nodeId, 0);
         } else if (
-            typeof nodeIdOrTimestamp === 'string' &&
-            Clock.validate(nodeIdOrTimestamp) &&
-            'data' in data &&
-            'timestamps' in data
+            !nodeId &&
+            !data &&
+            timestamp &&
+            typeof timestamp === 'string' &&
+            Clock.validate(timestamp) &&
+            serialized &&
+            'data' in serialized &&
+            'timestamps' in serialized &&
+            'pathsToItemArrays' in serialized
         ) {
             // fromSerialized constructor
-            this.crdt = BaseJsonCRDT.fromSerialized(data);
-            this.clock = new Clock(nodeIdOrTimestamp);
-            return;
+            this.crdt = BaseJsonCRDT.fromSerialized(serialized);
+            this.clock = new Clock(timestamp);
+        } else {
+            throw new Error(
+                'JsonCRDT constructor called with invalid arguments: ' +
+                    JSON.stringify({ nodeId, timestamp, data, serialized, pathsToItemArrays })
+            );
         }
-        throw new Error('JsonCRDT constructor called with invalid arguments');
     }
 
     /**
@@ -120,14 +165,16 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         return this.clock.count;
     }
 
-    getLogs() {
-        return this.crdt.getLogs();
-    }
-    getUpdates() {
-        return this.crdt.getUpdates();
+    setDebug(value: DebugFlagOrLevel) {
+        this.crdt.setDebug(value);
     }
 
-    printLogs(title?: string) {
-        return this.crdt.printLogs(title);
+    getDebugInfo() {
+        return {
+            history: this.crdt.getDebugHistory(),
+            getSnapshot: () => this.crdt.getDebugSnapshot(),
+            printHistory: (name?: string) =>
+                this.crdt.printDebugHistory(name, { nodeId: this.nodeId() })
+        };
     }
 }

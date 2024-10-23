@@ -1,6 +1,7 @@
 import test from 'ava';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
+import sampleSize from 'lodash/sampleSize.js';
 import get from 'lodash/get.js';
 import omit from 'lodash/omit.js';
 import { iterateObjectPaths } from '../objectPaths.js';
@@ -10,9 +11,15 @@ import isPrimitive from '../isPrimitive.js';
 import { parseArgs } from 'node:util';
 
 import { type ItemArray, ArrayItem } from './types.js';
-import { isItemArray } from './utils.js';
+import {
+    isItemArray,
+    isPathToItemArrayAncestor,
+    pathStringToArray,
+    pathArrayToString
+} from './utils.js';
 import { Update } from './CRDT.js';
 import { JsonCRDT } from './JsonCRDT.js';
+import { isEmpty } from 'lodash';
 
 const FLAGS = {
     primitiveToObject: false,
@@ -115,15 +122,16 @@ class Generate {
     static nestedObject(
         size?: number,
         maxDepth?: number,
-        allowItemArrays = true
+        allowItemArrays = false
     ): object | unknown {
         const depth = maxDepth ?? 3;
         if (depth === 0) return Generate.anyPrimitiveValue();
-        return Generate.flatObject(size, () =>
+        return this.flatObject(size, () =>
             oneOf(
-                ...Generate.primitiveValueGenerators,
-                ...(allowItemArrays ? Generate.arrayGenerators : [Generate.array]),
-                Generate.emptyObject
+                ...this.primitiveValueGenerators,
+                ...(allowItemArrays ? this.arrayGenerators : [this.array]),
+                this.emptyObject,
+                () => Generate.nestedObject(Math.floor((size ?? 5) / 2), depth - 1, allowItemArrays)
             )
         );
     }
@@ -155,18 +163,17 @@ class Mutate {
         primitive: 0
     };
 
-    value(value: any): any {
-        if (isItemArray(value)) {
+    constructor(private pathsToItemArrays: string[]) {}
+
+    value(value: any, path?: string): any {
+        if (path && this.pathsToItemArrays.includes(path)) {
             return this.itemArray(value);
         }
-        if (isAtomicArray(value)) {
+        if (Array.isArray(value)) {
             return this.atomicArray(value);
         }
-        if (Array.isArray(value)) {
-            return value;
-        }
         if (typeof value === 'object' && value !== null && !(value instanceof Date)) {
-            return this.object(value);
+            return this.object(value, path);
         }
         return this.primitiveValue(value);
     }
@@ -218,13 +225,14 @@ class Mutate {
             this.mutations.itemArray.shuffle += 1;
             return (cloneDeep(itemArr) as Array<ArrayItem>).sort(() => Math.random() - 0.5);
         };
+        if (itemArr.length === 0) return addItem();
         return oneOf(deleteItem, addItem, mutateItem, shuffleItems);
     }
 
     primitiveValue(value: any): any {
         if (FLAGS.primitiveToObject) {
             const [done, newValue] = withChance(0.1, () => {
-                return Generate.nestedObject(5, 2, false);
+                return Generate.nestedObject(5, 2);
             });
             if (done) return newValue;
         }
@@ -252,7 +260,7 @@ class Mutate {
         return oneOf(swap, append, remove, shuffle);
     }
 
-    object(o: object): object {
+    object(o: object, path?: string): object {
         const obj = cloneDeep(o);
         const insert = () => {
             this.mutations.objectProperties.add += 1;
@@ -266,6 +274,7 @@ class Mutate {
 
         const key = keys[Math.floor(Math.random() * keys.length)];
         const value = get(obj, key);
+        const newPath = path ? pathArrayToString([path, key]) : key;
 
         const deleteKey = () => {
             this.mutations.objectProperties.delete += 1;
@@ -274,20 +283,12 @@ class Mutate {
 
         const mutateValue = () => {
             this.mutations.objectProperties.mutate += 1;
-            const newValue = this.value(value);
+            const newValue = this.value(value, newPath);
             return setWith(obj, key, newValue, Object);
         };
 
         const convertToPrimitive = () => {
-            let containtsPotentialItemArray = false;
-            iterateObjectPaths(obj, path => {
-                const value = get(obj, path);
-                // Empty arrays could be item arrays too
-                if (Array.isArray(value) && (value.length === 0 || isItemArray(value))) {
-                    containtsPotentialItemArray = true;
-                }
-            });
-            if (containtsPotentialItemArray) {
+            if (isPathToItemArrayAncestor(this.pathsToItemArrays, pathStringToArray(newPath))) {
                 // The CRDT does not support deletion of item arrays
                 return mutateValue();
             }
@@ -304,12 +305,20 @@ class Mutate {
     }
 }
 
-function isAtomicArray(value: any): boolean {
-    return Array.isArray(value) && value.length > 0; // empty arrays could be item arrays so we can't return true here
+function getEmptyAndItemArrayPaths(data: object): string[] {
+    const paths: string[] = [];
+    iterateObjectPaths(data, path => {
+        const value = get(data, path);
+        if (Array.isArray(value) && (isEmpty(value) || isItemArray(value))) {
+            paths.push(path.join('.'));
+        }
+    });
+    return paths;
 }
 
 class Fuzz {
     data: object;
+    pathsToItemArrays: string[];
     mutator: Mutate;
     stats = {
         distribution: {
@@ -344,15 +353,16 @@ class Fuzz {
     };
 
     constructor(size?: number, maxDepth?: number) {
-        this.data = Generate.nestedObject(size, maxDepth) as object;
-        this.mutator = new Mutate();
+        this.data = Generate.nestedObject(size, maxDepth, true) as object;
+        this.pathsToItemArrays = getEmptyAndItemArrayPaths(this.data);
+        this.mutator = new Mutate(this.pathsToItemArrays);
     }
 
     private computeDistribution() {
         iterateObjectPaths(this.data, path => {
             const value = get(this.data, path);
             if (isItemArray(value)) this.stats.distribution.itemArray += 1;
-            else if (isAtomicArray(value)) this.stats.distribution.atomicArray += 1;
+            else if (Array.isArray(value)) this.stats.distribution.atomicArray += 1;
             else this.stats.distribution.primitive += 1;
         });
     }
@@ -363,7 +373,10 @@ class Fuzz {
     }
 
     get() {
-        return cloneDeep(this.data);
+        return {
+            initData: cloneDeep(this.data),
+            pathsToItemArrays: this.pathsToItemArrays
+        };
     }
 
     mutate(inputData: object, mutations?: number): object {
@@ -404,10 +417,15 @@ function multipleInstances(
 
             const fuzz = new Fuzz(size, maxDepth);
 
-            const initData = fuzz.get();
+            const { initData, pathsToItemArrays } = fuzz.get();
             const crdts = Generate.array(
                 numCRDTs,
-                () => new JsonCRDT(Generate.integer(99999999), initData)
+                () =>
+                    new JsonCRDT({
+                        nodeId: Generate.integer(99999999),
+                        data: initData,
+                        pathsToItemArrays
+                    })
             );
 
             const updates: Update<any>[] = [];
@@ -432,12 +450,11 @@ function multipleInstances(
             });
 
             // confirm that re-initializing the crdt with data and timestamps results in the final crdt state
-            let backendCrdt = new JsonCRDT(0, initData);
+            let backendCrdt = new JsonCRDT({ nodeId: 0, data: initData, pathsToItemArrays });
 
             const shuffledupdates = updates.sort(() => Math.random() - 0.5);
             shuffledupdates.forEach(update => {
                 // re-initialize the backend crdt with the same data and timestamps
-                //console.log(backendCrdt)
                 const newBackendCrdt = JsonCRDT.fromSerialized(backendCrdt.serialize());
 
                 t.deepEqual(backendCrdt, newBackendCrdt);
@@ -453,8 +470,6 @@ function multipleInstances(
             crdts.forEach(crdt => {
                 t.deepEqual(crdt.data(), crdts[0].data());
             });
-
-            // crdts.forEach((c, i) => c.printLogs(`CRDT ${i}`));
 
             t.deepEqual(crdts[0].data(), backendCrdt.data());
         });
@@ -479,8 +494,8 @@ FLAGS.objectToPrimitive = objectToPrimitive ?? false;
 
 Array.from({ length: Number(runs) }).forEach((_, i) => {
     multipleInstances(i + 1, {
-        // size: 3,
-        // numCRDTs: 4,
+        // size: 20,
+        // numCRDTs: 5,
         // numUpdates: 50
     })();
 });

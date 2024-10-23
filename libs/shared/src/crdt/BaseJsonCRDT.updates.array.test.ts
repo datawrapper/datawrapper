@@ -3,7 +3,7 @@ import { BaseJsonCRDT } from './BaseJsonCRDT.js';
 import cloneDeep from 'lodash/cloneDeep';
 
 test(`value arrays are treated as atomic arrays in basic updates`, t => {
-    const crdt = new BaseJsonCRDT({ a: [1, 2, 3] });
+    const crdt = new BaseJsonCRDT({ data: { a: [1, 2, 3] } });
     crdt.update({ a: [3, 4] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [3, 4]
@@ -11,7 +11,7 @@ test(`value arrays are treated as atomic arrays in basic updates`, t => {
 });
 
 test(`value arrays are treated as atomic arrays for nested arrays`, t => {
-    const crdt = new BaseJsonCRDT({ a: [1, 2, [4, 6]] });
+    const crdt = new BaseJsonCRDT({ data: { a: [1, 2, [4, 6]] } });
     crdt.update({ a: [1, [2, 3], 4] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [1, [2, 3], 4]
@@ -19,7 +19,7 @@ test(`value arrays are treated as atomic arrays for nested arrays`, t => {
 });
 
 test(`object arrays without ID are treated as atomic arrays`, t => {
-    const crdt = new BaseJsonCRDT({ a: [{ a: 1 }, { b: 2 }] });
+    const crdt = new BaseJsonCRDT({ data: { a: [{ a: 1 }, { b: 2 }] } });
     crdt.update({ a: [{ a: 1 }, { b: 2 }, { c: 3 }] }, '1-1');
     t.deepEqual(crdt.data(), {
         a: [{ a: 1 }, { b: 2 }, { c: 3 }]
@@ -28,10 +28,13 @@ test(`object arrays without ID are treated as atomic arrays`, t => {
 
 test(`item array initalization`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
     t.deepEqual(crdt.data(), {
         arr: [
@@ -43,10 +46,13 @@ test(`item array initalization`, t => {
 
 test(`update existing items of item array`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -68,10 +74,13 @@ test(`update existing items of item array`, t => {
 
 test(`add new items to item array`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -94,76 +103,58 @@ test(`add new items to item array`, t => {
     });
 });
 
-test(`item array can be created at empty path`, t => {
+test(`item array can not be created at random path`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value'
+        data: {
+            normalField: 'some value'
+        }
     });
 
     // add new array
-    crdt.update(
-        {
-            arr: {
-                A: { id: 'A', val: 1, _index: 0 },
-                B: { id: 'B', val: 2, _index: 1 },
-                C: { id: 'C', val: 3, _index: 2 }
-            }
-        },
-        '1-1'
-    );
-
-    // modify the new array to see that it is merged
-    crdt.update(
-        {
-            arr: {
-                A: { id: 'A' },
-                B: { id: 'B' },
-                C: { id: 'C' },
-                D: { id: 'D', val: 4, _index: 3 }
-            }
-        },
-        '2-1'
-    );
-
-    t.deepEqual(crdt.data(), {
-        normalField: 'some value',
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 },
-            { id: 'D', val: 4 }
-        ]
+    t.throws(() => {
+        crdt.update(
+            {
+                arr: {
+                    A: { id: 'A', val: 1, _index: 0 },
+                    B: { id: 'B', val: 2, _index: 1 },
+                    C: { id: 'C', val: 3, _index: 2 }
+                }
+            },
+            '1-1'
+        );
     });
 });
 
-test(`inserting item with id converts existing empty array into item array`, t => {
-    const crdt = new BaseJsonCRDT({ arr: [] });
+test(`inserting item with id into non-item array does not turn it into item array`, t => {
+    const crdt = new BaseJsonCRDT({ data: { arr: [] }, pathsToItemArrays: [] });
 
     // insert item with id
     crdt.update(
         {
-            arr: { A: { id: 'A', val: 1, _index: 0 } }
+            arr: [{ id: 'A', val: 1, _index: 0 }]
         },
         '1-1'
     );
 
-    // insert another item to see if it is merged
+    // update array as a normal array
     crdt.update(
         {
-            arr: { A: { id: 'A', _index: 0 }, B: { id: 'B', val: 2, _index: 1 } }
+            arr: [{ A: { id: 'A', _index: 1 }, B: { id: 'B', val: 2, _index: 0 } }]
         },
         '1-2'
     );
 
+    // array is a normal array
     t.deepEqual(crdt.data(), {
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        arr: [{ A: { id: 'A', _index: 1 }, B: { id: 'B', val: 2, _index: 0 } }]
     });
 });
 
 test(`item array can be cleared of all items`, t => {
-    const crdt = new BaseJsonCRDT({ arr: [{ id: 'A', val: 1 }] });
+    const crdt = new BaseJsonCRDT({
+        data: { arr: [{ id: 'A', val: 1 }] },
+        pathsToItemArrays: ['arr']
+    });
 
     // clear all elements
     crdt.update(
@@ -179,7 +170,10 @@ test(`item array can be cleared of all items`, t => {
 });
 
 test(`item array can be cleared of all items and filled with new items again`, t => {
-    const crdt = new BaseJsonCRDT({ arr: [{ id: 'A', val: 1 }] });
+    const crdt = new BaseJsonCRDT({
+        data: { arr: [{ id: 'A', val: 1 }] },
+        pathsToItemArrays: ['arr']
+    });
 
     // clear all elements
     crdt.update(
@@ -214,10 +208,13 @@ test(`item array can be cleared of all items and filled with new items again`, t
 // TODO: make this test pass
 test.failing('primitive value can not replace existing item array', t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -237,12 +234,15 @@ test.failing('primitive value can not replace existing item array', t => {
 
 test(`delete item from item array`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value',
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -260,12 +260,15 @@ test(`delete item from item array`, t => {
 
 test(`outdated re-create is denied`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value',
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
     crdt.update(
         {
@@ -288,12 +291,15 @@ test(`outdated re-create is denied`, t => {
 
 test(`newer re-create is denied`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value',
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
     crdt.update(
         {
@@ -319,11 +325,14 @@ test(`newer re-create is denied`, t => {
 
 test(`re-order only`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -344,11 +353,14 @@ test(`re-order only`, t => {
 
 test(`re-order and add item`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -375,11 +387,14 @@ test(`re-order and add item`, t => {
 
 test(`sorting works without updates`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     // add new items and re-order
@@ -407,7 +422,9 @@ test(`sorting works without updates`, t => {
 
 test(`empty array is treated as atomic array when inserted item is not item array item`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: []
+        data: {
+            arr: []
+        }
     });
 
     crdt.update(
@@ -432,7 +449,10 @@ test(`empty array is treated as atomic array when inserted item is not item arra
 
 test(`data of the same item is merged`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [{ id: 'A', val: 1, other: 'value' }]
+        data: {
+            arr: [{ id: 'A', val: 1, other: 'value' }]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -462,7 +482,10 @@ test(`data of the same item is merged`, t => {
 
 test(`data in item array with nested objects is merged`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [{ id: 'A', val: 1, other: 'value' }]
+        data: {
+            arr: [{ id: 'A', val: 1, other: 'value' }]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -493,10 +516,13 @@ test(`data in item array with nested objects is merged`, t => {
 
 test(`support concurrent inserts in item arrays at end`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -533,10 +559,13 @@ test(`support concurrent inserts in item arrays at end`, t => {
 
 test(`support concurrent inserts in item arrays in the middle of the array`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -573,12 +602,15 @@ test(`support concurrent inserts in item arrays in the middle of the array`, t =
 
 test(`support concurrent inserts in nested item arrays in the middle of the array`, t => {
     const crdt = new BaseJsonCRDT({
-        foo: {
-            arr: [
-                { id: 'A', val: 1 },
-                { id: 'B', val: 2 }
-            ]
-        }
+        data: {
+            foo: {
+                arr: [
+                    { id: 'A', val: 1 },
+                    { id: 'B', val: 2 }
+                ]
+            }
+        },
+        pathsToItemArrays: ['foo.arr']
     });
 
     crdt.update(
@@ -621,10 +653,13 @@ test(`support concurrent inserts in nested item arrays in the middle of the arra
 
 test(`support concurrent inserts and deletes in item arrays in the middle of the array`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 1 },
-            { id: 'B', val: 2 }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 1 },
+                { id: 'B', val: 2 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -655,12 +690,15 @@ test(`support concurrent inserts and deletes in item arrays in the middle of the
 
 test(`support concurrent sorting in item arrays`, t => {
     const crdt = new BaseJsonCRDT({
-        arr: [
-            { id: 'A', val: 'A' },
-            { id: 'B', val: 'B' },
-            { id: 'C', val: 'C' },
-            { id: 'D', val: 'D' }
-        ]
+        data: {
+            arr: [
+                { id: 'A', val: 'A' },
+                { id: 'B', val: 'B' },
+                { id: 'C', val: 'C' },
+                { id: 'D', val: 'D' }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -695,11 +733,14 @@ test(`support concurrent sorting in item arrays`, t => {
 
 test(`won't re-insert deleted item with late insert`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value',
-        arr: [
-            { id: 'B', val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 'B', val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -771,12 +812,15 @@ test(`diffs with array inserts and deletions applied in different order result i
 
 test(`update and delete operations on numeric ids`, t => {
     const crdt = new BaseJsonCRDT({
-        normalField: 'some value',
-        arr: [
-            { id: 1, val: 1 },
-            { id: 2, val: 2 },
-            { id: 'C', val: 3 }
-        ]
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 1, val: 1 },
+                { id: 2, val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
     });
 
     crdt.update(
@@ -792,5 +836,250 @@ test(`update and delete operations on numeric ids`, t => {
             { id: 2, val: 'B' },
             { id: 'C', val: 3 }
         ]
+    });
+});
+
+test(`null values get removed from item array item on init`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 1, val: 1 },
+                { id: 2, val: 2 },
+                { id: 'C', val: 3, null: null }
+            ]
+        },
+        pathsToItemArrays: ['arr']
+    });
+
+    // on init the null value is removed
+    t.deepEqual(crdt.data(), {
+        normalField: 'some value',
+        arr: [
+            { id: 1, val: 1 },
+            { id: 2, val: 2 },
+            { id: 'C', val: 3 }
+        ]
+    });
+});
+
+test(`null values get removed from item array item on update`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            normalField: 'some value',
+            arr: [
+                { id: 1, val: 1 },
+                { id: 2, val: 2 },
+                { id: 'C', val: 3 }
+            ]
+        },
+        pathsToItemArrays: ['arr']
+    });
+
+    crdt.update(
+        {
+            arr: { 1: { id: 1, _index: null }, 2: { id: 2, val: null }, C: { id: 'C' } }
+        },
+        '1-100'
+    );
+
+    t.deepEqual(crdt.data(), {
+        normalField: 'some value',
+        arr: [{ id: 2 }, { id: 'C', val: 3 }]
+    });
+});
+
+test(`deleting the ancestor of an item array throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: {
+                nested: {
+                    arr: [
+                        { id: 'A', val: 1 },
+                        { id: 'B', val: 2 }
+                    ]
+                }
+            }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: null
+            },
+            '1-10'
+        );
+    });
+});
+
+test(`converting the ancestor of an item array to a primitive value throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: {
+                nested: {
+                    arr: [
+                        { id: 'A', val: 1 },
+                        { id: 'B', val: 2 }
+                    ]
+                }
+            }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: 'test'
+            },
+            '1-10'
+        );
+    });
+});
+
+test(`setting the ancestor of an item array to empty object throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: {
+                nested: {
+                    arr: [
+                        { id: 'A', val: 1 },
+                        { id: 'B', val: 2 }
+                    ]
+                }
+            }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: {}
+            },
+            '1-10'
+        );
+    });
+});
+
+test(`setting the ancestor of an item array that does not exist yet to empty object throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: {}
+            },
+            '1-10'
+        );
+    });
+});
+
+test(`setting an item array to empty array succeeds if the array is undefined before`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    crdt.update(
+        {
+            some: {
+                nested: {
+                    arr: []
+                }
+            }
+        },
+        '1-10'
+    );
+
+    t.deepEqual(crdt.data(), {
+        some: {
+            nested: {
+                arr: []
+            }
+        }
+    });
+});
+
+test(`setting an item array to empty array does not do anything if the array containts data before`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: {
+                nested: {
+                    arr: [
+                        { id: 'A', val: 1 },
+                        { id: 'B', val: 2 }
+                    ]
+                }
+            }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    crdt.update(
+        {
+            some: {
+                nested: {
+                    arr: []
+                }
+            }
+        },
+        '1-10'
+    );
+
+    t.deepEqual(crdt.data(), {
+        some: {
+            nested: {
+                arr: [
+                    { id: 'A', val: 1 },
+                    { id: 'B', val: 2 }
+                ]
+            }
+        }
+    });
+});
+
+test(`setting an item array to anything but an array throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: {
+                    nested: {
+                        arr: 'test'
+                    }
+                }
+            },
+            '1-10'
+        );
+    });
+});
+
+test(`deleting an item array throws an error`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: {
+                    nested: {
+                        arr: null
+                    }
+                }
+            },
+            '1-10'
+        );
     });
 });

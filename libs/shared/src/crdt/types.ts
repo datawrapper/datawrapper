@@ -70,7 +70,7 @@ export type NewTimestamps<O extends object> = {
 export type SerializedBaseJsonCRDT<O extends object> = {
     data: O;
     timestamps: NewTimestamps<O>;
-    pathToItemArrays: string[];
+    pathsToItemArrays: string[];
 };
 
 export type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
@@ -81,3 +81,49 @@ export type SerializedJsonCRDT<O extends object> = {
     crdt: SerializedBaseJsonCRDT<O>;
     clock: Timestamp;
 };
+
+export type UpdateValueProps = {
+    path: string[];
+    currentValue: unknown;
+    newValue: unknown;
+    newTimestamp: Timestamp;
+    debugHistoryEntry: DebugHistoryEntry | null;
+};
+
+export type DebugHistoryMutation = {
+    rejected: boolean;
+    method: string;
+    path: string[];
+    values: { current: unknown; update: unknown };
+    timestamps: { current: Timestamp; update: Timestamp };
+
+    state?: {
+        data?: object;
+        timestamps?: object;
+    };
+};
+
+type DebugUpdate = {
+    diff: object;
+    timestamp: Timestamp;
+};
+
+export type DebugHistoryEntry = {
+    update: DebugUpdate;
+    mutations: DebugHistoryMutation[];
+};
+
+export type DebugSnapshot = {
+    data: object;
+    updates: DebugUpdate[];
+};
+
+export type DebugCombinedSnapshot = {
+    data: object;
+    clients: {
+        updates: DebugUpdate[];
+    }[];
+};
+
+export type DebugLevel = 'updates' | 'mutations' | 'all';
+export type DebugFlagOrLevel = boolean | DebugLevel;

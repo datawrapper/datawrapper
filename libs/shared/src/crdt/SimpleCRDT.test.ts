@@ -42,7 +42,7 @@ test('creates a new update with a higher count', t => {
     t.is(update2.timestamp, '1-3');
 });
 
-test('calculateDiff returns empty value if no diff', t => {
+test('calculateDiff returns empty value if there is no diff', t => {
     const crdt = new SimpleCRDT(1, 'value', '1-1');
     t.is(crdt.calculateDiff('value'), '');
 });
