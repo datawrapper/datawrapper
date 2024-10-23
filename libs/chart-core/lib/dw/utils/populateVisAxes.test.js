@@ -209,6 +209,101 @@ test('regression test for scatter charts', t => {
     t.truthy(axes.size, 'axis.size is undefined');
 });
 
+test('insufficient dataset - column gets reused when there is no other option', t => {
+    const ds = dataset([numberColumn('column1'), numberColumn('column2')]);
+    const visAxes = {
+        x: { accepts: ['number'] },
+        y: { accepts: ['number'] },
+        size: { accepts: ['number'] }
+    };
+    const { axes } = populateVisAxes({ dataset: ds, visAxes });
+    t.truthy(axes.x, 'axis.x is undefined');
+    t.truthy(axes.y, 'axis.y is undefined');
+    t.truthy(axes.size, 'axis.size is undefined');
+});
+
+test('insufficient dataset with preventMultipleUse: true - column does not get reused (irrespective of order of visAxes definition)', t => {
+    const ds = dataset([numberColumn('column1'), numberColumn('column2')]);
+
+    const variants = [
+        {
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true },
+            size: { accepts: ['number'] }
+        },
+        {
+            size: { accepts: ['number'] },
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true }
+        }
+    ];
+
+    variants.forEach(visAxes => {
+        const { axes } = populateVisAxes({ dataset: ds, visAxes });
+        t.truthy(axes.x, 'axis.x is undefined');
+        t.truthy(axes.y, 'axis.y is undefined');
+        t.is(axes.size, false, "axis.size got assigned even though there aren't enough columns");
+    });
+});
+
+test('insufficient dataset with preventMultipleUse: true - automatic population takes prescedence over user preference', t => {
+    const ds = dataset([numberColumn('column1'), numberColumn('column2')]);
+
+    const variants = [
+        {
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true },
+            size: { accepts: ['number'] }
+        },
+        {
+            size: { accepts: ['number'] },
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true }
+        }
+    ];
+    variants.forEach(visAxes => {
+        const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { size: 'column1' } });
+        t.truthy(axes.x, 'axis.x is undefined');
+        t.truthy(axes.y, 'axis.y is undefined');
+        t.is(
+            axes.size,
+            false,
+            "axis.size user preference retained even though there aren't enough columns"
+        );
+    });
+});
+
+test('insufficient dataset with preventMultipleUse: true still applies even when all axes have user-preference', t => {
+    const ds = dataset([numberColumn('column1'), numberColumn('column2')]);
+
+    const variants = [
+        {
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true },
+            size: { accepts: ['number'] }
+        },
+        {
+            size: { accepts: ['number'] },
+            x: { accepts: ['number'], preventMultipleUse: true },
+            y: { accepts: ['number'], preventMultipleUse: true }
+        }
+    ];
+    variants.forEach(visAxes => {
+        const { axes } = populateVisAxes({
+            dataset: ds,
+            visAxes,
+            userAxes: { size: 'column1', x: 'column1', y: 'column1' }
+        });
+        t.truthy(axes.x, 'axis.x is undefined');
+        t.truthy(axes.y, 'axis.y is undefined');
+        t.is(
+            axes.size,
+            false,
+            "axis.size user preference retained even though there aren't enough columns"
+        );
+    });
+});
+
 // some utility methods for constructing datasets below
 function textColumn(name) {
     return column(
