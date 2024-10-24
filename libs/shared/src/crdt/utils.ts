@@ -174,13 +174,27 @@ export function isPathToItemArray(pathsToItemArrays: string[] | Set<string>, pat
     return pathsToItemArrays.has(pathString);
 }
 
+export function isPathToItemArrayItem(pathsToItemArrays: string[] | Set<string>, path: string[]) {
+    const pathString = pathArrayToString(path);
+    // check if any path to item arrays (+ dot) is the start of pathString
+    return Array.from(pathsToItemArrays).some(itemArrayPath => {
+        return (
+            pathString.startsWith(itemArrayPath + '.') &&
+            pathStringToArray(itemArrayPath).length + 1 === path.length
+        );
+    });
+}
+
 export function isPathToItemArrayAncestor(
     pathsToItemArrays: string[] | Set<string>,
     path: string[]
 ) {
     const pathString = pathArrayToString(path);
     return Array.from(pathsToItemArrays).some(itemArrayPath => {
-        return itemArrayPath.startsWith(pathString) && !isPathToItemArray(pathsToItemArrays, path);
+        return (
+            itemArrayPath.startsWith(pathString + '.') && // we need the dot here to prevent considering 'a' as an ancestor of 'aa'
+            !isPathToItemArray(pathsToItemArrays, path)
+        );
     });
 }
 
