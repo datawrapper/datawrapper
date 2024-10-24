@@ -482,6 +482,41 @@ test(`convert object to string and back`, t => {
     t.deepEqual(testCRDT1.data(), testCRDT2.data());
 });
 
+test(`calculateDiff uses defined pathsToItemArrays`, t => {
+    const crdt = new JsonCRDT({
+        nodeId: 1,
+        data: {
+            items: [
+                { id: 1, value: 'test1' },
+                { id: 2, value: 'test2' }
+            ]
+        },
+        pathsToItemArrays: ['items']
+    });
+
+    const diff = crdt.calculateDiff({
+        items: [
+            { id: 1, value: 'test1' },
+            { id: 3, value: 'test3' },
+            { id: 2, value: 'test2' }
+        ]
+    });
+
+    // Produces an item array diff and does not simply overwrite the array.
+    t.deepEqual(diff, {
+        items: {
+            2: {
+                _index: 2
+            },
+            3: {
+                _index: 1,
+                id: 3,
+                value: 'test3'
+            }
+        }
+    });
+});
+
 /**
  * Run a mini fuzz test for the JsonCRDT.
  *

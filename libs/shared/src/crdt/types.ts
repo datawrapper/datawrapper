@@ -3,9 +3,11 @@ import { TIMESTAMP_KEY } from './constants.js';
 
 export type Timestamp = `${number}-${number}`;
 
+export type HasId = { id: string | number };
+
 type AnyArray<T = unknown> = Array<T> | ReadonlyArray<T>;
 
-export type ArrayItem = { id: string | number } & Record<string, unknown>;
+export type ArrayItem = HasId & Record<string, unknown>;
 export type ItemArray = AnyArray<ArrayItem>;
 
 /**
@@ -73,9 +75,8 @@ export type SerializedBaseJsonCRDT<O extends object> = {
     pathsToItemArrays: string[];
 };
 
-export type ItemArrayObject = Record<string, { id: string; _index: number } & unknown>;
-
-export type HasId = { id: string | number };
+export type ItemArrayObjectItem = HasId & { _index: number } & unknown;
+export type ItemArrayObject = Record<string | number, ItemArrayObjectItem>;
 
 export type SerializedJsonCRDT<O extends object> = {
     crdt: SerializedBaseJsonCRDT<O>;

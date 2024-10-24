@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep.js';
 import get from 'lodash/get.js';
-import isObject from 'lodash/isObject.js';
 import has from 'lodash/has.js';
 import isEmpty from 'lodash/isEmpty.js';
 import { Clock } from './Clock.js';
@@ -26,7 +25,11 @@ import {
     setIdToArrayItems,
     itemArrayPathFromIndexPath,
     isPathToItemArrayAncestor,
-    isPathToItemArray
+    isPathToItemArray,
+    pathArrayToString,
+    generateRandomId,
+    pathStringToArray,
+    isObjectArray
 } from './utils.js';
 import {
     ItemArray,
@@ -38,9 +41,12 @@ import {
     DebugHistoryEntry,
     DebugHistoryMutation,
     DebugSnapshot,
-    DebugLevel
+    DebugLevel,
+    ItemArrayObjectItem
 } from './types.js';
 import { TIMESTAMP_KEY } from './constants.js';
+
+type ItemArrayDiff = Record<ItemArrayObjectItem['id'], object>;
 
 /**
  * Calculate the diff between two item arrays. Item Arrays are arrays of objects with a unique ID property.
@@ -49,8 +55,10 @@ import { TIMESTAMP_KEY } from './constants.js';
  * @param targetArray The target array
  * @returns The diff object that represents the changes that are required to be performed to get from the source to the target array.
  */
-function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) {
-    const sourceItems = new Map(
+function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]): ItemArrayDiff {
+    const sourceArray = Array.isArray(sourceMaybeArray) ? sourceMaybeArray : [];
+
+    const sourceItems: Map<ItemArrayObjectItem['id'], ItemArrayObjectItem> = new Map(
         sourceArray.filter(hasId).map((item, index) => [
             item.id,
             {
@@ -60,63 +68,48 @@ function calculateItemArrayDiff(sourceArray: unknown[], targetArray: unknown[]) 
         ])
     );
 
-    // some items in source array don't contain an ID
-    const sourceIsAtomicArray = sourceArray.length && sourceArray.length !== sourceItems.size;
+    const diff: ItemArrayDiff = {};
 
-    if (sourceIsAtomicArray && targetArray.length === 0) {
-        // the source is an atomic array and the target is empty
-        // --> so we just return the target array as diff
-        return targetArray;
-    }
-
-    const diff: Record<string, unknown> = {};
     for (let i = 0; i < targetArray.length; i++) {
-        const targetItemOrig = targetArray[i];
-        if (!hasId(targetItemOrig)) {
-            if (sourceArray.length === 0 || sourceIsAtomicArray) {
-                // the source is either empty or an atomic array and at least one item does not contain an ID
-                // --> so we just return the target array as diff
-                return targetArray;
-            }
-            // if the source is an item array, we ignore target items without ID.
+        const targetItemRaw = targetArray[i];
+
+        // Ignore non-object items
+        if (!isActualObject(targetItemRaw)) {
             continue;
         }
-        const targetItem = {
-            ...targetItemOrig,
-            _index: i // already create updated _index so that updates are calculated as part of objectDiff
+
+        const targetItem: ItemArrayObjectItem = {
+            ...targetItemRaw,
+            // Generate a random ID if the item does not have one.
+            id: hasId(targetItemRaw) ? targetItemRaw.id : generateRandomId(),
+            // Already create updated _index so that updates are calculated as part of objectDiff
+            _index: i
         };
+
+        // Array item is new
         if (!sourceItems.has(targetItem.id)) {
-            // array item is new
-            diff[targetItem.id] = {
-                ...targetItem,
-                _index: i
-            };
+            diff[targetItem.id] = targetItem;
             continue;
         }
         const sourceItem = sourceItems.get(targetItem.id);
-        sourceItems.delete(targetItem.id); // remove from source items so that we can check for deleted items later
 
-        const itemDiff = BaseJsonCRDT.calculateDiff(sourceItem as object, targetItem);
+        // Remove from source items so that we can check for deleted items later
+        sourceItems.delete(targetItem.id);
+
+        const itemDiff = BaseJsonCRDT.calculateDiff(sourceItem || {}, targetItem);
         if (!isEmpty(itemDiff)) {
             diff[targetItem.id] = itemDiff;
         }
     }
-    if (sourceIsAtomicArray) {
-        // @todo: As long as we don't support converting types in our CRDT we have to throw an error here.
-        // Otherwise, subsequent diff calculations will interpret the source array as item array,
-        // but our CRDT cannot handle this case, yet.
-        throw Error(
-            'Atomic arrays cannot be converted to item arrays (all items in update contain an ID)'
-        );
-    }
-    // all items remaining in source items can be seen as deleted
-    // @typescript-eslint/no-unused-vars
+
+    // All items remaining in source items can be seen as deleted
     for (const [id] of sourceItems) {
-        // items are deleted by setting _index to null
+        // Items are deleted by setting _index to null
         diff[id] = {
             _index: null
         };
     }
+
     return diff;
 }
 
@@ -132,43 +125,54 @@ export class BaseJsonCRDT<O extends object = object> {
         options?: {
             allowedKeys?: null | Set<string>;
             ignorePaths?: null | Set<string>;
+            pathsToItemArrays?: string[] | Set<string>;
         }
     ): Record<string, unknown> {
         const allowedKeys = options?.allowedKeys ?? null;
         const ignorePaths = options?.ignorePaths ?? null;
+        const pathsToItemArrays =
+            options?.pathsToItemArrays instanceof Set
+                ? options.pathsToItemArrays
+                : new Set(options?.pathsToItemArrays ?? []);
         const diff = {};
 
         // Handle updates from the new data.
         iterateObjectPaths(newData, (path, newValue) => {
-            const pathString = path.join('.');
+            const pathString = pathArrayToString(path);
 
             if (ignorePaths && ignorePaths.has(pathString)) {
+                // Path should be ignored.
                 return;
             }
 
             const oldValue = get(oldData, path);
 
             if (isEqual(newValue, oldValue)) {
-                // no change
+                // Value did not change.
                 return;
             }
 
             if (allowedKeys && !allowedKeys.has(path[0])) {
-                // key not allowed
+                // Root key of the path is allowed.
                 return;
             }
 
             const isNewInsert = !has(oldData, path);
             if (isDeleteOperator(newValue) && isNewInsert) {
-                // delete order on non-existing value is redundant
+                // Delete order on non-existing value is redundant.
                 return;
             }
 
-            if (Array.isArray(newValue) && Array.isArray(oldValue)) {
-                // handle arrays
+            // Handle item arrays
+            if (pathsToItemArrays.has(pathString)) {
+                if (!Array.isArray(newValue)) {
+                    // Item arrays cannot be updated directly with non-array values, so we just ignore the change.
+                    return;
+                }
+
                 newValue = calculateItemArrayDiff(oldValue, newValue);
-                // if array diff is empty don't set anything
-                if (isObject(newValue) && !Array.isArray(newValue) && isEmpty(newValue)) {
+                // If array diff is empty don't set anything
+                if (isEmpty(newValue)) {
                     return;
                 }
             }
@@ -197,15 +201,31 @@ export class BaseJsonCRDT<O extends object = object> {
         const ancestorPaths = new Map<string, string[]>();
 
         // Handle deletes of old data that are not present in the new data.
-        iterateObjectPaths(oldData, path => {
-            let closestValue = null;
+        iterateObjectPaths(oldData, (path, oldValue) => {
+            const pathString = pathArrayToString(path);
+
+            if (ignorePaths && ignorePaths.has(pathString)) {
+                // Path should be ignored.
+                return;
+            }
+
+            if (has(newData, path)) {
+                // Path is present in the new data, so we don't need to delete it.
+                return;
+            }
+
+            let closestNewValue = null;
             let ancestorPath = [...path];
             const poppedParts: string[] = [];
 
             // Find the closest ancestor with a value in the new data.
-            while (ancestorPath.length > 0 && !closestValue) {
-                closestValue = get(newData, ancestorPath);
-                poppedParts.unshift(ancestorPath.pop()!);
+            while (ancestorPath.length > 0 && isDeleteOperator(closestNewValue)) {
+                closestNewValue = get(newData, ancestorPath);
+
+                // Only manipulate the path if we didn't find a value.
+                if (isDeleteOperator(closestNewValue)) {
+                    poppedParts.unshift(ancestorPath.pop() as string);
+                }
             }
 
             // Ensure the path is not empty.
@@ -213,42 +233,39 @@ export class BaseJsonCRDT<O extends object = object> {
                 ancestorPath = [poppedParts[0]];
             }
 
-            const ancestorWasDeleted = closestValue === undefined;
+            const ancestorWasDeleted = closestNewValue === undefined;
 
-            // Path is not present in the new data, so we delete it.
-            if (!has(newData, path)) {
-                const oldValue = get(oldData, path);
-                if (Array.isArray(oldValue)) {
-                    const arrayDiff = calculateItemArrayDiff(oldValue, []);
-                    if (isObject(arrayDiff) && !isEmpty(arrayDiff)) {
-                        // `oldValue` is an item array which has been deleted.
-                        // Since item arrays cannot be deleted, we update the diff to contain explicit deletes of each item
-                        // contained in the item array at that point (i.e. `arrayDiff`).
-                        set(diff, path, arrayDiff);
+            // Handle item arrays.
+            if (pathsToItemArrays.has(pathString)) {
+                const itemArrayDiff = calculateItemArrayDiff(oldValue, []);
 
-                        // Since the item array cannot be fully deleted, we update `newData` to reflect that:
-                        // After applying the diff, the item array would be empty.
-                        // Hence, we set the path at `newData` to an empty array.
-                        set(newData, path, []);
+                if (!isEmpty(itemArrayDiff)) {
+                    // `oldValue` is an item array which has been deleted.
+                    // Since item arrays cannot be deleted, we update the diff to contain explicit deletes of each item
+                    // contained in the item array at that point.
+                    set(diff, path, itemArrayDiff);
+                }
 
-                        // We now know that the ancestor possibly marked for deletion cannot be deleted
-                        // because it contains an item array. We therefore remove it from the `ancestorPaths` map.
-                        ancestorPaths.delete(ancestorPath.join('.'));
-                    } else {
-                        // Simple arrays can simply be deleted
-                        set(diff, path, null);
-                    }
-                }
-                // Mark the ancestor for deletion if it was deleted in the new data and set the child to null.
-                // The ancestor will only be fully deleted if it does not contain a nested item array.
-                else if (ancestorWasDeleted) {
-                    set(diff, path, null);
-                    ancestorPaths.set(ancestorPath.join('.'), ancestorPath);
-                }
-                // Simply delete the path if the ancestor was not deleted.
-                else if (isActualObject(closestValue)) {
-                    set(diff, path, null);
-                }
+                // Since the item array cannot be fully deleted, we update `newData` to reflect that:
+                // After applying the diff, the item array would be empty.
+                // Hence, we set the path at `newData` to an empty array.
+                // This is required so that the ancestor is not deleted in further iterations.
+                // This always needs to happen regardless of the item array diff.
+                set(newData, path, []);
+
+                // We now know that the ancestor possibly marked for deletion cannot be deleted
+                // because it contains an item array. We therefore remove it from the `ancestorPaths` map.
+                ancestorPaths.delete(pathArrayToString(ancestorPath));
+            }
+            // Mark the ancestor for deletion if it was deleted in the new data and set the child to null.
+            // The ancestor will only be fully deleted if it does not contain a nested item array.
+            else if (ancestorWasDeleted) {
+                set(diff, path, null);
+                ancestorPaths.set(pathArrayToString(ancestorPath), ancestorPath);
+            }
+            // Simply delete the path if the ancestor was not deleted.
+            else if (isActualObject(closestNewValue)) {
+                set(diff, path, null);
             }
         });
 
@@ -262,7 +279,8 @@ export class BaseJsonCRDT<O extends object = object> {
 
     private dataObj: O;
     private timestampObj: NewTimestamps<O>;
-    private pathsToItemArrays = new Set<string>();
+
+    public pathsToItemArrays = new Set<string>();
 
     static fromSerialized<T extends object>(
         serialized: SerializedBaseJsonCRDT<T>
@@ -316,9 +334,23 @@ export class BaseJsonCRDT<O extends object = object> {
         data = removeNullsFromObject(cloneDeep(data));
 
         this.pathsToItemArrays.forEach(path => {
-            const arr = get(data, path);
-            if (arr && Array.isArray(arr)) {
-                set(data, path.split('.'), itemArrayToObject(setIdToArrayItems(arr)));
+            const value = get(data, path);
+            if (value) {
+                if (Array.isArray(value)) {
+                    if (!isObjectArray(value)) {
+                        throw new Error(
+                            `Path ${path} is set as item array but is a non-object array: (${value})`
+                        );
+                    }
+                    set(data, pathStringToArray(path), itemArrayToObject(setIdToArrayItems(value)));
+                } else {
+                    throw new Error(
+                        `Path ${path} is set as item array but is neither array nor undefined but ${typeof value} (${value})`
+                    );
+                }
+            } else {
+                // If the item array does not exist in the data yet, we create it (or rather its object representation)
+                set(data, pathStringToArray(path), {});
             }
         });
         return data;
@@ -690,9 +722,11 @@ export class BaseJsonCRDT<O extends object = object> {
             .sort((a, b) => {
                 const comparison = a._index - b._index;
                 if (comparison !== 0) return comparison;
+
+                const pathArray = pathStringToArray(path);
                 // use timestamps as tie-breaker for when two items were inserted in the same index
-                const aTimestamp = this._getClock([...path.split('.'), a.id, '_index']);
-                const bTimestamp = this._getClock([...path.split('.'), b.id, '_index']);
+                const aTimestamp = this._getClock([...pathArray, a.id.toString(), '_index']);
+                const bTimestamp = this._getClock([...pathArray, b.id.toString(), '_index']);
                 return aTimestamp.isNewerThan(bTimestamp) ? -1 : 1;
             })
             .map(item => {

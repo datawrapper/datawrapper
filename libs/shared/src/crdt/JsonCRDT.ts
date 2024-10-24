@@ -135,7 +135,10 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
             ignorePaths?: Set<string> | null;
         }
     ): Diff<O> {
-        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, options) as O;
+        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, {
+            ...options,
+            pathsToItemArrays: this.crdt.pathsToItemArrays
+        }) as O;
     }
 
     data(): O {

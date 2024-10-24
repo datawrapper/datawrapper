@@ -144,7 +144,7 @@ test('calculateDiff - calculates the correct diff (item array - simple updates)'
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: { C: { value: 99 } }
@@ -199,7 +199,7 @@ test('calculateDiff - calculates the correct patch (item array - insertion at en
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: { D: { id: 'D', value: 4, _index: 3 } }
@@ -226,7 +226,7 @@ test('calculateDiff - calculates the correct diff (item array - insertion at sta
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -258,7 +258,7 @@ test('calculateDiff - calculates the correct diff (item array - insertion in mid
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -286,7 +286,7 @@ test('calculateDiff - calculates the correct diff (item array - deletion at end)
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -313,7 +313,7 @@ test('calculateDiff - calculates the correct diff (item array - deletion at begi
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -342,7 +342,7 @@ test('calculateDiff - calculates the correct diff (item array - deletion in the 
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -390,7 +390,7 @@ test('calculateDiff - calculates the correct diff (item array deletion)', t => {
         a: 'some value'
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b.d'] });
 
     t.deepEqual(diff, {
         b: {
@@ -429,7 +429,7 @@ test('calculateDiff - calculates the correct diff (item array - re-ordering two 
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -465,7 +465,7 @@ test('calculateDiff - calculates the correct diff (item array -  re-ordering mul
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
@@ -507,7 +507,7 @@ test('calculateDiff - calculates the correct diff (for numeric ids in item array
         }
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b.d'] });
 
     t.deepEqual(diff, {
         b: {
@@ -525,7 +525,7 @@ test('calculateDiff - calculates the correct diff (for numeric ids in item array
     });
 });
 
-test('calculateDiff - calculates the correct diff (empty array - converted to item array)', t => {
+test('calculateDiff - calculates the correct diff (empty array - to filled array)', t => {
     const oldData = {
         a: 'some value',
         b: []
@@ -539,37 +539,13 @@ test('calculateDiff - calculates the correct diff (empty array - converted to it
         ]
     };
 
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
 
     t.deepEqual(diff, {
         b: {
             A: { id: 'A', value: 1, _index: 0 },
             B: { id: 'B', value: 2, _index: 1 }
         }
-    });
-});
-
-test('calculateDiff - calculates the correct diff (empty array - treated as atomic array if not all items have an id)', t => {
-    const oldData = {
-        a: 'some value',
-        b: []
-    };
-
-    const newData = {
-        a: 'some value',
-        b: [
-            { value: 1 }, //missing id
-            { id: 'B', value: 2 }
-        ]
-    };
-
-    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
-
-    t.deepEqual(diff, {
-        b: [
-            { value: 1 }, //missing id
-            { id: 'B', value: 2 }
-        ]
     });
 });
 
@@ -591,7 +567,7 @@ test('calculateDiff - calculates the correct diff (atomic array remains an atomi
     });
 });
 
-test('calculateDiff - throws an error if an atomic array is turned into an item array (all elements containing an ID)', t => {
+test('calculateDiff - atomic arrays can be turned into atomic arrays that look like item arrays', t => {
     const oldData = {
         a: 'some value',
         b: [1, 2, 3]
@@ -602,7 +578,11 @@ test('calculateDiff - throws an error if an atomic array is turned into an item 
         b: [{ id: 'B', value: 2 }]
     };
 
-    t.throws(() => BaseJsonCRDT.calculateDiff(oldData, newData));
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        b: [{ id: 'B', value: 2 }]
+    });
 });
 
 test('calculateDiff - properly filters for allowedKeys', t => {
@@ -624,7 +604,8 @@ test('calculateDiff - properly filters for allowedKeys', t => {
     };
 
     const diff = BaseJsonCRDT.calculateDiff(oldData, newData, {
-        allowedKeys: new Set(['a', 'b'])
+        allowedKeys: new Set(['a', 'b']),
+        pathsToItemArrays: ['b']
     });
 
     t.deepEqual(diff, {
@@ -635,7 +616,7 @@ test('calculateDiff - properly filters for allowedKeys', t => {
     });
 });
 
-test('calculateDiff - properly filters for ignorePaths', t => {
+test('calculateDiff - properly filters for ignorePaths in new data', t => {
     const oldData = {
         a: {
             b: {
@@ -670,6 +651,43 @@ test('calculateDiff - properly filters for ignorePaths', t => {
         y: {
             nested: 'value is not ignored because the path is y.nested'
         }
+    });
+});
+
+test('calculateDiff - properly filters for ignorePaths in old data', t => {
+    const oldData = {
+        a: {
+            b: {
+                c: 'this will be kept',
+                d: 'this will be removed'
+            }
+        },
+        x: 'this will be kept',
+        y: 'this will be removed'
+    };
+
+    const newData = {
+        a: {
+            b: {
+                e: 'this will be added'
+            }
+        },
+        z: 'this will be added'
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, {
+        ignorePaths: new Set(['a.b.c', 'x'])
+    });
+
+    t.deepEqual(diff, {
+        a: {
+            b: {
+                d: null,
+                e: 'this will be added'
+            }
+        },
+        y: null,
+        z: 'this will be added'
     });
 });
 
@@ -852,6 +870,140 @@ test('calculateDiff: creating empty object creates empty object diff', t => {
     const oldData = {};
     const newData = { obj: {} };
     t.deepEqual(BaseJsonCRDT.calculateDiff(oldData, newData), { obj: {} });
+});
+
+test('calculateDiff: deleting an item array deletes all items but keeps the item array', t => {
+    const oldData = {
+        a: 'test',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    };
+    const newData = { a: '123' };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
+
+    t.deepEqual(diff, {
+        a: '123',
+        b: {
+            1: { _index: null },
+            2: { _index: null }
+        }
+    });
+});
+
+test('calculateDiff: setting an item array to empty array deletes all items', t => {
+    const oldData = {
+        a: 'test',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    };
+    const newData = { a: '123', b: [] };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
+
+    t.deepEqual(diff, {
+        a: '123',
+        b: {
+            1: { _index: null },
+            2: { _index: null }
+        }
+    });
+});
+
+test('calculateDiff: adding a new item without an id property to item array automatically generates a unique id', t => {
+    const oldData = {
+        a: 'test',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    };
+    const newData = {
+        a: 'test',
+        b: [{ id: '1', value: 1 }, { id: '2', value: 2 }, { value: 3 }]
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
+    const generatedId = Object.keys(diff.b || {})[0];
+
+    t.deepEqual(diff, {
+        b: {
+            [generatedId]: { id: generatedId, value: 3, _index: 2 }
+        }
+    });
+});
+
+test('calculateDiff: deleting empty item array does not remove the item array as a whole', t => {
+    const oldData = {
+        a: 'test',
+        b: []
+    };
+    const newData = {
+        a: 'test'
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
+
+    t.deepEqual(diff, {});
+});
+
+test('calculateDiff: deleting nested empty item array and siblings does not remove the item array as a whole', t => {
+    const oldData = {
+        a: 'test',
+        b: {
+            c: [],
+            d: 'test'
+        }
+    };
+    const newData = {
+        a: 'test'
+    };
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData, { pathsToItemArrays: ['b.c'] });
+
+    t.deepEqual(diff, {
+        b: {
+            d: null
+        }
+    });
+});
+
+test('calculateDiff: removing an ancestor object deletes the ancestor and not the nested value (string)', t => {
+    const oldData = {
+        a: {
+            b: {
+                c: 'test'
+            }
+        }
+    };
+    const newData = {};
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        a: null
+    });
+});
+
+test('calculateDiff: removing an ancestor object deletes the ancestor and not the nested value (array)', t => {
+    const oldData = {
+        a: {
+            b: {
+                c: []
+            }
+        }
+    };
+    const newData = {};
+
+    const diff = BaseJsonCRDT.calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        a: null
+    });
 });
 
 test('basic serialization and re-initialization', t => {

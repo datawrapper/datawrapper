@@ -21,7 +21,11 @@ export interface CRDT<O extends object | string | number> {
     createUpdate(diff: Diff<O>): Update<O>;
     calculateDiff(
         newData: O,
-        options?: { allowedKeys?: Set<string>; ignorePaths?: Set<string> | null }
+        options?: {
+            allowedKeys?: Set<string>;
+            ignorePaths?: Set<string> | null;
+            pathsToItemArrays?: string[];
+        }
     ): Diff<O>;
     data(): O;
 
