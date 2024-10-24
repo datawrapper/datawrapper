@@ -9,15 +9,15 @@ export function isDeleteOperator(value: unknown) {
     return value === null || value === undefined;
 }
 
-export function isActualObject(value: unknown) {
+export function isActualObject(value: unknown): value is object {
     return isObject(value) && !Array.isArray(value) && value !== null && !(value instanceof Date);
 }
 
-export function isEmptyObject(value: unknown) {
+export function isEmptyObject(value: unknown): value is object {
     return isActualObject(value) && Object.keys(value as object).length === 0;
 }
 
-export function isNonEmptyObject(value: unknown) {
+export function isNonEmptyObject(value: unknown): value is object {
     return isActualObject(value) && Object.keys(value as object).length > 0;
 }
 
@@ -25,7 +25,7 @@ export function isAtomic(value: unknown) {
     return !isActualObject(value);
 }
 
-export function isEmptyArray(value: unknown) {
+export function isEmptyArray(value: unknown): value is [] {
     return Array.isArray(value) && value.length === 0;
 }
 
@@ -37,6 +37,9 @@ export function isPathToItemArrayIndex(path: string[]) {
     return path[path.length - 1] === '_index';
 }
 
+export function isObjectArray(value: unknown): value is object[] {
+    return Array.isArray(value) && value.every(isActualObject);
+}
 /**
  * Checks if a value is an item array
  * @param value
@@ -186,13 +189,13 @@ export function isPathToItemArrayAncestor(
  * @param arr The array of objects to assign IDs to.
  * @returns The array with unique IDs assigned.
  */
-export function setIdToArrayItems(arr: { [key: string]: unknown }[]) {
+export function setIdToArrayItems(arr: object[]): ItemArray {
     const usedIds = new Set();
     return arr.map(item => {
         if (!hasId(item) || usedIds.has(item?.id)) {
-            item.id = Math.random().toString(36);
+            (item as HasId).id = generateRandomId();
         }
-        usedIds.add(item.id);
+        usedIds.add((item as HasId).id);
         return item;
     }) as ItemArray;
 }
@@ -202,4 +205,14 @@ export function pathStringToArray(path: string): string[] {
 }
 export function pathArrayToString(path: string[]): string {
     return path.join('.');
+}
+
+/**
+ * Generates a unique random string.
+ * We need to use a custom implementation because nanoid does not work in the CommonJS environment of our API,
+ * and the CRDTs need to work in both the backend and on the client side.
+ * @returns a random string of length 10
+ */
+export function generateRandomId(): string {
+    return Math.random().toString(36).substring(2, 12);
 }

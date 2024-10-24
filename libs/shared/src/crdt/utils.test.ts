@@ -16,7 +16,8 @@ import {
     removeNullsFromObject,
     itemArrayPathFromIndexPath,
     isPathToItemArrayAncestor,
-    isPathToItemArray
+    isPathToItemArray,
+    generateRandomId
 } from './utils.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -411,4 +412,16 @@ test('isPathToItemArray - correctly identifies paths to item arrays', t => {
     t.false(isPathToItemArray(pathsToItemArrays, ['a', 'b', 'c']));
     t.false(isPathToItemArray(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
     t.false(isPathToItemArray(pathsToItemArrays, ['a', 'false']));
+});
+
+test('generateRandomId generates random string', t => {
+    t.true(generateRandomId().length > 0);
+});
+
+test('generateRandomId generates different string every time', t => {
+    const ids = new Set<string>();
+    for (let i = 0; i < 10; i++) {
+        ids.add(generateRandomId());
+    }
+    t.is(ids.size, 10);
 });

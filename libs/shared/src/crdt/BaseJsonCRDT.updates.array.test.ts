@@ -796,8 +796,8 @@ test(`diffs with array inserts and deletions applied in different order result i
         '1-2'
     ] as const;
 
-    const crdtA = new BaseJsonCRDT(cloneDeep(initData));
-    const crdtB = new BaseJsonCRDT(cloneDeep(initData));
+    const crdtA = new BaseJsonCRDT({ data: cloneDeep(initData) });
+    const crdtB = new BaseJsonCRDT({ data: cloneDeep(initData) });
 
     crdtA.update(...diffX);
     crdtA.update(...diffY);
@@ -1081,5 +1081,71 @@ test(`deleting an item array throws an error`, t => {
             },
             '1-10'
         );
+    });
+});
+
+test(`creating a crdt with an item array initializes the data at the item array location with an empty array`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {},
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.deepEqual(crdt.data(), {
+        some: {
+            nested: {
+                arr: []
+            }
+        }
+    });
+});
+
+test(`creating a crdt with an item array path to an atomic value throws`, t => {
+    t.throws(() => {
+        new BaseJsonCRDT({
+            data: {
+                some: { nested: { arr: 1 } }
+            },
+            pathsToItemArrays: ['some.nested.arr']
+        });
+    });
+});
+
+test(`creating a crdt with an item array path to an object throws`, t => {
+    t.throws(() => {
+        new BaseJsonCRDT({
+            data: {
+                some: { nested: { arr: { obj: 1 } } }
+            },
+            pathsToItemArrays: ['some.nested.arr']
+        });
+    });
+});
+
+test(`creating a crdt with an item array path to an non-item array throws`, t => {
+    t.throws(() => {
+        new BaseJsonCRDT({
+            data: {
+                some: { nested: { arr: [1, 2, 3] } }
+            },
+            pathsToItemArrays: ['some.nested.arr']
+        });
+    });
+});
+
+test(`creating a crdt with an item array missing ids adds ids to the items`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: { nested: { arr: [{ some: { nested: 'item' } }] } }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    const itemId = crdt.data().some.nested.arr[0].id;
+    t.deepEqual(crdt.data(), {
+        some: {
+            nested: {
+                arr: [{ id: itemId, some: { nested: 'item' } }]
+            }
+        }
     });
 });
