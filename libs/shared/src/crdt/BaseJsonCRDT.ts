@@ -29,6 +29,7 @@ import {
     pathArrayToString,
     generateRandomId,
     pathStringToArray,
+    isPathToItemArrayItem,
     isObjectArray
 } from './utils.js';
 import {
@@ -620,22 +621,19 @@ export class BaseJsonCRDT<O extends object = object> {
         debugHistoryEntry: DebugHistoryEntry | null = null
     ) {
         const currentValue = get(this.dataObj, path);
+        const pathString = pathArrayToString(path);
 
         const props = { path, newValue, newTimestamp, currentValue, debugHistoryEntry };
 
         if (isPathToItemArrayAncestor(this.pathsToItemArrays, path)) {
             throw new Error(
-                `Path ${path.join(
-                    '.'
-                )} is an ancestor of an item array and cannot be updated directly`
+                `Path ${pathString} is an ancestor of an item array and cannot be updated directly`
             );
         }
         if (isPathToItemArray(this.pathsToItemArrays, path)) {
             if (!isEmptyArray(newValue)) {
                 throw new Error(
-                    `Path ${path.join(
-                        '.'
-                    )} is an item array and cannot be updated directly with ${newValue}`
+                    `Path ${pathString} is an item array and cannot be updated directly with ${newValue}`
                 );
             }
             if (currentValue === undefined) {
@@ -643,6 +641,12 @@ export class BaseJsonCRDT<O extends object = object> {
                 this._setInternalDataValue(path, {}, newTimestamp);
             }
             return;
+        }
+
+        if (isPathToItemArrayItem(this.pathsToItemArrays, path)) {
+            throw new Error(
+                `Path ${pathString} is an item array item and cannot be updated directly. Attempted to update with ${newValue}`
+            );
         }
 
         // Current path leads to an item array index (e.g. 'a.b._index')

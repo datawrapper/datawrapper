@@ -17,6 +17,7 @@ import {
     itemArrayPathFromIndexPath,
     isPathToItemArrayAncestor,
     isPathToItemArray,
+    isPathToItemArrayItem,
     generateRandomId
 } from './utils.js';
 import { TIMESTAMP_KEY } from './constants.js';
@@ -389,10 +390,16 @@ test('isPathToItemArrayAncestor - correctly identifies paths to item array ances
     t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'b']));
     t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2', '4', 'r']));
 
-    // path into item arrays
+    // path to item array items
     t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'b', 'c']));
     t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
-    t.false(isPathToItemArrayAncestor(pathsToItemArrays, ['a', 'false']));
+
+    // random paths
+    t.false(isPathToItemArray(pathsToItemArrays, ['a', 'false']));
+    t.false(isPathToItemArray(pathsToItemArrays, ['arr', 'x', 'y']));
+
+    // edge case:
+    t.false(isPathToItemArrayAncestor(['ab'], ['a']));
 });
 
 test('isPathToItemArray - correctly identifies paths to item arrays', t => {
@@ -408,10 +415,33 @@ test('isPathToItemArray - correctly identifies paths to item arrays', t => {
     t.true(isPathToItemArray(pathsToItemArrays, ['a', 'b']));
     t.true(isPathToItemArray(pathsToItemArrays, ['a', '2', '4', 'r']));
 
-    // path into item arrays
+    // path to item array items
     t.false(isPathToItemArray(pathsToItemArrays, ['a', 'b', 'c']));
     t.false(isPathToItemArray(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
-    t.false(isPathToItemArray(pathsToItemArrays, ['a', 'false']));
+
+    t.false(isPathToItemArray(pathsToItemArrays, ['arr', 'x', 'y']));
+});
+
+test('isPathToItemArrayItem - correctly identifies paths to item array items', t => {
+    const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
+
+    // path to item array ancestors
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a']));
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', '2', '4']));
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', '2']));
+
+    // path to item arrays
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['arr']));
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', 'b']));
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', '2', '4', 'r']));
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', 'false']));
+
+    // path to item array items
+    t.true(isPathToItemArrayItem(pathsToItemArrays, ['a', 'b', 'c']));
+    t.true(isPathToItemArrayItem(pathsToItemArrays, ['a', '2', '4', 'r', 's']));
+
+    // path to item array item child
+    t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', '2', '4', 'r', 's', 't']));
 });
 
 test('generateRandomId generates random string', t => {

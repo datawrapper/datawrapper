@@ -1149,3 +1149,25 @@ test(`creating a crdt with an item array missing ids adds ids to the items`, t =
         }
     });
 });
+
+test(`overwriting an item array item with an empty object throws`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            some: { nested: { arr: [{ id: '#1', some: { nested: 'item' } }] } }
+        },
+        pathsToItemArrays: ['some.nested.arr']
+    });
+
+    t.throws(() => {
+        crdt.update(
+            {
+                some: {
+                    nested: {
+                        arr: { '#1': {} }
+                    }
+                }
+            },
+            '1-10'
+        );
+    });
+});
