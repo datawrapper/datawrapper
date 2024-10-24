@@ -26,8 +26,7 @@ import {
     setIdToArrayItems,
     itemArrayPathFromIndexPath,
     isPathToItemArrayAncestor,
-    isPathToItemArray,
-    pathStringToArray
+    isPathToItemArray
 } from './utils.js';
 import {
     ItemArray,
@@ -318,16 +317,8 @@ export class BaseJsonCRDT<O extends object = object> {
 
         this.pathsToItemArrays.forEach(path => {
             const arr = get(data, path);
-            if (arr) {
-                if (Array.isArray(arr)) {
-                    set(data, pathStringToArray(path), itemArrayToObject(setIdToArrayItems(arr)));
-                } else {
-                    throw new Error(
-                        `Path ${path} is set as item array but is neither array nor undefined but ${typeof arr} (${arr})`
-                    );
-                }
-            } else {
-                set(data, pathStringToArray(path), {});
+            if (arr && Array.isArray(arr)) {
+                set(data, path.split('.'), itemArrayToObject(setIdToArrayItems(arr)));
             }
         });
         return data;
