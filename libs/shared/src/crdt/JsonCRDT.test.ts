@@ -3,6 +3,7 @@ import { JsonCRDT } from './JsonCRDT.js';
 import { cloneDeep, sample } from 'lodash';
 import { forEachOther, saveSnapshot } from '../../test/helpers/crdt.js';
 import { Update } from './CRDT.js';
+import { SerializedJsonCRDT } from './types.js';
 
 test(`crdt internals are immuatable`, t => {
     const crdt = new JsonCRDT({
@@ -515,6 +516,39 @@ test(`calculateDiff uses defined pathsToItemArrays`, t => {
             }
         }
     });
+});
+
+test(`fromSerialized: pathsToItemArray are kept through re-initialization`, t => {
+    const crdt = new JsonCRDT({
+        nodeId: 1,
+        data: { key: { data: { json: { d: { e: { f: 'str' } } }, arr: [] } } },
+        pathsToItemArrays: ['key.data.arr']
+    });
+
+    const newCrdt = JsonCRDT.fromSerialized(crdt.serialize());
+
+    t.deepEqual(newCrdt.crdt.pathsToItemArrays, new Set(['key.data.arr']));
+});
+
+test(`fromSerialized: pathsToItemArray are kept through re-initialization with legacy pathToItemArrays key`, t => {
+    const crdt = new JsonCRDT({
+        nodeId: 2,
+        data: { key: { data: { json: { d: { e: { f: 'str' } } }, arr: [] } } },
+        pathsToItemArrays: ['key.data.arr']
+    });
+
+    // type below can also contain the pathToItemArrays key while the pathsToItemArrays key is optional
+    const serialized = crdt.serialize() as {
+        crdt: {
+            pathsToItemArrays?: string[];
+            pathToItemArrays?: string[];
+        };
+    };
+    serialized.crdt.pathToItemArrays = serialized.crdt.pathsToItemArrays;
+    delete serialized.crdt.pathsToItemArrays;
+    const newCrdt = JsonCRDT.fromSerialized(serialized as SerializedJsonCRDT<object>);
+
+    t.deepEqual(newCrdt.crdt.pathsToItemArrays, new Set(['key.data.arr']));
 });
 
 /**
