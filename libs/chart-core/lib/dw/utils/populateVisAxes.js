@@ -23,10 +23,9 @@ import range from 'lodash/range.js';
  *                                and the current metadata values
  * @returns {object}
  */
-export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKeys }) {
+export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKeys = {} }) {
     visAxes = resolveVisAxesDefinitions(visAxes, overrideKeys);
     userAxes = userAxes || {};
-    overrideKeys = overrideKeys || {};
     const usedColumns = {};
     const axes = {};
     const axesAsColumns = {};
