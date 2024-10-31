@@ -380,6 +380,14 @@ type AnnotationId = string;
 type AnnotationPlot = string;
 type AnnotationShowInAllPlots = boolean;
 
+export type TextAnnotationPosition = {
+    x?: number | string;
+    y?: number | string;
+    plot?: AnnotationPlot;
+    rowIndex?: number;
+    rowOffset?: number;
+};
+
 export type TextAnnotationAnchor = 'tc' | 'tr' | 'mr' | 'br' | 'bc' | 'bl' | 'ml' | 'tl' | 'mc';
 export type TextAnnotationConnectorLineType = 'straight' | 'curveRight' | 'curveLeft';
 export type TextAnnotationArrowHead = 'lines' | 'triangle' | false;
@@ -397,10 +405,8 @@ export type TextAnnotationConnectorLine = {
 };
 
 export type TextAnnotationProps = {
-    plot?: AnnotationPlot;
+    position: TextAnnotationPosition;
     showInAllPlots?: AnnotationShowInAllPlots;
-    x: number | string;
-    y: number | string;
     dx: number;
     dy: number;
     bg: boolean;
@@ -420,21 +426,25 @@ export type TextAnnotationProps = {
 
 export type TextAnnotation = TextAnnotationProps & { id: AnnotationId };
 
+type RangeAnnotationPosition = {
+    x0: number | string;
+    x1: number | string;
+    y0: number | string;
+    y1: number | string;
+    plot?: AnnotationPlot;
+};
+
 export type RangeAnnotationStrokeType = 'solid' | 'dotted' | 'dashed';
 export type RangeAnnotationDisplay = 'range' | 'line';
 export type RangeAnnotationType = 'x' | 'y';
 export type RangeAnnotationStrokeWidth = 1 | 2 | 3;
 
 export type RangeAnnotation = {
+    position: RangeAnnotationPosition;
     id: AnnotationId;
-    plot?: AnnotationPlot;
     showInAllPlots?: AnnotationShowInAllPlots;
     display: RangeAnnotationDisplay;
     type: RangeAnnotationType;
-    x0: number | string;
-    x1: number | string;
-    y0: number | string;
-    y1: number | string;
     color: string;
     opacity: number;
     strokeWidth: RangeAnnotationStrokeWidth;
@@ -442,31 +452,38 @@ export type RangeAnnotation = {
 };
 
 /**
- * @param x - A `null` value reflects an indeterminate state
- * @param y - A `null` value reflects an indeterminate state
- * @param plot - If multiple plots, name of relevant plot
- * @param noPlotOffset - If true, returns x/y values independent of plot position
+ * @param params - All parameters passed as a single object.
+ * @param params.position - Object containing data relating to annotation position.
+ * @param params.position.x - A `null` value reflects an indeterminate state.
+ * @param params.position.y - A `null` value reflects an indeterminate state.
+ * @param params.position.plot - If multiple plots, name of relevant plot.
+ * @param params.noPlotOffset - If true, returns x/y values independent of plot position
  */
-export type DataToPx = (
-    x: number | string | null,
-    y: number | string | null,
-    plot?: string,
-    noPlotOffset?: boolean
-) => [number, number];
+export type DataToPx = (params: {
+    position: {
+        x?: number | string | null;
+        y?: number | string | null;
+        rowIndex?: number;
+        rowOffset?: number;
+        plot?: AnnotationPlot;
+    };
+    noPlotOffset?: boolean;
+}) => [number, number];
+
 /**
- * @param plotName - if specified, forces using coordinate system
+ * @param params - All parameters passed as a single object.
+ * @param params.plot - if specified, forces using coordinate system
  * of provided plot instead of looking for closest matching plot.
- * @param clamped - if true, returned values are clamped to plot bounds
+ * @param params.clamped - if true, returned values are clamped to plot bounds.
  */
-export type PxToData = (
-    x: number | string,
-    y: number | string,
-    plot?: string,
-    clamped?: boolean
-) => {
-    x: number | string;
-    y: number | string;
-    plot?: string | null;
+export type PxToData = (params: { x: number; y: number; plot?: string; clamped?: boolean }) => {
+    position: {
+        x?: number | string;
+        y?: number | string;
+        rowIndex?: number;
+        rowOffset?: number;
+        plot?: string;
+    };
     validPosition?: boolean;
 };
 

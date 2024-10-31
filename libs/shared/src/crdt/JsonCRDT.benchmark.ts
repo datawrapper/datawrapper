@@ -247,8 +247,10 @@ const chartData = {
 function mockAnnotation() {
     return {
         id: nanoid(10),
-        x: '2006/03/09 12:33',
-        y: '101.0325',
+        position: {
+            x: '2006/03/09 12:33',
+            y: '101.0325'
+        },
         bg: false,
         dx: 0,
         dy: 0,
