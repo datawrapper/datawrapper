@@ -40,7 +40,8 @@ const MONTHS = {
         'ENERO',
         'GEN',
         'GENNAIO',
-        'JANEIRO'
+        'JANEIRO',
+        'JANUARI'
     ],
     1: [
         'FEB',
@@ -53,14 +54,15 @@ const MONTHS = {
         'FEBRERO',
         'FEBBRAIO',
         'FEV',
-        'FEVEREIRO'
+        'FEVEREIRO',
+        'FEBRUARI'
     ],
-    2: ['MAR', 'MÄR', 'MARCH', 'MRZ', 'MÄRZ', 'MARS', 'MARS', 'MARZO', 'MARZO', 'MARÇO'],
+    2: ['MAR', 'MÄR', 'MARCH', 'MRZ', 'MÄRZ', 'MARS', 'MARS', 'MARZO', 'MARZO', 'MARÇO', 'MARET'],
     3: ['APR', 'APRIL', 'APR', 'APRIL', 'AVR', 'AVRIL', 'ABR', 'ABRIL', 'APRILE'],
-    4: ['MAY', 'MAI', 'MAYO', 'MAG', 'MAGGIO', 'MAIO', 'MAJ'],
+    4: ['MAY', 'MAI', 'MAYO', 'MAG', 'MAGGIO', 'MAIO', 'MAJ', 'MEI'],
     5: ['JUN', 'JUNE', 'JUNI', 'JUIN', 'JUNIO', 'GIU', 'GIUGNO', 'JUNHO'],
     6: ['JUL', 'JULY', 'JULI', 'JUIL', 'JUILLET', 'JULIO', 'LUG', 'LUGLIO', 'JULHO'],
-    7: ['AUG', 'AUGUST', 'AOÛT', 'AGO', 'AGOSTO'],
+    7: ['AUG', 'AUGUST', 'AOÛT', 'AGO', 'AGOSTO', 'AGUSTUS', 'AGT'],
     8: ['SEP', 'SEPTEMBER', 'SEPT', 'SEPTEMBRE', 'SEPTIEMBRE', 'SET', 'SETTEMBRE', 'SETEMBRO'],
     9: [
         'OCT',
