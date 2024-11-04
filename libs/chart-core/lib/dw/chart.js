@@ -26,6 +26,7 @@ import { getHeightMode } from './utils/index.js';
 function Chart(attributes) {
     // private methods and properties
     let dataset;
+    let datasetSourceUrl; // when loading external data
     let theme;
     let metricPrefix;
     let locale;
@@ -101,11 +102,23 @@ function Chart(attributes) {
             const dsopts = {
                 chartId: chart.get('id'),
                 firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
-                transpose: chart.get('metadata.data.transpose', false)
+                transpose: chart.get('metadata.data.transpose', false),
+                loadDataWithTimestamp: false
             };
 
             if ((csv || csv === '') && !externalData) dsopts.csv = csv;
             else dsopts.url = externalData || 'data.csv';
+
+            // append a timestamp to the URL to circumvent cache
+            if (externalData) {
+                const ts = new Date().getTime();
+                dsopts.url += `${externalData.includes('?') ? '&' : '?'}v=${
+                    externalData.includes('//static.dwcdn.net') ? ts - (ts % 60000) : ts
+                }`;
+                datasetSourceUrl = dsopts.url;
+            } else {
+                datasetSourceUrl = undefined;
+            }
 
             const datasource = chart.get('metadata.data.json') ? json(dsopts) : delimited(dsopts);
 
@@ -136,6 +149,14 @@ function Chart(attributes) {
                 return chart;
             }
             return dataset;
+        },
+
+        /**
+         * For external data charts, returns the URL that the data was loaded from,
+         * which also includes a timestamp query string.
+         */
+        datasetSourceUrl() {
+            return datasetSourceUrl ? datasetSourceUrl : undefined;
         },
 
         /**
