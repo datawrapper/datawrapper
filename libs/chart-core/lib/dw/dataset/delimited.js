@@ -32,12 +32,14 @@ import column from './column.js';
 export default function delimited(opts) {
     function loadAndParseCsv() {
         if (opts.url) {
-            const ts = new Date().getTime();
-            const url = `${opts.url}${opts.url.indexOf('?') > -1 ? '&' : '?'}v=${
-                opts.url.indexOf('//static.dwcdn.net') > -1 ? ts - (ts % 60000) : ts
-            }`;
+            if (opts.loadDataWithTimestamp ?? true) {
+                const ts = new Date().getTime();
+                opts.url += `${opts.url.includes('?') ? '&' : '?'}v=${
+                    opts.url.includes('//static.dwcdn.net') ? ts - (ts % 60000) : ts
+                }`;
+            }
             return window
-                .fetch(url)
+                .fetch(opts.url)
                 .then(res =>
                     res.ok
                         ? res
