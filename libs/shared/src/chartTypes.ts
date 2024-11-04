@@ -369,6 +369,7 @@ export type Visualization = {
     on(eventType: string, callback: (data: any) => any): void;
     fire(eventType: string, data?: any): void;
     off(eventType: string, callback: (data: any) => any): void;
+    showError: (message: string) => void;
 };
 
 /**
