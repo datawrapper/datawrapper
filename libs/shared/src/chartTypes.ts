@@ -62,6 +62,7 @@ export type Column = {
      * @returns first index of value in column, if present
      */
     indexOf: (value: any) => number | undefined;
+    length: number;
 };
 
 export type Metadata = {
