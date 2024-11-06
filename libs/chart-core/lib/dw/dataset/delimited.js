@@ -32,7 +32,7 @@ import column from './column.js';
 export default function delimited(opts) {
     function loadAndParseCsv() {
         if (opts.url) {
-            if (opts.loadDataWithTimestamp ?? true) {
+            if (opts.loadDataWithTimestamp === undefined ? true : opts.loadDataWithTimestamp) {
                 const ts = new Date().getTime();
                 opts.url += `${opts.url.includes('?') ? '&' : '?'}v=${
                     opts.url.includes('//static.dwcdn.net') ? ts - (ts % 60000) : ts
