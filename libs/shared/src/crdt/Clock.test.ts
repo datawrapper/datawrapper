@@ -22,12 +22,12 @@ test(`init clock`, t => {
     const error1 = t.throws(() => {
         new Clock(0.4, 9);
     });
-    t.is(error1?.message, 'nodeId must be a positive integer but is: "0.4"');
+    t.is(error1?.message, 'nodeId must be a positive integer but is `0.4` (number)');
 
     const error2 = t.throws(() => {
         new Clock(-1);
     });
-    t.is(error2?.message, 'nodeId must be a positive integer but is: "-1"');
+    t.is(error2?.message, 'nodeId must be a positive integer but is `-1` (number)');
 });
 
 test(`clock tick `, t => {

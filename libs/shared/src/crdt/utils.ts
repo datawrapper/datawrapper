@@ -230,3 +230,27 @@ export function pathArrayToString(path: string[]): string {
 export function generateRandomId(): string {
     return Math.random().toString(36).substring(2, 12);
 }
+
+/**
+ * Returns the type of each property of an object.
+ */
+export function typeofObjectProperties(obj: object): Record<string, string> {
+    const types: Record<string, string> = {};
+    for (const [key, value] of Object.entries(obj)) {
+        types[key] = typeof value;
+    }
+    return types;
+}
+
+/**
+ * Returns a string representation of a value with its type.
+ * This should be used when including a value in an error message.
+ * @example valueWithType(1) // => '`1` (number)'
+ */
+export function valueWithType(value: unknown): string {
+    let stringValue = value;
+    if (typeof value === 'object') {
+        stringValue = JSON.stringify(value);
+    }
+    return `\`${stringValue}\` (${typeof value})`;
+}

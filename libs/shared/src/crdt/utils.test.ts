@@ -18,7 +18,9 @@ import {
     isPathToItemArrayAncestor,
     isPathToItemArray,
     isPathToItemArrayItem,
-    generateRandomId
+    generateRandomId,
+    typeofObjectProperties,
+    valueWithType
 } from './utils.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -444,14 +446,40 @@ test('isPathToItemArrayItem - correctly identifies paths to item array items', t
     t.false(isPathToItemArrayItem(pathsToItemArrays, ['a', '2', '4', 'r', 's', 't']));
 });
 
-test('generateRandomId generates random string', t => {
+test('generateRandomId - generates random string', t => {
     t.true(generateRandomId().length > 0);
 });
 
-test('generateRandomId generates different string every time', t => {
+test('generateRandomId - generates different string every time', t => {
     const ids = new Set<string>();
     for (let i = 0; i < 10; i++) {
         ids.add(generateRandomId());
     }
     t.is(ids.size, 10);
+});
+
+test('typeofObjectProperties - returns the type of all properties of an object', t => {
+    t.deepEqual(typeofObjectProperties({ a: 1, b: 'foo', c: { d: 2 } }), {
+        a: 'number',
+        b: 'string',
+        c: 'object'
+    });
+});
+
+test('valueWithType - returns the value with its type for primitives', t => {
+    t.is(valueWithType(1), '`1` (number)');
+    t.is(valueWithType('foo'), '`foo` (string)');
+    t.is(valueWithType(true), '`true` (boolean)');
+    t.is(valueWithType(null), '`null` (object)');
+    t.is(valueWithType(undefined), '`undefined` (undefined)');
+});
+
+test('valueWithType - returns the value with its type for objects', t => {
+    t.is(valueWithType({ a: 1, b: { c: 2 } }), '`{"a":1,"b":{"c":2}}` (object)');
+    t.is(valueWithType([]), '`[]` (object)');
+    t.is(valueWithType([1, 2, 3]), '`[1,2,3]` (object)');
+    t.is(
+        valueWithType(new Date('2024-10-29T18:51:30.361Z')),
+        '`"2024-10-29T18:51:30.361Z"` (object)'
+    );
 });
