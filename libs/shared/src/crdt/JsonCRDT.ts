@@ -7,6 +7,7 @@ import type {
     SerializedJsonCRDT,
     DebugFlagOrLevel
 } from './types.js';
+import { typeofObjectProperties } from './utils.js';
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -29,36 +30,20 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         return new JsonCRDT({ timestamp: clock, serialized: crdt });
     }
 
-    constructor({
-        nodeId,
-        data,
-        pathsToItemArrays
-    }: {
-        nodeId: number;
-        data: O;
-        pathsToItemArrays?: string[];
-    });
-    constructor({
-        timestamp,
-        serialized
-    }: {
-        timestamp: Timestamp;
-        serialized: SerializedBaseJsonCRDT<O>;
-    });
+    // Normal constructor
+    constructor(props: { nodeId: number; data: O; pathsToItemArrays?: string[] });
+    // FromSerialized constructor
+    constructor(props: { timestamp: Timestamp; serialized: SerializedBaseJsonCRDT<O> });
 
-    constructor({
-        nodeId,
-        timestamp,
-        data,
-        serialized,
-        pathsToItemArrays
-    }: {
+    constructor(props: {
         nodeId?: number;
         timestamp?: Timestamp;
         data?: O;
         serialized?: SerializedBaseJsonCRDT<O>;
         pathsToItemArrays?: string[];
     }) {
+        const { nodeId, timestamp, data, serialized, pathsToItemArrays } = props;
+
         // We need this for backwards compatibility
         // TODO: remove this once all data in redis has been replaced with the new format (max 30 days)
         if (serialized && 'pathToItemArrays' in serialized) {
@@ -91,8 +76,9 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
             this.clock = new Clock(timestamp);
         } else {
             throw new Error(
-                'JsonCRDT constructor called with invalid arguments: ' +
-                    JSON.stringify({ nodeId, timestamp, data, serialized, pathsToItemArrays })
+                `JsonCRDT constructor called with invalid arguments. Types: ${JSON.stringify(
+                    typeofObjectProperties(props ?? {})
+                )}, Values: ${JSON.stringify(props ?? {})}`
             );
         }
     }

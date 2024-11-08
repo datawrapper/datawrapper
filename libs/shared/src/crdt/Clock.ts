@@ -1,6 +1,7 @@
 import { iterateObjectPaths } from '../objectPaths.js';
 import get from 'lodash/get.js';
 import { Timestamp, Timestamps } from './types.js';
+import { valueWithType } from './utils.js';
 
 export class Clock {
     /**
@@ -73,13 +74,13 @@ export class Clock {
         }
 
         if (typeof timestamps !== 'object') {
-            throw new Error('Timestamps must be object');
+            throw new Error(`Timestamps must be object but is ${valueWithType(timestamps)}`);
         }
         let maxTimestamp = new Clock();
         iterateObjectPaths(timestamps, (path: string[]) => {
             const value = get(timestamps, path);
             if (typeof value !== 'string') {
-                throw new Error(`Timestamps must be strings but is ${typeof value}`);
+                throw new Error(`Timestamps must be strings but is ${valueWithType(value)}`);
             }
 
             const timestamp = new Clock(value);
@@ -108,7 +109,9 @@ export class Clock {
         }
         if (typeof nodeIdOrTimestamp === 'number') {
             if (nodeIdOrTimestamp < 0 || !Number.isInteger(nodeIdOrTimestamp)) {
-                throw new Error(`nodeId must be a positive integer but is: "${nodeIdOrTimestamp}"`);
+                throw new Error(
+                    `nodeId must be a positive integer but is ${valueWithType(nodeIdOrTimestamp)}`
+                );
             }
             this.nodeId = nodeIdOrTimestamp;
             this.count = count;
@@ -122,9 +125,9 @@ export class Clock {
 
         if (!Clock.validate(nodeIdOrTimestamp)) {
             throw new Error(
-                `Timestamps must be a string or an instance of Timestamp but is: "${JSON.stringify(
+                `Timestamps must be a string or an instance of Timestamp but is ${valueWithType(
                     nodeIdOrTimestamp
-                )}"`
+                )}`
             );
         }
         [this.nodeId, this.count] = Clock.split(nodeIdOrTimestamp);

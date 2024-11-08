@@ -30,7 +30,8 @@ import {
     generateRandomId,
     pathStringToArray,
     isPathToItemArrayItem,
-    isObjectArray
+    isObjectArray,
+    valueWithType
 } from './utils.js';
 import {
     ItemArray,
@@ -295,15 +296,9 @@ export class BaseJsonCRDT<O extends object = object> {
      * @param timestamps The initial timestamp object, if not provided it will be inferred from the data
      * @returns A new CRDT instance
      */
-    constructor({
-        data,
-        timestamps,
-        pathsToItemArrays
-    }: {
-        data: O;
-        timestamps?: NewTimestamps<O>;
-        pathsToItemArrays?: string[];
-    }) {
+    constructor(props: { data: O; timestamps?: NewTimestamps<O>; pathsToItemArrays?: string[] }) {
+        const { data, timestamps, pathsToItemArrays } = props;
+
         if (!timestamps) {
             // case where we are initializing from scratch
             this.timestampObj = {} as NewTimestamps<O>;
@@ -315,7 +310,8 @@ export class BaseJsonCRDT<O extends object = object> {
         }
         if (!pathsToItemArrays) {
             throw new Error(
-                'Both timestamps and pathsToItemArrays must be provided for re-initialization'
+                `Both 'timestamps' and 'pathsToItemArrays' must be provided for re-initialization. Props given: ` +
+                    valueWithType(props)
             );
         }
 
@@ -340,13 +336,17 @@ export class BaseJsonCRDT<O extends object = object> {
                 if (Array.isArray(value)) {
                     if (!isObjectArray(value)) {
                         throw new Error(
-                            `Path ${path} is set as item array but is a non-object array: (${value})`
+                            `Path '${path}' is set as item array but is a non-object array: ${valueWithType(
+                                value
+                            )}`
                         );
                     }
                     set(data, pathStringToArray(path), itemArrayToObject(setIdToArrayItems(value)));
                 } else {
                     throw new Error(
-                        `Path ${path} is set as item array but is neither array nor undefined but ${typeof value} (${value})`
+                        `Path '${path}' is set as item array but is neither array nor undefined but ${valueWithType(
+                            value
+                        )}`
                     );
                 }
             } else {
@@ -463,7 +463,11 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
 
-        throw new Error('Unhandled newValue type!');
+        throw new Error(
+            `Unhandled new value ${valueWithType(newValue)} at path '${pathArrayToString(
+                path
+            )}', with a current value of ${valueWithType(currentValue)}`
+        );
     }
 
     _insertNewValue({
@@ -627,13 +631,17 @@ export class BaseJsonCRDT<O extends object = object> {
 
         if (isPathToItemArrayAncestor(this.pathsToItemArrays, path)) {
             throw new Error(
-                `Path ${pathString} is an ancestor of an item array and cannot be updated directly`
+                `Path '${pathString}' is an ancestor of an item array and cannot be updated directly with ${valueWithType(
+                    newValue
+                )}`
             );
         }
         if (isPathToItemArray(this.pathsToItemArrays, path)) {
             if (!isEmptyArray(newValue)) {
                 throw new Error(
-                    `Path ${pathString} is an item array and cannot be updated directly with ${newValue}`
+                    `Path '${pathString}' is an item array and cannot be updated directly with ${valueWithType(
+                        newValue
+                    )}`
                 );
             }
             if (currentValue === undefined) {
@@ -645,7 +653,9 @@ export class BaseJsonCRDT<O extends object = object> {
 
         if (isPathToItemArrayItem(this.pathsToItemArrays, path)) {
             throw new Error(
-                `Path ${pathString} is an item array item and cannot be updated directly. Attempted to update with ${newValue}`
+                `Path '${pathString}' is an item array item and cannot be updated directly. Attempted to update with ${valueWithType(
+                    newValue
+                )}`
             );
         }
 
@@ -653,7 +663,11 @@ export class BaseJsonCRDT<O extends object = object> {
         if (isPathToItemArrayIndex(path)) {
             const itemArrayPath = itemArrayPathFromIndexPath(path);
             if (!this._isPathToItemArray(itemArrayPath)) {
-                throw new Error(`Item array created at illegal path: '${itemArrayPath}'`);
+                throw new Error(
+                    `Item array created at illegal path '${pathArrayToString(
+                        itemArrayPath
+                    )}'. Allowed paths are '${Array.from(this.pathsToItemArrays).join(', ')}'`
+                );
             }
             this._updateItemArrayIndex(props);
             return;
@@ -678,7 +692,11 @@ export class BaseJsonCRDT<O extends object = object> {
             return;
         }
 
-        throw new Error('Unhandled update case!');
+        throw new Error(
+            `Unhandled update case at path '${pathString}' with current value ${valueWithType(
+                currentValue
+            )} and new value ${valueWithType(newValue)}`
+        );
     }
 
     /**
