@@ -77,6 +77,7 @@ export type SerializedBaseJsonCRDT<O extends object> = {
 
 export type ItemArrayObjectItem = HasId & { _index: number } & unknown;
 export type ItemArrayObject = Record<string | number, ItemArrayObjectItem>;
+export type ItemArrayDiff = Record<ItemArrayObjectItem['id'], object>;
 
 export type SerializedJsonCRDT<O extends object> = {
     crdt: SerializedBaseJsonCRDT<O>;
@@ -128,3 +129,9 @@ export type DebugCombinedSnapshot = {
 
 export type DebugLevel = 'updates' | 'mutations' | 'all';
 export type DebugFlagOrLevel = boolean | DebugLevel;
+
+export type CalculateDiffOptions = {
+    allowedKeys?: null | Set<string>;
+    ignorePaths?: null | Set<string>;
+    pathsToItemArrays?: string[] | Set<string>;
+};

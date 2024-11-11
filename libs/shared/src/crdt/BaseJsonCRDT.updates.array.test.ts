@@ -205,8 +205,7 @@ test(`item array can be cleared of all items and filled with new items again`, t
     });
 });
 
-// TODO: make this test pass
-test.failing('primitive value can not replace existing item array', t => {
+test('primitive value can not replace existing item array', t => {
     const crdt = new BaseJsonCRDT({
         data: {
             arr: [
@@ -217,12 +216,14 @@ test.failing('primitive value can not replace existing item array', t => {
         pathsToItemArrays: ['arr']
     });
 
-    crdt.update(
-        {
-            arr: 'primitive value'
-        },
-        '1-1'
-    );
+    t.throws(() => {
+        crdt.update(
+            {
+                arr: 'primitive value'
+            },
+            '1-1'
+        );
+    });
 
     t.deepEqual(crdt.data(), {
         arr: [
