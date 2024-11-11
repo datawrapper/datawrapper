@@ -1,5 +1,11 @@
 import { Clock } from './Clock.js';
-import type { DebugFlagOrLevel, DebugHistoryEntry, DebugSnapshot, Timestamp } from './types.js';
+import type {
+    DebugFlagOrLevel,
+    DebugHistoryEntry,
+    DebugSnapshot,
+    Timestamp,
+    CalculateDiffOptions
+} from './types.js';
 
 export type Diff<O extends object | string | number> = O;
 
@@ -21,11 +27,7 @@ export interface CRDT<O extends object | string | number> {
     createUpdate(diff: Diff<O>): Update<O>;
     calculateDiff(
         newData: O,
-        options?: {
-            allowedKeys?: Set<string>;
-            ignorePaths?: Set<string> | null;
-            pathsToItemArrays?: string[];
-        }
+        options?: Pick<CalculateDiffOptions, 'allowedKeys' | 'ignorePaths'>
     ): Diff<O>;
     data(): O;
 

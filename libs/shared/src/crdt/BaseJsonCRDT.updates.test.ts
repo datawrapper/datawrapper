@@ -177,7 +177,7 @@ test('reinsertions with outdated timestamps get denied', t => {
     t.deepEqual(crdt.data(), { b: 'value' });
 });
 
-test.failing('deleting an item array deletes all items instead', t => {
+test('deleting an item array is not possible', t => {
     // this is not a safe operation, the conversion of the deletion should be handled in the calculateDiff
     const data = {
         arr: [
@@ -185,15 +185,16 @@ test.failing('deleting an item array deletes all items instead', t => {
             { id: '2', val: 'val2' }
         ]
     };
-    const crdt = new BaseJsonCRDT({ data });
+    const crdt = new BaseJsonCRDT({ data, pathsToItemArrays: ['arr'] });
 
-    // delete item array
-    crdt.update({ arr: null }, '1-2');
+    t.throws(() => crdt.update({ arr: null }, '1-2'));
 
-    // re-inserting deleted item should not work
-    crdt.update({ arr: { 1: { _index: 1 } } }, '1-10');
-
-    t.deepEqual(crdt.data(), { arr: [] });
+    t.deepEqual(crdt.data(), {
+        arr: [
+            { id: '1', val: 'val1' },
+            { id: '2', val: 'val2' }
+        ]
+    });
 });
 
 test('inserting empty object: new path', t => {

@@ -5,7 +5,8 @@ import type {
     Timestamp,
     SerializedBaseJsonCRDT,
     SerializedJsonCRDT,
-    DebugFlagOrLevel
+    DebugFlagOrLevel,
+    CalculateDiffOptions
 } from './types.js';
 import { typeofObjectProperties } from './utils.js';
 
@@ -122,15 +123,9 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
 
     calculateDiff(
         newData: O,
-        options?: {
-            allowedKeys?: Set<string> | null;
-            ignorePaths?: Set<string> | null;
-        }
+        options?: Pick<CalculateDiffOptions, 'allowedKeys' | 'ignorePaths'>
     ): Diff<O> {
-        return BaseJsonCRDT.calculateDiff(this.crdt.data(), newData, {
-            ...options,
-            pathsToItemArrays: this.crdt.pathsToItemArrays
-        }) as O;
+        return this.crdt.calculateDiff(newData, options) as O;
     }
 
     data(): O {

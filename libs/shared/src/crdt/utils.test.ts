@@ -379,7 +379,7 @@ test('itemArrayPathFromIndexPath - throws error if path is not to item array ind
     t.throws(() => itemArrayPathFromIndexPath([]));
 });
 
-test('isPathToItemArrayAncestor - correctly identifies paths to item array ancestors', t => {
+test('isPathToItemArrayAncestor', t => {
     const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
 
     // path to item array ancestors
@@ -404,7 +404,7 @@ test('isPathToItemArrayAncestor - correctly identifies paths to item array ances
     t.false(isPathToItemArrayAncestor(['ab'], ['a']));
 });
 
-test('isPathToItemArray - correctly identifies paths to item arrays', t => {
+test('isPathToItemArray', t => {
     const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
 
     // path to item array ancestors
@@ -424,7 +424,7 @@ test('isPathToItemArray - correctly identifies paths to item arrays', t => {
     t.false(isPathToItemArray(pathsToItemArrays, ['arr', 'x', 'y']));
 });
 
-test('isPathToItemArrayItem - correctly identifies paths to item array items', t => {
+test('isPathToItemArrayItem', t => {
     const pathsToItemArrays = ['arr', 'a.b', 'a.2.4.r'];
 
     // path to item array ancestors
