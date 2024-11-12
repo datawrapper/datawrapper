@@ -34,8 +34,8 @@ export type Column = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     range(): [any, any];
     name: () => string;
-    value: (index: number) => string | number | boolean | null;
-    values: () => (string | number | boolean | null)[];
+    value: (index: number) => string | number | boolean | Date | null;
+    values: () => (string | number | boolean | Date | null)[];
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
@@ -349,6 +349,7 @@ export type Visualization = {
         column: Column;
         type: 'auto' | 'select' | 'buttons' | 'timescale';
     }) => void;
+    featurePreviews: () => Record<string, boolean>;
     renderingComplete: () => void;
     size: () => [number, number];
     colorMap: () => (color: string) => string;
