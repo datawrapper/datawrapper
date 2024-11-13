@@ -28,7 +28,7 @@ import columnTypes from './columnTypes/index.js';
 import purifyHtml from '@datawrapper/shared/purifyHtml';
 
 /**
- * @class dw.Column
+ * @function dw.Column
  */
 function Column(name_, rows, type, allowedTags) {
     function notEmpty(d) {
