@@ -534,6 +534,7 @@ export type EditorState = {
     plotHasUpdated: boolean;
     draggingOutOfBounds: boolean;
     activeRepeatedAnnotationIndex: null | number;
+    disableAnnotationInteractions: boolean;
     messages: {
         disableControls: string;
     };
