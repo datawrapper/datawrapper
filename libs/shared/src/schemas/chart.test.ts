@@ -1,6 +1,6 @@
 import test from 'ava';
 import Joi from 'joi';
-import { getPartialChartSchema } from './chart';
+import { getPartialChartSchema, themeIdSchema } from './chart';
 
 test('getPartialChartSchema returns the correct schema, and only the given keys', t => {
     const keys = ['title', 'type'];
@@ -27,3 +27,16 @@ test('getPartialChartSchema throws an error if an unknown key is passed', t => {
 
     t.throws(() => getPartialChartSchema(keys));
 });
+
+for (const [id, errorExpected] of [
+    ['datawrapper', false],
+    ['1-dwhj123', false],
+    ['drafts', true],
+    ['a', true],
+    ['$@dw?', true]
+] as const) {
+    test(`themeIdSchema: "${id}" is ${errorExpected ? 'invalid' : 'valid'}`, t => {
+        const { error } = themeIdSchema.validate(id);
+        t.is(!!error, errorExpected);
+    });
+}
