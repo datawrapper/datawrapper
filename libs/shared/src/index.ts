@@ -1,4 +1,4 @@
-export { trackEvent, trackPageView } from './analytics.js';
+export { trackEvent, trackPageView } from './clientEvents.js';
 export { default as area } from './area.js';
 export { default as arrayToObject } from './arrayToObject.js';
 export { default as assignWithEmptyObjects } from './assignWithEmptyObjects.js';

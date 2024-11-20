@@ -100,24 +100,24 @@
         "package.json"
     ],
     "exports": {
-        "./analytics.d.ts": {
-            "require": "./dist/cjs/analytics.d.cts",
-            "default": "./dist/esm/analytics.d.ts"
+        "./clientEvents.d.ts": {
+            "require": "./dist/cjs/clientEvents.d.cts",
+            "default": "./dist/esm/clientEvents.d.ts"
         },
-        "./analytics.js": {
-            "require": "./dist/cjs/analytics.cjs",
-            "types": "./dist/cjs/analytics.d.cts",
-            "default": "./dist/esm/analytics.js"
+        "./clientEvents.js": {
+            "require": "./dist/cjs/clientEvents.cjs",
+            "types": "./dist/cjs/clientEvents.d.cts",
+            "default": "./dist/esm/clientEvents.js"
         },
-        "./analytics": {
-            "require": "./dist/cjs/analytics.cjs",
-            "types": "./dist/cjs/analytics.d.cts",
-            "default": "./dist/esm/analytics.js"
+        "./clientEvents": {
+            "require": "./dist/cjs/clientEvents.cjs",
+            "types": "./dist/cjs/clientEvents.d.cts",
+            "default": "./dist/esm/clientEvents.js"
         },
-        "./dist/cjs/analytics.cjs": {
-            "require": "./dist/cjs/analytics.cjs",
-            "types": "./dist/cjs/analytics.d.cts",
-            "default": "./dist/esm/analytics.js"
+        "./dist/cjs/clientEvents.cjs": {
+            "require": "./dist/cjs/clientEvents.cjs",
+            "types": "./dist/cjs/clientEvents.d.cts",
+            "default": "./dist/esm/clientEvents.js"
         },
         "./area.d.ts": {
             "require": "./dist/cjs/area.d.cts",
