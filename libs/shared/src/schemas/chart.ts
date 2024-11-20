@@ -6,6 +6,7 @@ import { isValidMySQLJSON } from '../validation.js';
 export const themeIdSchema = Joi.string()
     .lowercase()
     .pattern(/^[a-z0-9]+(?:-{1,2}[a-z0-9]+)*$/)
+    .not('drafts')
     .min(2)
     .example('datawrapper');
 
