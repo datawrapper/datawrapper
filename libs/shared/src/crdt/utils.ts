@@ -54,34 +54,6 @@ export const isItemArray = (value: unknown): value is ItemArray => {
     );
 };
 
-export function migrateTimestamps<O extends object>(
-    timestamps: Timestamps<O> | NewTimestamps<O>
-): NewTimestamps<O> {
-    // Convert old structure to new structure
-    // old: { a: '1-3', b: { _self: '1-3', c: '1-3' } }
-    // new { a: { [TIMESTAMP_KEY]: '1-3' }, b: { [TIMESTAMP_KEY]: '1-3', c: { [TIMESTAMP_KEY]: '1-3' } } }
-
-    const newTimestamps: NewTimestamps<O> | Record<string, never> = {};
-
-    iterateObjectPaths(timestamps, (path, value) => {
-        const isMigrated = path[path.length - 1] === TIMESTAMP_KEY;
-        if (isMigrated) {
-            set(newTimestamps, path, value);
-            return;
-        }
-
-        const isSelf = path[path.length - 1] === '_self';
-
-        if (isSelf) {
-            set(newTimestamps, path.slice(0, -1).concat(TIMESTAMP_KEY), value);
-        } else {
-            set(newTimestamps, path.concat(TIMESTAMP_KEY), value);
-        }
-    });
-
-    return newTimestamps as NewTimestamps<O>;
-}
-
 export function hasId(item: unknown): item is HasId {
     return (
         isObject(item) &&

@@ -14,7 +14,6 @@ import {
     isActualObject,
     isEmptyObject,
     isEmptyArray,
-    migrateTimestamps,
     itemArrayToObject,
     assertOneOf,
     removeNullsFromObject,
@@ -86,9 +85,7 @@ export class BaseJsonCRDT<O extends object = object> {
             );
         }
 
-        // TODO: Remove this migration once all existing CRDT instances stored in Redis have been updated to use the new timestamp format.
-        // This will be 1 month (CRDT_STORAGE_DURATION) after this code has gone live.
-        this.timestampObj = migrateTimestamps(timestamps);
+        this.timestampObj = timestamps;
         this.dataObj = data; // data is already in the correct format in this case
         this.pathsToItemArrays = new Set(pathsToItemArrays);
     }
