@@ -490,23 +490,24 @@ export type PxToData = (params: { x: number; y: number; plot?: string; clamped?:
     validPosition?: boolean;
 };
 
-export type SelectedAnnotationProps = {
-    id: null | string;
-    plot: null | string;
-    // Text annotations.
-    x: null | number;
-    y: null | number;
-    dx: null | number;
-    dy: null | number;
+type InternalTextAnnotationPropList = {
+    plot: undefined | string;
+    x: number;
+    y: number;
+    dx: number;
+    dy: number;
     invalidX: boolean;
     invalidY: boolean;
-    width: null | number;
-    height: null | number;
+    width: number;
+    height: number;
     mobileFallback: boolean;
-    text: null | string;
-    // Range annotations.
-    start: null | number;
-    end: null | number;
+    text: string;
+};
+
+type InternalRangeAnnotationPropList = {
+    plot: undefined | string;
+    start: number;
+    end: number;
     invalidStart: boolean;
     invalidEnd: boolean;
     bounds:
@@ -519,10 +520,13 @@ export type SelectedAnnotationProps = {
           };
 };
 
+export type InternalTextAnnotationProps = Record<AnnotationId, InternalTextAnnotationPropList>;
+export type InternalRangeAnnotationProps = Record<AnnotationId, InternalRangeAnnotationPropList>;
+
 export type EditorState = {
     defaults: { text?: TextAnnotation; range?: RangeAnnotation; line?: RangeAnnotation };
-    selectedTextAnnotations: string[];
-    selectedRangeAnnotations: string[];
+    selectedTextAnnotations: AnnotationId[];
+    selectedRangeAnnotations: AnnotationId[];
     createMode: false | 'text' | 'range';
     disableControls: boolean;
     hideConnectorLine: boolean;
@@ -538,5 +542,8 @@ export type EditorState = {
     messages: {
         disableControls: string;
     };
-    selectedAnnotationProps: SelectedAnnotationProps;
+    internalProps: {
+        text: InternalTextAnnotationProps;
+        range: InternalRangeAnnotationProps;
+    };
 };
