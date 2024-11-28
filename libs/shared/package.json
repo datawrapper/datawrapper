@@ -1616,6 +1616,25 @@
             "require": "./dist/cjs/buildChartPath.cjs",
             "types": "./dist/cjs/buildChartPath.d.cts",
             "default": "./dist/esm/buildChartPath.js"
+        },
+        "./buildArchivePath.d.ts": {
+            "require": "./dist/cjs/buildArchivePath.d.cts",
+            "default": "./dist/esm/buildArchivePath.d.ts"
+        },
+        "./buildArchivePath.js": {
+            "require": "./dist/cjs/buildArchivePath.cjs",
+            "types": "./dist/cjs/buildArchivePath.d.cts",
+            "default": "./dist/esm/buildArchivePath.js"
+        },
+        "./buildArchivePath": {
+            "require": "./dist/cjs/buildArchivePath.cjs",
+            "types": "./dist/cjs/buildArchivePath.d.cts",
+            "default": "./dist/esm/buildArchivePath.js"
+        },
+        "./dist/cjs/buildArchivePath.cjs": {
+            "require": "./dist/cjs/buildArchivePath.cjs",
+            "types": "./dist/cjs/buildArchivePath.d.cts",
+            "default": "./dist/esm/buildArchivePath.js"
         }
     }
 }

@@ -11,7 +11,7 @@ export function buildChartPath({
     step,
     searchParams
 }: {
-    workspace: string | null | undefined;
+    workspace: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to worksaces, this parameter should become required
     chartId: string;
     step: string | null | undefined;
     searchParams?: URLSearchParams | null;
