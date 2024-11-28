@@ -1597,6 +1597,25 @@
             "require": "./dist/cjs/emoji/emojis.cjs",
             "types": "./dist/cjs/emoji/emojis.d.cts",
             "default": "./dist/esm/emoji/emojis.js"
+        },
+        "./buildChartPath.d.ts": {
+            "require": "./dist/cjs/buildChartPath.d.cts",
+            "default": "./dist/esm/buildChartPath.d.ts"
+        },
+        "./buildChartPath.js": {
+            "require": "./dist/cjs/buildChartPath.cjs",
+            "types": "./dist/cjs/buildChartPath.d.cts",
+            "default": "./dist/esm/buildChartPath.js"
+        },
+        "./buildChartPath": {
+            "require": "./dist/cjs/buildChartPath.cjs",
+            "types": "./dist/cjs/buildChartPath.d.cts",
+            "default": "./dist/esm/buildChartPath.js"
+        },
+        "./dist/cjs/buildChartPath.cjs": {
+            "require": "./dist/cjs/buildChartPath.cjs",
+            "types": "./dist/cjs/buildChartPath.d.cts",
+            "default": "./dist/esm/buildChartPath.js"
         }
     }
 }
