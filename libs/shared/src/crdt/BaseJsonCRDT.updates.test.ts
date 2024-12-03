@@ -1063,7 +1063,7 @@ test('cannot insert into empty object if object timestamp is higher', t => {
     });
 });
 
-test('deleting a non-existant nested value does not delete ancestors without timestamp', t => {
+test('deleting a non-existent nested value does not delete ancestors without timestamp', t => {
     const crdt = new BaseJsonCRDT({
         data: {
             a0: {}
