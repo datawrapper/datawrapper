@@ -1392,6 +1392,25 @@
             "types": "./dist/cjs/truncate.d.cts",
             "default": "./dist/esm/truncate.js"
         },
+        "./types.d.ts": {
+            "require": "./dist/cjs/types.d.cts",
+            "default": "./dist/esm/types.d.ts"
+        },
+        "./types.js": {
+            "require": "./dist/cjs/types.cjs",
+            "types": "./dist/cjs/types.d.cts",
+            "default": "./dist/esm/types.js"
+        },
+        "./types": {
+            "require": "./dist/cjs/types.cjs",
+            "types": "./dist/cjs/types.d.cts",
+            "default": "./dist/esm/types.js"
+        },
+        "./dist/cjs/types.cjs": {
+            "require": "./dist/cjs/types.cjs",
+            "types": "./dist/cjs/types.d.cts",
+            "default": "./dist/esm/types.js"
+        },
         "./units.d.ts": {
             "require": "./dist/cjs/units.d.cts",
             "default": "./dist/esm/units.d.ts"
