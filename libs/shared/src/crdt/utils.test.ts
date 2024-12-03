@@ -142,7 +142,7 @@ test('hasId - returns true for objects with a string or number id property', t =
     t.true(hasId({ id: 1 }));
 });
 
-test('hasId - returns false for non-objects and objects without an id property', t => {
+test('hasId - returns false for non-objects and objects without an id property or an empty string id property', t => {
     t.false(hasId({ id: undefined }));
     t.false(hasId({ id: null }));
     t.false(hasId({ foo: 'bar' }));
@@ -150,6 +150,7 @@ test('hasId - returns false for non-objects and objects without an id property',
     t.false(hasId(null));
     t.false(hasId(false));
     t.false(hasId({}));
+    t.false(hasId({ id: '' }));
 });
 
 test('assertOneOf - does not throw error if at least one callback returns true', t => {

@@ -848,6 +848,34 @@ test('calculateDiff - adding a new item without an id property to item array aut
     });
 });
 
+test('calculateDiff - adding a new item with a duplicate id property to item array automatically generates a new unique id', t => {
+    const oldData = {
+        a: 'test',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 }
+        ]
+    };
+    const newData = {
+        a: 'test',
+        b: [
+            { id: '1', value: 1 },
+            { id: '2', value: 2 },
+            { value: 3, id: '1' } // duplicate id
+        ]
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['b'] });
+    const generatedId = Object.keys(diff.b || {})[0];
+    t.not(generatedId, '1');
+
+    t.deepEqual(diff, {
+        b: {
+            [generatedId]: { id: generatedId, value: 3, _index: 2 }
+        }
+    });
+});
+
 test('calculateDiff - deleting empty item array does not remove the item array as a whole', t => {
     const oldData = {
         a: 'test',
