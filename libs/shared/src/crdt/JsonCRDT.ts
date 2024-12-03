@@ -44,13 +44,6 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         pathsToItemArrays?: string[];
     }) {
         const { nodeId, timestamp, data, serialized, pathsToItemArrays } = props;
-
-        // We need this for backwards compatibility
-        // TODO: remove this once all data in redis has been replaced with the new format (max 30 days)
-        if (serialized && 'pathToItemArrays' in serialized) {
-            serialized.pathsToItemArrays = serialized.pathToItemArrays as string[];
-        }
-
         if (
             !timestamp &&
             !serialized &&
