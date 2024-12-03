@@ -46,6 +46,7 @@ export {
     undefinedToNull
 } from './transformObjectValues.js';
 export { default as truncate } from './truncate.js';
+export type { StringWithAutocomplete } from './types.js';
 export { default as getVersionlessUrl } from './getVersionlessURL.js';
 export { isAllowedSourceUrl, isValidUrl } from './validation.js';
 export {
