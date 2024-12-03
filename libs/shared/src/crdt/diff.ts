@@ -189,6 +189,7 @@ function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]
 
     const diff: ItemArrayDiff = {};
 
+    const targetIds = new Set();
     for (let i = 0; i < targetArray.length; i++) {
         const targetItemRaw = targetArray[i];
 
@@ -200,10 +201,14 @@ function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]
         const targetItem: ItemArrayObjectItem = {
             ...targetItemRaw,
             // Generate a random ID if the item does not have one.
-            id: hasId(targetItemRaw) ? targetItemRaw.id : generateRandomId(),
+            id:
+                hasId(targetItemRaw) && !targetIds.has(targetItemRaw.id)
+                    ? targetItemRaw.id
+                    : generateRandomId(),
             // Already create updated _index so that updates are calculated as part of objectDiff
             _index: i
         };
+        targetIds.add(targetItem.id);
 
         // Array item is new
         if (!sourceItems.has(targetItem.id)) {

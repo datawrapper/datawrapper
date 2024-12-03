@@ -58,7 +58,7 @@ export function hasId(item: unknown): item is HasId {
     return (
         isObject(item) &&
         'id' in item &&
-        (typeof item.id === 'string' || typeof item.id === 'number')
+        ((typeof item.id === 'string' && !!item.id.length) || typeof item.id === 'number')
     );
 }
 
