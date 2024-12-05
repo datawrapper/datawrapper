@@ -71,14 +71,7 @@ type ThemeBlockStyles = {
     // TODO Define the type of the `tabs` property.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tabs?: any;
-    typography?: {
-        color?: string;
-        fontSize?: number;
-        fontWeight?: number | string;
-        lineHeight?: number;
-        typeface?: string;
-        underlined?: boolean;
-    };
+    typography?: TypographyObject;
 };
 
 export type ThemeBlock = {
@@ -125,6 +118,25 @@ type FontWeight =
     | 800
     | 900;
 type TextTransform = 'uppercase' | 'capitalize' | 'lowercase' | 'full-width' | 'none';
+type FontStretch =
+    | 'ultra-condensed'
+    | 'extra-condensed'
+    | 'condensed'
+    | 'semi-condensed'
+    | 'normal'
+    | 'semi-expanded'
+    | 'expanded'
+    | 'extra-expanded'
+    | 'ultra-expanded'
+    | '50%'
+    | '62.5%'
+    | '75%'
+    | '87.5%'
+    | '100%'
+    | '112.5%'
+    | '125%'
+    | '150%'
+    | '200%';
 type TypographyObject = {
     color?: string;
     fontSize?: number;
@@ -132,7 +144,10 @@ type TypographyObject = {
     typeface?: string;
     lineHeight?: number;
     textTransform?: TextTransform;
-    letterSpacing?: string;
+    letterSpacing?: number;
+    fontStretch?: FontStretch;
+    underlined?: boolean;
+    cursive?: boolean;
 };
 type StrokeLineCap = 'butt' | 'round' | 'square';
 type LineWidthStyle = 'style0' | 'style1' | 'style2' | 'style3';
