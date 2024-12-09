@@ -1,6 +1,13 @@
 'use strict';
 
-const AUTH_GUARDS = ['authPublic', 'authGuest', 'authUser', 'authDatawrapperStaff', 'authAdmin'];
+const AUTH_GUARDS = [
+    'authPublic',
+    'authGuest',
+    'authUser',
+    'authDatawrapperStaff',
+    'authFeaturePreview',
+    'authAdmin'
+];
 
 module.exports = {
     meta: {
