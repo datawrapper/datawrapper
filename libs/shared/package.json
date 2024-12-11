@@ -1654,6 +1654,25 @@
             "require": "./dist/cjs/buildArchivePath.cjs",
             "types": "./dist/cjs/buildArchivePath.d.cts",
             "default": "./dist/esm/buildArchivePath.js"
+        },
+        "./buildCreatePath.d.ts": {
+            "require": "./dist/cjs/buildCreatePath.d.cts",
+            "default": "./dist/esm/buildCreatePath.d.ts"
+        },
+        "./buildCreatePath.js": {
+            "require": "./dist/cjs/buildCreatePath.cjs",
+            "types": "./dist/cjs/buildCreatePath.d.cts",
+            "default": "./dist/esm/buildCreatePath.js"
+        },
+        "./buildCreatePath": {
+            "require": "./dist/cjs/buildCreatePath.cjs",
+            "types": "./dist/cjs/buildCreatePath.d.cts",
+            "default": "./dist/esm/buildCreatePath.js"
+        },
+        "./dist/cjs/buildCreatePath.cjs": {
+            "require": "./dist/cjs/buildCreatePath.cjs",
+            "types": "./dist/cjs/buildCreatePath.d.cts",
+            "default": "./dist/esm/buildCreatePath.js"
         }
     }
 }
