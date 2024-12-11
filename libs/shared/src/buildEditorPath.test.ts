@@ -1,5 +1,5 @@
 import test from 'ava';
-import { buildChartPath } from './buildChartPath';
+import { buildEditorPath } from './buildEditorPath';
 
 const testCases = [
     [{ chartId: 'ABCDE' }, '/edit/ABCDE/edit'],
@@ -11,6 +11,10 @@ const testCases = [
     [{ workspace: null, chartId: 'ABCDE', step: 'anotherStep' }, '/edit/ABCDE/anotherStep'],
     [{ workspace: 'test', chartId: 'ABCDE', step: null }, '/test/edit/ABCDE/edit'],
     [{ workspace: null, chartId: 'ABCDE', step: null }, '/edit/ABCDE/edit'],
+    [
+        { workspace: null, chartId: 'ABCDE', step: 'visualize#refine' },
+        '/edit/ABCDE/visualize#refine'
+    ],
     [
         {
             chartId: 'ABCDE',
@@ -30,17 +34,27 @@ const testCases = [
             })
         },
         '/edit/ABCDE/edit?a=1&b=2'
+    ],
+
+    [
+        {
+            workspace: 'ws',
+            chartId: 'ABCDE',
+            step: 'visualize#refine',
+            searchParams: new URLSearchParams({ comment: '123' })
+        },
+        '/ws/edit/ABCDE/visualize#refine?comment=123'
     ]
 ];
 
 for (const [input, expected] of testCases) {
-    test(`buildChartPath for ${JSON.stringify(input)} is "${expected}"`, t => {
+    test(`buildEditorPath for ${JSON.stringify(input)} is "${expected}"`, t => {
         const { workspace, chartId, step, searchParams } = input as {
             workspace?: string | null;
             chartId: string;
             step?: string | null;
             searchParams?: URLSearchParams | null;
         };
-        t.is(buildChartPath({ workspace, chartId, step, searchParams }), expected as string);
+        t.is(buildEditorPath({ workspace, chartId, step, searchParams }), expected as string);
     });
 }

@@ -5,15 +5,15 @@
  * There is no validation of the parameters, so the caller is responsible for ensuring that they are valid.
  */
 
-export function buildChartPath({
+export function buildEditorPath({
     workspace,
     chartId,
     step,
     searchParams
 }: {
-    workspace: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to worksaces, this parameter should become required
+    workspace?: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to worksaces, this parameter should become required
     chartId: string;
-    step: string | null | undefined;
+    step?: string | null;
     searchParams?: URLSearchParams | null;
 }): string {
     let path = '/';
