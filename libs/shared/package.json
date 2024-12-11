@@ -1617,24 +1617,24 @@
             "types": "./dist/cjs/emoji/emojis.d.cts",
             "default": "./dist/esm/emoji/emojis.js"
         },
-        "./buildChartPath.d.ts": {
-            "require": "./dist/cjs/buildChartPath.d.cts",
-            "default": "./dist/esm/buildChartPath.d.ts"
+        "./buildEditorPath.d.ts": {
+            "require": "./dist/cjs/buildEditorPath.d.cts",
+            "default": "./dist/esm/buildEditorPath.d.ts"
         },
-        "./buildChartPath.js": {
-            "require": "./dist/cjs/buildChartPath.cjs",
-            "types": "./dist/cjs/buildChartPath.d.cts",
-            "default": "./dist/esm/buildChartPath.js"
+        "./buildEditorPath.js": {
+            "require": "./dist/cjs/buildEditorPath.cjs",
+            "types": "./dist/cjs/buildEditorPath.d.cts",
+            "default": "./dist/esm/buildEditorPath.js"
         },
-        "./buildChartPath": {
-            "require": "./dist/cjs/buildChartPath.cjs",
-            "types": "./dist/cjs/buildChartPath.d.cts",
-            "default": "./dist/esm/buildChartPath.js"
+        "./buildEditorPath": {
+            "require": "./dist/cjs/buildEditorPath.cjs",
+            "types": "./dist/cjs/buildEditorPath.d.cts",
+            "default": "./dist/esm/buildEditorPath.js"
         },
-        "./dist/cjs/buildChartPath.cjs": {
-            "require": "./dist/cjs/buildChartPath.cjs",
-            "types": "./dist/cjs/buildChartPath.d.cts",
-            "default": "./dist/esm/buildChartPath.js"
+        "./dist/cjs/buildEditorPath.cjs": {
+            "require": "./dist/cjs/buildEditorPath.cjs",
+            "types": "./dist/cjs/buildEditorPath.d.cts",
+            "default": "./dist/esm/buildEditorPath.js"
         },
         "./buildArchivePath.d.ts": {
             "require": "./dist/cjs/buildArchivePath.d.cts",
