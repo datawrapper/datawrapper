@@ -119,6 +119,70 @@ const testCases = [
             searchParams: null
         },
         '/archive'
+    ],
+
+    // with office param
+
+    [
+        {
+            teamId: null,
+            folderId: null,
+            workspace: null,
+            searchParams: new URLSearchParams({
+                office: '1'
+            })
+        },
+        '/integrations/powerpoint/archive?office=1'
+    ],
+    [
+        {
+            teamId: null,
+            folderId: null,
+            workspace: 'test-workspace', // TODO: @workspaces: we should include workspaces in the powerpoint path as well
+            searchParams: new URLSearchParams({
+                office: '1'
+            })
+        },
+        '/integrations/powerpoint/archive?office=1'
+    ],
+    [
+        {
+            teamId: 'test-team',
+            folderId: null,
+            workspace: null,
+            searchParams: new URLSearchParams({
+                office: 'abc'
+            })
+        },
+        '/integrations/powerpoint/archive/team/test-team?office=abc'
+    ],
+    [
+        {
+            teamId: 'test-team',
+            folderId: '123',
+            workspace: null,
+            searchParams: new URLSearchParams({
+                office: 'abc'
+            })
+        },
+        '/integrations/powerpoint/archive/team/test-team/123?office=abc'
+    ],
+    [
+        {
+            teamId: 'test-team',
+            folderId: '123',
+            workspace: 'some-workspace',
+            searchParams: new URLSearchParams({
+                office: 'abc'
+            })
+        },
+        '/integrations/powerpoint/archive/team/test-team/123?office=abc'
+    ],
+    [
+        {
+            searchParams: new URLSearchParams({ a: 'b', number: '000', office: '1' })
+        },
+        '/integrations/powerpoint/archive?a=b&number=000&office=1'
     ]
 ];
 

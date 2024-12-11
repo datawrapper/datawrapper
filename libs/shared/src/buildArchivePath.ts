@@ -16,9 +16,14 @@ export function buildArchivePath({
     searchParams?: URLSearchParams | null;
 }) {
     const params = searchParams?.toString();
+
+    let prefix = workspace ? `/${workspace}` : '';
+    if (searchParams?.has('office')) {
+        prefix = `/integrations/powerpoint`; // TODO: @workspaces: we might want to include workspaces in the powerpoint path as well at some point
+    }
+
     const url =
-        `/${workspace ? `${workspace}/` : ''}archive${teamId ? `/team/${teamId}` : ''}${
-            folderId ? `/${folderId}` : ''
-        }` + (params ? `?${params}` : '');
+        `${prefix}/archive${teamId ? `/team/${teamId}` : ''}${folderId ? `/${folderId}` : ''}` +
+        (params ? `?${params}` : '');
     return url;
 }
