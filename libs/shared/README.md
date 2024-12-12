@@ -16,6 +16,12 @@ shared.purifyHtml();
 shared.httpReq();
 ```
 
+## Adding new files
+
+If you want to add a new file, you also need to add correct entries for this file to the exports field in `package.json`.
+This is needed so that different environments that import the files can locate the correct module.
+Take a look at how existing files are referenced in exports field in `package.json` and do the same for your new file.
+
 ## API reference
 
 -   [\_\_(key, scope)](#__) ⇒ <code>string</code>

@@ -613,44 +613,6 @@
             "types": "./dist/cjs/get.d.cts",
             "default": "./dist/esm/get.js"
         },
-        "./getOverlayColor.d.ts": {
-            "require": "./dist/cjs/getOverlayColor.d.cts",
-            "default": "./dist/esm/getOverlayColor.d.ts"
-        },
-        "./getOverlayColor.js": {
-            "require": "./dist/cjs/getOverlayColor.cjs",
-            "types": "./dist/cjs/getOverlayColor.d.cts",
-            "default": "./dist/esm/getOverlayColor.js"
-        },
-        "./getOverlayColor": {
-            "require": "./dist/cjs/getOverlayColor.cjs",
-            "types": "./dist/cjs/getOverlayColor.d.cts",
-            "default": "./dist/esm/getOverlayColor.js"
-        },
-        "./dist/cjs/getOverlayColor.cjs": {
-            "require": "./dist/cjs/getOverlayColor.cjs",
-            "types": "./dist/cjs/getOverlayColor.d.cts",
-            "default": "./dist/esm/getOverlayColor.js"
-        },
-        "./getOverlayColumnTitle.d.ts": {
-            "require": "./dist/cjs/getOverlayColumnTitle.d.cts",
-            "default": "./dist/esm/getOverlayColumnTitle.d.ts"
-        },
-        "./getOverlayColumnTitle.js": {
-            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
-            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
-            "default": "./dist/esm/getOverlayColumnTitle.js"
-        },
-        "./getOverlayColumnTitle": {
-            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
-            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
-            "default": "./dist/esm/getOverlayColumnTitle.js"
-        },
-        "./dist/cjs/getOverlayColumnTitle.cjs": {
-            "require": "./dist/cjs/getOverlayColumnTitle.cjs",
-            "types": "./dist/cjs/getOverlayColumnTitle.d.cts",
-            "default": "./dist/esm/getOverlayColumnTitle.js"
-        },
         "./getValueOrDefault.d.ts": {
             "require": "./dist/cjs/getValueOrDefault.d.cts",
             "default": "./dist/esm/getValueOrDefault.d.ts"
@@ -1673,6 +1635,25 @@
             "require": "./dist/cjs/buildCreatePath.cjs",
             "types": "./dist/cjs/buildCreatePath.d.cts",
             "default": "./dist/esm/buildCreatePath.js"
+        },
+        "./overlays.d.ts": {
+            "require": "./dist/cjs/overlays.d.cts",
+            "default": "./dist/esm/overlays.d.ts"
+        },
+        "./overlays.js": {
+            "require": "./dist/cjs/overlays.cjs",
+            "types": "./dist/cjs/overlays.d.cts",
+            "default": "./dist/esm/overlays.js"
+        },
+        "./overlays": {
+            "require": "./dist/cjs/overlays.cjs",
+            "types": "./dist/cjs/overlays.d.cts",
+            "default": "./dist/esm/overlays.js"
+        },
+        "./dist/cjs/overlays.cjs": {
+            "require": "./dist/cjs/overlays.cjs",
+            "types": "./dist/cjs/overlays.d.cts",
+            "default": "./dist/esm/overlays.js"
         }
     }
 }
