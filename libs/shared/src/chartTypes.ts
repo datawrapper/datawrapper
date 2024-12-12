@@ -131,8 +131,17 @@ export type Metadata = {
 };
 
 export type Overlay = {
+    id: string;
+    type: 'value' | 'range';
+    from: string;
+    to: string;
     color: number | string;
-    opacity: number | `${number}`;
+    opacity: number;
+    invisible: boolean;
+    labelDirectly: boolean;
+    showInColorKey: boolean;
+    pattern: 'solid' | 'diagonal-up' | 'diagonal-down';
+    title: string;
 };
 
 export type TextDirection = 'rtl' | 'ltr';
