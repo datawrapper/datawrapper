@@ -90,7 +90,7 @@
         "skin-tone": "^4.0.0"
     },
     "overrides": {
-        "esbuild": "^0.20.1"
+        "esbuild": "^0.21.5"
     },
     "publishConfig": {
         "access": "public"
