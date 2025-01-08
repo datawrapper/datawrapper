@@ -354,7 +354,32 @@ export type ThemeData = {
     defaultHeaderRegion?: string;
 };
 
-/**
- * @deprecated Please use ThemeData instead
- */
-export type Theme = ThemeData;
+export type Theme = {
+    id: string;
+    title: string;
+    data: ThemeData;
+    less: string;
+    assets: Record<
+        string,
+        | {
+              url: string;
+              type: string;
+          }
+        | {
+              type: string;
+              files: {
+                  eot: string;
+                  svg: string;
+                  ttf: string;
+                  woff: string;
+                  woff2: string;
+              };
+              method: string;
+          }
+    >;
+    fontsCSS: string;
+    creatorId?: number;
+    deletedAt: unknown;
+    lastModifiedAt: string;
+    workspace?: string;
+};
