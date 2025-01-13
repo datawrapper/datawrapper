@@ -354,10 +354,14 @@ export type Visualization = {
     darkMode: (darkMode?: boolean) => boolean;
     axes: AxesGetter;
     libraries: () => ChartLibraries;
-    addFilterUI: (args: {
-        column: Column;
-        type: 'auto' | 'select' | 'buttons' | 'timescale';
-    }) => void;
+    addFilterUI: (
+        args:
+            | {
+                  column: Column;
+                  type: 'auto' | 'select' | 'buttons' | 'timescale';
+              }
+            | false
+    ) => void;
     featurePreviews: () => Record<string, boolean>;
     renderingComplete: () => void;
     size: () => [number, number];
