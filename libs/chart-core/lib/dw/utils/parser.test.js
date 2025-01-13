@@ -251,16 +251,16 @@ test('custom functions', t => {
 const symbols = [
     {
         ID: 'USA',
-        value: 1234
+        value: 1234,
     },
     {
         ID: 'Canada',
-        value: 876
+        value: 876,
     },
     {
         ID: 'Mexico',
-        value: 7390
-    }
+        value: 7390,
+    },
 ];
 
 test('PLUCK', t => {
@@ -397,7 +397,7 @@ test('PLUCK xss', t => {
     global.alert = sinon.spy();
     const expressions = [
         `FOLD(f(e, z, i) = z, "z", PLUCK([ATAN2.__proto__], "constructor"))("alert(1)")()`,
-        `FOLD(f(e, z, i) = z, "z", PLUCK(["a".sub.__proto__], "constructor"))("alert(1)")()`
+        `FOLD(f(e, z, i) = z, "z", PLUCK(["a".sub.__proto__], "constructor"))("alert(1)")()`,
     ];
     expressions.forEach(expr => t.throws(() => parser.evaluate(expr)));
     t.is(global.alert.notCalled, true);

@@ -26,7 +26,7 @@ function addComputedColumns(chart, dataset) {
         virtualColumns = Object.keys(virtualColumns).reduce((acc, cur) => {
             acc.push({
                 name: cur,
-                formula: virtualColumns[cur]
+                formula: virtualColumns[cur],
             });
             return acc;
         }, []);
@@ -47,7 +47,7 @@ function addComputedColumns(chart, dataset) {
                 max,
                 sum: col.sum(),
                 mean: col.mean(),
-                median: col.median()
+                median: col.median(),
             };
         } else if (col.type() === 'date') {
             const [min, max] = col.range();
@@ -65,7 +65,7 @@ function addComputedColumns(chart, dataset) {
             formula: val.formula,
             visited: 0,
             computed: false,
-            dependsOn: []
+            dependsOn: [],
         });
     }, new Map());
 
@@ -92,7 +92,7 @@ function addComputedColumns(chart, dataset) {
                 },
                 variables() {
                     return [];
-                }
+                },
             };
         }
     });
@@ -134,8 +134,8 @@ function addComputedColumns(chart, dataset) {
             errorCol.errors = [
                 {
                     message: col.error,
-                    row: 'all'
-                }
+                    row: 'all',
+                },
             ];
             col.column = errorCol;
         } else {
@@ -197,7 +197,7 @@ function addComputedColumns(chart, dataset) {
 
         const values = data.map(function (row, index) {
             const context = {
-                ROWNUMBER: index
+                ROWNUMBER: index,
             };
             each(row, function (val, key) {
                 if (!columnNameToVar[key]) return;
@@ -251,7 +251,7 @@ function addComputedColumns(chart, dataset) {
                 max,
                 sum: virtualColumn.sum(),
                 mean: virtualColumn.mean(),
-                median: virtualColumn.median()
+                median: virtualColumn.median(),
             };
         } else if (virtualColumn.type() === 'date') {
             const [min, max] = virtualColumn.range();

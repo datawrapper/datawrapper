@@ -18,7 +18,7 @@ function withRoom(testFn: (room: FakeRoom) => Promise<void> | void) {
         sendSelectionChangedMessage: sinon.fake(),
         publishUserState: sinon.fake(),
         disconnect: sinon.fake(),
-        reconnect: sinon.fake()
+        reconnect: sinon.fake(),
     };
 
     return testFn(room);
@@ -452,7 +452,7 @@ test('[offset class] registers element and display options', async t => {
                 t.deepEqual(get(room).pinAnchors.get(path), {
                     element,
                     offset,
-                    classList: ['is-flex', 'bg-blue']
+                    classList: ['is-flex', 'bg-blue'],
                 });
             }
         );
@@ -471,7 +471,7 @@ test('[offset class] updates display options', async t => {
                 t.deepEqual(get(room).pinAnchors.get(path), {
                     element,
                     offset,
-                    classList: ['is-flex', 'bg-blue']
+                    classList: ['is-flex', 'bg-blue'],
                 });
 
                 const newOffset = { x: 3, y: 4 };
@@ -482,7 +482,7 @@ test('[offset class] updates display options', async t => {
                 t.deepEqual(get(room).pinAnchors.get(path), {
                     element,
                     offset: newOffset,
-                    classList: ['is-flex', 'bg-red']
+                    classList: ['is-flex', 'bg-red'],
                 });
             }
         );

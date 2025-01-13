@@ -86,7 +86,7 @@ test('should invoke getters and setters', t => {
         },
         get other() {
             return 'other';
-        }
+        },
     };
     const locals = {
         get name() {
@@ -94,7 +94,7 @@ test('should invoke getters and setters', t => {
         },
         get username() {
             return 'doowb';
-        }
+        },
     };
     const result = assignWithEmptyObjects(config, locals);
     t.true(result === config);
@@ -229,7 +229,7 @@ test('should deeply mix the properties of object into the first object.', t => {
         { a: { cc: 'cc', dd: { ii: 'jj' } } }
     );
     t.deepEqual(b, {
-        a: { aa: 'aa', dd: { ee: 'ff', gg: 'hh', ii: 'jj' }, bb: 'bb', cc: 'cc' }
+        a: { aa: 'aa', dd: { ee: 'ff', gg: 'hh', ii: 'jj' }, bb: 'bb', cc: 'cc' },
     });
 });
 
@@ -343,17 +343,17 @@ test('should update properties of array items containing IDs', t => {
     const target = {
         list: [
             { id: 1, name: 'A' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     };
     const source = {
-        list: [{ id: 1, name: 'New name' }, { id: 2 }]
+        list: [{ id: 1, name: 'New name' }, { id: 2 }],
     };
     t.deepEqual(assignWithEmptyObjects(target, source), {
         list: [
             { id: 1, name: 'New name' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     });
 });
 
@@ -361,14 +361,14 @@ test('should delete properties of array items containing IDs', t => {
     const target = {
         list: [
             { id: 1, name: 'A' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     };
     const source = {
-        list: [{ id: 1, name: undefined }, { id: 2 }]
+        list: [{ id: 1, name: undefined }, { id: 2 }],
     };
     t.deepEqual(assignWithEmptyObjects(target, source), {
-        list: [{ id: 1 }, { id: 2, name: 'B' }]
+        list: [{ id: 1 }, { id: 2, name: 'B' }],
     });
 });
 
@@ -376,17 +376,17 @@ test('should update the order of array items containing IDs', t => {
     const target = {
         list: [
             { id: 1, name: 'A' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     };
     const source = {
-        list: [{ id: 2 }, { id: 1 }]
+        list: [{ id: 2 }, { id: 1 }],
     };
     t.deepEqual(assignWithEmptyObjects(target, source), {
         list: [
             { id: 2, name: 'B' },
-            { id: 1, name: 'A' }
-        ]
+            { id: 1, name: 'A' },
+        ],
     });
 });
 
@@ -394,18 +394,18 @@ test('should add new items to the end of the array', t => {
     const target = {
         list: [
             { id: 1, name: 'A' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     };
     const source = {
-        list: [{ id: 1 }, { id: 2 }, { id: 3, name: 'C' }]
+        list: [{ id: 1 }, { id: 2 }, { id: 3, name: 'C' }],
     };
     t.deepEqual(assignWithEmptyObjects(target, source), {
         list: [
             { id: 1, name: 'A' },
             { id: 2, name: 'B' },
-            { id: 3, name: 'C' }
-        ]
+            { id: 3, name: 'C' },
+        ],
     });
 });
 
@@ -414,16 +414,16 @@ test('should remove items from the end of the array', t => {
         list: [
             { id: 1, name: 'A' },
             { id: 2, name: 'B' },
-            { id: 3, name: 'C' }
-        ]
+            { id: 3, name: 'C' },
+        ],
     };
     const source = {
-        list: [{ id: 1 }, { id: 2 }]
+        list: [{ id: 1 }, { id: 2 }],
     };
     t.deepEqual(assignWithEmptyObjects(target, source), {
         list: [
             { id: 1, name: 'A' },
-            { id: 2, name: 'B' }
-        ]
+            { id: 2, name: 'B' },
+        ],
     });
 });

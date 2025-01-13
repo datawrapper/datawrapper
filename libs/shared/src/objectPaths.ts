@@ -4,12 +4,12 @@ type Concat<TPrefix extends string, TRest extends string | undefined> = TRest ex
 
 type ConcatArray<
     TPrefix extends string,
-    TRest extends Readonly<string[]> | undefined
+    TRest extends Readonly<string[]> | undefined,
 > = TRest extends undefined
     ? Readonly<[TPrefix]>
     : TRest extends Readonly<string[]>
-    ? Readonly<[TPrefix, ...TRest]>
-    : never;
+      ? Readonly<[TPrefix, ...TRest]>
+      : never;
 
 /**
  * const x1 = { a: { b: 'c' }, d: 'e', f: ['g', 'h', { i: 'j' } ] } as const;
@@ -24,37 +24,39 @@ type ConcatArray<
  * type X4 = { a?: { b?: 'c' }, d: 'e' };
  * StringPaths<X4> = "a" | "d" | "a.b"
  */
-type StringPaths<TObj> = TObj extends Record<string | number | symbol, unknown>
-    ? {
-          [TKey in keyof TObj & (string | number)]:
-              | `${TKey}`
-              | Concat<`${TKey}`, StringPaths<TObj[TKey]>>;
-      }[keyof TObj & string]
-    : TObj extends Readonly<unknown[]>
-    ? `0` extends keyof TObj
+type StringPaths<TObj> =
+    TObj extends Record<string | number | symbol, unknown>
         ? {
-              [TKey in keyof TObj & `${number}`]:
+              [TKey in keyof TObj & (string | number)]:
                   | `${TKey}`
                   | Concat<`${TKey}`, StringPaths<TObj[TKey]>>;
-          }[keyof TObj & `${number}`]
-        : `${number}` | Concat<`${number}`, StringPaths<TObj[number]>>
-    : undefined;
+          }[keyof TObj & string]
+        : TObj extends Readonly<unknown[]>
+          ? `0` extends keyof TObj
+              ? {
+                    [TKey in keyof TObj & `${number}`]:
+                        | `${TKey}`
+                        | Concat<`${TKey}`, StringPaths<TObj[TKey]>>;
+                }[keyof TObj & `${number}`]
+              : `${number}` | Concat<`${number}`, StringPaths<TObj[number]>>
+          : undefined;
 
-type ArrayPaths<TObj> = TObj extends Record<string | number | symbol, unknown>
-    ? {
-          [TKey in keyof TObj & (string | number)]:
-              | [`${TKey}`]
-              | ConcatArray<`${TKey}`, ArrayPaths<TObj[TKey]>>;
-      }[keyof TObj & string]
-    : TObj extends Readonly<unknown[]>
-    ? `0` extends keyof TObj
+type ArrayPaths<TObj> =
+    TObj extends Record<string | number | symbol, unknown>
         ? {
-              [TKey in keyof TObj & `${number}`]:
+              [TKey in keyof TObj & (string | number)]:
                   | [`${TKey}`]
                   | ConcatArray<`${TKey}`, ArrayPaths<TObj[TKey]>>;
-          }[keyof TObj & `${number}`]
-        : [`${number}`] | ConcatArray<`${number}`, ArrayPaths<TObj[number]>>
-    : undefined;
+          }[keyof TObj & string]
+        : TObj extends Readonly<unknown[]>
+          ? `0` extends keyof TObj
+              ? {
+                    [TKey in keyof TObj & `${number}`]:
+                        | [`${TKey}`]
+                        | ConcatArray<`${TKey}`, ArrayPaths<TObj[TKey]>>;
+                }[keyof TObj & `${number}`]
+              : [`${number}`] | ConcatArray<`${number}`, ArrayPaths<TObj[number]>>
+          : undefined;
 
 export type Paths<TObj> =
     | (StringPaths<TObj> & string)
@@ -68,11 +70,11 @@ type GetValueByKey<TObj, TKey extends string> = TKey extends `${infer TNumber ex
             ? TObj[TNumber]
             : never
         : number extends keyof TObj
-        ? TObj[number]
-        : never
+          ? TObj[number]
+          : never
     : TKey extends keyof TObj
-    ? TObj[TKey]
-    : never;
+      ? TObj[TKey]
+      : never;
 
 /**
  * const x1 = { a: { b: 'c' }, d: 'e', f: ['g', 'h', { i: 'j' } ] } as const;
@@ -99,31 +101,31 @@ type GetValueByKey<TObj, TKey extends string> = TKey extends `${infer TNumber ex
 type GetValueByStringPath<TObj, TPath extends string> = TObj extends undefined
     ? never
     : TPath extends `${infer TPrefix}.${infer TRest}`
-    ? GetValueByStringPath<GetValueByKey<TObj, TPrefix>, TRest>
-    : TPath extends ''
-    ? TObj
-    : GetValueByKey<TObj, TPath>;
+      ? GetValueByStringPath<GetValueByKey<TObj, TPrefix>, TRest>
+      : TPath extends ''
+        ? TObj
+        : GetValueByKey<TObj, TPath>;
 
 type GetValueByArrayPath<TObj, TPath extends Readonly<string[]>> = TObj extends undefined
     ? never
     : TPath extends Readonly<[infer TPrefix extends string, ...infer TRest extends string[]]>
-    ? TRest extends Readonly<[unknown, ...unknown[]]>
-        ? GetValueByArrayPath<GetValueByKey<TObj, TPrefix>, TRest>
-        : GetValueByKey<TObj, TPrefix>
-    : TPath extends Readonly<[]>
-    ? TObj
-    : never;
+      ? TRest extends Readonly<[unknown, ...unknown[]]>
+          ? GetValueByArrayPath<GetValueByKey<TObj, TPrefix>, TRest>
+          : GetValueByKey<TObj, TPrefix>
+      : TPath extends Readonly<[]>
+        ? TObj
+        : never;
 
 export type GetValueByPath<
     TObj,
-    TPath extends string | Readonly<string[]> | null | undefined
+    TPath extends string | Readonly<string[]> | null | undefined,
 > = TPath extends null | undefined
     ? TObj
     : TPath extends string
-    ? GetValueByStringPath<TObj, TPath>
-    : TPath extends Readonly<string[]>
-    ? GetValueByArrayPath<TObj, TPath>
-    : never;
+      ? GetValueByStringPath<TObj, TPath>
+      : TPath extends Readonly<string[]>
+        ? GetValueByArrayPath<TObj, TPath>
+        : never;
 
 /**
  * Recursively iterate over all property paths of an object and apply the function.
@@ -136,7 +138,7 @@ export type GetValueByPath<
  */
 export function iterateObjectPaths<
     O extends object,
-    Fn extends (path: string[], value: unknown) => unknown
+    Fn extends (path: string[], value: unknown) => unknown,
 >(obj: O, fn: Fn, path = [] as string[]): void {
     for (const key in obj) {
         const value = obj[key];

@@ -5,13 +5,13 @@ const dates = [
     new Date(2000, 0, 1),
     new Date(2000, 3, 1, 11, 34, 5),
     new Date(2001, 6, 1),
-    new Date(2001, 11, 25)
+    new Date(2001, 11, 25),
 ];
 
 test('full year format', t => {
     const column = {
         format: () => 'YYYY',
-        precision: () => 'year' as const
+        precision: () => 'year' as const,
     };
 
     const formatter = dateFormatter(column);
@@ -22,7 +22,7 @@ test('full year format', t => {
 test('half year format', t => {
     const formatter = dateFormatter({
         format: () => 'YYYY-h',
-        precision: () => 'half'
+        precision: () => 'half',
     });
     t.is(formatter?.(dates[0]), '2000 H1');
     t.is(formatter?.(dates[2]), '2001 H2');
@@ -31,7 +31,7 @@ test('half year format', t => {
 test('quarter year format', t => {
     const formatter = dateFormatter({
         format: () => 'Q-YYYY',
-        precision: () => 'quarter'
+        precision: () => 'quarter',
     });
     t.is(formatter?.(dates[0]), '2000 Q1');
     t.is(formatter?.(dates[1]), '2000 Q2');
@@ -41,7 +41,7 @@ test('quarter year format', t => {
 test('month format', t => {
     const formatter = dateFormatter({
         format: () => 'M-YYYY',
-        precision: () => 'month'
+        precision: () => 'month',
     });
     t.is(formatter?.(dates[0]), 'Jan 00');
     t.is(formatter?.(dates[1]), 'Apr 00');
@@ -51,7 +51,7 @@ test('month format', t => {
 test('week', t => {
     const formatter = dateFormatter({
         format: () => 'YYYY-WW',
-        precision: () => 'week'
+        precision: () => 'week',
     });
     t.is(formatter?.(dates[1]), '2000 W13');
     t.is(formatter?.(dates[2]), '2001 W26');
@@ -60,7 +60,7 @@ test('week', t => {
 test('day', t => {
     const formatter = dateFormatter({
         format: () => 'MM/DD/YYYY',
-        precision: () => 'day'
+        precision: () => 'day',
     });
 
     // non-verbose
@@ -79,7 +79,7 @@ test('day', t => {
 test('day-minutes', t => {
     const formatter = dateFormatter({
         format: () => 'MM/DD/YYYY HH:MM',
-        precision: () => 'day-minutes'
+        precision: () => 'day-minutes',
     });
 
     // non-verbose
@@ -94,7 +94,7 @@ test('day-minutes', t => {
 test('day-seconds', t => {
     const formatter = dateFormatter({
         format: () => 'ISO8601',
-        precision: () => 'day-seconds'
+        precision: () => 'day-seconds',
     });
 
     // non-verbose
@@ -111,7 +111,7 @@ test('returns undefined when passed an unknown precision', t => {
         dateFormatter({
             format: () => 'YYYY',
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            precision: () => 'spam' as any
+            precision: () => 'spam' as any,
         }),
         undefined
     );

@@ -37,7 +37,7 @@ test.serial('waitFor allows a custom error message', async t => {
         async () => {
             await Promise.all([
                 waitFor(() => result, { timeout: 500, message: 'timed out in style' }),
-                clock.tickAsync(500)
+                clock.tickAsync(500),
             ]);
         },
         { instanceOf: Error, message: 'timed out in style' }
@@ -56,7 +56,7 @@ test.serial('waitFor uses custom interval when provided', async t => {
             },
             { interval: 50 }
         ),
-        clock.tickAsync(200)
+        clock.tickAsync(200),
     ]);
     t.is(checkedTimes, 5);
 
@@ -71,7 +71,7 @@ test.serial('waitFor uses custom interval when provided', async t => {
             },
             { interval: 100 }
         ),
-        clock.tickAsync(200)
+        clock.tickAsync(200),
     ]);
     t.is(checkedTimes, 3);
 });

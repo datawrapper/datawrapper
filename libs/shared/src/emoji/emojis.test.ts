@@ -9,7 +9,7 @@ test('useEmojis returns the emoji helper', t => {
         'skinTones',
         'getDataByNodeEmojiName',
         'getEmojiWithSkinTone',
-        'search'
+        'search',
     ]);
 });
 
@@ -45,7 +45,7 @@ test('useEmojis().getDataByNodeEmojiName returns the emoji data for the given no
         slug: 'waving_hand',
         group: 'People & Body',
         skin_tone_support: true,
-        emoji: '👋'
+        emoji: '👋',
     });
 });
 
@@ -56,7 +56,7 @@ test('useEmojis().getDataByNodeEmojiName returns the emoji data for the given no
         slug: 'waving_hand',
         group: 'People & Body',
         skin_tone_support: true,
-        emoji: '👋'
+        emoji: '👋',
     });
 });
 
@@ -99,7 +99,7 @@ test('useEmojis().search fuzzy searches for emojis based on a query', t => {
         slug: 'waving_hand',
         group: 'People & Body',
         skin_tone_support: true,
-        emoji: '👋'
+        emoji: '👋',
     });
 });
 
@@ -110,6 +110,6 @@ test('useEmojis().skinTones returns all available skin tones', t => {
         'creamWhite',
         'lightBrown',
         'brown',
-        'darkBrown'
+        'darkBrown',
     ]);
 });

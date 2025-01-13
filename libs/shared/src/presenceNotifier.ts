@@ -118,7 +118,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
         hideEvent = 'focusout',
         registerElement = true,
         offset,
-        class: className = ''
+        class: className = '',
     } = options;
     let classList = className.split(' ').filter(Boolean);
 
@@ -184,7 +184,7 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
                 hideEvent = 'focusout',
                 offset,
                 class: className = '',
-                registerElement = true
+                registerElement = true,
             } = options);
             classList = className.split(' ').filter(Boolean);
 
@@ -246,6 +246,6 @@ export const presenceNotifier = ((element: HTMLElement | SVGElement, options: Op
             }
         },
         // for testing
-        flushDebounce: handleFocusOut.flush
+        flushDebounce: handleFocusOut.flush,
     };
 }) satisfies Action<HTMLElement | SVGElement, Options>;

@@ -36,8 +36,8 @@ export default function populateVisAxes({ dataset, visAxes, userAxes, overrideKe
             return a.preventMultipleUse && !b.preventMultipleUse
                 ? -1
                 : !a.preventMultipleUse && b.preventMultipleUse
-                ? 1
-                : 0;
+                  ? 1
+                  : 0;
         })
     );
 

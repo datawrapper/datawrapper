@@ -10,7 +10,7 @@ export async function waitFor(
     {
         interval,
         timeout,
-        message
+        message,
     }: Partial<{ interval: number; timeout: number; message: string }> = {}
 ) {
     interval = interval ?? 100;

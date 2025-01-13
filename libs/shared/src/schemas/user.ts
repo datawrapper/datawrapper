@@ -10,5 +10,5 @@ export const userSchema: Record<string, Joi.Schema> = {
     presenceColor: Joi.string()
         .pattern(/^[a-zA-Z-\d]+$/, { name: 'Color var name' })
         .description('The preferred color to use for user precense pin.'),
-    avatar: Joi.string().uri()
+    avatar: Joi.string().uri(),
 };

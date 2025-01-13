@@ -41,7 +41,7 @@ function json(opts) {
         },
         parse: function () {
             return JSON.parse(opts.csv);
-        }
+        },
     };
 }
 

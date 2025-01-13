@@ -9,7 +9,7 @@ import {
     set,
     isActualObject,
     generateRandomId,
-    hasId
+    hasId,
 } from './utils.js';
 import { ItemArrayObjectItem, ItemArrayDiff, CalculateDiffOptions } from './types.js';
 
@@ -182,8 +182,8 @@ function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]
             item.id,
             {
                 ...item,
-                _index: index // calculate index so that we can compare whether or not the position has changed
-            }
+                _index: index, // calculate index so that we can compare whether or not the position has changed
+            },
         ])
     );
 
@@ -206,7 +206,7 @@ function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]
                     ? targetItemRaw.id
                     : generateRandomId(),
             // Already create updated _index so that updates are calculated as part of objectDiff
-            _index: i
+            _index: i,
         };
         targetIds.add(targetItem.id);
 
@@ -230,7 +230,7 @@ function calculateItemArrayDiff(sourceMaybeArray: unknown, targetArray: object[]
     for (const [id] of sourceItems) {
         // Items are deleted by setting _index to null
         diff[id] = {
-            _index: null
+            _index: null,
         };
     }
 

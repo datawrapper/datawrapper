@@ -21,14 +21,14 @@ function setupSupportedEmojis(): EmojiData[] {
             // We can safely use non-null assertion here because we only include emojis that are supported by node-emoji in the filter above.
             /* eslint-disable @typescript-eslint/no-non-null-assertion */
             nodeEmojiName: nodeEmoji.find(emoji)!.key,
-            keywords: keywordsByEmoji[emoji as Emoji] as string[]
+            keywords: keywordsByEmoji[emoji as Emoji] as string[],
         }));
 }
 
 const fuzzySearch = new uFuzzy({
     // Set operational mode to "Single Error".
     // See https://github.com/leeoniya/uFuzzy#how-it-works for details.
-    intraMode: 1
+    intraMode: 1,
 });
 
 function setupSearch() {
@@ -86,7 +86,7 @@ export function useEmojis() {
             'creamWhite',
             'lightBrown',
             'brown',
-            'darkBrown'
+            'darkBrown',
         ] as SkinToneType[],
 
         /**
@@ -136,7 +136,7 @@ export function useEmojis() {
             }
 
             return search.query(query.toLowerCase());
-        }
+        },
     };
 }
 /**

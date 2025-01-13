@@ -10,7 +10,7 @@ test.beforeEach(t => {
     t.context.dataset = Dataset([
         Column('thing', ['foo', 'bar', 'spam'], 'text'),
         Column('price', [1.2, undefined, '4'], 'number'),
-        priceEUR
+        priceEUR,
     ]);
 });
 
@@ -22,7 +22,7 @@ test('Dataset() sets unique names for columns with empty names', async t => {
             ['foo', 'foo'],
             ['X.1', ''],
             ['bar', 'bar'],
-            ['X.2', '']
+            ['X.2', ''],
         ]
     );
 });
@@ -34,7 +34,7 @@ test('Dataset() sets unique names for columns with same names', async t => {
         Column('foo.2', []),
         Column('foo', []),
         Column('foo.1', []),
-        Column('foo', [])
+        Column('foo', []),
     ]);
     t.deepEqual(
         dataset.columns().map(column => [column.name(), column.origName()]),
@@ -44,7 +44,7 @@ test('Dataset() sets unique names for columns with same names', async t => {
             ['foo.2', 'foo.2'],
             ['foo.3', 'foo'],
             ['foo.1.1', 'foo.1'],
-            ['foo.4', 'foo']
+            ['foo.4', 'foo'],
         ]
     );
 });
@@ -57,7 +57,7 @@ test('Dataset() handles both columns with empty names and columns with non-uniqu
             ['X.1', ''],
             ['X', 'X'],
             ['X.2', 'X'],
-            ['X.3', '']
+            ['X.3', ''],
         ]
     );
 });
@@ -82,7 +82,7 @@ test('Dataset.csv() returns a localized CSV when the numeral argument is passed'
     const sourceDataset = Dataset([
         Column('thing', ['foo', 'bar', 'spam'], 'text'),
         Column('price', [3.141592653589793, 9000, undefined], 'number'),
-        Column('date', ['2022-01-13', '2022-01-14', undefined], 'date')
+        Column('date', ['2022-01-13', '2022-01-14', undefined], 'date'),
     ]);
     const expectedCSV = `thing;price;date
 foo;3,141592653589793;2022-01-13
@@ -92,8 +92,8 @@ spam;;`;
     numeral.register('locale', locale, {
         delimiters: {
             thousands: ' ', // ignored
-            decimal: ','
-        }
+            decimal: ',',
+        },
     });
     numeral.locale(locale);
     const resultCSV = sourceDataset.csv({ numeral });
@@ -116,7 +116,7 @@ test('Dataset.csv() quoting', async t => {
         'with,delimiter',
         '"with,delimiter-quoted"',
         'with"quote',
-        '"with"quote-quoted"'
+        '"with"quote-quoted"',
     ];
     const expectedCSV = `X.1
 standard
@@ -139,7 +139,7 @@ standard
 test('Dataset.csv() returns a CSV that does not escape less/greater-than signs', async t => {
     const dataset = Dataset([
         Column('text', ['<10', '10', '>10'], 'text'),
-        Column('numbers', [0, 1, 2], 'number')
+        Column('numbers', [0, 1, 2], 'number'),
     ]);
 
     const expectedCSV = `text,numbers
@@ -153,7 +153,7 @@ test('Dataset.csv() returns a CSV that does not escape less/greater-than signs',
 test('Dataset.csv() does not contain html-escaped values', async t => {
     const dataset = Dataset([
         Column('text', ['Amp &amp; Ersand', '&quot;Double&quot;', '&#39;Single&#39;'], 'text'),
-        Column('numbers', [0, 1, 2], 'number')
+        Column('numbers', [0, 1, 2], 'number'),
     ]);
 
     const expectedCSV = `text,numbers
@@ -183,7 +183,7 @@ test('Dataset.deleteRow() does nothing when row index does not exist', async t =
 test('Dataset.deleteRow() deletes several rows', async t => {
     const dataset = Dataset([
         Column('letter', ['A', 'B', 'C', 'D', 'E'], 'text'),
-        Column('number', [0, 1, 2, 3, 4], 'number')
+        Column('number', [0, 1, 2, 3, 4], 'number'),
     ]);
     dataset.deleteRow(4, 2, 0);
     t.deepEqual(dataset.column('letter').raw(), ['B', 'D']);
@@ -193,7 +193,7 @@ test('Dataset.deleteRow() deletes several rows', async t => {
 test('Dataset.deleteRow() deletes several rows when columns have different lengths', async t => {
     const dataset = Dataset([
         Column('letter', ['A', 'B'], 'text'),
-        Column('number', [0, 1, 2, 3], 'number')
+        Column('number', [0, 1, 2, 3], 'number'),
     ]);
     dataset.deleteRow(1, 3);
     t.deepEqual(dataset.column('letter').raw(), ['A']);
@@ -224,7 +224,7 @@ test('Dataset.columnOrder() puts columns that do not appear in the order array a
     dataset.columnOrder([
         3, // This is an invalid index, so column 2 doesn't appear here and will be put at the end.
         1,
-        0
+        0,
     ]);
     t.deepEqual(
         dataset.columns().map(column => column.name()),

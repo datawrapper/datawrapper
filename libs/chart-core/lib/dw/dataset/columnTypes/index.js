@@ -5,5 +5,5 @@ import date from './date.js';
 export default {
     text,
     number,
-    date
+    date,
 };

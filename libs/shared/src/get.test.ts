@@ -8,10 +8,10 @@ const thing = {
         nothing: null,
         array: [1, 2, 4, 8],
         nested: {
-            foo: 12
+            foo: 12,
         },
-        'sp.am': 'spam'
-    }
+        'sp.am': 'spam',
+    },
 };
 
 test('get simple', t => {

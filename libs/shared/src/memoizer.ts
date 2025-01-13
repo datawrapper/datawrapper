@@ -26,6 +26,6 @@ export const createPermanentMemoizer = <TKey, TSerializedKey, TValue>(
             }
             map.set(serializedKey, value);
             return value;
-        }
+        },
     };
 };

@@ -3,5 +3,5 @@ module.exports = {
     files: ['src/**/*.test.*', '!src/**/*.perf.test.*'],
     require: ['./test/helpers/setup-browser-env.ts'],
     nodeArguments: ['--import=tsx', '--no-warnings'],
-    timeout: '40s'
+    timeout: '40s',
 };

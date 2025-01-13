@@ -21,7 +21,7 @@ function number(sample) {
         // excel sometimes produces a strange white-space:
         ' .': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(\.[0-9]+)?%? *$/, // eslint-disable-line no-irregular-whitespace
         ' ,': /^ *[-–—−]?[0-9]{1,3}([   ][0-9]{3})*(,[0-9]+)?%? *$/, // eslint-disable-line no-irregular-whitespace
-        "'.": /^ *[-–—−]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/
+        "'.": /^ *[-–—−]?[0-9]{1,3}('[0-9]{3})*(\.[0-9]+)?%? *$/,
     };
     const formatLabels = {
         '-.': '1234.56',
@@ -34,14 +34,14 @@ function number(sample) {
         ' .': '1 234.56',
         ' ,': '1 234,56',
         ' .': '1 234.56',
-        ' ,': '1 234,56'
+        ' ,': '1 234,56',
     };
     // a list of strings that are recognized as 'not available'
     const naStrings = {
         na: 1,
         'n/a': 1,
         '-': 1,
-        ':': 1
+        ':': 1,
     };
 
     const matches = {};
@@ -122,7 +122,7 @@ function number(sample) {
                 return type;
             }
             return format;
-        }
+        },
     };
     return type;
 }

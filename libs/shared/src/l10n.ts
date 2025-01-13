@@ -46,7 +46,7 @@ const ALLOWED_HTML = [
     'sup',
     'sub',
     'kbd',
-    'tt'
+    'tt',
 ];
 
 const __messages: Record<string, Record<string, string>> = {};

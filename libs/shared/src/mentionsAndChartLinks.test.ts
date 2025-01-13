@@ -3,7 +3,7 @@ import {
     getMentionsFromTipTapJson,
     getUserIdFromMention,
     getChartLinksFromTipTapJson,
-    getChartIdFromLink
+    getChartIdFromLink,
 } from './mentionsAndChartLinks';
 
 test('getMentionsFromTipTapJson works for trivial case', t => {
@@ -78,12 +78,12 @@ const trivialMentionsJson = {
                     type: 'mention',
                     attrs: {
                         id: 'user:1202',
-                        label: 'Sophie Xeon'
-                    }
-                }
-            ]
-        }
-    ]
+                        label: 'Sophie Xeon',
+                    },
+                },
+            ],
+        },
+    ],
 };
 
 /**
@@ -99,12 +99,12 @@ const trivialChartLinksJson = {
                     type: 'chart',
                     attrs: {
                         id: 'chart:abcde',
-                        label: '#abcde: "chart title"'
-                    }
-                }
-            ]
-        }
-    ]
+                        label: '#abcde: "chart title"',
+                    },
+                },
+            ],
+        },
+    ],
 };
 
 /**
@@ -126,23 +126,23 @@ const deeplyNestedMentionsJson = {
             content: [
                 {
                     type: 'text',
-                    text: 'top level mention: '
+                    text: 'top level mention: ',
                 },
                 {
                     type: 'mention',
                     attrs: {
                         id: 'user:1',
-                        label: 'Lorem ipsum'
-                    }
+                        label: 'Lorem ipsum',
+                    },
                 },
                 {
                     type: 'text',
-                    text: 'and some more text afterwards'
-                }
-            ]
+                    text: 'and some more text afterwards',
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'bulletList',
@@ -155,23 +155,23 @@ const deeplyNestedMentionsJson = {
                             content: [
                                 {
                                     type: 'text',
-                                    text: 'nested mention:'
+                                    text: 'nested mention:',
                                 },
                                 {
                                     type: 'mention',
                                     attrs: {
                                         id: 'user:1145',
-                                        label: 'shadow@test.com'
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+                                        label: 'shadow@test.com',
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'blockquote',
@@ -183,15 +183,15 @@ const deeplyNestedMentionsJson = {
                             type: 'mention',
                             attrs: {
                                 id: 'user:1206',
-                                label: 'Mr Oizo'
-                            }
-                        }
-                    ]
-                }
-            ]
+                                label: 'Mr Oizo',
+                            },
+                        },
+                    ],
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'paragraph',
@@ -200,7 +200,7 @@ const deeplyNestedMentionsJson = {
                     type: 'mention',
                     attrs: {
                         id: 'user:1145',
-                        label: 'mention with a link'
+                        label: 'mention with a link',
                     },
                     marks: [
                         {
@@ -209,14 +209,14 @@ const deeplyNestedMentionsJson = {
                                 href: 'https://example.com',
                                 target: '_blank',
                                 rel: 'noopener noreferrer nofollow',
-                                class: null
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+                                class: null,
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
 };
 
 /**
@@ -238,23 +238,23 @@ const deeplyNestedChartLinksJson = {
             content: [
                 {
                     type: 'text',
-                    text: 'top level link: '
+                    text: 'top level link: ',
                 },
                 {
                     type: 'chart',
                     attrs: {
                         id: 'chart:abcde',
-                        label: '#abcde: "chart title 1"'
-                    }
+                        label: '#abcde: "chart title 1"',
+                    },
                 },
                 {
                     type: 'text',
-                    text: 'and some more text afterwards'
-                }
-            ]
+                    text: 'and some more text afterwards',
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'bulletList',
@@ -267,23 +267,23 @@ const deeplyNestedChartLinksJson = {
                             content: [
                                 {
                                     type: 'text',
-                                    text: 'nested link:'
+                                    text: 'nested link:',
                                 },
                                 {
                                     type: 'chart',
                                     attrs: {
                                         id: 'chart:fghij',
-                                        label: '#fghij: "chart title 2"'
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+                                        label: '#fghij: "chart title 2"',
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'blockquote',
@@ -295,15 +295,15 @@ const deeplyNestedChartLinksJson = {
                             type: 'chart',
                             attrs: {
                                 id: 'chart:klmno',
-                                label: '#klmno: "chart title 3"'
-                            }
-                        }
-                    ]
-                }
-            ]
+                                label: '#klmno: "chart title 3"',
+                            },
+                        },
+                    ],
+                },
+            ],
         },
         {
-            type: 'paragraph'
+            type: 'paragraph',
         },
         {
             type: 'paragraph',
@@ -312,7 +312,7 @@ const deeplyNestedChartLinksJson = {
                     type: 'chart',
                     attrs: {
                         id: 'chart:pqrst',
-                        label: '#pqrst: "chart title 4"'
+                        label: '#pqrst: "chart title 4"',
                     },
                     marks: [
                         {
@@ -321,12 +321,12 @@ const deeplyNestedChartLinksJson = {
                                 href: 'https://example.com',
                                 target: '_blank',
                                 rel: 'noopener noreferrer nofollow',
-                                class: null
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+                                class: null,
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
+    ],
 };

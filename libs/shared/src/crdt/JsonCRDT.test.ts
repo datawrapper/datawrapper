@@ -7,7 +7,7 @@ import { Update } from './CRDT.js';
 test(`crdt internals are immuatable`, t => {
     const crdt = new JsonCRDT({
         nodeId: 2,
-        data: { key: { data: { json: { d: { e: { f: 'str' } } } } } }
+        data: { key: { data: { json: { d: { e: { f: 'str' } } } } } },
     });
 
     // data is immutable
@@ -18,7 +18,7 @@ test(`crdt internals are immuatable`, t => {
     // perform update to be sure there are timestamps
     crdt.applyUpdate({
         diff: { key: { data: { json: { d: { e: { f: 'new str' } } } } } },
-        timestamp: '1-1'
+        timestamp: '1-1',
     });
 });
 
@@ -31,8 +31,8 @@ test(`crdt basic init`, t => {
     const crdt2 = new JsonCRDT({
         nodeId: 2,
         data: {
-            key: { data: { json: { 'another key': { e: { f: 'str' } } } } }
-        }
+            key: { data: { json: { 'another key': { e: { f: 'str' } } } } },
+        },
     });
     t.deepEqual(crdt2.data(), { key: { data: { json: { 'another key': { e: { f: 'str' } } } } } });
 
@@ -56,11 +56,11 @@ test(`init crdt with array fields`, t => {
                 json: {
                     'another key': [
                         { x: 123, y: 456 },
-                        { x: 543, y: 543 }
-                    ]
-                }
-            }
-        }
+                        { x: 543, y: 543 },
+                    ],
+                },
+            },
+        },
     });
     t.deepEqual(crdt2.data(), {
         key: [1, 2, 3],
@@ -68,10 +68,10 @@ test(`init crdt with array fields`, t => {
             json: {
                 'another key': [
                     { x: 123, y: 456 },
-                    { x: 543, y: 543 }
-                ]
-            }
-        }
+                    { x: 543, y: 543 },
+                ],
+            },
+        },
     });
 });
 
@@ -226,8 +226,8 @@ test(`nested update`, t => {
     const crdt = new JsonCRDT({
         nodeId: 2,
         data: {
-            key: { data: { json: { 'another key': { e: { f: 'str' } } } } }
-        }
+            key: { data: { json: { 'another key': { e: { f: 'str' } } } } },
+        },
     });
     crdt.createUpdate({ key: { data: { json: { 'another key': { e: { f: 2 } } } } } });
     t.deepEqual(crdt.data(), { key: { data: { json: { 'another key': { e: { f: 2 } } } } } });
@@ -237,35 +237,35 @@ test(`nested updates get denied for outdated timestamps`, t => {
     const crdt = new JsonCRDT({
         nodeId: 2,
         data: {
-            e: { f: 'str', g: 0 }
-        }
+            e: { f: 'str', g: 0 },
+        },
     });
     crdt.applyUpdate({
         diff: { e: { f: 2 } },
-        timestamp: '1-1000'
+        timestamp: '1-1000',
     });
 
     crdt.applyUpdate({
         diff: { e: { f: 1000 } },
-        timestamp: '1-5'
+        timestamp: '1-5',
     });
     crdt.applyUpdate({
         diff: { e: { f: 123123, g: true } },
-        timestamp: '1-100'
+        timestamp: '1-100',
     });
     t.deepEqual(crdt.data(), {
-        e: { f: 2, g: true }
+        e: { f: 2, g: true },
     });
     crdt.applyUpdate({
         diff: { e: { f: 20 } },
-        timestamp: '1-2000'
+        timestamp: '1-2000',
     });
     crdt.applyUpdate({
         diff: { e: { f: -1 } },
-        timestamp: '1-1500'
+        timestamp: '1-1500',
     });
     t.deepEqual(crdt.data(), {
-        e: { f: 20, g: true }
+        e: { f: 20, g: true },
     });
 });
 
@@ -422,7 +422,7 @@ test(`add new fields single client`, t => {
         key: 'value',
         data: 3,
         json: { 'another key': { e: 9 } },
-        x: { y: 3, z: 4, i: { j: 'hello', k: 'untouched', abc: { f: 234 } } }
+        x: { y: 3, z: 4, i: { j: 'hello', k: 'untouched', abc: { f: 234 } } },
     });
 
     // update new fields
@@ -431,7 +431,7 @@ test(`add new fields single client`, t => {
         key: 'value',
         data: 8,
         json: { 'another key': { e: 9 } },
-        x: { y: 5, z: 4, i: { j: 6, k: 'untouched', abc: { f: 8 } } }
+        x: { y: 5, z: 4, i: { j: 6, k: 'untouched', abc: { f: 8 } } },
     });
 });
 
@@ -477,7 +477,7 @@ test(`convert object to string and back`, t => {
     testCRDT2.applyUpdates(updates2);
 
     t.deepEqual(testCRDT1.data(), {
-        key: { z: 9 }
+        key: { z: 9 },
     });
     t.deepEqual(testCRDT1.data(), testCRDT2.data());
 });
@@ -488,32 +488,32 @@ test(`calculateDiff uses defined pathsToItemArrays`, t => {
         data: {
             items: [
                 { id: 1, value: 'test1' },
-                { id: 2, value: 'test2' }
-            ]
+                { id: 2, value: 'test2' },
+            ],
         },
-        pathsToItemArrays: ['items']
+        pathsToItemArrays: ['items'],
     });
 
     const diff = crdt.calculateDiff({
         items: [
             { id: 1, value: 'test1' },
             { id: 3, value: 'test3' },
-            { id: 2, value: 'test2' }
-        ]
+            { id: 2, value: 'test2' },
+        ],
     });
 
     // Produces an item array diff and does not simply overwrite the array.
     t.deepEqual(diff, {
         items: {
             2: {
-                _index: 2
+                _index: 2,
             },
             3: {
                 _index: 1,
                 id: 3,
-                value: 'test3'
-            }
-        }
+                value: 'test3',
+            },
+        },
     });
 });
 

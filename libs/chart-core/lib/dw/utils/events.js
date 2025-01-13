@@ -12,6 +12,6 @@ export default function events() {
         },
         add(callback) {
             list.push(callback);
-        }
+        },
     };
 }

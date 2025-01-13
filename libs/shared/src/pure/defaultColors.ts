@@ -36,18 +36,18 @@ export function defaultColors(themeData: ThemeData, chroma: typeof import('chrom
                 'colors.bgBlendRatios.tickText.secondary',
                 darkBG ? 0.6 : 0.4
             ),
-            primary: get(themeData, 'colors.bgBlendRatios.tickText.primary', 0.2)
+            primary: get(themeData, 'colors.bgBlendRatios.tickText.primary', 0.2),
         },
         series: get(themeData, 'colors.bgBlendRatios.series', 0),
         value: get(themeData, 'colors.bgBlendRatios.value', 0.2),
         axis: get(themeData, 'colors.bgBlendRatios.axis', 0),
-        gridline: get(themeData, 'colors.bgBlendRatios.gridline', 0.82)
+        gridline: get(themeData, 'colors.bgBlendRatios.gridline', 0.82),
     };
 
     return {
         tickText: {
             secondary: chroma.mix(fallback, bg, bgBlendRatios.tickText.secondary).hex(),
-            primary: chroma.mix(fallback, bg, bgBlendRatios.tickText.primary).hex()
+            primary: chroma.mix(fallback, bg, bgBlendRatios.tickText.primary).hex(),
         },
 
         series: chroma.mix(fallback, bg, bgBlendRatios.series).hex(),
@@ -62,6 +62,6 @@ export function defaultColors(themeData: ThemeData, chroma: typeof import('chrom
 
         blendColor(blendRatio: number) {
             return chroma.mix(fallback, bg, blendRatio).hex();
-        }
+        },
     };
 }

@@ -6,7 +6,7 @@ function httpReq(path: string, options: Omit<HttpReqOptions, 'fetch' | 'disableC
     return httpReqClient(path, {
         ...options,
         fetch: fetch as unknown as SimpleFetch, // TODO Fix the types instead of casting.
-        disableCSRF: true
+        disableCSRF: true,
     });
 }
 

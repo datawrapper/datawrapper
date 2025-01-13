@@ -22,7 +22,7 @@ const chartData = {
             changes: [],
             transpose: false,
             'vertical-header': true,
-            'horizontal-header': true
+            'horizontal-header': true,
         },
         describe: {
             'source-name': 'Apple',
@@ -34,7 +34,7 @@ const chartData = {
             'number-divisor': 0,
             'number-append': '',
             'number-prepend': '',
-            'hide-title': false
+            'hide-title': false,
         },
         visualize: {
             'dark-mode-invert': true,
@@ -42,7 +42,7 @@ const chartData = {
             'highlighted-values': [],
             sharing: {
                 enabled: false,
-                auto: true
+                auto: true,
             },
             rules: false,
             thick: false,
@@ -166,10 +166,10 @@ const chartData = {
                     '2021 Q1',
                     '2021 Q2',
                     '2021 Q3',
-                    '2021 Q4'
+                    '2021 Q4',
                 ],
                 categoryLabels: {},
-                excludeFromKey: []
+                excludeFromKey: [],
             },
             'custom-range-x': ['', ''],
             'custom-range-y': ['', ''],
@@ -205,10 +205,10 @@ const chartData = {
             'value-label-alignment': 'left',
             'value-label-visibility': 'always',
             'tooltip-use-custom-formats': true,
-            'line-symbols-shape-multiple': {}
+            'line-symbols-shape-multiple': {},
         },
         axes: {
-            x: 'Quarter'
+            x: 'Quarter',
         },
         publish: {
             'embed-width': 600,
@@ -216,22 +216,22 @@ const chartData = {
             blocks: {
                 logo: {
                     id: 'datawrapper-logo',
-                    enabled: false
+                    enabled: false,
                 },
                 embed: false,
                 'download-pdf': false,
                 'download-svg': false,
                 'get-the-data': false,
-                'download-image': false
+                'download-image': false,
             },
             'export-pdf': {},
             autoDarkMode: false,
-            'chart-height': 295
+            'chart-height': 295,
         },
         annotate: {
-            notes: 'Apple stopped to report iPod sales at the end of 2014.'
+            notes: 'Apple stopped to report iPod sales at the end of 2014.',
         },
-        custom: {}
+        custom: {},
     },
     keywords:
         'apple sales by product in shipped units, 2000 to 2017.. . apple. . apple stopped to report ipod sales at the end of 2014.. ',
@@ -241,7 +241,7 @@ const chartData = {
     forkedFrom: null,
     organizationId: null,
     authorId: 2,
-    folderId: null
+    folderId: null,
 } satisfies PreparedChart;
 
 function mockAnnotation() {
@@ -249,7 +249,7 @@ function mockAnnotation() {
         id: nanoid(10),
         position: {
             x: '2006/03/09 12:33',
-            y: '101.0325'
+            y: '101.0325',
         },
         bg: false,
         dx: 0,
@@ -273,9 +273,9 @@ function mockAnnotation() {
             circleStyle: 'solid',
             circleRadius: 15,
             inheritColor: false,
-            targetPadding: 4
+            targetPadding: 4,
         },
-        mobileFallback: true
+        mobileFallback: true,
     };
 }
 
@@ -303,7 +303,7 @@ const update = generateRandomUpdte();
 describe.each([
     { size: 'small', chartData: addMoreData(chartData, 1) },
     { size: 'medium', chartData: addMoreData(chartData, 10) },
-    { size: 'large', chartData: addMoreData(chartData, 100) }
+    { size: 'large', chartData: addMoreData(chartData, 100) },
 ])('$size chart', ({ chartData }) => {
     bench(
         'init',
@@ -323,7 +323,7 @@ describe.each([
             time: 500,
             setup: () => {
                 crdt = new BaseJsonCRDT({ data: chartData });
-            }
+            },
         }
     );
     bench(
@@ -336,7 +336,7 @@ describe.each([
             time: 500,
             setup: () => {
                 crdt = new BaseJsonCRDT({ data: chartData });
-            }
+            },
         }
     );
 });

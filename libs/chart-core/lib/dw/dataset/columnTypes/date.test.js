@@ -27,18 +27,18 @@ const run = (name, { values, parsed, invalid }) => {
 
 run('date objects', {
     values: [ymd(1990), ymd(1990, 7, 1), ymd(1991, 12, 1)],
-    parsed: [ymd(1990), ymd(1990, 7, 1), ymd(1991, 12, 1)]
+    parsed: [ymd(1990), ymd(1990, 7, 1), ymd(1991, 12, 1)],
 });
 
 run('full years (YYYY)', {
     values: range(1985, 2021).map(String),
-    parsed: range(1985, 2021).map(yr)
+    parsed: range(1985, 2021).map(yr),
 });
 
 run('no years', {
     values: range(3000, 3021).map(String),
     parsed: range(3000, 3021),
-    invalid: true
+    invalid: true,
 });
 
 const halfYears = [
@@ -48,37 +48,37 @@ const halfYears = [
     ymd(1992, 1),
     ymd(1992, 7),
     ymd(1993, 1),
-    ymd(1993, 7)
+    ymd(1993, 7),
 ];
 
 run('half years (YYYY H)', {
     values: ['1990 H2', '1991 H1', '1991 H2', '1992 H1', '1992 H2', '1993 H1', '1993 H2'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 run('half years (YYYYH)', {
     values: ['1990H2', '1991H1', '1991H2', '1992H1', '1992H2', '1993H1', '1993H2'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 run('half years (YYYY-H)', {
     values: ['1990-H2', '1991-H1', '1991-H2', '1992-H1', '1992-H2', '1993-H1', '1993-H2'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 run('half years (YYYY/H)', {
     values: ['1990/H2', '1991/H1', '1991/H2', '1992/H1', '1992/H2', '1993/H1', '1993/H2'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 run('half years (H-YYYY)', {
     values: ['H2-1990', 'H1-1991', 'H2-1991', 'H1-1992', 'H2-1992', 'H1-1993', 'H2-1993'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 run('half years (H/YYYY)', {
     values: ['H2/1990', 'H1/1991', 'H2/1991', 'H1/1992', 'H2/1992', 'H1/1993', 'H2/1993'],
-    parsed: halfYears
+    parsed: halfYears,
 });
 
 const quarterYears = [
@@ -92,7 +92,7 @@ const quarterYears = [
     ymd(1992, 1),
     ymd(1992, 4),
     ymd(1992, 7),
-    ymd(1992, 10)
+    ymd(1992, 10),
 ];
 
 run('quarter years (YYYYQ)', {
@@ -107,9 +107,9 @@ run('quarter years (YYYYQ)', {
         '1992Q1',
         '1992Q2',
         '1992Q3',
-        '1992Q4'
+        '1992Q4',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (YYYY Q)', {
@@ -124,9 +124,9 @@ run('quarter years (YYYY Q)', {
         '1992 Q1',
         '1992 Q2',
         '1992 Q3',
-        '1992 Q4'
+        '1992 Q4',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (YYYY/Q)', {
@@ -141,9 +141,9 @@ run('quarter years (YYYY/Q)', {
         '1992/Q1',
         '1992/Q2',
         '1992/Q3',
-        '1992/Q4'
+        '1992/Q4',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (YYYY-Q)', {
@@ -158,9 +158,9 @@ run('quarter years (YYYY-Q)', {
         '1992-Q1',
         '1992-Q2',
         '1992-Q3',
-        '1992-Q4'
+        '1992-Q4',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (Q YYYY)', {
@@ -175,9 +175,9 @@ run('quarter years (Q YYYY)', {
         'Q1 1992',
         'Q2 1992',
         'Q3 1992',
-        'Q4 1992'
+        'Q4 1992',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (Q/YYYY)', {
@@ -192,9 +192,9 @@ run('quarter years (Q/YYYY)', {
         'q1/1992',
         'q2/1992',
         'q3/1992',
-        'q4/1992'
+        'q4/1992',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 run('quarter years (Q-YYYY)', {
@@ -209,9 +209,9 @@ run('quarter years (Q-YYYY)', {
         'Q1-1992',
         'Q2-1992',
         'Q3-1992',
-        'Q4-1992'
+        'Q4-1992',
     ],
-    parsed: quarterYears
+    parsed: quarterYears,
 });
 
 const months = [
@@ -226,7 +226,7 @@ const months = [
     ymd(2000, 3),
     ymd(2000, 4),
     ymd(2000, 5),
-    ymd(2000, 6)
+    ymd(2000, 6),
 ];
 
 run('numeric months (YYYY-MM)', {
@@ -242,9 +242,9 @@ run('numeric months (YYYY-MM)', {
         '2000-03',
         '2000-04',
         '2000-05',
-        '2000-06'
+        '2000-06',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('numeric months (YYYY/MM)', {
@@ -260,9 +260,9 @@ run('numeric months (YYYY/MM)', {
         '2000/03',
         '2000/04',
         '2000/05',
-        '2000/06'
+        '2000/06',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('numeric months (YYYY M)', {
@@ -278,9 +278,9 @@ run('numeric months (YYYY M)', {
         '2000 3',
         '2000 4',
         '2000 5',
-        '2000 6'
+        '2000 6',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('numeric months (YYYY/M)', {
@@ -296,9 +296,9 @@ run('numeric months (YYYY/M)', {
         '2000/3',
         '2000/4',
         '2000/5',
-        '2000/6'
+        '2000/6',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('numeric months (M/YYYY)', {
@@ -314,9 +314,9 @@ run('numeric months (M/YYYY)', {
         '3/2000',
         '4/2000',
         '5/2000',
-        '6/2000'
+        '6/2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('numeric months (M-YYYY)', {
@@ -332,9 +332,9 @@ run('numeric months (M-YYYY)', {
         '3-2000',
         '4-2000',
         '5-2000',
-        '6-2000'
+        '6-2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (YYYY-MMM)', {
@@ -350,9 +350,9 @@ run('abbreviated months (YYYY-MMM)', {
         '2000-Mar',
         '2000-Apr',
         '2000-May',
-        '2000-Jun'
+        '2000-Jun',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (YYYY MMM)', {
@@ -368,9 +368,9 @@ run('abbreviated months (YYYY MMM)', {
         '2000 MAR',
         '2000 APR',
         '2000 MAY',
-        '2000 JUN'
+        '2000 JUN',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (YYYY MMM, de)', {
@@ -386,9 +386,9 @@ run('abbreviated months (YYYY MMM, de)', {
         '2000 MÄR',
         '2000 APR',
         '2000 MAI',
-        '2000 JUN'
+        '2000 JUN',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (MMM-YYYY)', {
@@ -404,9 +404,9 @@ run('abbreviated months (MMM-YYYY)', {
         'Mar-2000',
         'Apr-2000',
         'May-2000',
-        'Jun-2000'
+        'Jun-2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (MMM. YYYY)', {
@@ -422,9 +422,9 @@ run('abbreviated months (MMM. YYYY)', {
         'Mar. 2000',
         'Apr. 2000',
         'May. 2000',
-        'Jun. 2000'
+        'Jun. 2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (MMM YY)', {
@@ -440,9 +440,9 @@ run('abbreviated months (MMM YY)', {
         'Mar 00',
         'Apr 00',
         'May 00',
-        'Jun 00'
+        'Jun 00',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (MMM. YY)', {
@@ -458,9 +458,9 @@ run('abbreviated months (MMM. YY)', {
         'Mar. 00',
         'Apr. 00',
         'May. 00',
-        'Jun. 00'
+        'Jun. 00',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('abbreviated months (MMM. ’YY)', {
@@ -476,16 +476,16 @@ run('abbreviated months (MMM. ’YY)', {
         'Mar. ’00',
         'Apr. ’00',
         'May. ’00',
-        'Jun. ’00'
+        'Jun. ’00',
     ],
-    parsed: months
+    parsed: months,
 });
 
 const months2 = range(1, 13).map(m => ymd(curYear, m));
 
 run('abbreviated months, no year (MMM)', {
     values: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    parsed: months2
+    parsed: months2,
 });
 
 run('full months (MMMM)', {
@@ -501,9 +501,9 @@ run('full months (MMMM)', {
         'September',
         'October',
         'November',
-        'December'
+        'December',
     ],
-    parsed: months2
+    parsed: months2,
 });
 
 run('full months (MMMM, de)', {
@@ -519,9 +519,9 @@ run('full months (MMMM, de)', {
         'September',
         'Oktober',
         'November',
-        'Dezember'
+        'Dezember',
     ],
-    parsed: months2
+    parsed: months2,
 });
 
 run('full months (MMMM-YYYY)', {
@@ -537,9 +537,9 @@ run('full months (MMMM-YYYY)', {
         'March-2000',
         'April-2000',
         'May-2000',
-        'June-2000'
+        'June-2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 run('full months (MMMM YYYY)', {
@@ -555,36 +555,36 @@ run('full months (MMMM YYYY)', {
         'March 2000',
         'April 2000',
         'May 2000',
-        'June 2000'
+        'June 2000',
     ],
-    parsed: months
+    parsed: months,
 });
 
 const weeks = [ymdUTC(2011, 7, 25), ymdUTC(2011, 8, 1), ymdUTC(2011, 8, 8), ymdUTC(2011, 8, 15)];
 
 run('weeks (YYYYW)', {
     values: ['2011W30', '2011W31', '2011W32', '2011W33'],
-    parsed: weeks
+    parsed: weeks,
 });
 
 run('weeks (YYYY W)', {
     values: ['2011 W30', '2011 W31', '2011 W32', '2011 W33'],
-    parsed: weeks
+    parsed: weeks,
 });
 
 run('weeks (YYYY/W)', {
     values: ['2011/W30', '2011/W31', '2011/W32', '2011/W33'],
-    parsed: weeks
+    parsed: weeks,
 });
 
 run('weeks (W YYYY)', {
     values: ['W30 2011', 'W31 2011', 'W32 2011', 'W33 2011'],
-    parsed: weeks
+    parsed: weeks,
 });
 
 run('weeks (W-YYYY)', {
     values: ['W30-2011', 'W31-2011', 'W32-2011', 'W33-2011'],
-    parsed: weeks
+    parsed: weeks,
 });
 
 const dates = [
@@ -599,7 +599,7 @@ const dates = [
     ymd(2000, 1, 4),
     ymd(2000, 1, 5),
     ymd(2000, 1, 6),
-    ymd(2000, 1, 7)
+    ymd(2000, 1, 7),
 ];
 
 run('numeric date (YYYY-MM-DD)', {
@@ -615,9 +615,9 @@ run('numeric date (YYYY-MM-DD)', {
         '2000-01-04',
         '2000-01-05',
         '2000-01-06',
-        '2000-01-07'
+        '2000-01-07',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('numeric date (DD.MM.YYYY)', {
@@ -633,9 +633,9 @@ run('numeric date (DD.MM.YYYY)', {
         '04.01.2000',
         '05.01.2000',
         '06.01.2000',
-        '07.01.2000'
+        '07.01.2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('numeric date (DD/MM/YYYY)', {
@@ -651,9 +651,9 @@ run('numeric date (DD/MM/YYYY)', {
         '04/01/2000',
         '05/01/2000',
         '06/01/2000',
-        '07/01/2000'
+        '07/01/2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('numeric date (MM/DD/YYYY)', {
@@ -669,9 +669,9 @@ run('numeric date (MM/DD/YYYY)', {
         '01/04/2000',
         '01/05/2000',
         '01/06/2000',
-        '01/07/2000'
+        '01/07/2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('date with abbreviated month (MMM DD, YYYY)', {
@@ -687,9 +687,9 @@ run('date with abbreviated month (MMM DD, YYYY)', {
         'Jan 4, 2000',
         'Jan 5, 2000',
         'Jan 6, 2000',
-        'Jan 7, 2000'
+        'Jan 7, 2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('date with abbreviated month (MMM/DD/YYYY)', {
@@ -705,9 +705,9 @@ run('date with abbreviated month (MMM/DD/YYYY)', {
         'Jan/04/2000',
         'Jan/05/2000',
         'Jan/06/2000',
-        'Jan/07/2000'
+        'Jan/07/2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('date with full month (MMMM DD, YYYY)', {
@@ -723,9 +723,9 @@ run('date with full month (MMMM DD, YYYY)', {
         'January 4, 2000',
         'January 5, 2000',
         'January 6, 2000',
-        'January 7, 2000'
+        'January 7, 2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('date with full month (MMMM/DD/YYYY)', {
@@ -741,19 +741,19 @@ run('date with full month (MMMM/DD/YYYY)', {
         'January/04/2000',
         'January/05/2000',
         'January/06/2000',
-        'January/07/2000'
+        'January/07/2000',
     ],
-    parsed: dates
+    parsed: dates,
 });
 
 run('date with week and day (YYYY/W/D)', {
     values: ['2011-W30-3', '2011-W30-4', '2011-W30-5', '2011-W30-6'],
-    parsed: [ymdUTC(2011, 7, 27), ymdUTC(2011, 7, 28), ymdUTC(2011, 7, 29), ymdUTC(2011, 7, 30)]
+    parsed: [ymdUTC(2011, 7, 27), ymdUTC(2011, 7, 28), ymdUTC(2011, 7, 29), ymdUTC(2011, 7, 30)],
 });
 
 run('date with abbreviated month (DD-MMM-YY)', {
     values: ['08-Aug-14', '15-Aug-14', '22-Aug-14', '29-Aug-14'],
-    parsed: [ymd(2014, 8, 8), ymd(2014, 8, 15), ymd(2014, 8, 22), ymd(2014, 8, 29)]
+    parsed: [ymd(2014, 8, 8), ymd(2014, 8, 15), ymd(2014, 8, 22), ymd(2014, 8, 29)],
 });
 
 const datetimes = [
@@ -766,7 +766,7 @@ const datetimes = [
     ymdhms(1999, 12, 28, 1),
     ymdhms(1999, 12, 28, 1, 30),
     ymdhms(1999, 12, 28, 2, 0),
-    ymdhms(1999, 12, 28, 2, 30)
+    ymdhms(1999, 12, 28, 2, 30),
 ];
 
 run('date with time (YYYY/MM/DD HH:MM)', {
@@ -780,9 +780,9 @@ run('date with time (YYYY/MM/DD HH:MM)', {
         '1999-12-28 01:00',
         '1999-12-28 01:30',
         '1999-12-28 02:00',
-        '1999-12-28 02:30'
+        '1999-12-28 02:30',
     ],
-    parsed: datetimes
+    parsed: datetimes,
 });
 
 run('date with time (YYYY/MM/DD HH:MM AM)', {
@@ -796,9 +796,9 @@ run('date with time (YYYY/MM/DD HH:MM AM)', {
         '1999-12-28 01:00 AM',
         '1999-12-28 01:30 AM',
         '1999-12-28 02:00 AM',
-        '1999-12-28 02:30 AM'
+        '1999-12-28 02:30 AM',
     ],
-    parsed: datetimes
+    parsed: datetimes,
 });
 
 run('date with time and seconds (YYYY/MM/DD HH:MM:SS AM)', {
@@ -812,7 +812,7 @@ run('date with time and seconds (YYYY/MM/DD HH:MM:SS AM)', {
         '1999-12-28 01:00:06 AM',
         '1999-12-28 01:30:07 AM',
         '1999-12-28 02:00:08 AM',
-        '1999-12-28 02:30:59 AM'
+        '1999-12-28 02:30:59 AM',
     ],
     parsed: [
         ymdhms(1999, 12, 27, 22),
@@ -824,13 +824,13 @@ run('date with time and seconds (YYYY/MM/DD HH:MM:SS AM)', {
         ymdhms(1999, 12, 28, 1, 0, 6),
         ymdhms(1999, 12, 28, 1, 30, 7),
         ymdhms(1999, 12, 28, 2, 0, 8),
-        ymdhms(1999, 12, 28, 2, 30, 59)
-    ]
+        ymdhms(1999, 12, 28, 2, 30, 59),
+    ],
 });
 
 run('date with abbreviated month (MMM-YY)', {
     values: ['ene-13', 'ene-14', 'ene-15', 'ene-16'],
-    parsed: [ymd(2013), ymd(2014), ymd(2015), ymd(2016)]
+    parsed: [ymd(2013), ymd(2014), ymd(2015), ymd(2016)],
 });
 
 run('ISO dates with seconds', {
@@ -838,14 +838,14 @@ run('ISO dates with seconds', {
         '2023-01-03T14:00:00.000Z',
         '2023-01-03T13:00:00.000Z',
         '2023-01-03T12:00:00.000Z',
-        '2023-01-03T11:00:00.000Z'
+        '2023-01-03T11:00:00.000Z',
     ],
     parsed: [
         ymdhmsUTC(2023, 1, 3, 14, 0, 0),
         ymdhmsUTC(2023, 1, 3, 13, 0, 0),
         ymdhmsUTC(2023, 1, 3, 12, 0, 0),
-        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
-    ]
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0),
+    ],
 });
 
 run('ISO dates with milliseconds', {
@@ -853,14 +853,14 @@ run('ISO dates with milliseconds', {
         '2023-01-03T15:34:26.4460520+02:00',
         '2023-01-03T15:34:26.446Z',
         '2023-01-03T15:34:26.4Z',
-        '2023-01-03T15:00:00.44605208Z'
+        '2023-01-03T15:00:00.44605208Z',
     ],
     parsed: [
         ymdhmsUTC(2023, 1, 3, 13, 34, 26, 446.052),
         ymdhmsUTC(2023, 1, 3, 15, 34, 26, 446),
         ymdhmsUTC(2023, 1, 3, 15, 34, 26, 400),
-        ymdhmsUTC(2023, 1, 3, 15, 0, 0, 446.05208)
-    ]
+        ymdhmsUTC(2023, 1, 3, 15, 0, 0, 446.05208),
+    ],
 });
 
 run('ISO dates without seconds', {
@@ -869,8 +869,8 @@ run('ISO dates without seconds', {
         ymdhmsUTC(2023, 1, 3, 14, 0, 0),
         ymdhmsUTC(2023, 1, 3, 13, 0, 0),
         ymdhmsUTC(2023, 1, 3, 12, 0, 0),
-        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
-    ]
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0),
+    ],
 });
 
 run('ISO dates without separators', {
@@ -879,8 +879,8 @@ run('ISO dates without separators', {
         ymdhmsUTC(2023, 1, 3, 14, 0, 0),
         ymdhmsUTC(2023, 1, 3, 13, 0, 0),
         ymdhmsUTC(2023, 1, 3, 12, 0, 0),
-        ymdhmsUTC(2023, 1, 3, 11, 0, 0)
-    ]
+        ymdhmsUTC(2023, 1, 3, 11, 0, 0),
+    ],
 });
 
 run('ISO dates with timezones', {
@@ -888,14 +888,14 @@ run('ISO dates with timezones', {
         '2023-01-03T14:00Z',
         '2023-01-03T14:00+01:00',
         '2023-01-03T14:00-02:00',
-        '2023-01-03T14:00+02:30'
+        '2023-01-03T14:00+02:30',
     ],
     parsed: [
         ymdhmsUTC(2023, 1, 3, 14, 0, 0),
         ymdhmsUTC(2023, 1, 3, 13, 0, 0),
         ymdhmsUTC(2023, 1, 3, 16, 0, 0),
-        ymdhmsUTC(2023, 1, 3, 11, 30, 0)
-    ]
+        ymdhmsUTC(2023, 1, 3, 11, 30, 0),
+    ],
 });
 
 run('floating timestamps', {
@@ -903,12 +903,12 @@ run('floating timestamps', {
         '2014-10-13T00:00:00.000',
         '2014-10-14T00:00:00.000',
         '2014-10-15T00:00:00.000',
-        '2014-10-16T10:00:00.000'
+        '2014-10-16T10:00:00.000',
     ],
     parsed: [
         ymdhms(2014, 10, 13, 0, 0, 0),
         ymdhms(2014, 10, 14, 0, 0, 0),
         ymdhms(2014, 10, 15, 0, 0, 0),
-        ymdhms(2014, 10, 16, 10, 0, 0)
-    ]
+        ymdhms(2014, 10, 16, 10, 0, 0),
+    ],
 });

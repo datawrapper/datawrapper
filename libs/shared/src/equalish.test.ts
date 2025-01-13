@@ -25,8 +25,8 @@ testProp(
     [
         fc.float({
             noDefaultInfinity: true,
-            noNaN: true
-        })
+            noNaN: true,
+        }),
     ],
     (t, a) => {
         t.true(equalish(a, a));
@@ -38,13 +38,13 @@ testProp(
     [
         fc.double({
             noDefaultInfinity: true,
-            noNaN: true
+            noNaN: true,
         }),
         fc.double({
             min: 0,
             max: 1e-7,
-            noNaN: true
-        })
+            noNaN: true,
+        }),
     ],
     (t, a, b) => {
         t.true(equalish(a, a + b));
@@ -59,13 +59,13 @@ testProp(
             // e.g. `17179869184 + 0.0000012 === 17179869184`.
             min: -10e5,
             max: 10e5,
-            noNaN: true
+            noNaN: true,
         }),
         fc.double({
             min: 1.1e-6,
             max: 2e-6,
-            noNaN: true
-        })
+            noNaN: true,
+        }),
     ],
     (t, a, b) => {
         t.false(equalish(a, a + b));

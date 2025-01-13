@@ -9,8 +9,8 @@ test('guessDelimiterFromLocale', async t => {
     numeral.register('locale', locale1, {
         delimiters: {
             thousands: ' ', // ignored
-            decimal: ','
-        }
+            decimal: ',',
+        },
     });
     numeral.locale(locale1);
     t.is(guessDelimiterFromLocale(numeral), ';');
@@ -19,8 +19,8 @@ test('guessDelimiterFromLocale', async t => {
     numeral.register('locale', locale2, {
         delimiters: {
             thousands: ' ', // ignored
-            decimal: '.'
-        }
+            decimal: '.',
+        },
     });
     numeral.locale(locale2);
     t.is(guessDelimiterFromLocale(numeral), ',');

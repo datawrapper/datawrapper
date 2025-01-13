@@ -6,7 +6,7 @@ test.before(() => {
     global.window = {
         fetch: () => {
             throw new Error('unexpected fetch call');
-        }
+        },
     };
 });
 test.after(() => {
@@ -305,8 +305,8 @@ function makeResponse(status, body = 'foo,bar') {
         new Response(body, {
             status,
             headers: {
-                'Content-type': 'text/csv'
-            }
+                'Content-type': 'text/csv',
+            },
         })
     );
 }

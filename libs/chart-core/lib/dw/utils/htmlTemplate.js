@@ -62,7 +62,7 @@ const ALLOWED_TAGS = [
     'tt',
     'u',
     'ul',
-    'wbr'
+    'wbr',
 ];
 
 /**

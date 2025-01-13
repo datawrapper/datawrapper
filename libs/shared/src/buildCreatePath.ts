@@ -17,7 +17,7 @@ export function buildCreatePath({
     folderId,
     type,
     office,
-    embedded
+    embedded,
 }: {
     workspace?: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to workspaces, this parameter should become required
     type: CreateChartType;

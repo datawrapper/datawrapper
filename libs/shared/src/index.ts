@@ -7,7 +7,7 @@ export {
     CHART_ID_ALLOWED_CHARS,
     CHART_ID_PATTERN,
     CHART_ID_REGEXP,
-    CUSTOM_FIELD_ORDERBY_PREFIX
+    CUSTOM_FIELD_ORDERBY_PREFIX,
 } from './chartConstants.js';
 export { columnFormatter } from './columnFormatter.js';
 export { default as clone } from './clone.js';
@@ -25,7 +25,7 @@ export {
     patchJSON,
     deleteJSON,
     loadScript,
-    loadStylesheet
+    loadStylesheet,
 } from './fetch.js';
 export { default as formatNumber } from './formatNumber.js';
 export { default as get } from './get.js';
@@ -43,7 +43,7 @@ export { default as toFixed } from './toFixed.js';
 export {
     default as transformObjectValues,
     nullsToUndefined,
-    undefinedToNull
+    undefinedToNull,
 } from './transformObjectValues.js';
 export { default as truncate } from './truncate.js';
 export type { StringWithAutocomplete } from './types.js';
@@ -53,5 +53,5 @@ export {
     getMentionsFromTipTapJson,
     getUserIdFromMention,
     getChartIdFromLink,
-    getChartLinksFromTipTapJson
+    getChartLinksFromTipTapJson,
 } from './mentionsAndChartLinks.js';

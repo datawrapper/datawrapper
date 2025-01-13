@@ -13,27 +13,27 @@ const testCases = [
     [{ workspace: null, chartId: 'ABCDE', step: null }, '/edit/ABCDE/edit'],
     [
         { workspace: null, chartId: 'ABCDE', step: 'visualize#refine' },
-        '/edit/ABCDE/visualize#refine'
+        '/edit/ABCDE/visualize#refine',
     ],
     [
         {
             chartId: 'ABCDE',
             step: 'describe',
             searchParams: new URLSearchParams({
-                comment: '123'
-            })
+                comment: '123',
+            }),
         },
-        '/edit/ABCDE/describe?comment=123'
+        '/edit/ABCDE/describe?comment=123',
     ],
     [
         {
             chartId: 'ABCDE',
             searchParams: new URLSearchParams({
                 a: '1',
-                b: '2'
-            })
+                b: '2',
+            }),
         },
-        '/edit/ABCDE/edit?a=1&b=2'
+        '/edit/ABCDE/edit?a=1&b=2',
     ],
 
     [
@@ -41,10 +41,10 @@ const testCases = [
             workspace: 'ws',
             chartId: 'ABCDE',
             step: 'visualize#refine',
-            searchParams: new URLSearchParams({ comment: '123' })
+            searchParams: new URLSearchParams({ comment: '123' }),
         },
-        '/ws/edit/ABCDE/visualize#refine?comment=123'
-    ]
+        '/ws/edit/ABCDE/visualize#refine?comment=123',
+    ],
 ];
 
 for (const [input, expected] of testCases) {

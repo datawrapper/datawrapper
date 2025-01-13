@@ -8,7 +8,7 @@ export function buildArchivePath({
     workspace,
     teamId,
     folderId,
-    searchParams
+    searchParams,
 }: {
     workspace: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to worksaces, this parameter should become required
     teamId: string | null | undefined;

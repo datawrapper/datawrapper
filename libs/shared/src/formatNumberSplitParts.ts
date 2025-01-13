@@ -53,13 +53,13 @@ export function formatNumberSplitParts(
         // pull plus sign to front
         return {
             prefix: value === 0 ? plusMinusChar : '+',
-            number: `${prepend}${fmt.replace('+', '')}${append}`
+            number: `${prepend}${fmt.replace('+', '')}${append}`,
         };
     } else if (value === 0 && format.includes('+')) {
         if (fmt.includes('+')) {
             return {
                 prefix: `${prepend}${plusMinusChar}`,
-                number: `${fmt.replace('+', '')}${append}`
+                number: `${fmt.replace('+', '')}${append}`,
             };
         }
         return { prefix: `${prepend}${plusMinusChar}`, number: `${fmt.replace('+', '')}${append}` };
@@ -92,5 +92,5 @@ const currencies = new Set([
     'cad',
     'us$',
     'ca$',
-    'can$'
+    'can$',
 ]);

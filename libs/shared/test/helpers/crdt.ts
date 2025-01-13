@@ -29,7 +29,7 @@ export function saveSnapshot(snapshots: DebugSnapshot[]): string {
 
     const combinedSnapshot: DebugCombinedSnapshot = {
         data: snapshots[0].data,
-        clients: snapshots.map(({ updates }) => ({ updates }))
+        clients: snapshots.map(({ updates }) => ({ updates })),
     };
 
     writeFileSync(getSnapshotPath(id), JSON.stringify(combinedSnapshot, null, 2));

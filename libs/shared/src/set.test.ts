@@ -8,9 +8,9 @@ const thing = {
         nothing: null,
         array: [1, 2, 4, 8],
         nested: {
-            foo: 12 as string | number
-        }
-    }
+            foo: 12 as string | number,
+        },
+    },
 };
 
 test('set simple', t => {

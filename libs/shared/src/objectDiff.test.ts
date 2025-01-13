@@ -8,24 +8,24 @@ const testData = {
     last_modified_at: new Date(2022, 2, 31, 10, 0, 0),
     author: {
         name: 'creator',
-        email: 'admin@datawrapper.de'
+        email: 'admin@datawrapper.de',
     },
     metadata: {
         annotate: {
-            notes: 'Some notes here'
+            notes: 'Some notes here',
         },
         describe: {
-            intro: 'This is an intro'
+            intro: 'This is an intro',
         },
         visualize: {
             sharing: {
-                enabled: true
+                enabled: true,
             },
             list: ['A', 'B', 'C', 'D'],
             custom: {
                 Apple: '#ff0000',
                 Banana: '#ffff00',
-                Orange: '#cc0044'
+                Orange: '#cc0044',
             },
             listWithIds: [
                 { id: 1, name: 'A' },
@@ -34,19 +34,19 @@ const testData = {
                     id: 3,
                     nestedListWithIds: [
                         { id: 1, name: 'A' },
-                        { id: 2, name: 'B' }
-                    ]
-                }
+                        { id: 2, name: 'B' },
+                    ],
+                },
             ],
             mixedList: [
                 { id: 1, name: 'A' },
                 { name: 'B' }, // no `id` property
                 { id: 3, name: 'C' },
                 { id: 4, name: 'D' },
-                null
-            ]
-        }
-    }
+                null,
+            ],
+        },
+    },
 };
 
 type PartialPartial<TObj, TKey extends keyof TObj> = Omit<TObj, TKey> & Partial<Pick<TObj, TKey>>;
@@ -80,7 +80,7 @@ test('removed key produces null diff', t => {
 test('removed 2nd-level key produces null diff', t => {
     const source = cloneDeep(testData);
     const target: Omit<typeof testData, 'author'> & {
-        author: PartialPartial<typeof testData['author'], 'email'>;
+        author: PartialPartial<(typeof testData)['author'], 'email'>;
     } = cloneDeep(testData);
     delete target.author.email;
     t.deepEqual(objectDiff(source, target), { author: { email: null } });
@@ -89,7 +89,7 @@ test('removed 2nd-level key produces null diff', t => {
 test('ignored keys are ignored', t => {
     const source = cloneDeep(testData);
     const target: PartialPartial<typeof testData, 'author'> = defaultsDeep({}, testData, {
-        metadata: { author: 'new' }
+        metadata: { author: 'new' },
     });
     delete target.author; // ignored
     t.deepEqual(objectDiff(source, target, ['title', 'metadata']), { metadata: { author: 'new' } });
@@ -123,7 +123,7 @@ test('boolean keys are compared', t => {
     const target = cloneDeep(testData);
     target.metadata.visualize.sharing.enabled = false;
     t.deepEqual(objectDiff(source, target), {
-        metadata: { visualize: { sharing: { enabled: false } } }
+        metadata: { visualize: { sharing: { enabled: false } } },
     });
 });
 
@@ -134,7 +134,7 @@ test('multiple keys are compared', t => {
     target.metadata.annotate.notes = 'New notes!';
     t.deepEqual(objectDiff(source, target), {
         title: 'New title!',
-        metadata: { annotate: { notes: 'New notes!' } }
+        metadata: { annotate: { notes: 'New notes!' } },
     });
 });
 
@@ -144,8 +144,8 @@ test('arrays of objects containing IDs are compared (property updates)', t => {
     target.metadata.visualize.listWithIds[0].name = 'New name';
     t.deepEqual(objectDiff(source, target), {
         metadata: {
-            visualize: { listWithIds: [{ id: 1, name: 'New name' }, { id: 2 }, { id: 3 }] }
-        }
+            visualize: { listWithIds: [{ id: 1, name: 'New name' }, { id: 2 }, { id: 3 }] },
+        },
     });
 });
 
@@ -155,8 +155,8 @@ test('arrays of objects containing IDs are compared (property deletion)', t => {
     delete target.metadata.visualize.listWithIds[0].name;
     t.deepEqual(objectDiff(source, target), {
         metadata: {
-            visualize: { listWithIds: [{ id: 1, name: null }, { id: 2 }, { id: 3 }] }
-        }
+            visualize: { listWithIds: [{ id: 1, name: null }, { id: 2 }, { id: 3 }] },
+        },
     });
 });
 
@@ -167,9 +167,9 @@ test('arrays of objects containing IDs are compared (insertion of new elements)'
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                listWithIds: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4, name: 'New element' }]
-            }
-        }
+                listWithIds: [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4, name: 'New element' }],
+            },
+        },
     });
 });
 
@@ -180,9 +180,9 @@ test('arrays of objects containing IDs are compared (deletion of elements)', t =
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                listWithIds: [{ id: 2 }, { id: 3 }]
-            }
-        }
+                listWithIds: [{ id: 2 }, { id: 3 }],
+            },
+        },
     });
 });
 
@@ -195,9 +195,9 @@ test('arrays of objects containing IDs are compared (order updates)', t => {
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                listWithIds: [{ id: 3 }, { id: 2 }, { id: 1 }]
-            }
-        }
+                listWithIds: [{ id: 3 }, { id: 2 }, { id: 1 }],
+            },
+        },
     });
 });
 
@@ -214,11 +214,11 @@ test('nested arrays of objects containing IDs are compared (property updates)', 
                     { id: 2 },
                     {
                         id: 3,
-                        nestedListWithIds: [{ id: 1, name: 'New name' }, { id: 2 }]
-                    }
-                ]
-            }
-        }
+                        nestedListWithIds: [{ id: 1, name: 'New name' }, { id: 2 }],
+                    },
+                ],
+            },
+        },
     });
 });
 
@@ -228,7 +228,7 @@ test('nested arrays of objects containing IDs are compared (insertion of new ele
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     target.metadata.visualize.listWithIds[2].nestedListWithIds!.push({
         id: 3,
-        name: 'New element'
+        name: 'New element',
     });
     t.deepEqual(objectDiff(source, target), {
         metadata: {
@@ -238,11 +238,11 @@ test('nested arrays of objects containing IDs are compared (insertion of new ele
                     { id: 2 },
                     {
                         id: 3,
-                        nestedListWithIds: [{ id: 1 }, { id: 2 }, { id: 3, name: 'New element' }]
-                    }
-                ]
-            }
-        }
+                        nestedListWithIds: [{ id: 1 }, { id: 2 }, { id: 3, name: 'New element' }],
+                    },
+                ],
+            },
+        },
     });
 });
 
@@ -260,11 +260,11 @@ test('nested arrays of objects containing IDs are compared (deletion of elements
                     { id: 2 },
                     {
                         id: 3,
-                        nestedListWithIds: [{ id: 2 }]
-                    }
-                ]
-            }
-        }
+                        nestedListWithIds: [{ id: 2 }],
+                    },
+                ],
+            },
+        },
     });
 });
 
@@ -282,11 +282,11 @@ test('nested arrays of objects containing IDs are compared (order updates)', t =
                     { id: 2 },
                     {
                         id: 3,
-                        nestedListWithIds: [{ id: 2 }, { id: 1 }]
-                    }
-                ]
-            }
-        }
+                        nestedListWithIds: [{ id: 2 }, { id: 1 }],
+                    },
+                ],
+            },
+        },
     });
 });
 
@@ -297,9 +297,9 @@ test('arrays of mixed objects (with and without IDs) are compared (property upda
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 1, name: 'New name' }, { name: 'B' }, { id: 3 }, { id: 4 }, null]
-            }
-        }
+                mixedList: [{ id: 1, name: 'New name' }, { name: 'B' }, { id: 3 }, { id: 4 }, null],
+            },
+        },
     });
 });
 
@@ -310,9 +310,9 @@ test('arrays of mixed objects (with and without IDs) are compared (removal of id
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { name: 'D' }, null]
-            }
-        }
+                mixedList: [{ id: 1 }, { name: 'B' }, { id: 3 }, { name: 'D' }, null],
+            },
+        },
     });
 });
 
@@ -329,10 +329,10 @@ test('arrays of mixed objects (with and without IDs) are compared (insertion of 
                     { id: 3 },
                     { id: 4 },
                     null,
-                    { name: 'New element' }
-                ]
-            }
-        }
+                    { name: 'New element' },
+                ],
+            },
+        },
     });
 });
 
@@ -343,9 +343,9 @@ test('arrays of mixed objects (with and without IDs) are compared (deletion of e
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [{ name: 'B' }, { id: 3 }, { id: 4 }, null]
-            }
-        }
+                mixedList: [{ name: 'B' }, { id: 3 }, { id: 4 }, null],
+            },
+        },
     });
 });
 
@@ -361,9 +361,9 @@ test('arrays of mixed objects (with and without IDs) are compared (order updates
     t.deepEqual(objectDiff(source, target), {
         metadata: {
             visualize: {
-                mixedList: [null, { id: 4 }, { id: 3 }, { name: 'B' }, { id: 1 }]
-            }
-        }
+                mixedList: [null, { id: 4 }, { id: 3 }, { name: 'B' }, { id: 1 }],
+            },
+        },
     });
 });
 
@@ -390,8 +390,8 @@ test('custom diffArray function', t => {
     t.deepEqual(objectDiff(source, target, null, { diffArray }), {
         metadata: {
             visualize: {
-                list: { D: null }
-            }
-        }
+                list: { D: null },
+            },
+        },
     });
 });

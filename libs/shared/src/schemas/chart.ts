@@ -42,8 +42,8 @@ export const preparedChartSchema: Record<string, Joi.Schema> = {
 
     metadata: Joi.object({
         data: Joi.object({
-            transpose: Joi.boolean()
-        }).unknown(true)
+            transpose: Joi.boolean(),
+        }).unknown(true),
     })
         .description('Metadata that saves all chart specific settings and options.')
         .unknown(true)
@@ -73,17 +73,20 @@ export const preparedChartSchema: Record<string, Joi.Schema> = {
     authorId: Joi.number().integer().allow(null),
     author: Joi.object({
         name: Joi.string().allow(null),
-        email: Joi.string().allow(null)
+        email: Joi.string().allow(null),
     }),
-    organizationId: Joi.string().allow(null)
+    organizationId: Joi.string().allow(null),
 };
 
 export function getPartialChartSchema(keys: string[]): Record<string, Joi.Schema> {
-    return keys.reduce((acc, key) => {
-        if (!preparedChartSchema[key]) {
-            throw new Error(`Unknown key "${key}" in chart schema`);
-        }
-        acc[key] = preparedChartSchema[key];
-        return acc;
-    }, {} as Record<string, Joi.Schema>);
+    return keys.reduce(
+        (acc, key) => {
+            if (!preparedChartSchema[key]) {
+                throw new Error(`Unknown key "${key}" in chart schema`);
+            }
+            acc[key] = preparedChartSchema[key];
+            return acc;
+        },
+        {} as Record<string, Joi.Schema>
+    );
 }

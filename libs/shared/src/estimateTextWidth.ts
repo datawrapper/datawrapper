@@ -89,5 +89,5 @@ const CHAR_W: Record<string, number> = {
     ';': 5,
     '-': 5,
     '+': 12,
-    ' ': 4
+    ' ': 4,
 };

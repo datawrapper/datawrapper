@@ -23,7 +23,7 @@ const rx = {
     MM: { test: /(0?[1-9]|1[0-2])/, parse: /(0?[1-9]|1[0-2])/ },
     DD: { parse: /(0?[1-9]|[1-2][0-9]|3[01])/ },
     DOW: { parse: /([0-7])/ },
-    HHMM: { parse: /(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *(AM|PM)?/ }
+    HHMM: { parse: /(0?\d|1\d|2[0-3]):([0-5]\d)(?::([0-5]\d))? *(AM|PM)?/ },
 };
 
 const MONTHS = {
@@ -41,7 +41,7 @@ const MONTHS = {
         'GEN',
         'GENNAIO',
         'JANEIRO',
-        'JANUARI'
+        'JANUARI',
     ],
     1: [
         'FEB',
@@ -55,7 +55,7 @@ const MONTHS = {
         'FEBBRAIO',
         'FEV',
         'FEVEREIRO',
-        'FEBRUARI'
+        'FEBRUARI',
     ],
     2: ['MAR', 'MÄR', 'MARCH', 'MRZ', 'MÄRZ', 'MARS', 'MARS', 'MARZO', 'MARZO', 'MARÇO', 'MARET'],
     3: ['APR', 'APRIL', 'APR', 'APRIL', 'AVR', 'AVRIL', 'ABR', 'ABRIL', 'APRILE'],
@@ -74,7 +74,7 @@ const MONTHS = {
         'OTT',
         'OTTOBRE',
         'OUT',
-        'OUTUBRO'
+        'OUTUBRO',
     ],
     10: ['NOV', 'NOVEMBER', 'NOVEMBER', 'NOVEMBRE', 'NOVIEMBRE', 'NOVEMBRE', 'NOVEMBRO'],
     11: [
@@ -89,8 +89,8 @@ const MONTHS = {
         'DICIEMBRE',
         'DICEMBRE',
         'DESEMBER',
-        'DEZEMBRO'
-    ]
+        'DEZEMBRO',
+    ],
 };
 const shortMonthKey = {};
 
@@ -120,122 +120,122 @@ var knownFormats = {
     YYYY: {
         test: reg(rx.YYYY2.test),
         parse: reg(rx.YYYY2.parse),
-        precision: 'year'
+        precision: 'year',
     },
     'YYYY-H': {
         test: reg(rx.YYYY.test, s0, rx.H.test),
         parse: reg(rx.YYYY.parse, s0, rx.H.parse),
-        precision: 'half'
+        precision: 'half',
     },
     'H-YYYY': {
         test: reg(rx.H.test, s1, rx.YYYY.test),
         parse: reg(rx.H.parse, s1, rx.YYYY.parse),
-        precision: 'half'
+        precision: 'half',
     },
     'YYYY-Q': {
         test: reg(rx.YYYY.test, s0, rx.Q.test),
         parse: reg(rx.YYYY.parse, s0, rx.Q.parse),
-        precision: 'quarter'
+        precision: 'quarter',
     },
     'Q-YYYY': {
         test: reg(rx.Q.test, s1, rx.YYYY.test),
         parse: reg(rx.Q.parse, s1, rx.YYYY.parse),
-        precision: 'quarter'
+        precision: 'quarter',
     },
     'YYYY-M': {
         test: reg(rx.YYYY.test, sM, rx.MM.test),
         parse: reg(rx.YYYY.parse, sM, rx.MM.parse),
-        precision: 'month'
+        precision: 'month',
     },
     'M-YYYY': {
         test: reg(rx.MM.test, s1, rx.YYYY.test),
         parse: reg(rx.MM.parse, s1, rx.YYYY.parse),
-        precision: 'month'
+        precision: 'month',
     },
     'YYYY-MMM': {
         test: reg(rx.YYYY.test, s1, rx.MMM.parse),
         parse: reg(rx.YYYY.parse, s1, rx.MMM.parse),
-        precision: 'month'
+        precision: 'month',
     },
     'MMM-YYYY': {
         test: reg(rx.MMM.parse, s1, rx.YYYY.test),
         parse: reg(rx.MMM.parse, s1, rx.YYYY.parse),
-        precision: 'month'
+        precision: 'month',
     },
     'MMM-YY': {
         test: reg(rx.MMM.parse, s1, rx.YY.test),
         parse: reg(rx.MMM.parse, s1, rx.YY.parse),
-        precision: 'month'
+        precision: 'month',
     },
     MMM: {
         test: reg(rx.MMM.parse),
         parse: reg(rx.MMM.parse),
-        precision: 'month'
+        precision: 'month',
     },
     'YYYY-WW': {
         test: reg(rx.YYYY.test, s0, rx.W.test),
         parse: reg(rx.YYYY.parse, s0, rx.W.parse),
-        precision: 'week'
+        precision: 'week',
     },
     'WW-YYYY': {
         test: reg(rx.W.test, s1, rx.YYYY.test),
         parse: reg(rx.W.parse, s1, rx.YYYY.parse),
-        precision: 'week'
+        precision: 'week',
     },
     'MM/DD/YYYY': {
         test: reg(rx.MM.test, '([\\-\\/])', rx.DD.test, '\\2', rx.YYYY.test),
         parse: reg(rx.MM.parse, '([\\-\\/])', rx.DD.parse, '\\2', rx.YYYY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'MM/DD/YY': {
         test: reg(rx.MM.test, '([\\-\\/])', rx.DD.test, '\\2', rx.YY.test),
         parse: reg(rx.MM.parse, '([\\-\\/])', rx.DD.parse, '\\2', rx.YY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'DD/MM/YY': {
         test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.YY.test),
         parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.YY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'DD/MM/YYYY': {
         test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.YYYY.test),
         parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.YYYY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'DD/MMM/YYYY': {
         test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MMM.test, '\\2', rx.YYYY.test),
         parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MMM.parse, '\\2', rx.YYYY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'DD/MMM/YY': {
         test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MMM.test, '\\2', rx.YY.test),
         parse: reg(rx.DD.parse, '([\\-\\.\\/ ?])', rx.MMM.parse, '\\2', rx.YY.parse),
-        precision: 'day'
+        precision: 'day',
     },
     'YYYY-MM-DD': {
         test: reg(rx.YYYY.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.DD.test),
         parse: reg(rx.YYYY.parse, '([\\-\\.\\/ ?])', rx.MM.parse, '\\2', rx.DD.parse),
-        precision: 'day'
+        precision: 'day',
     },
 
     'MMM-DD-YYYY': {
         test: reg(rx.MMM.test, s1, rx.DD.test, s2, rx.YYYY.test),
         parse: reg(rx.MMM.parse, s1, rx.DD.parse, s2, rx.YYYY.parse),
-        precision: 'day'
+        precision: 'day',
     },
 
     'YYYY-WW-d': {
         // year + ISO week + [day]
         test: reg(rx.YYYY.test, s0, rx.W.test, s1, rx.DOW.test),
         parse: reg(rx.YYYY.parse, s0, rx.W.parse, s1, rx.DOW.parse),
-        precision: 'day'
+        precision: 'day',
     },
 
     // dates with a time
     'MM/DD/YYYY HH:MM': {
         test: reg(rx.MM.test, '([\\-\\/])', rx.DD.test, '\\2', rx.YYYY.test, s3, rx.HHMM.test),
         parse: reg(rx.MM.parse, '([\\-\\/])', rx.DD.parse, '\\2', rx.YYYY.parse, s3, rx.HHMM.parse),
-        precision: 'day-minutes'
+        precision: 'day-minutes',
     },
     'DD.MM.YYYY HH:MM': {
         test: reg(rx.DD.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.YYYY.test, s3, rx.HHMM.test),
@@ -248,7 +248,7 @@ var knownFormats = {
             s3,
             rx.HHMM.parse
         ),
-        precision: 'day-minutes'
+        precision: 'day-minutes',
     },
     'YYYY-MM-DD HH:MM': {
         test: reg(rx.YYYY.test, '([\\-\\.\\/ ?])', rx.MM.test, '\\2', rx.DD.test, s3, rx.HHMM.test),
@@ -261,18 +261,18 @@ var knownFormats = {
             s3,
             rx.HHMM.parse
         ),
-        precision: 'day-minutes'
+        precision: 'day-minutes',
     },
     ISO8601: {
         test: ISO8601_REG,
         parse: ISO8601_REG,
-        precision: 'day-seconds'
+        precision: 'day-seconds',
     },
     floatingts: {
         test: FLOATING_TS,
         parse: FLOATING_TS,
-        precision: 'day-seconds'
-    }
+        precision: 'day-seconds',
+    },
 };
 
 function reg() {
@@ -486,7 +486,7 @@ function date(sample) {
                 }
             });
             return candidates;
-        }
+        },
     };
     return type;
 }

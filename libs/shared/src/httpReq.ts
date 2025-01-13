@@ -96,8 +96,8 @@ function httpReq(
         ...options,
         headers: {
             'Content-Type': 'application/json',
-            ...options.headers
-        } as Record<string, string>
+            ...options.headers,
+        } as Record<string, string>,
     };
     const url = `${baseUrl.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
     if (payload) {

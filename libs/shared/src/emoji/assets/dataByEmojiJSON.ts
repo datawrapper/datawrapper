@@ -10,7 +10,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😃': {
         name: 'grinning face with big eyes',
@@ -18,7 +18,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😄': {
         name: 'grinning face with smiling eyes',
@@ -26,7 +26,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😁': {
         name: 'beaming face with smiling eyes',
@@ -34,7 +34,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😆': {
         name: 'grinning squinting face',
@@ -42,7 +42,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😅': {
         name: 'grinning face with sweat',
@@ -50,7 +50,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤣': {
         name: 'rolling on the floor laughing',
@@ -58,7 +58,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😂': {
         name: 'face with tears of joy',
@@ -66,7 +66,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙂': {
         name: 'slightly smiling face',
@@ -74,7 +74,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙃': {
         name: 'upside-down face',
@@ -82,7 +82,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫠': {
         name: 'melting face',
@@ -90,7 +90,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😉': {
         name: 'winking face',
@@ -98,7 +98,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😊': {
         name: 'smiling face with smiling eyes',
@@ -106,7 +106,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😇': {
         name: 'smiling face with halo',
@@ -114,7 +114,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥰': {
         name: 'smiling face with hearts',
@@ -122,7 +122,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😍': {
         name: 'smiling face with heart-eyes',
@@ -130,7 +130,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤩': {
         name: 'star-struck',
@@ -138,7 +138,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😘': {
         name: 'face blowing a kiss',
@@ -146,7 +146,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😗': {
         name: 'kissing face',
@@ -154,7 +154,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☺️': {
         name: 'smiling face',
@@ -162,7 +162,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😚': {
         name: 'kissing face with closed eyes',
@@ -170,7 +170,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😙': {
         name: 'kissing face with smiling eyes',
@@ -178,7 +178,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥲': {
         name: 'smiling face with tear',
@@ -186,7 +186,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😋': {
         name: 'face savoring food',
@@ -194,7 +194,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😛': {
         name: 'face with tongue',
@@ -202,7 +202,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😜': {
         name: 'winking face with tongue',
@@ -210,7 +210,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤪': {
         name: 'zany face',
@@ -218,7 +218,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😝': {
         name: 'squinting face with tongue',
@@ -226,7 +226,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤑': {
         name: 'money-mouth face',
@@ -234,7 +234,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤗': {
         name: 'smiling face with open hands',
@@ -242,7 +242,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤭': {
         name: 'face with hand over mouth',
@@ -250,7 +250,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫢': {
         name: 'face with open eyes and hand over mouth',
@@ -258,7 +258,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫣': {
         name: 'face with peeking eye',
@@ -266,7 +266,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤫': {
         name: 'shushing face',
@@ -274,7 +274,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤔': {
         name: 'thinking face',
@@ -282,7 +282,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫡': {
         name: 'saluting face',
@@ -290,7 +290,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤐': {
         name: 'zipper-mouth face',
@@ -298,7 +298,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤨': {
         name: 'face with raised eyebrow',
@@ -306,7 +306,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😐': {
         name: 'neutral face',
@@ -314,7 +314,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😑': {
         name: 'expressionless face',
@@ -322,7 +322,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😶': {
         name: 'face without mouth',
@@ -330,7 +330,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫥': {
         name: 'dotted line face',
@@ -338,7 +338,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😶‍🌫️': {
         name: 'face in clouds',
@@ -346,7 +346,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.1',
         unicode_version: '13.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😏': {
         name: 'smirking face',
@@ -354,7 +354,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😒': {
         name: 'unamused face',
@@ -362,7 +362,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙄': {
         name: 'face with rolling eyes',
@@ -370,7 +370,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😬': {
         name: 'grimacing face',
@@ -378,7 +378,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😮‍💨': {
         name: 'face exhaling',
@@ -386,7 +386,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.1',
         unicode_version: '13.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤥': {
         name: 'lying face',
@@ -394,7 +394,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫨': {
         name: 'shaking face',
@@ -402,7 +402,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙂‍↔️': {
         name: 'head shaking horizontally',
@@ -410,7 +410,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙂‍↕️': {
         name: 'head shaking vertically',
@@ -418,7 +418,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😌': {
         name: 'relieved face',
@@ -426,7 +426,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😔': {
         name: 'pensive face',
@@ -434,7 +434,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😪': {
         name: 'sleepy face',
@@ -442,7 +442,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤤': {
         name: 'drooling face',
@@ -450,7 +450,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😴': {
         name: 'sleeping face',
@@ -458,7 +458,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😷': {
         name: 'face with medical mask',
@@ -466,7 +466,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤒': {
         name: 'face with thermometer',
@@ -474,7 +474,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤕': {
         name: 'face with head-bandage',
@@ -482,7 +482,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤢': {
         name: 'nauseated face',
@@ -490,7 +490,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤮': {
         name: 'face vomiting',
@@ -498,7 +498,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤧': {
         name: 'sneezing face',
@@ -506,7 +506,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥵': {
         name: 'hot face',
@@ -514,7 +514,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥶': {
         name: 'cold face',
@@ -522,7 +522,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥴': {
         name: 'woozy face',
@@ -530,7 +530,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😵': {
         name: 'face with crossed-out eyes',
@@ -538,7 +538,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😵‍💫': {
         name: 'face with spiral eyes',
@@ -546,7 +546,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.1',
         unicode_version: '13.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤯': {
         name: 'exploding head',
@@ -554,7 +554,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤠': {
         name: 'cowboy hat face',
@@ -562,7 +562,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥳': {
         name: 'partying face',
@@ -570,7 +570,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥸': {
         name: 'disguised face',
@@ -578,7 +578,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😎': {
         name: 'smiling face with sunglasses',
@@ -586,7 +586,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤓': {
         name: 'nerd face',
@@ -594,7 +594,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧐': {
         name: 'face with monocle',
@@ -602,7 +602,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😕': {
         name: 'confused face',
@@ -610,7 +610,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫤': {
         name: 'face with diagonal mouth',
@@ -618,7 +618,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😟': {
         name: 'worried face',
@@ -626,7 +626,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙁': {
         name: 'slightly frowning face',
@@ -634,7 +634,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☹️': {
         name: 'frowning face',
@@ -642,7 +642,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😮': {
         name: 'face with open mouth',
@@ -650,7 +650,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😯': {
         name: 'hushed face',
@@ -658,7 +658,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😲': {
         name: 'astonished face',
@@ -666,7 +666,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😳': {
         name: 'flushed face',
@@ -674,7 +674,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥺': {
         name: 'pleading face',
@@ -682,7 +682,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥹': {
         name: 'face holding back tears',
@@ -690,7 +690,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😦': {
         name: 'frowning face with open mouth',
@@ -698,7 +698,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😧': {
         name: 'anguished face',
@@ -706,7 +706,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😨': {
         name: 'fearful face',
@@ -714,7 +714,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😰': {
         name: 'anxious face with sweat',
@@ -722,7 +722,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😥': {
         name: 'sad but relieved face',
@@ -730,7 +730,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😢': {
         name: 'crying face',
@@ -738,7 +738,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😭': {
         name: 'loudly crying face',
@@ -746,7 +746,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😱': {
         name: 'face screaming in fear',
@@ -754,7 +754,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😖': {
         name: 'confounded face',
@@ -762,7 +762,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😣': {
         name: 'persevering face',
@@ -770,7 +770,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😞': {
         name: 'disappointed face',
@@ -778,7 +778,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😓': {
         name: 'downcast face with sweat',
@@ -786,7 +786,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😩': {
         name: 'weary face',
@@ -794,7 +794,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😫': {
         name: 'tired face',
@@ -802,7 +802,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥱': {
         name: 'yawning face',
@@ -810,7 +810,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😤': {
         name: 'face with steam from nose',
@@ -818,7 +818,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😡': {
         name: 'enraged face',
@@ -826,7 +826,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😠': {
         name: 'angry face',
@@ -834,7 +834,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤬': {
         name: 'face with symbols on mouth',
@@ -842,7 +842,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😈': {
         name: 'smiling face with horns',
@@ -850,7 +850,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👿': {
         name: 'angry face with horns',
@@ -858,7 +858,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💀': {
         name: 'skull',
@@ -866,7 +866,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☠️': {
         name: 'skull and crossbones',
@@ -874,7 +874,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💩': {
         name: 'pile of poo',
@@ -882,7 +882,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤡': {
         name: 'clown face',
@@ -890,7 +890,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👹': {
         name: 'ogre',
@@ -898,7 +898,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👺': {
         name: 'goblin',
@@ -906,7 +906,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👻': {
         name: 'ghost',
@@ -914,7 +914,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👽': {
         name: 'alien',
@@ -922,7 +922,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👾': {
         name: 'alien monster',
@@ -930,7 +930,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤖': {
         name: 'robot',
@@ -938,7 +938,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😺': {
         name: 'grinning cat',
@@ -946,7 +946,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😸': {
         name: 'grinning cat with smiling eyes',
@@ -954,7 +954,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😹': {
         name: 'cat with tears of joy',
@@ -962,7 +962,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😻': {
         name: 'smiling cat with heart-eyes',
@@ -970,7 +970,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😼': {
         name: 'cat with wry smile',
@@ -978,7 +978,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😽': {
         name: 'kissing cat',
@@ -986,7 +986,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙀': {
         name: 'weary cat',
@@ -994,7 +994,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😿': {
         name: 'crying cat',
@@ -1002,7 +1002,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '😾': {
         name: 'pouting cat',
@@ -1010,7 +1010,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙈': {
         name: 'see-no-evil monkey',
@@ -1018,7 +1018,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙉': {
         name: 'hear-no-evil monkey',
@@ -1026,7 +1026,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🙊': {
         name: 'speak-no-evil monkey',
@@ -1034,7 +1034,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💌': {
         name: 'love letter',
@@ -1042,7 +1042,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💘': {
         name: 'heart with arrow',
@@ -1050,7 +1050,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💝': {
         name: 'heart with ribbon',
@@ -1058,7 +1058,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💖': {
         name: 'sparkling heart',
@@ -1066,7 +1066,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💗': {
         name: 'growing heart',
@@ -1074,7 +1074,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💓': {
         name: 'beating heart',
@@ -1082,7 +1082,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💞': {
         name: 'revolving hearts',
@@ -1090,7 +1090,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💕': {
         name: 'two hearts',
@@ -1098,7 +1098,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💟': {
         name: 'heart decoration',
@@ -1106,7 +1106,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❣️': {
         name: 'heart exclamation',
@@ -1114,7 +1114,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💔': {
         name: 'broken heart',
@@ -1122,7 +1122,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❤️‍🔥': {
         name: 'heart on fire',
@@ -1130,7 +1130,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.1',
         unicode_version: '13.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❤️‍🩹': {
         name: 'mending heart',
@@ -1138,7 +1138,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '13.1',
         unicode_version: '13.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❤️': {
         name: 'red heart',
@@ -1146,7 +1146,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩷': {
         name: 'pink heart',
@@ -1154,7 +1154,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧡': {
         name: 'orange heart',
@@ -1162,7 +1162,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💛': {
         name: 'yellow heart',
@@ -1170,7 +1170,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💚': {
         name: 'green heart',
@@ -1178,7 +1178,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💙': {
         name: 'blue heart',
@@ -1186,7 +1186,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩵': {
         name: 'light blue heart',
@@ -1194,7 +1194,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💜': {
         name: 'purple heart',
@@ -1202,7 +1202,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤎': {
         name: 'brown heart',
@@ -1210,7 +1210,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖤': {
         name: 'black heart',
@@ -1218,7 +1218,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩶': {
         name: 'grey heart',
@@ -1226,7 +1226,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤍': {
         name: 'white heart',
@@ -1234,7 +1234,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💋': {
         name: 'kiss mark',
@@ -1242,7 +1242,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💯': {
         name: 'hundred points',
@@ -1250,7 +1250,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💢': {
         name: 'anger symbol',
@@ -1258,7 +1258,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💥': {
         name: 'collision',
@@ -1266,7 +1266,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💫': {
         name: 'dizzy',
@@ -1274,7 +1274,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💦': {
         name: 'sweat droplets',
@@ -1282,7 +1282,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💨': {
         name: 'dashing away',
@@ -1290,7 +1290,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕳️': {
         name: 'hole',
@@ -1298,7 +1298,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💬': {
         name: 'speech balloon',
@@ -1306,7 +1306,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👁️‍🗨️': {
         name: 'eye in speech bubble',
@@ -1314,7 +1314,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗨️': {
         name: 'left speech bubble',
@@ -1322,7 +1322,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗯️': {
         name: 'right anger bubble',
@@ -1330,7 +1330,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💭': {
         name: 'thought balloon',
@@ -1338,7 +1338,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💤': {
         name: 'ZZZ',
@@ -1346,7 +1346,7 @@ const emojiDataByEmoji = {
         group: 'Smileys & Emotion',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👋': {
         name: 'waving hand',
@@ -1355,7 +1355,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤚': {
         name: 'raised back of hand',
@@ -1364,7 +1364,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🖐️': {
         name: 'hand with fingers splayed',
@@ -1373,7 +1373,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '✋': {
         name: 'raised hand',
@@ -1382,7 +1382,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🖖': {
         name: 'vulcan salute',
@@ -1391,7 +1391,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🫱': {
         name: 'rightwards hand',
@@ -1400,7 +1400,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🫲': {
         name: 'leftwards hand',
@@ -1409,7 +1409,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🫳': {
         name: 'palm down hand',
@@ -1418,7 +1418,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🫴': {
         name: 'palm up hand',
@@ -1427,7 +1427,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🫷': {
         name: 'leftwards pushing hand',
@@ -1436,7 +1436,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.0',
         unicode_version: '15.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.0'
+        skin_tone_support_unicode_version: '15.0',
     },
     '🫸': {
         name: 'rightwards pushing hand',
@@ -1445,7 +1445,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.0',
         unicode_version: '15.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.0'
+        skin_tone_support_unicode_version: '15.0',
     },
     '👌': {
         name: 'OK hand',
@@ -1454,7 +1454,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤌': {
         name: 'pinched fingers',
@@ -1463,7 +1463,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '🤏': {
         name: 'pinching hand',
@@ -1472,7 +1472,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '✌️': {
         name: 'victory hand',
@@ -1481,7 +1481,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤞': {
         name: 'crossed fingers',
@@ -1490,7 +1490,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🫰': {
         name: 'hand with index finger and thumb crossed',
@@ -1499,7 +1499,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🤟': {
         name: 'love-you gesture',
@@ -1508,7 +1508,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🤘': {
         name: 'sign of the horns',
@@ -1517,7 +1517,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤙': {
         name: 'call me hand',
@@ -1526,7 +1526,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '👈': {
         name: 'backhand index pointing left',
@@ -1535,7 +1535,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👉': {
         name: 'backhand index pointing right',
@@ -1544,7 +1544,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👆': {
         name: 'backhand index pointing up',
@@ -1553,7 +1553,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🖕': {
         name: 'middle finger',
@@ -1562,7 +1562,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👇': {
         name: 'backhand index pointing down',
@@ -1571,7 +1571,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '☝️': {
         name: 'index pointing up',
@@ -1580,7 +1580,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🫵': {
         name: 'index pointing at the viewer',
@@ -1589,7 +1589,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '👍': {
         name: 'thumbs up',
@@ -1598,7 +1598,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👎': {
         name: 'thumbs down',
@@ -1607,7 +1607,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '✊': {
         name: 'raised fist',
@@ -1616,7 +1616,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👊': {
         name: 'oncoming fist',
@@ -1625,7 +1625,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤛': {
         name: 'left-facing fist',
@@ -1634,7 +1634,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤜': {
         name: 'right-facing fist',
@@ -1643,7 +1643,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '👏': {
         name: 'clapping hands',
@@ -1652,7 +1652,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙌': {
         name: 'raising hands',
@@ -1661,7 +1661,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🫶': {
         name: 'heart hands',
@@ -1670,7 +1670,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '👐': {
         name: 'open hands',
@@ -1679,7 +1679,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤲': {
         name: 'palms up together',
@@ -1688,7 +1688,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🤝': {
         name: 'handshake',
@@ -1697,7 +1697,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🙏': {
         name: 'folded hands',
@@ -1706,7 +1706,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '✍️': {
         name: 'writing hand',
@@ -1715,7 +1715,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '💅': {
         name: 'nail polish',
@@ -1724,7 +1724,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤳': {
         name: 'selfie',
@@ -1733,7 +1733,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '💪': {
         name: 'flexed biceps',
@@ -1742,7 +1742,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🦾': {
         name: 'mechanical arm',
@@ -1750,7 +1750,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦿': {
         name: 'mechanical leg',
@@ -1758,7 +1758,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦵': {
         name: 'leg',
@@ -1767,7 +1767,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦶': {
         name: 'foot',
@@ -1776,7 +1776,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '👂': {
         name: 'ear',
@@ -1785,7 +1785,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🦻': {
         name: 'ear with hearing aid',
@@ -1794,7 +1794,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👃': {
         name: 'nose',
@@ -1803,7 +1803,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🧠': {
         name: 'brain',
@@ -1811,7 +1811,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫀': {
         name: 'anatomical heart',
@@ -1819,7 +1819,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫁': {
         name: 'lungs',
@@ -1827,7 +1827,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦷': {
         name: 'tooth',
@@ -1835,7 +1835,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦴': {
         name: 'bone',
@@ -1843,7 +1843,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👀': {
         name: 'eyes',
@@ -1851,7 +1851,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👁️': {
         name: 'eye',
@@ -1859,7 +1859,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👅': {
         name: 'tongue',
@@ -1867,7 +1867,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👄': {
         name: 'mouth',
@@ -1875,7 +1875,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫦': {
         name: 'biting lip',
@@ -1883,7 +1883,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👶': {
         name: 'baby',
@@ -1892,7 +1892,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🧒': {
         name: 'child',
@@ -1901,7 +1901,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '👦': {
         name: 'boy',
@@ -1910,7 +1910,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👧': {
         name: 'girl',
@@ -1919,7 +1919,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🧑': {
         name: 'person',
@@ -1928,7 +1928,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '👱': {
         name: 'person blond hair',
@@ -1937,7 +1937,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👨': {
         name: 'man',
@@ -1946,7 +1946,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🧔': {
         name: 'person beard',
@@ -1955,7 +1955,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧔‍♂️': {
         name: 'man beard',
@@ -1964,7 +1964,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.1',
         unicode_version: '13.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '🧔‍♀️': {
         name: 'woman beard',
@@ -1973,7 +1973,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.1',
         unicode_version: '13.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👨‍🦰': {
         name: 'man red hair',
@@ -1982,7 +1982,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '👨‍🦱': {
         name: 'man curly hair',
@@ -1991,7 +1991,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '👨‍🦳': {
         name: 'man white hair',
@@ -2000,7 +2000,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '👨‍🦲': {
         name: 'man bald',
@@ -2009,7 +2009,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '👩': {
         name: 'woman',
@@ -2018,7 +2018,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👩‍🦰': {
         name: 'woman red hair',
@@ -2027,7 +2027,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🧑‍🦰': {
         name: 'person red hair',
@@ -2036,7 +2036,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👩‍🦱': {
         name: 'woman curly hair',
@@ -2045,7 +2045,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🧑‍🦱': {
         name: 'person curly hair',
@@ -2054,7 +2054,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👩‍🦳': {
         name: 'woman white hair',
@@ -2063,7 +2063,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🧑‍🦳': {
         name: 'person white hair',
@@ -2072,7 +2072,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👩‍🦲': {
         name: 'woman bald',
@@ -2081,7 +2081,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🧑‍🦲': {
         name: 'person bald',
@@ -2090,7 +2090,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👱‍♀️': {
         name: 'woman blond hair',
@@ -2099,7 +2099,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👱‍♂️': {
         name: 'man blond hair',
@@ -2108,7 +2108,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧓': {
         name: 'older person',
@@ -2117,7 +2117,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '👴': {
         name: 'old man',
@@ -2126,7 +2126,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👵': {
         name: 'old woman',
@@ -2135,7 +2135,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙍': {
         name: 'person frowning',
@@ -2144,7 +2144,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙍‍♂️': {
         name: 'man frowning',
@@ -2153,7 +2153,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙍‍♀️': {
         name: 'woman frowning',
@@ -2162,7 +2162,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙎': {
         name: 'person pouting',
@@ -2171,7 +2171,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙎‍♂️': {
         name: 'man pouting',
@@ -2180,7 +2180,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙎‍♀️': {
         name: 'woman pouting',
@@ -2189,7 +2189,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙅': {
         name: 'person gesturing NO',
@@ -2198,7 +2198,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙅‍♂️': {
         name: 'man gesturing NO',
@@ -2207,7 +2207,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙅‍♀️': {
         name: 'woman gesturing NO',
@@ -2216,7 +2216,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙆': {
         name: 'person gesturing OK',
@@ -2225,7 +2225,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙆‍♂️': {
         name: 'man gesturing OK',
@@ -2234,7 +2234,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙆‍♀️': {
         name: 'woman gesturing OK',
@@ -2243,7 +2243,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💁': {
         name: 'person tipping hand',
@@ -2252,7 +2252,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '💁‍♂️': {
         name: 'man tipping hand',
@@ -2261,7 +2261,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💁‍♀️': {
         name: 'woman tipping hand',
@@ -2270,7 +2270,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙋': {
         name: 'person raising hand',
@@ -2279,7 +2279,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙋‍♂️': {
         name: 'man raising hand',
@@ -2288,7 +2288,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙋‍♀️': {
         name: 'woman raising hand',
@@ -2297,7 +2297,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧏': {
         name: 'deaf person',
@@ -2306,7 +2306,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧏‍♂️': {
         name: 'deaf man',
@@ -2315,7 +2315,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧏‍♀️': {
         name: 'deaf woman',
@@ -2324,7 +2324,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🙇': {
         name: 'person bowing',
@@ -2333,7 +2333,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🙇‍♂️': {
         name: 'man bowing',
@@ -2342,7 +2342,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🙇‍♀️': {
         name: 'woman bowing',
@@ -2351,7 +2351,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤦': {
         name: 'person facepalming',
@@ -2360,7 +2360,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤦‍♂️': {
         name: 'man facepalming',
@@ -2369,7 +2369,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤦‍♀️': {
         name: 'woman facepalming',
@@ -2378,7 +2378,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤷': {
         name: 'person shrugging',
@@ -2387,7 +2387,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤷‍♂️': {
         name: 'man shrugging',
@@ -2396,7 +2396,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤷‍♀️': {
         name: 'woman shrugging',
@@ -2405,7 +2405,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍⚕️': {
         name: 'health worker',
@@ -2414,7 +2414,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍⚕️': {
         name: 'man health worker',
@@ -2423,7 +2423,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍⚕️': {
         name: 'woman health worker',
@@ -2432,7 +2432,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🎓': {
         name: 'student',
@@ -2441,7 +2441,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🎓': {
         name: 'man student',
@@ -2450,7 +2450,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🎓': {
         name: 'woman student',
@@ -2459,7 +2459,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🏫': {
         name: 'teacher',
@@ -2468,7 +2468,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🏫': {
         name: 'man teacher',
@@ -2477,7 +2477,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🏫': {
         name: 'woman teacher',
@@ -2486,7 +2486,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍⚖️': {
         name: 'judge',
@@ -2495,7 +2495,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍⚖️': {
         name: 'man judge',
@@ -2504,7 +2504,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍⚖️': {
         name: 'woman judge',
@@ -2513,7 +2513,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🌾': {
         name: 'farmer',
@@ -2522,7 +2522,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🌾': {
         name: 'man farmer',
@@ -2531,7 +2531,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🌾': {
         name: 'woman farmer',
@@ -2540,7 +2540,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🍳': {
         name: 'cook',
@@ -2549,7 +2549,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🍳': {
         name: 'man cook',
@@ -2558,7 +2558,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🍳': {
         name: 'woman cook',
@@ -2567,7 +2567,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🔧': {
         name: 'mechanic',
@@ -2576,7 +2576,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🔧': {
         name: 'man mechanic',
@@ -2585,7 +2585,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🔧': {
         name: 'woman mechanic',
@@ -2594,7 +2594,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🏭': {
         name: 'factory worker',
@@ -2603,7 +2603,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🏭': {
         name: 'man factory worker',
@@ -2612,7 +2612,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🏭': {
         name: 'woman factory worker',
@@ -2621,7 +2621,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍💼': {
         name: 'office worker',
@@ -2630,7 +2630,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍💼': {
         name: 'man office worker',
@@ -2639,7 +2639,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍💼': {
         name: 'woman office worker',
@@ -2648,7 +2648,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🔬': {
         name: 'scientist',
@@ -2657,7 +2657,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🔬': {
         name: 'man scientist',
@@ -2666,7 +2666,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🔬': {
         name: 'woman scientist',
@@ -2675,7 +2675,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍💻': {
         name: 'technologist',
@@ -2684,7 +2684,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍💻': {
         name: 'man technologist',
@@ -2693,7 +2693,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍💻': {
         name: 'woman technologist',
@@ -2702,7 +2702,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🎤': {
         name: 'singer',
@@ -2711,7 +2711,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🎤': {
         name: 'man singer',
@@ -2720,7 +2720,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🎤': {
         name: 'woman singer',
@@ -2729,7 +2729,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🎨': {
         name: 'artist',
@@ -2738,7 +2738,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🎨': {
         name: 'man artist',
@@ -2747,7 +2747,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🎨': {
         name: 'woman artist',
@@ -2756,7 +2756,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍✈️': {
         name: 'pilot',
@@ -2765,7 +2765,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍✈️': {
         name: 'man pilot',
@@ -2774,7 +2774,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍✈️': {
         name: 'woman pilot',
@@ -2783,7 +2783,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🚀': {
         name: 'astronaut',
@@ -2792,7 +2792,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🚀': {
         name: 'man astronaut',
@@ -2801,7 +2801,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🚀': {
         name: 'woman astronaut',
@@ -2810,7 +2810,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🚒': {
         name: 'firefighter',
@@ -2819,7 +2819,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '👨‍🚒': {
         name: 'man firefighter',
@@ -2828,7 +2828,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👩‍🚒': {
         name: 'woman firefighter',
@@ -2837,7 +2837,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👮': {
         name: 'police officer',
@@ -2846,7 +2846,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👮‍♂️': {
         name: 'man police officer',
@@ -2855,7 +2855,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👮‍♀️': {
         name: 'woman police officer',
@@ -2864,7 +2864,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🕵️': {
         name: 'detective',
@@ -2873,7 +2873,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '2.0'
+        skin_tone_support_unicode_version: '2.0',
     },
     '🕵️‍♂️': {
         name: 'man detective',
@@ -2882,7 +2882,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🕵️‍♀️': {
         name: 'woman detective',
@@ -2891,7 +2891,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💂': {
         name: 'guard',
@@ -2900,7 +2900,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '💂‍♂️': {
         name: 'man guard',
@@ -2909,7 +2909,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💂‍♀️': {
         name: 'woman guard',
@@ -2918,7 +2918,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🥷': {
         name: 'ninja',
@@ -2927,7 +2927,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '👷': {
         name: 'construction worker',
@@ -2936,7 +2936,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👷‍♂️': {
         name: 'man construction worker',
@@ -2945,7 +2945,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👷‍♀️': {
         name: 'woman construction worker',
@@ -2954,7 +2954,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🫅': {
         name: 'person with crown',
@@ -2963,7 +2963,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🤴': {
         name: 'prince',
@@ -2972,7 +2972,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '👸': {
         name: 'princess',
@@ -2981,7 +2981,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👳': {
         name: 'person wearing turban',
@@ -2990,7 +2990,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👳‍♂️': {
         name: 'man wearing turban',
@@ -2999,7 +2999,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👳‍♀️': {
         name: 'woman wearing turban',
@@ -3008,7 +3008,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👲': {
         name: 'person with skullcap',
@@ -3017,7 +3017,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🧕': {
         name: 'woman with headscarf',
@@ -3026,7 +3026,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🤵': {
         name: 'person in tuxedo',
@@ -3035,7 +3035,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤵‍♂️': {
         name: 'man in tuxedo',
@@ -3044,7 +3044,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '🤵‍♀️': {
         name: 'woman in tuxedo',
@@ -3053,7 +3053,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '👰': {
         name: 'person with veil',
@@ -3062,7 +3062,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '👰‍♂️': {
         name: 'man with veil',
@@ -3071,7 +3071,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '👰‍♀️': {
         name: 'woman with veil',
@@ -3080,7 +3080,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '🤰': {
         name: 'pregnant woman',
@@ -3089,7 +3089,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🫃': {
         name: 'pregnant man',
@@ -3098,7 +3098,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🫄': {
         name: 'pregnant person',
@@ -3107,7 +3107,7 @@ const emojiDataByEmoji = {
         emoji_version: '14.0',
         unicode_version: '14.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '14.0'
+        skin_tone_support_unicode_version: '14.0',
     },
     '🤱': {
         name: 'breast-feeding',
@@ -3116,7 +3116,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '👩‍🍼': {
         name: 'woman feeding baby',
@@ -3125,7 +3125,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '👨‍🍼': {
         name: 'man feeding baby',
@@ -3134,7 +3134,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '🧑‍🍼': {
         name: 'person feeding baby',
@@ -3143,7 +3143,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '👼': {
         name: 'baby angel',
@@ -3152,7 +3152,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🎅': {
         name: 'Santa Claus',
@@ -3161,7 +3161,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🤶': {
         name: 'Mrs. Claus',
@@ -3170,7 +3170,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🧑‍🎄': {
         name: 'mx claus',
@@ -3179,7 +3179,7 @@ const emojiDataByEmoji = {
         emoji_version: '13.0',
         unicode_version: '13.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.0'
+        skin_tone_support_unicode_version: '13.0',
     },
     '🦸': {
         name: 'superhero',
@@ -3188,7 +3188,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦸‍♂️': {
         name: 'man superhero',
@@ -3197,7 +3197,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦸‍♀️': {
         name: 'woman superhero',
@@ -3206,7 +3206,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦹': {
         name: 'supervillain',
@@ -3215,7 +3215,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦹‍♂️': {
         name: 'man supervillain',
@@ -3224,7 +3224,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🦹‍♀️': {
         name: 'woman supervillain',
@@ -3233,7 +3233,7 @@ const emojiDataByEmoji = {
         emoji_version: '11.0',
         unicode_version: '11.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '11.0'
+        skin_tone_support_unicode_version: '11.0',
     },
     '🧙': {
         name: 'mage',
@@ -3242,7 +3242,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧙‍♂️': {
         name: 'man mage',
@@ -3251,7 +3251,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧙‍♀️': {
         name: 'woman mage',
@@ -3260,7 +3260,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧚': {
         name: 'fairy',
@@ -3269,7 +3269,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧚‍♂️': {
         name: 'man fairy',
@@ -3278,7 +3278,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧚‍♀️': {
         name: 'woman fairy',
@@ -3287,7 +3287,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧛': {
         name: 'vampire',
@@ -3296,7 +3296,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧛‍♂️': {
         name: 'man vampire',
@@ -3305,7 +3305,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧛‍♀️': {
         name: 'woman vampire',
@@ -3314,7 +3314,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧜': {
         name: 'merperson',
@@ -3323,7 +3323,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧜‍♂️': {
         name: 'merman',
@@ -3332,7 +3332,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧜‍♀️': {
         name: 'mermaid',
@@ -3341,7 +3341,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧝': {
         name: 'elf',
@@ -3350,7 +3350,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧝‍♂️': {
         name: 'man elf',
@@ -3359,7 +3359,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧝‍♀️': {
         name: 'woman elf',
@@ -3368,7 +3368,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧞': {
         name: 'genie',
@@ -3376,7 +3376,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧞‍♂️': {
         name: 'man genie',
@@ -3384,7 +3384,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧞‍♀️': {
         name: 'woman genie',
@@ -3392,7 +3392,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧟': {
         name: 'zombie',
@@ -3400,7 +3400,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧟‍♂️': {
         name: 'man zombie',
@@ -3408,7 +3408,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧟‍♀️': {
         name: 'woman zombie',
@@ -3416,7 +3416,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧌': {
         name: 'troll',
@@ -3424,7 +3424,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💆': {
         name: 'person getting massage',
@@ -3433,7 +3433,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '💆‍♂️': {
         name: 'man getting massage',
@@ -3442,7 +3442,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💆‍♀️': {
         name: 'woman getting massage',
@@ -3451,7 +3451,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💇': {
         name: 'person getting haircut',
@@ -3460,7 +3460,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '💇‍♂️': {
         name: 'man getting haircut',
@@ -3469,7 +3469,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '💇‍♀️': {
         name: 'woman getting haircut',
@@ -3478,7 +3478,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚶': {
         name: 'person walking',
@@ -3487,7 +3487,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🚶‍♂️': {
         name: 'man walking',
@@ -3496,7 +3496,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚶‍♀️': {
         name: 'woman walking',
@@ -3505,7 +3505,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚶‍➡️': {
         name: 'person walking facing right',
@@ -3514,7 +3514,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🚶‍♀️‍➡️': {
         name: 'woman walking facing right',
@@ -3523,7 +3523,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🚶‍♂️‍➡️': {
         name: 'man walking facing right',
@@ -3532,7 +3532,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧍': {
         name: 'person standing',
@@ -3541,7 +3541,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧍‍♂️': {
         name: 'man standing',
@@ -3550,7 +3550,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧍‍♀️': {
         name: 'woman standing',
@@ -3559,7 +3559,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧎': {
         name: 'person kneeling',
@@ -3568,7 +3568,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧎‍♂️': {
         name: 'man kneeling',
@@ -3577,7 +3577,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧎‍♀️': {
         name: 'woman kneeling',
@@ -3586,7 +3586,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '🧎‍➡️': {
         name: 'person kneeling facing right',
@@ -3595,7 +3595,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧎‍♀️‍➡️': {
         name: 'woman kneeling facing right',
@@ -3604,7 +3604,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧎‍♂️‍➡️': {
         name: 'man kneeling facing right',
@@ -3613,7 +3613,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧑‍🦯': {
         name: 'person with white cane',
@@ -3622,7 +3622,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '🧑‍🦯‍➡️': {
         name: 'person with white cane facing right',
@@ -3631,7 +3631,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👨‍🦯': {
         name: 'man with white cane',
@@ -3640,7 +3640,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👨‍🦯‍➡️': {
         name: 'man with white cane facing right',
@@ -3649,7 +3649,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👩‍🦯': {
         name: 'woman with white cane',
@@ -3658,7 +3658,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👩‍🦯‍➡️': {
         name: 'woman with white cane facing right',
@@ -3667,7 +3667,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧑‍🦼': {
         name: 'person in motorized wheelchair',
@@ -3676,7 +3676,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '🧑‍🦼‍➡️': {
         name: 'person in motorized wheelchair facing right',
@@ -3685,7 +3685,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👨‍🦼': {
         name: 'man in motorized wheelchair',
@@ -3694,7 +3694,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👨‍🦼‍➡️': {
         name: 'man in motorized wheelchair facing right',
@@ -3703,7 +3703,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👩‍🦼': {
         name: 'woman in motorized wheelchair',
@@ -3712,7 +3712,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👩‍🦼‍➡️': {
         name: 'woman in motorized wheelchair facing right',
@@ -3721,7 +3721,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🧑‍🦽': {
         name: 'person in manual wheelchair',
@@ -3730,7 +3730,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.1',
         unicode_version: '12.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.1'
+        skin_tone_support_unicode_version: '12.1',
     },
     '🧑‍🦽‍➡️': {
         name: 'person in manual wheelchair facing right',
@@ -3739,7 +3739,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👨‍🦽': {
         name: 'man in manual wheelchair',
@@ -3748,7 +3748,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👨‍🦽‍➡️': {
         name: 'man in manual wheelchair facing right',
@@ -3757,7 +3757,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '👩‍🦽': {
         name: 'woman in manual wheelchair',
@@ -3766,7 +3766,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👩‍🦽‍➡️': {
         name: 'woman in manual wheelchair facing right',
@@ -3775,7 +3775,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🏃': {
         name: 'person running',
@@ -3784,7 +3784,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🏃‍♂️': {
         name: 'man running',
@@ -3793,7 +3793,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏃‍♀️': {
         name: 'woman running',
@@ -3802,7 +3802,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏃‍➡️': {
         name: 'person running facing right',
@@ -3811,7 +3811,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🏃‍♀️‍➡️': {
         name: 'woman running facing right',
@@ -3820,7 +3820,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '🏃‍♂️‍➡️': {
         name: 'man running facing right',
@@ -3829,7 +3829,7 @@ const emojiDataByEmoji = {
         emoji_version: '15.1',
         unicode_version: '15.1',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '15.1'
+        skin_tone_support_unicode_version: '15.1',
     },
     '💃': {
         name: 'woman dancing',
@@ -3838,7 +3838,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🕺': {
         name: 'man dancing',
@@ -3847,7 +3847,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🕴️': {
         name: 'person in suit levitating',
@@ -3856,7 +3856,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '👯': {
         name: 'people with bunny ears',
@@ -3864,7 +3864,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👯‍♂️': {
         name: 'men with bunny ears',
@@ -3872,7 +3872,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👯‍♀️': {
         name: 'women with bunny ears',
@@ -3880,7 +3880,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧖': {
         name: 'person in steamy room',
@@ -3889,7 +3889,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧖‍♂️': {
         name: 'man in steamy room',
@@ -3898,7 +3898,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧖‍♀️': {
         name: 'woman in steamy room',
@@ -3907,7 +3907,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧗': {
         name: 'person climbing',
@@ -3916,7 +3916,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧗‍♂️': {
         name: 'man climbing',
@@ -3925,7 +3925,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧗‍♀️': {
         name: 'woman climbing',
@@ -3934,7 +3934,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🤺': {
         name: 'person fencing',
@@ -3942,7 +3942,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏇': {
         name: 'horse racing',
@@ -3951,7 +3951,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '⛷️': {
         name: 'skier',
@@ -3959,7 +3959,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏂': {
         name: 'snowboarder',
@@ -3968,7 +3968,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🏌️': {
         name: 'person golfing',
@@ -3977,7 +3977,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏌️‍♂️': {
         name: 'man golfing',
@@ -3986,7 +3986,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏌️‍♀️': {
         name: 'woman golfing',
@@ -3995,7 +3995,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏄': {
         name: 'person surfing',
@@ -4004,7 +4004,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🏄‍♂️': {
         name: 'man surfing',
@@ -4013,7 +4013,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏄‍♀️': {
         name: 'woman surfing',
@@ -4022,7 +4022,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚣': {
         name: 'person rowing boat',
@@ -4031,7 +4031,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🚣‍♂️': {
         name: 'man rowing boat',
@@ -4040,7 +4040,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚣‍♀️': {
         name: 'woman rowing boat',
@@ -4049,7 +4049,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏊': {
         name: 'person swimming',
@@ -4058,7 +4058,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🏊‍♂️': {
         name: 'man swimming',
@@ -4067,7 +4067,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏊‍♀️': {
         name: 'woman swimming',
@@ -4076,7 +4076,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '⛹️': {
         name: 'person bouncing ball',
@@ -4085,7 +4085,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '2.0'
+        skin_tone_support_unicode_version: '2.0',
     },
     '⛹️‍♂️': {
         name: 'man bouncing ball',
@@ -4094,7 +4094,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '⛹️‍♀️': {
         name: 'woman bouncing ball',
@@ -4103,7 +4103,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏋️': {
         name: 'person lifting weights',
@@ -4112,7 +4112,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.7',
         unicode_version: '0.7',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '2.0'
+        skin_tone_support_unicode_version: '2.0',
     },
     '🏋️‍♂️': {
         name: 'man lifting weights',
@@ -4121,7 +4121,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🏋️‍♀️': {
         name: 'woman lifting weights',
@@ -4130,7 +4130,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚴': {
         name: 'person biking',
@@ -4139,7 +4139,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🚴‍♂️': {
         name: 'man biking',
@@ -4148,7 +4148,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚴‍♀️': {
         name: 'woman biking',
@@ -4157,7 +4157,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚵': {
         name: 'person mountain biking',
@@ -4166,7 +4166,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🚵‍♂️': {
         name: 'man mountain biking',
@@ -4175,7 +4175,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🚵‍♀️': {
         name: 'woman mountain biking',
@@ -4184,7 +4184,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤸': {
         name: 'person cartwheeling',
@@ -4193,7 +4193,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤸‍♂️': {
         name: 'man cartwheeling',
@@ -4202,7 +4202,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤸‍♀️': {
         name: 'woman cartwheeling',
@@ -4211,7 +4211,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤼': {
         name: 'people wrestling',
@@ -4219,7 +4219,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤼‍♂️': {
         name: 'men wrestling',
@@ -4227,7 +4227,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤼‍♀️': {
         name: 'women wrestling',
@@ -4235,7 +4235,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤽': {
         name: 'person playing water polo',
@@ -4244,7 +4244,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤽‍♂️': {
         name: 'man playing water polo',
@@ -4253,7 +4253,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤽‍♀️': {
         name: 'woman playing water polo',
@@ -4262,7 +4262,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤾': {
         name: 'person playing handball',
@@ -4271,7 +4271,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤾‍♂️': {
         name: 'man playing handball',
@@ -4280,7 +4280,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤾‍♀️': {
         name: 'woman playing handball',
@@ -4289,7 +4289,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤹': {
         name: 'person juggling',
@@ -4298,7 +4298,7 @@ const emojiDataByEmoji = {
         emoji_version: '3.0',
         unicode_version: '3.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '3.0'
+        skin_tone_support_unicode_version: '3.0',
     },
     '🤹‍♂️': {
         name: 'man juggling',
@@ -4307,7 +4307,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🤹‍♀️': {
         name: 'woman juggling',
@@ -4316,7 +4316,7 @@ const emojiDataByEmoji = {
         emoji_version: '4.0',
         unicode_version: '4.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧘': {
         name: 'person in lotus position',
@@ -4325,7 +4325,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧘‍♂️': {
         name: 'man in lotus position',
@@ -4334,7 +4334,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🧘‍♀️': {
         name: 'woman in lotus position',
@@ -4343,7 +4343,7 @@ const emojiDataByEmoji = {
         emoji_version: '5.0',
         unicode_version: '5.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '5.0'
+        skin_tone_support_unicode_version: '5.0',
     },
     '🛀': {
         name: 'person taking bath',
@@ -4352,7 +4352,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '1.0'
+        skin_tone_support_unicode_version: '1.0',
     },
     '🛌': {
         name: 'person in bed',
@@ -4361,7 +4361,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '4.0'
+        skin_tone_support_unicode_version: '4.0',
     },
     '🧑‍🤝‍🧑': {
         name: 'people holding hands',
@@ -4370,7 +4370,7 @@ const emojiDataByEmoji = {
         emoji_version: '12.0',
         unicode_version: '12.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👭': {
         name: 'women holding hands',
@@ -4379,7 +4379,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👫': {
         name: 'woman and man holding hands',
@@ -4388,7 +4388,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '👬': {
         name: 'men holding hands',
@@ -4397,7 +4397,7 @@ const emojiDataByEmoji = {
         emoji_version: '1.0',
         unicode_version: '1.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '12.0'
+        skin_tone_support_unicode_version: '12.0',
     },
     '💏': {
         name: 'kiss',
@@ -4406,7 +4406,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👩‍❤️‍💋‍👨': {
         name: 'kiss woman, man',
@@ -4415,7 +4415,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👨‍❤️‍💋‍👨': {
         name: 'kiss man, man',
@@ -4424,7 +4424,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👩‍❤️‍💋‍👩': {
         name: 'kiss woman, woman',
@@ -4433,7 +4433,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '💑': {
         name: 'couple with heart',
@@ -4442,7 +4442,7 @@ const emojiDataByEmoji = {
         emoji_version: '0.6',
         unicode_version: '0.6',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👩‍❤️‍👨': {
         name: 'couple with heart woman, man',
@@ -4451,7 +4451,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👨‍❤️‍👨': {
         name: 'couple with heart man, man',
@@ -4460,7 +4460,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👩‍❤️‍👩': {
         name: 'couple with heart woman, woman',
@@ -4469,7 +4469,7 @@ const emojiDataByEmoji = {
         emoji_version: '2.0',
         unicode_version: '2.0',
         skin_tone_support: true,
-        skin_tone_support_unicode_version: '13.1'
+        skin_tone_support_unicode_version: '13.1',
     },
     '👨‍👩‍👦': {
         name: 'family man, woman, boy',
@@ -4477,7 +4477,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👩‍👧': {
         name: 'family man, woman, girl',
@@ -4485,7 +4485,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👩‍👧‍👦': {
         name: 'family man, woman, girl, boy',
@@ -4493,7 +4493,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👩‍👦‍👦': {
         name: 'family man, woman, boy, boy',
@@ -4501,7 +4501,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👩‍👧‍👧': {
         name: 'family man, woman, girl, girl',
@@ -4509,7 +4509,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👨‍👦': {
         name: 'family man, man, boy',
@@ -4517,7 +4517,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👨‍👧': {
         name: 'family man, man, girl',
@@ -4525,7 +4525,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👨‍👧‍👦': {
         name: 'family man, man, girl, boy',
@@ -4533,7 +4533,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👨‍👦‍👦': {
         name: 'family man, man, boy, boy',
@@ -4541,7 +4541,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👨‍👧‍👧': {
         name: 'family man, man, girl, girl',
@@ -4549,7 +4549,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👩‍👦': {
         name: 'family woman, woman, boy',
@@ -4557,7 +4557,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👩‍👧': {
         name: 'family woman, woman, girl',
@@ -4565,7 +4565,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👩‍👧‍👦': {
         name: 'family woman, woman, girl, boy',
@@ -4573,7 +4573,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👩‍👦‍👦': {
         name: 'family woman, woman, boy, boy',
@@ -4581,7 +4581,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👩‍👧‍👧': {
         name: 'family woman, woman, girl, girl',
@@ -4589,7 +4589,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👦': {
         name: 'family man, boy',
@@ -4597,7 +4597,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👦‍👦': {
         name: 'family man, boy, boy',
@@ -4605,7 +4605,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👧': {
         name: 'family man, girl',
@@ -4613,7 +4613,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👧‍👦': {
         name: 'family man, girl, boy',
@@ -4621,7 +4621,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👨‍👧‍👧': {
         name: 'family man, girl, girl',
@@ -4629,7 +4629,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👦': {
         name: 'family woman, boy',
@@ -4637,7 +4637,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👦‍👦': {
         name: 'family woman, boy, boy',
@@ -4645,7 +4645,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👧': {
         name: 'family woman, girl',
@@ -4653,7 +4653,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👧‍👦': {
         name: 'family woman, girl, boy',
@@ -4661,7 +4661,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👩‍👧‍👧': {
         name: 'family woman, girl, girl',
@@ -4669,7 +4669,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗣️': {
         name: 'speaking head',
@@ -4677,7 +4677,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👤': {
         name: 'bust in silhouette',
@@ -4685,7 +4685,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👥': {
         name: 'busts in silhouette',
@@ -4693,7 +4693,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫂': {
         name: 'people hugging',
@@ -4701,7 +4701,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👪': {
         name: 'family',
@@ -4709,7 +4709,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧑‍🧑‍🧒': {
         name: 'family adult, adult, child',
@@ -4717,7 +4717,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧑‍🧑‍🧒‍🧒': {
         name: 'family adult, adult, child, child',
@@ -4725,7 +4725,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧑‍🧒': {
         name: 'family adult, child',
@@ -4733,7 +4733,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧑‍🧒‍🧒': {
         name: 'family adult, child, child',
@@ -4741,7 +4741,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👣': {
         name: 'footprints',
@@ -4749,7 +4749,7 @@ const emojiDataByEmoji = {
         group: 'People & Body',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐵': {
         name: 'monkey face',
@@ -4757,7 +4757,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐒': {
         name: 'monkey',
@@ -4765,7 +4765,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦍': {
         name: 'gorilla',
@@ -4773,7 +4773,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦧': {
         name: 'orangutan',
@@ -4781,7 +4781,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐶': {
         name: 'dog face',
@@ -4789,7 +4789,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐕': {
         name: 'dog',
@@ -4797,7 +4797,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦮': {
         name: 'guide dog',
@@ -4805,7 +4805,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐕‍🦺': {
         name: 'service dog',
@@ -4813,7 +4813,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐩': {
         name: 'poodle',
@@ -4821,7 +4821,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐺': {
         name: 'wolf',
@@ -4829,7 +4829,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦊': {
         name: 'fox',
@@ -4837,7 +4837,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦝': {
         name: 'raccoon',
@@ -4845,7 +4845,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐱': {
         name: 'cat face',
@@ -4853,7 +4853,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐈': {
         name: 'cat',
@@ -4861,7 +4861,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐈‍⬛': {
         name: 'black cat',
@@ -4869,7 +4869,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦁': {
         name: 'lion',
@@ -4877,7 +4877,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐯': {
         name: 'tiger face',
@@ -4885,7 +4885,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐅': {
         name: 'tiger',
@@ -4893,7 +4893,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐆': {
         name: 'leopard',
@@ -4901,7 +4901,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐴': {
         name: 'horse face',
@@ -4909,7 +4909,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫎': {
         name: 'moose',
@@ -4917,7 +4917,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫏': {
         name: 'donkey',
@@ -4925,7 +4925,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐎': {
         name: 'horse',
@@ -4933,7 +4933,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦄': {
         name: 'unicorn',
@@ -4941,7 +4941,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦓': {
         name: 'zebra',
@@ -4949,7 +4949,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦌': {
         name: 'deer',
@@ -4957,7 +4957,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦬': {
         name: 'bison',
@@ -4965,7 +4965,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐮': {
         name: 'cow face',
@@ -4973,7 +4973,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐂': {
         name: 'ox',
@@ -4981,7 +4981,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐃': {
         name: 'water buffalo',
@@ -4989,7 +4989,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐄': {
         name: 'cow',
@@ -4997,7 +4997,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐷': {
         name: 'pig face',
@@ -5005,7 +5005,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐖': {
         name: 'pig',
@@ -5013,7 +5013,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐗': {
         name: 'boar',
@@ -5021,7 +5021,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐽': {
         name: 'pig nose',
@@ -5029,7 +5029,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐏': {
         name: 'ram',
@@ -5037,7 +5037,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐑': {
         name: 'ewe',
@@ -5045,7 +5045,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐐': {
         name: 'goat',
@@ -5053,7 +5053,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐪': {
         name: 'camel',
@@ -5061,7 +5061,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐫': {
         name: 'two-hump camel',
@@ -5069,7 +5069,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦙': {
         name: 'llama',
@@ -5077,7 +5077,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦒': {
         name: 'giraffe',
@@ -5085,7 +5085,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐘': {
         name: 'elephant',
@@ -5093,7 +5093,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦣': {
         name: 'mammoth',
@@ -5101,7 +5101,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦏': {
         name: 'rhinoceros',
@@ -5109,7 +5109,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦛': {
         name: 'hippopotamus',
@@ -5117,7 +5117,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐭': {
         name: 'mouse face',
@@ -5125,7 +5125,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐁': {
         name: 'mouse',
@@ -5133,7 +5133,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐀': {
         name: 'rat',
@@ -5141,7 +5141,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐹': {
         name: 'hamster',
@@ -5149,7 +5149,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐰': {
         name: 'rabbit face',
@@ -5157,7 +5157,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐇': {
         name: 'rabbit',
@@ -5165,7 +5165,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐿️': {
         name: 'chipmunk',
@@ -5173,7 +5173,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦫': {
         name: 'beaver',
@@ -5181,7 +5181,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦔': {
         name: 'hedgehog',
@@ -5189,7 +5189,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦇': {
         name: 'bat',
@@ -5197,7 +5197,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐻': {
         name: 'bear',
@@ -5205,7 +5205,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐻‍❄️': {
         name: 'polar bear',
@@ -5213,7 +5213,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐨': {
         name: 'koala',
@@ -5221,7 +5221,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐼': {
         name: 'panda',
@@ -5229,7 +5229,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦥': {
         name: 'sloth',
@@ -5237,7 +5237,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦦': {
         name: 'otter',
@@ -5245,7 +5245,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦨': {
         name: 'skunk',
@@ -5253,7 +5253,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦘': {
         name: 'kangaroo',
@@ -5261,7 +5261,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦡': {
         name: 'badger',
@@ -5269,7 +5269,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐾': {
         name: 'paw prints',
@@ -5277,7 +5277,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦃': {
         name: 'turkey',
@@ -5285,7 +5285,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐔': {
         name: 'chicken',
@@ -5293,7 +5293,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐓': {
         name: 'rooster',
@@ -5301,7 +5301,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐣': {
         name: 'hatching chick',
@@ -5309,7 +5309,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐤': {
         name: 'baby chick',
@@ -5317,7 +5317,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐥': {
         name: 'front-facing baby chick',
@@ -5325,7 +5325,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐦': {
         name: 'bird',
@@ -5333,7 +5333,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐧': {
         name: 'penguin',
@@ -5341,7 +5341,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕊️': {
         name: 'dove',
@@ -5349,7 +5349,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦅': {
         name: 'eagle',
@@ -5357,7 +5357,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦆': {
         name: 'duck',
@@ -5365,7 +5365,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦢': {
         name: 'swan',
@@ -5373,7 +5373,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦉': {
         name: 'owl',
@@ -5381,7 +5381,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦤': {
         name: 'dodo',
@@ -5389,7 +5389,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪶': {
         name: 'feather',
@@ -5397,7 +5397,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦩': {
         name: 'flamingo',
@@ -5405,7 +5405,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦚': {
         name: 'peacock',
@@ -5413,7 +5413,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦜': {
         name: 'parrot',
@@ -5421,7 +5421,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪽': {
         name: 'wing',
@@ -5429,7 +5429,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐦‍⬛': {
         name: 'black bird',
@@ -5437,7 +5437,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪿': {
         name: 'goose',
@@ -5445,7 +5445,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐦‍🔥': {
         name: 'phoenix',
@@ -5453,7 +5453,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐸': {
         name: 'frog',
@@ -5461,7 +5461,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐊': {
         name: 'crocodile',
@@ -5469,7 +5469,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐢': {
         name: 'turtle',
@@ -5477,7 +5477,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦎': {
         name: 'lizard',
@@ -5485,7 +5485,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐍': {
         name: 'snake',
@@ -5493,7 +5493,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐲': {
         name: 'dragon face',
@@ -5501,7 +5501,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐉': {
         name: 'dragon',
@@ -5509,7 +5509,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦕': {
         name: 'sauropod',
@@ -5517,7 +5517,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦖': {
         name: 'T-Rex',
@@ -5525,7 +5525,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐳': {
         name: 'spouting whale',
@@ -5533,7 +5533,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐋': {
         name: 'whale',
@@ -5541,7 +5541,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐬': {
         name: 'dolphin',
@@ -5549,7 +5549,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦭': {
         name: 'seal',
@@ -5557,7 +5557,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐟': {
         name: 'fish',
@@ -5565,7 +5565,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐠': {
         name: 'tropical fish',
@@ -5573,7 +5573,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐡': {
         name: 'blowfish',
@@ -5581,7 +5581,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦈': {
         name: 'shark',
@@ -5589,7 +5589,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐙': {
         name: 'octopus',
@@ -5597,7 +5597,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐚': {
         name: 'spiral shell',
@@ -5605,7 +5605,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪸': {
         name: 'coral',
@@ -5613,7 +5613,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪼': {
         name: 'jellyfish',
@@ -5621,7 +5621,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐌': {
         name: 'snail',
@@ -5629,7 +5629,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦋': {
         name: 'butterfly',
@@ -5637,7 +5637,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐛': {
         name: 'bug',
@@ -5645,7 +5645,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐜': {
         name: 'ant',
@@ -5653,7 +5653,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐝': {
         name: 'honeybee',
@@ -5661,7 +5661,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪲': {
         name: 'beetle',
@@ -5669,7 +5669,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🐞': {
         name: 'lady beetle',
@@ -5677,7 +5677,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦗': {
         name: 'cricket',
@@ -5685,7 +5685,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪳': {
         name: 'cockroach',
@@ -5693,7 +5693,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕷️': {
         name: 'spider',
@@ -5701,7 +5701,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕸️': {
         name: 'spider web',
@@ -5709,7 +5709,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦂': {
         name: 'scorpion',
@@ -5717,7 +5717,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦟': {
         name: 'mosquito',
@@ -5725,7 +5725,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪰': {
         name: 'fly',
@@ -5733,7 +5733,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪱': {
         name: 'worm',
@@ -5741,7 +5741,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦠': {
         name: 'microbe',
@@ -5749,7 +5749,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💐': {
         name: 'bouquet',
@@ -5757,7 +5757,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌸': {
         name: 'cherry blossom',
@@ -5765,7 +5765,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💮': {
         name: 'white flower',
@@ -5773,7 +5773,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪷': {
         name: 'lotus',
@@ -5781,7 +5781,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏵️': {
         name: 'rosette',
@@ -5789,7 +5789,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌹': {
         name: 'rose',
@@ -5797,7 +5797,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥀': {
         name: 'wilted flower',
@@ -5805,7 +5805,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌺': {
         name: 'hibiscus',
@@ -5813,7 +5813,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌻': {
         name: 'sunflower',
@@ -5821,7 +5821,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌼': {
         name: 'blossom',
@@ -5829,7 +5829,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌷': {
         name: 'tulip',
@@ -5837,7 +5837,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪻': {
         name: 'hyacinth',
@@ -5845,7 +5845,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌱': {
         name: 'seedling',
@@ -5853,7 +5853,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪴': {
         name: 'potted plant',
@@ -5861,7 +5861,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌲': {
         name: 'evergreen tree',
@@ -5869,7 +5869,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌳': {
         name: 'deciduous tree',
@@ -5877,7 +5877,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌴': {
         name: 'palm tree',
@@ -5885,7 +5885,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌵': {
         name: 'cactus',
@@ -5893,7 +5893,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌾': {
         name: 'sheaf of rice',
@@ -5901,7 +5901,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌿': {
         name: 'herb',
@@ -5909,7 +5909,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☘️': {
         name: 'shamrock',
@@ -5917,7 +5917,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍀': {
         name: 'four leaf clover',
@@ -5925,7 +5925,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍁': {
         name: 'maple leaf',
@@ -5933,7 +5933,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍂': {
         name: 'fallen leaf',
@@ -5941,7 +5941,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍃': {
         name: 'leaf fluttering in wind',
@@ -5949,7 +5949,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪹': {
         name: 'empty nest',
@@ -5957,7 +5957,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪺': {
         name: 'nest with eggs',
@@ -5965,7 +5965,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍄': {
         name: 'mushroom',
@@ -5973,7 +5973,7 @@ const emojiDataByEmoji = {
         group: 'Animals & Nature',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍇': {
         name: 'grapes',
@@ -5981,7 +5981,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍈': {
         name: 'melon',
@@ -5989,7 +5989,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍉': {
         name: 'watermelon',
@@ -5997,7 +5997,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍊': {
         name: 'tangerine',
@@ -6005,7 +6005,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍋': {
         name: 'lemon',
@@ -6013,7 +6013,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍋‍🟩': {
         name: 'lime',
@@ -6021,7 +6021,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍌': {
         name: 'banana',
@@ -6029,7 +6029,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍍': {
         name: 'pineapple',
@@ -6037,7 +6037,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥭': {
         name: 'mango',
@@ -6045,7 +6045,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍎': {
         name: 'red apple',
@@ -6053,7 +6053,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍏': {
         name: 'green apple',
@@ -6061,7 +6061,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍐': {
         name: 'pear',
@@ -6069,7 +6069,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍑': {
         name: 'peach',
@@ -6077,7 +6077,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍒': {
         name: 'cherries',
@@ -6085,7 +6085,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍓': {
         name: 'strawberry',
@@ -6093,7 +6093,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫐': {
         name: 'blueberries',
@@ -6101,7 +6101,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥝': {
         name: 'kiwi fruit',
@@ -6109,7 +6109,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍅': {
         name: 'tomato',
@@ -6117,7 +6117,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫒': {
         name: 'olive',
@@ -6125,7 +6125,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥥': {
         name: 'coconut',
@@ -6133,7 +6133,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥑': {
         name: 'avocado',
@@ -6141,7 +6141,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍆': {
         name: 'eggplant',
@@ -6149,7 +6149,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥔': {
         name: 'potato',
@@ -6157,7 +6157,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥕': {
         name: 'carrot',
@@ -6165,7 +6165,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌽': {
         name: 'ear of corn',
@@ -6173,7 +6173,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌶️': {
         name: 'hot pepper',
@@ -6181,7 +6181,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫑': {
         name: 'bell pepper',
@@ -6189,7 +6189,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥒': {
         name: 'cucumber',
@@ -6197,7 +6197,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥬': {
         name: 'leafy green',
@@ -6205,7 +6205,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥦': {
         name: 'broccoli',
@@ -6213,7 +6213,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧄': {
         name: 'garlic',
@@ -6221,7 +6221,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧅': {
         name: 'onion',
@@ -6229,7 +6229,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥜': {
         name: 'peanuts',
@@ -6237,7 +6237,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫘': {
         name: 'beans',
@@ -6245,7 +6245,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌰': {
         name: 'chestnut',
@@ -6253,7 +6253,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫚': {
         name: 'ginger root',
@@ -6261,7 +6261,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫛': {
         name: 'pea pod',
@@ -6269,7 +6269,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍄‍🟫': {
         name: 'brown mushroom',
@@ -6277,7 +6277,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍞': {
         name: 'bread',
@@ -6285,7 +6285,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥐': {
         name: 'croissant',
@@ -6293,7 +6293,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥖': {
         name: 'baguette bread',
@@ -6301,7 +6301,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫓': {
         name: 'flatbread',
@@ -6309,7 +6309,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥨': {
         name: 'pretzel',
@@ -6317,7 +6317,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥯': {
         name: 'bagel',
@@ -6325,7 +6325,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥞': {
         name: 'pancakes',
@@ -6333,7 +6333,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧇': {
         name: 'waffle',
@@ -6341,7 +6341,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧀': {
         name: 'cheese wedge',
@@ -6349,7 +6349,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍖': {
         name: 'meat on bone',
@@ -6357,7 +6357,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍗': {
         name: 'poultry leg',
@@ -6365,7 +6365,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥩': {
         name: 'cut of meat',
@@ -6373,7 +6373,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥓': {
         name: 'bacon',
@@ -6381,7 +6381,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍔': {
         name: 'hamburger',
@@ -6389,7 +6389,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍟': {
         name: 'french fries',
@@ -6397,7 +6397,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍕': {
         name: 'pizza',
@@ -6405,7 +6405,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌭': {
         name: 'hot dog',
@@ -6413,7 +6413,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥪': {
         name: 'sandwich',
@@ -6421,7 +6421,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌮': {
         name: 'taco',
@@ -6429,7 +6429,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌯': {
         name: 'burrito',
@@ -6437,7 +6437,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫔': {
         name: 'tamale',
@@ -6445,7 +6445,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥙': {
         name: 'stuffed flatbread',
@@ -6453,7 +6453,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧆': {
         name: 'falafel',
@@ -6461,7 +6461,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥚': {
         name: 'egg',
@@ -6469,7 +6469,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍳': {
         name: 'cooking',
@@ -6477,7 +6477,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥘': {
         name: 'shallow pan of food',
@@ -6485,7 +6485,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍲': {
         name: 'pot of food',
@@ -6493,7 +6493,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫕': {
         name: 'fondue',
@@ -6501,7 +6501,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥣': {
         name: 'bowl with spoon',
@@ -6509,7 +6509,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥗': {
         name: 'green salad',
@@ -6517,7 +6517,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍿': {
         name: 'popcorn',
@@ -6525,7 +6525,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧈': {
         name: 'butter',
@@ -6533,7 +6533,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧂': {
         name: 'salt',
@@ -6541,7 +6541,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥫': {
         name: 'canned food',
@@ -6549,7 +6549,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍱': {
         name: 'bento box',
@@ -6557,7 +6557,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍘': {
         name: 'rice cracker',
@@ -6565,7 +6565,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍙': {
         name: 'rice ball',
@@ -6573,7 +6573,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍚': {
         name: 'cooked rice',
@@ -6581,7 +6581,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍛': {
         name: 'curry rice',
@@ -6589,7 +6589,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍜': {
         name: 'steaming bowl',
@@ -6597,7 +6597,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍝': {
         name: 'spaghetti',
@@ -6605,7 +6605,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍠': {
         name: 'roasted sweet potato',
@@ -6613,7 +6613,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍢': {
         name: 'oden',
@@ -6621,7 +6621,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍣': {
         name: 'sushi',
@@ -6629,7 +6629,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍤': {
         name: 'fried shrimp',
@@ -6637,7 +6637,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍥': {
         name: 'fish cake with swirl',
@@ -6645,7 +6645,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥮': {
         name: 'moon cake',
@@ -6653,7 +6653,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍡': {
         name: 'dango',
@@ -6661,7 +6661,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥟': {
         name: 'dumpling',
@@ -6669,7 +6669,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥠': {
         name: 'fortune cookie',
@@ -6677,7 +6677,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥡': {
         name: 'takeout box',
@@ -6685,7 +6685,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦀': {
         name: 'crab',
@@ -6693,7 +6693,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦞': {
         name: 'lobster',
@@ -6701,7 +6701,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦐': {
         name: 'shrimp',
@@ -6709,7 +6709,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦑': {
         name: 'squid',
@@ -6717,7 +6717,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦪': {
         name: 'oyster',
@@ -6725,7 +6725,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍦': {
         name: 'soft ice cream',
@@ -6733,7 +6733,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍧': {
         name: 'shaved ice',
@@ -6741,7 +6741,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍨': {
         name: 'ice cream',
@@ -6749,7 +6749,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍩': {
         name: 'doughnut',
@@ -6757,7 +6757,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍪': {
         name: 'cookie',
@@ -6765,7 +6765,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎂': {
         name: 'birthday cake',
@@ -6773,7 +6773,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍰': {
         name: 'shortcake',
@@ -6781,7 +6781,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧁': {
         name: 'cupcake',
@@ -6789,7 +6789,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥧': {
         name: 'pie',
@@ -6797,7 +6797,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍫': {
         name: 'chocolate bar',
@@ -6805,7 +6805,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍬': {
         name: 'candy',
@@ -6813,7 +6813,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍭': {
         name: 'lollipop',
@@ -6821,7 +6821,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍮': {
         name: 'custard',
@@ -6829,7 +6829,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍯': {
         name: 'honey pot',
@@ -6837,7 +6837,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍼': {
         name: 'baby bottle',
@@ -6845,7 +6845,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥛': {
         name: 'glass of milk',
@@ -6853,7 +6853,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☕': {
         name: 'hot beverage',
@@ -6861,7 +6861,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫖': {
         name: 'teapot',
@@ -6869,7 +6869,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍵': {
         name: 'teacup without handle',
@@ -6877,7 +6877,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍶': {
         name: 'sake',
@@ -6885,7 +6885,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍾': {
         name: 'bottle with popping cork',
@@ -6893,7 +6893,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍷': {
         name: 'wine glass',
@@ -6901,7 +6901,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍸': {
         name: 'cocktail glass',
@@ -6909,7 +6909,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍹': {
         name: 'tropical drink',
@@ -6917,7 +6917,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍺': {
         name: 'beer mug',
@@ -6925,7 +6925,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍻': {
         name: 'clinking beer mugs',
@@ -6933,7 +6933,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥂': {
         name: 'clinking glasses',
@@ -6941,7 +6941,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥃': {
         name: 'tumbler glass',
@@ -6949,7 +6949,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫗': {
         name: 'pouring liquid',
@@ -6957,7 +6957,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥤': {
         name: 'cup with straw',
@@ -6965,7 +6965,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧋': {
         name: 'bubble tea',
@@ -6973,7 +6973,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧃': {
         name: 'beverage box',
@@ -6981,7 +6981,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧉': {
         name: 'mate',
@@ -6989,7 +6989,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧊': {
         name: 'ice',
@@ -6997,7 +6997,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥢': {
         name: 'chopsticks',
@@ -7005,7 +7005,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍽️': {
         name: 'fork and knife with plate',
@@ -7013,7 +7013,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🍴': {
         name: 'fork and knife',
@@ -7021,7 +7021,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥄': {
         name: 'spoon',
@@ -7029,7 +7029,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔪': {
         name: 'kitchen knife',
@@ -7037,7 +7037,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫙': {
         name: 'jar',
@@ -7045,7 +7045,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏺': {
         name: 'amphora',
@@ -7053,7 +7053,7 @@ const emojiDataByEmoji = {
         group: 'Food & Drink',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌍': {
         name: 'globe showing Europe-Africa',
@@ -7061,7 +7061,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌎': {
         name: 'globe showing Americas',
@@ -7069,7 +7069,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌏': {
         name: 'globe showing Asia-Australia',
@@ -7077,7 +7077,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌐': {
         name: 'globe with meridians',
@@ -7085,7 +7085,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗺️': {
         name: 'world map',
@@ -7093,7 +7093,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗾': {
         name: 'map of Japan',
@@ -7101,7 +7101,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧭': {
         name: 'compass',
@@ -7109,7 +7109,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏔️': {
         name: 'snow-capped mountain',
@@ -7117,7 +7117,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛰️': {
         name: 'mountain',
@@ -7125,7 +7125,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌋': {
         name: 'volcano',
@@ -7133,7 +7133,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗻': {
         name: 'mount fuji',
@@ -7141,7 +7141,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏕️': {
         name: 'camping',
@@ -7149,7 +7149,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏖️': {
         name: 'beach with umbrella',
@@ -7157,7 +7157,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏜️': {
         name: 'desert',
@@ -7165,7 +7165,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏝️': {
         name: 'desert island',
@@ -7173,7 +7173,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏞️': {
         name: 'national park',
@@ -7181,7 +7181,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏟️': {
         name: 'stadium',
@@ -7189,7 +7189,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏛️': {
         name: 'classical building',
@@ -7197,7 +7197,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏗️': {
         name: 'building construction',
@@ -7205,7 +7205,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧱': {
         name: 'brick',
@@ -7213,7 +7213,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪨': {
         name: 'rock',
@@ -7221,7 +7221,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪵': {
         name: 'wood',
@@ -7229,7 +7229,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛖': {
         name: 'hut',
@@ -7237,7 +7237,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏘️': {
         name: 'houses',
@@ -7245,7 +7245,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏚️': {
         name: 'derelict house',
@@ -7253,7 +7253,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏠': {
         name: 'house',
@@ -7261,7 +7261,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏡': {
         name: 'house with garden',
@@ -7269,7 +7269,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏢': {
         name: 'office building',
@@ -7277,7 +7277,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏣': {
         name: 'Japanese post office',
@@ -7285,7 +7285,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏤': {
         name: 'post office',
@@ -7293,7 +7293,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏥': {
         name: 'hospital',
@@ -7301,7 +7301,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏦': {
         name: 'bank',
@@ -7309,7 +7309,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏨': {
         name: 'hotel',
@@ -7317,7 +7317,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏩': {
         name: 'love hotel',
@@ -7325,7 +7325,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏪': {
         name: 'convenience store',
@@ -7333,7 +7333,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏫': {
         name: 'school',
@@ -7341,7 +7341,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏬': {
         name: 'department store',
@@ -7349,7 +7349,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏭': {
         name: 'factory',
@@ -7357,7 +7357,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏯': {
         name: 'Japanese castle',
@@ -7365,7 +7365,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏰': {
         name: 'castle',
@@ -7373,7 +7373,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💒': {
         name: 'wedding',
@@ -7381,7 +7381,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗼': {
         name: 'Tokyo tower',
@@ -7389,7 +7389,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗽': {
         name: 'Statue of Liberty',
@@ -7397,7 +7397,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛪': {
         name: 'church',
@@ -7405,7 +7405,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕌': {
         name: 'mosque',
@@ -7413,7 +7413,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛕': {
         name: 'hindu temple',
@@ -7421,7 +7421,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕍': {
         name: 'synagogue',
@@ -7429,7 +7429,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛩️': {
         name: 'shinto shrine',
@@ -7437,7 +7437,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕋': {
         name: 'kaaba',
@@ -7445,7 +7445,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛲': {
         name: 'fountain',
@@ -7453,7 +7453,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛺': {
         name: 'tent',
@@ -7461,7 +7461,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌁': {
         name: 'foggy',
@@ -7469,7 +7469,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌃': {
         name: 'night with stars',
@@ -7477,7 +7477,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏙️': {
         name: 'cityscape',
@@ -7485,7 +7485,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌄': {
         name: 'sunrise over mountains',
@@ -7493,7 +7493,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌅': {
         name: 'sunrise',
@@ -7501,7 +7501,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌆': {
         name: 'cityscape at dusk',
@@ -7509,7 +7509,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌇': {
         name: 'sunset',
@@ -7517,7 +7517,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌉': {
         name: 'bridge at night',
@@ -7525,7 +7525,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♨️': {
         name: 'hot springs',
@@ -7533,7 +7533,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎠': {
         name: 'carousel horse',
@@ -7541,7 +7541,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛝': {
         name: 'playground slide',
@@ -7549,7 +7549,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎡': {
         name: 'ferris wheel',
@@ -7557,7 +7557,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎢': {
         name: 'roller coaster',
@@ -7565,7 +7565,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💈': {
         name: 'barber pole',
@@ -7573,7 +7573,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎪': {
         name: 'circus tent',
@@ -7581,7 +7581,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚂': {
         name: 'locomotive',
@@ -7589,7 +7589,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚃': {
         name: 'railway car',
@@ -7597,7 +7597,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚄': {
         name: 'high-speed train',
@@ -7605,7 +7605,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚅': {
         name: 'bullet train',
@@ -7613,7 +7613,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚆': {
         name: 'train',
@@ -7621,7 +7621,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚇': {
         name: 'metro',
@@ -7629,7 +7629,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚈': {
         name: 'light rail',
@@ -7637,7 +7637,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚉': {
         name: 'station',
@@ -7645,7 +7645,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚊': {
         name: 'tram',
@@ -7653,7 +7653,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚝': {
         name: 'monorail',
@@ -7661,7 +7661,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚞': {
         name: 'mountain railway',
@@ -7669,7 +7669,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚋': {
         name: 'tram car',
@@ -7677,7 +7677,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚌': {
         name: 'bus',
@@ -7685,7 +7685,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚍': {
         name: 'oncoming bus',
@@ -7693,7 +7693,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚎': {
         name: 'trolleybus',
@@ -7701,7 +7701,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚐': {
         name: 'minibus',
@@ -7709,7 +7709,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚑': {
         name: 'ambulance',
@@ -7717,7 +7717,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚒': {
         name: 'fire engine',
@@ -7725,7 +7725,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚓': {
         name: 'police car',
@@ -7733,7 +7733,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚔': {
         name: 'oncoming police car',
@@ -7741,7 +7741,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚕': {
         name: 'taxi',
@@ -7749,7 +7749,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚖': {
         name: 'oncoming taxi',
@@ -7757,7 +7757,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚗': {
         name: 'automobile',
@@ -7765,7 +7765,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚘': {
         name: 'oncoming automobile',
@@ -7773,7 +7773,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚙': {
         name: 'sport utility vehicle',
@@ -7781,7 +7781,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛻': {
         name: 'pickup truck',
@@ -7789,7 +7789,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚚': {
         name: 'delivery truck',
@@ -7797,7 +7797,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚛': {
         name: 'articulated lorry',
@@ -7805,7 +7805,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚜': {
         name: 'tractor',
@@ -7813,7 +7813,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏎️': {
         name: 'racing car',
@@ -7821,7 +7821,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏍️': {
         name: 'motorcycle',
@@ -7829,7 +7829,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛵': {
         name: 'motor scooter',
@@ -7837,7 +7837,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦽': {
         name: 'manual wheelchair',
@@ -7845,7 +7845,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦼': {
         name: 'motorized wheelchair',
@@ -7853,7 +7853,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛺': {
         name: 'auto rickshaw',
@@ -7861,7 +7861,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚲': {
         name: 'bicycle',
@@ -7869,7 +7869,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛴': {
         name: 'kick scooter',
@@ -7877,7 +7877,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛹': {
         name: 'skateboard',
@@ -7885,7 +7885,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛼': {
         name: 'roller skate',
@@ -7893,7 +7893,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚏': {
         name: 'bus stop',
@@ -7901,7 +7901,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛣️': {
         name: 'motorway',
@@ -7909,7 +7909,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛤️': {
         name: 'railway track',
@@ -7917,7 +7917,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛢️': {
         name: 'oil drum',
@@ -7925,7 +7925,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛽': {
         name: 'fuel pump',
@@ -7933,7 +7933,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛞': {
         name: 'wheel',
@@ -7941,7 +7941,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚨': {
         name: 'police car light',
@@ -7949,7 +7949,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚥': {
         name: 'horizontal traffic light',
@@ -7957,7 +7957,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚦': {
         name: 'vertical traffic light',
@@ -7965,7 +7965,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛑': {
         name: 'stop sign',
@@ -7973,7 +7973,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚧': {
         name: 'construction',
@@ -7981,7 +7981,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚓': {
         name: 'anchor',
@@ -7989,7 +7989,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛟': {
         name: 'ring buoy',
@@ -7997,7 +7997,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛵': {
         name: 'sailboat',
@@ -8005,7 +8005,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛶': {
         name: 'canoe',
@@ -8013,7 +8013,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚤': {
         name: 'speedboat',
@@ -8021,7 +8021,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛳️': {
         name: 'passenger ship',
@@ -8029,7 +8029,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛴️': {
         name: 'ferry',
@@ -8037,7 +8037,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛥️': {
         name: 'motor boat',
@@ -8045,7 +8045,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚢': {
         name: 'ship',
@@ -8053,7 +8053,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✈️': {
         name: 'airplane',
@@ -8061,7 +8061,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛩️': {
         name: 'small airplane',
@@ -8069,7 +8069,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛫': {
         name: 'airplane departure',
@@ -8077,7 +8077,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛬': {
         name: 'airplane arrival',
@@ -8085,7 +8085,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪂': {
         name: 'parachute',
@@ -8093,7 +8093,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💺': {
         name: 'seat',
@@ -8101,7 +8101,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚁': {
         name: 'helicopter',
@@ -8109,7 +8109,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚟': {
         name: 'suspension railway',
@@ -8117,7 +8117,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚠': {
         name: 'mountain cableway',
@@ -8125,7 +8125,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚡': {
         name: 'aerial tramway',
@@ -8133,7 +8133,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛰️': {
         name: 'satellite',
@@ -8141,7 +8141,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚀': {
         name: 'rocket',
@@ -8149,7 +8149,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛸': {
         name: 'flying saucer',
@@ -8157,7 +8157,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛎️': {
         name: 'bellhop bell',
@@ -8165,7 +8165,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧳': {
         name: 'luggage',
@@ -8173,7 +8173,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⌛': {
         name: 'hourglass done',
@@ -8181,7 +8181,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏳': {
         name: 'hourglass not done',
@@ -8189,7 +8189,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⌚': {
         name: 'watch',
@@ -8197,7 +8197,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏰': {
         name: 'alarm clock',
@@ -8205,7 +8205,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏱️': {
         name: 'stopwatch',
@@ -8213,7 +8213,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏲️': {
         name: 'timer clock',
@@ -8221,7 +8221,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕰️': {
         name: 'mantelpiece clock',
@@ -8229,7 +8229,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕛': {
         name: 'twelve o’clock',
@@ -8237,7 +8237,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕧': {
         name: 'twelve-thirty',
@@ -8245,7 +8245,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕐': {
         name: 'one o’clock',
@@ -8253,7 +8253,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕜': {
         name: 'one-thirty',
@@ -8261,7 +8261,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕑': {
         name: 'two o’clock',
@@ -8269,7 +8269,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕝': {
         name: 'two-thirty',
@@ -8277,7 +8277,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕒': {
         name: 'three o’clock',
@@ -8285,7 +8285,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕞': {
         name: 'three-thirty',
@@ -8293,7 +8293,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕓': {
         name: 'four o’clock',
@@ -8301,7 +8301,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕟': {
         name: 'four-thirty',
@@ -8309,7 +8309,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕔': {
         name: 'five o’clock',
@@ -8317,7 +8317,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕠': {
         name: 'five-thirty',
@@ -8325,7 +8325,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕕': {
         name: 'six o’clock',
@@ -8333,7 +8333,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕡': {
         name: 'six-thirty',
@@ -8341,7 +8341,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕖': {
         name: 'seven o’clock',
@@ -8349,7 +8349,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕢': {
         name: 'seven-thirty',
@@ -8357,7 +8357,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕗': {
         name: 'eight o’clock',
@@ -8365,7 +8365,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕣': {
         name: 'eight-thirty',
@@ -8373,7 +8373,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕘': {
         name: 'nine o’clock',
@@ -8381,7 +8381,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕤': {
         name: 'nine-thirty',
@@ -8389,7 +8389,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕙': {
         name: 'ten o’clock',
@@ -8397,7 +8397,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕥': {
         name: 'ten-thirty',
@@ -8405,7 +8405,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕚': {
         name: 'eleven o’clock',
@@ -8413,7 +8413,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕦': {
         name: 'eleven-thirty',
@@ -8421,7 +8421,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌑': {
         name: 'new moon',
@@ -8429,7 +8429,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌒': {
         name: 'waxing crescent moon',
@@ -8437,7 +8437,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌓': {
         name: 'first quarter moon',
@@ -8445,7 +8445,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌔': {
         name: 'waxing gibbous moon',
@@ -8453,7 +8453,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌕': {
         name: 'full moon',
@@ -8461,7 +8461,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌖': {
         name: 'waning gibbous moon',
@@ -8469,7 +8469,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌗': {
         name: 'last quarter moon',
@@ -8477,7 +8477,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌘': {
         name: 'waning crescent moon',
@@ -8485,7 +8485,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌙': {
         name: 'crescent moon',
@@ -8493,7 +8493,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌚': {
         name: 'new moon face',
@@ -8501,7 +8501,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌛': {
         name: 'first quarter moon face',
@@ -8509,7 +8509,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌜': {
         name: 'last quarter moon face',
@@ -8517,7 +8517,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌡️': {
         name: 'thermometer',
@@ -8525,7 +8525,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☀️': {
         name: 'sun',
@@ -8533,7 +8533,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌝': {
         name: 'full moon face',
@@ -8541,7 +8541,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌞': {
         name: 'sun with face',
@@ -8549,7 +8549,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪐': {
         name: 'ringed planet',
@@ -8557,7 +8557,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⭐': {
         name: 'star',
@@ -8565,7 +8565,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌟': {
         name: 'glowing star',
@@ -8573,7 +8573,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌠': {
         name: 'shooting star',
@@ -8581,7 +8581,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌌': {
         name: 'milky way',
@@ -8589,7 +8589,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☁️': {
         name: 'cloud',
@@ -8597,7 +8597,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛅': {
         name: 'sun behind cloud',
@@ -8605,7 +8605,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛈️': {
         name: 'cloud with lightning and rain',
@@ -8613,7 +8613,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌤️': {
         name: 'sun behind small cloud',
@@ -8621,7 +8621,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌥️': {
         name: 'sun behind large cloud',
@@ -8629,7 +8629,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌦️': {
         name: 'sun behind rain cloud',
@@ -8637,7 +8637,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌧️': {
         name: 'cloud with rain',
@@ -8645,7 +8645,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌨️': {
         name: 'cloud with snow',
@@ -8653,7 +8653,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌩️': {
         name: 'cloud with lightning',
@@ -8661,7 +8661,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌪️': {
         name: 'tornado',
@@ -8669,7 +8669,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌫️': {
         name: 'fog',
@@ -8677,7 +8677,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌬️': {
         name: 'wind face',
@@ -8685,7 +8685,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌀': {
         name: 'cyclone',
@@ -8693,7 +8693,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌈': {
         name: 'rainbow',
@@ -8701,7 +8701,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌂': {
         name: 'closed umbrella',
@@ -8709,7 +8709,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☂️': {
         name: 'umbrella',
@@ -8717,7 +8717,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☔': {
         name: 'umbrella with rain drops',
@@ -8725,7 +8725,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛱️': {
         name: 'umbrella on ground',
@@ -8733,7 +8733,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚡': {
         name: 'high voltage',
@@ -8741,7 +8741,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❄️': {
         name: 'snowflake',
@@ -8749,7 +8749,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☃️': {
         name: 'snowman',
@@ -8757,7 +8757,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛄': {
         name: 'snowman without snow',
@@ -8765,7 +8765,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☄️': {
         name: 'comet',
@@ -8773,7 +8773,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔥': {
         name: 'fire',
@@ -8781,7 +8781,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💧': {
         name: 'droplet',
@@ -8789,7 +8789,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🌊': {
         name: 'water wave',
@@ -8797,7 +8797,7 @@ const emojiDataByEmoji = {
         group: 'Travel & Places',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎃': {
         name: 'jack-o-lantern',
@@ -8805,7 +8805,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎄': {
         name: 'Christmas tree',
@@ -8813,7 +8813,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎆': {
         name: 'fireworks',
@@ -8821,7 +8821,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎇': {
         name: 'sparkler',
@@ -8829,7 +8829,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧨': {
         name: 'firecracker',
@@ -8837,7 +8837,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✨': {
         name: 'sparkles',
@@ -8845,7 +8845,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎈': {
         name: 'balloon',
@@ -8853,7 +8853,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎉': {
         name: 'party popper',
@@ -8861,7 +8861,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎊': {
         name: 'confetti ball',
@@ -8869,7 +8869,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎋': {
         name: 'tanabata tree',
@@ -8877,7 +8877,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎍': {
         name: 'pine decoration',
@@ -8885,7 +8885,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎎': {
         name: 'Japanese dolls',
@@ -8893,7 +8893,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎏': {
         name: 'carp streamer',
@@ -8901,7 +8901,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎐': {
         name: 'wind chime',
@@ -8909,7 +8909,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎑': {
         name: 'moon viewing ceremony',
@@ -8917,7 +8917,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧧': {
         name: 'red envelope',
@@ -8925,7 +8925,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎀': {
         name: 'ribbon',
@@ -8933,7 +8933,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎁': {
         name: 'wrapped gift',
@@ -8941,7 +8941,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎗️': {
         name: 'reminder ribbon',
@@ -8949,7 +8949,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎟️': {
         name: 'admission tickets',
@@ -8957,7 +8957,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎫': {
         name: 'ticket',
@@ -8965,7 +8965,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎖️': {
         name: 'military medal',
@@ -8973,7 +8973,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏆': {
         name: 'trophy',
@@ -8981,7 +8981,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏅': {
         name: 'sports medal',
@@ -8989,7 +8989,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥇': {
         name: '1st place medal',
@@ -8997,7 +8997,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥈': {
         name: '2nd place medal',
@@ -9005,7 +9005,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥉': {
         name: '3rd place medal',
@@ -9013,7 +9013,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚽': {
         name: 'soccer ball',
@@ -9021,7 +9021,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚾': {
         name: 'baseball',
@@ -9029,7 +9029,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥎': {
         name: 'softball',
@@ -9037,7 +9037,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏀': {
         name: 'basketball',
@@ -9045,7 +9045,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏐': {
         name: 'volleyball',
@@ -9053,7 +9053,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏈': {
         name: 'american football',
@@ -9061,7 +9061,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏉': {
         name: 'rugby football',
@@ -9069,7 +9069,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎾': {
         name: 'tennis',
@@ -9077,7 +9077,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥏': {
         name: 'flying disc',
@@ -9085,7 +9085,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎳': {
         name: 'bowling',
@@ -9093,7 +9093,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏏': {
         name: 'cricket game',
@@ -9101,7 +9101,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏑': {
         name: 'field hockey',
@@ -9109,7 +9109,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏒': {
         name: 'ice hockey',
@@ -9117,7 +9117,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥍': {
         name: 'lacrosse',
@@ -9125,7 +9125,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏓': {
         name: 'ping pong',
@@ -9133,7 +9133,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏸': {
         name: 'badminton',
@@ -9141,7 +9141,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥊': {
         name: 'boxing glove',
@@ -9149,7 +9149,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥋': {
         name: 'martial arts uniform',
@@ -9157,7 +9157,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥅': {
         name: 'goal net',
@@ -9165,7 +9165,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛳': {
         name: 'flag in hole',
@@ -9173,7 +9173,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛸️': {
         name: 'ice skate',
@@ -9181,7 +9181,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎣': {
         name: 'fishing pole',
@@ -9189,7 +9189,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🤿': {
         name: 'diving mask',
@@ -9197,7 +9197,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎽': {
         name: 'running shirt',
@@ -9205,7 +9205,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎿': {
         name: 'skis',
@@ -9213,7 +9213,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛷': {
         name: 'sled',
@@ -9221,7 +9221,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥌': {
         name: 'curling stone',
@@ -9229,7 +9229,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎯': {
         name: 'bullseye',
@@ -9237,7 +9237,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪀': {
         name: 'yo-yo',
@@ -9245,7 +9245,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪁': {
         name: 'kite',
@@ -9253,7 +9253,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔫': {
         name: 'water pistol',
@@ -9261,7 +9261,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎱': {
         name: 'pool 8 ball',
@@ -9269,7 +9269,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔮': {
         name: 'crystal ball',
@@ -9277,7 +9277,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪄': {
         name: 'magic wand',
@@ -9285,7 +9285,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎮': {
         name: 'video game',
@@ -9293,7 +9293,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕹️': {
         name: 'joystick',
@@ -9301,7 +9301,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎰': {
         name: 'slot machine',
@@ -9309,7 +9309,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎲': {
         name: 'game die',
@@ -9317,7 +9317,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧩': {
         name: 'puzzle piece',
@@ -9325,7 +9325,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧸': {
         name: 'teddy bear',
@@ -9333,7 +9333,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪅': {
         name: 'piñata',
@@ -9341,7 +9341,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪩': {
         name: 'mirror ball',
@@ -9349,7 +9349,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪆': {
         name: 'nesting dolls',
@@ -9357,7 +9357,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♠️': {
         name: 'spade suit',
@@ -9365,7 +9365,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♥️': {
         name: 'heart suit',
@@ -9373,7 +9373,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♦️': {
         name: 'diamond suit',
@@ -9381,7 +9381,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♣️': {
         name: 'club suit',
@@ -9389,7 +9389,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♟️': {
         name: 'chess pawn',
@@ -9397,7 +9397,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🃏': {
         name: 'joker',
@@ -9405,7 +9405,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🀄': {
         name: 'mahjong red dragon',
@@ -9413,7 +9413,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎴': {
         name: 'flower playing cards',
@@ -9421,7 +9421,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎭': {
         name: 'performing arts',
@@ -9429,7 +9429,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖼️': {
         name: 'framed picture',
@@ -9437,7 +9437,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎨': {
         name: 'artist palette',
@@ -9445,7 +9445,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧵': {
         name: 'thread',
@@ -9453,7 +9453,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪡': {
         name: 'sewing needle',
@@ -9461,7 +9461,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧶': {
         name: 'yarn',
@@ -9469,7 +9469,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪢': {
         name: 'knot',
@@ -9477,7 +9477,7 @@ const emojiDataByEmoji = {
         group: 'Activities',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👓': {
         name: 'glasses',
@@ -9485,7 +9485,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕶️': {
         name: 'sunglasses',
@@ -9493,7 +9493,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥽': {
         name: 'goggles',
@@ -9501,7 +9501,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥼': {
         name: 'lab coat',
@@ -9509,7 +9509,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦺': {
         name: 'safety vest',
@@ -9517,7 +9517,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👔': {
         name: 'necktie',
@@ -9525,7 +9525,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👕': {
         name: 't-shirt',
@@ -9533,7 +9533,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👖': {
         name: 'jeans',
@@ -9541,7 +9541,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧣': {
         name: 'scarf',
@@ -9549,7 +9549,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧤': {
         name: 'gloves',
@@ -9557,7 +9557,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧥': {
         name: 'coat',
@@ -9565,7 +9565,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧦': {
         name: 'socks',
@@ -9573,7 +9573,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👗': {
         name: 'dress',
@@ -9581,7 +9581,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👘': {
         name: 'kimono',
@@ -9589,7 +9589,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥻': {
         name: 'sari',
@@ -9597,7 +9597,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩱': {
         name: 'one-piece swimsuit',
@@ -9605,7 +9605,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩲': {
         name: 'briefs',
@@ -9613,7 +9613,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩳': {
         name: 'shorts',
@@ -9621,7 +9621,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👙': {
         name: 'bikini',
@@ -9629,7 +9629,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👚': {
         name: 'woman’s clothes',
@@ -9637,7 +9637,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪭': {
         name: 'folding hand fan',
@@ -9645,7 +9645,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👛': {
         name: 'purse',
@@ -9653,7 +9653,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👜': {
         name: 'handbag',
@@ -9661,7 +9661,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👝': {
         name: 'clutch bag',
@@ -9669,7 +9669,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛍️': {
         name: 'shopping bags',
@@ -9677,7 +9677,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎒': {
         name: 'backpack',
@@ -9685,7 +9685,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩴': {
         name: 'thong sandal',
@@ -9693,7 +9693,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👞': {
         name: 'man’s shoe',
@@ -9701,7 +9701,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👟': {
         name: 'running shoe',
@@ -9709,7 +9709,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥾': {
         name: 'hiking boot',
@@ -9717,7 +9717,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥿': {
         name: 'flat shoe',
@@ -9725,7 +9725,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👠': {
         name: 'high-heeled shoe',
@@ -9733,7 +9733,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👡': {
         name: 'woman’s sandal',
@@ -9741,7 +9741,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩰': {
         name: 'ballet shoes',
@@ -9749,7 +9749,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👢': {
         name: 'woman’s boot',
@@ -9757,7 +9757,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪮': {
         name: 'hair pick',
@@ -9765,7 +9765,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👑': {
         name: 'crown',
@@ -9773,7 +9773,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '👒': {
         name: 'woman’s hat',
@@ -9781,7 +9781,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎩': {
         name: 'top hat',
@@ -9789,7 +9789,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎓': {
         name: 'graduation cap',
@@ -9797,7 +9797,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧢': {
         name: 'billed cap',
@@ -9805,7 +9805,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪖': {
         name: 'military helmet',
@@ -9813,7 +9813,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛑️': {
         name: 'rescue worker’s helmet',
@@ -9821,7 +9821,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📿': {
         name: 'prayer beads',
@@ -9829,7 +9829,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💄': {
         name: 'lipstick',
@@ -9837,7 +9837,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💍': {
         name: 'ring',
@@ -9845,7 +9845,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💎': {
         name: 'gem stone',
@@ -9853,7 +9853,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔇': {
         name: 'muted speaker',
@@ -9861,7 +9861,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔈': {
         name: 'speaker low volume',
@@ -9869,7 +9869,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔉': {
         name: 'speaker medium volume',
@@ -9877,7 +9877,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔊': {
         name: 'speaker high volume',
@@ -9885,7 +9885,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📢': {
         name: 'loudspeaker',
@@ -9893,7 +9893,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📣': {
         name: 'megaphone',
@@ -9901,7 +9901,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📯': {
         name: 'postal horn',
@@ -9909,7 +9909,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔔': {
         name: 'bell',
@@ -9917,7 +9917,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔕': {
         name: 'bell with slash',
@@ -9925,7 +9925,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎼': {
         name: 'musical score',
@@ -9933,7 +9933,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎵': {
         name: 'musical note',
@@ -9941,7 +9941,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎶': {
         name: 'musical notes',
@@ -9949,7 +9949,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎙️': {
         name: 'studio microphone',
@@ -9957,7 +9957,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎚️': {
         name: 'level slider',
@@ -9965,7 +9965,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎛️': {
         name: 'control knobs',
@@ -9973,7 +9973,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎤': {
         name: 'microphone',
@@ -9981,7 +9981,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎧': {
         name: 'headphone',
@@ -9989,7 +9989,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📻': {
         name: 'radio',
@@ -9997,7 +9997,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎷': {
         name: 'saxophone',
@@ -10005,7 +10005,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪗': {
         name: 'accordion',
@@ -10013,7 +10013,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎸': {
         name: 'guitar',
@@ -10021,7 +10021,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎹': {
         name: 'musical keyboard',
@@ -10029,7 +10029,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎺': {
         name: 'trumpet',
@@ -10037,7 +10037,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎻': {
         name: 'violin',
@@ -10045,7 +10045,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪕': {
         name: 'banjo',
@@ -10053,7 +10053,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🥁': {
         name: 'drum',
@@ -10061,7 +10061,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪘': {
         name: 'long drum',
@@ -10069,7 +10069,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪇': {
         name: 'maracas',
@@ -10077,7 +10077,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪈': {
         name: 'flute',
@@ -10085,7 +10085,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📱': {
         name: 'mobile phone',
@@ -10093,7 +10093,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📲': {
         name: 'mobile phone with arrow',
@@ -10101,7 +10101,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☎️': {
         name: 'telephone',
@@ -10109,7 +10109,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📞': {
         name: 'telephone receiver',
@@ -10117,7 +10117,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📟': {
         name: 'pager',
@@ -10125,7 +10125,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📠': {
         name: 'fax machine',
@@ -10133,7 +10133,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔋': {
         name: 'battery',
@@ -10141,7 +10141,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪫': {
         name: 'low battery',
@@ -10149,7 +10149,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔌': {
         name: 'electric plug',
@@ -10157,7 +10157,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💻': {
         name: 'laptop',
@@ -10165,7 +10165,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖥️': {
         name: 'desktop computer',
@@ -10173,7 +10173,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖨️': {
         name: 'printer',
@@ -10181,7 +10181,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⌨️': {
         name: 'keyboard',
@@ -10189,7 +10189,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖱️': {
         name: 'computer mouse',
@@ -10197,7 +10197,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖲️': {
         name: 'trackball',
@@ -10205,7 +10205,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💽': {
         name: 'computer disk',
@@ -10213,7 +10213,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💾': {
         name: 'floppy disk',
@@ -10221,7 +10221,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💿': {
         name: 'optical disk',
@@ -10229,7 +10229,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📀': {
         name: 'dvd',
@@ -10237,7 +10237,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧮': {
         name: 'abacus',
@@ -10245,7 +10245,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎥': {
         name: 'movie camera',
@@ -10253,7 +10253,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎞️': {
         name: 'film frames',
@@ -10261,7 +10261,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📽️': {
         name: 'film projector',
@@ -10269,7 +10269,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎬': {
         name: 'clapper board',
@@ -10277,7 +10277,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📺': {
         name: 'television',
@@ -10285,7 +10285,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📷': {
         name: 'camera',
@@ -10293,7 +10293,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📸': {
         name: 'camera with flash',
@@ -10301,7 +10301,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📹': {
         name: 'video camera',
@@ -10309,7 +10309,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📼': {
         name: 'videocassette',
@@ -10317,7 +10317,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔍': {
         name: 'magnifying glass tilted left',
@@ -10325,7 +10325,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔎': {
         name: 'magnifying glass tilted right',
@@ -10333,7 +10333,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕯️': {
         name: 'candle',
@@ -10341,7 +10341,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💡': {
         name: 'light bulb',
@@ -10349,7 +10349,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔦': {
         name: 'flashlight',
@@ -10357,7 +10357,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏮': {
         name: 'red paper lantern',
@@ -10365,7 +10365,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪔': {
         name: 'diya lamp',
@@ -10373,7 +10373,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📔': {
         name: 'notebook with decorative cover',
@@ -10381,7 +10381,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📕': {
         name: 'closed book',
@@ -10389,7 +10389,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📖': {
         name: 'open book',
@@ -10397,7 +10397,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📗': {
         name: 'green book',
@@ -10405,7 +10405,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📘': {
         name: 'blue book',
@@ -10413,7 +10413,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📙': {
         name: 'orange book',
@@ -10421,7 +10421,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📚': {
         name: 'books',
@@ -10429,7 +10429,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📓': {
         name: 'notebook',
@@ -10437,7 +10437,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📒': {
         name: 'ledger',
@@ -10445,7 +10445,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📃': {
         name: 'page with curl',
@@ -10453,7 +10453,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📜': {
         name: 'scroll',
@@ -10461,7 +10461,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📄': {
         name: 'page facing up',
@@ -10469,7 +10469,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📰': {
         name: 'newspaper',
@@ -10477,7 +10477,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗞️': {
         name: 'rolled-up newspaper',
@@ -10485,7 +10485,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📑': {
         name: 'bookmark tabs',
@@ -10493,7 +10493,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔖': {
         name: 'bookmark',
@@ -10501,7 +10501,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏷️': {
         name: 'label',
@@ -10509,7 +10509,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💰': {
         name: 'money bag',
@@ -10517,7 +10517,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪙': {
         name: 'coin',
@@ -10525,7 +10525,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💴': {
         name: 'yen banknote',
@@ -10533,7 +10533,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💵': {
         name: 'dollar banknote',
@@ -10541,7 +10541,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💶': {
         name: 'euro banknote',
@@ -10549,7 +10549,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💷': {
         name: 'pound banknote',
@@ -10557,7 +10557,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💸': {
         name: 'money with wings',
@@ -10565,7 +10565,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💳': {
         name: 'credit card',
@@ -10573,7 +10573,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧾': {
         name: 'receipt',
@@ -10581,7 +10581,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💹': {
         name: 'chart increasing with yen',
@@ -10589,7 +10589,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✉️': {
         name: 'envelope',
@@ -10597,7 +10597,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📧': {
         name: 'e-mail',
@@ -10605,7 +10605,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📨': {
         name: 'incoming envelope',
@@ -10613,7 +10613,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📩': {
         name: 'envelope with arrow',
@@ -10621,7 +10621,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📤': {
         name: 'outbox tray',
@@ -10629,7 +10629,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📥': {
         name: 'inbox tray',
@@ -10637,7 +10637,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📦': {
         name: 'package',
@@ -10645,7 +10645,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📫': {
         name: 'closed mailbox with raised flag',
@@ -10653,7 +10653,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📪': {
         name: 'closed mailbox with lowered flag',
@@ -10661,7 +10661,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📬': {
         name: 'open mailbox with raised flag',
@@ -10669,7 +10669,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📭': {
         name: 'open mailbox with lowered flag',
@@ -10677,7 +10677,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📮': {
         name: 'postbox',
@@ -10685,7 +10685,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗳️': {
         name: 'ballot box with ballot',
@@ -10693,7 +10693,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✏️': {
         name: 'pencil',
@@ -10701,7 +10701,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✒️': {
         name: 'black nib',
@@ -10709,7 +10709,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖋️': {
         name: 'fountain pen',
@@ -10717,7 +10717,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖊️': {
         name: 'pen',
@@ -10725,7 +10725,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖌️': {
         name: 'paintbrush',
@@ -10733,7 +10733,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖍️': {
         name: 'crayon',
@@ -10741,7 +10741,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📝': {
         name: 'memo',
@@ -10749,7 +10749,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💼': {
         name: 'briefcase',
@@ -10757,7 +10757,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📁': {
         name: 'file folder',
@@ -10765,7 +10765,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📂': {
         name: 'open file folder',
@@ -10773,7 +10773,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗂️': {
         name: 'card index dividers',
@@ -10781,7 +10781,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📅': {
         name: 'calendar',
@@ -10789,7 +10789,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📆': {
         name: 'tear-off calendar',
@@ -10797,7 +10797,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗒️': {
         name: 'spiral notepad',
@@ -10805,7 +10805,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗓️': {
         name: 'spiral calendar',
@@ -10813,7 +10813,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📇': {
         name: 'card index',
@@ -10821,7 +10821,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📈': {
         name: 'chart increasing',
@@ -10829,7 +10829,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📉': {
         name: 'chart decreasing',
@@ -10837,7 +10837,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📊': {
         name: 'bar chart',
@@ -10845,7 +10845,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📋': {
         name: 'clipboard',
@@ -10853,7 +10853,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📌': {
         name: 'pushpin',
@@ -10861,7 +10861,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📍': {
         name: 'round pushpin',
@@ -10869,7 +10869,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📎': {
         name: 'paperclip',
@@ -10877,7 +10877,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🖇️': {
         name: 'linked paperclips',
@@ -10885,7 +10885,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📏': {
         name: 'straight ruler',
@@ -10893,7 +10893,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📐': {
         name: 'triangular ruler',
@@ -10901,7 +10901,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✂️': {
         name: 'scissors',
@@ -10909,7 +10909,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗃️': {
         name: 'card file box',
@@ -10917,7 +10917,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗄️': {
         name: 'file cabinet',
@@ -10925,7 +10925,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗑️': {
         name: 'wastebasket',
@@ -10933,7 +10933,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔒': {
         name: 'locked',
@@ -10941,7 +10941,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔓': {
         name: 'unlocked',
@@ -10949,7 +10949,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔏': {
         name: 'locked with pen',
@@ -10957,7 +10957,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔐': {
         name: 'locked with key',
@@ -10965,7 +10965,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔑': {
         name: 'key',
@@ -10973,7 +10973,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗝️': {
         name: 'old key',
@@ -10981,7 +10981,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔨': {
         name: 'hammer',
@@ -10989,7 +10989,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪓': {
         name: 'axe',
@@ -10997,7 +10997,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛏️': {
         name: 'pick',
@@ -11005,7 +11005,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚒️': {
         name: 'hammer and pick',
@@ -11013,7 +11013,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛠️': {
         name: 'hammer and wrench',
@@ -11021,7 +11021,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗡️': {
         name: 'dagger',
@@ -11029,7 +11029,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚔️': {
         name: 'crossed swords',
@@ -11037,7 +11037,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💣': {
         name: 'bomb',
@@ -11045,7 +11045,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪃': {
         name: 'boomerang',
@@ -11053,7 +11053,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏹': {
         name: 'bow and arrow',
@@ -11061,7 +11061,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛡️': {
         name: 'shield',
@@ -11069,7 +11069,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪚': {
         name: 'carpentry saw',
@@ -11077,7 +11077,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔧': {
         name: 'wrench',
@@ -11085,7 +11085,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪛': {
         name: 'screwdriver',
@@ -11093,7 +11093,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔩': {
         name: 'nut and bolt',
@@ -11101,7 +11101,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚙️': {
         name: 'gear',
@@ -11109,7 +11109,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗜️': {
         name: 'clamp',
@@ -11117,7 +11117,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚖️': {
         name: 'balance scale',
@@ -11125,7 +11125,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🦯': {
         name: 'white cane',
@@ -11133,7 +11133,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔗': {
         name: 'link',
@@ -11141,7 +11141,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛓️‍💥': {
         name: 'broken chain',
@@ -11149,7 +11149,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '15.1',
         unicode_version: '15.1',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛓️': {
         name: 'chains',
@@ -11157,7 +11157,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪝': {
         name: 'hook',
@@ -11165,7 +11165,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧰': {
         name: 'toolbox',
@@ -11173,7 +11173,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧲': {
         name: 'magnet',
@@ -11181,7 +11181,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪜': {
         name: 'ladder',
@@ -11189,7 +11189,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚗️': {
         name: 'alembic',
@@ -11197,7 +11197,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧪': {
         name: 'test tube',
@@ -11205,7 +11205,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧫': {
         name: 'petri dish',
@@ -11213,7 +11213,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧬': {
         name: 'dna',
@@ -11221,7 +11221,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔬': {
         name: 'microscope',
@@ -11229,7 +11229,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔭': {
         name: 'telescope',
@@ -11237,7 +11237,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📡': {
         name: 'satellite antenna',
@@ -11245,7 +11245,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💉': {
         name: 'syringe',
@@ -11253,7 +11253,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩸': {
         name: 'drop of blood',
@@ -11261,7 +11261,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💊': {
         name: 'pill',
@@ -11269,7 +11269,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩹': {
         name: 'adhesive bandage',
@@ -11277,7 +11277,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩼': {
         name: 'crutch',
@@ -11285,7 +11285,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩺': {
         name: 'stethoscope',
@@ -11293,7 +11293,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🩻': {
         name: 'x-ray',
@@ -11301,7 +11301,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚪': {
         name: 'door',
@@ -11309,7 +11309,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛗': {
         name: 'elevator',
@@ -11317,7 +11317,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪞': {
         name: 'mirror',
@@ -11325,7 +11325,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪟': {
         name: 'window',
@@ -11333,7 +11333,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛏️': {
         name: 'bed',
@@ -11341,7 +11341,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛋️': {
         name: 'couch and lamp',
@@ -11349,7 +11349,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪑': {
         name: 'chair',
@@ -11357,7 +11357,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚽': {
         name: 'toilet',
@@ -11365,7 +11365,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪠': {
         name: 'plunger',
@@ -11373,7 +11373,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚿': {
         name: 'shower',
@@ -11381,7 +11381,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛁': {
         name: 'bathtub',
@@ -11389,7 +11389,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪤': {
         name: 'mouse trap',
@@ -11397,7 +11397,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪒': {
         name: 'razor',
@@ -11405,7 +11405,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧴': {
         name: 'lotion bottle',
@@ -11413,7 +11413,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧷': {
         name: 'safety pin',
@@ -11421,7 +11421,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧹': {
         name: 'broom',
@@ -11429,7 +11429,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧺': {
         name: 'basket',
@@ -11437,7 +11437,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧻': {
         name: 'roll of paper',
@@ -11445,7 +11445,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪣': {
         name: 'bucket',
@@ -11453,7 +11453,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧼': {
         name: 'soap',
@@ -11461,7 +11461,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🫧': {
         name: 'bubbles',
@@ -11469,7 +11469,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪥': {
         name: 'toothbrush',
@@ -11477,7 +11477,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧽': {
         name: 'sponge',
@@ -11485,7 +11485,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧯': {
         name: 'fire extinguisher',
@@ -11493,7 +11493,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛒': {
         name: 'shopping cart',
@@ -11501,7 +11501,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '3.0',
         unicode_version: '3.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚬': {
         name: 'cigarette',
@@ -11509,7 +11509,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚰️': {
         name: 'coffin',
@@ -11517,7 +11517,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪦': {
         name: 'headstone',
@@ -11525,7 +11525,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚱️': {
         name: 'funeral urn',
@@ -11533,7 +11533,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🧿': {
         name: 'nazar amulet',
@@ -11541,7 +11541,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪬': {
         name: 'hamsa',
@@ -11549,7 +11549,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🗿': {
         name: 'moai',
@@ -11557,7 +11557,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪧': {
         name: 'placard',
@@ -11565,7 +11565,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪪': {
         name: 'identification card',
@@ -11573,7 +11573,7 @@ const emojiDataByEmoji = {
         group: 'Objects',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏧': {
         name: 'ATM sign',
@@ -11581,7 +11581,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚮': {
         name: 'litter in bin sign',
@@ -11589,7 +11589,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚰': {
         name: 'potable water',
@@ -11597,7 +11597,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♿': {
         name: 'wheelchair symbol',
@@ -11605,7 +11605,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚹': {
         name: 'men’s room',
@@ -11613,7 +11613,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚺': {
         name: 'women’s room',
@@ -11621,7 +11621,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚻': {
         name: 'restroom',
@@ -11629,7 +11629,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚼': {
         name: 'baby symbol',
@@ -11637,7 +11637,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚾': {
         name: 'water closet',
@@ -11645,7 +11645,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛂': {
         name: 'passport control',
@@ -11653,7 +11653,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛃': {
         name: 'customs',
@@ -11661,7 +11661,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛄': {
         name: 'baggage claim',
@@ -11669,7 +11669,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛅': {
         name: 'left luggage',
@@ -11677,7 +11677,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚠️': {
         name: 'warning',
@@ -11685,7 +11685,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚸': {
         name: 'children crossing',
@@ -11693,7 +11693,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛔': {
         name: 'no entry',
@@ -11701,7 +11701,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚫': {
         name: 'prohibited',
@@ -11709,7 +11709,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚳': {
         name: 'no bicycles',
@@ -11717,7 +11717,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚭': {
         name: 'no smoking',
@@ -11725,7 +11725,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚯': {
         name: 'no littering',
@@ -11733,7 +11733,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚱': {
         name: 'non-potable water',
@@ -11741,7 +11741,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚷': {
         name: 'no pedestrians',
@@ -11749,7 +11749,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📵': {
         name: 'no mobile phones',
@@ -11757,7 +11757,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔞': {
         name: 'no one under eighteen',
@@ -11765,7 +11765,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☢️': {
         name: 'radioactive',
@@ -11773,7 +11773,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☣️': {
         name: 'biohazard',
@@ -11781,7 +11781,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⬆️': {
         name: 'up arrow',
@@ -11789,7 +11789,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↗️': {
         name: 'up-right arrow',
@@ -11797,7 +11797,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➡️': {
         name: 'right arrow',
@@ -11805,7 +11805,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↘️': {
         name: 'down-right arrow',
@@ -11813,7 +11813,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⬇️': {
         name: 'down arrow',
@@ -11821,7 +11821,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↙️': {
         name: 'down-left arrow',
@@ -11829,7 +11829,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⬅️': {
         name: 'left arrow',
@@ -11837,7 +11837,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↖️': {
         name: 'up-left arrow',
@@ -11845,7 +11845,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↕️': {
         name: 'up-down arrow',
@@ -11853,7 +11853,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↔️': {
         name: 'left-right arrow',
@@ -11861,7 +11861,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↩️': {
         name: 'right arrow curving left',
@@ -11869,7 +11869,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '↪️': {
         name: 'left arrow curving right',
@@ -11877,7 +11877,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⤴️': {
         name: 'right arrow curving up',
@@ -11885,7 +11885,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⤵️': {
         name: 'right arrow curving down',
@@ -11893,7 +11893,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔃': {
         name: 'clockwise vertical arrows',
@@ -11901,7 +11901,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔄': {
         name: 'counterclockwise arrows button',
@@ -11909,7 +11909,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔙': {
         name: 'BACK arrow',
@@ -11917,7 +11917,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔚': {
         name: 'END arrow',
@@ -11925,7 +11925,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔛': {
         name: 'ON! arrow',
@@ -11933,7 +11933,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔜': {
         name: 'SOON arrow',
@@ -11941,7 +11941,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔝': {
         name: 'TOP arrow',
@@ -11949,7 +11949,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛐': {
         name: 'place of worship',
@@ -11957,7 +11957,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚛️': {
         name: 'atom symbol',
@@ -11965,7 +11965,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕉️': {
         name: 'om',
@@ -11973,7 +11973,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✡️': {
         name: 'star of David',
@@ -11981,7 +11981,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☸️': {
         name: 'wheel of dharma',
@@ -11989,7 +11989,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☯️': {
         name: 'yin yang',
@@ -11997,7 +11997,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✝️': {
         name: 'latin cross',
@@ -12005,7 +12005,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☦️': {
         name: 'orthodox cross',
@@ -12013,7 +12013,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☪️': {
         name: 'star and crescent',
@@ -12021,7 +12021,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☮️': {
         name: 'peace symbol',
@@ -12029,7 +12029,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🕎': {
         name: 'menorah',
@@ -12037,7 +12037,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔯': {
         name: 'dotted six-pointed star',
@@ -12045,7 +12045,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🪯': {
         name: 'khanda',
@@ -12053,7 +12053,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♈': {
         name: 'Aries',
@@ -12061,7 +12061,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♉': {
         name: 'Taurus',
@@ -12069,7 +12069,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♊': {
         name: 'Gemini',
@@ -12077,7 +12077,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♋': {
         name: 'Cancer',
@@ -12085,7 +12085,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♌': {
         name: 'Leo',
@@ -12093,7 +12093,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♍': {
         name: 'Virgo',
@@ -12101,7 +12101,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♎': {
         name: 'Libra',
@@ -12109,7 +12109,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♏': {
         name: 'Scorpio',
@@ -12117,7 +12117,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♐': {
         name: 'Sagittarius',
@@ -12125,7 +12125,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♑': {
         name: 'Capricorn',
@@ -12133,7 +12133,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♒': {
         name: 'Aquarius',
@@ -12141,7 +12141,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♓': {
         name: 'Pisces',
@@ -12149,7 +12149,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⛎': {
         name: 'Ophiuchus',
@@ -12157,7 +12157,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔀': {
         name: 'shuffle tracks button',
@@ -12165,7 +12165,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔁': {
         name: 'repeat button',
@@ -12173,7 +12173,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔂': {
         name: 'repeat single button',
@@ -12181,7 +12181,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '▶️': {
         name: 'play button',
@@ -12189,7 +12189,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏩': {
         name: 'fast-forward button',
@@ -12197,7 +12197,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏭️': {
         name: 'next track button',
@@ -12205,7 +12205,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏯️': {
         name: 'play or pause button',
@@ -12213,7 +12213,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '◀️': {
         name: 'reverse button',
@@ -12221,7 +12221,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏪': {
         name: 'fast reverse button',
@@ -12229,7 +12229,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏮️': {
         name: 'last track button',
@@ -12237,7 +12237,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔼': {
         name: 'upwards button',
@@ -12245,7 +12245,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏫': {
         name: 'fast up button',
@@ -12253,7 +12253,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔽': {
         name: 'downwards button',
@@ -12261,7 +12261,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏬': {
         name: 'fast down button',
@@ -12269,7 +12269,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏸️': {
         name: 'pause button',
@@ -12277,7 +12277,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏹️': {
         name: 'stop button',
@@ -12285,7 +12285,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏺️': {
         name: 'record button',
@@ -12293,7 +12293,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⏏️': {
         name: 'eject button',
@@ -12301,7 +12301,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎦': {
         name: 'cinema',
@@ -12309,7 +12309,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔅': {
         name: 'dim button',
@@ -12317,7 +12317,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔆': {
         name: 'bright button',
@@ -12325,7 +12325,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📶': {
         name: 'antenna bars',
@@ -12333,7 +12333,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🛜': {
         name: 'wireless',
@@ -12341,7 +12341,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '15.0',
         unicode_version: '15.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📳': {
         name: 'vibration mode',
@@ -12349,7 +12349,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📴': {
         name: 'mobile phone off',
@@ -12357,7 +12357,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♀️': {
         name: 'female sign',
@@ -12365,7 +12365,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♂️': {
         name: 'male sign',
@@ -12373,7 +12373,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚧️': {
         name: 'transgender symbol',
@@ -12381,7 +12381,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✖️': {
         name: 'multiply',
@@ -12389,7 +12389,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➕': {
         name: 'plus',
@@ -12397,7 +12397,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➖': {
         name: 'minus',
@@ -12405,7 +12405,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➗': {
         name: 'divide',
@@ -12413,7 +12413,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟰': {
         name: 'heavy equals sign',
@@ -12421,7 +12421,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '14.0',
         unicode_version: '14.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♾️': {
         name: 'infinity',
@@ -12429,7 +12429,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '‼️': {
         name: 'double exclamation mark',
@@ -12437,7 +12437,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⁉️': {
         name: 'exclamation question mark',
@@ -12445,7 +12445,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❓': {
         name: 'red question mark',
@@ -12453,7 +12453,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❔': {
         name: 'white question mark',
@@ -12461,7 +12461,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❕': {
         name: 'white exclamation mark',
@@ -12469,7 +12469,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❗': {
         name: 'red exclamation mark',
@@ -12477,7 +12477,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '〰️': {
         name: 'wavy dash',
@@ -12485,7 +12485,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💱': {
         name: 'currency exchange',
@@ -12493,7 +12493,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💲': {
         name: 'heavy dollar sign',
@@ -12501,7 +12501,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚕️': {
         name: 'medical symbol',
@@ -12509,7 +12509,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '♻️': {
         name: 'recycling symbol',
@@ -12517,7 +12517,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚜️': {
         name: 'fleur-de-lis',
@@ -12525,7 +12525,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔱': {
         name: 'trident emblem',
@@ -12533,7 +12533,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '📛': {
         name: 'name badge',
@@ -12541,7 +12541,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔰': {
         name: 'Japanese symbol for beginner',
@@ -12549,7 +12549,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⭕': {
         name: 'hollow red circle',
@@ -12557,7 +12557,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✅': {
         name: 'check mark button',
@@ -12565,7 +12565,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '☑️': {
         name: 'check box with check',
@@ -12573,7 +12573,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✔️': {
         name: 'check mark',
@@ -12581,7 +12581,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❌': {
         name: 'cross mark',
@@ -12589,7 +12589,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❎': {
         name: 'cross mark button',
@@ -12597,7 +12597,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➰': {
         name: 'curly loop',
@@ -12605,7 +12605,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '➿': {
         name: 'double curly loop',
@@ -12613,7 +12613,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '〽️': {
         name: 'part alternation mark',
@@ -12621,7 +12621,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✳️': {
         name: 'eight-spoked asterisk',
@@ -12629,7 +12629,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '✴️': {
         name: 'eight-pointed star',
@@ -12637,7 +12637,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '❇️': {
         name: 'sparkle',
@@ -12645,7 +12645,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '©️': {
         name: 'copyright',
@@ -12653,7 +12653,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '®️': {
         name: 'registered',
@@ -12661,7 +12661,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '™️': {
         name: 'trade mark',
@@ -12669,7 +12669,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '#️⃣': {
         name: 'keycap #',
@@ -12677,7 +12677,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '*️⃣': {
         name: 'keycap *',
@@ -12685,7 +12685,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '0️⃣': {
         name: 'keycap 0',
@@ -12693,7 +12693,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '1️⃣': {
         name: 'keycap 1',
@@ -12701,7 +12701,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '2️⃣': {
         name: 'keycap 2',
@@ -12709,7 +12709,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '3️⃣': {
         name: 'keycap 3',
@@ -12717,7 +12717,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '4️⃣': {
         name: 'keycap 4',
@@ -12725,7 +12725,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '5️⃣': {
         name: 'keycap 5',
@@ -12733,7 +12733,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '6️⃣': {
         name: 'keycap 6',
@@ -12741,7 +12741,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '7️⃣': {
         name: 'keycap 7',
@@ -12749,7 +12749,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '8️⃣': {
         name: 'keycap 8',
@@ -12757,7 +12757,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '9️⃣': {
         name: 'keycap 9',
@@ -12765,7 +12765,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔟': {
         name: 'keycap 10',
@@ -12773,7 +12773,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔠': {
         name: 'input latin uppercase',
@@ -12781,7 +12781,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔡': {
         name: 'input latin lowercase',
@@ -12789,7 +12789,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔢': {
         name: 'input numbers',
@@ -12797,7 +12797,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔣': {
         name: 'input symbols',
@@ -12805,7 +12805,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔤': {
         name: 'input latin letters',
@@ -12813,7 +12813,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🅰️': {
         name: 'A button (blood type)',
@@ -12821,7 +12821,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆎': {
         name: 'AB button (blood type)',
@@ -12829,7 +12829,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🅱️': {
         name: 'B button (blood type)',
@@ -12837,7 +12837,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆑': {
         name: 'CL button',
@@ -12845,7 +12845,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆒': {
         name: 'COOL button',
@@ -12853,7 +12853,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆓': {
         name: 'FREE button',
@@ -12861,7 +12861,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     ℹ️: {
         name: 'information',
@@ -12869,7 +12869,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆔': {
         name: 'ID button',
@@ -12877,7 +12877,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     'Ⓜ️': {
         name: 'circled M',
@@ -12885,7 +12885,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆕': {
         name: 'NEW button',
@@ -12893,7 +12893,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆖': {
         name: 'NG button',
@@ -12901,7 +12901,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🅾️': {
         name: 'O button (blood type)',
@@ -12909,7 +12909,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆗': {
         name: 'OK button',
@@ -12917,7 +12917,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🅿️': {
         name: 'P button',
@@ -12925,7 +12925,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆘': {
         name: 'SOS button',
@@ -12933,7 +12933,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆙': {
         name: 'UP! button',
@@ -12941,7 +12941,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🆚': {
         name: 'VS button',
@@ -12949,7 +12949,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈁': {
         name: 'Japanese “here” button',
@@ -12957,7 +12957,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈂️': {
         name: 'Japanese “service charge” button',
@@ -12965,7 +12965,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈷️': {
         name: 'Japanese “monthly amount” button',
@@ -12973,7 +12973,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈶': {
         name: 'Japanese “not free of charge” button',
@@ -12981,7 +12981,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈯': {
         name: 'Japanese “reserved” button',
@@ -12989,7 +12989,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🉐': {
         name: 'Japanese “bargain” button',
@@ -12997,7 +12997,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈹': {
         name: 'Japanese “discount” button',
@@ -13005,7 +13005,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈚': {
         name: 'Japanese “free of charge” button',
@@ -13013,7 +13013,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈲': {
         name: 'Japanese “prohibited” button',
@@ -13021,7 +13021,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🉑': {
         name: 'Japanese “acceptable” button',
@@ -13029,7 +13029,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈸': {
         name: 'Japanese “application” button',
@@ -13037,7 +13037,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈴': {
         name: 'Japanese “passing grade” button',
@@ -13045,7 +13045,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈳': {
         name: 'Japanese “vacancy” button',
@@ -13053,7 +13053,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '㊗️': {
         name: 'Japanese “congratulations” button',
@@ -13061,7 +13061,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '㊙️': {
         name: 'Japanese “secret” button',
@@ -13069,7 +13069,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈺': {
         name: 'Japanese “open for business” button',
@@ -13077,7 +13077,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🈵': {
         name: 'Japanese “no vacancy” button',
@@ -13085,7 +13085,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔴': {
         name: 'red circle',
@@ -13093,7 +13093,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟠': {
         name: 'orange circle',
@@ -13101,7 +13101,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟡': {
         name: 'yellow circle',
@@ -13109,7 +13109,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟢': {
         name: 'green circle',
@@ -13117,7 +13117,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔵': {
         name: 'blue circle',
@@ -13125,7 +13125,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟣': {
         name: 'purple circle',
@@ -13133,7 +13133,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟤': {
         name: 'brown circle',
@@ -13141,7 +13141,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚫': {
         name: 'black circle',
@@ -13149,7 +13149,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⚪': {
         name: 'white circle',
@@ -13157,7 +13157,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟥': {
         name: 'red square',
@@ -13165,7 +13165,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟧': {
         name: 'orange square',
@@ -13173,7 +13173,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟨': {
         name: 'yellow square',
@@ -13181,7 +13181,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟩': {
         name: 'green square',
@@ -13189,7 +13189,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟦': {
         name: 'blue square',
@@ -13197,7 +13197,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟪': {
         name: 'purple square',
@@ -13205,7 +13205,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🟫': {
         name: 'brown square',
@@ -13213,7 +13213,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '12.0',
         unicode_version: '12.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⬛': {
         name: 'black large square',
@@ -13221,7 +13221,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '⬜': {
         name: 'white large square',
@@ -13229,7 +13229,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '◼️': {
         name: 'black medium square',
@@ -13237,7 +13237,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '◻️': {
         name: 'white medium square',
@@ -13245,7 +13245,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '◾': {
         name: 'black medium-small square',
@@ -13253,7 +13253,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '◽': {
         name: 'white medium-small square',
@@ -13261,7 +13261,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '▪️': {
         name: 'black small square',
@@ -13269,7 +13269,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '▫️': {
         name: 'white small square',
@@ -13277,7 +13277,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔶': {
         name: 'large orange diamond',
@@ -13285,7 +13285,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔷': {
         name: 'large blue diamond',
@@ -13293,7 +13293,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔸': {
         name: 'small orange diamond',
@@ -13301,7 +13301,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔹': {
         name: 'small blue diamond',
@@ -13309,7 +13309,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔺': {
         name: 'red triangle pointed up',
@@ -13317,7 +13317,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔻': {
         name: 'red triangle pointed down',
@@ -13325,7 +13325,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '💠': {
         name: 'diamond with a dot',
@@ -13333,7 +13333,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔘': {
         name: 'radio button',
@@ -13341,7 +13341,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔳': {
         name: 'white square button',
@@ -13349,7 +13349,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🔲': {
         name: 'black square button',
@@ -13357,7 +13357,7 @@ const emojiDataByEmoji = {
         group: 'Symbols',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏁': {
         name: 'chequered flag',
@@ -13365,7 +13365,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🚩': {
         name: 'triangular flag',
@@ -13373,7 +13373,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🎌': {
         name: 'crossed flags',
@@ -13381,7 +13381,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏴': {
         name: 'black flag',
@@ -13389,7 +13389,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '1.0',
         unicode_version: '1.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏳️': {
         name: 'white flag',
@@ -13397,7 +13397,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.7',
         unicode_version: '0.7',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏳️‍🌈': {
         name: 'rainbow flag',
@@ -13405,7 +13405,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏳️‍⚧️': {
         name: 'transgender flag',
@@ -13413,7 +13413,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '13.0',
         unicode_version: '13.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏴‍☠️': {
         name: 'pirate flag',
@@ -13421,7 +13421,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '11.0',
         unicode_version: '11.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇨': {
         name: 'flag Ascension Island',
@@ -13429,7 +13429,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇩': {
         name: 'flag Andorra',
@@ -13437,7 +13437,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇪': {
         name: 'flag United Arab Emirates',
@@ -13445,7 +13445,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇫': {
         name: 'flag Afghanistan',
@@ -13453,7 +13453,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇬': {
         name: 'flag Antigua & Barbuda',
@@ -13461,7 +13461,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇮': {
         name: 'flag Anguilla',
@@ -13469,7 +13469,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇱': {
         name: 'flag Albania',
@@ -13477,7 +13477,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇲': {
         name: 'flag Armenia',
@@ -13485,7 +13485,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇴': {
         name: 'flag Angola',
@@ -13493,7 +13493,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇶': {
         name: 'flag Antarctica',
@@ -13501,7 +13501,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇷': {
         name: 'flag Argentina',
@@ -13509,7 +13509,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇸': {
         name: 'flag American Samoa',
@@ -13517,7 +13517,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇹': {
         name: 'flag Austria',
@@ -13525,7 +13525,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇺': {
         name: 'flag Australia',
@@ -13533,7 +13533,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇼': {
         name: 'flag Aruba',
@@ -13541,7 +13541,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇽': {
         name: 'flag Åland Islands',
@@ -13549,7 +13549,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇦🇿': {
         name: 'flag Azerbaijan',
@@ -13557,7 +13557,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇦': {
         name: 'flag Bosnia & Herzegovina',
@@ -13565,7 +13565,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇧': {
         name: 'flag Barbados',
@@ -13573,7 +13573,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇩': {
         name: 'flag Bangladesh',
@@ -13581,7 +13581,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇪': {
         name: 'flag Belgium',
@@ -13589,7 +13589,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇫': {
         name: 'flag Burkina Faso',
@@ -13597,7 +13597,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇬': {
         name: 'flag Bulgaria',
@@ -13605,7 +13605,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇭': {
         name: 'flag Bahrain',
@@ -13613,7 +13613,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇮': {
         name: 'flag Burundi',
@@ -13621,7 +13621,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇯': {
         name: 'flag Benin',
@@ -13629,7 +13629,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇱': {
         name: 'flag St. Barthélemy',
@@ -13637,7 +13637,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇲': {
         name: 'flag Bermuda',
@@ -13645,7 +13645,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇳': {
         name: 'flag Brunei',
@@ -13653,7 +13653,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇴': {
         name: 'flag Bolivia',
@@ -13661,7 +13661,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇶': {
         name: 'flag Caribbean Netherlands',
@@ -13669,7 +13669,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇷': {
         name: 'flag Brazil',
@@ -13677,7 +13677,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇸': {
         name: 'flag Bahamas',
@@ -13685,7 +13685,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇹': {
         name: 'flag Bhutan',
@@ -13693,7 +13693,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇻': {
         name: 'flag Bouvet Island',
@@ -13701,7 +13701,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇼': {
         name: 'flag Botswana',
@@ -13709,7 +13709,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇾': {
         name: 'flag Belarus',
@@ -13717,7 +13717,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇧🇿': {
         name: 'flag Belize',
@@ -13725,7 +13725,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇦': {
         name: 'flag Canada',
@@ -13733,7 +13733,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇨': {
         name: 'flag Cocos (Keeling) Islands',
@@ -13741,7 +13741,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇩': {
         name: 'flag Congo - Kinshasa',
@@ -13749,7 +13749,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇫': {
         name: 'flag Central African Republic',
@@ -13757,7 +13757,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇬': {
         name: 'flag Congo - Brazzaville',
@@ -13765,7 +13765,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇭': {
         name: 'flag Switzerland',
@@ -13773,7 +13773,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇮': {
         name: 'flag Côte d’Ivoire',
@@ -13781,7 +13781,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇰': {
         name: 'flag Cook Islands',
@@ -13789,7 +13789,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇱': {
         name: 'flag Chile',
@@ -13797,7 +13797,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇲': {
         name: 'flag Cameroon',
@@ -13805,7 +13805,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇳': {
         name: 'flag China',
@@ -13813,7 +13813,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇴': {
         name: 'flag Colombia',
@@ -13821,7 +13821,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇵': {
         name: 'flag Clipperton Island',
@@ -13829,7 +13829,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇷': {
         name: 'flag Costa Rica',
@@ -13837,7 +13837,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇺': {
         name: 'flag Cuba',
@@ -13845,7 +13845,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇻': {
         name: 'flag Cape Verde',
@@ -13853,7 +13853,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇼': {
         name: 'flag Curaçao',
@@ -13861,7 +13861,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇽': {
         name: 'flag Christmas Island',
@@ -13869,7 +13869,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇾': {
         name: 'flag Cyprus',
@@ -13877,7 +13877,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇨🇿': {
         name: 'flag Czechia',
@@ -13885,7 +13885,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇪': {
         name: 'flag Germany',
@@ -13893,7 +13893,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇬': {
         name: 'flag Diego Garcia',
@@ -13901,7 +13901,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇯': {
         name: 'flag Djibouti',
@@ -13909,7 +13909,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇰': {
         name: 'flag Denmark',
@@ -13917,7 +13917,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇲': {
         name: 'flag Dominica',
@@ -13925,7 +13925,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇴': {
         name: 'flag Dominican Republic',
@@ -13933,7 +13933,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇩🇿': {
         name: 'flag Algeria',
@@ -13941,7 +13941,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇦': {
         name: 'flag Ceuta & Melilla',
@@ -13949,7 +13949,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇨': {
         name: 'flag Ecuador',
@@ -13957,7 +13957,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇪': {
         name: 'flag Estonia',
@@ -13965,7 +13965,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇬': {
         name: 'flag Egypt',
@@ -13973,7 +13973,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇭': {
         name: 'flag Western Sahara',
@@ -13981,7 +13981,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇷': {
         name: 'flag Eritrea',
@@ -13989,7 +13989,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇸': {
         name: 'flag Spain',
@@ -13997,7 +13997,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇹': {
         name: 'flag Ethiopia',
@@ -14005,7 +14005,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇪🇺': {
         name: 'flag European Union',
@@ -14013,7 +14013,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇮': {
         name: 'flag Finland',
@@ -14021,7 +14021,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇯': {
         name: 'flag Fiji',
@@ -14029,7 +14029,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇰': {
         name: 'flag Falkland Islands',
@@ -14037,7 +14037,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇲': {
         name: 'flag Micronesia',
@@ -14045,7 +14045,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇴': {
         name: 'flag Faroe Islands',
@@ -14053,7 +14053,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇫🇷': {
         name: 'flag France',
@@ -14061,7 +14061,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇦': {
         name: 'flag Gabon',
@@ -14069,7 +14069,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇧': {
         name: 'flag United Kingdom',
@@ -14077,7 +14077,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇩': {
         name: 'flag Grenada',
@@ -14085,7 +14085,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇪': {
         name: 'flag Georgia',
@@ -14093,7 +14093,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇫': {
         name: 'flag French Guiana',
@@ -14101,7 +14101,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇬': {
         name: 'flag Guernsey',
@@ -14109,7 +14109,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇭': {
         name: 'flag Ghana',
@@ -14117,7 +14117,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇮': {
         name: 'flag Gibraltar',
@@ -14125,7 +14125,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇱': {
         name: 'flag Greenland',
@@ -14133,7 +14133,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇲': {
         name: 'flag Gambia',
@@ -14141,7 +14141,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇳': {
         name: 'flag Guinea',
@@ -14149,7 +14149,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇵': {
         name: 'flag Guadeloupe',
@@ -14157,7 +14157,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇶': {
         name: 'flag Equatorial Guinea',
@@ -14165,7 +14165,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇷': {
         name: 'flag Greece',
@@ -14173,7 +14173,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇸': {
         name: 'flag South Georgia & South Sandwich Islands',
@@ -14181,7 +14181,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇹': {
         name: 'flag Guatemala',
@@ -14189,7 +14189,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇺': {
         name: 'flag Guam',
@@ -14197,7 +14197,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇼': {
         name: 'flag Guinea-Bissau',
@@ -14205,7 +14205,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇬🇾': {
         name: 'flag Guyana',
@@ -14213,7 +14213,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇰': {
         name: 'flag Hong Kong SAR China',
@@ -14221,7 +14221,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇲': {
         name: 'flag Heard & McDonald Islands',
@@ -14229,7 +14229,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇳': {
         name: 'flag Honduras',
@@ -14237,7 +14237,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇷': {
         name: 'flag Croatia',
@@ -14245,7 +14245,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇹': {
         name: 'flag Haiti',
@@ -14253,7 +14253,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇭🇺': {
         name: 'flag Hungary',
@@ -14261,7 +14261,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇨': {
         name: 'flag Canary Islands',
@@ -14269,7 +14269,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇩': {
         name: 'flag Indonesia',
@@ -14277,7 +14277,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇪': {
         name: 'flag Ireland',
@@ -14285,7 +14285,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇱': {
         name: 'flag Israel',
@@ -14293,7 +14293,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇲': {
         name: 'flag Isle of Man',
@@ -14301,7 +14301,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇳': {
         name: 'flag India',
@@ -14309,7 +14309,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇴': {
         name: 'flag British Indian Ocean Territory',
@@ -14317,7 +14317,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇶': {
         name: 'flag Iraq',
@@ -14325,7 +14325,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇷': {
         name: 'flag Iran',
@@ -14333,7 +14333,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇸': {
         name: 'flag Iceland',
@@ -14341,7 +14341,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇮🇹': {
         name: 'flag Italy',
@@ -14349,7 +14349,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇯🇪': {
         name: 'flag Jersey',
@@ -14357,7 +14357,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇯🇲': {
         name: 'flag Jamaica',
@@ -14365,7 +14365,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇯🇴': {
         name: 'flag Jordan',
@@ -14373,7 +14373,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇯🇵': {
         name: 'flag Japan',
@@ -14381,7 +14381,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇪': {
         name: 'flag Kenya',
@@ -14389,7 +14389,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇬': {
         name: 'flag Kyrgyzstan',
@@ -14397,7 +14397,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇭': {
         name: 'flag Cambodia',
@@ -14405,7 +14405,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇮': {
         name: 'flag Kiribati',
@@ -14413,7 +14413,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇲': {
         name: 'flag Comoros',
@@ -14421,7 +14421,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇳': {
         name: 'flag St. Kitts & Nevis',
@@ -14429,7 +14429,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇵': {
         name: 'flag North Korea',
@@ -14437,7 +14437,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇷': {
         name: 'flag South Korea',
@@ -14445,7 +14445,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇼': {
         name: 'flag Kuwait',
@@ -14453,7 +14453,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇾': {
         name: 'flag Cayman Islands',
@@ -14461,7 +14461,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇰🇿': {
         name: 'flag Kazakhstan',
@@ -14469,7 +14469,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇦': {
         name: 'flag Laos',
@@ -14477,7 +14477,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇧': {
         name: 'flag Lebanon',
@@ -14485,7 +14485,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇨': {
         name: 'flag St. Lucia',
@@ -14493,7 +14493,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇮': {
         name: 'flag Liechtenstein',
@@ -14501,7 +14501,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇰': {
         name: 'flag Sri Lanka',
@@ -14509,7 +14509,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇷': {
         name: 'flag Liberia',
@@ -14517,7 +14517,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇸': {
         name: 'flag Lesotho',
@@ -14525,7 +14525,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇹': {
         name: 'flag Lithuania',
@@ -14533,7 +14533,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇺': {
         name: 'flag Luxembourg',
@@ -14541,7 +14541,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇻': {
         name: 'flag Latvia',
@@ -14549,7 +14549,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇱🇾': {
         name: 'flag Libya',
@@ -14557,7 +14557,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇦': {
         name: 'flag Morocco',
@@ -14565,7 +14565,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇨': {
         name: 'flag Monaco',
@@ -14573,7 +14573,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇩': {
         name: 'flag Moldova',
@@ -14581,7 +14581,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇪': {
         name: 'flag Montenegro',
@@ -14589,7 +14589,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇫': {
         name: 'flag St. Martin',
@@ -14597,7 +14597,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇬': {
         name: 'flag Madagascar',
@@ -14605,7 +14605,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇭': {
         name: 'flag Marshall Islands',
@@ -14613,7 +14613,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇰': {
         name: 'flag North Macedonia',
@@ -14621,7 +14621,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇱': {
         name: 'flag Mali',
@@ -14629,7 +14629,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇲': {
         name: 'flag Myanmar (Burma)',
@@ -14637,7 +14637,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇳': {
         name: 'flag Mongolia',
@@ -14645,7 +14645,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇴': {
         name: 'flag Macao SAR China',
@@ -14653,7 +14653,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇵': {
         name: 'flag Northern Mariana Islands',
@@ -14661,7 +14661,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇶': {
         name: 'flag Martinique',
@@ -14669,7 +14669,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇷': {
         name: 'flag Mauritania',
@@ -14677,7 +14677,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇸': {
         name: 'flag Montserrat',
@@ -14685,7 +14685,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇹': {
         name: 'flag Malta',
@@ -14693,7 +14693,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇺': {
         name: 'flag Mauritius',
@@ -14701,7 +14701,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇻': {
         name: 'flag Maldives',
@@ -14709,7 +14709,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇼': {
         name: 'flag Malawi',
@@ -14717,7 +14717,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇽': {
         name: 'flag Mexico',
@@ -14725,7 +14725,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇾': {
         name: 'flag Malaysia',
@@ -14733,7 +14733,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇲🇿': {
         name: 'flag Mozambique',
@@ -14741,7 +14741,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇦': {
         name: 'flag Namibia',
@@ -14749,7 +14749,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇨': {
         name: 'flag New Caledonia',
@@ -14757,7 +14757,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇪': {
         name: 'flag Niger',
@@ -14765,7 +14765,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇫': {
         name: 'flag Norfolk Island',
@@ -14773,7 +14773,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇬': {
         name: 'flag Nigeria',
@@ -14781,7 +14781,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇮': {
         name: 'flag Nicaragua',
@@ -14789,7 +14789,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇱': {
         name: 'flag Netherlands',
@@ -14797,7 +14797,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇴': {
         name: 'flag Norway',
@@ -14805,7 +14805,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇵': {
         name: 'flag Nepal',
@@ -14813,7 +14813,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇷': {
         name: 'flag Nauru',
@@ -14821,7 +14821,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇺': {
         name: 'flag Niue',
@@ -14829,7 +14829,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇳🇿': {
         name: 'flag New Zealand',
@@ -14837,7 +14837,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇴🇲': {
         name: 'flag Oman',
@@ -14845,7 +14845,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇦': {
         name: 'flag Panama',
@@ -14853,7 +14853,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇪': {
         name: 'flag Peru',
@@ -14861,7 +14861,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇫': {
         name: 'flag French Polynesia',
@@ -14869,7 +14869,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇬': {
         name: 'flag Papua New Guinea',
@@ -14877,7 +14877,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇭': {
         name: 'flag Philippines',
@@ -14885,7 +14885,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇰': {
         name: 'flag Pakistan',
@@ -14893,7 +14893,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇱': {
         name: 'flag Poland',
@@ -14901,7 +14901,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇲': {
         name: 'flag St. Pierre & Miquelon',
@@ -14909,7 +14909,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇳': {
         name: 'flag Pitcairn Islands',
@@ -14917,7 +14917,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇷': {
         name: 'flag Puerto Rico',
@@ -14925,7 +14925,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇸': {
         name: 'flag Palestinian Territories',
@@ -14933,7 +14933,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇹': {
         name: 'flag Portugal',
@@ -14941,7 +14941,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇼': {
         name: 'flag Palau',
@@ -14949,7 +14949,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇵🇾': {
         name: 'flag Paraguay',
@@ -14957,7 +14957,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇶🇦': {
         name: 'flag Qatar',
@@ -14965,7 +14965,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇷🇪': {
         name: 'flag Réunion',
@@ -14973,7 +14973,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇷🇴': {
         name: 'flag Romania',
@@ -14981,7 +14981,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇷🇸': {
         name: 'flag Serbia',
@@ -14989,7 +14989,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇷🇺': {
         name: 'flag Russia',
@@ -14997,7 +14997,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇷🇼': {
         name: 'flag Rwanda',
@@ -15005,7 +15005,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇦': {
         name: 'flag Saudi Arabia',
@@ -15013,7 +15013,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇧': {
         name: 'flag Solomon Islands',
@@ -15021,7 +15021,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇨': {
         name: 'flag Seychelles',
@@ -15029,7 +15029,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇩': {
         name: 'flag Sudan',
@@ -15037,7 +15037,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇪': {
         name: 'flag Sweden',
@@ -15045,7 +15045,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇬': {
         name: 'flag Singapore',
@@ -15053,7 +15053,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇭': {
         name: 'flag St. Helena',
@@ -15061,7 +15061,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇮': {
         name: 'flag Slovenia',
@@ -15069,7 +15069,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇯': {
         name: 'flag Svalbard & Jan Mayen',
@@ -15077,7 +15077,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇰': {
         name: 'flag Slovakia',
@@ -15085,7 +15085,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇱': {
         name: 'flag Sierra Leone',
@@ -15093,7 +15093,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇲': {
         name: 'flag San Marino',
@@ -15101,7 +15101,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇳': {
         name: 'flag Senegal',
@@ -15109,7 +15109,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇴': {
         name: 'flag Somalia',
@@ -15117,7 +15117,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇷': {
         name: 'flag Suriname',
@@ -15125,7 +15125,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇸': {
         name: 'flag South Sudan',
@@ -15133,7 +15133,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇹': {
         name: 'flag São Tomé & Príncipe',
@@ -15141,7 +15141,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇻': {
         name: 'flag El Salvador',
@@ -15149,7 +15149,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇽': {
         name: 'flag Sint Maarten',
@@ -15157,7 +15157,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇾': {
         name: 'flag Syria',
@@ -15165,7 +15165,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇸🇿': {
         name: 'flag Eswatini',
@@ -15173,7 +15173,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇦': {
         name: 'flag Tristan da Cunha',
@@ -15181,7 +15181,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇨': {
         name: 'flag Turks & Caicos Islands',
@@ -15189,7 +15189,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇩': {
         name: 'flag Chad',
@@ -15197,7 +15197,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇫': {
         name: 'flag French Southern Territories',
@@ -15205,7 +15205,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇬': {
         name: 'flag Togo',
@@ -15213,7 +15213,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇭': {
         name: 'flag Thailand',
@@ -15221,7 +15221,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇯': {
         name: 'flag Tajikistan',
@@ -15229,7 +15229,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇰': {
         name: 'flag Tokelau',
@@ -15237,7 +15237,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇱': {
         name: 'flag Timor-Leste',
@@ -15245,7 +15245,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇲': {
         name: 'flag Turkmenistan',
@@ -15253,7 +15253,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇳': {
         name: 'flag Tunisia',
@@ -15261,7 +15261,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇴': {
         name: 'flag Tonga',
@@ -15269,7 +15269,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇷': {
         name: 'flag Türkiye',
@@ -15277,7 +15277,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇹': {
         name: 'flag Trinidad & Tobago',
@@ -15285,7 +15285,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇻': {
         name: 'flag Tuvalu',
@@ -15293,7 +15293,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇼': {
         name: 'flag Taiwan',
@@ -15301,7 +15301,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇹🇿': {
         name: 'flag Tanzania',
@@ -15309,7 +15309,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇦': {
         name: 'flag Ukraine',
@@ -15317,7 +15317,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇬': {
         name: 'flag Uganda',
@@ -15325,7 +15325,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇲': {
         name: 'flag U.S. Outlying Islands',
@@ -15333,7 +15333,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇳': {
         name: 'flag United Nations',
@@ -15341,7 +15341,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '4.0',
         unicode_version: '4.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇸': {
         name: 'flag United States',
@@ -15349,7 +15349,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '0.6',
         unicode_version: '0.6',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇾': {
         name: 'flag Uruguay',
@@ -15357,7 +15357,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇺🇿': {
         name: 'flag Uzbekistan',
@@ -15365,7 +15365,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇦': {
         name: 'flag Vatican City',
@@ -15373,7 +15373,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇨': {
         name: 'flag St. Vincent & Grenadines',
@@ -15381,7 +15381,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇪': {
         name: 'flag Venezuela',
@@ -15389,7 +15389,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇬': {
         name: 'flag British Virgin Islands',
@@ -15397,7 +15397,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇮': {
         name: 'flag U.S. Virgin Islands',
@@ -15405,7 +15405,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇳': {
         name: 'flag Vietnam',
@@ -15413,7 +15413,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇻🇺': {
         name: 'flag Vanuatu',
@@ -15421,7 +15421,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇼🇫': {
         name: 'flag Wallis & Futuna',
@@ -15429,7 +15429,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇼🇸': {
         name: 'flag Samoa',
@@ -15437,7 +15437,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇽🇰': {
         name: 'flag Kosovo',
@@ -15445,7 +15445,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇾🇪': {
         name: 'flag Yemen',
@@ -15453,7 +15453,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇾🇹': {
         name: 'flag Mayotte',
@@ -15461,7 +15461,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇿🇦': {
         name: 'flag South Africa',
@@ -15469,7 +15469,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇿🇲': {
         name: 'flag Zambia',
@@ -15477,7 +15477,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🇿🇼': {
         name: 'flag Zimbabwe',
@@ -15485,7 +15485,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '2.0',
         unicode_version: '2.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏴󠁧󠁢󠁥󠁮󠁧󠁿': {
         name: 'flag England',
@@ -15493,7 +15493,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏴󠁧󠁢󠁳󠁣󠁴󠁿': {
         name: 'flag Scotland',
@@ -15501,7 +15501,7 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
+        skin_tone_support: false,
     },
     '🏴󠁧󠁢󠁷󠁬󠁳󠁿': {
         name: 'flag Wales',
@@ -15509,8 +15509,8 @@ const emojiDataByEmoji = {
         group: 'Flags',
         emoji_version: '5.0',
         unicode_version: '5.0',
-        skin_tone_support: false
-    }
+        skin_tone_support: false,
+    },
 } as Record<
     Emoji,
     {

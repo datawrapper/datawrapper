@@ -15,7 +15,7 @@ import {
     isItemArray,
     isPathToItemArrayAncestor,
     pathStringToArray,
-    pathArrayToString
+    pathArrayToString,
 } from './utils.js';
 import { Update } from './CRDT.js';
 import { JsonCRDT } from './JsonCRDT.js';
@@ -23,7 +23,7 @@ import { isEmpty } from 'lodash';
 
 const FLAGS = {
     primitiveToObject: false,
-    objectToPrimitive: false
+    objectToPrimitive: false,
 };
 
 function oneOf(...fns: (() => any)[]) {
@@ -78,7 +78,7 @@ class Generate {
         this.string,
         this.null,
         this.undefined,
-        this.date
+        this.date,
     ];
 
     static anyPrimitiveValue(): unknown {
@@ -143,24 +143,24 @@ class Mutate {
             swap: 0,
             append: 0,
             delete: 0,
-            shuffle: 0
+            shuffle: 0,
         },
         itemArray: {
             items: {
                 mutate: 0,
                 add: 0,
-                delete: 0
+                delete: 0,
             },
             add: 0,
             shuffle: 0,
-            delete: 0
+            delete: 0,
         },
         objectProperties: {
             mutate: 0,
             add: 0,
-            delete: 0
+            delete: 0,
         },
-        primitive: 0
+        primitive: 0,
     };
 
     constructor(private pathsToItemArrays: string[]) {}
@@ -324,32 +324,32 @@ class Fuzz {
         distribution: {
             atomicArray: 0,
             itemArray: 0,
-            primitive: 0
+            primitive: 0,
         },
         mutations: {
             atomicArray: {
                 swap: 0,
                 append: 0,
                 delete: 0,
-                shuffle: 0
+                shuffle: 0,
             },
             itemArray: {
                 items: {
                     mutate: 0,
                     add: 0,
-                    delete: 0
+                    delete: 0,
                 },
                 add: 0,
                 shuffle: 0,
-                delete: 0
+                delete: 0,
             },
             objectProperties: {
                 add: 0,
                 delete: 0,
-                mutate: 0
+                mutate: 0,
             },
-            primitive: 0
-        }
+            primitive: 0,
+        },
     };
 
     constructor(size?: number, maxDepth?: number) {
@@ -375,7 +375,7 @@ class Fuzz {
     get() {
         return {
             initData: cloneDeep(this.data),
-            pathsToItemArrays: this.pathsToItemArrays
+            pathsToItemArrays: this.pathsToItemArrays,
         };
     }
 
@@ -424,7 +424,7 @@ function multipleInstances(
                     new JsonCRDT({
                         nodeId: Generate.integer(99999999),
                         data: initData,
-                        pathsToItemArrays
+                        pathsToItemArrays,
                     })
             );
 
@@ -483,8 +483,8 @@ const { values } = parseArgs({
     options: {
         primitiveToObject: { type: 'boolean', default: false },
         objectToPrimitive: { type: 'boolean', default: false },
-        runs: { type: 'string', default: '10' }
-    }
+        runs: { type: 'string', default: '10' },
+    },
 });
 
 const { runs, primitiveToObject, objectToPrimitive } = values;

@@ -177,7 +177,7 @@ function Dataset(columns) {
             });
             const table = filteredColumns.map(col => [
                 ...(includeHeader ? [col.title()] : []),
-                ...col.formatted(numeral).map(unescape)
+                ...col.formatted(numeral).map(unescape),
             ]);
             const rows = table[0].map((_, i) => table.map(row => row[i])).slice(0, numRows + 1);
             if (!opts.delimiter && numeral) {
@@ -336,7 +336,7 @@ function Dataset(columns) {
                 });
             }
             return dataset;
-        }
+        },
     };
 
     return dataset;

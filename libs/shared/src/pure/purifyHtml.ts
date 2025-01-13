@@ -12,7 +12,7 @@ export const DEFAULT_ALLOWED = [
     'strike',
     'u',
     'em',
-    'tt'
+    'tt',
 ].sort();
 
 const MEMOIZER_MAXSIZE = 100_000;
@@ -41,12 +41,12 @@ const memoizer = createPermanentMemoizer(
                     allowedTagsInput === undefined
                         ? DEFAULT_ALLOWED
                         : typeof allowedTagsInput === 'string'
-                        ? allowedTagsInput.toLowerCase().slice(1, -1).split('><')
-                        : allowedTagsInput;
+                          ? allowedTagsInput.toLowerCase().slice(1, -1).split('><')
+                          : allowedTagsInput;
                 const config = {
                     ALLOWED_TAGS: allowedTags,
                     ADD_ATTR: ['target'],
-                    FORCE_BODY: true // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
+                    FORCE_BODY: true, // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
                 };
 
                 return createPermanentMemoizer(

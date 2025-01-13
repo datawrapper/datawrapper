@@ -52,25 +52,25 @@ test('data - returns data without null values', t => {
                 b: null,
                 c: {
                     d: null,
-                    e: 2
+                    e: 2,
                 },
                 f: false,
                 g: 0,
-                h: ''
-            }
-        }
+                h: '',
+            },
+        },
     });
 
     t.deepEqual(crdt.data(), {
         key: {
             a: 1,
             c: {
-                e: 2
+                e: 2,
             },
             f: false,
             g: 0,
-            h: ''
-        }
+            h: '',
+        },
     });
 });
 
@@ -87,7 +87,7 @@ test(`timestamps - returns immutable object`, t => {
     t.deepEqual(crdt.timestamps(), {
         a: { [TIMESTAMP_KEY]: '1-1' },
         b: { [TIMESTAMP_KEY]: '1-1' },
-        c: { [TIMESTAMP_KEY]: '1-1' }
+        c: { [TIMESTAMP_KEY]: '1-1' },
     });
 });
 
@@ -97,9 +97,9 @@ test('basic serialization and re-initialization', t => {
             a: 'some value',
             b: [
                 { id: '1', value: 1 },
-                { id: '2', value: 2 }
-            ]
-        }
+                { id: '2', value: 2 },
+            ],
+        },
     });
 
     const serialized = crdt.serialize();
@@ -114,10 +114,10 @@ test('fromSerialized - works after item array deletion', t => {
             a: 'some value',
             b: [
                 { id: '1', value: 1 },
-                { id: '2', value: 2 }
-            ]
+                { id: '2', value: 2 },
+            ],
         },
-        pathsToItemArrays: ['b']
+        pathsToItemArrays: ['b'],
     });
 
     // delete one item
@@ -138,9 +138,9 @@ test('pathsToItemArrays does not change, even if array that could be item array 
             a: 'some value',
             arr: [
                 { id: '1', value: 1 },
-                { id: '2', value: 2 }
-            ]
-        }
+                { id: '2', value: 2 },
+            ],
+        },
     });
 
     t.deepEqual(crdt.serialize().pathsToItemArrays, []);
@@ -151,25 +151,25 @@ test('_getTimestamp returns timestamp at exact path', t => {
         data: {
             a: {
                 b: {
-                    c: 1
-                }
+                    c: 1,
+                },
             },
-            x: 3
+            x: 3,
         },
         timestamps: {
             a: {
                 [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        [TIMESTAMP_KEY]: '1-2'
-                    }
-                }
+                        [TIMESTAMP_KEY]: '1-2',
+                    },
+                },
             },
             x: {
-                [TIMESTAMP_KEY]: '1-3'
-            }
+                [TIMESTAMP_KEY]: '1-3',
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     t.deepEqual(crdt._getTimestamp(['a', 'b', 'c']), '1-2');
@@ -187,46 +187,46 @@ test('_getTimestamps returns timestamps object at path (including children)', t 
         data: {
             a: {
                 b: {
-                    c: 1
-                }
+                    c: 1,
+                },
             },
-            x: 3
+            x: 3,
         },
         timestamps: {
             a: {
                 [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        [TIMESTAMP_KEY]: '1-2'
-                    }
-                }
+                        [TIMESTAMP_KEY]: '1-2',
+                    },
+                },
             },
             x: {
-                [TIMESTAMP_KEY]: '1-3'
-            }
+                [TIMESTAMP_KEY]: '1-3',
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     t.deepEqual(crdt._getTimestamps(['a', 'b', 'c']), {
-        [TIMESTAMP_KEY]: '1-2'
+        [TIMESTAMP_KEY]: '1-2',
     });
     t.deepEqual(crdt._getTimestamps(['a', 'b']), {
         c: {
-            [TIMESTAMP_KEY]: '1-2'
-        }
+            [TIMESTAMP_KEY]: '1-2',
+        },
     });
     t.deepEqual(crdt._getTimestamps(['a']), {
         [TIMESTAMP_KEY]: '1-1',
         b: {
             c: {
-                [TIMESTAMP_KEY]: '1-2'
-            }
-        }
+                [TIMESTAMP_KEY]: '1-2',
+            },
+        },
     });
     t.deepEqual(crdt._getTimestamps(['a', 'b', 'c', 'd']), undefined);
     t.deepEqual(crdt._getTimestamps(['x']), {
-        [TIMESTAMP_KEY]: '1-3'
+        [TIMESTAMP_KEY]: '1-3',
     });
     t.deepEqual(crdt._getTimestamps(['y']), undefined);
     t.deepEqual(crdt._getTimestamps(['x', 'y']), undefined);
@@ -238,25 +238,25 @@ test('_getClock always returns clock instance at exact path or minimum clock', t
         data: {
             a: {
                 b: {
-                    c: 1
-                }
+                    c: 1,
+                },
             },
-            x: 3
+            x: 3,
         },
         timestamps: {
             a: {
                 [TIMESTAMP_KEY]: '1-1',
                 b: {
                     c: {
-                        [TIMESTAMP_KEY]: '1-2'
-                    }
-                }
+                        [TIMESTAMP_KEY]: '1-2',
+                    },
+                },
             },
             x: {
-                [TIMESTAMP_KEY]: '1-3'
-            }
+                [TIMESTAMP_KEY]: '1-3',
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     t.deepEqual(crdt._getClock(['a', 'b', 'c']), new Clock('1-2'));
@@ -278,11 +278,11 @@ test('_updateValue - updates existing atomic value', t => {
             b: {
                 c: {
                     d: [],
-                    e: 'test'
+                    e: 'test',
                 },
-                f: false
-            }
-        }
+                f: false,
+            },
+        },
     });
 
     const stub = sandbox.spy(crdt);
@@ -314,16 +314,16 @@ test('_updateValue - updates item array index', t => {
                 {
                     id: 'c',
                     d: [],
-                    e: 'test'
+                    e: 'test',
                 },
                 {
                     id: 'd',
                     d: [],
-                    e: 'test123'
-                }
-            ]
+                    e: 'test123',
+                },
+            ],
         },
-        pathsToItemArrays: ['b']
+        pathsToItemArrays: ['b'],
     });
 
     const stub = sandbox.spy(crdt);
@@ -340,14 +340,14 @@ test('_updateValue - updates item array index', t => {
             {
                 id: 'd',
                 d: [],
-                e: 'test123'
+                e: 'test123',
             },
             {
                 id: 'c',
                 d: [],
-                e: 'test'
-            }
-        ]
+                e: 'test',
+            },
+        ],
     });
 });
 
@@ -359,10 +359,10 @@ test('_updateValue - updates an object', t => {
             a: 1,
             b: {
                 c: {
-                    d: 1
-                }
-            }
-        }
+                    d: 1,
+                },
+            },
+        },
     });
 
     const stub = sandbox.spy(crdt);
@@ -384,10 +384,10 @@ test('_updateValue - inserts a new value into existing object', t => {
             a: 1,
             b: {
                 b1: {
-                    b2: 1
-                }
-            }
-        }
+                    b2: 1,
+                },
+            },
+        },
     });
 
     const stub = sandbox.spy(crdt);
@@ -408,7 +408,7 @@ test('_updateValue - inserts a new value into existing object', t => {
     t.deepEqual(crdt.data(), {
         a: 1,
         b: { b1: { b2: 1, b1a: 123, c1: { c2: { c3: [1, 2, 3] } } } },
-        c: 'test'
+        c: 'test',
     });
 });
 
@@ -420,10 +420,10 @@ test('_updateValue - inserts new value replacing atomic ancestor', t => {
             a: 1,
             b: {
                 b1: {
-                    b2: 1
-                }
-            }
-        }
+                    b2: 1,
+                },
+            },
+        },
     });
 
     const stub = sandbox.spy(crdt);
@@ -442,8 +442,8 @@ test('_updateValue - multiple calls replacing atomic ancestor only modifies it o
 
     const crdt = new BaseJsonCRDT({
         data: {
-            a: 1
-        }
+            a: 1,
+        },
     });
 
     const stub = sandbox.spy(crdt);
@@ -460,12 +460,12 @@ test('_partialDelete - deletes outdated child values and keeps newer ones', t =>
             a: {
                 b: {
                     c: {
-                        d: 1
+                        d: 1,
                     },
-                    e: 2
+                    e: 2,
                 },
-                f: 3
-            }
+                f: 3,
+            },
         },
         timestamps: {
             a: {
@@ -473,19 +473,19 @@ test('_partialDelete - deletes outdated child values and keeps newer ones', t =>
                     c: {
                         [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            [TIMESTAMP_KEY]: '1-2'
-                        }
+                            [TIMESTAMP_KEY]: '1-2',
+                        },
                     },
                     e: {
-                        [TIMESTAMP_KEY]: '1-5'
-                    }
+                        [TIMESTAMP_KEY]: '1-5',
+                    },
                 },
                 f: {
-                    [TIMESTAMP_KEY]: '1-3'
-                }
-            }
+                    [TIMESTAMP_KEY]: '1-3',
+                },
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-4' });
@@ -493,10 +493,10 @@ test('_partialDelete - deletes outdated child values and keeps newer ones', t =>
     t.deepEqual(crdt.data(), {
         a: {
             b: {
-                e: 2
+                e: 2,
             },
-            f: 3
-        }
+            f: 3,
+        },
     });
 });
 
@@ -506,12 +506,12 @@ test('_partialDelete - updates timestamps of deleted values', t => {
             a: {
                 b: {
                     c: {
-                        d: 1
+                        d: 1,
                     },
-                    e: 2
+                    e: 2,
                 },
-                f: 3
-            }
+                f: 3,
+            },
         },
         timestamps: {
             a: {
@@ -519,19 +519,19 @@ test('_partialDelete - updates timestamps of deleted values', t => {
                     c: {
                         [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            [TIMESTAMP_KEY]: '1-2'
-                        }
+                            [TIMESTAMP_KEY]: '1-2',
+                        },
                     },
                     e: {
-                        [TIMESTAMP_KEY]: '1-5'
-                    }
+                        [TIMESTAMP_KEY]: '1-5',
+                    },
                 },
                 f: {
-                    [TIMESTAMP_KEY]: '1-3'
-                }
-            }
+                    [TIMESTAMP_KEY]: '1-3',
+                },
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-4' });
@@ -542,17 +542,17 @@ test('_partialDelete - updates timestamps of deleted values', t => {
                 c: {
                     [TIMESTAMP_KEY]: '1-4',
                     d: {
-                        [TIMESTAMP_KEY]: '1-4'
-                    }
+                        [TIMESTAMP_KEY]: '1-4',
+                    },
                 },
                 e: {
-                    [TIMESTAMP_KEY]: '1-5'
-                }
+                    [TIMESTAMP_KEY]: '1-5',
+                },
             },
             f: {
-                [TIMESTAMP_KEY]: '1-3'
-            }
-        }
+                [TIMESTAMP_KEY]: '1-3',
+            },
+        },
     });
 });
 
@@ -562,18 +562,18 @@ test('_partialDelete - removes empty parent objects of deleted children', t => {
             a: {
                 b: {
                     c: {
-                        d: 1
+                        d: 1,
                     },
                     e: 2,
                     f: {
                         g: {
-                            h: 3
+                            h: 3,
                         },
-                        i: 4
+                        i: 4,
                     },
-                    j: 5
-                }
-            }
+                    j: 5,
+                },
+            },
         },
         timestamps: {
             a: {
@@ -581,30 +581,30 @@ test('_partialDelete - removes empty parent objects of deleted children', t => {
                     c: {
                         [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            [TIMESTAMP_KEY]: '1-2'
-                        }
+                            [TIMESTAMP_KEY]: '1-2',
+                        },
                     },
                     e: {
-                        [TIMESTAMP_KEY]: '1-5'
+                        [TIMESTAMP_KEY]: '1-5',
                     },
                     f: {
                         g: {
                             [TIMESTAMP_KEY]: '1-2',
                             h: {
-                                [TIMESTAMP_KEY]: '1-3'
-                            }
+                                [TIMESTAMP_KEY]: '1-3',
+                            },
                         },
                         i: {
-                            [TIMESTAMP_KEY]: '1-4'
-                        }
+                            [TIMESTAMP_KEY]: '1-4',
+                        },
                     },
                     j: {
-                        [TIMESTAMP_KEY]: '1-12'
-                    }
-                }
-            }
+                        [TIMESTAMP_KEY]: '1-12',
+                    },
+                },
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-9' });
@@ -612,9 +612,9 @@ test('_partialDelete - removes empty parent objects of deleted children', t => {
     t.deepEqual(crdt.data(), {
         a: {
             b: {
-                j: 5
-            }
-        }
+                j: 5,
+            },
+        },
     });
 });
 
@@ -624,10 +624,10 @@ test('_partialDelete - removes empty parent objects of deleted children only up 
             a: {
                 b: {
                     c: {
-                        d: 1
-                    }
-                }
-            }
+                        d: 1,
+                    },
+                },
+            },
         },
         timestamps: {
             a: {
@@ -635,13 +635,13 @@ test('_partialDelete - removes empty parent objects of deleted children only up 
                     c: {
                         [TIMESTAMP_KEY]: '1-1',
                         d: {
-                            [TIMESTAMP_KEY]: '1-2'
-                        }
-                    }
-                }
-            }
+                            [TIMESTAMP_KEY]: '1-2',
+                        },
+                    },
+                },
+            },
         },
-        pathsToItemArrays: []
+        pathsToItemArrays: [],
     });
 
     crdt._partialDelete({ path: ['a', 'b'], newTimestamp: '1-9' });
@@ -650,7 +650,7 @@ test('_partialDelete - removes empty parent objects of deleted children only up 
         a: {
             // Even though `b` is empty, it is not removed,
             //  because the partial deletion was called on `b`
-            b: {}
-        }
+            b: {},
+        },
     });
 });

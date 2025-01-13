@@ -44,16 +44,16 @@ export default function numberColumnFormatter(
             digits = equalish(val, Math.round(val))
                 ? 0
                 : equalish(val, Math.round(val * 10) * 0.1)
-                ? 1
-                : equalish(val, Math.round(val * 100) * 0.01)
-                ? 2
-                : equalish(val, Math.round(val * 1000) * 0.001)
-                ? 3
-                : equalish(val, Math.round(val * 10000) * 0.0001)
-                ? 4
-                : equalish(val, Math.round(val * 100000) * 0.00001)
-                ? 5
-                : 6;
+                  ? 1
+                  : equalish(val, Math.round(val * 100) * 0.01)
+                    ? 2
+                    : equalish(val, Math.round(val * 1000) * 0.001)
+                      ? 3
+                      : equalish(val, Math.round(val * 10000) * 0.0001)
+                        ? 4
+                        : equalish(val, Math.round(val * 100000) * 0.00001)
+                          ? 5
+                          : 6;
         }
 
         if (_fmt[0] === 'n') {
@@ -70,7 +70,7 @@ export default function numberColumnFormatter(
             format: numeralFormat,
             prepend: full ? prepend : '',
             append: full ? append : '',
-            multiply: Math.pow(10, div * -1)
+            multiply: Math.pow(10, div * -1),
         });
     };
 }

@@ -355,7 +355,7 @@ function Column(name_, rows, type, allowedTags) {
                     })
                 )
             );
-        }
+        },
     };
     // backwards compatibility
     column.total = column.sum;

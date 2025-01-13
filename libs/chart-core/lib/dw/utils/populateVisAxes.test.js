@@ -14,7 +14,7 @@ test('assign correct columns based on type for non-optional axes', t => {
     const visAxes = {
         labels: LABELS,
         groups: GROUPS,
-        bars: VALUES
+        bars: VALUES,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.is(axes.labels, 'name');
@@ -27,11 +27,11 @@ test('assign all number columns to axis with multiple = true', t => {
         dateColumn('month'),
         numberColumn('line1'),
         numberColumn('line2'),
-        numberColumn('line3')
+        numberColumn('line3'),
     ]);
     const visAxes = {
         date: X_AXIS,
-        lines: VALUES_MULTIPLE
+        lines: VALUES_MULTIPLE,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.is(axes.date, 'month');
@@ -44,12 +44,12 @@ test('assign all number columns to axis with multiple = true, except if already 
         numberColumn('line1'),
         numberColumn('line2'),
         numberColumn('line3'),
-        numberColumn('value')
+        numberColumn('value'),
     ]);
     const visAxes = {
         date: X_AXIS,
         value: VALUES,
-        lines: VALUES_MULTIPLE
+        lines: VALUES_MULTIPLE,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { value: 'value' } });
     t.is(axes.date, 'month');
@@ -61,7 +61,7 @@ test('if there are no unused columns available for axis with multiple = true, re
     const ds = dataset([dateColumn('month'), numberColumn('value')]);
     const visAxes = {
         x: X_AXIS,
-        lines: VALUES_MULTIPLE
+        lines: VALUES_MULTIPLE,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { x: 'value' } });
     t.is(axes.x, 'value');
@@ -73,7 +73,7 @@ test("don't assign columns twice", t => {
     const visAxes = {
         labels: LABELS,
         start: VALUES,
-        end: VALUES
+        end: VALUES,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.is(axes.labels, 'name');
@@ -86,7 +86,7 @@ test('respect user axes preferences for required axis', t => {
     const visAxes = {
         labels: LABELS,
         start: VALUES,
-        end: VALUES
+        end: VALUES,
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { start: 'value2' } });
     t.is(axes.labels, 'name');
@@ -99,12 +99,12 @@ test('respect user preference for optional axis', t => {
     const visAxes = {
         labels: LABELS,
         groups: GROUPS,
-        bars: VALUES
+        bars: VALUES,
     };
     const { axes } = populateVisAxes({
         dataset: ds,
         visAxes,
-        userAxes: { groups: 'category' }
+        userAxes: { groups: 'category' },
     });
     t.is(axes.labels, 'name');
     t.is(axes.bars, 'value');
@@ -116,12 +116,12 @@ test('make optional axis mandatory using overrideOptionalKey', t => {
     const visAxes = {
         labels: LABELS,
         groups: { ...GROUPS, overrideOptionalKey: 'visualize.my-groups' },
-        bars: VALUES
+        bars: VALUES,
     };
     const { axes } = populateVisAxes({
         dataset: ds,
         visAxes,
-        overrideKeys: { 'visualize.my-groups': true }
+        overrideKeys: { 'visualize.my-groups': true },
     });
     t.is(axes.labels, 'name');
     t.is(axes.bars, 'value');
@@ -136,13 +136,13 @@ test('make optional axis mandatory using overrideOptionalKey, with specific over
             optional: true,
             accepts: ['number'],
             overrideOptionalKey: 'visualize.symbol-shape',
-            overrideOptionalKeyValue: 'arrow'
-        }
+            overrideOptionalKeyValue: 'arrow',
+        },
     };
     const { axes } = populateVisAxes({
         dataset: ds,
         visAxes,
-        overrideKeys: { 'visualize.symbol-shape': 'arrow' }
+        overrideKeys: { 'visualize.symbol-shape': 'arrow' },
     });
     t.is(axes.labels, 'name');
     t.is(axes.area, 'value');
@@ -153,11 +153,11 @@ test('prefer columns based on name', t => {
         textColumn('name'),
         numberColumn('value'),
         numberColumn('latitude'),
-        numberColumn('longitude')
+        numberColumn('longitude'),
     ]);
     const visAxes = {
         lat: { accepts: ['number'], preferred: '^(lat|y)' },
-        lon: { accepts: ['number'], preferred: '^(lon|x)' }
+        lon: { accepts: ['number'], preferred: '^(lon|x)' },
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.is(axes.lat, 'latitude');
@@ -169,11 +169,11 @@ test('prefer columns based on (regex test)', t => {
         textColumn('name'),
         numberColumn('value'),
         numberColumn('longitude'),
-        numberColumn('year')
+        numberColumn('year'),
     ]);
     const visAxes = {
         lat: { accepts: ['number'], preferred: '^(lat|y$)' },
-        lon: { accepts: ['number'], preferred: '^(lon|x$)' }
+        lon: { accepts: ['number'], preferred: '^(lon|x$)' },
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.is(axes.lat, 'value');
@@ -184,7 +184,7 @@ test('add missing label column to dataset', t => {
     const ds = dataset([numberColumn('value')]);
     const visAxes = {
         labels: { accepts: ['text', 'date'] },
-        slices: { accepts: ['number'], multiple: false }
+        slices: { accepts: ['number'], multiple: false },
     };
     t.is(ds.numColumns(), 1);
 
@@ -201,7 +201,7 @@ test('regression test for scatter charts', t => {
     const visAxes = {
         x: { accepts: ['number', 'date'], prefers: 'number' },
         y: { accepts: ['number', 'date'], prefers: 'number' },
-        size: { accepts: ['number'], optional: true }
+        size: { accepts: ['number'], optional: true },
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { size: 'column1' } });
     t.truthy(axes.x, 'axis.x is undefined');
@@ -214,7 +214,7 @@ test('insufficient dataset - column gets reused when there is no other option', 
     const visAxes = {
         x: { accepts: ['number'] },
         y: { accepts: ['number'] },
-        size: { accepts: ['number'] }
+        size: { accepts: ['number'] },
     };
     const { axes } = populateVisAxes({ dataset: ds, visAxes });
     t.truthy(axes.x, 'axis.x is undefined');
@@ -229,13 +229,13 @@ test('insufficient dataset with preventMultipleUse: true - column does not get r
         {
             x: { accepts: ['number'], preventMultipleUse: true },
             y: { accepts: ['number'], preventMultipleUse: true },
-            size: { accepts: ['number'] }
+            size: { accepts: ['number'] },
         },
         {
             size: { accepts: ['number'] },
             x: { accepts: ['number'], preventMultipleUse: true },
-            y: { accepts: ['number'], preventMultipleUse: true }
-        }
+            y: { accepts: ['number'], preventMultipleUse: true },
+        },
     ];
 
     variants.forEach(visAxes => {
@@ -253,13 +253,13 @@ test('insufficient dataset with preventMultipleUse: true - automatic population 
         {
             x: { accepts: ['number'], preventMultipleUse: true },
             y: { accepts: ['number'], preventMultipleUse: true },
-            size: { accepts: ['number'] }
+            size: { accepts: ['number'] },
         },
         {
             size: { accepts: ['number'] },
             x: { accepts: ['number'], preventMultipleUse: true },
-            y: { accepts: ['number'], preventMultipleUse: true }
-        }
+            y: { accepts: ['number'], preventMultipleUse: true },
+        },
     ];
     variants.forEach(visAxes => {
         const { axes } = populateVisAxes({ dataset: ds, visAxes, userAxes: { size: 'column1' } });
@@ -280,19 +280,19 @@ test('insufficient dataset with preventMultipleUse: true still applies even when
         {
             x: { accepts: ['number'], preventMultipleUse: true },
             y: { accepts: ['number'], preventMultipleUse: true },
-            size: { accepts: ['number'] }
+            size: { accepts: ['number'] },
         },
         {
             size: { accepts: ['number'] },
             x: { accepts: ['number'], preventMultipleUse: true },
-            y: { accepts: ['number'], preventMultipleUse: true }
-        }
+            y: { accepts: ['number'], preventMultipleUse: true },
+        },
     ];
     variants.forEach(visAxes => {
         const { axes } = populateVisAxes({
             dataset: ds,
             visAxes,
-            userAxes: { size: 'column1', x: 'column1', y: 'column1' }
+            userAxes: { size: 'column1', x: 'column1', y: 'column1' },
         });
         t.truthy(axes.x, 'axis.x is undefined');
         t.truthy(axes.y, 'axis.y is undefined');
@@ -318,7 +318,7 @@ function textColumn(name) {
             'Golf',
             'Hotel',
             'India',
-            'Juliett'
+            'Juliett',
         ],
         'text'
     );

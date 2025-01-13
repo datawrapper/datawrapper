@@ -74,7 +74,7 @@ export function itemArrayToObject(arr: ItemArray): ItemArrayObject {
     for (const item of arr) {
         set(obj, [item.id.toString()], {
             ...item,
-            _index: index
+            _index: index,
         });
         index++;
     }

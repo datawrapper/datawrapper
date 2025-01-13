@@ -77,7 +77,7 @@ function Chart(attributes) {
                 bottom: elementBounds.bottom - rootBounds.top,
                 left: elementBounds.left - rootBounds.left,
                 width: elementBounds.width,
-                height: elementBounds.height
+                height: elementBounds.height,
             };
         },
 
@@ -103,7 +103,7 @@ function Chart(attributes) {
                 chartId: chart.get('id'),
                 firstRowIsHeader: chart.get('metadata.data.horizontal-header', true),
                 transpose: chart.get('metadata.data.transpose', false),
-                loadDataWithTimestamp: false
+                loadDataWithTimestamp: false,
             };
 
             if ((csv || csv === '') && !externalData) dsopts.csv = csv;
@@ -333,8 +333,8 @@ function Chart(attributes) {
                     {
                         'datawrapper-height': {
                             [chart.get().id]: desiredHeight,
-                            ...(previewId ? { previewId } : {})
-                        }
+                            ...(previewId ? { previewId } : {}),
+                        },
                     },
                     '*'
                 );
@@ -344,7 +344,7 @@ function Chart(attributes) {
                     {
                         sentinel: 'amp',
                         type: 'embed-size',
-                        height: desiredHeight
+                        height: desiredHeight,
                     },
                     '*'
                 );
@@ -354,7 +354,7 @@ function Chart(attributes) {
                     JSON.stringify({
                         src: location.href,
                         context: 'iframe.resize',
-                        height: desiredHeight
+                        height: desiredHeight,
                     }),
                     '*'
                 );
@@ -370,7 +370,7 @@ function Chart(attributes) {
             return getHeightMode({
                 themeData: visualization.theme(),
                 visualizationMeta: visualization.meta,
-                renderFlags: flags
+                renderFlags: flags,
             });
         },
 
@@ -472,7 +472,7 @@ function Chart(attributes) {
             }
 
             return translation;
-        }
+        },
     };
 
     if (attributes.metadata) {

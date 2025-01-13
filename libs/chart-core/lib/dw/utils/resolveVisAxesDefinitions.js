@@ -16,8 +16,8 @@ export default function resolveVisAxesDefinitions(visAxes, overrideKeys = {}) {
                     axisType,
                     {
                         ...omit(axisDef, ['overrideOptionalKey', 'overrideOptionalKeyValue']),
-                        optional: !forceNonOptional
-                    }
+                        optional: !forceNonOptional,
+                    },
                 ];
             } else {
                 return [axisType, axisDef];

@@ -22,7 +22,7 @@ export default function postEvent(chartId: string, isIframe: boolean) {
                 source: 'datawrapper',
                 chartId,
                 type: event,
-                data
+                data,
             };
             host.postMessage(evt, '*');
         }

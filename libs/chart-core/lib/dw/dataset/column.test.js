@@ -83,8 +83,8 @@ test('Column.formatted() formats a number column', t => {
     numeral.register('locale', locale1, {
         delimiters: {
             thousands: ',', // ignored
-            decimal: '.'
-        }
+            decimal: '.',
+        },
     });
     numeral.locale(locale1);
     t.deepEqual(col.formatted(numeral), [
@@ -94,15 +94,15 @@ test('Column.formatted() formats a number column', t => {
         '3.141592653589793',
         NaN,
         null,
-        undefined
+        undefined,
     ]);
 
     const locale2 = String(Math.round(Math.random() * 100000));
     numeral.register('locale', locale2, {
         delimiters: {
             thousands: ' ', // ignored
-            decimal: ','
-        }
+            decimal: ',',
+        },
     });
     numeral.locale(locale2);
     t.deepEqual(col.formatted(numeral), [
@@ -112,7 +112,7 @@ test('Column.formatted() formats a number column', t => {
         '3,141592653589793',
         NaN,
         null,
-        undefined
+        undefined,
     ]);
 });
 
@@ -129,15 +129,15 @@ test('Column.formatted() does not format a date column', t => {
         'spam',
         NaN,
         null,
-        undefined
+        undefined,
     ]);
 
     const locale1 = String(Math.round(Math.random() * 100000));
     numeral.register('locale', locale1, {
         delimiters: {
             thousands: ',', // ignored
-            decimal: '.'
-        }
+            decimal: '.',
+        },
     });
     numeral.locale(locale1);
     t.deepEqual(col.formatted(numeral), [
@@ -147,15 +147,15 @@ test('Column.formatted() does not format a date column', t => {
         'spam',
         NaN,
         null,
-        undefined
+        undefined,
     ]);
 
     const locale2 = String(Math.round(Math.random() * 100000));
     numeral.register('locale', locale2, {
         delimiters: {
             thousands: ' ', // ignored
-            decimal: ','
-        }
+            decimal: ',',
+        },
     });
     numeral.locale(locale2);
     t.deepEqual(col.formatted(numeral), [
@@ -165,7 +165,7 @@ test('Column.formatted() does not format a date column', t => {
         'spam',
         NaN,
         null,
-        undefined
+        undefined,
     ]);
 });
 

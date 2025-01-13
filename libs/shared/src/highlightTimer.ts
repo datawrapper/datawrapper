@@ -48,6 +48,6 @@ export default function highlightTimer(action: (highlighted: boolean | null) => 
         },
         get() {
             return highlighted;
-        }
+        },
     };
 }

@@ -12,10 +12,10 @@ test.before(() => {
                     'html-example': '<strong>Hello</strong> %user_name%!',
                     'named-example': '%a %a% %ab %ab% %abc %abc%',
                     'numbered-example': 'Hi! $0. What? $0. Who? $0 $1!',
-                    'Unknown error': 'Unknown error'
-                }
-            }
-        }
+                    'Unknown error': 'Unknown error',
+                },
+            },
+        },
     };
 });
 
@@ -106,26 +106,26 @@ test('keyExists returns false if the passed scope does not exist', t => {
 test('translateError translates an API error object', t => {
     let error: ApiError;
     error = {
-        statusCode: 404
+        statusCode: 404,
     };
     t.is(translateError(error), 'Unknown error');
 
     error = {
         statusCode: 404,
-        message: 'foo'
+        message: 'foo',
     };
     t.is(translateError(error), 'Fooo');
 
     error = {
         statusCode: 404,
-        message: 'foo'
+        message: 'foo',
     };
     t.is(translateError(error, 'baz'), 'Baaaz');
 
     error = {
         statusCode: 404,
         message: 'foo',
-        translationKey: 'bar'
+        translationKey: 'bar',
     };
     t.is(translateError(error), 'Baaar');
 
@@ -133,7 +133,7 @@ test('translateError translates an API error object', t => {
         statusCode: 404,
         message: 'foo',
         translationKey: 'bar',
-        details: [{ type: 'baz', path: 'baz', translationKey: 'baz' }]
+        details: [{ type: 'baz', path: 'baz', translationKey: 'baz' }],
     };
     t.is(translateError(error), 'Baaaz');
 
@@ -143,8 +143,8 @@ test('translateError translates an API error object', t => {
         translationKey: 'bar',
         details: [
             { type: 'baz', path: 'baz', translationKey: 'baz' },
-            { type: 'foo', path: 'foo', translationKey: 'foo' }
-        ]
+            { type: 'foo', path: 'foo', translationKey: 'foo' },
+        ],
     };
     t.is(translateError(error), 'Baaaz. Fooo');
 });

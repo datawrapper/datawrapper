@@ -1,18 +1,18 @@
 type AfterClone<T> = T extends undefined | null | number | string | boolean
     ? T
     : T extends Date
-    ? string
-    : T extends Record<string | number, unknown>
-    ? {
-          [TKey in keyof T & (string | number)]: AfterClone<T[TKey]>;
-      }
-    : T extends Readonly<unknown[]>
-    ? `0` extends keyof T
+      ? string
+      : T extends Record<string | number, unknown>
         ? {
-              [TKey in keyof T & `${number}`]: AfterClone<T[TKey]>;
+              [TKey in keyof T & (string | number)]: AfterClone<T[TKey]>;
           }
-        : AfterClone<T[number]>[]
-    : undefined;
+        : T extends Readonly<unknown[]>
+          ? `0` extends keyof T
+              ? {
+                    [TKey in keyof T & `${number}`]: AfterClone<T[TKey]>;
+                }
+              : AfterClone<T[number]>[]
+          : undefined;
 
 /**
  * Clones an object

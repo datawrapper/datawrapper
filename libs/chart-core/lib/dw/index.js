@@ -20,14 +20,14 @@ const dw = {
     column,
     datasource: {
         delimited,
-        json
+        json,
     },
     utils,
     chart,
     visualization,
     theme,
     block,
-    notify
+    notify,
 };
 
 if (typeof exports !== 'undefined') {
@@ -41,7 +41,7 @@ if (typeof exports !== 'undefined') {
     // pre-existing properties
     window.dw = {
         ...dw,
-        ...(window.dw || {})
+        ...(window.dw || {}),
     };
     if (!window.dw.versions) window.dw.versions = {};
     // %%HASH%% will get replaced with the current hash when the bundle is built

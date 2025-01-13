@@ -10,7 +10,7 @@ export const presenceColors = [
     'color-dw-presence-90',
     'color-dw-presence-100',
     'color-dw-presence-110',
-    'color-dw-presence-120'
+    'color-dw-presence-120',
 ] as const;
 
 export function getRandomPresenceColor() {

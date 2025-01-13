@@ -8,13 +8,13 @@ const POSITIVE_RESPONSE = {
     statusText: 'OK',
     headers: { 'content-type': 'application/json' },
     ok: true,
-    text: () => '{"id": 42, "email": "ozzy@example.com", "name": "Ozzy"}'
+    text: () => '{"id": 42, "email": "ozzy@example.com", "name": "Ozzy"}',
 };
 
 const NEGATIVE_RESPONSE = {
     status: 404,
     ok: false,
-    statusText: 'Not Found'
+    statusText: 'Not Found',
 };
 
 const createFakeFetch = <TResponse>(response: TResponse) => {

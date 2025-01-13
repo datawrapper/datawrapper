@@ -32,8 +32,8 @@ const storeData = throttle((chart, callback) => {
     put(`/v3/charts/${chart.get().id}/data`, {
         body: data,
         headers: {
-            'Content-Type': 'text/csv'
-        }
+            'Content-Type': 'text/csv',
+        },
     })
         .then(() => {
             if (callback) callback();
@@ -50,7 +50,7 @@ class Chart extends Store {
     load(csv, externalData) {
         const dsopts = {
             firstRowIsHeader: this.getMetadata('data.horizontal-header', true),
-            transpose: this.getMetadata('data.transpose', false)
+            transpose: this.getMetadata('data.transpose', false),
         };
 
         if (csv && !externalData) dsopts.csv = csv;
@@ -188,7 +188,7 @@ class Chart extends Store {
             'forkable',
             'isFork',
             'inFolder',
-            'author'
+            'author',
         ];
         const copy = {};
         keep.forEach(k => {

@@ -45,7 +45,7 @@ const {
     // cbrt,
     // expm1,
     log1p,
-    log2
+    log2,
 } = functions;
 
 function Expression(tokens, parser) {
@@ -298,7 +298,7 @@ export function Parser(options) {
          * NUMBER '12.5' // 12.5
          * @see {@link TEXT}
          */
-        NUMBER: Number
+        NUMBER: Number,
     };
 
     this.binaryOps = {
@@ -318,11 +318,11 @@ export function Parser(options) {
         or: orOperator,
         in: (needle, haystack) =>
             Array.isArray(haystack) ? haystack.includes(needle) : String(haystack).includes(needle),
-        '[': arrayIndex
+        '[': arrayIndex,
     };
 
     this.ternaryOps = {
-        '?': condition
+        '?': condition,
     };
 
     const isDate = d => d instanceof Date && !isNaN(d);
@@ -1018,7 +1018,7 @@ export function Parser(options) {
             d1 = asDate(d1);
             d2 = asDate(d2);
             return d1 && d2 ? (d2.getTime() - d1.getTime()) / 1000 : null;
-        }
+        },
     };
 
     this.unaryOps.LOWER = this.functions.LOWER;
@@ -1040,7 +1040,7 @@ export function Parser(options) {
         TRUE: true,
         FALSE: false,
         NA: Number.NaN,
-        NULL: Number.NaN
+        NULL: Number.NaN,
     };
 }
 
@@ -1048,7 +1048,7 @@ Parser.prototype.parse = function (expr) {
     var instr = [];
     var parserState = new ParserState(this, new TokenStream(this, expr), {
         allowMemberAccess: true,
-        restrictMemberAccess: RESTRICT_MEMBER_ACCESS
+        restrictMemberAccess: RESTRICT_MEMBER_ACCESS,
     });
 
     parserState.parseExpression(instr);
@@ -1145,7 +1145,7 @@ Parser.keywords = [
     'TRUNC',
     'UPPER',
     'WEEKDAY',
-    'YEAR'
+    'YEAR',
 ];
 
 var optionNameMap = {
@@ -1171,7 +1171,7 @@ var optionNameMap = {
     ':': 'conditional',
     '=': 'assignment',
     '[': 'array',
-    '()=': 'fndef'
+    '()=': 'fndef',
 };
 
 function getOptionName(op) {

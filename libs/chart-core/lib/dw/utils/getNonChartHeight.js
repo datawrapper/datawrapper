@@ -58,7 +58,7 @@ export function getNonChartHeight(rootNode = document) {
         '.dw-chart',
         '.dw-chart-styles',
         '.dw-chart-body',
-        isWebComponent ? '.web-component-body' : 'body'
+        isWebComponent ? '.web-component-body' : 'body',
     ];
     const properties = [
         'padding-top',
@@ -66,7 +66,7 @@ export function getNonChartHeight(rootNode = document) {
         'margin-top',
         'margin-bottom',
         'border-top-width',
-        'border-bottom-width'
+        'border-bottom-width',
     ];
 
     selectors.forEach(function (sel) {

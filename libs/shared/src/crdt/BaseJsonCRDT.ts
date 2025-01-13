@@ -25,7 +25,7 @@ import {
     pathStringToArray,
     isPathToItemArrayItem,
     isObjectArray,
-    valueWithType
+    valueWithType,
 } from './utils.js';
 import { calculateDiff } from './diff.js';
 import {
@@ -39,7 +39,7 @@ import {
     DebugHistoryMutation,
     DebugSnapshot,
     DebugLevel,
-    CalculateDiffOptions
+    CalculateDiffOptions,
 } from './types.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -131,7 +131,7 @@ export class BaseJsonCRDT<O extends object = object> {
     ) {
         return calculateDiff(this.data(), newData, {
             ...options,
-            pathsToItemArrays: this.pathsToItemArrays
+            pathsToItemArrays: this.pathsToItemArrays,
         });
     }
 
@@ -169,7 +169,7 @@ export class BaseJsonCRDT<O extends object = object> {
         newValue,
         currentValue,
         newTimestamp,
-        debugHistoryEntry
+        debugHistoryEntry,
     }: UpdateValueProps) {
         assertOneOf(currentValue, [isExistingAtomicValue]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
@@ -182,7 +182,7 @@ export class BaseJsonCRDT<O extends object = object> {
             method: `updateExistingAtomicValue:${getUpdateType(newValue)}`,
             path,
             values: { current: currentValue, update: newValue },
-            timestamps: { current: currentTimestamp.timestamp, update: newTimestamp }
+            timestamps: { current: currentTimestamp.timestamp, update: newTimestamp },
         });
         if (reject) return;
 
@@ -194,7 +194,7 @@ export class BaseJsonCRDT<O extends object = object> {
         newValue,
         currentValue,
         newTimestamp,
-        debugHistoryEntry
+        debugHistoryEntry,
     }: UpdateValueProps) {
         assertOneOf(path, [isPathToItemArrayIndex]);
 
@@ -207,7 +207,7 @@ export class BaseJsonCRDT<O extends object = object> {
                 method: 'updateItemArrayIndex',
                 path,
                 values: { current: currentValue, update: newValue },
-                timestamps: { current: currentClock.timestamp, update: newTimestamp }
+                timestamps: { current: currentClock.timestamp, update: newTimestamp },
             });
             set(this.dataObj, path, null); // we don't delete the item in this case but keep the null value, so we can't use _setInternalDataValue
             this._setTimestamp(path, newTimestamp);
@@ -233,7 +233,7 @@ export class BaseJsonCRDT<O extends object = object> {
                 method: 'updateItemArrayIndex',
                 path,
                 values: { current: currentValue, update: newValue },
-                timestamps: { current: currentClock.timestamp, update: newTimestamp }
+                timestamps: { current: currentClock.timestamp, update: newTimestamp },
             });
             if (reject) return;
 
@@ -253,7 +253,7 @@ export class BaseJsonCRDT<O extends object = object> {
         newValue,
         currentValue,
         newTimestamp,
-        debugHistoryEntry
+        debugHistoryEntry,
     }: UpdateValueProps) {
         assertOneOf(currentValue, [(value: unknown) => value === undefined]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
@@ -279,8 +279,8 @@ export class BaseJsonCRDT<O extends object = object> {
             values: { current: currentValue, update: newValue },
             timestamps: {
                 current: clock.timestamp,
-                update: newTimestamp
-            }
+                update: newTimestamp,
+            },
         });
         if (reject) return;
 
@@ -345,7 +345,7 @@ export class BaseJsonCRDT<O extends object = object> {
             }
         });
         return {
-            maxTimestamp
+            maxTimestamp,
         };
     }
 
@@ -354,7 +354,7 @@ export class BaseJsonCRDT<O extends object = object> {
         newValue,
         currentValue,
         newTimestamp,
-        debugHistoryEntry
+        debugHistoryEntry,
     }: UpdateValueProps) {
         assertOneOf(currentValue, [isActualObject]);
         assertOneOf(newValue, [isDeleteOperator, isAtomic, isEmptyObject]);
@@ -370,14 +370,14 @@ export class BaseJsonCRDT<O extends object = object> {
             method: `updateObject:${getUpdateType(newValue)}`,
             path,
             values: { current: currentValue, update: newValue },
-            timestamps: { current: maxClock.timestamp, update: newTimestamp }
+            timestamps: { current: maxClock.timestamp, update: newTimestamp },
         });
 
         // We always need to perform the partial delete, even if we are going to reject the update.
         // This is nessessary because otherwise we would keep descendants that are older than the new timestamp which other CRDT instances might have deleted.
         this._partialDelete({
             path,
-            newTimestamp
+            newTimestamp,
         });
 
         // Even if we reject the update because of a descendant timestamp,
@@ -501,7 +501,7 @@ export class BaseJsonCRDT<O extends object = object> {
                     newValue,
                     currentTimestamp: this._getTimestamp(path),
                     newTimestamp,
-                    pathsToItemArrays: this.pathsToItemArrays
+                    pathsToItemArrays: this.pathsToItemArrays,
                 });
                 throw e;
             }
@@ -556,7 +556,7 @@ export class BaseJsonCRDT<O extends object = object> {
         return {
             data: cloneDeep(this.dataObj),
             timestamps: this.timestamps(),
-            pathsToItemArrays: Array.from(this.pathsToItemArrays)
+            pathsToItemArrays: Array.from(this.pathsToItemArrays),
         };
     }
 
@@ -594,19 +594,19 @@ export class BaseJsonCRDT<O extends object = object> {
             // Store the state of the CRDT when debug mode is enabled.
             this.#stateOnDebugStart = {
                 data: this.data(),
-                timestamps: this.timestamps()
+                timestamps: this.timestamps(),
             };
         } else {
             this.#stateOnDebugStart = {
                 data: {},
-                timestamps: {}
+                timestamps: {},
             };
         }
     }
 
     #stateOnDebugStart = {
         data: {},
-        timestamps: {}
+        timestamps: {},
     };
 
     /**
@@ -623,7 +623,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
         return {
             update: { diff, timestamp },
-            mutations: []
+            mutations: [],
         };
     }
 
@@ -640,7 +640,7 @@ export class BaseJsonCRDT<O extends object = object> {
         if (!entry || !mutation) return;
 
         entry.mutations.push({
-            ...mutation
+            ...mutation,
         });
     }
 
@@ -654,7 +654,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
         lastMutation.state = {
             data: this.data(),
-            timestamps: this.timestamps()
+            timestamps: this.timestamps(),
         };
     }
 
@@ -685,7 +685,7 @@ export class BaseJsonCRDT<O extends object = object> {
         const getStatusEmoji = (rejected: boolean) => (rejected ? '❌' : '✅');
 
         const clientCount = new Set([
-            ...this.#debugHistory.map(entry => getClientId(entry.update.timestamp))
+            ...this.#debugHistory.map(entry => getClientId(entry.update.timestamp)),
         ]).size;
 
         const logEntireStateAfterEachMutation = this.#debugLevel === 'all';
@@ -712,14 +712,14 @@ export class BaseJsonCRDT<O extends object = object> {
                     const updateMessage = [
                         getStatusEmoji(allMutationsRejected),
                         `%c${entry.update.timestamp}`,
-                        isBrowserDevtools ? (clientIsSelf ? '(You)' : '') : `(${name})`
+                        isBrowserDevtools ? (clientIsSelf ? '(You)' : '') : `(${name})`,
                     ].join(' ');
 
                     logGroup(
                         updateMessage,
                         () => {
                             logGroup('Diff', () => log(makeLoggable(entry.update.diff)), {
-                                collapsed: false
+                                collapsed: false,
                             });
                             logGroup(
                                 `Mutations (${entry.mutations.length})`,
@@ -735,7 +735,7 @@ export class BaseJsonCRDT<O extends object = object> {
                                             valuesString,
                                             '@',
                                             `${mutation.timestamps.current.toString()} -> ${mutation.timestamps.update.toString()}`,
-                                            `[${mutation.method}]`
+                                            `[${mutation.method}]`,
                                         ].join(' ');
 
                                         logGroup(mutationMessage, () => {
@@ -787,7 +787,7 @@ export class BaseJsonCRDT<O extends object = object> {
     public getDebugSnapshot(): DebugSnapshot {
         return {
             data: this.#stateOnDebugStart.data,
-            updates: this.#debugHistory.map(entry => entry.update)
+            updates: this.#debugHistory.map(entry => entry.update),
         };
     }
 }

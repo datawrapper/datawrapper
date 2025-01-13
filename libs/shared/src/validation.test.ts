@@ -20,9 +20,9 @@ testProp(
             fc.webUrl({
                 validSchemes: ['http', 'https', 'ftp'],
                 withQueryParameters: true,
-                withFragments: true
+                withFragments: true,
             })
-        )
+        ),
     ],
     (t, url) => {
         t.true(isAllowedSourceUrl(url));
@@ -52,9 +52,9 @@ testProp(
             fc.webUrl({
                 validSchemes: ['http', 'https'],
                 withQueryParameters: true,
-                withFragments: true
+                withFragments: true,
             })
-        )
+        ),
     ],
     (t, url) => {
         t.true(isValidUrl(url));
@@ -67,8 +67,8 @@ testProp(
         fc.webUrl({
             validSchemes: ['ftp', 'ftps', 'unix', 'file'],
             withQueryParameters: true,
-            withFragments: true
-        })
+            withFragments: true,
+        }),
     ],
     (t, url) => {
         t.false(isValidUrl(url));
@@ -90,15 +90,15 @@ test('isValidMySQLJSON returns true for a valid JSON', t => {
                 0: 'number',
                 string: 'a',
                 nested: {
-                    string: 'a'
-                }
+                    string: 'a',
+                },
             },
             arrays: {
                 empty: [],
                 numbers: [1, 2],
                 strings: ['a', 'b'],
-                objects: [{ string: 'a' }, { string: 'a' }]
-            }
+                objects: [{ string: 'a' }, { string: 'a' }],
+            },
         })
     );
 });
@@ -107,12 +107,12 @@ test('isValidMySQLJSON returns false for a JSON with too large object key', t =>
     t.false(isValidMySQLJSON({ ['a'.repeat(2 ** 16)]: 'value' }));
     t.false(
         isValidMySQLJSON({
-            nested: { ['a'.repeat(2 ** 16)]: 'value' }
+            nested: { ['a'.repeat(2 ** 16)]: 'value' },
         })
     );
     t.false(
         isValidMySQLJSON({
-            array: [{ ['a'.repeat(2 ** 16)]: 'value' }]
+            array: [{ ['a'.repeat(2 ** 16)]: 'value' }],
         })
     );
 });
@@ -123,12 +123,12 @@ test('isValidMySQLJSON returns false for a JSON with an invalid UTF-16 string', 
     t.false(isValidMySQLJSON('\ud800b'));
     t.false(
         isValidMySQLJSON({
-            nested: '\ud800b'
+            nested: '\ud800b',
         })
     );
     t.false(
         isValidMySQLJSON({
-            array: ['\ud800b']
+            array: ['\ud800b'],
         })
     );
 });

@@ -19,7 +19,7 @@ import {
     isPathToItemArrayItem,
     generateRandomId,
     typeofObjectProperties,
-    valueWithType
+    valueWithType,
 } from './utils.js';
 import { TIMESTAMP_KEY } from './constants.js';
 
@@ -173,11 +173,11 @@ test('itemArrayToObject - converts an item array to an object', t => {
     t.deepEqual(
         itemArrayToObject([
             { id: 'a', foo: 'bar' },
-            { id: 'b', bar: 'baz' }
+            { id: 'b', bar: 'baz' },
         ]),
         {
             a: { foo: 'bar', id: 'a', _index: 0 },
-            b: { bar: 'baz', id: 'b', _index: 1 }
+            b: { bar: 'baz', id: 'b', _index: 1 },
         }
     );
 });
@@ -228,10 +228,10 @@ test('removeNullsFromObject - removes null values everywhere in nested object', 
 test('removeNullsFromObject - does not remove null values for _index keys', t => {
     const obj = {
         a: { b: { d: 1, _index: null, e: { _index: null, not_null: 'not_null' } } },
-        x: null
+        x: null,
     };
     t.deepEqual(removeNullsFromObject(obj), {
-        a: { b: { d: 1, _index: null, e: { _index: null, not_null: 'not_null' } } }
+        a: { b: { d: 1, _index: null, e: { _index: null, not_null: 'not_null' } } },
     });
 });
 
@@ -330,7 +330,7 @@ test('typeofObjectProperties - returns the type of all properties of an object',
     t.deepEqual(typeofObjectProperties({ a: 1, b: 'foo', c: { d: 2 } }), {
         a: 'number',
         b: 'string',
-        c: 'object'
+        c: 'object',
     });
 });
 

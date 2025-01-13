@@ -17,7 +17,7 @@ const emojiKeywords = {
         'mouth',
         'open',
         'smiley',
-        'smiling'
+        'smiling',
     ],
     '😄': [
         'grinning_face_with_smiling_eyes',
@@ -36,7 +36,7 @@ const emojiKeywords = {
         'mouth',
         'open',
         'pleased',
-        'smiley'
+        'smiley',
     ],
     '😁': [
         'beaming_face_with_smiling_eyes',
@@ -47,7 +47,7 @@ const emojiKeywords = {
         'kawaii',
         'eye',
         'grin',
-        'grinning'
+        'grinning',
     ],
     '😆': [
         'grinning_squinting_face',
@@ -69,7 +69,7 @@ const emojiKeywords = {
         'open',
         'smile',
         'smiling',
-        'tightly'
+        'tightly',
     ],
     '😅': [
         'grinning_face_with_sweat',
@@ -84,7 +84,7 @@ const emojiKeywords = {
         'exercise',
         'mouth',
         'open',
-        'smiling'
+        'smiling',
     ],
     '🤣': [
         'rolling_on_the_floor_laughing',
@@ -96,7 +96,7 @@ const emojiKeywords = {
         'haha',
         'rofl',
         'laugh',
-        'rotfl'
+        'rotfl',
     ],
     '😂': [
         'face_with_tears_of_joy',
@@ -111,7 +111,7 @@ const emojiKeywords = {
         'laugh',
         'laughing',
         'lol',
-        'tear'
+        'tear',
     ],
     '🙂': ['slightly_smiling_face', 'face', 'smile', 'fine', 'happy', 'this'],
     '🙃': ['upside_down_face', 'face', 'flipped', 'silly', 'smile', 'sarcasm'],
@@ -126,7 +126,7 @@ const emojiKeywords = {
         'eye',
         'flirt',
         'wink',
-        'winky'
+        'winky',
     ],
     '😊': [
         'smiling_face_with_smiling_eyes',
@@ -142,7 +142,7 @@ const emojiKeywords = {
         'blush',
         'eye',
         'proud',
-        'smiley'
+        'smiley',
     ],
     '😇': [
         'smiling_face_with_halo',
@@ -154,7 +154,7 @@ const emojiKeywords = {
         'fairy',
         'fantasy',
         'smile',
-        'tale'
+        'tale',
     ],
     '🥰': [
         'smiling_face_with_hearts',
@@ -168,7 +168,7 @@ const emojiKeywords = {
         'hearts',
         'adore',
         'eyes',
-        'three'
+        'three',
     ],
     '😍': [
         'smiling_face_with_heart_eyes',
@@ -182,7 +182,7 @@ const emojiKeywords = {
         'heart',
         'eye',
         'shaped',
-        'smile'
+        'smile',
     ],
     '🤩': ['star_struck', 'face', 'smile', 'starry', 'eyes', 'grinning', 'excited', 'eyed', 'wow'],
     '😘': [
@@ -198,7 +198,7 @@ const emojiKeywords = {
         'flirt',
         'heart',
         'kissing',
-        'throwing'
+        'throwing',
     ],
     '😗': [
         'kissing_face',
@@ -211,7 +211,7 @@ const emojiKeywords = {
         'kiss',
         'duck',
         'kissy',
-        'whistling'
+        'whistling',
     ],
     '☺️': [
         'smiling_face',
@@ -225,7 +225,7 @@ const emojiKeywords = {
         'relaxed',
         'smile',
         'smiley',
-        'white'
+        'white',
     ],
     '😚': [
         'kissing_face_with_closed_eyes',
@@ -237,7 +237,7 @@ const emojiKeywords = {
         'infatuation',
         'kiss',
         'eye',
-        'kissy'
+        'kissy',
     ],
     '😙': [
         'kissing_face_with_smiling_eyes',
@@ -250,7 +250,7 @@ const emojiKeywords = {
         'kissy',
         'smile',
         'whistle',
-        'whistling'
+        'whistling',
     ],
     '😋': [
         'face_savoring_food',
@@ -271,7 +271,7 @@ const emojiKeywords = {
         'lips',
         'smiling',
         'um',
-        'yum'
+        'yum',
     ],
     '😛': [
         'face_with_tongue',
@@ -284,7 +284,7 @@ const emojiKeywords = {
         'tongue',
         'cheeky',
         'out',
-        'stuck'
+        'stuck',
     ],
     '😜': [
         'winking_face_with_tongue',
@@ -301,7 +301,7 @@ const emojiKeywords = {
         'joke',
         'out',
         'silly',
-        'stuck'
+        'stuck',
     ],
     '🤪': [
         'zany_face',
@@ -316,7 +316,7 @@ const emojiKeywords = {
         'one',
         'small',
         'wacky',
-        'wild'
+        'wild',
     ],
     '😝': [
         'squinting_face_with_tongue',
@@ -333,7 +333,7 @@ const emojiKeywords = {
         'out',
         'stuck',
         'taste',
-        'tightly'
+        'tightly',
     ],
     '🤑': ['money_mouth_face', 'face', 'rich', 'dollar', 'money', 'eyes', 'sign'],
     '🤗': ['hugging_face', 'face', 'smile', 'hug', 'hands', 'hugs', 'open', 'smiling'],
@@ -347,7 +347,7 @@ const emojiKeywords = {
         'covering',
         'eyes',
         'quiet',
-        'smiling'
+        'smiling',
     ],
     '🤫': [
         'shushing_face',
@@ -361,7 +361,7 @@ const emojiKeywords = {
         'lips',
         'shh',
         'shush',
-        'silence'
+        'silence',
     ],
     '🤔': [
         'thinking_face',
@@ -373,7 +373,7 @@ const emojiKeywords = {
         'shade',
         'thinker',
         'throwing',
-        'thumb'
+        'thumb',
     ],
     '🤐': [
         'zipper_mouth_face',
@@ -384,7 +384,7 @@ const emojiKeywords = {
         'hush',
         'lips',
         'silence',
-        'zip'
+        'zip',
     ],
     '🤨': [
         'face_with_raised_eyebrow',
@@ -399,7 +399,7 @@ const emojiKeywords = {
         'mild',
         'one',
         'rock',
-        'skeptic'
+        'skeptic',
     ],
     '😐': [
         'neutral_face',
@@ -410,7 +410,7 @@ const emojiKeywords = {
         'deadpan',
         'faced',
         'mouth',
-        'straight'
+        'straight',
     ],
     '😑': [
         'expressionless_face',
@@ -422,7 +422,7 @@ const emojiKeywords = {
         'inexpressive',
         'mouth',
         'straight',
-        'unexpressive'
+        'unexpressive',
     ],
     '😶': [
         'face_without_mouth',
@@ -433,7 +433,7 @@ const emojiKeywords = {
         'no',
         'quiet',
         'silence',
-        'silent'
+        'silent',
     ],
     '😏': [
         'smirking_face',
@@ -446,7 +446,7 @@ const emojiKeywords = {
         'flirting',
         'sexual',
         'smirk',
-        'suggestive'
+        'suggestive',
     ],
     '😒': [
         'unamused_face',
@@ -462,7 +462,7 @@ const emojiKeywords = {
         'side_eye',
         'dissatisfied',
         'meh',
-        'unhappy'
+        'unhappy',
     ],
     '🙄': ['face_with_rolling_eyes', 'face', 'eyeroll', 'frustrated', 'eye', 'roll'],
     '😬': [
@@ -478,7 +478,7 @@ const emojiKeywords = {
         'mouth',
         'mutual',
         'nervous',
-        'snapchat'
+        'snapchat',
     ],
     '🤥': ['lying_face', 'face', 'lie', 'pinocchio', 'liar', 'long', 'nose'],
     '😌': [
@@ -490,7 +490,7 @@ const emojiKeywords = {
         'happiness',
         'content',
         'pleased',
-        'whew'
+        'whew',
     ],
     '😔': ['pensive_face', 'face', 'sad', 'depressed', 'upset', 'dejected', 'sadface', 'sorrowful'],
     '😪': [
@@ -503,7 +503,7 @@ const emojiKeywords = {
         'side',
         'sleep',
         'snot',
-        'tear'
+        'tear',
     ],
     '🤤': ['drooling_face', 'face', 'drool'],
     '😴': ['sleeping_face', 'face', 'tired', 'sleepy', 'night', 'zzz', 'sleep', 'snoring'],
@@ -518,7 +518,7 @@ const emojiKeywords = {
         'coronavirus',
         'doctor',
         'medicine',
-        'surgical'
+        'surgical',
     ],
     '🤒': [
         'face_with_thermometer',
@@ -528,7 +528,7 @@ const emojiKeywords = {
         'cold',
         'fever',
         'covid',
-        'ill'
+        'ill',
     ],
     '🤕': ['face_with_head_bandage', 'injured', 'clumsy', 'bandage', 'hurt', 'bandaged', 'injury'],
     '🤢': [
@@ -543,7 +543,7 @@ const emojiKeywords = {
         'barf',
         'disgust',
         'disgusted',
-        'green face'
+        'green face',
     ],
     '🤮': [
         'face_vomiting',
@@ -557,7 +557,7 @@ const emojiKeywords = {
         'spew',
         'throwing',
         'up',
-        'vomit'
+        'vomit',
     ],
     '🤧': ['sneezing_face', 'face', 'gesundheit', 'sneeze', 'sick', 'allergy', 'achoo'],
     '🥵': ['hot_face', 'face', 'feverish', 'heat', 'red', 'sweating', 'overheated', 'stroke'],
@@ -573,7 +573,7 @@ const emojiKeywords = {
         'eyes',
         'groggy',
         'mouth',
-        'uneven'
+        'uneven',
     ],
     '😵': [
         'dizzy_face',
@@ -587,7 +587,7 @@ const emojiKeywords = {
         'eyes',
         'knocked',
         'out',
-        'spiral eyes'
+        'spiral eyes',
     ],
     '🤯': ['exploding_head', 'face', 'shocked', 'mind', 'blown', 'blowing', 'explosion', 'mad'],
     '🤠': ['cowboy_hat_face', 'face', 'cowgirl', 'hat'],
@@ -609,7 +609,7 @@ const emojiKeywords = {
         'mutual',
         'snapchat',
         'sun',
-        'weather'
+        'weather',
     ],
     '🤓': ['nerd_face', 'face', 'nerdy', 'geek', 'dork', 'glasses', 'smiling'],
     '🧐': ['face_with_monocle', 'face', 'stuffy', 'wealthy', 'rich'],
@@ -624,7 +624,7 @@ const emojiKeywords = {
         'meh',
         'nonplussed',
         'puzzled',
-        's'
+        's',
     ],
     '😟': ['worried_face', 'face', 'concern', 'nervous', ':(', 'sad', 'sadface'],
     '🙁': [
@@ -635,7 +635,7 @@ const emojiKeywords = {
         'sad',
         'upset',
         'frown',
-        'unhappy'
+        'unhappy',
     ],
     '☹️': ['frowning_face', 'face', 'sad', 'upset', 'frown', 'megafrown', 'unhappy', 'white'],
     '😮': [
@@ -647,7 +647,7 @@ const emojiKeywords = {
         'whoa',
         ':O',
         'surprised',
-        'sympathy'
+        'sympathy',
     ],
     '😯': [
         'hushed_face',
@@ -658,7 +658,7 @@ const emojiKeywords = {
         'speechless',
         'stunned',
         'surprise',
-        'surprised'
+        'surprised',
     ],
     '😲': [
         'astonished_face',
@@ -671,7 +671,7 @@ const emojiKeywords = {
         'gasp',
         'gasping',
         'shocked',
-        'totally'
+        'totally',
     ],
     '😳': [
         'flushed_face',
@@ -685,7 +685,7 @@ const emojiKeywords = {
         'eyes',
         'open',
         'shame',
-        'wide'
+        'wide',
     ],
     '🥺': [
         'pleading_face',
@@ -699,7 +699,7 @@ const emojiKeywords = {
         'eyes',
         'glossy',
         'puppy',
-        'simp'
+        'simp',
     ],
     '😦': ['frowning_face_with_open_mouth', 'face', 'aw', 'what', 'frown', 'yawning'],
     '😧': ['anguished_face', 'face', 'stunned', 'nervous', 'pained'],
@@ -712,7 +712,7 @@ const emojiKeywords = {
         'fear',
         'oops',
         'shocked',
-        'surprised'
+        'surprised',
     ],
     '😰': [
         'anxious_face_with_sweat',
@@ -724,7 +724,7 @@ const emojiKeywords = {
         'concerned face',
         'mouth',
         'open',
-        'rushed'
+        'rushed',
     ],
     '😥': [
         'sad_but_relieved_face',
@@ -734,7 +734,7 @@ const emojiKeywords = {
         'nervous',
         'disappointed',
         'eyebrow',
-        'whew'
+        'whew',
     ],
     '😢': ['crying_face', 'face', 'tears', 'sad', 'depressed', 'upset', ":'(", 'cry', 'tear'],
     '😭': [
@@ -748,7 +748,7 @@ const emojiKeywords = {
         'depressed',
         'bawling',
         'sob',
-        'tear'
+        'tear',
     ],
     '😱': [
         'face_screaming_in_fear',
@@ -761,7 +761,7 @@ const emojiKeywords = {
         'home',
         'horror',
         'scream',
-        'shocked'
+        'shocked',
     ],
     '😖': [
         'confounded_face',
@@ -773,7 +773,7 @@ const emojiKeywords = {
         ':S',
         'mouth',
         'quivering',
-        'scrunched'
+        'scrunched',
     ],
     '😣': [
         'persevering_face',
@@ -786,7 +786,7 @@ const emojiKeywords = {
         'helpless',
         'persevere',
         'scrunched',
-        'struggling'
+        'struggling',
     ],
     '😞': ['disappointed_face', 'face', 'sad', 'upset', 'depressed', ':(', 'sadface'],
     '😓': [
@@ -798,7 +798,7 @@ const emojiKeywords = {
         'exercise',
         'cold',
         'hard',
-        'work'
+        'work',
     ],
     '😩': [
         'weary_face',
@@ -809,7 +809,7 @@ const emojiKeywords = {
         'frustrated',
         'upset',
         'distraught',
-        'wailing'
+        'wailing',
     ],
     '😫': [
         'tired_face',
@@ -820,7 +820,7 @@ const emojiKeywords = {
         'distraught',
         'exhausted',
         'fed',
-        'up'
+        'up',
     ],
     '🥱': ['yawning_face', 'tired', 'sleepy', 'bored', 'yawn'],
     '😤': [
@@ -838,7 +838,7 @@ const emojiKeywords = {
         'mad',
         'smug',
         'steaming',
-        'won'
+        'won',
     ],
     '😡': [
         'pouting_face',
@@ -850,7 +850,7 @@ const emojiKeywords = {
         'grumpy',
         'pout',
         'rage',
-        'red'
+        'red',
     ],
     '😠': ['angry_face', 'mad', 'face', 'annoyed', 'frustrated', 'anger', 'grumpy'],
     '🤬': [
@@ -865,7 +865,7 @@ const emojiKeywords = {
         'foul',
         'grawlix',
         'over',
-        'serious'
+        'serious',
     ],
     '😈': [
         'smiling_face_with_horns',
@@ -879,7 +879,7 @@ const emojiKeywords = {
         'purple',
         'red devil',
         'smile',
-        'tale'
+        'tale',
     ],
     '👿': [
         'angry_face_with_horns',
@@ -894,7 +894,7 @@ const emojiKeywords = {
         'imp',
         'purple',
         'sad',
-        'tale'
+        'tale',
     ],
     '💀': [
         'skull',
@@ -911,7 +911,7 @@ const emojiKeywords = {
         'halloween',
         'monster',
         'poison',
-        'tale'
+        'tale',
     ],
     '☠️': [
         'skull_and_crossbones',
@@ -925,7 +925,7 @@ const emojiKeywords = {
         'body',
         'face',
         'halloween',
-        'monster'
+        'monster',
     ],
     '💩': [
         'pile_of_poo',
@@ -942,7 +942,7 @@ const emojiKeywords = {
         'face',
         'monster',
         'poop',
-        'smiling'
+        'smiling',
     ],
     '🤡': ['clown_face', 'face'],
     '👹': [
@@ -961,7 +961,7 @@ const emojiKeywords = {
         'fairy',
         'fantasy',
         'oni',
-        'tale'
+        'tale',
     ],
     '👺': [
         'goblin',
@@ -979,7 +979,7 @@ const emojiKeywords = {
         'long',
         'nose',
         'tale',
-        'tengu'
+        'tengu',
     ],
     '👻': [
         'ghost',
@@ -993,7 +993,7 @@ const emojiKeywords = {
         'fantasy',
         'ghoul',
         'monster',
-        'tale'
+        'tale',
     ],
     '👽': [
         'alien',
@@ -1008,7 +1008,7 @@ const emojiKeywords = {
         'fairy',
         'fantasy',
         'monster',
-        'tale'
+        'tale',
     ],
     '👾': [
         'alien_monster',
@@ -1025,7 +1025,7 @@ const emojiKeywords = {
         'space',
         'tale',
         'ufo',
-        'video'
+        'video',
     ],
     '🤖': ['robot', 'computer', 'machine', 'bot', 'face', 'monster'],
     '😺': [
@@ -1038,7 +1038,7 @@ const emojiKeywords = {
         'mouth',
         'open',
         'smiley',
-        'smiling'
+        'smiling',
     ],
     '😸': [
         'grinning_cat_with_smiling_eyes',
@@ -1048,7 +1048,7 @@ const emojiKeywords = {
         'eye',
         'face',
         'grin',
-        'happy'
+        'happy',
     ],
     '😹': [
         'cat_with_tears_of_joy',
@@ -1059,7 +1059,7 @@ const emojiKeywords = {
         'tears',
         'face',
         'laughing',
-        'tear'
+        'tear',
     ],
     '😻': [
         'smiling_cat_with_heart_eyes',
@@ -1074,7 +1074,7 @@ const emojiKeywords = {
         'face',
         'loving cat',
         'shaped',
-        'smile'
+        'smile',
     ],
     '😼': ['cat_with_wry_smile', 'animal', 'cats', 'smirk', 'face', 'ironic', 'smirking'],
     '😽': ['kissing_cat', 'animal', 'cats', 'kiss', 'closed', 'eye', 'eyes', 'face'],
@@ -1090,7 +1090,7 @@ const emojiKeywords = {
         'horror',
         'oh',
         'screaming',
-        'surprised'
+        'surprised',
     ],
     '😿': [
         'crying_cat',
@@ -1103,7 +1103,7 @@ const emojiKeywords = {
         'cry',
         'face',
         'sad cat',
-        'tear'
+        'tear',
     ],
     '😾': ['pouting_cat', 'animal', 'cats', 'face', 'grumpy'],
     '🙈': [
@@ -1121,7 +1121,7 @@ const emojiKeywords = {
         'ignore',
         'mizaru',
         'not',
-        'prohibited'
+        'prohibited',
     ],
     '🙉': [
         'hear_no_evil_monkey',
@@ -1136,7 +1136,7 @@ const emojiKeywords = {
         'gesture',
         'kikazaru',
         'not',
-        'prohibited'
+        'prohibited',
     ],
     '🙊': [
         'speak_no_evil_monkey',
@@ -1154,7 +1154,7 @@ const emojiKeywords = {
         'mute',
         'not',
         'no speaking',
-        'prohibited'
+        'prohibited',
     ],
     '💋': [
         'kiss_mark',
@@ -1167,7 +1167,7 @@ const emojiKeywords = {
         'heart',
         'kissing',
         'lipstick',
-        'romance'
+        'romance',
     ],
     '💌': [
         'love_letter',
@@ -1179,7 +1179,7 @@ const emojiKeywords = {
         'heart',
         'mail',
         'note',
-        'romance'
+        'romance',
     ],
     '💘': [
         'heart_with_arrow',
@@ -1190,7 +1190,7 @@ const emojiKeywords = {
         'valentines',
         'cupid',
         'lovestruck',
-        'romance'
+        'romance',
     ],
     '💝': [
         'heart_with_ribbon',
@@ -1200,7 +1200,7 @@ const emojiKeywords = {
         'chocolate',
         'chocolates',
         'gift',
-        'valentine'
+        'valentine',
     ],
     '💖': [
         'sparkling_heart',
@@ -1211,7 +1211,7 @@ const emojiKeywords = {
         'excited',
         'sparkle',
         'sparkly',
-        'stars heart'
+        'stars heart',
     ],
     '💗': [
         'growing_heart',
@@ -1225,7 +1225,7 @@ const emojiKeywords = {
         'multiple',
         'nervous',
         'pulse',
-        'triple'
+        'triple',
     ],
     '💓': [
         'beating_heart',
@@ -1238,7 +1238,7 @@ const emojiKeywords = {
         'alarm',
         'heartbeat',
         'pulsating',
-        'wifi'
+        'wifi',
     ],
     '💞': ['revolving_hearts', 'love', 'like', 'affection', 'valentines', 'heart', 'two'],
     '💕': ['two_hearts', 'love', 'like', 'affection', 'valentines', 'heart', 'pink', 'small'],
@@ -1255,7 +1255,7 @@ const emojiKeywords = {
         'mark',
         'ornament',
         'punctuation',
-        'red'
+        'red',
     ],
     '💔': [
         'broken_heart',
@@ -1265,7 +1265,7 @@ const emojiKeywords = {
         'heart',
         'heartbreak',
         'breaking',
-        'brokenhearted'
+        'brokenhearted',
     ],
     '❤️': ['red_heart', 'love', 'like', 'valentines', 'black', 'heavy'],
     '🧡': ['orange_heart', 'love', 'like', 'affection', 'valentines'],
@@ -1290,7 +1290,7 @@ const emojiKeywords = {
         '100',
         'full',
         'keep',
-        'symbol'
+        'symbol',
     ],
     '💢': ['anger_symbol', 'angry', 'mad', 'comic', 'pop', 'sign', 'vein'],
     '💥': [
@@ -1305,7 +1305,7 @@ const emojiKeywords = {
         'impact',
         'red',
         'spark',
-        'symbol'
+        'symbol',
     ],
     '💫': ['dizzy', 'star', 'sparkle', 'shoot', 'magic', 'circle', 'comic', 'symbol'],
     '💦': [
@@ -1318,7 +1318,7 @@ const emojiKeywords = {
         'plewds',
         'splashing',
         'symbol',
-        'workout'
+        'workout',
     ],
     '💨': [
         'dashing_away',
@@ -1336,7 +1336,7 @@ const emojiKeywords = {
         'running',
         'steam',
         'symbol',
-        'vaping'
+        'vaping',
     ],
     '🕳️': ['hole', 'embarrassing'],
     '💣': ['bomb', 'boom', 'explode', 'explosion', 'terrorism', 'comic'],
@@ -1350,7 +1350,7 @@ const emojiKeywords = {
         'chat',
         'comic',
         'comment',
-        'dialog'
+        'dialog',
     ],
     '👁️‍🗨️': ['eye_in_speech_bubble', 'info', 'am', 'i', 'witness'],
     '🗨️': ['left_speech_bubble', 'words', 'message', 'talk', 'chatting', 'dialog'],
@@ -1363,7 +1363,7 @@ const emojiKeywords = {
         'angry',
         'balloon',
         'zag',
-        'zig'
+        'zig',
     ],
     '💭': ['thought_balloon', 'bubble', 'cloud', 'speech', 'thinking', 'dream', 'comic'],
     '💤': [
@@ -1377,7 +1377,7 @@ const emojiKeywords = {
         'sign',
         'sleep',
         'sleeping',
-        'symbol'
+        'symbol',
     ],
     '👋': [
         'waving_hand',
@@ -1391,7 +1391,7 @@ const emojiKeywords = {
         'hi',
         'palm',
         'body',
-        'sign'
+        'sign',
     ],
     '🤚': ['raised_back_of_hand', 'fingers', 'raised', 'backhand', 'body'],
     '🖐️': [
@@ -1402,7 +1402,7 @@ const emojiKeywords = {
         'body',
         'finger',
         'five',
-        'raised'
+        'raised',
     ],
     '✋': ['raised_hand', 'fingers', 'stop', 'highfive', 'palm', 'ban', 'body', 'five', 'high'],
     '🖖': [
@@ -1419,7 +1419,7 @@ const emojiKeywords = {
         'prosper',
         'raised',
         'ring',
-        'split'
+        'split',
     ],
     '👌': ['ok_hand', 'fingers', 'limbs', 'perfect', 'ok', 'okay', 'body', 'sign'],
     '🤏': ['pinching_hand', 'tiny', 'small', 'size', 'amount', 'body', 'little'],
@@ -1435,7 +1435,7 @@ const emojiKeywords = {
         'body',
         'quotes',
         'sign',
-        'v'
+        'v',
     ],
     '🤞': [
         'crossed_fingers',
@@ -1448,7 +1448,7 @@ const emojiKeywords = {
         'hopeful',
         'index',
         'luck',
-        'middle'
+        'middle',
     ],
     '🤟': ['love_you_gesture', 'hand', 'fingers', 'gesture', 'body', 'i', 'ily', 'sign'],
     '🤘': [
@@ -1462,7 +1462,7 @@ const emojiKeywords = {
         'devil',
         'finger',
         'heavy',
-        'metal'
+        'metal',
     ],
     '🤙': ['call_me_hand', 'hands', 'gesture', 'shaka', 'body', 'phone', 'sign'],
     '👈': [
@@ -1474,7 +1474,7 @@ const emojiKeywords = {
         'body',
         'finger',
         'point',
-        'white'
+        'white',
     ],
     '👉': [
         'backhand_index_pointing_right',
@@ -1485,7 +1485,7 @@ const emojiKeywords = {
         'body',
         'finger',
         'point',
-        'white'
+        'white',
     ],
     '👆': [
         'backhand_index_pointing_up',
@@ -1497,7 +1497,7 @@ const emojiKeywords = {
         'finger',
         'middle',
         'point',
-        'white'
+        'white',
     ],
     '🖕': [
         'middle_finger',
@@ -1513,7 +1513,7 @@ const emojiKeywords = {
         'fu',
         'medio',
         'middle finger',
-        'reversed'
+        'reversed',
     ],
     '👇': [
         'backhand_index_pointing_down',
@@ -1524,7 +1524,7 @@ const emojiKeywords = {
         'body',
         'finger',
         'point',
-        'white'
+        'white',
     ],
     '☝️': [
         'index_pointing_up',
@@ -1536,7 +1536,7 @@ const emojiKeywords = {
         'finger',
         'point',
         'secret',
-        'white'
+        'white',
     ],
     '👍': [
         'thumbs_up',
@@ -1554,7 +1554,7 @@ const emojiKeywords = {
         'body',
         'ok',
         'sign',
-        'thumb'
+        'thumb',
     ],
     '👎': [
         'thumbs_down',
@@ -1568,7 +1568,7 @@ const emojiKeywords = {
         'bury',
         'disapprove',
         'sign',
-        'thumb'
+        'thumb',
     ],
     '✊': ['raised_fist', 'fingers', 'hand', 'grasp', 'body', 'clenched', 'power', 'pump', 'punch'],
     '👊': [
@@ -1588,7 +1588,7 @@ const emojiKeywords = {
         'facepunch',
         'fisted',
         'punch',
-        'sign'
+        'sign',
     ],
     '🤛': ['left_facing_fist', 'hand', 'fistbump', 'body', 'bump', 'leftwards'],
     '🤜': ['right_facing_fist', 'hand', 'fistbump', 'body', 'bump', 'rightwards', 'right fist'],
@@ -1604,7 +1604,7 @@ const emojiKeywords = {
         'golf',
         'hand',
         'round',
-        'sign'
+        'sign',
     ],
     '🙌': [
         'raising_hands',
@@ -1625,7 +1625,7 @@ const emojiKeywords = {
         'person',
         'praise',
         'raised',
-        'two'
+        'two',
     ],
     '👐': [
         'open_hands',
@@ -1637,7 +1637,7 @@ const emojiKeywords = {
         'hand',
         'hug',
         'jazz',
-        'sign'
+        'sign',
     ],
     '🤲': ['palms_up_together', 'hands', 'gesture', 'cupped', 'prayer', 'body', 'dua', 'facing'],
     '🤝': ['handshake', 'agreement', 'shake', 'deal', 'hand', 'hands', 'meeting', 'shaking'],
@@ -1662,7 +1662,7 @@ const emojiKeywords = {
         'person',
         'prayer',
         'pressed',
-        'together'
+        'together',
     ],
     '✍️': ['writing_hand', 'lower_left_ballpoint_pen', 'stationery', 'write', 'compose', 'body'],
     '💅': [
@@ -1677,7 +1677,7 @@ const emojiKeywords = {
         'body',
         'cosmetics',
         'fingers',
-        'nonchalant'
+        'nonchalant',
     ],
     '🤳': ['selfie', 'camera', 'phone', 'arm', 'hand'],
     '💪': [
@@ -1696,7 +1696,7 @@ const emojiKeywords = {
         'muscle',
         'muscles',
         'strength',
-        'workout'
+        'workout',
     ],
     '🦾': ['mechanical_arm', 'accessibility', 'body', 'prosthetic'],
     '🦿': ['mechanical_leg', 'accessibility', 'body', 'prosthetic'],
@@ -1712,7 +1712,7 @@ const emojiKeywords = {
         'ears',
         'hearing',
         'listening',
-        'nose'
+        'nose',
     ],
     '🦻': ['ear_with_hearing_aid', 'accessibility', 'body', 'hard'],
     '👃': ['nose', 'smell', 'sniff', 'body', 'smelling', 'sniffing', 'stinky'],
@@ -1731,7 +1731,7 @@ const emojiKeywords = {
         'eyeballs',
         'face',
         'shifty',
-        'wide'
+        'wide',
     ],
     '👁️': ['eye', 'face', 'look', 'see', 'watch', 'stare', 'body', 'single'],
     '👅': ['tongue', 'mouth', 'playful', 'body', 'out', 'taste'],
@@ -1747,7 +1747,7 @@ const emojiKeywords = {
         'inclusive',
         'neutral',
         'person',
-        'unspecified'
+        'unspecified',
     ],
     '👦': ['boy', 'man', 'male', 'guy', 'teenager', 'child', 'young'],
     '👧': [
@@ -1760,7 +1760,7 @@ const emojiKeywords = {
         'virgin',
         'virgo',
         'young',
-        'zodiac'
+        'zodiac',
     ],
     '🧑': [
         'person',
@@ -1775,7 +1775,7 @@ const emojiKeywords = {
         'neutral',
         'unspecified',
         'woman',
-        'women'
+        'women',
     ],
     '👱': ['person_blond_hair', 'hairstyle', 'blonde', 'haired', 'man'],
     '👨': [
@@ -1789,7 +1789,7 @@ const emojiKeywords = {
         'moustache',
         'adult',
         'male',
-        'men'
+        'men',
     ],
     '🧔': ['man_beard', 'person', 'bewhiskered', 'bearded'],
     '👨‍🦰': ['man_red_hair', 'hairstyle', 'adult', 'ginger', 'haired', 'male', 'men', 'redhead'],
@@ -1805,7 +1805,7 @@ const emojiKeywords = {
         'ginger',
         'haired',
         'redhead',
-        'women'
+        'women',
     ],
     '🧑‍🦰': ['person_red_hair', 'hairstyle', 'adult', 'gender', 'haired', 'unspecified'],
     '👩‍🦱': ['woman_curly_hair', 'hairstyle', 'adult', 'female', 'haired', 'women'],
@@ -1832,7 +1832,7 @@ const emojiKeywords = {
         'old',
         'unspecified',
         'woman',
-        'women'
+        'women',
     ],
     '👴': [
         'old_man',
@@ -1845,7 +1845,7 @@ const emojiKeywords = {
         'adult',
         'elderly',
         'grandpa',
-        'older'
+        'older',
     ],
     '👵': [
         'old_woman',
@@ -1860,7 +1860,7 @@ const emojiKeywords = {
         'elderly',
         'grandma',
         'nanna',
-        'older'
+        'older',
     ],
     '🙍': ['person_frowning', 'worried', 'frown', 'gesture', 'sad', 'woman'],
     '🙍‍♂️': [
@@ -1874,7 +1874,7 @@ const emojiKeywords = {
         'unhappy',
         'frown',
         'gesture',
-        'men'
+        'men',
     ],
     '🙍‍♀️': [
         'woman_frowning',
@@ -1887,7 +1887,7 @@ const emojiKeywords = {
         'unhappy',
         'frown',
         'gesture',
-        'women'
+        'women',
     ],
     '🙎': ['person_pouting', 'upset', 'blank', 'face', 'fed', 'gesture', 'look', 'up'],
     '🙎‍♂️': ['man_pouting', 'male', 'boy', 'man', 'gesture', 'men'],
@@ -1908,7 +1908,7 @@ const emojiKeywords = {
         'ok',
         'prohibited',
         'stop',
-        'x'
+        'x',
     ],
     '🙅‍♂️': [
         'man_gesturing_no',
@@ -1927,7 +1927,7 @@ const emojiKeywords = {
         'not',
         'ok',
         'prohibited',
-        'stop'
+        'stop',
     ],
     '🙅‍♀️': [
         'woman_gesturing_no',
@@ -1946,7 +1946,7 @@ const emojiKeywords = {
         'ok',
         'prohibited',
         'stop',
-        'women'
+        'women',
     ],
     '🙆': ['person_gesturing_ok', 'agree', 'ballerina', 'face', 'gesture', 'hand', 'hands', 'head'],
     '🙆‍♂️': ['man_gesturing_ok', 'men', 'boy', 'male', 'blue', 'human', 'man', 'gesture', 'hand'],
@@ -1959,7 +1959,7 @@ const emojiKeywords = {
         'human',
         'woman',
         'gesture',
-        'hand'
+        'hand',
     ],
     '💁': [
         'person_tipping_hand',
@@ -1975,7 +1975,7 @@ const emojiKeywords = {
         'help',
         'sassy',
         'woman',
-        'women'
+        'women',
     ],
     '💁‍♂️': [
         'man_tipping_hand',
@@ -1987,7 +1987,7 @@ const emojiKeywords = {
         'desk',
         'help',
         'men',
-        'sassy'
+        'sassy',
     ],
     '💁‍♀️': [
         'woman_tipping_hand',
@@ -1999,7 +1999,7 @@ const emojiKeywords = {
         'desk',
         'help',
         'sassy',
-        'women'
+        'women',
     ],
     '🙋': [
         'person_raising_hand',
@@ -2009,7 +2009,7 @@ const emojiKeywords = {
         'happy',
         'one',
         'raised',
-        'up'
+        'up',
     ],
     '🙋‍♂️': ['man_raising_hand', 'male', 'boy', 'man', 'gesture', 'happy', 'men', 'one', 'raised'],
     '🙋‍♀️': [
@@ -2021,7 +2021,7 @@ const emojiKeywords = {
         'happy',
         'one',
         'raised',
-        'women'
+        'women',
     ],
     '🧏': ['deaf_person', 'accessibility', 'ear', 'hear'],
     '🧏‍♂️': ['deaf_man', 'accessibility', 'male', 'men'],
@@ -2040,7 +2040,7 @@ const emojiKeywords = {
         'massage',
         'respect',
         'sorry',
-        'thanks'
+        'thanks',
     ],
     '🙇‍♂️': [
         'man_bowing',
@@ -2055,7 +2055,7 @@ const emojiKeywords = {
         'men',
         'respect',
         'sorry',
-        'thanks'
+        'thanks',
     ],
     '🙇‍♀️': [
         'woman_bowing',
@@ -2070,7 +2070,7 @@ const emojiKeywords = {
         'respect',
         'sorry',
         'thanks',
-        'women'
+        'women',
     ],
     '🤦': [
         'person_facepalming',
@@ -2083,7 +2083,7 @@ const emojiKeywords = {
         'hitting',
         'palm',
         'picard',
-        'smh'
+        'smh',
     ],
     '🤦‍♂️': [
         'man_facepalming',
@@ -2095,7 +2095,7 @@ const emojiKeywords = {
         'face',
         'facepalm',
         'men',
-        'palm'
+        'palm',
     ],
     '🤦‍♀️': [
         'woman_facepalming',
@@ -2107,7 +2107,7 @@ const emojiKeywords = {
         'face',
         'facepalm',
         'palm',
-        'women'
+        'women',
     ],
     '🤷': [
         'person_shrugging',
@@ -2117,7 +2117,7 @@ const emojiKeywords = {
         'indifference',
         'shrug',
         'shruggie',
-        '¯\\'
+        '¯\\',
     ],
     '🤷‍♂️': [
         'man_shrugging',
@@ -2130,7 +2130,7 @@ const emojiKeywords = {
         'ignorance',
         'indifference',
         'men',
-        'shrug'
+        'shrug',
     ],
     '🤷‍♀️': [
         'woman_shrugging',
@@ -2143,7 +2143,7 @@ const emojiKeywords = {
         'ignorance',
         'indifference',
         'shrug',
-        'women'
+        'women',
     ],
     '🧑‍⚕️': [
         'health_worker',
@@ -2155,7 +2155,7 @@ const emojiKeywords = {
         'nurse',
         'physician',
         'professional',
-        'therapist'
+        'therapist',
     ],
     '👨‍⚕️': [
         'man_health_worker',
@@ -2170,7 +2170,7 @@ const emojiKeywords = {
         'md',
         'men',
         'physician',
-        'professional'
+        'professional',
     ],
     '👩‍⚕️': [
         'woman_health_worker',
@@ -2185,7 +2185,7 @@ const emojiKeywords = {
         'md',
         'physician',
         'professional',
-        'women'
+        'women',
     ],
     '🧑‍🎓': ['student', 'learn', 'education', 'graduate', 'pupil', 'school'],
     '👨‍🎓': [
@@ -2198,7 +2198,7 @@ const emojiKeywords = {
         'male',
         'men',
         'pupil',
-        'school'
+        'school',
     ],
     '👩‍🎓': [
         'woman_student',
@@ -2210,7 +2210,7 @@ const emojiKeywords = {
         'graduation',
         'pupil',
         'school',
-        'women'
+        'women',
     ],
     '🧑‍🏫': ['teacher', 'professor', 'education', 'educator', 'instructor'],
     '👨‍🏫': [
@@ -2223,7 +2223,7 @@ const emojiKeywords = {
         'educator',
         'male',
         'men',
-        'school'
+        'school',
     ],
     '👩‍🏫': [
         'woman_teacher',
@@ -2235,7 +2235,7 @@ const emojiKeywords = {
         'educator',
         'female',
         'school',
-        'women'
+        'women',
     ],
     '🧑‍⚖️': ['judge', 'law', 'court', 'justice', 'scales'],
     '👨‍⚖️': ['man_judge', 'justice', 'court', 'man', 'human', 'law', 'male', 'men', 'scales'],
@@ -2251,7 +2251,7 @@ const emojiKeywords = {
         'farming',
         'male',
         'men',
-        'worker'
+        'worker',
     ],
     '👩‍🌾': [
         'woman_farmer',
@@ -2263,7 +2263,7 @@ const emojiKeywords = {
         'farming',
         'female',
         'women',
-        'worker'
+        'worker',
     ],
     '🧑‍🍳': ['cook', 'food', 'kitchen', 'culinary', 'chef', 'cooking', 'service'],
     '👨‍🍳': ['man_cook', 'chef', 'man', 'human', 'cooking', 'food', 'male', 'men', 'service'],
@@ -2276,7 +2276,7 @@ const emojiKeywords = {
         'person',
         'plumber',
         'repair',
-        'tradesperson'
+        'tradesperson',
     ],
     '👨‍🔧': [
         'man_mechanic',
@@ -2289,7 +2289,7 @@ const emojiKeywords = {
         'men',
         'person',
         'repair',
-        'tradesperson'
+        'tradesperson',
     ],
     '👩‍🔧': [
         'woman_mechanic',
@@ -2302,7 +2302,7 @@ const emojiKeywords = {
         'person',
         'repair',
         'tradesperson',
-        'women'
+        'women',
     ],
     '🧑‍🏭': ['factory_worker', 'labor', 'assembly', 'industrial', 'welder'],
     '👨‍🏭': ['man_factory_worker', 'assembly', 'industrial', 'man', 'human', 'male', 'men', 'welder'],
@@ -2314,7 +2314,7 @@ const emojiKeywords = {
         'human',
         'female',
         'welder',
-        'women'
+        'women',
     ],
     '🧑‍💼': [
         'office_worker',
@@ -2325,7 +2325,7 @@ const emojiKeywords = {
         'architect',
         'banker',
         'clerk',
-        'manager'
+        'manager',
     ],
     '👨‍💼': [
         'man_office_worker',
@@ -2342,7 +2342,7 @@ const emojiKeywords = {
         'ceo',
         'clerk',
         'male',
-        'men'
+        'men',
     ],
     '👩‍💼': [
         'woman_office_worker',
@@ -2359,7 +2359,7 @@ const emojiKeywords = {
         'ceo',
         'clerk',
         'female',
-        'women'
+        'women',
     ],
     '🧑‍🔬': [
         'scientist',
@@ -2370,7 +2370,7 @@ const emojiKeywords = {
         'lab',
         'mathematician',
         'physicist',
-        'technician'
+        'technician',
     ],
     '👨‍🔬': [
         'man_scientist',
@@ -2385,7 +2385,7 @@ const emojiKeywords = {
         'mathematician',
         'men',
         'research',
-        'technician'
+        'technician',
     ],
     '👩‍🔬': [
         'woman_scientist',
@@ -2400,7 +2400,7 @@ const emojiKeywords = {
         'mathematician',
         'research',
         'technician',
-        'women'
+        'women',
     ],
     '🧑‍💻': ['technologist', 'computer', 'coder', 'engineer', 'laptop', 'software', 'technology'],
     '👨‍💻': [
@@ -2417,7 +2417,7 @@ const emojiKeywords = {
         'blogger',
         'male',
         'men',
-        'technology'
+        'technology',
     ],
     '👩‍💻': [
         'woman_technologist',
@@ -2433,7 +2433,7 @@ const emojiKeywords = {
         'blogger',
         'female',
         'technology',
-        'women'
+        'women',
     ],
     '🧑‍🎤': [
         'singer',
@@ -2447,7 +2447,7 @@ const emojiKeywords = {
         'rock',
         'rocker',
         'rockstar',
-        'star'
+        'star',
     ],
     '👨‍🎤': [
         'man_singer',
@@ -2465,7 +2465,7 @@ const emojiKeywords = {
         'rock',
         'rocker',
         'sane',
-        'star'
+        'star',
     ],
     '👩‍🎤': [
         'woman_singer',
@@ -2480,7 +2480,7 @@ const emojiKeywords = {
         'rock',
         'rocker',
         'star',
-        'women'
+        'women',
     ],
     '🧑‍🎨': ['artist', 'painting', 'draw', 'creativity', 'art', 'paint', 'painter', 'palette'],
     '👨‍🎨': ['man_artist', 'painter', 'man', 'human', 'art', 'male', 'men', 'paint', 'palette'],
@@ -2493,7 +2493,7 @@ const emojiKeywords = {
         'female',
         'paint',
         'palette',
-        'women'
+        'women',
     ],
     '🧑‍✈️': ['pilot', 'fly', 'plane', 'airplane', 'aviation', 'aviator'],
     '👨‍✈️': ['man_pilot', 'aviator', 'plane', 'man', 'human', 'airplane', 'aviation', 'male', 'men'],
@@ -2506,7 +2506,7 @@ const emojiKeywords = {
         'airplane',
         'aviation',
         'female',
-        'women'
+        'women',
     ],
     '🧑‍🚀': ['astronaut', 'outerspace', 'moon', 'planets', 'rocket', 'space', 'stars'],
     '👨‍🚀': [
@@ -2520,7 +2520,7 @@ const emojiKeywords = {
         'men',
         'moon',
         'planets',
-        'stars'
+        'stars',
     ],
     '👩‍🚀': [
         'woman_astronaut',
@@ -2533,7 +2533,7 @@ const emojiKeywords = {
         'moon',
         'planets',
         'stars',
-        'women'
+        'women',
     ],
     '🧑‍🚒': ['firefighter', 'fire', 'firetruck'],
     '👨‍🚒': ['man_firefighter', 'fireman', 'man', 'human', 'fire', 'firetruck', 'male', 'men'],
@@ -2545,7 +2545,7 @@ const emojiKeywords = {
         'female',
         'fire',
         'firetruck',
-        'women'
+        'women',
     ],
     '👮': ['police_officer', 'cop', 'law', 'policeman', 'policewoman'],
     '👮‍♂️': [
@@ -2560,7 +2560,7 @@ const emojiKeywords = {
         'cop',
         'male',
         'men',
-        'policeman'
+        'policeman',
     ],
     '👮‍♀️': [
         'woman_police_officer',
@@ -2574,7 +2574,7 @@ const emojiKeywords = {
         'female',
         'cop',
         'policewoman',
-        'women'
+        'women',
     ],
     '🕵️': ['detective', 'human', 'spy', 'eye', 'or', 'private', 'sleuth'],
     '🕵️‍♂️': ['man_detective', 'crime', 'male', 'men', 'sleuth', 'spy'],
@@ -2591,7 +2591,7 @@ const emojiKeywords = {
         'woman',
         'guardsman',
         'guardswoman',
-        'women'
+        'women',
     ],
     '👷': [
         'construction_worker',
@@ -2602,7 +2602,7 @@ const emojiKeywords = {
         'hard',
         'hat',
         'helmet',
-        'safety'
+        'safety',
     ],
     '👷‍♂️': [
         'man_construction_worker',
@@ -2615,7 +2615,7 @@ const emojiKeywords = {
         'worker',
         'labor',
         'helmet',
-        'men'
+        'men',
     ],
     '👷‍♀️': [
         'woman_construction_worker',
@@ -2628,7 +2628,7 @@ const emojiKeywords = {
         'labor',
         'woman',
         'helmet',
-        'women'
+        'women',
     ],
     '🤴': [
         'prince',
@@ -2641,7 +2641,7 @@ const emojiKeywords = {
         'fairy',
         'fantasy',
         'men',
-        'tale'
+        'tale',
     ],
     '👸': [
         'princess',
@@ -2657,7 +2657,7 @@ const emojiKeywords = {
         'fantasy',
         'tale',
         'tiara',
-        'women'
+        'women',
     ],
     '👳': ['person_wearing_turban', 'headdress', 'arab', 'man', 'muslim', 'sikh'],
     '👳‍♂️': ['man_wearing_turban', 'male', 'indian', 'hinduism', 'arabs', 'men'],
@@ -2673,7 +2673,7 @@ const emojiKeywords = {
         'hat',
         'mao',
         'person',
-        'pi'
+        'pi',
     ],
     '🧕': ['woman_with_headscarf', 'female', 'hijab', 'mantilla', 'tichel'],
     '🤵': [
@@ -2685,7 +2685,7 @@ const emojiKeywords = {
         'male',
         'men',
         'person',
-        'suit'
+        'suit',
     ],
     '👰': ['bride_with_veil', 'couple', 'marriage', 'wedding', 'woman', 'bride', 'person'],
     '🤰': ['pregnant_woman', 'baby', 'female', 'pregnancy', 'pregnant lady', 'women'],
@@ -2700,7 +2700,7 @@ const emojiKeywords = {
         'milk',
         'mother',
         'woman',
-        'women'
+        'women',
     ],
     '👼': [
         'baby_angel',
@@ -2713,7 +2713,7 @@ const emojiKeywords = {
         'fairy',
         'fantasy',
         'putto',
-        'tale'
+        'tale',
     ],
     '🎅': [
         'santa_claus',
@@ -2727,7 +2727,7 @@ const emojiKeywords = {
         'men',
         'nicholas',
         'saint',
-        'sinterklaas'
+        'sinterklaas',
     ],
     '🤶': [
         'mrs_claus',
@@ -2739,7 +2739,7 @@ const emojiKeywords = {
         'celebration',
         'mrs.',
         'santa',
-        'women'
+        'women',
     ],
     '🦸': [
         'superhero',
@@ -2749,7 +2749,7 @@ const emojiKeywords = {
         'hero',
         'heroine',
         'superpower',
-        'superpowers'
+        'superpowers',
     ],
     '🦸‍♂️': [
         'man_superhero',
@@ -2760,7 +2760,7 @@ const emojiKeywords = {
         'superpowers',
         'fantasy',
         'men',
-        'superpower'
+        'superpower',
     ],
     '🦸‍♀️': [
         'woman_superhero',
@@ -2772,7 +2772,7 @@ const emojiKeywords = {
         'fantasy',
         'hero',
         'superpower',
-        'women'
+        'women',
     ],
     '🦹': [
         'supervillain',
@@ -2783,7 +2783,7 @@ const emojiKeywords = {
         'fantasy',
         'superpower',
         'superpowers',
-        'villain'
+        'villain',
     ],
     '🦹‍♂️': [
         'man_supervillain',
@@ -2797,7 +2797,7 @@ const emojiKeywords = {
         'fantasy',
         'men',
         'superpower',
-        'villain'
+        'villain',
     ],
     '🦹‍♀️': [
         'woman_supervillain',
@@ -2811,7 +2811,7 @@ const emojiKeywords = {
         'fantasy',
         'superpower',
         'villain',
-        'women'
+        'women',
     ],
     '🧙': ['mage', 'magic', 'fantasy', 'sorcerer', 'sorceress', 'witch', 'wizard'],
     '🧙‍♂️': ['man_mage', 'man', 'male', 'mage', 'sorcerer', 'fantasy', 'men', 'wizard'],
@@ -2824,7 +2824,7 @@ const emojiKeywords = {
         'fantasy',
         'sorceress',
         'wizard',
-        'women'
+        'women',
     ],
     '🧚': ['fairy', 'wings', 'magical', 'fantasy', 'oberon', 'puck', 'titania'],
     '🧚‍♂️': ['man_fairy', 'man', 'male', 'fantasy', 'men', 'oberon', 'puck'],
@@ -2855,7 +2855,7 @@ const emojiKeywords = {
         'face',
         'salon',
         'spa',
-        'women'
+        'women',
     ],
     '💇': [
         'person_getting_haircut',
@@ -2865,7 +2865,7 @@ const emojiKeywords = {
         'cutting',
         'hair',
         'hairdresser',
-        'parlor'
+        'parlor',
     ],
     '💇‍♂️': ['man_getting_haircut', 'male', 'boy', 'man', 'barber', 'beauty', 'men', 'parlor'],
     '💇‍♀️': [
@@ -2876,7 +2876,7 @@ const emojiKeywords = {
         'barber',
         'beauty',
         'parlor',
-        'women'
+        'women',
     ],
     '🚶': ['person_walking', 'move', 'hike', 'pedestrian', 'walk', 'walker'],
     '🚶‍♂️': ['man_walking', 'human', 'feet', 'steps', 'hike', 'male', 'men', 'pedestrian', 'walk'],
@@ -2890,7 +2890,7 @@ const emojiKeywords = {
         'hike',
         'pedestrian',
         'walk',
-        'women'
+        'women',
     ],
     '🧍': ['person_standing', 'still', 'stand'],
     '🧍‍♂️': ['man_standing', 'still', 'male', 'men', 'stand'],
@@ -2920,7 +2920,7 @@ const emojiKeywords = {
         'men',
         'racing',
         'runner',
-        'workout'
+        'workout',
     ],
     '🏃‍♀️': [
         'woman_running',
@@ -2935,7 +2935,7 @@ const emojiKeywords = {
         'racing',
         'runner',
         'women',
-        'workout'
+        'workout',
     ],
     '💃': [
         'woman_dancing',
@@ -2948,7 +2948,7 @@ const emojiKeywords = {
         'dress',
         'red',
         'salsa',
-        'women'
+        'women',
     ],
     '🕺': ['man_dancing', 'male', 'boy', 'fun', 'dancer', 'dance', 'disco', 'men'],
     '🕴️': [
@@ -2965,7 +2965,7 @@ const emojiKeywords = {
         'men',
         'person',
         'rude',
-        'walt'
+        'walt',
     ],
     '👯': [
         'people_with_bunny_ears',
@@ -2976,7 +2976,7 @@ const emojiKeywords = {
         'ear',
         'partying',
         'wearing',
-        'women'
+        'women',
     ],
     '👯‍♂️': [
         'men_with_bunny_ears',
@@ -2989,7 +2989,7 @@ const emojiKeywords = {
         'ear',
         'man',
         'partying',
-        'wearing'
+        'wearing',
     ],
     '👯‍♀️': [
         'women_with_bunny_ears',
@@ -3002,7 +3002,7 @@ const emojiKeywords = {
         'ear',
         'partying',
         'people',
-        'wearing'
+        'wearing',
     ],
     '🧖': ['person_in_steamy_room', 'relax', 'spa', 'hamam', 'sauna', 'steam', 'steambath'],
     '🧖‍♂️': [
@@ -3015,7 +3015,7 @@ const emojiKeywords = {
         'hamam',
         'men',
         'steam',
-        'steambath'
+        'steambath',
     ],
     '🧖‍♀️': [
         'woman_in_steamy_room',
@@ -3027,7 +3027,7 @@ const emojiKeywords = {
         'hamam',
         'steam',
         'steambath',
-        'women'
+        'women',
     ],
     '🧗': ['person_climbing', 'sport', 'bouldering', 'climber', 'rock'],
     '🧗‍♂️': [
@@ -3039,7 +3039,7 @@ const emojiKeywords = {
         'rock',
         'bouldering',
         'climber',
-        'men'
+        'men',
     ],
     '🧗‍♀️': [
         'woman_climbing',
@@ -3050,7 +3050,7 @@ const emojiKeywords = {
         'rock',
         'bouldering',
         'climber',
-        'women'
+        'women',
     ],
     '🤺': ['person_fencing', 'sports', 'fencing', 'sword', 'fencer'],
     '🏇': [
@@ -3062,7 +3062,7 @@ const emojiKeywords = {
         'luck',
         'jockey',
         'race',
-        'racehorse'
+        'racehorse',
     ],
     '⛷️': ['skier', 'sports', 'winter', 'snow', 'ski'],
     '🏂': ['snowboarder', 'sports', 'winter', 'ski', 'snow', 'snowboard', 'snowboarding'],
@@ -3077,7 +3077,7 @@ const emojiKeywords = {
         'ball',
         'golf',
         'golfer',
-        'women'
+        'women',
     ],
     '🏄': ['person_surfing', 'sport', 'sea', 'surf', 'surfer'],
     '🏄‍♂️': ['man_surfing', 'sports', 'ocean', 'sea', 'summer', 'beach', 'male', 'men', 'surfer'],
@@ -3091,7 +3091,7 @@ const emojiKeywords = {
         'woman',
         'female',
         'surfer',
-        'women'
+        'women',
     ],
     '🚣': ['person_rowing_boat', 'sport', 'move', 'paddles', 'rowboat', 'vehicle'],
     '🚣‍♂️': [
@@ -3103,7 +3103,7 @@ const emojiKeywords = {
         'male',
         'men',
         'rowboat',
-        'vehicle'
+        'vehicle',
     ],
     '🚣‍♀️': [
         'woman_rowing_boat',
@@ -3115,7 +3115,7 @@ const emojiKeywords = {
         'female',
         'rowboat',
         'vehicle',
-        'women'
+        'women',
     ],
     '🏊': ['person_swimming', 'sport', 'pool', 'swim', 'swimmer'],
     '🏊‍♂️': [
@@ -3129,7 +3129,7 @@ const emojiKeywords = {
         'male',
         'men',
         'swim',
-        'swimmer'
+        'swimmer',
     ],
     '🏊‍♀️': [
         'woman_swimming',
@@ -3143,7 +3143,7 @@ const emojiKeywords = {
         'female',
         'swim',
         'swimmer',
-        'women'
+        'women',
     ],
     '⛹️': ['person_bouncing_ball', 'sports', 'human', 'basketball', 'player'],
     '⛹️‍♂️': ['man_bouncing_ball', 'sport', 'basketball', 'male', 'men', 'player'],
@@ -3155,7 +3155,7 @@ const emojiKeywords = {
         'female',
         'basketball',
         'player',
-        'women'
+        'women',
     ],
     '🏋️': [
         'person_lifting_weights',
@@ -3167,7 +3167,7 @@ const emojiKeywords = {
         'lifter',
         'weight',
         'weightlifter',
-        'workout'
+        'workout',
     ],
     '🏋️‍♂️': [
         'man_lifting_weights',
@@ -3178,7 +3178,7 @@ const emojiKeywords = {
         'men',
         'weight',
         'weightlifter',
-        'workout'
+        'workout',
     ],
     '🏋️‍♀️': [
         'woman_lifting_weights',
@@ -3192,7 +3192,7 @@ const emojiKeywords = {
         'weight',
         'weightlifter',
         'women',
-        'workout'
+        'workout',
     ],
     '🚴': ['person_biking', 'bicycle', 'bike', 'cyclist', 'sport', 'move', 'bicyclist'],
     '🚴‍♂️': [
@@ -3205,7 +3205,7 @@ const emojiKeywords = {
         'hipster',
         'bicyclist',
         'male',
-        'men'
+        'men',
     ],
     '🚴‍♀️': [
         'woman_biking',
@@ -3218,7 +3218,7 @@ const emojiKeywords = {
         'woman',
         'female',
         'bicyclist',
-        'women'
+        'women',
     ],
     '🚵': [
         'person_mountain_biking',
@@ -3228,7 +3228,7 @@ const emojiKeywords = {
         'sport',
         'move',
         'bicyclist',
-        'biker'
+        'biker',
     ],
     '🚵‍♂️': [
         'man_mountain_biking',
@@ -3242,7 +3242,7 @@ const emojiKeywords = {
         'bicyclist',
         'biker',
         'male',
-        'men'
+        'men',
     ],
     '🚵‍♀️': [
         'woman_mountain_biking',
@@ -3257,7 +3257,7 @@ const emojiKeywords = {
         'female',
         'bicyclist',
         'biker',
-        'women'
+        'women',
     ],
     '🤸': [
         'person_cartwheeling',
@@ -3266,7 +3266,7 @@ const emojiKeywords = {
         'cartwheel',
         'doing',
         'gymnast',
-        'gymnastics'
+        'gymnastics',
     ],
     '🤸‍♂️': ['man_cartwheeling', 'gymnastics', 'cartwheel', 'doing', 'male', 'men'],
     '🤸‍♀️': ['woman_cartwheeling', 'gymnastics', 'cartwheel', 'doing', 'female', 'women'],
@@ -3289,7 +3289,7 @@ const emojiKeywords = {
         'multitask',
         'female',
         'juggler',
-        'women'
+        'women',
     ],
     '🧘': ['person_in_lotus_position', 'meditate', 'meditation', 'serenity', 'yoga'],
     '🧘‍♂️': [
@@ -3301,7 +3301,7 @@ const emojiKeywords = {
         'serenity',
         'zen',
         'mindfulness',
-        'men'
+        'men',
     ],
     '🧘‍♀️': [
         'woman_in_lotus_position',
@@ -3312,7 +3312,7 @@ const emojiKeywords = {
         'serenity',
         'zen',
         'mindfulness',
-        'women'
+        'women',
     ],
     '🛀': ['person_taking_bath', 'clean', 'shower', 'bathroom', 'bathing', 'bathtub', 'hot'],
     '🛌': ['person_in_bed', 'bed', 'rest', 'accommodation', 'hotel', 'sleep', 'sleeping'],
@@ -3326,7 +3326,7 @@ const emojiKeywords = {
         'hold',
         'inclusive',
         'neutral',
-        'nonconforming'
+        'nonconforming',
     ],
     '👭': [
         'women_holding_hands',
@@ -3345,7 +3345,7 @@ const emojiKeywords = {
         'lgbt',
         'pride',
         'two',
-        'woman'
+        'woman',
     ],
     '👫': [
         'woman_and_man_holding_hands',
@@ -3367,7 +3367,7 @@ const emojiKeywords = {
         'male',
         'men',
         'straight',
-        'women'
+        'women',
     ],
     '👬': [
         'men_holding_hands',
@@ -3387,7 +3387,7 @@ const emojiKeywords = {
         'male',
         'man',
         'pride',
-        'two'
+        'two',
     ],
     '💏': [
         'kiss',
@@ -3409,7 +3409,7 @@ const emojiKeywords = {
         'neutral',
         'romance',
         'woman',
-        'women'
+        'women',
     ],
     '👩‍❤️‍💋‍👨': [
         'kiss_woman_man',
@@ -3422,7 +3422,7 @@ const emojiKeywords = {
         'male',
         'men',
         'romance',
-        'women'
+        'women',
     ],
     '👨‍❤️‍💋‍👨': [
         'kiss_man_man',
@@ -3442,7 +3442,7 @@ const emojiKeywords = {
         'men',
         'pride',
         'romance',
-        'two'
+        'two',
     ],
     '👩‍❤️‍💋‍👩': [
         'kiss_woman_woman',
@@ -3462,7 +3462,7 @@ const emojiKeywords = {
         'pride',
         'romance',
         'two',
-        'women'
+        'women',
     ],
     '💑': [
         'couple_with_heart',
@@ -3483,7 +3483,7 @@ const emojiKeywords = {
         'neutral',
         'romance',
         'woman',
-        'women'
+        'women',
     ],
     '👩‍❤️‍👨': ['couple_with_heart_woman_man', 'love', 'female', 'male', 'men', 'romance', 'women'],
     '👨‍❤️‍👨': [
@@ -3502,7 +3502,7 @@ const emojiKeywords = {
         'men',
         'pride',
         'romance',
-        'two'
+        'two',
     ],
     '👩‍❤️‍👩': [
         'couple_with_heart_woman_woman',
@@ -3520,7 +3520,7 @@ const emojiKeywords = {
         'pride',
         'romance',
         'two',
-        'women'
+        'women',
     ],
     '👪': [
         'family',
@@ -3539,7 +3539,7 @@ const emojiKeywords = {
         'man',
         'men',
         'woman',
-        'women'
+        'women',
     ],
     '👨‍👩‍👦': ['family_man_woman_boy', 'love', 'father', 'mother', 'son'],
     '👨‍👩‍👧': [
@@ -3555,7 +3555,7 @@ const emojiKeywords = {
         'male',
         'men',
         'mother',
-        'women'
+        'women',
     ],
     '👨‍👩‍👧‍👦': [
         'family_man_woman_girl_boy',
@@ -3572,7 +3572,7 @@ const emojiKeywords = {
         'men',
         'mother',
         'son',
-        'women'
+        'women',
     ],
     '👨‍👩‍👦‍👦': [
         'family_man_woman_boy_boy',
@@ -3589,7 +3589,7 @@ const emojiKeywords = {
         'mother',
         'sons',
         'two',
-        'women'
+        'women',
     ],
     '👨‍👩‍👧‍👧': [
         'family_man_woman_girl_girl',
@@ -3606,7 +3606,7 @@ const emojiKeywords = {
         'men',
         'mother',
         'two',
-        'women'
+        'women',
     ],
     '👨‍👨‍👦': [
         'family_man_man_boy',
@@ -3624,7 +3624,7 @@ const emojiKeywords = {
         'men',
         'pride',
         'son',
-        'two'
+        'two',
     ],
     '👨‍👨‍👧': [
         'family_man_man_girl',
@@ -3642,7 +3642,7 @@ const emojiKeywords = {
         'male',
         'men',
         'pride',
-        'two'
+        'two',
     ],
     '👨‍👨‍👧‍👦': [
         'family_man_man_girl_boy',
@@ -3661,7 +3661,7 @@ const emojiKeywords = {
         'men',
         'pride',
         'son',
-        'two'
+        'two',
     ],
     '👨‍👨‍👦‍👦': [
         'family_man_man_boy_boy',
@@ -3679,7 +3679,7 @@ const emojiKeywords = {
         'men',
         'pride',
         'sons',
-        'two'
+        'two',
     ],
     '👨‍👨‍👧‍👧': [
         'family_man_man_girl_girl',
@@ -3697,7 +3697,7 @@ const emojiKeywords = {
         'male',
         'men',
         'pride',
-        'two'
+        'two',
     ],
     '👩‍👩‍👦': [
         'family_woman_woman_boy',
@@ -3715,7 +3715,7 @@ const emojiKeywords = {
         'pride',
         'son',
         'two',
-        'women'
+        'women',
     ],
     '👩‍👩‍👧': [
         'family_woman_woman_girl',
@@ -3733,7 +3733,7 @@ const emojiKeywords = {
         'mothers',
         'pride',
         'two',
-        'women'
+        'women',
     ],
     '👩‍👩‍👧‍👦': [
         'family_woman_woman_girl_boy',
@@ -3752,7 +3752,7 @@ const emojiKeywords = {
         'pride',
         'son',
         'two',
-        'women'
+        'women',
     ],
     '👩‍👩‍👦‍👦': [
         'family_woman_woman_boy_boy',
@@ -3770,7 +3770,7 @@ const emojiKeywords = {
         'pride',
         'sons',
         'two',
-        'women'
+        'women',
     ],
     '👩‍👩‍👧‍👧': [
         'family_woman_woman_girl_girl',
@@ -3788,7 +3788,7 @@ const emojiKeywords = {
         'mothers',
         'pride',
         'two',
-        'women'
+        'women',
     ],
     '👨‍👦': [
         'family_man_boy',
@@ -3800,7 +3800,7 @@ const emojiKeywords = {
         'father',
         'male',
         'men',
-        'son'
+        'son',
     ],
     '👨‍👦‍👦': [
         'family_man_boy_boy',
@@ -3814,7 +3814,7 @@ const emojiKeywords = {
         'male',
         'men',
         'sons',
-        'two'
+        'two',
     ],
     '👨‍👧': [
         'family_man_girl',
@@ -3826,7 +3826,7 @@ const emojiKeywords = {
         'daughter',
         'father',
         'female',
-        'male'
+        'male',
     ],
     '👨‍👧‍👦': [
         'family_man_girl_boy',
@@ -3840,7 +3840,7 @@ const emojiKeywords = {
         'father',
         'male',
         'men',
-        'son'
+        'son',
     ],
     '👨‍👧‍👧': [
         'family_man_girl_girl',
@@ -3854,7 +3854,7 @@ const emojiKeywords = {
         'father',
         'female',
         'male',
-        'two'
+        'two',
     ],
     '👩‍👦': [
         'family_woman_boy',
@@ -3866,7 +3866,7 @@ const emojiKeywords = {
         'female',
         'mother',
         'son',
-        'women'
+        'women',
     ],
     '👩‍👦‍👦': [
         'family_woman_boy_boy',
@@ -3880,7 +3880,7 @@ const emojiKeywords = {
         'mother',
         'sons',
         'two',
-        'women'
+        'women',
     ],
     '👩‍👧': [
         'family_woman_girl',
@@ -3892,7 +3892,7 @@ const emojiKeywords = {
         'daughter',
         'female',
         'mother',
-        'women'
+        'women',
     ],
     '👩‍👧‍👦': [
         'family_woman_girl_boy',
@@ -3906,7 +3906,7 @@ const emojiKeywords = {
         'female',
         'male',
         'mother',
-        'son'
+        'son',
     ],
     '👩‍👧‍👧': [
         'family_woman_girl_girl',
@@ -3920,7 +3920,7 @@ const emojiKeywords = {
         'female',
         'mother',
         'two',
-        'women'
+        'women',
     ],
     '🗣️': [
         'speaking_head',
@@ -3935,7 +3935,7 @@ const emojiKeywords = {
         'shout',
         'shouting',
         'silhouette',
-        'speak'
+        'speak',
     ],
     '👤': ['bust_in_silhouette', 'user', 'person', 'human', 'shadow'],
     '👥': [
@@ -3950,7 +3950,7 @@ const emojiKeywords = {
         'shadows',
         'silhouettes',
         'two',
-        'users'
+        'users',
     ],
     '👣': [
         'footprints',
@@ -3963,7 +3963,7 @@ const emojiKeywords = {
         'footprint',
         'footsteps',
         'print',
-        'tracks'
+        'tracks',
     ],
     '🐵': ['monkey_face', 'animal', 'nature', 'circus', 'head'],
     '🐒': ['monkey', 'animal', 'nature', 'banana', 'circus', 'cheeky'],
@@ -3993,7 +3993,7 @@ const emojiKeywords = {
         'galloping',
         'racehorse',
         'racing',
-        'speed'
+        'speed',
     ],
     '🦄': ['unicorn', 'animal', 'nature', 'mystical', 'face'],
     '🦓': ['zebra', 'animal', 'nature', 'stripes', 'safari', 'face', 'stripe'],
@@ -4019,7 +4019,7 @@ const emojiKeywords = {
         'hump',
         'asian',
         'bactrian',
-        'bump'
+        'bump',
     ],
     '🦙': ['llama', 'animal', 'nature', 'alpaca', 'guanaco', 'vicuña', 'wool'],
     '🦒': ['giraffe', 'animal', 'nature', 'spots', 'safari', 'face'],
@@ -4054,7 +4054,7 @@ const emojiKeywords = {
         'feet',
         'kitten',
         'print',
-        'puppy'
+        'puppy',
     ],
     '🦃': ['turkey', 'animal', 'bird', 'thanksgiving', 'wild'],
     '🐔': ['chicken', 'animal', 'cluck', 'nature', 'bird', 'hen'],
@@ -4086,7 +4086,7 @@ const emojiKeywords = {
         'bearer',
         'ophiuchus',
         'serpent',
-        'zodiac'
+        'zodiac',
     ],
     '🐲': ['dragon_face', 'animal', 'myth', 'nature', 'chinese', 'green', 'fairy', 'head', 'tale'],
     '🐉': ['dragon', 'animal', 'myth', 'nature', 'chinese', 'green', 'fairy', 'tale'],
@@ -4098,7 +4098,7 @@ const emojiKeywords = {
         'brachiosaurus',
         'brontosaurus',
         'diplodocus',
-        'extinct'
+        'extinct',
     ],
     '🦖': ['t_rex', 'animal', 'nature', 'dinosaur', 'tyrannosaurus', 'extinct', 'trex'],
     '🐳': ['spouting_whale', 'animal', 'nature', 'sea', 'ocean', 'cute', 'face'],
@@ -4118,7 +4118,7 @@ const emojiKeywords = {
         'fins',
         'beach',
         'great',
-        'white'
+        'white',
     ],
     '🐙': ['octopus', 'animal', 'creature', 'ocean', 'sea', 'nature', 'beach'],
     '🐚': ['spiral_shell', 'nature', 'sea', 'beach', 'seashell'],
@@ -4141,7 +4141,7 @@ const emojiKeywords = {
         'disease',
         'fever',
         'pest',
-        'virus'
+        'virus',
     ],
     '🦠': [
         'microbe',
@@ -4153,7 +4153,7 @@ const emojiKeywords = {
         'cell',
         'coronavirus',
         'germ',
-        'microorganism'
+        'microorganism',
     ],
     '💐': ['bouquet', 'flowers', 'nature', 'spring', 'flower', 'plant', 'romance'],
     '🌸': ['cherry_blossom', 'nature', 'plant', 'spring', 'flower', 'pink', 'sakura'],
@@ -4167,7 +4167,7 @@ const emojiKeywords = {
         'done',
         'paper',
         'stamp',
-        'well'
+        'well',
     ],
     '🏵️': ['rosette', 'flower', 'decoration', 'military', 'plant'],
     '🌹': ['rose', 'flowers', 'valentines', 'love', 'spring', 'flower', 'plant', 'red'],
@@ -4182,7 +4182,7 @@ const emojiKeywords = {
         'blossoming flower',
         'daisy',
         'flower',
-        'plant'
+        'plant',
     ],
     '🌷': ['tulip', 'flowers', 'plant', 'nature', 'summer', 'spring', 'flower'],
     '🌱': [
@@ -4194,7 +4194,7 @@ const emojiKeywords = {
         'spring',
         'sprout',
         'sprouting',
-        'young'
+        'young',
     ],
     '🌲': ['evergreen_tree', 'plant', 'nature', 'fir', 'pine', 'wood'],
     '🌳': ['deciduous_tree', 'plant', 'nature', 'rounded', 'shedding', 'wood'],
@@ -4207,7 +4207,7 @@ const emojiKeywords = {
         'beach',
         'mojito',
         'tropical',
-        'coconut'
+        'coconut',
     ],
     '🌵': ['cactus', 'vegetable', 'plant', 'nature', 'desert'],
     '🌾': ['sheaf_of_rice', 'nature', 'plant', 'crop', 'ear', 'farming', 'grain', 'wheat'],
@@ -4223,7 +4223,7 @@ const emojiKeywords = {
         'fall',
         'canada',
         'canadian',
-        'falling'
+        'falling',
     ],
     '🍂': [
         'fallen_leaf',
@@ -4234,7 +4234,7 @@ const emojiKeywords = {
         'autumn',
         'brown',
         'fall',
-        'falling'
+        'falling',
     ],
     '🍃': [
         'leaf_fluttering_in_wind',
@@ -4248,7 +4248,7 @@ const emojiKeywords = {
         'blow',
         'flutter',
         'green',
-        'leaves'
+        'leaves',
     ],
     '🍇': ['grapes', 'fruit', 'food', 'wine', 'grape', 'plant'],
     '🍈': ['melon', 'fruit', 'nature', 'food', 'cantaloupe', 'honeydew', 'muskmelon', 'plant'],
@@ -4286,7 +4286,7 @@ const emojiKeywords = {
         'chinese',
         'cos',
         'greens',
-        'romaine'
+        'romaine',
     ],
     '🥦': ['broccoli', 'fruit', 'food', 'vegetable', 'cabbage', 'wild'],
     '🧄': ['garlic', 'food', 'spice', 'cook', 'flavoring', 'plant', 'vegetable'],
@@ -4307,7 +4307,7 @@ const emojiKeywords = {
         'jewish_bakery',
         'breakfast',
         'cheese',
-        'cream'
+        'cream',
     ],
     '🥞': [
         'pancakes',
@@ -4319,7 +4319,7 @@ const emojiKeywords = {
         'crêpe',
         'crêpes',
         'hotcake',
-        'pancake'
+        'pancake',
     ],
     '🧇': ['waffle', 'food', 'breakfast', 'brunch', 'indecisive', 'iron'],
     '🧀': ['cheese_wedge', 'food', 'chadder', 'swiss'],
@@ -4341,7 +4341,7 @@ const emojiKeywords = {
         'cheese',
         'deli',
         'meat',
-        'vegetables'
+        'vegetables',
     ],
     '🌮': ['taco', 'food', 'mexican'],
     '🌯': ['burrito', 'food', 'mexican', 'wrap'],
@@ -4357,7 +4357,7 @@ const emojiKeywords = {
         'kebab',
         'pita',
         'sandwich',
-        'shawarma'
+        'shawarma',
     ],
     '🧆': ['falafel', 'food', 'mediterranean', 'chickpea', 'falfel', 'meatball'],
     '🥚': ['egg', 'food', 'chicken', 'breakfast'],
@@ -4372,7 +4372,7 @@ const emojiKeywords = {
         'oatmeal',
         'porridge',
         'congee',
-        'tableware'
+        'tableware',
     ],
     '🥗': ['green_salad', 'food', 'healthy', 'lettuce', 'vegetable'],
     '🍿': ['popcorn', 'food', 'movie theater', 'films', 'snack', 'drama', 'corn', 'popping'],
@@ -4404,7 +4404,7 @@ const emojiKeywords = {
         'ramen',
         'design',
         'fishcake',
-        'pastry'
+        'pastry',
     ],
     '🥮': ['moon_cake', 'food', 'autumn', 'dessert', 'festival', 'mooncake', 'yuèbǐng'],
     '🍡': [
@@ -4420,7 +4420,7 @@ const emojiKeywords = {
         'pink',
         'skewer',
         'stick',
-        'white'
+        'white',
     ],
     '🥟': ['dumpling', 'food', 'empanada', 'pierogi', 'potsticker', 'gyoza', 'gyōza', 'jiaozi'],
     '🥠': ['fortune_cookie', 'food', 'prophecy', 'dessert'],
@@ -4433,7 +4433,7 @@ const emojiKeywords = {
         'out',
         'oyster',
         'pail',
-        'take'
+        'take',
     ],
     '🦀': ['crab', 'animal', 'crustacean', 'cancer', 'zodiac'],
     '🦞': ['lobster', 'animal', 'nature', 'bisque', 'claws', 'seafood'],
@@ -4450,7 +4450,7 @@ const emojiKeywords = {
         'mr.',
         'serve',
         'sweet',
-        'whippy'
+        'whippy',
     ],
     '🍧': ['shaved_ice', 'hot', 'dessert', 'summer', 'cone', 'snow', 'sweet'],
     '🍨': ['ice_cream', 'food', 'hot', 'dessert', 'bowl', 'sweet'],
@@ -4465,7 +4465,7 @@ const emojiKeywords = {
         'celebration',
         'party',
         'pastry',
-        'sweet'
+        'sweet',
     ],
     '🍰': [
         'shortcake',
@@ -4476,7 +4476,7 @@ const emojiKeywords = {
         'piece',
         'slice',
         'strawberry',
-        'sweet'
+        'sweet',
     ],
     '🧁': ['cupcake', 'food', 'dessert', 'bakery', 'sweet', 'cake', 'fairy', 'pastry'],
     '🥧': ['pie', 'food', 'dessert', 'pastry', 'filling', 'sweet'],
@@ -4499,7 +4499,7 @@ const emojiKeywords = {
         'chocolate',
         'drink',
         'steaming',
-        'tea'
+        'tea',
     ],
     '🍵': [
         'teacup_without_handle',
@@ -4511,7 +4511,7 @@ const emojiKeywords = {
         'beverage',
         'cup',
         'matcha',
-        'tea'
+        'tea',
     ],
     '🍶': [
         'sake',
@@ -4525,7 +4525,7 @@ const emojiKeywords = {
         'bar',
         'bottle',
         'cup',
-        'rice'
+        'rice',
     ],
     '🍾': [
         'bottle_with_popping_cork',
@@ -4537,7 +4537,7 @@ const emojiKeywords = {
         'bubbly',
         'champagne',
         'party',
-        'sparkling'
+        'sparkling',
     ],
     '🍷': ['wine_glass', 'drink', 'beverage', 'drunk', 'alcohol', 'booze', 'bar', 'red'],
     '🍸': [
@@ -4549,7 +4549,7 @@ const emojiKeywords = {
         'booze',
         'mojito',
         'bar',
-        'martini'
+        'martini',
     ],
     '🍹': [
         'tropical_drink',
@@ -4564,7 +4564,7 @@ const emojiKeywords = {
         'fruit',
         'punch',
         'tiki',
-        'vacation'
+        'vacation',
     ],
     '🍺': [
         'beer_mug',
@@ -4578,7 +4578,7 @@ const emojiKeywords = {
         'alcohol',
         'booze',
         'bar',
-        'stein'
+        'stein',
     ],
     '🍻': [
         'clinking_beer_mugs',
@@ -4596,7 +4596,7 @@ const emojiKeywords = {
         'cheers',
         'clink',
         'drinks',
-        'mug'
+        'mug',
     ],
     '🥂': [
         'clinking_glasses',
@@ -4611,7 +4611,7 @@ const emojiKeywords = {
         'toast',
         'celebration',
         'clink',
-        'glass'
+        'glass',
     ],
     '🥃': [
         'tumbler_glass',
@@ -4627,7 +4627,7 @@ const emojiKeywords = {
         'glass',
         'shot',
         'rum',
-        'whiskey'
+        'whiskey',
     ],
     '🥤': [
         'cup_with_straw',
@@ -4641,7 +4641,7 @@ const emojiKeywords = {
         'smoothie',
         'soft',
         'tableware',
-        'water'
+        'water',
     ],
     '🧃': ['beverage_box', 'drink', 'juice', 'straw', 'sweet'],
     '🧉': [
@@ -4653,7 +4653,7 @@ const emojiKeywords = {
         'chimarrão',
         'cimarrón',
         'maté',
-        'yerba'
+        'yerba',
     ],
     '🧊': ['ice', 'water', 'cold', 'cube', 'iceberg'],
     '🥢': ['chopsticks', 'food', 'hashi', 'jeotgarak', 'kuaizi'],
@@ -4668,7 +4668,7 @@ const emojiKeywords = {
         'cooking',
         'cutlery',
         'dining',
-        'tableware'
+        'tableware',
     ],
     '🍴': ['fork_and_knife', 'cutlery', 'kitchen', 'cooking', 'silverware', 'tableware'],
     '🥄': ['spoon', 'cutlery', 'kitchen', 'tableware'],
@@ -4684,7 +4684,7 @@ const emojiKeywords = {
         'cooking',
         'cut',
         'hocho',
-        'tool'
+        'tool',
     ],
     '🏺': ['amphora', 'vase', 'jar', 'aquarius', 'cooking', 'drink', 'jug', 'tool', 'zodiac'],
     '🌍': ['globe_showing_europe_africa', 'globe', 'world', 'earth', 'international', 'planet'],
@@ -4696,7 +4696,7 @@ const emojiKeywords = {
         'east',
         'earth',
         'international',
-        'planet'
+        'planet',
     ],
     '🌐': [
         'globe_with_meridians',
@@ -4709,7 +4709,7 @@ const emojiKeywords = {
         'global',
         'web',
         'wide',
-        'www'
+        'www',
     ],
     '🗺️': ['world_map', 'location', 'direction', 'travel'],
     '🗾': ['map_of_japan', 'nation', 'country', 'japanese', 'asia', 'silhouette'],
@@ -4736,7 +4736,7 @@ const emojiKeywords = {
         'building',
         'abandoned',
         'haunted',
-        'old'
+        'old',
     ],
     '🏠': ['house', 'building', 'home'],
     '🏡': ['house_with_garden', 'home', 'plant', 'nature', 'building', 'tree'],
@@ -4748,7 +4748,7 @@ const emojiKeywords = {
         'communication',
         'japan',
         'mark',
-        'postal'
+        'postal',
     ],
     '🏤': ['post_office', 'building', 'email', 'european'],
     '🏥': [
@@ -4762,7 +4762,7 @@ const emojiKeywords = {
         'medical',
         'medicine',
         'red',
-        'room'
+        'room',
     ],
     '🏦': [
         'bank',
@@ -4774,7 +4774,7 @@ const emojiKeywords = {
         'enterprise',
         'bakkureru',
         'bk',
-        'branch'
+        'branch',
     ],
     '🏨': ['hotel', 'building', 'accomodation', 'checkin', 'accommodation', 'h'],
     '🏩': ['love_hotel', 'like', 'affection', 'dating', 'building', 'heart', 'hospital'],
@@ -4789,7 +4789,7 @@ const emojiKeywords = {
         'hour',
         'kwik',
         'mart',
-        'shop'
+        'shop',
     ],
     '🏫': [
         'school',
@@ -4802,7 +4802,7 @@ const emojiKeywords = {
         'elementary',
         'high',
         'middle',
-        'tower'
+        'tower',
     ],
     '🏬': ['department_store', 'building', 'shopping', 'mall', 'center', 'shops'],
     '🏭': ['factory', 'building', 'industry', 'pollution', 'smoke', 'industrial', 'smog'],
@@ -4821,7 +4821,7 @@ const emojiKeywords = {
         'chapel',
         'church',
         'heart',
-        'romance'
+        'romance',
     ],
     '🗼': ['tokyo_tower', 'photo', 'japanese', 'eiffel', 'red'],
     '🗽': ['statue_of_liberty', 'american', 'newyork', 'new', 'york'],
@@ -4843,7 +4843,7 @@ const emojiKeywords = {
         'fog bridge',
         'karl',
         'under',
-        'weather'
+        'weather',
     ],
     '🌃': ['night_with_stars', 'evening', 'city', 'downtown', 'star', 'starry', 'weather'],
     '🏙️': ['cityscape', 'photo', 'night life', 'urban', 'building', 'city', 'skyline'],
@@ -4855,7 +4855,7 @@ const emojiKeywords = {
         'morning',
         'mountain',
         'sun',
-        'weather'
+        'weather',
     ],
     '🌅': ['sunrise', 'morning', 'view', 'vacation', 'photo', 'sun', 'sunset', 'weather'],
     '🌆': [
@@ -4870,7 +4870,7 @@ const emojiKeywords = {
         'orange',
         'sun',
         'sunset',
-        'weather'
+        'weather',
     ],
     '🌇': [
         'sunset',
@@ -4884,7 +4884,7 @@ const emojiKeywords = {
         'over',
         'sun',
         'sunrise',
-        'weather'
+        'weather',
     ],
     '🌉': ['bridge_at_night', 'photo', 'sanfrancisco', 'gate', 'golden', 'weather'],
     '♨️': ['hot_springs', 'bath', 'warm', 'relax', 'hotsprings', 'onsen', 'steam', 'steaming'],
@@ -4897,7 +4897,7 @@ const emojiKeywords = {
         'fairground',
         'go',
         'merry',
-        'round'
+        'round',
     ],
     '🎡': [
         'ferris_wheel',
@@ -4910,7 +4910,7 @@ const emojiKeywords = {
         'entertainment',
         'fairground',
         'observation',
-        'park'
+        'park',
     ],
     '🎢': [
         'roller_coaster',
@@ -4923,7 +4923,7 @@ const emojiKeywords = {
         'entertainment',
         'park',
         'rollercoaster',
-        'theme'
+        'theme',
     ],
     '💈': [
         'barber_pole',
@@ -4934,7 +4934,7 @@ const emojiKeywords = {
         'haircut',
         'hairdresser',
         'shop',
-        'stripes'
+        'stripes',
     ],
     '🎪': [
         'circus_tent',
@@ -4944,7 +4944,7 @@ const emojiKeywords = {
         'activity',
         'big',
         'entertainment',
-        'top'
+        'top',
     ],
     '🚂': ['locomotive', 'transportation', 'vehicle', 'train', 'engine', 'railway', 'steam'],
     '🚃': [
@@ -4958,7 +4958,7 @@ const emojiKeywords = {
         'train',
         'tram',
         'trolleybus',
-        'wagon'
+        'wagon',
     ],
     '🚄': [
         'high_speed_train',
@@ -4967,7 +4967,7 @@ const emojiKeywords = {
         'bullettrain',
         'railway',
         'shinkansen',
-        'side'
+        'side',
     ],
     '🚅': [
         'bullet_train',
@@ -4982,7 +4982,7 @@ const emojiKeywords = {
         'high',
         'nose',
         'railway',
-        'shinkansen'
+        'shinkansen',
     ],
     '🚆': [
         'train',
@@ -4993,7 +4993,7 @@ const emojiKeywords = {
         'passenger',
         'railway',
         'regular',
-        'train2'
+        'train2',
     ],
     '🚇': [
         'metro',
@@ -5004,7 +5004,7 @@ const emojiKeywords = {
         'tube',
         'subway',
         'train',
-        'vehicle'
+        'vehicle',
     ],
     '🚈': ['light_rail', 'transportation', 'vehicle', 'railway'],
     '🚉': ['station', 'transportation', 'vehicle', 'public', 'platform', 'railway', 'train'],
@@ -5019,7 +5019,7 @@ const emojiKeywords = {
         'public',
         'travel',
         'train',
-        'trolleybus'
+        'trolleybus',
     ],
     '🚌': ['bus', 'car', 'vehicle', 'transportation', 'school'],
     '🚍': ['oncoming_bus', 'vehicle', 'transportation', 'front'],
@@ -5031,7 +5031,7 @@ const emojiKeywords = {
         'bus',
         'electric bus',
         'tram',
-        'trolley'
+        'trolley',
     ],
     '🚐': ['minibus', 'vehicle', 'car', 'transportation', 'bus', 'minivan', 'mover', 'people'],
     '🚑': ['ambulance', 'health', '911', 'hospital', 'vehicle'],
@@ -5046,7 +5046,7 @@ const emojiKeywords = {
         'enforcement',
         'cop',
         'patrol',
-        'side'
+        'side',
     ],
     '🚔': [
         'oncoming_police_car',
@@ -5056,7 +5056,7 @@ const emojiKeywords = {
         'enforcement',
         '911',
         'front of',
-        '🚓 cop'
+        '🚓 cop',
     ],
     '🚕': ['taxi', 'uber', 'vehicle', 'cars', 'transportation', 'new', 'side', 'taxicab', 'york'],
     '🚖': ['oncoming_taxi', 'vehicle', 'cars', 'uber', 'front', 'taxicab'],
@@ -5071,7 +5071,7 @@ const emojiKeywords = {
         'car',
         'motorhome',
         'recreational',
-        'rv'
+        'rv',
     ],
     '🚚': ['delivery_truck', 'cars', 'transportation', 'vehicle'],
     '🚛': [
@@ -5082,7 +5082,7 @@ const emojiKeywords = {
         'express',
         'green',
         'semi',
-        'truck'
+        'truck',
     ],
     '🚜': ['tractor', 'vehicle', 'car', 'farming', 'agriculture', 'farm'],
     '🏎️': ['racing_car', 'sports', 'race', 'fast', 'formula', 'f1', 'one'],
@@ -5118,7 +5118,7 @@ const emojiKeywords = {
         'revolving',
         'rotating',
         'siren',
-        'vehicle'
+        'vehicle',
     ],
     '🚥': ['horizontal_traffic_light', 'transportation', 'signal'],
     '🚦': ['vertical_traffic_light', 'transportation', 'driving', 'semaphore', 'signal'],
@@ -5134,7 +5134,7 @@ const emojiKeywords = {
         'roadwork',
         'sign',
         'striped',
-        'yellow'
+        'yellow',
     ],
     '⚓': ['anchor', 'ship', 'ferry', 'sea', 'boat', 'admiralty', 'fisherman', 'pattern', 'tool'],
     '⛵': [
@@ -5149,7 +5149,7 @@ const emojiKeywords = {
         'resort',
         'sea',
         'vehicle',
-        'yacht'
+        'yacht',
     ],
     '🛶': ['canoe', 'boat', 'paddle', 'water', 'ship'],
     '🚤': [
@@ -5160,7 +5160,7 @@ const emojiKeywords = {
         'summer',
         'boat',
         'motorboat',
-        'powerboat'
+        'powerboat',
     ],
     '🛳️': ['passenger_ship', 'yacht', 'cruise', 'ferry', 'vehicle'],
     '⛴️': ['ferry', 'boat', 'ship', 'yacht', 'passenger'],
@@ -5178,7 +5178,7 @@ const emojiKeywords = {
         'off',
         'plane',
         'taking',
-        'vehicle'
+        'vehicle',
     ],
     '🛬': [
         'airplane_arrival',
@@ -5190,7 +5190,7 @@ const emojiKeywords = {
         'arriving',
         'landing',
         'plane',
-        'vehicle'
+        'vehicle',
     ],
     '🪂': ['parachute', 'fly', 'glide', 'hang', 'parasail', 'skydive'],
     '💺': [
@@ -5203,7 +5203,7 @@ const emojiKeywords = {
         'fly',
         'aeroplane',
         'chair',
-        'train'
+        'train',
     ],
     '🚁': ['helicopter', 'transportation', 'vehicle', 'fly'],
     '🚟': ['suspension_railway', 'vehicle', 'transportation'],
@@ -5216,7 +5216,7 @@ const emojiKeywords = {
         'cable',
         'car',
         'gondola',
-        'ropeway'
+        'ropeway',
     ],
     '🛰️': [
         'satellite',
@@ -5228,7 +5228,7 @@ const emojiKeywords = {
         'ISS',
         'artificial',
         'space',
-        'vehicle'
+        'vehicle',
     ],
     '🚀': [
         'rocket',
@@ -5240,7 +5240,7 @@ const emojiKeywords = {
         'outer_space',
         'fly',
         'shuttle',
-        'vehicle'
+        'vehicle',
     ],
     '🛸': [
         'flying_saucer',
@@ -5250,7 +5250,7 @@ const emojiKeywords = {
         'alien',
         'extraterrestrial',
         'fantasy',
-        'space'
+        'space',
     ],
     '🛎️': ['bellhop_bell', 'service', 'hotel'],
     '🧳': ['luggage', 'packing', 'travel', 'suitcase'],
@@ -5264,7 +5264,7 @@ const emojiKeywords = {
         'quiz',
         'test',
         'sand',
-        'timer'
+        'timer',
     ],
     '⏳': ['hourglass_not_done', 'oldschool', 'time', 'countdown', 'flowing', 'sand', 'timer'],
     '⌚': ['watch', 'time', 'accessories', 'apple', 'clock', 'timepiece', 'wrist', 'wristwatch'],
@@ -5289,7 +5289,7 @@ const emojiKeywords = {
         'clock12',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕧': [
         'twelve_thirty',
@@ -5303,7 +5303,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock1230',
-        'face'
+        'face',
     ],
     '🕐': [
         'one_o_clock',
@@ -5319,7 +5319,7 @@ const emojiKeywords = {
         'clock1',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕜': [
         'one_thirty',
@@ -5333,7 +5333,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock130',
-        'face'
+        'face',
     ],
     '🕑': [
         'two_o_clock',
@@ -5349,7 +5349,7 @@ const emojiKeywords = {
         'clock2',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕝': [
         'two_thirty',
@@ -5363,7 +5363,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock230',
-        'face'
+        'face',
     ],
     '🕒': [
         'three_o_clock',
@@ -5379,7 +5379,7 @@ const emojiKeywords = {
         'clock3',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕞': [
         'three_thirty',
@@ -5393,7 +5393,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock330',
-        'face'
+        'face',
     ],
     '🕓': [
         'four_o_clock',
@@ -5409,7 +5409,7 @@ const emojiKeywords = {
         'clock4',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕟': [
         'four_thirty',
@@ -5423,7 +5423,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock430',
-        'face'
+        'face',
     ],
     '🕔': [
         'five_o_clock',
@@ -5439,7 +5439,7 @@ const emojiKeywords = {
         'clock5',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕠': [
         'five_thirty',
@@ -5453,7 +5453,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock530',
-        'face'
+        'face',
     ],
     '🕕': [
         'six_o_clock',
@@ -5471,7 +5471,7 @@ const emojiKeywords = {
         'clock6',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕡': [
         'six_thirty',
@@ -5485,7 +5485,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock630',
-        'face'
+        'face',
     ],
     '🕖': [
         'seven_o_clock',
@@ -5501,7 +5501,7 @@ const emojiKeywords = {
         'clock7',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕢': [
         'seven_thirty',
@@ -5515,7 +5515,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock730',
-        'face'
+        'face',
     ],
     '🕗': [
         'eight_o_clock',
@@ -5531,7 +5531,7 @@ const emojiKeywords = {
         'clock8',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕣': [
         'eight_thirty',
@@ -5545,7 +5545,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock830',
-        'face'
+        'face',
     ],
     '🕘': [
         'nine_o_clock',
@@ -5561,7 +5561,7 @@ const emojiKeywords = {
         'clock9',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕤': [
         'nine_thirty',
@@ -5575,7 +5575,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock930',
-        'face'
+        'face',
     ],
     '🕙': [
         'ten_o_clock',
@@ -5591,7 +5591,7 @@ const emojiKeywords = {
         'clock10',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕥': [
         'ten_thirty',
@@ -5605,7 +5605,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock1030',
-        'face'
+        'face',
     ],
     '🕚': [
         'eleven_o_clock',
@@ -5621,7 +5621,7 @@ const emojiKeywords = {
         'clock11',
         'face',
         'oclock',
-        'o’clock'
+        'o’clock',
     ],
     '🕦': [
         'eleven_thirty',
@@ -5635,7 +5635,7 @@ const emojiKeywords = {
         'schedule',
         'clock',
         'clock1130',
-        'face'
+        'face',
     ],
     '🌑': [
         'new_moon',
@@ -5651,7 +5651,7 @@ const emojiKeywords = {
         'shadow moon',
         'solar',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌒': [
         'waxing_crescent_moon',
@@ -5663,7 +5663,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌓': [
         'first_quarter_moon',
@@ -5675,7 +5675,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌔': [
         'waxing_gibbous_moon',
@@ -5689,7 +5689,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌕': [
         'full_moon',
@@ -5702,7 +5702,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌖': [
         'waning_gibbous_moon',
@@ -5715,7 +5715,7 @@ const emojiKeywords = {
         'sleep',
         'waxing_gibbous_moon',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌗': [
         'last_quarter_moon',
@@ -5727,7 +5727,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌘': [
         'waning_crescent_moon',
@@ -5739,7 +5739,7 @@ const emojiKeywords = {
         'evening',
         'sleep',
         'symbol',
-        'weather'
+        'weather',
     ],
     '🌙': ['crescent_moon', 'night', 'sleep', 'sky', 'evening', 'magic', 'space', 'weather'],
     '🌚': [
@@ -5754,7 +5754,7 @@ const emojiKeywords = {
         'creepy',
         'dark',
         'molester',
-        'weather'
+        'weather',
     ],
     '🌛': [
         'first_quarter_moon_face',
@@ -5765,7 +5765,7 @@ const emojiKeywords = {
         'night',
         'evening',
         'sleep',
-        'weather'
+        'weather',
     ],
     '🌜': [
         'last_quarter_moon_face',
@@ -5776,7 +5776,7 @@ const emojiKeywords = {
         'night',
         'evening',
         'sleep',
-        'weather'
+        'weather',
     ],
     '🌡️': ['thermometer', 'weather', 'temperature', 'hot', 'cold'],
     '☀️': [
@@ -5792,7 +5792,7 @@ const emojiKeywords = {
         'rays',
         'space',
         'sunny',
-        'sunshine'
+        'sunshine',
     ],
     '🌝': [
         'full_moon_face',
@@ -5807,7 +5807,7 @@ const emojiKeywords = {
         'moonface',
         'smiley',
         'smiling',
-        'weather'
+        'weather',
     ],
     '🌞': [
         'sun_with_face',
@@ -5820,7 +5820,7 @@ const emojiKeywords = {
         'space',
         'summer',
         'sunface',
-        'weather'
+        'weather',
     ],
     '🪐': ['ringed_planet', 'outerspace', 'planets', 'saturn', 'saturnine', 'space'],
     '⭐': ['star', 'night', 'yellow', 'gold', 'medium', 'white'],
@@ -5834,7 +5834,7 @@ const emojiKeywords = {
         'glittery',
         'glow',
         'shining',
-        'star2'
+        'star2',
     ],
     '🌠': [
         'shooting_star',
@@ -5848,7 +5848,7 @@ const emojiKeywords = {
         'upon',
         'when',
         'wish',
-        'you'
+        'you',
     ],
     '🌌': ['milky_way', 'photo', 'space', 'stars', 'galaxy', 'night', 'sky', 'universe', 'weather'],
     '☁️': ['cloud', 'weather', 'sky', 'cloudy', 'overcast'],
@@ -5861,7 +5861,7 @@ const emojiKeywords = {
         'fall',
         'spring',
         'partly',
-        'sunny'
+        'sunny',
     ],
     '⛈️': ['cloud_with_lightning_and_rain', 'weather', 'lightning', 'thunder'],
     '🌤️': ['sun_behind_small_cloud', 'weather', 'white'],
@@ -5887,7 +5887,7 @@ const emojiKeywords = {
         'hurricane',
         'typhoon',
         'dizzy',
-        'twister'
+        'twister',
     ],
     '🌈': [
         'rainbow',
@@ -5902,7 +5902,7 @@ const emojiKeywords = {
         'pride',
         'primary',
         'rain',
-        'weather'
+        'weather',
     ],
     '🌂': [
         'closed_umbrella',
@@ -5911,7 +5911,7 @@ const emojiKeywords = {
         'drizzle',
         'clothing',
         'collapsed umbrella',
-        'pink'
+        'pink',
     ],
     '☂️': ['umbrella', 'weather', 'spring', 'clothing', 'open', 'rain'],
     '☔': ['umbrella_with_rain_drops', 'rainy', 'weather', 'spring', 'clothing', 'drop', 'raining'],
@@ -5927,7 +5927,7 @@ const emojiKeywords = {
         'electric',
         'electricity',
         'sign',
-        'thunderbolt'
+        'thunderbolt',
     ],
     '❄️': [
         'snowflake',
@@ -5938,7 +5938,7 @@ const emojiKeywords = {
         'christmas',
         'xmas',
         'snow',
-        'snowing'
+        'snowing',
     ],
     '☃️': [
         'snowman',
@@ -5951,7 +5951,7 @@ const emojiKeywords = {
         'frozen',
         'snow',
         'snowflakes',
-        'snowing'
+        'snowing',
     ],
     '⛄': [
         'snowman_without_snow',
@@ -5964,7 +5964,7 @@ const emojiKeywords = {
         'frozen',
         'without_snow',
         'frosty',
-        'olaf'
+        'olaf',
     ],
     '☄️': ['comet', 'space'],
     '🔥': ['fire', 'hot', 'cook', 'flame', 'burn', 'lit', 'snapstreak', 'tool'],
@@ -5978,7 +5978,7 @@ const emojiKeywords = {
         'comic',
         'drop',
         'sweat',
-        'weather'
+        'weather',
     ],
     '🌊': [
         'water_wave',
@@ -5991,7 +5991,7 @@ const emojiKeywords = {
         'beach',
         'ocean',
         'waves',
-        'weather'
+        'weather',
     ],
     '🎃': [
         'jack_o_lantern',
@@ -6003,7 +6003,7 @@ const emojiKeywords = {
         'activity',
         'celebration',
         'entertainment',
-        'gourd'
+        'gourd',
     ],
     '🎄': [
         'christmas_tree',
@@ -6014,7 +6014,7 @@ const emojiKeywords = {
         'celebration',
         'activity',
         'entertainment',
-        'xmas tree'
+        'xmas tree',
     ],
     '🎆': [
         'fireworks',
@@ -6025,7 +6025,7 @@ const emojiKeywords = {
         'activity',
         'celebration',
         'entertainment',
-        'explosion'
+        'explosion',
     ],
     '🎇': [
         'sparkler',
@@ -6039,7 +6039,7 @@ const emojiKeywords = {
         'fireworks',
         'hanabi',
         'senko',
-        'sparkle'
+        'sparkle',
     ],
     '🧨': ['firecracker', 'dynamite', 'boom', 'explode', 'explosion', 'explosive', 'fireworks'],
     '✨': [
@@ -6054,7 +6054,7 @@ const emojiKeywords = {
         'entertainment',
         'glitter',
         'sparkle',
-        'star'
+        'star',
     ],
     '🎈': [
         'balloon',
@@ -6064,7 +6064,7 @@ const emojiKeywords = {
         'circus',
         'activity',
         'entertainment',
-        'red'
+        'red',
     ],
     '🎉': [
         'party_popper',
@@ -6078,7 +6078,7 @@ const emojiKeywords = {
         'activity',
         'entertainment',
         'hat',
-        'hooray'
+        'hooray',
     ],
     '🎊': [
         'confetti_ball',
@@ -6088,7 +6088,7 @@ const emojiKeywords = {
         'circus',
         'activity',
         'celebration',
-        'entertainment'
+        'entertainment',
     ],
     '🎋': [
         'tanabata_tree',
@@ -6104,7 +6104,7 @@ const emojiKeywords = {
         'banner',
         'celebration',
         'entertainment',
-        'japanese'
+        'japanese',
     ],
     '🎍': [
         'pine_decoration',
@@ -6118,7 +6118,7 @@ const emojiKeywords = {
         'activity',
         'celebration',
         'kadomatsu',
-        'year'
+        'year',
     ],
     '🎎': [
         'japanese_dolls',
@@ -6131,7 +6131,7 @@ const emojiKeywords = {
         'entertainment',
         'festival',
         'hinamatsuri',
-        'imperial'
+        'imperial',
     ],
     '🎏': [
         'carp_streamer',
@@ -6146,7 +6146,7 @@ const emojiKeywords = {
         'flag',
         'flags',
         'socks',
-        'wind'
+        'wind',
     ],
     '🎐': [
         'wind_chime',
@@ -6158,7 +6158,7 @@ const emojiKeywords = {
         'celebration',
         'entertainment',
         'furin',
-        'jellyfish'
+        'jellyfish',
     ],
     '🎑': [
         'moon_viewing_ceremony',
@@ -6176,7 +6176,7 @@ const emojiKeywords = {
         'harvest',
         'mid',
         'rice',
-        'scene'
+        'scene',
     ],
     '🧧': [
         'red_envelope',
@@ -6189,7 +6189,7 @@ const emojiKeywords = {
         'money',
         'packet',
         'pao',
-        'see'
+        'see',
     ],
     '🎀': ['ribbon', 'decoration', 'pink', 'girl', 'bowtie', 'bow', 'celebration'],
     '🎁': [
@@ -6200,7 +6200,7 @@ const emojiKeywords = {
         'xmas',
         'box',
         'celebration',
-        'entertainment'
+        'entertainment',
     ],
     '🎗️': ['reminder_ribbon', 'sports', 'cause', 'support', 'awareness', 'celebration'],
     '🎟️': ['admission_tickets', 'sports', 'concert', 'entrance', 'entertainment', 'ticket'],
@@ -6214,7 +6214,7 @@ const emojiKeywords = {
         'entertainment',
         'stub',
         'tour',
-        'world'
+        'world',
     ],
     '🎖️': ['military_medal', 'award', 'winning', 'army', 'celebration', 'decoration', 'medallion'],
     '🏆': [
@@ -6228,7 +6228,7 @@ const emojiKeywords = {
         'championship',
         'prize',
         'winner',
-        'winners'
+        'winners',
     ],
     '🏅': ['sports_medal', 'award', 'winning', 'gold', 'winner'],
     '🥇': ['1st_place_medal', 'award', 'winning', 'first', 'gold'],
@@ -6274,7 +6274,7 @@ const emojiKeywords = {
         'dart',
         'darts',
         'entertainment',
-        'eye'
+        'eye',
     ],
     '🪀': ['yo_yo', 'toy', 'fluctuate', 'yoyo'],
     '🪁': ['kite', 'wind', 'fly', 'soar', 'toy'],
@@ -6290,7 +6290,7 @@ const emojiKeywords = {
         'billiards',
         'cue',
         'eight',
-        'snooker'
+        'snooker',
     ],
     '🔮': [
         'crystal_ball',
@@ -6305,7 +6305,7 @@ const emojiKeywords = {
         'psychic',
         'purple',
         'tale',
-        'tool'
+        'tool',
     ],
     '🧿': ['nazar_amulet', 'bead', 'charm', 'boncuğu', 'evil', 'eye', 'talisman'],
     '🎮': [
@@ -6319,7 +6319,7 @@ const emojiKeywords = {
         'playstation',
         'u',
         'wii',
-        'xbox'
+        'xbox',
     ],
     '🕹️': ['joystick', 'game', 'play', 'entertainment', 'video'],
     '🎰': [
@@ -6333,7 +6333,7 @@ const emojiKeywords = {
         'activity',
         'gambling',
         'game',
-        'poker'
+        'poker',
     ],
     '🎲': ['game_die', 'dice', 'random', 'tabletop', 'play', 'luck', 'entertainment', 'gambling'],
     '🧩': ['puzzle_piece', 'interlocking', 'puzzle', 'piece', 'clue', 'jigsaw'],
@@ -6354,7 +6354,7 @@ const emojiKeywords = {
         'card',
         'entertainment',
         'playing',
-        'wildcard'
+        'wildcard',
     ],
     '🀄': ['mahjong_red_dragon', 'game', 'play', 'chinese', 'kanji', 'tile'],
     '🎴': [
@@ -6369,7 +6369,7 @@ const emojiKeywords = {
         'hanafuda',
         'hwatu',
         'japanese',
-        'of cards'
+        'of cards',
     ],
     '🎭': [
         'performing_arts',
@@ -6386,7 +6386,7 @@ const emojiKeywords = {
         'masks',
         'theatre',
         'theatre masks',
-        'tragedy'
+        'tragedy',
     ],
     '🖼️': ['framed_picture', 'photography', 'art', 'frame', 'museum', 'painting'],
     '🎨': [
@@ -6399,7 +6399,7 @@ const emojiKeywords = {
         'art',
         'entertainment',
         'museum',
-        'painting'
+        'painting',
     ],
     '🧵': ['thread', 'needle', 'sewing', 'spool', 'string', 'crafts'],
     '🧶': ['yarn', 'ball', 'crochet', 'knit', 'crafts'],
@@ -6414,7 +6414,7 @@ const emojiKeywords = {
         'clothing',
         'eye',
         'eyeglasses',
-        'eyewear'
+        'eyewear',
     ],
     '🕶️': ['sunglasses', 'face', 'cool', 'accessories', 'dark', 'eye', 'eyewear', 'glasses'],
     '🥽': ['goggles', 'eyes', 'protection', 'safety', 'clothing', 'eye', 'swimming', 'welding'],
@@ -6429,7 +6429,7 @@ const emojiKeywords = {
         'cloth',
         'business',
         'clothing',
-        'tie'
+        'tie',
     ],
     '👕': ['t_shirt', 'fashion', 'cloth', 'casual', 'shirt', 'tee', 'clothing', 'polo', 'tshirt'],
     '👖': ['jeans', 'fashion', 'shopping', 'clothing', 'denim', 'pants', 'trousers'],
@@ -6447,7 +6447,7 @@ const emojiKeywords = {
         'japanese',
         'clothing',
         'dressing',
-        'gown'
+        'gown',
     ],
     '🥻': ['sari', 'dress', 'clothing', 'saree', 'shari'],
     '🩱': ['one_piece_swimsuit', 'fashion', 'bathing', 'clothing', 'suit', 'swim'],
@@ -6465,7 +6465,7 @@ const emojiKeywords = {
         'bathers',
         'clothing',
         'swim',
-        'swimsuit'
+        'swimsuit',
     ],
     '👚': [
         'woman_s_clothes',
@@ -6477,7 +6477,7 @@ const emojiKeywords = {
         'pink',
         'shirt',
         'womans',
-        'woman’s'
+        'woman’s',
     ],
     '👛': [
         'purse',
@@ -6488,7 +6488,7 @@ const emojiKeywords = {
         'shopping',
         'clothing',
         'coin',
-        'wallet'
+        'wallet',
     ],
     '👜': [
         'handbag',
@@ -6499,7 +6499,7 @@ const emojiKeywords = {
         'bag',
         'clothing',
         'purse',
-        'women’s'
+        'women’s',
     ],
     '👝': ['clutch_bag', 'bag', 'accessories', 'shopping', 'clothing', 'pouch', 'small'],
     '🛍️': ['shopping_bags', 'mall', 'buy', 'purchase', 'bag', 'hotel'],
@@ -6516,7 +6516,7 @@ const emojiKeywords = {
         'sneaker',
         'sport',
         'tennis',
-        'trainer'
+        'trainer',
     ],
     '🥾': ['hiking_boot', 'backpacking', 'camping', 'hiking', 'clothing'],
     '🥿': ['flat_shoe', 'ballet', 'slip-on', 'slipper', 'clothing', 'woman’s'],
@@ -6530,7 +6530,7 @@ const emojiKeywords = {
         'clothing',
         'heel',
         'heels',
-        'woman'
+        'woman',
     ],
     '👡': [
         'woman_s_sandal',
@@ -6542,7 +6542,7 @@ const emojiKeywords = {
         'sandals',
         'shoe',
         'womans',
-        'woman’s'
+        'woman’s',
     ],
     '🩰': ['ballet_shoes', 'dance', 'clothing', 'pointe', 'shoe'],
     '👢': [
@@ -6557,7 +6557,7 @@ const emojiKeywords = {
         'knee',
         'shoe',
         'womans',
-        'woman’s'
+        'woman’s',
     ],
     '👑': ['crown', 'king', 'kod', 'leader', 'royalty', 'lord', 'clothing', 'queen', 'royal'],
     '👒': [
@@ -6571,7 +6571,7 @@ const emojiKeywords = {
         'clothing',
         'ladies',
         'womans',
-        'woman’s'
+        'woman’s',
     ],
     '🎩': [
         'top_hat',
@@ -6585,7 +6585,7 @@ const emojiKeywords = {
         'formal',
         'groom',
         'tophat',
-        'wear'
+        'wear',
     ],
     '🎓': [
         'graduation_cap',
@@ -6606,7 +6606,7 @@ const emojiKeywords = {
         'clothing',
         'graduate',
         'mortar',
-        'square'
+        'square',
     ],
     '🧢': ['billed_cap', 'cap', 'baseball', 'clothing', 'hat'],
     '⛑️': [
@@ -6618,7 +6618,7 @@ const emojiKeywords = {
         'face',
         'hat',
         'white',
-        'worker’s'
+        'worker’s',
     ],
     '📿': ['prayer_beads', 'dhikr', 'religious', 'clothing', 'necklace', 'religion', 'rosary'],
     '💄': ['lipstick', 'female', 'girl', 'fashion', 'woman', 'cosmetics', 'gloss', 'lip', 'makeup'],
@@ -6634,7 +6634,7 @@ const emojiKeywords = {
         'gem',
         'engagement',
         'engaged',
-        'romance'
+        'romance',
     ],
     '💎': ['gem_stone', 'blue', 'ruby', 'diamond', 'jewelry', 'gemstone', 'jewel', 'romance'],
     '🔇': [
@@ -6647,7 +6647,7 @@ const emojiKeywords = {
         'mute',
         'off',
         'silent',
-        'stroke'
+        'stroke',
     ],
     '🔈': ['speaker_low_volume', 'sound', 'volume', 'silence', 'broadcast', 'soft'],
     '🔉': [
@@ -6659,7 +6659,7 @@ const emojiKeywords = {
         'one',
         'reduce',
         'sound',
-        'wave'
+        'wave',
     ],
     '🔊': [
         'speaker_high_volume',
@@ -6673,7 +6673,7 @@ const emojiKeywords = {
         'loud',
         'sound',
         'three',
-        'waves'
+        'waves',
     ],
     '📢': [
         'loudspeaker',
@@ -6687,7 +6687,7 @@ const emojiKeywords = {
         'megaphone',
         'pa',
         'public',
-        'system'
+        'system',
     ],
     '📣': [
         'megaphone',
@@ -6697,7 +6697,7 @@ const emojiKeywords = {
         'bullhorn',
         'cheering',
         'communication',
-        'mega'
+        'mega',
     ],
     '📯': [
         'postal_horn',
@@ -6707,7 +6707,7 @@ const emojiKeywords = {
         'communication',
         'entertainment',
         'french',
-        'post'
+        'post',
     ],
     '🔔': [
         'bell',
@@ -6718,7 +6718,7 @@ const emojiKeywords = {
         'chime',
         'liberty',
         'ringer',
-        'wedding'
+        'wedding',
     ],
     '🔕': [
         'bell_with_slash',
@@ -6737,7 +6737,7 @@ const emojiKeywords = {
         'off',
         'prohibited',
         'ringer',
-        'stroke'
+        'stroke',
     ],
     '🎼': [
         'musical_score',
@@ -6747,7 +6747,7 @@ const emojiKeywords = {
         'activity',
         'entertainment',
         'music',
-        'sheet'
+        'sheet',
     ],
     '🎵': [
         'musical_note',
@@ -6761,7 +6761,7 @@ const emojiKeywords = {
         'music',
         'notes',
         'pair',
-        'quavers'
+        'quavers',
     ],
     '🎶': [
         'musical_notes',
@@ -6771,7 +6771,7 @@ const emojiKeywords = {
         'entertainment',
         'multiple',
         'note',
-        'singing'
+        'singing',
     ],
     '🎙️': [
         'studio_microphone',
@@ -6781,7 +6781,7 @@ const emojiKeywords = {
         'talkshow',
         'mic',
         'music',
-        'podcast'
+        'podcast',
     ],
     '🎚️': ['level_slider', 'scale', 'music'],
     '🎛️': ['control_knobs', 'dial', 'music'],
@@ -6796,7 +6796,7 @@ const emojiKeywords = {
         'entertainment',
         'karaoke',
         'mic',
-        'singing'
+        'singing',
     ],
     '🎧': [
         'headphone',
@@ -6809,7 +6809,7 @@ const emojiKeywords = {
         'earphones',
         'entertainment',
         'headphones',
-        'ipod'
+        'ipod',
     ],
     '📻': [
         'radio',
@@ -6820,7 +6820,7 @@ const emojiKeywords = {
         'digital',
         'entertainment',
         'video',
-        'wireless'
+        'wireless',
     ],
     '🎷': ['saxophone', 'music', 'instrument', 'jazz', 'blues', 'activity', 'entertainment', 'sax'],
     '🎸': [
@@ -6832,7 +6832,7 @@ const emojiKeywords = {
         'bass',
         'electric',
         'entertainment',
-        'rock'
+        'rock',
     ],
     '🎹': [
         'musical_keyboard',
@@ -6841,7 +6841,7 @@ const emojiKeywords = {
         'compose',
         'activity',
         'entertainment',
-        'music'
+        'music',
     ],
     '🎺': ['trumpet', 'music', 'brass', 'activity', 'entertainment', 'horn', 'instrument', 'jazz'],
     '🎻': [
@@ -6855,7 +6855,7 @@ const emojiKeywords = {
         'quartet',
         'smallest',
         'string',
-        'world’s'
+        'world’s',
     ],
     '🪕': ['banjo', 'music', 'instructment', 'activity', 'entertainment', 'instrument', 'stringed'],
     '🥁': ['drum', 'music', 'instrument', 'drumsticks', 'snare'],
@@ -6869,7 +6869,7 @@ const emojiKeywords = {
         'communication',
         'iphone',
         'smartphone',
-        'telephone'
+        'telephone',
     ],
     '📲': [
         'mobile_phone_with_arrow',
@@ -6883,7 +6883,7 @@ const emojiKeywords = {
         'pointing',
         'receive',
         'rightwards',
-        'telephone'
+        'telephone',
     ],
     '☎️': ['telephone', 'technology', 'communication', 'dial', 'black', 'phone', 'rotary'],
     '📞': ['telephone_receiver', 'technology', 'communication', 'dial', 'call', 'handset', 'phone'],
@@ -6901,7 +6901,7 @@ const emojiKeywords = {
         'desktop',
         'notebook',
         'pc',
-        'personal'
+        'personal',
     ],
     '🖥️': ['desktop_computer', 'technology', 'computing', 'screen', 'imac'],
     '🖨️': ['printer', 'paper', 'ink', 'computer'],
@@ -6918,7 +6918,7 @@ const emojiKeywords = {
         'entertainment',
         'minidisc',
         'minidisk',
-        'optical'
+        'optical',
     ],
     '💾': ['floppy_disk', 'oldschool', 'technology', 'save', '90s', '80s', 'computer'],
     '💿': [
@@ -6931,7 +6931,7 @@ const emojiKeywords = {
         'cd',
         'compact',
         'computer',
-        'rom'
+        'rom',
     ],
     '📀': ['dvd', 'cd', 'disk', 'disc', 'computer', 'entertainment', 'optical', 'rom', 'video'],
     '🧮': ['abacus', 'calculation', 'count', 'counting', 'frame', 'math'],
@@ -6943,7 +6943,7 @@ const emojiKeywords = {
         'cinema',
         'entertainment',
         'hollywood',
-        'video'
+        'video',
     ],
     '🎞️': ['film_frames', 'movie', 'cinema', 'entertainment', 'strip'],
     '📽️': ['film_projector', 'video', 'tape', 'record', 'movie', 'cinema', 'entertainment'],
@@ -6956,7 +6956,7 @@ const emojiKeywords = {
         'clapboard',
         'director',
         'entertainment',
-        'slate'
+        'slate',
     ],
     '📺': [
         'television',
@@ -6966,7 +6966,7 @@ const emojiKeywords = {
         'show',
         'entertainment',
         'tv',
-        'video'
+        'video',
     ],
     '📷': ['camera', 'gadgets', 'photography', 'digital', 'entertainment', 'photo', 'video'],
     '📸': ['camera_with_flash', 'photography', 'gadgets', 'photo', 'video'],
@@ -6981,7 +6981,7 @@ const emojiKeywords = {
         'entertainment',
         'tape',
         'vcr',
-        'vhs'
+        'vhs',
     ],
     '🔍': [
         'magnifying_glass_tilted_left',
@@ -6993,7 +6993,7 @@ const emojiKeywords = {
         'mag',
         'magnifier',
         'pointing',
-        'tool'
+        'tool',
     ],
     '🔎': [
         'magnifying_glass_tilted_right',
@@ -7005,7 +7005,7 @@ const emojiKeywords = {
         'mag',
         'magnifier',
         'pointing',
-        'tool'
+        'tool',
     ],
     '🕯️': ['candle', 'fire', 'wax', 'light'],
     '💡': ['light_bulb', 'light', 'electricity', 'idea', 'comic', 'electric'],
@@ -7019,7 +7019,7 @@ const emojiKeywords = {
         'asian',
         'bar',
         'izakaya',
-        'japanese'
+        'japanese',
     ],
     '🪔': ['diya_lamp', 'lighting', 'oil'],
     '📔': [
@@ -7030,7 +7030,7 @@ const emojiKeywords = {
         'paper',
         'study',
         'book',
-        'decorated'
+        'decorated',
     ],
     '📕': ['closed_book', 'read', 'library', 'knowledge', 'textbook', 'learn', 'red'],
     '📖': [
@@ -7042,7 +7042,7 @@ const emojiKeywords = {
         'literature',
         'learn',
         'study',
-        'novel'
+        'novel',
     ],
     '📗': ['green_book', 'read', 'library', 'knowledge', 'study', 'textbook'],
     '📘': ['blue_book', 'read', 'library', 'knowledge', 'learn', 'study', 'textbook'],
@@ -7058,7 +7058,7 @@ const emojiKeywords = {
         'black',
         'book',
         'composition',
-        'white'
+        'white',
     ],
     '📒': ['ledger', 'notes', 'paper', 'binder', 'book', 'bound', 'notebook', 'spiral', 'yellow'],
     '📃': ['page_with_curl', 'documents', 'office', 'paper', 'curled', 'curly page', 'document'],
@@ -7078,7 +7078,7 @@ const emojiKeywords = {
         'cream',
         'moneybag',
         'moneybags',
-        'rich'
+        'rich',
     ],
     '💴': [
         'yen_banknote',
@@ -7091,7 +7091,7 @@ const emojiKeywords = {
         'banknotes',
         'bill',
         'note',
-        'sign'
+        'sign',
     ],
     '💵': [
         'dollar_banknote',
@@ -7103,7 +7103,7 @@ const emojiKeywords = {
         'bank',
         'banknotes',
         'note',
-        'sign'
+        'sign',
     ],
     '💶': [
         'euro_banknote',
@@ -7115,7 +7115,7 @@ const emojiKeywords = {
         'banknotes',
         'bill',
         'note',
-        'sign'
+        'sign',
     ],
     '💷': [
         'pound_banknote',
@@ -7133,7 +7133,7 @@ const emojiKeywords = {
         'note',
         'quid',
         'sign',
-        'twenty'
+        'twenty',
     ],
     '💸': [
         'money_with_wings',
@@ -7147,7 +7147,7 @@ const emojiKeywords = {
         'fly',
         'flying',
         'losing',
-        'note'
+        'note',
     ],
     '💳': [
         'credit_card',
@@ -7163,7 +7163,7 @@ const emojiKeywords = {
         'diners',
         'mastercard',
         'subscription',
-        'visa'
+        'visa',
     ],
     '🧾': ['receipt', 'accounting', 'expenses', 'bookkeeping', 'evidence', 'proof'],
     '💹': [
@@ -7183,7 +7183,7 @@ const emojiKeywords = {
         'sign',
         'trend',
         'upward',
-        'upwards'
+        'upwards',
     ],
     '💱': ['currency_exchange', 'money', 'sales', 'dollar', 'travel', 'bank'],
     '💲': ['heavy_dollar_sign', 'money', 'sales', 'payment', 'currency', 'buck'],
@@ -7198,7 +7198,7 @@ const emojiKeywords = {
         'letter',
         'lines',
         'mail',
-        'receive'
+        'receive',
     ],
     '📩': [
         'envelope_with_arrow',
@@ -7211,7 +7211,7 @@ const emojiKeywords = {
         'letter',
         'mail',
         'outgoing',
-        'sent'
+        'sent',
     ],
     '📤': ['outbox_tray', 'inbox', 'email', 'box', 'communication', 'letter', 'mail', 'sent'],
     '📥': ['inbox_tray', 'email', 'documents', 'box', 'communication', 'letter', 'mail', 'receive'],
@@ -7224,7 +7224,7 @@ const emojiKeywords = {
         'moving',
         'communication',
         'parcel',
-        'shipping'
+        'shipping',
     ],
     '📫': ['closed_mailbox_with_raised_flag', 'email', 'inbox', 'communication', 'mail', 'postbox'],
     '📪': [
@@ -7233,7 +7233,7 @@ const emojiKeywords = {
         'communication',
         'inbox',
         'mail',
-        'postbox'
+        'postbox',
     ],
     '📬': ['open_mailbox_with_raised_flag', 'email', 'inbox', 'communication', 'mail', 'postbox'],
     '📭': [
@@ -7243,7 +7243,7 @@ const emojiKeywords = {
         'communication',
         'mail',
         'no',
-        'postbox'
+        'postbox',
     ],
     '📮': ['postbox', 'email', 'letter', 'envelope', 'communication', 'mail', 'mailbox'],
     '🗳️': ['ballot_box_with_ballot', 'election', 'vote', 'voting'],
@@ -7256,7 +7256,7 @@ const emojiKeywords = {
         'school',
         'study',
         'lead',
-        'pencil2'
+        'pencil2',
     ],
     '✒️': ['black_nib', 'pen', 'stationery', 'writing', 'write', 'fountain', '✒ fountain'],
     '🖋️': ['fountain_pen', 'stationery', 'writing', 'write', 'communication', 'left', 'lower'],
@@ -7270,7 +7270,7 @@ const emojiKeywords = {
         'communication',
         'left',
         'lower',
-        'painting'
+        'painting',
     ],
     '🖍️': ['crayon', 'drawing', 'creativity', 'communication', 'left', 'lower'],
     '📝': [
@@ -7290,7 +7290,7 @@ const emojiKeywords = {
         'communication',
         'document',
         'memorandum',
-        'note'
+        'note',
     ],
     '💼': [
         'briefcase',
@@ -7301,7 +7301,7 @@ const emojiKeywords = {
         'legal',
         'job',
         'career',
-        'suitcase'
+        'suitcase',
     ],
     '📁': ['file_folder', 'documents', 'business', 'office', 'closed', 'directory', 'manilla'],
     '📂': ['open_file_folder', 'documents', 'load'],
@@ -7330,7 +7330,7 @@ const emojiKeywords = {
         'trend',
         'up',
         'upward',
-        'upwards'
+        'upwards',
     ],
     '📉': [
         'chart_decreasing',
@@ -7349,7 +7349,7 @@ const emojiKeywords = {
         'down pointing',
         'metrics',
         'negative chart',
-        'trend'
+        'trend',
     ],
     '📊': ['bar_chart', 'graph', 'presentation', 'stats', 'metrics'],
     '📋': ['clipboard', 'stationery', 'documents'],
@@ -7367,7 +7367,7 @@ const emojiKeywords = {
         'drawing',
         'architect',
         'sketch',
-        'edge'
+        'edge',
     ],
     '📐': ['triangular_ruler', 'stationery', 'math', 'architect', 'sketch', 'set', 'triangle'],
     '✂️': ['scissors', 'stationery', 'cut', 'black', 'cutting', 'tool'],
@@ -7383,7 +7383,7 @@ const emojiKeywords = {
         'basket',
         'can',
         'litter',
-        'wastepaper'
+        'wastepaper',
     ],
     '🔒': ['locked', 'security', 'password', 'padlock', 'closed', 'lock', 'private'],
     '🔓': ['unlocked', 'privacy', 'security', 'lock', 'open', 'padlock', 'unlock'],
@@ -7396,7 +7396,7 @@ const emojiKeywords = {
         'lock',
         'lock with',
         'nib',
-        'privacy'
+        'privacy',
     ],
     '🔐': ['locked_with_key', 'security', 'privacy', 'closed', 'lock', 'secure'],
     '🔑': ['key', 'lock', 'door', 'password', 'gold'],
@@ -7418,7 +7418,7 @@ const emojiKeywords = {
         'shoot',
         'squirt',
         'tool',
-        'water'
+        'water',
     ],
     '🏹': ['bow_and_arrow', 'sports', 'archer', 'archery', 'sagittarius', 'tool', 'zodiac'],
     '🛡️': ['shield', 'protection', 'security', 'weapon'],
@@ -7435,7 +7435,7 @@ const emojiKeywords = {
         'libra',
         'scales',
         'tool',
-        'zodiac'
+        'zodiac',
     ],
     '🦯': ['probing_cane', 'accessibility', 'blind', 'white'],
     '🔗': ['link', 'rings', 'url', 'chain', 'hyperlink', 'linked', 'symbol'],
@@ -7455,7 +7455,7 @@ const emojiKeywords = {
         'study',
         'investigate',
         'magnify',
-        'tool'
+        'tool',
     ],
     '🔭': ['telescope', 'stars', 'space', 'zoom', 'science', 'astronomy', 'stargazing', 'tool'],
     '📡': ['satellite_antenna', 'communication', 'future', 'radio', 'space', 'dish', 'signal'],
@@ -7473,7 +7473,7 @@ const emojiKeywords = {
         'sick',
         'tool',
         'vaccination',
-        'vaccine'
+        'vaccine',
     ],
     '🩸': [
         'drop_of_blood',
@@ -7486,7 +7486,7 @@ const emojiKeywords = {
         'donation',
         'injury',
         'medicine',
-        'menstruation'
+        'menstruation',
     ],
     '💊': [
         'pill',
@@ -7498,7 +7498,7 @@ const emojiKeywords = {
         'capsule',
         'drugs',
         'sick',
-        'tablet'
+        'tablet',
     ],
     '🩹': ['adhesive_bandage', 'heal', 'aid', 'band', 'doctor', 'medicine', 'plaster'],
     '🩺': ['stethoscope', 'health', 'doctor', 'heart', 'medicine'],
@@ -7531,7 +7531,7 @@ const emojiKeywords = {
         'cemetery',
         'casket',
         'funeral',
-        'box'
+        'box',
     ],
     '⚱️': ['funeral_urn', 'dead', 'die', 'death', 'rip', 'ashes', 'vase'],
     '🗿': ['moai', 'rock', 'easter island', 'carving', 'face', 'human', 'moyai', 'statue', 'stone'],
@@ -7545,7 +7545,7 @@ const emojiKeywords = {
         'bank',
         'automated',
         'machine',
-        'teller'
+        'teller',
     ],
     '🚮': [
         'litter_in_bin_sign',
@@ -7559,7 +7559,7 @@ const emojiKeywords = {
         'place',
         'put',
         'symbol',
-        'trash'
+        'trash',
     ],
     '🚰': [
         'potable_water',
@@ -7573,7 +7573,7 @@ const emojiKeywords = {
         'symbol',
         'tap',
         'thirst',
-        'thirsty'
+        'thirsty',
     ],
     '♿': [
         'wheelchair_symbol',
@@ -7582,7 +7582,7 @@ const emojiKeywords = {
         'accessibility',
         'access',
         'accessible',
-        'bathroom'
+        'bathroom',
     ],
     '🚹': [
         'men_s_room',
@@ -7596,7 +7596,7 @@ const emojiKeywords = {
         'man',
         'mens',
         'men’s',
-        'symbol'
+        'symbol',
     ],
     '🚺': [
         'women_s_room',
@@ -7612,7 +7612,7 @@ const emojiKeywords = {
         'wc',
         'womens',
         'womens toilet',
-        'women’s'
+        'women’s',
     ],
     '🚻': [
         'restroom',
@@ -7623,7 +7623,7 @@ const emojiKeywords = {
         'gender',
         'bathroom',
         'lavatory',
-        'sign'
+        'sign',
     ],
     '🚼': ['baby_symbol', 'orange-square', 'child', 'change', 'changing', 'nursery', 'station'],
     '🚾': ['water_closet', 'toilet', 'restroom', 'blue-square', 'lavatory', 'wc'],
@@ -7639,7 +7639,7 @@ const emojiKeywords = {
         'key',
         'locked',
         'locker',
-        'suitcase'
+        'suitcase',
     ],
     '⚠️': ['warning', 'exclamation', 'wip', 'alert', 'error', 'problem', 'issue', 'sign', 'symbol'],
     '🚸': [
@@ -7653,7 +7653,7 @@ const emojiKeywords = {
         'child',
         'kids',
         'pedestrian',
-        'traffic'
+        'traffic',
     ],
     '⛔': [
         'no_entry',
@@ -7667,7 +7667,7 @@ const emojiKeywords = {
         'forbidden',
         'not',
         'prohibited',
-        'traffic'
+        'traffic',
     ],
     '🚫': [
         'prohibited',
@@ -7687,7 +7687,7 @@ const emojiKeywords = {
         'not',
         'red',
         'restricted',
-        'sign'
+        'sign',
     ],
     '🚳': [
         'no_bicycles',
@@ -7700,7 +7700,7 @@ const emojiKeywords = {
         'forbidden',
         'not',
         'sign',
-        'vehicle'
+        'vehicle',
     ],
     '🚭': [
         'no_smoking',
@@ -7712,7 +7712,7 @@ const emojiKeywords = {
         'not',
         'prohibited',
         'sign',
-        'symbol'
+        'symbol',
     ],
     '🚯': [
         'no_littering',
@@ -7725,7 +7725,7 @@ const emojiKeywords = {
         'litter',
         'not',
         'prohibited',
-        'symbol'
+        'symbol',
     ],
     '🚱': [
         'non_potable_water',
@@ -7738,7 +7738,7 @@ const emojiKeywords = {
         'no',
         'not',
         'prohibited',
-        'symbol'
+        'symbol',
     ],
     '🚷': [
         'no_pedestrians',
@@ -7750,7 +7750,7 @@ const emojiKeywords = {
         'not',
         'pedestrian',
         'people',
-        'prohibited'
+        'prohibited',
     ],
     '📵': [
         'no_mobile_phones',
@@ -7764,7 +7764,7 @@ const emojiKeywords = {
         'phone',
         'prohibited',
         'smartphones',
-        'telephone'
+        'telephone',
     ],
     '🔞': [
         'no_one_under_eighteen',
@@ -7781,7 +7781,7 @@ const emojiKeywords = {
         'prohibited',
         'restriction',
         'symbol',
-        'underage'
+        'underage',
     ],
     '☢️': ['radioactive', 'nuclear', 'danger', 'international', 'radiation', 'sign', 'symbol'],
     '☣️': ['biohazard', 'danger', 'sign'],
@@ -7795,7 +7795,7 @@ const emojiKeywords = {
         'cardinal',
         'north',
         'pointing',
-        'upwards'
+        'upwards',
     ],
     '↗️': [
         'up_right_arrow',
@@ -7807,7 +7807,7 @@ const emojiKeywords = {
         'east',
         'intercardinal',
         'north',
-        'upper'
+        'upper',
     ],
     '➡️': [
         'right_arrow',
@@ -7819,7 +7819,7 @@ const emojiKeywords = {
         'east',
         'pointing',
         'rightwards',
-        'right arrow'
+        'right arrow',
     ],
     '↘️': [
         'down_right_arrow',
@@ -7831,7 +7831,7 @@ const emojiKeywords = {
         'intercardinal',
         'lower',
         'right arrow',
-        'south'
+        'south',
     ],
     '⬇️': [
         'down_arrow',
@@ -7843,7 +7843,7 @@ const emojiKeywords = {
         'downwards',
         'down arrow',
         'pointing',
-        'south'
+        'south',
     ],
     '↙️': [
         'down_left_arrow',
@@ -7855,7 +7855,7 @@ const emojiKeywords = {
         'left arrow',
         'lower',
         'south',
-        'west'
+        'west',
     ],
     '⬅️': [
         'left_arrow',
@@ -7868,7 +7868,7 @@ const emojiKeywords = {
         'leftwards',
         'left arrow',
         'pointing',
-        'west'
+        'west',
     ],
     '↖️': [
         'up_left_arrow',
@@ -7881,7 +7881,7 @@ const emojiKeywords = {
         'left arrow',
         'north',
         'upper',
-        'west'
+        'west',
     ],
     '↕️': [
         'up_down_arrow',
@@ -7891,7 +7891,7 @@ const emojiKeywords = {
         'vertical',
         'arrows',
         'intercardinal',
-        'northwest'
+        'northwest',
     ],
     '↔️': [
         'left_right_arrow',
@@ -7900,7 +7900,7 @@ const emojiKeywords = {
         'horizontal',
         'sideways',
         'arrows',
-        'horizontal arrows'
+        'horizontal arrows',
     ],
     '↩️': [
         'right_arrow_curving_left',
@@ -7913,7 +7913,7 @@ const emojiKeywords = {
         'email',
         'hook',
         'leftwards',
-        'reply'
+        'reply',
     ],
     '↪️': [
         'left_arrow_curving_right',
@@ -7925,7 +7925,7 @@ const emojiKeywords = {
         'forward',
         'hook',
         'rightwards',
-        'right curved'
+        'right curved',
     ],
     '⤴️': [
         'right_arrow_curving_up',
@@ -7936,7 +7936,7 @@ const emojiKeywords = {
         'pointing',
         'rightwards',
         'then',
-        'upwards'
+        'upwards',
     ],
     '⤵️': [
         'right_arrow_curving_down',
@@ -7948,7 +7948,7 @@ const emojiKeywords = {
         'heading',
         'pointing',
         'rightwards',
-        'then'
+        'then',
     ],
     '🔃': [
         'clockwise_vertical_arrows',
@@ -7961,7 +7961,7 @@ const emojiKeywords = {
         'downwards',
         'open',
         'reload',
-        'upwards'
+        'upwards',
     ],
     '🔄': [
         'counterclockwise_arrows_button',
@@ -7977,7 +7977,7 @@ const emojiKeywords = {
         'rotate',
         'switch',
         'upwards',
-        'withershins'
+        'withershins',
     ],
     '🔙': ['back_arrow', 'arrow', 'words', 'return', 'above', 'leftwards'],
     '🔚': ['end_arrow', 'words', 'arrow', 'above', 'leftwards'],
@@ -7997,7 +7997,7 @@ const emojiKeywords = {
         'omkara',
         'pranava',
         'religion',
-        'symbol'
+        'symbol',
     ],
     '✡️': ['star_of_david', 'judaism', 'jew', 'jewish', 'magen', 'religion'],
     '☸️': [
@@ -8008,7 +8008,7 @@ const emojiKeywords = {
         'jainism',
         'buddhist',
         'helm',
-        'religion'
+        'religion',
     ],
     '☯️': ['yin_yang', 'balance', 'religion', 'tao', 'taoist'],
     '✝️': ['latin_cross', 'christianity', 'christian', 'religion'],
@@ -8025,7 +8025,7 @@ const emojiKeywords = {
         'candlestick',
         'chanukiah',
         'nine',
-        'religion'
+        'religion',
     ],
     '🔯': [
         'dotted_six_pointed_star',
@@ -8035,7 +8035,7 @@ const emojiKeywords = {
         'hexagram',
         'dot',
         'fortune',
-        'middle'
+        'middle',
     ],
     '♈': ['aries', 'sign', 'purple-square', 'zodiac', 'astrology', 'ram'],
     '♉': ['taurus', 'purple-square', 'sign', 'zodiac', 'astrology', 'bull', 'ox'],
@@ -8058,7 +8058,7 @@ const emojiKeywords = {
         'bearer',
         'serpent',
         'snake',
-        'zodiac'
+        'zodiac',
     ],
     '🔀': [
         'shuffle_tracks_button',
@@ -8071,7 +8071,7 @@ const emojiKeywords = {
         'crossed',
         'rightwards',
         'symbol',
-        'twisted'
+        'twisted',
     ],
     '🔁': [
         'repeat_button',
@@ -8085,7 +8085,7 @@ const emojiKeywords = {
         'open',
         'retweet',
         'rightwards',
-        'symbol'
+        'symbol',
     ],
     '🔂': [
         'repeat_single_button',
@@ -8104,7 +8104,7 @@ const emojiKeywords = {
         'overlay',
         'rightwards',
         'symbol',
-        'track'
+        'track',
     ],
     '▶️': [
         'play_button',
@@ -8117,7 +8117,7 @@ const emojiKeywords = {
         'forward',
         'pointing',
         'right triangle',
-        'triangle'
+        'triangle',
     ],
     '⏩': [
         'fast_forward_button',
@@ -8131,7 +8131,7 @@ const emojiKeywords = {
         'pointing',
         'right',
         'symbol',
-        'triangle'
+        'triangle',
     ],
     '⏭️': [
         'next_track_button',
@@ -8148,7 +8148,7 @@ const emojiKeywords = {
         'skip',
         'symbol',
         'triangle',
-        'vertical'
+        'vertical',
     ],
     '⏯️': [
         'play_or_pause_button',
@@ -8164,7 +8164,7 @@ const emojiKeywords = {
         'right',
         'symbol',
         'triangle',
-        'vertical'
+        'vertical',
     ],
     '◀️': [
         'reverse_button',
@@ -8175,7 +8175,7 @@ const emojiKeywords = {
         'backward',
         'black',
         'pointing',
-        'triangle'
+        'triangle',
     ],
     '⏪': [
         'fast_reverse_button',
@@ -8188,7 +8188,7 @@ const emojiKeywords = {
         'pointing',
         'rewind',
         'symbol',
-        'triangle'
+        'triangle',
     ],
     '⏮️': [
         'last_track_button',
@@ -8204,7 +8204,7 @@ const emojiKeywords = {
         'skip',
         'symbol',
         'triangle',
-        'vertical'
+        'vertical',
     ],
     '🔼': [
         'upwards_button',
@@ -8218,7 +8218,7 @@ const emojiKeywords = {
         'pointing',
         'red',
         'small',
-        'up'
+        'up',
     ],
     '⏫': [
         'fast_up_button',
@@ -8229,7 +8229,7 @@ const emojiKeywords = {
         'black',
         'double',
         'pointing',
-        'triangle'
+        'triangle',
     ],
     '🔽': [
         'downwards_button',
@@ -8241,7 +8241,7 @@ const emojiKeywords = {
         'pointing',
         'red',
         'small',
-        'triangle'
+        'triangle',
     ],
     '⏬': [
         'fast_down_button',
@@ -8252,7 +8252,7 @@ const emojiKeywords = {
         'black',
         'double',
         'pointing',
-        'triangle'
+        'triangle',
     ],
     '⏸️': ['pause_button', 'pause', 'blue-square', 'bar', 'double', 'symbol', 'vertical'],
     '⏹️': ['stop_button', 'blue-square', 'black', 'for', 'square', 'symbol'],
@@ -8272,7 +8272,7 @@ const emojiKeywords = {
         'entertainment',
         'movies',
         'screen',
-        'symbol'
+        'symbol',
     ],
     '🔅': [
         'dim_button',
@@ -8283,7 +8283,7 @@ const emojiKeywords = {
         'brightness',
         'decrease',
         'low',
-        'symbol'
+        'symbol',
     ],
     '🔆': ['bright_button', 'sun', 'light', 'brightness', 'high', 'increase', 'symbol'],
     '📶': [
@@ -8304,7 +8304,7 @@ const emojiKeywords = {
         'signal',
         'stairs',
         'strength',
-        'telephone'
+        'telephone',
     ],
     '📳': [
         'vibration_mode',
@@ -8315,7 +8315,7 @@ const emojiKeywords = {
         'heart',
         'mobile',
         'silent',
-        'telephone'
+        'telephone',
     ],
     '📴': [
         'mobile_phone_off',
@@ -8325,7 +8325,7 @@ const emojiKeywords = {
         'quiet',
         'cell',
         'communication',
-        'telephone'
+        'telephone',
     ],
     '♀️': ['female_sign', 'woman', 'women', 'lady', 'girl', 'symbol', 'venus'],
     '♂️': ['male_sign', 'man', 'boy', 'men', 'mars', 'symbol'],
@@ -8341,7 +8341,7 @@ const emojiKeywords = {
         'medicine',
         'rod',
         'snake',
-        'staff'
+        'staff',
     ],
     '♾️': ['infinity', 'forever', 'paper', 'permanent', 'sign', 'unbounded', 'universal'],
     '♻️': [
@@ -8354,7 +8354,7 @@ const emojiKeywords = {
         'green',
         'logo',
         'recycle',
-        'universal'
+        'universal',
     ],
     '⚜️': ['fleur_de_lis', 'decorative', 'scout', 'new', 'orleans', 'saints', 'scouts'],
     '🔱': ['trident_emblem', 'weapon', 'spear', 'anchor', 'pitchfork', 'ship', 'tool'],
@@ -8369,7 +8369,7 @@ const emojiKeywords = {
         'mark',
         'shoshinsha',
         'tool',
-        'yellow'
+        'yellow',
     ],
     '⭕': ['hollow_red_circle', 'circle', 'round', 'correct', 'heavy', 'large', 'mark', 'o'],
     '✅': [
@@ -8384,7 +8384,7 @@ const emojiKeywords = {
         'green',
         'heavy',
         'symbol',
-        'white'
+        'white',
     ],
     '☑️': [
         'check_box_with_check',
@@ -8398,7 +8398,7 @@ const emojiKeywords = {
         'tick',
         'ballot',
         'checkbox',
-        'mark'
+        'mark',
     ],
     '✔️': ['check_mark', 'ok', 'nike', 'answer', 'yes', 'tick', 'heavy'],
     '✖️': [
@@ -8409,7 +8409,7 @@ const emojiKeywords = {
         'heavy',
         'multiply',
         'symbol',
-        'x'
+        'x',
     ],
     '❌': [
         'cross_mark',
@@ -8420,7 +8420,7 @@ const emojiKeywords = {
         'red',
         'multiplication',
         'multiply',
-        'x'
+        'x',
     ],
     '❎': ['cross_mark_button', 'x', 'green-square', 'no', 'deny', 'negative', 'square', 'squared'],
     '➕': ['plus_sign', 'math', 'calculation', 'addition', 'more', 'increase', 'heavy', 'symbol'],
@@ -8437,7 +8437,7 @@ const emojiKeywords = {
         'economics',
         'bad',
         'm',
-        'mcdonald’s'
+        'mcdonald’s',
     ],
     '✳️': ['eight_spoked_asterisk', 'star', 'sparkle', 'green-square'],
     '✴️': ['eight_pointed_star', 'orange-square', 'shape', 'polygon', 'black', 'orange'],
@@ -8454,7 +8454,7 @@ const emojiKeywords = {
         'grey',
         'ornament',
         'outlined',
-        'punctuation'
+        'punctuation',
     ],
     '❕': [
         'white_exclamation_mark',
@@ -8465,7 +8465,7 @@ const emojiKeywords = {
         'warning',
         'grey',
         'ornament',
-        'outlined'
+        'outlined',
     ],
     '❗': [
         'exclamation_mark',
@@ -8477,7 +8477,7 @@ const emojiKeywords = {
         'warning',
         'bang',
         'red',
-        'symbol'
+        'symbol',
     ],
     '〰️': [
         'wavy_dash',
@@ -8488,7 +8488,7 @@ const emojiKeywords = {
         'squiggle',
         'scribble',
         'punctuation',
-        'wave'
+        'wave',
     ],
     '©️': ['copyright', 'ip', 'license', 'circle', 'law', 'legal', 'c', 'sign'],
     '®️': ['registered', 'alphabet', 'circle', 'r', 'sign'],
@@ -8504,7 +8504,7 @@ const emojiKeywords = {
         'number',
         'octothorpe',
         'pound',
-        'sign'
+        'sign',
     ],
     '*️⃣': ['keycap_', 'star', 'keycap', 'asterisk'],
     '0️⃣': ['keycap_0', '0', 'numbers', 'blue-square', 'null', 'zero', 'digit'],
@@ -8528,7 +8528,7 @@ const emojiKeywords = {
         'abcd',
         'capital',
         'for',
-        'symbol'
+        'symbol',
     ],
     '🔡': [
         'input_latin_lowercase',
@@ -8539,7 +8539,7 @@ const emojiKeywords = {
         'abcd',
         'for',
         'small',
-        'symbol'
+        'symbol',
     ],
     '🔢': [
         'input_numbers',
@@ -8552,7 +8552,7 @@ const emojiKeywords = {
         '4',
         'for',
         'numeric',
-        'symbol'
+        'symbol',
     ],
     '🔣': [
         'input_symbols',
@@ -8565,7 +8565,7 @@ const emojiKeywords = {
         'characters',
         'for',
         'symbol',
-        'symbol input'
+        'symbol input',
     ],
     '🔤': ['input_latin_letters', 'blue-square', 'alphabet', 'abc', 'for', 'symbol'],
     '🅰️': [
@@ -8578,7 +8578,7 @@ const emojiKeywords = {
         'latin',
         'negative',
         'squared',
-        'type'
+        'type',
     ],
     '🆎': ['ab_button', 'red-square', 'alphabet', 'blood', 'negative', 'squared', 'type'],
     '🅱️': [
@@ -8591,7 +8591,7 @@ const emojiKeywords = {
         'latin',
         'negative',
         'squared',
-        'type'
+        'type',
     ],
     '🆑': ['cl_button', 'alphabet', 'words', 'red-square', 'clear', 'sign', 'squared'],
     '🆒': ['cool_button', 'words', 'blue-square', 'sign', 'square', 'squared'],
@@ -8605,7 +8605,7 @@ const emojiKeywords = {
         'info',
         'lowercase',
         'source',
-        'tourist'
+        'tourist',
     ],
     '🆔': ['id_button', 'purple-square', 'words', 'identification', 'identity', 'sign', 'squared'],
     'Ⓜ️': ['circled_m', 'alphabet', 'blue-circle', 'letter', 'capital', 'circle', 'latin', 'metro'],
@@ -8620,7 +8620,7 @@ const emojiKeywords = {
         'good',
         'no',
         'sign',
-        'squared'
+        'squared',
     ],
     '🅾️': [
         'o_button',
@@ -8633,7 +8633,7 @@ const emojiKeywords = {
         'negative',
         'o2',
         'squared',
-        'type'
+        'type',
     ],
     '🆗': ['ok_button', 'good', 'agree', 'yes', 'blue-square', 'okay', 'sign', 'square', 'squared'],
     '🅿️': [
@@ -8647,7 +8647,7 @@ const emojiKeywords = {
         'negative',
         'parking',
         'sign',
-        'squared'
+        'squared',
     ],
     '🆘': [
         'sos_button',
@@ -8659,7 +8659,7 @@ const emojiKeywords = {
         'distress',
         'sign',
         'signal',
-        'squared'
+        'squared',
     ],
     '🆙': [
         'up_button',
@@ -8671,7 +8671,7 @@ const emojiKeywords = {
         'mark',
         'sign',
         'squared',
-        'up!'
+        'up!',
     ],
     '🆚': ['vs_button', 'words', 'orange-square', 'squared', 'versus'],
     '🈁': [
@@ -8686,7 +8686,7 @@ const emojiKeywords = {
         'sign',
         'squared',
         'word',
-        '“here”'
+        '“here”',
     ],
     '🈂️': [
         'japanese_service_charge_button',
@@ -8700,7 +8700,7 @@ const emojiKeywords = {
         'sign',
         'squared',
         '“service',
-        '“service”'
+        '“service”',
     ],
     '🈷️': [
         'japanese_monthly_amount_button',
@@ -8719,7 +8719,7 @@ const emojiKeywords = {
         'squared',
         'u6708',
         'unified',
-        '“monthly'
+        '“monthly',
     ],
     '🈶': [
         'japanese_not_free_of_charge_button',
@@ -8737,7 +8737,7 @@ const emojiKeywords = {
         'squared',
         'u6709',
         'unified',
-        '“not'
+        '“not',
     ],
     '🈯': [
         'japanese_reserved_button',
@@ -8753,7 +8753,7 @@ const emojiKeywords = {
         'squared',
         'u6307',
         'unified',
-        '“reserved”'
+        '“reserved”',
     ],
     '🉐': [
         'japanese_bargain_button',
@@ -8768,7 +8768,7 @@ const emojiKeywords = {
         'ideograph',
         'meaning',
         'sign',
-        '“bargain”'
+        '“bargain”',
     ],
     '🈹': [
         'japanese_discount_button',
@@ -8786,7 +8786,7 @@ const emojiKeywords = {
         'squared',
         'u5272',
         'unified',
-        '“discount”'
+        '“discount”',
     ],
     '🈚': [
         'japanese_free_of_charge_button',
@@ -8805,7 +8805,7 @@ const emojiKeywords = {
         'squared',
         'u7121',
         'unified',
-        '“free'
+        '“free',
     ],
     '🈲': [
         'japanese_prohibited_button',
@@ -8825,7 +8825,7 @@ const emojiKeywords = {
         'squared',
         'u7981',
         'unified',
-        '“prohibited”'
+        '“prohibited”',
     ],
     '🉑': [
         'japanese_acceptable_button',
@@ -8841,7 +8841,7 @@ const emojiKeywords = {
         'ideograph',
         'meaning',
         'sign',
-        '“acceptable”'
+        '“acceptable”',
     ],
     '🈸': [
         'japanese_application_button',
@@ -8860,7 +8860,7 @@ const emojiKeywords = {
         'squared',
         'u7533',
         'unified',
-        '“application”'
+        '“application”',
     ],
     '🈴': [
         'japanese_passing_grade_button',
@@ -8879,7 +8879,7 @@ const emojiKeywords = {
         'together',
         'u5408',
         'unified',
-        '“passing'
+        '“passing',
     ],
     '🈳': [
         'japanese_vacancy_button',
@@ -8898,7 +8898,7 @@ const emojiKeywords = {
         'squared',
         'u7a7a',
         'unified',
-        '“vacancy”'
+        '“vacancy”',
     ],
     '㊗️': [
         'japanese_congratulations_button',
@@ -8912,7 +8912,7 @@ const emojiKeywords = {
         'ideograph',
         'meaning',
         'sign',
-        '“congratulations”'
+        '“congratulations”',
     ],
     '㊙️': [
         'japanese_secret_button',
@@ -8925,7 +8925,7 @@ const emojiKeywords = {
         'ideograph',
         'meaning',
         'sign',
-        '“secret”'
+        '“secret”',
     ],
     '🈺': [
         'japanese_open_for_business_button',
@@ -8944,7 +8944,7 @@ const emojiKeywords = {
         'u55b6',
         'unified',
         'work',
-        '“open'
+        '“open',
     ],
     '🈵': [
         'japanese_no_vacancy_button',
@@ -8964,7 +8964,7 @@ const emojiKeywords = {
         'unified',
         'vacancy”',
         '“full;',
-        '“no'
+        '“no',
     ],
     '🔴': ['red_circle', 'shape', 'error', 'danger', 'geometric', 'large'],
     '🟠': ['orange_circle', 'round', 'geometric', 'large'],
@@ -9002,7 +9002,7 @@ const emojiKeywords = {
         'top',
         'geometric',
         'pointing',
-        'small'
+        'small',
     ],
     '🔻': [
         'red_triangle_pointed_down',
@@ -9011,7 +9011,7 @@ const emojiKeywords = {
         'bottom',
         'geometric',
         'pointing',
-        'small'
+        'small',
     ],
     '💠': [
         'diamond_with_a_dot',
@@ -9026,7 +9026,7 @@ const emojiKeywords = {
         'geometric',
         'inside',
         'kawaii',
-        'shape'
+        'shape',
     ],
     '🔘': ['radio_button', 'input', 'old', 'music', 'circle', 'geometric'],
     '🔳': ['white_square_button', 'shape', 'input', 'geometric', 'outlined'],
@@ -9042,7 +9042,7 @@ const emojiKeywords = {
         'girl',
         'grid',
         'milestone',
-        'racing'
+        'racing',
     ],
     '🚩': ['triangular_flag', 'mark', 'milestone', 'place', 'pole', 'post', 'red'],
     '🎌': [
@@ -9055,7 +9055,7 @@ const emojiKeywords = {
         'celebration',
         'cross',
         'flag',
-        'two'
+        'two',
     ],
     '🏴': ['black_flag', 'pirate', 'waving'],
     '🏳️': ['white_flag', 'losing', 'loser', 'lost', 'surrender', 'give up', 'fail', 'waving'],
@@ -9069,7 +9069,7 @@ const emojiKeywords = {
         'queer',
         'homosexual',
         'lesbian',
-        'bisexual'
+        'bisexual',
     ],
     '🏴‍☠️': [
         'pirate_flag',
@@ -9080,7 +9080,7 @@ const emojiKeywords = {
         'jolly',
         'plunder',
         'roger',
-        'treasure'
+        'treasure',
     ],
     '🇦🇨': ['flag_ascension_island'],
     '🇦🇩': ['flag_andorra', 'ad', 'flag', 'nation', 'country', 'banner', 'andorra', 'andorran'],
@@ -9095,7 +9095,7 @@ const emojiKeywords = {
         'banner',
         'united_arab_emirates',
         'emirati',
-        'uae'
+        'uae',
     ],
     '🇦🇫': [
         'flag_afghanistan',
@@ -9105,7 +9105,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'afghanistan',
-        'afghan'
+        'afghan',
     ],
     '🇦🇬': [
         'flag_antigua_barbuda',
@@ -9115,7 +9115,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'antigua_barbuda'
+        'antigua_barbuda',
     ],
     '🇦🇮': ['flag_anguilla', 'ai', 'flag', 'nation', 'country', 'banner', 'anguilla', 'anguillan'],
     '🇦🇱': ['flag_albania', 'al', 'flag', 'nation', 'country', 'banner', 'albania', 'albanian'],
@@ -9129,7 +9129,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'antarctica',
-        'antarctic'
+        'antarctic',
     ],
     '🇦🇷': [
         'flag_argentina',
@@ -9139,7 +9139,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'argentina',
-        'argentinian'
+        'argentinian',
     ],
     '🇦🇸': [
         'flag_american_samoa',
@@ -9150,7 +9150,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'american_samoa',
-        'samoan'
+        'samoan',
     ],
     '🇦🇹': ['flag_austria', 'at', 'flag', 'nation', 'country', 'banner', 'austria', 'austrian'],
     '🇦🇺': [
@@ -9164,7 +9164,7 @@ const emojiKeywords = {
         'aussie',
         'australian',
         'heard',
-        'mcdonald'
+        'mcdonald',
     ],
     '🇦🇼': ['flag_aruba', 'aw', 'flag', 'nation', 'country', 'banner', 'aruba', 'aruban'],
     '🇦🇽': [
@@ -9175,7 +9175,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'aland_islands'
+        'aland_islands',
     ],
     '🇦🇿': [
         'flag_azerbaijan',
@@ -9185,7 +9185,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'azerbaijan',
-        'azerbaijani'
+        'azerbaijani',
     ],
     '🇧🇦': [
         'flag_bosnia_herzegovina',
@@ -9195,7 +9195,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'bosnia_herzegovina'
+        'bosnia_herzegovina',
     ],
     '🇧🇧': [
         'flag_barbados',
@@ -9206,7 +9206,7 @@ const emojiKeywords = {
         'banner',
         'barbados',
         'bajan',
-        'barbadian'
+        'barbadian',
     ],
     '🇧🇩': [
         'flag_bangladesh',
@@ -9216,7 +9216,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'bangladesh',
-        'bangladeshi'
+        'bangladeshi',
     ],
     '🇧🇪': ['flag_belgium', 'be', 'flag', 'nation', 'country', 'banner', 'belgium', 'belgian'],
     '🇧🇫': [
@@ -9228,7 +9228,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'burkina_faso',
-        'burkinabe'
+        'burkinabe',
     ],
     '🇧🇬': ['flag_bulgaria', 'bg', 'flag', 'nation', 'country', 'banner', 'bulgaria', 'bulgarian'],
     '🇧🇭': [
@@ -9240,7 +9240,7 @@ const emojiKeywords = {
         'banner',
         'bahrain',
         'bahrainian',
-        'bahrani'
+        'bahrani',
     ],
     '🇧🇮': ['flag_burundi', 'bi', 'flag', 'nation', 'country', 'banner', 'burundi', 'burundian'],
     '🇧🇯': ['flag_benin', 'bj', 'flag', 'nation', 'country', 'banner', 'benin', 'beninese'],
@@ -9253,7 +9253,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_barthelemy',
-        'st.'
+        'st.',
     ],
     '🇧🇲': ['flag_bermuda', 'bm', 'flag', 'nation', 'country', 'banner', 'bermuda', 'bermudan flag'],
     '🇧🇳': [
@@ -9265,7 +9265,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'brunei',
-        'bruneian'
+        'bruneian',
     ],
     '🇧🇴': ['flag_bolivia', 'bo', 'flag', 'nation', 'country', 'banner', 'bolivia', 'bolivian'],
     '🇧🇶': [
@@ -9278,7 +9278,7 @@ const emojiKeywords = {
         'caribbean_netherlands',
         'eustatius',
         'saba',
-        'sint'
+        'sint',
     ],
     '🇧🇷': [
         'flag_brazil',
@@ -9290,7 +9290,7 @@ const emojiKeywords = {
         'brazil',
         'brasil',
         'brazilian',
-        'for'
+        'for',
     ],
     '🇧🇸': ['flag_bahamas', 'bs', 'flag', 'nation', 'country', 'banner', 'bahamas', 'bahamian'],
     '🇧🇹': ['flag_bhutan', 'bt', 'flag', 'nation', 'country', 'banner', 'bhutan', 'bhutanese'],
@@ -9309,7 +9309,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'cocos_islands',
-        'island'
+        'island',
     ],
     '🇨🇩': [
         'flag_congo_kinshasa',
@@ -9321,7 +9321,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'congo_kinshasa',
-        'drc'
+        'drc',
     ],
     '🇨🇫': [
         'flag_central_african_republic',
@@ -9332,7 +9332,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'central_african_republic'
+        'central_african_republic',
     ],
     '🇨🇬': [
         'flag_congo_brazzaville',
@@ -9342,7 +9342,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'congo_brazzaville',
-        'republic'
+        'republic',
     ],
     '🇨🇭': [
         'flag_switzerland',
@@ -9354,7 +9354,7 @@ const emojiKeywords = {
         'switzerland',
         'cross',
         'red',
-        'swiss'
+        'swiss',
     ],
     '🇨🇮': [
         'flag_cote_d_ivoire',
@@ -9367,7 +9367,7 @@ const emojiKeywords = {
         'cote_d_ivoire',
         'côte',
         'divoire',
-        'd’ivoire'
+        'd’ivoire',
     ],
     '🇨🇰': [
         'flag_cook_islands',
@@ -9379,7 +9379,7 @@ const emojiKeywords = {
         'banner',
         'cook_islands',
         'island',
-        'islander'
+        'islander',
     ],
     '🇨🇱': ['flag_chile', 'flag', 'nation', 'country', 'banner', 'chile', 'chilean'],
     '🇨🇲': ['flag_cameroon', 'cm', 'flag', 'nation', 'country', 'banner', 'cameroon', 'cameroonian'],
@@ -9396,7 +9396,7 @@ const emojiKeywords = {
         'indicator',
         'letters',
         'regional',
-        'symbol'
+        'symbol',
     ],
     '🇨🇴': ['flag_colombia', 'co', 'flag', 'nation', 'country', 'banner', 'colombia', 'colombian'],
     '🇨🇵': ['flag_clipperton_island'],
@@ -9409,7 +9409,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'costa_rica',
-        'rican'
+        'rican',
     ],
     '🇨🇺': ['flag_cuba', 'cu', 'flag', 'nation', 'country', 'banner', 'cuba', 'cuban'],
     '🇨🇻': [
@@ -9421,7 +9421,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'cape_verde',
-        'verdian'
+        'verdian',
     ],
     '🇨🇼': [
         'flag_curacao',
@@ -9432,7 +9432,7 @@ const emojiKeywords = {
         'banner',
         'curacao',
         'antilles',
-        'curaçaoan'
+        'curaçaoan',
     ],
     '🇨🇽': [
         'flag_christmas_island',
@@ -9442,7 +9442,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'christmas_island'
+        'christmas_island',
     ],
     '🇨🇾': ['flag_cyprus', 'cy', 'flag', 'nation', 'country', 'banner', 'cyprus', 'cypriot'],
     '🇨🇿': [
@@ -9454,7 +9454,7 @@ const emojiKeywords = {
         'banner',
         'czechia',
         'czech',
-        'republic'
+        'republic',
     ],
     '🇩🇪': [
         'flag_germany',
@@ -9469,7 +9469,7 @@ const emojiKeywords = {
         'indicator',
         'letters',
         'regional',
-        'symbol'
+        'symbol',
     ],
     '🇩🇬': ['flag_diego_garcia'],
     '🇩🇯': ['flag_djibouti', 'dj', 'flag', 'nation', 'country', 'banner', 'djibouti', 'djiboutian'],
@@ -9485,7 +9485,7 @@ const emojiKeywords = {
         'banner',
         'dominican_republic',
         'dom',
-        'rep'
+        'rep',
     ],
     '🇩🇿': ['flag_algeria', 'dz', 'flag', 'nation', 'country', 'banner', 'algeria', 'algerian'],
     '🇪🇦': ['flag_ceuta_melilla'],
@@ -9502,7 +9502,7 @@ const emojiKeywords = {
         'banner',
         'western_sahara',
         'saharan',
-        'west'
+        'west',
     ],
     '🇪🇷': ['flag_eritrea', 'er', 'flag', 'nation', 'country', 'banner', 'eritrea', 'eritrean'],
     '🇪🇸': [
@@ -9519,7 +9519,7 @@ const emojiKeywords = {
         'melilla',
         'regional',
         'spanish',
-        'symbol'
+        'symbol',
     ],
     '🇪🇹': ['flag_ethiopia', 'et', 'flag', 'nation', 'country', 'banner', 'ethiopia', 'ethiopian'],
     '🇪🇺': ['flag_european_union', 'european', 'union', 'flag', 'banner', 'eu'],
@@ -9538,7 +9538,7 @@ const emojiKeywords = {
         'falklander',
         'falklands',
         'island',
-        'islas'
+        'islas',
     ],
     '🇫🇲': [
         'flag_micronesia',
@@ -9549,7 +9549,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'micronesian'
+        'micronesian',
     ],
     '🇫🇴': [
         'flag_faroe_islands',
@@ -9561,7 +9561,7 @@ const emojiKeywords = {
         'banner',
         'faroe_islands',
         'island',
-        'islander'
+        'islander',
     ],
     '🇫🇷': [
         'flag_france',
@@ -9580,7 +9580,7 @@ const emojiKeywords = {
         'regional',
         'saint',
         'st.',
-        'symbol'
+        'symbol',
     ],
     '🇬🇦': ['flag_gabon', 'ga', 'flag', 'nation', 'country', 'banner', 'gabon', 'gabonese'],
     '🇬🇧': [
@@ -9604,7 +9604,7 @@ const emojiKeywords = {
         'cornwall',
         'gb',
         'scotland',
-        'wales'
+        'wales',
     ],
     '🇬🇩': ['flag_grenada', 'gd', 'flag', 'nation', 'country', 'banner', 'grenada', 'grenadian'],
     '🇬🇪': ['flag_georgia', 'ge', 'flag', 'nation', 'country', 'banner', 'georgia', 'georgian'],
@@ -9617,7 +9617,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'french_guiana',
-        'guinean'
+        'guinean',
     ],
     '🇬🇬': ['flag_guernsey', 'gg', 'flag', 'nation', 'country', 'banner', 'guernsey'],
     '🇬🇭': ['flag_ghana', 'gh', 'flag', 'nation', 'country', 'banner', 'ghana', 'ghanaian'],
@@ -9629,7 +9629,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'gibraltar',
-        'gibraltarian'
+        'gibraltarian',
     ],
     '🇬🇱': [
         'flag_greenland',
@@ -9639,7 +9639,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'greenland',
-        'greenlandic'
+        'greenlandic',
     ],
     '🇬🇲': ['flag_gambia', 'gm', 'flag', 'nation', 'country', 'banner', 'gambia', 'gambian flag'],
     '🇬🇳': ['flag_guinea', 'gn', 'flag', 'nation', 'country', 'banner', 'guinea', 'guinean'],
@@ -9651,7 +9651,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'guadeloupe',
-        'guadeloupean'
+        'guadeloupean',
     ],
     '🇬🇶': [
         'flag_equatorial_guinea',
@@ -9663,7 +9663,7 @@ const emojiKeywords = {
         'banner',
         'equatorial_guinea',
         'equatoguinean',
-        'guinean'
+        'guinean',
     ],
     '🇬🇷': ['flag_greece', 'gr', 'flag', 'nation', 'country', 'banner', 'greece', 'greek'],
     '🇬🇸': [
@@ -9677,7 +9677,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'south_georgia_south_sandwich_islands',
-        'island'
+        'island',
     ],
     '🇬🇹': [
         'flag_guatemala',
@@ -9687,7 +9687,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'guatemala',
-        'guatemalan'
+        'guatemalan',
     ],
     '🇬🇺': [
         'flag_guam',
@@ -9698,7 +9698,7 @@ const emojiKeywords = {
         'banner',
         'guam',
         'chamorro',
-        'guamanian'
+        'guamanian',
     ],
     '🇬🇼': [
         'flag_guinea_bissau',
@@ -9708,7 +9708,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'guinea_bissau'
+        'guinea_bissau',
     ],
     '🇬🇾': ['flag_guyana', 'gy', 'flag', 'nation', 'country', 'banner', 'guyana', 'guyanese'],
     '🇭🇰': [
@@ -9719,7 +9719,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'hong_kong_sar_china'
+        'hong_kong_sar_china',
     ],
     '🇭🇲': ['flag_heard_mcdonald_islands'],
     '🇭🇳': ['flag_honduras', 'hn', 'flag', 'nation', 'country', 'banner', 'honduras', 'honduran'],
@@ -9735,7 +9735,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'canary_islands',
-        'island'
+        'island',
     ],
     '🇮🇩': ['flag_indonesia', 'flag', 'nation', 'country', 'banner', 'indonesia', 'indonesian'],
     '🇮🇪': ['flag_ireland', 'ie', 'flag', 'nation', 'country', 'banner', 'ireland', 'irish flag'],
@@ -9749,7 +9749,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'isle_of_man',
-        'manx'
+        'manx',
     ],
     '🇮🇳': ['flag_india', 'in', 'flag', 'nation', 'country', 'banner', 'india', 'indian'],
     '🇮🇴': [
@@ -9766,7 +9766,7 @@ const emojiKeywords = {
         'chagos',
         'diego',
         'garcia',
-        'island'
+        'island',
     ],
     '🇮🇶': ['flag_iraq', 'iq', 'flag', 'nation', 'country', 'banner', 'iraq', 'iraqi'],
     '🇮🇷': [
@@ -9778,7 +9778,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'iranian flag'
+        'iranian flag',
     ],
     '🇮🇸': ['flag_iceland', 'is', 'flag', 'nation', 'country', 'banner', 'iceland', 'icelandic'],
     '🇮🇹': [
@@ -9792,7 +9792,7 @@ const emojiKeywords = {
         'italian',
         'letters',
         'regional',
-        'symbol'
+        'symbol',
     ],
     '🇯🇪': ['flag_jersey', 'je', 'flag', 'nation', 'country', 'banner', 'jersey'],
     '🇯🇲': ['flag_jamaica', 'jm', 'flag', 'nation', 'country', 'banner', 'jamaica', 'jamaican flag'],
@@ -9810,7 +9810,7 @@ const emojiKeywords = {
         'indicator',
         'letters',
         'regional',
-        'symbol'
+        'symbol',
     ],
     '🇰🇪': ['flag_kenya', 'ke', 'flag', 'nation', 'country', 'banner', 'kenya', 'kenyan'],
     '🇰🇬': [
@@ -9821,7 +9821,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'kyrgyzstan',
-        'kyrgyzstani'
+        'kyrgyzstani',
     ],
     '🇰🇭': ['flag_cambodia', 'kh', 'flag', 'nation', 'country', 'banner', 'cambodia', 'cambodian'],
     '🇰🇮': ['flag_kiribati', 'ki', 'flag', 'nation', 'country', 'banner', 'kiribati', 'i'],
@@ -9836,7 +9836,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_kitts_nevis',
-        'st.'
+        'st.',
     ],
     '🇰🇵': [
         'flag_north_korea',
@@ -9847,7 +9847,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'north_korea',
-        'korean'
+        'korean',
     ],
     '🇰🇷': [
         'flag_south_korea',
@@ -9863,7 +9863,7 @@ const emojiKeywords = {
         'kr',
         'letters',
         'regional',
-        'symbol'
+        'symbol',
     ],
     '🇰🇼': ['flag_kuwait', 'kw', 'flag', 'nation', 'country', 'banner', 'kuwait', 'kuwaiti'],
     '🇰🇾': [
@@ -9876,7 +9876,7 @@ const emojiKeywords = {
         'banner',
         'cayman_islands',
         'caymanian',
-        'island'
+        'island',
     ],
     '🇰🇿': [
         'flag_kazakhstan',
@@ -9887,7 +9887,7 @@ const emojiKeywords = {
         'banner',
         'kazakhstan',
         'kazakh',
-        'kazakhstani'
+        'kazakhstani',
     ],
     '🇱🇦': [
         'flag_laos',
@@ -9899,7 +9899,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'laos',
-        'laotian'
+        'laotian',
     ],
     '🇱🇧': ['flag_lebanon', 'lb', 'flag', 'nation', 'country', 'banner', 'lebanon', 'lebanese'],
     '🇱🇨': [
@@ -9911,7 +9911,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_lucia',
-        'st.'
+        'st.',
     ],
     '🇱🇮': [
         'flag_liechtenstein',
@@ -9921,7 +9921,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'liechtenstein',
-        'liechtensteiner'
+        'liechtensteiner',
     ],
     '🇱🇰': [
         'flag_sri_lanka',
@@ -9932,7 +9932,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'sri_lanka',
-        'lankan'
+        'lankan',
     ],
     '🇱🇷': ['flag_liberia', 'lr', 'flag', 'nation', 'country', 'banner', 'liberia', 'liberian'],
     '🇱🇸': ['flag_lesotho', 'ls', 'flag', 'nation', 'country', 'banner', 'lesotho', 'basotho'],
@@ -9944,7 +9944,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'lithuania',
-        'lithuanian'
+        'lithuanian',
     ],
     '🇱🇺': [
         'flag_luxembourg',
@@ -9954,7 +9954,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'luxembourg',
-        'luxembourger'
+        'luxembourger',
     ],
     '🇱🇻': ['flag_latvia', 'lv', 'flag', 'nation', 'country', 'banner', 'latvia', 'latvian'],
     '🇱🇾': ['flag_libya', 'ly', 'flag', 'nation', 'country', 'banner', 'libya', 'libyan'],
@@ -9968,7 +9968,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'moldovan'
+        'moldovan',
     ],
     '🇲🇪': [
         'flag_montenegro',
@@ -9978,7 +9978,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'montenegro',
-        'montenegrin'
+        'montenegrin',
     ],
     '🇲🇫': ['flag_st_martin', 'st.'],
     '🇲🇬': [
@@ -9989,7 +9989,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'madagascar',
-        'madagascan'
+        'madagascan',
     ],
     '🇲🇭': [
         'flag_marshall_islands',
@@ -10001,7 +10001,7 @@ const emojiKeywords = {
         'banner',
         'marshall_islands',
         'island',
-        'marshallese'
+        'marshallese',
     ],
     '🇲🇰': [
         'flag_north_macedonia',
@@ -10011,7 +10011,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'north_macedonia',
-        'macedonian'
+        'macedonian',
     ],
     '🇲🇱': ['flag_mali', 'ml', 'flag', 'nation', 'country', 'banner', 'mali', 'malian'],
     '🇲🇲': [
@@ -10025,7 +10025,7 @@ const emojiKeywords = {
         'burma',
         'burmese',
         'for',
-        'myanmarese flag'
+        'myanmarese flag',
     ],
     '🇲🇳': ['flag_mongolia', 'mn', 'flag', 'nation', 'country', 'banner', 'mongolia', 'mongolian'],
     '🇲🇴': [
@@ -10037,7 +10037,7 @@ const emojiKeywords = {
         'banner',
         'macao_sar_china',
         'macanese flag',
-        'macau'
+        'macau',
     ],
     '🇲🇵': [
         'flag_northern_mariana_islands',
@@ -10051,7 +10051,7 @@ const emojiKeywords = {
         'northern_mariana_islands',
         'island',
         'micronesian',
-        'north'
+        'north',
     ],
     '🇲🇶': [
         'flag_martinique',
@@ -10063,7 +10063,7 @@ const emojiKeywords = {
         'martinique',
         'martiniquais flag',
         'of martinique',
-        'snake'
+        'snake',
     ],
     '🇲🇷': [
         'flag_mauritania',
@@ -10073,7 +10073,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'mauritania',
-        'mauritanian'
+        'mauritanian',
     ],
     '🇲🇸': [
         'flag_montserrat',
@@ -10083,7 +10083,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'montserrat',
-        'montserratian'
+        'montserratian',
     ],
     '🇲🇹': ['flag_malta', 'mt', 'flag', 'nation', 'country', 'banner', 'malta', 'maltese'],
     '🇲🇺': ['flag_mauritius', 'mu', 'flag', 'nation', 'country', 'banner', 'mauritius', 'mauritian'],
@@ -10099,7 +10099,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'mozambique',
-        'mozambican'
+        'mozambican',
     ],
     '🇳🇦': ['flag_namibia', 'na', 'flag', 'nation', 'country', 'banner', 'namibia', 'namibian'],
     '🇳🇨': [
@@ -10111,7 +10111,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'new_caledonia',
-        'caledonian'
+        'caledonian',
     ],
     '🇳🇪': ['flag_niger', 'ne', 'flag', 'nation', 'country', 'banner', 'niger', 'nigerien flag'],
     '🇳🇫': [
@@ -10122,7 +10122,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'norfolk_island'
+        'norfolk_island',
     ],
     '🇳🇬': ['flag_nigeria', 'flag', 'nation', 'country', 'banner', 'nigeria', 'nigerian'],
     '🇳🇮': [
@@ -10133,7 +10133,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'nicaragua',
-        'nicaraguan'
+        'nicaraguan',
     ],
     '🇳🇱': ['flag_netherlands', 'nl', 'flag', 'nation', 'country', 'banner', 'netherlands', 'dutch'],
     '🇳🇴': [
@@ -10148,7 +10148,7 @@ const emojiKeywords = {
         'jan',
         'mayen',
         'norwegian',
-        'svalbard'
+        'svalbard',
     ],
     '🇳🇵': ['flag_nepal', 'np', 'flag', 'nation', 'country', 'banner', 'nepal', 'nepalese'],
     '🇳🇷': ['flag_nauru', 'nr', 'flag', 'nation', 'country', 'banner', 'nauru', 'nauruan'],
@@ -10162,7 +10162,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'new_zealand',
-        'kiwi'
+        'kiwi',
     ],
     '🇴🇲': ['flag_oman', 'om_symbol', 'flag', 'nation', 'country', 'banner', 'oman', 'omani'],
     '🇵🇦': ['flag_panama', 'pa', 'flag', 'nation', 'country', 'banner', 'panama', 'panamanian'],
@@ -10176,7 +10176,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'french_polynesia',
-        'polynesian'
+        'polynesian',
     ],
     '🇵🇬': [
         'flag_papua_new_guinea',
@@ -10189,7 +10189,7 @@ const emojiKeywords = {
         'banner',
         'papua_new_guinea',
         'guinean',
-        'png'
+        'png',
     ],
     '🇵🇭': ['flag_philippines', 'ph', 'flag', 'nation', 'country', 'banner', 'philippines'],
     '🇵🇰': ['flag_pakistan', 'pk', 'flag', 'nation', 'country', 'banner', 'pakistan', 'pakistani'],
@@ -10204,7 +10204,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_pierre_miquelon',
-        'st.'
+        'st.',
     ],
     '🇵🇳': [
         'flag_pitcairn_islands',
@@ -10214,7 +10214,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'pitcairn_islands',
-        'island'
+        'island',
     ],
     '🇵🇷': [
         'flag_puerto_rico',
@@ -10225,7 +10225,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'puerto_rico',
-        'rican'
+        'rican',
     ],
     '🇵🇸': [
         'flag_palestinian_territories',
@@ -10236,7 +10236,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'palestinian_territories'
+        'palestinian_territories',
     ],
     '🇵🇹': ['flag_portugal', 'pt', 'flag', 'nation', 'country', 'banner', 'portugal', 'portugese'],
     '🇵🇼': ['flag_palau', 'pw', 'flag', 'nation', 'country', 'banner', 'palau', 'palauan'],
@@ -10250,7 +10250,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'reunion',
-        'réunionnais'
+        'réunionnais',
     ],
     '🇷🇴': ['flag_romania', 'ro', 'flag', 'nation', 'country', 'banner', 'romania', 'romanian'],
     '🇷🇸': ['flag_serbia', 'rs', 'flag', 'nation', 'country', 'banner', 'serbia', 'serbian flag'],
@@ -10267,7 +10267,7 @@ const emojiKeywords = {
         'letters',
         'regional',
         'ru',
-        'symbol'
+        'symbol',
     ],
     '🇷🇼': ['flag_rwanda', 'rw', 'flag', 'nation', 'country', 'banner', 'rwanda', 'rwandan'],
     '🇸🇦': [
@@ -10277,7 +10277,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'saudi_arabia',
-        'arabian flag'
+        'arabian flag',
     ],
     '🇸🇧': [
         'flag_solomon_islands',
@@ -10289,7 +10289,7 @@ const emojiKeywords = {
         'banner',
         'solomon_islands',
         'island',
-        'islander flag'
+        'islander flag',
     ],
     '🇸🇨': [
         'flag_seychelles',
@@ -10299,7 +10299,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'seychelles',
-        'seychellois flag'
+        'seychellois flag',
     ],
     '🇸🇩': ['flag_sudan', 'sd', 'flag', 'nation', 'country', 'banner', 'sudan', 'sudanese'],
     '🇸🇪': ['flag_sweden', 'se', 'flag', 'nation', 'country', 'banner', 'sweden', 'swedish'],
@@ -10311,7 +10311,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'singapore',
-        'singaporean'
+        'singaporean',
     ],
     '🇸🇭': [
         'flag_st_helena',
@@ -10325,7 +10325,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_helena',
-        'st.'
+        'st.',
     ],
     '🇸🇮': ['flag_slovenia', 'si', 'flag', 'nation', 'country', 'banner', 'slovenia', 'slovenian'],
     '🇸🇯': ['flag_svalbard_jan_mayen'],
@@ -10338,7 +10338,7 @@ const emojiKeywords = {
         'banner',
         'slovakia',
         'slovakian',
-        'slovak flag'
+        'slovak flag',
     ],
     '🇸🇱': [
         'flag_sierra_leone',
@@ -10349,7 +10349,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'sierra_leone',
-        'leonean'
+        'leonean',
     ],
     '🇸🇲': [
         'flag_san_marino',
@@ -10360,7 +10360,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'san_marino',
-        'sammarinese'
+        'sammarinese',
     ],
     '🇸🇳': ['flag_senegal', 'sn', 'flag', 'nation', 'country', 'banner', 'senegal', 'sengalese'],
     '🇸🇴': ['flag_somalia', 'so', 'flag', 'nation', 'country', 'banner', 'somalia', 'somalian flag'],
@@ -10374,7 +10374,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'south_sudan',
-        'sudanese flag'
+        'sudanese flag',
     ],
     '🇸🇹': [
         'flag_sao_tome_principe',
@@ -10388,7 +10388,7 @@ const emojiKeywords = {
         'sao_tome_principe',
         'príncipe',
         'são',
-        'tomé'
+        'tomé',
     ],
     '🇸🇻': [
         'flag_el_salvador',
@@ -10399,7 +10399,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'el_salvador',
-        'salvadoran'
+        'salvadoran',
     ],
     '🇸🇽': [
         'flag_sint_maarten',
@@ -10410,7 +10410,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'sint_maarten'
+        'sint_maarten',
     ],
     '🇸🇾': [
         'flag_syria',
@@ -10421,7 +10421,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'syria'
+        'syria',
     ],
     '🇸🇿': ['flag_eswatini', 'sz', 'flag', 'nation', 'country', 'banner', 'eswatini', 'swaziland'],
     '🇹🇦': ['flag_tristan_da_cunha'],
@@ -10435,7 +10435,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'turks_caicos_islands',
-        'island'
+        'island',
     ],
     '🇹🇩': ['flag_chad', 'td', 'flag', 'nation', 'country', 'banner', 'chad', 'chadian'],
     '🇹🇫': [
@@ -10449,7 +10449,7 @@ const emojiKeywords = {
         'banner',
         'french_southern_territories',
         'antarctic',
-        'lands'
+        'lands',
     ],
     '🇹🇬': ['flag_togo', 'tg', 'flag', 'nation', 'country', 'banner', 'togo', 'togolese'],
     '🇹🇭': ['flag_thailand', 'th', 'flag', 'nation', 'country', 'banner', 'thailand', 'thai'],
@@ -10466,7 +10466,7 @@ const emojiKeywords = {
         'timor_leste',
         'east',
         'leste flag',
-        'timorese'
+        'timorese',
     ],
     '🇹🇲': ['flag_turkmenistan', 'flag', 'nation', 'country', 'banner', 'turkmenistan', 'turkmen'],
     '🇹🇳': ['flag_tunisia', 'tn', 'flag', 'nation', 'country', 'banner', 'tunisia', 'tunisian'],
@@ -10480,7 +10480,7 @@ const emojiKeywords = {
         'banner',
         'tr',
         'turkish flag',
-        'türkiye'
+        'türkiye',
     ],
     '🇹🇹': [
         'flag_trinidad_tobago',
@@ -10490,7 +10490,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'trinidad_tobago'
+        'trinidad_tobago',
     ],
     '🇹🇻': ['flag_tuvalu', 'flag', 'nation', 'country', 'banner', 'tuvalu', 'tuvaluan'],
     '🇹🇼': [
@@ -10502,7 +10502,7 @@ const emojiKeywords = {
         'banner',
         'taiwan',
         'china',
-        'taiwanese'
+        'taiwanese',
     ],
     '🇹🇿': [
         'flag_tanzania',
@@ -10513,7 +10513,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'tanzanian'
+        'tanzanian',
     ],
     '🇺🇦': ['flag_ukraine', 'ua', 'flag', 'nation', 'country', 'banner', 'ukraine', 'ukrainian'],
     '🇺🇬': ['flag_uganda', 'ug', 'flag', 'nation', 'country', 'banner', 'uganda', 'ugandan flag'],
@@ -10537,7 +10537,7 @@ const emojiKeywords = {
         'regional',
         'symbol',
         'us',
-        'usa'
+        'usa',
     ],
     '🇺🇾': ['flag_uruguay', 'uy', 'flag', 'nation', 'country', 'banner', 'uruguay', 'uruguayan'],
     '🇺🇿': [
@@ -10549,7 +10549,7 @@ const emojiKeywords = {
         'banner',
         'uzbekistan',
         'uzbek',
-        'uzbekistani'
+        'uzbekistani',
     ],
     '🇻🇦': [
         'flag_vatican_city',
@@ -10560,7 +10560,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'vatican_city',
-        'vanticanien'
+        'vanticanien',
     ],
     '🇻🇨': [
         'flag_st_vincent_grenadines',
@@ -10572,7 +10572,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'st_vincent_grenadines',
-        'st.'
+        'st.',
     ],
     '🇻🇪': [
         'flag_venezuela',
@@ -10584,7 +10584,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'venezuela',
-        'venezuelan'
+        'venezuelan',
     ],
     '🇻🇬': [
         'flag_british_virgin_islands',
@@ -10598,7 +10598,7 @@ const emojiKeywords = {
         'banner',
         'british_virgin_islands',
         'island',
-        'islander'
+        'islander',
     ],
     '🇻🇮': [
         'flag_u_s_virgin_islands',
@@ -10616,7 +10616,7 @@ const emojiKeywords = {
         'states',
         'u.s.',
         'united',
-        'usa'
+        'usa',
     ],
     '🇻🇳': [
         'flag_vietnam',
@@ -10627,7 +10627,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'vietnam',
-        'vietnamese'
+        'vietnamese',
     ],
     '🇻🇺': [
         'flag_vanuatu',
@@ -10638,7 +10638,7 @@ const emojiKeywords = {
         'banner',
         'vanuatu',
         'ni',
-        'vanuatu flag'
+        'vanuatu flag',
     ],
     '🇼🇫': [
         'flag_wallis_futuna',
@@ -10648,7 +10648,7 @@ const emojiKeywords = {
         'nation',
         'country',
         'banner',
-        'wallis_futuna'
+        'wallis_futuna',
     ],
     '🇼🇸': ['flag_samoa', 'ws', 'flag', 'nation', 'country', 'banner', 'samoa', 'samoan flag'],
     '🇽🇰': ['flag_kosovo', 'xk', 'flag', 'nation', 'country', 'banner', 'kosovo', 'kosovar'],
@@ -10663,7 +10663,7 @@ const emojiKeywords = {
         'country',
         'banner',
         'south_africa',
-        'african flag'
+        'african flag',
     ],
     '🇿🇲': ['flag_zambia', 'zm', 'flag', 'nation', 'country', 'banner', 'zambia', 'zambian'],
     '🇿🇼': [
@@ -10675,7 +10675,7 @@ const emojiKeywords = {
         'banner',
         'zimbabwe',
         'zim',
-        'zimbabwean flag'
+        'zimbabwean flag',
     ],
     '🏴󠁧󠁢󠁥󠁮󠁧󠁿': ['flag_england', 'flag', 'english', 'cross', "george's", 'st'],
     '🏴󠁧󠁢󠁳󠁣󠁴󠁿': ['flag_scotland', 'flag', 'scottish', "andrew's", 'cross', 'saltire', 'st'],
@@ -10690,7 +10690,7 @@ const emojiKeywords = {
         'proud',
         'relieved',
         'smile',
-        'touched'
+        'touched',
     ],
     '🥸': [
         'disguised face',
@@ -10700,7 +10700,7 @@ const emojiKeywords = {
         'moustache',
         'disguise',
         'incognito',
-        'nose'
+        'nose',
     ],
     '🤌': [
         'pinched fingers',
@@ -10715,7 +10715,7 @@ const emojiKeywords = {
         'ma',
         'purse',
         'sarcastic',
-        'vuoi'
+        'vuoi',
     ],
     '🫀': ['anatomical heart', 'health', 'heartbeat', 'cardiology', 'organ', 'pulse'],
     '🫁': ['lungs', 'breathe', 'breath', 'exhalation', 'inhalation', 'organ', 'respiration'],
@@ -10729,7 +10729,7 @@ const emojiKeywords = {
         'men',
         'person',
         'suit',
-        'wedding'
+        'wedding',
     ],
     '🤵‍♀️': ['woman in tuxedo', 'formal', 'fashion', 'female', 'wedding', 'women'],
     '👰‍♂️': ['man with veil', 'wedding', 'marriage', 'bride', 'male', 'men'],
@@ -10744,7 +10744,7 @@ const emojiKeywords = {
         'infant',
         'milk',
         'nursing',
-        'women'
+        'women',
     ],
     '👨‍🍼': [
         'man feeding baby',
@@ -10756,7 +10756,7 @@ const emojiKeywords = {
         'male',
         'men',
         'milk',
-        'nursing'
+        'nursing',
     ],
     '🧑‍🍼': ['person feeding baby', 'birth', 'food', 'bottle', 'child', 'infant', 'milk', 'nursing'],
     '🧑‍🎄': ['mx claus', 'christmas', 'activity', 'celebration', 'mx.', 'santa'],
@@ -10781,7 +10781,7 @@ const emojiKeywords = {
         'grow',
         'houseplant',
         'nurturing',
-        'useless'
+        'useless',
     ],
     '🫐': ['blueberries', 'fruit', 'berry', 'bilberry', 'blue', 'blueberry'],
     '🫒': ['olive', 'fruit', 'food', 'olives'],
@@ -10796,7 +10796,7 @@ const emojiKeywords = {
         'flat',
         'lavash',
         'naan',
-        'pita'
+        'pita',
     ],
     '🫔': ['tamale', 'food', 'masa', 'mexican', 'tamal', 'wrapped'],
     '🫕': ['fondue', 'cheese', 'pot', 'food', 'chocolate', 'melted', 'swiss'],
@@ -10822,7 +10822,7 @@ const emojiKeywords = {
         'jandals',
         'sandals',
         'thongs',
-        'zōri'
+        'zōri',
     ],
     '🪖': ['military helmet', 'army', 'protection', 'soldier', 'warrior'],
     '🪗': ['accordion', 'music', 'accordian', 'box', 'concertina', 'squeeze'],
@@ -10841,7 +10841,7 @@ const emojiKeywords = {
         'fishing',
         'point',
         'selling',
-        'tool'
+        'tool',
     ],
     '🪜': ['ladder', 'tools', 'climb', 'rung', 'step', 'tool'],
     '🛗': ['elevator', 'lift', 'accessibility', 'hoist'],
@@ -10862,7 +10862,7 @@ const emojiKeywords = {
         'male',
         'pride',
         'sign',
-        'stroke'
+        'stroke',
     ],
     '🏳️‍⚧️': [
         'transgender flag',
@@ -10875,7 +10875,7 @@ const emojiKeywords = {
         'light',
         'pink',
         'trans',
-        'white'
+        'white',
     ],
     '😶‍🌫️': [
         'face in clouds',
@@ -10889,7 +10889,7 @@ const emojiKeywords = {
         'haze',
         'head',
         'impractical',
-        'unrealistic'
+        'unrealistic',
     ],
     '😮‍💨': [
         'face exhaling',
@@ -10901,7 +10901,7 @@ const emojiKeywords = {
         'gasp',
         'groan',
         'whisper',
-        'whistle'
+        'whistle',
     ],
     '😵‍💫': [
         'face with spiral eyes',
@@ -10913,7 +10913,7 @@ const emojiKeywords = {
         'dizzy',
         'hypnotized',
         'trouble',
-        'whoa'
+        'whoa',
     ],
     '❤️‍🔥': ['heart on fire', 'passionate', 'enthusiastic', 'burn', 'love', 'lust', 'sacred'],
     '❤️‍🩹': [
@@ -10928,7 +10928,7 @@ const emojiKeywords = {
         'recovering',
         'recuperating',
         'unbroken',
-        'well'
+        'well',
     ],
     '🧔‍♂️': ['man beard', 'facial hair', 'bearded', 'bewhiskered', 'male', 'men'],
     '🧔‍♀️': ['woman beard', 'facial hair', 'bearded', 'bewhiskered', 'female', 'women'],
@@ -10941,7 +10941,7 @@ const emojiKeywords = {
         'dread',
         'liquid',
         'melt',
-        'sarcasm'
+        'sarcasm',
     ],
     '🫢': [
         'face with open eyes and hand over mouth',
@@ -10954,7 +10954,7 @@ const emojiKeywords = {
         'disbelief',
         'embarrass',
         'gasp',
-        'scared'
+        'scared',
     ],
     '🫣': [
         'face with peeking eye',
@@ -10964,7 +10964,7 @@ const emojiKeywords = {
         'shy',
         'captivated',
         'peep',
-        'stare'
+        'stare',
     ],
     '🫡': ['saluting face', 'respect', 'salute', 'ok', 'sunny', 'troops', 'yes'],
     '🫥': [
@@ -10976,7 +10976,7 @@ const emojiKeywords = {
         'depressed',
         'disappear',
         'hide',
-        'introvert'
+        'introvert',
     ],
     '🫤': [
         'face with diagonal mouth',
@@ -10988,7 +10988,7 @@ const emojiKeywords = {
         'disappointed',
         'meh',
         'skeptical',
-        'unsure'
+        'unsure',
     ],
     '🥹': [
         'face holding back tears',
@@ -10998,7 +10998,7 @@ const emojiKeywords = {
         'angry',
         'proud',
         'resist',
-        'sad'
+        'sad',
     ],
     '🫱': ['rightwards hand', 'palm', 'offer', 'right', 'rightward'],
     '🫲': ['leftwards hand', 'palm', 'offer', 'left', 'leftward'],
@@ -11010,7 +11010,7 @@ const emojiKeywords = {
         'love',
         'money',
         'expensive',
-        'snap'
+        'snap',
     ],
     '🫵': ['index pointing at the viewer', 'you', 'recruit', 'point'],
     '🫶': ['heart hands', 'love', 'appreciation', 'support'],
@@ -11025,7 +11025,7 @@ const emojiKeywords = {
         'flirting',
         'nervous',
         'uncomfortable',
-        'worried'
+        'worried',
     ],
     '🫅': ['person with crown', 'royalty', 'power', 'monarch', 'noble', 'regal'],
     '🫃': ['pregnant man', 'baby', 'belly', 'bloated', 'full'],
@@ -11041,7 +11041,7 @@ const emojiKeywords = {
         'hinduism',
         'india',
         'purity',
-        'vietnam'
+        'vietnam',
     ],
     '🪹': ['empty nest', 'bird', 'nesting'],
     '🪺': ['nest with eggs', 'bird', 'nesting'],
@@ -11063,7 +11063,7 @@ const emojiKeywords = {
         'disability',
         'hurt',
         'mobility',
-        'stick'
+        'stick',
     ],
     '🩻': ['x-ray', 'skeleton', 'medicine', 'bones', 'doctor', 'medical', 'ray', 'x'],
     '🫧': ['bubbles', 'soap', 'fun', 'carbonation', 'sparkling', 'burp', 'clean', 'underwater'],
@@ -11102,24 +11102,9 @@ const emojiKeywords = {
     '👨‍🦯‍➡️': ['man with white cane facing right', 'visually impaired', 'blind', 'walk', 'stick'],
     '👩‍🦯‍➡️': ['woman with white cane facing right', 'stick', 'visually impaired', 'blind'],
     '🧑‍🦼‍➡️': ['person in motorized wheelchair facing right', 'accessibility', 'disability'],
-    '👨‍🦼‍➡️': [
-        'man in motorized wheelchair facing right',
-        'disability',
-        'accessibility',
-        'mobility'
-    ],
-    '👩‍🦼‍➡️': [
-        'woman in motorized wheelchair facing right',
-        'mobility',
-        'accessibility',
-        'disability'
-    ],
-    '🧑‍🦽‍➡️': [
-        'person in manual wheelchair facing right',
-        'mobility',
-        'accessibility',
-        'disability'
-    ],
+    '👨‍🦼‍➡️': ['man in motorized wheelchair facing right', 'disability', 'accessibility', 'mobility'],
+    '👩‍🦼‍➡️': ['woman in motorized wheelchair facing right', 'mobility', 'accessibility', 'disability'],
+    '🧑‍🦽‍➡️': ['person in manual wheelchair facing right', 'mobility', 'accessibility', 'disability'],
     '👨‍🦽‍➡️': ['man in manual wheelchair facing right', 'mobility', 'accessibility', 'disability'],
     '👩‍🦽‍➡️': ['woman in manual wheelchair facing right', 'disability', 'mobility', 'accessibility'],
     '🏃‍➡️': ['person running facing right', 'exercise', 'jog'],
@@ -11132,7 +11117,7 @@ const emojiKeywords = {
     '🐦‍🔥': ['phoenix', 'immortal', 'bird', 'mythtical', 'reborn'],
     '🍋‍🟩': ['lime', 'fruit', 'acidic', 'citric'],
     '🍄‍🟫': ['brown mushroom', 'toadstool', 'fungus'],
-    '⛓️‍💥': ['broken chain', 'constraint', 'break']
+    '⛓️‍💥': ['broken chain', 'constraint', 'break'],
 } as Record<Emoji, string[]>;
 
 export default emojiKeywords;

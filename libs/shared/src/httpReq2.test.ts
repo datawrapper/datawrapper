@@ -31,7 +31,7 @@ test('calls /v3/me when CSRF cookie is not set', async t => {
             }
             lastFetchOpts = opts;
             return Promise.resolve(new Response());
-        }
+        },
     } as unknown as {
         // TODO Fix the SimpleFetch type and then remove this casting.
         baseUrl: string;

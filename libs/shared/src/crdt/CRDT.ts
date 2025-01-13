@@ -4,7 +4,7 @@ import type {
     DebugHistoryEntry,
     DebugSnapshot,
     Timestamp,
-    CalculateDiffOptions
+    CalculateDiffOptions,
 } from './types.js';
 
 export type Diff<O extends object | string | number> = O;

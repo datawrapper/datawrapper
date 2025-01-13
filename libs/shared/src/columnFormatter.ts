@@ -32,6 +32,6 @@ export function columnFormatter(
     return column.type() === 'date'
         ? dateColumnFormatter(column.type(true), options)
         : column.type() === 'number'
-        ? numberColumnFormatter(numeral, get(metadata, `data.column-format.${axis}`, {}))
-        : identity;
+          ? numberColumnFormatter(numeral, get(metadata, `data.column-format.${axis}`, {}))
+          : identity;
 }

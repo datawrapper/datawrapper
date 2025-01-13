@@ -19,12 +19,12 @@ export default {
     column,
     datasource: {
         delimited,
-        json
+        json,
     },
     utils,
     chart,
     visualization,
     theme,
     block,
-    notify
+    notify,
 };

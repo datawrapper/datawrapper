@@ -39,13 +39,13 @@ export type Timestamps<O extends object> = {
         ? // if the value is an array of objects with an id property
           TimestampsArray<O[K]>
         : O[K] extends AnyArray<unknown>
-        ? // if the value is a simple array, treat it as a primitive
-          Clock | Timestamp
-        : O[K] extends object
-        ? // if the value is an object, recursively timestampify it
-          Timestamps<O[K]>
-        : // otherwise, treat it as a primitive
-          Clock | Timestamp;
+          ? // if the value is a simple array, treat it as a primitive
+            Clock | Timestamp
+          : O[K] extends object
+            ? // if the value is an object, recursively timestampify it
+              Timestamps<O[K]>
+            : // otherwise, treat it as a primitive
+              Clock | Timestamp;
 };
 
 type TimestampObject = { [TIMESTAMP_KEY]: Timestamp | Clock };
@@ -60,13 +60,13 @@ export type NewTimestamps<O extends object> = {
         ? // if the value is an array of objects with an id property
           NewTimestampsArray<O[K]>
         : O[K] extends AnyArray<unknown>
-        ? // if the value is a simple array, treat it as a primitive
-          TimestampObject
-        : O[K] extends object
-        ? // if the value is an object, recursively timestampify it
-          NewTimestamps<O[K]>
-        : // otherwise, treat it as a primitive
-          TimestampObject;
+          ? // if the value is a simple array, treat it as a primitive
+            TimestampObject
+          : O[K] extends object
+            ? // if the value is an object, recursively timestampify it
+              NewTimestamps<O[K]>
+            : // otherwise, treat it as a primitive
+              TimestampObject;
 };
 
 export type SerializedBaseJsonCRDT<O extends object> = {

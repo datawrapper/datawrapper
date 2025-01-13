@@ -69,17 +69,17 @@ test('cluster tooltips', async t => {
         symbols: [
             {
                 ID: 'USA',
-                value: 1234
+                value: 1234,
             },
             {
                 ID: 'Canada',
-                value: 1876
+                value: 1876,
             },
             {
                 ID: 'Mexico',
-                value: 234
-            }
-        ]
+                value: 234,
+            },
+        ],
     };
     ctx.first = ctx.symbols[0];
     t.is(tpl(`{{ first.ID }}`, ctx), 'USA');

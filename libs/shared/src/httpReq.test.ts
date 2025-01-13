@@ -31,10 +31,10 @@ test.before(t => {
                 core: {
                     'existing-foo': 'My error foo',
                     'existing-bar / existing-one': 'My error detail one',
-                    'existing-bar / existing-two': 'My error detail two'
-                }
-            }
-        }
+                    'existing-bar / existing-two': 'My error detail two',
+                },
+            },
+        },
     };
 });
 
@@ -47,8 +47,8 @@ test.serial('simple get request', async t => {
             return [
                 200,
                 {
-                    url: `${baseUrl}${uri}`
-                }
+                    url: `${baseUrl}${uri}`,
+                },
             ];
         })
         .persist();
@@ -69,9 +69,9 @@ test.serial('simple put request', async t => {
                 {
                     url: `${baseUrl}${uri}`,
                     headers: {
-                        'Content-Type': getHeader(this.req, 'Content-Type')
-                    }
-                }
+                        'Content-Type': getHeader(this.req, 'Content-Type'),
+                    },
+                },
             ];
         })
         .persist();
@@ -93,10 +93,10 @@ test.serial('simple put request with json payload', async t => {
                 200,
                 {
                     headers: {
-                        'Content-Type': getHeader(this.req, 'Content-Type')
+                        'Content-Type': getHeader(this.req, 'Content-Type'),
                     },
-                    json: body
-                }
+                    json: body,
+                },
             ];
         })
         .persist();
@@ -119,10 +119,10 @@ test.serial('post request with csv body', async t => {
                 200,
                 {
                     headers: {
-                        'Content-Type': getHeader(this.req, 'Content-Type')
+                        'Content-Type': getHeader(this.req, 'Content-Type'),
                     },
-                    data: body
-                }
+                    data: body,
+                },
             ];
         })
         .persist();
@@ -133,7 +133,7 @@ test.serial('post request with csv body', async t => {
     let res = await httpReq.put('/put', {
         baseUrl,
         body,
-        headers: { 'Content-Type': 'text/csv' }
+        headers: { 'Content-Type': 'text/csv' },
     });
     t.is(res.headers['Content-Type'], `text/csv`);
     t.is(res.data, body);
@@ -142,7 +142,7 @@ test.serial('post request with csv body', async t => {
         method: 'PUT',
         baseUrl,
         body,
-        headers: { 'Content-Type': 'text/csv' }
+        headers: { 'Content-Type': 'text/csv' },
     });
     t.is(res.headers['Content-Type'], `text/csv`);
     t.is(res.data, body);
@@ -156,9 +156,9 @@ test.serial('post request with file in multipart/form-data body', async t => {
                 200,
                 {
                     headers: {
-                        'Content-Type': getHeader(this.req, 'Content-Type')
-                    }
-                }
+                        'Content-Type': getHeader(this.req, 'Content-Type'),
+                    },
+                },
             ];
         })
         .persist();
@@ -178,7 +178,7 @@ test.serial('post request with file in multipart/form-data body', async t => {
     const res = await httpReq.post('/anything', {
         baseUrl,
         body,
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
     });
     t.true(res.headers['Content-Type'].startsWith('multipart/form-data;boundary='));
 });
@@ -186,7 +186,7 @@ test.serial('post request with file in multipart/form-data body', async t => {
 test.serial('no content in 204 requests', async t => {
     nock(baseUrl).get('/status/204').reply(204);
     const res = await httpReq.get('/status/204', {
-        baseUrl
+        baseUrl,
     });
 
     t.is(res.headers.get('content-length'), null);
@@ -251,8 +251,8 @@ test.serial(
                     { type: 'unknown', path: 'path-three' },
                     { spam: 'missing-type' },
                     'not an object',
-                    null
-                ]
+                    null,
+                ],
             });
         try {
             await httpReq.get('/404-with-details', { baseUrl });
@@ -264,13 +264,13 @@ test.serial(
                 {
                     type: 'existing-one',
                     path: 'path-one',
-                    translationKey: 'existing-bar / existing-one'
+                    translationKey: 'existing-bar / existing-one',
                 },
                 { type: 'existing-two', translationKey: 'existing-bar / existing-two' },
                 { type: 'unknown', path: 'path-three' },
                 { spam: 'missing-type' },
                 'not an object',
-                null
+                null,
             ]);
         }
     }
@@ -283,7 +283,7 @@ test.serial(
             .get('/404-with-invalid-details')
             .reply(404, {
                 type: 'bar',
-                details: [{ spam: 'invalid' }, 'not an object', null]
+                details: [{ spam: 'invalid' }, 'not an object', null],
             });
         try {
             await httpReq.get('/404-with-invalid-details', { baseUrl });
@@ -302,11 +302,11 @@ test.serial(
         nock(baseUrl)
             .get('/404-with-details-without-type')
             .reply(404, {
-                details: [{ type: 'existing-one', path: 'path-one' }]
+                details: [{ type: 'existing-one', path: 'path-one' }],
             });
         try {
             await httpReq.get('/404-with-details-without-type', {
-                baseUrl
+                baseUrl,
             });
         } catch (err) {
             t.true(err instanceof HttpReqError);

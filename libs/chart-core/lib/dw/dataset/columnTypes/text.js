@@ -12,7 +12,7 @@ function text() {
         isValid: function () {
             return true;
         },
-        format: function () {}
+        format: function () {},
     };
 }
 

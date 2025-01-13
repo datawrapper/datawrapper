@@ -16,7 +16,7 @@ test('getPartialChartSchema returns the correct schema, and only the given keys'
             .example('d3-lines')
             .description(
                 'Type of the chart ([Reference](https://developer.datawrapper.de/v3.0/docs/chart-types))'
-            )
+            ),
     };
 
     t.deepEqual(actualSchema, expected);
@@ -33,7 +33,7 @@ for (const [id, errorExpected] of [
     ['1-dwhj123', false],
     ['drafts', true],
     ['a', true],
-    ['$@dw?', true]
+    ['$@dw?', true],
 ] as const) {
     test(`themeIdSchema: "${id}" is ${errorExpected ? 'invalid' : 'valid'}`, t => {
         const { error } = themeIdSchema.validate(id);

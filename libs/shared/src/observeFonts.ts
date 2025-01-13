@@ -34,8 +34,8 @@ export default function observeFonts(
                     family: fontFamily,
                     props: {
                         weight: fontface.weight || 400,
-                        style: fontface.style || 'normal'
-                    }
+                        style: fontface.style || 'normal',
+                    },
                 });
             }
         });

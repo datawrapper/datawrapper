@@ -4,15 +4,15 @@ import { Dataset, Overlay } from './chartTypes';
 
 const overlayOne = {
     color: 7,
-    opacity: 0.35
+    opacity: 0.35,
 } as Overlay;
 const overlayTwo = {
     color: '#ff5e4b',
-    opacity: 0.35
+    opacity: 0.35,
 } as Overlay;
 const overlayThree = {
     color: 0,
-    opacity: 0.35
+    opacity: 0.35,
 } as Overlay;
 const theme = {
     colors: {
@@ -27,9 +27,9 @@ const theme = {
             '#c71e1d',
             '#fa8c00',
             '#ffca76',
-            '#ffe59c'
-        ]
-    }
+            '#ffe59c',
+        ],
+    },
 };
 
 test('check color from with color from palette', t => {
@@ -64,9 +64,9 @@ const datasetOne = (<DeepPartial<Dataset>>{
         return {
             title() {
                 return title;
-            }
+            },
         };
-    }
+    },
 }) as Dataset;
 
 const datasetTwo = (<DeepPartial<Dataset>>{
@@ -75,7 +75,7 @@ const datasetTwo = (<DeepPartial<Dataset>>{
     },
     column() {
         throw new Error('should not be called');
-    }
+    },
 }) as Dataset;
 
 const colName = 'a-super-col-name';

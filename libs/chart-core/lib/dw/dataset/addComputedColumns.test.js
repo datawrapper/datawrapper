@@ -9,10 +9,10 @@ test('addComputedColumns adds a computed column that references an invalid date'
         metadata: {
             describe: {
                 'computed-columns': {
-                    my_computed_column: 'my_date_column'
-                }
-            }
-        }
+                    my_computed_column: 'my_date_column',
+                },
+            },
+        },
     });
     const validDate = new Date('2022-01-31');
     const invalidDate = new Date('spam');
@@ -21,11 +21,11 @@ test('addComputedColumns adds a computed column that references an invalid date'
     t.deepEqual(datesetWithComputedColumns.list(), [
         {
             my_date_column: validDate,
-            my_computed_column: '2022-01-31T00:00:00.000Z'
+            my_computed_column: '2022-01-31T00:00:00.000Z',
         },
         {
             my_date_column: invalidDate,
-            my_computed_column: 'Invalid Date'
-        }
+            my_computed_column: 'Invalid Date',
+        },
     ]);
 });

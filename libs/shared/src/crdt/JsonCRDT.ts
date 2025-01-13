@@ -6,7 +6,7 @@ import type {
     SerializedBaseJsonCRDT,
     SerializedJsonCRDT,
     DebugFlagOrLevel,
-    CalculateDiffOptions
+    CalculateDiffOptions,
 } from './types.js';
 import { typeofObjectProperties } from './utils.js';
 
@@ -132,7 +132,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
     serialize(): SerializedJsonCRDT<O> {
         return {
             crdt: this.crdt.serialize(),
-            clock: this.clock.timestamp
+            clock: this.clock.timestamp,
         };
     }
 
@@ -157,7 +157,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
             history: this.crdt.getDebugHistory(),
             getSnapshot: () => this.crdt.getDebugSnapshot(),
             printHistory: (name?: string) =>
-                this.crdt.printDebugHistory(name, { nodeId: this.nodeId() })
+                this.crdt.printDebugHistory(name, { nodeId: this.nodeId() }),
         };
     }
 }

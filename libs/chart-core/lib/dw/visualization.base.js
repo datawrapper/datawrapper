@@ -156,7 +156,7 @@ extend(base, {
                 .filter(([, axis]) => axis.optional && axis.overrideOptionalKey)
                 .map(([, axis]) => [
                     axis.overrideOptionalKey,
-                    me.chart().getMetadata(axis.overrideOptionalKey, false)
+                    me.chart().getMetadata(axis.overrideOptionalKey, false),
                 ])
         );
 
@@ -176,7 +176,7 @@ extend(base, {
             dataset,
             userAxes,
             visAxes,
-            overrideKeys
+            overrideKeys,
         });
 
         me.__axisCache = {
@@ -184,7 +184,7 @@ extend(base, {
             axesAsColumns: axesAsColumns,
             userAxes: clone(userAxes),
             overrideKeys,
-            transpose: me.chart().getMetadata('data.transpose')
+            transpose: me.chart().getMetadata('data.transpose'),
         };
 
         return me.__axisCache[returnAsColumns ? 'axesAsColumns' : 'axes'];
@@ -258,7 +258,7 @@ extend(base, {
                     () => reject(new Error(`timeout after ${rejectRenderedAfter}ms`)),
                     rejectRenderedAfter
                 )
-            )
+            ),
         ]);
     },
 
@@ -363,7 +363,7 @@ extend(base, {
             this.container().innerHTML = `<div class="error"><p>${message}</p></div>`;
         }
         console.warn(message);
-    }
+    },
 });
 
 export default base;

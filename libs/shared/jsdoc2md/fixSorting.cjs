@@ -21,7 +21,7 @@ const toc =
         .filter(s => s)
         .map(s => ({
             t: s.trim() + '\n',
-            h: s.match(/\((?:#|docs\/)([^)]+)/)[1].toLowerCase()
+            h: s.match(/\((?:#|docs\/)([^)]+)/)[1].toLowerCase(),
         }))
         .sort((a, b) => (a.h > b.h ? 1 : -1))
         .map(s => s.t)

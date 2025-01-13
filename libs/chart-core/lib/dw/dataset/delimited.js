@@ -74,7 +74,7 @@ export default function delimited(opts) {
         },
         parse: function () {
             return new DelimitedParser(opts).parse(opts.csv);
-        }
+        },
     };
 }
 
@@ -89,7 +89,7 @@ export class DelimitedParser {
                 skipRows: 0,
                 emptyValue: null,
                 transpose: false,
-                firstRowIsHeader: true
+                firstRowIsHeader: true,
             },
             opts
         );

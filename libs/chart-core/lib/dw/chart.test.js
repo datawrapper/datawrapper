@@ -8,7 +8,7 @@ test('chart.translate returns the correct translation', t => {
     const dwChart = chart({});
     const translations = {
         'translation-key': 'This is a translation',
-        'translation-key-with-replacements': 'This is the $0 translation, it is $1'
+        'translation-key-with-replacements': 'This is the $0 translation, it is $1',
     };
     dwChart.translations(translations);
     t.is(dwChart.translate('translation-key'), 'This is a translation');
@@ -21,7 +21,7 @@ test('chart.translate returns the correct translation', t => {
 test('chart.translate returns editor translations when chart is in editor', t => {
     const editorTranslations = {
         'translation-key': 'Das ist eine Übersetzung',
-        'translation-key-with-replacements': 'Das ist die $0 Übersetzung, sie ist $1'
+        'translation-key-with-replacements': 'Das ist die $0 Übersetzung, sie ist $1',
     };
 
     // this emulates the 'in editor' context
@@ -35,7 +35,7 @@ test('chart.translate returns editor translations when chart is in editor', t =>
 
     const translations = {
         'translation-key': 'This is a translation',
-        'translation-key-with-replacements': 'This is the $0 translation, it is $1'
+        'translation-key-with-replacements': 'This is the $0 translation, it is $1',
     };
 
     // chart scope translations

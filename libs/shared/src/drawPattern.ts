@@ -4,7 +4,7 @@ const patternRotation: Record<string, number> = {
     horizontal: 90,
     vertical: 0,
     'diagonal-up': 135,
-    'diagonal-down': 45
+    'diagonal-down': 45,
 };
 
 /**
@@ -25,7 +25,7 @@ export default function drawPattern({
     opacity = 1,
     rotation = 0,
     scale = 1,
-    flipV = false
+    flipV = false,
 }: {
     defs: JQuery;
     id: string;

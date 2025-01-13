@@ -5,12 +5,12 @@ import kMeans from './kMeans';
 const values = [1, 1.1, 1.2, 2.1, 3, 3.1, 3.2, 3.3, 7, 7.1, 10];
 const cluster2 = [
     [1, 1.1, 1.2, 2.1, 3, 3.1, 3.2, 3.3],
-    [7, 7.1, 10]
+    [7, 7.1, 10],
 ];
 const cluster3 = [
     [1, 1.1, 1.2, 2.1],
     [3, 3.1, 3.2, 3.3],
-    [7, 7.1, 10]
+    [7, 7.1, 10],
 ];
 const cluster4 = [[1, 1.1, 1.2], [2.1], [3, 3.1, 3.2, 3.3], [7, 7.1, 10]];
 const cluster5 = [[1, 1.1, 1.2], [2.1], [3, 3.1, 3.2, 3.3], [7, 7.1], [10]];
@@ -33,11 +33,11 @@ testProp(
             fc.double({
                 min: -10e5,
                 max: 10e5,
-                noNaN: true
+                noNaN: true,
             }),
             { minLength: 50 }
         ),
-        fc.integer({ min: 5, max: 12 })
+        fc.integer({ min: 5, max: 12 }),
     ],
     (t, values, count) => {
         const cluster = kMeans(values, count);

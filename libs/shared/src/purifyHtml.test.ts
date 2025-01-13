@@ -172,7 +172,7 @@ testProp(
                     .map(([tagName, content]) => `<${tagName}>${content}</${tagName}>`)
             ),
             { minLength: 50 }
-        )
+        ),
     ],
     (t, html) => {
         t.not(purifyHtml(html, ''), html);

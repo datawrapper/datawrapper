@@ -9,9 +9,9 @@ test(`iterateObjectPaths - basic nested object`, t => {
         c: {
             d: 3,
             e: {
-                f: 4
-            }
-        }
+                f: 4,
+            },
+        },
     };
 
     const actual: string[][] = [];
@@ -29,9 +29,9 @@ test(`iterateObjectPaths - with simple arrays`, t => {
             d: 3,
             e: {
                 f: 4,
-                g: [1, 2, 3]
-            }
-        }
+                g: [1, 2, 3],
+            },
+        },
     };
 
     const actual: string[][] = [];
@@ -74,32 +74,32 @@ test(`iterateObjectPaths - complex object`, t => {
             c1: {
                 f2: [],
                 c2: {
-                    a3: 2
-                }
+                    a3: 2,
+                },
             },
             d1: {
                 a2: {
-                    e3: null
-                }
+                    e3: null,
+                },
             },
             e1: {
                 b2: [1, 2, 3],
                 f2: {
-                    f3: {}
-                }
+                    f3: {},
+                },
             },
-            b1: null
+            b1: null,
         },
         b0: {
             b1: 2,
             f1: {
                 a2: [],
                 b2: {
-                    a3: 'abc'
-                }
-            }
+                    a3: 'abc',
+                },
+            },
         },
-        e0: null
+        e0: null,
     };
 
     const actual: string[][] = [];
@@ -118,7 +118,7 @@ test(`iterateObjectPaths - complex object`, t => {
         ['b0', 'b1'],
         ['b0', 'f1', 'a2'],
         ['b0', 'f1', 'b2', 'a3'],
-        ['e0']
+        ['e0'],
     ]);
 });
 
@@ -130,10 +130,10 @@ test('getObjectPaths - returns correct keys', t => {
             'null-key': null,
             describe: {
                 intro: 'Intro',
-                enabled: false
-            }
+                enabled: false,
+            },
         },
-        today: new Date()
+        today: new Date(),
     });
     [
         'answer',
@@ -141,7 +141,7 @@ test('getObjectPaths - returns correct keys', t => {
         'metadata.transpose',
         'metadata.null-key',
         'metadata.describe.intro',
-        'metadata.describe.enabled'
+        'metadata.describe.enabled',
     ].forEach(key => {
         t.is(keys.includes(key), true);
     });

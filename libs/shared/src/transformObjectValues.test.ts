@@ -6,7 +6,7 @@ for (const [from, to] of [
     [undefined, null],
     [9, 1],
     ['a', undefined],
-    ['a', 'a']
+    ['a', 'a'],
 ]) {
     test(`transformObjectValues sets ${JSON.stringify(from)} values to ${JSON.stringify(
         to
@@ -18,8 +18,8 @@ for (const [from, to] of [
             d: {
                 e: { e2: from },
                 f: 2,
-                g: from
-            }
+                g: from,
+            },
         };
 
         const out = transformObjectValues(input, from, to);
@@ -31,8 +31,8 @@ for (const [from, to] of [
             d: {
                 e: { e2: to },
                 f: 2,
-                g: to
-            }
+                g: to,
+            },
         });
     });
 }

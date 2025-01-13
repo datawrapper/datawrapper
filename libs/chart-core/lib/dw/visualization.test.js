@@ -18,7 +18,7 @@ test('register and instanciate a visualization', t => {
         {
             foo() {
                 return 42;
-            }
+            },
         },
         'myhash'
     );
@@ -52,7 +52,7 @@ test('visualization is registered on both global and versioned window.dw object'
         {
             foo() {
                 return 42;
-            }
+            },
         },
         'myhash',
         newDwJsHash
@@ -78,12 +78,12 @@ test('extend a visualization', t => {
         },
         foo() {
             return 100;
-        }
+        },
     });
     visualization.register(t.context.id, 'parent', {
         foo() {
             return 10;
-        }
+        },
     });
     t.is(visualization.has(t.context.id), true);
     t.is(visualization.has('parent'), true);
@@ -100,7 +100,7 @@ test('visualization renders into container', t => {
         render(el) {
             el.innerHTML = 'It <b>worked</b>';
             this.renderingComplete();
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
@@ -117,7 +117,7 @@ test('visualization rendered returns promise', async t => {
                 el.innerHTML = 'It <b>worked</b>';
                 this.renderingComplete();
             }, 100);
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
@@ -136,7 +136,7 @@ test('promise gets resolved even after re-rendering', async t => {
                 el.innerHTML = 'It <b>worked</b>';
                 this.renderingComplete();
             }, 100);
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
@@ -158,7 +158,7 @@ test('visualization rendered multiple times', async t => {
                 el.innerHTML = `rendered ${++cnt} times`;
                 this.renderingComplete();
             }, 100);
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
@@ -186,7 +186,7 @@ test('visualization can set custom resolve timeout', async t => {
                 el.innerHTML = `rendered ${++cnt} times`;
                 this.renderingComplete();
             }, 100);
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);
@@ -216,7 +216,7 @@ test('visualization rendered promise is rejected after timeout', async t => {
                 el.innerHTML = `rendered ${++cnt} times`;
                 this.renderingComplete();
             }, 500);
-        }
+        },
     });
     const element = document.createElement('div');
     const vis = visualization(t.context.id, element);

@@ -6,7 +6,7 @@ const AUTH_GUARDS = [
     'authUser',
     'authDatawrapperStaff',
     'authFeaturePreview',
-    'authAdmin'
+    'authAdmin',
 ];
 
 module.exports = {
@@ -14,10 +14,10 @@ module.exports = {
         type: 'problem',
         docs: {
             description:
-                'ensure all load functions and request handlers are wrapped in an auth guard'
+                'ensure all load functions and request handlers are wrapped in an auth guard',
         },
         schema: [],
-        fixable: null
+        fixable: null,
     },
     create: function (context) {
         const filename = context.getFilename();
@@ -44,7 +44,7 @@ module.exports = {
                         node,
                         message: `All load functions and request handlers have to be wrapped by an auth guard (${AUTH_GUARDS.map(
                             x => `\`${x}\``
-                        ).join(', ')})`
+                        ).join(', ')})`,
                     });
 
                 const requestHandlerDeclarations = declarations.filter(declaration =>
@@ -75,7 +75,7 @@ module.exports = {
                     if (expression.callee.type === 'ConditionalExpression') {
                         const possibleIdentifiers = [
                             expression.callee.consequent,
-                            expression.callee.alternate
+                            expression.callee.alternate,
                         ].map(({ name }) => name);
 
                         // Make sure both possible identifiers are auth guards.
@@ -84,7 +84,7 @@ module.exports = {
 
                     reportError();
                 }
-            }
+            },
         };
-    }
+    },
 };

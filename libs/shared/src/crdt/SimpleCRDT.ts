@@ -16,8 +16,8 @@ export class SimpleCRDT implements CRDT<string> {
                     pathsToItemArrays: [],
                     timestamps: { value: { [TIMESTAMP_KEY]: timestamp } } as NewTimestamps<{
                         value: string;
-                    }>
-                }
+                    }>,
+                },
             });
             return;
         }

@@ -80,7 +80,7 @@ visualization.register = function (id, parentVis, initFunc, hash = 'nohash', dwJ
     if (!__vis.has(id)) __vis.set(id, new Map());
     __vis.get(id).set(hash, {
         parentVis: parentVis || 'base',
-        init: initFunc
+        init: initFunc,
     });
 
     // also register on the versioned dw instance
@@ -100,7 +100,7 @@ visualization.hasVisHash = function (id, hash) {
 visualization.libraries = {
     numeral,
     chroma,
-    dayjs
+    dayjs,
 };
 
 visualization.base = base;

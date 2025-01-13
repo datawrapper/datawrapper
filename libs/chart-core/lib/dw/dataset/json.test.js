@@ -14,11 +14,11 @@ test.after(() => {
 
 test('simple JSON', async t => {
     const source = {
-        foo: 'bar'
+        foo: 'bar',
     };
     const dataset = await json({ csv: JSON.stringify(source) }).dataset();
     t.deepEqual(dataset, {
-        foo: 'bar'
+        foo: 'bar',
     });
 });
 
@@ -27,8 +27,8 @@ function makeResponse(status, body = { foo: 'bar' }) {
         new Response(JSON.stringify(body), {
             status,
             headers: {
-                'Content-type': 'application/json'
-            }
+                'Content-type': 'application/json',
+            },
         })
     );
 }
@@ -37,7 +37,7 @@ test.serial('With url: return parsed dataset if response is successful (HTTP 200
     const source = {
         foo: 'bar',
         baz: 42,
-        qux: [1, 2, 3]
+        qux: [1, 2, 3],
     };
 
     const stub = sinon.stub(global, 'fetch').callsFake(() => makeResponse(200, source));

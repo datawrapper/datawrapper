@@ -149,7 +149,7 @@ test(`Clock.max`, t => {
         b: '0-1',
         c: '1-0',
         d: '1-1',
-        e: '0-5434654'
+        e: '0-5434654',
     };
     t.deepEqual(Clock.max(timestamps).timestamp, '0-5434654');
 
@@ -164,9 +164,9 @@ test(`Clock.max`, t => {
             a: '1-0',
             b: '1-1',
             c: {
-                a: '1234123-5434654'
-            }
-        }
+                a: '1234123-5434654',
+            },
+        },
     };
     t.deepEqual(Clock.max(timestamps2).timestamp, '1234123-5434654');
 
@@ -174,13 +174,13 @@ test(`Clock.max`, t => {
     const timestamps3 = {
         a: '0-0',
         b: '0-1',
-        c: 'foo-bar'
+        c: 'foo-bar',
     };
     t.throws(() => Clock.max(timestamps3));
     const timestamps4 = {
         a: '0-0',
         b: 42,
-        c: '0-1'
+        c: '0-1',
     };
     t.throws(() => Clock.max(timestamps4));
 });

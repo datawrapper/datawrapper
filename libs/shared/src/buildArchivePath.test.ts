@@ -5,7 +5,7 @@ const testSearchParams = new URLSearchParams({
     orderBy: 'lastModifiedAt',
     order: 'ASC',
     search: 'foo',
-    minLastEditStep: '0'
+    minLastEditStep: '0',
 });
 
 const testCases = [
@@ -18,107 +18,107 @@ const testCases = [
     [{ teamId: null, folderId: null, workspace: 'test-workspace' }, '/test-workspace/archive'],
     [
         { teamId: 'test-team', folderId: 'test-folder', workspace: null },
-        '/archive/team/test-team/test-folder'
+        '/archive/team/test-team/test-folder',
     ],
     [
         { teamId: 'test-team', workspace: 'test-workspace' },
-        '/test-workspace/archive/team/test-team'
+        '/test-workspace/archive/team/test-team',
     ],
     [
         { folderId: 'test-folder', workspace: 'test-workspace' },
-        '/test-workspace/archive/test-folder'
+        '/test-workspace/archive/test-folder',
     ],
     [
         { teamId: 'test-team', folderId: 'test-folder', workspace: 'test-workspace' },
-        '/test-workspace/archive/team/test-team/test-folder'
+        '/test-workspace/archive/team/test-team/test-folder',
     ],
 
     // with params
     [
         { searchParams: testSearchParams },
-        '/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { teamId: null, folderId: null, workspace: null, searchParams: testSearchParams },
-        '/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { teamId: 'test-team', folderId: null, workspace: null, searchParams: testSearchParams },
-        '/archive/team/test-team?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive/team/test-team?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { teamId: null, folderId: 'test-folder', workspace: null, searchParams: testSearchParams },
-        '/archive/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { teamId: null, folderId: 1234, workspace: null, searchParams: testSearchParams },
-        '/archive/1234?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive/1234?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ], // folderId can be numeric
     [
         {
             teamId: null,
             folderId: null,
             workspace: 'test-workspace',
-            searchParams: testSearchParams
+            searchParams: testSearchParams,
         },
-        '/test-workspace/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/test-workspace/archive?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         {
             teamId: 'test-team',
             folderId: 'test-folder',
             workspace: null,
-            searchParams: testSearchParams
+            searchParams: testSearchParams,
         },
-        '/archive/team/test-team/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/archive/team/test-team/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { teamId: 'test-team', workspace: 'test-workspace', searchParams: testSearchParams },
-        '/test-workspace/archive/team/test-team?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/test-workspace/archive/team/test-team?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         { folderId: 'test-folder', workspace: 'test-workspace', searchParams: testSearchParams },
-        '/test-workspace/archive/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/test-workspace/archive/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         {
             teamId: 'test-team',
             folderId: 'test-folder',
             workspace: 'test-workspace',
-            searchParams: testSearchParams
+            searchParams: testSearchParams,
         },
-        '/test-workspace/archive/team/test-team/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0'
+        '/test-workspace/archive/team/test-team/test-folder?orderBy=lastModifiedAt&order=ASC&search=foo&minLastEditStep=0',
     ],
     [
         {
             teamId: 'test-team',
             folderId: 'test-folder',
             workspace: null,
-            searchParams: new URLSearchParams({ a: 'b' })
+            searchParams: new URLSearchParams({ a: 'b' }),
         },
-        '/archive/team/test-team/test-folder?a=b'
+        '/archive/team/test-team/test-folder?a=b',
     ],
     [
         {
-            searchParams: new URLSearchParams({ a: 'b', c: 'd' })
+            searchParams: new URLSearchParams({ a: 'b', c: 'd' }),
         },
-        '/archive?a=b&c=d'
+        '/archive?a=b&c=d',
     ],
     [
         {
             workspace: 'test-workspace',
-            searchParams: new URLSearchParams({ a: 'b', number: '000' })
+            searchParams: new URLSearchParams({ a: 'b', number: '000' }),
         },
-        '/test-workspace/archive?a=b&number=000'
+        '/test-workspace/archive?a=b&number=000',
     ],
     [
         {
             teamId: null,
             folderId: null,
             workspace: null,
-            searchParams: null
+            searchParams: null,
         },
-        '/archive'
+        '/archive',
     ],
 
     // with office param
@@ -129,10 +129,10 @@ const testCases = [
             folderId: null,
             workspace: null,
             searchParams: new URLSearchParams({
-                office: '1'
-            })
+                office: '1',
+            }),
         },
-        '/integrations/powerpoint/archive?office=1'
+        '/integrations/powerpoint/archive?office=1',
     ],
     [
         {
@@ -140,10 +140,10 @@ const testCases = [
             folderId: null,
             workspace: 'test-workspace', // TODO: @workspaces: we should include workspaces in the powerpoint path as well
             searchParams: new URLSearchParams({
-                office: '1'
-            })
+                office: '1',
+            }),
         },
-        '/integrations/powerpoint/archive?office=1'
+        '/integrations/powerpoint/archive?office=1',
     ],
     [
         {
@@ -151,10 +151,10 @@ const testCases = [
             folderId: null,
             workspace: null,
             searchParams: new URLSearchParams({
-                office: 'abc'
-            })
+                office: 'abc',
+            }),
         },
-        '/integrations/powerpoint/archive/team/test-team?office=abc'
+        '/integrations/powerpoint/archive/team/test-team?office=abc',
     ],
     [
         {
@@ -162,10 +162,10 @@ const testCases = [
             folderId: '123',
             workspace: null,
             searchParams: new URLSearchParams({
-                office: 'abc'
-            })
+                office: 'abc',
+            }),
         },
-        '/integrations/powerpoint/archive/team/test-team/123?office=abc'
+        '/integrations/powerpoint/archive/team/test-team/123?office=abc',
     ],
     [
         {
@@ -173,17 +173,17 @@ const testCases = [
             folderId: '123',
             workspace: 'some-workspace',
             searchParams: new URLSearchParams({
-                office: 'abc'
-            })
+                office: 'abc',
+            }),
         },
-        '/integrations/powerpoint/archive/team/test-team/123?office=abc'
+        '/integrations/powerpoint/archive/team/test-team/123?office=abc',
     ],
     [
         {
-            searchParams: new URLSearchParams({ a: 'b', number: '000', office: '1' })
+            searchParams: new URLSearchParams({ a: 'b', number: '000', office: '1' }),
         },
-        '/integrations/powerpoint/archive?a=b&number=000&office=1'
-    ]
+        '/integrations/powerpoint/archive?a=b&number=000&office=1',
+    ],
 ];
 
 for (const [input, expected] of testCases) {

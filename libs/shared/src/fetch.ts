@@ -34,7 +34,7 @@ export function fetchJSON(
         method,
         body,
         mode: 'cors' as const,
-        credentials
+        credentials,
     };
 
     return window
@@ -286,7 +286,7 @@ export function loadStylesheet(
 ) {
     if (typeof _opts === 'string') {
         _opts = {
-            src: _opts
+            src: _opts,
         };
     }
     const opts = _opts;

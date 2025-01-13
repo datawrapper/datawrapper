@@ -9,7 +9,7 @@ export function buildEditorPath({
     workspace,
     chartId,
     step,
-    searchParams
+    searchParams,
 }: {
     workspace?: string | null | undefined; // TODO: @launch:workspaces - once all data is migrated to worksaces, this parameter should become required
     chartId: string;

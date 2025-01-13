@@ -27,7 +27,7 @@ export {
     getNonChartHeight,
     outerHeight,
     htmlTemplate,
-    templateParser
+    templateParser,
 };
 
 /**
