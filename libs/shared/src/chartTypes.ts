@@ -252,7 +252,8 @@ export type VisualizationType =
     | 'multiple-lines'
     | 'multiple-columns'
     | 'stacked-column-chart'
-    | 'tables';
+    | 'tables'
+    | 'waterfall';
 
 export type Chart = {
     id: string;
