@@ -1,4 +1,5 @@
 import chroma, { Color } from 'chroma-js';
+import colorLightness from './colorLightness.js';
 
 const MAX_ITER = 10;
 const EPS = 0.01;
@@ -44,8 +45,8 @@ function invertColor(
     if (alpha === 0) return baseColor;
 
     const prevL = color.lab()[0];
-    const bgLightL = chroma(lightBackgroundColor).lab()[0];
-    const bgDarkL = chroma(darkBackgroundColor).lab()[0];
+    const bgLightL = colorLightness(lightBackgroundColor as string, chroma);
+    const bgDarkL = colorLightness(darkBackgroundColor as string, chroma);
 
     const contrast = computeContrast(baseColor, lightBackgroundColor);
 
