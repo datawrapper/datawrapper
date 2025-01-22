@@ -33,6 +33,7 @@ function addComputedColumns(chart, dataset) {
     }
 
     const data = applyChanges(chart, dataset).list();
+    const columnTypes = Object.fromEntries(dataset.columns().map(col => [col.name(), col.type()]));
     const columnNameToVar = {};
     const colAggregates = {};
     const parser = new Parser();
@@ -201,7 +202,9 @@ function addComputedColumns(chart, dataset) {
             };
             each(row, function (val, key) {
                 if (!columnNameToVar[key]) return;
-                context[columnNameToVar[key]] = val;
+                // empty cells are 'null' in the dataset, but for string operations (eg .length)
+                // it's better to treat them as as an empty string
+                context[columnNameToVar[key]] = columnTypes[key] === 'text' ? val || '' : val;
                 if (colAggregates[key]) {
                     Object.keys(colAggregates[key]).forEach(aggr => {
                         context[`${columnNameToVar[key]}__${aggr}`] = colAggregates[key][aggr];

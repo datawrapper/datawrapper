@@ -29,3 +29,30 @@ test('addComputedColumns adds a computed column that references an invalid date'
         },
     ]);
 });
+
+test('addComputedColumns treats null cells in a text column as empty strings', async t => {
+    const chart = Chart({
+        metadata: {
+            describe: {
+                'computed-columns': [
+                    { name: 'my_computed_column', formula: 'LENGTH my_text_column' },
+                ],
+            },
+        },
+    });
+
+    const textContent = 'This is text';
+
+    const dataset = Dataset([Column('my_text_column', [textContent, null], 'text')]);
+    const datesetWithComputedColumns = addComputedColumns(chart, dataset);
+    t.deepEqual(datesetWithComputedColumns.list(), [
+        {
+            my_text_column: textContent,
+            my_computed_column: textContent.length,
+        },
+        {
+            my_text_column: null,
+            my_computed_column: 0,
+        },
+    ]);
+});
