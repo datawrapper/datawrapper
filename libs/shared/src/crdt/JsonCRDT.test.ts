@@ -517,6 +517,85 @@ test(`calculateDiff uses defined pathsToItemArrays`, t => {
     });
 });
 
+test(`applying a serialized update does not result in a different state that applying it directly`, t => {
+    const baseState = {
+        a: { b: 1, c: 2 },
+        array: [
+            { id: 1, nested: { value: 1, otherValue: 10 } },
+            { id: 2, nested: { value: 2, otherValue: 20 } },
+        ],
+    };
+
+    const crdt1 = new JsonCRDT({
+        nodeId: 1,
+        data: baseState,
+        pathsToItemArrays: ['array'],
+    });
+    const crdt2 = new JsonCRDT({
+        nodeId: 2,
+        data: baseState,
+        pathsToItemArrays: ['array'],
+    });
+
+    let update = crdt1.createUpdate(
+        crdt1.calculateDiff({
+            a: {
+                // Set `b` to undefined
+                b: undefined,
+                c: 2,
+            },
+            array: [
+                {
+                    id: 1,
+                    nested: {
+                        // Set nested `value` to undefined
+                        value: undefined,
+                        otherValue: 10,
+                    },
+                },
+                {
+                    id: 2,
+                    nested: {
+                        value: 2,
+                        otherValue: 20,
+                    },
+                },
+            ],
+        })
+    );
+
+    // Simulate a network exchange.
+    update = JSON.parse(JSON.stringify(update));
+
+    crdt2.applyUpdate(update);
+
+    t.deepEqual(crdt1.data(), {
+        a: {
+            // Only `b` should be removed, `c` should be kept.
+            c: 2,
+        },
+        array: [
+            {
+                id: 1,
+                nested: {
+                    // Only `value` should be removed, `otherValue` should be kept.
+                    otherValue: 10,
+                },
+            },
+            {
+                id: 2,
+                nested: {
+                    value: 2,
+                    otherValue: 20,
+                },
+            },
+        ],
+    });
+
+    // Both CRDTs should have the same data.
+    t.deepEqual(crdt2.data(), crdt1.data());
+});
+
 /**
  * Run a mini fuzz test for the JsonCRDT.
  *

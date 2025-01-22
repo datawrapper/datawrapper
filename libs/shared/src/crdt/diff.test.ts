@@ -944,3 +944,288 @@ test('calculateDiff - removing an ancestor object deletes the ancestor and not t
         a: null,
     });
 });
+
+test('calculateDiff - `undefined` values in the new data that exist in the old data get converted to `null` in the diff', t => {
+    const oldData = {
+        a: 'foo',
+    };
+    const newData = {
+        a: undefined,
+    };
+
+    const diff = calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {
+        a: null,
+    });
+});
+
+test('calculateDiff - `undefined` values in the new data that exist in the old data get converted to `null` in the diff (within item array items)', t => {
+    const oldData = {
+        a: [
+            { id: 1, value: 1 },
+            { id: 2, value: 2 },
+        ],
+        b: {
+            c: {
+                d: [
+                    { id: 1, value: 1 },
+                    { id: 2, value: 2 },
+                ],
+            },
+        },
+    };
+    const newData = {
+        a: [
+            { id: 1, value: 1 },
+            { id: 2, value: undefined },
+        ],
+        b: {
+            c: {
+                d: [
+                    { id: 1, value: undefined },
+                    { id: 2, value: 2 },
+                ],
+            },
+        },
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['a', 'b.c.d'] });
+
+    t.deepEqual(diff, {
+        a: {
+            2: { value: null },
+        },
+        b: {
+            c: {
+                d: {
+                    1: { value: null },
+                },
+            },
+        },
+    });
+});
+
+test('calculateDiff - `undefined` values in the new data that exist in the old data get converted to `null` in the diff (within nested objects of item array items)', t => {
+    const oldData = {
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: 'red',
+                },
+            },
+            {
+                id: 2,
+                properties: {
+                    color: 'green',
+                },
+            },
+        ],
+    };
+    const newData = {
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: undefined,
+                },
+            },
+            {
+                id: 2,
+                properties: {
+                    color: 'green',
+                },
+            },
+        ],
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['a', 'b'] });
+
+    t.deepEqual(diff, {
+        a: {
+            1: {
+                properties: {
+                    color: null,
+                },
+            },
+        },
+    });
+});
+
+test("calculateDiff - `undefined` values in the new data that don't exist in the old data are not included in the diff", t => {
+    const oldData = {
+        a: 'foo',
+    };
+    const newData = {
+        a: 'foo',
+        b: undefined,
+    };
+
+    const diff = calculateDiff(oldData, newData);
+
+    t.deepEqual(diff, {});
+});
+
+test("calculateDiff - `undefined` values in the new data that don't exist in the old data are not included in the diff (within item array items)", t => {
+    const oldData = {
+        a: [
+            { id: 1, value: 1 },
+            { id: 2, value: 2 },
+        ],
+    };
+    const newData = {
+        a: [
+            { id: 1, value: 1 },
+            { id: 2, value: 2, new: undefined },
+        ],
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['a'] });
+
+    t.deepEqual(diff, {});
+});
+
+test("calculateDiff - `undefined` values in the new data that don't exist in the old data are not included in the diff (within nested objects of item array items)", t => {
+    const oldData = {
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: 'red',
+                },
+            },
+            {
+                id: 2,
+                properties: {
+                    color: 'green',
+                },
+            },
+        ],
+    };
+    const newData = {
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: 'red',
+                    size: undefined,
+                },
+            },
+            {
+                id: 2,
+                properties: {
+                    color: 'green',
+                },
+            },
+        ],
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['a', 'b'] });
+
+    t.deepEqual(diff, {});
+});
+
+test('calculateDiff - the diff does not change when serialized to BaseJsonCRDT', t => {
+    const oldData = {
+        foo: 'bar',
+        test: {
+            a: [1, 2, 3],
+            b: ['some', 'string', 'array'],
+            some: {
+                nested: {
+                    object: {},
+                },
+            },
+        },
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: 'red',
+                },
+            },
+            {
+                id: 2,
+                properties: {
+                    color: 'green',
+                },
+            },
+            {
+                id: 3,
+                properties: {
+                    color: 'yellow',
+                },
+            },
+        ],
+    };
+    const newData = {
+        foo: undefined,
+        newButNull: null,
+        newButUndefined: undefined,
+        aNewProperty: 'hello!',
+        test: {
+            a: [1, 4, 5],
+            b: ['some', 'string!!', 'array'],
+            some: {
+                nested: {
+                    object: undefined,
+                },
+            },
+        },
+        a: [
+            {
+                id: 1,
+                properties: {
+                    color: 'red',
+                    size: undefined,
+                },
+            },
+            {
+                id: 3,
+                properties: {
+                    color: 'yellow',
+                },
+            },
+            {
+                id: 4,
+                properties: {
+                    color: 'pink',
+                },
+            },
+        ],
+    };
+
+    const diff = calculateDiff(oldData, newData, { pathsToItemArrays: ['a'] });
+
+    t.deepEqual(diff, {
+        foo: null,
+        aNewProperty: 'hello!',
+        test: {
+            a: [1, 4, 5],
+            b: ['some', 'string!!', 'array'],
+            some: {
+                nested: {
+                    object: null,
+                },
+            },
+        },
+        a: {
+            2: {
+                _index: null,
+            },
+            3: {
+                _index: 1,
+            },
+            4: {
+                _index: 2,
+                id: 4,
+                properties: {
+                    color: 'pink',
+                },
+            },
+        },
+    });
+
+    t.deepEqual(diff, JSON.parse(JSON.stringify(diff)));
+});

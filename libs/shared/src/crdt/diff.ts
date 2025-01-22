@@ -77,7 +77,11 @@ export function calculateDiff(
             }
         }
 
-        set(diff, path, newValue);
+        // We HAVE to convert `undefined` to `null` in the diff,
+        // otherwise the properties are lost during JSON serialization.
+        // This might lead to data loss if there are only `undefined` values in the diff,
+        // because entire objects might get overwritten and properties deleted.
+        set(diff, path, newValue ?? null);
     });
 
     // This map keeps track of ancestors that were deleted in the new data.
