@@ -233,6 +233,25 @@
             "types": "./dist/cjs/chartTypes.d.cts",
             "default": "./dist/esm/chartTypes.js"
         },
+        "./checkFileType.d.ts": {
+            "require": "./dist/cjs/checkFileType.d.cts",
+            "default": "./dist/esm/checkFileType.d.ts"
+        },
+        "./checkFileType.js": {
+            "require": "./dist/cjs/checkFileType.cjs",
+            "types": "./dist/cjs/checkFileType.d.cts",
+            "default": "./dist/esm/checkFileType.js"
+        },
+        "./checkFileType": {
+            "require": "./dist/cjs/checkFileType.cjs",
+            "types": "./dist/cjs/checkFileType.d.cts",
+            "default": "./dist/esm/checkFileType.js"
+        },
+        "./dist/cjs/checkFileType.cjs": {
+            "require": "./dist/cjs/checkFileType.cjs",
+            "types": "./dist/cjs/checkFileType.d.cts",
+            "default": "./dist/esm/checkFileType.js"
+        },
         "./clone.d.ts": {
             "require": "./dist/cjs/clone.d.cts",
             "default": "./dist/esm/clone.d.ts"
@@ -1258,6 +1277,25 @@
             "require": "./dist/cjs/sportsSeasonFormat.cjs",
             "types": "./dist/cjs/sportsSeasonFormat.d.cts",
             "default": "./dist/esm/sportsSeasonFormat.js"
+        },
+        "./spreadsheetUtils.d.ts": {
+            "require": "./dist/cjs/spreadsheetUtils.d.cts",
+            "default": "./dist/esm/spreadsheetUtils.d.ts"
+        },
+        "./spreadsheetUtils.js": {
+            "require": "./dist/cjs/spreadsheetUtils.cjs",
+            "types": "./dist/cjs/spreadsheetUtils.d.cts",
+            "default": "./dist/esm/spreadsheetUtils.js"
+        },
+        "./spreadsheetUtils": {
+            "require": "./dist/cjs/spreadsheetUtils.cjs",
+            "types": "./dist/cjs/spreadsheetUtils.d.cts",
+            "default": "./dist/esm/spreadsheetUtils.js"
+        },
+        "./dist/cjs/spreadsheetUtils.cjs": {
+            "require": "./dist/cjs/spreadsheetUtils.cjs",
+            "types": "./dist/cjs/spreadsheetUtils.d.cts",
+            "default": "./dist/esm/spreadsheetUtils.js"
         },
         "./tailLength.d.ts": {
             "require": "./dist/cjs/tailLength.d.cts",

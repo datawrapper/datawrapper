@@ -55,3 +55,5 @@ export {
     getChartIdFromLink,
     getChartLinksFromTipTapJson,
 } from './mentionsAndChartLinks.js';
+export { isCSV, isJSON } from './checkFileType.js';
+export { isSpreadsheetUrl, convertSpreadsheetUrl } from './spreadsheetUtils.js';
