@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual.js';
 import { CRDT, Update } from './CRDT.js';
 import { Timestamp, NewTimestamps, DebugFlagOrLevel } from './types.js';
 import { JsonCRDT } from './JsonCRDT.js';
@@ -35,7 +34,6 @@ export class SimpleCRDT implements CRDT<string> {
     }
 
     calculateDiff(newData: string): string {
-        if (isEqual(this.data(), newData)) return ''; // isEmpty('') === true
         return newData;
     }
 
