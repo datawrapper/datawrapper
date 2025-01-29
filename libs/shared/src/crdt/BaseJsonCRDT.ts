@@ -488,7 +488,7 @@ export class BaseJsonCRDT<O extends object = object> {
 
         const debugHistoryEntry = this.#debugMakeHistoryEntry(diff, newTimestamp);
 
-        iterateObjectPaths(diff, (path, newValue) => {
+        iterateObjectPaths(diff as object, (path, newValue) => {
             try {
                 this._updateValue(path, cloneDeep(newValue), newTimestamp, debugHistoryEntry);
 

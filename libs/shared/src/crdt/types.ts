@@ -106,7 +106,7 @@ export type DebugHistoryMutation = {
 };
 
 type DebugUpdate = {
-    diff: object;
+    diff: object | undefined;
     timestamp: Timestamp;
 };
 

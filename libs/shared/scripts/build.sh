@@ -14,7 +14,7 @@ rm -Rf dist.new/*
 node_modules/.bin/tsc --project ./tsconfig.build.cjs.json --outDir dist.new/cjs
 
 
-echo "Tranforming CJS modules..."
+echo "Transforming CJS modules..."
 (
 # Change extensions to .cjs, so that the modules can be imported from this `type: module` package.
 find dist.new/cjs -name '*.js' -exec sh -c 'mv -v "$1" "${1%.js}.cjs"' _ {} \;
@@ -44,4 +44,3 @@ else
 fi
 ) > /dev/null
 echo "Done."
- 

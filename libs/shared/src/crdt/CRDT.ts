@@ -7,7 +7,7 @@ import type {
     CalculateDiffOptions,
 } from './types.js';
 
-export type Diff<O extends object | string | number> = O;
+export type Diff<O extends object | string | number> = O | undefined;
 
 export type Update<O extends object | string | number> = {
     timestamp: Timestamp | Clock;

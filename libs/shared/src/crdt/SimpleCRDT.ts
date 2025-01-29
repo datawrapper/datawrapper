@@ -1,7 +1,8 @@
-import { CRDT, Update } from './CRDT.js';
+import { CRDT, Diff, Update } from './CRDT.js';
 import { Timestamp, NewTimestamps, DebugFlagOrLevel } from './types.js';
 import { JsonCRDT } from './JsonCRDT.js';
 import { TIMESTAMP_KEY } from './constants.js';
+import isEqual from 'lodash/isEqual.js';
 
 export class SimpleCRDT implements CRDT<string> {
     private crdt: JsonCRDT<{ value: string }>;
@@ -24,17 +25,23 @@ export class SimpleCRDT implements CRDT<string> {
         this.crdt = new JsonCRDT<{ value: string }>({ nodeId, data: { value } });
     }
 
-    createUpdate(diff: string): Update<string> {
+    createUpdate(diff: Diff<string>): Update<string> {
+        if (diff === undefined) {
+            return { diff: undefined, timestamp: this.crdt.timestamp() };
+        }
         const update = this.crdt.createUpdate({ value: diff });
         return { diff, timestamp: update.timestamp };
     }
 
     applyUpdate(update: Update<string>): void {
+        if (update.diff === undefined) {
+            return;
+        }
         this.crdt.applyUpdate({ diff: { value: update.diff }, timestamp: update.timestamp });
     }
 
-    calculateDiff(newData: string): string {
-        return newData;
+    calculateDiff(newData: string): Diff<string> {
+        return this.crdt.calculateDiff({ value: newData })?.value;
     }
 
     data(): string {
