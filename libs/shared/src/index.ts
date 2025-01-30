@@ -41,10 +41,10 @@ export { default as smartRound } from './smartRound.js';
 export { default as tailLength } from './tailLength.js';
 export { default as toFixed } from './toFixed.js';
 export {
-    default as transformObjectValues,
-    nullsToUndefined,
-    undefinedToNull,
-} from './transformObjectValues.js';
+    default as mapObjectValues,
+    mapNullToUndefined,
+    mapUndefinedToNull,
+} from './mapObjectValues.js';
 export { default as truncate } from './truncate.js';
 export type { StringWithAutocomplete } from './types.js';
 export { default as getVersionlessUrl } from './getVersionlessURL.js';

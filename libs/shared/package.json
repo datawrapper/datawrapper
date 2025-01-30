@@ -1354,24 +1354,24 @@
             "types": "./dist/cjs/toFixed.d.cts",
             "default": "./dist/esm/toFixed.js"
         },
-        "./transformObjectValues.d.ts": {
-            "require": "./dist/cjs/transformObjectValues.d.cts",
-            "default": "./dist/esm/transformObjectValues.d.ts"
+        "./mapObjectValues.d.ts": {
+            "require": "./dist/cjs/mapObjectValues.d.cts",
+            "default": "./dist/esm/mapObjectValues.d.ts"
         },
-        "./transformObjectValues.js": {
-            "require": "./dist/cjs/transformObjectValues.cjs",
-            "types": "./dist/cjs/transformObjectValues.d.cts",
-            "default": "./dist/esm/transformObjectValues.js"
+        "./mapObjectValues.js": {
+            "require": "./dist/cjs/mapObjectValues.cjs",
+            "types": "./dist/cjs/mapObjectValues.d.cts",
+            "default": "./dist/esm/mapObjectValues.js"
         },
-        "./transformObjectValues": {
-            "require": "./dist/cjs/transformObjectValues.cjs",
-            "types": "./dist/cjs/transformObjectValues.d.cts",
-            "default": "./dist/esm/transformObjectValues.js"
+        "./mapObjectValues": {
+            "require": "./dist/cjs/mapObjectValues.cjs",
+            "types": "./dist/cjs/mapObjectValues.d.cts",
+            "default": "./dist/esm/mapObjectValues.js"
         },
-        "./dist/cjs/transformObjectValues.cjs": {
-            "require": "./dist/cjs/transformObjectValues.cjs",
-            "types": "./dist/cjs/transformObjectValues.d.cts",
-            "default": "./dist/esm/transformObjectValues.js"
+        "./dist/cjs/mapObjectValues.cjs": {
+            "require": "./dist/cjs/mapObjectValues.cjs",
+            "types": "./dist/cjs/mapObjectValues.d.cts",
+            "default": "./dist/esm/mapObjectValues.js"
         },
         "./truncate.d.ts": {
             "require": "./dist/cjs/truncate.d.cts",
