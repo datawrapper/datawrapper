@@ -501,7 +501,7 @@ export class BaseJsonCRDT<O extends object = object> {
                     newValue,
                     currentTimestamp: this._getTimestamp(path),
                     newTimestamp,
-                    pathsToItemArrays: this.pathsToItemArrays,
+                    pathsToItemArrays: Array.from(this.pathsToItemArrays),
                 });
                 throw e;
             }
