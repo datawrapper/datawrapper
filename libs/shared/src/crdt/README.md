@@ -155,7 +155,7 @@ To run the unit tests, simply run:
 
 ```sh
 # /libs/shared
-npm run test:crdt
+pnpm run test:crdt
 ```
 
 #### Fuzz Test
@@ -170,7 +170,7 @@ The fuzz test can be run with:
 
 ```sh
 # /libs/shared
-npm run fuzz
+pnpm run fuzz
 ```
 
 Note that the fuzz test can take up to a few minutes to finish.
@@ -184,5 +184,5 @@ To pass additional arguments to the fuzz test, use the following syntax:
 
 ```sh
 # /libs/shared
-npm run fuzz -- -- --runs 1
+pnpm run fuzz -- --runs 1
 ```

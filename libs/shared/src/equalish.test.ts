@@ -1,6 +1,6 @@
 import test from 'ava';
 import equalish from './equalish';
-import { testProp, fc } from 'ava-fast-check';
+import { testProp, fc } from '@fast-check/ava';
 
 test('obviously equal', t => {
     t.true(equalish(1, 1));

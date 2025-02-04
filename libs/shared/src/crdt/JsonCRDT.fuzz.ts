@@ -476,7 +476,7 @@ function multipleInstances(
     };
 }
 
-// invoke with `npm run fuzz -- -- --runs=3 --primitiveToObject`
+// invoke with `pnpm run fuzz -- --runs=3 --primitiveToObject`
 
 const { values } = parseArgs({
     args: process.argv.slice(2),

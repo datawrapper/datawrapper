@@ -1,5 +1,5 @@
 import test from 'ava';
-import { testProp, fc } from 'ava-fast-check';
+import { testProp, fc } from '@fast-check/ava';
 import chroma from 'chroma-js';
 import colorLightness from './colorLightness';
 
@@ -17,7 +17,7 @@ test('black lightness is 0', t => {
 
 testProp(
     'color lightness within 0 and 100',
-    [fc.hexaString({ minLength: 6, maxLength: 6 })],
+    [fc.string({ unit: fc.constantFrom(...'0123456789abcdef'), minLength: 6, maxLength: 6 })],
     (t, a) => {
         const l = colorLightness(`#${a}`, chroma);
         t.true(l >= 0);

@@ -1,5 +1,5 @@
 import test from 'ava';
-import { testProp, fc } from 'ava-fast-check';
+import { testProp, fc } from '@fast-check/ava';
 import purifyHtml from './purifyHtml';
 
 test('purifyHtml returns the string unchanged if no tags are present', t => {

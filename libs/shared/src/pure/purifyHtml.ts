@@ -25,7 +25,8 @@ const memoizer = createPermanentMemoizer(
          *
          * Don't overwrite target="_self".
          */
-        DOMPurify.addHook('afterSanitizeElements', function (el) {
+        DOMPurify.addHook('afterSanitizeElements', function (e) {
+            const el = e as Element;
             if (el.nodeName.toLowerCase() === 'a') {
                 if (el.getAttribute('target') !== '_self') {
                     el.setAttribute('target', '_blank');

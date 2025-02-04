@@ -23,14 +23,14 @@
  * @returns {object}
  */
 export default function highlightTimer(action: (highlighted: boolean | null) => void, delay = 700) {
-    let setTimer: ReturnType<typeof setTimeout>;
+    let setTimer: ReturnType<typeof setTimeout> | null = null;
     let highlighted: boolean | null = false;
     let inactive = true;
     return {
         set(value: boolean) {
             if (highlighted !== value) {
                 if (setTimer) clearTimeout(setTimer);
-                setTimeout(
+                setTimer = setTimeout(
                     () => {
                         inactive = false;
                         action(highlighted);

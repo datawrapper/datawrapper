@@ -1,5 +1,5 @@
 import test from 'ava';
-import { testProp, fc } from 'ava-fast-check';
+import { testProp, fc } from '@fast-check/ava';
 import kMeans from './kMeans';
 
 const values = [1, 1.1, 1.2, 2.1, 3, 3.1, 3.2, 3.3, 7, 7.1, 10];

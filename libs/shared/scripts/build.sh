@@ -11,8 +11,7 @@ cd "$dir"/..
 # Build CJS into dist.new/cjs
 echo "Building CJS modules..."
 rm -Rf dist.new/*
-node_modules/.bin/tsc --project ./tsconfig.build.cjs.json --outDir dist.new/cjs
-
+pnpm exec tsc --project ./tsconfig.build.cjs.json --outDir dist.new/cjs
 
 echo "Transforming CJS modules..."
 (
@@ -32,7 +31,7 @@ fi
 
 # Build ESM into dist.new/esm
 echo "Building ESM modules..."
-node_modules/.bin/tsc --project ./tsconfig.build.esm.json --outDir dist.new/esm
+pnpm exec tsc --project ./tsconfig.build.esm.json --outDir dist.new/esm
 
 # Merge the content of dist.new/ into dist/ to avoid downtime
 echo "Merging dist.new/ into dist/..."

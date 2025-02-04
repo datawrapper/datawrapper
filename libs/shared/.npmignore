@@ -1,0 +1,5 @@
+# This file is required for the `pnpm deploy` command that's used to create docker images.
+# Without it the `dist` directory is ignored when injecting workspace dependencies.
+dist.new
+jsdoc2md
+test

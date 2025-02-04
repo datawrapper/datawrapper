@@ -229,9 +229,6 @@ Returns the Lab lightness value of a given hexidecimal
 RGB color. Uses chroma-js to convert from Hex to Lab, but
 only adds a few hundreds bytes to your build.
 
-To use this function, you have to manually install chroma-js using
-`npm install chroma-js`.
-
 **Returns**: <code>number</code> - - the L*a*b lightness, between 0 (black) and 100 (white)
 
 | Param    | Type                | Description                                         |

@@ -2,14 +2,12 @@ type Concat<TPrefix extends string, TRest extends string | undefined> = TRest ex
     ? TPrefix
     : `${TPrefix}.${TRest}`;
 
-type ConcatArray<
-    TPrefix extends string,
-    TRest extends Readonly<string[]> | undefined,
-> = TRest extends undefined
-    ? Readonly<[TPrefix]>
-    : TRest extends Readonly<string[]>
-      ? Readonly<[TPrefix, ...TRest]>
-      : never;
+type ConcatArray<TPrefix extends string, TRest extends Readonly<string[]> | undefined> =
+    TRest extends Readonly<[infer Head, ...infer Tail]>
+        ? [TPrefix, Head, ...Tail] extends string[]
+            ? Readonly<[TPrefix, Head, ...Tail]>
+            : never
+        : Readonly<[TPrefix]>;
 
 /**
  * const x1 = { a: { b: 'c' }, d: 'e', f: ['g', 'h', { i: 'j' } ] } as const;

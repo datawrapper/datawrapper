@@ -1,5 +1,5 @@
 import test from 'ava';
-import { testProp, fc } from 'ava-fast-check';
+import { testProp, fc } from '@fast-check/ava';
 import { isAllowedSourceUrl, isValidMySQLJSON, isValidUrl } from './validation';
 
 test('isAllowedSourceUrl', t => {

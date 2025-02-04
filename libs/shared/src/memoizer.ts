@@ -9,7 +9,8 @@ export const createPermanentMemoizer = <TKey, TSerializedKey, TValue>(
         /* Use skipCheck if only one value is possible. */
         get: (key: TKey, skipCheck = false): TValue => {
             if (skipCheck && map.size === 1) {
-                return map.values().next().value;
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                return map.values().next().value!;
             }
             const serializedKey = keySerializer(key);
             if (map.has(serializedKey)) {
