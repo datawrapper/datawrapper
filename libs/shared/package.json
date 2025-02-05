@@ -1691,6 +1691,25 @@
             "require": "./dist/cjs/overlays.cjs",
             "types": "./dist/cjs/overlays.d.cts",
             "default": "./dist/esm/overlays.js"
+        },
+        "./collaboration.d.ts": {
+            "require": "./dist/cjs/collaboration.d.cts",
+            "default": "./dist/esm/collaboration.d.ts"
+        },
+        "./collaboration.js": {
+            "require": "./dist/cjs/collaboration.cjs",
+            "types": "./dist/cjs/collaboration.d.cts",
+            "default": "./dist/esm/collaboration.js"
+        },
+        "./collaboration": {
+            "require": "./dist/cjs/collaboration.cjs",
+            "types": "./dist/cjs/collaboration.d.cts",
+            "default": "./dist/esm/collaboration.js"
+        },
+        "./dist/cjs/collaboration.cjs": {
+            "require": "./dist/cjs/collaboration.cjs",
+            "types": "./dist/cjs/collaboration.d.cts",
+            "default": "./dist/esm/collaboration.js"
         }
     }
 }
