@@ -250,6 +250,7 @@ export type VisualizationType =
     | 'd3-pies'
     | 'd3-range-plot'
     | 'd3-scatter-plot'
+    | 'dual-axis'
     | 'election-donut-chart'
     | 'grouped-column-chart'
     | 'locator-map'
