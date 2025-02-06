@@ -116,7 +116,7 @@ function Column(name_, rows, type, allowedTags) {
          * @param i
          * @param unfiltered  if set to true, precedent calls of filterRows are ignored
          */
-        val(i, unfiltered) {
+        val(i, unfiltered = false) {
             if (!arguments.length) return undefined;
             var r = unfiltered ? origRows : rows;
             if (i < 0) i += r.length;

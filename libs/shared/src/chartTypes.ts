@@ -28,6 +28,8 @@ export type ColumnTypeExpanded = {
     precision(): DatePrecision;
 };
 
+export type ColumnFormat = Record<string, Record<string, unknown>>;
+
 export type Column = {
     // Depending on column type, supported range is either [number, number] or [column, column].
     // Declaring it as [any, any] is the simplest way.
@@ -39,7 +41,8 @@ export type Column = {
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
-    raw(index?: number, value?: unknown): string;
+    raw(index: number, value?: unknown): string;
+    raw(): string[];
     /**
      * @param index - row index
      * @param unchanged - if true, returns the data without the changes made in 'check & describe'
@@ -85,7 +88,7 @@ export type Metadata = {
         };
     } & Record<string, string | boolean>;
     data?: {
-        'column-format'?: Record<string, Record<string, unknown>>;
+        'column-format'?: ColumnFormat;
         'column-order'?: number[];
         'vertical-header'?: boolean;
         'horizontal-header'?: boolean;
@@ -158,6 +161,7 @@ export type Dataset = {
     numColumns: () => number;
     indexOf: (column: string | null) => number;
     clone: () => Dataset;
+    eachRow: (arg0: (index: number) => any) => void;
     eachColumn: (arg0: (column: Column, index: number, array: Column[]) => any) => void;
     // in the case of JSON data:
     [key: string]: unknown;
