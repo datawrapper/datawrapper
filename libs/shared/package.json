@@ -460,6 +460,25 @@
             "types": "./dist/cjs/drawPattern.d.cts",
             "default": "./dist/esm/drawPattern.js"
         },
+        "./encodeHTMLEntities.d.ts": {
+            "require": "./dist/cjs/encodeHTMLEntities.d.cts",
+            "default": "./dist/esm/encodeHTMLEntities.d.ts"
+        },
+        "./encodeHTMLEntities.js": {
+            "require": "./dist/cjs/encodeHTMLEntities.cjs",
+            "types": "./dist/cjs/encodeHTMLEntities.d.cts",
+            "default": "./dist/esm/encodeHTMLEntities.js"
+        },
+        "./encodeHTMLEntities": {
+            "require": "./dist/cjs/encodeHTMLEntities.cjs",
+            "types": "./dist/cjs/encodeHTMLEntities.d.cts",
+            "default": "./dist/esm/encodeHTMLEntities.js"
+        },
+        "./dist/cjs/encodeHTMLEntities.cjs": {
+            "require": "./dist/cjs/encodeHTMLEntities.cjs",
+            "types": "./dist/cjs/encodeHTMLEntities.d.cts",
+            "default": "./dist/esm/encodeHTMLEntities.js"
+        },
         "./ensureColorContrast.d.ts": {
             "require": "./dist/cjs/ensureColorContrast.d.cts",
             "default": "./dist/esm/ensureColorContrast.d.ts"
