@@ -20,48 +20,62 @@ const MEMOIZER_MAXSIZE = 100_000;
 const memoizer = createPermanentMemoizer(
     (DOMPurify: typeof import('isomorphic-dompurify')) => DOMPurify.version,
     DOMPurify => {
-        /**
-         * Set default TARGET and REL for A tags.
-         *
-         * Don't overwrite target="_self".
-         */
-        DOMPurify.addHook('afterSanitizeElements', function (e) {
-            const el = e as Element;
-            if (el.nodeName.toLowerCase() === 'a') {
-                if (el.getAttribute('target') !== '_self') {
-                    el.setAttribute('target', '_blank');
-                }
-                const noreferrer = el.getAttribute('rel')?.includes('noreferrer');
-                el.setAttribute('rel', 'nofollow noopener' + (noreferrer ? ' noreferrer' : ''));
-            }
-        });
         return createPermanentMemoizer(
-            (allowedTagsInput: string | string[] | undefined) => String(allowedTagsInput),
-            allowedTagsInput => {
-                const allowedTags =
-                    allowedTagsInput === undefined
-                        ? DEFAULT_ALLOWED
-                        : typeof allowedTagsInput === 'string'
-                          ? allowedTagsInput.toLowerCase().slice(1, -1).split('><')
-                          : allowedTagsInput;
-                const config = {
-                    ALLOWED_TAGS: allowedTags,
-                    ADD_ATTR: ['target'],
-                    FORCE_BODY: true, // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
-                };
+            (trustLinks: boolean | undefined) => String(trustLinks),
+            trustLinks => {
+                DOMPurify.removeHook('afterSanitizeElements');
+
+                if (!trustLinks) {
+                    /**
+                     * Set default TARGET and REL for A tags.
+                     *
+                     * Don't overwrite target="_self".
+                     */
+                    DOMPurify.addHook('afterSanitizeElements', function (e) {
+                        const el = e as Element;
+                        if (el.nodeName.toLowerCase() === 'a') {
+                            if (el.getAttribute('target') !== '_self') {
+                                el.setAttribute('target', '_blank');
+                            }
+
+                            const noreferrer = el.getAttribute('rel')?.includes('noreferrer');
+                            el.setAttribute(
+                                'rel',
+                                'nofollow noopener' + (noreferrer ? ' noreferrer' : '')
+                            );
+                        }
+                    });
+                }
 
                 return createPermanentMemoizer(
-                    (input: unknown) => input,
-                    input => {
-                        // Implementation of DOMPurify accepts anything,
-                        // and we need to accept anything too, according to tests
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        return DOMPurify.sanitize(input as any, config);
+                    (allowedTagsInput: string | string[] | undefined) => String(allowedTagsInput),
+                    allowedTagsInput => {
+                        const allowedTags =
+                            allowedTagsInput === undefined
+                                ? DEFAULT_ALLOWED
+                                : typeof allowedTagsInput === 'string'
+                                  ? allowedTagsInput.toLowerCase().slice(1, -1).split('><')
+                                  : allowedTagsInput;
+                        const config = {
+                            ALLOWED_TAGS: allowedTags,
+                            ADD_ATTR: ['target'],
+                            FORCE_BODY: true, // Makes sure that top-level SCRIPT tags are kept if explicitly allowed.
+                        };
+
+                        return createPermanentMemoizer(
+                            (input: unknown) => input,
+                            input => {
+                                // Implementation of DOMPurify accepts anything,
+                                // and we need to accept anything too, according to tests
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                return DOMPurify.sanitize(input as any, config);
+                            },
+                            { maxsize: MEMOIZER_MAXSIZE }
+                        );
                     },
                     { maxsize: MEMOIZER_MAXSIZE }
                 );
-            },
-            { maxsize: MEMOIZER_MAXSIZE }
+            }
         );
     }
 );
@@ -74,9 +88,14 @@ const memoizer = createPermanentMemoizer(
  *
  * @param {string} input - dirty HTML input
  * @param {string[]} [allowedTagsInput] - list of allowed tags; see DEFAULT_ALLOWED for the default value
+ * @param {boolean} [trustLinks] - if set to true, A tags will be trusted and not modified
  * @return {string} - the cleaned HTML output
  */
-type PurifyHTML = (input: string, allowedTagsInput?: string | string[]) => string;
+type PurifyHTML = (
+    input: string,
+    allowedTagsInput?: string | string[],
+    trustLinks?: boolean
+) => string;
 /**
  * Generates an instance of purifyHtml with DOMPurify already loaded.
  *
@@ -86,11 +105,15 @@ type PurifyHTML = (input: string, allowedTagsInput?: string | string[]) => strin
  * @param DOMPurify - DOMPurify instance
  */
 function purifyHtmlFactory(DOMPurify: typeof import('isomorphic-dompurify')): PurifyHTML {
-    return function purifyHtml(input: string, allowedTagsInput?: string | string[]) {
+    return function purifyHtml(
+        input: string,
+        allowedTagsInput?: string | string[],
+        trustLinks?: boolean
+    ) {
         if (!input) {
             return input;
         }
-        return memoizer.get(DOMPurify, true).get(allowedTagsInput).get(input);
+        return memoizer.get(DOMPurify, true).get(trustLinks).get(allowedTagsInput).get(input);
     };
 }
 

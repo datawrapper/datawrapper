@@ -235,3 +235,12 @@ test('purifyHtml preserves DEFAULT_ALLOWED tags if `allowed` is not passed', t =
         '<a rel="nofollow noopener" target="_blank">link</a> <b>bold</b> <i>italic</i> paragraph'
     );
 });
+
+test('purifyHtml does not overwrite target if links are trusted', t => {
+    t.is(
+        purifyHtml('check out <a href="https://example.com">this link</a>!', ['a'], {
+            trustLinks: true,
+        }),
+        'check out <a href="https://example.com">this link</a>!'
+    );
+});

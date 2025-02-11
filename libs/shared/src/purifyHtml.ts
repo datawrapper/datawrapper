@@ -9,9 +9,15 @@ import purifyHtmlFactory from './pure/purifyHtml.js';
  *
  * @param {string} input - dirty HTML input
  * @param {string[]} [allowedTagsInput] - list of allowed tags; see DEFAULT_ALLOWED for the default value
+ * @param {object} [options] - additional options
+ * @param {boolean} [options.trustLinks] - if set to true, A tags will be trusted and not modified
  * @return {string} - the cleaned HTML output
  */
-function purifyHtml(input: string, allowedTagsInput?: string[]): string;
+function purifyHtml(
+    input: string,
+    allowedTagsInput?: string[],
+    options?: { trustLinks?: boolean }
+): string;
 /**
  * @deprecated
  */
@@ -20,8 +26,16 @@ function purifyHtml(input: string, allowedTagsInput: string): string;
  * @deprecated
  */
 function purifyHtml(input: unknown): unknown;
-function purifyHtml(input: unknown, allowedTagsInput?: string | string[]) {
-    return purifyHtmlFactory(DOMPurify)(input as string, allowedTagsInput as string[]);
+function purifyHtml(
+    input: unknown,
+    allowedTagsInput?: string | string[],
+    options: { trustLinks?: boolean } = {}
+) {
+    return purifyHtmlFactory(DOMPurify)(
+        input as string,
+        allowedTagsInput as string[],
+        options.trustLinks ?? false
+    );
 }
 
 export type PurifyHtml = typeof purifyHtml;
