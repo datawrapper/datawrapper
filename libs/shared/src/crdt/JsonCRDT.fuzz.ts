@@ -1,7 +1,6 @@
 import test from 'ava';
 import cloneDeep from 'lodash/cloneDeep.js';
 import setWith from 'lodash/setWith.js';
-import sampleSize from 'lodash/sampleSize.js';
 import get from 'lodash/get.js';
 import omit from 'lodash/omit.js';
 import { iterateObjectPaths } from '../objectPaths.js';

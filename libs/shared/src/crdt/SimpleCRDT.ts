@@ -25,19 +25,23 @@ export class SimpleCRDT implements CRDT<string> {
         this.crdt = new JsonCRDT<{ value: string }>({ nodeId, data: { value } });
     }
 
-    createUpdate(diff: Diff<string>): Update<string> {
+    createUpdate(diff: Diff<string>): Update<string> | null {
         if (diff === undefined) {
-            return { diff: undefined, timestamp: this.crdt.timestamp() };
+            return null;
         }
         const update = this.crdt.createUpdate({ value: diff });
+        if (update === null) {
+            throw new Error('Update is null, but must be an object.');
+        }
         return { diff, timestamp: update.timestamp };
     }
 
     applyUpdate(update: Update<string>): void {
-        if (update.diff === undefined) {
-            return;
+        const { diff } = update;
+        if (diff === undefined || diff === null) {
+            throw new Error('diff is undefined or null, but must be a string.');
         }
-        this.crdt.applyUpdate({ diff: { value: update.diff }, timestamp: update.timestamp });
+        this.crdt.applyUpdate({ diff: { value: diff }, timestamp: update.timestamp });
     }
 
     calculateDiff(newData: string): Diff<string> {

@@ -46,3 +46,13 @@ test('calculateDiff returns undefined if there is no diff', t => {
     const crdt = new SimpleCRDT(1, 'value', '1-1');
     t.is(crdt.calculateDiff('value'), undefined);
 });
+
+test(`createUpdate returns null if there is no diff`, t => {
+    const crdt = new SimpleCRDT(1, 'value', '1-1');
+    t.is(crdt.createUpdate(undefined), null);
+});
+
+test(`applyUpdate throws if diff is undefined`, t => {
+    const crdt = new SimpleCRDT(1, 'value', '1-1');
+    t.throws(() => crdt.applyUpdate({ diff: undefined, timestamp: '1-2' }));
+});

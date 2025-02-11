@@ -9,6 +9,7 @@ import type {
     CalculateDiffOptions,
 } from './types.js';
 import { typeofObjectProperties } from './utils.js';
+import isEmpty from 'lodash/isEmpty.js';
 
 /*
 CRDT implementation using a single counter to track updates.
@@ -83,10 +84,13 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
      * @param update.timestamp The timestamp associated with the data diff
      */
     applyUpdate(update: Update<O>) {
+        if (isEmpty(update.diff)) {
+            // Updates must be created by createUpdate. createUpdate must return null for empty diffs.
+            throw new Error(
+                'Empty diffs are not allowed. Use createUpdate to create updates with empty diffs.'
+            );
+        }
         const { diff, timestamp } = update;
-        // if (this.clock.nodeId === 1) {
-        //     debugger;
-        // }
         this.clock.update(timestamp);
         this.crdt.update(diff, timestamp);
     }
@@ -108,7 +112,11 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
      * @param data The data diff to apply
      * @returns An update object that contains the applied data diff and the associated timestamp
      */
-    createUpdate(diff: Diff<O>): Update<O> {
+    createUpdate(diff: Diff<O>): Update<O> | null {
+        if (isEmpty(diff)) {
+            // We don't allow to create updates with empty diffs as there is nothing to change
+            return null;
+        }
         const timestamp = this.clock.tick();
         this.crdt.update(diff, timestamp);
         return { diff, timestamp };
@@ -118,7 +126,7 @@ export class JsonCRDT<O extends object> implements CRDT<O> {
         newData: O,
         options?: Pick<CalculateDiffOptions, 'allowedKeys' | 'ignorePaths'>
     ): Diff<O> {
-        return this.crdt.calculateDiff(newData, options) as O;
+        return this.crdt.calculateDiff(newData, options) as Diff<O>;
     }
 
     data(): O {
