@@ -1,19 +1,7 @@
 import test from 'ava';
 import Joi from 'joi';
-import { migrateObject, splitArray } from './migrateObject';
-
-test('migrateObject migrates settings based on explicit path mapping', t => {
-    const legacySettings = {
-        oldPath: 'value',
-    };
-    const mapping = {
-        oldPath: { path: 'newPath' },
-    };
-    const migratedSettings = migrateObject(legacySettings, mapping);
-    t.deepEqual(migratedSettings, {
-        newPath: 'value',
-    });
-});
+import { migrateObject } from './migrateObject';
+import { getValueFromArray } from './valueMigrations';
 
 test('migrateObject migrates settings based on simple string mapping', t => {
     const legacySettings = {
@@ -32,15 +20,18 @@ test('migrateObject migrates deeply nested objects', t => {
     const legacySettings = {
         nested: {
             oldPath: 'value',
+            anotherPath: 'anotherValue',
         },
     };
     const mapping = {
-        'nested.oldPath': { path: 'newNested.newPath' },
+        'nested.oldPath': 'newNested.newPath',
+        'nested.anotherPath': 'newNested.anotherPath',
     };
     const migratedSettings = migrateObject(legacySettings, mapping);
     t.deepEqual(migratedSettings, {
         newNested: {
             newPath: 'value',
+            anotherPath: 'anotherValue',
         },
     });
 });
@@ -50,7 +41,7 @@ test('migrateObject should migrate arrays', t => {
         oldPath: ['value1', 'value2'],
     };
     const mapping = {
-        oldPath: { path: 'newPath' },
+        oldPath: 'newPath',
     };
     const migratedSettings = migrateObject(legacySettings, mapping);
     t.deepEqual(migratedSettings, {
@@ -63,7 +54,7 @@ test('migrateObject migrates to multiple paths', t => {
         oldPath: 123,
     };
     const mapping = {
-        oldPath: [{ path: 'newPath2.nested' }, { path: 'newPath1' }],
+        oldPath: ['newPath2.nested', 'newPath1'],
     };
     const migratedSettings = migrateObject(legacySettings, mapping);
     t.deepEqual(migratedSettings, {
@@ -89,7 +80,7 @@ test('migrateObject migrates to multiple paths using simple string mapping', t =
 test('migrateObject should not fail but also not create a new path if the old path does not exist', t => {
     const legacySettings = {};
     const mapping = {
-        oldPath: { path: 'newPath' },
+        oldPath: 'newPath',
     };
     const migratedSettings = migrateObject(legacySettings, mapping);
     t.deepEqual(migratedSettings, {});
@@ -97,13 +88,13 @@ test('migrateObject should not fail but also not create a new path if the old pa
 
 test('migrateObject should throw if the migrated settings do not match the provided schema', t => {
     const newSchema = Joi.object({
-        NOTnewPath: Joi.string(),
+        NOTpath: Joi.string(),
     });
     const legacySettings = {
         oldPath: 'value',
     };
     const mapping = {
-        oldPath: { path: 'newPath' },
+        oldPath: 'newPath',
     };
     t.throws(() => migrateObject(legacySettings, mapping, newSchema));
 });
@@ -116,7 +107,7 @@ test('migrateObject should not throw if the migrated settings match the provided
         oldPath: 'value',
     };
     const mapping = {
-        oldPath: { path: 'newPath' },
+        oldPath: 'newPath',
     };
     t.notThrows(() => migrateObject(legacySettings, mapping, newSchema));
     t.deepEqual(migrateObject(legacySettings, mapping, newSchema), {
@@ -133,8 +124,8 @@ test('migrateObject modifies the value with the migrateValue function', t => {
     };
     const mapping = {
         oldPath: {
-            path: 'newPath',
-            value: (oldValue: unknown) => parseInt(oldValue as string, 10),
+            newPath: 'newPath',
+            valueMigration: (oldValue: unknown) => parseInt(oldValue as string, 10),
         },
     };
     t.notThrows(() => migrateObject(legacySettings, mapping, newSchema));
@@ -162,8 +153,8 @@ test('migrateObject migrates objects', t => {
     };
     const mapping = {
         oldObject: {
-            path: 'newObject',
-            value: (oldValue: unknown) => {
+            newPath: 'newObject',
+            valueMigration: (oldValue: unknown) => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { get_me, ...newObject } = oldValue as Record<string, unknown>;
                 return newObject;
@@ -197,12 +188,12 @@ test('migrateObject can split up arrays during migration using splitArray functi
     const mapping = {
         oldPath: [
             {
-                path: 'migrated.path.formerArray0',
-                value: (oldValue: unknown) => splitArray(oldValue, 0),
+                newPath: 'migrated.path.formerArray0',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 0),
             },
             {
-                path: 'migrated.path.formerArray1',
-                value: (oldValue: unknown) => splitArray(oldValue, 1),
+                newPath: 'migrated.path.formerArray1',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 1),
             },
         ],
     };
@@ -232,12 +223,12 @@ test('migrateObject can split up arrays during migration using splitArray functi
     const mapping = {
         oldPath: [
             {
-                path: 'migrated.path.formerArray0',
-                value: (oldValue: unknown) => splitArray(oldValue, 0),
+                newPath: 'migrated.path.formerArray0',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 0),
             },
             {
-                path: 'migrated.path.formerArray1',
-                value: (oldValue: unknown) => splitArray(oldValue, 1),
+                newPath: 'migrated.path.formerArray1',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 1),
             },
         ],
     };
@@ -263,12 +254,12 @@ test('migrateObject can split up arrays during migration using splitArray functi
     const mapping = {
         oldPath: [
             {
-                path: 'migrated.path.formerArray0',
-                value: (oldValue: unknown) => splitArray(oldValue, 0),
+                newPath: 'migrated.path.formerArray0',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 0),
             },
             {
-                path: 'migrated.path.formerArray1',
-                value: (oldValue: unknown) => splitArray(oldValue, 1),
+                newPath: 'migrated.path.formerArray1',
+                valueMigration: (oldValue: unknown) => getValueFromArray(oldValue, 1),
             },
         ],
     };
@@ -295,12 +286,12 @@ test('migrateObject can split up arrays during migration using splitArray functi
     const mapping = {
         oldPath: [
             {
-                path: 'migrated.path.formerArray0',
-                value: (oldValue: unknown) => splitArray(oldValue, 0, migrateValue),
+                newPath: 'migrated.path.formerArray0',
+                valueMigration: (oldValue: unknown) => migrateValue(getValueFromArray(oldValue, 0)),
             },
             {
-                path: 'migrated.path.formerArray1',
-                value: (oldValue: unknown) => splitArray(oldValue, 1, migrateValue),
+                newPath: 'migrated.path.formerArray1',
+                valueMigration: (oldValue: unknown) => migrateValue(getValueFromArray(oldValue, 1)),
             },
         ],
     };
