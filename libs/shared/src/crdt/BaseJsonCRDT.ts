@@ -157,10 +157,6 @@ export class BaseJsonCRDT<O extends object = object> {
 
     _setInternalDataValue(path: string[], value: unknown, timestamp: Timestamp) {
         set(this.dataObj, path, value);
-        // Right now, we need to keep null values in the internal CRDT data object to prevent issues with partial deletes.
-        // if (isDeleteOperator(value)) {
-        //     unset(this.dataObj, path);
-        // }
         this._setTimestamp(path, timestamp);
     }
 
