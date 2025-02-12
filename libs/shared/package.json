@@ -1729,6 +1729,25 @@
             "require": "./dist/cjs/collaboration.cjs",
             "types": "./dist/cjs/collaboration.d.cts",
             "default": "./dist/esm/collaboration.js"
+        },
+        "./migrateObject.d.ts": {
+            "require": "./dist/cjs/migrateObject/migrateObject.d.cts",
+            "default": "./dist/esm/migrateObject/migrateObject.d.ts"
+        },
+        "./migrateObject.js": {
+            "require": "./dist/cjs/migrateObject/migrateObject.cjs",
+            "types": "./dist/cjs/migrateObject/migrateObject.d.cts",
+            "default": "./dist/esm/migrateObject/migrateObject.js"
+        },
+        "./migrateObject": {
+            "require": "./dist/cjs/migrateObject/migrateObject.cjs",
+            "types": "./dist/cjs/migrateObject/migrateObject.d.cts",
+            "default": "./dist/esm/migrateObject/migrateObject.js"
+        },
+        "./dist/cjs/migrateObject.cjs": {
+            "require": "./dist/cjs/migrateObject/migrateObject.cjs",
+            "types": "./dist/cjs/migrateObject/migrateObject.d.cts",
+            "default": "./dist/esm/migrateObject/migrateObject.js"
         }
     }
 }
