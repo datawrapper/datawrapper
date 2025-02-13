@@ -1748,6 +1748,25 @@
             "require": "./dist/cjs/migrateObject/migrateObject.cjs",
             "types": "./dist/cjs/migrateObject/migrateObject.d.cts",
             "default": "./dist/esm/migrateObject/migrateObject.js"
+        },
+        "./comments.d.ts": {
+            "require": "./dist/cjs/comments.d.cts",
+            "default": "./dist/esm/comments.d.ts"
+        },
+        "./comments.js": {
+            "require": "./dist/cjs/comments.cjs",
+            "types": "./dist/cjs/comments.d.cts",
+            "default": "./dist/esm/comments.js"
+        },
+        "./comments": {
+            "require": "./dist/cjs/comments.cjs",
+            "types": "./dist/cjs/comments.d.cts",
+            "default": "./dist/esm/comments.js"
+        },
+        "./dist/cjs/comments.cjs": {
+            "require": "./dist/cjs/comments.cjs",
+            "types": "./dist/cjs/comments.d.cts",
+            "default": "./dist/esm/comments.js"
         }
     }
 }
