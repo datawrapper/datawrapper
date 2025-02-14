@@ -60,6 +60,7 @@ Take a look at how existing files are referenced in exports field in `package.js
 -   [kMeans(values, numCluster)](#kMeans) ⇒ <code>array.&lt;Array.&lt;number&gt;&gt;</code>
 -   [loadScript(src, callback)](#loadScript)
 -   [loadStylesheet(src, callback)](#loadStylesheet)
+-   [moveToStart(array, predicate)](#moveToStart)
 -   [normalizeAlphaNumKey(key)](#normalizeAlphaNumKey) ⇒ <code>string</code>
 -   [normalizeNumKey(key)](#normalizeNumKey) ⇒ <code>number</code>
 -   [numberColumnFormatter(numeral, config)](#numberColumnFormatter) ⇒ <code>function</code>
@@ -835,6 +836,28 @@ import { loadStylesheet } from '@datawrapper/shared/fetch';
 loadStylesheet('/static/css/library.css', () => {
     console.log('library styles are loaded');
 });
+```
+
+---
+
+<a name="moveToStart" id="moveToStart"></a>
+
+### moveToStart(array, predicate)
+
+Move an item to the start of an array based on a predicate. Modifies the array in place.
+
+| Param     | Type                  | Description                                                                   |
+| --------- | --------------------- | ----------------------------------------------------------------------------- |
+| array     | <code>Array</code>    | the array to modify                                                           |
+| predicate | <code>function</code> | all items matching the predicate will be moved to the start of the array, preserving their internal order. |
+
+**Example**
+
+```js
+import { moveToStart } from '@datawrapper/shared';
+const arr = [1, 2, 3, 4];
+moveToStart(arr, n => n === 3);
+console.log(arr); // [3, 1, 2, 4]
 ```
 
 ---

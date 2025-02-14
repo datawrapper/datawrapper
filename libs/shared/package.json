@@ -1767,6 +1767,25 @@
             "require": "./dist/cjs/comments.cjs",
             "types": "./dist/cjs/comments.d.cts",
             "default": "./dist/esm/comments.js"
+        },
+        "./array.d.ts": {
+            "require": "./dist/cjs/array.d.cts",
+            "default": "./dist/esm/array.d.ts"
+        },
+        "./array.js": {
+            "require": "./dist/cjs/array.cjs",
+            "types": "./dist/cjs/array.d.cts",
+            "default": "./dist/esm/array.js"
+        },
+        "./array": {
+            "require": "./dist/cjs/array.cjs",
+            "types": "./dist/cjs/array.d.cts",
+            "default": "./dist/esm/array.js"
+        },
+        "./dist/cjs/array.cjs": {
+            "require": "./dist/cjs/array.cjs",
+            "types": "./dist/cjs/array.d.cts",
+            "default": "./dist/esm/array.js"
         }
     }
 }
