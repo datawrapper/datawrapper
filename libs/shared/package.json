@@ -24,6 +24,7 @@
         "test:watch": "ava -w",
         "test:perf": "ava --config ava-perf.config.cjs",
         "build": "scripts/build.sh",
+        "build:incremental": "scripts/build.sh --incremental",
         "dev": "echo \"Please use 'pnpm run dev:esm' and note that it's only possible to build the ESM version of the package this way.\"; exit 1",
         "dev:esm": "rm -Rf dist/esm/* && tsc --watch --project ./tsconfig.build.esm.json",
         "typecheck": "tsc --noEmit",
