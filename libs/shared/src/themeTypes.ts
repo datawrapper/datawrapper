@@ -137,7 +137,7 @@ type FontStretch =
     | '125%'
     | '150%'
     | '200%';
-type TypographyObject = {
+export type TypographyObject = {
     color?: string;
     fontSize?: number;
     fontWeight?: FontWeight;
