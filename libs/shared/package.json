@@ -1598,25 +1598,6 @@
             "types": "./dist/cjs/nameFromEmail.d.cts",
             "default": "./dist/esm/nameFromEmail.js"
         },
-        "./mentionsAndChartLinks.d.ts": {
-            "require": "./dist/cjs/mentionsAndChartLinks.d.cts",
-            "default": "./dist/esm/mentionsAndChartLinks.d.ts"
-        },
-        "./mentionsAndChartLinks.js": {
-            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
-            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
-            "default": "./dist/esm/mentionsAndChartLinks.js"
-        },
-        "./mentionsAndChartLinks": {
-            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
-            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
-            "default": "./dist/esm/mentionsAndChartLinks.js"
-        },
-        "./dist/cjs/mentionsAndChartLinks.cjs": {
-            "require": "./dist/cjs/mentionsAndChartLinks.cjs",
-            "types": "./dist/cjs/mentionsAndChartLinks.d.cts",
-            "default": "./dist/esm/mentionsAndChartLinks.js"
-        },
         "./emojis.d.ts": {
             "require": "./dist/cjs/emoji/emojis.d.cts",
             "default": "./dist/esm/emoji/emojis.d.ts"

@@ -1,10 +1,11 @@
 import test from 'ava';
 import {
+    getChartIdFromLink,
+    getChartLinksFromTipTapJson,
     getMentionsFromTipTapJson,
     getUserIdFromMention,
-    getChartLinksFromTipTapJson,
-    getChartIdFromLink,
-} from './mentionsAndChartLinks';
+    jsonContentSchema,
+} from './comments';
 
 test('getMentionsFromTipTapJson works for trivial case', t => {
     const set = getMentionsFromTipTapJson(trivialMentionsJson);
@@ -65,6 +66,38 @@ test('getChartIdFromLink throws an error when the link is not a valid chart link
     t.throws(() => getChartIdFromLink('chart:abcdefg'));
 });
 
+test('jsonContentSchema confirms valid example tipTap json content', t => {
+    [
+        trivialMentionsJson,
+        trivialChartLinksJson,
+        deeplyNestedMentionsJson,
+        deeplyNestedChartLinksJson,
+    ].forEach(json => {
+        const result = jsonContentSchema.validate(json);
+        t.is(result.error, undefined);
+    });
+});
+
+test('jsonContentSchema rejects invalid example tipTap json content', t => {
+    const result = jsonContentSchema.validate({
+        type: 'doc',
+        content: [
+            {
+                type: 'paragraph',
+                content: [
+                    {
+                        type: 'mention',
+                        attrs: {
+                            id: { randomInvalidAttribute: 'user:1202' },
+                        },
+                    },
+                ],
+            },
+        ],
+    });
+
+    t.not(result.error, undefined);
+});
 /**
  * Equivalent to plain text "@Sophie Xeon".
  */

@@ -54,6 +54,6 @@ export {
     getUserIdFromMention,
     getChartIdFromLink,
     getChartLinksFromTipTapJson,
-} from './mentionsAndChartLinks.js';
+} from './comments.js';
 export { isCSV, isJSON } from './checkFileType.js';
 export { isSpreadsheetUrl, convertSpreadsheetUrl } from './spreadsheetUtils.js';
