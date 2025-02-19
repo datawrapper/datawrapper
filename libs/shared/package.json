@@ -1768,6 +1768,25 @@
             "require": "./dist/cjs/array.cjs",
             "types": "./dist/cjs/array.d.cts",
             "default": "./dist/esm/array.js"
+        },
+        "./hash.d.ts": {
+            "require": "./dist/cjs/hash.d.cts",
+            "default": "./dist/esm/hash.d.ts"
+        },
+        "./hash.js": {
+            "require": "./dist/cjs/hash.cjs",
+            "types": "./dist/cjs/hash.d.cts",
+            "default": "./dist/esm/hash.js"
+        },
+        "./hash": {
+            "require": "./dist/cjs/hash.cjs",
+            "types": "./dist/cjs/hash.d.cts",
+            "default": "./dist/esm/hash.js"
+        },
+        "./dist/cjs/hash.cjs": {
+            "require": "./dist/cjs/hash.cjs",
+            "types": "./dist/cjs/hash.d.cts",
+            "default": "./dist/esm/hash.js"
         }
     }
 }
