@@ -102,7 +102,7 @@ function Column(name_, rows, type, allowedTags) {
                 title = purifyHtml(arguments[0], allowedTags);
                 return column;
             }
-            return title || name;
+            return title ?? name;
         },
 
         /**
