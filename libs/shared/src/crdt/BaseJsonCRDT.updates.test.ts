@@ -1454,3 +1454,31 @@ test('cannot overwrite object with atomic value if any child has higher timestam
 
     t.deepEqual(crdt.data(), { a: {} });
 });
+
+test(`can set property with name '_index' outside of item arrays`, t => {
+    const crdt = new BaseJsonCRDT({
+        data: {
+            foo: 'bar',
+        },
+    });
+
+    crdt.update(
+        {
+            some: {
+                path: {
+                    _index: 'test',
+                },
+            },
+        },
+        '1-1'
+    );
+
+    t.deepEqual(crdt.data(), {
+        foo: 'bar',
+        some: {
+            path: {
+                _index: 'test',
+            },
+        },
+    });
+});

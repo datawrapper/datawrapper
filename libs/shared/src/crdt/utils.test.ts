@@ -9,7 +9,7 @@ import {
     isExistingAtomicValue,
     isItemArray,
     isNonEmptyObject,
-    isPathToItemArrayIndex,
+    isIndexPath,
     itemArrayToObject,
     set,
     removeNullsFromObject,
@@ -115,13 +115,13 @@ test('isExistingAtomicValue', t => {
     t.false(isExistingAtomicValue({}));
 });
 
-test('isPathToItemArrayIndex', t => {
-    t.true(isPathToItemArrayIndex(['a', 'b', '_index']));
+test('isIndexPath', t => {
+    t.true(isIndexPath(['a', 'b', '_index']));
 
-    t.false(isPathToItemArrayIndex(['a', 'b', TIMESTAMP_KEY]));
-    t.false(isPathToItemArrayIndex(['a', 'b']));
-    t.false(isPathToItemArrayIndex(['a']));
-    t.false(isPathToItemArrayIndex([]));
+    t.false(isIndexPath(['a', 'b', TIMESTAMP_KEY]));
+    t.false(isIndexPath(['a', 'b']));
+    t.false(isIndexPath(['a']));
+    t.false(isIndexPath([]));
 });
 
 test('isItemArray - returns true for valid item arrays', t => {

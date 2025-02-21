@@ -6,7 +6,7 @@ import type { Diff } from './CRDT.js';
 import unset from 'lodash/unset.js';
 import {
     set,
-    isPathToItemArrayIndex,
+    isIndexPath,
     isExistingAtomicValue,
     isDeleteOperator,
     isAtomic,
@@ -192,7 +192,7 @@ export class BaseJsonCRDT<O extends object = object> {
         newTimestamp,
         debugHistoryEntry,
     }: UpdateValueProps) {
-        assertOneOf(path, [isPathToItemArrayIndex]);
+        assertOneOf(path, [isIndexPath]);
 
         const currentClock = this._getClock(path);
 
@@ -433,18 +433,16 @@ export class BaseJsonCRDT<O extends object = object> {
             );
         }
 
-        // Current path leads to an item array index (e.g. 'a.b._index')
-        if (isPathToItemArrayIndex(path)) {
+        // Path might lead to an item array index, but it doesn't have to.
+        // This can be the case when dynamic/user controlled data contains an object with an `_index` key.
+        // If we're not in an item array, we just continue with a regular update of the value.
+        if (isIndexPath(path)) {
             const itemArrayPath = itemArrayPathFromIndexPath(path);
-            if (!this._isPathToItemArray(itemArrayPath)) {
-                throw new Error(
-                    `Item array created at illegal path '${pathArrayToString(
-                        itemArrayPath
-                    )}'. Allowed paths are '${Array.from(this.pathsToItemArrays).join(', ')}'`
-                );
+            // Current path leads to an item array index (e.g. 'a.b._index')
+            if (this._isPathToItemArray(itemArrayPath)) {
+                this._updateItemArrayIndex(props);
+                return;
             }
-            this._updateItemArrayIndex(props);
-            return;
         }
 
         // Current path has an atomic value.

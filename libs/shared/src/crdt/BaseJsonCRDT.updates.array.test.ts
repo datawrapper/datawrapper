@@ -103,28 +103,6 @@ test(`add new items to item array`, t => {
     });
 });
 
-test(`item array can not be created at random path`, t => {
-    const crdt = new BaseJsonCRDT({
-        data: {
-            normalField: 'some value',
-        },
-    });
-
-    // add new array
-    t.throws(() => {
-        crdt.update(
-            {
-                arr: {
-                    A: { id: 'A', val: 1, _index: 0 },
-                    B: { id: 'B', val: 2, _index: 1 },
-                    C: { id: 'C', val: 3, _index: 2 },
-                },
-            },
-            '1-1'
-        );
-    });
-});
-
 test(`inserting item with id into non-item array does not turn it into item array`, t => {
     const crdt = new BaseJsonCRDT({ data: { arr: [] }, pathsToItemArrays: [] });
 

@@ -34,7 +34,7 @@ export function isExistingAtomicValue(value: unknown) {
     return isAtomic(value) && value !== undefined;
 }
 
-export function isPathToItemArrayIndex(path: string[]) {
+export function isIndexPath(path: string[]) {
     return path[path.length - 1] === '_index';
 }
 
@@ -135,7 +135,7 @@ export function removeNullsFromObject<T extends object>(obj: T): T {
 }
 
 export function itemArrayPathFromIndexPath(path: string[]) {
-    if (!isPathToItemArrayIndex(path)) throw new Error('Path is not an index path');
+    if (!isIndexPath(path)) throw new Error('Path is not an index path');
     return path.slice(0, -2);
 }
 
