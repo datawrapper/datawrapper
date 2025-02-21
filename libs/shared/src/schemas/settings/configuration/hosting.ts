@@ -1,20 +1,20 @@
 import Joi from 'joi';
 
 const HostingPdfFtpSchema = Joi.object({
-    directory: Joi.string(),
+    directory: Joi.string().allow(''),
     enabled: Joi.boolean(),
-    filename: Joi.string(),
-    server: Joi.string(),
-    user: Joi.string(),
+    filename: Joi.string().allow(''),
+    server: Joi.string().allow(''),
+    user: Joi.string().allow(''),
 });
 
 const HostingPdfS3Schema = Joi.object({
-    accessKeyId: Joi.string(),
-    bucket: Joi.string(),
+    accessKeyId: Joi.string().allow(''),
+    bucket: Joi.string().allow(''),
     enabled: Joi.boolean(),
-    filename: Joi.string(),
-    prefix: Joi.string(),
-    region: Joi.string(),
+    filename: Joi.string().allow(''),
+    prefix: Joi.string().allow(''),
+    region: Joi.string().allow(''),
 });
 
 const HostingPdfSchema = Joi.object({
@@ -26,23 +26,24 @@ const HostingChartsConfigSchema = Joi.object({
     disableRedirect: Joi.boolean(),
     hashPublishing: Joi.boolean(),
     urls: Joi.object({
-        hostname: Joi.string(),
+        hostname: Joi.string().allow(''),
         protocol: Joi.string().valid('http', 'https'),
-        prefix: Joi.string(),
+        prefix: Joi.string().allow(''),
     }),
+    disableRedirects: Joi.boolean(),
 });
 
 const HostingChartsProvidersSftpSchema = Joi.object({
-    host: Joi.string(),
+    host: Joi.string().allow(''),
     port: Joi.number(),
-    username: Joi.string(),
-    prefix: Joi.string(),
+    username: Joi.string().allow(''),
+    prefix: Joi.string().allow(''),
+    authMethod: Joi.string(),
 });
 const HostingChartsProvidersS3Schema = Joi.object({
-    endpoint: Joi.string(),
-    bucket: Joi.string(),
-    prefix: Joi.string(),
-    region: Joi.string(),
+    bucket: Joi.string().allow(''),
+    prefix: Joi.string().allow(''),
+    region: Joi.string().allow(''),
     acl: Joi.string().valid(
         'private',
         'public-read',
@@ -65,12 +66,12 @@ const HostingChartsProvidersS3Schema = Joi.object({
         .optional(),
 });
 const HostingChartsProvidersGcsSchema = Joi.object({
-    privateKeyId: Joi.string(),
-    projectId: Joi.string(),
-    clientId: Joi.string(),
-    clientEmail: Joi.string(),
-    bucket: Joi.string(),
-    prefix: Joi.string(),
+    privateKeyId: Joi.string().allow(''),
+    projectId: Joi.string().allow(''),
+    clientId: Joi.string().allow(''),
+    clientEmail: Joi.string().allow(''),
+    bucket: Joi.string().allow(''),
+    prefix: Joi.string().allow(''),
 });
 
 const HostingChartsProvidersSchema = Joi.object({
@@ -112,7 +113,7 @@ export const hostingSecretsSchema = Joi.object({
             password: Joi.string(),
         }),
         s3: Joi.object({
-            secretAccessKey: Joi.string(),
+            secret: Joi.string(),
         }),
     }),
 });

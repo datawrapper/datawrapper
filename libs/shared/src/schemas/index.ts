@@ -8,4 +8,5 @@ export {
     customFieldsSchema,
     preferencesSchema,
 } from './settings/configuration/index.js';
+export { hostingSecretsSchema } from './settings/configuration/secrets.js';
 export { ssoSchema, ssoSecretsSchema } from './settings/sso.js';
