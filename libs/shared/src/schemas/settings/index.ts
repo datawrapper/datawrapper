@@ -7,7 +7,7 @@ import {
     overridingSecretsConfigurationSchema,
     overridableSecretsConfigurationSchema,
 } from './configuration/secrets.js';
-import { ssoSchema, ssoSecretsSchema } from './sso.js';
+import { ssoSchema, ssoSecretsSchema } from './workspace/sso.js';
 import { teamPreferencesSchema } from './team.js';
 // regular settings
 
@@ -20,7 +20,7 @@ export const teamSettings = Joi.object({
 });
 
 export const workspaceSettings = Joi.object({
-    sso: ssoSchema,
+    workspace: Joi.object({ sso: ssoSchema }),
     configuration: overridableConfigurationSchema,
 });
 
@@ -32,7 +32,7 @@ export const secretTeamSettings = Joi.object({
 });
 
 export const secretWorkspaceSettings = Joi.object({
-    sso: ssoSecretsSchema,
+    workspace: Joi.object({ sso: ssoSecretsSchema }),
     configuration: overridableSecretsConfigurationSchema,
 });
 
