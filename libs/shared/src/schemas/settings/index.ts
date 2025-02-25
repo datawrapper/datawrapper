@@ -8,15 +8,15 @@ import {
     overridableSecretsConfigurationSchema,
 } from './configuration/secrets.js';
 import { ssoSchema, ssoSecretsSchema } from './sso.js';
-
+import { teamPreferencesSchema } from './team.js';
 // regular settings
 
 export const teamSettings = Joi.object({
-    defaultFolder: Joi.number().integer().allow(null),
     hidden: {
         zipEmbedJs: Joi.string().optional(),
     },
     configuration: overridingConfigurationSchema,
+    preferences: teamPreferencesSchema,
 });
 
 export const workspaceSettings = Joi.object({
