@@ -277,6 +277,7 @@ export type Chart = {
     };
     thumbnailHash: string;
     folderId?: number | null;
+    folder?: { name: string };
     organizationId: string | null;
     authorId: number | null;
     deleted?: boolean;
