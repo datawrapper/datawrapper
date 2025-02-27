@@ -407,6 +407,8 @@ export type TextAnnotationPosition = {
     x?: number | string;
     y?: number | string;
     plot?: AnnotationPlot;
+    group?: string;
+    column?: string;
     rowIndex?: number;
     rowOffset?: number;
 };
@@ -455,6 +457,8 @@ type RangeAnnotationPosition = {
     y0: number | string;
     y1: number | string;
     plot?: AnnotationPlot;
+    group?: string;
+    column?: string;
 };
 
 export type RangeAnnotationStrokeType = 'solid' | 'dotted' | 'dashed';
@@ -483,35 +487,26 @@ export type RangeAnnotation = {
  * @param params.noPlotOffset - If true, returns x/y values independent of plot position
  */
 export type DataToPx = (params: {
-    position: {
-        x?: number | string | null;
-        y?: number | string | null;
-        rowIndex?: number;
-        rowOffset?: number;
-        plot?: AnnotationPlot;
-    };
+    position: TextAnnotationPosition;
     noPlotOffset?: boolean;
 }) => [number, number];
 
 /**
  * @param params - All parameters passed as a single object.
- * @param params.plot - if specified, forces using coordinate system
- * of provided plot instead of looking for closest matching plot.
+ * @param params.referencePosition - If provided, returned values are relative to the annotation plot corresponding to this position.
  * @param params.clamped - if true, returned values are clamped to plot bounds.
  */
-export type PxToData = (params: { x: number; y: number; plot?: string; clamped?: boolean }) => {
-    position: {
-        x?: number | string;
-        y?: number | string;
-        rowIndex?: number;
-        rowOffset?: number;
-        plot?: string;
-    };
+export type PxToData = (params: {
+    x: number;
+    y: number;
+    referencePosition?: TextAnnotationPosition;
+    clamped?: boolean;
+}) => {
+    position: TextAnnotationPosition;
     validPosition?: boolean;
 };
 
 type InternalTextAnnotationPropList = {
-    plot: undefined | string;
     x: number;
     y: number;
     dx: number;
@@ -522,14 +517,15 @@ type InternalTextAnnotationPropList = {
     height: number;
     mobileFallback: boolean;
     text: string;
+    position: TextAnnotationPosition;
 };
 
 type InternalRangeAnnotationPropList = {
-    plot: undefined | string;
     start: number;
     end: number;
     invalidStart: boolean;
     invalidEnd: boolean;
+    position: RangeAnnotationPosition;
     bounds:
         | Record<string, never>
         | {
@@ -555,7 +551,6 @@ export type EditorState = {
     height: null | number;
     dataToPx: null | DataToPx;
     pxToData: null | PxToData;
-    plotHasUpdated: boolean;
     draggingOutOfBounds: boolean;
     activeRepeatedAnnotationIndex: null | number;
     disableAnnotationInteractions: boolean;
