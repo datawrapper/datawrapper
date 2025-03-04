@@ -78,8 +78,12 @@ export type ThemeBlock = {
     styles?: ThemeBlockStyles & {
         links?: ThemeBlockStyles;
     };
-    options?: Record<string, unknown>;
+    options?: ThemeBlockOptions;
 };
+
+export type ThemeBlockOptions = {
+    order?: number;
+} & Record<string, unknown>;
 
 // TODO The `type` property should be `children?: Block[]`, but our type implementation in shared/get doesn't support recursive types yet.
 export type Block = {
