@@ -26,6 +26,7 @@ export type DateColumnFormatterConfig = {
 export type ColumnTypeExpanded = {
     format(): unknown;
     precision(): DatePrecision;
+    parse<T>(value: T): T | number;
 };
 
 export type ColumnFormat = Record<string, Record<string, unknown>>;
@@ -41,6 +42,7 @@ export type Column = {
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
+    type(colType: string): Column;
     raw(index: number, value?: unknown): string;
     raw(): string[];
     /**
