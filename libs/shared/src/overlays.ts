@@ -81,15 +81,20 @@ export function getValueOverlayColumnName(overlay: Overlay) {
  *
  * @param {object} overlay
  * @param {object} dataset
+ * @param {function} [rangeFormat] - function to format the label for range overlays
  *
  * @export
  * @returns {string}
  */
-export function getDefaultOverlayLabel(overlay: Overlay, dataset: Dataset) {
-    return overlay.type === 'value'
-        ? getOverlayColumnTitle(dataset, getValueOverlayColumnName(overlay))
-        : `${getOverlayColumnTitle(dataset, overlay.from)} - ${getOverlayColumnTitle(
-              dataset,
-              overlay.to
-          )}`;
+export function getDefaultOverlayLabel(
+    overlay: Overlay,
+    dataset: Dataset,
+    rangeFormat = (from: string, to: string) => `${from} - ${to}`
+) {
+    if (overlay.type === 'value') {
+        return getOverlayColumnTitle(dataset, getValueOverlayColumnName(overlay));
+    }
+    const from = getOverlayColumnTitle(dataset, overlay.from);
+    const to = getOverlayColumnTitle(dataset, overlay.to);
+    return rangeFormat(from, to);
 }
