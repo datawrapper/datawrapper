@@ -395,3 +395,57 @@ test('custom diffArray function', t => {
         },
     });
 });
+
+test('removed properties are included in the diff', t => {
+    const source = { a: 1, b: 2, c: 3 };
+    const target = { a: 1, b: 2 };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, { c: null });
+});
+
+test('present properties with nil values are not treated as removed', t => {
+    const source = { a: 1, b: 2, c: null, d: undefined };
+    const target = { a: 1, b: 2, c: null, d: undefined };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, {});
+});
+
+test('removed properties with nil values are included in the diff', t => {
+    const source = { a: 1, b: 2, c: null, d: undefined };
+    const target = { a: 1, b: 2 };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, {
+        c: null,
+        d: null,
+    });
+});
+
+test('added nil values are included in the diff', t => {
+    const source = { a: 1, b: 2 };
+    const target = { a: 1, b: 2, c: null, d: undefined };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, {
+        c: null,
+        d: undefined,
+    });
+});
+
+test('existing properties changed to nil values are included in the diff', t => {
+    const source = { a: 1, b: 2, c: 3, d: 4 };
+    const target = { a: 1, b: 2, c: null, d: undefined };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, {
+        c: null,
+        d: undefined,
+    });
+});
+
+test('nil values changed to regular values are included in the diff', t => {
+    const source = { a: 1, b: 2, c: null, d: undefined };
+    const target = { a: 1, b: 2, c: 3, d: 4 };
+    const diff = objectDiff(source, target);
+    t.deepEqual(diff, {
+        c: 3,
+        d: 4,
+    });
+});

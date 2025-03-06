@@ -56,7 +56,7 @@ function diffKeys(
 ) {
     const patch: Record<string, unknown> = {};
     for (const targetKey of Object.keys(target)) {
-        if (!isEqual(target[targetKey], source[targetKey])) {
+        if (!(targetKey in source) || !isEqual(target[targetKey], source[targetKey])) {
             if (allowedKeys && !allowedKeys.has(targetKey)) continue;
             if (isPlainObject(target[targetKey]) && isPlainObject(source[targetKey])) {
                 // iterate one level down - allowedKeys are ignored, options are passed down
@@ -75,7 +75,7 @@ function diffKeys(
     // also look for removed keys and set them null
     for (const sourceKey of Object.keys(source)) {
         if (allowedKeys && !allowedKeys.has(sourceKey)) continue;
-        if (target[sourceKey] === undefined) {
+        if (!(sourceKey in target)) {
             patch[sourceKey] = null;
         }
     }
