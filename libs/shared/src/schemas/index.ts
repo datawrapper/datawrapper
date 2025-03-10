@@ -7,6 +7,7 @@ export {
     integrationsSchema,
     customFieldsSchema,
     preferencesSchema,
+    hiddenSchema,
 } from './settings/configuration/index.js';
 export { hostingSecretsSchema } from './settings/configuration/secrets.js';
 export { ssoSchema, ssoSecretsSchema } from './settings/workspace/sso.js';

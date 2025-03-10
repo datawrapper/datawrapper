@@ -4,7 +4,9 @@ import { imagesSchema } from './images.js';
 import { integrationsSchema } from './integrations.js';
 import { customFieldsSchema } from './customFields.js';
 import { preferencesSchema } from './preferences.js';
+import { hiddenSchema } from './hidden.js';
 
+export { hiddenSchema } from './hidden.js';
 export { hostingSchema } from './hosting.js';
 export { imagesSchema } from './images.js';
 export { integrationsSchema } from './integrations.js';
@@ -12,6 +14,7 @@ export { customFieldsSchema } from './customFields.js';
 export { preferencesSchema } from './preferences.js';
 
 export const overridableConfigurationSchema = Joi.object({
+    hidden: hiddenSchema,
     hosting: hostingSchema,
     images: imagesSchema,
     integrations: integrationsSchema,
@@ -29,4 +32,5 @@ export const overridingConfigurationSchema = Joi.object({
     integrations: integrationsSchema.append(OverridingConfigurationSetSchema),
     customFields: customFieldsSchema.append(OverridingConfigurationSetSchema),
     preferences: preferencesSchema.append(OverridingConfigurationSetSchema),
+    hidden: hiddenSchema.append(OverridingConfigurationSetSchema),
 });

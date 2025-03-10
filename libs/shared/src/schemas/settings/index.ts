@@ -12,9 +12,6 @@ import { teamPreferencesSchema } from './team.js';
 // regular settings
 
 export const teamSettings = Joi.object({
-    hidden: {
-        zipEmbedJs: Joi.string().optional(),
-    },
     configuration: overridingConfigurationSchema,
     preferences: teamPreferencesSchema,
 });
