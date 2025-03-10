@@ -89,12 +89,12 @@ export function getValueOverlayColumnName(overlay: Overlay) {
 export function getDefaultOverlayLabel(
     overlay: Overlay,
     dataset: Dataset,
-    rangeFormat = (from: string, to: string) => `${from} - ${to}`
+    rangeFormat?: (from: string, to: string) => string
 ) {
     if (overlay.type === 'value') {
         return getOverlayColumnTitle(dataset, getValueOverlayColumnName(overlay));
     }
     const from = getOverlayColumnTitle(dataset, overlay.from);
     const to = getOverlayColumnTitle(dataset, overlay.to);
-    return rangeFormat(from, to);
+    return typeof rangeFormat === 'function' ? rangeFormat(from, to) : `${from} - ${to}`;
 }

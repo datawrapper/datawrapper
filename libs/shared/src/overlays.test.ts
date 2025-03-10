@@ -1,5 +1,10 @@
 import test from 'ava';
-import { ZERO_BASELINE, getOverlayColor, getOverlayColumnTitle } from './overlays';
+import {
+    ZERO_BASELINE,
+    getOverlayColor,
+    getOverlayColumnTitle,
+    getDefaultOverlayLabel,
+} from './overlays';
 import { Dataset, Overlay } from './chartTypes';
 
 const overlayOne = {
@@ -31,6 +36,11 @@ const theme = {
         ],
     },
 };
+const rangeOverlay = {
+    type: 'range',
+    from: 'a column',
+    to: 'another column',
+} as Overlay;
 
 test('check color from with color from palette', t => {
     t.deepEqual(getOverlayColor(overlayOne, theme), 'rgba(199,30,29, 0.35)');
@@ -90,4 +100,22 @@ test('has no column name', t => {
 
 test('column name is ZERO_BASELINE', t => {
     t.deepEqual(getOverlayColumnTitle(datasetOne, ZERO_BASELINE), '0');
+});
+
+test('applies custom range format', t => {
+    t.deepEqual(
+        getDefaultOverlayLabel(rangeOverlay, datasetOne, (from, to) => `${from} until ${to}`),
+        'a column until another column'
+    );
+});
+
+test('applies default range format when no custom range format is passed', t => {
+    t.deepEqual(getDefaultOverlayLabel(rangeOverlay, datasetOne), 'a column - another column');
+});
+
+test('applies default range format when a value is passed to rangeFormat that is not a function', t => {
+    t.deepEqual(
+        getDefaultOverlayLabel(rangeOverlay, datasetOne, null),
+        'a column - another column'
+    );
 });
