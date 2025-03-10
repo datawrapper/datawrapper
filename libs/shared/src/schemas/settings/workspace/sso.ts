@@ -16,7 +16,7 @@ const protocolsSchema = Joi.object({
 
 export const ssoSchema = Joi.object({
     protocols: protocolsSchema,
-    protocol: Joi.string().allow('openId').allow('saml'),
+    protocol: Joi.string().valid('openId', 'saml'),
     enabled: Joi.boolean().default(false),
     automaticProvisioning: Joi.boolean().default(false),
 });

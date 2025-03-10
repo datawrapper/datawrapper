@@ -21,9 +21,9 @@ export const preferencesSchema = Joi.object({
     }),
     preview: Joi.object({
         widths: Joi.object({
-            mobile: Joi.number(),
-            tablet: Joi.number(),
-            desktop: Joi.number(),
+            mobile: Joi.number().integer(),
+            tablet: Joi.number().integer(),
+            desktop: Joi.number().integer(),
         }),
     }),
     csv: Joi.object({

@@ -35,7 +35,7 @@ const HostingChartsConfigSchema = Joi.object({
 
 const HostingChartsProvidersSftpSchema = Joi.object({
     host: Joi.string().allow(''),
-    port: Joi.number(),
+    port: Joi.number().integer(),
     username: Joi.string().allow(''),
     prefix: Joi.string().allow(''),
     authMethod: Joi.string(),
@@ -95,25 +95,25 @@ export const hostingSecretsSchema = Joi.object({
     charts: Joi.object({
         providers: Joi.object({
             sftp: Joi.object({
-                passphrase: Joi.string(),
-                password: Joi.string(),
-                privateKey: Joi.string(),
+                passphrase: Joi.string().allow(''),
+                password: Joi.string().allow(''),
+                privateKey: Joi.string().allow(''),
             }),
             s3: Joi.object({
-                accessKey: Joi.string(),
-                secretKey: Joi.string(),
+                accessKey: Joi.string().allow(''),
+                secretKey: Joi.string().allow(''),
             }),
             gcs: Joi.object({
-                privateKey: Joi.string(),
+                privateKey: Joi.string().allow(''),
             }),
         }),
     }),
     pdf: Joi.object({
         ftp: Joi.object({
-            password: Joi.string(),
+            password: Joi.string().allow(''),
         }),
         s3: Joi.object({
-            secret: Joi.string(),
+            secret: Joi.string().allow(''),
         }),
     }),
 });
