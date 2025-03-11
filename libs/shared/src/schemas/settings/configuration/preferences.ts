@@ -8,7 +8,7 @@ export const preferencesSchema = Joi.object({
                 'embed-width': Joi.number(),
             }),
         }),
-        locale: Joi.string(),
+        locale: Joi.string().allow(null),
         embed: Joi.object({
             custom: Joi.object({
                 template: Joi.string().allow(''),
