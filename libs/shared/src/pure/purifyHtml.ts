@@ -13,6 +13,7 @@ export const DEFAULT_ALLOWED = [
     'u',
     'em',
     'tt',
+    'bdi',
 ].sort();
 
 const MEMOIZER_MAXSIZE = 100_000;
