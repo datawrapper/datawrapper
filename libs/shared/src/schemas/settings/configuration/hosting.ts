@@ -63,6 +63,7 @@ const HostingChartsProvidersS3Schema = Joi.object({
             'max-age=14400',
             'max-age=28800'
         )
+        .allow(null)
         .optional(),
 });
 const HostingChartsProvidersGcsSchema = Joi.object({

@@ -5,8 +5,18 @@ export const hiddenSchema = Joi.object({
     zipEmbedJs: Joi.boolean().default(false),
     privateBasemapGroups: Joi.object().pattern(Joi.string(), Joi.boolean()),
     customFormats: Joi.object({
-        date: Joi.string(),
-        number: Joi.string(),
+        date: Joi.array().items(
+            Joi.object({
+                label: Joi.string(),
+                value: Joi.string(),
+            })
+        ),
+        number: Joi.array().items(
+            Joi.object({
+                label: Joi.string(),
+                value: Joi.string(),
+            })
+        ),
     }),
     locales: {
         numeral: Joi.object(),
