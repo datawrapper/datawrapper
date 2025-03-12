@@ -1,13 +1,12 @@
 export type Typography = {
-    fontFamilies: Record<
-        string,
-        {
-            name: string;
-            weight: number;
-            style: string;
-        }[]
-    >;
+    fontFamilies: Record<string, FontFamily>;
 };
+
+export type FontFamily = {
+    name: string;
+    weight: number;
+    style: string;
+}[];
 
 export type FontObject = {
     family: string;
@@ -356,6 +355,7 @@ export type ThemeData = {
     locales?: Record<string, Record<string, string>>;
     defaultFooterRegion?: string;
     defaultHeaderRegion?: string;
+    fontFamilies?: Record<string, FontFamily>;
 };
 
 export type Theme = {
