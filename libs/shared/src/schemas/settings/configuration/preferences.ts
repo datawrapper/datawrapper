@@ -7,6 +7,9 @@ export const preferencesSchema = Joi.object({
                 'embed-height': Joi.number(),
                 'embed-width': Joi.number(),
             }),
+            visualize: Joi.object({
+                basemap: Joi.string(),
+            }),
         }),
         locale: Joi.string().allow(null),
         embed: Joi.object({
