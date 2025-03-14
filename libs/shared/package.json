@@ -1787,6 +1787,25 @@
             "require": "./dist/cjs/hash.cjs",
             "types": "./dist/cjs/hash.d.cts",
             "default": "./dist/esm/hash.js"
+        },
+        "./exportFormatPresets.d.ts": {
+            "require": "./dist/cjs/exportFormatPresets.d.cts",
+            "default": "./dist/esm/exportFormatPresets.d.ts"
+        },
+        "./exportFormatPresets.js": {
+            "require": "./dist/cjs/exportFormatPresets.cjs",
+            "types": "./dist/cjs/exportFormatPresets.d.cts",
+            "default": "./dist/esm/exportFormatPresets.js"
+        },
+        "./exportFormatPresets": {
+            "require": "./dist/cjs/exportFormatPresets.cjs",
+            "types": "./dist/cjs/exportFormatPresets.d.cts",
+            "default": "./dist/esm/exportFormatPresets.js"
+        },
+        "./dist/cjs/exportFormatPresets.cjs": {
+            "require": "./dist/cjs/exportFormatPresets.cjs",
+            "types": "./dist/cjs/exportFormatPresets.d.cts",
+            "default": "./dist/esm/exportFormatPresets.js"
         }
     }
 }
