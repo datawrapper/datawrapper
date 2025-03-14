@@ -1,27 +1,24 @@
 import Joi from 'joi';
 
 const Format = Joi.object({
-    borderWidth: Joi.number().default(0),
-    dark: Joi.boolean().default(false),
+    borderWidth: Joi.number(),
+    dark: Joi.boolean(),
     filename: Joi.string(),
-    format: Joi.string().valid('png', 'pdf', 'svg').default('png'),
-    size: Joi.object({
-        height: Joi.number().default(450),
-        width: Joi.number().default(375),
-    }),
-    plain: Joi.boolean().default(false),
+    format: Joi.string().valid('png', 'pdf', 'svg'),
+    height: Joi.alternatives().try(Joi.number(), Joi.string().valid('auto')),
+    width: Joi.number(),
+    plain: Joi.boolean(),
     logo: Joi.string(),
-    zoom: Joi.number().default(2),
-    transparent: Joi.boolean().default(false),
+    zoom: Joi.number(),
+    transparent: Joi.boolean(),
 });
 
 const ImagesDownloadSchema = Joi.object({
-    localized: Joi.boolean().default(false),
-    name: Joi.string().default('{{ LOWER(title) }}'),
-    format: Joi.string().default('full'),
+    localized: Joi.boolean(),
+    name: Joi.string(),
+    format: Joi.string(),
     formats: Joi.array().items(Format),
 });
-
 export const imagesSchema = Joi.object({
     waitForImagesDuringPublish: Joi.boolean().default(false),
     download: ImagesDownloadSchema,
