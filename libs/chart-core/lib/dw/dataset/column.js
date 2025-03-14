@@ -347,14 +347,9 @@ function Column(name_, rows, type, allowedTags) {
         /**
          * return all row values formatted for use as keys
          */
-        keys() {
-            return Array.from(
-                new Set(
-                    column.values().map((val, i) => {
-                        return column.key(i);
-                    })
-                )
-            );
+        keys(allowDuplicates = false) {
+            const keys = column.values().map((val, i) => column.key(i));
+            return allowDuplicates ? keys : Array.from(new Set(keys));
         },
     };
     // backwards compatibility

@@ -38,7 +38,7 @@ export type Column = {
     range(): [any, any];
     name: () => string;
     value: (index: number) => string | number | boolean | Date | null;
-    values: () => (string | number | boolean | Date | null)[];
+    values: (unfiltered?: boolean) => (string | number | boolean | Date | null)[];
     title: () => string;
     type(): 'text' | 'number' | 'date';
     type(expand: true): ColumnTypeExpanded;
@@ -61,7 +61,7 @@ export type Column = {
     /**
      * @returns all values formatted for use as keys
      */
-    keys(): string[];
+    keys(allowDuplicates?: boolean): string[];
     /**
      * @param value to search for
      * @returns first index of value in column, if present
