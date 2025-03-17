@@ -1806,6 +1806,25 @@
             "require": "./dist/cjs/exportFormatPresets.cjs",
             "types": "./dist/cjs/exportFormatPresets.d.cts",
             "default": "./dist/esm/exportFormatPresets.js"
+        },
+        "./filenameVariables.d.ts": {
+            "require": "./dist/cjs/filenameVariables.d.cts",
+            "default": "./dist/esm/filenameVariables.d.ts"
+        },
+        "./filenameVariables.js": {
+            "require": "./dist/cjs/filenameVariables.cjs",
+            "types": "./dist/cjs/filenameVariables.d.cts",
+            "default": "./dist/esm/filenameVariables.js"
+        },
+        "./filenameVariables": {
+            "require": "./dist/cjs/filenameVariables.cjs",
+            "types": "./dist/cjs/filenameVariables.d.cts",
+            "default": "./dist/esm/filenameVariables.js"
+        },
+        "./dist/cjs/filenameVariables.cjs": {
+            "require": "./dist/cjs/filenameVariables.cjs",
+            "types": "./dist/cjs/filenameVariables.d.cts",
+            "default": "./dist/esm/filenameVariables.js"
         }
     }
 }
