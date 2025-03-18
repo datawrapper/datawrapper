@@ -2,15 +2,9 @@ import Joi from 'joi';
 
 export const preferencesSchema = Joi.object({
     defaults: Joi.object({
-        metadata: Joi.object({
-            publish: Joi.object({
-                'embed-height': Joi.number(),
-                'embed-width': Joi.number(),
-            }),
-            visualize: Joi.object({
-                basemap: Joi.string(),
-            }),
-        }),
+        height: Joi.number(),
+        width: Joi.number(),
+        basemap: Joi.string(),
         locale: Joi.string().allow(null),
         embed: Joi.object({
             custom: Joi.object({
