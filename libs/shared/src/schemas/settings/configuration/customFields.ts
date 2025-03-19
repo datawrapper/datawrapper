@@ -36,5 +36,4 @@ export const customFieldsSchema = Joi.object({
             }
             return value;
         }),
-    enableShowInArchive: Joi.boolean().default(false),
 });
