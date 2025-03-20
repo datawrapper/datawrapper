@@ -206,6 +206,7 @@ export type ChartLibraries = {
 };
 
 export type DwChart = {
+    asset: ((id: string) => string) | ((id: string, asset: string) => void);
     get: SettingsGetter<Chart>;
     set: (key: string, value: unknown) => void;
     save(): void;
